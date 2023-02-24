@@ -1,4 +1,4 @@
-#' Pairwise formula special term
+#' Pairwise Formula Special Term
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -8,16 +8,16 @@
 #' @param x the variable for which pairwise result is expected
 #'
 #' @details Let's `ARM` being a factor with level A, B, C; let's be B the reference level,
-#'  a model calling the formula including `pairwise(ARM)` will result in two models
-#'  * a model including only levels A and B, and effect of A estimated in reference to B.
-#'  * a model including only levels C and B, the effect of C estimated in reference to B.
+#'   a model calling the formula including `pairwise(ARM)` will result in two models:
+#'   * A model including only levels A and B, and effect of A estimated in reference to B.
+#'   * A model including only levels C and B, the effect of C estimated in reference to B.
 #'
 #' @export
 pairwise <- function(x) {
   structure(x, varname = deparse(substitute(x)))
 }
 
-#' Univariate formula special term
+#' Univariate Formula Special Term
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -51,9 +51,9 @@ rht <- function(x) {
 #' This function estimates the hazard ratios between arms when an interaction variable is given with
 #' specific values.
 #'
-#' @param variable,given Names of two variable in interaction. We seek the estimation of the levels of \code{variable}
-#'   given the levels of \code{given}
-#' @param lvl_var,lvl_given corresponding levels has given by \code{levels}.
+#' @param variable,given Names of two variable in interaction. We seek the estimation of the levels of `variable`
+#'   given the levels of `given`.
+#' @param lvl_var,lvl_given corresponding levels has given by `levels`.
 #' @param mmat A name numeric filled with 0 used as template to obtain the design matrix.
 #' @param coef Numeric of estimated coefficients.
 #' @param vcov Variance-covariance matrix of underlying model.
@@ -63,8 +63,8 @@ rht <- function(x) {
 #'   and Sex (F, M; reference Female). The model is abbreviated: y ~ Arm + Sex + Arm x Sex.
 #'   The cox regression estimates the coefficients along with a variance-covariance matrix for:
 #'
-#'   - b1 (arm b), b2 (arm c),
-#'   - b3 (sex m),
+#'   - b1 (arm b), b2 (arm c)
+#'   - b3 (sex m)
 #'   - b4 (arm b: sex m), b5 (arm c: sex m)
 #'
 #'   Given that I want an estimation of the Hazard Ratio for arm C/sex M, the estimation
@@ -73,12 +73,12 @@ rht <- function(x) {
 #'   as $1.96 * sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$ for a confidence level of 0.95.
 #'
 #' @return A list of matrix (one per level of variable) with rows corresponding to the combinations of
-#' \code{variable} and \code{given}, with columns:
+#' `variable` and `given`, with columns:
 #' \describe{
-#'   \item{coef_hat}{Estimation of the coefficient}
+#'   \item{coef_hat}{Estimation of the coefficient.}
 #'   \item{coef_se}{Standard error of the estimation.}
 #'   \item{hr}{Hazard ratio.}
-#'   \item{lcl,ucl}{lower/upper confidence limit of the hazard ratio}
+#'   \item{lcl, ucl}{Lower/upper confidence limit of the hazard ratio.}
 #' }
 #' @seealso [s_cox_multivariate()].
 #'
@@ -334,18 +334,18 @@ check_increments <- function(increments, covariates) {
 #' the p.values need to be interpreted with caution. (**Statistical Analysis of Clinical Trials Data with R**,
 #' `NEST's bookdown`)
 #'
-#' @param formula A \code{formula} corresponding to the investigated \code{\link[survival:Surv]{survival model}}
-#'     including covariates.
-#' @param data A \code{data.frame} which includes the variable in formula and covariates.
-#' @param conf_level The level of confidence for the hazard ration interval estimations. Default is 0.95.
-#' @param pval_method The method used for the estimation of p.values, should be one of \code{"wald"} (default) or
-#'   \code{"likelihood"}.
-#' @param ... Optional parameters passed to \code{\link[survival:coxph]{coxph()}}
-#' + `ties` a character string specifying the method for tie handling, one of `exact` (default), `efron`, `breslow`.
+#' @param formula (`formula`)\cr A formula corresponding to the investigated [survival::Surv()] survival model
+#'   including covariates.
+#' @param data (`data.frame`)\cr A data frame which includes the variable in formula and covariates.
+#' @param conf_level (`proportion`)\cr The confidence level for the hazard ratio interval estimations. Default is 0.95.
+#' @param pval_method (`character`)\cr The method used for the estimation of p-values, should be one of
+#'   "wald" (default) or "likelihood".
+#' @param ... Optional parameters passed to [survival::coxph()]. Can include `ties`, a character string specifying the
+#'   method for tie handling, one of `exact` (default), `efron`, `breslow`.
 #'
 #' @details The output is limited to single effect terms. Work in ongoing for estimation of interaction terms
-#'     but is out of scope as defined by the  Global Data Standards Repository
-#'     (**`GDS_Standard_TLG_Specs_Tables_2.doc`**).
+#'   but is out of scope as defined by the  Global Data Standards Repository
+#'   (**`GDS_Standard_TLG_Specs_Tables_2.doc`**).
 #' @seealso [estimate_coef()].
 #'
 #' @examples

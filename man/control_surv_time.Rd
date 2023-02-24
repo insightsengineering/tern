@@ -13,10 +13,10 @@ control_surv_time(
 \arguments{
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{conf_type}{(\code{string}) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
-see more in \code{\link[survival:survfit]{survival::survfit()}}. Note that the option "none" is no longer supported.}
+\item{conf_type}{(\code{string})\cr confidence interval type. Options are "plain" (default), "log", "log-log",
+see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "none" is no longer supported.}
 
-\item{quantiles}{(\code{numeric}) \cr of length two to specify the quantiles of survival time.}
+\item{quantiles}{(\code{numeric})\cr of length two to specify the quantiles of survival time.}
 }
 \value{
 A list of components with the same names as the arguments

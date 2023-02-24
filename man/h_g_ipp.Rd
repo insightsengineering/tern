@@ -21,7 +21,7 @@ h_g_ipp(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{xvar}{(\code{string})\cr time point variable to be plotted on x-axis.}
 
@@ -37,7 +37,7 @@ h_g_ipp(
 
 \item{subtitle}{(\code{string})\cr subtitle for plot.}
 
-\item{caption}{(\code{character} scalar) \cr optional caption below the plot.}
+\item{caption}{(\code{character} scalar)\cr optional caption below the plot.}
 
 \item{add_baseline_hline}{(\code{flag})\cr adds horizontal line at baseline y-value on
 plot when TRUE.}

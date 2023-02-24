@@ -4,9 +4,9 @@
 #'
 #' Several confidence intervals for the difference between proportions.
 #'
-#' @param grp (`factor`)\cr
-#'   vector assigning observations to one out of two groups
+#' @param grp (`factor`)\cr vector assigning observations to one out of two groups
 #'   (e.g. reference and treatment group).
+#'
 #' @name desctools_binom
 
 NULL
@@ -26,15 +26,16 @@ h_recycle <- function(...) {
 
 #' @describeIn desctools_binom Several Confidence Intervals for the difference between proportions.
 #'
-#'
 #' @return A named list of 3 values:
-#'   - `est`: estimate of proportion difference.
-#'   - `lwrci`: estimate of lower end of the confidence interval
-#'   - `upci`: estimate of upper end of the confidence interval.
-#' @examples
-#' # Internal function -
-#' \dontrun{
+#' \describe{
+#'   \item{est}{estimate of proportion difference.}
+#'   \item{lwrci}{estimate of lower end of the confidence interval.}
+#'   \item{upci}{estimate of upper end of the confidence interval.}
+#' }
 #'
+#' @examples
+#' # Internal function - desctools_binom
+#' \dontrun{
 #' set.seed(2)
 #' rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 #' grp <- factor(c(rep("A", 10), rep("B", 10)))
@@ -343,29 +344,34 @@ desctools_binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
 
 #' @describeIn desctools_binom Compute confidence intervals for binomial proportions.
 #'
-#' @param x \cr number of successes
-#' @param n \cr number of trials
-#' @param conf.level \cr confidence level, defaults to 0.95
-#' @param sides \cr a character string specifying the side of the confidence interval. Must be one of "two-sided" (default), "left" or "right".
-#' @param method \cr character string specifying which method to use. Can be one out of: "wald", "wilson", "wilsoncc", "agresti-coull", "jeffreys", "modified wilson", "modified jeffreys", "clopper-pearson", "arcsine.
-#' ", "logit", "witting", "pratt", "midp", "lik" and "blaker"
-#'
-#'
-#'  @return A matric with 3 columns containing:
-#'   - `est`: estimate of proportion difference.
-#'   - `lwrci`: lower end of the confidence interval
-#'   - `upci`:  upper end of the confidence interval.
+#' @param x (`count`)\cr number of successes
+#' @param n (`count`)\cr number of trials
+#' @param conf.level (`proportion`)\cr confidence level, defaults to 0.95.
+#' @param sides (`character`)\cr side of the confidence interval to compute. Must be one of "two-sided" (default),
+#'   "left", or "right".
+#' @param method (`character`)\cr method to use. Can be one out of: "wald", "wilson", "wilsoncc", "agresti-coull",
+#'   "jeffreys", "modified wilson", "modified jeffreys", "clopper-pearson", "arcsine", "logit", "witting", "pratt",
+#'   "midp", "lik", and "blaker".
+#' @return A matrix with 3 columns containing:
+#' \describe{
+#'   \item{est}{estimate of proportion difference.}
+#'   \item{lwrci}{lower end of the confidence interval.}
+#'   \item{upci}{upper end of the confidence interval.}
+#' }
 #'
 #' @keywords internal
-desctools_binomci <- function(x, n, conf.level = 0.95, sides = c(
-                                "two.sided", "left",
-                                "right"
-                              ), method = c(
+desctools_binomci <- function(x,
+                              n,
+                              conf.level = 0.95,
+                              sides = c("two.sided", "left", "right"),
+                              method = c(
                                 "wilson", "wald", "waldcc", "agresti-coull",
                                 "jeffreys", "modified wilson", "wilsoncc", "modified jeffreys",
                                 "clopper-pearson", "arcsine", "logit", "witting", "pratt",
                                 "midp", "lik", "blaker"
-                              ), rand = 123, tol = 1e-05) {
+                              ),
+                              rand = 123,
+                              tol = 1e-05) {
   if (missing(method)) {
     method <- "wilson"
   }
@@ -391,7 +397,7 @@ desctools_binomci <- function(x, n, conf.level = 0.95, sides = c(
     if (length(conf.level) != 1) {
       stop("'conf.level' has to be of length 1 (confidence level)")
     }
-    if (conf.level < 0.5 | conf.level > 1) {
+    if (conf.level < 0.5 || conf.level > 1) {
       stop("'conf.level' has to be in [0.5, 1]")
     }
     sides <- match.arg(sides, choices = c(

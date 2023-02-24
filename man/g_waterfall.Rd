@@ -16,32 +16,24 @@ g_waterfall(
 )
 }
 \arguments{
-\item{height}{(\code{numeric} vector)\cr
-Contains values to be plotted as the waterfall bars}
+\item{height}{(`numeric``)\cr vector containing values to be plotted as the waterfall bars.}
 
-\item{id}{(vector)\cr
-Contains of IDs used as the x-axis label for the waterfall bars}
+\item{id}{(\code{character})\cr vector containing IDs to use as the x-axis label for the waterfall bars.}
 
-\item{col_var}{(\code{factor}, \code{character} or \code{NULL})\cr
-Categorical variable for bar coloring. \code{NULL} by default.}
+\item{col_var}{(\code{factor}, \code{character} or \code{NULL})\cr categorical variable for bar coloring. \code{NULL} by default.}
 
 \item{col}{(\code{character})\cr colors.}
 
-\item{xlab}{(\code{character} value)\cr
-x label. Default is \code{ID}.}
+\item{xlab}{(\code{character})\cr x label. Default is \code{"ID"}.}
 
-\item{ylab}{(\code{character} value)\cr
-y label. Default is \code{Value}.}
+\item{ylab}{(\code{character})\cr y label. Default is \code{"Value"}.}
 
-\item{col_legend_title}{(\code{character} value)\cr
-Text to be displayed as legend title.}
+\item{col_legend_title}{(\code{character})\cr text to be displayed as legend title.}
 
-\item{title}{(\code{character} value)\cr
-Text to be displayed as plot title.}
+\item{title}{(\code{character})\cr text to be displayed as plot title.}
 }
 \value{
-(\code{ggplot} object)\cr
-Waterfall plot
+(\code{ggplot} object)\cr waterfall plot.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

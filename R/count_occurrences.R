@@ -17,17 +17,16 @@ NULL
 
 #' @describeIn count_occurrences Statistics function which counts number of patients that report an
 #' occurrence.
-#' @param denom (`string`)\cr choice of denominator for patient proportions:\cr
-#'   can be `N_col` (total number of patients in this column across rows) or
-#'   `n` (number of patients with any occurrences).
 #'
-#'
+#' @param denom (`string`)\cr choice of denominator for patient proportions. Can be:
+#'   - `N_col`: total number of patients in this column across rows
+#'   - `n`: number of patients with any occurrences
 #' @returns A list with:
-#'   - `count`: list of counts with one element per occurrence
-#'   - `count_fraction`: list of counts and fractions with one element per occurrence.
-#'   - `fraction`: list of numerators and denominators with one element per occurrence.
-#'
-#' @export
+#' \describe{
+#'   \item{count}{list of counts with one element per occurrence.}
+#'   \item{count_fraction}{list of counts and fractions with one element per occurrence.}
+#'   \item{fraction}{list of numerators and denominators with one element per occurrence.}
+#' }
 #'
 #' @examples
 #' df <- data.frame(
@@ -45,6 +44,8 @@ NULL
 #'   .var = "MHDECOD",
 #'   id = "USUBJID"
 #' )
+#'
+#' @export
 s_count_occurrences <- function(df,
                                 denom = c("N_col", "n"),
                                 .N_col, # nolint

@@ -32,34 +32,35 @@ desctools_binomci(
 )
 }
 \arguments{
-\item{conf.level}{\cr confidence level, defaults to 0.95}
+\item{conf.level}{(\code{proportion})\cr confidence level, defaults to 0.95.}
 
-\item{sides}{\cr a character string specifying the side of the confidence interval. Must be one of "two-sided" (default), "left" or "right".}
+\item{sides}{(\code{character})\cr side of the confidence interval to compute. Must be one of "two-sided" (default),
+"left", or "right".}
 
-\item{method}{\cr character string specifying which method to use. Can be one out of: "wald", "wilson", "wilsoncc", "agresti-coull", "jeffreys", "modified wilson", "modified jeffreys", "clopper-pearson", "arcsine.
-", "logit", "witting", "pratt", "midp", "lik" and "blaker"
+\item{method}{(\code{character})\cr method to use. Can be one out of: "wald", "wilson", "wilsoncc", "agresti-coull",
+"jeffreys", "modified wilson", "modified jeffreys", "clopper-pearson", "arcsine", "logit", "witting", "pratt",
+"midp", "lik", and "blaker".}
 
-@return A matric with 3 columns containing:
-\itemize{
-\item \code{est}: estimate of proportion difference.
-\item \code{lwrci}: lower end of the confidence interval
-\item \code{upci}:  upper end of the confidence interval.
-}}
+\item{x}{(\code{count})\cr number of successes}
 
-\item{x}{\cr number of successes}
+\item{n}{(\code{count})\cr number of trials}
 
-\item{n}{\cr number of trials}
-
-\item{grp}{(\code{factor})\cr
-vector assigning observations to one out of two groups
+\item{grp}{(\code{factor})\cr vector assigning observations to one out of two groups
 (e.g. reference and treatment group).}
 }
 \value{
 A named list of 3 values:
-\itemize{
-\item \code{est}: estimate of proportion difference.
-\item \code{lwrci}: estimate of lower end of the confidence interval
-\item \code{upci}: estimate of upper end of the confidence interval.
+\describe{
+\item{est}{estimate of proportion difference.}
+\item{lwrci}{estimate of lower end of the confidence interval.}
+\item{upci}{estimate of upper end of the confidence interval.}
+}
+
+A matrix with 3 columns containing:
+\describe{
+\item{est}{estimate of proportion difference.}
+\item{lwrci}{lower end of the confidence interval.}
+\item{upci}{upper end of the confidence interval.}
 }
 }
 \description{
@@ -77,9 +78,8 @@ Several confidence intervals for the difference between proportions.
 
 }}
 \examples{
-# Internal function -
+# Internal function - desctools_binom
 \dontrun{
-
 set.seed(2)
 rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 grp <- factor(c(rep("A", 10), rep("B", 10)))

@@ -338,11 +338,11 @@ study_arm <- function(x) {
 #'
 #' This produces \code{loess} smoothed estimates of `y` with Student confidence intervals.
 #'
-#' @param df (`data.frame`)\cr.
+#' @param df (`data.frame`)\cr data set containing all analysis variables.
 #' @param x (`character`)\cr value with x column name.
 #' @param y (`character`)\cr value with y column name.
 #' @param groups (`character`)\cr vector with optional grouping variables names.
-#' @param level (`numeric`) level of confidence interval to use (0.95 by default).
+#' @param level (`numeric`)\cr level of confidence interval to use (0.95 by default).
 #' @return A `data.frame` with original `x`, smoothed `y`, `ylow`, `yhigh` and
 #' optional `groups` variables formatted to factor type.
 #' @export
@@ -409,7 +409,7 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
 #'
 #' Small utility function for better readability.
 #'
-#' @param x (`vector`)\cr where to count the non-missing values.
+#' @param x (`any`)\cr vector in which to count non-missing values.
 #'
 #' @return Number of non-missing values.
 #'
@@ -429,7 +429,7 @@ n_available <- function(x) {
 #' @description This is a helper function that is used in tests.
 #'
 #' @param x (`vector`)\cr vector of elements that needs new labels.
-#' @param varlabels (`vector`)\cr labels for `x`.
+#' @param varlabels (`character`)\cr vector of labels for `x`.
 #' @param ... further parameters to be added to the list.
 #'
 #' @export

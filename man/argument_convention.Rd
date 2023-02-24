@@ -6,7 +6,7 @@
 \arguments{
 \item{...}{additional arguments for the lower level functions.}
 
-\item{.df_row}{(\verb{data frame})\cr data frame across all of the columns for the given row split.}
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
@@ -15,7 +15,7 @@
 
 \item{.N_row}{(\code{count})\cr column-wise N (column count) for the full column that is passed by \code{rtables}.}
 
-\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
+\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
@@ -28,7 +28,7 @@
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.spl_context}{(\verb{data frame})\cr gives information about ancestor split states
+\item{.spl_context}{(\code{data.frame})\cr gives information about ancestor split states
 that is passed by \code{rtables}.}
 
 \item{col_by}{(\code{factor})\cr defining column groups.}
@@ -37,18 +37,18 @@ that is passed by \code{rtables}.}
 
 \item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{draw}{(\code{flag})\cr whether the plot should be drawn.}
 
 \item{drop}{(\code{flag})\cr should non appearing occurrence levels be dropped from the resulting table.
 Note that in that case the remaining occurrence levels in the table are sorted alphabetically.}
 
-\item{id}{(\code{string}) \cr subject variable name.}
+\item{id}{(\code{string})\cr subject variable name.}
 
 \item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
-\item{indent_mod}{(\code{count}) \cr it can be negative. Modifier for the default indent position for the
+\item{indent_mod}{(\code{count})\cr it can be negative. Modifier for the default indent position for the
 structure created by this function(subtable, content table, or row) and
 all of that structure's children. Defaults to 0, which corresponds to the
 unmodified default behavior.}

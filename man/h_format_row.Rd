@@ -7,15 +7,15 @@
 h_format_row(x, format, labels = NULL)
 }
 \arguments{
-\item{x}{(named \code{list}) \cr list of numerical values to be formatted and optionally labeled.
+\item{x}{(named \code{list})\cr list of numerical values to be formatted and optionally labeled.
 Elements of \code{x} must be \code{numeric} vectors.}
 
-\item{format}{(named \code{character} or \code{NULL}) \cr
+\item{format}{(named \code{character} or \code{NULL})\cr
 format patterns for \code{x}. Names of the \code{format} must match the names of \code{x}.
 This parameter is passed directly to the \code{rtables::format_rcell}
 function through the \code{format} parameter.}
 
-\item{labels}{(named \code{character} or \code{NULL}) \cr
+\item{labels}{(named \code{character} or \code{NULL})\cr
 optional labels for \code{x}. Names of the \code{labels} must match the names of \code{x}.
 When a label is not specified for an element of \code{x},
 then this function tries to use \code{label} or \code{names} (in this order) attribute of that element

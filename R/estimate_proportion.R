@@ -14,22 +14,19 @@ NULL
 #' @describeIn estimate_proportions statistics function estimating a
 #'   proportion along with its confidence interval.
 #'
-#' @param df (`logical` or `data.frame`)\cr
-#'   if only a logical vector is used, it indicates whether each subject is a
-#'   responder or not. `TRUE` represents a successful outcome. If a `data.frame`
-#'   is provided, also the `strata` variable names must be provided in
-#'   `variables` as a list element with the strata strings. In the case of
-#'   `data.frame`, the logical vector of responses must be indicated as a
-#'   variable name in `.var`.
-#' @param method (`string`) \cr
-#'   the method used to construct the confidence interval for proportion of
-#'   successful outcomes; one of `waldcc`, `wald`, `clopper-pearson`, `wilson`,
-#'   `wilsonc`, `strat_wilson`, `strat_wilsonc`, `agresti-coull` or `jeffreys`.
 #' @inheritParams prop_strat_wilson
+#' @param df (`logical` or `data.frame`)\cr if only a logical vector is used,
+#'   it indicates whether each subject is a responder or not. `TRUE` represents
+#'   a successful outcome. If a `data.frame` is provided, also the `strata` variable
+#'   names must be provided in `variables` as a list element with the strata strings.
+#'   In the case of `data.frame`, the logical vector of responses must be indicated as a
+#'   variable name in `.var`.
+#' @param method (`string`)\cr the method used to construct the confidence interval
+#'   for proportion of successful outcomes; one of `waldcc`, `wald`, `clopper-pearson`,
+#'   `wilson`, `wilsonc`, `strat_wilson`, `strat_wilsonc`, `agresti-coull` or `jeffreys`.
 #' @param long (`flag`)\cr a long description is required.
 #'
 #' @examples
-#'
 #' # Case with only logical vector.
 #' rsp_v <- c(1, 0, 1, 0, 1, 1, 0, 0)
 #' s_proportion(rsp_v)
@@ -216,18 +213,13 @@ prop_wilson <- function(rsp, conf_level, correct = FALSE) {
 #'   interval for unequal proportions as described in
 #'   \insertCite{Yan2010-jt;textual}{tern}
 #'
-#' @param strata (`factor`)\cr
-#'   with one level per stratum and same length as `rsp`.
-#' @param weights (`numeric` or `NULL`) \cr
-#'   weights for each level of the strata. If `NULL`, they are
-#'   estimated using the iterative algorithm proposed in
-#'   \insertCite{Yan2010-jt;textual}{tern} that minimizes the weighted squared
-#'   length of the confidence interval.
-#' @param max_iterations (`count`) \cr
-#'   maximum number of iterations for the iterative procedure used
+#' @param strata (`factor`)\cr variable with one level per stratum and same length as `rsp`.
+#' @param weights (`numeric` or `NULL`)\cr weights for each level of the strata. If `NULL`, they are
+#'   estimated using the iterative algorithm proposed in \insertCite{Yan2010-jt;textual}{tern} that
+#'   minimizes the weighted squared length of the confidence interval.
+#' @param max_iterations (`count`)\cr maximum number of iterations for the iterative procedure used
 #'   to find estimates of optimal weights.
-#' @param correct (`flag`)\cr
-#'   include the continuity correction. For further information, see for example
+#' @param correct (`flag`)\cr include the continuity correction. For further information, see for example
 #'   [stats::prop.test()].
 #'
 #' @examples
@@ -359,6 +351,7 @@ prop_clopper_pearson <- function(rsp,
 #' @describeIn h_proportions the Wald interval follows the usual
 #'   textbook definition for a single proportion confidence interval using the
 #'   normal approximation.
+#'
 #' @param correct (`flag`)\cr apply continuity correction.
 #'
 #' @examples
@@ -444,8 +437,7 @@ prop_jeffreys <- function(rsp,
 #' This is a helper function that describes the analysis in [s_proportion()].
 #'
 #' @inheritParams s_proportion
-#' @param long (`flag`)\cr
-#'   whether a long or a short (default) description is required.
+#' @param long (`flag`)\cr whether a long or a short (default) description is required.
 #'
 #' @return String describing the analysis.
 #'
@@ -514,19 +506,13 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
 #' weighted squared length of the confidence interval.
 #'
 #' @inheritParams prop_strat_wilson
-#' @param vars (`numeric`) \cr
-#'   normalized proportions for each strata.
-#' @param strata_qnorm (`numeric`) \cr
-#'   initial estimation with identical weights of the quantiles.
-#' @param initial_weights (`numeric`) \cr
-#'   initial weights used to calculate `strata_qnorm`. This can be optimized in
-#'   the future if we need to estimate better initial weights.
-#' @param n_per_strata (`numeric`) \cr
-#'   number of elements in each strata.
-#' @param max_iterations (`count`) \cr
-#'   maximum number of iterations to be tried. Convergence is always checked.
-#' @param tol (`number`) \cr
-#'   tolerance threshold for convergence.
+#' @param vars (`numeric`)\cr normalized proportions for each strata.
+#' @param strata_qnorm (`numeric`)\cr initial estimation with identical weights of the quantiles.
+#' @param initial_weights (`numeric`)\cr initial weights used to calculate `strata_qnorm`. This can
+#'   be optimized in the future if we need to estimate better initial weights.
+#' @param n_per_strata (`numeric`)\cr number of elements in each strata.
+#' @param max_iterations (`count`)\cr maximum number of iterations to be tried. Convergence is always checked.
+#' @param tol (`number`)\cr tolerance threshold for convergence.
 #'
 #' @seealso For references and details see [prop_strat_wilson()].
 #'

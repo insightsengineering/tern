@@ -5,26 +5,25 @@
 #' Helper function that merges `ADSL` and `ADLB` datasets so that missing lab test records are inserted in the
 #' output dataset.
 #'
-#' @param adsl (`data frame`) `ADSL` dataframe
-#' @param adlb (`data frame`) `ADLB` dataframe
-#' @param worst_flag (named `vector`)
-#' Worst post-baseline lab flag variable
-#' @param by_visit (`logical`) defaults to `FALSE` to generate worst grade per patient.
-#' If worst grade per patient per visit is specified for `worst_flag`, then
-#' `by_visit` should be `TRUE` to generate worst grade patient per visit.
-#' @param no_fillin_visits (named `character`)
-#' Visits that are not considered for post-baseline worst toxicity grade. Defaults to `c("SCREENING", "BASELINE")`.
+#' @param adsl (`data.frame`)\cr `ADSL` dataframe.
+#' @param adlb (`data.frame`)\cr `ADLB` dataframe.
+#' @param worst_flag (named `vector`)\cr Worst post-baseline lab flag variable.
+#' @param by_visit (`logical`)\cr defaults to `FALSE` to generate worst grade per patient.
+#'   If worst grade per patient per visit is specified for `worst_flag`, then
+#'   `by_visit` should be `TRUE` to generate worst grade patient per visit.
+#' @param no_fillin_visits (named `character`)\cr Visits that are not considered for post-baseline worst toxicity
+#'   grade. Defaults to `c("SCREENING", "BASELINE")`.
 #'
 #' @return `df` containing variables shared between `adlb` and `adsl` along with variables relevant for analysis:
-#' `PARAM`, `PARAMCD`, `ATOXGR`, and `BTOXGR`.  Optionally `AVISIT`, `AVISITN` are included when `by_visit = TRUE` and
-#' `no_fillin_visits = c("SCREENING", "BASELINE")`.
+#'   `PARAM`, `PARAMCD`, `ATOXGR`, and `BTOXGR`.  Optionally `AVISIT`, `AVISITN` are included when `by_visit = TRUE`
+#'   and `no_fillin_visits = c("SCREENING", "BASELINE")`.
 #'
 #' @export
 #'
 #' @details In the result data missing records will be created for the following situations:
-#'  * patients who are present in `adsl` but have no lab data in `adlb` (both baseline and post-baseline)
-#'  * patients who do not have any post-baseline lab values
-#'  * patients without any post-baseline values flagged as the worst
+#'   * Patients who are present in `adsl` but have no lab data in `adlb` (both baseline and post-baseline).
+#'   * Patients who do not have any post-baseline lab values.
+#'   * Patients without any post-baseline values flagged as the worst.
 #'
 #' @examples
 #' # `h_adsl_adlb_merge_using_worst_flag`

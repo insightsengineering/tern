@@ -33,8 +33,8 @@ s_compare <- function(x,
 #' @describeIn compare_variables Method for numeric class. This uses the standard t-test
 #'   to calculate the p-value.
 #' @return If `x` is of class `numeric`, returns a list with named items:
-#' - all items from [s_summary.numeric()].
-#' - `pval`: the p-value.
+#'   - all items from [s_summary.numeric()].
+#'   - `pval`: the p-value.
 #' @method s_compare numeric
 #'
 #' @export
@@ -77,8 +77,7 @@ s_compare.numeric <- function(x,
 #'   missing values should be accounted for explicitly as factor levels.
 #' @param denom (`string`)\cr choice of denominator for factor proportions,
 #'   can only be `n` (number of values in this row and column intersection).
-#' @return If `x` is of class `factor` or converted from `character`, returns a list with
-#'   named items:
+#' @return If `x` is of class `factor` or converted from `character`, returns a list with named items:
 #'   - all items from [s_summary.factor()].
 #'   - `pval`: the p-value.
 #' @method s_compare factor

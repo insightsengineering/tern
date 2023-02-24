@@ -46,14 +46,12 @@ h_coxreg_inter_estimations(
 \item{at}{(\code{list})\cr a list with items named after the covariate, every
 item is a vector of levels at which the interaction should be estimated.}
 
-\item{data}{(\verb{data frame})\cr the data frame on which the model was fit.}
+\item{data}{(\code{data.frame})\cr the data frame on which the model was fit.}
 
-\item{variable, given}{(\code{string})\cr
-the name of variables in interaction. We seek the estimation of the levels
-of \code{variable} given the levels of \code{given}.}
+\item{variable, given}{(\code{string})\cr the name of variables in interaction. We seek the estimation
+of the levels of \code{variable} given the levels of \code{given}.}
 
-\item{lvl_var, lvl_given}{(\code{character})\cr
-corresponding levels has given by \code{\link[=levels]{levels()}}.}
+\item{lvl_var, lvl_given}{(\code{character})\cr corresponding levels has given by \code{\link[=levels]{levels()}}.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 }
@@ -61,10 +59,10 @@ corresponding levels has given by \code{\link[=levels]{levels()}}.}
 A list of matrix (one per level of variable) with rows corresponding to the combinations of
 \code{variable} and \code{given}, with columns:
 \describe{
-\item{coef_hat}{Estimation of the coefficient}
+\item{coef_hat}{Estimation of the coefficient.}
 \item{coef_se}{Standard error of the estimation.}
 \item{hr}{Hazard ratio.}
-\item{lcl,ucl}{lower/upper confidence limit of the hazard ratio}
+\item{lcl, ucl}{Lower/upper confidence limit of the hazard ratio.}
 }
 }
 \description{
@@ -79,8 +77,8 @@ Given the cox regression investigating the effect of Arm (A, B, C; reference A)
 and Sex (F, M; reference Female) and the model being abbreviated: y ~ Arm + Sex + Arm:Sex.
 The cox regression estimates the coefficients along with a variance-covariance matrix for:
 \itemize{
-\item b1 (arm b), b2 (arm c),
-\item b3 (sex m),
+\item b1 (arm b), b2 (arm c)
+\item b3 (sex m)
 \item b4 (arm b: sex m), b5 (arm c: sex m)
 }
 
@@ -148,4 +146,5 @@ result <- h_coxreg_inter_estimations(
   mod = mod, conf_level = .95
 )
 result
+
 }

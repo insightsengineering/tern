@@ -124,10 +124,12 @@ summarize_vars(
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{denom}{(\code{string})\cr choice of denominator for proportion:\cr
-can be \code{n} (number of values in this row and column intersection), \code{N_row} (total
-number of values in this row across columns), or \code{N_col} (total number of values in
-this column across rows).}
+\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
+\itemize{
+\item \code{n}: number of values in this row and column intersection.
+\item \code{N_row}: total number of values in this row across columns.
+\item \code{N_col}: total number of values in this column across rows.
+}}
 
 \item{.N_row}{(\code{count})\cr column-wise N (column count) for the full column that is passed by \code{rtables}.}
 
@@ -141,14 +143,14 @@ by a statistics function.}
 
 \item{...}{arguments passed to \code{s_summary()}.}
 
-\item{control}{a (\code{list}) of parameters for descriptive statistics details, specified by using \cr
-the helper function \code{\link[=control_summarize_vars]{control_summarize_vars()}}. Some possible parameter options are: \cr
+\item{control}{(\code{list})\cr parameters for descriptive statistics details, specified by using
+the helper function \code{\link[=control_summarize_vars]{control_summarize_vars()}}. Some possible parameter options are:
 \itemize{
-\item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for mean and median.
-\item \code{quantiles}: numeric vector of length two to specify the quantiles.
-\item \code{quantile_type} (\code{numeric}) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
+\item \code{conf_level} (\code{proportion})\cr confidence level of the interval for mean and median.
+\item \code{quantiles} (\code{numeric})\cr vector of length two to specify the quantiles.
+\item \code{quantile_type} (\code{numeric})\cr between 1 and 9 selecting quantile algorithms to be used.
 See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
-\item \code{test_mean}: (\code{numeric}) \cr to test against the mean under the null hypothesis when calculating p-value.
+\item \code{test_mean} (\code{numeric})\cr value to test against the mean under the null hypothesis when calculating p-value.
 }}
 
 \item{verbose}{defaults to \code{TRUE}. It prints out warnings and messages. It is mainly used
@@ -179,50 +181,50 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-If \code{x} is of class \code{numeric}, returns a list with named items: \cr
-\itemize{
-\item \code{n}: the \code{\link[=length]{length()}} of \code{x}.
-\item \code{sum}: the \code{\link[=sum]{sum()}} of \code{x}.
-\item \code{mean}: the \code{\link[=mean]{mean()}} of \code{x}.
-\item \code{sd}: the \code{\link[stats:sd]{stats::sd()}} of \code{x}.
-\item \code{se}: the standard error of \code{x} mean, i.e.: (\verb{sd()/sqrt(length())]}).
-\item \code{mean_sd}: the \code{\link[=mean]{mean()}} and \code{\link[stats:sd]{stats::sd()}} of \code{x}.
-\item \code{mean_se}: the \code{\link[=mean]{mean()}} of \code{x} and its standard error (see above).
-\item \code{mean_ci}: the CI for the mean of \code{x} (from \code{\link[=stat_mean_ci]{stat_mean_ci()}}).
-\item \code{mean_sei}: the SE interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[stats:sd]{stats::sd()}}/\code{\link[=sqrt]{sqrt()}}).
-\item \code{mean_sdi}: the SD interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[stats:sd]{stats::sd()}}).
-\item \code{mean_pval}: the two-sided p-value of the mean of \code{x} (from \code{\link[=stat_mean_pval]{stat_mean_pval()}}).
-\item \code{median}: the \code{\link[stats:median]{stats::median()}} of \code{x}.
-\item \code{mad}:
-the median absolute deviation of \code{x}, i.e.: (\code{\link[stats:median]{stats::median()}} of \code{xc}, where \code{xc} = \code{x} - \code{\link[stats:median]{stats::median()}}).
-\item \code{median_ci}: the CI for the median of \code{x} (from \code{\link[=stat_median_ci]{stat_median_ci()}}).
-\item \code{quantiles}: two sample quantiles of \code{x} (from \code{\link[stats:quantile]{stats::quantile()}}).
-\item \code{iqr}: the \code{\link[stats:IQR]{stats::IQR()}} of \code{x}.
-\item \code{range}: the \code{\link[=range_noinf]{range_noinf()}} of \code{x}.
-\item \code{min}: the \code{\link[=max]{max()}} of \code{x}.
-\item \code{max}: the \code{\link[=min]{min()}} of \code{x}.
-\item \code{cv}: the coefficient of variation of \code{x}, i.e.: (\code{sd()/mean() * 100}).
-\item \code{geom_mean}: the geometric mean of \code{x}, i.e.: (\code{exp(mean(log(x)))}).
-\item \code{geom_cv}: the geometric coefficient of variation of \code{x}, i.e.: (\code{sqrt(exp(sd(log(x))^2) - 1)*100}).
+If \code{x} is of class \code{numeric}, returns a list with the following named \code{numeric} items:
+\describe{
+\item{n}{the \code{\link[=length]{length()}} of \code{x}.}
+\item{sum}{the \code{\link[=sum]{sum()}} of \code{x}.}
+\item{mean}{the \code{\link[=mean]{mean()}} of \code{x}.}
+\item{sd}{the \code{\link[stats:sd]{stats::sd()}} of \code{x}.}
+\item{se}{the standard error of \code{x} mean, i.e.: (\code{sd(x) / sqrt(length(x))}).}
+\item{mean_sd}{the \code{\link[=mean]{mean()}} and \code{\link[stats:sd]{stats::sd()}} of \code{x}.}
+\item{mean_se}{the \code{\link[=mean]{mean()}} of \code{x} and its standard error (see above).}
+\item{mean_ci}{the CI for the mean of \code{x} (from \code{\link[=stat_mean_ci]{stat_mean_ci()}}).}
+\item{mean_sei}{the SE interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[stats:sd]{stats::sd()}} / \code{\link[=sqrt]{sqrt()}}).}
+\item{mean_sdi}{the SD interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[stats:sd]{stats::sd()}}).}
+\item{mean_pval}{the two-sided p-value of the mean of \code{x} (from \code{\link[=stat_mean_pval]{stat_mean_pval()}}).}
+\item{median}{the \code{\link[stats:median]{stats::median()}} of \code{x}.}
+\item{mad}{the median absolute deviation of \code{x}, i.e.: (\code{\link[stats:median]{stats::median()}} of \code{xc},
+where \code{xc} = \code{x} - \code{\link[stats:median]{stats::median()}}).
+}
+\item{median_ci}{the CI for the median of \code{x} (from \code{\link[=stat_median_ci]{stat_median_ci()}}).}
+\item{quantiles}{two sample quantiles of \code{x} (from \code{\link[stats:quantile]{stats::quantile()}}).}
+\item{iqr}{the \code{\link[stats:IQR]{stats::IQR()}} of \code{x}.}
+\item{range}{the \code{\link[=range_noinf]{range_noinf()}} of \code{x}.}
+\item{min}{the \code{\link[=max]{max()}} of \code{x}.}
+\item{max}{the \code{\link[=min]{min()}} of \code{x}.}
+\item{cv}{the coefficient of variation of \code{x}, i.e.: (\code{\link[stats:sd]{stats::sd()}} / \code{\link[=mean]{mean()}} * 100).}
+\item{geom_mean}{the geometric mean of \code{x}, i.e.: (\code{exp(mean(log(x)))}).}
+\item{geom_cv}{the geometric coefficient of variation of \code{x}, i.e.: (\code{sqrt(exp(sd(log(x)) ^ 2) - 1) * 100}).}
 }
 
-If \code{x} is of class \code{factor} or converted from \code{character}, returns a list with
-named items:
-\itemize{
-\item \code{n}: the \code{\link[=length]{length()}} of \code{x}.
-\item \code{count}: a list with the number of cases for each level of the
-factor \code{x}
-\item \code{count_fraction}: similar to \code{count} but also includes the proportion of cases for each level of the
+If \code{x} is of class \code{factor} or converted from \code{character}, returns a list with named \code{numeric} items:
+\describe{
+\item{n}{the \code{\link[=length]{length()}} of \code{x}.}
+\item{count}{a list with the number of cases for each level of the factor \code{x}.}
+\item{count_fraction}{similar to \code{count} but also includes the proportion of cases for each level of the
 factor \code{x} relative to the denominator, or \code{NA} if the denominator is zero.
 }
+}
 
-If \code{x} is of class \code{logical}, returns a list with named items:
-\itemize{
-\item \code{n}: the \code{\link[=length]{length()}} of \code{x} (possibly after removing \code{NA}s).
-\item \code{count}: count of \code{TRUE} in \code{x}.
-\item \code{count_fraction}: count and proportion of \code{TRUE} in \code{x} relative to the denominator,
-or \code{NA} if the denominator is zero. Note that \code{NA}s in \code{x} are never counted or leading
-to \code{NA} here.
+If \code{x} is of class \code{logical}, returns a list with named \code{numeric} items:
+\describe{
+\item{n}{the \code{\link[=length]{length()}} of \code{x} (possibly after removing \code{NA}s).}
+\item{count}{count of \code{TRUE} in \code{x}.}
+\item{count_fraction}{count and proportion of \code{TRUE} in \code{x} relative to the denominator, or \code{NA} if the
+denominator is zero. Note that \code{NA}s in \code{x} are never counted or leading to \code{NA} here.
+}
 }
 }
 \description{
@@ -324,6 +326,7 @@ basic_table() \%>\%
 ## By comparison with `lapply`:
 X <- split(dta_test, f = with(dta_test, interaction(Group, sub_group)))
 lapply(X, function(x) s_summary(x$x))
+
 # `s_summary.factor`
 
 ## Basic usage:
@@ -341,6 +344,7 @@ s_summary(x, na.rm = FALSE)
 x <- factor(c("a", "a", "b", "c", "a"))
 s_summary(x, denom = "N_row", .N_row = 10L)
 s_summary(x, denom = "N_col", .N_col = 20L)
+
 # `s_summary.character`
 
 ## Basic usage:
@@ -360,6 +364,7 @@ s_summary(x, na.rm = FALSE)
 x <- c(TRUE, FALSE, TRUE, TRUE)
 s_summary(x, denom = "N_row", .N_row = 10L)
 s_summary(x, denom = "N_col", .N_col = 20L)
+
 # `a_summary.numeric`
 a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
 # `a_summary.factor`

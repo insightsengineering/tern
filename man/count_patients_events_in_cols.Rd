@@ -27,9 +27,9 @@ summarize_patients_events_in_cols(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{id}{(\code{string}) \cr subject variable name.}
+\item{id}{(\code{string})\cr subject variable name.}
 
 \item{filters_list}{(named \code{list} of \code{character})\cr each element in this list describes one
 type of event describe by filters, in the same format as \code{\link[=s_count_patients_with_event]{s_count_patients_with_event()}}.
@@ -56,7 +56,7 @@ be used as label.}
 Set to \code{FALSE} when the required column split has been done already earlier in the layout pipe.}
 }
 \value{
-\code{\link[=s_count_patients_and_multiple_events]{s_count_patients_and_multiple_events()}} returns a list with the statistics:\cr
+\code{\link[=s_count_patients_and_multiple_events]{s_count_patients_and_multiple_events()}} returns a list with the statistics:
 \itemize{
 \item \code{unique}: number of unique patients in \code{df}.
 \item \code{all}: number of rows in \code{df}.
@@ -80,7 +80,6 @@ statistics of patients and events in the column layout as content rows.
 
 }}
 \examples{
-
 # `s_count_patients_and_multiple_events()`
 df <- data.frame(
   USUBJID = rep(c("id1", "id2", "id3", "id4"), c(2, 3, 1, 1)),

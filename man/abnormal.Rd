@@ -35,7 +35,7 @@ count_abnormal(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
@@ -75,13 +75,13 @@ vector with \code{num} and \code{denom} counts of patients.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Primary analysis variable \code{.var} indicates the abnormal range result (character or factor)
-and additional analysis variables are \code{id} (character or factor) and \code{baseline} (character or
-factor). For each direction specified in \code{abnormal} (e.g. high or low) count patients in the
+Primary analysis variable \code{.var} indicates the abnormal range result (\code{character} or \code{factor})
+and additional analysis variables are \code{id} (\code{character} or \code{factor}) and \code{baseline} (\code{character} or
+\code{factor}). For each direction specified in \code{abnormal} (e.g. high or low) count patients in the
 numerator and denominator as follows:
 \describe{
-\item{\code{num}}{the number of patients with this abnormality recorded while on treatment.}
-\item{\code{denom}}{the number of patients with at least one post-baseline assessment.}
+\item{num}{the number of patients with this abnormality recorded while on treatment.}
+\item{denom}{the number of patients with at least one post-baseline assessment.}
 }
 Note, the denominator includes patients that might have other abnormal levels at baseline,
 and patients with missing baseline. Note, optionally patients with this abnormality at

@@ -44,12 +44,11 @@ estimate_proportion(
 )
 }
 \arguments{
-\item{df}{(\code{logical} or \code{data.frame})\cr
-if only a logical vector is used, it indicates whether each subject is a
-responder or not. \code{TRUE} represents a successful outcome. If a \code{data.frame}
-is provided, also the \code{strata} variable names must be provided in
-\code{variables} as a list element with the strata strings. In the case of
-\code{data.frame}, the logical vector of responses must be indicated as a
+\item{df}{(\code{logical} or \code{data.frame})\cr if only a logical vector is used,
+it indicates whether each subject is a responder or not. \code{TRUE} represents
+a successful outcome. If a \code{data.frame} is provided, also the \code{strata} variable
+names must be provided in \code{variables} as a list element with the strata strings.
+In the case of \code{data.frame}, the logical vector of responses must be indicated as a
 variable name in \code{.var}.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
@@ -57,19 +56,15 @@ by a statistics function.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{method}{(\code{string}) \cr
-the method used to construct the confidence interval for proportion of
-successful outcomes; one of \code{waldcc}, \code{wald}, \code{clopper-pearson}, \code{wilson},
-\code{wilsonc}, \code{strat_wilson}, \code{strat_wilsonc}, \code{agresti-coull} or \code{jeffreys}.}
+\item{method}{(\code{string})\cr the method used to construct the confidence interval
+for proportion of successful outcomes; one of \code{waldcc}, \code{wald}, \code{clopper-pearson},
+\code{wilson}, \code{wilsonc}, \code{strat_wilson}, \code{strat_wilsonc}, \code{agresti-coull} or \code{jeffreys}.}
 
-\item{weights}{(\code{numeric} or \code{NULL}) \cr
-weights for each level of the strata. If \code{NULL}, they are
-estimated using the iterative algorithm proposed in
-\insertCite{Yan2010-jt;textual}{tern} that minimizes the weighted squared
-length of the confidence interval.}
+\item{weights}{(\code{numeric} or \code{NULL})\cr weights for each level of the strata. If \code{NULL}, they are
+estimated using the iterative algorithm proposed in \insertCite{Yan2010-jt;textual}{tern} that
+minimizes the weighted squared length of the confidence interval.}
 
-\item{max_iterations}{(\code{count}) \cr
-maximum number of iterations for the iterative procedure used
+\item{max_iterations}{(\code{count})\cr maximum number of iterations for the iterative procedure used
 to find estimates of optimal weights.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
@@ -112,7 +107,6 @@ proportion along with its confidence interval.
 
 }}
 \examples{
-
 # Case with only logical vector.
 rsp_v <- c(1, 0, 1, 0, 1, 1, 0, 0)
 s_proportion(rsp_v)

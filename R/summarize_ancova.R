@@ -8,22 +8,23 @@
 #' @name summarize_ancova
 NULL
 
-#' Helper Function to Return Results of a Linear Model.
+#' Helper Function to Return Results of a Linear Model
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams argument_convention
-#' @param .df_row (`data frame`)\cr data set that includes all the variables that are called
+#' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called
 #'   in `.var` and `variables`.
 #' @param variables (named `list` of `strings`)\cr list of additional analysis variables, with
 #'   expected elements:
-#'   - `arm`: (`string`)\cr group variable, for which the covariate adjusted means of multiple
-#'   groups will be summarized. Specifically, the first level of `arm` variable is taken as the
-#'   reference group.
-#'   - `covariates`: (`character`)\cr a vector that can contain single variable names (such as
-#'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
+#'   - `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
+#'     groups will be summarized. Specifically, the first level of `arm` variable is taken as the
+#'     reference group.
+#'   - `covariates` (`character`)\cr a vector that can contain single variable names (such as
+#'     `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
 #' @param interaction_item (`character`)\cr name of the variable that should have interactions
-#'   with arm. if the interaction is not needed, the default option is NULL
+#'   with arm. if the interaction is not needed, the default option is NULL.
+#'
 #' @examples
 #' h_ancova(
 #'   .var = "Sepal.Length",
@@ -79,20 +80,24 @@ h_ancova <- function(.var,
 
 #' @describeIn summarize_ancova Statistics function that produces a named list of results
 #'   of the investigated linear model.
+#'
 #' @inheritParams argument_convention
 #' @inheritParams h_ancova
 #' @param interaction_y (`character`)\cr a selected item inside of the interaction_item column
 #'   which will be used to select the specific ANCOVA results. if the interaction is not
 #'   needed, the default option is FALSE
-#'
 #' @return A named list of 5 statistics:
-#'   - `n`: count of complete sample size for the group.
-#'   - `lsmean`: estimated marginal means in the group.
-#'   - `lsmean_diff`: difference in estimated marginal means in comparison to the reference
-#'   group. If working with the reference group, this will be empty.
-#'   - `lsmean_diff_ci`: confidence level for difference in estimated marginal means in
-#'   comparison to the reference group.
-#'   - `pval`: p-value (not adjusted for multiple comparisons).
+#' \describe{
+#'   \item{n}{count of complete sample size for the group.}
+#'   \item{lsmean}{estimated marginal means in the group.}
+#'   \item{lsmean_diff}{difference in estimated marginal means in comparison to the reference group.
+#'     If working with the reference group, this will be empty.
+#'   }
+#'   \item{lsmean_diff_ci}{confidence level for difference in estimated marginal means in comparison to the
+#'     reference group.
+#'   }
+#'   \item{pval}{p-value (not adjusted for multiple comparisons).}
+#' }
 #'
 #' @examples
 #' library(dplyr)

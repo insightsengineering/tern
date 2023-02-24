@@ -49,7 +49,7 @@ analyze_num_patients(
 )
 }
 \arguments{
-\item{x}{(\code{character} or \code{factor}) \cr vector of patient IDs.}
+\item{x}{(\code{character} or \code{factor})\cr vector of patient IDs.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions).}
@@ -57,18 +57,18 @@ analyze_num_patients(
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
 
-\item{count_by}{(\code{character} or \code{factor}) \cr optional vector to be combined with \code{x} when counting
+\item{count_by}{(\code{character} or \code{factor})\cr optional vector to be combined with \code{x} when counting
 \code{nonunique} records.}
 
-\item{unique_count_suffix}{(\code{logical}) \cr should \code{"(n)"} suffix be added to \code{unique_count} labels.
+\item{unique_count_suffix}{(\code{logical})\cr should \code{"(n)"} suffix be added to \code{unique_count} labels.
 Defaults to \code{TRUE}.}
 
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{required}{(\code{character} or \code{NULL}) optional name of a variable that is required to be non-missing.}
+\item{required}{(\code{character} or \code{NULL})\cr optional name of a variable that is required to be non-missing.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
@@ -78,7 +78,7 @@ by a statistics function.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{indent_mod}{(\code{count}) \cr it can be negative. Modifier for the default indent position for the
+\item{indent_mod}{(\code{count})\cr it can be negative. Modifier for the default indent position for the
 structure created by this function(subtable, content table, or row) and
 all of that structure's children. Defaults to 0, which corresponds to the
 unmodified default behavior.}
@@ -91,10 +91,10 @@ unmodified default behavior.}
 }
 \value{
 A list with:
-\itemize{
-\item \code{unique}: vector of count and percentage.
-\item \code{nonunique} : vector of count.
-\item \code{unique_count}: count.
+\describe{
+\item{unique}{vector of count and percentage.}
+\item{nonunique}{vector of count.}
+\item{unique_count}{count.}
 }
 }
 \description{
@@ -140,6 +140,7 @@ s_num_patients(
   .N_col = 6L,
   count_by = as.character(c(1, 1, 2, 1, 1, 1))
 )
+
 # Count number of unique and non-unique patients.
 df <- data.frame(
   USUBJID = as.character(c(1, 2, 1, 4, NA)),

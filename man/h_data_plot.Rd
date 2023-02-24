@@ -9,12 +9,11 @@ h_data_plot(fit_km, armval = "All", max_time = NULL)
 \arguments{
 \item{fit_km}{(\code{survfit})\cr result of \code{\link[survival:survfit]{survival::survfit()}}.}
 
-\item{armval}{(\code{string}) \cr used as strata name when treatment arm
+\item{armval}{(\code{string})\cr used as strata name when treatment arm
 variable only has one level. Default is "All".}
 
-\item{max_time}{(\code{numeric})\cr maximum value to show on X axis.
-Only data values less than or up to to this threshold value will be plotted.(\code{NULL} for
-default)}
+\item{max_time}{(\code{numeric})\cr maximum value to show on X axis. Only data values less than or up to
+this threshold value will be plotted (defaults to \code{NULL}).}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

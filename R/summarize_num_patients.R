@@ -5,25 +5,25 @@
 #' Count the number of unique and non-unique patients in a column (variable).
 #'
 #' @inheritParams argument_convention
-#' @param x (`character` or `factor`) \cr vector of patient IDs.
-#' @param count_by (`character` or `factor`) \cr optional vector to be combined with `x` when counting
+#' @param x (`character` or `factor`)\cr vector of patient IDs.
+#' @param count_by (`character` or `factor`)\cr optional vector to be combined with `x` when counting
 #' `nonunique` records.
-#' @param unique_count_suffix (`logical`) \cr should `"(n)"` suffix be added to `unique_count` labels.
+#' @param unique_count_suffix (`logical`)\cr should `"(n)"` suffix be added to `unique_count` labels.
 #' Defaults to `TRUE`.
 #'
 #' @name summarize_num_patients
 NULL
 
 #' @describeIn summarize_num_patients Statistics function which counts the number of
-#' unique patients, the corresponding percentage taken with respect to the
-#' total number of patients, and the number of non-unique patients.
+#'   unique patients, the corresponding percentage taken with respect to the
+#'   total number of patients, and the number of non-unique patients.
 #'
 #' @return A list with:
-#'   - `unique`: vector of count and percentage.
-#'   - `nonunique` : vector of count.
-#'   - `unique_count`: count.
-#'
-#' @export
+#' \describe{
+#'   \item{unique}{vector of count and percentage.}
+#'   \item{nonunique}{vector of count.}
+#'   \item{unique_count}{count.}
+#' }
 #'
 #' @examples
 #' # Use the statistics function to count number of unique and nonunique patients.
@@ -34,6 +34,8 @@ NULL
 #'   .N_col = 6L,
 #'   count_by = as.character(c(1, 1, 2, 1, 1, 1))
 #' )
+#'
+#' @export
 s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_suffix = TRUE) { # nolint
 
   checkmate::assert_string(labelstr)
@@ -60,12 +62,12 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_su
 }
 
 #' @describeIn summarize_num_patients Counts the number of unique patients in a column
-#' (variable), the corresponding percentage taken with respect to the total
-#' number of patients, and the number of non-unique patients in the column.
-#' Function serves as a wrapper that carries over both expected arguments `df`
-#' and `labelstr` in `cfun` of [summarize_row_groups()].
+#'   (variable), the corresponding percentage taken with respect to the total
+#'   number of patients, and the number of non-unique patients in the column.
+#'   Function serves as a wrapper that carries over both expected arguments `df`
+#'   and `labelstr` in `cfun` of [summarize_row_groups()].
 #'
-#' @param required (`character` or `NULL`) optional name of a variable that is required to be non-missing.
+#' @param required (`character` or `NULL`)\cr optional name of a variable that is required to be non-missing.
 #' @export
 #'
 #' @examples

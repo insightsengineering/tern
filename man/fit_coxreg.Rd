@@ -17,7 +17,7 @@ in \code{data}, passed as a named list and corresponding to \code{time}, \code{e
 only Cox model(s) including the \code{covariates} will be fitted and the corresponding
 effect estimates will be tabulated later.}
 
-\item{data}{(\verb{data frame})\cr the dataset containing the variables to fit the
+\item{data}{(\code{data.frame})\cr the dataset containing the variables to fit the
 models.}
 
 \item{at}{(\code{list} of \code{numeric})\cr when the candidate covariate is a
@@ -30,21 +30,21 @@ helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 \value{
 The function \code{fit_coxreg_univar} returns a \code{coxreg.univar} class object which is a named list
 with 5 elements:
-\itemize{
-\item \code{mod}: Cox regression models fitted by \code{\link[survival:coxph]{survival::coxph()}}.
-\item \code{data}: The original data frame input.
-\item \code{control}: The original control input.
-\item \code{vars}: The variables used in the model.
-\item \code{at}: Value of the covariate at which the effect should be estimated.
+\describe{
+\item{mod}{Cox regression models fitted by \code{\link[survival:coxph]{survival::coxph()}}.}
+\item{data}{The original data frame input.}
+\item{control}{The original control input.}
+\item{vars}{The variables used in the model.}
+\item{at}{Value of the covariate at which the effect should be estimated.}
 }
 
 The function \code{fit_coxreg_multivar} returns a \code{coxreg.multivar} class object which is a named list
 with 4 elements:
-\itemize{
-\item \code{mod}: Cox regression model fitted by \code{\link[survival:coxph]{survival::coxph()}}.
-\item \code{data}: The original data frame input.
-\item \code{control}: The original control input.
-\item \code{vars}: The variables used in the model.
+\describe{
+\item{mod}{Cox regression model fitted by \code{\link[survival:coxph]{survival::coxph()}}.}
+\item{data}{The original data frame input.}
+\item{control}{The original control input.}
+\item{vars}{The variables used in the model.}
 }
 }
 \description{
@@ -133,6 +133,7 @@ mod4 <- fit_coxreg_univar(
   ),
   data = dta_bladder
 )
+
 # fit_coxreg_multivar
 
 ## Cox regression: multivariate Cox regression.
@@ -152,6 +153,7 @@ multivar_covs_model <- fit_coxreg_multivar(
   ),
   data = dta_bladder
 )
+
 }
 \seealso{
 \link{h_cox_regression} for relevant helper functions, \link{cox_regression}.

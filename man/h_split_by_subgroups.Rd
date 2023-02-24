@@ -7,7 +7,7 @@
 h_split_by_subgroups(data, subgroups, groups_lists = list())
 }
 \arguments{
-\item{data}{(\verb{data frame})\cr dataset to split.}
+\item{data}{(\code{data.frame})\cr dataset to split.}
 
 \item{subgroups}{(\code{character})\cr names of factor variables from \code{data} used to create subsets.
 Unused levels not present in \code{data} are dropped. Note that the order in this vector

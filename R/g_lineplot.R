@@ -2,74 +2,61 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Line plot with the optional table
+#' Line plot with the optional table.
 #'
-#' @param df (`data frame`) \cr data set containing all analysis variables.
-#' @param alt_counts_df (`data frame` or `NULL`) \cr
-#'  data set that will be used (only) to counts objects in strata.
-#' @param variables (named `character` vector) of variable names in `df` data set. Details are: \cr
-#' * `x`: x-axis variable.
-#' * `y`: y-axis variable.
-#' * `strata`: grouping variable, i.e. treatment arm. Can be `NA` to indicate lack of groups.
-#' * `paramcd`: the variable name for parameter's code. Used for y-axis label and plot's subtitle.
-#' Can be `NA` if paramcd is not to be added to the y-axis label or subtitle.
-#' * `y_unit`: variable with units of `y`. Used for y-axis label and plot's subtitle.
-#' Can be `NA` if y unit is not to be added to the y-axis label or subtitle.
-#' @param mid (`character` or `NULL`) \cr
-#' names of the statistics that will be plotted as midpoints.
-#' All the statistics indicated in `mid` variable must be present in the object returned by `sfun`,
-#' and be of a `double` or `numeric` type vector of length one.
-#' @param interval (`character` or `NULL`) \cr
-#' names of the statistics that will be plotted as intervals.
-#' All the statistics indicated in `interval` variable must be present in the object returned by `sfun`,
-#' and be of a `double` or `numeric` type vector of length two.
-#' @param whiskers (`character`) \cr
-#' names of the interval whiskers that will be plotted. Must match the `names` attribute of the
-#' `interval` element in the list returned by `sfun`.
-#' It is possible to specify one whisker only, lower or upper.
-#' @param table (`character` or `NULL`) \cr
-#' names of the statistics that will be displayed in the table below the plot.
-#' All the statistics indicated in `table` variable must be present in the object returned by `sfun`.
-#' @param sfun (`closure`) \cr the function to compute the values of required statistics.
-#' It must return a named `list` with atomic vectors.
-#' The names of the `list` elements refer to the names of the statistics
-#' and are used by `mid`, `interval`, `table`.
-#' It must be able to accept as input a vector with data for which statistics are computed.
+#' @param df (`data.frame`)\cr data set containing all analysis variables.
+#' @param alt_counts_df (`data.frame` or `NULL`)\cr data set that will be used (only) to counts objects in strata.
+#' @param variables (named `character` vector) of variable names in `df` data set. Details are:
+#'   * `x` (`character`)\cr name of x-axis variable.
+#'   * `y` (`character`)\cr name of y-axis variable.
+#'   * `strata` (`character`)\cr name of grouping variable, i.e. treatment arm. Can be `NA` to indicate lack of groups.
+#'   * `paramcd` (`character`)\cr name of the variable for parameter's code. Used for y-axis label and plot's subtitle.
+#'     Can be `NA` if paramcd is not to be added to the y-axis label or subtitle.
+#'   * `y_unit` (`character`)\cr name of variable with units of `y`. Used for y-axis label and plot's subtitle.
+#'     Can be `NA` if y unit is not to be added to the y-axis label or subtitle.
+#' @param mid (`character` or `NULL`)\cr names of the statistics that will be plotted as midpoints.
+#'   All the statistics indicated in `mid` variable must be present in the object returned by `sfun`,
+#'   and be of a `double` or `numeric` type vector of length one.
+#' @param interval (`character` or `NULL`)\cr names of the statistics that will be plotted as intervals.
+#'   All the statistics indicated in `interval` variable must be present in the object returned by `sfun`,
+#'   and be of a `double` or `numeric` type vector of length two.
+#' @param whiskers (`character`)\cr names of the interval whiskers that will be plotted. Must match the `names`
+#'   attribute of the `interval` element in the list returned by `sfun`. It is possible to specify one whisker only,
+#'   lower or upper.
+#' @param table (`character` or `NULL`)\cr names of the statistics that will be displayed in the table below the plot.
+#'   All the statistics indicated in `table` variable must be present in the object returned by `sfun`.
+#' @param sfun (`closure`)\cr the function to compute the values of required statistics. It must return a named `list`
+#'   with atomic vectors. The names of the `list` elements refer to the names of the statistics and are used by `mid`,
+#'   `interval`, `table`. It must be able to accept as input a vector with data for which statistics are computed.
 #' @param ... optional arguments to `sfun`.
-#' @param mid_type (`character` scalar) \cr
-#' controls the type of the `mid` plot, it can be point (`p`), line (`l`), or point and line (`pl`).
-#' @param mid_point_size (`integer` or `double`) \cr
-#' controls the font size of the point for `mid` plot.
-#' @param position (`character` or `call`) \cr
-#' geom element position adjustment, either as a string, or the result of a call to a position adjustment function.
-#' @param legend_title (`character` string) \cr legend title.
-#' @param legend_position (`character`) \cr
-#' the position of the plot legend (`none`, `left`, `right`, `bottom`, `top`, or two-element numeric vector).
-#' @param ggtheme (`theme`) \cr
-#' a graphical theme as provided by `ggplot2` to control outlook of the plot.
-#' @param y_lab (`character` scalar) \cr y-axis label.
-#' If it equals to `NULL`, then no label will be added.
-#' @param y_lab_add_paramcd (`logical` scalar) \cr
-#' should paramcd, i.e. `unique(df[[variables["paramcd"]]])` be added to the y-axis label `y_lab`?
-#' @param y_lab_add_unit (`logical` scalar) \cr
-#' should y unit, i.e. `unique(df[[variables["y_unit"]]])` be added to the y-axis label `y_lab`?
-#' @param title (`character` scalar) \cr plot title.
-#' @param subtitle (`character` scalar) \cr plot subtitle.
-#' @param subtitle_add_paramcd (`logical` scalar) \cr
-#' should paramcd, i.e. `unique(df[[variables["paramcd"]]])` be added to the plot's subtitle `subtitle`?
-#' @param subtitle_add_unit (`logical` scalar) \cr
-#' should y unit, i.e. `unique(df[[variables["y_unit"]]])` be added to the plot's subtitle `subtitle`?
-#' @param caption (`character` scalar) \cr optional caption below the plot.
-#' @param table_format (named `character` or `NULL`) \cr
-#' format patterns for descriptive statistics used in the (optional) table appended to the plot.
-#' It is passed directly to the `h_format_row` function through the `format` parameter.
-#' Names of `table_format` must match the names of statistics returned by `sfun` function.
-#' @param table_labels (named `character` or `NULL`) \cr
-#' labels for descriptive statistics used in the (optional) table appended to the plot.
-#' Names of `table_labels` must match the names of statistics returned by `sfun` function.
-#' @param table_font_size (`integer` or `double`) \cr
-#' controls the font size of values in the table.
-#' @param newpage (`logical` scalar) \cr should plot be drawn on new page?
+#' @param mid_type (`character`)\cr controls the type of the `mid` plot, it can be point (`p`), line (`l`),
+#'   or point and line (`pl`).
+#' @param mid_point_size (`integer` or `double`)\cr controls the font size of the point for `mid` plot.
+#' @param position (`character` or `call`)\cr geom element position adjustment, either as a string, or the result of
+#'   a call to a position adjustment function.
+#' @param legend_title (`character` string)\cr legend title.
+#' @param legend_position (`character`)\cr the position of the plot legend (`none`, `left`, `right`, `bottom`, `top`,
+#'   or two-element numeric vector).
+#' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to control styling of the plot.
+#' @param y_lab (`character`)\cr y-axis label. If equal to `NULL`, then no label will be added.
+#' @param y_lab_add_paramcd (`logical`)\cr should paramcd, i.e. `unique(df[[variables["paramcd"]]])` be added to the
+#'   y-axis label `y_lab`?
+#' @param y_lab_add_unit (`logical`)\cr should y unit, i.e. `unique(df[[variables["y_unit"]]])` be added to the y-axis
+#'   label `y_lab`?
+#' @param title (`character`)\cr plot title.
+#' @param subtitle (`character`)\cr plot subtitle.
+#' @param subtitle_add_paramcd (`logical`)\cr should paramcd, i.e. `unique(df[[variables["paramcd"]]])` be added to
+#'   the plot's subtitle `subtitle`?
+#' @param subtitle_add_unit (`logical`)\cr should y unit, i.e. `unique(df[[variables["y_unit"]]])` be added to the
+#'   plot's subtitle `subtitle`?
+#' @param caption (`character`)\cr optional caption below the plot.
+#' @param table_format (named `character` or `NULL`)\cr format patterns for descriptive statistics used in the
+#'   (optional) table appended to the plot. It is passed directly to the `h_format_row` function through the `format`
+#'   parameter. Names of `table_format` must match the names of statistics returned by `sfun` function.
+#' @param table_labels (named `character` or `NULL`)\cr labels for descriptive statistics used in the (optional) table
+#'   appended to the plot. Names of `table_labels` must match the names of statistics returned by `sfun` function.
+#' @param table_font_size (`integer` or `double`)\cr controls the font size of values in the table.
+#' @param newpage (`logical`)\cr should plot be drawn on new page?
 #' @param col (`character`)\cr colors.
 #'
 #' @author Wojciech Wojciak wojciech.wojciak@contractors.roche.com
@@ -423,13 +410,13 @@ g_lineplot <- function(df, # nolint
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param x (named `list`) \cr list of numerical values to be formatted and optionally labeled.
+#' @param x (named `list`)\cr list of numerical values to be formatted and optionally labeled.
 #' Elements of `x` must be `numeric` vectors.
-#' @param format (named `character` or `NULL`) \cr
+#' @param format (named `character` or `NULL`)\cr
 #' format patterns for `x`. Names of the `format` must match the names of `x`.
 #' This parameter is passed directly to the `rtables::format_rcell`
 #' function through the `format` parameter.
-#' @param labels (named `character` or `NULL`) \cr
+#' @param labels (named `character` or `NULL`)\cr
 #' optional labels for `x`. Names of the `labels` must match the names of `x`.
 #' When a label is not specified for an element of `x`,
 #' then this function tries to use `label` or `names` (in this order) attribute of that element
@@ -489,11 +476,11 @@ h_format_row <- function(x, format, labels = NULL) {
 #' Default values for `variables` parameter in `g_lineplot` function.
 #' A variable's default value can be overwritten for any variable.
 #'
-#' @param x (`character` scalar) x variable name. \cr
-#' @param y (`character` scalar) y variable name. \cr
-#' @param strata (`character` scalar or `NA`) strata variable name. \cr
-#' @param paramcd (`character` scalar or `NA`) paramcd variable name. \cr
-#' @param y_unit (`character` scalar or `NA`) y_unit variable name. \cr
+#' @param x (`character`)\cr x variable name.
+#' @param y (`character`)\cr y variable name.
+#' @param strata (`character` or `NA`)\cr strata variable name.
+#' @param paramcd (`character` or `NA`)\cr paramcd variable name.
+#' @param y_unit (`character` or `NA`)\cr y_unit variable name.
 #'
 #' @return A named character vector with names of variables.
 #'

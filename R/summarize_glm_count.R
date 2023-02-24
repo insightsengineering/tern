@@ -22,23 +22,23 @@ NULL
 NULL
 
 #' @describeIn h_glm_count Helper function to return results of a poisson model.
+#'
 #' @inheritParams argument_convention
-#' @param .df_row (`data frame`)\cr data set that includes all the variables that are called
+#' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called
 #'   in `.var` and `variables`.
 #' @param variables (named `list` of `strings`)\cr list of additional analysis variables, with
 #'   expected elements:
-#'   - `arm`: (`string`)\cr group variable, for which the covariate adjusted means of multiple
-#'   groups will be summarized. Specifically, the first level of `arm` variable is taken as the
-#'   reference group.
-#'   - `covariates`: (`character`)\cr a vector that can contain single variable names (such as
-#'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
-#'   - `offset`: (`numeric`)\cr a numeric vector or scalar adding an offset.
+#'   - `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
+#'     groups will be summarized. Specifically, the first level of `arm` variable is taken as the
+#'     reference group.
+#'   - `covariates` (`character`)\cr a vector that can contain single variable names (such as
+#'     `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
+#'   - `offset` (`numeric`)\cr a numeric vector or scalar adding an offset.
 #' @param `weights`(`character`)\cr a character vector specifying weights used
 #'  in averaging predictions. Number of weights must equal the number of levels included in the covariates.
 #'  Weights option passed to emmeans function (hyperlink) (link to emmeans documentation)
 #'
 #' @examples
-#'
 #' # Internal function - h_glm_poisson
 #' \dontrun{
 #' h_glm_poisson(
@@ -142,25 +142,24 @@ h_glm_quasipoisson <- function(.var,
 }
 
 #' @describeIn h_glm_count Helper function to return the results of the
-#' selected model (poisson, quasipoisson, negative binomial).
+#'   selected model (poisson, quasipoisson, negative binomial).
+#'
 #' @inheritParams argument_convention
-#' @param .df_row (`data frame`)\cr data set that includes all the variables that are called
+#' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called
 #'   in `.var` and `variables`.
 #' @param variables (named `list` of `strings`)\cr list of additional analysis variables, with
 #'   expected elements:
-#'   - `arm`: (`string`)\cr group variable, for which the covariate adjusted means of multiple
-#'   groups will be summarized. Specifically, the first level of `arm` variable is taken as the
-#'   reference group.
-#'   - `covariates`: (`character`)\cr a vector that can contain single variable names (such as
-#'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
-#'   - `offset`: (`numeric`)\cr a numeric vector or scalar adding an offset.
+#'   - `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
+#'     groups will be summarized. Specifically, the first level of `arm` variable is taken as the
+#'     reference group.
+#'   - `covariates` (`character`)\cr a vector that can contain single variable names (such as
+#'     `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
+#'   - `offset` (`numeric`)\cr a numeric vector or scalar adding an offset.
 #' @param `weights`(`character`)\cr character vector specifying weights used in averaging predictions.
 #' @param `distribution`(`character`)\cr a character value specifying the distribution
-#' used in the regression (poisson, quasipoisson).
-#'
+#'   used in the regression (poisson, quasipoisson).
 #'
 #' @examples
-#'
 #' # Internal function - h_glm_count
 #' \dontrun{
 #' h_glm_count(
@@ -189,18 +188,17 @@ h_glm_count <- function(.var,
 
 
 #' @describeIn h_glm_count Helper function to return the estimated means.
+#'
 #' @inheritParams argument_convention
-#' @param .df_row (`data frame`)\cr data set that includes all the variables that are called
+#' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called
 #'   in `.var` and `variables`.
-# `list` of `strings`)\cr list of model fitting results.
-#' @param conf_level (`numeric`) value used to derive the confidence interval for the rate.
-#' @param obj (`glm.fit`) fitted model object used to derive the mean rate estimates in each treatment arm.
-#' @param `arm`: (`string`)\cr group variable, for which the covariate adjusted means of multiple
+#' @param conf_level (`numeric`)\cr value used to derive the confidence interval for the rate.
+#' @param obj (`glm.fit`)\cr fitted model object used to derive the mean rate estimates in each treatment arm.
+#' @param `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
 #'   groups will be summarized. Specifically, the first level of `arm` variable is taken as the
 #'   reference group.
 #'
 #' @examples
-#'
 #' # Internal function - h_ppmeans
 #' \dontrun{
 #' fits <- h_glm_count(
@@ -257,20 +255,20 @@ h_ppmeans <- function(obj, .df_row, arm, conf_level) {
 
 #' @describeIn summarize_glm_count Statistics function that produces a named list of results
 #'   of the investigated poisson model.
+#'
 #' @inheritParams argument_convention
 #' @inheritParams h_glm_count
-#'
 #' @return A named list of 5 statistics:
-#'   - `n`: count of complete sample size for the group.
-#'   - `rate`: estimated event rate per follow-up time.
-#'   - `rate_ci`: confidence level for estimated rate per follow-up time.
-#'   - `rate_ratio`: Ratio of event rates in each treatment arm to the reference arm.
-#'   - `rate_ratio_ci`: confidence level for the rate ratio.
-#'   - `pval`: p-value.
-#'
+#' \describe{
+#'   \item{n}{count of complete sample size for the group.}
+#'   \item{rate}{estimated event rate per follow-up time.}
+#'   \item{rate_ci}{confidence level for estimated rate per follow-up time.}
+#'   \item{rate_ratio}{ratio of event rates in each treatment arm to the reference arm.}
+#'   \item{rate_ratio_ci}{confidence level for the rate ratio.}
+#'   \item{pval}{p-value.}
+#' }
 #'
 #' @examples
-#'
 #' # Internal function - s_change_from_baseline
 #' \dontrun{
 #' s_glm_count(

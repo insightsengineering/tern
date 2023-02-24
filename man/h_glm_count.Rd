@@ -19,30 +19,30 @@ h_ppmeans(obj, .df_row, arm, conf_level)
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.df_row}{(\verb{data frame})\cr data set that includes all the variables that are called
+\item{.df_row}{(\code{data.frame})\cr data set that includes all the variables that are called
 in \code{.var} and \code{variables}.}
 
 \item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables, with
 expected elements:
 \itemize{
-\item \code{arm}: (\code{string})\cr group variable, for which the covariate adjusted means of multiple
+\item \code{arm} (\code{string})\cr group variable, for which the covariate adjusted means of multiple
 groups will be summarized. Specifically, the first level of \code{arm} variable is taken as the
 reference group.
-\item \code{covariates}: (\code{character})\cr a vector that can contain single variable names (such as
+\item \code{covariates} (\code{character})\cr a vector that can contain single variable names (such as
 \code{"X1"}), and/or interaction terms indicated by \code{"X1 * X2"}.
-\item \code{offset}: (\code{numeric})\cr a numeric vector or scalar adding an offset.
+\item \code{offset} (\code{numeric})\cr a numeric vector or scalar adding an offset.
 }}
 
-\item{obj}{(\code{glm.fit}) fitted model object used to derive the mean rate estimates in each treatment arm.}
+\item{obj}{(\code{glm.fit})\cr fitted model object used to derive the mean rate estimates in each treatment arm.}
 
-\item{conf_level}{(\code{numeric}) value used to derive the confidence interval for the rate.}
+\item{conf_level}{(\code{numeric})\cr value used to derive the confidence interval for the rate.}
 
 \item{`weights`(`character`)\cr}{character vector specifying weights used in averaging predictions.}
 
 \item{`distribution`(`character`)\cr}{a character value specifying the distribution
 used in the regression (poisson, quasipoisson).}
 
-\item{`arm`:}{(\code{string})\cr group variable, for which the covariate adjusted means of multiple
+\item{`arm`}{(\code{string})\cr group variable, for which the covariate adjusted means of multiple
 groups will be summarized. Specifically, the first level of \code{arm} variable is taken as the
 reference group.}
 }
@@ -64,7 +64,6 @@ selected model (poisson, quasipoisson, negative binomial).
 
 }}
 \examples{
-
 # Internal function - h_glm_poisson
 \dontrun{
 h_glm_poisson(
@@ -84,7 +83,6 @@ h_glm_quasipoisson(
 )
 }
 
-
 # Internal function - h_glm_count
 \dontrun{
 h_glm_count(
@@ -94,7 +92,6 @@ h_glm_count(
   distribution = "poisson"
 )
 }
-
 
 # Internal function - h_ppmeans
 \dontrun{

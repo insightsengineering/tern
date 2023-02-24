@@ -8,27 +8,27 @@
 #' For a certain direction (e.g. high or low) this function counts
 #' patients in the denominator as number of patients with at least one valid measurement during treatment,
 #' and patients in the numerator as follows:
-#'  * `1` to `4`: Numerator is number of patients with worst grades 1-4 respectively;
-#'  * `Any`: Numerator is number of patients with at least one abnormality, which means grade is different from 0.
+#'   * `1` to `4`: Numerator is number of patients with worst grades 1-4 respectively;
+#'   * `Any`: Numerator is number of patients with at least one abnormality, which means grade is different from 0.
 #'
 #' @details
 #' The pre-processing steps are crucial when using this function. From the standard
 #' lab grade variable `ATOXGR`, derive the following two variables:
-#' * A grade direction variable (e.g. `GRADE_DIR`) is required in order to obtain
-#'   the correct denominators when building the layout as it is used to define row splitting.
-#' * A toxicity grade variable (e.g. `GRADE_ANL`) where all negative values from
-#'   `ATOXGR` are replaced by their absolute values.
-#' * Prior to tabulation, `df` must filtered to include only post-baseline records with worst grade flags.
+#'   * A grade direction variable (e.g. `GRADE_DIR`) is required in order to obtain
+#'     the correct denominators when building the layout as it is used to define row splitting.
+#'   * A toxicity grade variable (e.g. `GRADE_ANL`) where all negative values from
+#'     `ATOXGR` are replaced by their absolute values.
+#'   * Prior to tabulation, `df` must filtered to include only post-baseline records with worst grade flags.
 #'
 #' @inheritParams argument_convention
 #'
 #' @name abnormal_by_worst_grade
-#'
 NULL
 
 #' @describeIn abnormal_by_worst_grade Statistics function which counts patients with worst grade,
 #'   consisting of counts and percentages of patients with worst grade
 #'   `1` to `4`, and `Any` non-zero grade.
+#'
 #' @return [s_count_abnormal_by_worst_grade()] the single statistic `count_fraction` with grade 1 to 4
 #'   and "Any" results.
 #'

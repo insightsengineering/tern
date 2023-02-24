@@ -7,17 +7,16 @@
 h_worsen_counter(df, id, .var, baseline_var, direction_var)
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{id}{(\code{string}) \cr subject variable name.}
+\item{id}{(\code{string})\cr subject variable name.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{baseline_var}{(\code{string}) \cr baseline lab grade variable}
+\item{baseline_var}{(\code{string})\cr baseline lab grade variable}
 
-\item{direction_var}{(\code{string}) \cr
-Direction variable specifying the direction of the shift table of interest.
+\item{direction_var}{(\code{string})\cr Direction variable specifying the direction of the shift table of interest.
 Only lab records flagged by \code{L}, \code{H} or \code{B} are included in the shift table.
 \itemize{
 \item \code{L}: low direction only

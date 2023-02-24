@@ -5,7 +5,7 @@
 \alias{s_count_abnormal_by_marked}
 \alias{a_count_abnormal_by_marked}
 \alias{count_abnormal_by_marked}
-\title{Count patients with marked laboratory abnormalities}
+\title{Count Patients with Marked Laboratory Abnormalities}
 \usage{
 s_count_abnormal_by_marked(
   df,
@@ -34,12 +34,12 @@ count_abnormal_by_marked(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.spl_context}{(\verb{data frame})\cr gives information about ancestor split states
+\item{.spl_context}{(\code{data.frame})\cr gives information about ancestor split states
 that is passed by \code{rtables}.}
 
 \item{category}{(\code{list})\cr with different marked category names for single
@@ -73,7 +73,6 @@ or last marked laboratory abnormality was observed (factor).
 Additional analysis variables are \code{id} (character or factor) and \code{direction} indicating
 the direction of the abnormality (factor).
 Denominator is number of patients with at least one valid measurement during
-treatment (post-baseline), and patients in the numerator are considered as follows:
 \itemize{
 \item For \verb{Single, not last} and \verb{Last or replicated}: Numerator is number of patients
 with \verb{Single, not last} and \verb{Last or replicated} levels, respectively.

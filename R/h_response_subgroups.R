@@ -138,9 +138,9 @@ h_proportion_subgroups_df <- function(variables,
 
 #' @describeIn h_response_subgroups helper to prepare a data frame with estimates of
 #'   the odds ratio between a treatment and a control arm.
+#'
 #' @inheritParams response_subgroups
-#' @param strata_data (`factor`, `data.frame` or `NULL`)\cr
-#'   required if stratified analysis is performed.
+#' @param strata_data (`factor`, `data.frame` or `NULL`)\cr required if stratified analysis is performed.
 #' @export
 #'
 #' @examples

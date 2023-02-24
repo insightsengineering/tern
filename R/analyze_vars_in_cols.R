@@ -15,7 +15,7 @@ NULL
 #' @inheritParams argument_convention
 #' @inheritParams rtables::analyze_colvars
 #'
-#' @seealso [summarize_vars], [rtables::analyze_colvars].
+#' @seealso [summarize_vars], [`rtables::analyze_colvars()`].
 #'
 #' @export
 #' @examples

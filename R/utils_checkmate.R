@@ -4,7 +4,7 @@
 #' Additional assertion functions which can be used together with the `checkmate` package.
 #'
 #' @param x (`any`)\cr object to test.
-#' @param df (`data frame`)\cr data set to test.
+#' @param df (`data.frame`)\cr data set to test.
 #' @param variables (named `list` of `character`)\cr list of variables to test.
 #' @param include_boundaries (`logical`)\cr whether to include boundaries when testing
 #'   for proportions.

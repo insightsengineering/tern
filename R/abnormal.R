@@ -2,13 +2,13 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Primary analysis variable `.var` indicates the abnormal range result (character or factor)
-#' and additional analysis variables are `id` (character or factor) and `baseline` (character or
-#' factor). For each direction specified in `abnormal` (e.g. high or low) count patients in the
+#' Primary analysis variable `.var` indicates the abnormal range result (`character` or `factor`)
+#' and additional analysis variables are `id` (`character` or `factor`) and `baseline` (`character` or
+#' `factor`). For each direction specified in `abnormal` (e.g. high or low) count patients in the
 #' numerator and denominator as follows:
 #' \describe{
-#'   \item{`num`}{the number of patients with this abnormality recorded while on treatment.}
-#'   \item{`denom`}{the number of patients with at least one post-baseline assessment.}
+#'   \item{num}{the number of patients with this abnormality recorded while on treatment.}
+#'   \item{denom}{the number of patients with at least one post-baseline assessment.}
 #' }
 #' Note, the denominator includes patients that might have other abnormal levels at baseline,
 #' and patients with missing baseline. Note, optionally patients with this abnormality at
@@ -23,7 +23,6 @@
 #'
 #' @name abnormal
 #' @include formats.R
-#'
 NULL
 
 #' @describeIn abnormal Statistics function which counts patients with abnormal range values

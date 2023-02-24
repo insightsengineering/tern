@@ -46,16 +46,16 @@ summarize_ancova(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.df_row}{(\verb{data frame})\cr data frame across all of the columns for the given row split.}
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
-\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
+\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
@@ -66,7 +66,7 @@ which will be used to select the specific ANCOVA results. if the interaction is 
 needed, the default option is FALSE}
 
 \item{interaction_item}{(\code{character})\cr name of the variable that should have interactions
-with arm. if the interaction is not needed, the default option is NULL}
+with arm. if the interaction is not needed, the default option is NULL.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
@@ -91,14 +91,16 @@ to avoid warnings from \code{rtables}.}
 }
 \value{
 A named list of 5 statistics:
-\itemize{
-\item \code{n}: count of complete sample size for the group.
-\item \code{lsmean}: estimated marginal means in the group.
-\item \code{lsmean_diff}: difference in estimated marginal means in comparison to the reference
-group. If working with the reference group, this will be empty.
-\item \code{lsmean_diff_ci}: confidence level for difference in estimated marginal means in
-comparison to the reference group.
-\item \code{pval}: p-value (not adjusted for multiple comparisons).
+\describe{
+\item{n}{count of complete sample size for the group.}
+\item{lsmean}{estimated marginal means in the group.}
+\item{lsmean_diff}{difference in estimated marginal means in comparison to the reference group.
+If working with the reference group, this will be empty.
+}
+\item{lsmean_diff_ci}{confidence level for difference in estimated marginal means in comparison to the
+reference group.
+}
+\item{pval}{p-value (not adjusted for multiple comparisons).}
 }
 }
 \description{

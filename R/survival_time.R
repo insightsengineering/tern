@@ -2,16 +2,16 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Summarize median survival time and CIs, percentiles of survival times, \cr
-#' survival time range of censored/event patients.
+#' Summarize median survival time and CIs, percentiles of survival times, survival
+#' time range of censored/event patients.
 #'
 #' @inheritParams argument_convention
-#' @param control a (`list`) of parameters for comparison details, specified by using \cr
-#'    the helper function [control_surv_time]. Some possible parameter options are: \cr
-#' * `conf_level`: (`proportion`)\cr confidence level of the interval for survival time.
-#' * `conf_type`: (`string`) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
-#'    see more in [survival::survfit()]. Note option, "none" is not supported.
-#' * `quantiles`: numeric vector of length two to specify the quantiles of survival time.
+#' @param control (`list`)\cr parameters for comparison details, specified by using the helper function
+#'   [control_surv_time()]. Some possible parameter options are:
+#'   * `conf_level` (`proportion`)\cr confidence level of the interval for survival time.
+#'   * `conf_type` (`string`)\cr confidence interval type. Options are "plain" (default), "log", or "log-log",
+#'     see more in [survival::survfit()]. Note option "none" is not supported.
+#'   * `quantiles` (`numeric`)\cr vector of length two to specify the quantiles of survival time.
 #'
 #' @name survival_time
 NULL
@@ -20,12 +20,14 @@ NULL
 #'  `range_censor` and `range_event`.
 #'
 #' @return The statistics are:
-#' * `median` : median survival time.
-#' * `median_ci` : confidence interval for median time.
-#' * `quantiles` : survival time for two specified quantiles.
-#' * `range_censor` : survival time range for censored observations.
-#' * `range_event` : survival time range for observations with events.
-#' * `range` : survival time range for all observations.
+#' \describe{
+#'   \item{median}{median survival time.}
+#'   \item{median_ci}{confidence interval for median time.}
+#'   \item{quantiles}{survival time for two specified quantiles.}
+#'   \item{range_censor}{survival time range for censored observations.}
+#'   \item{range_event}{survival time range for observations with events.}
+#'   \item{range}{survival time range for all observations.}
+#' }
 #'
 #' @examples
 #' library(dplyr)
@@ -115,8 +117,9 @@ a_surv_time <- make_afun(
 
 #' @describeIn survival_time Analyze Function which adds the survival times analysis
 #'   to the input layout. Note that additional formatting arguments can be used here.
-#' @inheritParams argument_convention
+#'
 #' @export
+#'
 #' @examples
 #' basic_table() %>%
 #'   split_cols_by(var = "ARMCD") %>%

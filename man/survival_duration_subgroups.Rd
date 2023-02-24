@@ -42,7 +42,7 @@ are required.}
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
 displaying unit.}
 
-\item{data}{(\verb{data frame})\cr the dataset containing the variables to summarize.}
+\item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
 \item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
 list, which specifies the new group levels via the names and the

@@ -32,12 +32,12 @@ count_abnormal_by_worst_grade(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.spl_context}{(\verb{data frame})\cr gives information about ancestor split states
+\item{.spl_context}{(\code{data.frame})\cr gives information about ancestor split states
 that is passed by \code{rtables}.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}

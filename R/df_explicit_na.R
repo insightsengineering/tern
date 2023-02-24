@@ -12,7 +12,7 @@
 #'   with the `char_as_factor` or `logical_as_factor` options, the missing values will
 #'   be set as the last level.
 #'
-#' @param data (`data frame`)\cr data set.
+#' @param data (`data.frame`)\cr data set.
 #' @param omit_columns (`character`)\cr names of variables from `data` that should
 #'   not be modified by this function.
 #' @param char_as_factor (`flag`)\cr whether to convert character variables

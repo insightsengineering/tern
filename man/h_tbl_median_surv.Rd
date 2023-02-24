@@ -9,7 +9,7 @@ h_tbl_median_surv(fit_km, armval = "All")
 \arguments{
 \item{fit_km}{(\code{survfit})\cr result of \code{\link[survival:survfit]{survival::survfit()}}.}
 
-\item{armval}{(\code{string}) \cr used as strata name when treatment arm
+\item{armval}{(\code{string})\cr used as strata name when treatment arm
 variable only has one level. Default is "All".}
 }
 \description{

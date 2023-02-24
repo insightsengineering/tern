@@ -61,25 +61,25 @@ surv_timepoint(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{time_point}{(\code{number}) \cr survival time point of interest.}
+\item{time_point}{(\code{number})\cr survival time point of interest.}
 
 \item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
-\item{control}{a (\code{list}) of parameters for comparison details, specified by using \cr
-the helper function \code{\link{control_surv_timepoint}}. Some possible parameter options are: \cr
+\item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
+\code{\link[=control_surv_timepoint]{control_surv_timepoint()}}. Some possible parameter options are:
 \itemize{
-\item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for survival rate.
-\item \code{conf_type}: (\code{string}) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
-see more in \code{\link[survival:survfit]{survival::survfit()}}. Note that the option "none" is no longer supported.
-\item \code{time_point}: (\code{number}) \cr survival time point of interest.
+\item \code{conf_level} (\code{proportion})\cr confidence level of the interval for survival rate.
+\item \code{conf_type} (\code{string})\cr confidence interval type. Options are "plain" (default), "log", "log-log",
+see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "none" is no longer supported.
+\item \code{time_point} (\code{number})\cr survival time point of interest.
 }}
 
-\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
+\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
@@ -109,24 +109,24 @@ avoid warnings from duplicate table names.}
 }
 \value{
 The statistics are:
-\itemize{
-\item \code{pt_at_risk} : patients remaining at risk.
-\item \code{event_free_rate} : event free rate (\%).
-\item \code{rate_se} : standard error of event free rate.
-\item \code{rate_ci} : confidence interval for event free rate.
+\describe{
+\item{pt_at_risk}{patients remaining at risk.}
+\item{event_free_rate}{event free rate (\%).}
+\item{rate_se}{standard error of event free rate.}
+\item{rate_ci}{confidence interval for event free rate.}
 }
 
 The statistics are:
-\itemize{
-\item \code{rate_diff} : event free rate difference between two groups.
-\item \code{rate_diff_ci} : confidence interval for the difference.
-\item \code{ztest_pval} : p-value to test the difference is 0.
+\describe{
+\item{rate_diff}{event free rate difference between two groups.}
+\item{rate_diff_ci}{confidence interval for the difference.}
+\item{ztest_pval}{p-value to test the difference is 0.}
 }
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Summarize patient's survival rate and difference of survival rates between groups at a time point.
+Summarize patients' survival rate and difference of survival rates between groups at a time point.
 }
 \section{Functions}{
 \itemize{

@@ -41,9 +41,9 @@ coxph_pairwise(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
+\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
@@ -52,17 +52,16 @@ by a statistics function.}
 
 \item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
-\item{strat}{(\code{character} or \code{NULL}) variable names indicating stratification factors.}
+\item{strat}{(\code{character} or \code{NULL})\cr variable names indicating stratification factors.}
 
-\item{control}{(\code{list}) \cr parameters for comparison details, specified by using \cr
-the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are: \cr
+\item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
+\code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are:
 \itemize{
-\item \code{pval_method}: (\code{string}) \cr p-value method for testing hazard ratio = 1.
-Default method is "log-rank" which comes from \code{\link[survival:survdiff]{survival::survdiff()}}, can also be set to "wald" or "likelihood"
-that comes from \code{\link[survival:coxph]{survival::coxph()}}.
-\item \code{ties}: (\code{string}) \cr specifying the method for tie handling. Default is "efron",
+\item \code{pval_method} (\code{string})\cr p-value method for testing hazard ratio = 1. Default method is "log-rank" which
+comes from \code{\link[survival:survdiff]{survival::survdiff()}}, can also be set to "wald" or "likelihood" (from \code{\link[survival:coxph]{survival::coxph()}}).
+\item \code{ties} (\code{string})\cr specifying the method for tie handling. Default is "efron",
 can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]{survival::coxph()}}
-\item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for HR.
+\item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
 }}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -88,12 +87,12 @@ to avoid warnings from \code{rtables}.}
 }
 \value{
 The statistics are:
-\itemize{
-\item \code{pvalue} : p-value to test HR = 1.
-\item \code{hr} : hazard ratio.
-\item \code{hr_ci} : confidence interval for hazard ratio.
-\item \code{n_tot} : total number of observations
-\item \code{n_tot_events} : total number of events
+\describe{
+\item{pvalue}{p-value to test HR = 1.}
+\item{hr}{hazard ratio.}
+\item{hr_ci}{confidence interval for hazard ratio.}
+\item{n_tot}{total number of observations.}
+\item{n_tot_events}{total number of events.}
 }
 }
 \description{

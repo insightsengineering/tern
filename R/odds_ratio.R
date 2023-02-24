@@ -205,8 +205,8 @@ estimate_odds_ratio <- function(lyt,
 #' Functions to calculate odds ratios in [estimate_odds_ratio()].
 #'
 #' @inheritParams argument_convention
-#' @param data (`data frame`)\cr
-#'   with at least the variables `rsp`, `grp`, and in addition `strata` for [or_clogit()].
+#' @param data (`data.frame`)\cr data frame containing at least the variables `rsp` and `grp`, and optionally
+#'   `strata` for [or_clogit()].
 #'
 #' @seealso [odds_ratio]
 #'

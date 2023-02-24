@@ -169,8 +169,8 @@ h_survtime_subgroups_df <- function(variables,
 
 #' @describeIn h_survival_duration_subgroups helper to prepare a data frame with estimates of
 #'   treatment hazard ratio.
-#' @param strata_data (`factor`, `data.frame` or `NULL`)\cr
-#'   required if stratified analysis is performed.
+#'
+#' @param strata_data (`factor`, `data.frame` or `NULL`)\cr required if stratified analysis is performed.
 #'
 #' @examples
 #' # Extract hazard ratio for one group.
@@ -377,7 +377,7 @@ h_coxph_subgroups_df <- function(variables,
 #' @details Main functionality is to prepare data for use in forest plot layouts.
 #'
 #' @inheritParams survival_duration_subgroups
-#' @param data (`data frame`)\cr dataset to split.
+#' @param data (`data.frame`)\cr dataset to split.
 #' @param subgroups (`character`)\cr names of factor variables from `data` used to create subsets.
 #'   Unused levels not present in `data` are dropped. Note that the order in this vector
 #'   determines the order in the downstream table.

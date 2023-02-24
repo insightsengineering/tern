@@ -6,29 +6,29 @@
 #'
 #' @inheritParams argument_convention
 #' @inheritParams s_surv_time
-#' @param strat (`character` or `NULL`) variable names indicating stratification factors.
-#' @param control (`list`) \cr parameters for comparison details, specified by using \cr
-#'    the helper function [control_coxph()]. Some possible parameter options are: \cr
-#' * `pval_method`: (`string`) \cr p-value method for testing hazard ratio = 1.
-#'   Default method is "log-rank" which comes from [survival::survdiff()], can also be set to "wald" or "likelihood"
-#'   that comes from [survival::coxph()].
-#' * `ties`: (`string`) \cr specifying the method for tie handling. Default is "efron",
-#'   can also be set to "breslow" or "exact". See more in [survival::coxph()]
-#' * `conf_level`: (`proportion`)\cr confidence level of the interval for HR.
+#' @param strat (`character` or `NULL`)\cr variable names indicating stratification factors.
+#' @param control (`list`)\cr parameters for comparison details, specified by using the helper function
+#'   [control_coxph()]. Some possible parameter options are:
+#'   * `pval_method` (`string`)\cr p-value method for testing hazard ratio = 1. Default method is "log-rank" which
+#'     comes from [survival::survdiff()], can also be set to "wald" or "likelihood" (from [survival::coxph()]).
+#'   * `ties` (`string`)\cr specifying the method for tie handling. Default is "efron",
+#'     can also be set to "breslow" or "exact". See more in [survival::coxph()]
+#'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
 #'
 #' @importFrom stats pchisq
-#'
 #' @name survival_coxph_pairwise
 NULL
 
 #' @describeIn survival_coxph_pairwise Statistics Function which analyzes HR, CIs of HR and p-value with coxph model.
 #'
 #' @return The statistics are:
-#' * `pvalue` : p-value to test HR = 1.
-#' * `hr` : hazard ratio.
-#' * `hr_ci` : confidence interval for hazard ratio.
-#' * `n_tot` : total number of observations
-#' * `n_tot_events` : total number of events
+#' \describe{
+#'   \item{pvalue}{p-value to test HR = 1.}
+#'   \item{hr}{hazard ratio.}
+#'   \item{hr_ci}{confidence interval for hazard ratio.}
+#'   \item{n_tot}{total number of observations.}
+#'   \item{n_tot_events}{total number of events.}
+#' }
 #'
 #' @examples
 #' library(dplyr)

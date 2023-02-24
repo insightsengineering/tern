@@ -9,7 +9,7 @@ append_varlabels(lyt, df, vars, indent = 0L)
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{vars}{(\code{character})\cr variable names of which the labels are to be looked up in \code{df}.}
 

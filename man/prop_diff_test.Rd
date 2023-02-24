@@ -38,19 +38,18 @@ test_proportion_diff(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
+\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
-\item{method}{(\code{string})\cr
-one of (\code{chisq}, \code{cmh}, \code{fisher}, \code{schouten}; specifies the test used
+\item{method}{(\code{string})\cr one of \code{chisq}, \code{cmh}, \code{fisher}, or \code{schouten}; specifies the test used
 to calculate the p-value.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -72,9 +71,8 @@ to avoid warnings from \code{rtables}.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
-\item{tbl}{(\code{matrix})\cr
-with two groups in rows and the binary response (\code{TRUE}/\code{FALSE}) in
-columns.}
+\item{tbl}{(\code{matrix})\cr matrix with two groups in rows and the binary response
+(\code{TRUE}/\code{FALSE}) in columns.}
 }
 \value{
 Named \code{list} with a single item \code{pval} with an attribute \code{label}

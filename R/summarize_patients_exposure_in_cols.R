@@ -11,12 +11,16 @@ NULL
 
 #' @describeIn summarize_patients_exposure_in_cols Statistics function which counts numbers
 #'  of patients and the sum of exposure across all patients.
+#'
 #' @inheritParams argument_convention
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
-#' be used as label.
-#' @return [s_count_patients_sum_exposure()] returns a list with the statistics:\cr
-#' - `n_patients`: number of unique patients in `df`.
-#' - `sum_exposure`: sum of `.var` across all patients in `df`.
+#'   be used as label.
+#' @return [s_count_patients_sum_exposure()] returns a list with the statistics:
+#' \describe{
+#'   \item{n_patients}{number of unique patients in `df`.}
+#'   \item{sum_exposure}{sum of `.var` across all patients in `df`.}
+#' }
+#'
 #' @examples
 #' set.seed(1)
 #' df <- data.frame(
@@ -83,12 +87,13 @@ s_count_patients_sum_exposure <- function(df, # nolintr
 
 #' @describeIn summarize_patients_exposure_in_cols Layout creating function which adds the count
 #'   statistics of patients and the sum of analysis value in the column layout as content rows.
-#' @inheritParams argument_convention
-#' @param col_split (`flag`)\cr whether the columns should be split.
-#'  Set to `FALSE` when the required column split has been done already earlier in the layout pipe.
-#' @export
-#' @examples
 #'
+#' @inheritParams argument_convention
+#' @param col_split (`flag`)\cr whether the columns should be split. Set to `FALSE` when the required
+#'   column split has been done already earlier in the layout pipe.
+#' @export
+#'
+#' @examples
 #' lyt <- basic_table() %>%
 #'   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
 #'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) %>%

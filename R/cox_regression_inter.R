@@ -116,7 +116,7 @@ h_coxreg_inter_effect.numeric <- function(x, # nolint
 #' @describeIn cox_regression_inter Estimate the interaction with a factor
 #'   covariate.
 #'
-#' @param data (`data frame`)\cr the data frame on which the model was fit.
+#' @param data (`data.frame`)\cr the data frame on which the model was fit.
 #' @export
 h_coxreg_inter_effect.factor <- function(x, # nolint
                                          effect,
@@ -209,19 +209,18 @@ h_coxreg_extract_interaction <- function(effect,
 
 #' @describeIn cox_regression_inter hazard ratio estimation in interactions.
 #'
-#' @param variable,given (`string`)\cr
-#'   the name of variables in interaction. We seek the estimation of the levels
-#'   of `variable` given the levels of `given`.
-#' @param lvl_var,lvl_given (`character`)\cr
-#'   corresponding levels has given by [levels()].
-#' @param mod (`coxph`)\cr a fitted Cox regression model (see [survival::coxph()]).
 #' @inheritParams argument_convention
+#' @param variable,given (`string`)\cr the name of variables in interaction. We seek the estimation
+#'   of the levels of `variable` given the levels of `given`.
+#' @param lvl_var,lvl_given (`character`)\cr corresponding levels has given by [levels()].
+#' @param mod (`coxph`)\cr a fitted Cox regression model (see [survival::coxph()]).
+#'
 #' @details Given the cox regression investigating the effect of Arm (A, B, C; reference A)
 #'   and Sex (F, M; reference Female) and the model being abbreviated: y ~ Arm + Sex + Arm:Sex.
 #'   The cox regression estimates the coefficients along with a variance-covariance matrix for:
 #'
-#'   - b1 (arm b), b2 (arm c),
-#'   - b3 (sex m),
+#'   - b1 (arm b), b2 (arm c)
+#'   - b3 (sex m)
 #'   - b4 (arm b: sex m), b5 (arm c: sex m)
 #'
 #'   The estimation of the Hazard Ratio for arm C/sex M is given in reference
@@ -232,13 +231,11 @@ h_coxreg_extract_interaction <- function(effect,
 #' @return A list of matrix (one per level of variable) with rows corresponding to the combinations of
 #' `variable` and `given`, with columns:
 #' \describe{
-#'   \item{coef_hat}{Estimation of the coefficient}
+#'   \item{coef_hat}{Estimation of the coefficient.}
 #'   \item{coef_se}{Standard error of the estimation.}
 #'   \item{hr}{Hazard ratio.}
-#'   \item{lcl,ucl}{lower/upper confidence limit of the hazard ratio}
+#'   \item{lcl, ucl}{Lower/upper confidence limit of the hazard ratio.}
 #' }
-#'
-#' @export
 #'
 #' @examples
 #' mod <- coxph(Surv(time, status) ~ armcd * covar1, data = dta_bladder)
@@ -249,6 +246,8 @@ h_coxreg_extract_interaction <- function(effect,
 #'   mod = mod, conf_level = .95
 #' )
 #' result
+#'
+#' @export
 h_coxreg_inter_estimations <- function(variable, given,
                                        lvl_var, lvl_given,
                                        mod,

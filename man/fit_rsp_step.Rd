@@ -30,8 +30,10 @@ This fits the Subgroup Treatment Effect Pattern logistic regression models for a
 where the first one is taken as reference and the estimated odds ratios are
 for the comparison of the second level vs. the first one.
 
-The (conditional) logistic regression model which is fit is:\cr
-\code{response ~ arm * poly(biomarker, degree) + covariates + strata(strata)}\cr
+The (conditional) logistic regression model which is fit is:
+
+\code{response ~ arm * poly(biomarker, degree) + covariates + strata(strata)}
+
 where \code{degree} is specified by \code{control_step()}.
 Note that for the default degree 0 the \code{biomarker} variable is not included in the model.
 }

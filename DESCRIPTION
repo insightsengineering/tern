@@ -43,7 +43,7 @@ Imports:
     rlang,
     scales,
     stats,
-    survival (>= 3.1-11),
+    survival (>= 3.2-13),
     tibble,
     tidyr,
     utils

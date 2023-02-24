@@ -12,7 +12,7 @@ fit_logistic(
 )
 }
 \arguments{
-\item{data}{(\verb{data frame})\cr the data frame on which the model was fit.}
+\item{data}{(\code{data.frame})\cr the data frame on which the model was fit.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
@@ -25,22 +25,17 @@ side of the formula.}
 
 Fit a (conditional) logistic regression model.
 }
-\details{
-Note this function may hang or error for certain datasets when an old version of the
-survival package (< 3.2-13) is used.
-}
 \section{Model Specification}{
 
 
-The \code{variables} list needs to include the following elements:\cr
-\itemize{
-\item \code{arm}: usual treatment arm variable name.
-\item \code{response}: the response arm variable name. Usually this is a 0/1 variable.
-\item \code{covariates}: this is either \code{NULL} (no covariates) or
-a character vector of covariate variable names.
-\item \code{interaction}: this is either \code{NULL} (no interaction) or a string of a single
-covariate variable name already included in \code{covariates}. Then the interaction
-with the treatment arm is included in the model.
+The \code{variables} list needs to include the following elements:
+\describe{
+\item{arm}{treatment arm variable name.}
+\item{response}{the response arm variable name. Usually this is a 0/1 variable.}
+\item{covariates}{this is either \code{NULL} (no covariates) or a character vector of covariate variable names.}
+\item{interaction}{this is either \code{NULL} (no interaction) or a string of a single covariate variable name already
+included in \code{covariates}. Then the interaction with the treatment arm is included in the model.
+}
 }
 }
 
@@ -73,4 +68,5 @@ mod2 <- fit_logistic(
     interaction = "AGE"
   )
 )
+
 }

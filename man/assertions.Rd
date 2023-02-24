@@ -54,7 +54,7 @@ the heuristic implemented in \code{\link[checkmate]{vname}}.}
 \item{add}{[\code{AssertCollection}]\cr
 Collection to store assertion messages. See \code{\link[checkmate]{AssertCollection}}.}
 
-\item{df}{(\verb{data frame})\cr data set to test.}
+\item{df}{(\code{data.frame})\cr data set to test.}
 
 \item{variables}{(named \code{list} of \code{character})\cr list of variables to test.}
 

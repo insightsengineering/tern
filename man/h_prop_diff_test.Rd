@@ -17,13 +17,11 @@ prop_schouten(tbl)
 prop_fisher(tbl)
 }
 \arguments{
-\item{tbl}{(\code{matrix})\cr
-with two groups in rows and the binary response (\code{TRUE}/\code{FALSE}) in
-columns.}
+\item{tbl}{(\code{matrix})\cr matrix with two groups in rows and the binary response
+(\code{TRUE}/\code{FALSE}) in columns.}
 
-\item{ary}{(\code{array}, 3 dimensions)\cr
-with two groups in rows, the binary response (\code{TRUE}/\code{FALSE}) in
-columns, the strata in the third dimension.}
+\item{ary}{(\code{array}, 3 dimensions)\cr array with two groups in rows, the binary response
+(\code{TRUE}/\code{FALSE}) in columns, and the strata in the third dimension.}
 }
 \description{
 Helper functions to implement various tests on the difference between two

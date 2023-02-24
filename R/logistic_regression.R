@@ -101,25 +101,22 @@ summarize_logistic <- function(lyt,
 #' Fit a (conditional) logistic regression model.
 #'
 #' @inheritParams argument_convention
-#' @param data (`data frame`)\cr the data frame on which the model was fit.
+#' @param data (`data.frame`)\cr the data frame on which the model was fit.
 #' @param response_definition (`string`)\cr the definition of what an event is in terms of `response`.
 #'   This will be used when fitting the (conditional) logistic regression model on the left hand
 #'   side of the formula.
 #'
 #' @section Model Specification:
 #'
-#' The `variables` list needs to include the following elements:\cr
-#' - `arm`: usual treatment arm variable name.
-#' - `response`: the response arm variable name. Usually this is a 0/1 variable.
-#' - `covariates`: this is either `NULL` (no covariates) or
-#'      a character vector of covariate variable names.
-#' - `interaction`: this is either `NULL` (no interaction) or a string of a single
-#'      covariate variable name already included in `covariates`. Then the interaction
-#'      with the treatment arm is included in the model.
-#'
-#' @details Note this function may hang or error for certain datasets when an old version of the
-#'   survival package (< 3.2-13) is used.
-#' @export
+#' The `variables` list needs to include the following elements:
+#' \describe{
+#'   \item{arm}{treatment arm variable name.}
+#'   \item{response}{the response arm variable name. Usually this is a 0/1 variable.}
+#'   \item{covariates}{this is either `NULL` (no covariates) or a character vector of covariate variable names.}
+#'   \item{interaction}{this is either `NULL` (no interaction) or a string of a single covariate variable name already
+#'     included in `covariates`. Then the interaction with the treatment arm is included in the model.
+#'   }
+#' }
 #'
 #' @examples
 #' library(dplyr)
@@ -150,6 +147,8 @@ summarize_logistic <- function(lyt,
 #'     interaction = "AGE"
 #'   )
 #' )
+#'
+#' @export
 fit_logistic <- function(data,
                          variables = list(
                            response = "Response",
