@@ -45,12 +45,12 @@ estimate_proportion_diff(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
+\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
@@ -58,12 +58,10 @@ by a statistics function.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{method}{(\code{string})\cr
-the method used for the confidence interval estimation.}
+\item{method}{(\code{string})\cr the method used for the confidence interval estimation.}
 
-\item{weights_method}{(\code{string}) \cr
-it can be one of \code{c("cmh", "heuristic")} and directs the way weights are
-estimated.}
+\item{weights_method}{(\code{string})\cr weights method. Can be either \code{"cmh"} or \code{"heuristic"}
+and directs the way weights are estimated.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 

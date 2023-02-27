@@ -12,16 +12,13 @@ h_adlb_worsen(
 )
 }
 \arguments{
-\item{adlb}{(\verb{data frame}) \cr \code{ADLB} dataframe}
+\item{adlb}{(\code{data.frame})\cr \code{ADLB} dataframe}
 
-\item{worst_flag_low}{(named \code{vector}) \cr
-Worst low post-baseline lab grade flag variable}
+\item{worst_flag_low}{(named \code{vector})\cr Worst low post-baseline lab grade flag variable}
 
-\item{worst_flag_high}{(named \code{vector}) \cr
-Worst high post-baseline lab grade flag variable}
+\item{worst_flag_high}{(named \code{vector})\cr Worst high post-baseline lab grade flag variable}
 
-\item{direction_var}{(\code{string}) \cr
-Direction variable specifying the direction of the shift table of interest.
+\item{direction_var}{(\code{string})\cr Direction variable specifying the direction of the shift table of interest.
 Only lab records flagged by \code{L}, \code{H} or \code{B} are included in the shift table.
 \itemize{
 \item \code{L}: low direction only
@@ -30,7 +27,7 @@ Only lab records flagged by \code{L}, \code{H} or \code{B} are included in the s
 }}
 }
 \value{
-\code{\link[=h_adlb_worsen]{h_adlb_worsen()}} returns the \code{adlb} \verb{data frame} containing only the
+\code{\link[=h_adlb_worsen]{h_adlb_worsen()}} returns the \code{adlb} \code{data.frame} containing only the
 worst labs specified according to \code{worst_flag_low} or \code{worst_flag_high} for the
 direction specified according to \code{direction_var}. For instance, for a lab that is
 needed for the low direction only, only records flagged by \code{worst_flag_low} are

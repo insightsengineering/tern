@@ -5,9 +5,8 @@
 #' Various tests were implemented to test the difference between two
 #' proportions.
 #'
-#' @param tbl (`matrix`)\cr
-#'   with two groups in rows and the binary response (`TRUE`/`FALSE`) in
-#'   columns.
+#' @param tbl (`matrix`)\cr matrix with two groups in rows and the binary response
+#'   (`TRUE`/`FALSE`) in columns.
 #' @seealso [h_prop_diff_test]
 #'
 #' @name prop_diff_test
@@ -18,8 +17,7 @@ NULL
 #'  between two proportions.
 #'
 #' @inheritParams argument_convention
-#' @param method (`string`)\cr
-#'   one of (`chisq`, `cmh`, `fisher`, `schouten`; specifies the test used
+#' @param method (`string`)\cr one of `chisq`, `cmh`, `fisher`, or `schouten`; specifies the test used
 #'   to calculate the p-value.
 #'
 #' @return Named `list` with a single item `pval` with an attribute `label`
@@ -189,9 +187,8 @@ test_proportion_diff <- function(lyt,
 #' Helper functions to implement various tests on the difference between two
 #' proportions.
 #'
-#' @param tbl (`matrix`)\cr
-#'   with two groups in rows and the binary response (`TRUE`/`FALSE`) in
-#'   columns.
+#' @param tbl (`matrix`)\cr matrix with two groups in rows and the binary response
+#'   (`TRUE`/`FALSE`) in columns.
 #'
 #' @seealso [prop_diff_test())] for implementation of these helper functions.
 #'
@@ -234,9 +231,9 @@ prop_chisq <- function(tbl) {
 #' @describeIn h_prop_diff_test performs stratified Cochran-Mantel-Haenszel test.
 #'   Internally calls [stats::mantelhaen.test()]. Note that strata with less than two observations
 #'   are automatically discarded.
-#' @param ary (`array`, 3 dimensions)\cr
-#'   with two groups in rows, the binary response (`TRUE`/`FALSE`) in
-#'   columns, the strata in the third dimension.
+#'
+#' @param ary (`array`, 3 dimensions)\cr array with two groups in rows, the binary response
+#'   (`TRUE`/`FALSE`) in columns, and the strata in the third dimension.
 #'
 #' @examples
 #' # Stratified proportion difference test

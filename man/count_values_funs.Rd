@@ -58,10 +58,12 @@ count_values(
 
 \item{.N_row}{(\code{count})\cr column-wise N (column count) for the full column that is passed by \code{rtables}.}
 
-\item{denom}{(\code{string})\cr choice of denominator for proportion:\cr
-can be \code{n} (number of values in this row and column intersection), \code{N_row} (total
-number of values in this row across columns), or \code{N_col} (total number of values in
-this column across rows).}
+\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
+\itemize{
+\item \code{n}: number of values in this row and column intersection.
+\item \code{N_row}: total number of values in this row across columns.
+\item \code{N_col}: total number of values in this column across rows.
+}}
 
 \item{...}{additional arguments for the lower level functions.}
 

@@ -5,9 +5,9 @@
 #' This is an auxiliary function for controlling arguments for `CoxPH` model, typically used internally to specify
 #' details of `CoxPH` model for [s_coxph_pairwise]. `conf_level` refers to Hazard Ratio estimation.
 #'
-#' @param pval_method (`string`) \cr p-value method for testing hazard ratio = 1.
+#' @param pval_method (`string`)\cr p-value method for testing hazard ratio = 1.
 #'   Default method is \code{"log-rank"}, can also be set to \code{"wald"} or \code{"likelihood"}.
-#' @param ties 	(`string`) \cr specifying the method for tie handling. Default is \code{"efron"},
+#' @param ties 	(`string`)\cr specifying the method for tie handling. Default is \code{"efron"},
 #'   can also be set to \code{"breslow"} or \code{"exact"}. see more in [survival::coxph()]
 #' @inheritParams argument_convention
 #' @return A list of components with the same names as the arguments
@@ -31,9 +31,9 @@ control_coxph <- function(pval_method = c("log-rank", "wald", "likelihood"),
 #' details of `survfit` model for [s_surv_time]. `conf_level` refers to survival time estimation.
 #'
 #' @inheritParams argument_convention
-#' @param conf_type (`string`) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
-#'    see more in [survival::survfit()]. Note that the option "none" is no longer supported.
-#' @param quantiles (`numeric`) \cr of length two to specify the quantiles of survival time.
+#' @param conf_type (`string`)\cr confidence interval type. Options are "plain" (default), "log", "log-log",
+#'   see more in [survival::survfit()]. Note option "none" is no longer supported.
+#' @param quantiles (`numeric`)\cr of length two to specify the quantiles of survival time.
 #' @return A list of components with the same names as the arguments
 #'
 #' @export

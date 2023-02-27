@@ -88,7 +88,7 @@ compare_vars(
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
+\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
@@ -138,8 +138,7 @@ If \code{x} is of class \code{numeric}, returns a list with named items:
 \item \code{pval}: the p-value.
 }
 
-If \code{x} is of class \code{factor} or converted from \code{character}, returns a list with
-named items:
+If \code{x} is of class \code{factor} or converted from \code{character}, returns a list with named items:
 \itemize{
 \item all items from \code{\link[=s_summary.factor]{s_summary.factor()}}.
 \item \code{pval}: the p-value.

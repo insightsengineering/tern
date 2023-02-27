@@ -13,7 +13,7 @@ df_explicit_na(
 )
 }
 \arguments{
-\item{data}{(\verb{data frame})\cr data set.}
+\item{data}{(\code{data.frame})\cr data set.}
 
 \item{omit_columns}{(\code{character})\cr names of variables from \code{data} that should
 not be modified by this function.}

@@ -14,11 +14,11 @@ h_map_for_count_abnormal(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
-\item{abnormal}{(\verb{named list})\cr identifying the abnormal range level(s) in \code{df}. Based on the levels of abnormality
+\item{abnormal}{(named \code{list})\cr identifying the abnormal range level(s) in \code{df}. Based on the levels of abnormality
 of the input dataset, it can be something like \code{list(Low = "LOW LOW", High = "HIGH HIGH")} or
 \verb{abnormal = list(Low = "LOW", High = "HIGH"))}}
 

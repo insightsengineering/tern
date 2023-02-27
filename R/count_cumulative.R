@@ -8,15 +8,13 @@
 #' @seealso Relevant helper function [h_count_cumulative()], and descriptive function [d_count_cumulative()]
 #'
 #' @name count_cumulative
-#'
 NULL
 
 #' Helper Function for [s_count_cumulative()]
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Helper function to calculate count and fraction of
-#' `x` values in the lower or upper tail given a threshold.
+#' Helper function to calculate count and fraction of `x` values in the lower or upper tail given a threshold.
 #'
 #' @inheritParams argument_convention
 #' @param threshold (`number`)\cr a cutoff value as threshold to count values of `x`.
@@ -24,10 +22,13 @@ NULL
 #' @param include_eq (`logical`)\cr whether to include value equal to the `threshold` in
 #' count, default is `TRUE`.
 #' @param .N_col (`count`)\cr denominator for fraction calculation.
-#' @return A named vector of 2:
-#'   - `count`: the count of values less than, less or equal to, greater than, or
-#'   greater or equal to a threshold of user specification.
-#'   - `fraction`: the fraction of the count.
+#' @return A named vector with items:
+#' \describe{
+#'   \item{count}{the count of values less than, less or equal to, greater than, or greater or equal to a threshold
+#'     of user specification.
+#'   }
+#'   \item{fraction}{the fraction of the count.}
+#' }
 #' @seealso [count_cumulative]
 #'
 #' @export
@@ -86,12 +87,11 @@ d_count_cumulative <- function(threshold, lower_tail, include_eq) {
   paste0(lg, eq, " ", threshold)
 }
 
-#' @describeIn count_cumulative Statistics function that produces a named lists given a
-#' (`numeric`) vector of thresholds.
+#' @describeIn count_cumulative Statistics function that produces a named lists given a numeric vector of thresholds.
+#'
 #' @inheritParams h_count_cumulative
 #' @param thresholds (`numeric`)\cr vector of cutoff value for the counts.
-#' @return A named list:
-#'   - `count_fraction`: a list with each `thresholds` value as a component, each component
+#' @return A named list of `count_fraction`s: a list with each `thresholds` value as a component, each component
 #'     contains a vector for the count and fraction.
 #'
 #' @examples
@@ -125,6 +125,7 @@ s_count_cumulative <- function(x,
 
 #' @describeIn count_cumulative Formatted Analysis function which can be further customized by calling
 #'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#'
 #' @return [a_count_cumulative()] returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
@@ -146,8 +147,10 @@ a_count_cumulative <- make_afun(
 #'   summary tables for cumulative counts of a variable. The ellipsis (`...`) conveys
 #'   arguments to `s_count_cumulative()`, for instance `lower_tail = FALSE` if upper tail
 #'   should be accounted for.
+#'
 #' @inheritParams argument_convention
 #' @export
+#'
 #' @examples
 #' basic_table() %>%
 #'   split_cols_by("ARM") %>%
@@ -157,7 +160,6 @@ a_count_cumulative <- make_afun(
 #'     thresholds = c(40, 60)
 #'   ) %>%
 #'   build_table(tern_ex_adsl)
-#'
 count_cumulative <- function(lyt,
                              vars,
                              var_labels = vars,

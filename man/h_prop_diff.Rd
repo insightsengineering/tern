@@ -29,22 +29,18 @@ prop_diff_strat_nc(
 \arguments{
 \item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
 
-\item{grp}{(\code{factor})\cr
-vector assigning observations to one out of two groups
+\item{grp}{(\code{factor})\cr vector assigning observations to one out of two groups
 (e.g. reference and treatment group).}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{correct}{\code{logical}\cr
-include the continuity correction. For further information, see for example
-\code{\link[stats:prop.test]{stats::prop.test()}}.}
+\item{correct}{\code{logical}\cr include the continuity correction. For further
+information, see \code{\link[stats:prop.test]{stats::prop.test()}}.}
 
-\item{strata}{(\code{factor})\cr
-with one level per stratum and same length as \code{rsp}.}
+\item{strata}{(\code{factor})\cr variable with one level per stratum and same length as \code{rsp}.}
 
-\item{weights_method}{(\code{string}) \cr
-it can be one of \code{c("cmh", "heuristic")} and directs the way weights are
-estimated.}
+\item{weights_method}{(\code{string})\cr weights method. Can be either \code{"cmh"} or \code{"heuristic"}
+and directs the way weights are estimated.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

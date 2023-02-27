@@ -46,6 +46,7 @@ reference:
       - starts_with("count_", internal = TRUE)
       - starts_with("estimate_", internal = TRUE)
       - starts_with("summarize_", internal = TRUE)
+      - starts_with("surv_", internal = TRUE)
       - starts_with("tabulate_", internal = TRUE)
       - test_proportion_diff
       - -estimate_coef

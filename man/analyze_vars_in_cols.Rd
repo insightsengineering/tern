@@ -113,5 +113,5 @@ result <- build_table(lyt, df = adpp)
 result
 }
 \seealso{
-\link{summarize_vars}, \link[rtables:analyze_colvars]{rtables::analyze_colvars}.
+\link{summarize_vars}, \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
 }

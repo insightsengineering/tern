@@ -6,17 +6,17 @@
 #' as incidence rate. Primary analysis variable is the person-years at risk.
 #'
 #' @inheritParams argument_convention
-#' @param control (`list`) \cr parameters for estimation details, specified by using
-#'   the helper function [control_incidence_rate()]. Possible parameter options are: \cr
-#' * `conf_level`: (`proportion`) \cr confidence level for the estimated incidence rate.
-#' * `conf_type`: (`string`) \cr `normal` (default), `normal_log`, `exact`, or `byar`
-#'   for confidence interval type.
-#' * `time_unit_input`: (`string`) \cr `day`, `week`, `month`, or `year` (default)
-#'   indicating time unit for data input.
-#' * `time_unit_output`: (`numeric`) \cr time unit for desired output (in person-years).
-#' @param person_years (`numeric`) \cr total person-years at risk.
-#' @param alpha (`numeric`) \cr two-sided alpha-level for confidence interval.
-#' @param n_events (`integer`) \cr number of events observed.
+#' @param control (`list`)\cr parameters for estimation details, specified by using
+#'   the helper function [control_incidence_rate()]. Possible parameter options are:
+#'   * `conf_level` (`proportion`)\cr confidence level for the estimated incidence rate.
+#'   * `conf_type` (`string`)\cr `normal` (default), `normal_log`, `exact`, or `byar`
+#'     for confidence interval type.
+#'   * `time_unit_input` (`string`)\cr `day`, `week`, `month`, or `year` (default)
+#'     indicating time unit for data input.
+#'   * `time_unit_output` (`numeric`)\cr time unit for desired output (in person-years).
+#' @param person_years (`numeric`)\cr total person-years at risk.
+#' @param alpha (`numeric`)\cr two-sided alpha-level for confidence interval.
+#' @param n_events (`integer`)\cr number of events observed.
 #'
 #' @seealso [control_incidence_rate()] and helper functions [h_incidence_rate].
 #'
@@ -27,13 +27,14 @@ NULL
 #'   associated confidence interval.
 #'
 #' @return The statistics are:
-#'   * `person_years`: total person-years at risk
-#'   * `n_events`: total number of events observed
-#'   * `rate`: estimated incidence rate
-#'   * `rate_ci`: confidence interval for the incidence rate
+#' \describe{
+#'   \item{person_years}{total person-years at risk}
+#'   \item{n_events}{total number of events observed}
+#'   \item{rate}{estimated incidence rate}
+#'   \item{rate_ci}{confidence interval for the incidence rate}
+#' }
 #'
 #' @examples
-#'
 #' library(dplyr)
 #'
 #' df <- data.frame(
@@ -180,17 +181,18 @@ estimate_incidence_rate <- function(lyt,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param control (`list`) \cr parameters for estimation details, specified by using
-#'   the helper function [control_incidence_rate()]. Possible parameter options are: \cr
-#' * `conf_level`: (`proportion`) \cr confidence level for the estimated incidence rate.
-#' * `conf_type`: (`string`) \cr `normal` (default), `normal_log`, `exact`, or `byar`
-#'   for confidence interval type.
-#' * `time_unit_input`: (`string`) \cr `day`, `week`, `month`, or `year` (default)
-#'   indicating time unit for data input.
-#' * `time_unit_output`: (`numeric`) \cr time unit for desired output (in person-years).
-#' @param person_years (`numeric`) \cr total person-years at risk.
-#' @param alpha (`numeric`) \cr two-sided alpha-level for confidence interval.
-#' @param n_events (`integer`) \cr number of events observed.
+#' @param control (`list`)\cr parameters for estimation details, specified by using
+#'   the helper function [control_incidence_rate()]. Possible parameter options are:
+#'   * `conf_level`: (`proportion`)\cr confidence level for the estimated incidence rate.
+#'   * `conf_type`: (`string`)\cr `normal` (default), `normal_log`, `exact`, or `byar`
+#'     for confidence interval type.
+#'   * `time_unit_input`: (`string`)\cr `day`, `week`, `month`, or `year` (default)
+#'     indicating time unit for data input.
+#'   * `time_unit_output`: (`numeric`)\cr time unit for desired output (in person-years).
+#'
+#' @param person_years (`numeric`)\cr total person-years at risk.
+#' @param alpha (`numeric`)\cr two-sided alpha-level for confidence interval.
+#' @param n_events (`integer`)\cr number of events observed.
 #'
 #' @seealso [incidence_rate]
 #'

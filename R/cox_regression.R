@@ -489,12 +489,13 @@ NULL
 
 #' @describeIn fit_coxreg Fit a series of univariate Cox regression models
 #'   given the inputs.
+#'
 #' @param variables (`list`)\cr a named list corresponds to the names of variables found
 #'   in `data`, passed as a named list and corresponding to `time`, `event`, `arm`,
 #'   `strata`, and `covariates` terms. If `arm` is missing from `variables`, then
 #'   only Cox model(s) including the `covariates` will be fitted and the corresponding
 #'   effect estimates will be tabulated later.
-#' @param data (`data frame`)\cr the dataset containing the variables to fit the
+#' @param data (`data.frame`)\cr the dataset containing the variables to fit the
 #'   models.
 #' @param at (`list` of `numeric`)\cr when the candidate covariate is a
 #'  `numeric`, use `at` to specify the value of the covariate at which the
@@ -503,13 +504,14 @@ NULL
 #'   helper function [control_coxreg()].
 #' @return The function `fit_coxreg_univar` returns a `coxreg.univar` class object which is a named list
 #' with 5 elements:
-#'   - `mod`: Cox regression models fitted by [survival::coxph()].
-#'   - `data`: The original data frame input.
-#'   - `control`: The original control input.
-#'   - `vars`: The variables used in the model.
-#'   - `at`: Value of the covariate at which the effect should be estimated.
+#' \describe{
+#'   \item{mod}{Cox regression models fitted by [survival::coxph()].}
+#'   \item{data}{The original data frame input.}
+#'   \item{control}{The original control input.}
+#'   \item{vars}{The variables used in the model.}
+#'   \item{at}{Value of the covariate at which the effect should be estimated.}
+#' }
 #' @note When using `fit_coxreg_univar` there should be two study arms.
-#' @export
 #'
 #' @examples
 #' # fit_coxreg_univar
@@ -552,6 +554,8 @@ NULL
 #'   ),
 #'   data = dta_bladder
 #' )
+#'
+#' @export
 fit_coxreg_univar <- function(variables,
                               data,
                               at = list(),
@@ -598,12 +602,13 @@ fit_coxreg_univar <- function(variables,
 #' @describeIn fit_coxreg Fit a multi-variable Cox regression model.
 #'
 #' @return The function `fit_coxreg_multivar` returns a `coxreg.multivar` class object which is a named list
-#'   with 4 elements:
-#'   - `mod`: Cox regression model fitted by [survival::coxph()].
-#'   - `data`: The original data frame input.
-#'   - `control`: The original control input.
-#'   - `vars`: The variables used in the model.
-#' @export
+#' with 4 elements:
+#' \describe{
+#'   \item{mod}{Cox regression model fitted by [survival::coxph()].}
+#'   \item{data}{The original data frame input.}
+#'   \item{control}{The original control input.}
+#'   \item{vars}{The variables used in the model.}
+#' }
 #'
 #' @examples
 #' # fit_coxreg_multivar
@@ -625,6 +630,8 @@ fit_coxreg_univar <- function(variables,
 #'   ),
 #'   data = dta_bladder
 #' )
+#'
+#' @export
 fit_coxreg_multivar <- function(variables,
                                 data,
                                 control = control_coxreg()) {

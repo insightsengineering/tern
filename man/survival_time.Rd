@@ -24,20 +24,20 @@ surv_time(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
 \item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
-\item{control}{a (\code{list}) of parameters for comparison details, specified by using \cr
-the helper function \link{control_surv_time}. Some possible parameter options are: \cr
+\item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
+\code{\link[=control_surv_time]{control_surv_time()}}. Some possible parameter options are:
 \itemize{
-\item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for survival time.
-\item \code{conf_type}: (\code{string}) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
-see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option, "none" is not supported.
-\item \code{quantiles}: numeric vector of length two to specify the quantiles of survival time.
+\item \code{conf_level} (\code{proportion})\cr confidence level of the interval for survival time.
+\item \code{conf_type} (\code{string})\cr confidence interval type. Options are "plain" (default), "log", or "log-log",
+see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "none" is not supported.
+\item \code{quantiles} (\code{numeric})\cr vector of length two to specify the quantiles of survival time.
 }}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -61,20 +61,20 @@ to avoid warnings from \code{rtables}.}
 }
 \value{
 The statistics are:
-\itemize{
-\item \code{median} : median survival time.
-\item \code{median_ci} : confidence interval for median time.
-\item \code{quantiles} : survival time for two specified quantiles.
-\item \code{range_censor} : survival time range for censored observations.
-\item \code{range_event} : survival time range for observations with events.
-\item \code{range} : survival time range for all observations.
+\describe{
+\item{median}{median survival time.}
+\item{median_ci}{confidence interval for median time.}
+\item{quantiles}{survival time for two specified quantiles.}
+\item{range_censor}{survival time range for censored observations.}
+\item{range_event}{survival time range for observations with events.}
+\item{range}{survival time range for all observations.}
 }
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Summarize median survival time and CIs, percentiles of survival times, \cr
-survival time range of censored/event patients.
+Summarize median survival time and CIs, percentiles of survival times, survival
+time range of censored/event patients.
 }
 \section{Functions}{
 \itemize{

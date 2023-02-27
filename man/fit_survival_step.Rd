@@ -30,8 +30,10 @@ This fits the Subgroup Treatment Effect Pattern models for a survival outcome. T
 variable must have exactly 2 levels, where the first one is taken as reference and the estimated
 hazard ratios are for the comparison of the second level vs. the first one.
 
-The model which is fit is:\cr
-\code{Surv(time, event) ~ arm * poly(biomarker, degree) + covariates + strata(strata)}\cr
+The model which is fit is:
+
+\code{Surv(time, event) ~ arm * poly(biomarker, degree) + covariates + strata(strata)}
+
 where \code{degree} is specified by \code{control_step()}.
 Note that for the default degree 0 the \code{biomarker} variable is not included in the model.
 }

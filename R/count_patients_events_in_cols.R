@@ -11,6 +11,7 @@ NULL
 
 #' @describeIn count_patients_events_in_cols Statistics function which counts numbers of patients and multiple events
 #'   defined by filters.
+#'
 #' @inheritParams argument_convention
 #' @param filters_list (named `list` of `character`)\cr each element in this list describes one
 #'   type of event describe by filters, in the same format as [s_count_patients_with_event()].
@@ -20,13 +21,13 @@ NULL
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
 #'   be used as label.
 #'
-#' @return [s_count_patients_and_multiple_events()] returns a list with the statistics:\cr
-#' - `unique`: number of unique patients in `df`.
-#' - `all`: number of rows in `df`.
-#' - one element with the same name as in `filters_list`: number of rows in `df`,
-#'   i.e. events, fulfilling the filter condition.
-#' @examples
+#' @return [s_count_patients_and_multiple_events()] returns a list with the statistics:
+#'   - `unique`: number of unique patients in `df`.
+#'   - `all`: number of rows in `df`.
+#'   - one element with the same name as in `filters_list`: number of rows in `df`,
+#'     i.e. events, fulfilling the filter condition.
 #'
+#' @examples
 #' # `s_count_patients_and_multiple_events()`
 #' df <- data.frame(
 #'   USUBJID = rep(c("id1", "id2", "id3", "id4"), c(2, 3, 1, 1)),

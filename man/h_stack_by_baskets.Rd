@@ -15,7 +15,7 @@ h_stack_by_baskets(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{baskets}{(\code{character})\cr variable names of the selected Standardized/Customized queries.}
 
@@ -24,7 +24,7 @@ h_stack_by_baskets(
 \item{keys}{(\code{character})\cr names of the key variables to be returned
 along with the new variable created.}
 
-\item{aag_summary}{(\verb{data frame})\cr containing the \code{SMQ} baskets
+\item{aag_summary}{(\code{data.frame})\cr containing the \code{SMQ} baskets
 and the levels of interest for the final \code{SMQ} variable. This is useful when
 there are some levels of interest that are not observed in the \code{df} dataset.
 The two columns of this dataset should be named \code{basket} and \code{basket_name}.}

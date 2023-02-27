@@ -36,17 +36,13 @@ prop_jeffreys(rsp, conf_level)
 
 \item{correct}{(\code{flag})\cr apply continuity correction.}
 
-\item{strata}{(\code{factor})\cr
-with one level per stratum and same length as \code{rsp}.}
+\item{strata}{(\code{factor})\cr variable with one level per stratum and same length as \code{rsp}.}
 
-\item{weights}{(\code{numeric} or \code{NULL}) \cr
-weights for each level of the strata. If \code{NULL}, they are
-estimated using the iterative algorithm proposed in
-\insertCite{Yan2010-jt;textual}{tern} that minimizes the weighted squared
-length of the confidence interval.}
+\item{weights}{(\code{numeric} or \code{NULL})\cr weights for each level of the strata. If \code{NULL}, they are
+estimated using the iterative algorithm proposed in \insertCite{Yan2010-jt;textual}{tern} that
+minimizes the weighted squared length of the confidence interval.}
 
-\item{max_iterations}{(\code{count}) \cr
-maximum number of iterations for the iterative procedure used
+\item{max_iterations}{(\code{count})\cr maximum number of iterations for the iterative procedure used
 to find estimates of optimal weights.}
 }
 \description{

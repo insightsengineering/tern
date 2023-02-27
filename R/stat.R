@@ -155,7 +155,7 @@ stat_median_ci <- function(x,
 #'
 #' @export
 stat_mean_pval <- function(x,
-                           na.rm = TRUE,
+                           na.rm = TRUE, # nolint
                            n_min = 2,
                            test_mean = 0) {
   if (na.rm) {

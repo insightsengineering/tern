@@ -1,4 +1,4 @@
-#' Count patients with marked laboratory abnormalities
+#' Count Patients with Marked Laboratory Abnormalities
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -7,27 +7,28 @@
 #' Additional analysis variables are `id` (character or factor) and `direction` indicating
 #' the direction of the abnormality (factor).
 #' Denominator is number of patients with at least one valid measurement during
-#' treatment (post-baseline), and patients in the numerator are considered as follows:
-#' * For `Single, not last` and `Last or replicated`: Numerator is number of patients
-#'   with `Single, not last` and `Last or replicated` levels, respectively.
-#' * For `Any`: Numerator is the number of patients with either single or
-#'   replicated marked abnormalities.
+#'   * For `Single, not last` and `Last or replicated`: Numerator is number of patients
+#'     with `Single, not last` and `Last or replicated` levels, respectively.
+#'   * For `Any`: Numerator is the number of patients with either single or
+#'     replicated marked abnormalities.
 #'
 #' @details Note that `Single, not last` and `Last or replicated` levels are
 #' mutually exclusive. If a patient has abnormalities that meet both the `Single, not last`
 #' and `Last or replicated` criteria, then the patient will be counted only under the `Last or replicated` category.
-
+#'
 #' @inheritParams argument_convention
 #' @param category (`list`)\cr with different marked category names for single
-#' and last or replicated.
-#' @name abnormal_by_marked
+#'   and last or replicated.
 #'
+#' @name abnormal_by_marked
 NULL
+
 #' @describeIn abnormal_by_marked Statistics function which returns
-#' the counts and fractions of patients with `Single, not last`, `Last or replicated` and `Any`
-#' marked laboratory abnormalities for a single `abnormal` level.
+#'   the counts and fractions of patients with `Single, not last`, `Last or replicated` and `Any`
+#'   marked laboratory abnormalities for a single `abnormal` level.
+#'
 #' @return [s_count_abnormal_by_marked()] the single statistic `count_fraction`
-#' with `Single, not last`, `Last or replicated` and `Any` results.
+#'   with `Single, not last`, `Last or replicated` and `Any` results.
 #'
 #' @examples
 #' library(dplyr)
@@ -157,7 +158,7 @@ a_count_abnormal_by_marked <- make_afun(
 )
 
 #' @describeIn abnormal_by_marked Layout creating function which can be used for creating tables,
-#' which can take statistics function arguments and additional format arguments (see below).
+#'   which can take statistics function arguments and additional format arguments (see below).
 #'
 #' @examples
 #' map <- unique(

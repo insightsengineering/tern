@@ -9,7 +9,7 @@
 #'
 #' @inheritParams argument_convention
 #' @inheritParams survival_coxph_pairwise
-#' @param data (`data frame`)\cr the dataset containing the variables to summarize.
+#' @param data (`data.frame`)\cr the dataset containing the variables to summarize.
 #' @param groups_lists (named `list` of `list`)\cr optionally contains for each `subgroups` variable a
 #'   list, which specifies the new group levels via the names and the
 #'   levels that belong to it in the character vectors that are elements of the list.

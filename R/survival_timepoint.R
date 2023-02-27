@@ -2,29 +2,30 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Summarize patient's survival rate and difference of survival rates between groups at a time point.
+#' Summarize patients' survival rate and difference of survival rates between groups at a time point.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams s_surv_time
-#' @param time_point (`number`) \cr survival time point of interest.
-#' @param control a (`list`) of parameters for comparison details, specified by using \cr
-#'    the helper function [`control_surv_timepoint`]. Some possible parameter options are: \cr
-#' * `conf_level`: (`proportion`)\cr confidence level of the interval for survival rate.
-#' * `conf_type`: (`string`) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
-#'    see more in [survival::survfit()]. Note that the option "none" is no longer supported.
-#' * `time_point`: (`number`) \cr survival time point of interest.
+#' @param time_point (`number`)\cr survival time point of interest.
+#' @param control (`list`)\cr parameters for comparison details, specified by using the helper function
+#'   [control_surv_timepoint()]. Some possible parameter options are:
+#'   * `conf_level` (`proportion`)\cr confidence level of the interval for survival rate.
+#'   * `conf_type` (`string`)\cr confidence interval type. Options are "plain" (default), "log", "log-log",
+#'     see more in [survival::survfit()]. Note option "none" is no longer supported.
+#'   * `time_point` (`number`)\cr survival time point of interest.
 #'
 #' @name survival_timepoint
-#'
 NULL
 
 #' @describeIn survival_timepoint Statistics Function which analyzes survival rate.
 #'
 #' @return The statistics are:
-#' * `pt_at_risk` : patients remaining at risk.
-#' * `event_free_rate` : event free rate (%).
-#' * `rate_se` : standard error of event free rate.
-#' * `rate_ci` : confidence interval for event free rate.
+#' \describe{
+#'   \item{pt_at_risk}{patients remaining at risk.}
+#'   \item{event_free_rate}{event free rate (%).}
+#'   \item{rate_se}{standard error of event free rate.}
+#'   \item{rate_ci}{confidence interval for event free rate.}
+#' }
 #'
 #' @examples
 #' library(dplyr)
@@ -111,10 +112,13 @@ a_surv_timepoint <- make_afun(
 )
 
 #' @describeIn survival_timepoint Statistics Function which analyzes difference between two survival rates.
+#'
 #' @return The statistics are:
-#' * `rate_diff` : event free rate difference between two groups.
-#' * `rate_diff_ci` : confidence interval for the difference.
-#' * `ztest_pval` : p-value to test the difference is 0.
+#' \describe{
+#'   \item{rate_diff}{event free rate difference between two groups.}
+#'   \item{rate_diff_ci}{confidence interval for the difference.}
+#'   \item{ztest_pval}{p-value to test the difference is 0.}
+#' }
 #'
 #' @examples
 #' df_ref_group <- adtte_f %>%
@@ -208,6 +212,7 @@ a_surv_timepoint_diff <- make_afun(
 
 #' @describeIn survival_timepoint Analyze Function which adds the survival rate analysis to the input layout.
 #'   Note that additional formatting arguments can be used here.
+#'
 #' @inheritParams argument_convention
 #' @param method (`string`)\cr either `surv` (survival estimations),
 #'   `surv_diff` (difference in survival with the control) or `both`.

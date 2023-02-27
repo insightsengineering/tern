@@ -6,8 +6,10 @@
 #' variable must have exactly 2 levels, where the first one is taken as reference and the estimated
 #' hazard ratios are for the comparison of the second level vs. the first one.
 #'
-#' The model which is fit is:\cr
-#' `Surv(time, event) ~ arm * poly(biomarker, degree) + covariates + strata(strata)`\cr
+#' The model which is fit is:
+#'
+#' `Surv(time, event) ~ arm * poly(biomarker, degree) + covariates + strata(strata)`
+#'
 #' where `degree` is specified by `control_step()`.
 #' Note that for the default degree 0 the `biomarker` variable is not included in the model.
 #'
@@ -20,6 +22,7 @@
 #'   second part of the columns contain the estimates for the treatment arm comparison.
 #' @seealso [control_step()] and [control_coxph()] for the available customization options.
 #' @export
+#'
 #' @examples
 #' # Testing dataset with just two treatment arms.
 #' library(dplyr)

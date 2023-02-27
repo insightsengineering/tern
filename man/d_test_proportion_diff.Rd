@@ -7,8 +7,7 @@
 d_test_proportion_diff(method)
 }
 \arguments{
-\item{method}{(\code{string})\cr
-one of (\code{chisq}, \code{cmh}, \code{fisher}, \code{schouten}; specifies the test used
+\item{method}{(\code{string})\cr one of \code{chisq}, \code{cmh}, \code{fisher}, or \code{schouten}; specifies the test used
 to calculate the p-value.}
 }
 \value{

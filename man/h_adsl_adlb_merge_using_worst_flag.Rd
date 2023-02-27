@@ -13,24 +13,23 @@ h_adsl_adlb_merge_using_worst_flag(
 )
 }
 \arguments{
-\item{adsl}{(\verb{data frame}) \code{ADSL} dataframe}
+\item{adsl}{(\code{data.frame})\cr \code{ADSL} dataframe.}
 
-\item{adlb}{(\verb{data frame}) \code{ADLB} dataframe}
+\item{adlb}{(\code{data.frame})\cr \code{ADLB} dataframe.}
 
-\item{worst_flag}{(named \code{vector})
-Worst post-baseline lab flag variable}
+\item{worst_flag}{(named \code{vector})\cr Worst post-baseline lab flag variable.}
 
-\item{by_visit}{(\code{logical}) defaults to \code{FALSE} to generate worst grade per patient.
+\item{by_visit}{(\code{logical})\cr defaults to \code{FALSE} to generate worst grade per patient.
 If worst grade per patient per visit is specified for \code{worst_flag}, then
 \code{by_visit} should be \code{TRUE} to generate worst grade patient per visit.}
 
-\item{no_fillin_visits}{(named \code{character})
-Visits that are not considered for post-baseline worst toxicity grade. Defaults to \code{c("SCREENING", "BASELINE")}.}
+\item{no_fillin_visits}{(named \code{character})\cr Visits that are not considered for post-baseline worst toxicity
+grade. Defaults to \code{c("SCREENING", "BASELINE")}.}
 }
 \value{
 \code{df} containing variables shared between \code{adlb} and \code{adsl} along with variables relevant for analysis:
-\code{PARAM}, \code{PARAMCD}, \code{ATOXGR}, and \code{BTOXGR}.  Optionally \code{AVISIT}, \code{AVISITN} are included when \code{by_visit = TRUE} and
-\code{no_fillin_visits = c("SCREENING", "BASELINE")}.
+\code{PARAM}, \code{PARAMCD}, \code{ATOXGR}, and \code{BTOXGR}.  Optionally \code{AVISIT}, \code{AVISITN} are included when \code{by_visit = TRUE}
+and \code{no_fillin_visits = c("SCREENING", "BASELINE")}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -41,9 +40,9 @@ output dataset.
 \details{
 In the result data missing records will be created for the following situations:
 \itemize{
-\item patients who are present in \code{adsl} but have no lab data in \code{adlb} (both baseline and post-baseline)
-\item patients who do not have any post-baseline lab values
-\item patients without any post-baseline values flagged as the worst
+\item Patients who are present in \code{adsl} but have no lab data in \code{adlb} (both baseline and post-baseline).
+\item Patients who do not have any post-baseline lab values.
+\item Patients without any post-baseline values flagged as the worst.
 }
 }
 \examples{

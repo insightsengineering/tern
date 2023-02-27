@@ -12,6 +12,7 @@
 #' @inheritParams fit_coxreg_multivar
 #' @inheritParams survival_duration_subgroups
 #' @name survival_biomarkers_subgroups
+#'
 #' @examples
 #' library(dplyr)
 #'
@@ -164,15 +165,14 @@ extract_survival_biomarkers <- function(variables,
 #'
 #' @param df (`data.frame`)\cr containing all analysis variables, as returned by
 #'   [extract_survival_biomarkers()].
-#' @param vars (`character`)\cr the name of statistics to be reported among
-#'  `n_tot_events` (total number of events per group),
-#'  `n_tot` (total number of observations per group),
-#'  `median` (median survival time),
-#'  `hr` (hazard ratio),
-#'  `ci` (confidence interval of hazard ratio) and
-#'  `pval` (p value of the effect).
-#'  Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci`
-#'  are required.
+#' @param vars (`character`)\cr the names of statistics to be reported among:
+#'   - `n_tot_events`: total number of events per group.
+#'   - `n_tot`: total number of observations per group.
+#'   - `median`: median survival time.
+#'   - `hr`: hazard ratio.
+#'   - `ci`: confidence interval of hazard ratio.
+#'   - `pval`: p-value of the effect.
+#'   Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci` are required.
 #' @seealso [h_tab_surv_one_biomarker()] which is used internally, [extract_survival_biomarkers()].
 #' @note In contrast to [tabulate_survival_subgroups()] this tabulation function does
 #'   not start from an input layout `lyt`. This is because internally the table is

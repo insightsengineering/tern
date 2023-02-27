@@ -11,9 +11,9 @@ NULL
 
 #' @describeIn prop_diff Statistics function estimating the difference
 #'   in terms of responder proportion.
-#' @param method (`string`)\cr
-#'   the method used for the confidence interval estimation.
+#'
 #' @inheritParams prop_diff_strat_nc
+#' @param method (`string`)\cr the method used for the confidence interval estimation.
 #'
 #' @examples
 #' # Summary
@@ -236,8 +236,7 @@ check_diff_prop_ci <- function(rsp,
 #' `s_proportion_diff`.
 #'
 #' @inheritParams s_proportion_diff
-#' @param long (`logical`)\cr
-#'   Whether a long or a short (default) description is required.
+#' @param long (`logical`)\cr Whether a long or a short (default) description is required.
 #' @return String describing the analysis.
 #' @seealso [prop_diff]
 #'
@@ -277,8 +276,7 @@ d_proportion_diff <- function(conf_level,
 #'
 #' @inheritParams argument_convention
 #' @inheritParams prop_diff
-#' @param grp (`factor`)\cr
-#'   vector assigning observations to one out of two groups
+#' @param grp (`factor`)\cr vector assigning observations to one out of two groups
 #'   (e.g. reference and treatment group).
 #'
 #' @seealso [prop_diff()] for implementation of these helper functions.
@@ -291,9 +289,8 @@ NULL
 #'   approximation. It is possible to include a continuity correction for Wald's
 #'   interval.
 #'
-#' @param correct `logical`\cr
-#'   include the continuity correction. For further information, see for example
-#'   [stats::prop.test()].
+#' @param correct `logical`\cr include the continuity correction. For further
+#'   information, see [stats::prop.test()].
 #'
 #' @examples
 #' # Wald confidence interval
@@ -420,13 +417,12 @@ prop_diff_nc <- function(rsp,
 
 
 #' @describeIn h_prop_diff Calculates the weighted difference.
-#'     This is defined as the difference in response rates between the
-#'     experimental treatment group and the control treatment group, adjusted
-#'     for stratification factors by applying Cochran-Mantel-Haenszel (CMH)
-#'     weights. For the CMH chi-squared test, use [stats::mantelhaen.test()].
+#'   This is defined as the difference in response rates between the
+#'   experimental treatment group and the control treatment group, adjusted
+#'   for stratification factors by applying Cochran-Mantel-Haenszel (CMH)
+#'   weights. For the CMH chi-squared test, use [stats::mantelhaen.test()].
 #'
-#' @param strata (`factor`)\cr
-#'   with one level per stratum and same length as `rsp`.
+#' @param strata (`factor`)\cr variable with one level per stratum and same length as `rsp`.
 #'
 #' @examples
 #' # Cochran-Mantel-Haenszel confidence interval
@@ -518,11 +514,9 @@ prop_diff_cmh <- function(rsp,
 #'   heuristic proposed in [prop_strat_wilson()] or from CMH-derived weights
 #'   (see [prop_diff_cmh()]).
 #'
-#' @param strata (`factor`)\cr
-#'   with one level per stratum and same length as `rsp`.
-#' @param weights_method (`string`) \cr
-#'   it can be one of `c("cmh", "heuristic")` and directs the way weights are
-#'   estimated.
+#' @param strata (`factor`)\cr variable with one level per stratum and same length as `rsp`.
+#' @param weights_method (`string`)\cr weights method. Can be either `"cmh"` or `"heuristic"`
+#'   and directs the way weights are estimated.
 #'
 #' @examples
 #' # Stratified Newcombe confidence interval

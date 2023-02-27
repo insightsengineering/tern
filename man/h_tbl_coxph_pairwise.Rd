@@ -7,24 +7,24 @@
 h_tbl_coxph_pairwise(df, variables, control_coxph_pw = control_coxph())
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{variables}{(named \code{list}) of variable names. Details are: \cr
+\item{variables}{(named \code{list})\cr variable names. Details are:
 \itemize{
-\item \code{tte}: variable indicating time-to-event duration values (\code{numeric}).
-\item \code{is_event}: event variable (\code{logical}) \cr \code{TRUE} if event, \code{FALSE} if time to event is censored.
-\item \code{arm}: the treatment group variable (\code{factor}).
-\item \code{strat}: (\code{character} or \code{NULL}) variable names indicating stratification factors.
+\item \code{tte} (\code{numeric})\cr variable indicating time-to-event duration values.
+\item \code{is_event} (\code{logical})\cr event variable. \code{TRUE} if event, \code{FALSE} if time to event is censored.
+\item \code{arm} (\code{factor})\cr the treatment group variable.
+\item \code{strat} (\code{character} or \code{NULL})\cr variable names indicating stratification factors.
 }}
 
-\item{control_coxph_pw}{(\code{list}) \cr parameters for comparison details, specified by using \cr
-the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are: \cr
+\item{control_coxph_pw}{(\code{list})\cr parameters for comparison details, specified by using
+the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are:
 \itemize{
-\item \code{pval_method}: (\code{string}) \cr p-value method for testing hazard ratio = 1.
+\item \code{pval_method} (\code{string})\cr p-value method for testing hazard ratio = 1.
 Default method is "log-rank", can also be set to "wald" or "likelihood".
-\item \code{ties}: (\code{string}) \cr specifying the method for tie handling. Default is "efron",
+\item \code{ties} (\code{string})\cr method for tie handling. Default is "efron",
 can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]{survival::coxph()}}
-\item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for HR.
+\item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
 }}
 }
 \description{

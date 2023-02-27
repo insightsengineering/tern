@@ -48,16 +48,16 @@ summarize_glm_count(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.df_row}{(\verb{data frame})\cr data frame across all of the columns for the given row split.}
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
-\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
+\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
@@ -86,13 +86,13 @@ to avoid warnings from \code{rtables}.}
 }
 \value{
 A named list of 5 statistics:
-\itemize{
-\item \code{n}: count of complete sample size for the group.
-\item \code{rate}: estimated event rate per follow-up time.
-\item \code{rate_ci}: confidence level for estimated rate per follow-up time.
-\item \code{rate_ratio}: Ratio of event rates in each treatment arm to the reference arm.
-\item \code{rate_ratio_ci}: confidence level for the rate ratio.
-\item \code{pval}: p-value.
+\describe{
+\item{n}{count of complete sample size for the group.}
+\item{rate}{estimated event rate per follow-up time.}
+\item{rate_ci}{confidence level for estimated rate per follow-up time.}
+\item{rate_ratio}{ratio of event rates in each treatment arm to the reference arm.}
+\item{rate_ratio_ci}{confidence level for the rate ratio.}
+\item{pval}{p-value.}
 }
 }
 \description{
@@ -114,7 +114,6 @@ summary tables for analysis of count data using generalized linear models (poiss
 
 }}
 \examples{
-
 # Internal function - s_change_from_baseline
 \dontrun{
 s_glm_count(

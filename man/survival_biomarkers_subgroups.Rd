@@ -15,15 +15,16 @@ tabulate_survival_biomarkers(
 \item{df}{(\code{data.frame})\cr containing all analysis variables, as returned by
 \code{\link[=extract_survival_biomarkers]{extract_survival_biomarkers()}}.}
 
-\item{vars}{(\code{character})\cr the name of statistics to be reported among
-\code{n_tot_events} (total number of events per group),
-\code{n_tot} (total number of observations per group),
-\code{median} (median survival time),
-\code{hr} (hazard ratio),
-\code{ci} (confidence interval of hazard ratio) and
-\code{pval} (p value of the effect).
-Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as both \code{hr} and \code{ci}
-are required.}
+\item{vars}{(\code{character})\cr the names of statistics to be reported among:
+\itemize{
+\item \code{n_tot_events}: total number of events per group.
+\item \code{n_tot}: total number of observations per group.
+\item \code{median}: median survival time.
+\item \code{hr}: hazard ratio.
+\item \code{ci}: confidence interval of hazard ratio.
+\item \code{pval}: p-value of the effect.
+Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as both \code{hr} and \code{ci} are required.
+}}
 
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
 displaying unit.}

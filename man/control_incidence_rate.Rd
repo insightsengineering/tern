@@ -14,13 +14,13 @@ control_incidence_rate(
 \arguments{
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{conf_type}{(\code{string}) \cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
+\item{conf_type}{(\code{string})\cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
 for confidence interval type.}
 
-\item{time_unit_input}{(\code{string}) \cr \code{day}, \code{month}, or \code{year} (default)
+\item{time_unit_input}{(\code{string})\cr \code{day}, \code{month}, or \code{year} (default)
 indicating time unit for data input.}
 
-\item{time_unit_output}{(\code{numeric}) \cr time unit for desired output (in person-years).}
+\item{time_unit_output}{(\code{numeric})\cr time unit for desired output (in person-years).}
 }
 \value{
 A list of components with the same name as the arguments.

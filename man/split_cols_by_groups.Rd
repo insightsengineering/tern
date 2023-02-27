@@ -15,7 +15,7 @@ by a statistics function.}
 \item{groups_list}{(named \code{list} of \code{character})\cr specifies the new group levels via the names and the
 levels that belong to it in the character vectors that are elements of the list.}
 
-\item{ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
+\item{ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{...}{additional arguments, see \emph{note} section.}
 }

@@ -36,14 +36,14 @@ count_abnormal_by_baseline(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
 \item{abnormal}{(\code{character})\cr identifying the abnormal range level(s) in \code{.var}.}
 
-\item{na_level}{(\code{string}) \cr the explicit \code{na_level} argument you used in the pre-processing steps (maybe with
+\item{na_level}{(\code{string})\cr the explicit \code{na_level} argument you used in the pre-processing steps (maybe with
 \code{df_explicit_na()}). The default is \code{"<Missing>"}.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
@@ -77,7 +77,7 @@ analysis variables are \code{id} (character or factor) and \code{baseline} (char
 direction specified in \code{abnormal} (e.g. high or low) we condition on baseline range result and count
 patients in the numerator and denominator as follows:
 \itemize{
-\item \verb{Not <abnormal>}
+\item \verb{Not <Abnormal>}
 \itemize{
 \item \code{denom}: the number of patients without abnormality at baseline (excluding those with missing baseline)
 \item \code{num}:  the number of patients in \code{denom} who also have at least one abnormality post-baseline
@@ -130,7 +130,6 @@ s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
 afun <- make_afun(a_count_abnormal_by_baseline, .ungroup_stats = "fraction")
 afun(df, .var = "ANRIND", abnormal = "LOW")
 }
-
 
 # Layout creating function.
 basic_table() \%>\%

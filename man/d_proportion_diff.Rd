@@ -9,11 +9,9 @@ d_proportion_diff(conf_level, method, long = FALSE)
 \arguments{
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{method}{(\code{string})\cr
-the method used for the confidence interval estimation.}
+\item{method}{(\code{string})\cr the method used for the confidence interval estimation.}
 
-\item{long}{(\code{logical})\cr
-Whether a long or a short (default) description is required.}
+\item{long}{(\code{logical})\cr Whether a long or a short (default) description is required.}
 }
 \value{
 String describing the analysis.

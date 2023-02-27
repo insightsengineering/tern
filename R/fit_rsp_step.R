@@ -7,8 +7,10 @@
 #' where the first one is taken as reference and the estimated odds ratios are
 #' for the comparison of the second level vs. the first one.
 #'
-#' The (conditional) logistic regression model which is fit is:\cr
-#' `response ~ arm * poly(biomarker, degree) + covariates + strata(strata)`\cr
+#' The (conditional) logistic regression model which is fit is:
+#'
+#' `response ~ arm * poly(biomarker, degree) + covariates + strata(strata)`
+#'
 #' where `degree` is specified by `control_step()`.
 #' Note that for the default degree 0 the `biomarker` variable is not included in the model.
 #'
@@ -25,6 +27,7 @@
 #' @seealso [control_step()] and [control_logistic()] for the available
 #'   customization options.
 #' @export
+#'
 #' @examples
 #' # Testing dataset with just two treatment arms.
 #' library(survival)

@@ -32,7 +32,7 @@ created using \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.}
 \code{pval} (p value of the effect).
 Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.}
 
-\item{data}{(\verb{data frame})\cr the dataset containing the variables to summarize.}
+\item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
 \item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
 list, which specifies the new group levels via the names and the
@@ -40,10 +40,8 @@ levels that belong to it in the character vectors that are elements of the list.
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
 
-\item{method}{(\code{string})\cr
-specifies the test used to calculate the p-value for the difference between
-two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL}
-so no test is performed.}
+\item{method}{(\code{string})\cr specifies the test used to calculate the p-value for the difference between
+two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL} so no test is performed.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

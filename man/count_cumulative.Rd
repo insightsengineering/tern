@@ -71,11 +71,8 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-A named list:
-\itemize{
-\item \code{count_fraction}: a list with each \code{thresholds} value as a component, each component
+A named list of \code{count_fraction}s: a list with each \code{thresholds} value as a component, each component
 contains a vector for the count and fraction.
-}
 
 \code{\link[=a_count_cumulative]{a_count_cumulative()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
@@ -87,8 +84,7 @@ greater than, or greater or equal to user-specific thresholds.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_cumulative()}: Statistics function that produces a named lists given a
-(\code{numeric}) vector of thresholds.
+\item \code{s_count_cumulative()}: Statistics function that produces a named lists given a numeric vector of thresholds.
 
 \item \code{a_count_cumulative()}: Formatted Analysis function which can be further customized by calling
 \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
@@ -125,7 +121,6 @@ basic_table() \%>\%
     thresholds = c(40, 60)
   ) \%>\%
   build_table(tern_ex_adsl)
-
 }
 \seealso{
 Relevant helper function \code{\link[=h_count_cumulative]{h_count_cumulative()}}, and descriptive function \code{\link[=d_count_cumulative]{d_count_cumulative()}}

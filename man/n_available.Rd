@@ -7,7 +7,7 @@
 n_available(x)
 }
 \arguments{
-\item{x}{(\code{vector})\cr where to count the non-missing values.}
+\item{x}{(\code{any})\cr vector in which to count non-missing values.}
 }
 \value{
 Number of non-missing values.

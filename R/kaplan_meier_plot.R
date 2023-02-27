@@ -2,25 +2,22 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param df (`data frame`)\cr data set containing all analysis variables.
-#' @param variables (named `list`) of variable names. Details are: \cr
-#' * `tte`: variable indicating time-to-event duration values (`numeric`).
-#' * `is_event`: event variable (`logical`) \cr `TRUE` if event, `FALSE` if time to event is censored.
-#' * `arm`: the treatment group variable (`factor`).
-#' * `strat`: (`character` or `NULL`) variable names indicating stratification factors.
-#' @param control_surv a (`list`) of parameters for comparison details, specified by using \cr
-#'    the helper function [`control_surv_timepoint`]. Some possible parameter options are: \cr
-#' * `conf_level`: (`proportion`)\cr confidence level of the interval for survival rate.
-#' * `conf_type`: (`string`) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
-#'    see more in [survival::survfit()]. Note that the option "none" is no longer supported.
+#' @param df (`data.frame`)\cr data set containing all analysis variables.
+#' @param variables (named `list`)\cr variable names. Details are:
+#'   * `tte` (`numeric`)\cr variable indicating time-to-event duration values.
+#'   * `is_event` (`logical`)\cr event variable. `TRUE` if event, `FALSE` if time to event is censored.
+#'   * `arm` (`factor`)\cr the treatment group variable.
+#'   * `strat` (`character` or `NULL`)\cr variable names indicating stratification factors.
+#' @param control_surv (`list`)\cr parameters for comparison details, specified by using
+#'   the helper function [`control_surv_timepoint`]. Some possible parameter options are:
+#'   * `conf_level` (`proportion`)\cr confidence level of the interval for survival rate.
+#'   * `conf_type` (`string`)\cr "plain" (default), "log", "log-log" for confidence interval type,
+#'     see more in [survival::survfit()]. Note that the option "none" is no longer supported.
 #' @param data (`data.frame`)\cr survival data as pre-processed by `h_data_plot`.
-#' @param xticks (`numeric`, `number`, or `NULL`)\cr
-#'   numeric vector of ticks or single number with spacing
-#'   between ticks on the x axis.
-#'   If `NULL` (default), [labeling::extended()] is used to determine
+#' @param xticks (`numeric`, `number`, or `NULL`)\cr numeric vector of ticks or single number with spacing
+#'   between ticks on the x axis. If `NULL` (default), [labeling::extended()] is used to determine
 #'   an optimal tick position on the x axis.
-#' @param yval (`string`)\cr value of y-axis. Should be either
-#'   `Survival` (default) or `Failure` probability.
+#' @param yval (`string`)\cr value of y-axis. Options are `Survival` (default) and `Failure` probability.
 #' @param censor_show (`flag`)\cr whether to show censored.
 #' @param xlab (`string`)\cr label of x-axis.
 #' @param ylab (`string`)\cr label of y-axis.
@@ -34,36 +31,32 @@
 #'   to number of strata from [survival::survfit()].
 #' @param pch (`numeric`, `string`)\cr value or character of points symbol to indicate censored cases.
 #' @param size (`numeric`)\cr size of censored point, a class of `unit`.
-#' @param max_time (`numeric`)\cr maximum value to show on X axis.
-#' Only data values less than or up to to this threshold value will be plotted.(`NULL` for
-#'    default)
-#' @param font_size (`number`) \cr font size to be used.
+#' @param max_time (`numeric`)\cr maximum value to show on X axis. Only data values less than or up to
+#'   this threshold value will be plotted (defaults to `NULL`).
+#' @param font_size (`number`)\cr font size to be used.
 #' @param ci_ribbon (`flag`)\cr draw the confidence interval around the Kaplan-Meier curve.
-#' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to
-#'   control outlook of the Kaplan-Meier curve.
-#' @param annot_at_risk (`flag`)\cr compute and add the annotation table
-#'   reporting the number of patient at risk matching the main grid of the
-#'   Kaplan-Meier curve.
-#' @param annot_surv_med (`flag`)\cr compute and add the annotation table
-#'   on the Kaplan-Meier curve estimating the median survival time per group.
+#' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to control outlook of the Kaplan-Meier curve.
+#' @param annot_at_risk (`flag`)\cr compute and add the annotation table reporting the number of patient at risk
+#'   matching the main grid of the Kaplan-Meier curve.
+#' @param annot_surv_med (`flag`)\cr compute and add the annotation table on the Kaplan-Meier curve estimating the
+#'   median survival time per group.
 #' @param annot_coxph (`flag`)\cr add the annotation table from a [survival::coxph()] model.
 #' @param annot_stats (`string`)\cr statistics annotations to add to the plot. Options are
 #'   `median` (median survival follow-up time) and `min` (minimum survival follow-up time).
 #' @param annot_stats_vlines (`flag`)\cr add vertical lines corresponding to each of the statistics
 #'   specified by `annot_stats`. If `annot_stats` is `NULL` no lines will be added.
-#' @param control_coxph_pw (`list`) \cr parameters for comparison details, specified by using \cr
-#'    the helper function [control_coxph()]. Some possible parameter options are: \cr
-#' * `pval_method`: (`string`) \cr p-value method for testing hazard ratio = 1.
-#'   Default method is "log-rank", can also be set to "wald" or "likelihood".
-#' * `ties`: (`string`) \cr specifying the method for tie handling. Default is "efron",
-#'   can also be set to "breslow" or "exact". See more in [survival::coxph()]
-#' * `conf_level`: (`proportion`)\cr confidence level of the interval for HR.
-#' @param position_coxph `numeric` \cr x and y positions for plotting [survival::coxph()] model.
-#' @param position_surv_med `numeric` \cr x and y positions for plotting annotation table
-#'    estimating median survival time per group
+#' @param control_coxph_pw (`list`)\cr parameters for comparison details, specified by using
+#'   the helper function [control_coxph()]. Some possible parameter options are:
+#'   * `pval_method` (`string`)\cr p-value method for testing hazard ratio = 1.
+#'     Default method is "log-rank", can also be set to "wald" or "likelihood".
+#'   * `ties` (`string`)\cr method for tie handling. Default is "efron",
+#'     can also be set to "breslow" or "exact". See more in [survival::coxph()]
+#'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
+#' @param position_coxph (`numeric`)\cr x and y positions for plotting [survival::coxph()] model.
+#' @param position_surv_med (`numeric`)\cr x and y positions for plotting annotation table estimating median survival
+#'   time per group.
 #'
 #' @name kaplan_meier
-#'
 NULL
 
 #' Kaplan-Meier Plot
@@ -470,7 +463,7 @@ g_km <- function(df,
 #'
 #' @inheritParams kaplan_meier
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
-#' @param armval (`string`) \cr used as strata name when treatment arm
+#' @param armval (`string`)\cr used as strata name when treatment arm
 #' variable only has one level. Default is "All".
 #' @examples
 #' \dontrun{

@@ -10,30 +10,30 @@
 #' `@inheritParams argument_convention`
 #'
 #' @param ... additional arguments for the lower level functions.
-#' @param .df_row (`data frame`)\cr data frame across all of the columns for the given row split.
+#' @param .df_row (`data.frame`)\cr data frame across all of the columns for the given row split.
 #' @param .in_ref_col (`logical`)\cr `TRUE` when working with the reference level, `FALSE` otherwise.
 #' @param .N_col (`count`)\cr row-wise N (row group count) for the group of observations being analyzed
 #'   (i.e. with no column-based subsetting) that is passed by `rtables`.
 #' @param .N_row (`count`)\cr column-wise N (column count) for the full column that is passed by `rtables`.
-#' @param .ref_group (`data frame` or `vector`)\cr the data corresponding to the reference group.
+#' @param .ref_group (`data.frame` or `vector`)\cr the data corresponding to the reference group.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #' @param .indent_mods (named `integer`)\cr indent modifiers for the labels.
 #' @param .formats (named `character` or `list`)\cr formats for the statistics.
 #' @param .labels (named `character`)\cr labels for the statistics (without indent).
 #' @param .var (`string`)\cr single variable name that is passed by `rtables` when requested
 #'   by a statistics function.
-#' @param .spl_context (`data frame`)\cr gives information about ancestor split states
+#' @param .spl_context (`data.frame`)\cr gives information about ancestor split states
 #'   that is passed by `rtables`.
 #' @param col_by (`factor`)\cr defining column groups.
 #' @param conf_level (`proportion`)\cr confidence level of the interval.
 #' @param data (`data.frame`)\cr the dataset containing the variables to summarize.
-#' @param df (`data frame`)\cr data set containing all analysis variables.
+#' @param df (`data.frame`)\cr data set containing all analysis variables.
 #' @param draw (`flag`)\cr whether the plot should be drawn.
 #' @param drop (`flag`)\cr should non appearing occurrence levels be dropped from the resulting table.
 #'   Note that in that case the remaining occurrence levels in the table are sorted alphabetically.
-#' @param id (`string`) \cr subject variable name.
+#' @param id (`string`)\cr subject variable name.
 #' @param is_event (`logical`)\cr `TRUE` if event, `FALSE` if time to event is censored.
-#' @param indent_mod (`count`) \cr it can be negative. Modifier for the default indent position for the
+#' @param indent_mod (`count`)\cr it can be negative. Modifier for the default indent position for the
 #'   structure created by this function(subtable, content table, or row) and
 #'   all of that structure's children. Defaults to 0, which corresponds to the
 #'   unmodified default behavior.

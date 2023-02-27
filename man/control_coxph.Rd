@@ -11,10 +11,10 @@ control_coxph(
 )
 }
 \arguments{
-\item{pval_method}{(\code{string}) \cr p-value method for testing hazard ratio = 1.
+\item{pval_method}{(\code{string})\cr p-value method for testing hazard ratio = 1.
 Default method is \code{"log-rank"}, can also be set to \code{"wald"} or \code{"likelihood"}.}
 
-\item{ties}{(\code{string}) \cr specifying the method for tie handling. Default is \code{"efron"},
+\item{ties}{(\code{string})\cr specifying the method for tie handling. Default is \code{"efron"},
 can also be set to \code{"breslow"} or \code{"exact"}. see more in \code{\link[survival:coxph]{survival::coxph()}}}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}

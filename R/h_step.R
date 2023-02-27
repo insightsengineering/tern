@@ -15,8 +15,9 @@ NULL
 #' @describeIn h_step creates the windows for STEP, based on the control settings
 #'   provided. Returns a list containing the window-selection matrix `sel`
 #'   and the interval information matrix `interval`.
-#' @param x (`numeric`) biomarker value(s) to use (without `NA`).
-#' @param control (named `list`) from `control_step()`.
+#'
+#' @param x (`numeric`)\cr biomarker value(s) to use (without `NA`).
+#' @param control (named `list`)\cr output from `control_step()`.
 #'
 #' @export
 h_step_window <- function(x,

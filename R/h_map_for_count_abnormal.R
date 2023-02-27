@@ -6,7 +6,7 @@
 #' `trim_levels_to_map` split function. Based on different method, the map is constructed differently.
 #'
 #' @inheritParams argument_convention
-#' @param abnormal (`named list`)\cr identifying the abnormal range level(s) in `df`. Based on the levels of abnormality
+#' @param abnormal (named `list`)\cr identifying the abnormal range level(s) in `df`. Based on the levels of abnormality
 #' of the input dataset, it can be something like `list(Low = "LOW LOW", High = "HIGH HIGH")` or
 #' `abnormal = list(Low = "LOW", High = "HIGH"))`
 #' @param method (`string`)\cr indicates how the returned map will be constructed. Can be either `"default"` or

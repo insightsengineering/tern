@@ -25,12 +25,12 @@ summarize_patients_exposure_in_cols(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{id}{(\code{string}) \cr subject variable name.}
+\item{id}{(\code{string})\cr subject variable name.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions).}
@@ -51,14 +51,14 @@ be used as label.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
-\item{col_split}{(\code{flag})\cr whether the columns should be split.
-Set to \code{FALSE} when the required column split has been done already earlier in the layout pipe.}
+\item{col_split}{(\code{flag})\cr whether the columns should be split. Set to \code{FALSE} when the required
+column split has been done already earlier in the layout pipe.}
 }
 \value{
-\code{\link[=s_count_patients_sum_exposure]{s_count_patients_sum_exposure()}} returns a list with the statistics:\cr
-\itemize{
-\item \code{n_patients}: number of unique patients in \code{df}.
-\item \code{sum_exposure}: sum of \code{.var} across all patients in \code{df}.
+\code{\link[=s_count_patients_sum_exposure]{s_count_patients_sum_exposure()}} returns a list with the statistics:
+\describe{
+\item{n_patients}{number of unique patients in \code{df}.}
+\item{sum_exposure}{sum of \code{.var} across all patients in \code{df}.}
 }
 }
 \description{
@@ -101,7 +101,6 @@ s_count_patients_sum_exposure(
   custom_label = "some user's custom label"
 )
 }
-
 
 lyt <- basic_table() \%>\%
   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) \%>\%

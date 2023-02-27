@@ -2,7 +2,7 @@
 % Please edit documentation in R/coxph.R
 \name{univariate}
 \alias{univariate}
-\title{Univariate formula special term}
+\title{Univariate Formula Special Term}
 \usage{
 univariate(x)
 }

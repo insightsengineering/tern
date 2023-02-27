@@ -31,16 +31,16 @@ count_abnormal_lab_worsen_by_baseline(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{variables}{(named \code{list} of \code{string}) \cr list of additional analysis variables including:
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables including:
 \itemize{
-\item \code{id} (\code{string}): \cr subject variable name
-\item \code{baseline_var} (\code{string}): \cr name of the data column containing baseline toxicity variable
-\item \code{direction_var} (\code{string}): See \code{direction_var} for more detail
+\item \code{id} (\code{string})\cr subject variable name.
+\item \code{baseline_var} (\code{string})\cr name of the data column containing baseline toxicity variable.
+\item \code{direction_var} (\code{string})\cr see \code{direction_var} for more details.
 }}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -63,8 +63,8 @@ to avoid warnings from \code{rtables}.}
 counts and fraction of patients whose worst post-baseline lab grades are worse than
 their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
 
-\code{\link[=a_count_abnormal_lab_worsen_by_baseline]{a_count_abnormal_lab_worsen_by_baseline()}} returns
-the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+\code{\link[=a_count_abnormal_lab_worsen_by_baseline]{a_count_abnormal_lab_worsen_by_baseline()}} returns the corresponding list with
+formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -77,12 +77,10 @@ Patient count and fraction for laboratory events (worsen from baseline) shift ta
 counts and fraction of patients whose worst post-baseline lab grades are worse than
 their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
 
-\item \code{a_count_abnormal_lab_worsen_by_baseline()}: Formatted Analysis function which can be further customized by
-calling \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_count_abnormal_lab_worsen_by_baseline()}: 
 
-\item \code{count_abnormal_lab_worsen_by_baseline()}: Layout
-creating function which can be used for creating tables, which can take statistics
-function arguments and additional format arguments (see below).
+\item \code{count_abnormal_lab_worsen_by_baseline()}: Layout creating function which can be used for creating tables,
+which can take statistics function arguments and additional format arguments (see below).
 
 }}
 \examples{

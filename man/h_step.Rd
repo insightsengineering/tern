@@ -37,9 +37,9 @@ h_step_rsp_est(
 )
 }
 \arguments{
-\item{x}{(\code{numeric}) biomarker value(s) to use (without \code{NA}).}
+\item{x}{(\code{numeric})\cr biomarker value(s) to use (without \code{NA}).}
 
-\item{control}{(named \code{list}) from \code{control_step()}.}
+\item{control}{(named \code{list})\cr output from \code{control_step()}.}
 
 \item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 

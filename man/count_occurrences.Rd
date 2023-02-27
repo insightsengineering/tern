@@ -40,16 +40,18 @@ count_occurrences(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{denom}{(\code{string})\cr choice of denominator for patient proportions:\cr
-can be \code{N_col} (total number of patients in this column across rows) or
-\code{n} (number of patients with any occurrences).}
+\item{denom}{(\code{string})\cr choice of denominator for patient proportions. Can be:
+\itemize{
+\item \code{N_col}: total number of patients in this column across rows
+\item \code{n}: number of patients with any occurrences
+}}
 
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
 
-\item{.df_row}{(\verb{data frame})\cr data frame across all of the columns for the given row split.}
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
 \item{drop}{(\code{flag})\cr should non appearing occurrence levels be dropped from the resulting table.
 Note that in that case the remaining occurrence levels in the table are sorted alphabetically.}
@@ -57,7 +59,7 @@ Note that in that case the remaining occurrence levels in the table are sorted a
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{id}{(\code{string}) \cr subject variable name.}
+\item{id}{(\code{string})\cr subject variable name.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
@@ -82,10 +84,10 @@ to avoid warnings from \code{rtables}.}
 }
 \value{
 A list with:
-\itemize{
-\item \code{count}: list of counts with one element per occurrence
-\item \code{count_fraction}: list of counts and fractions with one element per occurrence.
-\item \code{fraction}: list of numerators and denominators with one element per occurrence.
+\describe{
+\item{count}{list of counts with one element per occurrence.}
+\item{count_fraction}{list of counts and fractions with one element per occurrence.}
+\item{fraction}{list of numerators and denominators with one element per occurrence.}
 }
 }
 \description{
@@ -127,6 +129,7 @@ s_count_occurrences(
   .var = "MHDECOD",
   id = "USUBJID"
 )
+
 #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 # function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(a_count_occurrences, .ungroup_stats = c("count", "count_fraction", "fraction"))

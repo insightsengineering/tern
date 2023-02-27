@@ -9,18 +9,15 @@ check_diff_prop_ci(rsp, grp, strata = NULL, conf_level, correct = NULL)
 \arguments{
 \item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
 
-\item{grp}{(\code{factor})\cr
-vector assigning observations to one out of two groups
+\item{grp}{(\code{factor})\cr vector assigning observations to one out of two groups
 (e.g. reference and treatment group).}
 
-\item{strata}{(\code{factor})\cr
-with one level per stratum and same length as \code{rsp}.}
+\item{strata}{(\code{factor})\cr variable with one level per stratum and same length as \code{rsp}.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{correct}{\code{logical}\cr
-include the continuity correction. For further information, see for example
-\code{\link[stats:prop.test]{stats::prop.test()}}.}
+\item{correct}{\code{logical}\cr include the continuity correction. For further
+information, see \code{\link[stats:prop.test]{stats::prop.test()}}.}
 }
 \description{
 Verifies that and/or convert arguments into valid values to be used in the

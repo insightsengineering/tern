@@ -69,7 +69,7 @@ count_patients_with_flags(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{character})\cr name of the column that contains the unique identifier.}
 
@@ -84,10 +84,12 @@ Note that only equality is being accepted as condition.}
 
 \item{.N_row}{(\code{count})\cr column-wise N (column count) for the full column that is passed by \code{rtables}.}
 
-\item{denom}{(\code{string})\cr choice of denominator for proportion:\cr
-can be \code{n} (number of values in this row and column intersection), \code{N_row} (total
-number of values in this row across columns), or \code{N_col} (total number of values in
-this column across rows).}
+\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
+\itemize{
+\item \code{n}: number of values in this row and column intersection.
+\item \code{N_row}: total number of values in this row across columns.
+\item \code{N_col}: total number of values in this column across rows.
+}}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 

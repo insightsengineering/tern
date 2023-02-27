@@ -4,9 +4,9 @@
 #'
 #' Several confidence intervals for the difference between proportions.
 #'
-#' @param grp (`factor`)\cr
-#'   vector assigning observations to one out of two groups
+#' @param grp (`factor`)\cr vector assigning observations to one out of two groups
 #'   (e.g. reference and treatment group).
+#'
 #' @name desctools_binom
 
 NULL
@@ -26,15 +26,16 @@ h_recycle <- function(...) {
 
 #' @describeIn desctools_binom Several Confidence Intervals for the difference between proportions.
 #'
-#'
 #' @return A named list of 3 values:
-#'   - `est`: estimate of proportion difference.
-#'   - `lwrci`: estimate of lower end of the confidence interval
-#'   - `upci`: estimate of upper end of the confidence interval.
-#' @examples
-#' # Internal function -
-#' \dontrun{
+#' \describe{
+#'   \item{est}{estimate of proportion difference.}
+#'   \item{lwrci}{estimate of lower end of the confidence interval.}
+#'   \item{upci}{estimate of upper end of the confidence interval.}
+#' }
 #'
+#' @examples
+#' # Internal function - desctools_binom
+#' \dontrun{
 #' set.seed(2)
 #' rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 #' grp <- factor(c(rep("A", 10), rep("B", 10)))
@@ -46,7 +47,7 @@ h_recycle <- function(...) {
 #' }
 #'
 #' @keywords internal
-desctools_binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
+desctools_binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c( # nolint
                               "two.sided",
                               "left", "right"
                             ), method = c(
@@ -59,46 +60,46 @@ desctools_binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
   if (missing(method)) {
     method <- match.arg(method)
   }
-  iBinomDiffCI <- function(x1, n1, x2, n2, conf.level, sides,
+  iBinomDiffCI <- function(x1, n1, x2, n2, conf.level, sides, # nolint
                            method) {
     if (sides != "two.sided") {
-      conf.level <- 1 - 2 * (1 - conf.level)
+      conf.level <- 1 - 2 * (1 - conf.level) # nolint
     }
     alpha <- 1 - conf.level
     kappa <- stats::qnorm(1 - alpha / 2)
-    p1.hat <- x1 / n1
-    p2.hat <- x2 / n2
-    est <- p1.hat - p2.hat
+    p1_hat <- x1 / n1
+    p2_hat <- x2 / n2
+    est <- p1_hat - p2_hat
     switch(method,
       wald = {
-        vd <- p1.hat * (1 - p1.hat) / n1 + p2.hat * (1 - p2.hat) / n2
+        vd <- p1_hat * (1 - p1_hat) / n1 + p2_hat * (1 - p2_hat) / n2
         term2 <- kappa * sqrt(vd)
-        CI.lower <- max(-1, est - term2)
-        CI.upper <- min(1, est + term2)
+        ci_lwr <- max(-1, est - term2)
+        ci_upr <- min(1, est + term2)
       },
       waldcc = {
-        vd <- p1.hat * (1 - p1.hat) / n1 + p2.hat * (1 - p2.hat) / n2
+        vd <- p1_hat * (1 - p1_hat) / n1 + p2_hat * (1 - p2_hat) / n2
         term2 <- kappa * sqrt(vd)
         term2 <- term2 + 0.5 * (1 / n1 + 1 / n2)
-        CI.lower <- max(-1, est - term2)
-        CI.upper <- min(1, est + term2)
+        ci_lwr <- max(-1, est - term2)
+        ci_upr <- min(1, est + term2)
       },
       ac = {
         n1 <- n1 + 2
         n2 <- n2 + 2
         x1 <- x1 + 1
         x2 <- x2 + 1
-        p1.hat <- x1 / n1
-        p2.hat <- x2 / n2
-        est1 <- p1.hat - p2.hat
-        vd <- p1.hat * (1 - p1.hat) / n1 + p2.hat * (1 - p2.hat) / n2
+        p1_hat <- x1 / n1
+        p2_hat <- x2 / n2
+        est1 <- p1_hat - p2_hat
+        vd <- p1_hat * (1 - p1_hat) / n1 + p2_hat * (1 - p2_hat) / n2
         term2 <- kappa * sqrt(vd)
-        CI.lower <- max(-1, est1 - term2)
-        CI.upper <- min(1, est1 + term2)
+        ci_lwr <- max(-1, est1 - term2)
+        ci_upr <- min(1, est1 + term2)
       },
       exact = {
-        CI.lower <- NA
-        CI.upper <- NA
+        ci_lwr <- NA
+        ci_upr <- NA
       },
       score = {
         w1 <- desctools_binomci(
@@ -113,9 +114,9 @@ desctools_binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
         u1 <- w1[3]
         l2 <- w2[2]
         u2 <- w2[3]
-        CI.lower <- est - kappa * sqrt(l1 * (1 - l1) / n1 +
+        ci_lwr <- est - kappa * sqrt(l1 * (1 - l1) / n1 +
           u2 * (1 - u2) / n2)
-        CI.upper <- est + kappa * sqrt(u1 * (1 - u1) / n1 +
+        ci_upr <- est + kappa * sqrt(u1 * (1 - u1) / n1 +
           l2 * (1 - l2) / n2)
       },
       scorecc = {
@@ -131,9 +132,9 @@ desctools_binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
         u1 <- w1[3]
         l2 <- w2[2]
         u2 <- w2[3]
-        CI.lower <- max(-1, est - sqrt((p1.hat - l1)^2 +
-          (u2 - p2.hat)^2))
-        CI.upper <- min(1, est + sqrt((u1 - p1.hat)^2 + (p2.hat -
+        ci_lwr <- max(-1, est - sqrt((p1_hat - l1)^2 +
+          (u2 - p2_hat)^2))
+        ci_upr <- min(1, est + sqrt((u1 - p1_hat)^2 + (p2_hat -
           l2)^2))
       },
       mee = {
@@ -164,50 +165,50 @@ desctools_binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
         }
         pval <- function(delta) {
           z <- (est - delta) / .score(
-            p1.hat, n1, p2.hat,
+            p1_hat, n1, p2_hat,
             n2, delta
           )
           2 * min(stats::pnorm(z), 1 - stats::pnorm(z))
         }
-        CI.lower <- max(-1, stats::uniroot(function(delta) {
+        ci_lwr <- max(-1, stats::uniroot(function(delta) {
           pval(delta) -
             alpha
         }, interval = c(-1 + 1e-06, est - 1e-06))$root)
-        CI.upper <- min(1, stats::uniroot(function(delta) {
+        ci_upr <- min(1, stats::uniroot(function(delta) {
           pval(delta) -
             alpha
         }, interval = c(est + 1e-06, 1 - 1e-06))$root)
       },
       blj = {
-        p1.dash <- (x1 + 0.5) / (n1 + 1)
-        p2.dash <- (x2 + 0.5) / (n2 + 1)
-        vd <- p1.dash * (1 - p1.dash) / n1 + p2.dash * (1 -
-          p2.dash) / n2
+        p1_dash <- (x1 + 0.5) / (n1 + 1)
+        p2_dash <- (x2 + 0.5) / (n2 + 1)
+        vd <- p1_dash * (1 - p1_dash) / n1 + p2_dash * (1 -
+          p2_dash) / n2
         term2 <- kappa * sqrt(vd)
-        est.dash <- p1.dash - p2.dash
-        CI.lower <- max(-1, est.dash - term2)
-        CI.upper <- min(1, est.dash + term2)
+        est_dash <- p1_dash - p2_dash
+        ci_lwr <- max(-1, est_dash - term2)
+        ci_upr <- min(1, est_dash + term2)
       },
       ha = {
-        term2 <- 1 / (2 * min(n1, n2)) + kappa * sqrt(p1.hat *
-          (1 - p1.hat) / (n1 - 1) + p2.hat * (1 - p2.hat) / (n2 -
+        term2 <- 1 / (2 * min(n1, n2)) + kappa * sqrt(p1_hat *
+          (1 - p1_hat) / (n1 - 1) + p2_hat * (1 - p2_hat) / (n2 -
             1))
-        CI.lower <- max(-1, est - term2)
-        CI.upper <- min(1, est + term2)
+        ci_lwr <- max(-1, est - term2)
+        ci_upr <- min(1, est + term2)
       },
       mn = {
         .conf <- function(x1, n1, x2, n2, z, lower = FALSE) {
           p1 <- x1 / n1
           p2 <- x2 / n2
-          p.hat <- p1 - p2
-          dp <- 1 + ifelse(lower, 1, -1) * p.hat
+          p_hat <- p1 - p2
+          dp <- 1 + ifelse(lower, 1, -1) * p_hat
           i <- 1
           while (i <= 50) {
             dp <- 0.5 * dp
-            y <- p.hat + ifelse(lower, -1, 1) * dp
+            y <- p_hat + ifelse(lower, -1, 1) * dp
             score <- .score(p1, n1, p2, n2, y)
             if (score < z) {
-              p.hat <- y
+              p_hat <- y
             }
             if ((dp < 1e-07) || (abs(z - score) < 1e-06)) {
               (break)()
@@ -243,37 +244,35 @@ desctools_binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
           return(res)
         }
         z <- stats::qchisq(conf.level, 1)
-        CI.lower <- max(-1, .conf(x1, n1, x2, n2, z, TRUE))
-        CI.upper <- min(1, .conf(x1, n1, x2, n2, z, FALSE))
+        ci_lwr <- max(-1, .conf(x1, n1, x2, n2, z, TRUE))
+        ci_upr <- min(1, .conf(x1, n1, x2, n2, z, FALSE))
       },
       beal = {
-        a <- p1.hat + p2.hat
-        b <- p1.hat - p2.hat
+        a <- p1_hat + p2_hat
+        b <- p1_hat - p2_hat
         u <- ((1 / n1) + (1 / n2)) / 4
         v <- ((1 / n1) - (1 / n2)) / 4
-        V <- u * ((2 - a) * a - b^2) + 2 * v * (1 - a) *
-          b
+        V <- u * ((2 - a) * a - b^2) + 2 * v * (1 - a) * b # nolint
         z <- stats::qchisq(p = 1 - alpha / 2, df = 1)
-        A <- sqrt(z * (V + z * u^2 * (2 - a) * a + z * v^2 *
-          (1 - a)^2))
-        B <- (b + z * v * (1 - a)) / (1 + z * u)
-        CI.lower <- max(-1, B - A / (1 + z * u))
-        CI.upper <- min(1, B + A / (1 + z * u))
+        A <- sqrt(z * (V + z * u^2 * (2 - a) * a + z * v^2 * (1 - a)^2)) # nolint
+        B <- (b + z * v * (1 - a)) / (1 + z * u) # nolint
+        ci_lwr <- max(-1, B - A / (1 + z * u))
+        ci_upr <- min(1, B + A / (1 + z * u))
       },
       hal = {
-        psi <- (p1.hat + p2.hat) / 2
+        psi <- (p1_hat + p2_hat) / 2
         u <- (1 / n1 + 1 / n2) / 4
         v <- (1 / n1 - 1 / n2) / 4
         z <- kappa
-        theta <- ((p1.hat - p2.hat) + z^2 * v * (1 - 2 *
+        theta <- ((p1_hat - p2_hat) + z^2 * v * (1 - 2 *
           psi)) / (1 + z^2 * u)
         w <- z / (1 + z^2 * u) * sqrt(u * (4 * psi * (1 - psi) -
-          (p1.hat - p2.hat)^2) + 2 * v * (1 - 2 * psi) *
-          (p1.hat - p2.hat) + 4 * z^2 * u^2 * (1 - psi) *
+          (p1_hat - p2_hat)^2) + 2 * v * (1 - 2 * psi) *
+          (p1_hat - p2_hat) + 4 * z^2 * u^2 * (1 - psi) *
           psi + z^2 * v^2 * (1 - 2 * psi)^2)
         c(theta + w, theta - w)
-        CI.lower <- max(-1, theta - w)
-        CI.upper <- min(1, theta + w)
+        ci_lwr <- max(-1, theta - w)
+        ci_upr <- min(1, theta + w)
       },
       jp = {
         psi <- 0.5 * ((x1 + 0.5) / (n1 + 1) + (x2 + 0.5) / (n2 +
@@ -281,20 +280,20 @@ desctools_binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
         u <- (1 / n1 + 1 / n2) / 4
         v <- (1 / n1 - 1 / n2) / 4
         z <- kappa
-        theta <- ((p1.hat - p2.hat) + z^2 * v * (1 - 2 *
+        theta <- ((p1_hat - p2_hat) + z^2 * v * (1 - 2 *
           psi)) / (1 + z^2 * u)
         w <- z / (1 + z^2 * u) * sqrt(u * (4 * psi * (1 - psi) -
-          (p1.hat - p2.hat)^2) + 2 * v * (1 - 2 * psi) *
-          (p1.hat - p2.hat) + 4 * z^2 * u^2 * (1 - psi) *
+          (p1_hat - p2_hat)^2) + 2 * v * (1 - 2 * psi) *
+          (p1_hat - p2_hat) + 4 * z^2 * u^2 * (1 - psi) *
           psi + z^2 * v^2 * (1 - 2 * psi)^2)
         c(theta + w, theta - w)
-        CI.lower <- max(-1, theta - w)
-        CI.upper <- min(1, theta + w)
+        ci_lwr <- max(-1, theta - w)
+        ci_upr <- min(1, theta + w)
       },
     )
     ci <- c(
-      est = est, lwr.ci = min(CI.lower, CI.upper),
-      upr.ci = max(CI.lower, CI.upper)
+      est = est, lwr.ci = min(ci_lwr, ci_upr),
+      upr.ci = max(ci_lwr, ci_upr)
     )
     if (sides == "left") {
       ci[3] <- 1
@@ -343,36 +342,41 @@ desctools_binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c(
 
 #' @describeIn desctools_binom Compute confidence intervals for binomial proportions.
 #'
-#' @param x \cr number of successes
-#' @param n \cr number of trials
-#' @param conf.level \cr confidence level, defaults to 0.95
-#' @param sides \cr a character string specifying the side of the confidence interval. Must be one of "two-sided" (default), "left" or "right".
-#' @param method \cr character string specifying which method to use. Can be one out of: "wald", "wilson", "wilsoncc", "agresti-coull", "jeffreys", "modified wilson", "modified jeffreys", "clopper-pearson", "arcsine.
-#' ", "logit", "witting", "pratt", "midp", "lik" and "blaker"
-#'
-#'
-#'  @return A matric with 3 columns containing:
-#'   - `est`: estimate of proportion difference.
-#'   - `lwrci`: lower end of the confidence interval
-#'   - `upci`:  upper end of the confidence interval.
+#' @param x (`count`)\cr number of successes
+#' @param n (`count`)\cr number of trials
+#' @param conf.level (`proportion`)\cr confidence level, defaults to 0.95.
+#' @param sides (`character`)\cr side of the confidence interval to compute. Must be one of "two-sided" (default),
+#'   "left", or "right".
+#' @param method (`character`)\cr method to use. Can be one out of: "wald", "wilson", "wilsoncc", "agresti-coull",
+#'   "jeffreys", "modified wilson", "modified jeffreys", "clopper-pearson", "arcsine", "logit", "witting", "pratt",
+#'   "midp", "lik", and "blaker".
+#' @return A matrix with 3 columns containing:
+#' \describe{
+#'   \item{est}{estimate of proportion difference.}
+#'   \item{lwrci}{lower end of the confidence interval.}
+#'   \item{upci}{upper end of the confidence interval.}
+#' }
 #'
 #' @keywords internal
-desctools_binomci <- function(x, n, conf.level = 0.95, sides = c(
-                                "two.sided", "left",
-                                "right"
-                              ), method = c(
+desctools_binomci <- function(x,
+                              n,
+                              conf.level = 0.95, # nolint
+                              sides = c("two.sided", "left", "right"),
+                              method = c(
                                 "wilson", "wald", "waldcc", "agresti-coull",
                                 "jeffreys", "modified wilson", "wilsoncc", "modified jeffreys",
                                 "clopper-pearson", "arcsine", "logit", "witting", "pratt",
                                 "midp", "lik", "blaker"
-                              ), rand = 123, tol = 1e-05) {
+                              ),
+                              rand = 123,
+                              tol = 1e-05) {
   if (missing(method)) {
     method <- "wilson"
   }
   if (missing(sides)) {
     sides <- "two.sided"
   }
-  iBinomCI <- function(x, n, conf.level = 0.95, sides = c(
+  iBinomCI <- function(x, n, conf.level = 0.95, sides = c( # nolint
                          "two.sided",
                          "left", "right"
                        ), method = c(
@@ -391,7 +395,7 @@ desctools_binomci <- function(x, n, conf.level = 0.95, sides = c(
     if (length(conf.level) != 1) {
       stop("'conf.level' has to be of length 1 (confidence level)")
     }
-    if (conf.level < 0.5 | conf.level > 1) {
+    if (conf.level < 0.5 || conf.level > 1) {
       stop("'conf.level' has to be in [0.5, 1]")
     }
     sides <- match.arg(sides, choices = c(
@@ -399,13 +403,13 @@ desctools_binomci <- function(x, n, conf.level = 0.95, sides = c(
       "right"
     ), several.ok = FALSE)
     if (sides != "two.sided") {
-      conf.level <- 1 - 2 * (1 - conf.level)
+      conf.level <- 1 - 2 * (1 - conf.level) # nolint
     }
     alpha <- 1 - conf.level
     kappa <- stats::qnorm(1 - alpha / 2)
-    p.hat <- x / n
-    q.hat <- 1 - p.hat
-    est <- p.hat
+    p_hat <- x / n
+    q_hat <- 1 - p_hat
+    est <- p_hat
     switch(match.arg(arg = method, choices = c(
       "wilson",
       "wald", "waldcc", "wilsoncc", "agresti-coull", "jeffreys",
@@ -414,264 +418,261 @@ desctools_binomci <- function(x, n, conf.level = 0.95, sides = c(
       "blaker"
     )),
     wald = {
-      term2 <- kappa * sqrt(p.hat * q.hat) / sqrt(n)
-      CI.lower <- max(0, p.hat - term2)
-      CI.upper <- min(1, p.hat + term2)
+      term2 <- kappa * sqrt(p_hat * q_hat) / sqrt(n)
+      ci_lwr <- max(0, p_hat - term2)
+      ci_upr <- min(1, p_hat + term2)
     },
     waldcc = {
-      term2 <- kappa * sqrt(p.hat * q.hat) / sqrt(n)
+      term2 <- kappa * sqrt(p_hat * q_hat) / sqrt(n)
       term2 <- term2 + 1 / (2 * n)
-      CI.lower <- max(0, p.hat - term2)
-      CI.upper <- min(1, p.hat + term2)
+      ci_lwr <- max(0, p_hat - term2)
+      ci_upr <- min(1, p_hat + term2)
     },
     wilson = {
       term1 <- (x + kappa^2 / 2) / (n + kappa^2)
-      term2 <- kappa * sqrt(n) / (n + kappa^2) * sqrt(p.hat *
-        q.hat + kappa^2 / (4 * n))
-      CI.lower <- max(0, term1 - term2)
-      CI.upper <- min(1, term1 + term2)
+      term2 <- kappa * sqrt(n) / (n + kappa^2) * sqrt(p_hat *
+        q_hat + kappa^2 / (4 * n))
+      ci_lwr <- max(0, term1 - term2)
+      ci_upr <- min(1, term1 + term2)
     },
     wilsoncc = {
       lci <- (2 * x + kappa^2 - 1 - kappa * sqrt(kappa^2 -
-        2 - 1 / n + 4 * p.hat * (n * q.hat + 1))) / (2 *
+        2 - 1 / n + 4 * p_hat * (n * q_hat + 1))) / (2 *
         (n + kappa^2))
       uci <- (2 * x + kappa^2 + 1 + kappa * sqrt(kappa^2 +
-        2 - 1 / n + 4 * p.hat * (n * q.hat - 1))) / (2 *
+        2 - 1 / n + 4 * p_hat * (n * q_hat - 1))) / (2 *
         (n + kappa^2))
-      CI.lower <- max(0, ifelse(p.hat == 0, 0, lci))
-      CI.upper <- min(1, ifelse(p.hat == 1, 1, uci))
+      ci_lwr <- max(0, ifelse(p_hat == 0, 0, lci))
+      ci_upr <- min(1, ifelse(p_hat == 1, 1, uci))
     },
     `agresti-coull` = {
-      x.tilde <- x + kappa^2 / 2
-      n.tilde <- n + kappa^2
-      p.tilde <- x.tilde / n.tilde
-      q.tilde <- 1 - p.tilde
-      est <- p.tilde
-      term2 <- kappa * sqrt(p.tilde * q.tilde) / sqrt(n.tilde)
-      CI.lower <- max(0, p.tilde - term2)
-      CI.upper <- min(1, p.tilde + term2)
+      x_tilde <- x + kappa^2 / 2
+      n_tilde <- n + kappa^2
+      p_tilde <- x_tilde / n_tilde
+      q_tilde <- 1 - p_tilde
+      est <- p_tilde
+      term2 <- kappa * sqrt(p_tilde * q_tilde) / sqrt(n_tilde)
+      ci_lwr <- max(0, p_tilde - term2)
+      ci_upr <- min(1, p_tilde + term2)
     },
     jeffreys = {
       if (x == 0) {
-        CI.lower <- 0
+        ci_lwr <- 0
       } else {
-        CI.lower <- stats::qbeta(
+        ci_lwr <- stats::qbeta(
           alpha / 2,
           x + 0.5, n - x + 0.5
         )
       }
       if (x == n) {
-        CI.upper <- 1
+        ci_upr <- 1
       } else {
-        CI.upper <- stats::qbeta(1 -
+        ci_upr <- stats::qbeta(1 -
           alpha / 2, x + 0.5, n - x + 0.5)
       }
     },
     `modified wilson` = {
       term1 <- (x + kappa^2 / 2) / (n + kappa^2)
-      term2 <- kappa * sqrt(n) / (n + kappa^2) * sqrt(p.hat *
-        q.hat + kappa^2 / (4 * n))
+      term2 <- kappa * sqrt(n) / (n + kappa^2) * sqrt(p_hat *
+        q_hat + kappa^2 / (4 * n))
       if ((n <= 50 & x %in% c(1, 2)) | (n >= 51 & x %in%
         c(1:3))) {
-        CI.lower <- 0.5 * stats::qchisq(alpha, 2 *
+        ci_lwr <- 0.5 * stats::qchisq(alpha, 2 *
           x) / n
       } else {
-        CI.lower <- max(0, term1 - term2)
+        ci_lwr <- max(0, term1 - term2)
       }
       if ((n <= 50 & x %in% c(n - 1, n - 2)) | (n >= 51 &
         x %in% c(n - (1:3)))) {
-        CI.upper <- 1 - 0.5 * stats::qchisq(
+        ci_upr <- 1 - 0.5 * stats::qchisq(
           alpha,
           2 * (n - x)
         ) / n
       } else {
-        CI.upper <- min(1, term1 +
+        ci_upr <- min(1, term1 +
           term2)
       }
     },
     `modified jeffreys` = {
       if (x == n) {
-        CI.lower <- (alpha / 2)^(1 / n)
+        ci_lwr <- (alpha / 2)^(1 / n)
       } else {
         if (x <= 1) {
-          CI.lower <- 0
+          ci_lwr <- 0
         } else {
-          CI.lower <- stats::qbeta(
+          ci_lwr <- stats::qbeta(
             alpha / 2,
             x + 0.5, n - x + 0.5
           )
         }
       }
       if (x == 0) {
-        CI.upper <- 1 - (alpha / 2)^(1 / n)
+        ci_upr <- 1 - (alpha / 2)^(1 / n)
       } else {
         if (x >= n - 1) {
-          CI.upper <- 1
+          ci_upr <- 1
         } else {
-          CI.upper <- stats::qbeta(1 -
+          ci_upr <- stats::qbeta(1 -
             alpha / 2, x + 0.5, n - x + 0.5)
         }
       }
     },
     `clopper-pearson` = {
-      CI.lower <- stats::qbeta(alpha / 2, x, n - x + 1)
-      CI.upper <- stats::qbeta(1 - alpha / 2, x + 1, n - x)
+      ci_lwr <- stats::qbeta(alpha / 2, x, n - x + 1)
+      ci_upr <- stats::qbeta(1 - alpha / 2, x + 1, n - x)
     },
     arcsine = {
-      p.tilde <- (x + 0.375) / (n + 0.75)
-      est <- p.tilde
-      CI.lower <- sin(asin(sqrt(p.tilde)) - 0.5 * kappa / sqrt(n))^2
-      CI.upper <- sin(asin(sqrt(p.tilde)) + 0.5 * kappa / sqrt(n))^2
+      p_tilde <- (x + 0.375) / (n + 0.75)
+      est <- p_tilde
+      ci_lwr <- sin(asin(sqrt(p_tilde)) - 0.5 * kappa / sqrt(n))^2
+      ci_upr <- sin(asin(sqrt(p_tilde)) + 0.5 * kappa / sqrt(n))^2
     },
     logit = {
-      lambda.hat <- log(x / (n - x))
-      V.hat <- n / (x * (n - x))
-      lambda.lower <- lambda.hat - kappa * sqrt(V.hat)
-      lambda.upper <- lambda.hat + kappa * sqrt(V.hat)
-      CI.lower <- exp(lambda.lower) / (1 + exp(lambda.lower))
-      CI.upper <- exp(lambda.upper) / (1 + exp(lambda.upper))
+      lambda_hat <- log(x / (n - x))
+      V_hat <- n / (x * (n - x)) # nolint
+      lambda_lower <- lambda_hat - kappa * sqrt(V_hat)
+      lambda_upper <- lambda_hat + kappa * sqrt(V_hat)
+      ci_lwr <- exp(lambda_lower) / (1 + exp(lambda_lower))
+      ci_upr <- exp(lambda_upper) / (1 + exp(lambda_upper))
     },
     witting = {
       set.seed(rand)
-      x.tilde <- x + stats::runif(1, min = 0, max = 1)
-      pbinom.abscont <- function(q, size, prob) {
+      x_tilde <- x + stats::runif(1, min = 0, max = 1)
+      pbinom_abscont <- function(q, size, prob) {
         v <- trunc(q)
         term1 <- stats::pbinom(v - 1, size = size, prob = prob)
         term2 <- (q - v) * stats::dbinom(v, size = size, prob = prob)
         return(term1 + term2)
       }
-      qbinom.abscont <- function(p, size, x) {
+      qbinom_abscont <- function(p, size, x) {
         fun <- function(prob, size, x, p) {
-          pbinom.abscont(x, size, prob) - p
+          pbinom_abscont(x, size, prob) - p
         }
         stats::uniroot(fun,
           interval = c(0, 1), size = size,
           x = x, p = p
         )$root
       }
-      CI.lower <- qbinom.abscont(1 - alpha, size = n, x = x.tilde)
-      CI.upper <- qbinom.abscont(alpha, size = n, x = x.tilde)
+      ci_lwr <- qbinom_abscont(1 - alpha, size = n, x = x_tilde)
+      ci_upr <- qbinom_abscont(alpha, size = n, x = x_tilde)
     },
     pratt = {
       if (x == 0) {
-        CI.lower <- 0
-        CI.upper <- 1 - alpha^(1 / n)
+        ci_lwr <- 0
+        ci_upr <- 1 - alpha^(1 / n)
       } else if (x == 1) {
-        CI.lower <- 1 - (1 - alpha / 2)^(1 / n)
-        CI.upper <- 1 - (alpha / 2)^(1 / n)
+        ci_lwr <- 1 - (1 - alpha / 2)^(1 / n)
+        ci_upr <- 1 - (alpha / 2)^(1 / n)
       } else if (x == (n - 1)) {
-        CI.lower <- (alpha / 2)^(1 / n)
-        CI.upper <- (1 - alpha / 2)^(1 / n)
+        ci_lwr <- (alpha / 2)^(1 / n)
+        ci_upr <- (1 - alpha / 2)^(1 / n)
       } else if (x == n) {
-        CI.lower <- alpha^(1 / n)
-        CI.upper <- 1
+        ci_lwr <- alpha^(1 / n)
+        ci_upr <- 1
       } else {
         z <- stats::qnorm(1 - alpha / 2)
-        A <- ((x + 1) / (n - x))^2
-        B <- 81 * (x + 1) * (n - x) - 9 * n - 8
-        C <- (0 - 3) * z * sqrt(9 * (x + 1) * (n - x) *
-          (9 * n + 5 - z^2) + n + 1)
-        D <- 81 * (x + 1)^2 - 9 * (x + 1) * (2 + z^2) +
-          1
-        E <- 1 + A * ((B + C) / D)^3
-        CI.upper <- 1 / E
-        A <- (x / (n - x - 1))^2
-        B <- 81 * x * (n - x - 1) - 9 * n - 8
-        C <- 3 * z * sqrt(9 * x * (n - x - 1) * (9 *
-          n + 5 - z^2) + n + 1)
-        D <- 81 * x^2 - 9 * x * (2 + z^2) + 1
-        E <- 1 + A * ((B + C) / D)^3
-        CI.lower <- 1 / E
+        A <- ((x + 1) / (n - x))^2 # nolint
+        B <- 81 * (x + 1) * (n - x) - 9 * n - 8 # nolint
+        C <- (0 - 3) * z * sqrt(9 * (x + 1) * (n - x) * (9 * n + 5 - z^2) + n + 1) # nolint
+        D <- 81 * (x + 1)^2 - 9 * (x + 1) * (2 + z^2) + 1 # nolint
+        E <- 1 + A * ((B + C) / D)^3 # nolint
+        ci_upr <- 1 / E
+        A <- (x / (n - x - 1))^2 # nolint
+        B <- 81 * x * (n - x - 1) - 9 * n - 8 # nolint
+        C <- 3 * z * sqrt(9 * x * (n - x - 1) * (9 * n + 5 - z^2) + n + 1) # nolint
+        D <- 81 * x^2 - 9 * x * (2 + z^2) + 1 # nolint
+        E <- 1 + A * ((B + C) / D)^3 # nolint
+        ci_lwr <- 1 / E
       }
     },
     midp = {
-      f.low <- function(pi, x, n) {
+      f_low <- function(pi, x, n) {
         1 / 2 * stats::dbinom(x, size = n, prob = pi) + stats::pbinom(x,
           size = n, prob = pi, lower.tail = FALSE
         ) -
           (1 - conf.level) / 2
       }
-      f.up <- function(pi, x, n) {
+      f_up <- function(pi, x, n) {
         1 / 2 * stats::dbinom(x, size = n, prob = pi) + stats::pbinom(x -
           1, size = n, prob = pi) - (1 - conf.level) / 2
       }
-      CI.lower <- 0
-      CI.upper <- 1
+      ci_lwr <- 0
+      ci_upr <- 1
       if (x != 0) {
-        CI.lower <- stats::uniroot(f.low,
-          interval = c(0, p.hat),
+        ci_lwr <- stats::uniroot(f_low,
+          interval = c(0, p_hat),
           x = x, n = n
         )$root
       }
       if (x != n) {
-        CI.upper <- stats::uniroot(f.up, interval = c(
-          p.hat,
+        ci_upr <- stats::uniroot(f_up, interval = c(
+          p_hat,
           1
         ), x = x, n = n)$root
       }
     },
     lik = {
-      CI.lower <- 0
-      CI.upper <- 1
+      ci_lwr <- 0
+      ci_upr <- 1
       z <- stats::qnorm(1 - alpha * 0.5)
       tol <- .Machine$double.eps^0.5
-      BinDev <- function(y, x, mu, wt, bound = 0, tol = .Machine$double.eps^0.5,
+      BinDev <- function(y, x, mu, wt, bound = 0, tol = .Machine$double.eps^0.5, # nolint
                          ...) {
-        ll.y <- ifelse(y %in% c(0, 1), 0, stats::dbinom(x, wt,
+        ll_y <- ifelse(y %in% c(0, 1), 0, stats::dbinom(x, wt,
           y,
           log = TRUE
         ))
-        ll.mu <- ifelse(mu %in% c(0, 1), 0, stats::dbinom(x,
+        ll_mu <- ifelse(mu %in% c(0, 1), 0, stats::dbinom(x,
           wt, mu,
           log = TRUE
         ))
         res <- ifelse(abs(y - mu) < tol, 0, sign(y -
-          mu) * sqrt(-2 * (ll.y - ll.mu)))
+          mu) * sqrt(-2 * (ll_y - ll_mu)))
         return(res - bound)
       }
-      if (x != 0 && tol < p.hat) {
-        CI.lower <- if (BinDev(
-          tol, x, p.hat, n, -z,
+      if (x != 0 && tol < p_hat) {
+        ci_lwr <- if (BinDev(
+          tol, x, p_hat, n, -z,
           tol
         ) <= 0) {
           stats::uniroot(
-            f = BinDev, interval = c(tol, if (p.hat <
-              tol || p.hat == 1) {
+            f = BinDev, interval = c(tol, if (p_hat <
+              tol || p_hat == 1) {
               1 - tol
             } else {
-              p.hat
+              p_hat
             }), bound = -z,
-            x = x, mu = p.hat, wt = n
+            x = x, mu = p_hat, wt = n
           )$root
         }
       }
-      if (x != n && p.hat < (1 - tol)) {
-        CI.upper <- if (BinDev(y = 1 - tol, x = x, mu = ifelse(p.hat >
-          1 - tol, tol, p.hat), wt = n, bound = z, tol = tol) <
+      if (x != n && p_hat < (1 - tol)) {
+        ci_upr <- if (BinDev(y = 1 - tol, x = x, mu = ifelse(p_hat >
+          1 - tol, tol, p_hat), wt = n, bound = z, tol = tol) <
           0) {
-          CI.lower <- if (BinDev(
-            tol, x, if (p.hat <
-              tol || p.hat == 1) {
+          ci_lwr <- if (BinDev(
+            tol, x, if (p_hat <
+              tol || p_hat == 1) {
               1 - tol
             } else {
-              p.hat
+              p_hat
             }, n,
             -z, tol
           ) <= 0) {
             stats::uniroot(
-              f = BinDev, interval = c(tol, p.hat),
-              bound = -z, x = x, mu = p.hat, wt = n
+              f = BinDev, interval = c(tol, p_hat),
+              bound = -z, x = x, mu = p_hat, wt = n
             )$root
           }
         } else {
           stats::uniroot(
-            f = BinDev, interval = c(if (p.hat >
+            f = BinDev, interval = c(if (p_hat >
               1 - tol) {
               tol
             } else {
-              p.hat
+              p_hat
             }, 1 - tol), bound = z,
-            x = x, mu = p.hat, wt = n
+            x = x, mu = p_hat, wt = n
           )$root
         }
       }
@@ -687,29 +688,29 @@ desctools_binomci <- function(x, n, conf.level = 0.95, sides = c(
         )
         return(min(a1, a2))
       }
-      CI.lower <- 0
-      CI.upper <- 1
+      ci_lwr <- 0
+      ci_upr <- 1
       if (x != 0) {
-        CI.lower <- stats::qbeta((1 - conf.level) / 2, x, n -
+        ci_lwr <- stats::qbeta((1 - conf.level) / 2, x, n -
           x + 1)
-        while (acceptbin(x, n, CI.lower + tol) < (1 -
+        while (acceptbin(x, n, ci_lwr + tol) < (1 -
           conf.level)) {
-          CI.lower <- CI.lower + tol
+          ci_lwr <- ci_lwr + tol
         }
       }
       if (x != n) {
-        CI.upper <- stats::qbeta(1 - (1 - conf.level) / 2, x +
+        ci_upr <- stats::qbeta(1 - (1 - conf.level) / 2, x +
           1, n - x)
-        while (acceptbin(x, n, CI.upper - tol) < (1 -
+        while (acceptbin(x, n, ci_upr - tol) < (1 -
           conf.level)) {
-          CI.upper <- CI.upper - tol
+          ci_upr <- ci_upr - tol
         }
       }
     }
     )
-    ci <- c(est = est, lwr.ci = max(0, CI.lower), upr.ci = min(
+    ci <- c(est = est, lwr.ci = max(0, ci_lwr), upr.ci = min(
       1,
-      CI.upper
+      ci_upr
     ))
     if (sides == "left") {
       ci[3] <- 1
@@ -738,7 +739,7 @@ desctools_binomci <- function(x, n, conf.level = 0.95, sides = c(
       1
   })]), 1, paste, collapse = ":")
   res <- t(sapply(1:maxdim, function(i) {
-    iBinomCI(
+    iBinomCI( # nolint
       x = lgp$x[i],
       n = lgp$n[i], conf.level = lgp$conf.level[i], sides = lgp$sides[i],
       method = lgp$method[i], rand = lgp$rand[i]

@@ -6,11 +6,11 @@
 #' details for [s_summary].
 #'
 #' @inheritParams argument_convention
-#' @param quantiles (`numeric`) \cr of length two to specify the quantiles to calculate.
-#' @param quantile_type (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
-#'   Default is set to `2` as this matches the default quantile algorithm in SAS `proc univariate` set by `QNTLDEF=5`.
+#' @param quantiles (`numeric`)\cr of length two to specify the quantiles to calculate.
+#' @param quantile_type (`numeric`)\cr between 1 and 9 selecting quantile algorithms to be used.
+#'   Default is set to 2 as this matches the default quantile algorithm in SAS `proc univariate` set by `QNTLDEF=5`.
 #'   This differs from R's default. See more about `type` in [stats::quantile()].
-#' @param test_mean (`numeric`) \cr to test against the mean under the null hypothesis when calculating p-value.
+#' @param test_mean (`numeric`)\cr to test against the mean under the null hypothesis when calculating p-value.
 #'
 #' @return A list of components with the same names as the arguments.
 #' @export
@@ -138,42 +138,42 @@ s_summary <- function(x,
 #'   Also, when the `mean` function is applied to an empty vector, `NA` will
 #'   be returned instead of `NaN`, the latter being standard behavior in R.
 #'
-#' @param control a (`list`) of parameters for descriptive statistics details, specified by using \cr
-#'    the helper function [control_summarize_vars()]. Some possible parameter options are: \cr
-#' * `conf_level`: (`proportion`)\cr confidence level of the interval for mean and median.
-#' * `quantiles`: numeric vector of length two to specify the quantiles.
-#' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
-#'   See more about `type` in [stats::quantile()].
-#' * `test_mean`: (`numeric`) \cr to test against the mean under the null hypothesis when calculating p-value.
+#' @param control (`list`)\cr parameters for descriptive statistics details, specified by using
+#'   the helper function [control_summarize_vars()]. Some possible parameter options are:
+#'   * `conf_level` (`proportion`)\cr confidence level of the interval for mean and median.
+#'   * `quantiles` (`numeric`)\cr vector of length two to specify the quantiles.
+#'   * `quantile_type` (`numeric`)\cr between 1 and 9 selecting quantile algorithms to be used.
+#'     See more about `type` in [stats::quantile()].
+#'   * `test_mean` (`numeric`)\cr value to test against the mean under the null hypothesis when calculating p-value.
 #'
-#' @return If `x` is of class `numeric`, returns a list with named items: \cr
-#' - `n`: the [length()] of `x`.
-#' - `sum`: the [sum()] of `x`.
-#' - `mean`: the [mean()] of `x`.
-#' - `sd`: the [stats::sd()] of `x`.
-#' - `se`: the standard error of `x` mean, i.e.: (`sd()/sqrt(length())]`).
-#' - `mean_sd`: the [mean()] and [stats::sd()] of `x`.
-#' - `mean_se`: the [mean()] of `x` and its standard error (see above).
-#' - `mean_ci`: the CI for the mean of `x` (from [stat_mean_ci()]).
-#' - `mean_sei`: the SE interval for the mean of `x`, i.e.: ([mean()] -/+ [stats::sd()]/[sqrt()]).
-#' - `mean_sdi`: the SD interval for the mean of `x`, i.e.: ([mean()] -/+ [stats::sd()]).
-#' - `mean_pval`: the two-sided p-value of the mean of `x` (from [stat_mean_pval()]).
-#' - `median`: the [stats::median()] of `x`.
-#' - `mad`:
-#' the median absolute deviation of `x`, i.e.: ([stats::median()] of `xc`, where `xc` = `x` - [stats::median()]).
-#' - `median_ci`: the CI for the median of `x` (from [stat_median_ci()]).
-#' - `quantiles`: two sample quantiles of `x` (from [stats::quantile()]).
-#' - `iqr`: the [stats::IQR()] of `x`.
-#' - `range`: the [range_noinf()] of `x`.
-#' - `min`: the [max()] of `x`.
-#' - `max`: the [min()] of `x`.
-#' - `cv`: the coefficient of variation of `x`, i.e.: (`sd()/mean() * 100`).
-#' - `geom_mean`: the geometric mean of `x`, i.e.: (`exp(mean(log(x)))`).
-#' - `geom_cv`: the geometric coefficient of variation of `x`, i.e.: (`sqrt(exp(sd(log(x))^2) - 1)*100`).
-#'
+#' @return If `x` is of class `numeric`, returns a list with the following named `numeric` items:
+#' \describe{
+#'   \item{n}{the [length()] of `x`.}
+#'   \item{sum}{the [sum()] of `x`.}
+#'   \item{mean}{the [mean()] of `x`.}
+#'   \item{sd}{the [stats::sd()] of `x`.}
+#'   \item{se}{the standard error of `x` mean, i.e.: (`sd(x) / sqrt(length(x))`).}
+#'   \item{mean_sd}{the [mean()] and [stats::sd()] of `x`.}
+#'   \item{mean_se}{the [mean()] of `x` and its standard error (see above).}
+#'   \item{mean_ci}{the CI for the mean of `x` (from [stat_mean_ci()]).}
+#'   \item{mean_sei}{the SE interval for the mean of `x`, i.e.: ([mean()] -/+ [stats::sd()] / [sqrt()]).}
+#'   \item{mean_sdi}{the SD interval for the mean of `x`, i.e.: ([mean()] -/+ [stats::sd()]).}
+#'   \item{mean_pval}{the two-sided p-value of the mean of `x` (from [stat_mean_pval()]).}
+#'   \item{median}{the [stats::median()] of `x`.}
+#'   \item{mad}{the median absolute deviation of `x`, i.e.: ([stats::median()] of `xc`,
+#'     where `xc` = `x` - [stats::median()]).
+#'   }
+#'   \item{median_ci}{the CI for the median of `x` (from [stat_median_ci()]).}
+#'   \item{quantiles}{two sample quantiles of `x` (from [stats::quantile()]).}
+#'   \item{iqr}{the [stats::IQR()] of `x`.}
+#'   \item{range}{the [range_noinf()] of `x`.}
+#'   \item{min}{the [max()] of `x`.}
+#'   \item{max}{the [min()] of `x`.}
+#'   \item{cv}{the coefficient of variation of `x`, i.e.: ([stats::sd()] / [mean()] * 100).}
+#'   \item{geom_mean}{the geometric mean of `x`, i.e.: (`exp(mean(log(x)))`).}
+#'   \item{geom_cv}{the geometric coefficient of variation of `x`, i.e.: (`sqrt(exp(sd(log(x)) ^ 2) - 1) * 100`).}
+#' }
 #' @method s_summary numeric
-#'
-#' @export
 #'
 #' @examples
 #' # `s_summary.numeric`
@@ -207,6 +207,8 @@ s_summary <- function(x,
 #' ## By comparison with `lapply`:
 #' X <- split(dta_test, f = with(dta_test, interaction(Group, sub_group)))
 #' lapply(X, function(x) s_summary(x$x))
+#'
+#' @export
 s_summary.numeric <- function(x, # nolint
                               na.rm = TRUE, # nolint
                               denom,
@@ -297,20 +299,21 @@ s_summary.numeric <- function(x, # nolint
 #'   per factor level. If there are no levels in `x`, the function fails. If `x` contains `NA`,
 #'   it is expected that `NA` have been conveyed to `na_level` appropriately beforehand with
 #'   [df_explicit_na()] or [explicit_na()].
-#' @param denom (`string`)\cr choice of denominator for factor proportions:\cr
-#'   can be `n` (number of values in this row and column intersection), `N_row` (total
-#'   number of values in this row across columns), or `N_col` (total number of values in
-#'   this column across rows).
-#' @return If `x` is of class `factor` or converted from `character`, returns a list with
-#'   named items:
-#'   - `n`: the [length()] of `x`.
-#'   - `count`: a list with the number of cases for each level of the
-#'      factor `x`
-#'   - `count_fraction`: similar to `count` but also includes the proportion of cases for each level of the
-#'      factor `x` relative to the denominator, or `NA` if the denominator is zero.
-#' @method s_summary factor
 #'
-#' @export
+#' @param denom (`string`)\cr choice of denominator for factor proportions. Options are:
+#'   - `n`: number of values in this row and column intersection.
+#'   - `N_row`: total number of values in this row across columns.
+#'   - `N_col`: total number of values in this column across rows.
+#'
+#' @return If `x` is of class `factor` or converted from `character`, returns a list with named `numeric` items:
+#' \describe{
+#'   \item{n}{the [length()] of `x`.}
+#'   \item{count}{a list with the number of cases for each level of the factor `x`.}
+#'   \item{count_fraction}{similar to `count` but also includes the proportion of cases for each level of the
+#'     factor `x` relative to the denominator, or `NA` if the denominator is zero.
+#'   }
+#' }
+#' @method s_summary factor
 #'
 #' @examples
 #' # `s_summary.factor`
@@ -330,6 +333,8 @@ s_summary.numeric <- function(x, # nolint
 #' x <- factor(c("a", "a", "b", "c", "a"))
 #' s_summary(x, denom = "N_row", .N_row = 10L)
 #' s_summary(x, denom = "N_col", .N_col = 20L)
+#'
+#' @export
 s_summary.factor <- function(x,
                              na.rm = TRUE, # nolint
                              denom = c("n", "N_row", "N_col"),
@@ -404,19 +409,21 @@ s_summary.character <- function(x,
 }
 
 #' @describeIn summarize_variables Method for logical class.
-#' @param denom (`string`)\cr choice of denominator for proportion:\cr
-#'   can be `n` (number of values in this row and column intersection), `N_row` (total
-#'   number of values in this row across columns), or `N_col` (total number of values in
-#'   this column across rows).
-#' @return If `x` is of class `logical`, returns a list with named items:
-#'   - `n`: the [length()] of `x` (possibly after removing `NA`s).
-#'   - `count`: count of `TRUE` in `x`.
-#'   - `count_fraction`: count and proportion of `TRUE` in `x` relative to the denominator,
-#'      or `NA` if the denominator is zero. Note that `NA`s in `x` are never counted or leading
-#'      to `NA` here.
-#' @method s_summary logical
 #'
-#' @export
+#' @param denom (`string`)\cr choice of denominator for proportion. Options are:
+#'   - `n`: number of values in this row and column intersection.
+#'   - `N_row`: total number of values in this row across columns.
+#'   - `N_col`: total number of values in this column across rows.
+#'
+#' @return If `x` is of class `logical`, returns a list with named `numeric` items:
+#' \describe{
+#'   \item{n}{the [length()] of `x` (possibly after removing `NA`s).}
+#'   \item{count}{count of `TRUE` in `x`.}
+#'   \item{count_fraction}{count and proportion of `TRUE` in `x` relative to the denominator, or `NA` if the
+#'     denominator is zero. Note that `NA`s in `x` are never counted or leading to `NA` here.
+#'   }
+#' }
+#' @method s_summary logical
 #'
 #' @examples
 #' # `s_summary.logical`
@@ -433,6 +440,8 @@ s_summary.character <- function(x,
 #' x <- c(TRUE, FALSE, TRUE, TRUE)
 #' s_summary(x, denom = "N_row", .N_row = 10L)
 #' s_summary(x, denom = "N_col", .N_col = 20L)
+#'
+#' @export
 s_summary.logical <- function(x,
                               na.rm = TRUE, # nolint
                               denom = c("n", "N_row", "N_col"),
