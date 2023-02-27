@@ -12,7 +12,7 @@ Summarize p-value, HR and CIs from stratified or unstratified CoxPH model."><!--
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9048</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9050</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,15 +37,6 @@ Summarize p-value, HR and CIs from stratified or unstratified CoxPH model."><!--
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -111,11 +102,11 @@ Summarize p-value, HR and CIs from stratified or unstratified CoxPH model."><!--
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>df</dt>
-<dd><p>(<code>data frame</code>)<br> data set containing all analysis variables.</p></dd>
+<dd><p>(<code>data.frame</code>)<br> data set containing all analysis variables.</p></dd>
 
 
 <dt>.ref_group</dt>
-<dd><p>(<code>data frame</code> or <code>vector</code>)<br> the data corresponding to the reference group.</p></dd>
+<dd><p>(<code>data.frame</code> or <code>vector</code>)<br> the data corresponding to the reference group.</p></dd>
 
 
 <dt>.in_ref_col</dt>
@@ -132,17 +123,16 @@ by a statistics function.</p></dd>
 
 
 <dt>strat</dt>
-<dd><p>(<code>character</code> or <code>NULL</code>) variable names indicating stratification factors.</p></dd>
+<dd><p>(<code>character</code> or <code>NULL</code>)<br> variable names indicating stratification factors.</p></dd>
 
 
 <dt>control</dt>
-<dd><p>(<code>list</code>) <br> parameters for comparison details, specified by using <br>
-the helper function <code><a href="control_coxph.html">control_coxph()</a></code>. Some possible parameter options are: <br></p><ul><li><p><code>pval_method</code>: (<code>string</code>) <br> p-value method for testing hazard ratio = 1.
-Default method is "log-rank" which comes from <code><a href="https://rdrr.io/pkg/survival/man/survdiff.html" class="external-link">survival::survdiff()</a></code>, can also be set to "wald" or "likelihood"
-that comes from <code><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">survival::coxph()</a></code>.</p></li>
-<li><p><code>ties</code>: (<code>string</code>) <br> specifying the method for tie handling. Default is "efron",
+<dd><p>(<code>list</code>)<br> parameters for comparison details, specified by using the helper function
+<code><a href="control_coxph.html">control_coxph()</a></code>. Some possible parameter options are:</p><ul><li><p><code>pval_method</code> (<code>string</code>)<br> p-value method for testing hazard ratio = 1. Default method is "log-rank" which
+comes from <code><a href="https://rdrr.io/pkg/survival/man/survdiff.html" class="external-link">survival::survdiff()</a></code>, can also be set to "wald" or "likelihood" (from <code><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">survival::coxph()</a></code>).</p></li>
+<li><p><code>ties</code> (<code>string</code>)<br> specifying the method for tie handling. Default is "efron",
 can also be set to "breslow" or "exact". See more in <code><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">survival::coxph()</a></code></p></li>
-<li><p><code>conf_level</code>: (<code>proportion</code>)<br> confidence level of the interval for HR.</p></li>
+<li><p><code>conf_level</code> (<code>proportion</code>)<br> confidence level of the interval for HR.</p></li>
 </ul></dd>
 
 
@@ -191,12 +181,23 @@ to avoid warnings from <code>rtables</code>.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>The statistics are:</p><ul><li><p><code>pvalue</code> : p-value to test HR = 1.</p></li>
-<li><p><code>hr</code> : hazard ratio.</p></li>
-<li><p><code>hr_ci</code> : confidence interval for hazard ratio.</p></li>
-<li><p><code>n_tot</code> : total number of observations</p></li>
-<li><p><code>n_tot_events</code> : total number of events</p></li>
-</ul></div>
+<p>The statistics are:</p><dl><dt>pvalue</dt>
+<dd><p>p-value to test HR = 1.</p></dd>
+
+<dt>hr</dt>
+<dd><p>hazard ratio.</p></dd>
+
+<dt>hr_ci</dt>
+<dd><p>confidence interval for hazard ratio.</p></dd>
+
+<dt>n_tot</dt>
+<dd><p>total number of observations.</p></dd>
+
+<dt>n_tot_events</dt>
+<dd><p>total number of events.</p></dd>
+
+
+</dl></div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     

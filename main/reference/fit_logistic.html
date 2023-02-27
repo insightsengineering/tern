@@ -12,7 +12,7 @@ Fit a (conditional) logistic regression model."><!-- mathjax --><script src="htt
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9048</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9050</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,15 +37,6 @@ Fit a (conditional) logistic regression model."><!-- mathjax --><script src="htt
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -85,7 +76,7 @@ Fit a (conditional) logistic regression model."><!-- mathjax --><script src="htt
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
-<dd><p>(<code>data frame</code>)<br> the data frame on which the model was fit.</p></dd>
+<dd><p>(<code>data.frame</code>)<br> the data frame on which the model was fit.</p></dd>
 
 
 <dt>variables</dt>
@@ -99,23 +90,25 @@ side of the formula.</p></dd>
 
 </dl></div>
     <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Note this function may hang or error for certain datasets when an old version of the
-survival package (&lt; 3.2-13) is used.</p>
-    </div>
-    <div class="section level2">
     <h2 id="model-specification">Model Specification<a class="anchor" aria-label="anchor" href="#model-specification"></a></h2>
     
 
 
-<p>The <code>variables</code> list needs to include the following elements:<br></p><ul><li><p><code>arm</code>: usual treatment arm variable name.</p></li>
-<li><p><code>response</code>: the response arm variable name. Usually this is a 0/1 variable.</p></li>
-<li><p><code>covariates</code>: this is either <code>NULL</code> (no covariates) or
-a character vector of covariate variable names.</p></li>
-<li><p><code>interaction</code>: this is either <code>NULL</code> (no interaction) or a string of a single
-covariate variable name already included in <code>covariates</code>. Then the interaction
-with the treatment arm is included in the model.</p></li>
-</ul></div>
+<p>The <code>variables</code> list needs to include the following elements:</p><dl><dt>arm</dt>
+<dd><p>treatment arm variable name.</p></dd>
+
+<dt>response</dt>
+<dd><p>the response arm variable name. Usually this is a 0/1 variable.</p></dd>
+
+<dt>covariates</dt>
+<dd><p>this is either <code>NULL</code> (no covariates) or a character vector of covariate variable names.</p></dd>
+
+<dt>interaction</dt>
+<dd><p>this is either <code>NULL</code> (no interaction) or a string of a single covariate variable name already
+included in <code>covariates</code>. Then the interaction with the treatment arm is included in the model.</p></dd>
+
+
+</dl></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -149,6 +142,7 @@ with the treatment arm is included in the model.</p></li>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>glm.fit: fitted probabilities numerically 0 or 1 occurred</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

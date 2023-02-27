@@ -14,7 +14,7 @@ time and hazard ratio for population subgroups."><!-- mathjax --><script src="ht
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9048</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9050</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,15 +39,6 @@ time and hazard ratio for population subgroups."><!-- mathjax --><script src="ht
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -130,18 +121,16 @@ levels that belong to it in the character vectors that are elements of the list.
 
 
 <dt>strata_data</dt>
-<dd><p>(<code>factor</code>, <code>data.frame</code> or <code>NULL</code>)<br>
-required if stratified analysis is performed.</p></dd>
+<dd><p>(<code>factor</code>, <code>data.frame</code> or <code>NULL</code>)<br> required if stratified analysis is performed.</p></dd>
 
 
 <dt>control</dt>
-<dd><p>(<code>list</code>) <br> parameters for comparison details, specified by using <br>
-the helper function <code><a href="control_coxph.html">control_coxph()</a></code>. Some possible parameter options are: <br></p><ul><li><p><code>pval_method</code>: (<code>string</code>) <br> p-value method for testing hazard ratio = 1.
-Default method is "log-rank" which comes from <code><a href="https://rdrr.io/pkg/survival/man/survdiff.html" class="external-link">survival::survdiff()</a></code>, can also be set to "wald" or "likelihood"
-that comes from <code><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">survival::coxph()</a></code>.</p></li>
-<li><p><code>ties</code>: (<code>string</code>) <br> specifying the method for tie handling. Default is "efron",
+<dd><p>(<code>list</code>)<br> parameters for comparison details, specified by using the helper function
+<code><a href="control_coxph.html">control_coxph()</a></code>. Some possible parameter options are:</p><ul><li><p><code>pval_method</code> (<code>string</code>)<br> p-value method for testing hazard ratio = 1. Default method is "log-rank" which
+comes from <code><a href="https://rdrr.io/pkg/survival/man/survdiff.html" class="external-link">survival::survdiff()</a></code>, can also be set to "wald" or "likelihood" (from <code><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">survival::coxph()</a></code>).</p></li>
+<li><p><code>ties</code> (<code>string</code>)<br> specifying the method for tie handling. Default is "efron",
 can also be set to "breslow" or "exact". See more in <code><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">survival::coxph()</a></code></p></li>
-<li><p><code>conf_level</code>: (<code>proportion</code>)<br> confidence level of the interval for HR.</p></li>
+<li><p><code>conf_level</code> (<code>proportion</code>)<br> confidence level of the interval for HR.</p></li>
 </ul></dd>
 
 </dl></div>

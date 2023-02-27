@@ -12,7 +12,7 @@ Helper functions that can be used to return the results of various Poisson model
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9048</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9050</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,15 +37,6 @@ Helper functions that can be used to return the results of various Poisson model
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -91,27 +82,27 @@ by a statistics function.</p></dd>
 
 
 <dt>.df_row</dt>
-<dd><p>(<code>data frame</code>)<br> data set that includes all the variables that are called
+<dd><p>(<code>data.frame</code>)<br> data set that includes all the variables that are called
 in <code>.var</code> and <code>variables</code>.</p></dd>
 
 
 <dt>variables</dt>
 <dd><p>(named <code>list</code> of <code>strings</code>)<br> list of additional analysis variables, with
-expected elements:</p><ul><li><p><code>arm</code>: (<code>string</code>)<br> group variable, for which the covariate adjusted means of multiple
+expected elements:</p><ul><li><p><code>arm</code> (<code>string</code>)<br> group variable, for which the covariate adjusted means of multiple
 groups will be summarized. Specifically, the first level of <code>arm</code> variable is taken as the
 reference group.</p></li>
-<li><p><code>covariates</code>: (<code>character</code>)<br> a vector that can contain single variable names (such as
+<li><p><code>covariates</code> (<code>character</code>)<br> a vector that can contain single variable names (such as
 <code>"X1"</code>), and/or interaction terms indicated by <code>"X1 * X2"</code>.</p></li>
-<li><p><code>offset</code>: (<code>numeric</code>)<br> a numeric vector or scalar adding an offset.</p></li>
+<li><p><code>offset</code> (<code>numeric</code>)<br> a numeric vector or scalar adding an offset.</p></li>
 </ul></dd>
 
 
 <dt>obj</dt>
-<dd><p>(<code>glm.fit</code>) fitted model object used to derive the mean rate estimates in each treatment arm.</p></dd>
+<dd><p>(<code>glm.fit</code>)<br> fitted model object used to derive the mean rate estimates in each treatment arm.</p></dd>
 
 
 <dt>conf_level</dt>
-<dd><p>(<code>numeric</code>) value used to derive the confidence interval for the rate.</p></dd>
+<dd><p>(<code>numeric</code>)<br> value used to derive the confidence interval for the rate.</p></dd>
 
 
 <dt>`weights`(`character`)<br></dt>
@@ -123,7 +114,7 @@ reference group.</p></li>
 used in the regression (poisson, quasipoisson).</p></dd>
 
 
-<dt>`arm`:</dt>
+<dt>`arm`</dt>
 <dd><p>(<code>string</code>)<br> group variable, for which the covariate adjusted means of multiple
 groups will be summarized. Specifically, the first level of <code>arm</code> variable is taken as the
 reference group.</p></dd>
@@ -145,8 +136,7 @@ selected model (poisson, quasipoisson, negative binomial).</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - h_glm_poisson</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Internal function - h_glm_poisson</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu">h_glm_poisson</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
@@ -165,7 +155,6 @@ selected model (poisson, quasipoisson, negative binomial).</p></li>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Internal function - h_glm_count</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu">h_glm_count</span><span class="op">(</span></span></span>
@@ -175,7 +164,6 @@ selected model (poisson, quasipoisson, negative binomial).</p></li>
 <span class="r-in"><span>  distribution <span class="op">=</span> <span class="st">"poisson"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Internal function - h_ppmeans</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>

@@ -16,7 +16,7 @@ of the covariate, in comparison to the treatment control."><!-- mathjax --><scri
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9048</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9050</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,15 +41,6 @@ of the covariate, in comparison to the treatment control."><!-- mathjax --><scri
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -138,18 +129,16 @@ item is a vector of levels at which the interaction should be estimated.</p></dd
 
 
 <dt>data</dt>
-<dd><p>(<code>data frame</code>)<br> the data frame on which the model was fit.</p></dd>
+<dd><p>(<code>data.frame</code>)<br> the data frame on which the model was fit.</p></dd>
 
 
 <dt>variable, given</dt>
-<dd><p>(<code>string</code>)<br>
-the name of variables in interaction. We seek the estimation of the levels
-of <code>variable</code> given the levels of <code>given</code>.</p></dd>
+<dd><p>(<code>string</code>)<br> the name of variables in interaction. We seek the estimation
+of the levels of <code>variable</code> given the levels of <code>given</code>.</p></dd>
 
 
 <dt>lvl_var, lvl_given</dt>
-<dd><p>(<code>character</code>)<br>
-corresponding levels has given by <code><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels()</a></code>.</p></dd>
+<dd><p>(<code>character</code>)<br> corresponding levels has given by <code><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels()</a></code>.</p></dd>
 
 
 <dt>conf_level</dt>
@@ -162,7 +151,7 @@ corresponding levels has given by <code><a href="https://rdrr.io/r/base/levels.h
 
 <p>A list of matrix (one per level of variable) with rows corresponding to the combinations of
 <code>variable</code> and <code>given</code>, with columns:</p><dl><dt>coef_hat</dt>
-<dd><p>Estimation of the coefficient</p></dd>
+<dd><p>Estimation of the coefficient.</p></dd>
 
 <dt>coef_se</dt>
 <dd><p>Standard error of the estimation.</p></dd>
@@ -170,8 +159,8 @@ corresponding levels has given by <code><a href="https://rdrr.io/r/base/levels.h
 <dt>hr</dt>
 <dd><p>Hazard ratio.</p></dd>
 
-<dt>lcl,ucl</dt>
-<dd><p>lower/upper confidence limit of the hazard ratio</p></dd>
+<dt>lcl, ucl</dt>
+<dd><p>Lower/upper confidence limit of the hazard ratio.</p></dd>
 
 
 </dl></div>
@@ -179,8 +168,8 @@ corresponding levels has given by <code><a href="https://rdrr.io/r/base/levels.h
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Given the cox regression investigating the effect of Arm (A, B, C; reference A)
 and Sex (F, M; reference Female) and the model being abbreviated: y ~ Arm + Sex + Arm:Sex.
-The cox regression estimates the coefficients along with a variance-covariance matrix for:</p><ul><li><p>b1 (arm b), b2 (arm c),</p></li>
-<li><p>b3 (sex m),</p></li>
+The cox regression estimates the coefficients along with a variance-covariance matrix for:</p><ul><li><p>b1 (arm b), b2 (arm c)</p></li>
+<li><p>b3 (sex m)</p></li>
 <li><p>b4 (arm b: sex m), b5 (arm c: sex m)</p></li>
 </ul><p>The estimation of the Hazard Ratio for arm C/sex M is given in reference
 to arm A/Sex M by exp(b2 + b3 + b5)/ exp(b3) = exp(b2 + b5).
@@ -267,6 +256,7 @@ no interaction, <code><a href="h_cox_regression.html">h_coxreg_univar_extract()<
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"details")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Estimations of armcd hazard ratio given the level of covar1 compared to armcd level 1."</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

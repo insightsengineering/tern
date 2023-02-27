@@ -14,7 +14,7 @@ output dataset."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9048</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9050</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,15 +39,6 @@ output dataset."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -89,27 +80,26 @@ output dataset.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>adsl</dt>
-<dd><p>(<code>data frame</code>) <code>ADSL</code> dataframe</p></dd>
+<dd><p>(<code>data.frame</code>)<br><code>ADSL</code> dataframe.</p></dd>
 
 
 <dt>adlb</dt>
-<dd><p>(<code>data frame</code>) <code>ADLB</code> dataframe</p></dd>
+<dd><p>(<code>data.frame</code>)<br><code>ADLB</code> dataframe.</p></dd>
 
 
 <dt>worst_flag</dt>
-<dd><p>(named <code>vector</code>)
-Worst post-baseline lab flag variable</p></dd>
+<dd><p>(named <code>vector</code>)<br> Worst post-baseline lab flag variable.</p></dd>
 
 
 <dt>by_visit</dt>
-<dd><p>(<code>logical</code>) defaults to <code>FALSE</code> to generate worst grade per patient.
+<dd><p>(<code>logical</code>)<br> defaults to <code>FALSE</code> to generate worst grade per patient.
 If worst grade per patient per visit is specified for <code>worst_flag</code>, then
 <code>by_visit</code> should be <code>TRUE</code> to generate worst grade patient per visit.</p></dd>
 
 
 <dt>no_fillin_visits</dt>
-<dd><p>(named <code>character</code>)
-Visits that are not considered for post-baseline worst toxicity grade. Defaults to <code>c("SCREENING", "BASELINE")</code>.</p></dd>
+<dd><p>(named <code>character</code>)<br> Visits that are not considered for post-baseline worst toxicity
+grade. Defaults to <code>c("SCREENING", "BASELINE")</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -117,14 +107,16 @@ Visits that are not considered for post-baseline worst toxicity grade. Defaults 
     
 
 <p><code>df</code> containing variables shared between <code>adlb</code> and <code>adsl</code> along with variables relevant for analysis:
-<code>PARAM</code>, <code>PARAMCD</code>, <code>ATOXGR</code>, and <code>BTOXGR</code>.  Optionally <code>AVISIT</code>, <code>AVISITN</code> are included when <code>by_visit = TRUE</code> and
-<code>no_fillin_visits = c("SCREENING", "BASELINE")</code>.</p>
+<code>PARAM</code>, <code>PARAMCD</code>, <code>ATOXGR</code>, and <code>BTOXGR</code>.  Optionally <code>AVISIT</code>, <code>AVISITN</code> are included when <code>by_visit = TRUE</code></p>
+
+
+<p>and <code>no_fillin_visits = c("SCREENING", "BASELINE")</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>In the result data missing records will be created for the following situations:</p><ul><li><p>patients who are present in <code>adsl</code> but have no lab data in <code>adlb</code> (both baseline and post-baseline)</p></li>
-<li><p>patients who do not have any post-baseline lab values</p></li>
-<li><p>patients without any post-baseline values flagged as the worst</p></li>
+    <p>In the result data missing records will be created for the following situations:</p><ul><li><p>Patients who are present in <code>adsl</code> but have no lab data in <code>adlb</code> (both baseline and post-baseline).</p></li>
+<li><p>Patients who do not have any post-baseline lab values.</p></li>
+<li><p>Patients without any post-baseline values flagged as the worst.</p></li>
 </ul></div>
 
     <div class="section level2">

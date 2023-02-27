@@ -12,7 +12,7 @@ Patient count and fraction for laboratory events (worsen from baseline) shift ta
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9048</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9050</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,15 +37,6 @@ Patient count and fraction for laboratory events (worsen from baseline) shift ta
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -101,7 +92,7 @@ Patient count and fraction for laboratory events (worsen from baseline) shift ta
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>df</dt>
-<dd><p>(<code>data frame</code>)<br> data set containing all analysis variables.</p></dd>
+<dd><p>(<code>data.frame</code>)<br> data set containing all analysis variables.</p></dd>
 
 
 <dt>.var, var</dt>
@@ -110,9 +101,9 @@ by a statistics function.</p></dd>
 
 
 <dt>variables</dt>
-<dd><p>(named <code>list</code> of <code>string</code>) <br> list of additional analysis variables including:</p><ul><li><p><code>id</code> (<code>string</code>): <br> subject variable name</p></li>
-<li><p><code>baseline_var</code> (<code>string</code>): <br> name of the data column containing baseline toxicity variable</p></li>
-<li><p><code>direction_var</code> (<code>string</code>): See <code>direction_var</code> for more detail</p></li>
+<dd><p>(named <code>list</code> of <code>string</code>)<br> list of additional analysis variables including:</p><ul><li><p><code>id</code> (<code>string</code>)<br> subject variable name.</p></li>
+<li><p><code>baseline_var</code> (<code>string</code>)<br> name of the data column containing baseline toxicity variable.</p></li>
+<li><p><code>direction_var</code> (<code>string</code>)<br> see <code>direction_var</code> for more details.</p></li>
 </ul></dd>
 
 
@@ -154,8 +145,8 @@ counts and fraction of patients whose worst post-baseline lab grades are worse t
 their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".</p>
 
 
-<p><code>a_count_abnormal_lab_worsen_by_baseline()</code> returns
-the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p>
+<p><code>a_count_abnormal_lab_worsen_by_baseline()</code> returns the corresponding list with
+formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
@@ -163,11 +154,9 @@ the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables
 <ul><li><p><code>s_count_abnormal_lab_worsen_by_baseline()</code>: Statistics function which calculates the
 counts and fraction of patients whose worst post-baseline lab grades are worse than
 their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".</p></li>
-<li><p><code>a_count_abnormal_lab_worsen_by_baseline()</code>: Formatted Analysis function which can be further customized by
-calling <code><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">rtables::make_afun()</a></code> on it. It is used as <code>afun</code> in <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
-<li><p><code>count_abnormal_lab_worsen_by_baseline()</code>: Layout
-creating function which can be used for creating tables, which can take statistics
-function arguments and additional format arguments (see below).</p></li>
+<li><p><code>a_count_abnormal_lab_worsen_by_baseline()</code>:</p></li>
+<li><p><code>count_abnormal_lab_worsen_by_baseline()</code>: Layout creating function which can be used for creating tables,
+which can take statistics function arguments and additional format arguments (see below).</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

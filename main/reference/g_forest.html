@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9048</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9050</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,15 +35,6 @@
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -107,13 +98,11 @@ to get this from <code>tbl</code> attribute <code>col_ci</code>, otherwise needs
 
 
 <dt>vline</dt>
-<dd><p>(<code>number</code>)<br>
-x coordinate for vertical line, if <code>NULL</code> then the line is omitted.</p></dd>
+<dd><p>(<code>number</code>)<br> x coordinate for vertical line, if <code>NULL</code> then the line is omitted.</p></dd>
 
 
 <dt>forest_header</dt>
-<dd><p>(<code>character</code>, length 2)<br>
-text displayed to the left and right of <code>vline</code>, respectively.
+<dd><p>(<code>character</code>, length 2)<br> text displayed to the left and right of <code>vline</code>, respectively.
 If <code>vline = NULL</code> then <code>forest_header</code> needs to be <code>NULL</code> too.
 By default tries to get this from <code>tbl</code> attribute <code>forest_header</code>.</p></dd>
 
@@ -131,27 +120,25 @@ By default tries to get this from <code>tbl</code> attribute <code>forest_header
 
 
 <dt>width_row_names</dt>
-<dd><p>(<code>unit</code>)<br>
-width for row names. If <code>NULL</code> the widths get automatically calculated. See <code><a href="https://rdrr.io/r/grid/unit.html" class="external-link">grid::unit()</a></code>.</p></dd>
+<dd><p>(<code>unit</code>)<br> width for row names.
+If <code>NULL</code> the widths get automatically calculated. See <code><a href="https://rdrr.io/r/grid/unit.html" class="external-link">grid::unit()</a></code>.</p></dd>
 
 
 <dt>width_columns</dt>
-<dd><p>(<code>unit</code>)<br>
-widths for the table columns. If <code>NULL</code> the widths get automatically calculated. See <code><a href="https://rdrr.io/r/grid/unit.html" class="external-link">grid::unit()</a></code>.</p></dd>
+<dd><p>(<code>unit</code>)<br> widths for the table columns.
+If <code>NULL</code> the widths get automatically calculated. See <code><a href="https://rdrr.io/r/grid/unit.html" class="external-link">grid::unit()</a></code>.</p></dd>
 
 
 <dt>width_forest</dt>
-<dd><p>(<code>unit</code>)<br>
-width for the forest column. If <code>NULL</code> the widths get automatically calculated. See <code><a href="https://rdrr.io/r/grid/unit.html" class="external-link">grid::unit()</a></code>.</p></dd>
+<dd><p>(<code>unit</code>)<br> width for the forest column.
+If <code>NULL</code> the widths get automatically calculated. See <code><a href="https://rdrr.io/r/grid/unit.html" class="external-link">grid::unit()</a></code>.</p></dd>
 
 
 <dt>col_symbol_size</dt>
-<dd><p>(<code>integer</code>)<br>
-column index from <code>tbl</code> containing data to be used to determine relative
-size for estimator plot symbol. Typically, the symbol size is proportional to the
-sample size used to calculate the estimator. If <code>NULL</code>, the same symbol
-size is used for all subgroups. By default tries to get this from
-<code>tbl</code> attribute <code>col_symbol_size</code>, otherwise needs to be manually specified.</p></dd>
+<dd><p>(<code>integer</code>)<br> column index from <code>tbl</code> containing data to be used
+to determine relative size for estimator plot symbol. Typically, the symbol size is proportional
+to the sample size used to calculate the estimator. If <code>NULL</code>, the same symbol size is used for all subgroups.
+By default tries to get this from <code>tbl</code> attribute <code>col_symbol_size</code>, otherwise needs to be manually specified.</p></dd>
 
 
 <dt>col</dt>
@@ -171,7 +158,7 @@ Only considered if <code>draw = TRUE</code> is used.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>(<code>gtree</code>) object containing the forest plot and table</p>
+<p><code>gtree</code> object containing the forest plot and table</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

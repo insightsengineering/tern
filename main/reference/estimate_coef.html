@@ -12,7 +12,7 @@ specific values."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9048</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9050</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,15 +37,6 @@ specific values."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -90,7 +81,7 @@ specific values.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>variable, given</dt>
 <dd><p>Names of two variable in interaction. We seek the estimation of the levels of <code>variable</code>
-given the levels of <code>given</code></p></dd>
+given the levels of <code>given</code>.</p></dd>
 
 
 <dt>lvl_var, lvl_given</dt>
@@ -119,7 +110,7 @@ given the levels of <code>given</code></p></dd>
 
 <p>A list of matrix (one per level of variable) with rows corresponding to the combinations of
 <code>variable</code> and <code>given</code>, with columns:</p><dl><dt>coef_hat</dt>
-<dd><p>Estimation of the coefficient</p></dd>
+<dd><p>Estimation of the coefficient.</p></dd>
 
 <dt>coef_se</dt>
 <dd><p>Standard error of the estimation.</p></dd>
@@ -127,8 +118,8 @@ given the levels of <code>given</code></p></dd>
 <dt>hr</dt>
 <dd><p>Hazard ratio.</p></dd>
 
-<dt>lcl,ucl</dt>
-<dd><p>lower/upper confidence limit of the hazard ratio</p></dd>
+<dt>lcl, ucl</dt>
+<dd><p>Lower/upper confidence limit of the hazard ratio.</p></dd>
 
 
 </dl></div>
@@ -136,8 +127,8 @@ given the levels of <code>given</code></p></dd>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Given the cox regression investigating the effect of Arm (A, B, C; reference A)
 and Sex (F, M; reference Female). The model is abbreviated: y ~ Arm + Sex + Arm x Sex.
-The cox regression estimates the coefficients along with a variance-covariance matrix for:</p><ul><li><p>b1 (arm b), b2 (arm c),</p></li>
-<li><p>b3 (sex m),</p></li>
+The cox regression estimates the coefficients along with a variance-covariance matrix for:</p><ul><li><p>b1 (arm b), b2 (arm c)</p></li>
+<li><p>b3 (sex m)</p></li>
 <li><p>b4 (arm b: sex m), b5 (arm c: sex m)</p></li>
 </ul><p>Given that I want an estimation of the Hazard Ratio for arm C/sex M, the estimation
 will be given in reference to arm A/Sex M by exp(b2 + b3 + b5)/ exp(b3) = exp(b2 + b5),

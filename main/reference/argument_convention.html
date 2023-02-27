@@ -12,7 +12,7 @@ that are used repeatedly to express an analysis."><!-- mathjax --><script src="h
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9048</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9050</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,15 +37,6 @@ that are used repeatedly to express an analysis."><!-- mathjax --><script src="h
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -80,7 +71,7 @@ that are used repeatedly to express an analysis.</p>
 
 
 <dt>.df_row</dt>
-<dd><p>(<code>data frame</code>)<br> data frame across all of the columns for the given row split.</p></dd>
+<dd><p>(<code>data.frame</code>)<br> data frame across all of the columns for the given row split.</p></dd>
 
 
 <dt>.in_ref_col</dt>
@@ -97,7 +88,7 @@ that are used repeatedly to express an analysis.</p>
 
 
 <dt>.ref_group</dt>
-<dd><p>(<code>data frame</code> or <code>vector</code>)<br> the data corresponding to the reference group.</p></dd>
+<dd><p>(<code>data.frame</code> or <code>vector</code>)<br> the data corresponding to the reference group.</p></dd>
 
 
 <dt>.stats</dt>
@@ -122,7 +113,7 @@ by a statistics function.</p></dd>
 
 
 <dt>.spl_context</dt>
-<dd><p>(<code>data frame</code>)<br> gives information about ancestor split states
+<dd><p>(<code>data.frame</code>)<br> gives information about ancestor split states
 that is passed by <code>rtables</code>.</p></dd>
 
 
@@ -139,7 +130,7 @@ that is passed by <code>rtables</code>.</p></dd>
 
 
 <dt>df</dt>
-<dd><p>(<code>data frame</code>)<br> data set containing all analysis variables.</p></dd>
+<dd><p>(<code>data.frame</code>)<br> data set containing all analysis variables.</p></dd>
 
 
 <dt>draw</dt>
@@ -152,7 +143,7 @@ Note that in that case the remaining occurrence levels in the table are sorted a
 
 
 <dt>id</dt>
-<dd><p>(<code>string</code>) <br> subject variable name.</p></dd>
+<dd><p>(<code>string</code>)<br> subject variable name.</p></dd>
 
 
 <dt>is_event</dt>
@@ -160,7 +151,7 @@ Note that in that case the remaining occurrence levels in the table are sorted a
 
 
 <dt>indent_mod</dt>
-<dd><p>(<code>count</code>) <br> it can be negative. Modifier for the default indent position for the
+<dd><p>(<code>count</code>)<br> it can be negative. Modifier for the default indent position for the
 structure created by this function(subtable, content table, or row) and
 all of that structure's children. Defaults to 0, which corresponds to the
 unmodified default behavior.</p></dd>

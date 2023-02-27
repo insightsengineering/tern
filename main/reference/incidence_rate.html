@@ -14,7 +14,7 @@ as incidence rate. Primary analysis variable is the person-years at risk."><!-- 
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9048</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10.9050</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,15 +39,6 @@ as incidence rate. Primary analysis variable is the person-years at risk."><!-- 
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -109,7 +100,7 @@ as incidence rate. Primary analysis variable is the person-years at risk.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>df</dt>
-<dd><p>(<code>data frame</code>)<br> data set containing all analysis variables.</p></dd>
+<dd><p>(<code>data.frame</code>)<br> data set containing all analysis variables.</p></dd>
 
 
 <dt>.var</dt>
@@ -118,7 +109,7 @@ by a statistics function.</p></dd>
 
 
 <dt>n_events</dt>
-<dd><p>(<code>integer</code>) <br> number of events observed.</p></dd>
+<dd><p>(<code>integer</code>)<br> number of events observed.</p></dd>
 
 
 <dt>is_event</dt>
@@ -126,13 +117,13 @@ by a statistics function.</p></dd>
 
 
 <dt>control</dt>
-<dd><p>(<code>list</code>) <br> parameters for estimation details, specified by using
-the helper function <code><a href="control_incidence_rate.html">control_incidence_rate()</a></code>. Possible parameter options are: <br></p><ul><li><p><code>conf_level</code>: (<code>proportion</code>) <br> confidence level for the estimated incidence rate.</p></li>
-<li><p><code>conf_type</code>: (<code>string</code>) <br><code>normal</code> (default), <code>normal_log</code>, <code>exact</code>, or <code>byar</code>
+<dd><p>(<code>list</code>)<br> parameters for estimation details, specified by using
+the helper function <code><a href="control_incidence_rate.html">control_incidence_rate()</a></code>. Possible parameter options are:</p><ul><li><p><code>conf_level</code> (<code>proportion</code>)<br> confidence level for the estimated incidence rate.</p></li>
+<li><p><code>conf_type</code> (<code>string</code>)<br><code>normal</code> (default), <code>normal_log</code>, <code>exact</code>, or <code>byar</code>
 for confidence interval type.</p></li>
-<li><p><code>time_unit_input</code>: (<code>string</code>) <br><code>day</code>, <code>week</code>, <code>month</code>, or <code>year</code> (default)
+<li><p><code>time_unit_input</code> (<code>string</code>)<br><code>day</code>, <code>week</code>, <code>month</code>, or <code>year</code> (default)
 indicating time unit for data input.</p></li>
-<li><p><code>time_unit_output</code>: (<code>numeric</code>) <br> time unit for desired output (in person-years).</p></li>
+<li><p><code>time_unit_output</code> (<code>numeric</code>)<br> time unit for desired output (in person-years).</p></li>
 </ul></dd>
 
 
@@ -174,22 +165,31 @@ to avoid warnings from <code>rtables</code>.</p></dd>
 
 
 <dt>person_years</dt>
-<dd><p>(<code>numeric</code>) <br> total person-years at risk.</p></dd>
+<dd><p>(<code>numeric</code>)<br> total person-years at risk.</p></dd>
 
 
 <dt>alpha</dt>
-<dd><p>(<code>numeric</code>) <br> two-sided alpha-level for confidence interval.</p></dd>
+<dd><p>(<code>numeric</code>)<br> two-sided alpha-level for confidence interval.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>The statistics are:</p><ul><li><p><code>person_years</code>: total person-years at risk</p></li>
-<li><p><code>n_events</code>: total number of events observed</p></li>
-<li><p><code>rate</code>: estimated incidence rate</p></li>
-<li><p><code>rate_ci</code>: confidence interval for the incidence rate</p></li>
-</ul></div>
+<p>The statistics are:</p><dl><dt>person_years</dt>
+<dd><p>total person-years at risk</p></dd>
+
+<dt>n_events</dt>
+<dd><p>total number of events observed</p></dd>
+
+<dt>rate</dt>
+<dd><p>estimated incidence rate</p></dd>
+
+<dt>rate_ci</dt>
+<dd><p>confidence interval for the incidence rate</p></dd>
+
+
+</dl></div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
@@ -207,8 +207,7 @@ function <code>s_incidence_rate</code> and desired format.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span>,</span></span>
