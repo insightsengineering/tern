@@ -112,6 +112,31 @@ testthat::test_that("add_rowcounts works with multiple column and row splits", {
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("add_rowcounts works with pruning", {
+  result <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    split_rows_by("SEX", split_fun = drop_split_levels) %>%
+    add_rowcounts() %>%
+    analyze("RACE") %>%
+    build_table(DM) %>%
+    prune_table()
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  dm_f <- DM %>% dplyr::filter(SEX == "F")
+  result <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    split_rows_by("SEX", split_fun = drop_split_levels) %>%
+    add_rowcounts() %>%
+    analyze("RACE") %>%
+    build_table(dm_f) %>%
+    prune_table()
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("h_col_indices works as expected", {
   tab <- basic_table() %>%
     split_cols_by("ARM") %>%
