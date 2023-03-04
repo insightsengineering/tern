@@ -15,7 +15,7 @@ c_label_n(df, labelstr, .N_row)
 \item{.N_row}{(\code{count})\cr column-wise N (column count) for the full column that is passed by \code{rtables}.}
 }
 \value{
-\code{CellValue} that just has the right label.
+list containing "row_count" with the row count value and the correct label.
 }
 \description{
 This takes the label of the latest row split level and adds the row total in parentheses.

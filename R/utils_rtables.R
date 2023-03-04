@@ -94,7 +94,7 @@ cfun_by_flag <- function(analysis_var,
 #'
 #' @inheritParams argument_convention
 #'
-#' @return `CellValue` that just has the right label.
+#' @return list containing "row_count" with the row count value and the correct label.
 #'
 #' @note Important is here to not use `df` but `.N_row` in the implementation, because the former
 #'   is already split by columns and will refer to the first column of the data only.
@@ -102,13 +102,9 @@ cfun_by_flag <- function(analysis_var,
 #' @keywords internal
 c_label_n <- function(df,
                       labelstr,
-                      .N_row # nolint
-) {
+                      .N_row) { # nolint
   label <- paste0(labelstr, " (N=", .N_row, ")")
-  CellValue(
-    val = NULL,
-    label = label
-  )
+  list(row_count = formatters::with_label(c(.N_row, .N_row), label))
 }
 
 #' Layout Creating Function to Add Row Total Counts
@@ -120,8 +116,9 @@ c_label_n <- function(df,
 #' @inheritParams argument_convention
 #'
 #' @return The modified layout where the latest row split labels now have the row-wise
-#'   total counts (i.e. without column based subsetting) attached in parentheses.
-#'
+#'   total counts (i.e. without column based subsetting) attached in parentheses. Row
+#'   count values are contained in these row count rows but are not displayed so that
+#'   they are not considered zero rows by default when pruning.
 #'
 #' @examples
 #' basic_table() %>%
@@ -134,9 +131,14 @@ c_label_n <- function(df,
 #'
 #' @export
 add_rowcounts <- function(lyt) {
+  c_lbl_n_fun <- make_afun(
+    c_label_n,
+    .stats = c("row_count"),
+    .formats = c(row_count = function(x, ...) "")
+  )
   summarize_row_groups(
     lyt,
-    cfun = c_label_n
+    cfun = c_lbl_n_fun
   )
 }
 

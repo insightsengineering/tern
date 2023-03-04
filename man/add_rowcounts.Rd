@@ -11,7 +11,9 @@ add_rowcounts(lyt)
 }
 \value{
 The modified layout where the latest row split labels now have the row-wise
-total counts (i.e. without column based subsetting) attached in parentheses.
+total counts (i.e. without column based subsetting) attached in parentheses. Row
+count values are contained in these row count rows but are not displayed so that
+they are not considered zero rows by default when pruning.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
