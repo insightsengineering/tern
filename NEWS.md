@@ -42,6 +42,7 @@
   (also the standard values, that where never used) of column indices and names.
 * Fixed single applicable record bug in `count_abnormal_by_grade`.
 * Fixed bug in `add_rowcounts` that caused all row count row values to be counted as zero.
+* Fixed bug in `h_col_indices` causing an error when pruning with an overall column added.
 
 ### Miscellaneous
 * Renamed `test_pkc01.R` and `summarize_variables_in_cols.R` into `test_pkct01.R`
