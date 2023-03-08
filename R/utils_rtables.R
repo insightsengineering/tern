@@ -157,8 +157,8 @@ add_rowcounts <- function(lyt) {
 #' @export
 h_col_indices <- function(table_tree, col_names) {
   checkmate::assert_class(table_tree, "VTableNodeInfo")
-  checkmate::assert_subset(col_names, names(row_cells(table_tree)), empty.ok = FALSE)
-  match(col_names, names(row_cells(table_tree)))
+  checkmate::assert_subset(col_names, names(attr(col_info(table_tree), "cextra_args")), empty.ok = FALSE)
+  match(col_names, names(attr(col_info(table_tree), "cextra_args")))
 }
 
 #' Labels or Names of List Elements
