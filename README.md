@@ -55,9 +55,13 @@ remotes::install_github("insightsengineering/tern@*release")
 
 A stable release of all `NEST` packages from June 2022 is also available [here](https://github.com/insightsengineering/depository#readme).
 
-In order to run many of the examples you will also need to install the [`scda`](https://insightsengineering.github.io/scda) package.
-
 See package vignettes `browseVignettes(package = "tern")` for usage of this package.
+
+## Related
+
+* [`rtables`](https://github.com/insightsengineering/rtables) - table engine used
+* [TLG Catalog](https://github.com/insightsengineering/tlg-catalog) - examples for clinical trials tables and graphs
+* [`teal.modules.clinical`](https://insightsengineering.github.io/teal.modules.clinical) - `teal` modules for interactive data analysis
 
 ## Acknowledgment
 
