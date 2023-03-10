@@ -29,6 +29,7 @@ test_proportion_diff(
   lyt,
   vars,
   ...,
+  var_labels = vars,
   show_labels = "hidden",
   table_names = vars,
   .stats = NULL,
@@ -57,6 +58,8 @@ to calculate the p-value.}
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
 \item{...}{other arguments are passed to \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}.}
+
+\item{var_labels}{character for label.}
 
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
