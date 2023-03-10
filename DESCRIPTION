@@ -31,7 +31,7 @@ Imports:
     emmeans (>= 1.4.5),
     forcats (>= 1.0.0),
     formatters (>= 0.4.0),
-    ggplot2,
+    ggplot2 (>= 3.4.0),
     grid,
     gridExtra,
     gtable,
@@ -50,7 +50,7 @@ Imports:
 Suggests:
     knitr,
     lattice,
-    nestcolor (>= 0.1.0),
+    nestcolor (>= 0.1.1),
     rmarkdown,
     stringr,
     testthat (>= 3.0)
