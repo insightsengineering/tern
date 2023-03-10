@@ -179,6 +179,8 @@ testthat::test_that("test_proportion_diff edge case: all responder by fisher", {
     split_cols_by(var = "grp", ref_group = "B") %>%
     test_proportion_diff(
       vars = "rsp",
+      var_labels = "Variable Label",
+      show_labels = "visible",
       method = c("chisq", "schouten", "fisher", "cmh")[3]
     ) %>%
     build_table(df = dta)
@@ -198,6 +200,8 @@ testthat::test_that("test_proportion_diff edge case: all responder by CMH", {
     split_cols_by(var = "grp", ref_group = "B") %>%
     test_proportion_diff(
       vars = "rsp",
+      var_labels = "Variable Label",
+      show_labels = "visible",
       method = c("chisq", "schouten", "fisher", "cmh")[4],
       variables = list(strata = "strat")
     ) %>%
