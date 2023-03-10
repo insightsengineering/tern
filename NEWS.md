@@ -40,6 +40,7 @@
 
 ### Miscellaneous
 * Renamed `summarize_vars_in_cols` to `analyze_vars_in_cols` to reflect the appropriate `analyze` logic.
+* Removed redundant `summary_in_cols` helper functions.
 * Exported function `format_xx`.
 * Replaced deprecated `ggplot2` functions/arguments to fix warnings.
 * Replaced deprecated function `forcats::fct_explicit_na` with `forcats::fct_na_value_to_level`.
@@ -60,7 +61,6 @@
 ### Enhancements 
 * Redesign of data handling in tests by removing repetitive data loads and 
   library calls.
-* Removed `summary_in_cols` helper functions because redundant.
 * Added `DescTools::BinomDiffCI` function within `tern`.
 * Added new parameter to `summarize_logistic` to specify which pivoted value 
   to use during analysis.
