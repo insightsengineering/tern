@@ -22,8 +22,8 @@
 * Fixed bugs in `rtables_access.R` caused by not checking for specific combinations
   (also the standard values that were never used) of column indices and names.
 * Fixed single applicable record bug in `count_abnormal_by_grade`.
-* Fixed bug in `add_rowcounts` that caused all row count row values to be counted as zero.
-* Fixed bug in `h_col_indices` causing an error when pruning with an overall column added.
+* Fixed bug in `add_rowcounts` that caused all row count row values to count as zero.
+* Fixed bug in `h_col_indices` causing an error when pruning with combination columns.
 
 ### Documentation and Tests
 * Added more tests to increase code coverage.
@@ -36,7 +36,7 @@
 * Created vignette which saves cached synthetic CDISC dataset files to the `data/` folder and 
   generated cached synthetic datasets.
 * Updated all examples/tests to use datasets from the `data/` folder instead of `scda` datasets.
-* Removed all template tests from `tern`. These tests are kept in internal repo `scda.test`.
+* Removed all template tests from `tern`. These tests are in internal repo `scda.test`.
 
 ### Miscellaneous
 * Renamed `summarize_vars_in_cols` to `analyze_vars_in_cols` to reflect the appropriate `analyze` logic.
