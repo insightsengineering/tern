@@ -1,62 +1,51 @@
-# tern 0.7.10.9056
+# tern 0.8.0
 
 ### Enhancements
-* Added `summarize_glm_count` function to tern.
-* Replaced `synthetic_cdisc_data` with re-factored `synthetic_cdisc_dataset` 
-  function to speed up data set loading in tests/examples.
-* Updated all tests to use `rcd_2022_06_27` version of cached data.
-* Added more tests to increase code coverage.
+* Added `summarize_glm_count` function to analyze count data using a linear model.
 * Added legend to `g_step`.
 * Added formatting functions `format_fraction_fixed_dp` and 
   `format_count_fraction_fixed_dp` with fixed single decimal place in percentages.
-* Removed `summary_in_cols` helper functions because redundant.
-* Added `na_level` and `labelstr` to `summarize_vars_in_cols`.
-* Added tests for `pkct01`, `adat03`, `pdt01`, and `pdt02`.
-* Added `analyze_num_patients` to have total summary at the beginning that does not
+* Added `na_level` and `labelstr` arguments to `summarize_vars_in_cols`.
+* Added `analyze_num_patients` to include summary at the beginning that does not
   repeat when paginating.
 * Added `h_row_first_values` function as a more general helper function to retrieve
   first values from specific rows.
-* Replaced table template tests with snapshot testing.
 * Added option to remove `"(n)"` suffix from `unique_count` labels for `s_num_patients`.
-* Updated `summarize_ancova` examples to use `iris` dataset in examples instead of `scda` data.
-* Created vignette which saves cached synthetic CDISC dataset files to the `data/` folder.
-* Added cached synthetic datasets to `data/` folder to use in tests/examples instead of `scda` data.
-* Updated examples to use datasets from the `tern` package instead of `scda` datasets.
-* Replaced all applicable tests with snapshot testing.
-* Updated all tests to use `tern` data.
 * Added options to `g_km` to annotate with statistics (`annot_stats`) and add corresponding 
   vertical lines (`annot_stats_lines`).
 
 ### Bug Fixes
 * Fixed bug causing incorrect ordering of numeric grade levels when missing 
   grades are present in `s_count_occurrences_by_grade`.
-* Changed `summarize_vars_in_cols` to work with pagination machinery.
-* Fixed bug passing `conf_level` to `emmeans::contrast()` in `s_ancova` to make 
-  it works. Tests are also updated. 
-* Fixed table tests (`aet02`, `aet02_smq`, `aet_03`, `aet_06_smq`, `aet_09`, 
-  `aet_09_smq`, `mth01`, `cmt01`, `aet07`, `aet06`) that used 
-  `summarize_num_patients` to generate an initial summary so there is no repetition
-  when paginating.
-* Removed deprecated `ggplot2` functions/arguments to resolve warnings.
-* Fixed bugs in `rtables_access.R` that did not check for specific combination
-  (also the standard values, that where never used) of column indices and names.
+* Refactored `summarize_vars_in_cols` to work with pagination machinery.
+* Fixed bug to allow passing of `conf_level` argument to `emmeans::contrast()` in `s_ancova`.
+* Fixed bugs in `rtables_access.R` caused by not checking for specific combinations
+  (also the standard values that were never used) of column indices and names.
 * Fixed single applicable record bug in `count_abnormal_by_grade`.
 * Fixed bug in `add_rowcounts` that caused all row count row values to be counted as zero.
 * Fixed bug in `h_col_indices` causing an error when pruning with an overall column added.
 
-### Miscellaneous
-* Renamed `test_pkc01.R` and `summarize_variables_in_cols.R` into `test_pkct01.R`
-  and `summarize_vars_in_cols.R`, respectively.
-* Renamed `summarize_vars_in_cols` into `analyze_vars_in_cols` to reflect the
-  appropriate `analyze` logic.
-* Exported function `format_xx`.
-* Updated tests to use `testthat` 3rd edition.
+### Documentation and Tests
+* Added more tests to increase code coverage.
 * Created separate documentation files for functions in different sections of pkgdown reference.
 * Created separate `.R` files for logistic regression and cox regression helper functions.
-* Removed all template tests from `tern`. These tests are in internal repo `scda.test`.
+* Fixed table tests using `analyze_num_patients` to generate an initial summary so there is no 
+  repetition when paginating.
+* Updated tests to use `testthat` 3rd edition and replaced applicable tests with snapshot testing.
+* Updated `summarize_ancova` examples to use `iris` dataset instead of `scda` data.
+* Created vignette which saves cached synthetic CDISC dataset files to the `data/` folder and 
+  generated cached synthetic datasets.
+* Updated all examples/tests to use datasets from the `data/` folder instead of `scda` datasets.
+* Removed all template tests from `tern`. These tests are kept in internal repo `scda.test`.
+
+### Miscellaneous
+* Renamed `summarize_vars_in_cols` to `analyze_vars_in_cols` to reflect the appropriate `analyze` logic.
+* Removed redundant `summary_in_cols` helper functions.
+* Exported function `format_xx`.
+* Replaced deprecated `ggplot2` functions/arguments to fix warnings.
 * Replaced deprecated function `forcats::fct_explicit_na` with `forcats::fct_na_value_to_level`.
-* Removal of deprecated `wrap_text` and related files.
-* Deprecation cycle started for `footnotes` functions.
+* Removed deprecated `wrap_text` function and related files.
+* Started deprecation cycle for `footnotes` functions.
 
 # tern 0.7.10
 
