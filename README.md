@@ -57,6 +57,12 @@ A stable release of all `NEST` packages from October 2022 is also available [her
 
 See package vignettes `browseVignettes(package = "tern")` for usage of this package.
 
+## Related
+
+* [`rtables`](https://github.com/insightsengineering/rtables) - table engine used
+* [TLG Catalog](https://github.com/insightsengineering/tlg-catalog) - examples for clinical trials tables and graphs
+* [`teal.modules.clinical`](https://insightsengineering.github.io/teal.modules.clinical) - `teal` modules for interactive data analysis
+
 ## Acknowledgment
 
 This package is a result of a joint efforts by many developers and stakeholders. We would like to thank everyone who contributed so far!
