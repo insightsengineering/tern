@@ -6,7 +6,7 @@ hazard ratios are for the comparison of the second level vs. the first one.
 The model which is fit is:
 Surv(time, event) ~ arm * poly(biomarker, degree) + covariates + strata(strata)
 where degree is specified by control_step().
-Note that for the default degree 0 the biomarker variable is not included in the model."><title>Subgroup Treatment Effect Pattern (STEP) Fit for Survival Outcome — fit_survival_step • tern</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Subgroup Treatment Effect Pattern (STEP) Fit for Survival Outcome — fit_survival_step"><meta property="og:description" content="
+Note that for the default degree 0 the biomarker variable is not included in the model."><title>Subgroup Treatment Effect Pattern (STEP) Fit for Survival Outcome — fit_survival_step • tern</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Subgroup Treatment Effect Pattern (STEP) Fit for Survival Outcome — fit_survival_step"><meta property="og:description" content="
 This fits the Subgroup Treatment Effect Pattern models for a survival outcome. The treatment arm
 variable must have exactly 2 levels, where the first one is taken as reference and the estimated
 hazard ratios are for the comparison of the second level vs. the first one.
@@ -24,7 +24,7 @@ Note that for the default degree 0 the biomarker variable is not included in the
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.10</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,9 @@ Note that for the default degree 0 the biomarker variable is not included in the
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/generate_tern_data.html">Example Data Generation</a>
     <a class="dropdown-item" href="../articles/tables.html">Tabulation</a>
+    <a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a>
   </div>
 </li>
 <li class="nav-item">
@@ -54,6 +56,7 @@ Note that for the default degree 0 the biomarker variable is not included in the
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
 <!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -82,8 +85,9 @@ Note that for the default degree 0 the biomarker variable is not included in the
 <p>This fits the Subgroup Treatment Effect Pattern models for a survival outcome. The treatment arm
 variable must have exactly 2 levels, where the first one is taken as reference and the estimated
 hazard ratios are for the comparison of the second level vs. the first one.</p>
-<p>The model which is fit is:<br><code>Surv(time, event) ~ arm * poly(biomarker, degree) + covariates + strata(strata)</code><br>
-where <code>degree</code> is specified by <code><a href="control_step.html">control_step()</a></code>.
+<p>The model which is fit is:</p>
+<p><code>Surv(time, event) ~ arm * poly(biomarker, degree) + covariates + strata(strata)</code></p>
+<p>where <code>degree</code> is specified by <code><a href="control_step.html">control_step()</a></code>.
 Note that for the default degree 0 the <code>biomarker</code> variable is not included in the model.</p>
     </div>
 
@@ -126,15 +130,10 @@ second part of the columns contain the estimates for the treatment arm compariso
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Testing dataset with just two treatment arms.</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scda</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Testing dataset with just two treatment arms.</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/roche/rtables" class="external-link">rtables</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">adtte</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scda/man/synthetic_cdisc_data.html" class="external-link">synthetic_cdisc_data</a></span><span class="op">(</span><span class="st">"latest"</span><span class="op">)</span><span class="op">$</span><span class="va">adtte</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">adtte_f</span> <span class="op">&lt;-</span> <span class="va">adtte</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">adtte_f</span> <span class="op">&lt;-</span> <span class="va">tern_ex_adtte</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"OS"</span>,</span></span>
 <span class="r-in"><span>    <span class="va">ARM</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B: Placebo"</span>, <span class="st">"A: Drug X"</span><span class="op">)</span></span></span>
@@ -164,26 +163,26 @@ second part of the columns contain the estimates for the treatment arm compariso
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39 12</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">step_matrix</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Percentile Center Percentile Lower Percentile Upper Interval Center</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]             0.025                0            0.275        1.240529</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]             0.050                0            0.300        1.628805</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]             0.075                0            0.325        1.818258</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]             0.100                0            0.350        2.003407</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]             0.125                0            0.375        2.300801</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]             0.150                0            0.400        2.638651</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      Interval Lower Interval Upper   n events       loghr        se   ci_lower</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]      0.4055982       3.504396  74     41 0.006507558 0.3163349 -0.6134975</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]      0.4055982       3.686405  81     45 0.056543290 0.3031253 -0.5375715</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]      0.4055982       3.805456  87     50 0.118428018 0.2903633 -0.4506737</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]      0.4055982       3.925492  94     55 0.152132172 0.2808143 -0.3982538</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]      0.4055982       4.121412 101     59 0.099905333 0.2715645 -0.4323514</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]      0.4055982       4.284773 107     64 0.082851772 0.2574120 -0.4216664</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]             0.025                0            0.275        1.472755</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]             0.050                0            0.300        2.028546</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]             0.075                0            0.325        2.204086</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]             0.100                0            0.350        2.799776</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]             0.125                0            0.375        2.969998</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]             0.150                0            0.400        3.149068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      Interval Lower Interval Upper  n events      loghr        se   ci_lower</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]      0.4459546       4.182444 39     29 0.03729601 0.4243013 -0.7943192</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]      0.4459546       4.349471 43     31 0.23246622 0.3881347 -0.5282639</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]      0.4459546       4.626913 46     32 0.07952492 0.3813113 -0.6678314</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]      0.4459546       4.805767 50     35 0.09020455 0.3638368 -0.6229026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]      0.4459546       4.929816 53     37 0.15522702 0.3477999 -0.5264483</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]      0.4459546       5.020539 57     41 0.11135760 0.3332843 -0.5418676</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       ci_upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.6265126</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.6506581</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.6875297</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.7025181</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.6321620</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.5873699</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.8689112</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.9931963</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.8268813</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.8033117</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.8369023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.7645828</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Specify different polynomial degree for the biomarker interaction to use more flexible local</span></span></span>
 <span class="r-in"><span><span class="co"># models. Or specify different Cox regression options.</span></span></span>
