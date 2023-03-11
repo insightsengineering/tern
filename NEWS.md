@@ -24,6 +24,7 @@
 * Fixed single applicable record bug in `count_abnormal_by_grade`.
 * Fixed bug in `add_rowcounts` that caused all row count row values to count as zero.
 * Fixed bug in `h_col_indices` causing an error when pruning with combination columns.
+* Fixed bug in `test_proportion_diff` missing argument for `var_labels`.
 
 ### Documentation and Tests
 * Added more tests to increase code coverage.
