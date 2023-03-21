@@ -63,7 +63,7 @@ testthat::test_that("h_row_counts returns NA with empty analysis row", {
   testthat::expect_snapshot(res)
 
   table_row <- collect_leaves(sub_tab)[[1]]
-  result <- h_row_counts(table_row, col_names = c("B: Placebo", "C: Combination"))
+  result <- h_row_counts(table_row, col_names = c())
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
