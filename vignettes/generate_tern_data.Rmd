@@ -124,7 +124,7 @@ generate_adsl <- function(N = 200) { # nolint
     ) %>%
       sample_fct(N, prob = c(.55, .23, .16, .05, .004, .003, .002, .002)) %>%
       with_label("Race"),
-    TRTSDTM = sys_dtm + sample(seq(0, study_duration_secs), size = N, replace = TRUE) %>% 
+    TRTSDTM = sys_dtm + sample(seq(0, study_duration_secs), size = N, replace = TRUE) %>%
       with_label("Datetime of First Exposure to Treatment"),
     TRTEDTM = TRTSDTM + study_duration_secs %>%
       with_label("Datetime of Last Exposure to Treatment"),
@@ -483,7 +483,7 @@ generate_adlb <- function(adsl = tern_ex_adsl,
       TRUE ~ TRTEDTM
     ))) %>%
     dplyr::ungroup()
-  
+
   adlb <- adlb %>%
     dplyr::group_by(USUBJID) %>%
     dplyr::mutate(ADTM = rep(
