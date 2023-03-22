@@ -1,4 +1,4 @@
-# tern 0.8.0
+# tern 0.8.1
 
 ### Enhancements
 * Added `summarize_glm_count` function to analyze count data using a linear model.
