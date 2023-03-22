@@ -1,3 +1,11 @@
+# tern 0.8.1
+
+### Bug Fixes
+* Fixed missing label for `TRTEDTM` in `tern` datasets.
+
+### Miscellaneous
+* Implemented the `lubridate` package for date variables in `tern` datasets.
+
 # tern 0.8.0
 
 ### Enhancements
@@ -47,7 +55,6 @@
 * Replaced deprecated function `forcats::fct_explicit_na` with `forcats::fct_na_value_to_level`.
 * Removed deprecated `wrap_text` function and related files.
 * Started deprecation cycle for `footnotes` functions.
-* Implemented the `lubridate` package for date variables in `tern` datasets.
 
 # tern 0.7.10
 
