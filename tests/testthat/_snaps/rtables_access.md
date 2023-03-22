@@ -62,7 +62,7 @@
     Code
       res
     Output
-      [1] NA NA
+      [1] NA NA NA
 
 # h_row_fractions works as expected
 

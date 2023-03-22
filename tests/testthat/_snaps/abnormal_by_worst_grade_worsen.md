@@ -202,11 +202,11 @@
           Any   27/68 (39.7%)    18/72 (25%)    24/58 (41.4%)
       ALT                                                    
         High                                                 
-          1     7/62 (11.3%)     6/62 (9.7%)     2/48 (4.2%) 
-          2     12/62 (19.4%)     4/67 (6%)      11/50 (22%) 
-          3      4/64 (6.2%)    11/71 (15.5%)   7/56 (12.5%) 
-          4      1/66 (1.5%)    8/71 (11.3%)      4/57 (7%)  
-          Any   24/66 (36.4%)   29/71 (40.8%)   24/57 (42.1%)
+          1     7/63 (11.1%)     6/62 (9.7%)     2/48 (4.2%) 
+          2      12/63 (19%)      4/67 (6%)      11/50 (22%) 
+          3      4/65 (6.2%)    11/71 (15.5%)   7/56 (12.5%) 
+          4      1/67 (1.5%)    8/71 (11.3%)      4/57 (7%)  
+          Any   24/67 (35.8%)   29/71 (40.8%)   24/57 (42.1%)
         Low                                                  
           1     12/67 (17.9%)    4/66 (6.1%)    7/52 (13.5%) 
           2     9/68 (13.2%)    12/69 (17.4%)   6/55 (10.9%) 
@@ -226,7 +226,7 @@
     Code
       res
     Output
-      # A tibble: 598 x 51
+      # A tibble: 600 x 51
          STUDYID COUNTRY SITEID SUBJID   AGE SEX   ARMCD ARM      ACTAR~1 ACTARM RACE 
          <chr>   <fct>   <chr>  <chr>  <dbl> <fct> <fct> <fct>    <fct>   <fct>  <fct>
        1 AB12345 BRA     BRA-1  id-105  37.8 F     ARM A A: Drug~ ARM A   A: Dr~ ASIAN
@@ -239,7 +239,7 @@
        8 AB12345 BRA     BRA-1  id-177  38.9 F     ARM B B: Plac~ ARM B   B: Pl~ ASIAN
        9 AB12345 BRA     BRA-1  id-177  38.9 F     ARM B B: Plac~ ARM B   B: Pl~ ASIAN
       10 AB12345 BRA     BRA-1  id-23   41.3 F     ARM A A: Drug~ ARM A   A: Dr~ AMER~
-      # ... with 588 more rows, 40 more variables: TRTSDTM <dttm>, TRTEDTM <dttm>,
+      # ... with 590 more rows, 40 more variables: TRTSDTM <dttm>, TRTEDTM <dttm>,
       #   EOSDY <dbl>, STRATA1 <fct>, STRATA2 <fct>, BMRKR1 <dbl>, BMRKR2 <fct>,
       #   REGION1 <fct>, SAFFL <fct>, USUBJID <chr>, PARAM <fct>, AVISIT <fct>,
       #   AVAL <dbl>, LBCAT <fct>, PARAMCD <chr>, AVALU <fct>, AVISITN <dbl>,
@@ -252,7 +252,7 @@
     Code
       res
     Output
-      # A tibble: 599 x 51
+      # A tibble: 600 x 51
          STUDYID COUNTRY SITEID SUBJID   AGE SEX   ARMCD ARM      ACTAR~1 ACTARM RACE 
          <chr>   <fct>   <chr>  <chr>  <dbl> <fct> <fct> <fct>    <fct>   <fct>  <fct>
        1 AB12345 BRA     BRA-1  id-105  37.8 F     ARM A A: Drug~ ARM A   A: Dr~ ASIAN
@@ -265,7 +265,7 @@
        8 AB12345 BRA     BRA-1  id-177  38.9 F     ARM B B: Plac~ ARM B   B: Pl~ ASIAN
        9 AB12345 BRA     BRA-1  id-177  38.9 F     ARM B B: Plac~ ARM B   B: Pl~ ASIAN
       10 AB12345 BRA     BRA-1  id-23   41.3 F     ARM A A: Drug~ ARM A   A: Dr~ AMER~
-      # ... with 589 more rows, 40 more variables: TRTSDTM <dttm>, TRTEDTM <dttm>,
+      # ... with 590 more rows, 40 more variables: TRTSDTM <dttm>, TRTEDTM <dttm>,
       #   EOSDY <dbl>, STRATA1 <fct>, STRATA2 <fct>, BMRKR1 <dbl>, BMRKR2 <fct>,
       #   REGION1 <fct>, SAFFL <fct>, USUBJID <chr>, PARAM <fct>, AVISIT <fct>,
       #   AVAL <dbl>, LBCAT <fct>, PARAMCD <chr>, AVALU <fct>, AVISITN <dbl>,

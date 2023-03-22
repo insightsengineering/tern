@@ -100,16 +100,18 @@
     Code
       res
     Output
-                                        B     A   
-      ————————————————————————————————————————————
-        p-value (Fisher's Exact Test)       1.0000
+                                          B     A   
+      ——————————————————————————————————————————————
+      Variable Label                                
+          p-value (Fisher's Exact Test)       1.0000
 
 # test_proportion_diff edge case: all responder by CMH
 
     Code
       res
     Output
-                                                 B   A 
-      —————————————————————————————————————————————————
-        p-value (Cochran-Mantel-Haenszel Test)       NA
+                                                   B   A 
+      ———————————————————————————————————————————————————
+      Variable Label                                     
+          p-value (Cochran-Mantel-Haenszel Test)       NA
 
