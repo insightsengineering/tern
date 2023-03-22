@@ -126,7 +126,7 @@ generate_adsl <- function(N = 200) { # nolint
       with_label("Race"),
     TRTSDTM = sys_dtm + sample(seq(0, study_duration_secs), size = N, replace = TRUE) %>%
       with_label("Datetime of First Exposure to Treatment"),
-    TRTEDTM = TRTSDTM + study_duration_secs %>%
+    TRTEDTM = c(TRTSDTM + study_duration_secs) %>%
       with_label("Datetime of Last Exposure to Treatment"),
     EOSDY = ceiling(as.numeric(difftime(TRTEDTM, TRTSDTM, units = "days"))) %>%
       with_label("End of Study Relative Day"),
