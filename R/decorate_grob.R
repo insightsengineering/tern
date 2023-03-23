@@ -35,7 +35,7 @@
 #' @return a grid grob (\code{gTree})
 #'
 #' @export
-#' @template author_waddella
+#' @author Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 #'
 #' @examples
 #' library(grid)
@@ -451,7 +451,7 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
 #' @return closure that increments the page number
 #'
 #' @keywords internal
-#' @template author_waddella
+#' @author Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 #'
 #' @examples
 #' # Internal function - decorate_grob_factory
@@ -487,7 +487,7 @@ decorate_grob_factory <- function(npages, ...) {
 #' @param grobs a list of grid grobs
 #' @param ... arguments passed on to \code{\link{decorate_grob}}
 #'
-#' @template author_waddella
+#' @author Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 #'
 #' @examples
 #' library(ggplot2)

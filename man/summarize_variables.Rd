@@ -162,10 +162,9 @@ to print out information about factor casting.}
 
 \item{var_labels}{character for label.}
 
-\item{nested}{boolean. Should this layout instruction be applied within the
-existing layout structure \emph{if possible} (\code{TRUE}, the default) or as a
-new top-level element (`FALSE). Ignored if it would nest a split underneath
-analyses, which is not allowed.}
+\item{nested}{(\code{flag})\cr whether this layout instruction be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
+underneath analyses, which is not allowed.}
 
 \item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
 
@@ -283,17 +282,6 @@ can be generated correctly. In particular for sparse tables this very likely can
 It is therefore better to always pre-process the dataset such that factors are manually
 created from character variables before passing the dataset to \code{\link[rtables:build_table]{rtables::build_table()}}.
 }
-\section{Formatting arguments}{
-
-These additional formatting arguments can be passed to the layout creating function:
-\describe{
-\item{.stats}{(\code{character})\cr names of the statistics to use}
-\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
-}
-}
-
 \examples{
 # `s_summary.numeric`
 

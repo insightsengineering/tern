@@ -467,10 +467,10 @@ create_afun_compare <- function(.stats = NULL,
 #'   When factor variables contains `NA`, it is expected that `NA`
 #'   have been conveyed to `na_level` appropriately beforehand with
 #'   [df_explicit_na()].
-#' @inheritParams rtables::analyze
+#'
+#' @inheritParams argument_convention
 #' @param ... arguments passed to `s_compare()`.
 #'
-#' @template formatting_arguments
 #' @export
 #'
 #' @examples
