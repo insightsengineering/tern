@@ -650,10 +650,10 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'   accounted for. When factor variables contains `NA`, it is expected that `NA`
 #'   have been conveyed to `na_level` appropriately beforehand with
 #'   [df_explicit_na()].
-#' @inheritParams rtables::analyze
+#'
+#' @inheritParams argument_convention
 #' @param ... arguments passed to `s_summary()`.
 #'
-#' @template formatting_arguments
 #' @export
 #'
 #' @examples
