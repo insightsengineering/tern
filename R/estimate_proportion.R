@@ -131,7 +131,8 @@ a_proportion <- make_afun(
 )
 
 #' @describeIn estimate_proportions used in a `rtables` pipeline.
-#' @inheritParams rtables::analyze
+#'
+#' @inheritParams argument_convention
 #' @param ... other arguments are ultimately conveyed to [s_proportion()].
 #'
 #' @examples

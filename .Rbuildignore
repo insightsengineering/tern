@@ -12,7 +12,6 @@ design/*
 ^\.github$
 ^\.git$
 README.*
-man-roxygen/*
 TODO\.md
 ^\.drone\.yml$
 ^Jenkinsfile$
@@ -21,4 +20,3 @@ TODO\.md
 ^staged_dependencies\.yaml$
 ^LICENSE\.md$
 ^\.gitlab-ci\.yml$
-^man-roxygen$

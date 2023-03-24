@@ -158,7 +158,8 @@ a_proportion_diff <- make_afun(
 #'   estimations, in `rcells`. The ellipsis (`...`) conveys arguments to
 #'   `s_proportion_diff()`, for instance `na.rm = FALSE` if missing data
 #'   should be accounted for.
-#' @inheritParams rtables::analyze
+#'
+#' @inheritParams argument_convention
 #' @param ... arguments passed to `s_proportion_diff()`.
 #'
 #' @examples

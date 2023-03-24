@@ -11,8 +11,6 @@
 #'
 #' @seealso [rtables::split_cols_by_multivar()]
 #'
-#' @template formatting_arguments
-#'
 #' @export
 #' @examples
 #'
