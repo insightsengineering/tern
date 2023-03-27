@@ -1,5 +1,4 @@
 # cicd
-^\.CI-FORCE-RELEASE-VERSION$
 ^\.pre-commit-config\.yaml$
 
 # data
@@ -37,5 +36,3 @@ TODO\.md
 # others
 ^renv$
 ^renv\.lock$
-^\.drone\.yml$
-^Jenkinsfile$
