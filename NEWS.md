@@ -5,6 +5,7 @@
 
 ### Miscellaneous
 * Implemented the `lubridate` package for date variables in `tern` datasets.
+* Organization of `.gitignore` and `.Rbuildignore`.
 
 # tern 0.8.0
 
