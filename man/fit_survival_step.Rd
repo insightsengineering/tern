@@ -19,7 +19,7 @@ fit_survival_step(
 \item{control}{(named \code{list})\cr combined control list from \code{\link[=control_step]{control_step()}} and \code{\link[=control_coxph]{control_coxph()}}.}
 }
 \value{
-a matrix of class \code{step}. The first part of the columns describe the subgroup intervals used
+A matrix of class \code{step}. The first part of the columns describe the subgroup intervals used
 for the biomarker variable, including where the center of the intervals are and their bounds. The
 second part of the columns contain the estimates for the treatment arm comparison.
 }

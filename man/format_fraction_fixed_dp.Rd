@@ -12,7 +12,7 @@ format_fraction_fixed_dp(x, ...)
 \item{...}{required for \code{rtables} interface.}
 }
 \value{
-a string in the format \verb{num / denom (ratio \%)}. If \code{num} is 0 the format is \code{num / denom}.
+A string in the format \verb{num / denom (ratio \%)}. If \code{num} is 0, the format is \code{num / denom}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

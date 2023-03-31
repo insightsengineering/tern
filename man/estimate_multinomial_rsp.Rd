@@ -50,7 +50,13 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-See \code{\link[=s_proportion]{s_proportion()}} for statistics and additional possible arguments.
+\itemize{
+\item \code{s_length_proportion()} returns statistics from \code{\link[=s_proportion]{s_proportion()}}.
+\item \code{a_length_proportion()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+\item \code{estimate_multinomial_response()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_length_proportion()} to the table layout.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -60,16 +66,14 @@ regarding the level of a factor.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_length_proportion()}: Statistics function which takes the length of the input \code{x} and takes that
-as the number of successes, and the column number \code{.N_col} as the total number, and feeds that into
-\code{\link[=s_proportion]{s_proportion()}}.
+\item \code{s_length_proportion()}: Statistics function which feeds the length of \code{x} as number
+of successes, and \code{.N_col} as total number of successes and failures into \code{\link[=s_proportion]{s_proportion()}}.
 
-\item \code{a_length_proportion()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_length_proportion()}: Formatted analysis function which is used as \code{afun}
+in \code{estimate_multinomial_response()}.
 
-\item \code{estimate_multinomial_response()}: Analyze Function which adds the multinomial proportion analysis to
-the input layout. Note that additional formatting arguments can be used
-here.
+\item \code{estimate_multinomial_response()}: Layout-creating function which can which can take statistics
+function arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{

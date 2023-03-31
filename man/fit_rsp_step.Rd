@@ -17,7 +17,7 @@ needs \code{response}, \code{arm}, \code{biomarker}, and optional \code{covariat
 and \code{\link[=control_logistic]{control_logistic()}}.}
 }
 \value{
-a matrix of class \code{step}. The first part of the columns describe the
+A matrix of class \code{step}. The first part of the columns describe the
 subgroup intervals used for the biomarker variable, including where the
 center of the intervals are and their bounds. The second part of the
 columns contain the estimates for the treatment arm comparison.

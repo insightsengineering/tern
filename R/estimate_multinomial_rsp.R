@@ -5,6 +5,13 @@
 #' Estimate the proportion along with confidence interval of a proportion
 #' regarding the level of a factor.
 #'
+#' @return
+#' * `s_length_proportion()` returns statistics from [s_proportion()].
+#' * `a_length_proportion()` returns the corresponding list with formatted [rtables::CellValue()].
+#' * `estimate_multinomial_response()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_length_proportion()` to the table layout.
+#'
 #' @seealso Relevant description function [d_onco_rsp_label()].
 #'
 #' @name estimate_multinomial_rsp
@@ -18,6 +25,9 @@ NULL
 #' Describe the oncology response in a standard way.
 #'
 #' @param x (`character`)\cr the standard oncology code to be described.
+#'
+#' @return Response labels.
+#'
 #' @seealso [estimate_multinomial_rsp()]
 #' @export
 #'
@@ -61,11 +71,10 @@ d_onco_rsp_label <- function(x) { # nolint
 }
 
 
-#' @describeIn estimate_multinomial_rsp Statistics function which takes the length of the input `x` and takes that
-#'   as the number of successes, and the column number `.N_col` as the total number, and feeds that into
-#'   [s_proportion()].
+#' @describeIn estimate_multinomial_rsp Statistics function which feeds the length of `x` as number
+#'   of successes, and `.N_col` as total number of successes and failures into [s_proportion()].
+#'
 #' @inheritParams argument_convention
-#' @return See [s_proportion()] for statistics and additional possible arguments.
 #'
 #' @export
 #'
@@ -85,8 +94,8 @@ s_length_proportion <- function(x,
   s_proportion(df = x_logical, ...)
 }
 
-#' @describeIn estimate_multinomial_rsp Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn estimate_multinomial_rsp Formatted analysis function which is used as `afun`
+#'   in `estimate_multinomial_response()`.
 #' @export
 #'
 #' @examples
@@ -100,9 +109,9 @@ a_length_proportion <- make_afun(
   )
 )
 
-#' @describeIn estimate_multinomial_rsp Analyze Function which adds the multinomial proportion analysis to
-#'   the input layout. Note that additional formatting arguments can be used
-#'   here.
+#' @describeIn estimate_multinomial_rsp Layout-creating function which can which can take statistics
+#'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
 #' @inheritParams argument_convention
 #'
 #' @export

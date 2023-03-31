@@ -30,6 +30,9 @@ be optimized in the future if we need to estimate better initial weights.}
 
 \item{tol}{(\code{number})\cr tolerance threshold for convergence.}
 }
+\value{
+A \code{list} of 3 elements: \code{n_it}, \code{weights}, and \code{diff_v}.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

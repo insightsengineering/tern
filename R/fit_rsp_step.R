@@ -20,10 +20,12 @@
 #'   `strata`.
 #' @param control (named `list`)\cr combined control list from [control_step()]
 #'   and [control_logistic()].
-#' @return a matrix of class `step`. The first part of the columns describe the
+#'
+#' @return A matrix of class `step`. The first part of the columns describe the
 #'   subgroup intervals used for the biomarker variable, including where the
 #'   center of the intervals are and their bounds. The second part of the
 #'   columns contain the estimates for the treatment arm comparison.
+#'
 #' @seealso [control_step()] and [control_logistic()] for the available
 #'   customization options.
 #' @export
