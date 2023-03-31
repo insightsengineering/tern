@@ -71,10 +71,14 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-A named list of \code{count_fraction}s: a list with each \code{thresholds} value as a component, each component
-contains a vector for the count and fraction.
-
-\code{\link[=a_count_cumulative]{a_count_cumulative()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+\itemize{
+\item \code{s_count_cumulative()} returns a named list of \code{count_fraction}s: a list with each \code{thresholds} value as a
+component, each component containing a vector for the count and fraction.
+\item \code{a_count_cumulative()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+\item \code{count_cumulative()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_cumulative()} to the table layout.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -84,15 +88,13 @@ greater than, or greater or equal to user-specific thresholds.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_cumulative()}: Statistics function that produces a named lists given a numeric vector of thresholds.
+\item \code{s_count_cumulative()}: Statistics function that produces a named list given a numeric vector of thresholds.
 
-\item \code{a_count_cumulative()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_count_cumulative()}: Formatted analysis function which is used as \code{afun}
+in \code{count_cumulative()}.
 
-\item \code{count_cumulative()}: Layout creating function which can be be used for creating
-summary tables for cumulative counts of a variable. The ellipsis (\code{...}) conveys
-arguments to \code{s_count_cumulative()}, for instance \code{lower_tail = FALSE} if upper tail
-should be accounted for.
+\item \code{count_cumulative()}: Layout-creating function which can which can take statistics
+function arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{

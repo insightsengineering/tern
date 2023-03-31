@@ -64,7 +64,18 @@ by a statistics function.}
 \item{grade_groups}{(named \code{list} of \code{character})\cr containing groupings of grades.}
 
 \item{remove_single}{(\code{logical})\cr \code{TRUE} to not include the elements of one-element grade groups
-in the the output list; in this case only the grade groups names will be included in the output.}
+in the the output list; in this case only the grade groups names will be included in the output.
+\itemize{
+\item \code{s_count_occurrences_by_grade()} returns a list of counts and fractions with one element per grade level or
+grade level grouping.
+\item \code{a_count_occurrences_by_grade()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+\item \code{count_occurrences_by_grade()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_occurrences_by_grade()} to the table layout.
+\item \code{summarize_occurrences_by_grade()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted content rows
+containing the statistics from \code{s_count_occurrences_by_grade()} to the table layout.
+}}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions).}
@@ -97,18 +108,17 @@ greatest intensity/highest grade level.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_occurrences_by_grade()}: Statistics function which given occurrence data counts the
-number of patients by highest grade. Returns a list of counts and fractions with one element
-per grade level or grade level grouping.
+\item \code{s_count_occurrences_by_grade()}: Statistics function which counts the
+number of patients by highest grade.
 
-\item \code{a_count_occurrences_by_grade()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_count_occurrences_by_grade()}: Formatted analysis function which is used as \code{afun}
+in \code{count_occurrences_by_grade()}.
 
-\item \code{count_occurrences_by_grade()}: Layout creating function which can be used for creating tables,
-which can take statistics function arguments and additional format arguments (see below).
+\item \code{count_occurrences_by_grade()}: Layout-creating function which can which can take statistics
+function arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{summarize_occurrences_by_grade()}: Layout creating function which adds content rows using the
-statistics function and additional format arguments (see below).
+\item \code{summarize_occurrences_by_grade()}: Layout-creating function which can which can take content function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 
 }}
 \examples{

@@ -13,7 +13,21 @@ h_append_grade_groups(grade_groups, refs, remove_single = TRUE)
 and each entry represents a count.}
 
 \item{remove_single}{(\code{logical})\cr \code{TRUE} to not include the elements of one-element grade groups
-in the the output list; in this case only the grade groups names will be included in the output.}
+in the the output list; in this case only the grade groups names will be included in the output.
+\itemize{
+\item \code{s_count_occurrences_by_grade()} returns a list of counts and fractions with one element per grade level or
+grade level grouping.
+\item \code{a_count_occurrences_by_grade()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+\item \code{count_occurrences_by_grade()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_occurrences_by_grade()} to the table layout.
+\item \code{summarize_occurrences_by_grade()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted content rows
+containing the statistics from \code{s_count_occurrences_by_grade()} to the table layout.
+}}
+}
+\value{
+Formatted list of grade groupings.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

@@ -1,5 +1,7 @@
 #' Occurrence Counts
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Functions for analyzing frequencies and fractions of occurrences for patients with occurrence
 #' data. Primary analysis variables are the dictionary terms. All occurrences are counted for total
 #' counts. Multiple occurrences within patient at the lowest term level displayed in the table are
@@ -8,8 +10,19 @@
 #' Therefore the corresponding layout needs to use `split_fun = drop_split_levels` in the `split_rows_by`
 #' calls. Use `drop = FALSE` if you would like to show all occurrences.
 #'
-#' @description `r lifecycle::badge("stable")`
 #' @inheritParams argument_convention
+#'
+#' @return
+#' * `s_count_occurrences()` returns a list with:
+#'   \describe{
+#'     \item{count}{list of counts with one element per occurrence.}
+#'     \item{count_fraction}{list of counts and fractions with one element per occurrence.}
+#'     \item{fraction}{list of numerators and denominators with one element per occurrence.}
+#'   }
+#' * `a_count_occurrences()` returns the corresponding list with formatted [rtables::CellValue()].
+#' * `count_occurrences()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_occurrences()` to the table layout.
 #'
 #' @name count_occurrences
 #'
@@ -21,12 +34,6 @@ NULL
 #' @param denom (`string`)\cr choice of denominator for patient proportions. Can be:
 #'   - `N_col`: total number of patients in this column across rows
 #'   - `n`: number of patients with any occurrences
-#' @returns A list with:
-#' \describe{
-#'   \item{count}{list of counts with one element per occurrence.}
-#'   \item{count_fraction}{list of counts and fractions with one element per occurrence.}
-#'   \item{fraction}{list of numerators and denominators with one element per occurrence.}
-#' }
 #'
 #' @examples
 #' df <- data.frame(
@@ -102,8 +109,8 @@ s_count_occurrences <- function(df,
   )
 }
 
-#' @describeIn count_occurrences Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn count_occurrences Formatted analysis function which is used as `afun`
+#'   in `count_occurrences()`.
 #' @export
 #'
 #' @examples
@@ -117,17 +124,18 @@ s_count_occurrences <- function(df,
 #'   .var = "MHDECOD",
 #'   id = "USUBJID"
 #' )
+#'
 a_count_occurrences <- make_afun(
   s_count_occurrences,
   .formats = c(count = "xx", count_fraction = format_count_fraction_fixed_dp, fraction = format_fraction_fixed_dp)
 )
 
-#' @describeIn count_occurrences Analyze Function that counts occurrences as part of `rtables` layouts.
+#' @describeIn count_occurrences Layout-creating function which can which can take statistics
+#'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @export
 #'
 #' @examples
-#'
 #' library(dplyr)
 #' df <- data.frame(
 #'   USUBJID = as.character(c(

@@ -2,8 +2,8 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Primary analysis variable `.var` indicates the toxicity grade (factor), and additional
-#' analysis variables are `id` (character or factor), `param` (`factor`) and `grade_dir` (`factor`).
+#' Primary analysis variable `.var` indicates the toxicity grade (`factor`), and additional
+#' analysis variables are `id` (`character` or `factor`), `param` (`factor`) and `grade_dir` (`factor`).
 #' The pre-processing steps are crucial when using this function.
 #' For a certain direction (e.g. high or low) this function counts
 #' patients in the denominator as number of patients with at least one valid measurement during treatment,
@@ -18,19 +18,23 @@
 #'     the correct denominators when building the layout as it is used to define row splitting.
 #'   * A toxicity grade variable (e.g. `GRADE_ANL`) where all negative values from
 #'     `ATOXGR` are replaced by their absolute values.
-#'   * Prior to tabulation, `df` must filtered to include only post-baseline records with worst grade flags.
+#'
+#' @note Prior to tabulation, `df` must filtered to include only post-baseline records with worst grade flags.
 #'
 #' @inheritParams argument_convention
+#'
+#' @return
+#' * `s_count_abnormal_by_worst_grade()` returns the single statistic `count_fraction` with grades 1 to 4 and
+#'   "Any" results.
+#' * `a_count_abnormal_by_worst_grade()` returns the corresponding list with formatted [rtables::CellValue()].
+#' * `count_abnormal_by_worst_grade()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_abnormal_by_worst_grade()` to the table layout.
 #'
 #' @name abnormal_by_worst_grade
 NULL
 
-#' @describeIn abnormal_by_worst_grade Statistics function which counts patients with worst grade,
-#'   consisting of counts and percentages of patients with worst grade
-#'   `1` to `4`, and `Any` non-zero grade.
-#'
-#' @return [s_count_abnormal_by_worst_grade()] the single statistic `count_fraction` with grade 1 to 4
-#'   and "Any" results.
+#' @describeIn abnormal_by_worst_grade Statistics function which counts patients by worst grade.
 #'
 #' @examples
 #' library(dplyr)
@@ -132,10 +136,8 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
   result
 }
 
-#' @describeIn abnormal_by_worst_grade Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#'
-#' @return [a_count_abnormal_by_worst_grade()] returns the corresponding list with formatted [rtables::CellValue()].
+#' @describeIn abnormal_by_worst_grade Formatted analysis function which is used as `afun`
+#'   in `count_abnormal_by_worst_grade()`.
 #'
 #' @examples
 #' # Internal function - a_count_abnormal_by_worst_grade
@@ -152,8 +154,8 @@ a_count_abnormal_by_worst_grade <- make_afun( # nolint
   .formats = c(count_fraction = format_count_fraction)
 )
 
-#' @describeIn abnormal_by_worst_grade Layout creating function which can be used for creating tables,
-#'    which can take statistics function arguments and additional format arguments (see below).
+#' @describeIn abnormal_by_worst_grade Layout-creating function which can which can take statistics
+#'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @examples
 #' # Map excludes records without abnormal grade since they should not be displayed

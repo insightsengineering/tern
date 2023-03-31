@@ -47,8 +47,8 @@ the relevant statistic is on the columns instead of on the rows.
 }
 \section{Functions}{
 \itemize{
-\item \code{analyze_vars_in_cols()}: Layout creating
-function which can be used for creating summary tables in columns, primarily used for PK data sets.
+\item \code{analyze_vars_in_cols()}: Layout-creating function which can be used for creating column-wise
+summary tables, primarily used for PK data sets. This function is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
 
 }}
 \examples{
@@ -110,6 +110,7 @@ lyt <- basic_table() \%>\%
   )
 result <- build_table(lyt, df = adpp)
 result
+
 }
 \seealso{
 \link{summarize_vars}, \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.

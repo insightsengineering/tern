@@ -40,9 +40,9 @@ count_abnormal(
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{abnormal}{(\verb{named list})\cr identifying the abnormal range level(s) in \code{var}. Default to
-\code{list(Low = "LOW", High = "HIGH")} but you can also group different levels into the name list,
-for example, \code{abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))}}
+\item{abnormal}{(named \code{list})\cr list identifying the abnormal range level(s) in \code{var}. Defaults to
+\code{list(Low = "LOW", High = "HIGH")} but you can also group different levels into the named list,
+for example, \code{abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))}.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
@@ -65,12 +65,13 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-\code{\link[=s_count_abnormal]{s_count_abnormal()}} returns the statistic \code{fraction} which is a
-vector with \code{num} and \code{denom} counts of patients.
-
-\code{\link[=a_count_abnormal]{a_count_abnormal()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
-
-\code{\link[=count_abnormal]{count_abnormal()}} can be used with multiple abnormal levels and modifies the layout.
+\itemize{
+\item \code{s_count_abnormal()} returns the statistic \code{fraction} which is a vector with \code{num} and \code{denom} counts of patients.
+\item \code{a_count_abnormal()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+\item \code{count_abnormal()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_abnormal()} to the table layout.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -83,26 +84,27 @@ numerator and denominator as follows:
 \item{num}{the number of patients with this abnormality recorded while on treatment.}
 \item{denom}{the number of patients with at least one post-baseline assessment.}
 }
-Note, the denominator includes patients that might have other abnormal levels at baseline,
-and patients with missing baseline. Note, optionally patients with this abnormality at
-baseline can be excluded from numerator and denominator.
-}
-\details{
-Note that \code{df} should be filtered to include only post-baseline records.
 }
 \section{Functions}{
 \itemize{
 \item \code{s_count_abnormal()}: Statistics function which counts patients with abnormal range values
 for a single \code{abnormal} level.
 
-\item \code{a_count_abnormal()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_count_abnormal()}: Formatted analysis function which is used as \code{afun} in \code{count_abnormal()}.
 
-\item \code{count_abnormal()}: Layout creating function which can be used for creating tables, which can take
-statistics function arguments and additional format arguments (see below). Note that it only
-works with a single variable but multiple abnormal levels.
+\item \code{count_abnormal()}: Layout-creating function which can which can take statistics
+function arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
+\note{
+\itemize{
+\item \code{count_abnormal()} only works with a single variable containing multiple abnormal levels.
+\item \code{df} should be filtered to include only post-baseline records.
+\item the denominator includes patients that might have other abnormal levels at baseline,
+and patients with missing baseline. Patients with these abnormalities at
+baseline can be optionally excluded from numerator and denominator.
+}
+}
 \examples{
 library(dplyr)
 

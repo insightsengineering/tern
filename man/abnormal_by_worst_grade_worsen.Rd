@@ -59,12 +59,16 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-\code{\link[=s_count_abnormal_lab_worsen_by_baseline]{s_count_abnormal_lab_worsen_by_baseline()}} returns the
-counts and fraction of patients whose worst post-baseline lab grades are worse than
-their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
-
-\code{\link[=a_count_abnormal_lab_worsen_by_baseline]{a_count_abnormal_lab_worsen_by_baseline()}} returns the corresponding list with
+\itemize{
+\item \code{s_count_abnormal_lab_worsen_by_baseline()} returns the counts and fraction of patients whose worst
+post-baseline lab grades are worse than their baseline grades, for post-baseline worst grades
+"1", "2", "3", "4" and "Any".
+\item \code{a_count_abnormal_lab_worsen_by_baseline()} returns the corresponding list with
 formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+\item \code{count_abnormal_lab_worsen_by_baseline()} returns a layout object suitable for passing to further layouting
+functions, or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted
+rows containing the statistics from \code{s_count_abnormal_lab_worsen_by_baseline()} to the table layout.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -73,14 +77,14 @@ Patient count and fraction for laboratory events (worsen from baseline) shift ta
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_abnormal_lab_worsen_by_baseline()}: Statistics function which calculates the
-counts and fraction of patients whose worst post-baseline lab grades are worse than
-their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
+\item \code{s_count_abnormal_lab_worsen_by_baseline()}: Statistics function for patients whose worst post-baseline
+lab grades are worse than their baseline grades.
 
-\item \code{a_count_abnormal_lab_worsen_by_baseline()}: 
+\item \code{a_count_abnormal_lab_worsen_by_baseline()}: Formatted analysis function which is used as \code{afun}
+in \code{count_abnormal_lab_worsen_by_baseline()}.
 
-\item \code{count_abnormal_lab_worsen_by_baseline()}: Layout creating function which can be used for creating tables,
-which can take statistics function arguments and additional format arguments (see below).
+\item \code{count_abnormal_lab_worsen_by_baseline()}: Layout-creating function which can which can take statistics
+function arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{
@@ -144,6 +148,6 @@ basic_table() \%>\%
 
 }
 \seealso{
-Relevant helper functions \code{\link[=h_adlb_worsen]{h_adlb_worsen()}} and \code{\link[=h_worsen_counter]{h_worsen_counter()}}.
+Relevant helper functions \code{\link[=h_adlb_worsen]{h_adlb_worsen()}} and \code{\link[=h_worsen_counter]{h_worsen_counter()}}
 }
 \keyword{internal}

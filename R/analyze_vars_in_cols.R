@@ -5,19 +5,17 @@
 #' This function can be used to produce summary tables for PK datasets where
 #' the relevant statistic is on the columns instead of on the rows.
 #'
-#' @name analyze_vars_in_cols
-#'
-NULL
-
-#' @describeIn analyze_vars_in_cols Layout creating
-#' function which can be used for creating summary tables in columns, primarily used for PK data sets.
-#'
 #' @inheritParams argument_convention
 #' @inheritParams rtables::analyze_colvars
 #'
-#' @seealso [summarize_vars], [`rtables::analyze_colvars()`].
+#' @seealso [summarize_vars], [rtables::analyze_colvars()].
 #'
-#' @export
+#' @name analyze_vars_in_cols
+NULL
+
+#' @describeIn analyze_vars_in_cols Layout-creating function which can be used for creating column-wise
+#'   summary tables, primarily used for PK data sets. This function is a wrapper for [rtables::analyze_colvars()].
+#'
 #' @examples
 #' library(dplyr)
 #'
@@ -77,6 +75,8 @@ NULL
 #'   )
 #' result <- build_table(lyt, df = adpp)
 #' result
+#'
+#' @export
 analyze_vars_in_cols <- function(lyt,
                                  vars,
                                  ...,

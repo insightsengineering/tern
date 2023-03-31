@@ -10,16 +10,25 @@
 #'   \item{num}{the number of patients with this abnormality recorded while on treatment.}
 #'   \item{denom}{the number of patients with at least one post-baseline assessment.}
 #' }
-#' Note, the denominator includes patients that might have other abnormal levels at baseline,
-#' and patients with missing baseline. Note, optionally patients with this abnormality at
-#' baseline can be excluded from numerator and denominator.
 #'
-#' @details Note that `df` should be filtered to include only post-baseline records.
+#' @note
+#' * `count_abnormal()` only works with a single variable containing multiple abnormal levels.
+#' * `df` should be filtered to include only post-baseline records.
+#' * the denominator includes patients that might have other abnormal levels at baseline,
+#' and patients with missing baseline. Patients with these abnormalities at
+#' baseline can be optionally excluded from numerator and denominator.
 #'
 #' @inheritParams argument_convention
-#' @param abnormal (`named list`)\cr identifying the abnormal range level(s) in `var`. Default to
-#' `list(Low = "LOW", High = "HIGH")` but you can also group different levels into the name list,
-#' for example, `abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))`
+#' @param abnormal (named `list`)\cr list identifying the abnormal range level(s) in `var`. Defaults to
+#'   `list(Low = "LOW", High = "HIGH")` but you can also group different levels into the named list,
+#'   for example, `abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))`.
+#'
+#' @return
+#' * `s_count_abnormal()` returns the statistic `fraction` which is a vector with `num` and `denom` counts of patients.
+#' * `a_count_abnormal()` returns the corresponding list with formatted [rtables::CellValue()].
+#' * `count_abnormal()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_abnormal()` to the table layout.
 #'
 #' @name abnormal
 #' @include formats.R
@@ -29,9 +38,6 @@ NULL
 #'   for a single `abnormal` level.
 #' @param exclude_base_abn (`flag`)\cr whether to exclude subjects with baseline abnormality
 #'   from numerator and denominator.
-#' @return [s_count_abnormal()] returns the statistic `fraction` which is a
-#'   vector with `num` and `denom` counts of patients.
-#'
 #' @examples
 #' library(dplyr)
 #'
@@ -105,10 +111,7 @@ s_count_abnormal <- function(df,
   result
 }
 
-#' @describeIn abnormal Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#'
-#' @return [a_count_abnormal()] returns the corresponding list with formatted [rtables::CellValue()].
+#' @describeIn abnormal Formatted analysis function which is used as `afun` in `count_abnormal()`.
 #'
 #' @examples
 #' # Internal function - a_count_abnormal
@@ -124,10 +127,8 @@ a_count_abnormal <- make_afun(
   .formats = c(fraction = format_fraction)
 )
 
-#' @describeIn abnormal Layout creating function which can be used for creating tables, which can take
-#'   statistics function arguments and additional format arguments (see below). Note that it only
-#'   works with a single variable but multiple abnormal levels.
-#' @return [count_abnormal()] can be used with multiple abnormal levels and modifies the layout.
+#' @describeIn abnormal Layout-creating function which can which can take statistics
+#'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #' @export
 #' @examples
 #' # Layout creating function.

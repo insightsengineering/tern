@@ -1,16 +1,30 @@
 #' Count the Number of Patients with a Particular Event
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' The primary analysis variable `.var` denotes the unique patient identifier.
+#'
+#' @return
+#' * `s_count_patients_with_event()` returns the count and fraction of unique identifiers with the defined event.
+#' * `a_count_patients_with_event()` returns the corresponding list with formatted [rtables::CellValue()].
+#' * `count_patients_with_event()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_patients_with_event()` to the table layout.
+#'
+#' * `s_count_patients_with_flags()` returns the count and the fraction of unique identifiers with each particular
+#'   flag. Returns a list of `n`s, `count`s, `count_fraction`s, and `n_blq`s with one element per flag.
+#' * `a_count_patients_with_flags()` returns the corresponding list with formatted [rtables::CellValue()].
+#' * `count_patients_with_flags()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_patients_with_flags()` to the table layout.
 #'
 #' @name count_patients_with_event
 #'
-#' @description `r lifecycle::badge("stable")`
 NULL
 
-#' @describeIn count_patients_with_event Statistics Function that returns the number and the fraction
-#'   of unique identifiers with a particular type of event, e.g. the number and the fraction of patients who
-#'   had treatment-emergent adverse events. Note that the user can define a new data column containing
-#'   the event of interest.
+#' @describeIn count_patients_with_event Statistics function which counts the number of patients for which
+#'   the defined event has occurred.
+#'
 #' @inheritParams argument_convention
 #' @param .var (`character`)\cr name of the column that contains the unique identifier.
 #' @param filters (`character`)\cr a character vector specifying the column names and flag variables
@@ -19,9 +33,6 @@ NULL
 #'   `c("column_name1" = "flag1", "column_name2" = "flag2")`.
 #'   Note that only equality is being accepted as condition.
 #' @inheritParams summarize_variables
-#'
-#' @return [s_count_patients_with_event()] returns the count and fraction of patients with the
-#'   defined event.
 #'
 #' @export
 #'
@@ -75,8 +86,8 @@ s_count_patients_with_event <- function(df,
   result
 }
 
-#' @describeIn count_patients_with_event Formatted Analysis function which can be further
-#'   customized by calling [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn count_patients_with_event Formatted analysis function which is used as `afun`
+#'   in `count_patients_with_event()`.
 #' @export
 #'
 #' @examples
@@ -94,8 +105,8 @@ a_count_patients_with_event <- make_afun(
   .formats = c(count_fraction = format_count_fraction_fixed_dp)
 )
 
-#' @describeIn count_patients_with_event Analyze Function which adds the count statistics
-#' to the input layout. Note that additional formatting arguments can be used here.
+#' @describeIn count_patients_with_event Layout-creating function which can which can take statistics
+#'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @inheritParams argument_convention
 #'
@@ -158,9 +169,9 @@ count_patients_with_event <- function(lyt,
   )
 }
 
-#' @describeIn count_patients_with_event Statistics function that returns the number and the fraction
-#'   of unique identifiers with each particular flag. Returns a list of totals, counts, counts and
-#'   fractions with one element per flag.
+#' @describeIn count_patients_with_event Statistics function which counts the number of patients for which
+#'   a particular flag variable is `TRUE`.
+#'
 #' @inheritParams argument_convention
 #' @param .var (`character`)\cr name of the column that contains the unique identifier.
 #' @param flag_variables (`character`)\cr a character vector specifying the names of `logical`
@@ -226,8 +237,8 @@ s_count_patients_with_flags <- function(df,
   result
 }
 
-#' @describeIn count_patients_with_event Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn count_patients_with_event Formatted analysis function which is used as `afun`
+#'   in `count_patients_with_flags()`.
 #' @export
 #'
 #' @examples
@@ -252,8 +263,8 @@ a_count_patients_with_flags <- make_afun(
   .formats = c("count_fraction" = format_count_fraction_fixed_dp)
 )
 
-#' @describeIn count_patients_with_event Analyze Function which is a modified version of [count_patients_with_event()].
-#'  Adds the count statistics to the input layout for multiple flag variables at once.
+#' @describeIn count_patients_with_event Layout-creating function which can which can take statistics
+#'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @inheritParams argument_convention
 #'

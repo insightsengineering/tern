@@ -25,7 +25,7 @@ Only lab records flagged by \code{L}, \code{H} or \code{B} are included in the s
 }}
 }
 \value{
-\code{\link[=h_worsen_counter]{h_worsen_counter()}} returns the counts and fraction of patients
+\code{h_worsen_counter()} returns the counts and fraction of patients
 whose worst post-baseline lab grades are worse than their baseline grades, for
 post-baseline worst grades "1", "2", "3", "4" and "Any".
 }
