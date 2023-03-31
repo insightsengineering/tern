@@ -14,11 +14,9 @@
 #'
 #' @return
 #' * `s_count_occurrences()` returns a list with:
-#'   \describe{
-#'     \item{count}{list of counts with one element per occurrence.}
-#'     \item{count_fraction}{list of counts and fractions with one element per occurrence.}
-#'     \item{fraction}{list of numerators and denominators with one element per occurrence.}
-#'   }
+#'   * `count`: list of counts with one element per occurrence.
+#'   * `count_fraction`: list of counts and fractions with one element per occurrence.
+#'   * `fraction`: list of numerators and denominators with one element per occurrence.
 #' * `a_count_occurrences()` returns the corresponding list with formatted [rtables::CellValue()].
 #' * `count_occurrences()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing

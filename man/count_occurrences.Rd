@@ -85,10 +85,10 @@ to avoid warnings from \code{rtables}.}
 \value{
 \itemize{
 \item \code{s_count_occurrences()} returns a list with:
-\describe{
-\item{count}{list of counts with one element per occurrence.}
-\item{count_fraction}{list of counts and fractions with one element per occurrence.}
-\item{fraction}{list of numerators and denominators with one element per occurrence.}
+\itemize{
+\item \code{count}: list of counts with one element per occurrence.
+\item \code{count_fraction}: list of counts and fractions with one element per occurrence.
+\item \code{fraction}: list of numerators and denominators with one element per occurrence.
 }
 \item \code{a_count_occurrences()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 \item \code{count_occurrences()} returns a layout object suitable for passing to further layouting functions,

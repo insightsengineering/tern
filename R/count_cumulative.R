@@ -31,12 +31,10 @@ NULL
 #' count, default is `TRUE`.
 #' @param .N_col (`count`)\cr denominator for fraction calculation.
 #' @return A named vector with items:
-#' \describe{
-#'   \item{count}{the count of values less than, less or equal to, greater than, or greater or equal to a threshold
+#'   * `count`: the count of values less than, less or equal to, greater than, or greater or equal to a threshold
 #'     of user specification.
-#'   }
-#'   \item{fraction}{the fraction of the count.}
-#' }
+#'   * `fraction`: the fraction of the count.
+#'
 #' @seealso [count_cumulative]
 #'
 #' @export
