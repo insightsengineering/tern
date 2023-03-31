@@ -161,5 +161,4 @@ reference:
       - starts_with("ex_")
 
   - title: Deprecated Functions
-    contents:
-      - matches(".*footnotes.*")
+    desc: No functions are currently deprecated within `tern`.
