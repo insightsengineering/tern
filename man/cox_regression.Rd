@@ -40,6 +40,15 @@ of the treatment arm effect estimate across models.}
 \code{pval_inter} (the p.value of the interaction effect between the treatment
 and the covariate).}
 }
+\value{
+\itemize{
+\item \code{s_coxreg()} returns a formatted list with the specified statistic, with each element corresponding
+to one term in the given model.
+\item \code{summarize_coxreg()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add rows for a formatted
+Cox regression summary table containing the statistics from \code{s_coxreg()} to the table layout.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -56,11 +65,11 @@ analysis (NEST Team, 2020).
 }
 \section{Functions}{
 \itemize{
-\item \code{s_coxreg()}: transforms the tabulated results from \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}}
-and \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} into a list. Not much calculation is done here,
-it rather prepares the data to be used by the layout creating function.
+\item \code{s_coxreg()}: Statistics function to transform the tabulated results from \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}}
+and \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} into a list.
 
-\item \code{summarize_coxreg()}: layout creating function.
+\item \code{summarize_coxreg()}: Layout-creating function which can which can take statistics
+function arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
 
 }}
 \note{

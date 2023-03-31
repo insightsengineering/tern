@@ -16,6 +16,18 @@
 #'   [control_coxreg()].
 #' @param ... see methods.
 #'
+#' @return
+#' * `h_coxreg_inter_effect()` returns a `data.frame` of covariate interaction effects consisting of the following
+#'   variables: `effect`, `term`, `term_label`, `level`, `n`, `hr`, `lcl`, `ucl`, `pval`, and `pval_inter`.
+#' * `h_coxreg_extract_interaction()` returns the result of an interaction test and the estimated values. If
+#'   no interaction, [h_coxreg_univar_extract()] is applied instead.
+#' * `h_coxreg_inter_estimations()` returns a list of matrices (one per level of variable) with rows corresponding
+#'   to the combinations of `variable` and `given`, with columns:
+#'   * `coef_hat`: Estimation of the coefficient.
+#'   * `coef_se`: Standard error of the estimation.
+#'   * `hr`: Hazard ratio.
+#'   * `lcl, ucl`: Lower/upper confidence limit of the hazard ratio.
+#'
 #' @name cox_regression_inter
 #'
 #' @examples
@@ -49,6 +61,9 @@
 #'   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 #' )
 #'
+NULL
+
+#' @describeIn cox_regression_inter S3 generic helper function to determine interaction effect.
 #' @export
 h_coxreg_inter_effect <- function(x,
                                   effect,
@@ -61,8 +76,8 @@ h_coxreg_inter_effect <- function(x,
 }
 
 
-#' @describeIn cox_regression_inter Estimate the interaction with a numerical
-#'   covariate
+#' @describeIn cox_regression_inter Estimate the interaction with a `numeric`
+#'   covariate.
 #'
 #' @param at (`list`)\cr a list with items named after the covariate, every
 #'   item is a vector of levels at which the interaction should be estimated.
@@ -113,7 +128,7 @@ h_coxreg_inter_effect.numeric <- function(x, # nolint
   )
 }
 
-#' @describeIn cox_regression_inter Estimate the interaction with a factor
+#' @describeIn cox_regression_inter Estimate the interaction with a `factor`
 #'   covariate.
 #'
 #' @param data (`data.frame`)\cr the data frame on which the model was fit.
@@ -149,9 +164,8 @@ h_coxreg_inter_effect.factor <- function(x, # nolint
   )
 }
 
-#' @describeIn cox_regression_inter a higher level function that returns
-#'   the test of the interaction test and the estimated values. If
-#'   no interaction, [h_coxreg_univar_extract()] is applied.
+#' @describeIn cox_regression_inter A higher level function to get
+#'   the results of the interaction test and the estimated values.
 #'
 #' @export
 #'
@@ -207,7 +221,7 @@ h_coxreg_extract_interaction <- function(effect,
   }
 }
 
-#' @describeIn cox_regression_inter hazard ratio estimation in interactions.
+#' @describeIn cox_regression_inter Hazard ratio estimation in interactions.
 #'
 #' @inheritParams argument_convention
 #' @param variable,given (`string`)\cr the name of variables in interaction. We seek the estimation
@@ -228,15 +242,6 @@ h_coxreg_extract_interaction <- function(effect,
 #'   The interaction coefficient is deduced by b2 + b5 while the standard error
 #'   is obtained as $sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$.
 #'
-#' @return A list of matrix (one per level of variable) with rows corresponding to the combinations of
-#' `variable` and `given`, with columns:
-#' \describe{
-#'   \item{coef_hat}{Estimation of the coefficient.}
-#'   \item{coef_se}{Standard error of the estimation.}
-#'   \item{hr}{Hazard ratio.}
-#'   \item{lcl, ucl}{Lower/upper confidence limit of the hazard ratio.}
-#' }
-#'
 #' @examples
 #' mod <- coxph(Surv(time, status) ~ armcd * covar1, data = dta_bladder)
 #' result <- h_coxreg_inter_estimations(
@@ -248,8 +253,10 @@ h_coxreg_extract_interaction <- function(effect,
 #' result
 #'
 #' @export
-h_coxreg_inter_estimations <- function(variable, given,
-                                       lvl_var, lvl_given,
+h_coxreg_inter_estimations <- function(variable,
+                                       given,
+                                       lvl_var,
+                                       lvl_given,
                                        mod,
                                        conf_level = 0.95) {
   var_lvl <- paste0(variable, lvl_var[-1]) # [-1]: reference level

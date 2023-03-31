@@ -7,6 +7,8 @@
 #'
 #' @param x the variable for which pairwise result is expected
 #'
+#' @return Variable "paired".
+#'
 #' @details Let's `ARM` being a factor with level A, B, C; let's be B the reference level,
 #'   a model calling the formula including `pairwise(ARM)` will result in two models:
 #'   * A model including only levels A and B, and effect of A estimated in reference to B.
@@ -24,7 +26,9 @@ pairwise <- function(x) {
 #' The special term `univariate` indicate that the model should be fitted individually for
 #' every variable included in univariate.
 #'
-#' @param x A vector of variable name separated by comas.
+#' @param x A vector of variable name separated by commas.
+#'
+#' @return When used within a model formula, produces univariate models for each variable provided.
 #'
 #' @details
 #' If provided alongside with pairwise specification, the model
@@ -73,13 +77,12 @@ rht <- function(x) {
 #'   as $1.96 * sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$ for a confidence level of 0.95.
 #'
 #' @return A list of matrix (one per level of variable) with rows corresponding to the combinations of
-#' `variable` and `given`, with columns:
-#' \describe{
-#'   \item{coef_hat}{Estimation of the coefficient.}
-#'   \item{coef_se}{Standard error of the estimation.}
-#'   \item{hr}{Hazard ratio.}
-#'   \item{lcl, ucl}{Lower/upper confidence limit of the hazard ratio.}
-#' }
+#'   `variable` and `given`, with columns:
+#'   * `coef_hat`: Estimation of the coefficient.
+#'   * `coef_se`: Standard error of the estimation.
+#'   * `hr`: Hazard ratio.
+#'   * `lcl, ucl`: Lower/upper confidence limit of the hazard ratio.
+#'
 #' @seealso [s_cox_multivariate()].
 #'
 #' @examples
@@ -342,6 +345,9 @@ check_increments <- function(increments, covariates) {
 #'   "wald" (default) or "likelihood".
 #' @param ... Optional parameters passed to [survival::coxph()]. Can include `ties`, a character string specifying the
 #'   method for tie handling, one of `exact` (default), `efron`, `breslow`.
+#'
+#' @return
+#' A `list` with elements `mod`, `msum`, `aov`, and `coef_inter`.
 #'
 #' @details The output is limited to single effect terms. Work in ongoing for estimation of interaction terms
 #'   but is out of scope as defined by the  Global Data Standards Repository

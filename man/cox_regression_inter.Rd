@@ -56,13 +56,19 @@ of the levels of \code{variable} given the levels of \code{given}.}
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 }
 \value{
-A list of matrix (one per level of variable) with rows corresponding to the combinations of
-\code{variable} and \code{given}, with columns:
-\describe{
-\item{coef_hat}{Estimation of the coefficient.}
-\item{coef_se}{Standard error of the estimation.}
-\item{hr}{Hazard ratio.}
-\item{lcl, ucl}{Lower/upper confidence limit of the hazard ratio.}
+\itemize{
+\item \code{h_coxreg_inter_effect()} returns a \code{data.frame} of covariate interaction effects consisting of the following
+variables: \code{effect}, \code{term}, \code{term_label}, \code{level}, \code{n}, \code{hr}, \code{lcl}, \code{ucl}, \code{pval}, and \code{pval_inter}.
+\item \code{h_coxreg_extract_interaction()} returns the result of an interaction test and the estimated values. If
+no interaction, \code{\link[=h_coxreg_univar_extract]{h_coxreg_univar_extract()}} is applied instead.
+\item \code{h_coxreg_inter_estimations()} returns a list of matrices (one per level of variable) with rows corresponding
+to the combinations of \code{variable} and \code{given}, with columns:
+\itemize{
+\item \code{coef_hat}: Estimation of the coefficient.
+\item \code{coef_se}: Standard error of the estimation.
+\item \code{hr}: Hazard ratio.
+\item \verb{lcl, ucl}: Lower/upper confidence limit of the hazard ratio.
+}
 }
 }
 \description{
@@ -89,17 +95,18 @@ is obtained as $sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_coxreg_inter_effect(numeric)}: Estimate the interaction with a numerical
-covariate
+\item \code{h_coxreg_inter_effect()}: S3 generic helper function to determine interaction effect.
 
-\item \code{h_coxreg_inter_effect(factor)}: Estimate the interaction with a factor
+\item \code{h_coxreg_inter_effect(numeric)}: Estimate the interaction with a \code{numeric}
 covariate.
 
-\item \code{h_coxreg_extract_interaction()}: a higher level function that returns
-the test of the interaction test and the estimated values. If
-no interaction, \code{\link[=h_coxreg_univar_extract]{h_coxreg_univar_extract()}} is applied.
+\item \code{h_coxreg_inter_effect(factor)}: Estimate the interaction with a \code{factor}
+covariate.
 
-\item \code{h_coxreg_inter_estimations()}: hazard ratio estimation in interactions.
+\item \code{h_coxreg_extract_interaction()}: A higher level function to get
+the results of the interaction test and the estimated values.
+
+\item \code{h_coxreg_inter_estimations()}: Hazard ratio estimation in interactions.
 
 }}
 \examples{

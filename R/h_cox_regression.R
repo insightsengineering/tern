@@ -5,22 +5,25 @@
 #' Helper functions used in [fit_coxreg_univar()] and [fit_coxreg_multivar()].
 #'
 #' @inheritParams argument_convention
+#'
+#' @return
+#' * `h_coxreg_univar_formulas()` returns a `character` vector coercible into formulas (e.g [stats::as.formula()]).
+#' * `h_coxreg_univar_formulas()` returns a `character` vector coercible into formulas (e.g [stats::as.formula()]).
+#' * `h_coxreg_univar_extract()` returns a `data.frame` with variables `effect`, `term`, `term_label`, `level`,
+#'   `n`, `hr`, `lcl`, `ucl`, and `pval`.
+#' * `h_coxreg_multivar_extract()` returns a `data.frame` with variables `pval`, `hr`, `lcl`, `ucl`, `level`,
+#'   `n`, `term`, and `term_label`.
+#'
 #' @seealso [cox_regression]
 #'
 #' @name h_cox_regression
 NULL
 
-#' @describeIn h_cox_regression Helper for Cox Regression Formula
-#'
-#' Creates a list of formulas. It is used internally by [fit_coxreg_univar()]
-#' for the comparison of univariate Cox regression models.
+#' @describeIn h_cox_regression Helper for Cox regression formula. Creates a list of formulas. It is used
+#'   internally by [fit_coxreg_univar()] for the comparison of univariate Cox regression models.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams control_coxreg
-#'
-#' @return
-#' The function `h_coxreg_univar_formulas` returns a `character` vector coercible
-#' into formulas (e.g [stats::as.formula()]).
 #'
 #' @examples
 #' # `h_coxreg_univar_formulas`
@@ -107,17 +110,11 @@ h_coxreg_univar_formulas <- function(variables,
   stats::setNames(forms, nams)
 }
 
-#' @describeIn h_cox_regression Helper for Multi-variable Cox Regression Formula
-#'
-#' Creates a formulas string. It is used internally by [fit_coxreg_multivar()]
-#' for the comparison of multi-variable Cox regression models. Interactions will not
-#' be included in multi-variable Cox regression model.
+#' @describeIn h_cox_regression Helper for multi-variable Cox regression formula. Creates a formulas
+#'   string. It is used internally by [fit_coxreg_multivar()] for the comparison of multi-variable Cox
+#'   regression models. Interactions will not be included in multi-variable Cox regression model.
 #'
 #' @inheritParams argument_convention
-#'
-#' @return
-#' The function `h_coxreg_univar_formulas` returns a `character` vector coercible
-#' into formulas (e.g [stats::as.formula()]).
 #'
 #' @export
 #'
@@ -235,10 +232,8 @@ h_coxreg_univar_extract <- function(effect,
   )
 }
 
-#' @describeIn h_cox_regression Tabulation of Multi-variable Cox Regressions
-#'
-#' Utility function to help tabulate the result of a multi-variable Cox regression model
-#' for a treatment/covariate variable.
+#' @describeIn h_cox_regression Tabulation of multi-variable Cox regressions. Utility function to help
+#'   tabulate the result of a multi-variable Cox regression model for a treatment/covariate variable.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams h_coxreg_univar_extract

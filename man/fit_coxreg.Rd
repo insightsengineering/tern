@@ -28,23 +28,27 @@ effect should be estimated.}
 helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 }
 \value{
-The function \code{fit_coxreg_univar} returns a \code{coxreg.univar} class object which is a named list
+\itemize{
+\item \code{fit_coxreg_univar()} returns a \code{coxreg.univar} class object which is a named \code{list}
 with 5 elements:
-\describe{
-\item{mod}{Cox regression models fitted by \code{\link[survival:coxph]{survival::coxph()}}.}
-\item{data}{The original data frame input.}
-\item{control}{The original control input.}
-\item{vars}{The variables used in the model.}
-\item{at}{Value of the covariate at which the effect should be estimated.}
+\itemize{
+\item \code{mod}: Cox regression models fitted by \code{\link[survival:coxph]{survival::coxph()}}.
+\item \code{data}: The original data frame input.
+\item \code{control}: The original control input.
+\item \code{vars}: The variables used in the model.
+\item \code{at}: Value of the covariate at which the effect should be estimated.
+}
 }
 
-The function \code{fit_coxreg_multivar} returns a \code{coxreg.multivar} class object which is a named list
+\itemize{
+\item \code{fit_coxreg_multivar()} returns a \code{coxreg.multivar} class object which is a named list
 with 4 elements:
-\describe{
-\item{mod}{Cox regression model fitted by \code{\link[survival:coxph]{survival::coxph()}}.}
-\item{data}{The original data frame input.}
-\item{control}{The original control input.}
-\item{vars}{The variables used in the model.}
+\itemize{
+\item \code{mod}: Cox regression model fitted by \code{\link[survival:coxph]{survival::coxph()}}.
+\item \code{data}: The original data frame input.
+\item \code{control}: The original control input.
+\item \code{vars}: The variables used in the model.
+}
 }
 }
 \description{
