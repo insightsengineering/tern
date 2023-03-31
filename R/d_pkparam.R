@@ -2,7 +2,7 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @return dataframe of PK parameters
+#' @return `data.frame` of PK parameters
 #' @export
 #'
 #' @examples

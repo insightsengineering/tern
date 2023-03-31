@@ -8,14 +8,18 @@
 #'   (e.g. reference and treatment group).
 #'
 #' @name desctools_binom
-
 NULL
 
-#' Recycle list of parameters
+#' Recycle List of Parameters
 #'
-#' @describeIn desctools_binom This function recycles all supplied elements to the maximal dimension.
+#' This function recycles all supplied elements to the maximal dimension.
+#'
+#' @param ... (`any`)\cr Elements to recycle.
+#'
+#' @return A `list`.
 #'
 #' @keywords internal
+#' @noRd
 h_recycle <- function(...) {
   lst <- list(...)
   maxdim <- max(lengths(lst))
@@ -24,14 +28,12 @@ h_recycle <- function(...) {
   return(res)
 }
 
-#' @describeIn desctools_binom Several Confidence Intervals for the difference between proportions.
+#' @describeIn desctools_binom Several confidence intervals for the difference between proportions.
 #'
-#' @return A named list of 3 values:
-#' \describe{
-#'   \item{est}{estimate of proportion difference.}
-#'   \item{lwrci}{estimate of lower end of the confidence interval.}
-#'   \item{upci}{estimate of upper end of the confidence interval.}
-#' }
+#' @return A `matrix` of 3 values:
+#'   * `est`: estimate of proportion difference.
+#'   * `lwr.ci`: estimate of lower end of the confidence interval.
+#'   * `upr.ci`: estimate of upper end of the confidence interval.
 #'
 #' @examples
 #' # Internal function - desctools_binom
@@ -350,12 +352,10 @@ desctools_binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c( # noli
 #' @param method (`character`)\cr method to use. Can be one out of: "wald", "wilson", "wilsoncc", "agresti-coull",
 #'   "jeffreys", "modified wilson", "modified jeffreys", "clopper-pearson", "arcsine", "logit", "witting", "pratt",
 #'   "midp", "lik", and "blaker".
-#' @return A matrix with 3 columns containing:
-#' \describe{
-#'   \item{est}{estimate of proportion difference.}
-#'   \item{lwrci}{lower end of the confidence interval.}
-#'   \item{upci}{upper end of the confidence interval.}
-#' }
+#' @return A `matrix` with 3 columns containing:
+#'   * `est`: estimate of proportion difference.
+#'   * `lwr.ci`: lower end of the confidence interval.
+#'   * `upr.ci`: upper end of the confidence interval.
 #'
 #' @keywords internal
 desctools_binomci <- function(x,

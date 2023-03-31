@@ -26,13 +26,7 @@
 #' The titles and footnotes will be ragged, i.e. each title will be wrapped
 #' individually.
 #'
-#' \if{html}{
-#' The layout can be illustrated as follows:
-#'
-#' \figure{decorate_grob.png}{options: alt="decorate_grob layout"}
-#' }
-#'
-#' @return a grid grob (\code{gTree})
+#' @return A grid grob (`gTree`).
 #'
 #' @export
 #' @author Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
@@ -312,6 +306,8 @@ split_string <- function(text, width) {
 #' @param text character string
 #' @param width a unit object specifying max width of text
 #'
+#' @return A text grob.
+#'
 #' @details
 #' This code is taken from R Graphics by \code{Paul Murell}, 2nd edition
 #'
@@ -448,7 +444,7 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
 #' @param npages number of pages in total
 #' @param ... passed on to \code{\link{decorate_grob}}
 #'
-#' @return closure that increments the page number
+#' @return Closure that increments the page number.
 #'
 #' @keywords internal
 #' @author Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
@@ -486,6 +482,8 @@ decorate_grob_factory <- function(npages, ...) {
 #'
 #' @param grobs a list of grid grobs
 #' @param ... arguments passed on to \code{\link{decorate_grob}}
+#'
+#' @return A decorated grob.
 #'
 #' @author Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 #'

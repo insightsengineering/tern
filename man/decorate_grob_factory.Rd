@@ -12,7 +12,7 @@ decorate_grob_factory(npages, ...)
 \item{...}{passed on to \code{\link{decorate_grob}}}
 }
 \value{
-closure that increments the page number
+Closure that increments the page number.
 }
 \description{
 Automatically updates page number.

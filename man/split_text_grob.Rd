@@ -54,6 +54,9 @@ split_text_grob(
 
 \item{vp}{A Grid viewport object (or NULL).}
 }
+\value{
+A text grob.
+}
 \description{
 Dynamically wrap text.
 }
