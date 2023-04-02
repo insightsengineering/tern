@@ -102,7 +102,6 @@ Collate:
     'estimate_proportion.R'
     'fit_rsp_step.R'
     'fit_survival_step.R'
-    'footnotes.R'
     'g_forest.R'
     'g_lineplot.R'
     'g_step.R'
