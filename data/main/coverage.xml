@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage line-rate="0.957987964119451" branch-rate="0" lines-covered="8437" lines-valid="8807" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2023-03-27 16:50:39">
+<coverage line-rate="0.95793542519327" branch-rate="0" lines-covered="8426" lines-valid="8796" branches-covered="0" branches-valid="0" complexity="0" version="3.6.1" timestamp="2023-04-02 14:53:13">
   <sources/>
   <packages>
-    <package name="tern" line-rate="0.957987964119451" branch-rate="0" complexity="0">
+    <package name="tern" line-rate="0.95793542519327" branch-rate="0" complexity="0">
       <classes>
         <class name="abnormal_by_baseline.R" filename="R/abnormal_by_baseline.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
@@ -6696,46 +6696,6 @@
             <line number="110" hits="4" branch="false"/>
             <line number="111" hits="4" branch="false"/>
             <line number="112" hits="4" branch="false"/>
-          </lines>
-        </class>
-        <class name="footnotes.R" filename="R/footnotes.R" line-rate="1" branch-rate="0" complexity="0">
-          <methods>
-            <method name="footnotes&lt;-" signature="" line-rate="1" branch-rate="0">
-              <lines>
-                <line number="18" hits="3" branch="false"/>
-                <line number="19" hits="3" branch="false"/>
-                <line number="20" hits="3" branch="false"/>
-                <line number="21" hits="3" branch="false"/>
-              </lines>
-            </method>
-            <method name="footnotes" signature="" line-rate="1" branch-rate="0">
-              <lines>
-                <line number="40" hits="3" branch="false"/>
-                <line number="41" hits="3" branch="false"/>
-                <line number="42" hits="3" branch="false"/>
-              </lines>
-            </method>
-            <method name="add_footnotes&lt;-" signature="" line-rate="1" branch-rate="0">
-              <lines>
-                <line number="64" hits="1" branch="false"/>
-                <line number="65" hits="1" branch="false"/>
-                <line number="66" hits="1" branch="false"/>
-                <line number="67" hits="1" branch="false"/>
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="18" hits="3" branch="false"/>
-            <line number="19" hits="3" branch="false"/>
-            <line number="20" hits="3" branch="false"/>
-            <line number="21" hits="3" branch="false"/>
-            <line number="40" hits="3" branch="false"/>
-            <line number="41" hits="3" branch="false"/>
-            <line number="42" hits="3" branch="false"/>
-            <line number="64" hits="1" branch="false"/>
-            <line number="65" hits="1" branch="false"/>
-            <line number="66" hits="1" branch="false"/>
-            <line number="67" hits="1" branch="false"/>
           </lines>
         </class>
         <class name="formats.R" filename="R/formats.R" line-rate="0.973913043478261" branch-rate="0" complexity="0">
