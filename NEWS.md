@@ -1,4 +1,4 @@
-# tern 0.8.1.9002
+# tern 0.8.1.9003
 
 ### Bug Fixes
 * Fixed missing label for `TRTEDTM` in `tern` datasets.
@@ -6,6 +6,7 @@
 ### Miscellaneous
 * Implemented the `lubridate` package for date variables in `tern` datasets.
 * Organization of `.gitignore` and `.Rbuildignore`.
+* Removed deprecated `footnotes` functions and all related files.
 
 # tern 0.8.0
 
