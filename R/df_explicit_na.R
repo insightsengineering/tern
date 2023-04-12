@@ -15,9 +15,9 @@
 #' @param data (`data.frame`)\cr data set.
 #' @param omit_columns (`character`)\cr names of variables from `data` that should
 #'   not be modified by this function.
-#' @param char_as_factor (`logical`)\cr whether to convert character variables
+#' @param char_as_factor (`flag`)\cr whether to convert character variables
 #'   in `data` to factors.
-#' @param logical_as_factor (`logical`)\cr whether to convert logical variables
+#' @param logical_as_factor (`flag`)\cr whether to convert logical variables
 #'   in `data` to factors.
 #' @param na_level (`string`)\cr used to replace all `NA` or empty
 #'   values inside non-`omit_columns` columns.
@@ -38,6 +38,7 @@
 #'   stringsAsFactors = FALSE
 #' )
 #'
+#' # Example 1
 #' # Encode missing values in all character or factor columns.
 #' df_explicit_na(my_data)
 #' # Also convert logical columns to factor columns.
@@ -45,102 +46,26 @@
 #' # Encode missing values in a subset of columns.
 #' df_explicit_na(my_data, omit_columns = c("x", "y"))
 #'
-#' # Example 1
-#' # `rtables` requires that split variables to be factors.
-#' # When you try and split a variable that isn't, a warning message will appear.
-#' # Here we purposefully convert the SEX variable to character to demonstrate what happens
-#' # when we try splitting the rows by this variable.
-#' # To fix this, `df_explict_na` will convert this to a factor resulting in the table
-#' # being generated.
-#' adsl <- tern_ex_adsl
-#' adsl$SEX <- as.character(adsl$SEX)
-#'
-#' vars <- c("AGE", "SEX", "RACE", "BMRKR1")
-#' var_labels <- c(
-#'   "Age (yr)",
-#'   "Sex",
-#'   "Race",
-#'   "Continous Level Biomarker 1"
-#' )
-#'
-#' result <- basic_table(show_colcounts = TRUE) %>%
-#'   split_cols_by(var = "ARM") %>%
-#'   add_overall_col("All Patients") %>%
-#'   summarize_vars(
-#'     vars = vars,
-#'     var_labels = var_labels
-#'   ) %>%
-#'   build_table(adsl)
-#' result
-#'
 #' # Example 2
-#' # How missing values are handled
 #' # Here we purposefully convert all `M` values to `NA` in the `SEX` variable.
 #' # After running `df_explicit_na` the `NA` values are encoded as `<Missing>` but they are not
-#' # included in the table.
-#' # As well, the missing values are not included in the `n` count and they are not included in
-#' # the denominator value for calculating the percent values.
+#' # included when generating `rtables`.
 #' adsl <- tern_ex_adsl
 #' adsl$SEX[adsl$SEX == "M"] <- NA
 #' adsl <- df_explicit_na(adsl)
 #'
-#' vars <- c("AGE", "SEX")
-#' var_labels <- c(
-#'   "Age (yr)",
-#'   "Sex"
-#' )
-#'
-#' result <- basic_table(show_colcounts = TRUE) %>%
-#'   split_cols_by(var = "ARM") %>%
-#'   add_overall_col("All Patients") %>%
-#'   summarize_vars(
-#'     vars = vars,
-#'     var_labels = var_labels
-#'   ) %>%
-#'   build_table(adsl)
-#' result
-#'
-#' # If you want the `Na` values to be displayed in the table and included in the `n` count
-#' # and as the denominator for calculating percent values, use the `na_level` argument.
+#' # If you want the `Na` values to be displayed in the table use the `na_level` argument.
 #' adsl <- tern_ex_adsl
 #' adsl$SEX[adsl$SEX == "M"] <- NA
 #' adsl <- df_explicit_na(adsl, na_level = "Missing Values")
-#'
-#' result <- basic_table(show_colcounts = TRUE) %>%
-#'   split_cols_by(var = "ARM") %>%
-#'   add_overall_col("All Patients") %>%
-#'   summarize_vars(
-#'     vars = vars,
-#'     var_labels = var_labels
-#'   ) %>%
-#'   build_table(adsl)
-#' result
 #'
 #' # Example 3
 #' # Numeric variables that have missing values are not altered. This means that any `NA` value in
 #' # a numeric variable will not be included in the summary statistics, nor will they be included
 #' # in the denominator value for calculating the percent values.
-#' # Here we make any value less than 30 missing in the `AGE` variable and only the valued
-#' # greater than 30 are included in the table below.
 #' adsl <- tern_ex_adsl
 #' adsl$AGE[adsl$AGE < 30] <- NA
 #' adsl <- df_explicit_na(adsl)
-#'
-#' vars <- c("AGE", "SEX")
-#' var_labels <- c(
-#'   "Age (yr)",
-#'   "Sex"
-#' )
-#'
-#' result <- basic_table(show_colcounts = TRUE) %>%
-#'   split_cols_by(var = "ARM") %>%
-#'   add_overall_col("All Patients") %>%
-#'   summarize_vars(
-#'     vars = vars,
-#'     var_labels = var_labels
-#'   ) %>%
-#'   build_table(adsl)
-#' result
 df_explicit_na <- function(data,
                            omit_columns = NULL,
                            char_as_factor = TRUE,
