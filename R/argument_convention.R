@@ -49,11 +49,13 @@
 #'   Only considered if `draw = TRUE` is used.
 #' @param prune_zero_rows (`flag`)\cr whether to prune all zero rows.
 #' @param rsp (`logical`)\cr whether each subject is a responder or not.
-#' @param show_labels label visibility: one of "default", "visible" and "hidden".
+#' @param show_labels (`string`)\cr label visibility: one of "default", "visible" and "hidden".
+#' @param section_div (`string`)\cr string which should be repeated as a section divider after each group
+#'   defined by this split instruction, or `NA_character_` (the default) for no section divider.
 #' @param table_names (`character`)\cr this can be customized in case that the same `vars` are analyzed multiple times,
 #'   to avoid warnings from `rtables`.
 #' @param tte (`numeric`)\cr contains time-to-event duration values.
-#' @param var_labels character for label.
+#' @param var_labels (`character`)\cr character for label.
 #' @param variables (named `list` of `string`)\cr list of additional analysis variables.
 #' @param vars (`character`)\cr variable names for the primary analysis variable to be iterated over.
 #' @param var (`string`)\cr single variable name for the primary analysis variable.

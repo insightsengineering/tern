@@ -92,9 +92,9 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "no
 \item{table_names_suffix}{(\code{string})\cr optional suffix for the \code{table_names} used for the \code{rtables} to
 avoid warnings from duplicate table names.}
 
-\item{var_labels}{character for label.}
+\item{var_labels}{(\code{character})\cr character for label.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{method}{(\code{string})\cr either \code{surv} (survival estimations),
 \code{surv_diff} (difference in survival with the control) or \code{both}.}

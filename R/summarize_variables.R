@@ -711,10 +711,12 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 summarize_vars <- function(lyt,
                            vars,
                            var_labels = vars,
+                           na_level = NA_character_,
                            nested = TRUE,
                            ...,
                            show_labels = "default",
                            table_names = vars,
+                           section_div = NA_character_,
                            .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
                            .formats = NULL,
                            .labels = NULL,
@@ -726,10 +728,12 @@ summarize_vars <- function(lyt,
     vars = vars,
     var_labels = var_labels,
     afun = afun,
+    na_str = na_level,
     nested = nested,
     extra_args = list(...),
     inclNAs = TRUE,
     show_labels = show_labels,
-    table_names = table_names
+    table_names = table_names,
+    section_div = section_div
   )
 }
