@@ -1,14 +1,16 @@
-a_cox_univar <- function(df,
-                         labelstr = "",
-                         eff = FALSE,
-                         var_main = FALSE,
-                         variables,
-                         at = list(),
-                         control = control_coxreg(),
-                         .spl_context,
-                         .stats,
-                         .formats) {
-  if (eff) {
+a_coxreg <- function(df,
+                     labelstr = "",
+                     eff = FALSE,
+                     var_main = FALSE,
+                     multivar = FALSE,
+                     variables,
+                     at = list(),
+                     control = control_coxreg(),
+                     .spl_context,
+                     .stats,
+                     .formats) {
+  # if (multivar) browser()
+  if (eff || multivar) {
     control$interaction <- FALSE
   } else {
     cov <- tail(.spl_context$value, 1)
@@ -16,81 +18,59 @@ a_cox_univar <- function(df,
     if (var_main) control$interaction <- TRUE
   }
 
-  model <- fit_coxreg_univar(
-    variables = variables,
-    data = df,
-    at = at,
-    control = control
-  ) %>% broom::tidy()
-  if (!var_main) model[, "pval_inter"] <- NA_real_
 
-  vars_coxreg <- list(arm = NULL, var = NULL, which_vars = "all")
-  if (eff) {
-    vars_coxreg[c("arm", "which_vars")] <- list(variables$arm, "eff")
+  if (!multivar) {
+    model <- fit_coxreg_univar(
+      variables = variables,
+      data = df,
+      at = at,
+      control = control
+    ) %>% broom::tidy()
+    if (!var_main) model[, "pval_inter"] <- NA_real_
   } else {
-    vars_coxreg[c("var", "which_vars")] <- list(cov, "var_main")
-    if (!var_main && control$interaction) vars_coxreg["which_vars"] <- "inter"
+    model <- fit_coxreg_multivar(
+      variables = variables,
+      data = df,
+      control = control
+    ) %>% broom::tidy()
   }
-  var_vals <- s_coxreg(
-    model, .stats,
-    arm = vars_coxreg$arm, var = vars_coxreg$var, which_vars = vars_coxreg$which_vars
-  )[[1]]
-  var_nms <- if (!eff && !(!var_main && control$interaction) && nchar(labelstr) > 0) labelstr else names(var_vals)
-
-  in_rows(
-    .list = var_vals,
-    .names = var_nms,
-    .labels = var_nms,
-    .formats = setNames(rep(.formats, length(var_nms)), var_nms),
-    .format_na_strs = setNames(rep("", length(var_nms)), var_nms)
-  )
-}
-
-a_cox_multivar <- function(df,
-                           labelstr = "",
-                           eff = FALSE,
-                           var_main = FALSE,
-                           variables,
-                           at = list(),
-                           control = control_coxreg(),
-                           .spl_context,
-                           .stats,
-                           .formats = .formats) {
-  control$interaction <- FALSE
-  model <- fit_coxreg_multivar(
-    variables = variables,
-    data = df,
-    control = control
-  ) %>% broom::tidy()
 
   vars_coxreg <- list(arm = NULL, var = NULL, which_vars = "all")
   if (eff) {
-    if (var_main) {
-      vars_coxreg[c("arm", "which_vars")] <- list(variables$arm, "eff")
-    } else {
+    if (multivar && !var_main) {
       vars_coxreg[c("var", "which_vars")] <- list(c(variables$arm, var_labels(df)[[variables$arm]]), "multi_lvl")
+    } else {
+      vars_coxreg[c("arm", "which_vars")] <- list(variables$arm, "eff")
     }
   } else {
     cov <- tail(.spl_context$value, 1)
-    if (var_main && is.numeric(df[[cov]])) {
-      model[cov, .stats] <- NA_real_
-      vars_coxreg[c("var", "which_vars")] <- list(c(cov, var_labels(df)[[cov]]), "multi_lvl")
-    } else if (var_main) {
+    if (!multivar || (multivar && var_main && !is.numeric(df[[cov]]))) {
       vars_coxreg[c("var", "which_vars")] <- list(cov, "var_main")
-    } else {
-      vars_coxreg[c("var", "which_vars")] <- list(c(cov, var_labels(df)[[cov]]), "multi_lvl")
+    } else if (multivar) {
+      if (var_main) {
+        model[cov, .stats] <- NA_real_
+        vars_coxreg[c("var", "which_vars")] <- list(c(cov, var_labels(df)[[cov]]), "multi_lvl")
+      } else {
+        vars_coxreg[c("var", "which_vars")] <- list(c(cov, var_labels(df)[[cov]]), "multi_lvl")
+      }
     }
+    if (!multivar && !var_main && control$interaction) vars_coxreg["which_vars"] <- "inter"
   }
+
   var_vals <- s_coxreg(
     model, .stats,
     arm = vars_coxreg$arm, var = vars_coxreg$var, which_vars = vars_coxreg$which_vars
   )[[1]]
-  var_nms <- if (!eff && !var_main && is.numeric(df[[cov]])) "All" else names(var_vals)
+  var_nms <- if (!multivar && !eff && !(!var_main && control$interaction) && nchar(labelstr) > 0) {
+    labelstr
+  } else if (multivar && !eff && !var_main && is.numeric(df[[cov]])) {
+    "All"
+  } else {
+    names(var_vals)
+  }
 
   in_rows(
-    .list = var_vals,
-    .names = var_nms,
-    .labels = var_nms,
+    .list = var_vals, .names = var_nms, .labels = var_nms,
     .formats = setNames(rep(.formats, length(var_nms)), var_nms),
     .format_na_strs = setNames(rep("", length(var_nms)), var_nms)
   )
@@ -137,16 +117,18 @@ summarize_coxreg_new <- function(lyt,
         label_pos = "visible"
       ) %>%
       summarize_row_groups(
-        cfun = if (!multivar) a_cox_univar else a_cox_multivar,
-        extra_args = list(variables = variables, control = control, eff = TRUE, var_main = multivar)
+        cfun = a_coxreg,
+        extra_args = list(
+          variables = variables, control = control, multivar = multivar, eff = TRUE, var_main = multivar
+        )
       )
   }
 
   if (multivar) {
     lyt <- lyt %>%
       analyze_colvars(
-        afun = if (!multivar) a_cox_univar else a_cox_multivar,
-        extra_args = list(eff = TRUE, control = control, variables = variables)
+        afun = a_coxreg,
+        extra_args = list(eff = TRUE, control = control, variables = variables, multivar = multivar)
       )
   }
 
@@ -159,17 +141,18 @@ summarize_coxreg_new <- function(lyt,
       nested = FALSE
     ) %>%
     summarize_row_groups(
-      cfun = if (!multivar) a_cox_univar else a_cox_multivar,
+      cfun = a_coxreg,
       extra_args = list(
-        variables = variables, control = control, var_main = if (multivar) multivar else control$interaction
+        variables = variables, control = control, multivar = multivar,
+        var_main = if (multivar) multivar else control$interaction
       )
     )
 
   if (multivar || control$interaction) {
     lyt <- lyt %>%
       analyze_colvars(
-        afun = if (!multivar) a_cox_univar else a_cox_multivar,
-        extra_args = list(variables = variables, at = at, control = control)
+        afun = a_coxreg,
+        extra_args = list(variables = variables, at = at, control = control, multivar = multivar)
       )
   }
 
