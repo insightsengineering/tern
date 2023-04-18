@@ -102,6 +102,7 @@ NULL
 #' )
 #' df2_covs <- broom::tidy(multivar_covs_model)
 #' s_coxreg(df = df2_covs, .stats = "hr")
+#'
 s_coxreg <- function(df, .stats, arm = NULL, var = NULL, which_vars = "all") {
   assert_df_with_variables(df, list(term = "term", var = .stats))
   checkmate::assert_multi_class(df$term, classes = c("factor", "character"))

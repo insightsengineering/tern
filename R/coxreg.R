@@ -29,10 +29,11 @@ a_cox_univar <- function(df,
     vars_coxreg[c("arm", "which_vars")] <- list(variables$arm, "eff")
   } else {
     vars_coxreg[c("var", "which_vars")] <- list(cov, "var_main")
-    if (!var_main & control$interaction) vars_coxreg["which_vars"] <- "inter"
+    if (!var_main && control$interaction) vars_coxreg["which_vars"] <- "inter"
   }
   var_vals <- s_coxreg(
-    model, .stats, arm = vars_coxreg$arm, var = vars_coxreg$var, which_vars = vars_coxreg$which_vars
+    model, .stats,
+    arm = vars_coxreg$arm, var = vars_coxreg$var, which_vars = vars_coxreg$which_vars
   )[[1]]
   var_nms <- if (!eff && !(!var_main && control$interaction) && nchar(labelstr) > 0) labelstr else names(var_vals)
 
@@ -81,7 +82,8 @@ a_cox_multivar <- function(df,
     }
   }
   var_vals <- s_coxreg(
-    model, .stats, arm = vars_coxreg$arm, var = vars_coxreg$var, which_vars = vars_coxreg$which_vars
+    model, .stats,
+    arm = vars_coxreg$arm, var = vars_coxreg$var, which_vars = vars_coxreg$which_vars
   )[[1]]
   var_nms <- if (!eff && !var_main && is.numeric(df[[cov]])) "All" else names(var_vals)
 
@@ -95,11 +97,7 @@ a_cox_multivar <- function(df,
 }
 
 formats_coxreg <- c(
-  n = "xx",
-  hr = "xx.xx",
-  ci = "(xx.xx, xx.xx)",
-  pval = "x.xxxx | (<0.0001)",
-  pval_inter = "x.xxxx | (<0.0001)"
+  n = "xx", hr = "xx.xx", ci = "(xx.xx, xx.xx)", pval = "x.xxxx | (<0.0001)", pval_inter = "x.xxxx | (<0.0001)"
 )
 
 summarize_coxreg_new <- function(lyt,
@@ -156,15 +154,18 @@ summarize_coxreg_new <- function(lyt,
     split_rows_by_multivar(
       vars = variables$covariates,
       varlabels = var_labels,
+      split_fun = split_fun,
       split_label = "Covariate:",
       nested = FALSE
     ) %>%
     summarize_row_groups(
       cfun = if (!multivar) a_cox_univar else a_cox_multivar,
-      extra_args = list(variables = variables, control = control, var_main = if (multivar) multivar else control$interaction)
+      extra_args = list(
+        variables = variables, control = control, var_main = if (multivar) multivar else control$interaction
+      )
     )
 
-  if (multivar | (!multivar & control$interaction)) {
+  if (multivar || control$interaction) {
     lyt <- lyt %>%
       analyze_colvars(
         afun = if (!multivar) a_cox_univar else a_cox_multivar,
