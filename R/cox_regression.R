@@ -55,6 +55,22 @@ NULL
 #' @describeIn cox_regression transforms the tabulated results from [`fit_coxreg_univar()`]
 #'  and [`fit_coxreg_multivar()`] into a list. Not much calculation is done here,
 #'  it rather prepares the data to be used by the layout creating function.
+#'
+#' @param .stats (`character`)\cr the name of statistics to be reported among:
+#'   * `n`: number of observations
+#'   * `hr`: hazard ratio
+#'   * `ci`: confidence interval
+#'   * `pval`: p-value of the treatment effect
+#'   * `pval_inter`: p-value of the interaction effect between the treatment and the covariate
+#' @param which_vars (`character`)\cr which rows should statistics be returned for from the given model.
+#'   Defaults to "all". Other options include "var_main" for main effects, "inter" for interaction effects,
+#'   and "multi_lvl" for multivariate model covariate level rows. When `which_vars` is "all" specific
+#'   variables can be selected by specifying `var_nms`.
+#' @param var_nms (`character`)\cr the `term` value of rows in `df` for which `.stats` should by returned. Typically
+#'   this is the name of a variable. If using variable labels, `var` should be a vector of both the desired
+#'   variable name and the variable label in that order to see all `.stats` related to that variable. When `which_vars`
+#'   is "var_main" `var_nms` should be only the variable name.
+#'
 #' @export
 #'
 #' @examples
@@ -70,7 +86,7 @@ NULL
 #' df1 <- broom::tidy(univar_model)
 #' s_coxreg(df = df1, .stats = "hr")
 #'
-#' # Only covariates.
+#' # Univariate without treatment arm - only "covar2" covariate effects
 #' univar_covs_model <- fit_coxreg_univar(
 #'   variables = list(
 #'     time = "time", event = "status",
@@ -79,7 +95,7 @@ NULL
 #'   data = dta_bladder
 #' )
 #' df1_covs <- broom::tidy(univar_covs_model)
-#' s_coxreg(df = df1_covs, .stats = "hr")
+#' s_coxreg(df = df1_covs, .stats = "hr", var_nms = c("covar2", "Sex (F/M)"))
 #'
 #' # Multivariate.
 #' multivar_model <- fit_coxreg_multivar(
@@ -92,7 +108,7 @@ NULL
 #' df2 <- broom::tidy(multivar_model)
 #' s_coxreg(df = df2, .stats = "hr")
 #'
-#' # Multivariate without treatment arm.
+#' # Multivariate without treatment arm - only "covar1" main effect
 #' multivar_covs_model <- fit_coxreg_multivar(
 #'   variables = list(
 #'     time = "time", event = "status",
@@ -101,24 +117,17 @@ NULL
 #'   data = dta_bladder
 #' )
 #' df2_covs <- broom::tidy(multivar_covs_model)
-#' s_coxreg(df = df2_covs, .stats = "hr")
+#' s_coxreg(df = df2_covs, .stats = "pval", which_vars = "var_main", var_nms = "covar1")
 #'
-s_coxreg <- function(df, .stats, arm = NULL, var = NULL, which_vars = "all") {
-  assert_df_with_variables(df, list(term = "term", var = .stats))
+s_coxreg <- function(df, .stats, which_vars = "all", var_nms = NULL) {
+  assert_df_with_variables(df, list(term = "term", stat = .stats))
   checkmate::assert_multi_class(df$term, classes = c("factor", "character"))
   df$term <- as.character(df$term)
 
-  if (which_vars == "eff") {
-    df <- df[df$term == arm, ]
-  } else if (which_vars %in% c("var_main", "inter", "multi_lvl")) {
-    df <- df[df$term %in% var, ]
-    # df <- df[sapply(rownames(df), function(x) strsplit(x, "[.]")[[1]][1]) == var, ]
-    if (which_vars == "multi_lvl") df$term <- tail(var, 1)
-  }
+  if (length(var_nms) > 0) df <- df[df$term %in% var_nms, ]
+  if (which_vars == "multi_lvl") df$term <- tail(var_nms, 1)
 
-  # We need a list with names corresponding to the stats to display.
-  # There can be several covariate to test, but the names of the items should
-  # be constant and equal to the stats to display.
+  # We need a list with names corresponding to the stats to display of equal length to the list of stats.
   y <- split(df, f = df$term, drop = FALSE)
   y <- stats::setNames(y, nm = rep(.stats, length(y)))
 
@@ -146,13 +155,6 @@ s_coxreg <- function(df, .stats, arm = NULL, var = NULL, which_vars = "all") {
 #'   an arm variable. When no arm variable is included in the univariate Cox regression,
 #'   then also `TRUE` should be used to tabulate the covariate effect estimates instead
 #'   of the treatment arm effect estimate across models.
-#' @param vars (`character`)\cr the name of statistics to be reported among
-#'  `n` (number of observation),
-#'  `hr` (Hazard Ratio),
-#'  `ci` (confidence interval),
-#'  `pval` (p.value of the treatment effect) and
-#'  `pval_inter` (the p.value of the interaction effect between the treatment
-#'  and the covariate).
 #' @export
 #'
 #' @examples

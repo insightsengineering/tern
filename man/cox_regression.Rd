@@ -6,7 +6,7 @@
 \alias{summarize_coxreg}
 \title{Cox Proportional Hazards Regression}
 \usage{
-s_coxreg(df, .var)
+s_coxreg(df, .stats, which_vars = "all", var_nms = NULL)
 
 summarize_coxreg(
   lyt,
@@ -18,8 +18,24 @@ summarize_coxreg(
 \arguments{
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
+\item{.stats}{(\code{character})\cr the name of statistics to be reported among:
+\itemize{
+\item \code{n}: number of observations
+\item \code{hr}: hazard ratio
+\item \code{ci}: confidence interval
+\item \code{pval}: p-value of the treatment effect
+\item \code{pval_inter}: p-value of the interaction effect between the treatment and the covariate
+}}
+
+\item{which_vars}{(\code{character})\cr which rows should statistics be returned for from the given model.
+Defaults to "all". Other options include "var_main" for main effects, "inter" for interaction effects,
+and "multi_lvl" for multivariate model covariate level rows. When \code{which_vars} is "all" specific
+variables can be selected by specifying \code{var_nms}.}
+
+\item{var_nms}{(\code{character})\cr the \code{term} value of rows in \code{df} for which \code{.stats} should by returned. Typically
+this is the name of a variable. If using variable labels, \code{var} should be a vector of both the desired
+variable name and the variable label in that order to see all \code{.stats} related to that variable. When \code{which_vars}
+is "var_main" \code{var_nms} should be only the variable name.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
@@ -32,13 +48,7 @@ an arm variable. When no arm variable is included in the univariate Cox regressi
 then also \code{TRUE} should be used to tabulate the covariate effect estimates instead
 of the treatment arm effect estimate across models.}
 
-\item{vars}{(\code{character})\cr the name of statistics to be reported among
-\code{n} (number of observation),
-\code{hr} (Hazard Ratio),
-\code{ci} (confidence interval),
-\code{pval} (p.value of the treatment effect) and
-\code{pval_inter} (the p.value of the interaction effect between the treatment
-and the covariate).}
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -106,9 +116,9 @@ univar_model <- fit_coxreg_univar(
   data = dta_bladder
 )
 df1 <- broom::tidy(univar_model)
-s_coxreg(df = df1, .var = "hr")
+s_coxreg(df = df1, .stats = "hr")
 
-# Only covariates.
+# Univariate without treatment arm - only "covar2" covariate effects
 univar_covs_model <- fit_coxreg_univar(
   variables = list(
     time = "time", event = "status",
@@ -117,7 +127,7 @@ univar_covs_model <- fit_coxreg_univar(
   data = dta_bladder
 )
 df1_covs <- broom::tidy(univar_covs_model)
-s_coxreg(df = df1_covs, .var = "hr")
+s_coxreg(df = df1_covs, .stats = "hr", var_nms = c("covar2", "Sex (F/M)"))
 
 # Multivariate.
 multivar_model <- fit_coxreg_multivar(
@@ -128,9 +138,9 @@ multivar_model <- fit_coxreg_multivar(
   data = dta_bladder
 )
 df2 <- broom::tidy(multivar_model)
-s_coxreg(df = df2, .var = "hr")
+s_coxreg(df = df2, .stats = "hr")
 
-# Multivariate without treatment arm.
+# Multivariate without treatment arm - only "covar1" main effect
 multivar_covs_model <- fit_coxreg_multivar(
   variables = list(
     time = "time", event = "status",
@@ -139,7 +149,8 @@ multivar_covs_model <- fit_coxreg_multivar(
   data = dta_bladder
 )
 df2_covs <- broom::tidy(multivar_covs_model)
-s_coxreg(df = df2_covs, .var = "hr")
+s_coxreg(df = df2_covs, .stats = "pval", which_vars = "var_main", var_nms = "covar1")
+
 # summarize_coxreg
 result_univar <- basic_table() \%>\%
   split_rows_by("effect") \%>\%
