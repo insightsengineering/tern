@@ -1,64 +1,56 @@
 a_cox_univar <- function(df,
                          labelstr = "",
                          eff = FALSE,
-                         cov_main = FALSE,
+                         var_main = FALSE,
                          variables,
                          at = list(),
                          control = control_coxreg(),
                          .spl_context,
                          .stats,
                          .formats) {
-  cov <- tail(.spl_context$value, 1)
-  variables$covariates <- cov
-
-  thing <- if (eff) {
+  # browser()
+  if (eff) {
     control$interaction <- FALSE
-    fit_coxreg_univar(
-      variables = variables[names(variables) != "covariates"],
-      data = df,
-      at = at,
-      control = control
-    )
   } else {
-    if (cov_main) control$interaction <- TRUE
-    fit_coxreg_univar(
-      variables = variables,
-      data = df,
-      at = at,
-      control = control
-    )
+    cov <- tail(.spl_context$value, 1)
+    variables$covariates <- cov
+    if (var_main) control$interaction <- TRUE
   }
-  thing <- thing %>% broom::tidy()
 
-  if (!cov_main) {
-    thing[, "pval_inter"] <- NA_real_
-  }
+  model <- fit_coxreg_univar(
+    variables = variables,
+    data = df,
+    at = at,
+    control = control
+  ) %>% broom::tidy()
+  if (!var_main) model[, "pval_inter"] <- NA_real_
 
   if (eff) {
-    retvals <- list(unlist(thing[.stats]))
-    nms <- thing$term_label
+    # model <- model[model$effect == "Treatment:", ]
+    retvals <- s_coxreg(df = model, .stats = .stats, arm = variables$arm, which_vars = "eff")[[1]]
+    nms <- names(retvals)
   } else {
-    thing <- thing[thing$effect == "Covariate:", ]
-    if (control$interaction) thing[,"pval"] <- NA_real_
-    if (cov_main) {
-      thing_keep <- thing[nchar(thing$level) == 0, ]
-      nms <- labelstr
-    } else if (control$interaction) {
-      givlevs <- if (is.factor(df[[cov]])) {
-        levels(df[[cov]])
-      } else if (!is.null(at[[cov]])) {
-        as.character(at[[cov]])
-      } else {
-        as.character(median(df[[cov]]))
-      }
-      thing_keep <- if (cov_main) thing[!thing$level %in% givlevs,] else thing[thing$level %in% givlevs,]
-      nms <- givlevs
-    } else {
-      thing_keep <- thing
-      nms <- labelstr
+    # browser()
+    # model <- model[model$effect == "Covariate:", ]
+    # nms <- labelstr
+    retvals <- s_coxreg(df = model, .stats = .stats, var = cov, which_vars = "var_main")[[1]]
+    nms <- if (nchar(labelstr) > 0) labelstr else names(retvals)
+    if (!var_main & control$interaction) {
+      retvals <- s_coxreg(df = model, .stats = .stats, var = cov, which_vars = "inter")[[1]]
+      nms <- names(retvals)
+      # inter_lvls <- if (is.factor(df[[cov]])) {
+      #   levels(df[[cov]])
+      # } else if (!is.null(at[[cov]])) {
+      #   as.character(at[[cov]])
+      # } else {
+      #   as.character(median(df[[cov]]))
+      # }
+      # model <- model[model$level %in% inter_lvls, ]
+      # nms <- inter_lvls
+      # retvals <- as.list(apply(model[.stats], 1, function(x) unlist(x), simplify = FALSE))
     }
-    retvals <- as.list(apply(thing_keep[.stats], 1, function(x) unlist(x), simplify = FALSE))
   }
+
   in_rows(
     .list = retvals,
     .names = nms,
@@ -78,29 +70,32 @@ a_cox_multivar <- function(df,
                            .spl_context,
                            .stats,
                            .formats = .formats) {
-  thing <- fit_coxreg_multivar(
+  model <- fit_coxreg_multivar(
     variables = variables,
     data = df,
     control = control
   ) %>% broom::tidy()
 
   if (eff) {
-    if (var_main) thing <- thing[1, ] else thing <- thing[-1, ]
-    thing_keep <- thing[thing$term %in% c(variables$arm, var_labels(df)[[variables$arm]]), ]
+    if (var_main) {
+      retvals <- s_coxreg(model, .stats, arm = variables$arm, which_vars = "eff")[[1]]
+    } else {
+      retvals <- s_coxreg(model, .stats, var = c(variables$arm, var_labels(df)[[variables$arm]]), which_vars = "multi_lvl")[[1]]
+    }
+    nms <- names(retvals)
   } else {
     cov <- tail(.spl_context$value, 1)
-    if (var_main & is.numeric(df[[cov]])) {
-      thing[cov, .stats] <- NA_real_
-      thing_keep <- thing[thing$term == var_labels(df)[[cov]], ]
+    if (var_main && is.numeric(df[[cov]])) {
+      model[cov, .stats] <- NA_real_
+      retvals <- s_coxreg(model, .stats, var = c(cov, var_labels(df)[[cov]]), which_vars = "multi_lvl")[[1]]
     } else if (var_main) {
-      thing_keep <- thing[thing$term == cov, ]
+      retvals <- s_coxreg(model, .stats, var = cov, which_vars = "var_main")[[1]]
     } else {
-      thing_keep <- thing[thing$term == var_labels(df)[[cov]], ]
-      if (is.numeric(df[[cov]])) thing_keep$term_label <- "All"
+      retvals <- s_coxreg(model, .stats, var = c(cov, var_labels(df)[[cov]]), which_vars = "multi_lvl")[[1]]
     }
+    nms <- if (!var_main && is.numeric(df[[cov]])) "All" else names(retvals)
   }
-  nms <- thing_keep$term_label
-  retvals <- as.list(apply(thing_keep[.stats], 1, function(x) unlist(x), simplify = FALSE))
+
   in_rows(
     .list = retvals,
     .names = nms,
@@ -127,6 +122,7 @@ summarize_coxreg_new <- function(lyt,
                                  .stats = c("n", "hr", "ci", "pval"),
                                  .formats = formats_coxreg[names(formats_coxreg) %in% .stats],
                                  var_labels = NULL,
+                                 split_fun = NULL,
                                  .indent_mods = NULL,
                                  .na_str = NA_character_,
                                  .section_div = NA_character_) {
@@ -139,11 +135,12 @@ summarize_coxreg_new <- function(lyt,
   )
   stat_labels <- stat_labels[names(stat_labels) %in% .stats]
 
-  lyt <- lyt %>% split_cols_by_multivar(
-    vars = rep(common_var, length(.stats)),
-    varlabels = stat_labels,
-    extra_args = list(.stats = .stats, .formats = .formats)
-  )
+  lyt <- lyt %>%
+    split_cols_by_multivar(
+      vars = rep(common_var, length(.stats)),
+      varlabels = stat_labels,
+      extra_args = list(.stats = .stats, .formats = .formats)
+    )
 
   if (!multivar) {
     if (nchar(variables$arm) > 0) {
@@ -153,19 +150,22 @@ summarize_coxreg_new <- function(lyt,
           split_label = "Treatment:",
           label_pos = "visible"
         ) %>%
-        summarize_row_groups(cfun = a_cox_univar,
-                             extra_args = list(variables = variables, control = control, eff = TRUE))
+        summarize_row_groups(
+          cfun = a_cox_univar,
+          extra_args = list(variables = variables, control = control, eff = TRUE)
+        )
     }
 
-    lyt <- lyt %>% split_rows_by_multivar(
-      vars = variables$covariates,
-      varlabels = var_labels,
-      split_label = "Covariate:",
-      nested = FALSE
-    ) %>%
+    lyt <- lyt %>%
+      split_rows_by_multivar(
+        vars = variables$covariates,
+        varlabels = var_labels,
+        split_label = "Covariate:",
+        nested = FALSE
+      ) %>%
       summarize_row_groups(
         cfun = a_cox_univar,
-        extra_args = list(variables = variables, control = control, cov_main = control$interaction)
+        extra_args = list(variables = variables, control = control, var_main = control$interaction)
       )
 
     if (control$interaction) {
@@ -184,8 +184,9 @@ summarize_coxreg_new <- function(lyt,
           split_label = "Treatment:",
           label_pos = "visible"
         ) %>%
-        summarize_row_groups(cfun = a_cox_multivar,
-                             extra_args = list(eff = TRUE, var_main = TRUE, control = control, variables = variables)
+        summarize_row_groups(
+          cfun = a_cox_multivar,
+          extra_args = list(eff = TRUE, var_main = TRUE, control = control, variables = variables)
         ) %>%
         analyze_colvars(
           afun = a_cox_multivar,
@@ -193,12 +194,13 @@ summarize_coxreg_new <- function(lyt,
         )
     }
 
-    lyt <- lyt %>% split_rows_by_multivar(
-      vars = variables$covariates,
-      varlabels = var_labels,
-      split_label = "Covariate:",
-      nested = FALSE
-    ) %>%
+    lyt <- lyt %>%
+      split_rows_by_multivar(
+        vars = variables$covariates,
+        varlabels = var_labels,
+        split_label = "Covariate:",
+        nested = FALSE
+      ) %>%
       summarize_row_groups(
         cfun = a_cox_multivar,
         extra_args = list(control = control, variables = variables, var_main = TRUE)

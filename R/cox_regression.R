@@ -68,7 +68,7 @@ NULL
 #'   data = dta_bladder
 #' )
 #' df1 <- broom::tidy(univar_model)
-#' s_coxreg(df = df1, .var = "hr")
+#' s_coxreg(df = df1, .stats = "hr")
 #'
 #' # Only covariates.
 #' univar_covs_model <- fit_coxreg_univar(
@@ -79,7 +79,7 @@ NULL
 #'   data = dta_bladder
 #' )
 #' df1_covs <- broom::tidy(univar_covs_model)
-#' s_coxreg(df = df1_covs, .var = "hr")
+#' s_coxreg(df = df1_covs, .stats = "hr")
 #'
 #' # Multivariate.
 #' multivar_model <- fit_coxreg_multivar(
@@ -90,7 +90,7 @@ NULL
 #'   data = dta_bladder
 #' )
 #' df2 <- broom::tidy(multivar_model)
-#' s_coxreg(df = df2, .var = "hr")
+#' s_coxreg(df = df2, .stats = "hr")
 #'
 #' # Multivariate without treatment arm.
 #' multivar_covs_model <- fit_coxreg_multivar(
@@ -101,20 +101,36 @@ NULL
 #'   data = dta_bladder
 #' )
 #' df2_covs <- broom::tidy(multivar_covs_model)
-#' s_coxreg(df = df2_covs, .var = "hr")
-s_coxreg <- function(df, .var) {
-  assert_df_with_variables(df, list(term = "term", var = .var))
+#' s_coxreg(df = df2_covs, .stats = "hr")
+s_coxreg <- function(df, .stats, arm = NULL, var = NULL, which_vars = "all") {
+  assert_df_with_variables(df, list(term = "term", var = .stats))
   checkmate::assert_multi_class(df$term, classes = c("factor", "character"))
   df$term <- as.character(df$term)
+
+  if (which_vars == "eff") {
+    df <- df[df$term == arm, ]
+  } else if (which_vars %in% c("var_main", "inter", "multi_lvl")) {
+    df <- df[df$term %in% var, ]
+    # df <- df[sapply(rownames(df), function(x) strsplit(x, "[.]")[[1]][1]) == var, ]
+    if (which_vars == "multi_lvl") df$term <- tail(var, 1)
+  }
+
   # We need a list with names corresponding to the stats to display.
   # There can be several covariate to test, but the names of the items should
   # be constant and equal to the stats to display.
   y <- split(df, f = df$term, drop = FALSE)
-  y <- stats::setNames(y, nm = rep(.var, length(y)))
+  y <- stats::setNames(y, nm = rep(.stats, length(y)))
+
+  if (which_vars == "var_main") {
+    y <- lapply(y, function(x) x[1, ])
+  } else if (which_vars %in% c("inter", "multi_lvl")) {
+    y <- lapply(y, function(x) if (nrow(y[[1]]) > 1) x[-1, ] else x)
+  }
+
   lapply(
     X = y,
     FUN = function(x) {
-      z <- as.list(x[[.var]])
+      z <- as.list(x[[.stats]])
       stats::setNames(z, nm = x$term_label)
     }
   )
