@@ -25,15 +25,15 @@
 #' set.seed(1, kind = "Mersenne-Twister")
 #' dta_bladder <- with(
 #'   data = bladder[bladder$enum < 5, ],
-#'   data.frame(
+#'   tibble(
 #'     TIME = stop,
 #'     STATUS = event,
 #'     ARM = as.factor(rx),
-#'     COVAR1 = as.factor(enum),
+#'     COVAR1 = as.factor(enum) %>% formatters::with_label("A Covariate Label"),
 #'     COVAR2 = factor(
 #'       sample(as.factor(enum)),
 #'       levels = 1:4, labels = c("F", "F", "M", "M")
-#'     )
+#'     ) %>% formatters::with_label("Sex (F/M)")
 #'   )
 #' )
 #' dta_bladder$AGE <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
@@ -54,14 +54,14 @@ NULL
 #'  it rather prepares the data to be used by the layout creating function.
 #'
 #' @param .stats (`character`)\cr the name of statistics to be reported among:
-#'   * `n`: number of observations
+#'   * `n`: number of observations (univariable only)
 #'   * `hr`: hazard ratio
 #'   * `ci`: confidence interval
 #'   * `pval`: p-value of the treatment effect
-#'   * `pval_inter`: p-value of the interaction effect between the treatment and the covariate
+#'   * `pval_inter`: p-value of the interaction effect between the treatment and the covariate (univariable only)
 #' @param which_vars (`character`)\cr which rows should statistics be returned for from the given model.
 #'   Defaults to "all". Other options include "var_main" for main effects, "inter" for interaction effects,
-#'   and "multi_lvl" for multivariate model covariate level rows. When `which_vars` is "all" specific
+#'   and "multi_lvl" for multivariable model covariate level rows. When `which_vars` is "all" specific
 #'   variables can be selected by specifying `var_nms`.
 #' @param var_nms (`character`)\cr the `term` value of rows in `df` for which `.stats` should by returned. Typically
 #'   this is the name of a variable. If using variable labels, `var` should be a vector of both the desired
@@ -73,25 +73,25 @@ NULL
 #' @examples
 #' # s_coxreg
 #'
-#' # Univariate
+#' # Univariable
 #' u1_variables <- list(time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2"))
 #' univar_model <- fit_coxreg_univar(variables = u1_variables, data = dta_bladder)
 #' df1 <- broom::tidy(univar_model)
 #' s_coxreg(df = df1, .stats = "hr")
 #'
-#' # Univariate without treatment arm - only "COVAR2" covariate effects
+#' # Univariable without treatment arm - only "COVAR2" covariate effects
 #' u2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 #' univar_covs_model <- fit_coxreg_univar(variables = u2_variables, data = dta_bladder)
 #' df1_covs <- broom::tidy(univar_covs_model)
 #' s_coxreg(df = df1_covs, .stats = "hr", var_nms = c("COVAR2", "Sex (F/M)"))
 #'
-#' # Multivariate.
+#' # Multivariable.
 #' m1_variables <- list(time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2"))
 #' multivar_model <- fit_coxreg_multivar(variables = m1_variables, data = dta_bladder)
 #' df2 <- broom::tidy(multivar_model)
 #' s_coxreg(df = df2, .stats = "hr")
 #'
-#' # Multivariate without treatment arm - only "COVAR1" main effect
+#' # Multivariable without treatment arm - only "COVAR1" main effect
 #' m2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 #' multivar_covs_model <- fit_coxreg_multivar(variables = m2_variables, data = dta_bladder)
 #' df2_covs <- broom::tidy(multivar_covs_model)
@@ -111,9 +111,9 @@ s_coxreg <- function(df, .stats, which_vars = "all", var_nms = NULL) {
   y <- stats::setNames(y, nm = rep(.stats, length(y)))
 
   if (which_vars == "var_main") {
-    y <- lapply(y, function(x) x[1, ])
+    y <- lapply(y, function(x) x[1, ]) # only main effect
   } else if (which_vars %in% c("inter", "multi_lvl")) {
-    y <- lapply(y, function(x) if (nrow(y[[1]]) > 1) x[-1, ] else x)
+    y <- lapply(y, function(x) if (nrow(y[[1]]) > 1) x[-1, ] else x) # exclude main effect
   }
 
   lapply(
@@ -131,9 +131,28 @@ s_coxreg <- function(df, .stats, which_vars = "all", var_nms = NULL) {
 #' @param eff (`flag`)\cr whether treatment effect should be calculated. Defaults to `FALSE`.
 #' @param var_main (`flag`)\cr whether main effects should be calculated. Defaults to `FALSE`.
 #'
+#' @examples
+#' a_coxreg(
+#'   df = dta_bladder,
+#'   labelstr = "Label 1",
+#'   variables = u1_variables,
+#'   .spl_context = list(value = "COVAR1"),
+#'   .stats = "n",
+#'   .formats = "xx"
+#' )
+#'
+#' a_coxreg(
+#'   df = dta_bladder,
+#'   labelstr = "",
+#'   variables = u1_variables,
+#'   .spl_context = list(value = "COVAR2"),
+#'   .stats = "pval",
+#'   .formats = "xx.xxxx"
+#' )
+#'
 #' @keywords internal
 a_coxreg <- function(df,
-                     labelstr = "",
+                     labelstr,
                      eff = FALSE,
                      var_main = FALSE,
                      multivar = FALSE,
@@ -144,10 +163,12 @@ a_coxreg <- function(df,
                      .stats,
                      .formats) {
   cov_no_arm <- !multivar && !"arm" %in% names(variables) && control$interaction
+  cov <- tail(.spl_context$value, 1)
+  var_lbl <- formatters::var_labels(df)[cov]
+  if (!is.na(var_lbl) && labelstr == cov && cov %in% variables$covariates) labelstr <- var_lbl
   if (eff || multivar || cov_no_arm) {
     control$interaction <- FALSE
   } else {
-    cov <- tail(.spl_context$value, 1)
     variables$covariates <- cov
     if (var_main) control$interaction <- TRUE
   }
@@ -159,30 +180,29 @@ a_coxreg <- function(df,
     model <- fit_coxreg_multivar(variables = variables, data = df, control = control) %>% broom::tidy()
   }
 
+  if (cov_no_arm) multivar <- TRUE
+
   vars_coxreg <- list(var = NULL, which_vars = "all")
   if (eff) {
     if (multivar && !var_main) {
-      vars_coxreg[c("var", "which_vars")] <- list(c(variables$arm, var_labels(df)[[variables$arm]]), "multi_lvl")
+      vars_coxreg[c("var", "which_vars")] <- list(c(variables$arm, formatters::var_labels(df)[[variables$arm]]), "multi_lvl")
     } else {
       vars_coxreg["var"] <- variables$arm
       if (var_main) vars_coxreg["which_vars"] <- "var_main"
     }
   } else {
-    cov <- tail(.spl_context$value, 1)
     if (!multivar || (multivar && var_main && !is.numeric(df[[cov]]))) {
       vars_coxreg[c("var", "which_vars")] <- list(cov, "var_main")
     } else if (multivar) {
-      vars_coxreg[c("var", "which_vars")] <- list(c(cov, var_labels(df)[[cov]]), "multi_lvl")
+      vars_coxreg[c("var", "which_vars")] <- list(c(cov, formatters::var_labels(df)[[cov]]), "multi_lvl")
       if (var_main) model[cov, .stats] <- NA_real_
     }
-    if ((!multivar && !var_main && control$interaction) || cov_no_arm) vars_coxreg["which_vars"] <- "inter"
+    if (!multivar && !var_main && control$interaction) vars_coxreg["which_vars"] <- "inter"
   }
 
-  var_vals <- s_coxreg(
-    model, .stats,
-    var = vars_coxreg$var, which_vars = vars_coxreg$which_vars
-  )[[1]]
+  var_vals <- s_coxreg(model, .stats, which_vars = vars_coxreg$which_vars, var_nms = vars_coxreg$var)[[1]]
   var_nms <- if (all(grepl("\\(reference = ", names(var_vals))) && labelstr != tail(.spl_context$value, 1)) {
+    # browser()
     paste(c(labelstr, tail(strsplit(names(var_vals), " ")[[1]], 3)), collapse = " ")
   } else if (!multivar && !eff && !(!var_main && control$interaction) && nchar(labelstr) > 0) {
     labelstr
@@ -199,15 +219,11 @@ a_coxreg <- function(df,
   )
 }
 
-formats_coxreg <- c(
-  n = "xx", hr = "xx.xx", ci = "(xx.xx, xx.xx)", pval = "x.xxxx | (<0.0001)", pval_inter = "x.xxxx | (<0.0001)"
-)
-
 #' @describeIn cox_regression layout creating function.
 #'
 #' @inheritParams fit_coxreg_univar
-#' @param multivar (`flag`)\cr Defaults to `FALSE`. If `TRUE` multivariate Cox regression will run, otherwise
-#'   univariate Cox regression will run.
+#' @param multivar (`flag`)\cr Defaults to `FALSE`. If `TRUE` multivariable Cox regression will run, otherwise
+#'   univariable Cox regression will run.
 #' @param common_var (`character`)\cr the name of a factor variable in the dataset which takes the same value
 #'   for all rows. This should be created during pre-processing if no such variable currently exists.
 #' @param split_fun (`function`)\cr split function to implement for row split by covariates. Defaults to `NULL`.
@@ -215,17 +231,14 @@ formats_coxreg <- c(
 #' @export
 #'
 #' @seealso [fit_coxreg_univar()] and [fit_coxreg_multivar()] which also take the `variables`, `data`,
-#'   `at` (univariate only), and `control` arguments but return unformatted univariate and multivariate
+#'   `at` (univariable only), and `control` arguments but return unformatted univariable and multivariable
 #'   Cox regression models, respectively.
 #'
 #' @examples
 #' # summarize_coxreg
 #'
 #' result_univar <- basic_table() %>%
-#'   summarize_coxreg(
-#'     variables = u1_variables,
-#'     var_labels = c("A Covariate Label", "Sex (F/M)")
-#'   ) %>%
+#'   summarize_coxreg(variables = u1_variables) %>%
 #'   build_table(dta_bladder)
 #' result_univar
 #'
@@ -233,7 +246,6 @@ formats_coxreg <- c(
 #'   summarize_coxreg(
 #'     variables = m1_variables,
 #'     multivar = TRUE,
-#'     var_labels = c("A Covariate Label", "Sex (F/M)")
 #'   ) %>%
 #'   build_table(dta_bladder)
 #' result_multivar
@@ -241,7 +253,6 @@ formats_coxreg <- c(
 #' result_univar_covs <- basic_table() %>%
 #'   summarize_coxreg(
 #'     variables = u2_variables,
-#'     var_labels = c("A Covariate Label", "Sex (F/M)")
 #'   ) %>%
 #'   build_table(dta_bladder)
 #' result_univar_covs
@@ -250,7 +261,7 @@ formats_coxreg <- c(
 #'   summarize_coxreg(
 #'     variables = m2_variables,
 #'     multivar = TRUE,
-#'     var_labels = c("A Covariate Label", "Sex (F/M)")
+#'     varlabels = c("Covariate 1", "Covariate 2") # custom labels
 #'   ) %>%
 #'   build_table(dta_bladder)
 #' result_multivar_covs
@@ -261,38 +272,39 @@ summarize_coxreg <- function(lyt,
                              at = list(),
                              multivar = FALSE,
                              common_var = "STUDYID",
-                             .stats = NULL,
-                             .formats = NULL,
-                             var_labels = NULL,
-                             split_fun = NULL,
+                             .stats = c("n", "hr", "ci", "pval", "pval_inter"),
+                             .formats = c(n = "xx", hr = "xx.xx", ci = "(xx.xx, xx.xx)",
+                                          pval = "x.xxxx | (<0.0001)", pval_inter = "x.xxxx | (<0.0001)"),
+                             varlabels = NULL,
                              .indent_mods = NULL,
                              .na_str = NA_character_,
                              .section_div = NA_character_) {
   if (multivar && control$interaction) {
-    stop(paste(
-      "Interactions are not available for multivariate cox regression using summarize_coxreg.",
-      "Please turn off interactions or switch to a univariate model."
+    warning(paste(
+      "Interactions are not available for multivariable cox regression using summarize_coxreg.",
+      "The model will be calculated without interaction effects."
     ))
   }
   if (control$interaction && !"arm" %in% names(variables)) {
-    stop("To include interactions please specify an arm variable in variables.")
+    stop("To include interactions please specify 'arm' in variables.")
   }
 
-  if (is.null(.stats)) .stats <- if (!multivar) c("n", "hr", "ci", "pval") else c("hr", "ci", "pval")
   .stats <- if (!"arm" %in% names(variables) || multivar) {
     intersect(c("hr", "ci", "pval"), .stats)
-  } else {
+  } else if (control$interaction) {
     intersect(c("n", "hr", "ci", "pval", "pval_inter"), .stats)
+  } else {
+    intersect(c("n", "hr", "ci", "pval"), .stats)
   }
-  if (is.null(.formats)) .formats <- formats_coxreg[names(formats_coxreg) %in% .stats]
   stat_labels <- c(
     n = "n",
     hr = "Hazard Ratio",
     ci = paste0(control$conf_level * 100, "% CI"),
     pval = "p-value",
-    pval_inter = "p-value\n(Interaction)"
+    pval_inter = "Interaction p-value"
   )
   stat_labels <- stat_labels[names(stat_labels) %in% .stats]
+  .formats <- .formats[names(.formats) %in% .stats]
 
   lyt <- lyt %>%
     split_cols_by_multivar(
@@ -327,8 +339,7 @@ summarize_coxreg <- function(lyt,
     lyt <- lyt %>%
       split_rows_by_multivar(
         vars = variables$covariates,
-        varlabels = var_labels,
-        split_fun = split_fun,
+        varlabels = varlabels,
         split_label = "Covariate:",
         nested = FALSE
       ) %>%
@@ -344,7 +355,7 @@ summarize_coxreg <- function(lyt,
       lyt <- lyt %>%
         analyze_colvars(
           afun = a_coxreg,
-          extra_args = list(variables = variables, at = at, control = control, multivar = multivar)
+          extra_args = list(variables = variables, at = at, control = control, multivar = multivar, labelstr = "")
         )
     }
   }

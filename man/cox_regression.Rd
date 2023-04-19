@@ -11,7 +11,7 @@ s_coxreg(df, .stats, which_vars = "all", var_nms = NULL)
 
 a_coxreg(
   df,
-  labelstr = "",
+  labelstr,
   eff = FALSE,
   var_main = FALSE,
   multivar = FALSE,
@@ -30,10 +30,10 @@ summarize_coxreg(
   at = list(),
   multivar = FALSE,
   common_var = "STUDYID",
-  .stats = NULL,
-  .formats = NULL,
-  var_labels = NULL,
-  split_fun = NULL,
+  .stats = c("n", "hr", "ci", "pval", "pval_inter"),
+  .formats = c(n = "xx", hr = "xx.xx", ci = "(xx.xx, xx.xx)", pval =
+    "x.xxxx | (<0.0001)", pval_inter = "x.xxxx | (<0.0001)"),
+  varlabels = NULL,
   .indent_mods = NULL,
   .na_str = NA_character_,
   .section_div = NA_character_
@@ -44,16 +44,16 @@ summarize_coxreg(
 
 \item{.stats}{(\code{character})\cr the name of statistics to be reported among:
 \itemize{
-\item \code{n}: number of observations
+\item \code{n}: number of observations (univariable only)
 \item \code{hr}: hazard ratio
 \item \code{ci}: confidence interval
 \item \code{pval}: p-value of the treatment effect
-\item \code{pval_inter}: p-value of the interaction effect between the treatment and the covariate
+\item \code{pval_inter}: p-value of the interaction effect between the treatment and the covariate (univariable only)
 }}
 
 \item{which_vars}{(\code{character})\cr which rows should statistics be returned for from the given model.
 Defaults to "all". Other options include "var_main" for main effects, "inter" for interaction effects,
-and "multi_lvl" for multivariate model covariate level rows. When \code{which_vars} is "all" specific
+and "multi_lvl" for multivariable model covariate level rows. When \code{which_vars} is "all" specific
 variables can be selected by specifying \code{var_nms}.}
 
 \item{var_nms}{(\code{character})\cr the \code{term} value of rows in \code{df} for which \code{.stats} should by returned. Typically
@@ -68,8 +68,8 @@ is "var_main" \code{var_nms} should be only the variable name.}
 
 \item{var_main}{(\code{flag})\cr whether main effects should be calculated. Defaults to \code{FALSE}.}
 
-\item{multivar}{(\code{flag})\cr Defaults to \code{FALSE}. If \code{TRUE} multivariate Cox regression will run, otherwise
-univariate Cox regression will run.}
+\item{multivar}{(\code{flag})\cr Defaults to \code{FALSE}. If \code{TRUE} multivariable Cox regression will run, otherwise
+univariable Cox regression will run.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
@@ -90,17 +90,15 @@ that is passed by \code{rtables}.}
 \item{common_var}{(\code{character})\cr the name of a factor variable in the dataset which takes the same value
 for all rows. This should be created during pre-processing if no such variable currently exists.}
 
-\item{var_labels}{character for label.}
-
-\item{split_fun}{(\code{function})\cr split function to implement for row split by covariates. Defaults to \code{NULL}.
-See \link[rtables:split_funcs]{rtables::split_funcs} for several pre-made options.}
-
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
 \item{.na_str}{(\code{character})\cr string that should be displayed when a value is missing. Defaults to \code{NA}.}
 
 \item{.section_div}{(\code{character})\cr string which should be repeated as a section divider after each group
 defined by a split instruction. Defaults to \code{NA} for no section divider.}
+
+\item{split_fun}{(\code{function})\cr split function to implement for row split by covariates. Defaults to \code{NULL}.
+See \link[rtables:split_funcs]{rtables::split_funcs} for several pre-made options.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -135,15 +133,15 @@ library(survival)
 set.seed(1, kind = "Mersenne-Twister")
 dta_bladder <- with(
   data = bladder[bladder$enum < 5, ],
-  data.frame(
+  tibble(
     TIME = stop,
     STATUS = event,
     ARM = as.factor(rx),
-    COVAR1 = as.factor(enum),
+    COVAR1 = as.factor(enum) \%>\% formatters::with_label("A Covariate Label"),
     COVAR2 = factor(
       sample(as.factor(enum)),
       levels = 1:4, labels = c("F", "F", "M", "M")
-    )
+    ) \%>\% formatters::with_label("Sex (F/M)")
   )
 )
 dta_bladder$AGE <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
@@ -158,37 +156,52 @@ plot(
 
 # s_coxreg
 
-# Univariate
+# Univariable
 u1_variables <- list(time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2"))
 univar_model <- fit_coxreg_univar(variables = u1_variables, data = dta_bladder)
 df1 <- broom::tidy(univar_model)
 s_coxreg(df = df1, .stats = "hr")
 
-# Univariate without treatment arm - only "COVAR2" covariate effects
+# Univariable without treatment arm - only "COVAR2" covariate effects
 u2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 univar_covs_model <- fit_coxreg_univar(variables = u2_variables, data = dta_bladder)
 df1_covs <- broom::tidy(univar_covs_model)
 s_coxreg(df = df1_covs, .stats = "hr", var_nms = c("COVAR2", "Sex (F/M)"))
 
-# Multivariate.
+# Multivariable.
 m1_variables <- list(time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2"))
 multivar_model <- fit_coxreg_multivar(variables = m1_variables, data = dta_bladder)
 df2 <- broom::tidy(multivar_model)
 s_coxreg(df = df2, .stats = "hr")
 
-# Multivariate without treatment arm - only "COVAR1" main effect
+# Multivariable without treatment arm - only "COVAR1" main effect
 m2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 multivar_covs_model <- fit_coxreg_multivar(variables = m2_variables, data = dta_bladder)
 df2_covs <- broom::tidy(multivar_covs_model)
 s_coxreg(df = df2_covs, .stats = "pval", which_vars = "var_main", var_nms = "COVAR1")
 
+a_coxreg(
+  df = dta_bladder,
+  labelstr = "Label 1",
+  variables = u1_variables,
+  .spl_context = list(value = "COVAR1"),
+  .stats = "n",
+  .formats = "xx"
+)
+
+a_coxreg(
+  df = dta_bladder,
+  labelstr = "",
+  variables = u1_variables,
+  .spl_context = list(value = "COVAR2"),
+  .stats = "pval",
+  .formats = "xx.xxxx"
+)
+
 # summarize_coxreg
 
 result_univar <- basic_table() \%>\%
-  summarize_coxreg(
-    variables = u1_variables,
-    var_labels = c("A Covariate Label", "Sex (F/M)")
-  ) \%>\%
+  summarize_coxreg(variables = u1_variables) \%>\%
   build_table(dta_bladder)
 result_univar
 
@@ -196,7 +209,6 @@ result_multivar <- basic_table() \%>\%
   summarize_coxreg(
     variables = m1_variables,
     multivar = TRUE,
-    var_labels = c("A Covariate Label", "Sex (F/M)")
   ) \%>\%
   build_table(dta_bladder)
 result_multivar
@@ -204,7 +216,6 @@ result_multivar
 result_univar_covs <- basic_table() \%>\%
   summarize_coxreg(
     variables = u2_variables,
-    var_labels = c("A Covariate Label", "Sex (F/M)")
   ) \%>\%
   build_table(dta_bladder)
 result_univar_covs
@@ -213,7 +224,7 @@ result_multivar_covs <- basic_table() \%>\%
   summarize_coxreg(
     variables = m2_variables,
     multivar = TRUE,
-    var_labels = c("A Covariate Label", "Sex (F/M)")
+    varlabels = c("Covariate 1", "Covariate 2") # custom labels
   ) \%>\%
   build_table(dta_bladder)
 result_multivar_covs
@@ -224,7 +235,7 @@ result_multivar_covs
 helper functions, and \link{tidy_coxreg} for custom tidy methods.
 
 \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} and \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} which also take the \code{variables}, \code{data},
-\code{at} (univariate only), and \code{control} arguments but return unformatted univariate and multivariate
+\code{at} (univariable only), and \code{control} arguments but return unformatted univariable and multivariable
 Cox regression models, respectively.
 }
 \keyword{internal}
