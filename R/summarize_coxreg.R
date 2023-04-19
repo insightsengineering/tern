@@ -200,14 +200,16 @@ formats_coxreg <- c(
 )
 
 #' @describeIn cox_regression layout creating function.
+#'
 #' @inheritParams argument_convention
-#' @inheritParams control_coxreg
-#' @param multivar (`flag`)\cr if `TRUE`, the multi-variable Cox regression will run
-#'   and no interaction will be considered between the studied treatment and c
-#'   candidate covariate. Default is `FALSE` for univariate Cox regression including
-#'   an arm variable. When no arm variable is included in the univariate Cox regression,
-#'   then also `TRUE` should be used to tabulate the covariate effect estimates instead
-#'   of the treatment arm effect estimate across models.
+#' @inheritParams fit_coxreg_univar
+#'
+#' @param multivar (`flag`)\cr Defaults to `FALSE`. If `TRUE` multivariate Cox regression will run, otherwise
+#'   univariate Cox regression will run.
+#' @param common_var (`character`)\cr the name of a factor variable in the dataset which takes the same value
+#'   for all rows. This should be created during pre-processing if no such variable currently exists.
+#' @param split_fun (`function`)\cr split function to implement for row split by covariates. Defaults to `NULL`.
+#'   See [rtables::split_funcs] for several pre-made options.
 #' @export
 #'
 #' @examples

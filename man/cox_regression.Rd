@@ -50,18 +50,32 @@ is "var_main" \code{var_nms} should be only the variable name.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
-\item{multivar}{(\code{flag})\cr if \code{TRUE}, the multi-variable Cox regression will run
-and no interaction will be considered between the studied treatment and c
-candidate covariate. Default is \code{FALSE} for univariate Cox regression including
-an arm variable. When no arm variable is included in the univariate Cox regression,
-then also \code{TRUE} should be used to tabulate the covariate effect estimates instead
-of the treatment arm effect estimate across models.}
+\item{control}{(\code{list})\cr a list of parameters as returned by the
+helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
+
+\item{at}{(\code{list} of \code{numeric})\cr when the candidate covariate is a
+\code{numeric}, use \code{at} to specify the value of the covariate at which the
+effect should be estimated.}
+
+\item{multivar}{(\code{flag})\cr Defaults to \code{FALSE}. If \code{TRUE} multivariate Cox regression will run, otherwise
+univariate Cox regression will run.}
+
+\item{common_var}{(\code{character})\cr the name of a factor variable in the dataset which takes the same value
+for all rows. This should be created during pre-processing if no such variable currently exists.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
 \item{var_labels}{character for label.}
 
+\item{split_fun}{(\code{function})\cr split function to implement for row split by covariates. Defaults to \code{NULL}.
+See \link[rtables:split_funcs]{rtables::split_funcs} for several pre-made options.}
+
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+
+\item{.na_str}{(\code{character})\cr string that should be displayed when a value is missing. Defaults to \code{NA}.}
+
+\item{.section_div}{(\code{character})\cr string which should be repeated as a section divider after each group
+defined by a split instruction. Defaults to \code{NA} for no section divider.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

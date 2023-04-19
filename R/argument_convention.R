@@ -24,6 +24,9 @@
 #'   by a statistics function.
 #' @param .spl_context (`data.frame`)\cr gives information about ancestor split states
 #'   that is passed by `rtables`.
+#' @param .na_str (`character`)\cr string that should be displayed when a value is missing. Defaults to `NA`.
+#' @param .section_div (`character`)\cr string which should be repeated as a section divider after each group
+#'   defined by a split instruction. Defaults to `NA` for no section divider.
 #' @param col_by (`factor`)\cr defining column groups.
 #' @param conf_level (`proportion`)\cr confidence level of the interval.
 #' @param data (`data.frame`)\cr the dataset containing the variables to summarize.
