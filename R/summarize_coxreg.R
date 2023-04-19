@@ -2,7 +2,7 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Fits a Cox regression model and estimate hazard ratio to describe the effect
+#' Fits a Cox regression model and estimates hazard ratio to describe the effect
 #' size in a survival analysis.
 #'
 #' @details
@@ -13,14 +13,10 @@
 #' most commonly reported metrics to describe the effect size in survival
 #' analysis (NEST Team, 2020).
 #'
-#' @note The usual formatting arguments for the _layout creating_ function
-#'  `summarize_coxreg` are not yet accepted (`.stats`, `.indent_mod`, `.formats`,
-#'  `.labels`).
 #' @inheritParams argument_convention
+#'
 #' @seealso [fit_coxreg] for relevant fitting functions, [h_cox_regression] for relevant
 #' helper functions, and [tidy_coxreg] for custom tidy methods.
-#'
-#' @name cox_regression
 #'
 #' @examples
 #' library(survival)
@@ -50,6 +46,7 @@
 #'   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 #' )
 #'
+#' @name cox_regression
 NULL
 
 #' @describeIn cox_regression transforms the tabulated results from [`fit_coxreg_univar()`]
@@ -128,6 +125,13 @@ s_coxreg <- function(df, .stats, which_vars = "all", var_nms = NULL) {
   )
 }
 
+#' @describeIn cox_regression Analysis function. It is used as `afun` in [rtables::analyze()]
+#'   and `cfun` in [rtables::summarize_row_groups()] within `summarize_coxreg()`.
+#'
+#' @param eff (`flag`)\cr whether treatment effect should be calculated. Defaults to `FALSE`.
+#' @param var_main (`flag`)\cr whether main effects should be calculated. Defaults to `FALSE`.
+#'
+#' @keywords internal
 a_coxreg <- function(df,
                      labelstr = "",
                      eff = FALSE,
@@ -201,9 +205,7 @@ formats_coxreg <- c(
 
 #' @describeIn cox_regression layout creating function.
 #'
-#' @inheritParams argument_convention
 #' @inheritParams fit_coxreg_univar
-#'
 #' @param multivar (`flag`)\cr Defaults to `FALSE`. If `TRUE` multivariate Cox regression will run, otherwise
 #'   univariate Cox regression will run.
 #' @param common_var (`character`)\cr the name of a factor variable in the dataset which takes the same value
@@ -211,6 +213,10 @@ formats_coxreg <- c(
 #' @param split_fun (`function`)\cr split function to implement for row split by covariates. Defaults to `NULL`.
 #'   See [rtables::split_funcs] for several pre-made options.
 #' @export
+#'
+#' @seealso [fit_coxreg_univar()] and [fit_coxreg_multivar()] which also take the `variables`, `data`,
+#'   `at` (univariate only), and `control` arguments but return unformatted univariate and multivariate
+#'   Cox regression models, respectively.
 #'
 #' @examples
 #' # summarize_coxreg

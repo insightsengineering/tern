@@ -3,10 +3,25 @@
 \name{cox_regression}
 \alias{cox_regression}
 \alias{s_coxreg}
+\alias{a_coxreg}
 \alias{summarize_coxreg}
 \title{Cox Proportional Hazards Regression}
 \usage{
 s_coxreg(df, .stats, which_vars = "all", var_nms = NULL)
+
+a_coxreg(
+  df,
+  labelstr = "",
+  eff = FALSE,
+  var_main = FALSE,
+  multivar = FALSE,
+  variables,
+  at = list(),
+  control = control_coxreg(),
+  .spl_context,
+  .stats,
+  .formats
+)
 
 summarize_coxreg(
   lyt,
@@ -46,24 +61,34 @@ this is the name of a variable. If using variable labels, \code{var} should be a
 variable name and the variable label in that order to see all \code{.stats} related to that variable. When \code{which_vars}
 is "var_main" \code{var_nms} should be only the variable name.}
 
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+(must be present as second argument in Content Row Functions).}
+
+\item{eff}{(\code{flag})\cr whether treatment effect should be calculated. Defaults to \code{FALSE}.}
+
+\item{var_main}{(\code{flag})\cr whether main effects should be calculated. Defaults to \code{FALSE}.}
+
+\item{multivar}{(\code{flag})\cr Defaults to \code{FALSE}. If \code{TRUE} multivariate Cox regression will run, otherwise
+univariate Cox regression will run.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
-
-\item{control}{(\code{list})\cr a list of parameters as returned by the
-helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 
 \item{at}{(\code{list} of \code{numeric})\cr when the candidate covariate is a
 \code{numeric}, use \code{at} to specify the value of the covariate at which the
 effect should be estimated.}
 
-\item{multivar}{(\code{flag})\cr Defaults to \code{FALSE}. If \code{TRUE} multivariate Cox regression will run, otherwise
-univariate Cox regression will run.}
+\item{control}{(\code{list})\cr a list of parameters as returned by the
+helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
+
+\item{.spl_context}{(\code{data.frame})\cr gives information about ancestor split states
+that is passed by \code{rtables}.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{common_var}{(\code{character})\cr the name of a factor variable in the dataset which takes the same value
 for all rows. This should be created during pre-processing if no such variable currently exists.}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
 \item{var_labels}{character for label.}
 
@@ -80,7 +105,7 @@ defined by a split instruction. Defaults to \code{NA} for no section divider.}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Fits a Cox regression model and estimate hazard ratio to describe the effect
+Fits a Cox regression model and estimates hazard ratio to describe the effect
 size in a survival analysis.
 }
 \details{
@@ -97,14 +122,12 @@ analysis (NEST Team, 2020).
 and \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} into a list. Not much calculation is done here,
 it rather prepares the data to be used by the layout creating function.
 
+\item \code{a_coxreg()}: Analysis function. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}
+and \code{cfun} in \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}} within \code{summarize_coxreg()}.
+
 \item \code{summarize_coxreg()}: layout creating function.
 
 }}
-\note{
-The usual formatting arguments for the \emph{layout creating} function
-\code{summarize_coxreg} are not yet accepted (\code{.stats}, \code{.indent_mod}, \code{.formats},
-\code{.labels}).
-}
 \examples{
 library(survival)
 
@@ -199,4 +222,9 @@ result_multivar_covs
 \seealso{
 \link{fit_coxreg} for relevant fitting functions, \link{h_cox_regression} for relevant
 helper functions, and \link{tidy_coxreg} for custom tidy methods.
+
+\code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} and \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} which also take the \code{variables}, \code{data},
+\code{at} (univariate only), and \code{control} arguments but return unformatted univariate and multivariate
+Cox regression models, respectively.
 }
+\keyword{internal}
