@@ -73,7 +73,7 @@ in the the output list; in this case only the grade groups names will be include
 
 \item{var_labels}{(\code{character})\cr labels to show in the result table.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{...}{additional arguments for the lower level functions.}
 

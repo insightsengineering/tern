@@ -66,7 +66,7 @@ levels that belong to it in the character vectors that are elements of the list.
 
 \item{...}{arguments passed to \code{s_odds_ratio()}.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
