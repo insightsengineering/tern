@@ -137,6 +137,7 @@ Collate:
     'summarize_ancova.R'
     'summarize_change.R'
     'summarize_colvars.R'
+    'summarize_coxreg.R'
     'summarize_glm_count.R'
     'summarize_num_patients.R'
     'summarize_patients_exposure_in_cols.R'
