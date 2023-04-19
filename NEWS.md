@@ -7,6 +7,7 @@
 * Implemented the `lubridate` package for date variables in `tern` datasets.
 * Organization of `.gitignore` and `.Rbuildignore`.
 * Removed deprecated `footnotes` functions and all related files.
+* Added `section_div` and `na_level` (`na_str`) to `summarize_vars`.
 
 # tern 0.8.0
 
