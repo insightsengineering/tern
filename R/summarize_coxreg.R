@@ -273,8 +273,10 @@ summarize_coxreg <- function(lyt,
                              multivar = FALSE,
                              common_var = "STUDYID",
                              .stats = c("n", "hr", "ci", "pval", "pval_inter"),
-                             .formats = c(n = "xx", hr = "xx.xx", ci = "(xx.xx, xx.xx)",
-                                          pval = "x.xxxx | (<0.0001)", pval_inter = "x.xxxx | (<0.0001)"),
+                             .formats = c(
+                               n = "xx", hr = "xx.xx", ci = "(xx.xx, xx.xx)",
+                               pval = "x.xxxx | (<0.0001)", pval_inter = "x.xxxx | (<0.0001)"
+                             ),
                              varlabels = NULL,
                              .indent_mods = NULL,
                              .na_str = "",
@@ -289,13 +291,17 @@ summarize_coxreg <- function(lyt,
     stop("To include interactions please specify 'arm' in variables.")
   }
 
-  if (!"arm" %in% names(variables) || multivar) {
-    .stats <- intersect(c("hr", "ci", "pval"), .stats)
-  } else if (!control$interaction) {
-    .stats <- intersect(c("n", "hr", "ci", "pval"), .stats)
+  .stats <- if (!"arm" %in% names(variables) || multivar) { # only valid statistics
+    intersect(c("hr", "ci", "pval"), .stats)
+  } else if (control$interaction) {
+    intersect(c("n", "hr", "ci", "pval", "pval_inter"), .stats)
+  } else {
+    intersect(c("n", "hr", "ci", "pval"), .stats)
   }
-  stat_labels <- c(n = "n", hr = "Hazard Ratio", ci = paste0(control$conf_level * 100, "% CI"),
-                   pval = "p-value", pval_inter = "Interaction p-value")
+  stat_labels <- c(
+    n = "n", hr = "Hazard Ratio", ci = paste0(control$conf_level * 100, "% CI"),
+    pval = "p-value", pval_inter = "Interaction p-value"
+  )
   stat_labels <- stat_labels[names(stat_labels) %in% .stats]
   .formats <- .formats[names(.formats) %in% .stats]
 

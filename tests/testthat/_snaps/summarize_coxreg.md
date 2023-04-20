@@ -69,6 +69,19 @@
         First Covariate    340       0.61       (0.41, 0.90)   0.0126 
         Second Covariate   340       0.62       (0.42, 0.92)   0.0182 
 
+---
+
+    Code
+      res
+    Output
+                            n    Hazard Ratio      90% CI      p-value
+      ————————————————————————————————————————————————————————————————
+      Treatment:                                                      
+        2 vs control (1)   340       0.64       (0.46, 0.89)   0.0253 
+      Covariate:                                                      
+        COVAR1             340       0.61       (0.44, 0.85)   0.0136 
+        COVAR2             340       0.63       (0.45, 0.87)   0.0191 
+
 # summarize_coxreg .section_div argument works
 
     Code
@@ -94,6 +107,8 @@
       Treatment:                                                                             
         2 vs control (1)    340       0.64       (0.43, 0.94)   0.0242                       
       Covariate:                                                                             
+        Age                 340                                                 0.1757       
+          40                          0.62       (0.42, 0.93)                                
         A Covariate Label   340                                                 0.9883       
           1                           0.63       (0.35, 1.14)                                
           2                           0.58       (0.27, 1.26)                                
@@ -102,6 +117,24 @@
         Sex (F/M)           340                                                 0.7759       
           F                           0.67       (0.36, 1.22)                                
           M                           0.60       (0.36, 0.99)                                
+
+# summarize_coxreg 'at' argument works in univariable case
+
+    Code
+      res
+    Output
+                            n    Hazard Ratio      95% CI      p-value   Interaction p-value
+      ——————————————————————————————————————————————————————————————————————————————————————
+      Treatment:                                                                            
+        2 vs control (1)   340       0.64       (0.43, 0.94)   0.0242                       
+      Covariate:                                                                            
+        Age                340                                                 0.1757       
+          15                         0.35       (0.13, 0.92)                                
+          30                         0.49       (0.29, 0.86)                                
+          60                         0.98       (0.47, 2.04)                                
+        Sex (F/M)          340                                                 0.7759       
+          F                          0.67       (0.36, 1.22)                                
+          M                          0.60       (0.36, 0.99)                                
 
 # summarize_coxreg .na_str argument works
 
@@ -172,4 +205,22 @@
           4                                    0.18       (0.10, 0.33)   <0.0001
         Second Covariate (reference = F)                                        
           M                                    1.29       (0.88, 1.89)   0.1911 
+
+---
+
+    Code
+      res
+    Output
+                                 Hazard Ratio      95% CI      p-value
+      ————————————————————————————————————————————————————————————————
+      Treatment:                                                      
+        ARMCD (reference = 1)                                         
+          2                          0.61       (0.41, 0.90)   0.0123 
+      Covariate:                                                      
+        COVAR1 (reference = 1)                                 <0.0001
+          2                          0.46       (0.28, 0.73)   0.0011 
+          3                          0.31       (0.18, 0.51)   <0.0001
+          4                          0.18       (0.10, 0.33)   <0.0001
+        COVAR2 (reference = F)                                        
+          M                          1.29       (0.88, 1.89)   0.1911 
 

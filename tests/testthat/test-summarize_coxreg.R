@@ -13,21 +13,21 @@ dta_bladder <- local({
       COVAR2 = formatters::with_label(
         factor(sample(as.factor(enum)), levels = 1:4, labels = c("F", "F", "M", "M")), "Sex (F/M)"
       ),
-      AGE = sample(20:60, size = 340, replace = TRUE),
+      AGE = formatters::with_label(sample(20:60, size = 340, replace = TRUE), "Age"),
       STUDYID = factor("X")
     )
   )
   dta_bladder
 })
 
+variables <- list(time = "TIME", event = "STATUS", arm = "ARMCD", covariates = c("COVAR1", "COVAR2"))
+variables_no_arm <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
+
 # s_coxreg ----
 
 testthat::test_that("s_coxreg converts tabulated results in a list", {
   univar_model <- fit_coxreg_univar(
-    variables = list(
-      time = "TIME", event = "STATUS", arm = "ARMCD",
-      covariates = c("COVAR1", "COVAR2")
-    ),
+    variables = variables,
     data = dta_bladder
   ) %>% broom::tidy()
   result <- s_coxreg(df = univar_model, .stat = "hr")
@@ -38,10 +38,7 @@ testthat::test_that("s_coxreg converts tabulated results in a list", {
 
 testthat::test_that("s_coxreg works with which_vars and var_nms arguments", {
   univar_model <- fit_coxreg_univar(
-    variables = list(
-      time = "TIME", event = "STATUS", arm = "ARMCD",
-      covariates = c("COVAR1", "COVAR2")
-    ),
+    variables = variables,
     control = control_coxreg(interaction = TRUE),
     data = dta_bladder
   ) %>% broom::tidy()
@@ -57,10 +54,7 @@ testthat::test_that("a_coxreg works as expected", {
   result <- a_coxreg(
     df = dta_bladder,
     labelstr = "Label 1",
-    variables = list(
-      time = "TIME", event = "STATUS", arm = "ARMCD",
-      covariates = c("COVAR1", "COVAR2")
-    ),
+    variables = variables,
     .spl_context = list(value = "COVAR1"),
     .stats = "n",
     .formats = "xx"
@@ -73,18 +67,12 @@ testthat::test_that("a_coxreg works as expected", {
 # summarize_coxreg ----
 
 testthat::test_that("summarize_coxreg adds the univariable Cox regression layer to rtables", {
-  variables <- list(
-    time = "TIME", event = "STATUS", arm = "ARMCD",
-    covariates = c("COVAR1", "COVAR2")
-  )
-  control <- control_coxreg(ties = "breslow", conf_level = 0.90)
-
-  result <- basic_table() %>%
+  lyt <- basic_table() %>%
     summarize_coxreg(
       variables = variables,
-      control = control
-    ) %>%
-    build_table(df = dta_bladder)
+      control = control_coxreg(ties = "breslow", conf_level = 0.90)
+    )
+  result <- lyt %>% build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -99,15 +87,16 @@ testthat::test_that("summarize_coxreg adds the univariable Cox regression layer 
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
+
+  # no labels
+  formatters::var_labels(dta_bladder) <- rep(NA_character_, ncol(dta_bladder))
+  result <- lyt %>% build_table(df = dta_bladder)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("summarize_coxreg .section_div argument works", {
-  variables <- list(
-    time = "TIME", event = "STATUS", arm = "ARMCD",
-    covariates = c("COVAR1", "COVAR2")
-  )
-  control <- control_coxreg(ties = "breslow", conf_level = 0.90)
-
   result <- basic_table() %>%
     summarize_coxreg(
       variables = variables,
@@ -120,16 +109,27 @@ testthat::test_that("summarize_coxreg .section_div argument works", {
 })
 
 testthat::test_that("summarize_coxreg works with interactions in univariable case", {
-  variables <- list(
-    time = "TIME", event = "STATUS", arm = "ARMCD",
-    covariates = c("COVAR1", "COVAR2")
-  )
-  control <- control_coxreg(interaction = TRUE)
+  variables <- list(time = "TIME", event = "STATUS", arm = "ARMCD", covariates = c("AGE", "COVAR1", "COVAR2"))
 
   result <- basic_table() %>%
     summarize_coxreg(
       variables = variables,
-      control = control
+      control = control_coxreg(interaction = TRUE)
+    ) %>%
+    build_table(df = dta_bladder)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("summarize_coxreg 'at' argument works in univariable case", {
+  variables <- list(time = "TIME", event = "STATUS", arm = "ARMCD", covariates = c("AGE", "COVAR2"))
+
+  result <- basic_table() %>%
+    summarize_coxreg(
+      variables = variables,
+      control = control_coxreg(interaction = TRUE),
+      at = list(AGE = c(15, 30, 60))
     ) %>%
     build_table(df = dta_bladder)
 
@@ -138,16 +138,10 @@ testthat::test_that("summarize_coxreg works with interactions in univariable cas
 })
 
 testthat::test_that("summarize_coxreg .na_str argument works", {
-  variables <- list(
-    time = "TIME", event = "STATUS", arm = "ARMCD",
-    covariates = c("COVAR1", "COVAR2")
-  )
-  control <- control_coxreg(interaction = TRUE)
-
   result <- basic_table() %>%
     summarize_coxreg(
       variables = variables,
-      control = control,
+      control = control_coxreg(interaction = TRUE),
       .na_str = "---"
     ) %>%
     build_table(df = dta_bladder)
@@ -157,16 +151,10 @@ testthat::test_that("summarize_coxreg .na_str argument works", {
 })
 
 testthat::test_that("summarize_coxreg works without treatment arm in univariable case", {
-  variables <- list(
-    time = "TIME", event = "STATUS",
-    covariates = c("COVAR1", "COVAR2")
-  )
-  control <- control_coxreg(conf_level = 0.90)
-
   result <- basic_table() %>%
     summarize_coxreg(
-      variables = variables,
-      control = control
+      variables = variables_no_arm,
+      control = control_coxreg(conf_level = 0.90)
     ) %>%
     build_table(df = dta_bladder)
 
@@ -175,14 +163,12 @@ testthat::test_that("summarize_coxreg works without treatment arm in univariable
 })
 
 testthat::test_that("summarize_coxreg adds the multivariable Cox regression layer to rtables", {
-  variables <- list(
-    time = "TIME", event = "STATUS", arm = "ARMCD",
-    covariates = c("COVAR1", "COVAR2")
-  )
-
-  result <- basic_table() %>%
-    summarize_coxreg(variables = variables, multivar = TRUE) %>%
-    build_table(df = dta_bladder)
+  lyt <- basic_table() %>%
+    summarize_coxreg(
+      variables = variables,
+      multivar = TRUE
+    )
+  result <- lyt %>% build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -198,4 +184,34 @@ testthat::test_that("summarize_coxreg adds the multivariable Cox regression laye
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
+
+  # no labels
+  formatters::var_labels(dta_bladder) <- rep(NA_character_, ncol(dta_bladder))
+  result <- lyt %>% build_table(df = dta_bladder)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("warning/error messages work", {
+  testthat::expect_warning(
+    result <- basic_table() %>%
+      summarize_coxreg(
+        variables = variables,
+        control = control_coxreg(interaction = TRUE),
+        multivar = TRUE
+      ) %>%
+      build_table(df = dta_bladder),
+    "Interactions are not available"
+  )
+
+  testthat::expect_error(
+    result <- basic_table() %>%
+      summarize_coxreg(
+        variables = variables_no_arm,
+        control = control_coxreg(interaction = TRUE)
+      ) %>%
+      build_table(df = dta_bladder),
+    "To include interactions"
+  )
 })
