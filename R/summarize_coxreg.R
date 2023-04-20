@@ -25,7 +25,7 @@
 #' set.seed(1, kind = "Mersenne-Twister")
 #' dta_bladder <- with(
 #'   data = bladder[bladder$enum < 5, ],
-#'   tibble(
+#'   tibble::tibble(
 #'     TIME = stop,
 #'     STATUS = event,
 #'     ARM = as.factor(rx),
@@ -74,7 +74,9 @@ NULL
 #' # s_coxreg
 #'
 #' # Univariable
-#' u1_variables <- list(time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2"))
+#' u1_variables <- list(
+#'   time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2")
+#' )
 #' univar_model <- fit_coxreg_univar(variables = u1_variables, data = dta_bladder)
 #' df1 <- broom::tidy(univar_model)
 #' s_coxreg(df = df1, .stats = "hr")
@@ -86,7 +88,9 @@ NULL
 #' s_coxreg(df = df1_covs, .stats = "hr", .var_nms = c("COVAR2", "Sex (F/M)"))
 #'
 #' # Multivariable.
-#' m1_variables <- list(time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2"))
+#' m1_variables <- list(
+#'   time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2")
+#' )
 #' multivar_model <- fit_coxreg_multivar(variables = m1_variables, data = dta_bladder)
 #' df2 <- broom::tidy(multivar_model)
 #' s_coxreg(df = df2, .stats = "hr")
@@ -213,8 +217,8 @@ a_coxreg <- function(df,
   }
   in_rows(
     .list = var_vals, .names = var_names, .labels = var_names,
-    .formats = setNames(rep(.formats, length(var_names)), var_names),
-    .format_na_strs = setNames(rep(.na_str, length(var_names)), var_names)
+    .formats = stats::setNames(rep(.formats, length(var_names)), var_names),
+    .format_na_strs = stats::setNames(rep(.na_str, length(var_names)), var_names)
   )
 }
 
