@@ -63,7 +63,7 @@ NULL
 #'   Defaults to "all". Other options include "var_main" for main effects, "inter" for interaction effects,
 #'   and "multi_lvl" for multivariable model covariate level rows. When `.which_vars` is "all" specific
 #'   variables can be selected by specifying `.var_nms`.
-#' @param .var_nms (`character`)\cr the `term` value of rows in `df` for which `.stats` should by returned. Typically
+#' @param .var_nms (`character`)\cr the `term` value of rows in `df` for which `.stats` should be returned. Typically
 #'   this is the name of a variable. If using variable labels, `var` should be a vector of both the desired
 #'   variable name and the variable label in that order to see all `.stats` related to that variable. When `.which_vars`
 #'   is "var_main" `.var_nms` should be only the variable name.

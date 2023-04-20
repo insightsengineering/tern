@@ -33,9 +33,6 @@ that is passed by \code{rtables}.}
 
 \item{.na_str}{(\code{character})\cr string that should be displayed when a value is missing. Defaults to \code{NA}.}
 
-\item{.section_div}{(\code{character})\cr string which should be repeated as a section divider after each group
-defined by a split instruction. Defaults to \code{NA} for no section divider.}
-
 \item{col_by}{(\code{factor})\cr defining column groups.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}

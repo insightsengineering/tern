@@ -173,8 +173,8 @@ underneath analyses, which is not allowed.}
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
 
-\item{section_div}{(\code{character})\cr string which should be repeated as a section divider after each group
-defined by a split instruction. Defaults to \code{NA} for no section divider.}
+\item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
+defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 

@@ -57,7 +57,7 @@ Defaults to "all". Other options include "var_main" for main effects, "inter" fo
 and "multi_lvl" for multivariable model covariate level rows. When \code{.which_vars} is "all" specific
 variables can be selected by specifying \code{.var_nms}.}
 
-\item{.var_nms}{(\code{character})\cr the \code{term} value of rows in \code{df} for which \code{.stats} should by returned. Typically
+\item{.var_nms}{(\code{character})\cr the \code{term} value of rows in \code{df} for which \code{.stats} should be returned. Typically
 this is the name of a variable. If using variable labels, \code{var} should be a vector of both the desired
 variable name and the variable label in that order to see all \code{.stats} related to that variable. When \code{.which_vars}
 is "var_main" \code{.var_nms} should be only the variable name.}
