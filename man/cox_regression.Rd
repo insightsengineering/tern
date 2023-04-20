@@ -183,7 +183,7 @@ multivar_covs_model <- fit_coxreg_multivar(variables = m2_variables, data = dta_
 df2_covs <- broom::tidy(multivar_covs_model)
 s_coxreg(df = df2_covs, .stats = "pval", .which_vars = "var_main", .var_nms = "COVAR1")
 
-a_coxreg(
+tern:::a_coxreg(
   df = dta_bladder,
   labelstr = "Label 1",
   variables = u1_variables,
@@ -192,7 +192,7 @@ a_coxreg(
   .formats = "xx"
 )
 
-a_coxreg(
+tern:::a_coxreg(
   df = dta_bladder,
   labelstr = "",
   variables = u1_variables,

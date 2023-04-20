@@ -137,7 +137,7 @@ s_coxreg <- function(df, .stats, .which_vars = "all", .var_nms = NULL) {
 #' @param .na_str (`character`)\cr string that should be displayed when a value is missing. Defaults to `""`.
 #'
 #' @examples
-#' a_coxreg(
+#' tern:::a_coxreg(
 #'   df = dta_bladder,
 #'   labelstr = "Label 1",
 #'   variables = u1_variables,
@@ -146,7 +146,7 @@ s_coxreg <- function(df, .stats, .which_vars = "all", .var_nms = NULL) {
 #'   .formats = "xx"
 #' )
 #'
-#' a_coxreg(
+#' tern:::a_coxreg(
 #'   df = dta_bladder,
 #'   labelstr = "",
 #'   variables = u1_variables,
