@@ -10,30 +10,12 @@
       
       $hr
       $hr$`A Covariate Label`
-      numeric(0)
-      
-      $hr$`  1`
-      [1] 0.6284569
-      
-      $hr$`  2`
-      [1] 0.5806499
-      
-      $hr$`  3`
-      [1] 0.5486103
-      
-      $hr$`  4`
-      [1] 0.6910725
+      [1] 0.607037
       
       
       $hr
       $hr$`Sex (F/M)`
-      numeric(0)
-      
-      $hr$`  F`
-      [1] 0.6678243
-      
-      $hr$`  M`
-      [1] 0.5954021
+      [1] 0.6242738
       
       
 
@@ -87,6 +69,21 @@
         First Covariate    340       0.61       (0.41, 0.90)   0.0126 
         Second Covariate   340       0.62       (0.42, 0.92)   0.0182 
 
+# summarize_coxreg .section_div argument works
+
+    Code
+      res
+    Output
+                             n    Hazard Ratio      95% CI      p-value
+      —————————————————————————————————————————————————————————————————
+      Treatment:                                                       
+        2 vs control (1)    340       0.64       (0.43, 0.94)   0.0242 
+      _________________________________________________________________
+      Covariate:                                                       
+        A Covariate Label   340       0.61       (0.41, 0.90)   0.0126 
+       * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+        Sex (F/M)           340       0.62       (0.42, 0.92)   0.0182 
+
 # summarize_coxreg works with interactions in univariable case
 
     Code
@@ -105,6 +102,25 @@
         Sex (F/M)           340                                                 0.7759       
           F                           0.67       (0.36, 1.22)                                
           M                           0.60       (0.36, 0.99)                                
+
+# summarize_coxreg .na_str argument works
+
+    Code
+      res
+    Output
+                             n    Hazard Ratio      95% CI      p-value   Interaction p-value
+      ———————————————————————————————————————————————————————————————————————————————————————
+      Treatment:                                                                             
+        2 vs control (1)    340       0.64       (0.43, 0.94)   0.0242            ---        
+      Covariate:                                                                             
+        A Covariate Label   340                                                 0.9883       
+          1                           0.63       (0.35, 1.14)                     ---        
+          2                           0.58       (0.27, 1.26)                     ---        
+          3                           0.55       (0.22, 1.35)                     ---        
+          4                           0.69       (0.23, 2.07)                     ---        
+        Sex (F/M)           340                                                 0.7759       
+          F                           0.67       (0.36, 1.22)                     ---        
+          M                           0.60       (0.36, 0.99)                     ---        
 
 # summarize_coxreg works without treatment arm in univariable case
 

@@ -7,7 +7,7 @@
 \alias{summarize_coxreg}
 \title{Cox Proportional Hazards Regression}
 \usage{
-s_coxreg(df, .stats, which_vars = "all", var_nms = NULL)
+s_coxreg(df, .stats, .which_vars = "all", .var_nms = NULL)
 
 a_coxreg(
   df,
@@ -20,7 +20,8 @@ a_coxreg(
   control = control_coxreg(),
   .spl_context,
   .stats,
-  .formats
+  .formats,
+  .na_str = ""
 )
 
 summarize_coxreg(
@@ -35,7 +36,7 @@ summarize_coxreg(
     "x.xxxx | (<0.0001)", pval_inter = "x.xxxx | (<0.0001)"),
   varlabels = NULL,
   .indent_mods = NULL,
-  .na_str = NA_character_,
+  .na_str = "",
   .section_div = NA_character_
 )
 }
@@ -51,15 +52,15 @@ summarize_coxreg(
 \item \code{pval_inter}: p-value of the interaction effect between the treatment and the covariate (univariable only)
 }}
 
-\item{which_vars}{(\code{character})\cr which rows should statistics be returned for from the given model.
+\item{.which_vars}{(\code{character})\cr which rows should statistics be returned for from the given model.
 Defaults to "all". Other options include "var_main" for main effects, "inter" for interaction effects,
-and "multi_lvl" for multivariable model covariate level rows. When \code{which_vars} is "all" specific
-variables can be selected by specifying \code{var_nms}.}
+and "multi_lvl" for multivariable model covariate level rows. When \code{.which_vars} is "all" specific
+variables can be selected by specifying \code{.var_nms}.}
 
-\item{var_nms}{(\code{character})\cr the \code{term} value of rows in \code{df} for which \code{.stats} should by returned. Typically
+\item{.var_nms}{(\code{character})\cr the \code{term} value of rows in \code{df} for which \code{.stats} should by returned. Typically
 this is the name of a variable. If using variable labels, \code{var} should be a vector of both the desired
-variable name and the variable label in that order to see all \code{.stats} related to that variable. When \code{which_vars}
-is "var_main" \code{var_nms} should be only the variable name.}
+variable name and the variable label in that order to see all \code{.stats} related to that variable. When \code{.which_vars}
+is "var_main" \code{.var_nms} should be only the variable name.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions).}
@@ -85,6 +86,8 @@ that is passed by \code{rtables}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
+\item{.na_str}{(\code{character})\cr string that should be displayed when a value is missing. Defaults to \code{""}.}
+
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{common_var}{(\code{character})\cr the name of a factor variable in the dataset which takes the same value
@@ -92,13 +95,9 @@ for all rows. This should be created during pre-processing if no such variable c
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
-\item{.na_str}{(\code{character})\cr string that should be displayed when a value is missing. Defaults to \code{NA}.}
-
-\item{.section_div}{(\code{character})\cr string which should be repeated as a section divider after each group
-defined by a split instruction. Defaults to \code{NA} for no section divider.}
-
-\item{split_fun}{(\code{function})\cr split function to implement for row split by covariates. Defaults to \code{NULL}.
-See \link[rtables:split_funcs]{rtables::split_funcs} for several pre-made options.}
+\item{.section_div}{(\code{character})\cr string which should be repeated as a section divider between sections.
+Defaults to \code{NA} for no section divider. If a vector of two strings are given, the first will be used between
+treatment and covariate sections and the second between different covariates.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -166,7 +165,7 @@ s_coxreg(df = df1, .stats = "hr")
 u2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 univar_covs_model <- fit_coxreg_univar(variables = u2_variables, data = dta_bladder)
 df1_covs <- broom::tidy(univar_covs_model)
-s_coxreg(df = df1_covs, .stats = "hr", var_nms = c("COVAR2", "Sex (F/M)"))
+s_coxreg(df = df1_covs, .stats = "hr", .var_nms = c("COVAR2", "Sex (F/M)"))
 
 # Multivariable.
 m1_variables <- list(time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2"))
@@ -178,7 +177,7 @@ s_coxreg(df = df2, .stats = "hr")
 m2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 multivar_covs_model <- fit_coxreg_multivar(variables = m2_variables, data = dta_bladder)
 df2_covs <- broom::tidy(multivar_covs_model)
-s_coxreg(df = df2_covs, .stats = "pval", which_vars = "var_main", var_nms = "COVAR1")
+s_coxreg(df = df2_covs, .stats = "pval", .which_vars = "var_main", .var_nms = "COVAR1")
 
 a_coxreg(
   df = dta_bladder,
