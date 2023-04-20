@@ -109,10 +109,12 @@ summarize_vars(
   lyt,
   vars,
   var_labels = vars,
+  na_level = NA_character_,
   nested = TRUE,
   ...,
   show_labels = "default",
   table_names = vars,
+  section_div = NA_character_,
   .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
   .formats = NULL,
   .labels = NULL,
@@ -160,16 +162,19 @@ to print out information about factor casting.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{var_labels}{character for label.}
+\item{var_labels}{(\code{character})\cr character for label.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
 underneath analyses, which is not allowed.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
+
+\item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
+defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 

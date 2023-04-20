@@ -78,14 +78,17 @@ Only considered if \code{draw = TRUE} is used.}
 
 \item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+
+\item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
+defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
 
 \item{tte}{(\code{numeric})\cr contains time-to-event duration values.}
 
-\item{var_labels}{character for label.}
+\item{var_labels}{(\code{character})\cr character for label.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
