@@ -134,7 +134,7 @@ s_coxreg <- function(df, .stats, .which_vars = "all", .var_nms = NULL) {
 #'
 #' @param eff (`flag`)\cr whether treatment effect should be calculated. Defaults to `FALSE`.
 #' @param var_main (`flag`)\cr whether main effects should be calculated. Defaults to `FALSE`.
-#' @param .na_str (`character`)\cr string that should be displayed when a value is missing. Defaults to `""`.
+#' @param na_level (`string`)\cr custom string to replace all `NA` values with. Defaults to `""`.
 #'
 #' @examples
 #' tern:::a_coxreg(
@@ -167,7 +167,7 @@ a_coxreg <- function(df,
                      .spl_context,
                      .stats,
                      .formats,
-                     .na_str = "") {
+                     na_level = "") {
   cov_no_arm <- !multivar && !"arm" %in% names(variables) && control$interaction # special case: univar no arm
   cov <- tail(.spl_context$value, 1) # current variable/covariate
   var_lbl <- formatters::var_labels(df)[cov] # check for df labels
@@ -219,7 +219,7 @@ a_coxreg <- function(df,
   in_rows(
     .list = var_vals, .names = var_names, .labels = var_names,
     .formats = stats::setNames(rep(.formats, length(var_names)), var_names),
-    .format_na_strs = stats::setNames(rep(.na_str, length(var_names)), var_names)
+    .format_na_strs = stats::setNames(rep(na_level, length(var_names)), var_names)
   )
 }
 
@@ -284,7 +284,7 @@ summarize_coxreg <- function(lyt,
                              ),
                              varlabels = NULL,
                              .indent_mods = NULL,
-                             .na_str = "",
+                             na_level = "",
                              .section_div = NA_character_) {
   if (multivar && control$interaction) {
     warning(paste(
@@ -314,7 +314,7 @@ summarize_coxreg <- function(lyt,
     split_cols_by_multivar(
       vars = rep(common_var, length(.stats)),
       varlabels = stat_labels,
-      extra_args = list(.stats = .stats, .formats = .formats, .na_str = rep(.na_str, length(.stats)))
+      extra_args = list(.stats = .stats, .formats = .formats, na_level = rep(na_level, length(.stats)))
     )
 
   if ("arm" %in% names(variables)) { # treatment effect

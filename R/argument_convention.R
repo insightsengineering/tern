@@ -24,7 +24,6 @@
 #'   by a statistics function.
 #' @param .spl_context (`data.frame`)\cr gives information about ancestor split states
 #'   that is passed by `rtables`.
-#' @param .na_str (`character`)\cr string that should be displayed when a value is missing. Defaults to `NA`.
 #' @param col_by (`factor`)\cr defining column groups.
 #' @param conf_level (`proportion`)\cr confidence level of the interval.
 #' @param data (`data.frame`)\cr the dataset containing the variables to summarize.

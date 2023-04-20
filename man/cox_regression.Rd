@@ -21,7 +21,7 @@ a_coxreg(
   .spl_context,
   .stats,
   .formats,
-  .na_str = ""
+  na_level = ""
 )
 
 summarize_coxreg(
@@ -36,7 +36,7 @@ summarize_coxreg(
     "x.xxxx | (<0.0001)", pval_inter = "x.xxxx | (<0.0001)"),
   varlabels = NULL,
   .indent_mods = NULL,
-  .na_str = "",
+  na_level = "",
   .section_div = NA_character_
 )
 }
@@ -86,7 +86,7 @@ that is passed by \code{rtables}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
-\item{.na_str}{(\code{character})\cr string that should be displayed when a value is missing. Defaults to \code{""}.}
+\item{na_level}{(\code{string})\cr custom string to replace all \code{NA} values with. Defaults to \code{""}.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
