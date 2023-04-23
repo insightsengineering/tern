@@ -208,6 +208,7 @@ where \code{xc} = \code{x} - \code{\link[stats:median]{stats::median()}}).
 \item{range}{the \code{\link[=range_noinf]{range_noinf()}} of \code{x}.}
 \item{min}{the \code{\link[=max]{max()}} of \code{x}.}
 \item{max}{the \code{\link[=min]{min()}} of \code{x}.}
+\item{median_range}{the \code{\link[=median]{median()}} and \code{\link[=range_noinf]{range_noinf()}} of \code{x}.}
 \item{cv}{the coefficient of variation of \code{x}, i.e.: (\code{\link[stats:sd]{stats::sd()}} / \code{\link[=mean]{mean()}} * 100).}
 \item{geom_mean}{the geometric mean of \code{x}, i.e.: (\code{exp(mean(log(x)))}).}
 \item{geom_cv}{the geometric coefficient of variation of \code{x}, i.e.: (\code{sqrt(exp(sd(log(x)) ^ 2) - 1) * 100}).}
