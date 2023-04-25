@@ -68,6 +68,7 @@ summary_formats <- function(type = "numeric") {
       cv = "xx.x",
       min = "xx.x",
       max = "xx.x",
+      median_range = "xx.x (xx.x - xx.x)",
       geom_mean = "xx.x",
       geom_cv = "xx.x"
     )
@@ -93,6 +94,7 @@ summary_labels <- function() {
     mad = "Median Absolute Deviation",
     iqr = "IQR",
     range = "Min - Max",
+    median_range = "Median (Min - Max)",
     cv = "CV (%)",
     min = "Minimum",
     max = "Maximum",
@@ -169,6 +171,7 @@ s_summary <- function(x,
 #'   \item{range}{the [range_noinf()] of `x`.}
 #'   \item{min}{the [max()] of `x`.}
 #'   \item{max}{the [min()] of `x`.}
+#'   \item{median_range}{the [median()] and [range_noinf()] of `x`.}
 #'   \item{cv}{the coefficient of variation of `x`, i.e.: ([stats::sd()] / [mean()] * 100).}
 #'   \item{geom_mean}{the geometric mean of `x`, i.e.: (`exp(mean(log(x)))`).}
 #'   \item{geom_cv}{the geometric coefficient of variation of `x`, i.e.: (`sqrt(exp(sd(log(x)) ^ 2) - 1) * 100`).}
@@ -279,6 +282,8 @@ s_summary.numeric <- function(x, # nolint
   y$range <- stats::setNames(range_noinf(x, na.rm = FALSE), c("min", "max"))
   y$min <- y$range[1]
   y$max <- y$range[2]
+
+  y$median_range <- formatters::with_label(c(y$median, y$range), "Median (Min - Max)")
 
   y$cv <- c("cv" = unname(y$sd) / unname(y$mean) * 100)
 
