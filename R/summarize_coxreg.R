@@ -53,8 +53,8 @@ NULL
 #'  and [`fit_coxreg_multivar()`] into a list. Not much calculation is done here,
 #'  it rather prepares the data to be used by the layout creating function.
 #'
-#' @param model_df (`data.frame`)\cr contains the resulting model fits from [`fit_coxreg`]
-#'  functions after tidying process (`broom::tidy`).
+#' @param model_df (`data.frame`)\cr contains the resulting model fit from a [`fit_coxreg`]
+#'   function with tidying applied via [`broom::tidy()`].
 #' @param .stats (`character`)\cr the name of statistics to be reported among:
 #'   * `n`: number of observations (univariable only)
 #'   * `hr`: hazard ratio
@@ -114,16 +114,16 @@ NULL
 #' s_coxreg(model_df = df2_covs, .stats = "hr")
 #'
 s_coxreg <- function(model_df, .stats, .which_vars = "all", .var_nms = NULL) {
-  assert_df_with_variables(df, list(term = "term", stat = .stats))
-  checkmate::assert_multi_class(df$term, classes = c("factor", "character"))
-  df$term <- as.character(df$term)
+  assert_df_with_variables(model_df, list(term = "term", stat = .stats))
+  checkmate::assert_multi_class(model_df$term, classes = c("factor", "character"))
+  model_df$term <- as.character(model_df$term)
   .var_nms <- .var_nms[!is.na(.var_nms)]
 
-  if (length(.var_nms) > 0) df <- df[df$term %in% .var_nms, ]
-  if (.which_vars == "multi_lvl") df$term <- tail(.var_nms, 1)
+  if (length(.var_nms) > 0) model_df <- model_df[model_df$term %in% .var_nms, ]
+  if (.which_vars == "multi_lvl") model_df$term <- tail(.var_nms, 1)
 
   # We need a list with names corresponding to the stats to display of equal length to the list of stats.
-  y <- split(df, f = df$term, drop = FALSE)
+  y <- split(model_df, f = model_df$term, drop = FALSE)
   y <- stats::setNames(y, nm = rep(.stats, length(y)))
 
   if (.which_vars == "var_main") {
