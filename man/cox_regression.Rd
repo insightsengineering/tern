@@ -187,7 +187,9 @@ m1_variables <- list(
 multivar_model <- fit_coxreg_multivar(variables = m1_variables, data = dta_bladder)
 df2 <- broom::tidy(multivar_model)
 s_coxreg(df = df2, .stats = "pval", .which_vars = "var_main", .var_nms = "COVAR1")
-s_coxreg(df = df2, .stats = "pval", .which_vars = "multi_lvl", .var_nms = c("COVAR1", "A Covariate Label"))
+s_coxreg(
+  df = df2, .stats = "pval", .which_vars = "multi_lvl", .var_nms = c("COVAR1", "A Covariate Label")
+)
 
 # Multivariable without treatment arm - only "COVAR1" main effect
 m2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
