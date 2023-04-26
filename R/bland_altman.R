@@ -1,3 +1,4 @@
+
 #' Bland Altman analysis
 #'
 #' @description 'r lifecycle::badge("stable")'
@@ -38,7 +39,6 @@ s_bland_altman <- function(x, y, conf_level = 0.95){
   ind <- complete.cases(x, y) # use only pairwise complete observations, and check if x and y have the same length
   x <- x[ind]
   y <- y[ind]
-
   difference <- x - y                                 # vector of differences
   average <- (x + y) / 2                              # vector of means
   difference_mean <- mean(difference)                 # mean difference
