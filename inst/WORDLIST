@@ -48,7 +48,6 @@ blaker
 breslow
 clopper
 coercible
-colvars
 coull
 coxph
 doi
@@ -58,8 +57,9 @@ https
 jeffreys
 lik
 lineplot
-matric
+lvl
 midp
+multivariable
 nd
 onlinelibrary
 paramcd
@@ -74,12 +74,13 @@ repo
 responder
 responders
 roche
-rtables
 songy
 subtable
 subtables
 surv
 timepoint
+unformatted
+univariable
 unstratified
 waddella
 wald
