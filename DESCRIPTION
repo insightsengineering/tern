@@ -76,6 +76,7 @@ Collate:
     'abnormal_by_worst_grade_worsen.R'
     'analyze_vars_in_cols.R'
     'argument_convention.R'
+    'bland_altman.R'
     'combination_function.R'
     'summarize_variables.R'
     'compare_variables.R'

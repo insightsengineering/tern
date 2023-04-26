@@ -6,22 +6,38 @@
 #' @param y ('numeric')\cr vector of numbers we want to analyze.
 #'
 #' @name s_bland_altman
-#'
+#' @details
+#' https://doi.org/10.1016/S0140-6736(86)90837-8
+#' @references
+#' @article{bland1986statistical,
+# title={Statistical methods for assessing agreement between two methods of clinical measurement},
+# author={Bland, J Martin and Altman, DouglasG},
+# journal={The lancet},
+# volume={327},
+# number={8476},
+# pages={307--310},
+# year={1986},
+# publisher={Elsevier}
+# }
+# https://cran.r-project.org/web/packages/Rdpack/vignettes/Inserting_bibtex_references.pdf
+
 #' @examples
-#' x = seq(1, 60, 5)
-#' y = seq(5, 50, 4)
-#' conf_level = 0.9
+#' x <- seq(1, 60, 5)
+#' y <- seq(5, 50, 4)
+#' conf_level <- 0.9
 #' s_bland_altman(x, y, conf_level = conf_level)
 
 
-s_bland_altman_cj <- function(x, y, conf_level = 0.95, group = NULL){
+s_bland_altman <- function(x, y, conf_level = 0.95){
+  checkmate::assert_numeric(x, min.len = 1, any.missing = TRUE)
+  checkmate::assert_numeric(y, len = length(x), any.missing = TRUE)
+  checkmate::assert_numeric(conf_level, lower = 0, upper = 1, any.missing = TRUE)
 
   alpha <- 1 - conf_level
 
   ind <- complete.cases(x, y) # use only pairwise complete observations, and check if x and y have the same length
   x <- x[ind]
   y <- y[ind]
-  group <- group[ind]
 
   difference <- x - y                                 # vector of differences
   average <- (x + y) / 2                              # vector of means
