@@ -7,7 +7,7 @@
 \alias{summarize_coxreg}
 \title{Cox Proportional Hazards Regression}
 \usage{
-s_coxreg(df, .stats, .which_vars = "all", .var_nms = NULL)
+s_coxreg(model_df, .stats, .which_vars = "all", .var_nms = NULL)
 
 a_coxreg(
   df,
@@ -42,7 +42,8 @@ summarize_coxreg(
 )
 }
 \arguments{
-\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
+\item{model_df}{(\code{data.frame})\cr contains the resulting model fits from \code{\link{fit_coxreg}}
+functions after tidying process (\code{broom::tidy}).}
 
 \item{.stats}{(\code{character})\cr the name of statistics to be reported among:
 \itemize{
@@ -62,6 +63,8 @@ variables can be selected by specifying \code{.var_nms}.}
 this is the name of a variable. If using variable labels, \code{var} should be a vector of both the desired
 variable name and the variable label in that order to see all \code{.stats} related to that variable. When \code{.which_vars}
 is "var_main" \code{.var_nms} should be only the variable name.}
+
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions).}
@@ -102,9 +105,6 @@ for all rows. This should be created during pre-processing if no such variable c
 \item{.section_div}{(\code{character})\cr string which should be repeated as a section divider between sections.
 Defaults to \code{NA} for no section divider. If a vector of two strings are given, the first will be used between
 treatment and covariate sections and the second between different covariates.}
-
-\item{model_df}{(\code{data.frame})\cr contains the resulting model fits from \code{\link{fit_coxreg}}
-functions after tidying process (\code{broom::tidy}).}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
