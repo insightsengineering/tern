@@ -21,7 +21,8 @@ a_coxreg(
   .spl_context,
   .stats,
   .formats,
-  na_level = ""
+  na_level = "",
+  cache_env = NULL
 )
 
 summarize_coxreg(
@@ -87,6 +88,9 @@ that is passed by \code{rtables}.}
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
 \item{na_level}{(\code{string})\cr custom string to replace all \code{NA} values with. Defaults to \code{""}.}
+
+\item{cache_env}{(\code{environment})\cr an environment object used to cache the regression model in order to
+avoid repeatedly fitting the same model for every row in the table. Defaults to \code{NULL} (no caching).}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 

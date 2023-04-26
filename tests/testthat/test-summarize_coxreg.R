@@ -165,12 +165,12 @@ testthat::test_that("summarize_coxreg works without treatment arm in univariable
 testthat::test_that("summarize_coxreg adds the multivariable Cox regression layer to rtables", {
   variables <- list(time = "TIME", event = "STATUS", arm = "ARMCD", covariates = c("AGE", "COVAR1", "COVAR2"))
 
-  lyt <- basic_table() %>%
+  result <- basic_table() %>%
     summarize_coxreg(
       variables = variables,
       multivar = TRUE
-    )
-  result <- lyt %>% build_table(df = dta_bladder)
+    ) %>%
+    build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -189,7 +189,12 @@ testthat::test_that("summarize_coxreg adds the multivariable Cox regression laye
 
   # no labels
   formatters::var_labels(dta_bladder) <- rep(NA_character_, ncol(dta_bladder))
-  result <- lyt %>% build_table(df = dta_bladder)
+  result <- basic_table() %>%
+    summarize_coxreg(
+      variables = variables,
+      multivar = TRUE
+    ) %>%
+    build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)

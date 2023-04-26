@@ -135,6 +135,8 @@ s_coxreg <- function(df, .stats, .which_vars = "all", .var_nms = NULL) {
 #' @param eff (`flag`)\cr whether treatment effect should be calculated. Defaults to `FALSE`.
 #' @param var_main (`flag`)\cr whether main effects should be calculated. Defaults to `FALSE`.
 #' @param na_level (`string`)\cr custom string to replace all `NA` values with. Defaults to `""`.
+#' @param cache_env (`environment`)\cr an environment object used to cache the regression model in order to
+#'   avoid repeatedly fitting the same model for every row in the table. Defaults to `NULL` (no caching).
 #'
 #' @examples
 #' tern:::a_coxreg(
@@ -167,7 +169,8 @@ a_coxreg <- function(df,
                      .spl_context,
                      .stats,
                      .formats,
-                     na_level = "") {
+                     na_level = "",
+                     cache_env = NULL) {
   cov_no_arm <- !multivar && !"arm" %in% names(variables) && control$interaction # special case: univar no arm
   cov <- tail(.spl_context$value, 1) # current variable/covariate
   var_lbl <- formatters::var_labels(df)[cov] # check for df labels
@@ -179,12 +182,17 @@ a_coxreg <- function(df,
     if (var_main) control$interaction <- TRUE
   }
 
-  if (!multivar) {
-    model <- fit_coxreg_univar(variables = variables, data = df, at = at, control = control) %>% broom::tidy()
-    if (!var_main) model[, "pval_inter"] <- NA_real_
+  if (is.null(cache_env[[cov]])) {
+    if (!multivar) {
+      model <- fit_coxreg_univar(variables = variables, data = df, at = at, control = control) %>% broom::tidy()
+    } else {
+      model <- fit_coxreg_multivar(variables = variables, data = df, control = control) %>% broom::tidy()
+    }
+    cache_env[[cov]] <- model
   } else {
-    model <- fit_coxreg_multivar(variables = variables, data = df, control = control) %>% broom::tidy()
+    model <- cache_env[[cov]]
   }
+  if (!multivar && !var_main) model[, "pval_inter"] <- NA_real_
 
   if (cov_no_arm) multivar <- TRUE
   vars_coxreg <- list(which_vars = "all", var_nms = NULL)
@@ -309,12 +317,16 @@ summarize_coxreg <- function(lyt,
   )
   stat_labels <- stat_labels[names(stat_labels) %in% .stats]
   .formats <- .formats[names(.formats) %in% .stats]
+  env <- new.env() # create caching environment
 
   lyt <- lyt %>%
     split_cols_by_multivar(
       vars = rep(common_var, length(.stats)),
       varlabels = stat_labels,
-      extra_args = list(.stats = .stats, .formats = .formats, na_level = rep(na_level, length(.stats)))
+      extra_args = list(
+        .stats = .stats, .formats = .formats, na_level = rep(na_level, length(.stats)),
+        cache_env = replicate(length(.stats), list(env))
+      )
     )
 
   if ("arm" %in% names(variables)) { # treatment effect
@@ -352,7 +364,7 @@ summarize_coxreg <- function(lyt,
       summarize_row_groups(
         cfun = a_coxreg,
         extra_args = list(
-          variables = variables, control = control, multivar = multivar,
+          variables = variables, at = at, control = control, multivar = multivar,
           var_main = if (multivar) multivar else control$interaction
         )
       )
