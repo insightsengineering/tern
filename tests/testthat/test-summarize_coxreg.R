@@ -30,7 +30,7 @@ testthat::test_that("s_coxreg converts tabulated results in a list", {
     variables = variables,
     data = dta_bladder
   ) %>% broom::tidy()
-  result <- s_coxreg(df = univar_model, .stat = "hr")
+  result <- s_coxreg(model_df = univar_model, .stat = "hr")
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -42,7 +42,7 @@ testthat::test_that("s_coxreg works with which_vars and var_nms arguments", {
     control = control_coxreg(interaction = TRUE),
     data = dta_bladder
   ) %>% broom::tidy()
-  result <- s_coxreg(df = univar_model, .stat = "hr", .which_vars = "inter", .var_nms = "COVAR2")
+  result <- s_coxreg(model_df = univar_model, .stat = "hr", .which_vars = "inter", .var_nms = "COVAR2")
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
