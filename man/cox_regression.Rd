@@ -167,6 +167,13 @@ univar_model <- fit_coxreg_univar(variables = u1_variables, data = dta_bladder)
 df1 <- broom::tidy(univar_model)
 s_coxreg(df = df1, .stats = "hr")
 
+# Univariable with interactions
+univar_model_inter <- fit_coxreg_univar(
+  variables = u1_variables, control = control_coxreg(interaction = TRUE), data = dta_bladder
+)
+df1_inter <- broom::tidy(univar_model_inter)
+s_coxreg(df = df1_inter, .stats = "hr", .which_vars = "inter", .var_nms = "COVAR1")
+
 # Univariable without treatment arm - only "COVAR2" covariate effects
 u2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 univar_covs_model <- fit_coxreg_univar(variables = u2_variables, data = dta_bladder)
@@ -179,13 +186,14 @@ m1_variables <- list(
 )
 multivar_model <- fit_coxreg_multivar(variables = m1_variables, data = dta_bladder)
 df2 <- broom::tidy(multivar_model)
-s_coxreg(df = df2, .stats = "hr")
+s_coxreg(df = df2, .stats = "pval", .which_vars = "var_main", .var_nms = "COVAR1")
+s_coxreg(df = df2, .stats = "pval", .which_vars = "multi_lvl", .var_nms = c("COVAR1", "A Covariate Label"))
 
 # Multivariable without treatment arm - only "COVAR1" main effect
 m2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 multivar_covs_model <- fit_coxreg_multivar(variables = m2_variables, data = dta_bladder)
 df2_covs <- broom::tidy(multivar_covs_model)
-s_coxreg(df = df2_covs, .stats = "pval", .which_vars = "var_main", .var_nms = "COVAR1")
+s_coxreg(df = df2_covs, .stats = "hr")
 
 tern:::a_coxreg(
   df = dta_bladder,
