@@ -170,6 +170,21 @@
         Sex (F/M) (reference = F)                                                
           M                                     1.33       (0.97, 1.82)   0.1414 
 
+# summarize_coxreg works with numeric covariate without treatment arm in univariable case
+
+    Code
+      res
+    Output
+                                            Hazard Ratio      90% CI      p-value
+      ———————————————————————————————————————————————————————————————————————————
+      Covariate:                                                                 
+        A Covariate Label (reference = 1)                                 <0.0001
+          2                                     0.45       (0.30, 0.66)   0.0007 
+          3                                     0.31       (0.20, 0.48)   <0.0001
+          4                                     0.18       (0.11, 0.30)   <0.0001
+        Age                                                                      
+          All                                   1.01       (1.00, 1.02)   0.2486 
+
 # summarize_coxreg adds the multivariable Cox regression layer to rtables
 
     Code

@@ -162,6 +162,20 @@ testthat::test_that("summarize_coxreg works without treatment arm in univariable
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("summarize_coxreg works with numeric covariate without treatment arm in univariable case", {
+  variables_no_arm <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "AGE"))
+
+  result <- basic_table() %>%
+    summarize_coxreg(
+      variables = variables_no_arm,
+      control = control_coxreg(conf_level = 0.90)
+    ) %>%
+    build_table(df = dta_bladder)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("summarize_coxreg adds the multivariable Cox regression layer to rtables", {
   variables <- list(time = "TIME", event = "STATUS", arm = "ARMCD", covariates = c("AGE", "COVAR1", "COVAR2"))
 

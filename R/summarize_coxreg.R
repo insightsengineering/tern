@@ -207,7 +207,11 @@ a_coxreg <- function(df,
   }
   if (!multivar && !var_main) model[, "pval_inter"] <- NA_real_
 
-  if (cov_no_arm) multivar <- TRUE
+  if (cov_no_arm || (!cov_no_arm && !"arm" %in% names(variables) && is.numeric(df[[cov]]))) {
+    multivar <- TRUE
+    if (!cov_no_arm) var_main <- TRUE
+  }
+
   vars_coxreg <- list(which_vars = "all", var_nms = NULL)
   if (eff) {
     if (multivar && !var_main) { # multivar treatment level
