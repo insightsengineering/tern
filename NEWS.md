@@ -1,11 +1,19 @@
-# tern 0.8.1.9002
+# tern 0.8.1.9011
+
+### Breaking Changes
+* Refactored `s_coxreg` and `summarize_coxreg`. Added new analysis function `a_coxreg`.
 
 ### Bug Fixes
 * Fixed missing label for `TRTEDTM` in `tern` datasets.
 
+### Enhancements
+* Added `section_div` and `na_level` (`na_str`) to `summarize_vars`.
+* Added `median_range` as a numeric variable statistic option for `summarize_vars`. 
+
 ### Miscellaneous
 * Implemented the `lubridate` package for date variables in `tern` datasets.
 * Organization of `.gitignore` and `.Rbuildignore`.
+* Removed deprecated `footnotes` functions and all related files.
 
 # tern 0.8.0
 

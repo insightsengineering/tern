@@ -93,6 +93,12 @@
       max 
        NA 
       
+      $median_range
+      median    min    max 
+          NA     NA     NA 
+      attr(,"label")
+      [1] "Median (Min - Max)"
+      
       $cv
       cv 
       NA 
@@ -206,6 +212,12 @@
       $max
       max 
         6 
+      
+      $median_range
+      median    min    max 
+           3      0      6 
+      attr(,"label")
+      [1] "Median (Min - Max)"
       
       $cv
        cv 
@@ -322,6 +334,12 @@
       max 
         2 
       
+      $`FALSE`$median_range
+      median    min    max 
+         1.5    1.0    2.0 
+      attr(,"label")
+      [1] "Median (Min - Max)"
+      
       $`FALSE`$cv
             cv 
       47.14045 
@@ -431,6 +449,12 @@
       $`TRUE`$max
       max 
         4 
+      
+      $`TRUE`$median_range
+      median    min    max 
+         2.5    1.0    4.0 
+      attr(,"label")
+      [1] "Median (Min - Max)"
       
       $`TRUE`$cv
             cv 

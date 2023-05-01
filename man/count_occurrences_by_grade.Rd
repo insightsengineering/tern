@@ -84,7 +84,7 @@ containing the statistics from \code{s_count_occurrences_by_grade()} to the tabl
 
 \item{var_labels}{(\code{character})\cr labels to show in the result table.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{...}{additional arguments for the lower level functions.}
 

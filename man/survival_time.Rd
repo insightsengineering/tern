@@ -46,7 +46,7 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "no
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{var_labels}{character for label.}
+\item{var_labels}{(\code{character})\cr character for label.}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
