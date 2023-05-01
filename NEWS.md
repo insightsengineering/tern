@@ -1,4 +1,4 @@
-# tern 0.8.1.9010
+# tern 0.8.1.9011
 
 ### Breaking Changes
 * Refactored `s_coxreg` and `summarize_coxreg`. Added new analysis function `a_coxreg`.
