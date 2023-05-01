@@ -11,7 +11,9 @@
 #' @param time_unit_output (`numeric`)\cr time unit for desired output (in person-years).
 #' @param conf_type (`string`)\cr `normal` (default), `normal_log`, `exact`, or `byar`
 #'   for confidence interval type.
-#' @return A list of components with the same name as the arguments.
+#'
+#' @return A list of components with the same names as the arguments.
+#'
 #' @export
 #' @examples
 #' control_incidence_rate(0.9, "exact", "month", 100)

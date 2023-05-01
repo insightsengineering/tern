@@ -245,10 +245,11 @@ try_car_anova <- function(mod,
 #' more flexibility to get the effect p.values.
 #'
 #' @inheritParams t_coxreg
-#' @noRd
 #'
 #' @return A list with items `mod` (results of [survival::coxph()]),
-#' `msum` (result of `summary`) and `aov` (result of [car::Anova]).
+#'   `msum` (result of `summary`) and `aov` (result of [car::Anova]).
+#'
+#' @noRd
 fit_n_aov <- function(formula,
                       data = data,
                       conf_level = conf_level,
@@ -346,8 +347,7 @@ check_increments <- function(increments, covariates) {
 #' @param ... Optional parameters passed to [survival::coxph()]. Can include `ties`, a character string specifying the
 #'   method for tie handling, one of `exact` (default), `efron`, `breslow`.
 #'
-#' @return
-#' A `list` with elements `mod`, `msum`, `aov`, and `coef_inter`.
+#' @return A `list` with elements `mod`, `msum`, `aov`, and `coef_inter`.
 #'
 #' @details The output is limited to single effect terms. Work in ongoing for estimation of interaction terms
 #'   but is out of scope as defined by the  Global Data Standards Repository

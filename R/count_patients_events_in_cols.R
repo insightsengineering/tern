@@ -5,16 +5,6 @@
 #' Counting the number of unique patients and the total number of all and specific events
 #' when a column table layout is required.
 #'
-#' @return
-#' * `s_count_patients_and_multiple_events()` returns a list with the statistics:
-#'   - `unique`: number of unique patients in `df`.
-#'   - `all`: number of rows in `df`.
-#'   - one element with the same name as in `filters_list`: number of rows in `df`,
-#'     i.e. events, fulfilling the filter condition.
-#' * `summarize_patients_events_in_cols()` returns a layout object suitable for passing to further layouting functions,
-#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted content rows
-#'   containing the statistics from `s_count_patients_and_multiple_events()` to the table layout.
-#'
 #' @name count_patients_events_in_cols
 #'
 NULL
@@ -30,6 +20,13 @@ NULL
 #'   that corresponding table cells will stay blank.
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
 #'   be used as label.
+#'
+#' @return
+#' * `s_count_patients_and_multiple_events()` returns a list with the statistics:
+#'   - `unique`: number of unique patients in `df`.
+#'   - `all`: number of rows in `df`.
+#'   - one element with the same name as in `filters_list`: number of rows in `df`,
+#'     i.e. events, fulfilling the filter condition.
 #'
 #' @examples
 #' # `s_count_patients_and_multiple_events()`
@@ -116,6 +113,12 @@ s_count_patients_and_multiple_events <- function(df, # nolint
 #' @inheritParams argument_convention
 #' @param col_split (`flag`)\cr whether the columns should be split.
 #'  Set to `FALSE` when the required column split has been done already earlier in the layout pipe.
+#'
+#' @return
+#' * `summarize_patients_events_in_cols()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted content rows
+#'   containing the statistics from `s_count_patients_and_multiple_events()` to the table layout.
+#'
 #' @export
 #' @examples
 #'

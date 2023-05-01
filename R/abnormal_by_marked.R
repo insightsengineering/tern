@@ -20,18 +20,14 @@
 #' @param category (`list`)\cr with different marked category names for single
 #'   and last or replicated.
 #'
-#' @return
-#' * `s_count_abnormal_by_marked()` returns statistic `count_fraction` with `Single, not last`,
-#'   `Last or replicated`, and `Any` results.
-#' * `a_count_abnormal_by_marked()` returns the corresponding list with formatted [rtables::CellValue()].
-#' * `count_abnormal_by_marked()` returns a layout object suitable for passing to further layouting functions,
-#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
-#'   the statistics from `s_count_abnormal_by_marked()` to the table layout.
-#'
 #' @name abnormal_by_marked
 NULL
 
 #' @describeIn abnormal_by_marked Statistics function for patients with marked lab abnormalities.
+#'
+#' @return
+#' * `s_count_abnormal_by_marked()` returns statistic `count_fraction` with `Single, not last`,
+#'   `Last or replicated`, and `Any` results.
 #'
 #' @examples
 #' library(dplyr)
@@ -139,6 +135,9 @@ s_count_abnormal_by_marked <- function(df,
 #' @describeIn abnormal_by_marked Formatted analysis function which is used as `afun`
 #'   in `count_abnormal_by_marked()`.
 #'
+#' @return
+#' * `a_count_abnormal_by_marked()` returns the corresponding list with formatted [rtables::CellValue()].
+#'
 #' @examples
 #' # Internal function - a_count_abnormal_by_marked
 #' \dontrun{
@@ -160,6 +159,11 @@ a_count_abnormal_by_marked <- make_afun(
 
 #' @describeIn abnormal_by_marked Layout-creating function which can which can take statistics
 #'   function arguments and additional format arguments.  This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `count_abnormal_by_marked()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_abnormal_by_marked()` to the table layout.
 #'
 #' @examples
 #' map <- unique(

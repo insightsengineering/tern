@@ -5,14 +5,6 @@
 #' Summarize cumulative counts of a (`numeric`) vector that is less than, less or equal to,
 #' greater than, or greater or equal to user-specific thresholds.
 #'
-#' @return
-#' * `s_count_cumulative()` returns a named list of `count_fraction`s: a list with each `thresholds` value as a
-#'   component, each component containing a vector for the count and fraction.
-#' * `a_count_cumulative()` returns the corresponding list with formatted [rtables::CellValue()].
-#' * `count_cumulative()` returns a layout object suitable for passing to further layouting functions,
-#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
-#'   the statistics from `s_count_cumulative()` to the table layout.
-#'
 #' @seealso Relevant helper function [h_count_cumulative()], and descriptive function [d_count_cumulative()]
 #'
 #' @name count_cumulative
@@ -30,6 +22,7 @@ NULL
 #' @param include_eq (`logical`)\cr whether to include value equal to the `threshold` in
 #' count, default is `TRUE`.
 #' @param .N_col (`count`)\cr denominator for fraction calculation.
+#'
 #' @return A named vector with items:
 #'   * `count`: the count of values less than, less or equal to, greater than, or greater or equal to a threshold
 #'     of user specification.
@@ -98,6 +91,10 @@ d_count_cumulative <- function(threshold, lower_tail, include_eq) {
 #' @inheritParams h_count_cumulative
 #' @param thresholds (`numeric`)\cr vector of cutoff value for the counts.
 #'
+#' @return
+#' * `s_count_cumulative()` returns a named list of `count_fraction`s: a list with each `thresholds` value as a
+#'   component, each component containing a vector for the count and fraction.
+#'
 #' @examples
 #' # Internal function - s_count_cumulative
 #' \dontrun{
@@ -130,6 +127,9 @@ s_count_cumulative <- function(x,
 #' @describeIn count_cumulative Formatted analysis function which is used as `afun`
 #'   in `count_cumulative()`.
 #'
+#' @return
+#' * `a_count_cumulative()` returns the corresponding list with formatted [rtables::CellValue()].
+#'
 #' @examples
 #' # Internal function - a_count_cumulative
 #' \dontrun{
@@ -149,6 +149,12 @@ a_count_cumulative <- make_afun(
 #'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @inheritParams argument_convention
+#'
+#' @return
+#' * `count_cumulative()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_cumulative()` to the table layout.
+#'
 #' @export
 #'
 #' @examples

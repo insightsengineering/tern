@@ -8,6 +8,11 @@
 #' @inheritParams argument_convention
 #' @inheritParams rtables::analyze_colvars
 #'
+#' @return
+#' A layout object suitable for passing to further layouting functions, or to [rtables::build_table()].
+#' Adding this function to an `rtable` layout will summarize the given variables, arrange the output
+#' in columns, and add it to the table layout.
+#'
 #' @seealso [summarize_vars], [rtables::analyze_colvars()].
 #'
 #' @name analyze_vars_in_cols

@@ -25,15 +25,6 @@
 #' @param abnormal (`character`)\cr identifying the abnormal range level(s) in `.var`.
 #' @seealso Relevant description function [d_count_abnormal_by_baseline()].
 #'
-#' @return
-#' * `s_count_abnormal_by_baseline()` returns statistic `fraction` which is a named list with 3 labelled elements:
-#'   `not_abnormal`, `abnormal`, and `total`. Each element contains a vector with `num` and `denom` patient counts.
-#' * `a_count_abnormal_by_baseline()` returns the corresponding list with formatted [rtables::CellValue()].
-#' * `count_abnormal_by_baseline()` returns a layout object suitable for passing to further layouting functions,
-#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
-#'   the statistics from `s_count_abnormal_by_baseline()` to the table layout.
-#'
-#'
 #' @name abnormal_by_baseline
 NULL
 
@@ -67,6 +58,10 @@ d_count_abnormal_by_baseline <- function(abnormal) {
 #'
 #' @param na_level (`string`)\cr the explicit `na_level` argument you used in the pre-processing steps (maybe with
 #'   [df_explicit_na()]). The default is `"<Missing>"`.
+#'
+#' @return
+#' * `s_count_abnormal_by_baseline()` returns statistic `fraction` which is a named list with 3 labelled elements:
+#'   `not_abnormal`, `abnormal`, and `total`. Each element contains a vector with `num` and `denom` patient counts.
 #'
 #' @examples
 #' df <- data.frame(
@@ -148,6 +143,9 @@ s_count_abnormal_by_baseline <- function(df,
 #' @describeIn abnormal_by_baseline Formatted analysis function which is used as `afun`
 #'   in `count_abnormal_by_baseline()`.
 #'
+#' @return
+#' * `a_count_abnormal_by_baseline()` returns the corresponding list with formatted [rtables::CellValue()].
+#'
 #' @examples
 #' # Internal function - a_count_abnormal_by_baseline
 #' \dontrun{
@@ -165,6 +163,11 @@ a_count_abnormal_by_baseline <- make_afun(
 
 #' @describeIn abnormal_by_baseline Layout-creating function which can which can take statistics
 #'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `count_abnormal_by_baseline()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_abnormal_by_baseline()` to the table layout.
 #'
 #' @examples
 #' # Layout creating function.

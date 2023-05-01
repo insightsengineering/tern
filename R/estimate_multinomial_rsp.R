@@ -5,13 +5,6 @@
 #' Estimate the proportion along with confidence interval of a proportion
 #' regarding the level of a factor.
 #'
-#' @return
-#' * `s_length_proportion()` returns statistics from [s_proportion()].
-#' * `a_length_proportion()` returns the corresponding list with formatted [rtables::CellValue()].
-#' * `estimate_multinomial_response()` returns a layout object suitable for passing to further layouting functions,
-#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
-#'   the statistics from `s_length_proportion()` to the table layout.
-#'
 #' @seealso Relevant description function [d_onco_rsp_label()].
 #'
 #' @name estimate_multinomial_rsp
@@ -76,6 +69,9 @@ d_onco_rsp_label <- function(x) { # nolint
 #'
 #' @inheritParams argument_convention
 #'
+#' @return
+#' * `s_length_proportion()` returns statistics from [s_proportion()].
+#'
 #' @export
 #'
 #' @examples
@@ -96,6 +92,10 @@ s_length_proportion <- function(x,
 
 #' @describeIn estimate_multinomial_rsp Formatted analysis function which is used as `afun`
 #'   in `estimate_multinomial_response()`.
+#'
+#' @return
+#' * `a_length_proportion()` returns the corresponding list with formatted [rtables::CellValue()].
+#'
 #' @export
 #'
 #' @examples
@@ -113,6 +113,11 @@ a_length_proportion <- make_afun(
 #'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @inheritParams argument_convention
+#'
+#' @return
+#' * `estimate_multinomial_response()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_length_proportion()` to the table layout.
 #'
 #' @export
 #'

@@ -10,13 +10,6 @@
 #' * For `count_values()`, variable labels are shown when there is more than one element in `vars`,
 #'   otherwise they are hidden.
 #'
-#' @return
-#' * `s_count_values()` returns output of [s_summary()] for specified values of a non-numeric variable.
-#' * `a_count_values()` returns the corresponding list with formatted [rtables::CellValue()].
-#' * `count_values()` returns a layout object suitable for passing to further layouting functions,
-#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
-#'   the statistics from `s_count_values()` to the table layout.
-#'
 #' @name count_values_funs
 #'
 NULL
@@ -25,6 +18,9 @@ NULL
 #' @inheritParams argument_convention
 #' @inheritParams s_summary.logical
 #' @param values (`character`)\cr specific values that should be counted.
+#'
+#' @return
+#' * `s_count_values()` returns output of [s_summary()] for specified values of a non-numeric variable.
 #'
 #' @export
 #'
@@ -92,6 +88,10 @@ s_count_values.logical <- function(x, values = TRUE, ...) {
 
 #' @describeIn count_values_funs Formatted analysis function which is used as `afun`
 #'   in `count_values()`.
+#'
+#' @return
+#' * `a_count_values()` returns the corresponding list with formatted [rtables::CellValue()].
+#'
 #' @export
 #'
 #' @examples
@@ -105,6 +105,11 @@ a_count_values <- make_afun(
 #' @describeIn count_values_funs  Layout-creating function which can which can take statistics
 #'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #' @inheritParams argument_convention
+#'
+#' @return
+#' * `count_values()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_values()` to the table layout.
 #'
 #' @export
 #'

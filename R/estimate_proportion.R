@@ -6,14 +6,6 @@
 #'
 #' @inheritParams argument_convention
 #'
-#' @return
-#' * `s_proportion()` returns statistics `n_prop` (`n` and proportion) and `prop_ci` (proportion CI) for a
-#'   given variable.
-#' * `a_proportion()` returns the corresponding list with formatted [rtables::CellValue()].
-#' * `estimate_proportion()` returns a layout object suitable for passing to further layouting functions,
-#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
-#'   the statistics from `s_proportion()` to the table layout.
-#'
 #' @seealso [h_proportions]
 #'
 #' @name estimate_proportions
@@ -34,6 +26,10 @@ NULL
 #'   for proportion of successful outcomes; one of `waldcc`, `wald`, `clopper-pearson`,
 #'   `wilson`, `wilsonc`, `strat_wilson`, `strat_wilsonc`, `agresti-coull` or `jeffreys`.
 #' @param long (`flag`)\cr a long description is required.
+#'
+#' @return
+#' * `s_proportion()` returns statistics `n_prop` (`n` and proportion) and `prop_ci` (proportion CI) for a
+#'   given variable.
 #'
 #' @examples
 #' # Case with only logical vector.
@@ -133,6 +129,9 @@ s_proportion <- function(df,
 #' @describeIn estimate_proportions Formatted analysis function which is used as `afun`
 #'   in `estimate_proportion()`.
 #'
+#' @return
+#' * `a_proportion()` returns the corresponding list with formatted [rtables::CellValue()].
+#'
 #' @export
 a_proportion <- make_afun(
   s_proportion,
@@ -144,6 +143,11 @@ a_proportion <- make_afun(
 #'
 #' @inheritParams argument_convention
 #' @param ... other arguments are ultimately conveyed to [s_proportion()].
+#'
+#' @return
+#' * `estimate_proportion()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_proportion()` to the table layout.
 #'
 #' @examples
 #' dta_test <- data.frame(

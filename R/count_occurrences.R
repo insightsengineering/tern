@@ -12,16 +12,6 @@
 #'
 #' @inheritParams argument_convention
 #'
-#' @return
-#' * `s_count_occurrences()` returns a list with:
-#'   * `count`: list of counts with one element per occurrence.
-#'   * `count_fraction`: list of counts and fractions with one element per occurrence.
-#'   * `fraction`: list of numerators and denominators with one element per occurrence.
-#' * `a_count_occurrences()` returns the corresponding list with formatted [rtables::CellValue()].
-#' * `count_occurrences()` returns a layout object suitable for passing to further layouting functions,
-#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
-#'   the statistics from `s_count_occurrences()` to the table layout.
-#'
 #' @name count_occurrences
 #'
 NULL
@@ -32,6 +22,12 @@ NULL
 #' @param denom (`string`)\cr choice of denominator for patient proportions. Can be:
 #'   - `N_col`: total number of patients in this column across rows
 #'   - `n`: number of patients with any occurrences
+#'
+#' @return
+#' * `s_count_occurrences()` returns a list with:
+#'   * `count`: list of counts with one element per occurrence.
+#'   * `count_fraction`: list of counts and fractions with one element per occurrence.
+#'   * `fraction`: list of numerators and denominators with one element per occurrence.
 #'
 #' @examples
 #' df <- data.frame(
@@ -111,6 +107,9 @@ s_count_occurrences <- function(df,
 #'   in `count_occurrences()`.
 #' @export
 #'
+#' @return
+#' * `a_count_occurrences()` returns the corresponding list with formatted [rtables::CellValue()].
+#'
 #' @examples
 #' #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 #' # function `format_count_fraction()` can be applied correctly.
@@ -130,6 +129,11 @@ a_count_occurrences <- make_afun(
 
 #' @describeIn count_occurrences Layout-creating function which can which can take statistics
 #'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `count_occurrences()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_occurrences()` to the table layout.
 #'
 #' @export
 #'

@@ -23,18 +23,14 @@
 #'
 #' @inheritParams argument_convention
 #'
-#' @return
-#' * `s_count_abnormal_by_worst_grade()` returns the single statistic `count_fraction` with grades 1 to 4 and
-#'   "Any" results.
-#' * `a_count_abnormal_by_worst_grade()` returns the corresponding list with formatted [rtables::CellValue()].
-#' * `count_abnormal_by_worst_grade()` returns a layout object suitable for passing to further layouting functions,
-#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
-#'   the statistics from `s_count_abnormal_by_worst_grade()` to the table layout.
-#'
 #' @name abnormal_by_worst_grade
 NULL
 
 #' @describeIn abnormal_by_worst_grade Statistics function which counts patients by worst grade.
+#'
+#' @return
+#' * `s_count_abnormal_by_worst_grade()` returns the single statistic `count_fraction` with grades 1 to 4 and
+#'   "Any" results.
 #'
 #' @examples
 #' library(dplyr)
@@ -139,6 +135,9 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
 #' @describeIn abnormal_by_worst_grade Formatted analysis function which is used as `afun`
 #'   in `count_abnormal_by_worst_grade()`.
 #'
+#' @return
+#' * `a_count_abnormal_by_worst_grade()` returns the corresponding list with formatted [rtables::CellValue()].
+#'
 #' @examples
 #' # Internal function - a_count_abnormal_by_worst_grade
 #' \dontrun{
@@ -156,6 +155,11 @@ a_count_abnormal_by_worst_grade <- make_afun( # nolint
 
 #' @describeIn abnormal_by_worst_grade Layout-creating function which can which can take statistics
 #'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `count_abnormal_by_worst_grade()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_abnormal_by_worst_grade()` to the table layout.
 #'
 #' @examples
 #' # Map excludes records without abnormal grade since they should not be displayed

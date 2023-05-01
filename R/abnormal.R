@@ -23,13 +23,6 @@
 #'   `list(Low = "LOW", High = "HIGH")` but you can also group different levels into the named list,
 #'   for example, `abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))`.
 #'
-#' @return
-#' * `s_count_abnormal()` returns the statistic `fraction` which is a vector with `num` and `denom` counts of patients.
-#' * `a_count_abnormal()` returns the corresponding list with formatted [rtables::CellValue()].
-#' * `count_abnormal()` returns a layout object suitable for passing to further layouting functions,
-#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
-#'   the statistics from `s_count_abnormal()` to the table layout.
-#'
 #' @name abnormal
 #' @include formats.R
 NULL
@@ -38,6 +31,10 @@ NULL
 #'   for a single `abnormal` level.
 #' @param exclude_base_abn (`flag`)\cr whether to exclude subjects with baseline abnormality
 #'   from numerator and denominator.
+#'
+#' @return
+#' * `s_count_abnormal()` returns the statistic `fraction` which is a vector with `num` and `denom` counts of patients.
+#'
 #' @examples
 #' library(dplyr)
 #'
@@ -113,6 +110,9 @@ s_count_abnormal <- function(df,
 
 #' @describeIn abnormal Formatted analysis function which is used as `afun` in `count_abnormal()`.
 #'
+#' @return
+#' * `a_count_abnormal()` returns the corresponding list with formatted [rtables::CellValue()].
+#'
 #' @examples
 #' # Internal function - a_count_abnormal
 #' \dontrun{
@@ -129,6 +129,12 @@ a_count_abnormal <- make_afun(
 
 #' @describeIn abnormal Layout-creating function which can which can take statistics
 #'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `count_abnormal()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_abnormal()` to the table layout.
+#'
 #' @export
 #' @examples
 #' # Layout creating function.

@@ -6,16 +6,6 @@
 #'
 #' @inheritParams argument_convention
 #'
-#' @return
-#' * `s_count_abnormal_lab_worsen_by_baseline()` returns the counts and fraction of patients whose worst
-#'   post-baseline lab grades are worse than their baseline grades, for post-baseline worst grades
-#'   "1", "2", "3", "4" and "Any".
-#' * `a_count_abnormal_lab_worsen_by_baseline()` returns the corresponding list with
-#'   formatted [rtables::CellValue()].
-#' * `count_abnormal_lab_worsen_by_baseline()` returns a layout object suitable for passing to further layouting
-#'   functions, or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted
-#'   rows containing the statistics from `s_count_abnormal_lab_worsen_by_baseline()` to the table layout.
-#'
 #' @seealso Relevant helper functions [h_adlb_worsen()] and [h_worsen_counter()]
 #'
 #' @name abnormal_by_worst_grade_worsen
@@ -278,6 +268,11 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 #'   * `baseline_var` (`string`)\cr name of the data column containing baseline toxicity variable.
 #'   * `direction_var` (`string`)\cr see `direction_var` for more details.
 #'
+#' @return
+#' * `s_count_abnormal_lab_worsen_by_baseline()` returns the counts and fraction of patients whose worst
+#'   post-baseline lab grades are worse than their baseline grades, for post-baseline worst grades
+#'   "1", "2", "3", "4" and "Any".
+#'
 #' @examples
 #' library(dplyr)
 #'
@@ -335,6 +330,10 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
 #' @describeIn abnormal_by_worst_grade_worsen Formatted analysis function which is used as `afun`
 #'   in `count_abnormal_lab_worsen_by_baseline()`.
 #'
+#' @return
+#' * `a_count_abnormal_lab_worsen_by_baseline()` returns the corresponding list with
+#'   formatted [rtables::CellValue()].
+#'
 #' @examples
 #' # Internal function - a_count_abnormal_lab_worsen_by_baseline
 #' \dontrun{
@@ -354,6 +353,11 @@ a_count_abnormal_lab_worsen_by_baseline <- make_afun( # nolint
 
 #' @describeIn abnormal_by_worst_grade_worsen Layout-creating function which can which can take statistics
 #'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `count_abnormal_lab_worsen_by_baseline()` returns a layout object suitable for passing to further layouting
+#'   functions, or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted
+#'   rows containing the statistics from `s_count_abnormal_lab_worsen_by_baseline()` to the table layout.
 #'
 #' @examples
 #' basic_table() %>%

@@ -5,14 +5,6 @@
 #' These are specific functions to count patients with missed doses. The difference to [count_cumulative()] is
 #' mainly the special labels.
 #'
-#' @return
-#' * `s_count_nonmissing()` returns the statistic `n` which is the count of non-missing values in `x`.
-#' * `s_count_missed_doses()` returns the statistics `n` and `count_fraction` with one element for each threshold.
-#' * `a_count_missed_doses()` returns the corresponding list with formatted [rtables::CellValue()].
-#' * `count_missed_doses()` returns a layout object suitable for passing to further layouting functions,
-#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
-#'   the statistics from `s_count_missed_doses()` to the table layout.
-#'
 #' @seealso Relevant description function [d_count_missed_doses()].
 #'
 #' @name count_missed_doses
@@ -20,6 +12,9 @@
 NULL
 
 #' @describeIn count_missed_doses Statistics function to count non-missing values.
+#'
+#' @return
+#' * `s_count_nonmissing()` returns the statistic `n` which is the count of non-missing values in `x`.
 #'
 #' @examples
 #' set.seed(1)
@@ -52,6 +47,9 @@ d_count_missed_doses <- function(thresholds) {
 #' @inheritParams argument_convention
 #' @param thresholds (vector of `count`)\cr number of missed doses the patients at least had.
 #'
+#' @return
+#' * `s_count_missed_doses()` returns the statistics `n` and `count_fraction` with one element for each threshold.
+#'
 #' @examples
 #' # Internal function - s_count_missed_doses
 #' \dontrun{
@@ -80,6 +78,9 @@ s_count_missed_doses <- function(x,
 #' @describeIn count_missed_doses Formatted analysis function which is used as `afun`
 #'   in `count_missed_doses()`.
 #'
+#' @return
+#' * `a_count_missed_doses()` returns the corresponding list with formatted [rtables::CellValue()].
+#'
 #' @examples
 #' # Internal function - a_count_missed_doses
 #' \dontrun{
@@ -98,6 +99,12 @@ a_count_missed_doses <- make_afun(
 #' @describeIn count_missed_doses Layout-creating function which can which can take statistics
 #'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #' @inheritParams s_count_cumulative
+#'
+#' @return
+#' * `count_missed_doses()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_missed_doses()` to the table layout.
+#'
 #' @export
 #' @examples
 #' library(dplyr)

@@ -10,6 +10,7 @@
 #' @param ties 	(`string`)\cr specifying the method for tie handling. Default is \code{"efron"},
 #'   can also be set to \code{"breslow"} or \code{"exact"}. see more in [survival::coxph()]
 #' @inheritParams argument_convention
+#'
 #' @return A list of components with the same names as the arguments
 #'
 #' @export
@@ -34,6 +35,7 @@ control_coxph <- function(pval_method = c("log-rank", "wald", "likelihood"),
 #' @param conf_type (`string`)\cr confidence interval type. Options are "plain" (default), "log", "log-log",
 #'   see more in [survival::survfit()]. Note option "none" is no longer supported.
 #' @param quantiles (`numeric`)\cr of length two to specify the quantiles of survival time.
+#'
 #' @return A list of components with the same names as the arguments
 #'
 #' @export
@@ -56,6 +58,7 @@ control_surv_time <- function(conf_level = 0.95,
 #'
 #' @inheritParams argument_convention
 #' @inheritParams control_surv_time
+#'
 #' @return A list of components with the same names as the arguments
 #'
 #' @export

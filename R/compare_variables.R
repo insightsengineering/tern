@@ -6,13 +6,6 @@
 #'
 #' @inheritParams argument_convention
 #'
-#' @return
-#' * `s_compare()` returns output of [s_summary()] and comparisons versus the reference group in the form of p-values.
-#' * `a_compare()` returns the corresponding list with formatted [rtables::CellValue()].
-#' * `compare_vars()` returns a layout object suitable for passing to further layouting functions,
-#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
-#'   the statistics from `s_compare()` to the table layout.
-#'
 #' @note
 #' * For factor variables, `denom` for factor proportions can only be `n` since the purpose is to compare proportions
 #'   between columns, therefore a row-based proportion would not make sense. Proportion based on `N_col` would
@@ -35,6 +28,9 @@
 NULL
 
 #' @describeIn compare_variables S3 generic statistics function to produce a comparison summary.
+#'
+#' @return
+#' * `s_compare()` returns output of [s_summary()] and comparisons versus the reference group in the form of p-values.
 #'
 #' @export
 #'
@@ -245,6 +241,9 @@ s_compare.logical <- function(x,
 
 #' @describeIn compare_variables Formatted analysis function which is used as `afun`
 #'   in `compare_vars()`.
+#'
+#' @return
+#' * `a_compare()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @export
 #'
@@ -465,6 +464,11 @@ create_afun_compare <- function(.stats = NULL,
 #'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @param ... arguments passed to `s_compare()`.
+#'
+#' @return
+#' * `compare_vars()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_compare()` to the table layout.
 #'
 #' @export
 #'

@@ -16,18 +16,6 @@
 #'   [control_coxreg()].
 #' @param ... see methods.
 #'
-#' @return
-#' * `h_coxreg_inter_effect()` returns a `data.frame` of covariate interaction effects consisting of the following
-#'   variables: `effect`, `term`, `term_label`, `level`, `n`, `hr`, `lcl`, `ucl`, `pval`, and `pval_inter`.
-#' * `h_coxreg_extract_interaction()` returns the result of an interaction test and the estimated values. If
-#'   no interaction, [h_coxreg_univar_extract()] is applied instead.
-#' * `h_coxreg_inter_estimations()` returns a list of matrices (one per level of variable) with rows corresponding
-#'   to the combinations of `variable` and `given`, with columns:
-#'   * `coef_hat`: Estimation of the coefficient.
-#'   * `coef_se`: Standard error of the estimation.
-#'   * `hr`: Hazard ratio.
-#'   * `lcl, ucl`: Lower/upper confidence limit of the hazard ratio.
-#'
 #' @name cox_regression_inter
 #'
 #' @examples
@@ -64,6 +52,11 @@
 NULL
 
 #' @describeIn cox_regression_inter S3 generic helper function to determine interaction effect.
+#'
+#' @return
+#' * `h_coxreg_inter_effect()` returns a `data.frame` of covariate interaction effects consisting of the following
+#'   variables: `effect`, `term`, `term_label`, `level`, `n`, `hr`, `lcl`, `ucl`, `pval`, and `pval_inter`.
+#'
 #' @export
 h_coxreg_inter_effect <- function(x,
                                   effect,
@@ -167,6 +160,10 @@ h_coxreg_inter_effect.factor <- function(x, # nolint
 #' @describeIn cox_regression_inter A higher level function to get
 #'   the results of the interaction test and the estimated values.
 #'
+#' @return
+#' * `h_coxreg_extract_interaction()` returns the result of an interaction test and the estimated values. If
+#'   no interaction, [h_coxreg_univar_extract()] is applied instead.
+#'
 #' @export
 #'
 #' @examples
@@ -241,6 +238,14 @@ h_coxreg_extract_interaction <- function(effect,
 #'   to arm A/Sex M by exp(b2 + b3 + b5)/ exp(b3) = exp(b2 + b5).
 #'   The interaction coefficient is deduced by b2 + b5 while the standard error
 #'   is obtained as $sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$.
+#'
+#' @return
+#' * `h_coxreg_inter_estimations()` returns a list of matrices (one per level of variable) with rows corresponding
+#'   to the combinations of `variable` and `given`, with columns:
+#'   * `coef_hat`: Estimation of the coefficient.
+#'   * `coef_se`: Standard error of the estimation.
+#'   * `hr`: Hazard ratio.
+#'   * `lcl, ucl`: Lower/upper confidence limit of the hazard ratio.
 #'
 #' @examples
 #' mod <- coxph(Surv(time, status) ~ armcd * covar1, data = dta_bladder)

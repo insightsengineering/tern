@@ -259,18 +259,16 @@ format_fraction_threshold <- function(threshold) {
 #'
 #' @param digits (`integer`)\cr number of decimal places to display.
 #'
-#' @return
-#' * `h_get_format_threshold()` returns a `list` of 2 elements: `threshold`, with `low` and `high` thresholds,
-#'   and `format_string`, with thresholds formatted as strings.
-#' * `h_format_threshold()` returns the given value, or if the value is not within the digit threshold the relation
-#'   of the given value to the digit threshold, as a formatted string.
-#'
 #' @family formatting functions
 #' @name extreme_format
 NULL
 
 #' @describeIn extreme_format Internal helper function to calculate the threshold and create formatted strings
 #'  used in Formatting Functions. Returns a list with elements `threshold` and `format_string`.
+#'
+#' @return
+#' * `h_get_format_threshold()` returns a `list` of 2 elements: `threshold`, with `low` and `high` thresholds,
+#'   and `format_string`, with thresholds formatted as strings.
 #'
 #' @examples
 #' h_get_format_threshold(2L)
@@ -295,6 +293,10 @@ h_get_format_threshold <- function(digits = 2L) {
 #'   Creates a formatted string to be used in Formatting Functions.
 #'
 #' @param x (`number`)\cr value to format.
+#'
+#' @return
+#' * `h_format_threshold()` returns the given value, or if the value is not within the digit threshold the relation
+#'   of the given value to the digit threshold, as a formatted string.
 #'
 #' @examples
 #' h_format_threshold(0.001)

@@ -18,13 +18,6 @@
 #'  `.labels`).
 #' @inheritParams argument_convention
 #'
-#' @return
-#' * `s_coxreg()` returns a formatted list with the specified statistic, with each element corresponding
-#'   to one term in the given model.
-#' * `summarize_coxreg()` returns a layout object suitable for passing to further layouting functions,
-#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add rows for a formatted
-#'   Cox regression summary table containing the statistics from `s_coxreg()` to the table layout.
-#'
 #' @seealso [fit_coxreg] for relevant fitting functions, [h_cox_regression] for relevant
 #' helper functions, and [tidy_coxreg] for custom tidy methods.
 #'
@@ -62,6 +55,11 @@ NULL
 
 #' @describeIn cox_regression Statistics function to transform the tabulated results from [fit_coxreg_univar()]
 #'  and [fit_coxreg_multivar()] into a list.
+#'
+#' @return
+#' * `s_coxreg()` returns a formatted list with the specified statistic, with each element corresponding
+#'   to one term in the given model.
+#'
 #' @export
 #'
 #' @examples
@@ -144,6 +142,12 @@ s_coxreg <- function(df, .var) {
 #'  `pval` (p.value of the treatment effect) and
 #'  `pval_inter` (the p.value of the interaction effect between the treatment
 #'  and the covariate).
+#'
+#' @return
+#' * `summarize_coxreg()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add rows for a formatted
+#'   Cox regression summary table containing the statistics from `s_coxreg()` to the table layout.
+#'
 #' @export
 #'
 #' @examples
@@ -238,7 +242,7 @@ summarize_coxreg <- function(lyt,
 #'   `efron` and `breslow`, see [survival::coxph()].
 #'   Note: there is no equivalent of SAS `EXACT` method in R.
 #'
-#' @return A `list` of item corresponding to the arguments.
+#' @return A `list` of items with names corresponding to the arguments.
 #'
 #' @examples
 #' control_coxreg()
@@ -520,6 +524,7 @@ NULL
 #'  effect should be estimated.
 #' @param control (`list`)\cr a list of parameters as returned by the
 #'   helper function [control_coxreg()].
+#'
 #' @return
 #' * `fit_coxreg_univar()` returns a `coxreg.univar` class object which is a named `list`
 #'   with 5 elements:
