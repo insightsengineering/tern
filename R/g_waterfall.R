@@ -13,7 +13,8 @@
 #' @param ylab (`character`)\cr y label. Default is `"Value"`.
 #' @param title (`character`)\cr text to be displayed as plot title.
 #' @param col_legend_title (`character`)\cr text to be displayed as legend title.
-#' @return (`ggplot` object)\cr waterfall plot.
+#'
+#' @return A `ggplot` waterfall plot.
 #'
 #' @author Yuyao Song (songy) \email{yuyao.song@roche.com}
 #' @export

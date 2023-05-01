@@ -14,9 +14,9 @@
 #' @param no_fillin_visits (named `character`)\cr Visits that are not considered for post-baseline worst toxicity
 #'   grade. Defaults to `c("SCREENING", "BASELINE")`.
 #'
-#' @return `df` containing variables shared between `adlb` and `adsl` along with variables relevant for analysis:
-#'   `PARAM`, `PARAMCD`, `ATOXGR`, and `BTOXGR`.  Optionally `AVISIT`, `AVISITN` are included when `by_visit = TRUE`
-#'   and `no_fillin_visits = c("SCREENING", "BASELINE")`.
+#' @return `df` containing variables shared between `adlb` and `adsl` along with variables `PARAM`, `PARAMCD`,
+#'   `ATOXGR`, and `BTOXGR` relevant for analysis. Optionally, `AVISIT` are `AVISITN` are included when
+#'   `by_visit = TRUE` and `no_fillin_visits = c("SCREENING", "BASELINE")`.
 #'
 #' @export
 #'

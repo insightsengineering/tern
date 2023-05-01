@@ -29,7 +29,9 @@
 #'   to the sample size used to calculate the estimator. If `NULL`, the same symbol size is used for all subgroups.
 #'   By default tries to get this from `tbl` attribute `col_symbol_size`, otherwise needs to be manually specified.
 #' @param col (`character`)\cr color(s).
-#' @return `gtree` object containing the forest plot and table
+#'
+#' @return `gTree` object containing the forest plot and table.
+#'
 #' @export
 #'
 #' @examples
@@ -657,6 +659,8 @@ forest_dot_line <- function(x, # nolint
 }
 
 #' Create a Viewport Tree for the Forest Plot
+#'
+#' @return A viewport tree.
 #'
 #' @examples
 #' library(grid)

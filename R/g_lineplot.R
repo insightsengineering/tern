@@ -61,7 +61,7 @@
 #'
 #' @author Wojciech Wojciak wojciech.wojciak@contractors.roche.com
 #'
-#' @return \code{ggplot}
+#' @return A `ggplot` line plot (and statistics table if applicable).
 #'
 #' @export
 #'
@@ -426,7 +426,7 @@ g_lineplot <- function(df, # nolint
 #'
 #' @author Wojciech Wojciak wojciech.wojciak@contractors.roche.com
 #'
-#' @return 1-row \code{data.frame} object
+#' @return A single row `data.frame` object.
 #'
 #' @examples
 #'
@@ -482,7 +482,7 @@ h_format_row <- function(x, format, labels = NULL) {
 #' @param paramcd (`character` or `NA`)\cr paramcd variable name.
 #' @param y_unit (`character` or `NA`)\cr y_unit variable name.
 #'
-#' @return A named character vector with names of variables.
+#' @return A named character vector of variable names.
 #'
 #' @author Wojciech Wojciak wojciech.wojciak@contractors.roche.com
 #'

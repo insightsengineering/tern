@@ -1,14 +1,16 @@
 #' Helper Functions for Tabulating Binary Response by Subgroup
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Helper functions that tabulate in a data frame statistics such as response rate
 #' and odds ratio for population subgroups.
 #'
 #' @details Main functionality is to prepare data for use in a layout creating function.
 #'
-#' @description `r lifecycle::badge("stable")`
 #' @inheritParams argument_convention
 #' @inheritParams response_subgroups
 #' @param arm (`factor`)\cr the treatment group variable.
+#'
 #' @name h_response_subgroups
 #'
 #' @examples
@@ -32,6 +34,10 @@ NULL
 
 #' @describeIn h_response_subgroups helper to prepare a data frame of binary responses by arm.
 #' @inheritParams h_response_subgroups
+#'
+#' @return
+#' * `h_proportion_df()` returns a `data.frame` with columns `arm`, `n`, `n_rsp`, and `prop`.
+#'
 #' @export
 #' @examples
 #'
@@ -77,6 +83,11 @@ h_proportion_df <- function(rsp, arm) {
 #'    in a data frame. `variables` corresponds to the names of variables found in `data`, passed as a named list and
 #'    requires elements `rsp`, `arm` and optionally `subgroups`. `groups_lists` optionally specifies
 #'    groupings for `subgroups` variables.
+#'
+#' @return
+#' * `h_proportion_subgroups_df()` returns a `data.frame` with columns `arm`, `n`, `n_rsp`, `prop`, `subgroup`,
+#'   `var`, `var_label`, and `row_type`.
+#'
 #' @export
 #'
 #' @examples
@@ -141,6 +152,11 @@ h_proportion_subgroups_df <- function(variables,
 #'
 #' @inheritParams response_subgroups
 #' @param strata_data (`factor`, `data.frame` or `NULL`)\cr required if stratified analysis is performed.
+#'
+#' @return
+#' * `h_odds_ratio_df()` returns a `data.frame` with columns `arm`, `n_tot`, `or`, `lcl`, `ucl`, `conf_level`, and
+#'   optionally `pval` and `pval_label`.
+#'
 #' @export
 #'
 #' @examples
@@ -263,6 +279,11 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
 #'   arm across subgroups in a data frame. `variables` corresponds to the names of variables found in
 #'   `data`, passed as a named list and requires elements `rsp`, `arm` and optionally `subgroups`
 #'   and `strat`. `groups_lists` optionally specifies groupings for `subgroups` variables.
+#'
+#' @return
+#' * `h_odds_ratio_subgroups_df()` returns a `data.frame` with columns `arm`, `n_tot`, `or`, `lcl`, `ucl`,
+#'   `conf_level`, `subgroup`, `var`, `var_label`, and `row_type`.
+#'
 #' @export
 #'
 #' @examples

@@ -13,11 +13,14 @@ NULL
 NULL
 
 #' @describeIn h_step creates the windows for STEP, based on the control settings
-#'   provided. Returns a list containing the window-selection matrix `sel`
-#'   and the interval information matrix `interval`.
+#'   provided.
 #'
 #' @param x (`numeric`)\cr biomarker value(s) to use (without `NA`).
 #' @param control (named `list`)\cr output from `control_step()`.
+#'
+#' @return
+#' * `h_step_window()` returns a list containing the window-selection matrix `sel`
+#'   and the interval information matrix `interval`.
 #'
 #' @export
 h_step_window <- function(x,
@@ -65,8 +68,11 @@ h_step_window <- function(x,
 #'   on the linear predictor scale and corresponding standard error from a STEP `model` fitted
 #'   on `data` given `variables` specification, for a single biomarker value `x`.
 #'   This works for both `coxph` and `glm` models, i.e. for calculating log hazard ratio or log odds
-#'   ratio estimates. It returns a vector with elements `est` and `se`.
+#'   ratio estimates.
 #' @param model the regression model object.
+#'
+#' @return
+#' * `h_step_trt_effect()` returns a vector with elements `est` and `se`.
 #'
 #' @export
 h_step_trt_effect <- function(data,
@@ -100,6 +106,9 @@ h_step_trt_effect <- function(data,
 
 #' @describeIn h_step builds the model formula used in survival STEP calculations.
 #'
+#' @return
+#' * `h_step_survival_formula()` returns a model formula.
+#'
 #' @export
 h_step_survival_formula <- function(variables,
                                     control = control_step()) {
@@ -121,12 +130,15 @@ h_step_survival_formula <- function(variables,
 
 #' @describeIn h_step estimates the model with `formula` built based on
 #'   `variables` in `data` for a given `subset` and `control` parameters for the
-#'   Cox regression, and returns a matrix of number of observations `n`,
-#'   `events` as well as log hazard ratio estimates `loghr`, standard error `se`
-#'   and Wald confidence interval bounds `ci_lower` and `ci_upper`. One row is
-#'   included here for each biomarker value in `x`.
+#'   Cox regression.
 #' @param formula (`formula`)\cr the regression model formula.
 #' @param subset (`logical`)\cr subset vector.
+#'
+#' @return
+#' * `h_step_survival_est()` returns a matrix of number of observations `n`,
+#'   `events`, log hazard ratio estimates `loghr`, standard error `se`,
+#'   and Wald confidence interval bounds `ci_lower` and `ci_upper`. One row is
+#'   included for each biomarker value in `x`.
 #'
 #' @export
 h_step_survival_est <- function(formula,
@@ -221,12 +233,14 @@ h_step_rsp_formula <- function(variables,
 
 #' @describeIn h_step estimates the model with `formula` built based on
 #'   `variables` in `data` for a given `subset` and `control` parameters for the
-#'   logistic regression, and returns a matrix of number of observations `n`
-#'   as well as log odds ratio estimates `logor`, standard error `se`
-#'   and Wald confidence interval bounds `ci_lower` and `ci_upper`. One row is
-#'   included here for each biomarker value in `x`.
+#'   logistic regression.
 #' @param formula (`formula`)\cr the regression model formula.
 #' @param subset (`logical`)\cr subset vector.
+#'
+#' @return
+#' * `h_step_rsp_est()` returns a matrix of number of observations `n`, log odds
+#'   ratio estimates `logor`, standard error `se`, and Wald confidence interval bounds
+#'   `ci_lower` and `ci_upper`. One row is included for each biomarker value in `x`.
 #'
 #' @export
 h_step_rsp_est <- function(formula,

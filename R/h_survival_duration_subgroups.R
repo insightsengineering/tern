@@ -42,6 +42,9 @@ NULL
 #' @describeIn h_survival_duration_subgroups helper to prepare a data frame of median survival times by arm.
 #' @inheritParams h_survival_duration_subgroups
 #'
+#' @return
+#' * `h_survtime_df()` returns a `data.frame` with columns `arm`, `n`, `n_events`, and `median`.
+#'
 #' @examples
 #' # Extract median survival time for one group.
 #' h_survtime_df(
@@ -96,6 +99,10 @@ h_survtime_df <- function(tte, is_event, arm) {
 #'    in a data frame. `variables` corresponds to the names of variables found in `data`, passed as a named list and
 #'    requires elements `tte`, `is_event`, `arm` and optionally `subgroups`. `groups_lists` optionally specifies
 #'    groupings for `subgroups` variables.
+#'
+#' @return
+#' * `h_survtime_subgroups_df()` returns a `data.frame` with columns `arm`, `n`, `n_events`, `median`, `subgroup`,
+#'   `var`, `var_label`, and `row_type`.
 #'
 #' @examples
 #' # Extract median survival time for multiple groups.
@@ -171,6 +178,10 @@ h_survtime_subgroups_df <- function(variables,
 #'   treatment hazard ratio.
 #'
 #' @param strata_data (`factor`, `data.frame` or `NULL`)\cr required if stratified analysis is performed.
+#'
+#' @return
+#' * `h_coxph_df()` returns a `data.frame` with columns `arm`, `n_tot`, `n_tot_events`, `hr`, `lcl`, `ucl`,
+#'   `conf_level`, `pval` and `pval_label`.
 #'
 #' @examples
 #' # Extract hazard ratio for one group.
@@ -269,6 +280,10 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
 #'   `data`, passed as a named list and requires elements `tte`, `is_event`, `arm` and
 #'   optionally `subgroups` and `strat`. `groups_lists` optionally specifies
 #'   groupings for `subgroups` variables.
+#'
+#' @return
+#' * `h_coxph_subgroups_df()` returns a `data.frame` with columns `arm`, `n_tot`, `n_tot_events`, `hr`,
+#'   `lcl`, `ucl`, `conf_level`, `pval`, `pval_label`, `subgroup`, `var`, `var_label`, and `row_type`.
 #'
 #' @examples
 #' # Extract hazard ratio for multiple groups.

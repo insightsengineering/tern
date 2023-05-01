@@ -6,14 +6,6 @@
 #'
 #' @inheritParams argument_convention
 #'
-#' @return
-#' * `h_coxreg_univar_formulas()` returns a `character` vector coercible into formulas (e.g [stats::as.formula()]).
-#' * `h_coxreg_univar_formulas()` returns a `character` vector coercible into formulas (e.g [stats::as.formula()]).
-#' * `h_coxreg_univar_extract()` returns a `data.frame` with variables `effect`, `term`, `term_label`, `level`,
-#'   `n`, `hr`, `lcl`, `ucl`, and `pval`.
-#' * `h_coxreg_multivar_extract()` returns a `data.frame` with variables `pval`, `hr`, `lcl`, `ucl`, `level`,
-#'   `n`, `term`, and `term_label`.
-#'
 #' @seealso [cox_regression]
 #'
 #' @name h_cox_regression
@@ -24,6 +16,9 @@ NULL
 #'
 #' @inheritParams argument_convention
 #' @inheritParams control_coxreg
+#'
+#' @return
+#' * `h_coxreg_univar_formulas()` returns a `character` vector coercible into formulas (e.g [stats::as.formula()]).
 #'
 #' @examples
 #' # `h_coxreg_univar_formulas`
@@ -116,6 +111,9 @@ h_coxreg_univar_formulas <- function(variables,
 #'
 #' @inheritParams argument_convention
 #'
+#' @return
+#' * `h_coxreg_multivar_formula()` returns a `string` coercible into a formula (e.g [stats::as.formula()]).
+#'
 #' @export
 #'
 #' @examples
@@ -171,6 +169,10 @@ h_coxreg_multivar_formula <- function(variables) {
 #' @inheritParams cox_regression_inter
 #' @param effect (`string`)\cr the treatment variable.
 #' @param mod (`coxph`)\cr Cox regression model fitted by [survival::coxph()].
+#'
+#' @return
+#' * `h_coxreg_univar_extract()` returns a `data.frame` with variables `effect`, `term`, `term_label`, `level`,
+#'   `n`, `hr`, `lcl`, `ucl`, and `pval`.
 #'
 #' @examples
 #' library(survival)
@@ -237,6 +239,11 @@ h_coxreg_univar_extract <- function(effect,
 #'
 #' @inheritParams argument_convention
 #' @inheritParams h_coxreg_univar_extract
+#'
+#' @return
+#' * `h_coxreg_multivar_extract()` returns a `data.frame` with variables `pval`, `hr`, `lcl`, `ucl`, `level`,
+#'   `n`, `term`, and `term_label`.
+#'
 #' @export
 #'
 #' @examples
