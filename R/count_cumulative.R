@@ -145,8 +145,8 @@ a_count_cumulative <- make_afun(
   .formats = c(count_fraction = format_count_fraction)
 )
 
-#' @describeIn count_cumulative Layout-creating function which can which can take statistics
-#'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#' @describeIn count_cumulative Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @inheritParams argument_convention
 #'

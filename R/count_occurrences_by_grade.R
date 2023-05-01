@@ -221,8 +221,8 @@ a_count_occurrences_by_grade <- make_afun(
 )
 
 
-#' @describeIn count_occurrences_by_grade Layout-creating function which can which can take statistics
-#'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#' @describeIn count_occurrences_by_grade Layout-creating function which can take statistics function
+#'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #' @param var_labels (`character`)\cr labels to show in the result table.
 #'
 #' @return
@@ -287,7 +287,7 @@ count_occurrences_by_grade <- function(lyt,
   )
 }
 
-#' @describeIn count_occurrences_by_grade Layout-creating function which can which can take content function arguments
+#' @describeIn count_occurrences_by_grade Layout-creating function which can take content function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::summarize_row_groups()].
 #'
 #' @return

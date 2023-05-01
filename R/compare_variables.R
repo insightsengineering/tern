@@ -460,8 +460,8 @@ create_afun_compare <- function(.stats = NULL,
   }
 }
 
-#' @describeIn compare_variables Layout-creating function which can which can take statistics
-#'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#' @describeIn compare_variables Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @param ... arguments passed to `s_compare()`.
 #'

@@ -138,8 +138,8 @@ a_proportion <- make_afun(
   .formats = c(n_prop = "xx (xx.x%)", prop_ci = "(xx.x, xx.x)")
 )
 
-#' @describeIn estimate_proportions Layout-creating function which can which can take statistics
-#'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#' @describeIn estimate_proportions Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @inheritParams argument_convention
 #' @param ... other arguments are ultimately conveyed to [s_proportion()].

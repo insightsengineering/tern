@@ -9,8 +9,8 @@
 #'
 NULL
 
-#' @describeIn count_patients_events_in_cols Statistics function which counts numbers of patients and multiple events
-#'   defined by filters.
+#' @describeIn count_patients_events_in_cols Statistics function which counts numbers of patients and multiple
+#'   events defined by filters. Used as analysis function `afun` in `summarize_patients_events_in_cols()`.
 #'
 #' @inheritParams argument_convention
 #' @param filters_list (named `list` of `character`)\cr each element in this list describes one
@@ -107,7 +107,7 @@ s_count_patients_and_multiple_events <- function(df, # nolint
   y
 }
 
-#' @describeIn count_patients_events_in_cols Layout-creating function which can which can take statistics function
+#' @describeIn count_patients_events_in_cols Layout-creating function which can take statistics function
 #'   arguments and additional format arguments. This function is a wrapper for [rtables::summarize_row_groups()].
 #'
 #' @inheritParams argument_convention

@@ -102,8 +102,8 @@ a_count_values <- make_afun(
   .formats = c(count_fraction = "xx (xx.xx%)", count = "xx")
 )
 
-#' @describeIn count_values_funs  Layout-creating function which can which can take statistics
-#'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#' @describeIn count_values_funs Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #' @inheritParams argument_convention
 #'
 #' @return

@@ -18,8 +18,8 @@
 #' @name analyze_vars_in_cols
 NULL
 
-#' @describeIn analyze_vars_in_cols Layout-creating function which can be used for creating column-wise
-#'   summary tables, primarily used for PK data sets. This function is a wrapper for [rtables::analyze_colvars()].
+#' @describeIn analyze_vars_in_cols Layout-creating function which can be used for creating column-wise summary
+#'   tables, primarily used for PK data sets. This function is a wrapper for [rtables::analyze_colvars()].
 #'
 #' @examples
 #' library(dplyr)

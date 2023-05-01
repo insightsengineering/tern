@@ -157,8 +157,8 @@ a_count_abnormal_by_marked <- make_afun(
   .formats = c(count_fraction = format_count_fraction)
 )
 
-#' @describeIn abnormal_by_marked Layout-creating function which can which can take statistics
-#'   function arguments and additional format arguments.  This function is a wrapper for [rtables::analyze()].
+#' @describeIn abnormal_by_marked Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @return
 #' * `count_abnormal_by_marked()` returns a layout object suitable for passing to further layouting functions,

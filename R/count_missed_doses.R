@@ -96,8 +96,8 @@ a_count_missed_doses <- make_afun(
   .formats = c(n = "xx", count_fraction = format_count_fraction)
 )
 
-#' @describeIn count_missed_doses Layout-creating function which can which can take statistics
-#'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#' @describeIn count_missed_doses Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #' @inheritParams s_count_cumulative
 #'
 #' @return

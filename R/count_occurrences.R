@@ -127,8 +127,8 @@ a_count_occurrences <- make_afun(
   .formats = c(count = "xx", count_fraction = format_count_fraction_fixed_dp, fraction = format_fraction_fixed_dp)
 )
 
-#' @describeIn count_occurrences Layout-creating function which can which can take statistics
-#'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#' @describeIn count_occurrences Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @return
 #' * `count_occurrences()` returns a layout object suitable for passing to further layouting functions,

@@ -351,8 +351,8 @@ a_count_abnormal_lab_worsen_by_baseline <- make_afun( # nolint
   .ungroup_stats = "fraction"
 )
 
-#' @describeIn abnormal_by_worst_grade_worsen Layout-creating function which can which can take statistics
-#'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#' @describeIn abnormal_by_worst_grade_worsen Layout-creating function which can take statistics function
+#'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @return
 #' * `count_abnormal_lab_worsen_by_baseline()` returns a layout object suitable for passing to further layouting

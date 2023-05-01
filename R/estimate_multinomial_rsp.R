@@ -109,8 +109,8 @@ a_length_proportion <- make_afun(
   )
 )
 
-#' @describeIn estimate_multinomial_rsp Layout-creating function which can which can take statistics
-#'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#' @describeIn estimate_multinomial_rsp Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @inheritParams argument_convention
 #'

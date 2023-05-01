@@ -153,8 +153,8 @@ a_count_abnormal_by_worst_grade <- make_afun( # nolint
   .formats = c(count_fraction = format_count_fraction)
 )
 
-#' @describeIn abnormal_by_worst_grade Layout-creating function which can which can take statistics
-#'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#' @describeIn abnormal_by_worst_grade Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @return
 #' * `count_abnormal_by_worst_grade()` returns a layout object suitable for passing to further layouting functions,

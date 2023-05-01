@@ -161,8 +161,8 @@ a_count_abnormal_by_baseline <- make_afun(
   .formats = c(fraction = format_fraction)
 )
 
-#' @describeIn abnormal_by_baseline Layout-creating function which can which can take statistics
-#'   function arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#' @describeIn abnormal_by_baseline Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @return
 #' * `count_abnormal_by_baseline()` returns a layout object suitable for passing to further layouting functions,
