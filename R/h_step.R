@@ -202,6 +202,9 @@ h_step_survival_est <- function(formula,
 
 #' @describeIn h_step builds the model formula used in response STEP calculations.
 #'
+#' @return
+#' * `h_step_rsp_formula()` returns a model formula.
+#'
 #' @export
 h_step_rsp_formula <- function(variables,
                                control = c(control_step(), control_logistic())) {

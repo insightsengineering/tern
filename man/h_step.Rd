@@ -73,6 +73,10 @@ included for each biomarker value in \code{x}.
 }
 
 \itemize{
+\item \code{h_step_rsp_formula()} returns a model formula.
+}
+
+\itemize{
 \item \code{h_step_rsp_est()} returns a matrix of number of observations \code{n}, log odds
 ratio estimates \code{logor}, standard error \code{se}, and Wald confidence interval bounds
 \code{ci_lower} and \code{ci_upper}. One row is included for each biomarker value in \code{x}.

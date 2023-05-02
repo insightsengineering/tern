@@ -47,15 +47,9 @@ in columns, and add it to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This function can be used to produce summary tables for PK datasets where
-the relevant statistic is on the columns instead of on the rows.
+Layout-creating function which can be used for creating column-wise summary tables, primarily
+used for PK data sets. This function is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
 }
-\section{Functions}{
-\itemize{
-\item \code{analyze_vars_in_cols()}: Layout-creating function which can be used for creating column-wise summary
-tables, primarily used for PK data sets. This function is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
-
-}}
 \examples{
 library(dplyr)
 

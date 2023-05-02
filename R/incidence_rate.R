@@ -137,6 +137,11 @@ a_incidence_rate <- make_afun(
 #' @describeIn incidence_rate Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
+#' @return
+#' * `estimate_incidence_rate()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_incidence_rate()` to the table layout.
+#'
 #' @examples
 #' basic_table() %>%
 #'   split_cols_by("ARM") %>%

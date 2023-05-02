@@ -2,8 +2,8 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This function can be used to produce summary tables for PK datasets where
-#' the relevant statistic is on the columns instead of on the rows.
+#' Layout-creating function which can be used for creating column-wise summary tables, primarily
+#' used for PK data sets. This function is a wrapper for [rtables::analyze_colvars()].
 #'
 #' @inheritParams argument_convention
 #' @inheritParams rtables::analyze_colvars
@@ -14,12 +14,6 @@
 #' in columns, and add it to the table layout.
 #'
 #' @seealso [summarize_vars], [rtables::analyze_colvars()].
-#'
-#' @name analyze_vars_in_cols
-NULL
-
-#' @describeIn analyze_vars_in_cols Layout-creating function which can be used for creating column-wise summary
-#'   tables, primarily used for PK data sets. This function is a wrapper for [rtables::analyze_colvars()].
 #'
 #' @examples
 #' library(dplyr)

@@ -232,6 +232,7 @@ decorate_grob <- function(grob,
 }
 
 #' @importFrom grid validDetails
+#' @return A grid grob (`gTree`).
 #' @export
 validDetails.decoratedGrob <- function(x) { # nolint
 
@@ -258,12 +259,14 @@ validDetails.decoratedGrob <- function(x) { # nolint
 }
 
 #' @importFrom grid widthDetails
+#' @return A grid grob (`gTree`).
 #' @export
 widthDetails.decoratedGrob <- function(x) { # nolint
   grid::unit(1, "null")
 }
 
 #' @importFrom grid heightDetails
+#' @return A grid grob (`gTree`).
 #' @export
 heightDetails.decoratedGrob <- function(x) { # nolint
   grid::unit(1, "null")
@@ -395,6 +398,7 @@ split_text_grob <- function(text,
 }
 
 #' @importFrom grid validDetails
+#' @return A text grob.
 #' @export
 validDetails.dynamicSplitText <- function(x) { # nolint
   checkmate::assert_character(x$text)
@@ -404,6 +408,7 @@ validDetails.dynamicSplitText <- function(x) { # nolint
 }
 
 #' @importFrom grid heightDetails
+#' @return A text grob.
 #' @export
 heightDetails.dynamicSplitText <- function(x) { # nolint
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
@@ -415,12 +420,14 @@ heightDetails.dynamicSplitText <- function(x) { # nolint
 }
 
 #' @importFrom grid widthDetails
+#' @return A text grob.
 #' @export
 widthDetails.dynamicSplitText <- function(x) { # nolint
   x$width
 }
 
 #' @importFrom grid drawDetails
+#' @return A text grob.
 #' @export
 drawDetails.dynamicSplitText <- function(x, recording) { # nolint
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
