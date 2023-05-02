@@ -15,11 +15,11 @@ NULL
 #' @inheritParams argument_convention
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
 #'   be used as label.
-#' @return [s_count_patients_sum_exposure()] returns a list with the statistics:
-#' \describe{
-#'   \item{n_patients}{number of unique patients in `df`.}
-#'   \item{sum_exposure}{sum of `.var` across all patients in `df`.}
-#' }
+#'
+#' @return
+#' * `s_count_patients_sum_exposure()` returns a named `list` with the statistics:
+#'   * `n_patients`: Number of unique patients in `df`.
+#'   * `sum_exposure`: Sum of `.var` across all patients in `df`.
 #'
 #' @examples
 #' set.seed(1)
@@ -85,8 +85,16 @@ s_count_patients_sum_exposure <- function(df, # nolintr
   y
 }
 
-#' @describeIn summarize_patients_exposure_in_cols Layout creating function which adds the count
-#'   statistics of patients and the sum of analysis value in the column layout as content rows.
+#' @describeIn summarize_patients_exposure_in_cols Layout-creating function which can take statistics
+#'   function arguments and additional format arguments. This function is a wrapper for
+#'   [rtables::split_cols_by_multivar()] and [rtables::summarize_row_groups()].
+#'
+#' @return
+#' * `summarize_patients_exposure_in_cols()` returns a layout object suitable for passing to further
+#'   layouting functions, or to [rtables::build_table()]. Adding this function to an `rtable` layout will
+#'   add formatted rows, with the statistics from `s_count_patients_sum_exposure()` arranged in
+#'   columns, to the table layout.
+#'
 #'
 #' @inheritParams argument_convention
 #' @param col_split (`flag`)\cr whether the columns should be split. Set to `FALSE` when the required

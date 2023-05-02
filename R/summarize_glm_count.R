@@ -38,6 +38,10 @@ NULL
 #'  in averaging predictions. Number of weights must equal the number of levels included in the covariates.
 #'  Weights option passed to emmeans function (hyperlink) (link to emmeans documentation)
 #'
+#' @return
+#' * `h_glm_poisson()` returns the results of a Poisson model.
+#'
+#'
 #' @examples
 #' # Internal function - h_glm_poisson
 #' \dontrun{
@@ -91,13 +95,16 @@ h_glm_poisson <- function(.var,
 #' @inheritParams argument_convention
 #' @inheritParams summarize_glm_count
 #'
+#' @return
+#' * `h_glm_quasipoisson()` returns the results of a Quasi-Poisson model.
+#'
 #' @examples
 #'
 #' # Internal function - h_glm_quasipoisson
 #' \dontrun{
 #' h_glm_quasipoisson(
 #'   .var = "AVAL",
-#'   .df_row = anl,
+#'   .df_row = adtte,
 #'   variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = c("REGION1"))
 #' )
 #' }
@@ -159,6 +166,9 @@ h_glm_quasipoisson <- function(.var,
 #' @param `distribution`(`character`)\cr a character value specifying the distribution
 #'   used in the regression (poisson, quasipoisson).
 #'
+#' @return
+#' * `h_glm_count()` returns the results of the selected model.
+#'
 #' @examples
 #' # Internal function - h_glm_count
 #' \dontrun{
@@ -197,6 +207,9 @@ h_glm_count <- function(.var,
 #' @param `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
 #'   groups will be summarized. Specifically, the first level of `arm` variable is taken as the
 #'   reference group.
+#'
+#' @return
+#' * `h_ppmeans()` returns the estimated means.
 #'
 #' @examples
 #' # Internal function - h_ppmeans
@@ -254,19 +267,19 @@ h_ppmeans <- function(obj, .df_row, arm, conf_level) {
 }
 
 #' @describeIn summarize_glm_count Statistics function that produces a named list of results
-#'   of the investigated poisson model.
+#'   of the investigated Poisson model.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams h_glm_count
-#' @return A named list of 5 statistics:
-#' \describe{
-#'   \item{n}{count of complete sample size for the group.}
-#'   \item{rate}{estimated event rate per follow-up time.}
-#'   \item{rate_ci}{confidence level for estimated rate per follow-up time.}
-#'   \item{rate_ratio}{ratio of event rates in each treatment arm to the reference arm.}
-#'   \item{rate_ratio_ci}{confidence level for the rate ratio.}
-#'   \item{pval}{p-value.}
-#' }
+#'
+#' @return
+#' * `s_glm_count()` returns a named `list` of 5 statistics:
+#'   * `n`: Count of complete sample size for the group.
+#'   * `rate`: Estimated event rate per follow-up time.
+#'   * `rate_ci`: Confidence level for estimated rate per follow-up time.
+#'   * `rate_ratio`: Ratio of event rates in each treatment arm to the reference arm.
+#'   * `rate_ratio_ci`: Confidence level for the rate ratio.
+#'   * `pval`: p-value.
 #'
 #' @examples
 #' # Internal function - s_change_from_baseline
@@ -373,8 +386,10 @@ s_glm_count <- function(df,
   }
 }
 
-#' @describeIn summarize_glm_count Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn summarize_glm_count Formatted analysis function which is used as `afun` in `summarize_glm_count()`.
+#'
+#' @return
+#' * `a_glm_count()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #'
@@ -415,9 +430,16 @@ a_glm_count <- make_afun(
   .null_ref_cells = FALSE
 )
 
-#' @describeIn summarize_glm_count Layout creating function which can be be used for creating
-#'   summary tables for analysis of count data using generalized linear models (poisson, quasipoisson).
+#' @describeIn summarize_glm_count Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
 #' @inheritParams argument_convention
+#'
+#' @return
+#' * `summarize_glm_count()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_glm_count()` to the table layout.
+#'
 #' @export
 #' @examples
 #' library(dplyr)

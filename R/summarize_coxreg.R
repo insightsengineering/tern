@@ -49,9 +49,8 @@
 #' @name cox_regression
 NULL
 
-#' @describeIn cox_regression transforms the tabulated results from [`fit_coxreg_univar()`]
-#'  and [`fit_coxreg_multivar()`] into a list. Not much calculation is done here,
-#'  it rather prepares the data to be used by the layout creating function.
+#' @describeIn cox_regression Statistics function that transforms results tabulated
+#'   from [`fit_coxreg_univar()`] or [`fit_coxreg_multivar()`] into a list.
 #'
 #' @param model_df (`data.frame`)\cr contains the resulting model fit from a [`fit_coxreg`]
 #'   function with tidying applied via [`broom::tidy()`].
@@ -69,6 +68,9 @@ NULL
 #'   this is the name of a variable. If using variable labels, `var` should be a vector of both the desired
 #'   variable name and the variable label in that order to see all `.stats` related to that variable. When `.which_vars`
 #'   is "var_main" `.var_nms` should be only the variable name.
+#'
+#' @return
+#' * `s_coxreg()` returns the selected statistic for from the Cox regression model for the selected variable(s).
 #'
 #' @export
 #'
@@ -142,7 +144,7 @@ s_coxreg <- function(model_df, .stats, .which_vars = "all", .var_nms = NULL) {
   )
 }
 
-#' @describeIn cox_regression Analysis function. It is used as `afun` in [rtables::analyze()]
+#' @describeIn cox_regression Analysis function which is used as `afun` in [rtables::analyze()]
 #'   and `cfun` in [rtables::summarize_row_groups()] within `summarize_coxreg()`.
 #'
 #' @param eff (`flag`)\cr whether treatment effect should be calculated. Defaults to `FALSE`.
@@ -150,6 +152,9 @@ s_coxreg <- function(model_df, .stats, .which_vars = "all", .var_nms = NULL) {
 #' @param na_level (`string`)\cr custom string to replace all `NA` values with. Defaults to `""`.
 #' @param cache_env (`environment`)\cr an environment object used to cache the regression model in order to
 #'   avoid repeatedly fitting the same model for every row in the table. Defaults to `NULL` (no caching).
+#'
+#' @return
+#' * `a_coxreg()` returns formatted [rtables::CellValue()].
 #'
 #' @examples
 #' tern:::a_coxreg(
@@ -248,7 +253,8 @@ a_coxreg <- function(df,
   )
 }
 
-#' @describeIn cox_regression layout creating function.
+#' @describeIn cox_regression Layout-creating function which creates a Cox regression summary table
+#'   layout. This function is a wrapper for several `rtables` layouting functions.
 #'
 #' @inheritParams fit_coxreg_univar
 #' @param multivar (`flag`)\cr Defaults to `FALSE`. If `TRUE` multivariable Cox regression will run, otherwise
@@ -258,6 +264,11 @@ a_coxreg <- function(df,
 #' @param .section_div (`character`)\cr string which should be repeated as a section divider between sections.
 #'   Defaults to `NA` for no section divider. If a vector of two strings are given, the first will be used between
 #'   treatment and covariate sections and the second between different covariates.
+#'
+#' @return
+#' * `summarize_coxreg()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add a Cox regression table
+#'   containing the chosen statistics to the table layout.
 #'
 #' @export
 #' @seealso [fit_coxreg_univar()] and [fit_coxreg_multivar()] which also take the `variables`, `data`,

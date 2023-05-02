@@ -20,10 +20,15 @@
 NULL
 
 #' @describeIn odds_ratio Statistics function which estimates the odds ratio
-#'   between a treatment and a control. Note that a `variables` list with `arm` and `strata` names
-#'   needs to be passed if a stratified analysis is required.
+#'   between a treatment and a control. A `variables` list with `arm` and `strata`
+#'   variable names must be passed if a stratified analysis is required.
 #' @inheritParams split_cols_by_groups
 #' @inheritParams argument_convention
+#'
+#' @return
+#' * `s_odds_ratio()` returns a named list with the statistics `or_ci`
+#'   (containing `est`, `lcl`, and `ucl`) and `n_tot`.
+#'
 #' @export
 #'
 #' @examples
@@ -134,8 +139,10 @@ s_odds_ratio <- function(df,
   y
 }
 
-#' @describeIn odds_ratio Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn odds_ratio Formatted analysis function which is used as `afun` in `estimate_odds_ratio()`.
+#'
+#' @return
+#' * `a_odds_ratio()` returns the corresponding list with formatted [rtables::CellValue()].
 #' @export
 #'
 #' @examples
@@ -152,12 +159,17 @@ a_odds_ratio <- make_afun(
   .indent_mods = c(or_ci = 1L)
 )
 
-#' @describeIn odds_ratio Layout creating function which can be used for creating
-#'   tables, which can take statistics function arguments and additional format
-#'   arguments (see below).
+#' @describeIn odds_ratio Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @inheritParams argument_convention
 #' @param ... arguments passed to `s_odds_ratio()`.
+#'
+#' @return
+#' * `estimate_odds_ratio()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_odds_ratio()` to the table layout.
+#'
 #' @export
 #'
 #' @examples
@@ -207,6 +219,8 @@ estimate_odds_ratio <- function(lyt,
 #' @inheritParams argument_convention
 #' @param data (`data.frame`)\cr data frame containing at least the variables `rsp` and `grp`, and optionally
 #'   `strata` for [or_clogit()].
+#'
+#' @return A named `list` of elements `or_ci` and `n_tot`.
 #'
 #' @seealso [odds_ratio]
 #'

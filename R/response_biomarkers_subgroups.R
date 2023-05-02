@@ -19,6 +19,8 @@
 #'  `pval` (p value of the effect).
 #'  Note, the statistics `n_tot`, `or` and `ci` are required.
 #'
+#' @return An `rtables` table summarizing biomarker effects on binary response by subgroup.
+#'
 #' @seealso [h_tab_rsp_one_biomarker()] which is used internally, [extract_rsp_biomarkers()].
 #' @note In contrast to [tabulate_rsp_subgroups()] this tabulation function does
 #'   not start from an input layout `lyt`. This is because internally the table is
@@ -98,6 +100,11 @@ tabulate_rsp_biomarkers <- function(df,
 #' @inheritParams response_subgroups
 #' @param control (named `list`)\cr controls for the response definition and the
 #'   confidence level produced by [control_logistic()].
+#'
+#' @return A `data.frame` with columns `biomarker`, `biomarker_label`, `n_tot`, `n_rsp`,
+#'   `prop`, `or`, `lcl`, `ucl`, `conf_level`, `pval`, `pval_label`, `subgroup`, `var`,
+#'   `var_label`, and `row_type`.
+#'
 #' @seealso [h_logistic_mult_cont_df()] which is used internally.
 #' @note You can also specify a continuous variable in `rsp` and then use the
 #'   `response_definition` control to convert that internally to a logical

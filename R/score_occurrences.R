@@ -1,5 +1,7 @@
 #' Occurrence Table Sorting
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Functions to score occurrence table subtables and rows which can be used in the
 #' sorting of occurrence tables.
 #'
@@ -7,12 +9,12 @@
 #'
 NULL
 
-#' @description `r lifecycle::badge("stable")`
 #' @describeIn score_occurrences Scoring function which sums the counts across all
 #'   columns. It will fail if anything else but counts are used.
 #' @inheritParams rtables_access
 #'
-#' @return [score_occurrences()] returns the sum of counts across all columns of a table row.
+#' @return
+#' * `score_occurrences()` returns the sum of counts across all columns of a table row.
 #'
 #' @seealso [h_row_first_values()]
 #'
@@ -54,7 +56,8 @@ score_occurrences <- function(table_row) {
 #'   specific columns in the scoring. See [h_row_counts()] for further information.
 #' @inheritParams has_count_in_cols
 #'
-#' @return [score_occurrences_cols()] returns a function that sums counts across all specified columns
+#' @return
+#' * `score_occurrences_cols()` returns a function that sums counts across all specified columns
 #'   of a table row.
 #'
 #' @seealso [h_row_counts()]
@@ -80,7 +83,9 @@ score_occurrences_cols <- function(...) {
 #' @describeIn score_occurrences Scoring functions produced by this constructor can be used on
 #'   subtables: They sum up all specified column counts in the subtable. This is useful when
 #'   there is no available content row summing up these counts.
-#' @return [score_occurrences_subtable()] returns a function that sums counts in each subtable
+#'
+#' @return
+#' * `score_occurrences_subtable()` returns a function that sums counts in each subtable
 #'   across all specified columns.
 #'
 #' @export
@@ -105,6 +110,11 @@ score_occurrences_subtable <- function(...) {
 
 #' @describeIn score_occurrences Produce score function for sorting table by summing the first content row in
 #'   specified columns. Note that this is extending [rtables::cont_n_onecol()] and [rtables::cont_n_allcols()].
+#'
+#' @return
+#' * `score_occurrences_cont_cols()` returns a function that sums counts in the first content row in
+#'   specified columns.
+#'
 #' @export
 #'
 score_occurrences_cont_cols <- function(...) {

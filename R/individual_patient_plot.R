@@ -39,6 +39,9 @@ NULL
 #'
 #' @inheritParams argument_convention
 #' @inheritParams g_ipp
+#'
+#' @return A `ggplot` line plot.
+#'
 #' @seealso [g_ipp()] which uses this function.
 #' @export
 #' @examples
@@ -147,7 +150,7 @@ h_g_ipp <- function(df,
 #' graphic or compiles a list of graphics that show trends in individual's parameter
 #' values over time.
 #'
-#' @return a `ggplot` object or a list of `ggplot` objects.
+#' @return A `ggplot` object or a list of `ggplot` objects.
 #'
 #' @export
 #' @examples

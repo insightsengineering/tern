@@ -26,13 +26,12 @@ NULL
 #' @describeIn incidence_rate Statistics function which estimates the incidence rate and the
 #'   associated confidence interval.
 #'
-#' @return The statistics are:
-#' \describe{
-#'   \item{person_years}{total person-years at risk}
-#'   \item{n_events}{total number of events observed}
-#'   \item{rate}{estimated incidence rate}
-#'   \item{rate_ci}{confidence interval for the incidence rate}
-#' }
+#' @return
+#' `s_incidence_rate()` returns the following statistics:
+#'   * `person_years`: Total person-years at risk.
+#'   * `n_events`: Total number of events observed.
+#'   * `rate`: Estimated incidence rate.
+#'   * `rate_ci`: Confidence interval for the incidence rate.
 #'
 #' @examples
 #' library(dplyr)
@@ -107,8 +106,11 @@ s_incidence_rate <- function(df,
 }
 
 
-#' @describeIn incidence_rate Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn incidence_rate Formatted analysis function which is used as `afun`
+#'   in `estimate_incidence_rate()`.
+#'
+#' @return
+#' * `a_incidence_rate()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' # Internal function - a_incidence_rate
@@ -132,8 +134,8 @@ a_incidence_rate <- make_afun(
   )
 )
 
-#' @describeIn incidence_rate Layout creating function which adds analyze rows using the statistics
-#' function `s_incidence_rate` and desired format.
+#' @describeIn incidence_rate Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @examples
 #' basic_table() %>%
@@ -193,6 +195,8 @@ estimate_incidence_rate <- function(lyt,
 #' @param person_years (`numeric`)\cr total person-years at risk.
 #' @param alpha (`numeric`)\cr two-sided alpha-level for confidence interval.
 #' @param n_events (`integer`)\cr number of events observed.
+#'
+#' @return Estimated incidence rate `rate` and associated confidence interval `rate_ci`.
 #'
 #' @seealso [incidence_rate]
 #'

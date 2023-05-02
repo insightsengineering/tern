@@ -67,11 +67,11 @@ NULL
 #' including the number of patient at risk at given time and the median survival
 #' per group.
 #'
-#' @return a `grob` of class `gTree`.
-#'
 #' @inheritParams grid::gTree
 #' @inheritParams kaplan_meier
 #' @inheritParams argument_convention
+#'
+#' @return A `grob` of class `gTree`.
 #'
 #' @export
 #'
@@ -447,12 +447,10 @@ g_km <- function(df,
 
 #' Helper function: tidy survival fit
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Convert the survival fit data into a data frame designed for plotting
 #' within `g_km`.
-#'
-#' @description `r lifecycle::badge("stable")`
 #'
 #' This starts from the [broom::tidy()] result, and then:
 #' - post-processes the `strata` column into a factor,
@@ -465,6 +463,10 @@ g_km <- function(df,
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
 #' @param armval (`string`)\cr used as strata name when treatment arm
 #' variable only has one level. Default is "All".
+#'
+#' @return A `tibble` with columns `time`, `n.risk`, `n.event`, `n.censor`,
+#'   `estimate`, `std.error`, `conf.high`, `conf.low`, `strata`, and `censor`.
+#'
 #' @examples
 #' \dontrun{
 #' library(dplyr)
@@ -538,6 +540,9 @@ h_data_plot <- function(fit_km,
 #'
 #' @inheritParams kaplan_meier
 #'
+#' @return A vector of positions to use for x-axis ticks on a `ggplot` object.
+#'
+#'
 #' @examples
 #' \dontrun{
 #' library(dplyr)
@@ -590,6 +595,9 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' Draw the Kaplan-Meier plot using `ggplot2`.
 #'
 #' @inheritParams kaplan_meier
+#'
+#' @return A `ggplot` object.
+#'
 #' @examples
 #' \dontrun{
 #' library(dplyr)
@@ -730,14 +738,17 @@ h_ggkm <- function(data,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The elements composing the `ggplot` are extracted and organized in a
-#' list containing:
-#' the panel (`panel`),
-#' the y-axis and its label (`yaxis`, `ylab`),
-#' idem for the x-axis (`xaxis`, `xlab`),
-#' the legend (`guide`).
+#' The elements composing the `ggplot` are extracted and organized in a `list`.
 #'
 #' @param gg (`ggplot`)\cr a graphic to decompose.
+#'
+#' @return A named `list` with elements:
+#'   * `panel`: The panel.
+#'   * `yaxis`: The y-axis.
+#'   * `xaxis`: The x-axis.
+#'   * `xlab`: The x-axis label.
+#'   * `ylab`: The y-axis label.
+#'   * `guide`: The legend.
 #'
 #' @examples
 #' \dontrun{
@@ -795,6 +806,9 @@ h_decompose_gg <- function(gg) {
 #' @param annot_at_risk (`flag`)\cr compute and add the annotation table
 #'   reporting the number of patient at risk matching the main grid of the
 #'   Kaplan-Meier curve.
+#'
+#' @return A grid layout.
+#'
 #' @export
 #'
 #' @details
@@ -908,6 +922,8 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
 #'   patients at risk at given time points.
 #' @param xlim (`numeric`)\cr the maximum value on the x-axis (used to
 #'   ensure the at risk table aligns with the KM graph).
+#'
+#' @return A named `list` of two `gTree` objects: `at_risk` and `label`.
 #'
 #' @examples
 #' \dontrun{
@@ -1047,6 +1063,8 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 #'
 #' @inheritParams h_data_plot
 #'
+#' @return A summary table with statistics `N`, `Median`, and `XX% CI` (`XX` taken from `fit_km`).
+#'
 #' @examples
 #' \dontrun{
 #' library(dplyr)
@@ -1095,6 +1113,8 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' @param x a `numeric` value between 0 and 1 specifying x-location.
 #' @param y a `numeric` value between 0 and 1 specifying y-location.
 #' @inheritParams h_data_plot
+#'
+#' @return A `grob` of a table containing statistics `N`, `Median`, and `XX% CI` (`XX` taken from `fit_km`).
 #'
 #' @examples
 #' \dontrun{
@@ -1146,6 +1166,8 @@ h_grob_median_surv <- function(fit_km,
 #' @param yaxis (`gtable`)\cr the y-axis as a graphical object derived from
 #'   a `ggplot`.
 #'
+#' @return a `gTree` object containing the y-axis annotation from a `ggplot`.
+#'
 #' @examples
 #' \dontrun{
 #' library(dplyr)
@@ -1191,9 +1213,13 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Create an `rtable` of pairwise stratified or unstratified CoxPH analysis results.
+#' Create a `data.frame` of pairwise stratified or unstratified CoxPH analysis results.
 #'
 #' @inheritParams g_km
+#'
+#' @return A `data.frame` containing statistics `HR`, `XX% CI` (`XX` taken from `control_coxph_pw`),
+#'   and `p-value (log-rank)`.
+#'
 #' @export
 #'
 #' @examples
@@ -1254,6 +1280,10 @@ h_tbl_coxph_pairwise <- function(df,
 #' @param ... arguments will be passed to [h_tbl_coxph_pairwise()].
 #' @param x a `numeric` value between 0 and 1 specifying x-location.
 #' @param y a `numeric` value between 0 and 1 specifying y-location.
+#'
+#' @return A `grob` of a table containing statistics `HR`, `XX% CI` (`XX` taken from `control_coxph_pw`),
+#'   and `p-value (log-rank)`.
+#'
 #' @export
 #'
 #' @examples

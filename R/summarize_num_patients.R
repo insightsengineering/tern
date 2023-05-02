@@ -18,12 +18,11 @@ NULL
 #'   unique patients, the corresponding percentage taken with respect to the
 #'   total number of patients, and the number of non-unique patients.
 #'
-#' @return A list with:
-#' \describe{
-#'   \item{unique}{vector of count and percentage.}
-#'   \item{nonunique}{vector of count.}
-#'   \item{unique_count}{count.}
-#' }
+#' @return
+#' * `s_num_patients()` returns a named `list` of 3 statistics:
+#'   * `unique`: Vector of counts and percentages.
+#'   * `nonunique`: Vector of counts.
+#'   * `unique_count`: Counts.
 #'
 #' @examples
 #' # Use the statistics function to count number of unique and nonunique patients.
@@ -61,13 +60,15 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_su
   out
 }
 
-#' @describeIn summarize_num_patients Counts the number of unique patients in a column
-#'   (variable), the corresponding percentage taken with respect to the total
-#'   number of patients, and the number of non-unique patients in the column.
-#'   Function serves as a wrapper that carries over both expected arguments `df`
-#'   and `labelstr` in `cfun` of [summarize_row_groups()].
+#' @describeIn summarize_num_patients Statistics function which counts the number of unique patients
+#'   in a column (variable), the corresponding percentage taken with respect to the total number of
+#'   patients, and the number of non-unique patients in the column.
 #'
 #' @param required (`character` or `NULL`)\cr optional name of a variable that is required to be non-missing.
+#'
+#' @return
+#' * `s_num_patients_content()` returns the same values as `s_num_patients()`.
+#'
 #' @export
 #'
 #' @examples
@@ -120,8 +121,13 @@ c_num_patients <- make_afun(
   .formats = c(unique = format_count_fraction_fixed_dp, nonunique = "xx", unique_count = "xx")
 )
 
-#' @describeIn summarize_num_patients Layout creating function which adds content rows using the statistics
-#' function [s_num_patients_content()] and desired format.
+#' @describeIn summarize_num_patients Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::summarize_row_groups()].
+#'
+#' @return
+#' * `summarize_num_patients()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_num_patients_content()` to the table layout.
 #'
 #' @export
 summarize_num_patients <- function(lyt,
@@ -153,10 +159,15 @@ summarize_num_patients <- function(lyt,
   )
 }
 
-#' @describeIn summarize_num_patients Identically to [summarize_num_patients()],
-#'   This function creates a layout which adds content rows using the statistics
-#'   function [s_num_patients_content()] and desired format. Differently from its
-#'   counterpart, this function does not impose the produced rows to be repeated.
+#' @describeIn summarize_num_patients Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `analyze_num_patients()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_num_patients_content()` to the table layout.
+#'
+#' @note As opposed to [summarize_num_patients()], this function does not repeat the produced rows.
 #'
 #' @details In general, functions that starts with `analyze*` are expected to
 #'   work like [rtables::analyze()], while functions that starts with `summarize*`

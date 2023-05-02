@@ -58,6 +58,13 @@ NULL
 #' @inheritParams argument_convention
 #' @inheritParams response_subgroups
 #' @param label_all (`string`)\cr label for the total population analysis.
+#'
+#' @return A named list of two elements:
+#'   * `prop`: A `data.frame` containing columns `arm`, `n`, `n_rsp`, `prop`, `subgroup`, `var`,
+#'     `var_label`, and `row_type`.
+#'   * `or`: A `data.frame` containing columns `arm`, `n_tot`, `or`, `lcl`, `ucl`, `conf_level`,
+#'     `subgroup`, `var`, `var_label`, and `row_type`.
+#'
 #' @seealso [response_subgroups]
 #' @export
 #'
@@ -130,8 +137,10 @@ extract_rsp_subgroups <- function(variables,
   list(prop = df_prop, or = df_or)
 }
 
-#' @describeIn response_subgroups Formatted Analysis function used to format the results of [extract_rsp_subgroups()].
-#'   Returns is a list of Formatted Analysis functions with one element per statistic.
+#' @describeIn response_subgroups Formatted analysis function which is used as `afun` in `tabulate_rsp_subgroups()`.
+#'
+#' @return
+#' * `a_response_subgroups()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' # Internal function - a_response_subgroups
@@ -174,7 +183,9 @@ a_response_subgroups <- function(.formats = list(
   afun_lst
 }
 
-#' @describeIn response_subgroups table creating function.
+#' @describeIn response_subgroups Table-creating function which creates a table
+#'   summarizing binary response by subgroup.
+#'
 #' @param df (`list`)\cr of data frames containing all analysis variables. List should be
 #'   created using [extract_rsp_subgroups()].
 #' @param vars (`character`)\cr the name of statistics to be reported among
@@ -186,6 +197,9 @@ a_response_subgroups <- function(.formats = list(
 #'  `ci` (confidence interval of odds ratio) and
 #'  `pval` (p value of the effect).
 #'  Note, the statistics `n_tot`, `or` and `ci` are required.
+#'
+#' @return An `rtables` table summarizing binary response by subgroup.
+#'
 #' @export
 #'
 #' @examples
@@ -329,7 +343,7 @@ tabulate_rsp_subgroups <- function(lyt,
 #' @inheritParams argument_convention
 #' @inheritParams tabulate_rsp_subgroups
 #'
-#' @return `list` of variables to tabulate and their labels.
+#' @return A `list` of variables to tabulate and their labels.
 #'
 #' @export
 d_rsp_subgroups_colvars <- function(vars,

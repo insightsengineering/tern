@@ -14,6 +14,8 @@
 #' @param geom_mean (`logical`)\cr `TRUE` when the geometric mean should be
 #' calculated
 #'
+#' @return A named `vector` of values `mean_ci_lwr` and `mean_ci_upr`.
+#'
 #' @export
 #'
 #' @examples
@@ -93,6 +95,8 @@ stat_mean_ci <- function(x,
 #'
 #' @details The function was adapted from `DescTools/versions/0.99.35/source`
 #'
+#' @return A named `vector` of values `median_ci_lwr` and `median_ci_upr`.
+#'
 #' @export
 #'
 #' @examples
@@ -147,6 +151,8 @@ stat_median_ci <- function(x,
 #' @param n_min (`number`)\cr a minimum number of non-missing `x` to estimate
 #'     the p-value of the mean.
 #' @param test_mean (`number`)\cr mean value to test under the null hypothesis.
+#'
+#' @return A p-value.
 #'
 #' @examples
 #' stat_mean_pval(sample(10))
