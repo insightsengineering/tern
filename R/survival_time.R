@@ -16,18 +16,16 @@
 #' @name survival_time
 NULL
 
-#' @describeIn survival_time Statistics Function which analyzes survival times.
-#'  `range_censor` and `range_event`.
+#' @describeIn survival_time Statistics function which analyzes survival times.
 #'
-#' @return The statistics are:
-#' \describe{
-#'   \item{median}{median survival time.}
-#'   \item{median_ci}{confidence interval for median time.}
-#'   \item{quantiles}{survival time for two specified quantiles.}
-#'   \item{range_censor}{survival time range for censored observations.}
-#'   \item{range_event}{survival time range for observations with events.}
-#'   \item{range}{survival time range for all observations.}
-#' }
+#' @return
+#' * `s_surv_time()` returns the statistics:
+#'   * `median`: Median survival time.
+#'   * `median_ci`: Confidence interval for median time.
+#'   * `quantiles`: Survival time for two specified quantiles.
+#'   * `range_censor`: Survival time range for censored observations.
+#'   * `range_event`: Survival time range for observations with events.
+#'   * `range`: Survival time range for all observations.
 #'
 #' @examples
 #' library(dplyr)
@@ -85,8 +83,10 @@ s_surv_time <- function(df,
   )
 }
 
-#' @describeIn survival_time Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn survival_time Formatted analysis function which is used as `afun` in `surv_time()`.
+#'
+#' @return
+#' * `a_surv_time()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' # Internal function - a_surv_time
@@ -115,8 +115,13 @@ a_surv_time <- make_afun(
   )
 )
 
-#' @describeIn survival_time Analyze Function which adds the survival times analysis
-#'   to the input layout. Note that additional formatting arguments can be used here.
+#' @describeIn survival_time Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `surv_time()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_surv_time()` to the table layout.
 #'
 #' @export
 #'

@@ -8,7 +8,7 @@
 #' @param levels level names to be combined
 #' @param new_level name of new level
 #'
-#' @return a factor
+#' @return A `factor` with the new levels.
 #'
 #' @export
 #'
@@ -42,8 +42,7 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #'   converting a character vector.
 #' @param verbose defaults to `TRUE`. It prints out warnings and messages.
 #'
-#' @return The factor with same attributes (except class) as `x`. Does not do any modifications
-#'   if `x` is already a factor.
+#' @return A `factor` with same attributes (except class) as `x`. Does not modify `x` if already a `factor`.
 #'
 #' @examples
 #' # Internal function - as_factor_keep_attributes
@@ -104,7 +103,7 @@ as_factor_keep_attributes <- function(x,
 #'   the boundaries 0 and 1 must not be included.
 #' @param digits (`integer`)\cr number of decimal places to round the percent numbers.
 #'
-#' @return Character vector with labels in the format `[0%,20%]`, `(20%,50%]`, etc.
+#' @return A `character` vector with labels in the format `[0%,20%]`, `(20%,50%]`, etc.
 #'
 #' @examples
 #' # Internal function - bins_percent_labels
@@ -157,7 +156,8 @@ bins_percent_labels <- function(probs,
 #' @param type (`integer`)\cr type of quantiles to use, see [stats::quantile()] for details.
 #' @param ordered (`flag`)\cr should the result be an ordered factor.
 #'
-#' @return The factor variable with the appropriately labeled bins as levels.
+#' @return A `factor` variable with appropriately-labeled bins as levels.
+#'
 #' @export
 #'
 #' @examples
@@ -220,7 +220,8 @@ cut_quantile_bins <- function(x,
 #' @param x (`factor`)\cr the original factor.
 #' @param discard (`character`)\cr which levels to discard.
 #'
-#' @return The modified factor with observations as well as levels from `discard` dropped.
+#' @return A modified `factor` with observations as well as levels from `discard` dropped.
+#'
 #' @export
 #'
 #' @examples
@@ -242,7 +243,8 @@ fct_discard <- function(x, discard) {
 #' @param condition (`logical`)\cr where to insert missings.
 #' @param na_level (`string`)\cr which level to use for missings.
 #'
-#' @return The modified factor with inserted and existing `NA` converted to `na_level`.
+#' @return A modified `factor` with inserted and existing `NA` converted to `na_level`.
+#'
 #' @seealso [forcats::fct_na_value_to_level()] which is used internally.
 #'
 #' @examples
@@ -270,8 +272,9 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 #' @param .na_level (`string`)\cr which level to use for other levels, which should be missing in the
 #'   new factor. Note that this level must not be contained in the new levels specified in `...`.
 #'
-#' @return The modified factor with collapsed levels. Values and levels which are not included
-#'   in the given character vectors input will be set to the missing level.
+#' @return A modified `factor` with collapsed levels. Values and levels which are not included
+#'   in the given `character` vector input will be set to the missing level `.na_level`.
+#'
 #' @seealso [forcats::fct_collapse()], [forcats::fct_relevel()] which are used internally.
 #'
 #' @examples

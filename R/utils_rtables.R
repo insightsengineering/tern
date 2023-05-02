@@ -13,7 +13,7 @@
 #' @param print_txt_to_copy Utility to have a way to copy the input table directly
 #'   into the expected variable instead of copying it too manually.
 #'
-#' @return A matrix of strings
+#' @return A `matrix` of `string`s.
 #'
 #' @export
 to_string_matrix <- function(x, with_spaces = FALSE, print_txt_to_copy = FALSE) {
@@ -46,8 +46,8 @@ to_string_matrix <- function(x, with_spaces = FALSE, print_txt_to_copy = FALSE) 
 #'
 #' @param x (`vector`)\cr input for a cell.
 #'
-#' @return Either empty character vector if all entries in `x` are missing (`NA`), or otherwise
-#'   the unlisted version of `x`
+#' @return An empty `character` vector if all entries in `x` are missing (`NA`), otherwise
+#'   the unlisted version of `x`.
 #'
 #' @keywords internal
 unlist_and_blank_na <- function(x) {
@@ -69,7 +69,7 @@ unlist_and_blank_na <- function(x) {
 #'   row should be returned.
 #' @param format (`string`)\cr `rtables` format to use.
 #'
-#' @return Content function which just gives `df$analysis_var` at the row identified by
+#' @return A content function which gives `df$analysis_var` at the row identified by
 #'   `.df_row$flag` in the given format.
 #'
 #' @keywords internal
@@ -94,7 +94,7 @@ cfun_by_flag <- function(analysis_var,
 #'
 #' @inheritParams argument_convention
 #'
-#' @return list containing "row_count" with the row count value and the correct label.
+#' @return A `list` containing "row_count" with the row count value and the correct label.
 #'
 #' @note Important is here to not use `df` but `.N_row` in the implementation, because the former
 #'   is already split by columns and will refer to the first column of the data only.
@@ -115,10 +115,11 @@ c_label_n <- function(df,
 #'
 #' @inheritParams argument_convention
 #'
-#' @return The modified layout where the latest row split labels now have the row-wise
-#'   total counts (i.e. without column based subsetting) attached in parentheses. Row
-#'   count values are contained in these row count rows but are not displayed so that
-#'   they are not considered zero rows by default when pruning.
+#' @return A modified layout where the latest row split labels now have the row-wise
+#'   total counts (i.e. without column-based subsetting) attached in parentheses.
+#'
+#' @note Row count values are contained in these row count rows but are not displayed
+#'   so that they are not considered zero rows by default when pruning.
 #'
 #' @examples
 #' basic_table() %>%
@@ -152,7 +153,7 @@ add_rowcounts <- function(lyt) {
 #' @param table_tree (`VTableTree`)\cr table to extract the indices from.
 #' @param col_names (`character`)\cr vector of column names.
 #'
-#' @return the vector of column indices.
+#' @return A vector of column indices.
 #'
 #' @export
 h_col_indices <- function(table_tree, col_names) {
@@ -168,7 +169,7 @@ h_col_indices <- function(table_tree, col_names) {
 #'
 #' @param x a list
 #'
-#' @return a character vector with the labels or names for the list elements
+#' @return A `character` vector with the labels or names for the list elements.
 #'
 #' @keywords internal
 labels_or_names <- function(x) {
@@ -182,15 +183,14 @@ labels_or_names <- function(x) {
 
 #' Convert to `rtable`
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' This is a new generic function to convert objects to `rtable` tables.
 #'
 #' @param x the object which should be converted to an `rtable`.
 #' @param ... additional arguments for methods.
 #'
-#' @return The `rtable` object. Note that the concrete class will depend on the method
-#'   which is used.
+#' @return An `rtables` table object. Note that the concrete class will depend on the method used.
 #'
 #' @export
 as.rtable <- function(x, ...) { # nolint
@@ -200,6 +200,9 @@ as.rtable <- function(x, ...) { # nolint
 #' @describeIn as.rtable method for converting `data.frame` that contain numeric columns to `rtable`.
 #'
 #' @param format the format which should be used for the columns.
+#'
+#' @return An `rtables` table object.
+#'
 #' @method as.rtable data.frame
 #'
 #' @examples
@@ -249,6 +252,9 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
 #' @param value (`vector`)\cr the value used to split.
 #' @param f (`list` of `vectors`)\cr the reference to make the split
 #'
+#' @return A named `list` with the same element names as `f`, each containing the
+#'   elements specified in `.stats`.
+#'
 #' @examples
 #' f <- list(
 #'   surv = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci"),
@@ -290,7 +296,7 @@ h_split_param <- function(param,
 #'   in this context that all default statistics should be used.
 #' @param all_stats (`character`)\cr all statistics which can be selected here potentially.
 #'
-#' @return Character vector with the selected statistics.
+#' @return A `character` vector with the selected statistics.
 #'
 #' @keywords internal
 afun_selected_stats <- function(.stats, all_stats) {
@@ -321,7 +327,7 @@ afun_selected_stats <- function(.stats, all_stats) {
 #' @param indent (`integer`)\cr non-negative number of nested indent space, default to 0L which means no indent.
 #' 1L means two spaces indent, 2L means four spaces indent and so on.
 #'
-#' @return The modified layout.
+#' @return A modified layout with the new variable label(s) added to the top-left material.
 #'
 #' @examples
 #' lyt <- basic_table() %>%

@@ -76,6 +76,12 @@ NULL
 #' @inheritParams survival_duration_subgroups
 #' @inheritParams survival_coxph_pairwise
 #'
+#' @return A named list of two elements:
+#'   * `survtime`: A `data.frame` containing columns `arm`, `n`, `n_events`, `median`, `subgroup`, `var`,
+#'     `var_label`, and `row_type`.
+#'   * `hr`: A `data.frame` containing columns `arm`, `n_tot`, `n_tot_events`, `hr`, `lcl`, `ucl`, `conf_level`,
+#'     `pval`, `pval_label`, `subgroup`, `var`, `var_label`, and `row_type`.
+#'
 #' @examples
 #' library(dplyr)
 #' library(forcats)
@@ -152,8 +158,11 @@ extract_survival_subgroups <- function(variables,
   list(survtime = df_survtime, hr = df_hr)
 }
 
-#' @describeIn survival_duration_subgroups Formatted Analysis function used to format the results of
-#'   [extract_survival_subgroups()]. Returns is a list of Formatted Analysis functions with one element per statistic.
+#' @describeIn survival_duration_subgroups  Formatted analysis function which is used as
+#'   `afun` in `tabulate_survival_subgroups()`.
+#'
+#' @return
+#' * `a_survival_subgroups()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' # Internal function - a_survival_subgroups
@@ -205,7 +214,9 @@ a_survival_subgroups <- function(.formats = list(
   afun_lst
 }
 
-#' @describeIn survival_duration_subgroups table creating function.
+#' @describeIn survival_duration_subgroups Table-creating function which creates a table
+#'   summarizing survival by subgroup.
+#'
 #' @param df (`list`)\cr of data frames containing all analysis variables. List should be
 #'   created using [extract_survival_subgroups()].
 #' @param vars (`character`)\cr the name of statistics to be reported among
@@ -219,6 +230,9 @@ a_survival_subgroups <- function(.formats = list(
 #'  `pval` (p value of the effect).
 #'  Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci`
 #'  are required.
+#'
+#' @return An `rtables` table summarizing survival by subgroup.
+#'
 #' @export
 #' @examples
 #'
@@ -371,7 +385,8 @@ tabulate_survival_subgroups <- function(lyt,
 #' @inheritParams tabulate_survival_subgroups
 #' @inheritParams argument_convention
 #' @param method p-value method for testing hazard ratio = 1.
-#' @return `list` of variables to tabulate and their labels.
+#'
+#' @return A `list` of variables and their labels to tabulate.
 #'
 #' @export
 d_survival_subgroups_colvars <- function(vars,

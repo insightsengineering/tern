@@ -14,6 +14,9 @@
 #' @inheritParams checkmate::assert_factor
 #' @param (`integer`)\cr minimum number of factor levels. Default is `1`.
 #' @param ... a collection of objects to test.
+#'
+#' @return Nothing if assertion passes, otherwise prints the error message.
+#'
 #' @name assertions
 NULL
 
@@ -33,8 +36,8 @@ check_list_of_variables <- function(x) {
   }
   return(res)
 }
-#' @describeIn assertions Check whether `x` is a valid list of variable names.
-#'   `NULL` elements of the list `x` are dropped out with `Filter(Negate(is.null), x)`.
+#' @describeIn assertions Checks whether `x` is a valid list of variable names.
+#'   `NULL` elements of the list `x` are dropped with `Filter(Negate(is.null), x)`.
 #'
 #' @examples
 #' # Check whether `x` is a valid list of variable names.

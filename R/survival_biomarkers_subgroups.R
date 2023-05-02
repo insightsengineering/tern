@@ -59,6 +59,10 @@ NULL
 #' @inheritParams fit_coxreg_multivar
 #' @inheritParams survival_duration_subgroups
 #'
+#' @return A `data.frame` with columns `biomarker`, `biomarker_label`, `n_tot`, `n_tot_events`,
+#'   `median`, `hr`, `lcl`, `ucl`, `conf_level`, `pval`, `pval_label`, `subgroup`, `var`,
+#'   `var_label`, and `row_type`.
+#'
 #' @seealso [h_coxreg_mult_cont_df()] which is used internally, [tabulate_survival_biomarkers()].
 #' @export
 #' @examples
@@ -173,6 +177,9 @@ extract_survival_biomarkers <- function(variables,
 #'   - `ci`: confidence interval of hazard ratio.
 #'   - `pval`: p-value of the effect.
 #'   Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci` are required.
+#'
+#' @return An `rtables` table summarizing biomarker effects on survival by subgroup.
+#'
 #' @seealso [h_tab_surv_one_biomarker()] which is used internally, [extract_survival_biomarkers()].
 #' @note In contrast to [tabulate_survival_subgroups()] this tabulation function does
 #'   not start from an input layout `lyt`. This is because internally the table is

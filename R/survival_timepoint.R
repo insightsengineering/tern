@@ -17,15 +17,14 @@
 #' @name survival_timepoint
 NULL
 
-#' @describeIn survival_timepoint Statistics Function which analyzes survival rate.
+#' @describeIn survival_timepoint Statistics function which analyzes survival rate.
 #'
-#' @return The statistics are:
-#' \describe{
-#'   \item{pt_at_risk}{patients remaining at risk.}
-#'   \item{event_free_rate}{event free rate (%).}
-#'   \item{rate_se}{standard error of event free rate.}
-#'   \item{rate_ci}{confidence interval for event free rate.}
-#' }
+#' @return
+#' * `s_surv_timepoint()` returns the statistics:
+#'   * `pt_at_risk`: Patients remaining at risk.
+#'   * `event_free_rate`: Event-free rate (%).
+#'   * `rate_se`: Standard error of event free rate.
+#'   * `rate_ci`: Confidence interval for event free rate.
 #'
 #' @examples
 #' library(dplyr)
@@ -85,8 +84,11 @@ s_surv_timepoint <- function(df,
   )
 }
 
-#' @describeIn survival_timepoint Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn survival_timepoint Formatted analysis function which is used as `afun` in `surv_timepoint()`
+#'   when `method = "surv"`.
+#'
+#' @return
+#' * `a_surv_timepoint()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' # Internal function - a_surv_timepoint
@@ -111,14 +113,13 @@ a_surv_timepoint <- make_afun(
   )
 )
 
-#' @describeIn survival_timepoint Statistics Function which analyzes difference between two survival rates.
+#' @describeIn survival_timepoint Statistics function which analyzes difference between two survival rates.
 #'
-#' @return The statistics are:
-#' \describe{
-#'   \item{rate_diff}{event free rate difference between two groups.}
-#'   \item{rate_diff_ci}{confidence interval for the difference.}
-#'   \item{ztest_pval}{p-value to test the difference is 0.}
-#' }
+#' @return
+#' * `s_surv_timepoint_diff()` returns the statistics:
+#'   * `rate_diff`: Event-free rate difference between two groups.
+#'   * `rate_diff_ci`: Confidence interval for the difference.
+#'   * `ztest_pval`: p-value to test the difference is 0.
 #'
 #' @examples
 #' df_ref_group <- adtte_f %>%
@@ -179,8 +180,11 @@ s_surv_timepoint_diff <- function(df,
   )
 }
 
-#' @describeIn survival_timepoint Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn survival_timepoint Formatted analysis function which is used as `afun` in `surv_timepoint()`
+#'   when `method = "surv_diff"`.
+#'
+#' @return
+#' * `a_surv_timepoint_diff()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' # Internal function - a_surv_timepoint_diff
@@ -210,14 +214,21 @@ a_surv_timepoint_diff <- make_afun(
   )
 )
 
-#' @describeIn survival_timepoint Analyze Function which adds the survival rate analysis to the input layout.
-#'   Note that additional formatting arguments can be used here.
+#' @describeIn survival_timepoint Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @inheritParams argument_convention
 #' @param method (`string`)\cr either `surv` (survival estimations),
 #'   `surv_diff` (difference in survival with the control) or `both`.
 #' @param table_names_suffix (`string`)\cr optional suffix for the `table_names` used for the `rtables` to
 #'   avoid warnings from duplicate table names.
+#'
+#' @return
+#' * `surv_timepoint()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_surv_timepoint()` and/or `s_surv_timepoint_diff()` to the table layout depending on
+#'   the value of `method`.
+#'
 #' @export
 #'
 #' @examples
