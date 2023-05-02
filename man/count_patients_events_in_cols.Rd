@@ -64,6 +64,9 @@ Set to \code{FALSE} when the required column split has been done already earlier
 \item one element with the same name as in \code{filters_list}: number of rows in \code{df},
 i.e. events, fulfilling the filter condition.
 }
+}
+
+\itemize{
 \item \code{summarize_patients_events_in_cols()} returns a layout object suitable for passing to further layouting functions,
 or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted content rows
 containing the statistics from \code{s_count_patients_and_multiple_events()} to the table layout.
@@ -77,10 +80,10 @@ when a column table layout is required.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_patients_and_multiple_events()}: Statistics function which counts numbers of patients and multiple events
-defined by filters.
+\item \code{s_count_patients_and_multiple_events()}: Statistics function which counts numbers of patients and multiple
+events defined by filters. Used as analysis function \code{afun} in \code{summarize_patients_events_in_cols()}.
 
-\item \code{summarize_patients_events_in_cols()}: Layout-creating function which can which can take statistics function
+\item \code{summarize_patients_events_in_cols()}: Layout-creating function which can take statistics function
 arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 
 }}

@@ -39,6 +39,11 @@ underneath analyses, which is not allowed.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 }
+\value{
+A layout object suitable for passing to further layouting functions, or to \code{\link[rtables:build_table]{rtables::build_table()}}.
+Adding this function to an \code{rtable} layout will summarize the given variables, arrange the output
+in columns, and add it to the table layout.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -47,8 +52,8 @@ the relevant statistic is on the columns instead of on the rows.
 }
 \section{Functions}{
 \itemize{
-\item \code{analyze_vars_in_cols()}: Layout-creating function which can be used for creating column-wise
-summary tables, primarily used for PK data sets. This function is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
+\item \code{analyze_vars_in_cols()}: Layout-creating function which can be used for creating column-wise summary
+tables, primarily used for PK data sets. This function is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
 
 }}
 \examples{

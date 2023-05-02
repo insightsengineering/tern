@@ -15,7 +15,7 @@ d_rsp_subgroups_colvars(vars, conf_level = NULL, method = NULL)
 two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL} so no test is performed.}
 }
 \value{
-\code{list} of variables to tabulate and their labels.
+A \code{list} of variables to tabulate and their labels.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

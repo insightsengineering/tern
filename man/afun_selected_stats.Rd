@@ -13,7 +13,7 @@ in this context that all default statistics should be used.}
 \item{all_stats}{(\code{character})\cr all statistics which can be selected here potentially.}
 }
 \value{
-Character vector with the selected statistics.
+A \code{character} vector with the selected statistics.
 }
 \description{
 Helper function to be used for creating \code{afun}.

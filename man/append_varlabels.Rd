@@ -17,7 +17,7 @@ append_varlabels(lyt, df, vars, indent = 0L)
 1L means two spaces indent, 2L means four spaces indent and so on.}
 }
 \value{
-The modified layout.
+A modified layout with the new variable label(s) added to the top-left material.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

@@ -42,6 +42,19 @@ Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as bot
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
 displaying unit.}
 }
+\value{
+\itemize{
+\item \code{h_surv_to_coxreg_variables()} returns a named \code{list} of elements \code{time}, \code{event}, \code{arm}, \code{covariates}, and \code{strata}.
+}
+
+\itemize{
+\item \code{h_coxreg_mult_cont_df()} returns a \code{data.frame} containing estimates and statistics for the selected biomarkers.
+}
+
+\itemize{
+\item \code{h_tab_surv_one_biomarker()} returns an \code{rtables} table object with the given statistics arranged in columns.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

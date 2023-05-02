@@ -140,7 +140,7 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 time per group.}
 }
 \value{
-a \code{grob} of class \code{gTree}.
+A \code{grob} of class \code{gTree}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

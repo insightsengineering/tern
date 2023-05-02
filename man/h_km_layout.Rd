@@ -19,6 +19,9 @@ h_km_layout(data, g_el, title, footnotes, annot_at_risk = TRUE)
 reporting the number of patient at risk matching the main grid of the
 Kaplan-Meier curve.}
 }
+\value{
+A grid layout.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

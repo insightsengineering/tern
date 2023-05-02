@@ -16,7 +16,7 @@ spaces?}
 into the expected variable instead of copying it too manually.}
 }
 \value{
-A matrix of strings
+A \code{matrix} of \code{string}s.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

@@ -58,7 +58,13 @@ that is passed by \code{rtables}.}
 \itemize{
 \item \code{s_count_abnormal_by_worst_grade()} returns the single statistic \code{count_fraction} with grades 1 to 4 and
 "Any" results.
+}
+
+\itemize{
 \item \code{a_count_abnormal_by_worst_grade()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
 \item \code{count_abnormal_by_worst_grade()} returns a layout object suitable for passing to further layouting functions,
 or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
 the statistics from \code{s_count_abnormal_by_worst_grade()} to the table layout.
@@ -95,8 +101,8 @@ the correct denominators when building the layout as it is used to define row sp
 \item \code{a_count_abnormal_by_worst_grade()}: Formatted analysis function which is used as \code{afun}
 in \code{count_abnormal_by_worst_grade()}.
 
-\item \code{count_abnormal_by_worst_grade()}: Layout-creating function which can which can take statistics
-function arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{count_abnormal_by_worst_grade()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \note{

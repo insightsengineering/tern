@@ -59,8 +59,14 @@ of the levels of \code{variable} given the levels of \code{given}.}
 \itemize{
 \item \code{h_coxreg_inter_effect()} returns a \code{data.frame} of covariate interaction effects consisting of the following
 variables: \code{effect}, \code{term}, \code{term_label}, \code{level}, \code{n}, \code{hr}, \code{lcl}, \code{ucl}, \code{pval}, and \code{pval_inter}.
+}
+
+\itemize{
 \item \code{h_coxreg_extract_interaction()} returns the result of an interaction test and the estimated values. If
 no interaction, \code{\link[=h_coxreg_univar_extract]{h_coxreg_univar_extract()}} is applied instead.
+}
+
+\itemize{
 \item \code{h_coxreg_inter_estimations()} returns a list of matrices (one per level of variable) with rows corresponding
 to the combinations of \code{variable} and \code{given}, with columns:
 \itemize{

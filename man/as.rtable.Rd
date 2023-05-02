@@ -17,8 +17,9 @@ as.rtable(x, ...)
 \item{format}{the format which should be used for the columns.}
 }
 \value{
-The \code{rtable} object. Note that the concrete class will depend on the method
-which is used.
+An \code{rtables} table object. Note that the concrete class will depend on the method used.
+
+An \code{rtables} table object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

@@ -55,10 +55,19 @@ be used as label.}
 column split has been done already earlier in the layout pipe.}
 }
 \value{
-\code{\link[=s_count_patients_sum_exposure]{s_count_patients_sum_exposure()}} returns a list with the statistics:
-\describe{
-\item{n_patients}{number of unique patients in \code{df}.}
-\item{sum_exposure}{sum of \code{.var} across all patients in \code{df}.}
+\itemize{
+\item \code{s_count_patients_sum_exposure()} returns a named \code{list} with the statistics:
+\itemize{
+\item \code{n_patients}: Number of unique patients in \code{df}.
+\item \code{sum_exposure}: Sum of \code{.var} across all patients in \code{df}.
+}
+}
+
+\itemize{
+\item \code{summarize_patients_exposure_in_cols()} returns a layout object suitable for passing to further
+layouting functions, or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will
+add formatted rows, with the statistics from \code{s_count_patients_sum_exposure()} arranged in
+columns, to the table layout.
 }
 }
 \description{
@@ -72,8 +81,9 @@ when a column table layout is required.
 \item \code{s_count_patients_sum_exposure()}: Statistics function which counts numbers
 of patients and the sum of exposure across all patients.
 
-\item \code{summarize_patients_exposure_in_cols()}: Layout creating function which adds the count
-statistics of patients and the sum of analysis value in the column layout as content rows.
+\item \code{summarize_patients_exposure_in_cols()}: Layout-creating function which can take statistics
+function arguments and additional format arguments. This function is a wrapper for
+\code{\link[rtables:split_cols_by_multivar]{rtables::split_cols_by_multivar()}} and \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 
 }}
 \examples{

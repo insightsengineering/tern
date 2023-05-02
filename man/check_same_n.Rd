@@ -11,6 +11,9 @@ check_same_n(..., omit_null = TRUE)
 
 \item{omit_null}{are \code{NULL} elements in \code{...} to be omitted from the check?}
 }
+\value{
+A \code{logical} value.
+}
 \description{
 Checks if the elements in \code{...} have the same dimension.
 }

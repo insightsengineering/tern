@@ -99,6 +99,31 @@ helper function).}
 
 \item{...}{additional arguments for the lower level functions.}
 }
+\value{
+Vector of names of interaction variables.
+
+Name of coefficient.
+
+Odds ratio.
+
+Odds ratio.
+
+Odds ratio.
+
+Term labels containing numbers of patients.
+
+Term labels containing numbers of patients.
+
+Tabulated main effect results from a logistic regression model.
+
+Tabulated interaction term results from a logistic regression model.
+
+A \code{data.frame} of tabulated interaction term results from a logistic regression model.
+
+Tabulated statistics for the given variable(s) from the logistic regression model.
+
+Tabulated statistics for the given variable(s) from the logistic regression model.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

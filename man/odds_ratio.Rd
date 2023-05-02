@@ -79,6 +79,22 @@ to avoid warnings from \code{rtables}.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
+\value{
+\itemize{
+\item \code{s_odds_ratio()} returns a named list with the statistics \code{or_ci}
+(containing \code{est}, \code{lcl}, and \code{ucl}) and \code{n_tot}.
+}
+
+\itemize{
+\item \code{a_odds_ratio()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{estimate_odds_ratio()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_odds_ratio()} to the table layout.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -99,15 +115,13 @@ possible.
 \section{Functions}{
 \itemize{
 \item \code{s_odds_ratio()}: Statistics function which estimates the odds ratio
-between a treatment and a control. Note that a \code{variables} list with \code{arm} and \code{strata} names
-needs to be passed if a stratified analysis is required.
+between a treatment and a control. A \code{variables} list with \code{arm} and \code{strata}
+variable names must be passed if a stratified analysis is required.
 
-\item \code{a_odds_ratio()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_odds_ratio()}: Formatted analysis function which is used as \code{afun} in \code{estimate_odds_ratio()}.
 
-\item \code{estimate_odds_ratio()}: Layout creating function which can be used for creating
-tables, which can take statistics function arguments and additional format
-arguments (see below).
+\item \code{estimate_odds_ratio()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{

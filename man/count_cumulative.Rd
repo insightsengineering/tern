@@ -74,7 +74,13 @@ to avoid warnings from \code{rtables}.}
 \itemize{
 \item \code{s_count_cumulative()} returns a named list of \code{count_fraction}s: a list with each \code{thresholds} value as a
 component, each component containing a vector for the count and fraction.
+}
+
+\itemize{
 \item \code{a_count_cumulative()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
 \item \code{count_cumulative()} returns a layout object suitable for passing to further layouting functions,
 or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
 the statistics from \code{s_count_cumulative()} to the table layout.
@@ -93,8 +99,8 @@ greater than, or greater or equal to user-specific thresholds.
 \item \code{a_count_cumulative()}: Formatted analysis function which is used as \code{afun}
 in \code{count_cumulative()}.
 
-\item \code{count_cumulative()}: Layout-creating function which can which can take statistics
-function arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{count_cumulative()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{

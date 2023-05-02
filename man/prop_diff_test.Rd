@@ -78,9 +78,20 @@ to avoid warnings from \code{rtables}.}
 (\code{TRUE}/\code{FALSE}) in columns.}
 }
 \value{
-Named \code{list} with a single item \code{pval} with an attribute \code{label}
-describing the method used. The p-value tests the null hypothesis that
-proportions in two groups are the same.
+\itemize{
+\item \code{s_test_proportion_diff()} returns a named \code{list} with a single item \code{pval} with an attribute \code{label}
+describing the method used. The p-value tests the null hypothesis that proportions in two groups are the same.
+}
+
+\itemize{
+\item \code{a_test_proportion_diff()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{test_proportion_diff()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_test_proportion_diff()} to the table layout.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -93,12 +104,10 @@ proportions.
 \item \code{s_test_proportion_diff()}: Statistics function which tests the difference
 between two proportions.
 
-\item \code{a_test_proportion_diff()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_test_proportion_diff()}: Formatted analysis function which is used as \code{afun} in \code{test_proportion_diff()}.
 
-\item \code{test_proportion_diff()}: Layout creating function which can be used for
-creating tables, which can take statistics function arguments and
-additional format arguments.
+\item \code{test_proportion_diff()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{

@@ -65,7 +65,7 @@ By default tries to get this from \code{tbl} attribute \code{col_symbol_size}, o
 Only considered if \code{draw = TRUE} is used.}
 }
 \value{
-\code{gtree} object containing the forest plot and table
+\code{gTree} object containing the forest plot and table.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

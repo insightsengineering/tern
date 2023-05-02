@@ -29,6 +29,15 @@ two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_pr
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
 }
+\value{
+A named list of two elements:
+\itemize{
+\item \code{prop}: A \code{data.frame} containing columns \code{arm}, \code{n}, \code{n_rsp}, \code{prop}, \code{subgroup}, \code{var},
+\code{var_label}, and \code{row_type}.
+\item \code{or}: A \code{data.frame} containing columns \code{arm}, \code{n_tot}, \code{or}, \code{lcl}, \code{ucl}, \code{conf_level},
+\code{subgroup}, \code{var}, \code{var_label}, and \code{row_type}.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

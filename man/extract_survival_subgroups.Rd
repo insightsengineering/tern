@@ -33,6 +33,15 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
 }
+\value{
+A named list of two elements:
+\itemize{
+\item \code{survtime}: A \code{data.frame} containing columns \code{arm}, \code{n}, \code{n_events}, \code{median}, \code{subgroup}, \code{var},
+\code{var_label}, and \code{row_type}.
+\item \code{hr}: A \code{data.frame} containing columns \code{arm}, \code{n_tot}, \code{n_tot_events}, \code{hr}, \code{lcl}, \code{ucl}, \code{conf_level},
+\code{pval}, \code{pval_label}, \code{subgroup}, \code{var}, \code{var_label}, and \code{row_type}.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

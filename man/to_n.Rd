@@ -12,7 +12,7 @@ to_n(x, n)
 \item{n}{(\code{count})\cr how many entries we need.}
 }
 \value{
-Just input \code{x} if it has the required length already or is \code{NULL},
+\code{x} if it has the required length already or is \code{NULL},
 otherwise if it is scalar the replicated version of it with \code{n} entries.
 }
 \description{

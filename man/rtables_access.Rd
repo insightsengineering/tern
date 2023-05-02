@@ -37,6 +37,35 @@ column split.)}
 
 \item{table}{(\code{VTableNodeInfo})\cr an occurrence table or row.}
 }
+\value{
+\itemize{
+\item \code{h_row_first_values()} returns a \code{vector} of numeric values.
+}
+
+\itemize{
+\item \code{h_row_counts()} returns a \code{vector} of numeric values.
+}
+
+\itemize{
+\item \code{h_row_fractions()} returns a \code{vector} of proportions.
+}
+
+\itemize{
+\item \code{h_col_counts()} returns a \code{vector} of column counts.
+}
+
+\itemize{
+\item \code{h_content_first_row()} returns a row from an \code{rtables} table.
+}
+
+\itemize{
+\item \code{is_leaf_table()} returns a \code{logical} value indicating whether current table is a leaf.
+}
+
+\itemize{
+\item \code{check_names_indices} returns column indices.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -46,7 +75,7 @@ as having a count as the first element and a fraction as the second element in e
 }
 \section{Functions}{
 \itemize{
-\item \code{h_row_first_values()}: helper function to extract the first values from each content
+\item \code{h_row_first_values()}: Helper function to extract the first values from each content
 cell and from specified columns in a \code{TableRow}. Defaults to all columns.
 
 \item \code{h_row_counts()}: Helper function that extracts row values and checks if they are

@@ -19,6 +19,9 @@ h_format_threshold(x, digits = 2L)
 \itemize{
 \item \code{h_get_format_threshold()} returns a \code{list} of 2 elements: \code{threshold}, with \code{low} and \code{high} thresholds,
 and \code{format_string}, with thresholds formatted as strings.
+}
+
+\itemize{
 \item \code{h_format_threshold()} returns the given value, or if the value is not within the digit threshold the relation
 of the given value to the digit threshold, as a formatted string.
 }

@@ -20,6 +20,9 @@ fit_logistic(
 This will be used when fitting the (conditional) logistic regression model on the left hand
 side of the formula.}
 }
+\value{
+A fitted logistic regression model.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

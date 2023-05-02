@@ -37,6 +37,19 @@ see the example).}
 \code{pval} (p value of the effect).
 Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.}
 }
+\value{
+\itemize{
+\item \code{h_rsp_to_logistic_variables()} returns a named \code{list} of elements \code{response}, \code{arm}, \code{covariates}, and \code{strata}.
+}
+
+\itemize{
+\item \code{h_logistic_mult_cont_df()} returns a \code{data.frame} containing estimates and statistics for the selected biomarkers.
+}
+
+\itemize{
+\item \code{h_tab_rsp_one_biomarker()} returns an \code{rtables} table object with the given statistics arranged in columns.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

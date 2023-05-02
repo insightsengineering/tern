@@ -60,14 +60,26 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-The statistics are:
-\describe{
-\item{median}{median survival time.}
-\item{median_ci}{confidence interval for median time.}
-\item{quantiles}{survival time for two specified quantiles.}
-\item{range_censor}{survival time range for censored observations.}
-\item{range_event}{survival time range for observations with events.}
-\item{range}{survival time range for all observations.}
+\itemize{
+\item \code{s_surv_time()} returns the statistics:
+\itemize{
+\item \code{median}: Median survival time.
+\item \code{median_ci}: Confidence interval for median time.
+\item \code{quantiles}: Survival time for two specified quantiles.
+\item \code{range_censor}: Survival time range for censored observations.
+\item \code{range_event}: Survival time range for observations with events.
+\item \code{range}: Survival time range for all observations.
+}
+}
+
+\itemize{
+\item \code{a_surv_time()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{surv_time()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_surv_time()} to the table layout.
 }
 }
 \description{
@@ -78,14 +90,12 @@ time range of censored/event patients.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_surv_time()}: Statistics Function which analyzes survival times.
-\code{range_censor} and \code{range_event}.
+\item \code{s_surv_time()}: Statistics function which analyzes survival times.
 
-\item \code{a_surv_time()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_surv_time()}: Formatted analysis function which is used as \code{afun} in \code{surv_time()}.
 
-\item \code{surv_time()}: Analyze Function which adds the survival times analysis
-to the input layout. Note that additional formatting arguments can be used here.
+\item \code{surv_time()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{

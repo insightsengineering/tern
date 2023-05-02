@@ -29,7 +29,7 @@ probabilities in \code{probs}, then this must be \code{n + 1} long.}
 \item{ordered}{(\code{flag})\cr should the result be an ordered factor.}
 }
 \value{
-The factor variable with the appropriately labeled bins as levels.
+A \code{factor} variable with appropriately-labeled bins as levels.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

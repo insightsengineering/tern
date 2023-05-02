@@ -27,9 +27,9 @@ If worst grade per patient per visit is specified for \code{worst_flag}, then
 grade. Defaults to \code{c("SCREENING", "BASELINE")}.}
 }
 \value{
-\code{df} containing variables shared between \code{adlb} and \code{adsl} along with variables relevant for analysis:
-\code{PARAM}, \code{PARAMCD}, \code{ATOXGR}, and \code{BTOXGR}.  Optionally \code{AVISIT}, \code{AVISITN} are included when \code{by_visit = TRUE}
-and \code{no_fillin_visits = c("SCREENING", "BASELINE")}.
+\code{df} containing variables shared between \code{adlb} and \code{adsl} along with variables \code{PARAM}, \code{PARAMCD},
+\code{ATOXGR}, and \code{BTOXGR} relevant for analysis. Optionally, \code{AVISIT} are \code{AVISITN} are included when
+\code{by_visit = TRUE} and \code{no_fillin_visits = c("SCREENING", "BASELINE")}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

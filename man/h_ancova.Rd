@@ -26,6 +26,9 @@ reference group.
 \item{interaction_item}{(\code{character})\cr name of the variable that should have interactions
 with arm. if the interaction is not needed, the default option is NULL.}
 }
+\value{
+The summary of a linear model.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }

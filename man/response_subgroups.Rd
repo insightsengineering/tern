@@ -43,6 +43,13 @@ levels that belong to it in the character vectors that are elements of the list.
 \item{method}{(\code{string})\cr specifies the test used to calculate the p-value for the difference between
 two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL} so no test is performed.}
 }
+\value{
+\itemize{
+\item \code{a_response_subgroups()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+An \code{rtables} table summarizing binary response by subgroup.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -54,10 +61,10 @@ the required statistics. Tables typically used as part of forest plot.
 }
 \section{Functions}{
 \itemize{
-\item \code{a_response_subgroups()}: Formatted Analysis function used to format the results of \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.
-Returns is a list of Formatted Analysis functions with one element per statistic.
+\item \code{a_response_subgroups()}: Formatted analysis function which is used as \code{afun} in \code{tabulate_rsp_subgroups()}.
 
-\item \code{tabulate_rsp_subgroups()}: table creating function.
+\item \code{tabulate_rsp_subgroups()}: Table-creating function which creates a table
+summarizing binary response by subgroup.
 
 }}
 \examples{

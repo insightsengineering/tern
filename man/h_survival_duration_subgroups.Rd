@@ -56,6 +56,26 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
 }}
 }
+\value{
+\itemize{
+\item \code{h_survtime_df()} returns a \code{data.frame} with columns \code{arm}, \code{n}, \code{n_events}, and \code{median}.
+}
+
+\itemize{
+\item \code{h_survtime_subgroups_df()} returns a \code{data.frame} with columns \code{arm}, \code{n}, \code{n_events}, \code{median}, \code{subgroup},
+\code{var}, \code{var_label}, and \code{row_type}.
+}
+
+\itemize{
+\item \code{h_coxph_df()} returns a \code{data.frame} with columns \code{arm}, \code{n_tot}, \code{n_tot_events}, \code{hr}, \code{lcl}, \code{ucl},
+\code{conf_level}, \code{pval} and \code{pval_label}.
+}
+
+\itemize{
+\item \code{h_coxph_subgroups_df()} returns a \code{data.frame} with columns \code{arm}, \code{n_tot}, \code{n_tot_events}, \code{hr},
+\code{lcl}, \code{ucl}, \code{conf_level}, \code{pval}, \code{pval_label}, \code{subgroup}, \code{var}, \code{var_label}, and \code{row_type}.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

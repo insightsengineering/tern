@@ -90,7 +90,13 @@ to avoid warnings from \code{rtables}.}
 \item \code{count_fraction}: list of counts and fractions with one element per occurrence.
 \item \code{fraction}: list of numerators and denominators with one element per occurrence.
 }
+}
+
+\itemize{
 \item \code{a_count_occurrences()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
 \item \code{count_occurrences()} returns a layout object suitable for passing to further layouting functions,
 or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
 the statistics from \code{s_count_occurrences()} to the table layout.
@@ -115,8 +121,8 @@ occurrence.
 \item \code{a_count_occurrences()}: Formatted analysis function which is used as \code{afun}
 in \code{count_occurrences()}.
 
-\item \code{count_occurrences()}: Layout-creating function which can which can take statistics
-function arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{count_occurrences()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{

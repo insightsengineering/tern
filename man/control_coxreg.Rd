@@ -27,7 +27,7 @@ for univariate models without treatment arm, and multivariate models, no
 interaction can be used so that this needs to be \code{FALSE}.}
 }
 \value{
-A \code{list} of item corresponding to the arguments.
+A \code{list} of items with names corresponding to the arguments.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

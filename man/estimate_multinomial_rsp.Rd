@@ -52,7 +52,13 @@ to avoid warnings from \code{rtables}.}
 \value{
 \itemize{
 \item \code{s_length_proportion()} returns statistics from \code{\link[=s_proportion]{s_proportion()}}.
+}
+
+\itemize{
 \item \code{a_length_proportion()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
 \item \code{estimate_multinomial_response()} returns a layout object suitable for passing to further layouting functions,
 or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
 the statistics from \code{s_length_proportion()} to the table layout.
@@ -72,8 +78,8 @@ of successes, and \code{.N_col} as total number of successes and failures into \
 \item \code{a_length_proportion()}: Formatted analysis function which is used as \code{afun}
 in \code{estimate_multinomial_response()}.
 
-\item \code{estimate_multinomial_response()}: Layout-creating function which can which can take statistics
-function arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{estimate_multinomial_response()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{

@@ -67,7 +67,13 @@ to avoid warnings from \code{rtables}.}
 \value{
 \itemize{
 \item \code{s_count_abnormal()} returns the statistic \code{fraction} which is a vector with \code{num} and \code{denom} counts of patients.
+}
+
+\itemize{
 \item \code{a_count_abnormal()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
 \item \code{count_abnormal()} returns a layout object suitable for passing to further layouting functions,
 or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
 the statistics from \code{s_count_abnormal()} to the table layout.
@@ -92,8 +98,8 @@ for a single \code{abnormal} level.
 
 \item \code{a_count_abnormal()}: Formatted analysis function which is used as \code{afun} in \code{count_abnormal()}.
 
-\item \code{count_abnormal()}: Layout-creating function which can which can take statistics
-function arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{count_abnormal()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \note{

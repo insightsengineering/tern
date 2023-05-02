@@ -20,7 +20,9 @@ levels that belong to it in the character vectors that are elements of the list.
 \item{...}{additional arguments, see \emph{note} section.}
 }
 \value{
-the modified layout.
+A layout object suitable for passing to further layouting functions. Adding
+this function to an \code{rtable} layout will add a column split including the given
+groups to the table layout.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

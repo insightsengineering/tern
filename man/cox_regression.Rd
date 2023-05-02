@@ -108,11 +108,17 @@ treatment and covariate sections and the second between different covariates.}
 }
 \value{
 \itemize{
-\item \code{s_coxreg()} returns a formatted list with the specified statistic, with each element corresponding
-to one term in the given model.
+\item \code{s_coxreg()} returns the selected statistic for from the Cox regression model for the selected variable(s).
+}
+
+\itemize{
+\item \code{a_coxreg()} returns formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
 \item \code{summarize_coxreg()} returns a layout object suitable for passing to further layouting functions,
-or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add rows for a formatted
-Cox regression summary table containing the statistics from \code{s_coxreg()} to the table layout.
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add a Cox regression table
+containing the chosen statistics to the table layout.
 }
 }
 \description{
@@ -131,14 +137,14 @@ analysis (NEST Team, 2020).
 }
 \section{Functions}{
 \itemize{
-\item \code{s_coxreg()}: Statistics function to transform the tabulated results from \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}}
-and \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} into a list.
+\item \code{s_coxreg()}: Statistics function that transforms results tabulated
+from \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} or \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} into a list.
 
-\item \code{a_coxreg()}: Analysis function. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}
+\item \code{a_coxreg()}: Analysis function which is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}
 and \code{cfun} in \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}} within \code{summarize_coxreg()}.
 
-\item \code{summarize_coxreg()}: Layout-creating function which can which can take statistics
-function arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
+\item \code{summarize_coxreg()}: Layout-creating function which creates a Cox regression summary table
+layout. This function is a wrapper for several \code{rtables} layouting functions.
 
 }}
 \examples{

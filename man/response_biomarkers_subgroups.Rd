@@ -23,6 +23,9 @@ tabulate_rsp_biomarkers(
 \code{pval} (p value of the effect).
 Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.}
 }
+\value{
+An \code{rtables} table summarizing biomarker effects on binary response by subgroup.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

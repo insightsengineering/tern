@@ -35,6 +35,9 @@ arrange_grobs(
 
 \item{name}{a character identifier for the grob.}
 }
+\value{
+A \code{grob}.
+}
 \description{
 Arrange grobs as a new grob with \verb{n*m (rows*cols)} layout.
 }

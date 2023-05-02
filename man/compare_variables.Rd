@@ -133,7 +133,13 @@ to avoid warnings from \code{rtables}.}
 \value{
 \itemize{
 \item \code{s_compare()} returns output of \code{\link[=s_summary]{s_summary()}} and comparisons versus the reference group in the form of p-values.
+}
+
+\itemize{
 \item \code{a_compare()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
 \item \code{compare_vars()} returns a layout object suitable for passing to further layouting functions,
 or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
 the statistics from \code{s_compare()} to the table layout.
@@ -171,8 +177,8 @@ in \code{compare_vars()}.
 
 \item \code{a_compare(logical)}: Formatted analysis function method for \code{logical} class.
 
-\item \code{compare_vars()}: Layout-creating function which can which can take statistics
-function arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{compare_vars()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \note{

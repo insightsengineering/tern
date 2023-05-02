@@ -46,6 +46,23 @@ used in the regression (poisson, quasipoisson).}
 groups will be summarized. Specifically, the first level of \code{arm} variable is taken as the
 reference group.}
 }
+\value{
+\itemize{
+\item \code{h_glm_poisson()} returns the results of a Poisson model.
+}
+
+\itemize{
+\item \code{h_glm_quasipoisson()} returns the results of a Quasi-Poisson model.
+}
+
+\itemize{
+\item \code{h_glm_count()} returns the results of the selected model.
+}
+
+\itemize{
+\item \code{h_ppmeans()} returns the estimated means.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
@@ -78,7 +95,7 @@ h_glm_poisson(
 \dontrun{
 h_glm_quasipoisson(
   .var = "AVAL",
-  .df_row = anl,
+  .df_row = adtte,
   variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = c("REGION1"))
 )
 }

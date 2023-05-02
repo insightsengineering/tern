@@ -63,7 +63,13 @@ and last or replicated.}
 \itemize{
 \item \code{s_count_abnormal_by_marked()} returns statistic \code{count_fraction} with \verb{Single, not last},
 \verb{Last or replicated}, and \code{Any} results.
+}
+
+\itemize{
 \item \code{a_count_abnormal_by_marked()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
 \item \code{count_abnormal_by_marked()} returns a layout object suitable for passing to further layouting functions,
 or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
 the statistics from \code{s_count_abnormal_by_marked()} to the table layout.
@@ -95,8 +101,8 @@ patient will be counted only under the \verb{Last or replicated} category.
 \item \code{a_count_abnormal_by_marked()}: Formatted analysis function which is used as \code{afun}
 in \code{count_abnormal_by_marked()}.
 
-\item \code{count_abnormal_by_marked()}: Layout-creating function which can which can take statistics
-function arguments and additional format arguments.  This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{count_abnormal_by_marked()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{

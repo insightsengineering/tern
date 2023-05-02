@@ -41,9 +41,18 @@ by a statistics function.}
 \value{
 \itemize{
 \item \code{h_coxreg_univar_formulas()} returns a \code{character} vector coercible into formulas (e.g \code{\link[stats:formula]{stats::as.formula()}}).
-\item \code{h_coxreg_univar_formulas()} returns a \code{character} vector coercible into formulas (e.g \code{\link[stats:formula]{stats::as.formula()}}).
+}
+
+\itemize{
+\item \code{h_coxreg_multivar_formula()} returns a \code{string} coercible into a formula (e.g \code{\link[stats:formula]{stats::as.formula()}}).
+}
+
+\itemize{
 \item \code{h_coxreg_univar_extract()} returns a \code{data.frame} with variables \code{effect}, \code{term}, \code{term_label}, \code{level},
 \code{n}, \code{hr}, \code{lcl}, \code{ucl}, and \code{pval}.
+}
+
+\itemize{
 \item \code{h_coxreg_multivar_extract()} returns a \code{data.frame} with variables \code{pval}, \code{hr}, \code{lcl}, \code{ucl}, \code{level},
 \code{n}, \code{term}, and \code{term_label}.
 }

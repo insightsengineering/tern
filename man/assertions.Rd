@@ -91,13 +91,16 @@ for proportions.}
 
 \item{...}{a collection of objects to test.}
 }
+\value{
+Nothing if assertion passes, otherwise prints the error message.
+}
 \description{
 Additional assertion functions which can be used together with the \code{checkmate} package.
 }
 \section{Functions}{
 \itemize{
-\item \code{assert_list_of_variables()}: Check whether \code{x} is a valid list of variable names.
-\code{NULL} elements of the list \code{x} are dropped out with \code{Filter(Negate(is.null), x)}.
+\item \code{assert_list_of_variables()}: Checks whether \code{x} is a valid list of variable names.
+\code{NULL} elements of the list \code{x} are dropped with \code{Filter(Negate(is.null), x)}.
 
 \item \code{assert_df_with_variables()}: Check whether \code{df} is a data frame with the analysis \code{variables}.
 Please notice how this produces an error when not all variables are present in the

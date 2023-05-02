@@ -60,7 +60,7 @@ plot. Ignored when \code{plotting_choices} is not "separate_by_obs".}
 \item{col}{(\code{character})\cr lines colors.}
 }
 \value{
-a \code{ggplot} object or a list of \code{ggplot} objects.
+A \code{ggplot} object or a list of \code{ggplot} objects.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

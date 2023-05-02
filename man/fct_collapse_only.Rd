@@ -16,8 +16,8 @@ the new level given by the respective name.}
 new factor. Note that this level must not be contained in the new levels specified in \code{...}.}
 }
 \value{
-The modified factor with collapsed levels. Values and levels which are not included
-in the given character vectors input will be set to the missing level.
+A modified \code{factor} with collapsed levels. Values and levels which are not included
+in the given \code{character} vector input will be set to the missing level \code{.na_level}.
 }
 \description{
 This collapses levels and only keeps those new group levels, in the order provided.

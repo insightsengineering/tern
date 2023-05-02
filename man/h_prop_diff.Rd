@@ -42,6 +42,10 @@ information, see \code{\link[stats:prop.test]{stats::prop.test()}}.}
 \item{weights_method}{(\code{string})\cr weights method. Can be either \code{"cmh"} or \code{"heuristic"}
 and directs the way weights are estimated.}
 }
+\value{
+A named \code{list} of elements \code{diff} (proportion difference) and \code{diff_ci}
+(proportion difference confidence interval).
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }

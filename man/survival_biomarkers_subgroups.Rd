@@ -29,6 +29,9 @@ Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as bot
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
 displaying unit.}
 }
+\value{
+An \code{rtables} table summarizing biomarker effects on survival by subgroup.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
