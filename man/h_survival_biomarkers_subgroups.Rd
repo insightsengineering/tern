@@ -44,7 +44,8 @@ displaying unit.}
 }
 \value{
 \itemize{
-\item \code{h_surv_to_coxreg_variables()} returns a named \code{list} of elements \code{time}, \code{event}, \code{arm}, \code{covariates}, and \code{strata}.
+\item \code{h_surv_to_coxreg_variables()} returns a named \code{list} of elements \code{time}, \code{event}, \code{arm},
+\code{covariates}, and \code{strata}.
 }
 
 \itemize{

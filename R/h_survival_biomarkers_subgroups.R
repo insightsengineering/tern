@@ -36,7 +36,8 @@ NULL
 #' @param biomarker (`string`)\cr the name of the biomarker variable.
 #'
 #' @return
-#' * `h_surv_to_coxreg_variables()` returns a named `list` of elements `time`, `event`, `arm`, `covariates`, and `strata`.
+#' * `h_surv_to_coxreg_variables()` returns a named `list` of elements `time`, `event`, `arm`,
+#'   `covariates`, and `strata`.
 #'
 #' @examples
 #' # This is how the variable list is converted internally.

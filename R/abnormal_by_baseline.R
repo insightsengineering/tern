@@ -60,7 +60,7 @@ d_count_abnormal_by_baseline <- function(abnormal) {
 #'   [df_explicit_na()]). The default is `"<Missing>"`.
 #'
 #' @return
-#' * `s_count_abnormal_by_baseline()` returns statistic `fraction` which is a named list with 3 labelled elements:
+#' * `s_count_abnormal_by_baseline()` returns statistic `fraction` which is a named list with 3 labeled elements:
 #'   `not_abnormal`, `abnormal`, and `total`. Each element contains a vector with `num` and `denom` patient counts.
 #'
 #' @examples

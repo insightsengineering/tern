@@ -65,7 +65,7 @@ to avoid warnings from \code{rtables}.}
 }
 \value{
 \itemize{
-\item \code{s_count_abnormal_by_baseline()} returns statistic \code{fraction} which is a named list with 3 labelled elements:
+\item \code{s_count_abnormal_by_baseline()} returns statistic \code{fraction} which is a named list with 3 labeled elements:
 \code{not_abnormal}, \code{abnormal}, and \code{total}. Each element contains a vector with \code{num} and \code{denom} patient counts.
 }
 
