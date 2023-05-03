@@ -178,7 +178,7 @@ count_patients_with_event <- function(lyt,
 #'
 #' @return
 #' * `s_count_patients_with_flags()` returns the count and the fraction of unique identifiers with each particular
-#'   flag. Returns a list of `n`s, `count`s, `count_fraction`s, and `n_blq`s with one element per flag.
+#'   flag as a list of statistics `n`, `count`, `count_fraction`, and `n_blq`, with one element per flag.
 #'
 #' @export
 #'

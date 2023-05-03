@@ -135,7 +135,7 @@ the statistics from \code{s_count_patients_with_event()} to the table layout.
 
 \itemize{
 \item \code{s_count_patients_with_flags()} returns the count and the fraction of unique identifiers with each particular
-flag. Returns a list of \code{n}s, \code{count}s, \code{count_fraction}s, and \code{n_blq}s with one element per flag.
+flag as a list of statistics \code{n}, \code{count}, \code{count_fraction}, and \code{n_blq}, with one element per flag.
 }
 
 \itemize{
