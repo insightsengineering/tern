@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.956712390375534" branch-rate="0" lines-covered="8509" lines-valid="8894" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-05-03 16:37:14">
+<coverage line-rate="0.956712390375534" branch-rate="0" lines-covered="8509" lines-valid="8894" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-05-03 16:52:33">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
@@ -11151,7 +11151,6 @@
           <methods>
             <method name="h_surv_to_coxreg_variables" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="55" hits="41" branch="false"/>
                 <line number="56" hits="41" branch="false"/>
                 <line number="57" hits="41" branch="false"/>
                 <line number="58" hits="41" branch="false"/>
@@ -11162,19 +11161,19 @@
                 <line number="63" hits="41" branch="false"/>
                 <line number="64" hits="41" branch="false"/>
                 <line number="65" hits="41" branch="false"/>
+                <line number="66" hits="41" branch="false"/>
               </lines>
             </method>
             <method name="h_coxreg_mult_cont_df" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="108" hits="21" branch="false"/>
                 <line number="109" hits="21" branch="false"/>
                 <line number="110" hits="21" branch="false"/>
                 <line number="111" hits="21" branch="false"/>
                 <line number="112" hits="21" branch="false"/>
-                <line number="114" hits="21" branch="false"/>
+                <line number="113" hits="21" branch="false"/>
                 <line number="115" hits="21" branch="false"/>
-                <line number="117" hits="21" branch="false"/>
-                <line number="118" hits="20" branch="false"/>
+                <line number="116" hits="21" branch="false"/>
+                <line number="118" hits="21" branch="false"/>
                 <line number="119" hits="20" branch="false"/>
                 <line number="120" hits="20" branch="false"/>
                 <line number="121" hits="20" branch="false"/>
@@ -11193,7 +11192,7 @@
                 <line number="134" hits="20" branch="false"/>
                 <line number="135" hits="20" branch="false"/>
                 <line number="136" hits="20" branch="false"/>
-                <line number="138" hits="20" branch="false"/>
+                <line number="137" hits="20" branch="false"/>
                 <line number="139" hits="20" branch="false"/>
                 <line number="140" hits="20" branch="false"/>
                 <line number="141" hits="20" branch="false"/>
@@ -11206,7 +11205,7 @@
                 <line number="148" hits="20" branch="false"/>
                 <line number="149" hits="20" branch="false"/>
                 <line number="150" hits="20" branch="false"/>
-                <line number="152" hits="1" branch="false"/>
+                <line number="151" hits="20" branch="false"/>
                 <line number="153" hits="1" branch="false"/>
                 <line number="154" hits="1" branch="false"/>
                 <line number="155" hits="1" branch="false"/>
@@ -11221,11 +11220,11 @@
                 <line number="164" hits="1" branch="false"/>
                 <line number="165" hits="1" branch="false"/>
                 <line number="166" hits="1" branch="false"/>
+                <line number="167" hits="1" branch="false"/>
               </lines>
             </method>
             <method name="h_tab_surv_one_biomarker" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="197" hits="6" branch="false"/>
                 <line number="198" hits="6" branch="false"/>
                 <line number="199" hits="6" branch="false"/>
                 <line number="200" hits="6" branch="false"/>
@@ -11237,11 +11236,11 @@
                 <line number="206" hits="6" branch="false"/>
                 <line number="207" hits="6" branch="false"/>
                 <line number="208" hits="6" branch="false"/>
+                <line number="209" hits="6" branch="false"/>
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="55" hits="41" branch="false"/>
             <line number="56" hits="41" branch="false"/>
             <line number="57" hits="41" branch="false"/>
             <line number="58" hits="41" branch="false"/>
@@ -11252,15 +11251,15 @@
             <line number="63" hits="41" branch="false"/>
             <line number="64" hits="41" branch="false"/>
             <line number="65" hits="41" branch="false"/>
-            <line number="108" hits="21" branch="false"/>
+            <line number="66" hits="41" branch="false"/>
             <line number="109" hits="21" branch="false"/>
             <line number="110" hits="21" branch="false"/>
             <line number="111" hits="21" branch="false"/>
             <line number="112" hits="21" branch="false"/>
-            <line number="114" hits="21" branch="false"/>
+            <line number="113" hits="21" branch="false"/>
             <line number="115" hits="21" branch="false"/>
-            <line number="117" hits="21" branch="false"/>
-            <line number="118" hits="20" branch="false"/>
+            <line number="116" hits="21" branch="false"/>
+            <line number="118" hits="21" branch="false"/>
             <line number="119" hits="20" branch="false"/>
             <line number="120" hits="20" branch="false"/>
             <line number="121" hits="20" branch="false"/>
@@ -11279,7 +11278,7 @@
             <line number="134" hits="20" branch="false"/>
             <line number="135" hits="20" branch="false"/>
             <line number="136" hits="20" branch="false"/>
-            <line number="138" hits="20" branch="false"/>
+            <line number="137" hits="20" branch="false"/>
             <line number="139" hits="20" branch="false"/>
             <line number="140" hits="20" branch="false"/>
             <line number="141" hits="20" branch="false"/>
@@ -11292,7 +11291,7 @@
             <line number="148" hits="20" branch="false"/>
             <line number="149" hits="20" branch="false"/>
             <line number="150" hits="20" branch="false"/>
-            <line number="152" hits="1" branch="false"/>
+            <line number="151" hits="20" branch="false"/>
             <line number="153" hits="1" branch="false"/>
             <line number="154" hits="1" branch="false"/>
             <line number="155" hits="1" branch="false"/>
@@ -11307,7 +11306,7 @@
             <line number="164" hits="1" branch="false"/>
             <line number="165" hits="1" branch="false"/>
             <line number="166" hits="1" branch="false"/>
-            <line number="197" hits="6" branch="false"/>
+            <line number="167" hits="1" branch="false"/>
             <line number="198" hits="6" branch="false"/>
             <line number="199" hits="6" branch="false"/>
             <line number="200" hits="6" branch="false"/>
@@ -11319,6 +11318,7 @@
             <line number="206" hits="6" branch="false"/>
             <line number="207" hits="6" branch="false"/>
             <line number="208" hits="6" branch="false"/>
+            <line number="209" hits="6" branch="false"/>
           </lines>
         </class>
         <class name="h_survival_duration_subgroups.R" filename="R/h_survival_duration_subgroups.R" line-rate="0.94" branch-rate="0" complexity="0">
