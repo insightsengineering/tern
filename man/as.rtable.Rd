@@ -18,8 +18,6 @@ as.rtable(x, ...)
 }
 \value{
 An \code{rtables} table object. Note that the concrete class will depend on the method used.
-
-An \code{rtables} table object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

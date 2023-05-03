@@ -201,8 +201,6 @@ as.rtable <- function(x, ...) { # nolint
 #'
 #' @param format the format which should be used for the columns.
 #'
-#' @return An `rtables` table object.
-#'
 #' @method as.rtable data.frame
 #'
 #' @examples
