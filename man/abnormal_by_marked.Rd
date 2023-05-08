@@ -89,10 +89,6 @@ with \verb{Single, not last} and \verb{Last or replicated} levels, respectively.
 \item For \code{Any}: Numerator is the number of patients with either single or
 replicated marked abnormalities.
 }
-
-Note that \verb{Single, not last} and \verb{Last or replicated} levels are mutually exclusive. If a patient has
-abnormalities that meet both the \verb{Single, not last} and \verb{Last or replicated} criteria, then the
-patient will be counted only under the \verb{Last or replicated} category.
 }
 \section{Functions}{
 \itemize{
@@ -105,6 +101,11 @@ in \code{count_abnormal_by_marked()}.
 and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
+\note{
+\verb{Single, not last} and \verb{Last or replicated} levels are mutually exclusive. If a patient has
+abnormalities that meet both the \verb{Single, not last} and \verb{Last or replicated} criteria, then the
+patient will be counted only under the \verb{Last or replicated} category.
+}
 \examples{
 library(dplyr)
 

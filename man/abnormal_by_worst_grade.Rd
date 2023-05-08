@@ -106,7 +106,7 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 
 }}
 \note{
-Prior to tabulation, \code{df} must filtered to include only post-baseline records with worst grade flags.
+Prior to tabulation, \code{df} must be filtered to include only post-baseline records with worst grade flags.
 }
 \examples{
 library(dplyr)

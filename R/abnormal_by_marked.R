@@ -12,7 +12,7 @@
 #'   * For `Any`: Numerator is the number of patients with either single or
 #'     replicated marked abnormalities.
 #'
-#' Note that `Single, not last` and `Last or replicated` levels are mutually exclusive. If a patient has
+#' @note `Single, not last` and `Last or replicated` levels are mutually exclusive. If a patient has
 #' abnormalities that meet both the `Single, not last` and `Last or replicated` criteria, then the
 #' patient will be counted only under the `Last or replicated` category.
 #'

@@ -19,7 +19,7 @@
 #'   * A toxicity grade variable (e.g. `GRADE_ANL`) where all negative values from
 #'     `ATOXGR` are replaced by their absolute values.
 #'
-#' @note Prior to tabulation, `df` must filtered to include only post-baseline records with worst grade flags.
+#' @note Prior to tabulation, `df` must be filtered to include only post-baseline records with worst grade flags.
 #'
 #' @inheritParams argument_convention
 #'
