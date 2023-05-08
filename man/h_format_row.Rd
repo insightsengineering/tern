@@ -42,6 +42,3 @@ x <- list(mean = 50, mean_ci = mean_ci)
 h_format_row(x, format, labels)
 
 }
-\author{
-Wojciech Wojciak wojciech.wojciak@contractors.roche.com
-}

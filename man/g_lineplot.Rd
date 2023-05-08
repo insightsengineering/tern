@@ -182,6 +182,3 @@ g_lineplot(
 adlb_f <- dplyr::filter(adlb, ARMCD != "ARM A" | AVISIT == "BASELINE")
 g_lineplot(adlb_f, table = c("n", "mean"))
 }
-\author{
-Wojciech Wojciak wojciech.wojciak@contractors.roche.com
-}

@@ -16,7 +16,6 @@
 #'
 #' @return A `ggplot` waterfall plot.
 #'
-#' @author Yuyao Song (songy) \email{yuyao.song@roche.com}
 #' @export
 #'
 #' @examples

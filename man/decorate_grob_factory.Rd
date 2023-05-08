@@ -32,7 +32,4 @@ draw_grob(pf(NULL))
 draw_grob(pf(NULL))
 }
 }
-\author{
-Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
-}
 \keyword{internal}

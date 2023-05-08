@@ -57,6 +57,3 @@ draw_grob(lg[[2]])
 draw_grob(lg[[6]])
 
 }
-\author{
-Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
-}

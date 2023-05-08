@@ -85,6 +85,3 @@ g_waterfall(
   title = "Waterfall plot"
 )
 }
-\author{
-Yuyao Song (songy) \email{yuyao.song@roche.com}
-}
