@@ -27,17 +27,19 @@ tabulate_survival_subgroups(
 \item{df}{(\code{list})\cr of data frames containing all analysis variables. List should be
 created using \code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}}.}
 
-\item{vars}{(\code{character})\cr the name of statistics to be reported among
-\code{n_tot_events} (total number of events per group),
-\code{n_events} (number of events per group),
-\code{n_tot} (total number of observations per group),
-\code{n} (number of observations per group),
-\code{median} (median survival time),
-\code{hr} (hazard ratio),
-\code{ci} (confidence interval of hazard ratio) and
-\code{pval} (p value of the effect).
+\item{vars}{(\code{character})\cr the name of statistics to be reported among:
+\itemize{
+\item \code{n_tot_events}: Total number of events per group.
+\item \code{n_events}: Number of events per group.
+\item \code{n_tot}: Total number of observations per group.
+\item \code{n}: Number of observations per group.
+\item \code{median}: Median survival time.
+\item \code{hr}: Hazard ratio.
+\item \code{ci}: Confidence interval of hazard ratio.
+\item \code{pval}: p-value of the effect.
 Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as both \code{hr} and \code{ci}
-are required.}
+are required.
+}}
 
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
 displaying unit.}
@@ -50,6 +52,13 @@ levels that belong to it in the character vectors that are elements of the list.
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
 }
+\value{
+\itemize{
+\item \code{a_survival_subgroups()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+An \code{rtables} table summarizing survival by subgroup.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -61,10 +70,11 @@ the required statistics. Tables typically used as part of forest plot.
 }
 \section{Functions}{
 \itemize{
-\item \code{a_survival_subgroups()}: Formatted Analysis function used to format the results of
-\code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}}. Returns is a list of Formatted Analysis functions with one element per statistic.
+\item \code{a_survival_subgroups()}: Formatted analysis function which is used as
+\code{afun} in \code{tabulate_survival_subgroups()}.
 
-\item \code{tabulate_survival_subgroups()}: table creating function.
+\item \code{tabulate_survival_subgroups()}: Table-creating function which creates a table
+summarizing survival by subgroup.
 
 }}
 \examples{
@@ -106,6 +116,7 @@ df <- extract_survival_subgroups(
   data = adtte_f
 )
 df
+
 # Internal function - a_survival_subgroups
 \dontrun{
 a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))

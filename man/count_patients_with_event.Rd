@@ -119,37 +119,59 @@ by a statistics function.}
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 }
 \value{
-\code{\link[=s_count_patients_with_event]{s_count_patients_with_event()}} returns the count and fraction of patients with the
-defined event.
+\itemize{
+\item \code{s_count_patients_with_event()} returns the count and fraction of unique identifiers with the defined event.
+}
+
+\itemize{
+\item \code{a_count_patients_with_event()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{count_patients_with_event()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_patients_with_event()} to the table layout.
+}
+
+\itemize{
+\item \code{s_count_patients_with_flags()} returns the count and the fraction of unique identifiers with each particular
+flag as a list of statistics \code{n}, \code{count}, \code{count_fraction}, and \code{n_blq}, with one element per flag.
+}
+
+\itemize{
+\item \code{a_count_patients_with_flags()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{count_patients_with_flags()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_patients_with_flags()} to the table layout.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
+
 The primary analysis variable \code{.var} denotes the unique patient identifier.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_patients_with_event()}: Statistics Function that returns the number and the fraction
-of unique identifiers with a particular type of event, e.g. the number and the fraction of patients who
-had treatment-emergent adverse events. Note that the user can define a new data column containing
-the event of interest.
+\item \code{s_count_patients_with_event()}: Statistics function which counts the number of patients for which
+the defined event has occurred.
 
-\item \code{a_count_patients_with_event()}: Formatted Analysis function which can be further
-customized by calling \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_count_patients_with_event()}: Formatted analysis function which is used as \code{afun}
+in \code{count_patients_with_event()}.
 
-\item \code{count_patients_with_event()}: Analyze Function which adds the count statistics
-to the input layout. Note that additional formatting arguments can be used here.
+\item \code{count_patients_with_event()}: Layout-creating function which can take statistics function
+arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{s_count_patients_with_flags()}: Statistics function that returns the number and the fraction
-of unique identifiers with each particular flag. Returns a list of totals, counts, counts and
-fractions with one element per flag.
+\item \code{s_count_patients_with_flags()}: Statistics function which counts the number of patients for which
+a particular flag variable is \code{TRUE}.
 
-\item \code{a_count_patients_with_flags()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_count_patients_with_flags()}: Formatted analysis function which is used as \code{afun}
+in \code{count_patients_with_flags()}.
 
-\item \code{count_patients_with_flags()}: Analyze Function which is a modified version of \code{\link[=count_patients_with_event]{count_patients_with_event()}}.
-Adds the count statistics to the input layout for multiple flag variables at once.
+\item \code{count_patients_with_flags()}: Layout-creating function which can take statistics function
+arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{

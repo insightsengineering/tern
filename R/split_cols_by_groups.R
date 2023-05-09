@@ -44,8 +44,8 @@ groups_list_to_df <- function(groups_list) {
 #' @param ref (`string`)\cr the reference level(s).
 #' @param collapse (`string`)\cr a character string to separate `fct` and `ref`.
 #'
-#' @return a `list` with first item `ref` (reference) and second item `trt`
-#'   (treatment).
+#' @return A `list` with first item `ref` (reference) and second item `trt` (treatment).
+#'
 #' @export
 #'
 #' @examples
@@ -88,14 +88,15 @@ combine_groups <- function(fct,
 #'
 #' @inheritParams argument_convention
 #' @inheritParams groups_list_to_df
-#' @param ... additional arguments, see _note_ section.
-#'
-#' @note The ellipse (`...`) conveys arguments to [rtables::split_cols_by()]
-#'   in order, for instance, to control formats (`format`), add a joint column
-#'   for all groups (`incl_all`).
+#' @param ... additional arguments to [rtables::split_cols_by()] in order. For instance, to
+#'   control formats (`format`), add a joint column for all groups (`incl_all`).
 #'
 #' @seealso [rtables::split_cols_by()]
-#' @return the modified layout.
+#'
+#' @return A layout object suitable for passing to further layouting functions. Adding
+#'   this function to an `rtable` layout will add a column split including the given
+#'   groups to the table layout.
+#'
 #' @export
 #'
 #' @examples
@@ -222,6 +223,8 @@ split_cols_by_groups <- function(lyt,
 #' @seealso [combine_groups]
 #' @inheritParams combine_groups
 #' @inheritParams groups_list_to_df
+#'
+#' @return A `vector` of column counts.
 #'
 #' @examples
 #' ref <- c("A: Drug X", "B: Placebo")

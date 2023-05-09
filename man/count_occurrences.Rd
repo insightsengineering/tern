@@ -83,36 +83,51 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-A list with:
-\describe{
-\item{count}{list of counts with one element per occurrence.}
-\item{count_fraction}{list of counts and fractions with one element per occurrence.}
-\item{fraction}{list of numerators and denominators with one element per occurrence.}
+\itemize{
+\item \code{s_count_occurrences()} returns a list with:
+\itemize{
+\item \code{count}: list of counts with one element per occurrence.
+\item \code{count_fraction}: list of counts and fractions with one element per occurrence.
+\item \code{fraction}: list of numerators and denominators with one element per occurrence.
+}
+}
+
+\itemize{
+\item \code{a_count_occurrences()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{count_occurrences()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_occurrences()} to the table layout.
 }
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
+
 Functions for analyzing frequencies and fractions of occurrences for patients with occurrence
 data. Primary analysis variables are the dictionary terms. All occurrences are counted for total
 counts. Multiple occurrences within patient at the lowest term level displayed in the table are
-counted only once. Note that by default occurrences which don't appear in a given row split
-are dropped from the table and the occurrences in the table are sorted alphabetically per row split.
-Therefore the corresponding layout needs to use \code{split_fun = drop_split_levels} in the \code{split_rows_by}
-calls. Use \code{drop = FALSE} if you would like to show all occurrences.
+counted only once.
 }
 \section{Functions}{
 \itemize{
 \item \code{s_count_occurrences()}: Statistics function which counts number of patients that report an
 occurrence.
 
-\item \code{a_count_occurrences()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_count_occurrences()}: Formatted analysis function which is used as \code{afun}
+in \code{count_occurrences()}.
 
-\item \code{count_occurrences()}: Analyze Function that counts occurrences as part of \code{rtables} layouts.
+\item \code{count_occurrences()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
+\note{
+By default, occurrences which don't appear in a given row split are dropped from the table and
+the occurrences in the table are sorted alphabetically per row split. Therefore, the corresponding layout
+needs to use \code{split_fun = drop_split_levels} in the \code{split_rows_by} calls. Use \code{drop = FALSE} if you would
+like to show all occurrences.
+}
 \examples{
 df <- data.frame(
   USUBJID = as.character(c(1, 1, 2, 4, 4, 4)),

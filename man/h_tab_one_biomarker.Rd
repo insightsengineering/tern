@@ -14,11 +14,11 @@ h_tab_one_biomarker(df, afuns, colvars)
 \item{colvars}{(\code{list} with \code{vars} and \code{labels})\cr variables to tabulate and their labels.}
 }
 \value{
-The \code{rtables} table object.
+An \code{rtables} table object with statistics in columns.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This is used by \code{\link[=h_tab_surv_one_biomarker]{h_tab_surv_one_biomarker()}} and \code{\link[=h_tab_rsp_one_biomarker]{h_tab_rsp_one_biomarker()}},
-please see there for examples.
+Please see \code{\link[=h_tab_surv_one_biomarker]{h_tab_surv_one_biomarker()}} and \code{\link[=h_tab_rsp_one_biomarker]{h_tab_rsp_one_biomarker()}},
+which use this function for examples.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_pkparam_sort.R
 \name{h_pkparam_sort}
 \alias{h_pkparam_sort}
-\title{Sort \verb{PK PARAM} variable}
+\title{Sort Data by \verb{PK PARAM} Variable}
 \usage{
 h_pkparam_sort(pk_data, key_var = "PARAMCD")
 }
@@ -12,7 +12,7 @@ h_pkparam_sort(pk_data, key_var = "PARAMCD")
 \item{key_var}{(\code{character})\cr key variable used to merge pk_data and metadata created by \code{d_pkparam()}}
 }
 \value{
-dataframe with \verb{PK PARAM} variable ordered
+A PK \code{data.frame} sorted by a \code{PARAM} variable.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

@@ -13,6 +13,9 @@ draw_grob(grob, newpage = TRUE, vp = NULL)
 
 \item{vp}{a \code{\link{viewport}} object (or \code{NULL}).}
 }
+\value{
+A \code{grob}.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

@@ -27,7 +27,7 @@ Only lab records flagged by \code{L}, \code{H} or \code{B} are included in the s
 }}
 }
 \value{
-\code{\link[=h_adlb_worsen]{h_adlb_worsen()}} returns the \code{adlb} \code{data.frame} containing only the
+\code{h_adlb_worsen()} returns the \code{adlb} \code{data.frame} containing only the
 worst labs specified according to \code{worst_flag_low} or \code{worst_flag_high} for the
 direction specified according to \code{direction_var}. For instance, for a lab that is
 needed for the low direction only, only records flagged by \code{worst_flag_low} are

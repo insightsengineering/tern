@@ -85,14 +85,26 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-A named list of 5 statistics:
-\describe{
-\item{n}{count of complete sample size for the group.}
-\item{rate}{estimated event rate per follow-up time.}
-\item{rate_ci}{confidence level for estimated rate per follow-up time.}
-\item{rate_ratio}{ratio of event rates in each treatment arm to the reference arm.}
-\item{rate_ratio_ci}{confidence level for the rate ratio.}
-\item{pval}{p-value.}
+\itemize{
+\item \code{s_glm_count()} returns a named \code{list} of 5 statistics:
+\itemize{
+\item \code{n}: Count of complete sample size for the group.
+\item \code{rate}: Estimated event rate per follow-up time.
+\item \code{rate_ci}: Confidence level for estimated rate per follow-up time.
+\item \code{rate_ratio}: Ratio of event rates in each treatment arm to the reference arm.
+\item \code{rate_ratio_ci}: Confidence level for the rate ratio.
+\item \code{pval}: p-value.
+}
+}
+
+\itemize{
+\item \code{a_glm_count()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{summarize_glm_count()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_glm_count()} to the table layout.
 }
 }
 \description{
@@ -104,13 +116,12 @@ This can be used to analyze count and/or frequency data using a linear model.
 \section{Functions}{
 \itemize{
 \item \code{s_glm_count()}: Statistics function that produces a named list of results
-of the investigated poisson model.
+of the investigated Poisson model.
 
-\item \code{a_glm_count()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_glm_count()}: Formatted analysis function which is used as \code{afun} in \code{summarize_glm_count()}.
 
-\item \code{summarize_glm_count()}: Layout creating function which can be be used for creating
-summary tables for analysis of count data using generalized linear models (poisson, quasipoisson).
+\item \code{summarize_glm_count()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{

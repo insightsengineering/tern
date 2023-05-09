@@ -15,20 +15,19 @@
 #'     can also be set to "breslow" or "exact". See more in [survival::coxph()]
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
 #'
-#' @importFrom stats pchisq
 #' @name survival_coxph_pairwise
 NULL
 
-#' @describeIn survival_coxph_pairwise Statistics Function which analyzes HR, CIs of HR and p-value with coxph model.
+#' @describeIn survival_coxph_pairwise Statistics function which analyzes HR, CIs of HR and p-value
+#'   of a coxph model.
 #'
-#' @return The statistics are:
-#' \describe{
-#'   \item{pvalue}{p-value to test HR = 1.}
-#'   \item{hr}{hazard ratio.}
-#'   \item{hr_ci}{confidence interval for hazard ratio.}
-#'   \item{n_tot}{total number of observations.}
-#'   \item{n_tot_events}{total number of events.}
-#' }
+#' @return
+#' * `s_coxph_pairwise()` returns the statistics:
+#'   * `pvalue`: p-value to test HR = 1.
+#'   * `hr`: Hazard ratio.
+#'   * `hr_ci`: Confidence interval for hazard ratio.
+#'   * `n_tot`: Total number of observations.
+#'   * `n_tot_events`: Total number of events.
 #'
 #' @examples
 #' library(dplyr)
@@ -119,8 +118,10 @@ s_coxph_pairwise <- function(df,
   )
 }
 
-#' @describeIn survival_coxph_pairwise Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn survival_coxph_pairwise Formatted analysis function which is used as `afun` in `coxph_pairwise()`.
+#'
+#' @return
+#' * `a_coxph_pairwise()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' # Internal function - a_coxph_pairwise
@@ -142,8 +143,14 @@ a_coxph_pairwise <- make_afun(
 )
 
 
-#' @describeIn survival_coxph_pairwise Analyze Function which adds the pairwise coxph analysis
-#'   to the input layout. Note that additional formatting arguments can be used here.
+#' @describeIn survival_coxph_pairwise Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `coxph_pairwise()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_coxph_pairwise()` to the table layout.
+#'
 #' @export
 #'
 #' @examples

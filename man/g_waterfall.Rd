@@ -33,7 +33,7 @@ g_waterfall(
 \item{title}{(\code{character})\cr text to be displayed as plot title.}
 }
 \value{
-(\code{ggplot} object)\cr waterfall plot.
+A \code{ggplot} waterfall plot.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -84,7 +84,4 @@ g_waterfall(
   ylab = "Percentage Change",
   title = "Waterfall plot"
 )
-}
-\author{
-Yuyao Song (songy) \email{yuyao.song@roche.com}
 }

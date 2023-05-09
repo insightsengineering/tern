@@ -7,10 +7,10 @@
 #'
 #' @param tbl (`matrix`)\cr matrix with two groups in rows and the binary response
 #'   (`TRUE`/`FALSE`) in columns.
+#'
 #' @seealso [h_prop_diff_test]
 #'
 #' @name prop_diff_test
-#'
 NULL
 
 #' @describeIn prop_diff_test Statistics function which tests the difference
@@ -20,9 +20,9 @@ NULL
 #' @param method (`string`)\cr one of `chisq`, `cmh`, `fisher`, or `schouten`; specifies the test used
 #'   to calculate the p-value.
 #'
-#' @return Named `list` with a single item `pval` with an attribute `label`
-#'   describing the method used. The p-value tests the null hypothesis that
-#'   proportions in two groups are the same.
+#' @return
+#' * `s_test_proportion_diff()` returns a named `list` with a single item `pval` with an attribute `label`
+#'   describing the method used. The p-value tests the null hypothesis that proportions in two groups are the same.
 #'
 #' @examples
 #'
@@ -101,6 +101,7 @@ s_test_proportion_diff <- function(df,
 #' `s_test_proportion_diff`.
 #'
 #' @inheritParams s_test_proportion_diff
+#'
 #' @return `string` describing the test from which the p-value is derived.
 #'
 #' @export
@@ -116,8 +117,10 @@ d_test_proportion_diff <- function(method) {
   paste0("p-value (", meth_part, ")")
 }
 
-#' @describeIn prop_diff_test Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn prop_diff_test Formatted analysis function which is used as `afun` in `test_proportion_diff()`.
+#'
+#' @return
+#' * `a_test_proportion_diff()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' # Internal function - a_test_proportion_diff
@@ -139,11 +142,17 @@ a_test_proportion_diff <- make_afun(
   .indent_mods = c(pval = 1L)
 )
 
-#' @describeIn prop_diff_test Layout creating function which can be used for
-#'   creating tables, which can take statistics function arguments and
-#'   additional format arguments.
+#' @describeIn prop_diff_test Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
 #' @param ... other arguments are passed to [s_test_proportion_diff()].
 #' @inheritParams argument_convention
+#'
+#' @return
+#' * `test_proportion_diff()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_test_proportion_diff()` to the table layout.
+#'
 #' @export
 #'
 #' @examples
@@ -191,6 +200,8 @@ test_proportion_diff <- function(lyt,
 #'
 #' @param tbl (`matrix`)\cr matrix with two groups in rows and the binary response
 #'   (`TRUE`/`FALSE`) in columns.
+#'
+#' @return A p-value.
 #'
 #' @seealso [prop_diff_test())] for implementation of these helper functions.
 #'

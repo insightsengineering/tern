@@ -29,11 +29,10 @@ count, default is \code{TRUE}.}
 }
 \value{
 A named vector with items:
-\describe{
-\item{count}{the count of values less than, less or equal to, greater than, or greater or equal to a threshold
+\itemize{
+\item \code{count}: the count of values less than, less or equal to, greater than, or greater or equal to a threshold
 of user specification.
-}
-\item{fraction}{the fraction of the count.}
+\item \code{fraction}: the fraction of the count.
 }
 }
 \description{

@@ -80,12 +80,24 @@ to avoid warnings from \code{rtables}.}
 \item{alpha}{(\code{numeric})\cr two-sided alpha-level for confidence interval.}
 }
 \value{
-The statistics are:
-\describe{
-\item{person_years}{total person-years at risk}
-\item{n_events}{total number of events observed}
-\item{rate}{estimated incidence rate}
-\item{rate_ci}{confidence interval for the incidence rate}
+\itemize{
+\item \code{s_incidence_rate()} returns the following statistics:
+\itemize{
+\item \code{person_years}: Total person-years at risk.
+\item \code{n_events}: Total number of events observed.
+\item \code{rate}: Estimated incidence rate.
+\item \code{rate_ci}: Confidence interval for the incidence rate.
+}
+}
+
+\itemize{
+\item \code{a_incidence_rate()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{estimate_incidence_rate()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_incidence_rate()} to the table layout.
 }
 }
 \description{
@@ -99,11 +111,11 @@ as incidence rate. Primary analysis variable is the person-years at risk.
 \item \code{s_incidence_rate()}: Statistics function which estimates the incidence rate and the
 associated confidence interval.
 
-\item \code{a_incidence_rate()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_incidence_rate()}: Formatted analysis function which is used as \code{afun}
+in \code{estimate_incidence_rate()}.
 
-\item \code{estimate_incidence_rate()}: Layout creating function which adds analyze rows using the statistics
-function \code{s_incidence_rate} and desired format.
+\item \code{estimate_incidence_rate()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{

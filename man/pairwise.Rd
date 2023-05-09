@@ -7,7 +7,10 @@
 pairwise(x)
 }
 \arguments{
-\item{x}{the variable for which pairwise result is expected}
+\item{x}{the variable for which pairwise result is expected.}
+}
+\value{
+Variable "paired".
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

@@ -14,6 +14,9 @@
 \item{at}{(\code{NULL} or \code{numeric})\cr optional values for the interaction variable. Otherwise
 the median is used.}
 }
+\value{
+A \code{data.frame} containing the tidied model.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

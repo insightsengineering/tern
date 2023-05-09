@@ -22,7 +22,7 @@
 #' @param na_level (`string`)\cr used to replace all `NA` or empty
 #'   values inside non-`omit_columns` columns.
 #'
-#' @return The data frame with the desired changes made.
+#' @return A `data.frame` with the chosen modifications applied.
 #'
 #' @export
 #' @seealso [sas_na()] and [explicit_na()] for other missing data helper functions.

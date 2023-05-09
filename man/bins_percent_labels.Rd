@@ -14,7 +14,7 @@ the boundaries 0 and 1 must not be included.}
 \item{digits}{(\code{integer})\cr number of decimal places to round the percent numbers.}
 }
 \value{
-Character vector with labels in the format \verb{[0\%,20\%]}, \verb{(20\%,50\%]}, etc.
+A \code{character} vector with labels in the format \verb{[0\%,20\%]}, \verb{(20\%,50\%]}, etc.
 }
 \description{
 This creates labels for quantile based bins in percent. This assumes the right-closed

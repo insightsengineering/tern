@@ -23,6 +23,9 @@ prop_fisher(tbl)
 \item{ary}{(\code{array}, 3 dimensions)\cr array with two groups in rows, the binary response
 (\code{TRUE}/\code{FALSE}) in columns, and the strata in the third dimension.}
 }
+\value{
+A p-value.
+}
 \description{
 Helper functions to implement various tests on the difference between two
 proportions.

@@ -6,11 +6,10 @@
 #' when a column table layout is required.
 #'
 #' @name count_patients_events_in_cols
-#'
 NULL
 
-#' @describeIn count_patients_events_in_cols Statistics function which counts numbers of patients and multiple events
-#'   defined by filters.
+#' @describeIn count_patients_events_in_cols Statistics function which counts numbers of patients and multiple
+#'   events defined by filters. Used as analysis function `afun` in `summarize_patients_events_in_cols()`.
 #'
 #' @inheritParams argument_convention
 #' @param filters_list (named `list` of `character`)\cr each element in this list describes one
@@ -21,7 +20,8 @@ NULL
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
 #'   be used as label.
 #'
-#' @return [s_count_patients_and_multiple_events()] returns a list with the statistics:
+#' @return
+#' * `s_count_patients_and_multiple_events()` returns a list with the statistics:
 #'   - `unique`: number of unique patients in `df`.
 #'   - `all`: number of rows in `df`.
 #'   - one element with the same name as in `filters_list`: number of rows in `df`,
@@ -106,12 +106,18 @@ s_count_patients_and_multiple_events <- function(df, # nolint
   y
 }
 
-#' @describeIn count_patients_events_in_cols Layout creating function which adds the count
-#'   statistics of patients and events in the column layout as content rows.
+#' @describeIn count_patients_events_in_cols Layout-creating function which can take statistics function
+#'   arguments and additional format arguments. This function is a wrapper for [rtables::summarize_row_groups()].
 #'
 #' @inheritParams argument_convention
 #' @param col_split (`flag`)\cr whether the columns should be split.
 #'  Set to `FALSE` when the required column split has been done already earlier in the layout pipe.
+#'
+#' @return
+#' * `summarize_patients_events_in_cols()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted content rows
+#'   containing the statistics from `s_count_patients_and_multiple_events()` to the table layout.
+#'
 #' @export
 #' @examples
 #'

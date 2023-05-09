@@ -1,25 +1,35 @@
-#' @include summarize_variables.R
-NULL
-
 #' Compare Variables Between Groups
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' We use the new S3 generic function [s_compare()] to implement comparisons for
-#' different `x` objects. This is used as Statistics Function in combination
-#' with the new Analyze Function [compare_vars()].
+#' Comparison with a reference group for different `x` objects.
 #'
-#' @seealso Relevant constructor function [create_afun_compare()].
+#' @inheritParams argument_convention
+#'
+#' @note
+#' * For factor variables, `denom` for factor proportions can only be `n` since the purpose is to compare proportions
+#'   between columns, therefore a row-based proportion would not make sense. Proportion based on `N_col` would
+#'   be difficult since we use counts for the chi-squared test statistic, therefore missing values should be accounted
+#'   for as explicit factor levels.
+#' * For character variables, automatic conversion to factor does not guarantee that the table
+#'   will be generated correctly. In particular for sparse tables this very likely can fail.
+#'   Therefore it is always better to manually convert character variables to factors during pre-processing.
+#' * For `compare_vars()`, the column split must define a reference group via `ref_group` so that the comparison
+#'   is well defined.
+#' * When factor variables contains `NA`, it is expected that `NA` values have been conveyed to `na_level`
+#'   appropriately beforehand via [df_explicit_na()].
+#'
+#' @seealso Relevant constructor function [create_afun_compare()], and [s_summary()] which is used internally
+#'   to compute a summary within `s_compare()`.
 #'
 #' @name compare_variables
-#'
+#' @include summarize_variables.R
 NULL
 
-#' @inheritParams argument_convention
-#' @describeIn compare_variables `s_compare` is a S3 generic function to produce
-#'   an object description and comparison versus the reference column in the form
-#'   of p-values.
-#' @seealso [s_summary()] which is used internally for the summary part per column.
+#' @describeIn compare_variables S3 generic function to produce a comparison summary.
+#'
+#' @return
+#' * `s_compare()` returns output of [s_summary()] and comparisons versus the reference group in the form of p-values.
 #'
 #' @export
 #'
@@ -30,11 +40,8 @@ s_compare <- function(x,
   UseMethod("s_compare", x)
 }
 
-#' @describeIn compare_variables Method for numeric class. This uses the standard t-test
+#' @describeIn compare_variables Method for `numeric` class. This uses the standard t-test
 #'   to calculate the p-value.
-#' @return If `x` is of class `numeric`, returns a list with named items:
-#'   - all items from [s_summary.numeric()].
-#'   - `pval`: the p-value.
 #' @method s_compare numeric
 #'
 #' @export
@@ -69,17 +76,10 @@ s_compare.numeric <- function(x,
   y
 }
 
-#' @describeIn compare_variables Method for factor class. This uses the chi-squared test
-#'   to calculate the p-value. Note that the `denom` for factor proportions can only be `n` here
-#'   since the usage is for comparing proportions between columns.
-#'   Therefore a row-based proportion would not make sense. Also proportion based on `N_col` would
-#'   be difficult since for the chi-squared test statistic we use the counts. Therefore
-#'   missing values should be accounted for explicitly as factor levels.
+#' @describeIn compare_variables Method for `factor` class. This uses the chi-squared test
+#'   to calculate the p-value.
 #' @param denom (`string`)\cr choice of denominator for factor proportions,
 #'   can only be `n` (number of values in this row and column intersection).
-#' @return If `x` is of class `factor` or converted from `character`, returns a list with named items:
-#'   - all items from [s_summary.factor()].
-#'   - `pval`: the p-value.
 #' @method s_compare factor
 #'
 #' @export
@@ -135,14 +135,10 @@ s_compare.factor <- function(x,
   y
 }
 
-#' @describeIn compare_variables Method for character class. This makes an automatic
-#'   conversion to factor (with a warning) and then forwards to the method for factors.
-#' @param verbose defaults to `TRUE`. It prints out warnings and messages. It is mainly used
-#'   to print out information about factor casting.
-#' @note Automatic conversion of character to factor does not guarantee that the table
-#'   can be generated correctly. In particular for sparse tables this very likely can fail.
-#'   It is therefore better to always pre-process the dataset such that factors are manually
-#'   created from character variables before passing the dataset to [rtables::build_table()].
+#' @describeIn compare_variables Method for `character` class. This makes an automatic
+#'   conversion to `factor` (with a warning) and then forwards to the method for factors.
+#' @param verbose (`logical`)\cr Whether warnings and messages should be printed. Mainly used
+#'   to print out information about factor casting. Defaults to `TRUE`.
 #' @method s_compare character
 #'
 #' @examples
@@ -188,11 +184,8 @@ s_compare.character <- function(x,
   )
 }
 
-#' @describeIn compare_variables Method for logical class. A chi-squared test
+#' @describeIn compare_variables Method for `logical` class. A chi-squared test
 #'   is used. If missing values are not removed, then they are counted as `FALSE`.
-#' @return If `x` is of class `logical`, returns a list with named items:
-#'   - all items from [s_summary.logical()].
-#'   - `pval`: the p-value.
 #' @method s_compare logical
 #'
 #' @export
@@ -245,9 +238,11 @@ s_compare.logical <- function(x,
   y
 }
 
-#' @describeIn compare_variables S3 generic Formatted Analysis function to produce
-#'   an object description and comparison versus the reference column in the form
-#'   of p-values. It is used as `afun` in [rtables::analyze()].
+#' @describeIn compare_variables Formatted analysis function which is used as `afun`
+#'   in `compare_vars()`.
+#'
+#' @return
+#' * `a_compare()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @export
 #'
@@ -259,7 +254,7 @@ a_compare <- function(x,
   UseMethod("a_compare", x)
 }
 
-#' @describeIn compare_variables Formatted Analysis function method for `numeric`.
+#' @describeIn compare_variables Formatted analysis function method for `numeric` class.
 #' @export
 #'
 #' @examples
@@ -292,7 +287,7 @@ a_compare.numeric <- make_afun(
   pval = "p-value (chi-squared test)"
 )
 
-#' @describeIn compare_variables Formatted Analysis function method for `factor`.
+#' @describeIn compare_variables Formatted analysis function method for `factor` class.
 #' @export
 #'
 #' @examples
@@ -313,7 +308,7 @@ a_compare.factor <- make_afun(
   .null_ref_cells = FALSE
 )
 
-#' @describeIn compare_variables Formatted Analysis function method for `character`.
+#' @describeIn compare_variables Formatted analysis function method for `character` class.
 #' @export
 #'
 #' @examples
@@ -332,7 +327,7 @@ a_compare.character <- make_afun(
   .null_ref_cells = FALSE
 )
 
-#' @describeIn compare_variables Formatted Analysis function method for `logical`.
+#' @describeIn compare_variables Formatted analysis function method for `logical` class.
 #' @export
 #'
 #' @examples
@@ -352,8 +347,13 @@ a_compare.logical <- make_afun(
 
 #' Constructor Function for [compare_vars()]
 #'
-#' @description `r lifecycle::badge("stable")` Constructor function which creates a combined Formatted
-#' Analysis function for use in layout creating functions [compare_vars()].
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Constructor function which creates a combined formatted analysis function.
+#'
+#' @inheritParams argument_convention
+#'
+#' @return Combined formatted analysis function for use in [compare_vars()].
 #'
 #' @note Since [a_compare()] is generic and we want customization of the formatting arguments
 #'   via [rtables::make_afun()], we need to create another temporary generic function, with
@@ -361,9 +361,9 @@ a_compare.logical <- make_afun(
 #'   we need to wrap them in a combined `afun`. Since this is required by two layout creating
 #'   functions (and possibly others in the future), we provide a constructor that does this:
 #'   [create_afun_compare()].
+#'
 #' @export
-#' @inheritParams argument_convention
-#' @seealso [compare_variables]
+#' @seealso [compare_vars()]
 #'
 #' @examples
 #' # `create_afun_compare()` to create combined `afun`
@@ -460,16 +460,15 @@ create_afun_compare <- function(.stats = NULL,
   }
 }
 
-#' @describeIn compare_variables Analyze Function to add a comparison of variables to
-#'  `rtables` pipelines. The column split needs to have the reference group defined
-#'   via `ref_group` so that the comparison is well defined.
-#'   The ellipsis (`...`) conveys arguments to [s_compare()].
-#'   When factor variables contains `NA`, it is expected that `NA`
-#'   have been conveyed to `na_level` appropriately beforehand with
-#'   [df_explicit_na()].
+#' @describeIn compare_variables Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @inheritParams argument_convention
 #' @param ... arguments passed to `s_compare()`.
+#'
+#' @return
+#' * `compare_vars()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_compare()` to the table layout.
 #'
 #' @export
 #'

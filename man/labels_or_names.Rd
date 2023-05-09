@@ -10,7 +10,7 @@ labels_or_names(x)
 \item{x}{a list}
 }
 \value{
-a character vector with the labels or names for the list elements
+A \code{character} vector with the labels or names for the list elements.
 }
 \description{
 Internal helper function for working with nested statistic function results which typically

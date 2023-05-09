@@ -23,7 +23,7 @@ indicating time unit for data input.}
 \item{time_unit_output}{(\code{numeric})\cr time unit for desired output (in person-years).}
 }
 \value{
-A list of components with the same name as the arguments.
+A list of components with the same names as the arguments.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

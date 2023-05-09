@@ -16,7 +16,7 @@ row should be returned.}
 \item{format}{(\code{string})\cr \code{rtables} format to use.}
 }
 \value{
-Content function which just gives \code{df$analysis_var} at the row identified by
+A content function which gives \code{df$analysis_var} at the row identified by
 \code{.df_row$flag} in the given format.
 }
 \description{

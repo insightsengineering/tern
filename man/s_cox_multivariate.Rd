@@ -26,6 +26,9 @@ including covariates.}
 \item{...}{Optional parameters passed to \code{\link[survival:coxph]{survival::coxph()}}. Can include \code{ties}, a character string specifying the
 method for tie handling, one of \code{exact} (default), \code{efron}, \code{breslow}.}
 }
+\value{
+A \code{list} with elements \code{mod}, \code{msum}, \code{aov}, and \code{coef_inter}.
+}
 \description{
 Analyses based on multivariate Cox model are usually not performed for the Controlled Substance Reporting or
 regulatory documents but serve exploratory purposes only (e.g., for publication). In practice, the model usually

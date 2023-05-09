@@ -24,7 +24,7 @@ control_lineplot_vars(
 \item{y_unit}{(\code{character} or \code{NA})\cr y_unit variable name.}
 }
 \value{
-A named character vector with names of variables.
+A named character vector of variable names.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -35,7 +35,4 @@ A variable's default value can be overwritten for any variable.
 \examples{
 control_lineplot_vars()
 control_lineplot_vars(strata = NA)
-}
-\author{
-Wojciech Wojciak wojciech.wojciak@contractors.roche.com
 }

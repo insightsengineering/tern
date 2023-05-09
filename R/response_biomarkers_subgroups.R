@@ -5,26 +5,27 @@
 #' Tabulate the estimated effects of multiple continuous biomarker variables
 #' on a binary response endpoint across population subgroups.
 #'
+#' @param df (`data.frame`)\cr containing all analysis variables, as returned by
+#'   [extract_rsp_biomarkers()].
+#' @param vars (`character`)\cr the names of statistics to be reported among:
+#'   * `n_tot`: Total number of patients per group.
+#'   * `n_rsp`: Total number of responses per group.
+#'   * `prop`: Total response proportion per group.
+#'   * `or`: Odds ratio.
+#'   * `ci`: Confidence interval of odds ratio.
+#'   * `pval`: p-value of the effect.
+#'   Note, the statistics `n_tot`, `or` and `ci` are required.
+#'
+#' @return An `rtables` table summarizing biomarker effects on binary response by subgroup.
+#'
 #' @details These functions create a layout starting from a data frame which contains
 #'   the required statistics. The tables are then typically used as input for forest plots.
 #'
-#' @param df (`data.frame`)\cr containing all analysis variables, as returned by
-#'   [extract_rsp_biomarkers()].
-#' @param vars (`character`)\cr the name of statistics to be reported among
-#'  `n_tot` (total number of patients per group),
-#'  `n_rsp` (total number of responses per group),
-#'  `prop` (total response proportion per group),
-#'  `or` (odds ratio),
-#'  `ci` (confidence interval of odds ratio) and
-#'  `pval` (p value of the effect).
-#'  Note, the statistics `n_tot`, `or` and `ci` are required.
-#'
-#' @seealso [h_tab_rsp_one_biomarker()] which is used internally, [extract_rsp_biomarkers()].
 #' @note In contrast to [tabulate_rsp_subgroups()] this tabulation function does
 #'   not start from an input layout `lyt`. This is because internally the table is
 #'   created by combining multiple subtables.
-#' @name response_biomarkers_subgroups
-#' @export
+#'
+#' @seealso [h_tab_rsp_one_biomarker()] which is used internally, [extract_rsp_biomarkers()].
 #'
 #' @examples
 #' library(dplyr)
@@ -51,6 +52,9 @@
 #' ## Finally produce the forest plot.
 #' g_forest(tab, xlim = c(0.7, 1.4))
 #' }
+#'
+#' @export
+#' @name response_biomarkers_subgroups
 tabulate_rsp_biomarkers <- function(df,
                                     vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval")) {
   checkmate::assert_data_frame(df)
@@ -98,10 +102,17 @@ tabulate_rsp_biomarkers <- function(df,
 #' @inheritParams response_subgroups
 #' @param control (named `list`)\cr controls for the response definition and the
 #'   confidence level produced by [control_logistic()].
-#' @seealso [h_logistic_mult_cont_df()] which is used internally.
+#'
+#' @return A `data.frame` with columns `biomarker`, `biomarker_label`, `n_tot`, `n_rsp`,
+#'   `prop`, `or`, `lcl`, `ucl`, `conf_level`, `pval`, `pval_label`, `subgroup`, `var`,
+#'   `var_label`, and `row_type`.
+#'
 #' @note You can also specify a continuous variable in `rsp` and then use the
 #'   `response_definition` control to convert that internally to a logical
 #'   variable reflecting binary response.
+#'
+#' @seealso [h_logistic_mult_cont_df()] which is used internally.
+#'
 #' @export
 #'
 #' @examples

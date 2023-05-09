@@ -12,9 +12,11 @@ fct_discard(x, discard)
 \item{discard}{(\code{character})\cr which levels to discard.}
 }
 \value{
-The modified factor with observations as well as levels from \code{discard} dropped.
+A modified \code{factor} with observations as well as levels from \code{discard} dropped.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This discards the observations as well as the levels specified from a factor.
 }
 \examples{

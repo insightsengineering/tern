@@ -7,6 +7,8 @@
 #' @param x factor or character vector
 #' @param label character string that missing data should be replaced with
 #'
+#' @return `x` with any `NA` values substituted by `label`.
+#'
 #' @export
 #'
 #' @examples
@@ -41,6 +43,9 @@ explicit_na <- function(x, label = "<Missing>") {
 #' @inheritParams explicit_na
 #' @param empty boolean if true empty strings get replaced by \code{NA}
 #' @param whitespaces boolean, if true then strings made from whitespaces only get replaced with \code{NA}
+#'
+#' @return `x` with `""` and/or whitespace-only values substituted by `NA`, depending on the values of
+#'   `empty` and `whitespaces`.
 #'
 #' @export
 #'

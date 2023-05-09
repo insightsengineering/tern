@@ -9,6 +9,9 @@ d_onco_rsp_label(x)
 \arguments{
 \item{x}{(\code{character})\cr the standard oncology code to be described.}
 }
+\value{
+Response labels.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

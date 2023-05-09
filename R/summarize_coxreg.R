@@ -5,15 +5,14 @@
 #' Fits a Cox regression model and estimates hazard ratio to describe the effect
 #' size in a survival analysis.
 #'
-#' @details
-#' Cox models are the most commonly used methods to estimate the magnitude of
-#' the effect in survival analysis. It assumes proportional hazards: the ratio
-#' of the hazards between groups (e.g., two arms) is constant over time.
-#' This ratio is referred to as the "hazard ratio" (HR) and is one of the
-#' most commonly reported metrics to describe the effect size in survival
-#' analysis (NEST Team, 2020).
-#'
 #' @inheritParams argument_convention
+#'
+#' @details Cox models are the most commonly used methods to estimate the magnitude of
+#'   the effect in survival analysis. It assumes proportional hazards: the ratio
+#'   of the hazards between groups (e.g., two arms) is constant over time.
+#'   This ratio is referred to as the "hazard ratio" (HR) and is one of the
+#'   most commonly reported metrics to describe the effect size in survival
+#'   analysis (NEST Team, 2020).
 #'
 #' @seealso [fit_coxreg] for relevant fitting functions, [h_cox_regression] for relevant
 #' helper functions, and [tidy_coxreg] for custom tidy methods.
@@ -49,9 +48,8 @@
 #' @name cox_regression
 NULL
 
-#' @describeIn cox_regression transforms the tabulated results from [`fit_coxreg_univar()`]
-#'  and [`fit_coxreg_multivar()`] into a list. Not much calculation is done here,
-#'  it rather prepares the data to be used by the layout creating function.
+#' @describeIn cox_regression Statistics function that transforms results tabulated
+#'   from [`fit_coxreg_univar()`] or [`fit_coxreg_multivar()`] into a list.
 #'
 #' @param model_df (`data.frame`)\cr contains the resulting model fit from a [`fit_coxreg`]
 #'   function with tidying applied via [`broom::tidy()`].
@@ -63,12 +61,15 @@ NULL
 #'   * `pval_inter`: p-value of the interaction effect between the treatment and the covariate (univariable only)
 #' @param .which_vars (`character`)\cr which rows should statistics be returned for from the given model.
 #'   Defaults to "all". Other options include "var_main" for main effects, "inter" for interaction effects,
-#'   and "multi_lvl" for multivariable model covariate level rows. When `.which_vars` is "all" specific
+#'   and "multi_lvl" for multivariate model covariate level rows. When `.which_vars` is "all" specific
 #'   variables can be selected by specifying `.var_nms`.
 #' @param .var_nms (`character`)\cr the `term` value of rows in `df` for which `.stats` should be returned. Typically
 #'   this is the name of a variable. If using variable labels, `var` should be a vector of both the desired
 #'   variable name and the variable label in that order to see all `.stats` related to that variable. When `.which_vars`
 #'   is "var_main" `.var_nms` should be only the variable name.
+#'
+#' @return
+#' * `s_coxreg()` returns the selected statistic for from the Cox regression model for the selected variable(s).
 #'
 #' @export
 #'
@@ -96,7 +97,7 @@ NULL
 #' df1_covs <- broom::tidy(univar_covs_model)
 #' s_coxreg(model_df = df1_covs, .stats = "hr", .var_nms = c("COVAR2", "Sex (F/M)"))
 #'
-#' # Multivariable.
+#' # Multivariate.
 #' m1_variables <- list(
 #'   time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2")
 #' )
@@ -108,7 +109,7 @@ NULL
 #'   .var_nms = c("COVAR1", "A Covariate Label")
 #' )
 #'
-#' # Multivariable without treatment arm - only "COVAR1" main effect
+#' # Multivariate without treatment arm - only "COVAR1" main effect
 #' m2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 #' multivar_covs_model <- fit_coxreg_multivar(variables = m2_variables, data = dta_bladder)
 #' df2_covs <- broom::tidy(multivar_covs_model)
@@ -142,7 +143,7 @@ s_coxreg <- function(model_df, .stats, .which_vars = "all", .var_nms = NULL) {
   )
 }
 
-#' @describeIn cox_regression Analysis function. It is used as `afun` in [rtables::analyze()]
+#' @describeIn cox_regression Analysis function which is used as `afun` in [rtables::analyze()]
 #'   and `cfun` in [rtables::summarize_row_groups()] within `summarize_coxreg()`.
 #'
 #' @param eff (`flag`)\cr whether treatment effect should be calculated. Defaults to `FALSE`.
@@ -150,6 +151,9 @@ s_coxreg <- function(model_df, .stats, .which_vars = "all", .var_nms = NULL) {
 #' @param na_level (`string`)\cr custom string to replace all `NA` values with. Defaults to `""`.
 #' @param cache_env (`environment`)\cr an environment object used to cache the regression model in order to
 #'   avoid repeatedly fitting the same model for every row in the table. Defaults to `NULL` (no caching).
+#'
+#' @return
+#' * `a_coxreg()` returns formatted [rtables::CellValue()].
 #'
 #' @examples
 #' tern:::a_coxreg(
@@ -248,10 +252,11 @@ a_coxreg <- function(df,
   )
 }
 
-#' @describeIn cox_regression layout creating function.
+#' @describeIn cox_regression Layout-creating function which creates a Cox regression summary table
+#'   layout. This function is a wrapper for several `rtables` layouting functions.
 #'
 #' @inheritParams fit_coxreg_univar
-#' @param multivar (`flag`)\cr Defaults to `FALSE`. If `TRUE` multivariable Cox regression will run, otherwise
+#' @param multivar (`flag`)\cr Defaults to `FALSE`. If `TRUE` multivariate Cox regression will run, otherwise
 #'   univariable Cox regression will run.
 #' @param common_var (`character`)\cr the name of a factor variable in the dataset which takes the same value
 #'   for all rows. This should be created during pre-processing if no such variable currently exists.
@@ -259,9 +264,14 @@ a_coxreg <- function(df,
 #'   Defaults to `NA` for no section divider. If a vector of two strings are given, the first will be used between
 #'   treatment and covariate sections and the second between different covariates.
 #'
+#' @return
+#' * `summarize_coxreg()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add a Cox regression table
+#'   containing the chosen statistics to the table layout.
+#'
 #' @export
 #' @seealso [fit_coxreg_univar()] and [fit_coxreg_multivar()] which also take the `variables`, `data`,
-#'   `at` (univariable only), and `control` arguments but return unformatted univariable and multivariable
+#'   `at` (univariable only), and `control` arguments but return unformatted univariable and multivariate
 #'   Cox regression models, respectively.
 #'
 #' @examples
@@ -313,7 +323,7 @@ summarize_coxreg <- function(lyt,
                              .section_div = NA_character_) {
   if (multivar && control$interaction) {
     warning(paste(
-      "Interactions are not available for multivariable cox regression using summarize_coxreg.",
+      "Interactions are not available for multivariate cox regression using summarize_coxreg.",
       "The model will be calculated without interaction effects."
     ))
   }

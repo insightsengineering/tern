@@ -16,6 +16,9 @@ stat_median_ci(x, conf_level = 0.95, na.rm = TRUE, gg_helper = TRUE)
 \item{gg_helper}{(\code{logical})\cr \code{TRUE} when output should be aligned
 for the use with \code{ggplot}.}
 }
+\value{
+A named \code{vector} of values \code{median_ci_lwr} and \code{median_ci_upr}.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

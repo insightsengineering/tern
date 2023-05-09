@@ -62,6 +62,9 @@ to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 
 \item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to control outlook of the Kaplan-Meier curve.}
 }
+\value{
+A \code{ggplot} object.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

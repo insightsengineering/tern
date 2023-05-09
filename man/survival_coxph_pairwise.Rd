@@ -86,13 +86,25 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-The statistics are:
-\describe{
-\item{pvalue}{p-value to test HR = 1.}
-\item{hr}{hazard ratio.}
-\item{hr_ci}{confidence interval for hazard ratio.}
-\item{n_tot}{total number of observations.}
-\item{n_tot_events}{total number of events.}
+\itemize{
+\item \code{s_coxph_pairwise()} returns the statistics:
+\itemize{
+\item \code{pvalue}: p-value to test HR = 1.
+\item \code{hr}: Hazard ratio.
+\item \code{hr_ci}: Confidence interval for hazard ratio.
+\item \code{n_tot}: Total number of observations.
+\item \code{n_tot_events}: Total number of events.
+}
+}
+
+\itemize{
+\item \code{a_coxph_pairwise()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{coxph_pairwise()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_coxph_pairwise()} to the table layout.
 }
 }
 \description{
@@ -102,13 +114,13 @@ Summarize p-value, HR and CIs from stratified or unstratified CoxPH model.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_coxph_pairwise()}: Statistics Function which analyzes HR, CIs of HR and p-value with coxph model.
+\item \code{s_coxph_pairwise()}: Statistics function which analyzes HR, CIs of HR and p-value
+of a coxph model.
 
-\item \code{a_coxph_pairwise()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_coxph_pairwise()}: Formatted analysis function which is used as \code{afun} in \code{coxph_pairwise()}.
 
-\item \code{coxph_pairwise()}: Analyze Function which adds the pairwise coxph analysis
-to the input layout. Note that additional formatting arguments can be used here.
+\item \code{coxph_pairwise()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{

@@ -51,6 +51,37 @@ h_step_rsp_est(
 
 \item{subset}{(\code{logical})\cr subset vector.}
 }
+\value{
+\itemize{
+\item \code{h_step_window()} returns a list containing the window-selection matrix \code{sel}
+and the interval information matrix \code{interval}.
+}
+
+\itemize{
+\item \code{h_step_trt_effect()} returns a vector with elements \code{est} and \code{se}.
+}
+
+\itemize{
+\item \code{h_step_survival_formula()} returns a model formula.
+}
+
+\itemize{
+\item \code{h_step_survival_est()} returns a matrix of number of observations \code{n},
+\code{events}, log hazard ratio estimates \code{loghr}, standard error \code{se},
+and Wald confidence interval bounds \code{ci_lower} and \code{ci_upper}. One row is
+included for each biomarker value in \code{x}.
+}
+
+\itemize{
+\item \code{h_step_rsp_formula()} returns a model formula.
+}
+
+\itemize{
+\item \code{h_step_rsp_est()} returns a matrix of number of observations \code{n}, log odds
+ratio estimates \code{logor}, standard error \code{se}, and Wald confidence interval bounds
+\code{ci_lower} and \code{ci_upper}. One row is included for each biomarker value in \code{x}.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -59,31 +90,24 @@ Helper functions that are used internally for the STEP calculations.
 \section{Functions}{
 \itemize{
 \item \code{h_step_window()}: creates the windows for STEP, based on the control settings
-provided. Returns a list containing the window-selection matrix \code{sel}
-and the interval information matrix \code{interval}.
+provided.
 
 \item \code{h_step_trt_effect()}: calculates the estimated treatment effect estimate
 on the linear predictor scale and corresponding standard error from a STEP \code{model} fitted
 on \code{data} given \code{variables} specification, for a single biomarker value \code{x}.
 This works for both \code{coxph} and \code{glm} models, i.e. for calculating log hazard ratio or log odds
-ratio estimates. It returns a vector with elements \code{est} and \code{se}.
+ratio estimates.
 
 \item \code{h_step_survival_formula()}: builds the model formula used in survival STEP calculations.
 
 \item \code{h_step_survival_est()}: estimates the model with \code{formula} built based on
 \code{variables} in \code{data} for a given \code{subset} and \code{control} parameters for the
-Cox regression, and returns a matrix of number of observations \code{n},
-\code{events} as well as log hazard ratio estimates \code{loghr}, standard error \code{se}
-and Wald confidence interval bounds \code{ci_lower} and \code{ci_upper}. One row is
-included here for each biomarker value in \code{x}.
+Cox regression.
 
 \item \code{h_step_rsp_formula()}: builds the model formula used in response STEP calculations.
 
 \item \code{h_step_rsp_est()}: estimates the model with \code{formula} built based on
 \code{variables} in \code{data} for a given \code{subset} and \code{control} parameters for the
-logistic regression, and returns a matrix of number of observations \code{n}
-as well as log odds ratio estimates \code{logor}, standard error \code{se}
-and Wald confidence interval bounds \code{ci_lower} and \code{ci_upper}. One row is
-included here for each biomarker value in \code{x}.
+logistic regression.
 
 }}

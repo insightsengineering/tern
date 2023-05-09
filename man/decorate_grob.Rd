@@ -60,7 +60,7 @@ not.}
 \item{vp}{a \code{\link[grid]{viewport}} object (or \code{NULL}).}
 }
 \value{
-a grid grob (\code{gTree})
+A grid grob (\code{gTree}).
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -71,12 +71,6 @@ with title, footnote, and page numbers.
 \details{
 The titles and footnotes will be ragged, i.e. each title will be wrapped
 individually.
-
-\if{html}{
-The layout can be illustrated as follows:
-
-\figure{decorate_grob.png}{options: alt="decorate_grob layout"}
-}
 }
 \examples{
 library(grid)
@@ -180,7 +174,4 @@ grid.draw(
     border = FALSE
   )
 )
-}
-\author{
-Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 }

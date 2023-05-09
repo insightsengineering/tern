@@ -13,6 +13,9 @@ reapply_varlabels(x, varlabels, ...)
 
 \item{...}{further parameters to be added to the list.}
 }
+\value{
+\code{x} with variable labels reapplied.
+}
 \description{
 This is a helper function that is used in tests.
 }

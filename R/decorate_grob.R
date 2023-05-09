@@ -26,16 +26,9 @@
 #' The titles and footnotes will be ragged, i.e. each title will be wrapped
 #' individually.
 #'
-#' \if{html}{
-#' The layout can be illustrated as follows:
-#'
-#' \figure{decorate_grob.png}{options: alt="decorate_grob layout"}
-#' }
-#'
-#' @return a grid grob (\code{gTree})
+#' @return A grid grob (`gTree`).
 #'
 #' @export
-#' @author Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 #'
 #' @examples
 #' library(grid)
@@ -238,7 +231,7 @@ decorate_grob <- function(grob,
 }
 
 #' @importFrom grid validDetails
-#' @export
+#' @noRd
 validDetails.decoratedGrob <- function(x) { # nolint
 
   checkmate::assert_character(x$titles)
@@ -264,13 +257,13 @@ validDetails.decoratedGrob <- function(x) { # nolint
 }
 
 #' @importFrom grid widthDetails
-#' @export
+#' @noRd
 widthDetails.decoratedGrob <- function(x) { # nolint
   grid::unit(1, "null")
 }
 
 #' @importFrom grid heightDetails
-#' @export
+#' @noRd
 heightDetails.decoratedGrob <- function(x) { # nolint
   grid::unit(1, "null")
 }
@@ -311,6 +304,8 @@ split_string <- function(text, width) {
 #' @inheritParams grid::grid.text
 #' @param text character string
 #' @param width a unit object specifying max width of text
+#'
+#' @return A text grob.
 #'
 #' @details
 #' This code is taken from R Graphics by \code{Paul Murell}, 2nd edition
@@ -399,7 +394,7 @@ split_text_grob <- function(text,
 }
 
 #' @importFrom grid validDetails
-#' @export
+#' @noRd
 validDetails.dynamicSplitText <- function(x) { # nolint
   checkmate::assert_character(x$text)
   checkmate::assert_true(grid::is.unit(x$width))
@@ -408,7 +403,7 @@ validDetails.dynamicSplitText <- function(x) { # nolint
 }
 
 #' @importFrom grid heightDetails
-#' @export
+#' @noRd
 heightDetails.dynamicSplitText <- function(x) { # nolint
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
     attr(x$text, "fixed_text")
@@ -419,13 +414,13 @@ heightDetails.dynamicSplitText <- function(x) { # nolint
 }
 
 #' @importFrom grid widthDetails
-#' @export
+#' @noRd
 widthDetails.dynamicSplitText <- function(x) { # nolint
   x$width
 }
 
 #' @importFrom grid drawDetails
-#' @export
+#' @noRd
 drawDetails.dynamicSplitText <- function(x, recording) { # nolint
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
     attr(x$text, "fixed_text")
@@ -448,10 +443,9 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
 #' @param npages number of pages in total
 #' @param ... passed on to \code{\link{decorate_grob}}
 #'
-#' @return closure that increments the page number
+#' @return Closure that increments the page number.
 #'
 #' @keywords internal
-#' @author Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 #'
 #' @examples
 #' # Internal function - decorate_grob_factory
@@ -487,7 +481,7 @@ decorate_grob_factory <- function(npages, ...) {
 #' @param grobs a list of grid grobs
 #' @param ... arguments passed on to \code{\link{decorate_grob}}
 #'
-#' @author Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
+#' @return A decorated grob.
 #'
 #' @examples
 #' library(ggplot2)

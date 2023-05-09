@@ -56,7 +56,7 @@ function with tidying applied via \code{\link[broom:reexports]{broom::tidy()}}.}
 
 \item{.which_vars}{(\code{character})\cr which rows should statistics be returned for from the given model.
 Defaults to "all". Other options include "var_main" for main effects, "inter" for interaction effects,
-and "multi_lvl" for multivariable model covariate level rows. When \code{.which_vars} is "all" specific
+and "multi_lvl" for multivariate model covariate level rows. When \code{.which_vars} is "all" specific
 variables can be selected by specifying \code{.var_nms}.}
 
 \item{.var_nms}{(\code{character})\cr the \code{term} value of rows in \code{df} for which \code{.stats} should be returned. Typically
@@ -73,7 +73,7 @@ is "var_main" \code{.var_nms} should be only the variable name.}
 
 \item{var_main}{(\code{flag})\cr whether main effects should be calculated. Defaults to \code{FALSE}.}
 
-\item{multivar}{(\code{flag})\cr Defaults to \code{FALSE}. If \code{TRUE} multivariable Cox regression will run, otherwise
+\item{multivar}{(\code{flag})\cr Defaults to \code{FALSE}. If \code{TRUE} multivariate Cox regression will run, otherwise
 univariable Cox regression will run.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
@@ -106,6 +106,21 @@ for all rows. This should be created during pre-processing if no such variable c
 Defaults to \code{NA} for no section divider. If a vector of two strings are given, the first will be used between
 treatment and covariate sections and the second between different covariates.}
 }
+\value{
+\itemize{
+\item \code{s_coxreg()} returns the selected statistic for from the Cox regression model for the selected variable(s).
+}
+
+\itemize{
+\item \code{a_coxreg()} returns formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{summarize_coxreg()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add a Cox regression table
+containing the chosen statistics to the table layout.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -122,14 +137,14 @@ analysis (NEST Team, 2020).
 }
 \section{Functions}{
 \itemize{
-\item \code{s_coxreg()}: transforms the tabulated results from \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}}
-and \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} into a list. Not much calculation is done here,
-it rather prepares the data to be used by the layout creating function.
+\item \code{s_coxreg()}: Statistics function that transforms results tabulated
+from \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} or \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} into a list.
 
-\item \code{a_coxreg()}: Analysis function. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}
+\item \code{a_coxreg()}: Analysis function which is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}
 and \code{cfun} in \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}} within \code{summarize_coxreg()}.
 
-\item \code{summarize_coxreg()}: layout creating function.
+\item \code{summarize_coxreg()}: Layout-creating function which creates a Cox regression summary table
+layout. This function is a wrapper for several \code{rtables} layouting functions.
 
 }}
 \examples{
@@ -183,7 +198,7 @@ univar_covs_model <- fit_coxreg_univar(variables = u2_variables, data = dta_blad
 df1_covs <- broom::tidy(univar_covs_model)
 s_coxreg(model_df = df1_covs, .stats = "hr", .var_nms = c("COVAR2", "Sex (F/M)"))
 
-# Multivariable.
+# Multivariate.
 m1_variables <- list(
   time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2")
 )
@@ -195,7 +210,7 @@ s_coxreg(
   .var_nms = c("COVAR1", "A Covariate Label")
 )
 
-# Multivariable without treatment arm - only "COVAR1" main effect
+# Multivariate without treatment arm - only "COVAR1" main effect
 m2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 multivar_covs_model <- fit_coxreg_multivar(variables = m2_variables, data = dta_bladder)
 df2_covs <- broom::tidy(multivar_covs_model)
@@ -256,7 +271,7 @@ result_multivar_covs
 helper functions, and \link{tidy_coxreg} for custom tidy methods.
 
 \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} and \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} which also take the \code{variables}, \code{data},
-\code{at} (univariable only), and \code{control} arguments but return unformatted univariable and multivariable
+\code{at} (univariable only), and \code{control} arguments but return unformatted univariable and multivariate
 Cox regression models, respectively.
 }
 \keyword{internal}

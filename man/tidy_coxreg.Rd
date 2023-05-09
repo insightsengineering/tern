@@ -18,6 +18,17 @@
 
 \item{...}{additional arguments for the lower level functions.}
 }
+\value{
+\code{\link[=tidy]{tidy()}} returns:
+\itemize{
+\item For \code{summary.coxph} objects,  a \code{data.frame} with columns: \verb{Pr(>|z|)}, \code{exp(coef)}, \code{exp(-coef)}, \verb{lower .95},
+\verb{upper .95}, \code{level}, and \code{n}.
+\item For \code{coxreg.univar} objects, a \code{data.frame} with columns: \code{effect}, \code{term}, \code{term_label}, \code{level}, \code{n}, \code{hr},
+\code{lcl}, \code{ucl}, \code{pval}, and \code{ci}.
+\item For \code{coxreg.multivar} objects, a \code{data.frame} with columns: \code{term}, \code{pval}, \code{term_label}, \code{hr}, \code{lcl}, \code{ucl},
+\code{level}, and \code{ci}.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
@@ -27,11 +38,11 @@
 
 Tidy the \code{\link[survival:coxph]{survival::coxph()}} results into a \code{data.frame} to extract model results.
 
-\item \code{tidy(coxreg.univar)}: Custom tidy method for a Univariate Cox Regression
+\item \code{tidy(coxreg.univar)}: Custom tidy method for a univariate Cox regression.
 
 Tidy up the result of a Cox regression model fitted by \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}}.
 
-\item \code{tidy(coxreg.multivar)}: Custom tidy method for a Multi-variable Cox Regression
+\item \code{tidy(coxreg.multivar)}: Custom tidy method for a multivariate Cox regression.
 
 Tidy up the result of a Cox regression model fitted by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}.
 

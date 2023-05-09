@@ -2,12 +2,9 @@
 % Please edit documentation in R/desctools_binom_diff.R
 \name{desctools_binom}
 \alias{desctools_binom}
-\alias{h_recycle}
 \alias{desctools_binomci}
 \title{Confidence Intervals for a Difference of Binomials}
 \usage{
-h_recycle(...)
-
 desctools_binom(
   x1,
   n1,
@@ -49,18 +46,18 @@ desctools_binomci(
 (e.g. reference and treatment group).}
 }
 \value{
-A named list of 3 values:
-\describe{
-\item{est}{estimate of proportion difference.}
-\item{lwrci}{estimate of lower end of the confidence interval.}
-\item{upci}{estimate of upper end of the confidence interval.}
+A \code{matrix} of 3 values:
+\itemize{
+\item \code{est}: estimate of proportion difference.
+\item \code{lwr.ci}: estimate of lower end of the confidence interval.
+\item \code{upr.ci}: estimate of upper end of the confidence interval.
 }
 
-A matrix with 3 columns containing:
-\describe{
-\item{est}{estimate of proportion difference.}
-\item{lwrci}{lower end of the confidence interval.}
-\item{upci}{upper end of the confidence interval.}
+A \code{matrix} with 3 columns containing:
+\itemize{
+\item \code{est}: estimate of proportion difference.
+\item \code{lwr.ci}: lower end of the confidence interval.
+\item \code{upr.ci}: upper end of the confidence interval.
 }
 }
 \description{
@@ -70,9 +67,7 @@ Several confidence intervals for the difference between proportions.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_recycle()}: This function recycles all supplied elements to the maximal dimension.
-
-\item \code{desctools_binom()}: Several Confidence Intervals for the difference between proportions.
+\item \code{desctools_binom()}: Several confidence intervals for the difference between proportions.
 
 \item \code{desctools_binomci()}: Compute confidence intervals for binomial proportions.
 

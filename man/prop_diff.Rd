@@ -84,6 +84,21 @@ to avoid warnings from \code{rtables}.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
+\value{
+\itemize{
+\item \code{s_proportion_diff()} returns a named list of elements \code{diff} and \code{diff_ci}.
+}
+
+\itemize{
+\item \code{a_proportion_diff()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{estimate_proportion_diff()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_proportion_diff()} to the table layout.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
@@ -92,14 +107,10 @@ to avoid warnings from \code{rtables}.}
 \item \code{s_proportion_diff()}: Statistics function estimating the difference
 in terms of responder proportion.
 
-\item \code{a_proportion_diff()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_proportion_diff()}: Formatted analysis function which is used as \code{afun} in \code{estimate_proportion_diff()}.
 
-\item \code{estimate_proportion_diff()}: Adds a descriptive analyze layer to \code{rtables}
-pipelines. The analysis is applied to a \code{dataframe} and return the
-estimations, in \code{rcells}. The ellipsis (\code{...}) conveys arguments to
-\code{s_proportion_diff()}, for instance \code{na.rm = FALSE} if missing data
-should be accounted for.
+\item \code{estimate_proportion_diff()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{

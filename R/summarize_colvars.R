@@ -2,12 +2,16 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This Analyze Function uses the new S3 generic function [s_summary()] to summarize
-#' different variables that are arranged in columns.
-#' Additional standard formatting arguments are available.
+#' This analyze function uses the S3 generic function [s_summary()] to summarize different variables
+#' that are arranged in columns. Additional standard formatting arguments are available.
 #'
 #' @inheritParams argument_convention
 #' @param ... arguments passed to `s_summary()`.
+#'
+#' @return
+#' A layout object suitable for passing to further layouting functions, or to [rtables::build_table()].
+#' Adding this function to an `rtable` layout will summarize the given variables, arrange the output
+#' in columns, and add it to the table layout.
 #'
 #' @seealso [rtables::split_cols_by_multivar()]
 #'

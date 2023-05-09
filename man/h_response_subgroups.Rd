@@ -50,14 +50,34 @@ levels that belong to it in the character vectors that are elements of the list.
 \item{method}{(\code{string})\cr specifies the test used to calculate the p-value for the difference between
 two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL} so no test is performed.}
 }
+\value{
+\itemize{
+\item \code{h_proportion_df()} returns a \code{data.frame} with columns \code{arm}, \code{n}, \code{n_rsp}, and \code{prop}.
+}
+
+\itemize{
+\item \code{h_proportion_subgroups_df()} returns a \code{data.frame} with columns \code{arm}, \code{n}, \code{n_rsp}, \code{prop}, \code{subgroup},
+\code{var}, \code{var_label}, and \code{row_type}.
+}
+
+\itemize{
+\item \code{h_odds_ratio_df()} returns a \code{data.frame} with columns \code{arm}, \code{n_tot}, \code{or}, \code{lcl}, \code{ucl}, \code{conf_level}, and
+optionally \code{pval} and \code{pval_label}.
+}
+
+\itemize{
+\item \code{h_odds_ratio_subgroups_df()} returns a \code{data.frame} with columns \code{arm}, \code{n_tot}, \code{or}, \code{lcl}, \code{ucl},
+\code{conf_level}, \code{subgroup}, \code{var}, \code{var_label}, and \code{row_type}.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
+
 Helper functions that tabulate in a data frame statistics such as response rate
 and odds ratio for population subgroups.
-
-Main functionality is to prepare data for use in a layout creating function.
+}
+\details{
+Main functionality is to prepare data for use in a layout-creating function.
 }
 \section{Functions}{
 \itemize{
@@ -94,6 +114,7 @@ adrs_f <- adrs \%>\%
     rsp = AVALC == "CR"
   )
 formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
+
 
 h_proportion_df(
   c(TRUE, FALSE, FALSE),

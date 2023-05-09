@@ -15,6 +15,9 @@ minimizes the weighted squared length of the confidence interval.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 }
+\value{
+Stratified quantile.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

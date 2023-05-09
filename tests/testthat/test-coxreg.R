@@ -539,7 +539,7 @@ testthat::test_that("fit_coxreg_multivar works correctly also without treatment 
 
 # tidy.coxreg.multivar ----
 
-testthat::test_that("tidy.coxreg.multivar method tidies up the multi-variable Cox regression model", {
+testthat::test_that("tidy.coxreg.multivar method tidies up the multivariate Cox regression model", {
   set.seed(1, kind = "Mersenne-Twister")
   dta_bladder <- dta_bladder_raw
 

@@ -11,6 +11,9 @@ explicit_na(x, label = "<Missing>")
 
 \item{label}{character string that missing data should be replaced with}
 }
+\value{
+\code{x} with any \code{NA} values substituted by \code{label}.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

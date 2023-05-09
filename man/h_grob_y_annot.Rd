@@ -13,6 +13,9 @@ a \code{ggplot}.}
 \item{yaxis}{(\code{gtable})\cr the y-axis as a graphical object derived from
 a \code{ggplot}.}
 }
+\value{
+a \code{gTree} object containing the y-axis annotation from a \code{ggplot}.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

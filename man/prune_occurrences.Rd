@@ -43,29 +43,45 @@ keep the row.}
 or alternatively \code{col_indices} (\code{integer}) giving the indices directly instead.}
 }
 \value{
-\code{\link[=keep_rows]{keep_rows()}} returns a pruning function that can be used with \code{\link[rtables:prune_table]{rtables::prune_table()}}
-on \verb{[rtables::TableTree()]} objects.
+\itemize{
+\item \code{keep_rows()} returns a pruning function that can be used with \code{\link[rtables:prune_table]{rtables::prune_table()}}
+to prune an \code{rtables} table.
+}
 
-\code{\link[=keep_content_rows]{keep_content_rows()}} also returns a pruning function, the difference is that it
-checks the condition on the first content row of leaf tables in the table.
+\itemize{
+\item \code{keep_content_rows()} returns a pruning function that checks the condition on the first content
+row of leaf tables in the table.
+}
 
-\code{\link[=has_count_in_cols]{has_count_in_cols()}} returns a condition function that sums the counts in the specified
+\itemize{
+\item \code{has_count_in_cols()} returns a condition function that sums the counts in the specified
 column.
+}
 
-\code{\link[=has_count_in_any_col]{has_count_in_any_col()}} returns a condition function that compares the counts in the
+\itemize{
+\item \code{has_count_in_any_col()} returns a condition function that compares the counts in the
 specified columns with the threshold.
+}
 
-\code{\link[=has_fraction_in_cols]{has_fraction_in_cols()}} returns a condition function that sums the counts in the
+\itemize{
+\item \code{has_fraction_in_cols()} returns a condition function that sums the counts in the
 specified column, and computes the fraction by dividing by the total column counts.
+}
 
-\code{\link[=has_fraction_in_cols]{has_fraction_in_cols()}} returns a condition function that looks at the fractions
+\itemize{
+\item \code{has_fraction_in_any_col()} returns a condition function that looks at the fractions
 in the specified columns and checks whether any of them fulfill the threshold.
+}
 
-\code{\link[=has_fractions_difference]{has_fractions_difference()}} returns a condition function that extracts the fractions of each
+\itemize{
+\item \code{has_fractions_difference()} returns a condition function that extracts the fractions of each
 specified column, and computes the difference of the minimum and maximum.
+}
 
-\code{\link[=has_counts_difference]{has_counts_difference()}} returns a condition function that extracts the counts of each
+\itemize{
+\item \code{has_counts_difference()} returns a condition function that extracts the counts of each
 specified column, and computes the difference of the minimum and maximum.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -77,39 +93,39 @@ functions.
 }
 \section{Functions}{
 \itemize{
-\item \code{keep_rows()}: constructor for creating pruning functions based on
+\item \code{keep_rows()}: Constructor for creating pruning functions based on
 a row condition function. This removes all analysis rows (\code{TableRow}) that should be
-pruned, i.e., don't fulfill the row condition. It removes the sub tree if there are no
+pruned, i.e., don't fulfill the row condition. It removes the sub-tree if there are no
 children left.
 
-\item \code{keep_content_rows()}: constructor for creating pruning functions based on
+\item \code{keep_content_rows()}: Constructor for creating pruning functions based on
 a condition for the (first) content row in leaf tables. This removes all leaf tables where
 the first content row does not fulfill the condition. It does not check individual rows.
 It then proceeds recursively by removing the sub tree if there are no children left.
 
-\item \code{has_count_in_cols()}: constructor for creating condition functions on total counts in
+\item \code{has_count_in_cols()}: Constructor for creating condition functions on total counts in
 the specified columns.
 
-\item \code{has_count_in_any_col()}: constructor for creating condition functions on any of the counts in
+\item \code{has_count_in_any_col()}: Constructor for creating condition functions on any of the counts in
 the specified columns satisfying a threshold.
 
-\item \code{has_fraction_in_cols()}: constructor for creating condition functions on total fraction in
+\item \code{has_fraction_in_cols()}: Constructor for creating condition functions on total fraction in
 the specified columns.
 
-\item \code{has_fraction_in_any_col()}: constructor for creating condition functions on any fraction in
+\item \code{has_fraction_in_any_col()}: Constructor for creating condition functions on any fraction in
 the specified columns.
 
-\item \code{has_fractions_difference()}: constructor for creating condition function that checks the difference
+\item \code{has_fractions_difference()}: Constructor for creating condition function that checks the difference
 between the fractions reported in each specified column.
 
-\item \code{has_counts_difference()}: constructor for creating condition function that checks the difference
+\item \code{has_counts_difference()}: Constructor for creating condition function that checks the difference
 between the counts reported in each specified column.
 
 }}
 \note{
 Since most table specifications are worded positively, we name our constructor and condition
 functions positively, too. However, note that the result of \code{\link[=keep_rows]{keep_rows()}} says what
-should be pruned though, to conform with the \code{\link[rtables:prune_table]{rtables::prune_table()}} interface.
+should be pruned, to conform with the \code{\link[rtables:prune_table]{rtables::prune_table()}} interface.
 }
 \examples{
 \dontrun{

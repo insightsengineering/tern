@@ -16,6 +16,9 @@ the p-value of the mean.}
 
 \item{test_mean}{(\code{number})\cr mean value to test under the null hypothesis.}
 }
+\value{
+A p-value.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

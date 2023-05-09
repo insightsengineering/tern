@@ -11,7 +11,9 @@
 #'   levels. By default this is just `"response"` such that the original response variable is used
 #'   and not modified further.
 #' @inheritParams argument_convention
+#'
 #' @return A list of components with the same names as the arguments.
+#'
 #' @export
 #' @examples
 #' # Standard options.

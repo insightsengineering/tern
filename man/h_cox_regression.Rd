@@ -32,18 +32,29 @@ interaction can be used so that this needs to be \code{FALSE}.}
 
 \item{mod}{(\code{coxph})\cr Cox regression model fitted by \code{\link[survival:coxph]{survival::coxph()}}.}
 
-\item{control}{(\code{list})\cr a list of controls as returned by
-\code{\link[=control_coxreg]{control_coxreg()}}.}
+\item{control}{(\code{list})\cr a list of controls as returned by \code{\link[=control_coxreg]{control_coxreg()}}.}
 
 \item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 }
 \value{
-The function \code{h_coxreg_univar_formulas} returns a \code{character} vector coercible
-into formulas (e.g \code{\link[stats:formula]{stats::as.formula()}}).
+\itemize{
+\item \code{h_coxreg_univar_formulas()} returns a \code{character} vector coercible into formulas (e.g \code{\link[stats:formula]{stats::as.formula()}}).
+}
 
-The function \code{h_coxreg_univar_formulas} returns a \code{character} vector coercible
-into formulas (e.g \code{\link[stats:formula]{stats::as.formula()}}).
+\itemize{
+\item \code{h_coxreg_multivar_formula()} returns a \code{string} coercible into a formula (e.g \code{\link[stats:formula]{stats::as.formula()}}).
+}
+
+\itemize{
+\item \code{h_coxreg_univar_extract()} returns a \code{data.frame} with variables \code{effect}, \code{term}, \code{term_label}, \code{level},
+\code{n}, \code{hr}, \code{lcl}, \code{ucl}, and \code{pval}.
+}
+
+\itemize{
+\item \code{h_coxreg_multivar_extract()} returns a \code{data.frame} with variables \code{pval}, \code{hr}, \code{lcl}, \code{ucl}, \code{level},
+\code{n}, \code{term}, and \code{term_label}.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -52,24 +63,18 @@ Helper functions used in \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} a
 }
 \section{Functions}{
 \itemize{
-\item \code{h_coxreg_univar_formulas()}: Helper for Cox Regression Formula
+\item \code{h_coxreg_univar_formulas()}: Helper for Cox regression formula. Creates a list of formulas. It is used
+internally by \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} for the comparison of univariate Cox regression models.
 
-Creates a list of formulas. It is used internally by \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}}
-for the comparison of univariate Cox regression models.
-
-\item \code{h_coxreg_multivar_formula()}: Helper for Multi-variable Cox Regression Formula
-
-Creates a formulas string. It is used internally by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}
-for the comparison of multi-variable Cox regression models. Interactions will not
-be included in multi-variable Cox regression model.
+\item \code{h_coxreg_multivar_formula()}: Helper for multivariate Cox regression formula. Creates a formulas
+string. It is used internally by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} for the comparison of multivariate Cox
+regression models. Interactions will not be included in multivariate Cox regression model.
 
 \item \code{h_coxreg_univar_extract()}: Utility function to help tabulate the result of
 a univariate Cox regression model.
 
-\item \code{h_coxreg_multivar_extract()}: Tabulation of Multi-variable Cox Regressions
-
-Utility function to help tabulate the result of a multi-variable Cox regression model
-for a treatment/covariate variable.
+\item \code{h_coxreg_multivar_extract()}: Tabulation of multivariate Cox regressions. Utility function to help
+tabulate the result of a multivariate Cox regression model for a treatment/covariate variable.
 
 }}
 \examples{

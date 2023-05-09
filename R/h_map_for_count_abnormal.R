@@ -15,6 +15,9 @@
 #' records with all normal values will be excluded to avoid error in creating layout.
 #' If method is `"range"`, the returned map will be based on the rule that at least one observation with low range > 0
 #' for low direction and at least one observation with high range is not missing for high direction.
+#'
+#' @return A map `data.frame`.
+#'
 #' @export
 #'
 #' @examples

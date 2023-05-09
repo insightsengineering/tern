@@ -12,7 +12,7 @@ format_count_fraction_fixed_dp(x, ...)
 \item{...}{required for \code{rtables} interface.}
 }
 \value{
-a string in the format \verb{count (fraction \%)}. If \code{count} is 0 the format is \code{0}.
+A string in the format \verb{count (fraction \%)}. If \code{count} is 0, the format is \code{0}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

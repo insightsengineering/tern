@@ -19,6 +19,9 @@
 #' there are some levels of interest that are not observed in the `df` dataset.
 #' The two columns of this dataset should be named `basket` and `basket_name`.
 #'
+#' @return `data.frame` with variables in `keys` taken from `df` and new variable `SMQ` containing
+#'   records belonging to the baskets selected via the `baskets` argument.
+#'
 #' @export
 #'
 #' @examples

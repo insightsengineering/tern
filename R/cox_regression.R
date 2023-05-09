@@ -16,7 +16,7 @@
 #'   `efron` and `breslow`, see [survival::coxph()].
 #'   Note: there is no equivalent of SAS `EXACT` method in R.
 #'
-#' @return A `list` of item corresponding to the arguments.
+#' @return A `list` of items with names corresponding to the arguments.
 #'
 #' @examples
 #' control_coxreg()
@@ -42,6 +42,14 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
+#' @return [tidy()] returns:
+#' * For `summary.coxph` objects,  a `data.frame` with columns: `Pr(>|z|)`, `exp(coef)`, `exp(-coef)`, `lower .95`,
+#'   `upper .95`, `level`, and `n`.
+#' * For `coxreg.univar` objects, a `data.frame` with columns: `effect`, `term`, `term_label`, `level`, `n`, `hr`,
+#'   `lcl`, `ucl`, `pval`, and `ci`.
+#' * For `coxreg.multivar` objects, a `data.frame` with columns: `term`, `pval`, `term_label`, `hr`, `lcl`, `ucl`,
+#'   `level`, and `ci`.
+#'
 #' @seealso [cox_regression]
 #'
 #' @name tidy_coxreg
@@ -52,6 +60,7 @@ NULL
 #' Tidy the [survival::coxph()] results into a `data.frame` to extract model results.
 #'
 #' @inheritParams argument_convention
+#'
 #' @method tidy summary.coxph
 #' @export
 #'
@@ -97,7 +106,7 @@ tidy.summary.coxph <- function(x, # nolint
   ret
 }
 
-#' @describeIn tidy_coxreg Custom tidy method for a Univariate Cox Regression
+#' @describeIn tidy_coxreg Custom tidy method for a univariate Cox regression.
 #'
 #' Tidy up the result of a Cox regression model fitted by [`fit_coxreg_univar()`].
 #'
@@ -186,7 +195,7 @@ tidy.coxreg.univar <- function(x, # nolint
   result
 }
 
-#' @describeIn tidy_coxreg Custom tidy method for a Multi-variable Cox Regression
+#' @describeIn tidy_coxreg Custom tidy method for a multivariate Cox regression.
 #'
 #' Tidy up the result of a Cox regression model fitted by [`fit_coxreg_multivar()`].
 #'
@@ -288,15 +297,16 @@ NULL
 #'  effect should be estimated.
 #' @param control (`list`)\cr a list of parameters as returned by the
 #'   helper function [control_coxreg()].
-#' @return The function `fit_coxreg_univar` returns a `coxreg.univar` class object which is a named list
-#' with 5 elements:
-#' \describe{
-#'   \item{mod}{Cox regression models fitted by [survival::coxph()].}
-#'   \item{data}{The original data frame input.}
-#'   \item{control}{The original control input.}
-#'   \item{vars}{The variables used in the model.}
-#'   \item{at}{Value of the covariate at which the effect should be estimated.}
-#' }
+#'
+#' @return
+#' * `fit_coxreg_univar()` returns a `coxreg.univar` class object which is a named `list`
+#'   with 5 elements:
+#'   * `mod`: Cox regression models fitted by [survival::coxph()].
+#'   * `data`: The original data frame input.
+#'   * `control`: The original control input.
+#'   * `vars`: The variables used in the model.
+#'   * `at`: Value of the covariate at which the effect should be estimated.
+#'
 #' @note When using `fit_coxreg_univar` there should be two study arms.
 #'
 #' @examples
@@ -385,16 +395,15 @@ fit_coxreg_univar <- function(variables,
   )
 }
 
-#' @describeIn fit_coxreg Fit a multi-variable Cox regression model.
+#' @describeIn fit_coxreg Fit a multivariate Cox regression model.
 #'
-#' @return The function `fit_coxreg_multivar` returns a `coxreg.multivar` class object which is a named list
-#' with 4 elements:
-#' \describe{
-#'   \item{mod}{Cox regression model fitted by [survival::coxph()].}
-#'   \item{data}{The original data frame input.}
-#'   \item{control}{The original control input.}
-#'   \item{vars}{The variables used in the model.}
-#' }
+#' @return
+#' * `fit_coxreg_multivar()` returns a `coxreg.multivar` class object which is a named list
+#'   with 4 elements:
+#'   * `mod`: Cox regression model fitted by [survival::coxph()].
+#'   * `data`: The original data frame input.
+#'   * `control`: The original control input.
+#'   * `vars`: The variables used in the model.
 #'
 #' @examples
 #' # fit_coxreg_multivar
@@ -462,6 +471,8 @@ fit_coxreg_multivar <- function(variables,
 #' @param mod (`coxph`)\cr Cox regression model fitted by [survival::coxph()].
 #' @param test_statistic (`string`)\cr the method used for estimation of p.values;
 #'   `wald` (default) or `likelihood`.
+#'
+#' @return Returns the output of [car::Anova()], with convergence message muffled.
 #'
 #' @keywords internal
 muffled_car_anova <- function(mod, test_statistic) {

@@ -18,8 +18,8 @@ get_smooths(df, x, y, groups = NULL, level = 0.95)
 \item{level}{(\code{numeric})\cr level of confidence interval to use (0.95 by default).}
 }
 \value{
-A \code{data.frame} with original \code{x}, smoothed \code{y}, \code{ylow}, \code{yhigh} and
-optional \code{groups} variables formatted to factor type.
+A \code{data.frame} with original \code{x}, smoothed \code{y}, \code{ylow}, and \code{yhigh}, and
+optional \code{groups} variables formatted as \code{factor} type.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

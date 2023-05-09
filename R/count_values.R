@@ -4,15 +4,22 @@
 #'
 #' We can count the occurrence of specific values in a variable of interest.
 #'
-#' @name count_values_funs
+#' @note
+#' * For `factor` variables, `s_count_values` checks whether `values` are all included in the levels of `x`
+#'   and fails otherwise.
+#' * For `count_values()`, variable labels are shown when there is more than one element in `vars`,
+#'   otherwise they are hidden.
 #'
+#' @name count_values_funs
 NULL
 
-#' @describeIn count_values_funs Statistics Function which is a generic function to count values.
+#' @describeIn count_values_funs S3 generic function to count values.
 #' @inheritParams argument_convention
 #' @inheritParams s_summary.logical
 #' @param values (`character`)\cr specific values that should be counted.
-#' @return See [s_summary.logical()] for the returned statistics, as this is used inside.
+#'
+#' @return
+#' * `s_count_values()` returns output of [s_summary()] for specified values of a non-numeric variable.
 #'
 #' @export
 #'
@@ -25,7 +32,7 @@ s_count_values <- function(x,
   UseMethod("s_count_values", x)
 }
 
-#' @describeIn count_values_funs Method for `character` vectors `x`.
+#' @describeIn count_values_funs Method for `character` class.
 #' @method s_count_values character
 #'
 #' @export
@@ -49,9 +56,8 @@ s_count_values.character <- function(x,
   s_summary(is_in_values, ...)
 }
 
-#' @describeIn count_values_funs method for `factor` vectors `x`. This checks whether `values` are all
-#'   included in the levels of `x` and fails otherwise. It then proceeds by converting to `character`
-#'   and calling `s_count_values.character`.
+#' @describeIn count_values_funs Method for `factor` class. This makes an automatic
+#'   conversion to `character` and then forwards to the method for characters.
 #' @method s_count_values factor
 #'
 #' @export
@@ -65,7 +71,7 @@ s_count_values.factor <- function(x,
   s_count_values(as.character(x), values = as.character(values), ...)
 }
 
-#' @describeIn count_values_funs method for `logical` vectors `x`.
+#' @describeIn count_values_funs Method for `logical` class.
 #' @method s_count_values logical
 #'
 #' @export
@@ -79,8 +85,12 @@ s_count_values.logical <- function(x, values = TRUE, ...) {
 }
 
 
-#' @describeIn count_values_funs Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn count_values_funs Formatted analysis function which is used as `afun`
+#'   in `count_values()`.
+#'
+#' @return
+#' * `a_count_values()` returns the corresponding list with formatted [rtables::CellValue()].
+#'
 #' @export
 #'
 #' @examples
@@ -91,13 +101,14 @@ a_count_values <- make_afun(
   .formats = c(count_fraction = "xx (xx.xx%)", count = "xx")
 )
 
-#' @describeIn count_values_funs Analyze Function which adds the counting analysis to
-#'   the input layout. Note that additional formatting arguments can be used
-#'   here.
+#' @describeIn count_values_funs Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #' @inheritParams argument_convention
 #'
-#' @note Variable labels are shown when there is more than one element in `vars`, otherwise they
-#' are hidden.
+#' @return
+#' * `count_values()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_values()` to the table layout.
 #'
 #' @export
 #'

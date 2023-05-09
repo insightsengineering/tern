@@ -16,6 +16,9 @@ patients at risk at given time points.}
 \item{xlim}{(\code{numeric})\cr the maximum value on the x-axis (used to
 ensure the at risk table aligns with the KM graph).}
 }
+\value{
+A named \code{list} of two \code{gTree} objects: \code{at_risk} and \code{label}.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

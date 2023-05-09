@@ -121,7 +121,7 @@ appended to the plot. Names of \code{table_labels} must match the names of stati
 \item{col}{(\code{character})\cr colors.}
 }
 \value{
-\code{ggplot}
+A \code{ggplot} line plot (and statistics table if applicable).
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -181,7 +181,4 @@ g_lineplot(
 # Mean with CI, table, filtered data
 adlb_f <- dplyr::filter(adlb, ARMCD != "ARM A" | AVISIT == "BASELINE")
 g_lineplot(adlb_f, table = c("n", "mean"))
-}
-\author{
-Wojciech Wojciak wojciech.wojciak@contractors.roche.com
 }

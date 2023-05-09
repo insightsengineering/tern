@@ -88,6 +88,28 @@ to avoid warnings from \code{rtables}.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 }
+\value{
+\itemize{
+\item \code{s_count_occurrences_by_grade()} returns a list of counts and fractions with one element per grade level or
+grade level grouping.
+}
+
+\itemize{
+\item \code{a_count_occurrences_by_grade()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{count_occurrences_by_grade()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_occurrences_by_grade()} to the table layout.
+}
+
+\itemize{
+\item \code{summarize_occurrences_by_grade()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted content rows
+containing the statistics from \code{s_count_occurrences_by_grade()} to the table layout.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -97,18 +119,17 @@ greatest intensity/highest grade level.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_occurrences_by_grade()}: Statistics function which given occurrence data counts the
-number of patients by highest grade. Returns a list of counts and fractions with one element
-per grade level or grade level grouping.
+\item \code{s_count_occurrences_by_grade()}: Statistics function which counts the
+number of patients by highest grade.
 
-\item \code{a_count_occurrences_by_grade()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_count_occurrences_by_grade()}: Formatted analysis function which is used as \code{afun}
+in \code{count_occurrences_by_grade()}.
 
-\item \code{count_occurrences_by_grade()}: Layout creating function which can be used for creating tables,
-which can take statistics function arguments and additional format arguments (see below).
+\item \code{count_occurrences_by_grade()}: Layout-creating function which can take statistics function
+arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{summarize_occurrences_by_grade()}: Layout creating function which adds content rows using the
-statistics function and additional format arguments (see below).
+\item \code{summarize_occurrences_by_grade()}: Layout-creating function which can take content function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 
 }}
 \examples{

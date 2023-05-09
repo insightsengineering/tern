@@ -15,6 +15,9 @@ NULL
 #' @inheritParams prop_diff_strat_nc
 #' @param method (`string`)\cr the method used for the confidence interval estimation.
 #'
+#' @return
+#' * `s_proportion_diff()` returns a named list of elements `diff` and `diff_ci`.
+#'
 #' @examples
 #' # Summary
 #'
@@ -133,8 +136,10 @@ s_proportion_diff <- function(df,
   y
 }
 
-#' @describeIn prop_diff Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn prop_diff Formatted analysis function which is used as `afun` in `estimate_proportion_diff()`.
+#'
+#' @return
+#' * `a_proportion_diff()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' a_proportion_diff(
@@ -153,14 +158,16 @@ a_proportion_diff <- make_afun(
   .indent_mods = c(diff = 0L, diff_ci = 1L)
 )
 
-#' @describeIn prop_diff Adds a descriptive analyze layer to `rtables`
-#'   pipelines. The analysis is applied to a `dataframe` and return the
-#'   estimations, in `rcells`. The ellipsis (`...`) conveys arguments to
-#'   `s_proportion_diff()`, for instance `na.rm = FALSE` if missing data
-#'   should be accounted for.
+#' @describeIn prop_diff Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @inheritParams argument_convention
 #' @param ... arguments passed to `s_proportion_diff()`.
+#'
+#' @return
+#' * `estimate_proportion_diff()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_proportion_diff()` to the table layout.
 #'
 #' @examples
 #' l <- basic_table() %>%
@@ -238,7 +245,9 @@ check_diff_prop_ci <- function(rsp,
 #'
 #' @inheritParams s_proportion_diff
 #' @param long (`logical`)\cr Whether a long or a short (default) description is required.
-#' @return String describing the analysis.
+#'
+#' @return A `string` describing the analysis.
+#'
 #' @seealso [prop_diff]
 #'
 #' @export
@@ -279,6 +288,9 @@ d_proportion_diff <- function(conf_level,
 #' @inheritParams prop_diff
 #' @param grp (`factor`)\cr vector assigning observations to one out of two groups
 #'   (e.g. reference and treatment group).
+#'
+#' @return A named `list` of elements `diff` (proportion difference) and `diff_ci`
+#'   (proportion difference confidence interval).
 #'
 #' @seealso [prop_diff()] for implementation of these helper functions.
 #'

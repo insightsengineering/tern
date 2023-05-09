@@ -10,10 +10,10 @@ format_fraction_threshold(threshold)
 \item{threshold}{(\code{proportion})\cr lower threshold.}
 }
 \value{
-An \code{rtables} Formatting Function that takes numeric input \code{x} where the second
+An \code{rtables} formatting function that takes numeric input \code{x} where the second
 element is the fraction that is formatted. If the fraction is above or equal to the threshold,
-then it is displayed in percentage. If it is positive but below the threshold, it returns
-"<1" e.g. if the threshold is \code{0.01}. If it is zero, then just "0" is returned.
+then it is displayed in percentage. If it is positive but below the threshold, it returns,
+e.g. "<1" if the threshold is \code{0.01}. If it is zero, then just "0" is returned.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

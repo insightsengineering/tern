@@ -13,6 +13,10 @@ sas_na(x, empty = TRUE, whitespaces = TRUE)
 
 \item{whitespaces}{boolean, if true then strings made from whitespaces only get replaced with \code{NA}}
 }
+\value{
+\code{x} with \code{""} and/or whitespace-only values substituted by \code{NA}, depending on the values of
+\code{empty} and \code{whitespaces}.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

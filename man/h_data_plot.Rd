@@ -15,13 +15,15 @@ variable only has one level. Default is "All".}
 \item{max_time}{(\code{numeric})\cr maximum value to show on X axis. Only data values less than or up to
 this threshold value will be plotted (defaults to \code{NULL}).}
 }
+\value{
+A \code{tibble} with columns \code{time}, \code{n.risk}, \code{n.event}, \code{n.censor},
+\code{estimate}, \code{std.error}, \code{conf.high}, \code{conf.low}, \code{strata}, and \code{censor}.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Convert the survival fit data into a data frame designed for plotting
 within \code{g_km}.
-
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 This starts from the \code{\link[broom:reexports]{broom::tidy()}} result, and then:
 \itemize{

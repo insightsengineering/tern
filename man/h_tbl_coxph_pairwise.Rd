@@ -27,10 +27,14 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
 }}
 }
+\value{
+A \code{data.frame} containing statistics \code{HR}, \verb{XX\% CI} (\code{XX} taken from \code{control_coxph_pw}),
+and \code{p-value (log-rank)}.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Create an \code{rtable} of pairwise stratified or unstratified CoxPH analysis results.
+Create a \code{data.frame} of pairwise stratified or unstratified CoxPH analysis results.
 }
 \examples{
 \dontrun{

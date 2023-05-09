@@ -29,6 +29,9 @@ for the use with \code{ggplot}.}
 \item{geom_mean}{(\code{logical})\cr \code{TRUE} when the geometric mean should be
 calculated}
 }
+\value{
+A named \code{vector} of values \code{mean_ci_lwr} and \code{mean_ci_upr}.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

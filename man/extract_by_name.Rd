@@ -12,7 +12,7 @@ extract_by_name(x, names)
 \item{names}{(\code{character})\cr vector of names to extract.}
 }
 \value{
-Either \code{NULL} or the extracted elements from \code{x}.
+\code{NULL} if \code{x} is \code{NULL}, otherwise the extracted elements from \code{x}.
 }
 \description{
 This utility function extracts elements from a vector \code{x} by \code{names}.

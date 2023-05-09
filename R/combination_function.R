@@ -9,6 +9,8 @@
 #' @param e2 (`CombinationFunction`)\cr right hand side of logical operator.
 #' @param x (`CombinationFunction`)\cr the function which should be negated.
 #'
+#' @return Returns a logical value indicating whether the left hand side of the equation equals the right hand side.
+#'
 #' @exportClass CombinationFunction
 #' @export CombinationFunction
 #'

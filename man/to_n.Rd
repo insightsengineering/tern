@@ -12,12 +12,14 @@ to_n(x, n)
 \item{n}{(\code{count})\cr how many entries we need.}
 }
 \value{
-Just input \code{x} if it has the required length already or is \code{NULL},
+\code{x} if it has the required length already or is \code{NULL},
 otherwise if it is scalar the replicated version of it with \code{n} entries.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Replicate entries of a vector if required. Note that this will fail if \code{x}
-is not of length \code{n} or is not a scalar.
+Replicate entries of a vector if required.
+}
+\note{
+This function will fail if \code{x} is not of length \code{n} and/or is not a scalar.
 }

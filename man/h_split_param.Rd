@@ -13,6 +13,10 @@ h_split_param(param, value, f)
 
 \item{f}{(\code{list} of \code{vectors})\cr the reference to make the split}
 }
+\value{
+A named \code{list} with the same element names as \code{f}, each containing the
+elements specified in \code{.stats}.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

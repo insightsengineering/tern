@@ -14,6 +14,9 @@ forest_viewport(
   mat_form = NULL
 )
 }
+\value{
+A viewport tree.
+}
 \description{
 Create a Viewport Tree for the Forest Plot
 }

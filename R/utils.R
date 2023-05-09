@@ -6,7 +6,7 @@
 #' @param na.rm (`logical`)\cr indicating if NA should be omitted.
 #' @param finite (`logical`)\cr indicating if non-finite elements should be removed.
 #'
-#' @return 2-elements vector of class numeric.
+#' @return A 2-element vector of class `numeric`.
 #'
 #' @examples
 #' # Internal function - range_noinf
@@ -47,7 +47,7 @@ range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams argument_convention
-#' @return a `string`
+#' @return A `string`.
 #'
 #' @export
 f_conf_level <- function(conf_level) {
@@ -60,7 +60,7 @@ f_conf_level <- function(conf_level) {
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @param test_mean (`number`)\cr mean value to test under the null hypothesis.
-#' @return a `string`
+#' @return A `string`.
 #'
 #' @export
 f_pval <- function(test_mean) {
@@ -72,7 +72,7 @@ f_pval <- function(test_mean) {
 #'
 #' @param covariates (`character`)\cr a vector that can contain single variable names (such as
 #'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
-#' @return a named `list` of character vector.
+#' @return A named `list` of `character` vector.
 #'
 #' @keywords internal
 get_covariates <- function(covariates) {
@@ -85,14 +85,15 @@ get_covariates <- function(covariates) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Replicate entries of a vector if required. Note that this will fail if `x`
-#' is not of length `n` or is not a scalar.
+#' Replicate entries of a vector if required.
 #'
 #' @inheritParams argument_convention
 #' @param n (`count`)\cr how many entries we need.
 #'
-#' @return Just input `x` if it has the required length already or is `NULL`,
+#' @return `x` if it has the required length already or is `NULL`,
 #'   otherwise if it is scalar the replicated version of it with `n` entries.
+#'
+#' @note This function will fail if `x` is not of length `n` and/or is not a scalar.
 #'
 #' @export
 to_n <- function(x, n) {
@@ -115,6 +116,8 @@ to_n <- function(x, n) {
 #'
 #' @param ... data.frames or vectors
 #' @param omit_null are \code{NULL} elements in \code{...} to be omitted from the check?
+#'
+#' @return A `logical` value.
 #'
 #' @keywords internal
 check_same_n <- function(..., omit_null = TRUE) {
@@ -153,7 +156,7 @@ check_same_n <- function(..., omit_null = TRUE) {
 #'
 #' @param nams (`character`)\cr vector of original names.
 #'
-#' @return Character vector of proper names, which does not use dots in contrast to
+#' @return A `character` `vector` of proper names, which does not use dots in contrast to
 #'   [base::make.names()].
 #'
 #' @examples
@@ -209,7 +212,7 @@ day2month <- function(x) {
 #'
 #' @param x (`numeric`)\cr vector.
 #'
-#' @return An empty `numeric`.
+#' @return An empty `numeric` if all elements of `x` are `NA`, otherwise `x`.
 #'
 #' @examples
 #' x <- c(NA, NA, NA)
@@ -261,7 +264,7 @@ combine_vectors <- function(x, y) {
 #' @param x (named `vector`)\cr where to extract named elements from.
 #' @param names (`character`)\cr vector of names to extract.
 #'
-#' @return Either `NULL` or the extracted elements from `x`.
+#' @return `NULL` if `x` is `NULL`, otherwise the extracted elements from `x`.
 #'
 #' @keywords internal
 extract_by_name <- function(x, names) {
@@ -326,6 +329,8 @@ aesi_label <- function(aesi, scope = NULL) {
 #'
 #' @param x arm information
 #'
+#' @return `x`
+#'
 #' @keywords internal
 #'
 study_arm <- function(x) {
@@ -343,8 +348,10 @@ study_arm <- function(x) {
 #' @param y (`character`)\cr value with y column name.
 #' @param groups (`character`)\cr vector with optional grouping variables names.
 #' @param level (`numeric`)\cr level of confidence interval to use (0.95 by default).
-#' @return A `data.frame` with original `x`, smoothed `y`, `ylow`, `yhigh` and
-#' optional `groups` variables formatted to factor type.
+#'
+#' @return A `data.frame` with original `x`, smoothed `y`, `ylow`, and `yhigh`, and
+#' optional `groups` variables formatted as `factor` type.
+#'
 #' @export
 #'
 get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
@@ -431,6 +438,8 @@ n_available <- function(x) {
 #' @param x (`vector`)\cr vector of elements that needs new labels.
 #' @param varlabels (`character`)\cr vector of labels for `x`.
 #' @param ... further parameters to be added to the list.
+#'
+#' @return `x` with variable labels reapplied.
 #'
 #' @export
 reapply_varlabels <- function(x, varlabels, ...) {

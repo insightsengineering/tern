@@ -28,7 +28,7 @@ in \code{data} to factors.}
 values inside non-\code{omit_columns} columns.}
 }
 \value{
-The data frame with the desired changes made.
+A \code{data.frame} with the chosen modifications applied.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

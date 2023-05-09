@@ -22,15 +22,17 @@ tabulate_rsp_subgroups(lyt, df, vars = c("n_tot", "n", "prop", "or", "ci"))
 \item{df}{(\code{list})\cr of data frames containing all analysis variables. List should be
 created using \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.}
 
-\item{vars}{(\code{character})\cr the name of statistics to be reported among
-\code{n} (total number of observations per group),
-\code{n_rsp} (number of responders per group),
-\code{prop} (proportion of responders),
-\code{n_tot} (total number of observations),
-\code{or} (odds ratio),
-\code{ci} (confidence interval of odds ratio) and
-\code{pval} (p value of the effect).
-Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.}
+\item{vars}{(\code{character})\cr the names of statistics to be reported among:
+\itemize{
+\item \code{n}: Total number of observations per group.
+\item \code{n_rsp}: Number of responders per group.
+\item \code{prop}: Proportion of responders.
+\item \code{n_tot}: Total number of observations.
+\item \code{or}: Odds ratio.
+\item \code{ci} : Confidence interval of odds ratio.
+\item \code{pval}: p-value of the effect.
+Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.
+}}
 
 \item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
@@ -43,6 +45,13 @@ levels that belong to it in the character vectors that are elements of the list.
 \item{method}{(\code{string})\cr specifies the test used to calculate the p-value for the difference between
 two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL} so no test is performed.}
 }
+\value{
+\itemize{
+\item \code{a_response_subgroups()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+An \code{rtables} table summarizing binary response by subgroup.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -54,10 +63,10 @@ the required statistics. Tables typically used as part of forest plot.
 }
 \section{Functions}{
 \itemize{
-\item \code{a_response_subgroups()}: Formatted Analysis function used to format the results of \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.
-Returns is a list of Formatted Analysis functions with one element per statistic.
+\item \code{a_response_subgroups()}: Formatted analysis function which is used as \code{afun} in \code{tabulate_rsp_subgroups()}.
 
-\item \code{tabulate_rsp_subgroups()}: table creating function.
+\item \code{tabulate_rsp_subgroups()}: Table-creating function which creates a table
+summarizing binary response by subgroup.
 
 }}
 \examples{
@@ -84,6 +93,7 @@ df <- extract_rsp_subgroups(
   data = adrs_f
 )
 df
+
 # Internal function - a_response_subgroups
 \dontrun{
 a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx\%"))

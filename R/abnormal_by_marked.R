@@ -2,33 +2,31 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Primary analysis variable `.var` indicates whether single, replicated
-#' or last marked laboratory abnormality was observed (factor).
-#' Additional analysis variables are `id` (character or factor) and `direction` indicating
-#' the direction of the abnormality (factor).
-#' Denominator is number of patients with at least one valid measurement during
+#' Primary analysis variable `.var` indicates whether single, replicated or last marked laboratory
+#' abnormality was observed (`factor`). Additional analysis variables are `id` (`character` or `factor`)
+#' and `direction` (`factor`) indicating the direction of the abnormality. Denominator is number of
+#' patients with at least one valid measurement during the analysis.
 #'   * For `Single, not last` and `Last or replicated`: Numerator is number of patients
 #'     with `Single, not last` and `Last or replicated` levels, respectively.
 #'   * For `Any`: Numerator is the number of patients with either single or
 #'     replicated marked abnormalities.
 #'
-#' @details Note that `Single, not last` and `Last or replicated` levels are
-#' mutually exclusive. If a patient has abnormalities that meet both the `Single, not last`
-#' and `Last or replicated` criteria, then the patient will be counted only under the `Last or replicated` category.
-#'
 #' @inheritParams argument_convention
 #' @param category (`list`)\cr with different marked category names for single
 #'   and last or replicated.
 #'
+#' @note `Single, not last` and `Last or replicated` levels are mutually exclusive. If a patient has
+#'   abnormalities that meet both the `Single, not last` and `Last or replicated` criteria, then the
+#'   patient will be counted only under the `Last or replicated` category.
+#'
 #' @name abnormal_by_marked
 NULL
 
-#' @describeIn abnormal_by_marked Statistics function which returns
-#'   the counts and fractions of patients with `Single, not last`, `Last or replicated` and `Any`
-#'   marked laboratory abnormalities for a single `abnormal` level.
+#' @describeIn abnormal_by_marked Statistics function for patients with marked lab abnormalities.
 #'
-#' @return [s_count_abnormal_by_marked()] the single statistic `count_fraction`
-#'   with `Single, not last`, `Last or replicated` and `Any` results.
+#' @return
+#' * `s_count_abnormal_by_marked()` returns statistic `count_fraction` with `Single, not last`,
+#'   `Last or replicated`, and `Any` results.
 #'
 #' @examples
 #' library(dplyr)
@@ -133,10 +131,11 @@ s_count_abnormal_by_marked <- function(df,
   result
 }
 
-#' @describeIn abnormal_by_marked Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn abnormal_by_marked Formatted analysis function which is used as `afun`
+#'   in `count_abnormal_by_marked()`.
 #'
-#' @return [a_count_abnormal_by_marked()] returns the corresponding list with formatted [rtables::CellValue()].
+#' @return
+#' * `a_count_abnormal_by_marked()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' # Internal function - a_count_abnormal_by_marked
@@ -157,8 +156,13 @@ a_count_abnormal_by_marked <- make_afun(
   .formats = c(count_fraction = format_count_fraction)
 )
 
-#' @describeIn abnormal_by_marked Layout creating function which can be used for creating tables,
-#'   which can take statistics function arguments and additional format arguments (see below).
+#' @describeIn abnormal_by_marked Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `count_abnormal_by_marked()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_abnormal_by_marked()` to the table layout.
 #'
 #' @examples
 #' map <- unique(

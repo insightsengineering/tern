@@ -22,8 +22,7 @@ converting a character vector.}
 \item{verbose}{defaults to \code{TRUE}. It prints out warnings and messages.}
 }
 \value{
-The factor with same attributes (except class) as \code{x}. Does not do any modifications
-if \code{x} is already a factor.
+A \code{factor} with same attributes (except class) as \code{x}. Does not modify \code{x} if already a \code{factor}.
 }
 \description{
 Converts \code{x} to a factor and keeps its attributes. Warns appropriately such that the user

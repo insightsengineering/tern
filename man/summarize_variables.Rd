@@ -185,104 +185,120 @@ defined by this split instruction, or \code{NA_character_} (the default) for no 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-If \code{x} is of class \code{numeric}, returns a list with the following named \code{numeric} items:
-\describe{
-\item{n}{the \code{\link[=length]{length()}} of \code{x}.}
-\item{sum}{the \code{\link[=sum]{sum()}} of \code{x}.}
-\item{mean}{the \code{\link[=mean]{mean()}} of \code{x}.}
-\item{sd}{the \code{\link[stats:sd]{stats::sd()}} of \code{x}.}
-\item{se}{the standard error of \code{x} mean, i.e.: (\code{sd(x) / sqrt(length(x))}).}
-\item{mean_sd}{the \code{\link[=mean]{mean()}} and \code{\link[stats:sd]{stats::sd()}} of \code{x}.}
-\item{mean_se}{the \code{\link[=mean]{mean()}} of \code{x} and its standard error (see above).}
-\item{mean_ci}{the CI for the mean of \code{x} (from \code{\link[=stat_mean_ci]{stat_mean_ci()}}).}
-\item{mean_sei}{the SE interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[stats:sd]{stats::sd()}} / \code{\link[=sqrt]{sqrt()}}).}
-\item{mean_sdi}{the SD interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[stats:sd]{stats::sd()}}).}
-\item{mean_pval}{the two-sided p-value of the mean of \code{x} (from \code{\link[=stat_mean_pval]{stat_mean_pval()}}).}
-\item{median}{the \code{\link[stats:median]{stats::median()}} of \code{x}.}
-\item{mad}{the median absolute deviation of \code{x}, i.e.: (\code{\link[stats:median]{stats::median()}} of \code{xc},
-where \code{xc} = \code{x} - \code{\link[stats:median]{stats::median()}}).
-}
-\item{median_ci}{the CI for the median of \code{x} (from \code{\link[=stat_median_ci]{stat_median_ci()}}).}
-\item{quantiles}{two sample quantiles of \code{x} (from \code{\link[stats:quantile]{stats::quantile()}}).}
-\item{iqr}{the \code{\link[stats:IQR]{stats::IQR()}} of \code{x}.}
-\item{range}{the \code{\link[=range_noinf]{range_noinf()}} of \code{x}.}
-\item{min}{the \code{\link[=max]{max()}} of \code{x}.}
-\item{max}{the \code{\link[=min]{min()}} of \code{x}.}
-\item{median_range}{the \code{\link[=median]{median()}} and \code{\link[=range_noinf]{range_noinf()}} of \code{x}.}
-\item{cv}{the coefficient of variation of \code{x}, i.e.: (\code{\link[stats:sd]{stats::sd()}} / \code{\link[=mean]{mean()}} * 100).}
-\item{geom_mean}{the geometric mean of \code{x}, i.e.: (\code{exp(mean(log(x)))}).}
-\item{geom_cv}{the geometric coefficient of variation of \code{x}, i.e.: (\code{sqrt(exp(sd(log(x)) ^ 2) - 1) * 100}).}
+\itemize{
+\item \code{s_summary()} returns different statistics depending on the class of \code{x}.
 }
 
-If \code{x} is of class \code{factor} or converted from \code{character}, returns a list with named \code{numeric} items:
-\describe{
-\item{n}{the \code{\link[=length]{length()}} of \code{x}.}
-\item{count}{a list with the number of cases for each level of the factor \code{x}.}
-\item{count_fraction}{similar to \code{count} but also includes the proportion of cases for each level of the
+\itemize{
+\item If \code{x} is of class \code{numeric}, returns a \code{list} with the following named \code{numeric} items:
+\itemize{
+\item \code{n}: The \code{\link[=length]{length()}} of \code{x}.
+\item \code{sum}: The \code{\link[=sum]{sum()}} of \code{x}.
+\item \code{mean}: The \code{\link[=mean]{mean()}} of \code{x}.
+\item \code{sd}: The \code{\link[stats:sd]{stats::sd()}} of \code{x}.
+\item \code{se}: The standard error of \code{x} mean, i.e.: (\code{sd(x) / sqrt(length(x))}).
+\item \code{mean_sd}: The \code{\link[=mean]{mean()}} and \code{\link[stats:sd]{stats::sd()}} of \code{x}.
+\item \code{mean_se}: The \code{\link[=mean]{mean()}} of \code{x} and its standard error (see above).
+\item \code{mean_ci}: The CI for the mean of \code{x} (from \code{\link[=stat_mean_ci]{stat_mean_ci()}}).
+\item \code{mean_sei}: The SE interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[stats:sd]{stats::sd()}} / \code{\link[=sqrt]{sqrt()}}).
+\item \code{mean_sdi}: The SD interval for the mean of \code{x}, i.e.: (\code{\link[=mean]{mean()}} -/+ \code{\link[stats:sd]{stats::sd()}}).
+\item \code{mean_pval}: The two-sided p-value of the mean of \code{x} (from \code{\link[=stat_mean_pval]{stat_mean_pval()}}).
+\item \code{median}: The \code{\link[stats:median]{stats::median()}} of \code{x}.
+\item \code{mad}: The median absolute deviation of \code{x}, i.e.: (\code{\link[stats:median]{stats::median()}} of \code{xc},
+where \code{xc} = \code{x} - \code{\link[stats:median]{stats::median()}}).
+\item \code{median_ci}: The CI for the median of \code{x} (from \code{\link[=stat_median_ci]{stat_median_ci()}}).
+\item \code{quantiles}: Two sample quantiles of \code{x} (from \code{\link[stats:quantile]{stats::quantile()}}).
+\item \code{iqr}: The \code{\link[stats:IQR]{stats::IQR()}} of \code{x}.
+\item \code{range}: The \code{\link[=range_noinf]{range_noinf()}} of \code{x}.
+\item \code{min}: The \code{\link[=max]{max()}} of \code{x}.
+\item \code{max}: The \code{\link[=min]{min()}} of \code{x}.
+\item \code{median_range}: The \code{\link[=median]{median()}} and \code{\link[=range_noinf]{range_noinf()}} of \code{x}.
+\item \code{cv}: The coefficient of variation of \code{x}, i.e.: (\code{\link[stats:sd]{stats::sd()}} / \code{\link[=mean]{mean()}} * 100).
+\item \code{geom_mean}: The geometric mean of \code{x}, i.e.: (\code{exp(mean(log(x)))}).
+\item \code{geom_cv}: The geometric coefficient of variation of \code{x}, i.e.: (\code{sqrt(exp(sd(log(x)) ^ 2) - 1) * 100}).
+}
+}
+
+\itemize{
+\item If \code{x} is of class \code{factor} or converted from \code{character}, returns a \code{list} with named \code{numeric} items:
+\itemize{
+\item \code{n}: The \code{\link[=length]{length()}} of \code{x}.
+\item \code{count}: A list with the number of cases for each level of the factor \code{x}.
+\item \code{count_fraction}: Similar to \code{count} but also includes the proportion of cases for each level of the
 factor \code{x} relative to the denominator, or \code{NA} if the denominator is zero.
 }
 }
 
-If \code{x} is of class \code{logical}, returns a list with named \code{numeric} items:
-\describe{
-\item{n}{the \code{\link[=length]{length()}} of \code{x} (possibly after removing \code{NA}s).}
-\item{count}{count of \code{TRUE} in \code{x}.}
-\item{count_fraction}{count and proportion of \code{TRUE} in \code{x} relative to the denominator, or \code{NA} if the
+\itemize{
+\item If \code{x} is of class \code{logical}, returns a \code{list} with named \code{numeric} items:
+\itemize{
+\item \code{n}: The \code{\link[=length]{length()}} of \code{x} (possibly after removing \code{NA}s).
+\item \code{count}: Count of \code{TRUE} in \code{x}.
+\item \code{count_fraction}: Count and proportion of \code{TRUE} in \code{x} relative to the denominator, or \code{NA} if the
 denominator is zero. Note that \code{NA}s in \code{x} are never counted or leading to \code{NA} here.
 }
+}
+
+\itemize{
+\item \code{a_summary()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{summarize_vars()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_summary()} to the table layout.
 }
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-We use the new S3 generic function \code{\link[=s_summary]{s_summary()}} to implement summaries for
-different \code{x} objects. This is used as Statistics Function in combination
-with the new Analyze Function \code{\link[=summarize_vars]{summarize_vars()}}.
+We use the S3 generic function \code{\link[=s_summary]{s_summary()}} to implement summaries for different \code{x} objects. This
+is used as a statistics function in combination with the analyze function \code{\link[=summarize_vars]{summarize_vars()}}.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_summary()}: \code{s_summary} is a S3 generic function to produce
-an object description.
+\item \code{s_summary()}: S3 generic function to produces a variable summary.
 
-\item \code{s_summary(numeric)}: Method for numeric class. Note that,
-if \code{x} is an empty vector, \code{NA} is returned. This is the expected
-feature so as to return \code{rcell} content in \code{rtables} when the
-intersection of a column and a row delimits an empty data selection.
-Also, when the \code{mean} function is applied to an empty vector, \code{NA} will
-be returned instead of \code{NaN}, the latter being standard behavior in R.
+\item \code{s_summary(numeric)}: Method for \code{numeric} class.
 
-\item \code{s_summary(factor)}: Method for factor class. Note that,
-if \code{x} is an empty factor, then still a list is returned for \code{counts} with one element
-per factor level. If there are no levels in \code{x}, the function fails. If \code{x} contains \code{NA},
-it is expected that \code{NA} have been conveyed to \code{na_level} appropriately beforehand with
-\code{\link[=df_explicit_na]{df_explicit_na()}} or \code{\link[=explicit_na]{explicit_na()}}.
+\item \code{s_summary(factor)}: Method for \code{factor} class.
 
-\item \code{s_summary(character)}: Method for character class. This makes an automatic
+\item \code{s_summary(character)}: Method for \code{character} class. This makes an automatic
 conversion to factor (with a warning) and then forwards to the method for factors.
 
-\item \code{s_summary(logical)}: Method for logical class.
+\item \code{s_summary(logical)}: Method for \code{logical} class.
 
-\item \code{a_summary()}: S3 generic Formatted Analysis function to produce
-an object description. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_summary()}: Formatted analysis function which is used as \code{afun}
+in \code{summarize_vars()}.
 
-\item \code{a_summary(numeric)}: Formatted Analysis function method for \code{numeric}.
+\item \code{a_summary(numeric)}: Formatted analysis function method for \code{numeric} class.
 
-\item \code{a_summary(factor)}: Method for \code{factor}.
+\item \code{a_summary(factor)}: Formatted analysis function method for \code{factor} class.
 
-\item \code{a_summary(character)}: Formatted Analysis function method for \code{character}.
+\item \code{a_summary(character)}: Formatted analysis function method for \code{character} class.
 
-\item \code{a_summary(logical)}: Formatted Analysis function method for \code{logical}.
+\item \code{a_summary(logical)}: Formatted analysis function method for \code{logical} class.
 
-\item \code{summarize_vars()}: Analyze Function to add a descriptive analyze
-layer to \code{rtables} pipelines. The analysis is applied to a vector and
-return the summary, in \code{rcells}. The ellipsis (\code{...}) conveys arguments to
-\code{\link[=s_summary]{s_summary()}}, for instance \code{na.rm = FALSE} if missing data should be
-accounted for. When factor variables contains \code{NA}, it is expected that \code{NA}
-have been conveyed to \code{na_level} appropriately beforehand with
-\code{\link[=df_explicit_na]{df_explicit_na()}}.
+\item \code{summarize_vars()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \note{
+\itemize{
+\item If \code{x} is an empty vector, \code{NA} is returned. This is the expected
+feature so as to return \code{rcell} content in \code{rtables} when the
+intersection of a column and a row delimits an empty data selection.
+\item When the \code{mean} function is applied to an empty vector, \code{NA} will
+be returned instead of \code{NaN}, the latter being standard behavior in R.
+}
+
+\itemize{
+\item If \code{x} is an empty \code{factor}, a list is still returned for \code{counts} with one element
+per factor level. If there are no levels in \code{x}, the function fails.
+\item If \code{x} contains \code{NA}, it is expected that \code{NA} have been conveyed to \code{na_level}
+appropriately beforehand with \code{\link[=df_explicit_na]{df_explicit_na()}} or \code{\link[=explicit_na]{explicit_na()}}.
+}
+
 Automatic conversion of character to factor does not guarantee that the table
 can be generated correctly. In particular for sparse tables this very likely can fail.
 It is therefore better to always pre-process the dataset such that factors are manually

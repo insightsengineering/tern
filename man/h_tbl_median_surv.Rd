@@ -12,6 +12,9 @@ h_tbl_median_surv(fit_km, armval = "All")
 \item{armval}{(\code{string})\cr used as strata name when treatment arm
 variable only has one level. Default is "All".}
 }
+\value{
+A summary table with statistics \code{N}, \code{Median}, and \verb{XX\% CI} (\code{XX} taken from \code{fit_km}).
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

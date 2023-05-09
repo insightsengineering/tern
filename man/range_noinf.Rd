@@ -16,7 +16,7 @@ range_noinf(x, na.rm = FALSE, finite = FALSE)
 \item{finite}{(\code{logical})\cr indicating if non-finite elements should be removed.}
 }
 \value{
-2-elements vector of class numeric.
+A 2-element vector of class \code{numeric}.
 }
 \description{
 Re-implemented \code{\link[base:range]{range.default}} default S3 method for numerical objects only.

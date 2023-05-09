@@ -10,7 +10,7 @@ make_names(nams)
 \item{nams}{(\code{character})\cr vector of original names.}
 }
 \value{
-Character vector of proper names, which does not use dots in contrast to
+A \code{character} \code{vector} of proper names, which does not use dots in contrast to
 \code{\link[base:make.names]{base::make.names()}}.
 }
 \description{

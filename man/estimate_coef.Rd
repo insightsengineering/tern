@@ -32,11 +32,11 @@ given the levels of \code{given}.}
 \value{
 A list of matrix (one per level of variable) with rows corresponding to the combinations of
 \code{variable} and \code{given}, with columns:
-\describe{
-\item{coef_hat}{Estimation of the coefficient.}
-\item{coef_se}{Standard error of the estimation.}
-\item{hr}{Hazard ratio.}
-\item{lcl, ucl}{Lower/upper confidence limit of the hazard ratio.}
+\itemize{
+\item \code{coef_hat}: Estimation of the coefficient.
+\item \code{coef_se}: Standard error of the estimation.
+\item \code{hr}: Hazard ratio.
+\item \verb{lcl, ucl}: Lower/upper confidence limit of the hazard ratio.
 }
 }
 \description{

@@ -10,6 +10,9 @@ summary_formats(type = "numeric")
 \item{type}{(\code{string})\cr choice of a summary data type.
 Only \code{counts} and \code{numeric} types are currently supported.}
 }
+\value{
+A named \code{vector} of default statistic formats for the given data type.
+}
 \description{
 Returns format patterns for descriptive statistics.
 The format is understood by the \code{rtables}.

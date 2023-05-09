@@ -24,7 +24,7 @@ If none of these attributes are attached to a given element of \code{x},
 then the label is automatically generated.}
 }
 \value{
-1-row \code{data.frame} object
+A single row \code{data.frame} object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -41,7 +41,4 @@ attr(mean_ci, "label") <- "Mean 95\% CI"
 x <- list(mean = 50, mean_ci = mean_ci)
 h_format_row(x, format, labels)
 
-}
-\author{
-Wojciech Wojciak wojciech.wojciak@contractors.roche.com
 }

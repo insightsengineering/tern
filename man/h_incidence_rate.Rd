@@ -36,6 +36,9 @@ indicating time unit for data input.
 \item \code{time_unit_output}: (\code{numeric})\cr time unit for desired output (in person-years).
 }}
 }
+\value{
+Estimated incidence rate \code{rate} and associated confidence interval \code{rate_ci}.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
