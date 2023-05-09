@@ -61,7 +61,7 @@ NULL
 #'   * `pval_inter`: p-value of the interaction effect between the treatment and the covariate (univariable only)
 #' @param .which_vars (`character`)\cr which rows should statistics be returned for from the given model.
 #'   Defaults to "all". Other options include "var_main" for main effects, "inter" for interaction effects,
-#'   and "multi_lvl" for multivariable model covariate level rows. When `.which_vars` is "all" specific
+#'   and "multi_lvl" for multivariate model covariate level rows. When `.which_vars` is "all" specific
 #'   variables can be selected by specifying `.var_nms`.
 #' @param .var_nms (`character`)\cr the `term` value of rows in `df` for which `.stats` should be returned. Typically
 #'   this is the name of a variable. If using variable labels, `var` should be a vector of both the desired
@@ -97,7 +97,7 @@ NULL
 #' df1_covs <- broom::tidy(univar_covs_model)
 #' s_coxreg(model_df = df1_covs, .stats = "hr", .var_nms = c("COVAR2", "Sex (F/M)"))
 #'
-#' # Multivariable.
+#' # Multivariate.
 #' m1_variables <- list(
 #'   time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2")
 #' )
@@ -109,7 +109,7 @@ NULL
 #'   .var_nms = c("COVAR1", "A Covariate Label")
 #' )
 #'
-#' # Multivariable without treatment arm - only "COVAR1" main effect
+#' # Multivariate without treatment arm - only "COVAR1" main effect
 #' m2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 #' multivar_covs_model <- fit_coxreg_multivar(variables = m2_variables, data = dta_bladder)
 #' df2_covs <- broom::tidy(multivar_covs_model)
@@ -256,7 +256,7 @@ a_coxreg <- function(df,
 #'   layout. This function is a wrapper for several `rtables` layouting functions.
 #'
 #' @inheritParams fit_coxreg_univar
-#' @param multivar (`flag`)\cr Defaults to `FALSE`. If `TRUE` multivariable Cox regression will run, otherwise
+#' @param multivar (`flag`)\cr Defaults to `FALSE`. If `TRUE` multivariate Cox regression will run, otherwise
 #'   univariable Cox regression will run.
 #' @param common_var (`character`)\cr the name of a factor variable in the dataset which takes the same value
 #'   for all rows. This should be created during pre-processing if no such variable currently exists.
@@ -271,7 +271,7 @@ a_coxreg <- function(df,
 #'
 #' @export
 #' @seealso [fit_coxreg_univar()] and [fit_coxreg_multivar()] which also take the `variables`, `data`,
-#'   `at` (univariable only), and `control` arguments but return unformatted univariable and multivariable
+#'   `at` (univariable only), and `control` arguments but return unformatted univariable and multivariate
 #'   Cox regression models, respectively.
 #'
 #' @examples
@@ -323,7 +323,7 @@ summarize_coxreg <- function(lyt,
                              .section_div = NA_character_) {
   if (multivar && control$interaction) {
     warning(paste(
-      "Interactions are not available for multivariable cox regression using summarize_coxreg.",
+      "Interactions are not available for multivariate cox regression using summarize_coxreg.",
       "The model will be calculated without interaction effects."
     ))
   }

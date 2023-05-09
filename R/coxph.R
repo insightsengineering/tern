@@ -5,7 +5,7 @@
 #' The special term `pairwise` indicate that the model should be fitted individually for
 #' every tested level in comparison to the reference level.
 #'
-#' @param x the variable for which pairwise result is expected
+#' @param x the variable for which pairwise result is expected.
 #'
 #' @return Variable "paired".
 #'

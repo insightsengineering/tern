@@ -61,7 +61,7 @@ Fitting functions for univariate and multivariate Cox regression models.
 \item \code{fit_coxreg_univar()}: Fit a series of univariate Cox regression models
 given the inputs.
 
-\item \code{fit_coxreg_multivar()}: Fit a multi-variable Cox regression model.
+\item \code{fit_coxreg_multivar()}: Fit a multivariate Cox regression model.
 
 }}
 \note{

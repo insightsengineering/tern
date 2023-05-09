@@ -1,4 +1,4 @@
-#' Helper Functions for Multi-Variable Logistic Regression
+#' Helper Functions for Multivariate Logistic Regression
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

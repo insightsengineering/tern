@@ -105,9 +105,9 @@ h_coxreg_univar_formulas <- function(variables,
   stats::setNames(forms, nams)
 }
 
-#' @describeIn h_cox_regression Helper for multi-variable Cox regression formula. Creates a formulas
-#'   string. It is used internally by [fit_coxreg_multivar()] for the comparison of multi-variable Cox
-#'   regression models. Interactions will not be included in multi-variable Cox regression model.
+#' @describeIn h_cox_regression Helper for multivariate Cox regression formula. Creates a formulas
+#'   string. It is used internally by [fit_coxreg_multivar()] for the comparison of multivariate Cox
+#'   regression models. Interactions will not be included in multivariate Cox regression model.
 #'
 #' @inheritParams argument_convention
 #'
@@ -234,8 +234,8 @@ h_coxreg_univar_extract <- function(effect,
   )
 }
 
-#' @describeIn h_cox_regression Tabulation of multi-variable Cox regressions. Utility function to help
-#'   tabulate the result of a multi-variable Cox regression model for a treatment/covariate variable.
+#' @describeIn h_cox_regression Tabulation of multivariate Cox regressions. Utility function to help
+#'   tabulate the result of a multivariate Cox regression model for a treatment/covariate variable.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams h_coxreg_univar_extract

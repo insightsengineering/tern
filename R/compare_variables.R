@@ -26,7 +26,7 @@
 #' @include summarize_variables.R
 NULL
 
-#' @describeIn compare_variables S3 generic statistics function to produce a comparison summary.
+#' @describeIn compare_variables S3 generic function to produce a comparison summary.
 #'
 #' @return
 #' * `s_compare()` returns output of [s_summary()] and comparisons versus the reference group in the form of p-values.

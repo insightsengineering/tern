@@ -2,7 +2,7 @@
 % Please edit documentation in R/logistic_regression.R
 \name{summarize_logistic}
 \alias{summarize_logistic}
-\title{Multi-Variable Logistic Regression Table}
+\title{Multivariate Logistic Regression Table}
 \usage{
 summarize_logistic(lyt, conf_level, drop_and_remove_str = "")
 }

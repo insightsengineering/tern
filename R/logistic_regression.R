@@ -1,4 +1,4 @@
-#' Multi-Variable Logistic Regression Table
+#' Multivariate Logistic Regression Table
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -286,11 +286,11 @@ tidy.glm <- function(fit_glm, # nolint
   df
 }
 
-#' Logistic Regression Multi-Variable Column Layout Function
+#' Logistic Regression Multivariate Column Layout Function
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Layout-creating function which creates a multi-variable column layout summarizing logistic
+#' Layout-creating function which creates a multivariate column layout summarizing logistic
 #'   regression results. This function is a wrapper for [rtables::split_cols_by_multivar()].
 #'
 #' @inheritParams argument_convention

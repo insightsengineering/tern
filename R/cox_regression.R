@@ -195,7 +195,7 @@ tidy.coxreg.univar <- function(x, # nolint
   result
 }
 
-#' @describeIn tidy_coxreg Custom tidy method for a multi-variable Cox regression.
+#' @describeIn tidy_coxreg Custom tidy method for a multivariate Cox regression.
 #'
 #' Tidy up the result of a Cox regression model fitted by [`fit_coxreg_multivar()`].
 #'
@@ -395,7 +395,7 @@ fit_coxreg_univar <- function(variables,
   )
 }
 
-#' @describeIn fit_coxreg Fit a multi-variable Cox regression model.
+#' @describeIn fit_coxreg Fit a multivariate Cox regression model.
 #'
 #' @return
 #' * `fit_coxreg_multivar()` returns a `coxreg.multivar` class object which is a named list

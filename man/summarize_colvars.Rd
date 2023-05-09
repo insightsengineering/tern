@@ -34,9 +34,8 @@ in columns, and add it to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This Analyze Function uses the new S3 generic function \code{\link[=s_summary]{s_summary()}} to summarize
-different variables that are arranged in columns.
-Additional standard formatting arguments are available.
+This analyze function uses the S3 generic function \code{\link[=s_summary]{s_summary()}} to summarize different variables
+that are arranged in columns. Additional standard formatting arguments are available.
 }
 \examples{
 

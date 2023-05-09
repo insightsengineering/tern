@@ -66,15 +66,15 @@ Helper functions used in \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} a
 \item \code{h_coxreg_univar_formulas()}: Helper for Cox regression formula. Creates a list of formulas. It is used
 internally by \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} for the comparison of univariate Cox regression models.
 
-\item \code{h_coxreg_multivar_formula()}: Helper for multi-variable Cox regression formula. Creates a formulas
-string. It is used internally by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} for the comparison of multi-variable Cox
-regression models. Interactions will not be included in multi-variable Cox regression model.
+\item \code{h_coxreg_multivar_formula()}: Helper for multivariate Cox regression formula. Creates a formulas
+string. It is used internally by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} for the comparison of multivariate Cox
+regression models. Interactions will not be included in multivariate Cox regression model.
 
 \item \code{h_coxreg_univar_extract()}: Utility function to help tabulate the result of
 a univariate Cox regression model.
 
-\item \code{h_coxreg_multivar_extract()}: Tabulation of multi-variable Cox regressions. Utility function to help
-tabulate the result of a multi-variable Cox regression model for a treatment/covariate variable.
+\item \code{h_coxreg_multivar_extract()}: Tabulation of multivariate Cox regressions. Utility function to help
+tabulate the result of a multivariate Cox regression model for a treatment/covariate variable.
 
 }}
 \examples{

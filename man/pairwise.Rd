@@ -7,7 +7,7 @@
 pairwise(x)
 }
 \arguments{
-\item{x}{the variable for which pairwise result is expected}
+\item{x}{the variable for which pairwise result is expected.}
 }
 \value{
 Variable "paired".

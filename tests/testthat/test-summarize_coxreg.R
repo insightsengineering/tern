@@ -176,7 +176,7 @@ testthat::test_that("summarize_coxreg works with numeric covariate without treat
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("summarize_coxreg adds the multivariable Cox regression layer to rtables", {
+testthat::test_that("summarize_coxreg adds the multivariate Cox regression layer to rtables", {
   variables <- list(time = "TIME", event = "STATUS", arm = "ARMCD", covariates = c("AGE", "COVAR1", "COVAR2"))
 
   result <- basic_table() %>%

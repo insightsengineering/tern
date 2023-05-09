@@ -104,7 +104,7 @@ We can count the occurrence of specific values in a variable of interest.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_values()}: S3 generic statistics function to count values.
+\item \code{s_count_values()}: S3 generic function to count values.
 
 \item \code{s_count_values(character)}: Method for \code{character} class.
 

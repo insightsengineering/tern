@@ -152,7 +152,7 @@ Comparison with a reference group for different \code{x} objects.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_compare()}: S3 generic statistics function to produce a comparison summary.
+\item \code{s_compare()}: S3 generic function to produce a comparison summary.
 
 \item \code{s_compare(numeric)}: Method for \code{numeric} class. This uses the standard t-test
 to calculate the p-value.

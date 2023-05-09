@@ -2,7 +2,7 @@
 % Please edit documentation in R/logistic_regression.R
 \name{logistic_regression_cols}
 \alias{logistic_regression_cols}
-\title{Logistic Regression Multi-Variable Column Layout Function}
+\title{Logistic Regression Multivariate Column Layout Function}
 \usage{
 logistic_regression_cols(lyt, conf_level = 0.95)
 }
@@ -19,6 +19,6 @@ statistics \code{df}, \code{estimate}, \code{std_error}, \code{odds_ratio}, \cod
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Layout-creating function which creates a multi-variable column layout summarizing logistic
+Layout-creating function which creates a multivariate column layout summarizing logistic
 regression results. This function is a wrapper for \code{\link[rtables:split_cols_by_multivar]{rtables::split_cols_by_multivar()}}.
 }

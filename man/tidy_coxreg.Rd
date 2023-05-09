@@ -42,7 +42,7 @@ Tidy the \code{\link[survival:coxph]{survival::coxph()}} results into a \code{da
 
 Tidy up the result of a Cox regression model fitted by \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}}.
 
-\item \code{tidy(coxreg.multivar)}: Custom tidy method for a multi-variable Cox regression.
+\item \code{tidy(coxreg.multivar)}: Custom tidy method for a multivariate Cox regression.
 
 Tidy up the result of a Cox regression model fitted by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}.
 

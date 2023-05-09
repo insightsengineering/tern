@@ -14,7 +14,7 @@
 \alias{h_glm_inter_term_extract}
 \alias{h_logistic_simple_terms}
 \alias{h_logistic_inter_terms}
-\title{Helper Functions for Multi-Variable Logistic Regression}
+\title{Helper Functions for Multivariate Logistic Regression}
 \usage{
 h_get_interaction_vars(fit_glm)
 

@@ -112,16 +112,15 @@ summary_labels <- function() {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' We use the new S3 generic function [s_summary()] to implement summaries for
-#' different `x` objects. This is used as Statistics Function in combination
-#' with the new Analyze Function [summarize_vars()].
+#' We use the S3 generic function [s_summary()] to implement summaries for different `x` objects. This
+#' is used as a statistics function in combination with the analyze function [summarize_vars()].
 #'
 #' @inheritParams argument_convention
 #'
 #' @name summarize_variables
 NULL
 
-#' @describeIn summarize_variables S3 generic statistics function to produces a variable summary.
+#' @describeIn summarize_variables S3 generic function to produces a variable summary.
 #'
 #' @return
 #' * `s_summary()` returns different statistics depending on the class of `x`.

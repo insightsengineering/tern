@@ -13,7 +13,7 @@
 #' @name count_values_funs
 NULL
 
-#' @describeIn count_values_funs S3 generic statistics function to count values.
+#' @describeIn count_values_funs S3 generic function to count values.
 #' @inheritParams argument_convention
 #' @inheritParams s_summary.logical
 #' @param values (`character`)\cr specific values that should be counted.

@@ -252,13 +252,12 @@ the statistics from \code{s_summary()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-We use the new S3 generic function \code{\link[=s_summary]{s_summary()}} to implement summaries for
-different \code{x} objects. This is used as Statistics Function in combination
-with the new Analyze Function \code{\link[=summarize_vars]{summarize_vars()}}.
+We use the S3 generic function \code{\link[=s_summary]{s_summary()}} to implement summaries for different \code{x} objects. This
+is used as a statistics function in combination with the analyze function \code{\link[=summarize_vars]{summarize_vars()}}.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_summary()}: S3 generic statistics function to produces a variable summary.
+\item \code{s_summary()}: S3 generic function to produces a variable summary.
 
 \item \code{s_summary(numeric)}: Method for \code{numeric} class.
 
