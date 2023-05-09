@@ -229,8 +229,6 @@ a_surv_timepoint_diff <- make_afun(
 #'   the statistics from `s_surv_timepoint()` and/or `s_surv_timepoint_diff()` to the table layout depending on
 #'   the value of `method`.
 #'
-#' @export
-#'
 #' @examples
 #' # Survival at given time points.
 #' basic_table() %>%
@@ -270,6 +268,8 @@ a_surv_timepoint_diff <- make_afun(
 #'     method = "both"
 #'   ) %>%
 #'   build_table(df = adtte_f)
+#'
+#' @export
 surv_timepoint <- function(lyt,
                            vars,
                            ...,

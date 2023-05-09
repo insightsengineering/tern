@@ -65,7 +65,6 @@ NULL
 #'
 #' @seealso [h_coxreg_mult_cont_df()] which is used internally, [tabulate_survival_biomarkers()].
 #'
-#' @export
 #' @examples
 #' # Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,
 #' # in multiple regression models containing one covariate `RACE`,
@@ -119,6 +118,8 @@ NULL
 #'   )
 #' )
 #' df_grouped
+#'
+#' @export
 extract_survival_biomarkers <- function(variables,
                                         data,
                                         groups_lists = list(),
@@ -188,8 +189,6 @@ extract_survival_biomarkers <- function(variables,
 #'
 #' @seealso [h_tab_surv_one_biomarker()] which is used internally, [extract_survival_biomarkers()].
 #'
-#' @export
-#'
 #' @examples
 #' ## Table with default columns.
 #' tabulate_survival_biomarkers(df)
@@ -205,6 +204,8 @@ extract_survival_biomarkers <- function(variables,
 #' \dontrun{
 #' g_forest(tab, xlim = c(0.8, 1.2))
 #' }
+#'
+#' @export
 tabulate_survival_biomarkers <- function(df,
                                          vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
                                          time_unit = NULL) {

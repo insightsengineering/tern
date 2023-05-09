@@ -10,6 +10,7 @@
 #' @importFrom lifecycle badge
 #' @importFrom methods new
 #' @importFrom magrittr %>%
+#' @importFrom Rdpack reprompt
 #' @importFrom rlang .data := !!
 #' @importFrom survival coxph strata Surv
 #' @importFrom stats pchisq

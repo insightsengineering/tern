@@ -41,14 +41,13 @@ Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as bot
 are required.
 }}
 
-\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
-displaying unit.}
+\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
 
 \item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
-\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
-list, which specifies the new group levels via the names and the
-levels that belong to it in the character vectors that are elements of the list.}
+\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a list, which
+specifies the new group levels via the names and the levels that belong to it in the character vectors that are
+elements of the list.}
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
 }
@@ -122,7 +121,6 @@ df
 a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
 }
 
-
 ## Table with default columns.
 basic_table() \%>\%
   tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])
@@ -134,6 +132,7 @@ basic_table() \%>\%
     vars = c("n_tot_events", "n_events", "median", "hr", "ci", "pval"),
     time_unit = adtte_f$AVALU[1]
   )
+
 }
 \seealso{
 \code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}}

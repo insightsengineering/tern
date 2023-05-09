@@ -334,7 +334,6 @@ h_format_threshold <- function(x, digits = 2L) {
 #' @return An `rtables` formatting function that uses threshold `digits` to return a formatted extreme value.
 #'
 #' @examples
-#'
 #' format_fun <- format_extreme_values(2L)
 #' format_fun(x = 0.127)
 #' format_fun(x = Inf)

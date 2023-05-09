@@ -123,8 +123,6 @@ a_surv_time <- make_afun(
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_surv_time()` to the table layout.
 #'
-#' @export
-#'
 #' @examples
 #' basic_table() %>%
 #'   split_cols_by(var = "ARMCD") %>%
@@ -136,6 +134,8 @@ a_surv_time <- make_afun(
 #'     control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
 #'   ) %>%
 #'   build_table(df = adtte_f)
+#'
+#' @export
 surv_time <- function(lyt,
                       vars,
                       ...,

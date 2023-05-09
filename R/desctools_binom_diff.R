@@ -352,6 +352,7 @@ desctools_binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c( # noli
 #' @param method (`character`)\cr method to use. Can be one out of: "wald", "wilson", "wilsoncc", "agresti-coull",
 #'   "jeffreys", "modified wilson", "modified jeffreys", "clopper-pearson", "arcsine", "logit", "witting", "pratt",
 #'   "midp", "lik", and "blaker".
+#'
 #' @return A `matrix` with 3 columns containing:
 #'   * `est`: estimate of proportion difference.
 #'   * `lwr.ci`: lower end of the confidence interval.

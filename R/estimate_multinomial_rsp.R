@@ -21,7 +21,6 @@ NULL
 #' @return Response labels.
 #'
 #' @seealso [estimate_multinomial_rsp()]
-#' @export
 #'
 #' @examples
 #' d_onco_rsp_label(
@@ -33,6 +32,8 @@ NULL
 #' d_onco_rsp_label(
 #'   c("CR", "PR", "hello", "hi")
 #' )
+#'
+#' @export
 d_onco_rsp_label <- function(x) { # nolint
 
   x <- as.character(x)
@@ -71,11 +72,11 @@ d_onco_rsp_label <- function(x) { # nolint
 #' @return
 #' * `s_length_proportion()` returns statistics from [s_proportion()].
 #'
-#' @export
-#'
 #' @examples
 #' s_length_proportion(rep("CR", 10), .N_col = 100)
 #' s_length_proportion(factor(character(0)), .N_col = 100)
+#'
+#' @export
 s_length_proportion <- function(x,
                                 .N_col, # nolint snake_case
                                 ...) {
@@ -95,11 +96,11 @@ s_length_proportion <- function(x,
 #' @return
 #' * `a_length_proportion()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @export
-#'
 #' @examples
 #' a_length_proportion(rep("CR", 10), .N_col = 100)
 #' a_length_proportion(factor(character(0)), .N_col = 100)
+#'
+#' @export
 a_length_proportion <- make_afun(
   s_length_proportion,
   .formats = c(
@@ -117,8 +118,6 @@ a_length_proportion <- make_afun(
 #' * `estimate_multinomial_response()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_length_proportion()` to the table layout.
-#'
-#' @export
 #'
 #' @examples
 #' library(dplyr)
@@ -146,6 +145,8 @@ a_length_proportion <- make_afun(
 #' \dontrun{
 #' Viewer(html)
 #' }
+#'
+#' @export
 estimate_multinomial_response <- function(lyt,
                                           var,
                                           ...,

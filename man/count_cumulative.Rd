@@ -129,6 +129,7 @@ basic_table() \%>\%
     thresholds = c(40, 60)
   ) \%>\%
   build_table(tern_ex_adsl)
+
 }
 \seealso{
 Relevant helper function \code{\link[=h_count_cumulative]{h_count_cumulative()}}, and descriptive function \code{\link[=d_count_cumulative]{d_count_cumulative()}}.

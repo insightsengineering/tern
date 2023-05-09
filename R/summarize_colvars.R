@@ -15,9 +15,7 @@
 #'
 #' @seealso [rtables::split_cols_by_multivar()]
 #'
-#' @export
 #' @examples
-#'
 #' dta_test <- data.frame(
 #'   USUBJID = rep(1:6, each = 3),
 #'   PARAMCD = rep("lab", 6 * 3),
@@ -54,6 +52,8 @@
 #'   split_cols_by_multivar(vars = c("AVAL", "CHG")) %>%
 #'   summarize_colvars(na.rm = FALSE) %>%
 #'   build_table(dta_test)
+#'
+#' @export
 summarize_colvars <- function(lyt,
                               ...,
                               .stats = c("n", "mean_sd", "median", "range", "count_fraction"),

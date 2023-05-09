@@ -111,7 +111,6 @@ s_count_patients_and_multiple_events(
 )
 }
 
-
 # `summarize_patients_events_in_cols()`
 basic_table() \%>\%
   summarize_patients_events_in_cols(
@@ -123,5 +122,6 @@ basic_table() \%>\%
     custom_label = "\%s Total number of patients and events"
   ) \%>\%
   build_table(df)
+
 }
 \keyword{internal}

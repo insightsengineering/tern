@@ -26,4 +26,5 @@ aesi_label(adae$SMQ01NAM, scope = adae$SMQ01SC)
 
 # Customized query label.
 aesi_label(adae$CQ01NAM)
+
 }

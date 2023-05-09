@@ -3,8 +3,8 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' These are a couple of functions that help with accessing the data in `rtables` objects.
-#' Currently these work for occurrence tables, which are defined
-#' as having a count as the first element and a fraction as the second element in each cell.
+#' Currently these work for occurrence tables, which are defined as having a count as the first
+#' element and a fraction as the second element in each cell.
 #'
 #' @seealso [prune_occurrences] for usage of these functions.
 #'
@@ -16,10 +16,9 @@ NULL
 #'
 #' @param table_row (`TableRow`)\cr an analysis row in a occurrence table.
 #' @param col_names (`character`)\cr the names of the columns to extract from.
-#' @param col_indices (`integer`)\cr the indices of the columns to extract from.
-#'   If `col_names` are provided, then these are inferred from the names of
-#'   `table_row`. (Note that this currently only works well with a single
-#'   column split.)
+#' @param col_indices (`integer`)\cr the indices of the columns to extract from. If `col_names` are provided,
+#'   then these are inferred from the names of `table_row`. Note that this currently only works well with a single
+#'   column split.
 #'
 #' @return
 #' * `h_row_first_values()` returns a `vector` of numeric values.
@@ -63,7 +62,7 @@ h_row_first_values <- function(table_row,
 }
 
 #' @describeIn rtables_access Helper function that extracts row values and checks if they are
-#'  convertible to integers (`integerish` values).
+#'   convertible to integers (`integerish` values).
 #'
 #' @return
 #' * `h_row_counts()` returns a `vector` of numeric values.
@@ -87,9 +86,8 @@ h_row_counts <- function(table_row,
   counts
 }
 
-#' @describeIn rtables_access helper function to extract fractions from specified columns
-#'   in a `TableRow`. More specifically it extracts the second values from each
-#'   content cell and checks it is a fraction.
+#' @describeIn rtables_access helper function to extract fractions from specified columns in a `TableRow`.
+#'   More specifically it extracts the second values from each content cell and checks it is a fraction.
 #'
 #' @return
 #' * `h_row_fractions()` returns a `vector` of proportions.
@@ -110,8 +108,8 @@ h_row_fractions <- function(table_row,
   fractions
 }
 
-#' @describeIn rtables_access Helper function to extract column counts from specified columns
-#'   in a table.
+#' @describeIn rtables_access Helper function to extract column counts from specified columns in a table.
+#'
 #' @param table (`VTableNodeInfo`)\cr an occurrence table or row.
 #'
 #' @return

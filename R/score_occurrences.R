@@ -10,6 +10,7 @@ NULL
 
 #' @describeIn score_occurrences Scoring function which sums the counts across all
 #'   columns. It will fail if anything else but counts are used.
+#'
 #' @inheritParams rtables_access
 #'
 #' @return
@@ -53,6 +54,7 @@ score_occurrences <- function(table_row) {
 
 #' @describeIn score_occurrences Scoring functions can be produced by this constructor to only include
 #'   specific columns in the scoring. See [h_row_counts()] for further information.
+#'
 #' @inheritParams has_count_in_cols
 #'
 #' @return
@@ -87,8 +89,6 @@ score_occurrences_cols <- function(...) {
 #' * `score_occurrences_subtable()` returns a function that sums counts in each subtable
 #'   across all specified columns.
 #'
-#' @export
-#'
 #' @examples
 #' score_subtable_all <- score_occurrences_subtable(col_names = names(tbl))
 #'
@@ -98,6 +98,8 @@ score_occurrences_cols <- function(...) {
 #'   sort_at_path(path = c("AEBODSYS"), scorefun = score_subtable_all, decreasing = FALSE)
 #'
 #' tbl_sorted
+#'
+#' @export
 score_occurrences_subtable <- function(...) {
   score_table_row <- score_occurrences_cols(...)
   function(table_tree) {
@@ -115,7 +117,6 @@ score_occurrences_subtable <- function(...) {
 #'   specified columns.
 #'
 #' @export
-#'
 score_occurrences_cont_cols <- function(...) {
   score_table_row <- score_occurrences_cols(...)
   function(table_tree) {

@@ -97,7 +97,6 @@ h_glm_poisson <- function(.var,
 #' * `h_glm_quasipoisson()` returns the results of a Quasi-Poisson model.
 #'
 #' @examples
-#'
 #' # Internal function - h_glm_quasipoisson
 #' \dontrun{
 #' h_glm_quasipoisson(
@@ -194,17 +193,14 @@ h_glm_count <- function(.var,
   )
 }
 
-
 #' @describeIn h_glm_count Helper function to return the estimated means.
 #'
 #' @inheritParams argument_convention
-#' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called
-#'   in `.var` and `variables`.
+#' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called in `.var` and `variables`.
 #' @param conf_level (`numeric`)\cr value used to derive the confidence interval for the rate.
 #' @param obj (`glm.fit`)\cr fitted model object used to derive the mean rate estimates in each treatment arm.
-#' @param `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
-#'   groups will be summarized. Specifically, the first level of `arm` variable is taken as the
-#'   reference group.
+#' @param `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple groups will be
+#'   summarized. Specifically, the first level of `arm` variable is taken as the reference group.
 #'
 #' @return
 #' * `h_ppmeans()` returns the estimated means.
@@ -390,7 +386,6 @@ s_glm_count <- function(df,
 #' * `a_glm_count()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
-#'
 #' # Internal function - s_change_from_baseline
 #' \dontrun{
 #' a_glm_count(
@@ -438,7 +433,6 @@ a_glm_count <- make_afun(
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_glm_count()` to the table layout.
 #'
-#' @export
 #' @examples
 #' library(dplyr)
 #' anl <- tern_ex_adtte %>% filter(PARAMCD == "TNE")
@@ -480,6 +474,8 @@ a_glm_count <- make_afun(
 #'     )
 #'   )
 #' build_table(lyt = lyt, df = anl)
+#'
+#' @export
 summarize_glm_count <- function(lyt,
                                 vars,
                                 var_labels,

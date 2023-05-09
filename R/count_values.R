@@ -14,6 +14,7 @@
 NULL
 
 #' @describeIn count_values_funs S3 generic function to count values.
+#'
 #' @inheritParams argument_convention
 #' @inheritParams s_summary.logical
 #' @param values (`character`)\cr specific values that should be counted.
@@ -22,7 +23,6 @@ NULL
 #' * `s_count_values()` returns output of [s_summary()] for specified values of a non-numeric variable.
 #'
 #' @export
-#'
 s_count_values <- function(x,
                            values,
                            na.rm = TRUE, # nolint
@@ -33,14 +33,15 @@ s_count_values <- function(x,
 }
 
 #' @describeIn count_values_funs Method for `character` class.
-#' @method s_count_values character
 #'
-#' @export
+#' @method s_count_values character
 #'
 #' @examples
 #' # `s_count_values.character`
 #' s_count_values(x = c("a", "b", "a"), values = "a")
 #' s_count_values(x = c("a", "b", "a", NA, NA), values = "b", na.rm = FALSE)
+#'
+#' @export
 s_count_values.character <- function(x,
                                      values = "Y",
                                      na.rm = TRUE, # nolint
@@ -58,13 +59,14 @@ s_count_values.character <- function(x,
 
 #' @describeIn count_values_funs Method for `factor` class. This makes an automatic
 #'   conversion to `character` and then forwards to the method for characters.
-#' @method s_count_values factor
 #'
-#' @export
+#' @method s_count_values factor
 #'
 #' @examples
 #' # `s_count_values.factor`
 #' s_count_values(x = factor(c("a", "b", "a")), values = "a")
+#'
+#' @export
 s_count_values.factor <- function(x,
                                   values = "Y",
                                   ...) {
@@ -72,13 +74,14 @@ s_count_values.factor <- function(x,
 }
 
 #' @describeIn count_values_funs Method for `logical` class.
-#' @method s_count_values logical
 #'
-#' @export
+#' @method s_count_values logical
 #'
 #' @examples
 #' # `s_count_values.logical`
 #' s_count_values(x = c(TRUE, FALSE, TRUE))
+#'
+#' @export
 s_count_values.logical <- function(x, values = TRUE, ...) {
   checkmate::assert_logical(values)
   s_count_values(as.character(x), values = as.character(values), ...)
@@ -91,11 +94,11 @@ s_count_values.logical <- function(x, values = TRUE, ...) {
 #' @return
 #' * `a_count_values()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @export
-#'
 #' @examples
 #' # `a_count_values`
 #' a_count_values(x = factor(c("a", "b", "a")), values = "a", .N_col = 10, .N_row = 10)
+#'
+#' @export
 a_count_values <- make_afun(
   s_count_values,
   .formats = c(count_fraction = "xx (xx.xx%)", count = "xx")
@@ -103,6 +106,7 @@ a_count_values <- make_afun(
 
 #' @describeIn count_values_funs Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
 #' @inheritParams argument_convention
 #'
 #' @return
@@ -110,13 +114,13 @@ a_count_values <- make_afun(
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_count_values()` to the table layout.
 #'
-#' @export
-#'
 #' @examples
 #' # `count_values`
 #' basic_table() %>%
 #'   count_values("Species", values = "setosa") %>%
 #'   build_table(iris)
+#'
+#' @export
 count_values <- function(lyt,
                          vars,
                          values,

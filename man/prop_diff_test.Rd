@@ -74,8 +74,7 @@ to avoid warnings from \code{rtables}.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
-\item{tbl}{(\code{matrix})\cr matrix with two groups in rows and the binary response
-(\code{TRUE}/\code{FALSE}) in columns.}
+\item{tbl}{(\code{matrix})\cr matrix with two groups in rows and the binary response (\code{TRUE}/\code{FALSE}) in columns.}
 }
 \value{
 \itemize{
@@ -96,13 +95,11 @@ the statistics from \code{s_test_proportion_diff()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Various tests were implemented to test the difference between two
-proportions.
+Various tests were implemented to test the difference between two proportions.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_test_proportion_diff()}: Statistics function which tests the difference
-between two proportions.
+\item \code{s_test_proportion_diff()}: Statistics function which tests the difference between two proportions.
 
 \item \code{a_test_proportion_diff()}: Formatted analysis function which is used as \code{afun} in \code{test_proportion_diff()}.
 
@@ -111,7 +108,6 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 
 }}
 \examples{
-
 # Statistics function
 dta <- data.frame(
   rsp = sample(c(TRUE, FALSE), 100, TRUE),
@@ -152,6 +148,7 @@ l <- basic_table() \%>\%
   )
 
 build_table(l, df = dta)
+
 }
 \seealso{
 \link{h_prop_diff_test}

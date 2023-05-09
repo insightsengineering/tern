@@ -7,12 +7,11 @@
 #' @inheritParams argument_convention
 #' @inheritParams survival_coxph_pairwise
 #' @param data (`data.frame`)\cr the dataset containing the variables to summarize.
-#' @param groups_lists (named `list` of `list`)\cr optionally contains for each `subgroups` variable a
-#'   list, which specifies the new group levels via the names and the
-#'   levels that belong to it in the character vectors that are elements of the list.
+#' @param groups_lists (named `list` of `list`)\cr optionally contains for each `subgroups` variable a list, which
+#'   specifies the new group levels via the names and the levels that belong to it in the character vectors that are
+#'   elements of the list.
 #' @param label_all (`string`)\cr label for the total population analysis.
-#' @param time_unit (`string`)\cr label with unit of median survival time. Default `NULL` skips
-#'   displaying unit.
+#' @param time_unit (`string`)\cr label with unit of median survival time. Default `NULL` skips displaying unit.
 #'
 #' @details These functions create a layout starting from a data frame which contains
 #'   the required statistics. Tables typically used as part of forest plot.
@@ -72,7 +71,6 @@ NULL
 #' passed as a named `list` and requires elements `tte`, `is_event`, `arm` and optionally `subgroups` and `strat`.
 #' `groups_lists` optionally specifies groupings for `subgroups` variables.
 #'
-#' @export
 #' @inheritParams argument_convention
 #' @inheritParams survival_duration_subgroups
 #' @inheritParams survival_coxph_pairwise
@@ -139,6 +137,8 @@ NULL
 #'   )
 #' )
 #' df_grouped
+#'
+#' @export
 extract_survival_subgroups <- function(variables,
                                        data,
                                        groups_lists = list(),
@@ -236,9 +236,7 @@ a_survival_subgroups <- function(.formats = list(
 #'
 #' @return An `rtables` table summarizing survival by subgroup.
 #'
-#' @export
 #' @examples
-#'
 #' ## Table with default columns.
 #' basic_table() %>%
 #'   tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])
@@ -250,6 +248,8 @@ a_survival_subgroups <- function(.formats = list(
 #'     vars = c("n_tot_events", "n_events", "median", "hr", "ci", "pval"),
 #'     time_unit = adtte_f$AVALU[1]
 #'   )
+#'
+#' @export
 tabulate_survival_subgroups <- function(lyt,
                                         df,
                                         vars = c("n_tot_events", "n_events", "median", "hr", "ci"),
@@ -381,8 +381,7 @@ tabulate_survival_subgroups <- function(lyt,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Internal function to check variables included in [tabulate_survival_subgroups()]
-#' and create column labels.
+#' Internal function to check variables included in [tabulate_survival_subgroups()] and create column labels.
 #'
 #' @inheritParams tabulate_survival_subgroups
 #' @inheritParams argument_convention

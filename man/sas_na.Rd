@@ -7,7 +7,7 @@
 sas_na(x, empty = TRUE, whitespaces = TRUE)
 }
 \arguments{
-\item{x}{factor or character vector}
+\item{x}{(\code{factor} or \code{character} vector)\cr values for which any missing values should be substituted.}
 
 \item{empty}{boolean if true empty strings get replaced by \code{NA}}
 
@@ -28,4 +28,5 @@ sas_na(c("1", "", " ", "   ", "b"))
 sas_na(factor(c("", " ", "b")))
 
 is.na(sas_na(c("1", "", " ", "   ", "b")))
+
 }

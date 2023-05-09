@@ -32,8 +32,6 @@
 #'
 #' @return `gTree` object containing the forest plot and table.
 #'
-#' @export
-#'
 #' @examples
 #' \dontrun{
 #' library(dplyr)
@@ -145,6 +143,8 @@
 #'   forest_header = c("Hello", "World")
 #' )
 #' }
+#'
+#' @export
 g_forest <- function(tbl, # nolint
                      col_x = attr(tbl, "col_x"),
                      col_ci = attr(tbl, "col_ci"),

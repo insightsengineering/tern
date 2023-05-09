@@ -61,8 +61,6 @@
 #'
 #' @return A `ggplot` line plot (and statistics table if applicable).
 #'
-#' @export
-#'
 #' @examples
 #' library(nestcolor)
 #'
@@ -116,6 +114,8 @@
 #' # Mean with CI, table, filtered data
 #' adlb_f <- dplyr::filter(adlb, ARMCD != "ARM A" | AVISIT == "BASELINE")
 #' g_lineplot(adlb_f, table = c("n", "mean"))
+#'
+#' @export
 g_lineplot <- function(df, # nolint
                        alt_counts_df = NULL,
                        variables = control_lineplot_vars(),
@@ -409,23 +409,19 @@ g_lineplot <- function(df, # nolint
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @param x (named `list`)\cr list of numerical values to be formatted and optionally labeled.
-#' Elements of `x` must be `numeric` vectors.
-#' @param format (named `character` or `NULL`)\cr
-#' format patterns for `x`. Names of the `format` must match the names of `x`.
-#' This parameter is passed directly to the `rtables::format_rcell`
-#' function through the `format` parameter.
-#' @param labels (named `character` or `NULL`)\cr
-#' optional labels for `x`. Names of the `labels` must match the names of `x`.
-#' When a label is not specified for an element of `x`,
-#' then this function tries to use `label` or `names` (in this order) attribute of that element
-#' (depending on which one exists and it is not `NULL` or `NA` or `NaN`).
-#' If none of these attributes are attached to a given element of `x`,
-#' then the label is automatically generated.
+#'   Elements of `x` must be `numeric` vectors.
+#' @param format (named `character` or `NULL`)\cr format patterns for `x`. Names of the `format` must
+#'   match the names of `x`. This parameter is passed directly to the `rtables::format_rcell`
+#'   function through the `format` parameter.
+#' @param labels (named `character` or `NULL`)\cr optional labels for `x`. Names of the `labels` must
+#'   match the names of `x`. When a label is not specified for an element of `x`,
+#'   then this function tries to use `label` or `names` (in this order) attribute of that element
+#'   (depending on which one exists and it is not `NULL` or `NA` or `NaN`). If none of these attributes
+#'   are attached to a given element of `x`, then the label is automatically generated.
 #'
 #' @return A single row `data.frame` object.
 #'
 #' @examples
-#'
 #' mean_ci <- c(48, 51)
 #' x <- list(mean = 50, mean_ci = mean_ci)
 #' format <- c(mean = "xx.x", mean_ci = "(xx.xx, xx.xx)")
@@ -480,11 +476,11 @@ h_format_row <- function(x, format, labels = NULL) {
 #'
 #' @return A named character vector of variable names.
 #'
-#' @export
-#'
 #' @examples
 #' control_lineplot_vars()
 #' control_lineplot_vars(strata = NA)
+#'
+#' @export
 control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", strata = "ARM", paramcd = "PARAMCD", y_unit = "AVALU") {
   checkmate::assert_string(x)
   checkmate::assert_string(y)

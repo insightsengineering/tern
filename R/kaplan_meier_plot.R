@@ -73,8 +73,6 @@ NULL
 #'
 #' @return A `grob` of class `gTree`.
 #'
-#' @export
-#'
 #' @examples
 #' \dontrun{
 #' library(dplyr)
@@ -167,6 +165,8 @@ NULL
 #'   position_surv_med = c(1, 0.7)
 #' )
 #' }
+#'
+#' @export
 g_km <- function(df,
                  variables,
                  control_surv = control_surv_timepoint(),
@@ -453,19 +453,18 @@ g_km <- function(df,
 #' within `g_km`.
 #'
 #' This starts from the [broom::tidy()] result, and then:
-#' - post-processes the `strata` column into a factor,
-#' - extends each stratum by an additional first row with time 0
-#' and probability 1 so that downstream plot lines start at those coordinates,
-#' - adds a `censor` column,
-#' - filters the rows before `max_time`.
+#'   - Post-processes the `strata` column into a factor
+#'   - Extends each stratum by an additional first row with time 0 and probability 1 so that
+#'     downstream plot lines start at those coordinates
+#'   - Adds a `censor` column
+#'   - Filters the rows before `max_time`
 #'
 #' @inheritParams kaplan_meier
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
-#' @param armval (`string`)\cr used as strata name when treatment arm
-#' variable only has one level. Default is "All".
+#' @param armval (`string`)\cr used as strata name when treatment arm variable only has one level. Default is "All".
 #'
-#' @return A `tibble` with columns `time`, `n.risk`, `n.event`, `n.censor`,
-#'   `estimate`, `std.error`, `conf.high`, `conf.low`, `strata`, and `censor`.
+#' @return A `tibble` with columns `time`, `n.risk`, `n.event`, `n.censor`, `estimate`, `std.error`, `conf.high`,
+#'   `conf.low`, `strata`, and `censor`.
 #'
 #' @examples
 #' \dontrun{
@@ -541,7 +540,6 @@ h_data_plot <- function(fit_km,
 #' @inheritParams kaplan_meier
 #'
 #' @return A vector of positions to use for x-axis ticks on a `ggplot` object.
-#'
 #'
 #' @examples
 #' \dontrun{
@@ -809,18 +807,15 @@ h_decompose_gg <- function(gg) {
 #'
 #' @return A grid layout.
 #'
-#' @export
-#'
-#' @details
-#' The layout corresponds to a grid of two columns and five rows of unequal
-#' dimensions. Most of the dimension are fixed, only the curve is flexible and
-#' will accommodate with the remaining free space.
-#' - The left column gets the annotation of the `ggplot` (y-axis) and the
-#'   names of the strata for the patient at risk tabulation.
-#'   The main constraint is about the width of the columns which must allow the
-#'   writing of the strata name.
-#' - The right column receive the `ggplot`, the legend, the x-axis and the
-#' patient at risk table.
+#' @details The layout corresponds to a grid of two columns and five rows of unequal
+#'   dimensions. Most of the dimension are fixed, only the curve is flexible and
+#'   will accommodate with the remaining free space.
+#'   - The left column gets the annotation of the `ggplot` (y-axis) and the
+#'     names of the strata for the patient at risk tabulation.
+#'     The main constraint is about the width of the columns which must allow the
+#'     writing of the strata name.
+#'   - The right column receive the `ggplot`, the legend, the x-axis and the
+#'     patient at risk table.
 #'
 #' @examples
 #' \dontrun{
@@ -843,6 +838,7 @@ h_decompose_gg <- function(gg) {
 #' grid.show.layout(lyt)
 #' }
 #'
+#' @export
 h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
@@ -913,7 +909,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Two Graphical Objects are obtained, one corresponding to row labeling and
+#' Two graphical objects are obtained, one corresponding to row labeling and
 #' the second to the number of patient at risk.
 #'
 #' @inheritParams kaplan_meier
@@ -1109,10 +1105,10 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' rows characterized by N, median and 95% confidence interval.
 #'
 #' @inheritParams kaplan_meier
+#' @inheritParams h_data_plot
 #' @param ttheme (`list`)\cr see [gridExtra::ttheme_default()].
 #' @param x a `numeric` value between 0 and 1 specifying x-location.
 #' @param y a `numeric` value between 0 and 1 specifying y-location.
-#' @inheritParams h_data_plot
 #'
 #' @return A `grob` of a table containing statistics `N`, `Median`, and `XX% CI` (`XX` taken from `fit_km`).
 #'
@@ -1161,10 +1157,8 @@ h_grob_median_surv <- function(fit_km,
 #'
 #' Build the y-axis annotation from a decomposed `ggplot`.
 #'
-#' @param ylab (`gtable`)\cr the y-lab as a graphical object derived from
-#'   a `ggplot`.
-#' @param yaxis (`gtable`)\cr the y-axis as a graphical object derived from
-#'   a `ggplot`.
+#' @param ylab (`gtable`)\cr the y-lab as a graphical object derived from a `ggplot`.
+#' @param yaxis (`gtable`)\cr the y-axis as a graphical object derived from a `ggplot`.
 #'
 #' @return a `gTree` object containing the y-axis annotation from a `ggplot`.
 #'
@@ -1220,8 +1214,6 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #' @return A `data.frame` containing statistics `HR`, `XX% CI` (`XX` taken from `control_coxph_pw`),
 #'   and `p-value (log-rank)`.
 #'
-#' @export
-#'
 #' @examples
 #' \dontrun{
 #' library(dplyr)
@@ -1236,6 +1228,8 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #'   control_coxph_pw = control_coxph(conf_level = 0.9)
 #' )
 #' }
+#'
+#' @export
 h_tbl_coxph_pairwise <- function(df,
                                  variables,
                                  control_coxph_pw = control_coxph()) {
@@ -1284,8 +1278,6 @@ h_tbl_coxph_pairwise <- function(df,
 #' @return A `grob` of a table containing statistics `HR`, `XX% CI` (`XX` taken from `control_coxph_pw`),
 #'   and `p-value (log-rank)`.
 #'
-#' @export
-#'
 #' @examples
 #' \dontrun{
 #' library(dplyr)
@@ -1304,6 +1296,8 @@ h_tbl_coxph_pairwise <- function(df,
 #' )
 #' grid::grid.draw(tbl_grob)
 #' }
+#'
+#' @export
 h_grob_coxph <- function(...,
                          x = 0,
                          y = 0,

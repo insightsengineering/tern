@@ -109,6 +109,7 @@ basic_table() \%>\%
     df = df,
     vars = c("n_tot", "n", "n_rsp", "prop", "or", "ci")
   )
+
 }
 \seealso{
 \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}

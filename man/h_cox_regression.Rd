@@ -19,10 +19,9 @@ h_coxreg_multivar_extract(var, data, mod, control = control_coxreg())
 \arguments{
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
-\item{interaction}{(\code{flag})\cr if \code{TRUE}, the model includes the
-interaction between the studied treatment and candidate covariate. Note that
-for univariate models without treatment arm, and multivariate models, no
-interaction can be used so that this needs to be \code{FALSE}.}
+\item{interaction}{(\code{flag})\cr if \code{TRUE}, the model includes the interaction between the studied
+treatment and candidate covariate. Note that for univariate models without treatment arm, and
+multivariate models, no interaction can be used so that this needs to be \code{FALSE}.}
 
 \item{effect}{(\code{string})\cr the treatment variable.}
 
@@ -134,6 +133,7 @@ h_coxreg_multivar_formula(
     strata = "SITE"
   )
 )
+
 library(survival)
 
 dta_simple <- data.frame(
@@ -154,6 +154,7 @@ result <- h_coxreg_multivar_extract(
   var = "var1", mod = mod, data = dta_simple
 )
 result
+
 }
 \seealso{
 \link{cox_regression}

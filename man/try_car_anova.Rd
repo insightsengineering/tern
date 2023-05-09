@@ -25,8 +25,7 @@ try_car_anova(mod, test.statistic)
     test statistic, and the default is to report all four.}
 }
 \value{
-A list with item \code{aov} for the result of the model and
-\code{error_text} for the captured warnings.
+A list with item \code{aov} for the result of the model and \code{error_text} for the captured warnings.
 }
 \description{
 Captures warnings when executing \link[car:Anova]{car::Anova}.

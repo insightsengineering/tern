@@ -151,6 +151,7 @@ s_odds_ratio(
   .df_row = dta,
   variables = list(arm = "grp", strata = "strata")
 )
+
 a_odds_ratio(
   df = subset(dta, grp == "A"),
   .var = "rsp",
@@ -158,6 +159,7 @@ a_odds_ratio(
   .in_ref_col = FALSE,
   .df_row = dta
 )
+
 dta <- data.frame(
   rsp = sample(c(TRUE, FALSE), 100, TRUE),
   grp = factor(rep(c("A", "B"), each = 50))
@@ -168,6 +170,7 @@ l <- basic_table() \%>\%
   estimate_odds_ratio(vars = "rsp")
 
 build_table(l, df = dta)
+
 }
 \seealso{
 Relevant helper function \code{\link[=h_odds_ratio]{h_odds_ratio()}}.

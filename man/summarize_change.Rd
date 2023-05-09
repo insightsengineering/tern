@@ -113,7 +113,6 @@ a_change_from_baseline(
 )
 }
 
-
 # `summarize_change()`
 
 ## Fabricated dataset.

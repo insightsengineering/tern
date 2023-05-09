@@ -38,7 +38,6 @@ This analyze function uses the S3 generic function \code{\link[=s_summary]{s_sum
 that are arranged in columns. Additional standard formatting arguments are available.
 }
 \examples{
-
 dta_test <- data.frame(
   USUBJID = rep(1:6, each = 3),
   PARAMCD = rep("lab", 6 * 3),
@@ -75,6 +74,7 @@ basic_table() \%>\%
   split_cols_by_multivar(vars = c("AVAL", "CHG")) \%>\%
   summarize_colvars(na.rm = FALSE) \%>\%
   build_table(dta_test)
+
 }
 \seealso{
 \code{\link[rtables:split_cols_by_multivar]{rtables::split_cols_by_multivar()}}

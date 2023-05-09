@@ -27,6 +27,7 @@ NULL
 
 #' @describeIn abnormal Statistics function which counts patients with abnormal range values
 #'   for a single `abnormal` level.
+#'
 #' @param exclude_base_abn (`flag`)\cr whether to exclude subjects with baseline abnormality
 #'   from numerator and denominator.
 #'
@@ -133,7 +134,6 @@ a_count_abnormal <- make_afun(
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_count_abnormal()` to the table layout.
 #'
-#' @export
 #' @examples
 #' # Layout creating function.
 #' basic_table() %>%
@@ -160,6 +160,8 @@ a_count_abnormal <- make_afun(
 #'     variables = list(id = "ID", baseline = "BL_RANGE")
 #'   ) %>%
 #'   build_table(df2)
+#'
+#' @export
 count_abnormal <- function(lyt,
                            var,
                            ...,

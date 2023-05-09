@@ -1,28 +1,21 @@
-#' Helper Function to create a new `SMQ` variable in `ADAE` by stacking
-#' `SMQ` and/or `CQ` records.
+#' Helper Function to create a new `SMQ` variable in `ADAE` by stacking `SMQ` and/or `CQ` records.
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Helper Function to create a new `SMQ` variable in `ADAE` that
-#' consists of all adverse events belonging to selected
-#' Standardized/Customized queries.
-#' The new dataset will only contain records of the adverse events
+#' Helper Function to create a new `SMQ` variable in `ADAE` that consists of all adverse events belonging to
+#' selected Standardized/Customized queries. The new dataset will only contain records of the adverse events
 #' belonging to any of the selected baskets.
 #'
 #' @inheritParams argument_convention
 #' @param baskets (`character`)\cr variable names of the selected Standardized/Customized queries.
 #' @param smq_varlabel (`string`)\cr a label for the new variable created.
-#' @param keys (`character`)\cr names of the key variables to be returned
-#' along with the new variable created.
-#' @param aag_summary (`data.frame`)\cr containing the `SMQ` baskets
-#' and the levels of interest for the final `SMQ` variable. This is useful when
-#' there are some levels of interest that are not observed in the `df` dataset.
-#' The two columns of this dataset should be named `basket` and `basket_name`.
+#' @param keys (`character`)\cr names of the key variables to be returned along with the new variable created.
+#' @param aag_summary (`data.frame`)\cr containing the `SMQ` baskets and the levels of interest for the final `SMQ`
+#'   variable. This is useful when there are some levels of interest that are not observed in the `df` dataset.
+#'   The two columns of this dataset should be named `basket` and `basket_name`.
 #'
 #' @return `data.frame` with variables in `keys` taken from `df` and new variable `SMQ` containing
 #'   records belonging to the baskets selected via the `baskets` argument.
-#'
-#' @export
 #'
 #' @examples
 #' adae <- tern_ex_adae[1:20, ] %>% df_explicit_na()
@@ -61,6 +54,8 @@
 #'   keys = c("STUDYID", "USUBJID", "AEDECOD", "ARM"),
 #'   baskets = "SMQ01NAM"
 #' )
+#'
+#' @export
 h_stack_by_baskets <- function(df,
                                baskets = grep("^(SMQ|CQ).+NAM$", names(df), value = TRUE),
                                smq_varlabel = "Standardized MedDRA Query",

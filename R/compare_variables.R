@@ -32,7 +32,6 @@ NULL
 #' * `s_compare()` returns output of [s_summary()] and comparisons versus the reference group in the form of p-values.
 #'
 #' @export
-#'
 s_compare <- function(x,
                       .ref_group,
                       .in_ref_col,
@@ -42,9 +41,8 @@ s_compare <- function(x,
 
 #' @describeIn compare_variables Method for `numeric` class. This uses the standard t-test
 #'   to calculate the p-value.
-#' @method s_compare numeric
 #'
-#' @export
+#' @method s_compare numeric
 #'
 #' @examples
 #' # `s_compare.numeric`
@@ -57,6 +55,8 @@ s_compare <- function(x,
 #'
 #' ## Empty numeric does not fail, it returns NA-filled items and no p-value.
 #' s_compare(numeric(), .ref_group = numeric(), .in_ref_col = FALSE)
+#'
+#' @export
 s_compare.numeric <- function(x,
                               .ref_group,
                               .in_ref_col,
@@ -78,11 +78,11 @@ s_compare.numeric <- function(x,
 
 #' @describeIn compare_variables Method for `factor` class. This uses the chi-squared test
 #'   to calculate the p-value.
+#'
 #' @param denom (`string`)\cr choice of denominator for factor proportions,
 #'   can only be `n` (number of values in this row and column intersection).
-#' @method s_compare factor
 #'
-#' @export
+#' @method s_compare factor
 #'
 #' @examples
 #' # `s_compare.factor`
@@ -97,6 +97,8 @@ s_compare.numeric <- function(x,
 #' y <- explicit_na(factor(c("a", "b", "c", NA)))
 #' s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
 #' s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
+#'
+#' @export
 s_compare.factor <- function(x,
                              .ref_group,
                              .in_ref_col,
@@ -137,8 +139,10 @@ s_compare.factor <- function(x,
 
 #' @describeIn compare_variables Method for `character` class. This makes an automatic
 #'   conversion to `factor` (with a warning) and then forwards to the method for factors.
+#'
 #' @param verbose (`logical`)\cr Whether warnings and messages should be printed. Mainly used
 #'   to print out information about factor casting. Defaults to `TRUE`.
+#'
 #' @method s_compare character
 #'
 #' @examples
@@ -186,9 +190,8 @@ s_compare.character <- function(x,
 
 #' @describeIn compare_variables Method for `logical` class. A chi-squared test
 #'   is used. If missing values are not removed, then they are counted as `FALSE`.
-#' @method s_compare logical
 #'
-#' @export
+#' @method s_compare logical
 #'
 #' @examples
 #' # `s_compare.logical`
@@ -203,6 +206,8 @@ s_compare.character <- function(x,
 #' y <- c(NA, NA, NA, NA, FALSE)
 #' s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
 #' s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
+#'
+#' @export
 s_compare.logical <- function(x,
                               .ref_group,
                               .in_ref_col,
@@ -245,7 +250,6 @@ s_compare.logical <- function(x,
 #' * `a_compare()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @export
-#'
 a_compare <- function(x,
                       .ref_group,
                       .in_ref_col,
@@ -255,7 +259,6 @@ a_compare <- function(x,
 }
 
 #' @describeIn compare_variables Formatted analysis function method for `numeric` class.
-#' @export
 #'
 #' @examples
 #' # `a_compare.numeric`
@@ -265,6 +268,8 @@ a_compare <- function(x,
 #'   .in_ref_col = FALSE,
 #'   .var = "bla"
 #' )
+#'
+#' @export
 a_compare.numeric <- make_afun(
   s_compare.numeric,
   .formats = c(
@@ -288,7 +293,6 @@ a_compare.numeric <- make_afun(
 )
 
 #' @describeIn compare_variables Formatted analysis function method for `factor` class.
-#' @export
 #'
 #' @examples
 #' # `a_compare.factor`
@@ -301,6 +305,8 @@ a_compare.numeric <- make_afun(
 #' x <- factor(c("a", "a", "b", "c", "a"))
 #' y <- factor(c("a", "a", "b", "c"))
 #' afun(x, .ref_group = y, .in_ref_col = FALSE)
+#'
+#' @export
 a_compare.factor <- make_afun(
   s_compare.factor,
   .formats = .a_compare_counts_formats,
@@ -309,7 +315,6 @@ a_compare.factor <- make_afun(
 )
 
 #' @describeIn compare_variables Formatted analysis function method for `character` class.
-#' @export
 #'
 #' @examples
 #' # `a_compare.character`
@@ -320,6 +325,8 @@ a_compare.factor <- make_afun(
 #' x <- c("A", "B", "A", "C")
 #' y <- c("B", "A", "C")
 #' afun(x, .ref_group = y, .in_ref_col = FALSE, .var = "x", verbose = FALSE)
+#'
+#' @export
 a_compare.character <- make_afun(
   s_compare.character,
   .formats = .a_compare_counts_formats,
@@ -328,7 +335,6 @@ a_compare.character <- make_afun(
 )
 
 #' @describeIn compare_variables Formatted analysis function method for `logical` class.
-#' @export
 #'
 #' @examples
 #' # `a_compare.logical`
@@ -338,6 +344,8 @@ a_compare.character <- make_afun(
 #' x <- c(TRUE, FALSE, FALSE, TRUE, TRUE)
 #' y <- c(TRUE, FALSE)
 #' afun(x, .ref_group = y, .in_ref_col = FALSE)
+#'
+#' @export
 a_compare.logical <- make_afun(
   s_compare.logical,
   .formats = .a_compare_counts_formats,
@@ -362,7 +370,6 @@ a_compare.logical <- make_afun(
 #'   functions (and possibly others in the future), we provide a constructor that does this:
 #'   [create_afun_compare()].
 #'
-#' @export
 #' @seealso [compare_vars()]
 #'
 #' @examples
@@ -390,6 +397,8 @@ a_compare.logical <- make_afun(
 #'     show_labels = "visible"
 #'   )
 #' build_table(lyt, df = tern_ex_adsl)
+#'
+#' @export
 create_afun_compare <- function(.stats = NULL,
                                 .formats = NULL,
                                 .labels = NULL,
@@ -470,8 +479,6 @@ create_afun_compare <- function(.stats = NULL,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_compare()` to the table layout.
 #'
-#' @export
-#'
 #' @examples
 #' # `compare_vars()` in `rtables` pipelines
 #'
@@ -491,6 +498,8 @@ create_afun_compare <- function(.stats = NULL,
 #'     .labels = c(mean_sd = "Mean, SD")
 #'   )
 #' build_table(lyt, df = tern_ex_adsl)
+#'
+#' @export
 compare_vars <- function(lyt,
                          vars,
                          var_labels = vars,

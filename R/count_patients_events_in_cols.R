@@ -111,16 +111,14 @@ s_count_patients_and_multiple_events <- function(df, # nolint
 #'
 #' @inheritParams argument_convention
 #' @param col_split (`flag`)\cr whether the columns should be split.
-#'  Set to `FALSE` when the required column split has been done already earlier in the layout pipe.
+#'   Set to `FALSE` when the required column split has been done already earlier in the layout pipe.
 #'
 #' @return
 #' * `summarize_patients_events_in_cols()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted content rows
 #'   containing the statistics from `s_count_patients_and_multiple_events()` to the table layout.
 #'
-#' @export
 #' @examples
-#'
 #' # `summarize_patients_events_in_cols()`
 #' basic_table() %>%
 #'   summarize_patients_events_in_cols(
@@ -132,6 +130,8 @@ s_count_patients_and_multiple_events <- function(df, # nolint
 #'     custom_label = "%s Total number of patients and events"
 #'   ) %>%
 #'   build_table(df)
+#'
+#' @export
 summarize_patients_events_in_cols <- function(lyt, # nolint
                                               id = "USUBJID",
                                               filters_list = list(),

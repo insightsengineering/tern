@@ -22,7 +22,7 @@ A named \code{list} of two \code{gTree} objects: \code{at_risk} and \code{label}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Two Graphical Objects are obtained, one corresponding to row labeling and
+Two graphical objects are obtained, one corresponding to row labeling and
 the second to the number of patient at risk.
 }
 \examples{

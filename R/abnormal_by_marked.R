@@ -193,7 +193,6 @@ a_count_abnormal_by_marked <- make_afun(
 #'   ) %>%
 #'   build_table(df = df)
 #'
-#'
 #' basic_table() %>%
 #'   split_cols_by("ARMCD") %>%
 #'   split_rows_by("PARAMCD") %>%

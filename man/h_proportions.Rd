@@ -104,6 +104,7 @@ prop_strat_wilson(
   weights = rep(1 / n_strata, n_strata),
   conf_level = 0.90
 )
+
 prop_clopper_pearson(rsp, conf_level = .95)
 
 prop_wald(rsp, conf_level = 0.95)

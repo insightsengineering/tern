@@ -11,18 +11,16 @@ NULL
 #'   the defined event has occurred.
 #'
 #' @inheritParams argument_convention
+#' @inheritParams summarize_variables
 #' @param .var (`character`)\cr name of the column that contains the unique identifier.
 #' @param filters (`character`)\cr a character vector specifying the column names and flag variables
 #'   to be used for counting the number of unique identifiers satisfying such conditions.
 #'   Multiple column names and flags are accepted in this format
 #'   `c("column_name1" = "flag1", "column_name2" = "flag2")`.
 #'   Note that only equality is being accepted as condition.
-#' @inheritParams summarize_variables
 #'
 #' @return
 #' * `s_count_patients_with_event()` returns the count and fraction of unique identifiers with the defined event.
-#'
-#' @export
 #'
 #' @examples
 #' library(dplyr)
@@ -46,6 +44,8 @@ NULL
 #'   denom = "N_col",
 #'   .N_col = 456
 #' )
+#'
+#' @export
 s_count_patients_with_event <- function(df,
                                         .var,
                                         filters,
@@ -80,8 +80,6 @@ s_count_patients_with_event <- function(df,
 #' @return
 #' * `a_count_patients_with_event()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @export
-#'
 #' @examples
 #' # `a_count_patients_with_event()`
 #'
@@ -92,6 +90,8 @@ s_count_patients_with_event <- function(df,
 #'   .N_col = 100,
 #'   .N_row = 100
 #' )
+#'
+#' @export
 a_count_patients_with_event <- make_afun(
   s_count_patients_with_event,
   .formats = c(count_fraction = format_count_fraction_fixed_dp)
@@ -107,7 +107,6 @@ a_count_patients_with_event <- make_afun(
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_count_patients_with_event()` to the table layout.
 #'
-#' @export
 #' @examples
 #' # `count_patients_with_event()`
 #'
@@ -140,6 +139,8 @@ a_count_patients_with_event <- make_afun(
 #'     table_names = "tbl_rel_fatal"
 #'   )
 #' build_table(lyt, tern_ex_adae, alt_counts_df = tern_ex_adsl)
+#'
+#' @export
 count_patients_with_event <- function(lyt,
                                       vars,
                                       ...,
@@ -170,16 +171,14 @@ count_patients_with_event <- function(lyt,
 #'   a particular flag variable is `TRUE`.
 #'
 #' @inheritParams argument_convention
+#' @inheritParams summarize_variables
 #' @param .var (`character`)\cr name of the column that contains the unique identifier.
 #' @param flag_variables (`character`)\cr a character vector specifying the names of `logical`
 #'   variables from analysis dataset used for counting the number of unique identifiers.
-#' @inheritParams summarize_variables
 #'
 #' @return
 #' * `s_count_patients_with_flags()` returns the count and the fraction of unique identifiers with each particular
 #'   flag as a list of statistics `n`, `count`, `count_fraction`, and `n_blq`, with one element per flag.
-#'
-#' @export
 #'
 #' @examples
 #' # `s_count_patients_with_flags()`
@@ -207,6 +206,8 @@ count_patients_with_event <- function(lyt,
 #'   denom = "N_col",
 #'   .N_col = 1000
 #' )
+#'
+#' @export
 s_count_patients_with_flags <- function(df,
                                         .var,
                                         flag_variables,
@@ -245,8 +246,6 @@ s_count_patients_with_flags <- function(df,
 #' @return
 #' * `a_count_patients_with_flags()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @export
-#'
 #' @examples
 #' #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 #' # function `format_count_fraction()` can be applied correctly.
@@ -264,6 +263,8 @@ s_count_patients_with_flags <- function(df,
 #'   .var = "USUBJID",
 #'   flag_variables = c("fl1", "fl2", "fl3", "fl4")
 #' )
+#'
+#' @export
 a_count_patients_with_flags <- make_afun(
   s_count_patients_with_flags,
   .formats = c("count_fraction" = format_count_fraction_fixed_dp)
@@ -279,8 +280,6 @@ a_count_patients_with_flags <- make_afun(
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_count_patients_with_flags()` to the table layout.
 #'
-#' @export
-#'
 #' @examples
 #' # `count_patients_with_flags()`
 #'
@@ -293,6 +292,8 @@ a_count_patients_with_flags <- make_afun(
 #'     denom = "N_col"
 #'   )
 #' build_table(lyt2, adae, alt_counts_df = tern_ex_adsl)
+#'
+#' @export
 count_patients_with_flags <- function(lyt,
                                       var,
                                       var_labels = var,

@@ -12,8 +12,7 @@ NULL
 #'   of patients and the sum of exposure across all patients.
 #'
 #' @inheritParams argument_convention
-#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
-#'   be used as label.
+#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will be used as label.
 #'
 #' @return
 #' * `s_count_patients_sum_exposure()` returns a named `list` with the statistics:
@@ -73,7 +72,7 @@ s_count_patients_sum_exposure <- function(df, # nolintr
     formatters::with_label(
       s_num_patients_content(
         df = df,
-        .N_col = .N_col, # nolintr
+        .N_col = .N_col,
         .var = id,
         labelstr = ""
       )$unique,
@@ -97,8 +96,6 @@ s_count_patients_sum_exposure <- function(df, # nolintr
 #'   layouting functions, or to [rtables::build_table()]. Adding this function to an `rtable` layout will
 #'   add formatted rows, with the statistics from `s_count_patients_sum_exposure()` arranged in
 #'   columns, to the table layout.
-#'
-#' @export
 #'
 #' @examples
 #' lyt <- basic_table() %>%
@@ -129,7 +126,9 @@ s_count_patients_sum_exposure <- function(df, # nolintr
 #'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
 #' result4 <- build_table(lyt4, df = df, alt_counts_df = adsl)
 #' result4
-summarize_patients_exposure_in_cols <- function(lyt, # nolintr
+#'
+#' @export
+summarize_patients_exposure_in_cols <- function(lyt,
                                                 var,
                                                 ...,
                                                 .stats = c("n_patients", "sum_exposure"),

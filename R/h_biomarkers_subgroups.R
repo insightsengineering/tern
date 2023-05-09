@@ -3,7 +3,7 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Please see [h_tab_surv_one_biomarker()] and [h_tab_rsp_one_biomarker()],
-#'   which use this function for examples.
+#' which use this function for examples.
 #'
 #' @param df (`data.frame`)\cr results for a single biomarker.
 #' @param afuns (named `list` of `function`)\cr analysis functions.

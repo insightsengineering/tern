@@ -6,29 +6,23 @@
 #' with title, footnote, and page numbers.
 #'
 #' @inheritParams grid::grob
-#' @param grob a grid grob object, optionally \code{NULL} if only a \code{grob} with
-#'   the decoration should be shown.
-#' @param titles vector of character strings. Vector elements are separated by a
-#'   newline and strings are wrapped according to the page with.
+#' @param grob a grid grob object, optionally \code{NULL} if only a \code{grob} with the decoration should be shown.
+#' @param titles vector of character strings. Vector elements are separated by a newline and strings are wrapped
+#'   according to the page width.
 #' @param footnotes vector of character string. Same rules as for \code{titles}.
 #' @param page string with page numeration, if \code{NULL} then no page number is displayed.
 #' @param width_titles unit object
 #' @param width_footnotes unit object
-#' @param border boolean, whether a a border should be drawn around the plot or
-#'   not.
+#' @param border boolean, whether a a border should be drawn around the plot or not.
 #' @param margins unit object of length 4
 #' @param padding  unit object of length 4
 #' @param outer_margins  unit object of length 4
 #' @param gp_titles a \code{gpar} object
 #' @param gp_footnotes a \code{gpar} object
 #'
-#' @details
-#' The titles and footnotes will be ragged, i.e. each title will be wrapped
-#' individually.
-#'
 #' @return A grid grob (`gTree`).
 #'
-#' @export
+#' @details The titles and footnotes will be ragged, i.e. each title will be wrapped individually.
 #'
 #' @examples
 #' library(grid)
@@ -132,6 +126,8 @@
 #'     border = FALSE
 #'   )
 #' )
+#'
+#' @export
 decorate_grob <- function(grob,
                           titles,
                           footnotes,
@@ -307,8 +303,7 @@ split_string <- function(text, width) {
 #'
 #' @return A text grob.
 #'
-#' @details
-#' This code is taken from R Graphics by \code{Paul Murell}, 2nd edition
+#' @details This code is taken from R Graphics by \code{Paul Murell}, 2nd edition
 #'
 #' @examples
 #' # Internal function - split_text_grob
@@ -445,8 +440,6 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
 #'
 #' @return Closure that increments the page number.
 #'
-#' @keywords internal
-#'
 #' @examples
 #' # Internal function - decorate_grob_factory
 #' \dontrun{
@@ -461,6 +454,8 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
 #' draw_grob(pf(NULL))
 #' draw_grob(pf(NULL))
 #' }
+#'
+#' @keywords internal
 decorate_grob_factory <- function(npages, ...) {
   current_page <- 0
   function(grob) {

@@ -196,6 +196,7 @@ s_count_patients_with_event(
   denom = "N_col",
   .N_col = 456
 )
+
 # `a_count_patients_with_event()`
 
 a_count_patients_with_event(
@@ -205,6 +206,7 @@ a_count_patients_with_event(
   .N_col = 100,
   .N_row = 100
 )
+
 # `count_patients_with_event()`
 
 lyt <- basic_table() \%>\%
@@ -236,6 +238,7 @@ lyt <- basic_table() \%>\%
     table_names = "tbl_rel_fatal"
   )
 build_table(lyt, tern_ex_adae, alt_counts_df = tern_ex_adsl)
+
 # `s_count_patients_with_flags()`
 
 # Add labelled flag variables to analysis dataset.
@@ -261,6 +264,7 @@ s_count_patients_with_flags(
   denom = "N_col",
   .N_col = 1000
 )
+
 #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 # function `format_count_fraction()` can be applied correctly.
 
@@ -277,6 +281,7 @@ afun(
   .var = "USUBJID",
   flag_variables = c("fl1", "fl2", "fl3", "fl4")
 )
+
 # `count_patients_with_flags()`
 
 lyt2 <- basic_table() \%>\%
@@ -288,4 +293,5 @@ lyt2 <- basic_table() \%>\%
     denom = "N_col"
   )
 build_table(lyt2, adae, alt_counts_df = tern_ex_adsl)
+
 }

@@ -13,8 +13,6 @@
 #'
 #' @return A `grob`.
 #'
-#' @export
-#'
 #' @examples
 #' library(grid)
 #'
@@ -33,6 +31,8 @@
 #'
 #' showViewport()
 #' grid.ls(grobs = TRUE, viewports = TRUE, print = FALSE)
+#'
+#' @export
 stack_grobs <- function(...,
                         grobs = list(...),
                         padding = grid::unit(2, "line"),
@@ -83,7 +83,6 @@ stack_grobs <- function(...,
     name = name
   )
 }
-
 
 #' Arrange Multiple Grobs
 #'
@@ -220,8 +219,6 @@ arrange_grobs <- function(..., # nolint
   )
 }
 
-
-
 #' Draw `grob`
 #'
 #' @description `r lifecycle::badge("stable")`
@@ -233,8 +230,6 @@ arrange_grobs <- function(..., # nolint
 #' @param vp a \code{\link{viewport}} object (or \code{NULL}).
 #'
 #' @return A `grob`.
-#'
-#' @export
 #'
 #' @examples
 #' library(dplyr)
@@ -251,6 +246,8 @@ arrange_grobs <- function(..., # nolint
 #'   draw_grob()
 #' showViewport()
 #' }
+#'
+#' @export
 draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
   if (newpage) {
     grid::grid.newpage()

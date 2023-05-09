@@ -20,7 +20,7 @@ NULL
 #' @param threshold (`number`)\cr a cutoff value as threshold to count values of `x`.
 #' @param lower_tail (`logical`)\cr whether to count lower tail, default is `TRUE`.
 #' @param include_eq (`logical`)\cr whether to include value equal to the `threshold` in
-#' count, default is `TRUE`.
+#'   count, default is `TRUE`.
 #' @param .N_col (`count`)\cr denominator for fraction calculation.
 #'
 #' @return A named vector with items:
@@ -30,8 +30,6 @@ NULL
 #'
 #' @seealso [count_cumulative]
 #'
-#' @export
-#'
 #' @examples
 #' set.seed(1, kind = "Mersenne-Twister")
 #' x <- c(sample(1:10, 10), NA)
@@ -40,6 +38,8 @@ NULL
 #' h_count_cumulative(x, 5, lower_tail = FALSE, include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
 #' h_count_cumulative(x, 0, lower_tail = FALSE, .N_col = .N_col)
 #' h_count_cumulative(x, 100, lower_tail = FALSE, .N_col = .N_col)
+#'
+#' @export
 h_count_cumulative <- function(x,
                                threshold,
                                lower_tail = TRUE,
@@ -155,8 +155,6 @@ a_count_cumulative <- make_afun(
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_count_cumulative()` to the table layout.
 #'
-#' @export
-#'
 #' @examples
 #' basic_table() %>%
 #'   split_cols_by("ARM") %>%
@@ -166,6 +164,8 @@ a_count_cumulative <- make_afun(
 #'     thresholds = c(40, 60)
 #'   ) %>%
 #'   build_table(tern_ex_adsl)
+#'
+#' @export
 count_cumulative <- function(lyt,
                              vars,
                              var_labels = vars,

@@ -18,8 +18,6 @@
 #'   `ATOXGR`, and `BTOXGR` relevant for analysis. Optionally, `AVISIT` are `AVISITN` are included when
 #'   `by_visit = TRUE` and `no_fillin_visits = c("SCREENING", "BASELINE")`.
 #'
-#' @export
-#'
 #' @details In the result data missing records will be created for the following situations:
 #'   * Patients who are present in `adsl` but have no lab data in `adlb` (both baseline and post-baseline).
 #'   * Patients who do not have any post-baseline lab values.
@@ -40,6 +38,8 @@
 #'   worst_flag = c("WGRLOVFL" = "Y"),
 #'   by_visit = TRUE
 #' )
+#'
+#' @export
 h_adsl_adlb_merge_using_worst_flag <- function(adsl, # nolint
                                                adlb,
                                                worst_flag = c("WGRHIFL" = "Y"),

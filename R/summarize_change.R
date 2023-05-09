@@ -108,9 +108,7 @@ a_change_from_baseline <- make_afun(
 #' @note To be used after a split on visits in the layout, such that each data subset only contains
 #'   either baseline or post-baseline data.
 #'
-#' @export
 #' @examples
-#'
 #' # `summarize_change()`
 #'
 #' ## Fabricated dataset.
@@ -139,6 +137,7 @@ a_change_from_baseline <- make_afun(
 #' Viewer(results)
 #' }
 #'
+#' @export
 summarize_change <- function(lyt,
                              vars,
                              ...,

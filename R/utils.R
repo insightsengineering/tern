@@ -1,8 +1,9 @@
-#' Re-implemented \code{\link[base:range]{range.default}} default S3 method for numerical objects only.
-#' It returns \code{c(NA, NA)} instead of \code{c(-Inf, Inf)} for zero-length data
+#' Re-implemented [`base::range()`] Default S3 method for numerical objects
+#'
+#' This function returns \code{c(NA, NA)} instead of \code{c(-Inf, Inf)} for zero-length data
 #' without any warnings.
 #'
-#' @param x numeric S3 class, a sequence of numbers for which the range is computed.
+#' @param x (`numeric`)\cr a sequence of numbers for which the range is computed.
 #' @param na.rm (`logical`)\cr indicating if NA should be omitted.
 #' @param finite (`logical`)\cr indicating if non-finite elements should be removed.
 #'
@@ -47,6 +48,7 @@ range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams argument_convention
+#'
 #' @return A `string`.
 #'
 #' @export
@@ -60,6 +62,7 @@ f_conf_level <- function(conf_level) {
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @param test_mean (`number`)\cr mean value to test under the null hypothesis.
+#'
 #' @return A `string`.
 #'
 #' @export
@@ -72,6 +75,7 @@ f_pval <- function(test_mean) {
 #'
 #' @param covariates (`character`)\cr a vector that can contain single variable names (such as
 #'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
+#'
 #' @return A named `list` of `character` vector.
 #'
 #' @keywords internal
@@ -109,8 +113,6 @@ to_n <- function(x, n) {
 }
 
 #' Check Element Dimension
-#'
-#' @description
 #'
 #' Checks if the elements in `...` have the same dimension.
 #'
@@ -173,7 +175,7 @@ make_names <- function(nams) {
 
 #' Conversion of Months to Days
 #'
-#' @description
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Conversion of Months to Days. This is an approximative calculation because it
 #' considers each month as having an average of 30.4375 days.
@@ -252,8 +254,6 @@ combine_vectors <- function(x, y) {
 
 #' Extract Elements by Name
 #'
-#' @description
-#'
 #' This utility function extracts elements from a vector `x` by `names`.
 #' Differences to the standard [base::`[`()] function are:
 #'
@@ -284,13 +284,12 @@ extract_by_name <- function(x, names) {
 #' Labels for Adverse Event Baskets
 #'
 #' @description `r lifecycle::badge("stable")`
+#'
 #' @param aesi (`character`)\cr with standardized MedDRA query name (e.g. `SMQzzNAM`) or customized query
 #'   name (e.g. `CQzzNAM`).
 #' @param scope (`character`)\cr with scope of query (e.g. `SMQzzSC`).
 #'
 #' @return A `string` with the standard label for the AE basket.
-#'
-#' @export
 #'
 #' @examples
 #' adae <- tern_ex_adae
@@ -300,6 +299,8 @@ extract_by_name <- function(x, names) {
 #'
 #' # Customized query label.
 #' aesi_label(adae$CQ01NAM)
+#'
+#' @export
 aesi_label <- function(aesi, scope = NULL) {
   checkmate::assert_character(aesi)
   checkmate::assert_character(scope, null.ok = TRUE)
@@ -323,8 +324,6 @@ aesi_label <- function(aesi, scope = NULL) {
 
 #' Indicate Study Arm Variable in Formula
 #'
-#' @description
-#'
 #' We use `study_arm` to indicate the study arm variable in `tern` formulas.
 #'
 #' @param x arm information
@@ -332,7 +331,6 @@ aesi_label <- function(aesi, scope = NULL) {
 #' @return `x`
 #'
 #' @keywords internal
-#'
 study_arm <- function(x) {
   structure(x, varname = deparse(substitute(x)))
 }
@@ -350,10 +348,9 @@ study_arm <- function(x) {
 #' @param level (`numeric`)\cr level of confidence interval to use (0.95 by default).
 #'
 #' @return A `data.frame` with original `x`, smoothed `y`, `ylow`, and `yhigh`, and
-#' optional `groups` variables formatted as `factor` type.
+#'   optional `groups` variables formatted as `factor` type.
 #'
 #' @export
-#'
 get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
   checkmate::assert_data_frame(df)
   df_cols <- colnames(df)
@@ -412,8 +409,6 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
 
 #' Number of Available (Non-Missing Entries) in a Vector
 #'
-#' @description
-#'
 #' Small utility function for better readability.
 #'
 #' @param x (`any`)\cr vector in which to count non-missing values.
@@ -433,7 +428,7 @@ n_available <- function(x) {
 
 #' Reapply Variable Labels
 #'
-#' @description This is a helper function that is used in tests.
+#' This is a helper function that is used in tests.
 #'
 #' @param x (`vector`)\cr vector of elements that needs new labels.
 #' @param varlabels (`character`)\cr vector of labels for `x`.

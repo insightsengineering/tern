@@ -16,7 +16,7 @@ check_diff_prop_ci(rsp, grp, strata = NULL, conf_level, correct = NULL)
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{correct}{\code{logical}\cr include the continuity correction. For further
+\item{correct}{(\code{logical})\cr whether to include the continuity correction. For further
 information, see \code{\link[stats:prop.test]{stats::prop.test()}}.}
 }
 \description{

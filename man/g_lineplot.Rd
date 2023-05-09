@@ -181,4 +181,5 @@ g_lineplot(
 # Mean with CI, table, filtered data
 adlb_f <- dplyr::filter(adlb, ARMCD != "ARM A" | AVISIT == "BASELINE")
 g_lineplot(adlb_f, table = c("n", "mean"))
+
 }

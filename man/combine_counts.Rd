@@ -16,8 +16,7 @@ levels that belong to it in the character vectors that are elements of the list.
 A \code{vector} of column counts.
 }
 \description{
-Simplifies the estimation of column counts, especially when group combination
-is required.
+Simplifies the estimation of column counts, especially when group combination is required.
 }
 \examples{
 ref <- c("A: Drug X", "B: Placebo")

@@ -131,6 +131,7 @@ basic_table() \%>\%
   add_colcounts() \%>\%
   count_missed_doses("AVAL", thresholds = c(1, 5, 10, 15), var_labels = "Missed Doses") \%>\%
   build_table(anl, alt_counts_df = tern_ex_adsl)
+
 }
 \seealso{
 Relevant description function \code{\link[=d_count_missed_doses]{d_count_missed_doses()}}.

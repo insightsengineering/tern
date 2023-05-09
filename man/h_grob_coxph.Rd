@@ -48,4 +48,5 @@ tbl_grob <- h_grob_coxph(
 )
 grid::grid.draw(tbl_grob)
 }
+
 }

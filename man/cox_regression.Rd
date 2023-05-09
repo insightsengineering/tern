@@ -78,12 +78,10 @@ univariable Cox regression will run.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
-\item{at}{(\code{list} of \code{numeric})\cr when the candidate covariate is a
-\code{numeric}, use \code{at} to specify the value of the covariate at which the
-effect should be estimated.}
+\item{at}{(\code{list} of \code{numeric})\cr when the candidate covariate is a \code{numeric}, use \code{at} to specify
+the value of the covariate at which the effect should be estimated.}
 
-\item{control}{(\code{list})\cr a list of parameters as returned by the
-helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
+\item{control}{(\code{list})\cr a list of parameters as returned by the helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 
 \item{.spl_context}{(\code{data.frame})\cr gives information about ancestor split states
 that is passed by \code{rtables}.}
@@ -124,8 +122,7 @@ containing the chosen statistics to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Fits a Cox regression model and estimates hazard ratio to describe the effect
-size in a survival analysis.
+Fits a Cox regression model and estimates hazard ratio to describe the effect size in a survival analysis.
 }
 \details{
 Cox models are the most commonly used methods to estimate the magnitude of

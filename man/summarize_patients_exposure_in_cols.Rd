@@ -38,8 +38,7 @@ by a statistics function.}
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
 
-\item{custom_label}{(\code{string} or \code{NULL})\cr if provided and \code{labelstr} is empty then this will
-be used as label.}
+\item{custom_label}{(\code{string} or \code{NULL})\cr if provided and \code{labelstr} is empty then this will be used as label.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
@@ -140,5 +139,6 @@ lyt4 <- basic_table() \%>\%
   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
 result4 <- build_table(lyt4, df = df, alt_counts_df = adsl)
 result4
+
 }
 \keyword{internal}

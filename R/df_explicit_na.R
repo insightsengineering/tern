@@ -3,7 +3,7 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' This is a helper function to encode missing entries across groups of categorical
-#'   variables in a data frame.
+#' variables in a data frame.
 #'
 #' @details Missing entries are those with `NA` or empty strings and will
 #'   be replaced with a specified value. If factor variables include missing
@@ -24,10 +24,9 @@
 #'
 #' @return A `data.frame` with the chosen modifications applied.
 #'
-#' @export
 #' @seealso [sas_na()] and [explicit_na()] for other missing data helper functions.
-#' @examples
 #'
+#' @examples
 #' my_data <- data.frame(
 #'   u = c(TRUE, FALSE, NA, TRUE),
 #'   v = factor(c("A", NA, NA, NA), levels = c("Z", "A")),
@@ -66,6 +65,8 @@
 #' adsl <- tern_ex_adsl
 #' adsl$AGE[adsl$AGE < 30] <- NA
 #' adsl <- df_explicit_na(adsl)
+#'
+#' @export
 df_explicit_na <- function(data,
                            omit_columns = NULL,
                            char_as_factor = TRUE,

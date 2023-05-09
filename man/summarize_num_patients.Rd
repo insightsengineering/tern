@@ -171,6 +171,7 @@ df_by_event <- data.frame(
 )
 s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID")
 s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
+
 df_tmp <- data.frame(
   USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
   ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),

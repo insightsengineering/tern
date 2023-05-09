@@ -251,5 +251,6 @@ basic_table() \%>\%
     method = "both"
   ) \%>\%
   build_table(df = adtte_f)
+
 }
 \keyword{internal}

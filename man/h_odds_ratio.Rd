@@ -45,6 +45,7 @@ data <- data.frame(
 
 # Odds ratio based on glm.
 or_glm(data, conf_level = 0.95)
+
 # Data with 3 groups.
 data <- data.frame(
   rsp = as.logical(c(1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0)),
@@ -55,6 +56,7 @@ data <- data.frame(
 
 # Odds ratio based on stratified estimation by conditional logistic regression.
 or_clogit(data, conf_level = 0.95)
+
 }
 \seealso{
 \link{odds_ratio}

@@ -16,8 +16,6 @@
 #'
 #' @return A `ggplot` waterfall plot.
 #'
-#' @export
-#'
 #' @examples
 #' library(dplyr)
 #' library(nestcolor)
@@ -60,6 +58,8 @@
 #'   ylab = "Percentage Change",
 #'   title = "Waterfall plot"
 #' )
+#'
+#' @export
 g_waterfall <- function(height,
                         id,
                         col_var = NULL,

@@ -18,8 +18,7 @@
 #' @name survival_coxph_pairwise
 NULL
 
-#' @describeIn survival_coxph_pairwise Statistics function which analyzes HR, CIs of HR and p-value
-#'   of a coxph model.
+#' @describeIn survival_coxph_pairwise Statistics function which analyzes HR, CIs of HR and p-value of a coxph model.
 #'
 #' @return
 #' * `s_coxph_pairwise()` returns the statistics:
@@ -151,8 +150,6 @@ a_coxph_pairwise <- make_afun(
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_coxph_pairwise()` to the table layout.
 #'
-#' @export
-#'
 #' @examples
 #' basic_table() %>%
 #'   split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
@@ -175,6 +172,8 @@ a_coxph_pairwise <- make_afun(
 #'     control = control_coxph(pval_method = "wald")
 #'   ) %>%
 #'   build_table(df = adtte_f)
+#'
+#' @export
 coxph_pairwise <- function(lyt,
                            vars,
                            ...,

@@ -140,7 +140,6 @@ s_glm_count(
 )
 }
 
-
 # Internal function - s_change_from_baseline
 \dontrun{
 a_glm_count(
@@ -196,5 +195,6 @@ lyt <- basic_table() \%>\%
     )
   )
 build_table(lyt = lyt, df = anl)
+
 }
 \keyword{internal}

@@ -7,11 +7,9 @@
 h_grob_y_annot(ylab, yaxis)
 }
 \arguments{
-\item{ylab}{(\code{gtable})\cr the y-lab as a graphical object derived from
-a \code{ggplot}.}
+\item{ylab}{(\code{gtable})\cr the y-lab as a graphical object derived from a \code{ggplot}.}
 
-\item{yaxis}{(\code{gtable})\cr the y-axis as a graphical object derived from
-a \code{ggplot}.}
+\item{yaxis}{(\code{gtable})\cr the y-axis as a graphical object derived from a \code{ggplot}.}
 }
 \value{
 a \code{gTree} object containing the y-axis annotation from a \code{ggplot}.

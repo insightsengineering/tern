@@ -73,6 +73,7 @@ dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 formula <- "survival::Surv(time, status) ~ armcd + covar1"
 msum <- summary(coxph(stats::as.formula(formula), data = dta_bladder))
 tidy(msum)
+
 ## Cox regression: arm + 1 covariate.
 mod1 <- fit_coxreg_univar(
   variables = list(
@@ -95,6 +96,7 @@ mod2 <- fit_coxreg_univar(
 
 tidy(mod1)
 tidy(mod2)
+
 multivar_model <- fit_coxreg_multivar(
   variables = list(
     time = "time", event = "status", arm = "armcd",
@@ -103,6 +105,7 @@ multivar_model <- fit_coxreg_multivar(
   data = dta_bladder
 )
 broom::tidy(multivar_model)
+
 }
 \seealso{
 \link{cox_regression}

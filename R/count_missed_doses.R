@@ -34,7 +34,9 @@ s_count_nonmissing <- function(x) {
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams s_count_missed_doses
+#'
 #' @return [d_count_missed_doses()] returns a named `character` vector with the labels.
+#'
 #' @seealso [s_count_missed_doses()]
 #'
 #' @export
@@ -43,6 +45,7 @@ d_count_missed_doses <- function(thresholds) {
 }
 
 #' @describeIn count_missed_doses Statistics function to count patients with missed doses.
+#'
 #' @inheritParams argument_convention
 #' @param thresholds (vector of `count`)\cr number of missed doses the patients at least had.
 #'
@@ -97,6 +100,7 @@ a_count_missed_doses <- make_afun(
 
 #' @describeIn count_missed_doses Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
 #' @inheritParams s_count_cumulative
 #'
 #' @return
@@ -104,7 +108,6 @@ a_count_missed_doses <- make_afun(
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_count_missed_doses()` to the table layout.
 #'
-#' @export
 #' @examples
 #' library(dplyr)
 #'
@@ -122,6 +125,8 @@ a_count_missed_doses <- make_afun(
 #'   add_colcounts() %>%
 #'   count_missed_doses("AVAL", thresholds = c(1, 5, 10, 15), var_labels = "Missed Doses") %>%
 #'   build_table(anl, alt_counts_df = tern_ex_adsl)
+#'
+#' @export
 count_missed_doses <- function(lyt,
                                vars,
                                var_labels = vars,

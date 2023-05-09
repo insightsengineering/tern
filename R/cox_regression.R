@@ -2,21 +2,19 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Sets a list of parameters for Cox regression fit. Used internally,
-#' see [fit_coxreg_univar()] and [fit_coxreg_multivar()].
+#' Sets a list of parameters for Cox regression fit. Used internally.
 #'
 #' @inheritParams argument_convention
-#' @param pval_method (`string`)\cr the method used for estimation of p.values;
-#'   `wald` (default) or `likelihood`.
-#' @param interaction (`flag`)\cr if `TRUE`, the model includes the
-#'   interaction between the studied treatment and candidate covariate. Note that
-#'   for univariate models without treatment arm, and multivariate models, no
-#'   interaction can be used so that this needs to be `FALSE`.
-#' @param ties (`string`)\cr among `exact` (equivalent to `DISCRETE` in SAS),
-#'   `efron` and `breslow`, see [survival::coxph()].
-#'   Note: there is no equivalent of SAS `EXACT` method in R.
+#' @param pval_method (`string`)\cr the method used for estimation of p.values; `wald` (default) or `likelihood`.
+#' @param interaction (`flag`)\cr if `TRUE`, the model includes the interaction between the studied
+#'   treatment and candidate covariate. Note that for univariate models without treatment arm, and
+#'   multivariate models, no interaction can be used so that this needs to be `FALSE`.
+#' @param ties (`string`)\cr among `exact` (equivalent to `DISCRETE` in SAS), `efron` and `breslow`,
+#'   see [survival::coxph()]. Note: there is no equivalent of SAS `EXACT` method in R.
 #'
 #' @return A `list` of items with names corresponding to the arguments.
+#'
+#' @seealso [fit_coxreg_univar()] and [fit_coxreg_multivar()].
 #'
 #' @examples
 #' control_coxreg()
@@ -62,7 +60,6 @@ NULL
 #' @inheritParams argument_convention
 #'
 #' @method tidy summary.coxph
-#' @export
 #'
 #' @examples
 #' library(survival)
@@ -90,6 +87,8 @@ NULL
 #' formula <- "survival::Surv(time, status) ~ armcd + covar1"
 #' msum <- summary(coxph(stats::as.formula(formula), data = dta_bladder))
 #' tidy(msum)
+#'
+#' @export
 tidy.summary.coxph <- function(x, # nolint
                                ...) {
   checkmate::assert_class(x, "summary.coxph")
@@ -114,7 +113,6 @@ tidy.summary.coxph <- function(x, # nolint
 #' @param x (`list`)\cr Result of the Cox regression model fitted by [`fit_coxreg_univar()`].
 #'
 #' @method tidy coxreg.univar
-#' @export
 #'
 #' @examples
 #' ## Cox regression: arm + 1 covariate.
@@ -139,6 +137,8 @@ tidy.summary.coxph <- function(x, # nolint
 #'
 #' tidy(mod1)
 #' tidy(mod2)
+#'
+#' @export
 tidy.coxreg.univar <- function(x, # nolint
                                ...) {
   checkmate::assert_class(x, "coxreg.univar")
@@ -203,7 +203,6 @@ tidy.coxreg.univar <- function(x, # nolint
 #' @param x (`list`)\cr Result of the Cox regression model fitted by [`fit_coxreg_multivar()`].
 #'
 #' @method tidy coxreg.multivar
-#' @export
 #'
 #' @examples
 #' multivar_model <- fit_coxreg_multivar(
@@ -214,6 +213,8 @@ tidy.coxreg.univar <- function(x, # nolint
 #'   data = dta_bladder
 #' )
 #' broom::tidy(multivar_model)
+#'
+#' @export
 tidy.coxreg.multivar <- function(x, # nolint
                                  ...) {
   checkmate::assert_class(x, "coxreg.multivar")
@@ -282,21 +283,16 @@ tidy.coxreg.multivar <- function(x, # nolint
 #' @name fit_coxreg
 NULL
 
-#' @describeIn fit_coxreg Fit a series of univariate Cox regression models
-#'   given the inputs.
+#' @describeIn fit_coxreg Fit a series of univariate Cox regression models given the inputs.
 #'
-#' @param variables (`list`)\cr a named list corresponds to the names of variables found
-#'   in `data`, passed as a named list and corresponding to `time`, `event`, `arm`,
-#'   `strata`, and `covariates` terms. If `arm` is missing from `variables`, then
-#'   only Cox model(s) including the `covariates` will be fitted and the corresponding
-#'   effect estimates will be tabulated later.
-#' @param data (`data.frame`)\cr the dataset containing the variables to fit the
-#'   models.
-#' @param at (`list` of `numeric`)\cr when the candidate covariate is a
-#'  `numeric`, use `at` to specify the value of the covariate at which the
-#'  effect should be estimated.
-#' @param control (`list`)\cr a list of parameters as returned by the
-#'   helper function [control_coxreg()].
+#' @param variables (`list`)\cr a named list corresponds to the names of variables found in `data`, passed as a named
+#'   list and corresponding to `time`, `event`, `arm`, `strata`, and `covariates` terms. If `arm` is missing from
+#'   `variables`, then only Cox model(s) including the `covariates` will be fitted and the corresponding effect
+#'   estimates will be tabulated later.
+#' @param data (`data.frame`)\cr the dataset containing the variables to fit the models.
+#' @param at (`list` of `numeric`)\cr when the candidate covariate is a `numeric`, use `at` to specify
+#'   the value of the covariate at which the effect should be estimated.
+#' @param control (`list`)\cr a list of parameters as returned by the helper function [control_coxreg()].
 #'
 #' @return
 #' * `fit_coxreg_univar()` returns a `coxreg.univar` class object which is a named `list`
@@ -469,8 +465,7 @@ fit_coxreg_multivar <- function(variables,
 #' present, this function deliberately muffles this message.
 #'
 #' @param mod (`coxph`)\cr Cox regression model fitted by [survival::coxph()].
-#' @param test_statistic (`string`)\cr the method used for estimation of p.values;
-#'   `wald` (default) or `likelihood`.
+#' @param test_statistic (`string`)\cr the method used for estimation of p.values; `wald` (default) or `likelihood`.
 #'
 #' @return Returns the output of [car::Anova()], with convergence message muffled.
 #'

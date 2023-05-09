@@ -238,6 +238,9 @@ prop_wilson <- function(rsp, conf_level, correct = FALSE) {
 #' @param correct (`flag`)\cr include the continuity correction. For further information, see for example
 #'   [stats::prop.test()].
 #'
+#' @references
+#' - \insertRef{Yan2010-jt}{tern}
+#'
 #' @examples
 #' # Stratified Wilson confidence interval with unequal probabilities
 #'
@@ -262,10 +265,6 @@ prop_wilson <- function(rsp, conf_level, correct = FALSE) {
 #'   weights = rep(1 / n_strata, n_strata),
 #'   conf_level = 0.90
 #' )
-#' @references
-#' - \insertRef{Yan2010-jt}{tern}
-#'
-#' @importFrom Rdpack reprompt
 #'
 #' @export
 prop_strat_wilson <- function(rsp,
