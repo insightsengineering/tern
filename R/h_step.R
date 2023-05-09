@@ -1,6 +1,3 @@
-#' @include control_step.R
-NULL
-
 #' Helper Functions for Subgroup Treatment Effect Pattern (STEP) Calculations
 #'
 #' @description `r lifecycle::badge("stable")`
@@ -10,6 +7,7 @@ NULL
 #' @inheritParams argument_convention
 #'
 #' @name h_step
+#' @include control_step.R
 NULL
 
 #' @describeIn h_step creates the windows for STEP, based on the control settings
