@@ -207,6 +207,7 @@ mod2 <- fit_logistic(
     interaction = "AGE"
   )
 )
+
 h_glm_simple_term_extract("AGE", mod1)
 h_glm_simple_term_extract("ARMCD", mod1)
 

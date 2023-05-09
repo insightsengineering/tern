@@ -26,7 +26,7 @@ Functions to calculate odds ratios in \code{\link[=estimate_odds_ratio]{estimate
 }
 \section{Functions}{
 \itemize{
-\item \code{or_glm()}: estimates the odds ratio based on \code{\link[stats:glm]{stats::glm()}}. Note that there must be
+\item \code{or_glm()}: Estimates the odds ratio based on \code{\link[stats:glm]{stats::glm()}}. Note that there must be
 exactly 2 groups in \code{data} as specified by the \code{grp} variable.
 
 \item \code{or_clogit()}: estimates the odds ratio based on \code{\link[survival:clogit]{survival::clogit()}}. This is done for

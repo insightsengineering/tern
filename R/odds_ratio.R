@@ -8,12 +8,13 @@
 #' @details This function uses either logistic regression for unstratified
 #'   analyses, or conditional logistic regression for stratified analyses.
 #'   The Wald confidence interval with the specified confidence level is
-#'   calculated. Note that, for stratified analyses, there is currently no
-#'   implementation for conditional likelihood confidence intervals,
-#'   therefore the likelihood confidence interval as an option is not yet
-#'   available. Besides, when `rsp` contains only responders or non-responders,
-#'   then the result values will be `NA`, because no odds ratio estimation is
-#'   possible.
+#'   calculated.
+#'
+#' @note For stratified analyses, there is currently no implementation for conditional
+#'   likelihood confidence intervals, therefore the likelihood confidence interval is not
+#'   yet available as an option. Besides, when `rsp` contains only responders or non-responders,
+#'   then the result values will be `NA`, because no odds ratio estimation is possible.
+#'
 #' @seealso Relevant helper function [h_odds_ratio()].
 #'
 #' @name odds_ratio
@@ -22,6 +23,7 @@ NULL
 #' @describeIn odds_ratio Statistics function which estimates the odds ratio
 #'   between a treatment and a control. A `variables` list with `arm` and `strata`
 #'   variable names must be passed if a stratified analysis is required.
+#'
 #' @inheritParams split_cols_by_groups
 #' @inheritParams argument_convention
 #'
@@ -227,7 +229,7 @@ estimate_odds_ratio <- function(lyt,
 #' @name h_odds_ratio
 NULL
 
-#' @describeIn h_odds_ratio estimates the odds ratio based on [stats::glm()]. Note that there must be
+#' @describeIn h_odds_ratio Estimates the odds ratio based on [stats::glm()]. Note that there must be
 #'   exactly 2 groups in `data` as specified by the `grp` variable.
 #'
 #' @export

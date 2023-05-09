@@ -83,7 +83,7 @@ Helper functions that tabulate in a data frame statistics such as median surviva
 time and hazard ratio for population subgroups.
 }
 \details{
-Main functionality is to prepare data for use in a layout creating function.
+Main functionality is to prepare data for use in a layout-creating function.
 }
 \section{Functions}{
 \itemize{

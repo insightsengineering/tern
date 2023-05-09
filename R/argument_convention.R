@@ -3,12 +3,6 @@
 #' The documentation to this function lists all the arguments in `tern`
 #' that are used repeatedly to express an analysis.
 #'
-#' @details Although this function just returns `NULL` it has two uses, for
-#' the `tern` users it provides a documentation of arguments that are
-#' commonly and consistently used in the framework. For the developer it adds a
-#' single reference point to import the `roxygen` argument description with:
-#' `@inheritParams argument_convention`
-#'
 #' @param ... additional arguments for the lower level functions.
 #' @param .df_row (`data.frame`)\cr data frame across all of the columns for the given row split.
 #' @param .in_ref_col (`logical`)\cr `TRUE` when working with the reference level, `FALSE` otherwise.
@@ -61,7 +55,12 @@
 #' @param var (`string`)\cr single variable name for the primary analysis variable.
 #' @param x (`numeric`)\cr vector of numbers we want to analyze.
 #'
-#' @name argument_convention
-#' @keywords internal
+#' @details Although this function just returns `NULL` it has two uses, for
+#'   the `tern` users it provides a documentation of arguments that are
+#'   commonly and consistently used in the framework. For the developer it adds a
+#'   single reference point to import the `roxygen` argument description with:
+#'   `@inheritParams argument_convention`
 #'
+#' @keywords internal
+#' @name argument_convention
 NULL

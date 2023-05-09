@@ -8,7 +8,6 @@
 #' @seealso Relevant description function [d_count_missed_doses()].
 #'
 #' @name count_missed_doses
-#'
 NULL
 
 #' @describeIn count_missed_doses Statistics function to count non-missing values.

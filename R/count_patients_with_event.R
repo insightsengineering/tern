@@ -5,7 +5,6 @@
 #' The primary analysis variable `.var` denotes the unique patient identifier.
 #'
 #' @name count_patients_with_event
-#'
 NULL
 
 #' @describeIn count_patients_with_event Statistics function which counts the number of patients for which

@@ -16,13 +16,14 @@
 #'     * `denom`: the number of patients with at least one valid measurement post-baseline
 #'     * `num`: the number of patients in `denom` who also have at least one abnormality post-baseline
 #'
+#' @inheritParams argument_convention
+#' @param abnormal (`character`)\cr identifying the abnormal range level(s) in `.var`.
+#'
 #' @note
 #' * `df` should be filtered to include only post-baseline records.
 #' * If the baseline variable or analysis variable contains `NA`, it is expected that `NA` has been
 #'   conveyed to `na_level` appropriately beforehand with [df_explicit_na()] or [explicit_na()].
 #'
-#' @inheritParams argument_convention
-#' @param abnormal (`character`)\cr identifying the abnormal range level(s) in `.var`.
 #' @seealso Relevant description function [d_count_abnormal_by_baseline()].
 #'
 #' @name abnormal_by_baseline

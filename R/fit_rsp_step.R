@@ -12,12 +12,10 @@
 #' `response ~ arm * poly(biomarker, degree) + covariates + strata(strata)`
 #'
 #' where `degree` is specified by `control_step()`.
-#' Note that for the default degree 0 the `biomarker` variable is not included in the model.
 #'
 #' @inheritParams argument_convention
 #' @param variables (named `list` of `character`)\cr list of analysis variables:
-#'   needs `response`, `arm`, `biomarker`, and optional `covariates` and
-#'   `strata`.
+#'   needs `response`, `arm`, `biomarker`, and optional `covariates` and `strata`.
 #' @param control (named `list`)\cr combined control list from [control_step()]
 #'   and [control_logistic()].
 #'
@@ -25,6 +23,8 @@
 #'   subgroup intervals used for the biomarker variable, including where the
 #'   center of the intervals are and their bounds. The second part of the
 #'   columns contain the estimates for the treatment arm comparison.
+#'
+#' @note For the default degree 0 the `biomarker` variable is not included in the model.
 #'
 #' @seealso [control_step()] and [control_logistic()] for the available
 #'   customization options.

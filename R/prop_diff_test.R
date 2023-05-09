@@ -7,10 +7,10 @@
 #'
 #' @param tbl (`matrix`)\cr matrix with two groups in rows and the binary response
 #'   (`TRUE`/`FALSE`) in columns.
+#'
 #' @seealso [h_prop_diff_test]
 #'
 #' @name prop_diff_test
-#'
 NULL
 
 #' @describeIn prop_diff_test Statistics function which tests the difference

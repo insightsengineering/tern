@@ -17,7 +17,8 @@ levels that belong to it in the character vectors that are elements of the list.
 
 \item{ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
-\item{...}{additional arguments, see \emph{note} section.}
+\item{...}{additional arguments to \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}} in order. For instance, to
+control formats (\code{format}), add a joint column for all groups (\code{incl_all}).}
 }
 \value{
 A layout object suitable for passing to further layouting functions. Adding
@@ -26,11 +27,6 @@ groups to the table layout.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\note{
-The ellipse (\code{...}) conveys arguments to \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}}
-in order, for instance, to control formats (\code{format}), add a joint column
-for all groups (\code{incl_all}).
 }
 \examples{
 # 1 - Basic use

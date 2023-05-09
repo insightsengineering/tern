@@ -6,11 +6,10 @@
 #' when a column table layout is required.
 #'
 #' @name summarize_patients_exposure_in_cols
-#'
 NULL
 
 #' @describeIn summarize_patients_exposure_in_cols Statistics function which counts numbers
-#'  of patients and the sum of exposure across all patients.
+#'   of patients and the sum of exposure across all patients.
 #'
 #' @inheritParams argument_convention
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
@@ -89,16 +88,16 @@ s_count_patients_sum_exposure <- function(df, # nolintr
 #'   function arguments and additional format arguments. This function is a wrapper for
 #'   [rtables::split_cols_by_multivar()] and [rtables::summarize_row_groups()].
 #'
+#' @inheritParams argument_convention
+#' @param col_split (`flag`)\cr whether the columns should be split. Set to `FALSE` when the required
+#'   column split has been done already earlier in the layout pipe.
+#'
 #' @return
 #' * `summarize_patients_exposure_in_cols()` returns a layout object suitable for passing to further
 #'   layouting functions, or to [rtables::build_table()]. Adding this function to an `rtable` layout will
 #'   add formatted rows, with the statistics from `s_count_patients_sum_exposure()` arranged in
 #'   columns, to the table layout.
 #'
-#'
-#' @inheritParams argument_convention
-#' @param col_split (`flag`)\cr whether the columns should be split. Set to `FALSE` when the required
-#'   column split has been done already earlier in the layout pipe.
 #' @export
 #'
 #' @examples

@@ -11,8 +11,6 @@
 #' @param x (`string` or `character`)\cr a variable or interaction term in `fit_glm` (depending on the
 #'   helper function).
 #'
-#' @name h_logistic_regression
-#'
 #' @examples
 #' library(dplyr)
 #' library(broom)
@@ -43,6 +41,8 @@
 #'     interaction = "AGE"
 #'   )
 #' )
+#'
+#' @name h_logistic_regression
 NULL
 
 #' @describeIn h_logistic_regression Helper function to extract interaction variable names from a fitted
@@ -150,11 +150,12 @@ h_or_cat_interaction <- function(odds_ratio_var,
 #'
 #' @param at (`NULL` or `numeric`)\cr optional values for the interaction variable. Otherwise
 #'   the median is used.
+#'
+#' @return Odds ratio.
+#'
 #' @note We don't provide a function for the case when both variables are continuous because
 #'   this does not arise in this table, as the treatment arm variable will always be involved
 #'   and categorical.
-#'
-#' @return Odds ratio.
 #'
 #' @export
 h_or_cont_interaction <- function(odds_ratio_var,

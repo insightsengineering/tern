@@ -2,7 +2,7 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Layout creating function which summarizes a logistic variable regression for binary outcome with
+#' Layout-creating function which summarizes a logistic variable regression for binary outcome with
 #' categorical/continuous covariates in model statement. For each covariate category (if categorical)
 #' or specified values (if continuous), present degrees of freedom, regression parameter estimate and
 #' standard error (SE) relative to reference group or category. Report odds ratios for each covariate
@@ -12,14 +12,14 @@
 #' Allow option to include one two-way interaction and present similar output for
 #' each interaction degree of freedom.
 #'
-#' @note For the formula, the variable names need to be standard `data.frame` column names without
-#'   special characters.
-#'
 #' @inheritParams argument_convention
-#' @param drop_and_remove_str string to be dropped and removed
+#' @param drop_and_remove_str (`character`)\cr string to be dropped and removed.
 #'
 #' @return A layout object suitable for passing to further layouting functions, or to [rtables::build_table()].
 #'   Adding this function to an `rtable` layout will add a logistic regression variable summary to the table layout.
+#'
+#' @note For the formula, the variable names need to be standard `data.frame` column names without
+#'   special characters.
 #'
 #' @examples
 #' library(dplyr)
@@ -110,19 +110,16 @@ summarize_logistic <- function(lyt,
 #'   This will be used when fitting the (conditional) logistic regression model on the left hand
 #'   side of the formula.
 #'
+#' @return A fitted logistic regression model.
+#'
 #' @section Model Specification:
 #'
 #' The `variables` list needs to include the following elements:
-#' \describe{
-#'   \item{arm}{treatment arm variable name.}
-#'   \item{response}{the response arm variable name. Usually this is a 0/1 variable.}
-#'   \item{covariates}{this is either `NULL` (no covariates) or a character vector of covariate variable names.}
-#'   \item{interaction}{this is either `NULL` (no interaction) or a string of a single covariate variable name already
+#'   * `arm`: Treatment arm variable name.
+#'   * `response`: The response arm variable name. Usually this is a 0/1 variable.
+#'   * `covariates`: This is either `NULL` (no covariates) or a character vector of covariate variable names.
+#'   * `interaction`: This is either `NULL` (no interaction) or a string of a single covariate variable name already
 #'     included in `covariates`. Then the interaction with the treatment arm is included in the model.
-#'   }
-#' }
-#'
-#' @return A fitted logistic regression model.
 #'
 #' @examples
 #' library(dplyr)

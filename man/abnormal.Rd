@@ -86,9 +86,9 @@ Primary analysis variable \code{.var} indicates the abnormal range result (\code
 and additional analysis variables are \code{id} (\code{character} or \code{factor}) and \code{baseline} (\code{character} or
 \code{factor}). For each direction specified in \code{abnormal} (e.g. high or low) count patients in the
 numerator and denominator as follows:
-\describe{
-\item{num}{the number of patients with this abnormality recorded while on treatment.}
-\item{denom}{the number of patients with at least one post-baseline assessment.}
+\itemize{
+\item \code{num} : The number of patients with this abnormality recorded while on treatment.
+\item \code{denom}: The number of patients with at least one post-baseline assessment.
 }
 }
 \section{Functions}{

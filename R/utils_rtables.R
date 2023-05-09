@@ -96,8 +96,8 @@ cfun_by_flag <- function(analysis_var,
 #'
 #' @return A `list` containing "row_count" with the row count value and the correct label.
 #'
-#' @note Important is here to not use `df` but `.N_row` in the implementation, because the former
-#'   is already split by columns and will refer to the first column of the data only.
+#' @note It is important here to not use `df` but rather `.N_row` in the implementation, because
+#'   the former is already split by columns and will refer to the first column of the data only.
 #'
 #' @keywords internal
 c_label_n <- function(df,
@@ -316,16 +316,16 @@ afun_selected_stats <- function(.stats, all_stats) {
 #' from a given dataset in the top left corner. If a variable label is not found then the
 #' variable name itself is used instead. Multiple variable labels are concatenated with slashes.
 #'
-#' @note This is not an optimal implementation of course, since we are using here the data set
-#'   itself during the layout creation. When we have a more mature `rtables` implementation then
-#'   this will also be improved or not necessary anymore.
-#'
 #' @inheritParams argument_convention
 #' @param vars (`character`)\cr variable names of which the labels are to be looked up in `df`.
 #' @param indent (`integer`)\cr non-negative number of nested indent space, default to 0L which means no indent.
-#' 1L means two spaces indent, 2L means four spaces indent and so on.
+#'   1L means two spaces indent, 2L means four spaces indent and so on.
 #'
 #' @return A modified layout with the new variable label(s) added to the top-left material.
+#'
+#' @note This is not an optimal implementation of course, since we are using here the data set
+#'   itself during the layout creation. When we have a more mature `rtables` implementation then
+#'   this will also be improved or not necessary anymore.
 #'
 #' @examples
 #' lyt <- basic_table() %>%

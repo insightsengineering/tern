@@ -142,10 +142,7 @@ bins_percent_labels <- function(probs,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This cuts a numeric vector into sample quantile bins. Note that the intervals are closed on
-#' the right side. That is, the first bin is the interval `[-Inf, q1]` where `q1` is
-#' the first quantile, the second bin is then `(q1, q2]`, etc., and the last bin
-#' is `(qn, +Inf]` where `qn` is the last quantile.
+#' This cuts a numeric vector into sample quantile bins.
 #'
 #' @inheritParams bins_percent_labels
 #' @param x (`numeric`)\cr the continuous variable values which should be cut into
@@ -157,6 +154,10 @@ bins_percent_labels <- function(probs,
 #' @param ordered (`flag`)\cr should the result be an ordered factor.
 #'
 #' @return A `factor` variable with appropriately-labeled bins as levels.
+#'
+#' @note Intervals are closed on the right side. That is, the first bin is the interval
+#'   `[-Inf, q1]` where `q1` is the first quantile, the second bin is then `(q1, q2]`, etc.,
+#'   and the last bin is `(qn, +Inf]` where `qn` is the last quantile.
 #'
 #' @export
 #'
@@ -215,6 +216,8 @@ cut_quantile_bins <- function(x,
 
 #' Discard Certain Levels from a Factor
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This discards the observations as well as the levels specified from a factor.
 #'
 #' @param x (`factor`)\cr the original factor.
@@ -236,7 +239,9 @@ fct_discard <- function(x, discard) {
 
 #' Insertion of Explicit Missings in a Factor
 #'
-#' This inserts explicit missings in a factor based on a condition. Note that also additional
+#' @description `r lifecycle::badge("stable")`
+#'
+#' This inserts explicit missings in a factor based on a condition. Additionally,
 #' existing `NA` values will be explicitly converted to given `na_level`.
 #'
 #' @param x (`factor`)\cr the original factor.
@@ -261,10 +266,11 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 
 #' Collapsing of Factor Levels and Keeping Only Those New Group Levels
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This collapses levels and only keeps those new group levels, in the order provided.
 #' The returned factor has levels in the order given, with the possible missing level last (this will
-#' only be included if there are missings). Note that any existing `NA` in the input vector will
-#' not be replaced by the missing level. If needed [explicit_na()] can be called separately on the result.
+#' only be included if there are missing values).
 #'
 #' @param .f (`factor` or `character`)\cr original vector.
 #' @param ... (named `character` vectors)\cr levels in each vector provided will be collapsed into
@@ -274,6 +280,9 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 #'
 #' @return A modified `factor` with collapsed levels. Values and levels which are not included
 #'   in the given `character` vector input will be set to the missing level `.na_level`.
+#'
+#' @note Any existing `NA`s in the input vector will not be replaced by the missing level. If needed,
+#'   [explicit_na()] can be called separately on the result.
 #'
 #' @seealso [forcats::fct_collapse()], [forcats::fct_relevel()] which are used internally.
 #'

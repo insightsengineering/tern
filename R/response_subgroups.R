@@ -4,9 +4,6 @@
 #'
 #' Tabulate statistics such as response rate and odds ratio for population subgroups.
 #'
-#' @details These functions create a layout starting from a data frame which contains
-#'   the required statistics. Tables typically used as part of forest plot.
-#'
 #' @inheritParams argument_convention
 #' @param data (`data.frame`)\cr the dataset containing the variables to summarize.
 #' @param groups_lists (named `list` of `list`)\cr optionally contains for each `subgroups` variable a
@@ -15,7 +12,10 @@
 #' @param label_all (`string`)\cr label for the total population analysis.
 #' @param method (`string`)\cr specifies the test used to calculate the p-value for the difference between
 #'   two proportions. For options, see [s_test_proportion_diff()]. Default is `NULL` so no test is performed.
-#' @name response_subgroups
+#'
+#' @details These functions create a layout starting from a data frame which contains
+#'   the required statistics. Tables typically used as part of forest plot.
+#'
 #' @seealso [extract_rsp_subgroups()]
 #'
 #' @examples
@@ -42,6 +42,8 @@
 #'   data = adrs_f
 #' )
 #' df
+#'
+#' @name response_subgroups
 NULL
 
 #' Prepares Response Data for Population Subgroups in Data Frames
@@ -188,15 +190,15 @@ a_response_subgroups <- function(.formats = list(
 #'
 #' @param df (`list`)\cr of data frames containing all analysis variables. List should be
 #'   created using [extract_rsp_subgroups()].
-#' @param vars (`character`)\cr the name of statistics to be reported among
-#'  `n` (total number of observations per group),
-#'  `n_rsp` (number of responders per group),
-#'  `prop` (proportion of responders),
-#'  `n_tot` (total number of observations),
-#'  `or` (odds ratio),
-#'  `ci` (confidence interval of odds ratio) and
-#'  `pval` (p value of the effect).
-#'  Note, the statistics `n_tot`, `or` and `ci` are required.
+#' @param vars (`character`)\cr the names of statistics to be reported among:
+#'   * `n`: Total number of observations per group.
+#'   * `n_rsp`: Number of responders per group.
+#'   * `prop`: Proportion of responders.
+#'   * `n_tot`: Total number of observations.
+#'   * `or`: Odds ratio.
+#'   * `ci` : Confidence interval of odds ratio.
+#'   * `pval`: p-value of the effect.
+#'   Note, the statistics `n_tot`, `or` and `ci` are required.
 #'
 #' @return An `rtables` table summarizing binary response by subgroup.
 #'

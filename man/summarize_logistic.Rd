@@ -11,7 +11,7 @@ summarize_logistic(lyt, conf_level, drop_and_remove_str = "")
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{drop_and_remove_str}{string to be dropped and removed}
+\item{drop_and_remove_str}{(\code{character})\cr string to be dropped and removed.}
 }
 \value{
 A layout object suitable for passing to further layouting functions, or to \code{\link[rtables:build_table]{rtables::build_table()}}.
@@ -20,7 +20,7 @@ Adding this function to an \code{rtable} layout will add a logistic regression v
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Layout creating function which summarizes a logistic variable regression for binary outcome with
+Layout-creating function which summarizes a logistic variable regression for binary outcome with
 categorical/continuous covariates in model statement. For each covariate category (if categorical)
 or specified values (if continuous), present degrees of freedom, regression parameter estimate and
 standard error (SE) relative to reference group or category. Report odds ratios for each covariate

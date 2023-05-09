@@ -5,7 +5,7 @@
 #' Summarize cumulative counts of a (`numeric`) vector that is less than, less or equal to,
 #' greater than, or greater or equal to user-specific thresholds.
 #'
-#' @seealso Relevant helper function [h_count_cumulative()], and descriptive function [d_count_cumulative()]
+#' @seealso Relevant helper function [h_count_cumulative()], and descriptive function [d_count_cumulative()].
 #'
 #' @name count_cumulative
 NULL

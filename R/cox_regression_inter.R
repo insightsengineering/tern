@@ -10,13 +10,9 @@
 #' @param effect (`string`)\cr the name of the effect to be tested and estimated.
 #' @param covar (`string`)\cr the name of the covariate in the model.
 #' @param mod (`coxph`)\cr the Cox regression model.
-#' @param label (`string`)\cr the label to be return as `term_label`
-#'   (see `return`).
-#' @param control (`list`)\cr a list of controls as returned by
-#'   [control_coxreg()].
+#' @param label (`string`)\cr the label to be returned as `term_label`.
+#' @param control (`list`)\cr a list of controls as returned by [control_coxreg()].
 #' @param ... see methods.
-#'
-#' @name cox_regression_inter
 #'
 #' @examples
 #' library(survival)
@@ -49,6 +45,7 @@
 #'   col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
 #' )
 #'
+#' @name cox_regression_inter
 NULL
 
 #' @describeIn cox_regression_inter S3 generic helper function to determine interaction effect.

@@ -5,15 +5,16 @@
 #' Functions for analyzing frequencies and fractions of occurrences for patients with occurrence
 #' data. Primary analysis variables are the dictionary terms. All occurrences are counted for total
 #' counts. Multiple occurrences within patient at the lowest term level displayed in the table are
-#' counted only once. Note that by default occurrences which don't appear in a given row split
-#' are dropped from the table and the occurrences in the table are sorted alphabetically per row split.
-#' Therefore the corresponding layout needs to use `split_fun = drop_split_levels` in the `split_rows_by`
-#' calls. Use `drop = FALSE` if you would like to show all occurrences.
+#' counted only once.
 #'
 #' @inheritParams argument_convention
 #'
-#' @name count_occurrences
+#' @note By default, occurrences which don't appear in a given row split are dropped from the table and
+#'   the occurrences in the table are sorted alphabetically per row split. Therefore, the corresponding layout
+#'   needs to use `split_fun = drop_split_levels` in the `split_rows_by` calls. Use `drop = FALSE` if you would
+#'   like to show all occurrences.
 #'
+#' @name count_occurrences
 NULL
 
 #' @describeIn count_occurrences Statistics function which counts number of patients that report an

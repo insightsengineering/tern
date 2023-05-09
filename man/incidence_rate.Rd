@@ -80,12 +80,14 @@ to avoid warnings from \code{rtables}.}
 \item{alpha}{(\code{numeric})\cr two-sided alpha-level for confidence interval.}
 }
 \value{
-\code{s_incidence_rate()} returns the following statistics:
+\itemize{
+\item \code{s_incidence_rate()} returns the following statistics:
 \itemize{
 \item \code{person_years}: Total person-years at risk.
 \item \code{n_events}: Total number of events observed.
 \item \code{rate}: Estimated incidence rate.
 \item \code{rate_ci}: Confidence interval for the incidence rate.
+}
 }
 
 \itemize{

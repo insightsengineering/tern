@@ -12,6 +12,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data := !!
 #' @importFrom survival coxph strata Surv
+#' @importFrom stats pchisq
 NULL
 
 # We need this to avoid R CMD check warning about missing global definitions.

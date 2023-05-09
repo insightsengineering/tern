@@ -35,11 +35,9 @@ h_coxreg_inter_estimations(
 
 \item{mod}{(\code{coxph})\cr a fitted Cox regression model (see \code{\link[survival:coxph]{survival::coxph()}}).}
 
-\item{label}{(\code{string})\cr the label to be return as \code{term_label}
-(see \code{return}).}
+\item{label}{(\code{string})\cr the label to be returned as \code{term_label}.}
 
-\item{control}{(\code{list})\cr a list of controls as returned by
-\code{\link[=control_coxreg]{control_coxreg()}}.}
+\item{control}{(\code{list})\cr a list of controls as returned by \code{\link[=control_coxreg]{control_coxreg()}}.}
 
 \item{...}{see methods.}
 

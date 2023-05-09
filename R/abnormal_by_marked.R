@@ -2,23 +2,22 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Primary analysis variable `.var` indicates whether single, replicated
-#' or last marked laboratory abnormality was observed (`factor`).
-#' Additional analysis variables are `id` (`character` or `factor`) and `direction` (`factor`)
-#' indicating the direction of the abnormality.
-#' Denominator is number of patients with at least one valid measurement during the analysis.
+#' Primary analysis variable `.var` indicates whether single, replicated or last marked laboratory
+#' abnormality was observed (`factor`). Additional analysis variables are `id` (`character` or `factor`)
+#' and `direction` (`factor`) indicating the direction of the abnormality. Denominator is number of
+#' patients with at least one valid measurement during the analysis.
 #'   * For `Single, not last` and `Last or replicated`: Numerator is number of patients
 #'     with `Single, not last` and `Last or replicated` levels, respectively.
 #'   * For `Any`: Numerator is the number of patients with either single or
 #'     replicated marked abnormalities.
 #'
-#' @note `Single, not last` and `Last or replicated` levels are mutually exclusive. If a patient has
-#' abnormalities that meet both the `Single, not last` and `Last or replicated` criteria, then the
-#' patient will be counted only under the `Last or replicated` category.
-#'
 #' @inheritParams argument_convention
 #' @param category (`list`)\cr with different marked category names for single
 #'   and last or replicated.
+#'
+#' @note `Single, not last` and `Last or replicated` levels are mutually exclusive. If a patient has
+#'   abnormalities that meet both the `Single, not last` and `Last or replicated` criteria, then the
+#'   patient will be counted only under the `Last or replicated` category.
 #'
 #' @name abnormal_by_marked
 NULL

@@ -88,11 +88,8 @@ combine_groups <- function(fct,
 #'
 #' @inheritParams argument_convention
 #' @inheritParams groups_list_to_df
-#' @param ... additional arguments, see _note_ section.
-#'
-#' @note The ellipse (`...`) conveys arguments to [rtables::split_cols_by()]
-#'   in order, for instance, to control formats (`format`), add a joint column
-#'   for all groups (`incl_all`).
+#' @param ... additional arguments to [rtables::split_cols_by()] in order. For instance, to
+#'   control formats (`format`), add a joint column for all groups (`incl_all`).
 #'
 #' @seealso [rtables::split_cols_by()]
 #'

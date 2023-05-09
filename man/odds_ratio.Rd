@@ -105,12 +105,7 @@ along with a confidence interval.
 This function uses either logistic regression for unstratified
 analyses, or conditional logistic regression for stratified analyses.
 The Wald confidence interval with the specified confidence level is
-calculated. Note that, for stratified analyses, there is currently no
-implementation for conditional likelihood confidence intervals,
-therefore the likelihood confidence interval as an option is not yet
-available. Besides, when \code{rsp} contains only responders or non-responders,
-then the result values will be \code{NA}, because no odds ratio estimation is
-possible.
+calculated.
 }
 \section{Functions}{
 \itemize{
@@ -124,6 +119,12 @@ variable names must be passed if a stratified analysis is required.
 and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
+\note{
+For stratified analyses, there is currently no implementation for conditional
+likelihood confidence intervals, therefore the likelihood confidence interval is not
+yet available as an option. Besides, when \code{rsp} contains only responders or non-responders,
+then the result values will be \code{NA}, because no odds ratio estimation is possible.
+}
 \examples{
 set.seed(12)
 dta <- data.frame(

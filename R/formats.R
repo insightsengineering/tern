@@ -250,14 +250,14 @@ format_fraction_threshold <- function(threshold) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' `Rtables` Formatting Functions that handle extreme values.
+#' `rtables` formatting functions that handle extreme values.
+#'
+#' @param digits (`integer`)\cr number of decimal places to display.
 #'
 #' @details For each input, apply a format to the specified number of `digits`. If the value is
 #'    below a threshold, it returns "<0.01" e.g. if the number of `digits` is 2. If the value is
 #'    above a threshold, it returns ">999.99" e.g. if the number of `digits` is 2.
 #'    If it is zero, then returns "0.00".
-#'
-#' @param digits (`integer`)\cr number of decimal places to display.
 #'
 #' @family formatting functions
 #' @name extreme_format

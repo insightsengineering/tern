@@ -8,7 +8,6 @@
 #' @seealso Relevant description function [d_onco_rsp_label()].
 #'
 #' @name estimate_multinomial_rsp
-#'
 NULL
 
 #' Description of Standard Oncology Response

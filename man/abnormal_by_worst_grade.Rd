@@ -85,8 +85,8 @@ and patients in the numerator as follows:
 }
 }
 \details{
-The pre-processing steps are crucial when using this function. From the standard
-lab grade variable \code{ATOXGR}, derive the following two variables:
+The pre-processing steps are crucial when using this function. From the standard lab grade variable
+\code{ATOXGR}, derive the following two variables:
 \itemize{
 \item A grade direction variable (e.g. \code{GRADE_DIR}) is required in order to obtain
 the correct denominators when building the layout as it is used to define row splitting.

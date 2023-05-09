@@ -14,14 +14,16 @@ tabulate_rsp_biomarkers(
 \item{df}{(\code{data.frame})\cr containing all analysis variables, as returned by
 \code{\link[=extract_rsp_biomarkers]{extract_rsp_biomarkers()}}.}
 
-\item{vars}{(\code{character})\cr the name of statistics to be reported among
-\code{n_tot} (total number of patients per group),
-\code{n_rsp} (total number of responses per group),
-\code{prop} (total response proportion per group),
-\code{or} (odds ratio),
-\code{ci} (confidence interval of odds ratio) and
-\code{pval} (p value of the effect).
-Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.}
+\item{vars}{(\code{character})\cr the names of statistics to be reported among:
+\itemize{
+\item \code{n_tot}: Total number of patients per group.
+\item \code{n_rsp}: Total number of responses per group.
+\item \code{prop}: Total response proportion per group.
+\item \code{or}: Odds ratio.
+\item \code{ci}: Confidence interval of odds ratio.
+\item \code{pval}: p-value of the effect.
+Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.
+}}
 }
 \value{
 An \code{rtables} table summarizing biomarker effects on binary response by subgroup.
@@ -66,6 +68,7 @@ tab <- tabulate_rsp_biomarkers(
 ## Finally produce the forest plot.
 g_forest(tab, xlim = c(0.7, 1.4))
 }
+
 }
 \seealso{
 \code{\link[=h_tab_rsp_one_biomarker]{h_tab_rsp_one_biomarker()}} which is used internally, \code{\link[=extract_rsp_biomarkers]{extract_rsp_biomarkers()}}.

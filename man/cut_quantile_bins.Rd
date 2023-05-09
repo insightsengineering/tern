@@ -34,10 +34,12 @@ A \code{factor} variable with appropriately-labeled bins as levels.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This cuts a numeric vector into sample quantile bins. Note that the intervals are closed on
-the right side. That is, the first bin is the interval \verb{[-Inf, q1]} where \code{q1} is
-the first quantile, the second bin is then \verb{(q1, q2]}, etc., and the last bin
-is \verb{(qn, +Inf]} where \code{qn} is the last quantile.
+This cuts a numeric vector into sample quantile bins.
+}
+\note{
+Intervals are closed on the right side. That is, the first bin is the interval
+\verb{[-Inf, q1]} where \code{q1} is the first quantile, the second bin is then \verb{(q1, q2]}, etc.,
+and the last bin is \verb{(qn, +Inf]} where \code{qn} is the last quantile.
 }
 \examples{
 # Default is to cut into quartile bins.

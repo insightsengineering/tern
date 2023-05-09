@@ -17,11 +17,11 @@ tabulate_survival_biomarkers(
 
 \item{vars}{(\code{character})\cr the names of statistics to be reported among:
 \itemize{
-\item \code{n_tot_events}: total number of events per group.
-\item \code{n_tot}: total number of observations per group.
-\item \code{median}: median survival time.
-\item \code{hr}: hazard ratio.
-\item \code{ci}: confidence interval of hazard ratio.
+\item \code{n_tot_events}: Total number of events per group.
+\item \code{n_tot}: Total number of observations per group.
+\item \code{median}: Median survival time.
+\item \code{hr}: Hazard ratio.
+\item \code{ci}: Confidence interval of hazard ratio.
 \item \code{pval}: p-value of the effect.
 Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as both \code{hr} and \code{ci} are required.
 }}
@@ -44,7 +44,8 @@ the required statistics. The tables are then typically used as input for forest 
 }
 \section{Functions}{
 \itemize{
-\item \code{tabulate_survival_biomarkers()}: table creating function.
+\item \code{tabulate_survival_biomarkers()}: Table-creating function which creates a table
+summarizing biomarker effects on survival by subgroup.
 
 }}
 \note{
@@ -81,6 +82,7 @@ df <- extract_survival_biomarkers(
   data = adtte_f
 )
 df
+
 ## Table with default columns.
 tabulate_survival_biomarkers(df)
 

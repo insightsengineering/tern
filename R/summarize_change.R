@@ -8,10 +8,10 @@
 #' or the change from baseline values (post-baseline) are then summarized.
 #'
 #' @name summarize_change
-#'
 NULL
 
 #' @describeIn summarize_change Statistics function that summarizes baseline or post-baseline visits.
+#'
 #' @inheritParams argument_convention
 #'
 #' @return

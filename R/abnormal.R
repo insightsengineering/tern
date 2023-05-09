@@ -6,22 +6,20 @@
 #' and additional analysis variables are `id` (`character` or `factor`) and `baseline` (`character` or
 #' `factor`). For each direction specified in `abnormal` (e.g. high or low) count patients in the
 #' numerator and denominator as follows:
-#' \describe{
-#'   \item{num}{the number of patients with this abnormality recorded while on treatment.}
-#'   \item{denom}{the number of patients with at least one post-baseline assessment.}
-#' }
-#'
-#' @note
-#' * `count_abnormal()` only works with a single variable containing multiple abnormal levels.
-#' * `df` should be filtered to include only post-baseline records.
-#' * the denominator includes patients that might have other abnormal levels at baseline,
-#' and patients with missing baseline. Patients with these abnormalities at
-#' baseline can be optionally excluded from numerator and denominator.
+#'   * `num` : The number of patients with this abnormality recorded while on treatment.
+#'   * `denom`: The number of patients with at least one post-baseline assessment.
 #'
 #' @inheritParams argument_convention
 #' @param abnormal (named `list`)\cr list identifying the abnormal range level(s) in `var`. Defaults to
 #'   `list(Low = "LOW", High = "HIGH")` but you can also group different levels into the named list,
 #'   for example, `abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))`.
+#'
+#' @note
+#' * `count_abnormal()` only works with a single variable containing multiple abnormal levels.
+#' * `df` should be filtered to include only post-baseline records.
+#' * the denominator includes patients that might have other abnormal levels at baseline,
+#'   and patients with missing baseline. Patients with these abnormalities at
+#'   baseline can be optionally excluded from numerator and denominator.
 #'
 #' @name abnormal
 #' @include formats.R

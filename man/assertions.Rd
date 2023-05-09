@@ -106,7 +106,7 @@ Additional assertion functions which can be used together with the \code{checkma
 Please notice how this produces an error when not all variables are present in the
 data.frame while the opposite is not required.
 
-\item \code{assert_valid_factor()}: Check whether \code{x} is a valid factor (has levels and no empty
+\item \code{assert_valid_factor()}: Check whether \code{x} is a valid factor (i.e. has levels and no empty
 string levels). Note that \code{NULL} and \code{NA} elements are allowed.
 
 \item \code{assert_df_with_factors()}: Check whether \code{df} is a data frame where the analysis \code{variables}

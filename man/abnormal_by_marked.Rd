@@ -78,11 +78,10 @@ the statistics from \code{s_count_abnormal_by_marked()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Primary analysis variable \code{.var} indicates whether single, replicated
-or last marked laboratory abnormality was observed (\code{factor}).
-Additional analysis variables are \code{id} (\code{character} or \code{factor}) and \code{direction} (\code{factor})
-indicating the direction of the abnormality.
-Denominator is number of patients with at least one valid measurement during the analysis.
+Primary analysis variable \code{.var} indicates whether single, replicated or last marked laboratory
+abnormality was observed (\code{factor}). Additional analysis variables are \code{id} (\code{character} or \code{factor})
+and \code{direction} (\code{factor}) indicating the direction of the abnormality. Denominator is number of
+patients with at least one valid measurement during the analysis.
 \itemize{
 \item For \verb{Single, not last} and \verb{Last or replicated}: Numerator is number of patients
 with \verb{Single, not last} and \verb{Last or replicated} levels, respectively.

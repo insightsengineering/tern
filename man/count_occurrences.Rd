@@ -108,10 +108,7 @@ the statistics from \code{s_count_occurrences()} to the table layout.
 Functions for analyzing frequencies and fractions of occurrences for patients with occurrence
 data. Primary analysis variables are the dictionary terms. All occurrences are counted for total
 counts. Multiple occurrences within patient at the lowest term level displayed in the table are
-counted only once. Note that by default occurrences which don't appear in a given row split
-are dropped from the table and the occurrences in the table are sorted alphabetically per row split.
-Therefore the corresponding layout needs to use \code{split_fun = drop_split_levels} in the \code{split_rows_by}
-calls. Use \code{drop = FALSE} if you would like to show all occurrences.
+counted only once.
 }
 \section{Functions}{
 \itemize{
@@ -125,6 +122,12 @@ in \code{count_occurrences()}.
 and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
+\note{
+By default, occurrences which don't appear in a given row split are dropped from the table and
+the occurrences in the table are sorted alphabetically per row split. Therefore, the corresponding layout
+needs to use \code{split_fun = drop_split_levels} in the \code{split_rows_by} calls. Use \code{drop = FALSE} if you would
+like to show all occurrences.
+}
 \examples{
 df <- data.frame(
   USUBJID = as.character(c(1, 1, 2, 4, 4, 4)),

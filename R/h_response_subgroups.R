@@ -5,13 +5,11 @@
 #' Helper functions that tabulate in a data frame statistics such as response rate
 #' and odds ratio for population subgroups.
 #'
-#' @details Main functionality is to prepare data for use in a layout creating function.
-#'
 #' @inheritParams argument_convention
 #' @inheritParams response_subgroups
 #' @param arm (`factor`)\cr the treatment group variable.
 #'
-#' @name h_response_subgroups
+#' @details Main functionality is to prepare data for use in a layout-creating function.
 #'
 #' @examples
 #' library(dplyr)
@@ -30,6 +28,8 @@
 #'     rsp = AVALC == "CR"
 #'   )
 #' formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
+#'
+#' @name h_response_subgroups
 NULL
 
 #' @describeIn h_response_subgroups helper to prepare a data frame of binary responses by arm.

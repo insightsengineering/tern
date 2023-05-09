@@ -141,13 +141,6 @@ s_summary <- function(x,
 
 #' @describeIn summarize_variables Method for `numeric` class.
 #'
-#' @note
-#' * If `x` is an empty vector, `NA` is returned. This is the expected
-#'   feature so as to return `rcell` content in `rtables` when the
-#'   intersection of a column and a row delimits an empty data selection.
-#' * When the `mean` function is applied to an empty vector, `NA` will
-#'   be returned instead of `NaN`, the latter being standard behavior in R.
-#'
 #' @param control (`list`)\cr parameters for descriptive statistics details, specified by using
 #'   the helper function [control_summarize_vars()]. Some possible parameter options are:
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for mean and median.
@@ -182,6 +175,13 @@ s_summary <- function(x,
 #'     * `cv`: The coefficient of variation of `x`, i.e.: ([stats::sd()] / [mean()] * 100).
 #'     * `geom_mean`: The geometric mean of `x`, i.e.: (`exp(mean(log(x)))`).
 #'     * `geom_cv`: The geometric coefficient of variation of `x`, i.e.: (`sqrt(exp(sd(log(x)) ^ 2) - 1) * 100`).
+#'
+#' @note
+#' * If `x` is an empty vector, `NA` is returned. This is the expected
+#'   feature so as to return `rcell` content in `rtables` when the
+#'   intersection of a column and a row delimits an empty data selection.
+#' * When the `mean` function is applied to an empty vector, `NA` will
+#'   be returned instead of `NaN`, the latter being standard behavior in R.
 #'
 #' @method s_summary numeric
 #'
@@ -308,12 +308,6 @@ s_summary.numeric <- function(x, # nolint
 
 #' @describeIn summarize_variables Method for `factor` class.
 #'
-#' @note
-#' * If `x` is an empty `factor`, a list is still returned for `counts` with one element
-#'   per factor level. If there are no levels in `x`, the function fails.
-#' * If `x` contains `NA`, it is expected that `NA` have been conveyed to `na_level`
-#'   appropriately beforehand with [df_explicit_na()] or [explicit_na()].
-#'
 #' @param denom (`string`)\cr choice of denominator for factor proportions. Options are:
 #'   - `n`: number of values in this row and column intersection.
 #'   - `N_row`: total number of values in this row across columns.
@@ -325,6 +319,12 @@ s_summary.numeric <- function(x, # nolint
 #'     * `count`: A list with the number of cases for each level of the factor `x`.
 #'     * `count_fraction`: Similar to `count` but also includes the proportion of cases for each level of the
 #'       factor `x` relative to the denominator, or `NA` if the denominator is zero.
+#'
+#' @note
+#' * If `x` is an empty `factor`, a list is still returned for `counts` with one element
+#'   per factor level. If there are no levels in `x`, the function fails.
+#' * If `x` contains `NA`, it is expected that `NA` have been conveyed to `na_level`
+#'   appropriately beforehand with [df_explicit_na()] or [explicit_na()].
 #'
 #' @method s_summary factor
 #'
@@ -384,12 +384,15 @@ s_summary.factor <- function(x,
 
 #' @describeIn summarize_variables Method for `character` class. This makes an automatic
 #'   conversion to factor (with a warning) and then forwards to the method for factors.
+#'
 #' @param verbose defaults to `TRUE`. It prints out warnings and messages. It is mainly used
 #'   to print out information about factor casting.
+#'
 #' @note Automatic conversion of character to factor does not guarantee that the table
 #'   can be generated correctly. In particular for sparse tables this very likely can fail.
 #'   It is therefore better to always pre-process the dataset such that factors are manually
 #'   created from character variables before passing the dataset to [rtables::build_table()].
+#'
 #' @method s_summary character
 #'
 #' @export
@@ -564,16 +567,16 @@ a_summary.logical <- make_afun(
 #'
 #' Constructor function which creates a combined formatted analysis function.
 #'
+#' @inheritParams argument_convention
+#'
+#' @return Combined formatted analysis function for use in [summarize_vars()].
+#'
 #' @note Since [a_summary()] is generic and we want customization of the formatting arguments
 #'   via [rtables::make_afun()], we need to create another temporary generic function, with
 #'   corresponding customized methods. Then in order for the methods to be found,
 #'   we need to wrap them in a combined `afun`. Since this is required by two layout creating
 #'   functions (and possibly others in the future), we provide a constructor that does this:
 #'   [create_afun_summary()].
-#'
-#' @inheritParams argument_convention
-#'
-#' @return Combined formatted analysis function for use in [summarize_vars()].
 #'
 #' @export
 #'

@@ -1,8 +1,8 @@
 #' Additional Assertions for `checkmate`
 #'
-#' @description
 #' Additional assertion functions which can be used together with the `checkmate` package.
 #'
+#' @inheritParams checkmate::assert_factor
 #' @param x (`any`)\cr object to test.
 #' @param df (`data.frame`)\cr data set to test.
 #' @param variables (named `list` of `character`)\cr list of variables to test.
@@ -11,7 +11,6 @@
 #' @param na_level (`character`)\cr the string you have been using to represent NA or
 #'   missing data. For `NA` values please consider using directly `base::is.na` or
 #'   similar approaches.
-#' @inheritParams checkmate::assert_factor
 #' @param (`integer`)\cr minimum number of factor levels. Default is `1`.
 #' @param ... a collection of objects to test.
 #'
@@ -157,7 +156,7 @@ check_valid_factor <- function(x,
 
   return(res)
 }
-#' @describeIn assertions Check whether `x` is a valid factor (has levels and no empty
+#' @describeIn assertions Check whether `x` is a valid factor (i.e. has levels and no empty
 #'   string levels). Note that `NULL` and `NA` elements are allowed.
 #'
 #' @examples

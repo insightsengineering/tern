@@ -8,8 +8,7 @@ fit_rsp_step(variables, data, control = c(control_step(), control_logistic()))
 }
 \arguments{
 \item{variables}{(named \code{list} of \code{character})\cr list of analysis variables:
-needs \code{response}, \code{arm}, \code{biomarker}, and optional \code{covariates} and
-\code{strata}.}
+needs \code{response}, \code{arm}, \code{biomarker}, and optional \code{covariates} and \code{strata}.}
 
 \item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
@@ -35,7 +34,9 @@ The (conditional) logistic regression model which is fit is:
 \code{response ~ arm * poly(biomarker, degree) + covariates + strata(strata)}
 
 where \code{degree} is specified by \code{control_step()}.
-Note that for the default degree 0 the \code{biomarker} variable is not included in the model.
+}
+\note{
+For the default degree 0 the \code{biomarker} variable is not included in the model.
 }
 \examples{
 # Testing dataset with just two treatment arms.

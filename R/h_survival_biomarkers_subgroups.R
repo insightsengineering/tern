@@ -1,6 +1,6 @@
 #' Helper Functions for Tabulating Biomarker Effects on Survival by Subgroup
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Helper functions which are documented here separately to not confuse the user
 #' when reading about the user-facing functions.
@@ -8,7 +8,6 @@
 #' @inheritParams survival_biomarkers_subgroups
 #' @inheritParams argument_convention
 #' @inheritParams fit_coxreg_multivar
-#' @name h_survival_biomarkers_subgroups
 #'
 #' @examples
 #' library(dplyr)
@@ -28,6 +27,7 @@
 #' labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
 #' formatters::var_labels(adtte_f)[names(labels)] <- labels
 #'
+#' @name h_survival_biomarkers_subgroups
 NULL
 
 #' @describeIn h_survival_biomarkers_subgroups helps with converting the "survival" function variable list

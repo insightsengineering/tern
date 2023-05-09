@@ -5,7 +5,7 @@
 \alias{s_num_patients}
 \alias{s_num_patients_content}
 \alias{analyze_num_patients}
-\title{Number of patients}
+\title{Number of Patients}
 \usage{
 s_num_patients(
   x,

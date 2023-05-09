@@ -19,9 +19,8 @@
 #' * When factor variables contains `NA`, it is expected that `NA` values have been conveyed to `na_level`
 #'   appropriately beforehand via [df_explicit_na()].
 #'
-#' @seealso
-#' Relevant constructor function [create_afun_compare()], and
-#' [s_summary()] which is used internally to compute a summary within `s_compare()`.
+#' @seealso Relevant constructor function [create_afun_compare()], and [s_summary()] which is used internally
+#'   to compute a summary within `s_compare()`.
 #'
 #' @name compare_variables
 #' @include summarize_variables.R
@@ -352,6 +351,10 @@ a_compare.logical <- make_afun(
 #'
 #' Constructor function which creates a combined formatted analysis function.
 #'
+#' @inheritParams argument_convention
+#'
+#' @return Combined formatted analysis function for use in [compare_vars()].
+#'
 #' @note Since [a_compare()] is generic and we want customization of the formatting arguments
 #'   via [rtables::make_afun()], we need to create another temporary generic function, with
 #'   corresponding customized methods. Then in order for the methods to be found,
@@ -359,10 +362,7 @@ a_compare.logical <- make_afun(
 #'   functions (and possibly others in the future), we provide a constructor that does this:
 #'   [create_afun_compare()].
 #'
-#' @return Combined formatted analysis function for use in [compare_vars()].
-#'
 #' @export
-#' @inheritParams argument_convention
 #' @seealso [compare_vars()]
 #'
 #' @examples

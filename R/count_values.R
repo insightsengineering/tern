@@ -11,7 +11,6 @@
 #'   otherwise they are hidden.
 #'
 #' @name count_values_funs
-#'
 NULL
 
 #' @describeIn count_values_funs S3 generic statistics function to count values.

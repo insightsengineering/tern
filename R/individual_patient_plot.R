@@ -14,15 +14,15 @@
 #' @param title (`string`)\cr title for plot.
 #' @param subtitle (`string`)\cr subtitle for plot.
 #' @param add_baseline_hline (`flag`)\cr adds horizontal line at baseline y-value on
-#' plot when TRUE.
+#'   plot when TRUE.
 #' @param yvar_baseline (`string`)\cr variable with baseline values only.
-#' Ignored when `add_baseline_hline` is FALSE.
+#'   Ignored when `add_baseline_hline` is FALSE.
 #' @param ggtheme (`theme`)\cr optional graphical theme function as provided
-#' by `ggplot2` to control outlook of plot. Use `ggplot2::theme()` to tweak the display.
+#'   by `ggplot2` to control outlook of plot. Use `ggplot2::theme()` to tweak the display.
 #' @param plotting_choices (`character`)\cr specifies options for displaying
-#' plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".
+#'   plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".
 #' @param max_obs_per_plot (`count`)\cr Number of observations to be plotted on one
-#' plot. Ignored when `plotting_choices` is not "separate_by_obs".
+#'   plot. Ignored when `plotting_choices` is not "separate_by_obs".
 #' @param caption (`character` scalar)\cr optional caption below the plot.
 #' @param col (`character`)\cr lines colors.
 #'

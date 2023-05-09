@@ -32,8 +32,7 @@ interaction can be used so that this needs to be \code{FALSE}.}
 
 \item{mod}{(\code{coxph})\cr Cox regression model fitted by \code{\link[survival:coxph]{survival::coxph()}}.}
 
-\item{control}{(\code{list})\cr a list of controls as returned by
-\code{\link[=control_coxreg]{control_coxreg()}}.}
+\item{control}{(\code{list})\cr a list of controls as returned by \code{\link[=control_coxreg]{control_coxreg()}}.}
 
 \item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}

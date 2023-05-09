@@ -6,7 +6,6 @@
 #' This can be used to analyze count and/or frequency data using a linear model.
 #'
 #' @name summarize_glm_count
-#'
 NULL
 
 #' Helper Functions for Poisson Models.
@@ -18,7 +17,6 @@ NULL
 #' @seealso [summarize_glm_count]
 #'
 #' @name h_glm_count
-#'
 NULL
 
 #' @describeIn h_glm_count Helper function to return results of a poisson model.
@@ -28,19 +26,18 @@ NULL
 #'   in `.var` and `variables`.
 #' @param variables (named `list` of `strings`)\cr list of additional analysis variables, with
 #'   expected elements:
-#'   - `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
+#'   * `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
 #'     groups will be summarized. Specifically, the first level of `arm` variable is taken as the
 #'     reference group.
-#'   - `covariates` (`character`)\cr a vector that can contain single variable names (such as
+#'   * `covariates` (`character`)\cr a vector that can contain single variable names (such as
 #'     `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
-#'   - `offset` (`numeric`)\cr a numeric vector or scalar adding an offset.
+#'   * `offset` (`numeric`)\cr a numeric vector or scalar adding an offset.
 #' @param `weights`(`character`)\cr a character vector specifying weights used
-#'  in averaging predictions. Number of weights must equal the number of levels included in the covariates.
-#'  Weights option passed to emmeans function (hyperlink) (link to emmeans documentation)
+#'   in averaging predictions. Number of weights must equal the number of levels included in the covariates.
+#'   Weights option passed to emmeans function (hyperlink) (link to emmeans documentation)
 #'
 #' @return
 #' * `h_glm_poisson()` returns the results of a Poisson model.
-#'
 #'
 #' @examples
 #' # Internal function - h_glm_poisson
@@ -92,6 +89,7 @@ h_glm_poisson <- function(.var,
 }
 
 #' @describeIn h_glm_count Helper function to return results of a quasipoisson model.
+#'
 #' @inheritParams argument_convention
 #' @inheritParams summarize_glm_count
 #'
@@ -156,12 +154,12 @@ h_glm_quasipoisson <- function(.var,
 #'   in `.var` and `variables`.
 #' @param variables (named `list` of `strings`)\cr list of additional analysis variables, with
 #'   expected elements:
-#'   - `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
+#'   * `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
 #'     groups will be summarized. Specifically, the first level of `arm` variable is taken as the
 #'     reference group.
-#'   - `covariates` (`character`)\cr a vector that can contain single variable names (such as
+#'   * `covariates` (`character`)\cr a vector that can contain single variable names (such as
 #'     `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
-#'   - `offset` (`numeric`)\cr a numeric vector or scalar adding an offset.
+#'   * `offset` (`numeric`)\cr a numeric vector or scalar adding an offset.
 #' @param `weights`(`character`)\cr character vector specifying weights used in averaging predictions.
 #' @param `distribution`(`character`)\cr a character value specifying the distribution
 #'   used in the regression (poisson, quasipoisson).

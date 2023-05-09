@@ -34,7 +34,7 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
 }
 \value{
-A named list of two elements:
+A named \code{list} of two elements:
 \itemize{
 \item \code{survtime}: A \code{data.frame} containing columns \code{arm}, \code{n}, \code{n_events}, \code{median}, \code{subgroup}, \code{var},
 \code{var_label}, and \code{row_type}.
@@ -46,11 +46,10 @@ A named list of two elements:
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Prepares estimates of median survival times and treatment hazard ratios for population subgroups in
-data frames. Simple wrapper for \code{\link[=h_survtime_subgroups_df]{h_survtime_subgroups_df()}} and \code{\link[=h_coxph_subgroups_df]{h_coxph_subgroups_df()}}.
-Result is a list of two data frames: \code{survtime} and \code{hr}.
-\code{variables} corresponds to the names of variables found in \code{data}, passed as a named list and requires elements
-\code{tte}, \code{is_event}, \code{arm} and optionally \code{subgroups} and \code{strat}. \code{groups_lists} optionally specifies
-groupings for \code{subgroups} variables.
+data frames. Simple wrapper for \code{\link[=h_survtime_subgroups_df]{h_survtime_subgroups_df()}} and \code{\link[=h_coxph_subgroups_df]{h_coxph_subgroups_df()}}. Result is a \code{list}
+of two \code{data.frame}s: \code{survtime} and \code{hr}. \code{variables} corresponds to the names of variables found in \code{data},
+passed as a named \code{list} and requires elements \code{tte}, \code{is_event}, \code{arm} and optionally \code{subgroups} and \code{strat}.
+\code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
 }
 \examples{
 library(dplyr)

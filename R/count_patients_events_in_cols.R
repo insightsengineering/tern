@@ -6,7 +6,6 @@
 #' when a column table layout is required.
 #'
 #' @name count_patients_events_in_cols
-#'
 NULL
 
 #' @describeIn count_patients_events_in_cols Statistics function which counts numbers of patients and multiple

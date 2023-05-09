@@ -6,7 +6,6 @@
 #' sorting of occurrence tables.
 #'
 #' @name score_occurrences
-#'
 NULL
 
 #' @describeIn score_occurrences Scoring function which sums the counts across all

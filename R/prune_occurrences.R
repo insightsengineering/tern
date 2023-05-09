@@ -11,7 +11,6 @@
 #'   functions positively, too. However, note that the result of [keep_rows()] says what
 #'   should be pruned, to conform with the [rtables::prune_table()] interface.
 #'
-#' @name prune_occurrences
 #' @examples
 #' \dontrun{
 #' tab <- basic_table() %>%
@@ -23,12 +22,14 @@
 #'   build_table(DM)
 #' }
 #'
+#' @name prune_occurrences
 NULL
 
 #' @describeIn prune_occurrences Constructor for creating pruning functions based on
 #'   a row condition function. This removes all analysis rows (`TableRow`) that should be
 #'   pruned, i.e., don't fulfill the row condition. It removes the sub-tree if there are no
 #'   children left.
+#'
 #' @param row_condition (`CombinationFunction`)\cr condition function which works on individual
 #'   analysis rows and flags whether these should be kept in the pruned table.
 #'

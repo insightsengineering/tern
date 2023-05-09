@@ -5,13 +5,12 @@
 #' Helper functions that tabulate in a data frame statistics such as median survival
 #' time and hazard ratio for population subgroups.
 #'
-#' @details Main functionality is to prepare data for use in a layout creating function.
-#'
 #' @inheritParams argument_convention
 #' @inheritParams survival_coxph_pairwise
 #' @inheritParams survival_duration_subgroups
 #' @param arm (`factor`)\cr the treatment group variable.
-#' @name h_survival_duration_subgroups
+#'
+#' @details Main functionality is to prepare data for use in a layout-creating function.
 #'
 #' @examples
 #' library(dplyr)
@@ -37,6 +36,7 @@
 #' labels <- c("ARM" = adtte_labels[["ARM"]], "SEX" = adtte_labels[["SEX"]], "is_event" = "Event Flag")
 #' formatters::var_labels(adtte_f)[names(labels)] <- labels
 #'
+#' @name h_survival_duration_subgroups
 NULL
 
 #' @describeIn h_survival_duration_subgroups helper to prepare a data frame of median survival times by arm.

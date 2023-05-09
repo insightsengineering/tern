@@ -3,13 +3,13 @@ NULL
 
 #' Helper Functions for Subgroup Treatment Effect Pattern (STEP) Calculations
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Helper functions that are used internally for the STEP calculations.
 #'
 #' @inheritParams argument_convention
-#' @name h_step
 #'
+#' @name h_step
 NULL
 
 #' @describeIn h_step creates the windows for STEP, based on the control settings

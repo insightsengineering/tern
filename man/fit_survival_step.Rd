@@ -35,7 +35,9 @@ The model which is fit is:
 \code{Surv(time, event) ~ arm * poly(biomarker, degree) + covariates + strata(strata)}
 
 where \code{degree} is specified by \code{control_step()}.
-Note that for the default degree 0 the \code{biomarker} variable is not included in the model.
+}
+\note{
+For the default degree 0 the \code{biomarker} variable is not included in the model.
 }
 \examples{
 # Testing dataset with just two treatment arms.

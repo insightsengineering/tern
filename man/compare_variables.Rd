@@ -302,6 +302,6 @@ lyt <- basic_table() \%>\%
 build_table(lyt, df = tern_ex_adsl)
 }
 \seealso{
-Relevant constructor function \code{\link[=create_afun_compare]{create_afun_compare()}}, and
-\code{\link[=s_summary]{s_summary()}} which is used internally to compute a summary within \code{s_compare()}.
+Relevant constructor function \code{\link[=create_afun_compare]{create_afun_compare()}}, and \code{\link[=s_summary]{s_summary()}} which is used internally
+to compute a summary within \code{s_compare()}.
 }

@@ -5,15 +5,14 @@
 #' Fits a Cox regression model and estimates hazard ratio to describe the effect
 #' size in a survival analysis.
 #'
-#' @details
-#' Cox models are the most commonly used methods to estimate the magnitude of
-#' the effect in survival analysis. It assumes proportional hazards: the ratio
-#' of the hazards between groups (e.g., two arms) is constant over time.
-#' This ratio is referred to as the "hazard ratio" (HR) and is one of the
-#' most commonly reported metrics to describe the effect size in survival
-#' analysis (NEST Team, 2020).
-#'
 #' @inheritParams argument_convention
+#'
+#' @details Cox models are the most commonly used methods to estimate the magnitude of
+#'   the effect in survival analysis. It assumes proportional hazards: the ratio
+#'   of the hazards between groups (e.g., two arms) is constant over time.
+#'   This ratio is referred to as the "hazard ratio" (HR) and is one of the
+#'   most commonly reported metrics to describe the effect size in survival
+#'   analysis (NEST Team, 2020).
 #'
 #' @seealso [fit_coxreg] for relevant fitting functions, [h_cox_regression] for relevant
 #' helper functions, and [tidy_coxreg] for custom tidy methods.

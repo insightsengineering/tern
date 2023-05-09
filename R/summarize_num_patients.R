@@ -1,4 +1,4 @@
-#' Number of patients
+#' Number of Patients
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -7,9 +7,9 @@
 #' @inheritParams argument_convention
 #' @param x (`character` or `factor`)\cr vector of patient IDs.
 #' @param count_by (`character` or `factor`)\cr optional vector to be combined with `x` when counting
-#' `nonunique` records.
+#'   `nonunique` records.
 #' @param unique_count_suffix (`logical`)\cr should `"(n)"` suffix be added to `unique_count` labels.
-#' Defaults to `TRUE`.
+#'   Defaults to `TRUE`.
 #'
 #' @name summarize_num_patients
 NULL
@@ -167,14 +167,14 @@ summarize_num_patients <- function(lyt,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_num_patients_content()` to the table layout.
 #'
-#' @note As opposed to [summarize_num_patients()], this function does not repeat the produced rows.
-#'
 #' @details In general, functions that starts with `analyze*` are expected to
 #'   work like [rtables::analyze()], while functions that starts with `summarize*`
 #'   are based upon [rtables::summarize_row_groups()]. The latter provides a
 #'   value for each dividing split in the row and column space, but, being it
 #'   bound to the fundamental splits, it is repeated by design in every page
 #'   when pagination is involved.
+#'
+#' @note As opposed to [summarize_num_patients()], this function does not repeat the produced rows.
 #'
 #' @examples
 #' df_tmp <- data.frame(

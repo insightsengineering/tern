@@ -42,16 +42,15 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @seealso [cox_regression]
-#'
-#' @return
-#' [tidy()] returns:
+#' @return [tidy()] returns:
 #' * For `summary.coxph` objects,  a `data.frame` with columns: `Pr(>|z|)`, `exp(coef)`, `exp(-coef)`, `lower .95`,
 #'   `upper .95`, `level`, and `n`.
 #' * For `coxreg.univar` objects, a `data.frame` with columns: `effect`, `term`, `term_label`, `level`, `n`, `hr`,
 #'   `lcl`, `ucl`, `pval`, and `ci`.
 #' * For `coxreg.multivar` objects, a `data.frame` with columns: `term`, `pval`, `term_label`, `hr`, `lcl`, `ucl`,
 #'   `level`, and `ci`.
+#'
+#' @seealso [cox_regression]
 #'
 #' @name tidy_coxreg
 NULL

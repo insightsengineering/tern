@@ -29,7 +29,7 @@ of the given value to the digit threshold, as a formatted string.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-\code{Rtables} Formatting Functions that handle extreme values.
+\code{rtables} formatting functions that handle extreme values.
 }
 \details{
 For each input, apply a format to the specified number of \code{digits}. If the value is

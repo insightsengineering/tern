@@ -85,14 +85,15 @@ get_covariates <- function(covariates) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Replicate entries of a vector if required. Note that this will fail if `x`
-#' is not of length `n` or is not a scalar.
+#' Replicate entries of a vector if required.
 #'
 #' @inheritParams argument_convention
 #' @param n (`count`)\cr how many entries we need.
 #'
 #' @return `x` if it has the required length already or is `NULL`,
 #'   otherwise if it is scalar the replicated version of it with `n` entries.
+#'
+#' @note This function will fail if `x` is not of length `n` and/or is not a scalar.
 #'
 #' @export
 to_n <- function(x, n) {

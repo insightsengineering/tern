@@ -9,7 +9,6 @@
 #' @seealso [h_proportions]
 #'
 #' @name estimate_proportions
-#'
 NULL
 
 #' @describeIn estimate_proportions Statistics function estimating a

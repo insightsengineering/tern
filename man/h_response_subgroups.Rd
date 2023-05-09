@@ -77,7 +77,7 @@ Helper functions that tabulate in a data frame statistics such as response rate
 and odds ratio for population subgroups.
 }
 \details{
-Main functionality is to prepare data for use in a layout creating function.
+Main functionality is to prepare data for use in a layout-creating function.
 }
 \section{Functions}{
 \itemize{
@@ -114,6 +114,7 @@ adrs_f <- adrs \%>\%
     rsp = AVALC == "CR"
   )
 formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
+
 
 h_proportion_df(
   c(TRUE, FALSE, FALSE),

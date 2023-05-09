@@ -27,11 +27,11 @@ NULL
 #'   associated confidence interval.
 #'
 #' @return
-#' `s_incidence_rate()` returns the following statistics:
-#'   * `person_years`: Total person-years at risk.
-#'   * `n_events`: Total number of events observed.
-#'   * `rate`: Estimated incidence rate.
-#'   * `rate_ci`: Confidence interval for the incidence rate.
+#' * `s_incidence_rate()` returns the following statistics:
+#'   - `person_years`: Total person-years at risk.
+#'   - `n_events`: Total number of events observed.
+#'   - `rate`: Estimated incidence rate.
+#'   - `rate_ci`: Confidence interval for the incidence rate.
 #'
 #' @examples
 #' library(dplyr)
@@ -196,7 +196,6 @@ estimate_incidence_rate <- function(lyt,
 #'   * `time_unit_input`: (`string`)\cr `day`, `week`, `month`, or `year` (default)
 #'     indicating time unit for data input.
 #'   * `time_unit_output`: (`numeric`)\cr time unit for desired output (in person-years).
-#'
 #' @param person_years (`numeric`)\cr total person-years at risk.
 #' @param alpha (`numeric`)\cr two-sided alpha-level for confidence interval.
 #' @param n_events (`integer`)\cr number of events observed.

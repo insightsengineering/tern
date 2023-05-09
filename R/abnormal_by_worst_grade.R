@@ -11,17 +11,16 @@
 #'   * `1` to `4`: Numerator is number of patients with worst grades 1-4 respectively;
 #'   * `Any`: Numerator is number of patients with at least one abnormality, which means grade is different from 0.
 #'
-#' @details
-#' The pre-processing steps are crucial when using this function. From the standard
-#' lab grade variable `ATOXGR`, derive the following two variables:
+#' @inheritParams argument_convention
+#'
+#' @details The pre-processing steps are crucial when using this function. From the standard lab grade variable
+#'   `ATOXGR`, derive the following two variables:
 #'   * A grade direction variable (e.g. `GRADE_DIR`) is required in order to obtain
 #'     the correct denominators when building the layout as it is used to define row splitting.
 #'   * A toxicity grade variable (e.g. `GRADE_ANL`) where all negative values from
 #'     `ATOXGR` are replaced by their absolute values.
 #'
 #' @note Prior to tabulation, `df` must be filtered to include only post-baseline records with worst grade flags.
-#'
-#' @inheritParams argument_convention
 #'
 #' @name abnormal_by_worst_grade
 NULL

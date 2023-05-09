@@ -9,8 +9,6 @@
 #' @inheritParams extract_rsp_biomarkers
 #' @inheritParams argument_convention
 #'
-#' @name h_response_biomarkers_subgroups
-#'
 #' @examples
 #' library(dplyr)
 #' library(forcats)
@@ -23,6 +21,7 @@
 #'   mutate(rsp = AVALC == "CR")
 #' formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
 #'
+#' @name h_response_biomarkers_subgroups
 NULL
 
 #' @describeIn h_response_biomarkers_subgroups helps with converting the "response" function variable list
