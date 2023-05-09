@@ -12,7 +12,7 @@ Tabulate statistics such as median survival time and hazard ratio for population
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1.9011</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1.9012</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,17 +37,6 @@ Tabulate statistics such as median survival time and hazard ratio for population
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -113,17 +102,17 @@ created using <code><a href="extract_survival_subgroups.html">extract_survival_s
 
 
 <dt>vars</dt>
-<dd><p>(<code>character</code>)<br> the name of statistics to be reported among
-<code>n_tot_events</code> (total number of events per group),
-<code>n_events</code> (number of events per group),
-<code>n_tot</code> (total number of observations per group),
-<code>n</code> (number of observations per group),
-<code>median</code> (median survival time),
-<code>hr</code> (hazard ratio),
-<code>ci</code> (confidence interval of hazard ratio) and
-<code>pval</code> (p value of the effect).
+<dd><p>(<code>character</code>)<br> the name of statistics to be reported among:</p><ul><li><p><code>n_tot_events</code>: Total number of events per group.</p></li>
+<li><p><code>n_events</code>: Number of events per group.</p></li>
+<li><p><code>n_tot</code>: Total number of observations per group.</p></li>
+<li><p><code>n</code>: Number of observations per group.</p></li>
+<li><p><code>median</code>: Median survival time.</p></li>
+<li><p><code>hr</code>: Hazard ratio.</p></li>
+<li><p><code>ci</code>: Confidence interval of hazard ratio.</p></li>
+<li><p><code>pval</code>: p-value of the effect.
 Note, one of the statistics <code>n_tot</code> and <code>n_tot_events</code>, as well as both <code>hr</code> and <code>ci</code>
-are required.</p></dd>
+are required.</p></li>
+</ul></dd>
 
 
 <dt>time_unit</dt>
@@ -146,6 +135,13 @@ levels that belong to it in the character vectors that are elements of the list.
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<ul><li><p><code>a_survival_subgroups()</code> returns the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
+</ul><p>An <code>rtables</code> table summarizing survival by subgroup.</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>These functions create a layout starting from a data frame which contains
 the required statistics. Tables typically used as part of forest plot.</p>
@@ -153,9 +149,10 @@ the required statistics. Tables typically used as part of forest plot.</p>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>a_survival_subgroups()</code>: Formatted Analysis function used to format the results of
-<code><a href="extract_survival_subgroups.html">extract_survival_subgroups()</a></code>. Returns is a list of Formatted Analysis functions with one element per statistic.</p></li>
-<li><p><code>tabulate_survival_subgroups()</code>: table creating function.</p></li>
+<ul><li><p><code>a_survival_subgroups()</code>: Formatted analysis function which is used as
+<code>afun</code> in <code>tabulate_survival_subgroups()</code>.</p></li>
+<li><p><code>tabulate_survival_subgroups()</code>: Table-creating function which creates a table
+summarizing survival by subgroup.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -246,6 +243,7 @@ the required statistics. Tables typically used as part of forest plot.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 p-value (log-rank)       MEDIUM BMRKR2 Continuous Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 p-value (log-rank)         HIGH BMRKR2 Continuous Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Internal function - a_survival_subgroups</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu">a_survival_subgroups</span><span class="op">(</span>.formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"n"</span> <span class="op">=</span> <span class="st">"xx"</span>, <span class="st">"median"</span> <span class="op">=</span> <span class="st">"xx.xx"</span><span class="op">)</span><span class="op">)</span></span></span>

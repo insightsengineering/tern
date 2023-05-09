@@ -12,7 +12,7 @@ Tabulate statistics such as response rate and odds ratio for population subgroup
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1.9011</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1.9012</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,17 +37,6 @@ Tabulate statistics such as response rate and odds ratio for population subgroup
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -108,15 +97,15 @@ created using <code><a href="extract_rsp_subgroups.html">extract_rsp_subgroups()
 
 
 <dt>vars</dt>
-<dd><p>(<code>character</code>)<br> the name of statistics to be reported among
-<code>n</code> (total number of observations per group),
-<code>n_rsp</code> (number of responders per group),
-<code>prop</code> (proportion of responders),
-<code>n_tot</code> (total number of observations),
-<code>or</code> (odds ratio),
-<code>ci</code> (confidence interval of odds ratio) and
-<code>pval</code> (p value of the effect).
-Note, the statistics <code>n_tot</code>, <code>or</code> and <code>ci</code> are required.</p></dd>
+<dd><p>(<code>character</code>)<br> the names of statistics to be reported among:</p><ul><li><p><code>n</code>: Total number of observations per group.</p></li>
+<li><p><code>n_rsp</code>: Number of responders per group.</p></li>
+<li><p><code>prop</code>: Proportion of responders.</p></li>
+<li><p><code>n_tot</code>: Total number of observations.</p></li>
+<li><p><code>or</code>: Odds ratio.</p></li>
+<li><p><code>ci</code> : Confidence interval of odds ratio.</p></li>
+<li><p><code>pval</code>: p-value of the effect.
+Note, the statistics <code>n_tot</code>, <code>or</code> and <code>ci</code> are required.</p></li>
+</ul></dd>
 
 
 <dt>data</dt>
@@ -139,6 +128,13 @@ two proportions. For options, see <code><a href="prop_diff_test.html">s_test_pro
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<ul><li><p><code>a_response_subgroups()</code> returns the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
+</ul><p>An <code>rtables</code> table summarizing binary response by subgroup.</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>These functions create a layout starting from a data frame which contains
 the required statistics. Tables typically used as part of forest plot.</p>
@@ -146,9 +142,9 @@ the required statistics. Tables typically used as part of forest plot.</p>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>a_response_subgroups()</code>: Formatted Analysis function used to format the results of <code><a href="extract_rsp_subgroups.html">extract_rsp_subgroups()</a></code>.
-Returns is a list of Formatted Analysis functions with one element per statistic.</p></li>
-<li><p><code>tabulate_rsp_subgroups()</code>: table creating function.</p></li>
+<ul><li><p><code>a_response_subgroups()</code>: Formatted analysis function which is used as <code>afun</code> in <code>tabulate_rsp_subgroups()</code>.</p></li>
+<li><p><code>tabulate_rsp_subgroups()</code>: Table-creating function which creates a table
+summarizing binary response by subgroup.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -224,6 +220,7 @@ Returns is a list of Formatted Analysis functions with one element per statistic
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 Continuous Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 Continuous Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Internal function - a_response_subgroups</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu">a_response_subgroups</span><span class="op">(</span>.formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"n"</span> <span class="op">=</span> <span class="st">"xx"</span>, <span class="st">"prop"</span> <span class="op">=</span> <span class="st">"xx.xx%"</span><span class="op">)</span><span class="op">)</span></span></span>

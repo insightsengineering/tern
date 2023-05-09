@@ -12,7 +12,7 @@ Functions to calculate different proportion confidence intervals for use in esti
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1.9011</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1.9012</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,17 +37,6 @@ Functions to calculate different proportion confidence intervals for use in esti
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -134,25 +123,26 @@ to find estimates of optimal weights.</p></dd>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<p>Confidence interval of a proportion.</p>
+    </div>
+    <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>prop_wilson()</code>: the Wilson interval calls <code><a href="https://rdrr.io/r/stats/prop.test.html" class="external-link">stats::prop.test()</a></code>.
+<ul><li><p><code>prop_wilson()</code>: Calculates the Wilson interval by calling <code><a href="https://rdrr.io/r/stats/prop.test.html" class="external-link">stats::prop.test()</a></code>.
 Also referred to as Wilson score interval.</p></li>
 <li><p><code>prop_strat_wilson()</code>: Calculates the stratified Wilson confidence
-interval for unequal proportions as described in
-Yan and Su (2010)</p></li>
-<li><p><code>prop_clopper_pearson()</code>: the Clopper-Pearson interval calls
-<code><a href="https://rdrr.io/r/stats/binom.test.html" class="external-link">stats::binom.test()</a></code>. Also referred to as the <code>exact</code> method.</p></li>
-<li><p><code>prop_wald()</code>: the Wald interval follows the usual
-textbook definition for a single proportion confidence interval using the
-normal approximation.</p></li>
-<li><p><code>prop_agresti_coull()</code>: the Agresti-Coull interval was created by
-Alan Agresti and Brent Coull and can be understood (for 95% CI) as adding
-two successes and two failures to the data, and then using the Wald
-formula to construct a CI.</p></li>
-<li><p><code>prop_jeffreys()</code>: the Jeffreys interval is an equal-tailed
-interval based on the non-informative Jeffreys prior for a binomial
-proportion.</p></li>
+interval for unequal proportions as described in Yan and Su (2010)</p></li>
+<li><p><code>prop_clopper_pearson()</code>: Calculates the Clopper-Pearson interval by calling <code><a href="https://rdrr.io/r/stats/binom.test.html" class="external-link">stats::binom.test()</a></code>.
+Also referred to as the <code>exact</code> method.</p></li>
+<li><p><code>prop_wald()</code>: Calculates the Wald interval by following the usual textbook definition
+for a single proportion confidence interval using the normal approximation.</p></li>
+<li><p><code>prop_agresti_coull()</code>: Calculates the Agresti-Coull interval (created by Alan Agresti and Brent Coull) by
+(for 95% CI) adding two successes and two failures to the data and then using the Wald formula to construct a CI.</p></li>
+<li><p><code>prop_jeffreys()</code>: Calculates the Jeffreys interval, an equal-tailed interval based on the
+non-informative Jeffreys prior for a binomial proportion.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
