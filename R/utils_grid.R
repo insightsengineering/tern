@@ -7,9 +7,9 @@
 #' @param ... grobs.
 #' @param grobs list of grobs.
 #' @param padding unit of length 1, space between each grob.
-#' @param vp a \code{\link{viewport}} object (or \code{NULL}).
+#' @param vp a [`viewport()`] object (or `NULL`).
 #' @param name a character identifier for the grob.
-#' @param gp A \code{\link{gpar}} object.
+#' @param gp A [`gpar()`] object.
 #'
 #' @return A `grob`.
 #'
@@ -227,7 +227,7 @@ arrange_grobs <- function(..., # nolint
 #'
 #' @param grob grid object
 #' @param newpage draw on a new page
-#' @param vp a \code{\link{viewport}} object (or \code{NULL}).
+#' @param vp a [`viewport()`] object (or `NULL`).
 #'
 #' @return A `grob`.
 #'

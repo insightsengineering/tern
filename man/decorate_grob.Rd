@@ -126,7 +126,7 @@ grid.draw(
   )
 )
 
-## with \code{ggplot2}
+## with ggplot2
 library(ggplot2)
 
 p_gg <- ggplot2::ggplot(iris, aes(Sepal.Length, Sepal.Width, col = Species)) +
@@ -143,7 +143,7 @@ grid.draw(
   )
 )
 
-## with \code{lattice}
+## with lattice
 library(lattice)
 
 xyplot(Sepal.Length ~ Petal.Length, data = iris, col = iris$Species)
@@ -158,7 +158,7 @@ grid.draw(
   )
 )
 
-# with \code{gridExtra} - no borders
+# with gridExtra - no borders
 library(gridExtra)
 grid.newpage()
 grid.draw(

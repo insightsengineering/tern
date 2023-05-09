@@ -39,8 +39,7 @@ A \code{ggplot} waterfall plot.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \details{
-This basic waterfall plot visualizes a quantity \code{height} ordered by value with some
-markup.
+This basic waterfall plot visualizes a quantity \code{height} ordered by value with some markup.
 }
 \examples{
 library(dplyr)

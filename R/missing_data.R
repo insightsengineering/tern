@@ -38,11 +38,11 @@ explicit_na <- function(x, label = "<Missing>") {
 #' @description `r lifecycle::badge("stable")`
 #'
 #' SAS imports missing data as empty strings or strings with whitespaces only. This helper function can be used to
-#' convert these values to \code{NA}s.
+#' convert these values to `NA`s.
 #'
 #' @inheritParams explicit_na
-#' @param empty boolean if true empty strings get replaced by \code{NA}
-#' @param whitespaces boolean, if true then strings made from whitespaces only get replaced with \code{NA}
+#' @param empty (`logical`)\cr if `TRUE` empty strings get replaced by `NA`.
+#' @param whitespaces (`logical`)\cr if `TRUE` then strings made from whitespaces only get replaced with `NA`.
 #'
 #' @return `x` with `""` and/or whitespace-only values substituted by `NA`, depending on the values of
 #'   `empty` and `whitespaces`.

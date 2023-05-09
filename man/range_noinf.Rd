@@ -9,7 +9,7 @@ range_noinf(x, na.rm = FALSE, finite = FALSE)
 \arguments{
 \item{x}{(\code{numeric})\cr a sequence of numbers for which the range is computed.}
 
-\item{na.rm}{(\code{logical})\cr indicating if NA should be omitted.}
+\item{na.rm}{(\code{logical})\cr indicating if \code{NA} should be omitted.}
 
 \item{finite}{(\code{logical})\cr indicating if non-finite elements should be removed.}
 }

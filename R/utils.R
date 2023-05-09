@@ -1,10 +1,10 @@
 #' Re-implemented [`base::range()`] Default S3 method for numerical objects
 #'
-#' This function returns \code{c(NA, NA)} instead of \code{c(-Inf, Inf)} for zero-length data
+#' This function returns `c(NA, NA)` instead of `c(-Inf, Inf)` for zero-length data
 #' without any warnings.
 #'
 #' @param x (`numeric`)\cr a sequence of numbers for which the range is computed.
-#' @param na.rm (`logical`)\cr indicating if NA should be omitted.
+#' @param na.rm (`logical`)\cr indicating if `NA` should be omitted.
 #' @param finite (`logical`)\cr indicating if non-finite elements should be removed.
 #'
 #' @return A 2-element vector of class `numeric`.
@@ -116,8 +116,8 @@ to_n <- function(x, n) {
 #'
 #' Checks if the elements in `...` have the same dimension.
 #'
-#' @param ... data.frames or vectors
-#' @param omit_null are \code{NULL} elements in \code{...} to be omitted from the check?
+#' @param ... (`data.frame`s or `vector`s)\cr any data frames/vectors.
+#' @param omit_null (`logical`)\cr whether `NULL` elements in `...` should be omitted from the check.
 #'
 #' @return A `logical` value.
 #'
@@ -339,7 +339,7 @@ study_arm <- function(x) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This produces \code{loess} smoothed estimates of `y` with Student confidence intervals.
+#' This produces `loess` smoothed estimates of `y` with Student confidence intervals.
 #'
 #' @param df (`data.frame`)\cr data set containing all analysis variables.
 #' @param x (`character`)\cr value with x column name.

@@ -20,9 +20,9 @@ stack_grobs(
 
 \item{padding}{unit of length 1, space between each grob.}
 
-\item{vp}{a \code{\link{viewport}} object (or \code{NULL}).}
+\item{vp}{a \code{\link[=viewport]{viewport()}} object (or \code{NULL}).}
 
-\item{gp}{A \code{\link{gpar}} object.}
+\item{gp}{A \code{\link[=gpar]{gpar()}} object.}
 
 \item{name}{a character identifier for the grob.}
 }

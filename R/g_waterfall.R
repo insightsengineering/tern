@@ -1,7 +1,6 @@
 #' Horizontal Waterfall Plot
 #'
-#' This basic waterfall plot visualizes a quantity \code{height} ordered by value with some
-#' markup.
+#' This basic waterfall plot visualizes a quantity `height` ordered by value with some markup.
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

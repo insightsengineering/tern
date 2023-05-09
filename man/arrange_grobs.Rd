@@ -29,9 +29,9 @@ arrange_grobs(
 
 \item{padding_wt}{unit of length 1, horizontal space between each grob.}
 
-\item{vp}{a \code{\link{viewport}} object (or \code{NULL}).}
+\item{vp}{a \code{\link[=viewport]{viewport()}} object (or \code{NULL}).}
 
-\item{gp}{A \code{\link{gpar}} object.}
+\item{gp}{A \code{\link[=gpar]{gpar()}} object.}
 
 \item{name}{a character identifier for the grob.}
 }

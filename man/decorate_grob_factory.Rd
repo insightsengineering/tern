@@ -9,7 +9,7 @@ decorate_grob_factory(npages, ...)
 \arguments{
 \item{npages}{number of pages in total}
 
-\item{...}{passed on to \code{\link{decorate_grob}}}
+\item{...}{passed on to \code{\link[=decorate_grob]{decorate_grob()}}}
 }
 \value{
 Closure that increments the page number.
