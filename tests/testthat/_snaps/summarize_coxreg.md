@@ -185,7 +185,7 @@
         Age                                                                      
           All                                   1.01       (1.00, 1.02)   0.2486 
 
-# summarize_coxreg adds the multivariable Cox regression layer to rtables
+# summarize_coxreg adds the multivariate Cox regression layer to rtables
 
     Code
       res
