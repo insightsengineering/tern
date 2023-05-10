@@ -2,11 +2,14 @@
 % Please edit documentation in R/formats.R
 \name{formatting_functions}
 \alias{formatting_functions}
-\title{Additional Formatting Functions}
+\title{Formatting Functions}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This summarizes the additional Formatting Functions to work with \code{rtables}.
+See below for the list of formatting functions created in \code{tern} to work with \code{rtables}.
+
+Other available formats can be listed via \code{\link[formatters:list_valid_format_labels]{formatters::list_valid_format_labels()}}. Additional
+custom formats can be created via the \code{\link[formatters:sprintf_format]{formatters::sprintf_format()}} function.
 }
 \seealso{
 Other formatting functions: 
