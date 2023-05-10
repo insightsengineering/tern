@@ -1,6 +1,6 @@
 #' Pairwise Formula Special Term
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("deprecated")`
 #'
 #' The special term `pairwise` indicate that the model should be fitted individually for
 #' every tested level in comparison to the reference level.
@@ -16,6 +16,7 @@
 #'
 #' @export
 pairwise <- function(x) {
+  lifecycle::deprecate_warn("0.8.1.9013", "pairwise()", "univariate()")
   structure(x, varname = deparse(substitute(x)))
 }
 

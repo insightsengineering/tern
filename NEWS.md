@@ -14,6 +14,7 @@
 * Implemented the `lubridate` package for date variables in `tern` datasets.
 * Organization of `.gitignore` and `.Rbuildignore`.
 * Removed deprecated `footnotes` functions and all related files.
+* Deprecation cycle of `pairwise` function started.
 
 # tern 0.8.0
 
