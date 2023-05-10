@@ -4,8 +4,8 @@
 \alias{analyze_functions}
 \title{Analyze Functions}
 \description{
-These functions are wrappers of \code{\link[rtables:analyze]{rtables::analyze()}}, applying custom \code{tern} statistics functions
-to return the corresponding analysis within a given table layout.
+These functions are wrappers of \code{\link[rtables:analyze]{rtables::analyze()}} which apply corresponding \code{tern} statistics functions
+to add an analysis to a given table layout:
 \itemize{
 \item \code{\link[=analyze_num_patients]{analyze_num_patients()}}
 \item \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}}
@@ -22,7 +22,7 @@ to return the corresponding analysis within a given table layout.
 \item \code{\link[=count_patients_with_event]{count_patients_with_event()}}
 \item \code{\link[=count_patients_with_flags]{count_patients_with_flags()}}
 \item \code{\link[=count_values]{count_values()}}
-\item \code{\link[=cox_pairwise]{cox_pairwise()}}
+\item \code{\link[=coxph_pairwise]{coxph_pairwise()}}
 \item \code{\link[=estimate_incidence_rate]{estimate_incidence_rate()}}
 \item \code{\link[=estimate_multinomial_rsp]{estimate_multinomial_rsp()}}
 \item \code{\link[=estimate_odds_ratio]{estimate_odds_ratio()}}
@@ -37,6 +37,8 @@ to return the corresponding analysis within a given table layout.
 }
 }
 \seealso{
-\link{summarize_functions} for functions which are wrappers for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}, and\cr
-\code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}} which is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
+\itemize{
+\item \link{summarize_functions} for functions which are wrappers for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
+\item \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}} which is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
+}
 }

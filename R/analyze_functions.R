@@ -1,8 +1,9 @@
 #' Analyze Functions
 #'
 #' @description
-#' These functions are wrappers of [rtables::analyze()], applying custom `tern` statistics functions
-#' to return the corresponding analysis within a given table layout.
+#'
+#' These functions are wrappers of [rtables::analyze()] which apply corresponding `tern` statistics functions
+#' to add an analysis to a given table layout:
 #'
 #' * [analyze_num_patients()]
 #' * [analyze_vars_in_cols()]
@@ -19,7 +20,7 @@
 #' * [count_patients_with_event()]
 #' * [count_patients_with_flags()]
 #' * [count_values()]
-#' * [cox_pairwise()]
+#' * [coxph_pairwise()]
 #' * [estimate_incidence_rate()]
 #' * [estimate_multinomial_rsp()]
 #' * [estimate_odds_ratio()]
@@ -32,8 +33,9 @@
 #' * [surv_timepoint()]
 #' * [test_proportion_diff()]
 #'
-#' @seealso [summarize_functions] for functions which are wrappers for [rtables::summarize_row_groups()], and\cr
-#' [analyze_vars_in_cols()] which is a wrapper for [rtables::analyze_colvars()].
+#' @seealso
+#'   * [summarize_functions] for functions which are wrappers for [rtables::summarize_row_groups()].
+#'   * [analyze_vars_in_cols()] which is a wrapper for [rtables::analyze_colvars()].
 #'
 #' @name analyze_functions
 NULL

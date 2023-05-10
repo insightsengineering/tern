@@ -4,8 +4,8 @@
 \alias{summarize_functions}
 \title{Summarize Functions}
 \description{
-These functions are wrappers for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}, applying custom \code{tern} content functions
-to return the corresponding row summary within a given table layout.
+These functions are wrappers for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}, applying corresponding \code{tern} content functions
+to add summary rows to a given table layout:
 \itemize{
 \item \code{\link[=logistic_summary_by_flag]{logistic_summary_by_flag()}}
 \item \code{\link[=summarize_num_patients]{summarize_num_patients()}}
@@ -13,8 +13,13 @@ to return the corresponding row summary within a given table layout.
 \item \code{\link[=summarize_patients_events_in_cols]{summarize_patients_events_in_cols()}}
 \item \code{\link[=summarize_patients_exposure_in_cols]{summarize_patients_exposure_in_cols()}}
 }
+
+Additionally, the \code{\link[=summarize_coxreg]{summarize_coxreg()}} function utilizes \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
+(in combination with several other \code{rtables} functions) to output a Cox regression summary table.
 }
 \seealso{
-\link{analyze_functions} for functions which are wrappers for \code{\link[rtables:analyze]{rtables::analyze()}}, and\cr
-\code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}} which is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
+\itemize{
+\item \link{analyze_functions} for functions which are wrappers for \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}} which is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
+}
 }
