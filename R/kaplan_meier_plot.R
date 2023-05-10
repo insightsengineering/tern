@@ -2,6 +2,12 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
+#' From a survival model, a graphic is rendered along with tabulated annotation
+#' including the number of patient at risk at given time and the median survival
+#' per group.
+#'
+#' @inheritParams grid::gTree
+#' @inheritParams argument_convention
 #' @param df (`data.frame`)\cr data set containing all analysis variables.
 #' @param variables (named `list`)\cr variable names. Details are:
 #'   * `tte` (`numeric`)\cr variable indicating time-to-event duration values.
@@ -13,7 +19,6 @@
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for survival rate.
 #'   * `conf_type` (`string`)\cr "plain" (default), "log", "log-log" for confidence interval type,
 #'     see more in [survival::survfit()]. Note that the option "none" is no longer supported.
-#' @param data (`data.frame`)\cr survival data as pre-processed by `h_data_plot`.
 #' @param xticks (`numeric`, `number`, or `NULL`)\cr numeric vector of ticks or single number with spacing
 #'   between ticks on the x axis. If `NULL` (default), [labeling::extended()] is used to determine
 #'   an optimal tick position on the x axis.
@@ -55,21 +60,6 @@
 #' @param position_coxph (`numeric`)\cr x and y positions for plotting [survival::coxph()] model.
 #' @param position_surv_med (`numeric`)\cr x and y positions for plotting annotation table estimating median survival
 #'   time per group.
-#'
-#' @name kaplan_meier
-NULL
-
-#' Kaplan-Meier Plot
-#'
-#' @description `r lifecycle::badge("stable")`
-#'
-#' From a survival model, a graphic is rendered along with tabulated annotation
-#' including the number of patient at risk at given time and the median survival
-#' per group.
-#'
-#' @inheritParams grid::gTree
-#' @inheritParams kaplan_meier
-#' @inheritParams argument_convention
 #'
 #' @return A `grob` of class `gTree`.
 #'
@@ -459,7 +449,7 @@ g_km <- function(df,
 #' - adds a `censor` column,
 #' - filters the rows before `max_time`.
 #'
-#' @inheritParams kaplan_meier
+#' @inheritParams g_km
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
 #' @param armval (`string`)\cr used as strata name when treatment arm
 #' variable only has one level. Default is "All".
@@ -538,8 +528,8 @@ h_data_plot <- function(fit_km,
 #' exists it is kept as is. It is based on the same function `ggplot2` relies on,
 #' and is required in the graphic and the patient-at-risk annotation table.
 #'
-#' @inheritParams kaplan_meier
-#'
+#' @inheritParams g_km
+#' @inheritParams h_ggkm
 #' @return A vector of positions to use for x-axis ticks on a `ggplot` object.
 #'
 #'
@@ -594,8 +584,8 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #'
 #' Draw the Kaplan-Meier plot using `ggplot2`.
 #'
-#' @inheritParams kaplan_meier
-#'
+#' @inheritParams g_km
+#' @param data (`data.frame`)\cr survival data as pre-processed by `h_data_plot`.
 #' @return A `ggplot` object.
 #'
 #' @examples
