@@ -241,4 +241,5 @@ g_km(
   position_surv_med = c(1, 0.7)
 )
 }
+
 }

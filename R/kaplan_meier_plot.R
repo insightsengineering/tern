@@ -63,8 +63,6 @@
 #'
 #' @return A `grob` of class `gTree`.
 #'
-#' @export
-#'
 #' @examples
 #' \dontrun{
 #' library(dplyr)
@@ -157,6 +155,8 @@
 #'   position_surv_med = c(1, 0.7)
 #' )
 #' }
+#'
+#' @export
 g_km <- function(df,
                  variables,
                  control_surv = control_surv_timepoint(),
@@ -586,6 +586,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #'
 #' @inheritParams g_km
 #' @param data (`data.frame`)\cr survival data as pre-processed by `h_data_plot`.
+#'
 #' @return A `ggplot` object.
 #'
 #' @examples
@@ -791,7 +792,8 @@ h_decompose_gg <- function(gg) {
 #'
 #' Prepares a (5 rows) x (2 cols) layout for the Kaplan-Meier curve.
 #'
-#' @inheritParams kaplan_meier
+#' @inheritParams g_km
+#' @inheritParams h_ggkm
 #' @param g_el (`list` of `gtable`)\cr list as obtained by `h_decompose_gg()`.
 #' @param annot_at_risk (`flag`)\cr compute and add the annotation table
 #'   reporting the number of patient at risk matching the main grid of the
@@ -906,7 +908,8 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
 #' Two Graphical Objects are obtained, one corresponding to row labeling and
 #' the second to the number of patient at risk.
 #'
-#' @inheritParams kaplan_meier
+#' @inheritParams g_km
+#' @inheritParams h_ggkm
 #' @param annot_tbl (`data.frame`)\cr annotation as prepared
 #'   by [survival::summary.survfit()] which includes the number of
 #'   patients at risk at given time points.
@@ -1098,7 +1101,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' The survival fit is transformed in a grob containing a table with groups in
 #' rows characterized by N, median and 95% confidence interval.
 #'
-#' @inheritParams kaplan_meier
+#' @inheritParams g_km
 #' @param ttheme (`list`)\cr see [gridExtra::ttheme_default()].
 #' @param x a `numeric` value between 0 and 1 specifying x-location.
 #' @param y a `numeric` value between 0 and 1 specifying y-location.
