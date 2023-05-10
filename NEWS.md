@@ -15,6 +15,8 @@
 * Organization of `.gitignore` and `.Rbuildignore`.
 * Removed deprecated `footnotes` functions and all related files.
 * Deprecation cycle of `pairwise` function started.
+* Moved `count_patients_with_flags` functions out of `count_patients_with_event.R` and 
+  into `count_patients_with_flags.R`.
 
 # tern 0.8.0
 
