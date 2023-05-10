@@ -85,8 +85,13 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_su
 #' s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
 #'
 #' @export
-s_num_patients_content <- function(df, labelstr = "", .N_col, .var, required = NULL, count_by = NULL, unique_count_suffix = TRUE) { # nolint
-
+s_num_patients_content <- function(df,
+                                   labelstr = "",
+                                   .N_col, # nolint
+                                   .var,
+                                   required = NULL,
+                                   count_by = NULL,
+                                   unique_count_suffix = TRUE) {
   checkmate::assert_string(.var)
   checkmate::assert_data_frame(df)
   if (is.null(count_by)) {

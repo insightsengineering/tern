@@ -228,8 +228,7 @@ decorate_grob <- function(grob,
 
 #' @importFrom grid validDetails
 #' @noRd
-validDetails.decoratedGrob <- function(x) { # nolint
-
+validDetails.decoratedGrob <- function(x) {
   checkmate::assert_character(x$titles)
   checkmate::assert_character(x$footnotes)
 
@@ -254,13 +253,13 @@ validDetails.decoratedGrob <- function(x) { # nolint
 
 #' @importFrom grid widthDetails
 #' @noRd
-widthDetails.decoratedGrob <- function(x) { # nolint
+widthDetails.decoratedGrob <- function(x) {
   grid::unit(1, "null")
 }
 
 #' @importFrom grid heightDetails
 #' @noRd
-heightDetails.decoratedGrob <- function(x) { # nolint
+heightDetails.decoratedGrob <- function(x) {
   grid::unit(1, "null")
 }
 
@@ -390,7 +389,7 @@ split_text_grob <- function(text,
 
 #' @importFrom grid validDetails
 #' @noRd
-validDetails.dynamicSplitText <- function(x) { # nolint
+validDetails.dynamicSplitText <- function(x) {
   checkmate::assert_character(x$text)
   checkmate::assert_true(grid::is.unit(x$width))
   checkmate::assert_vector(x$width, len = 1)
@@ -399,7 +398,7 @@ validDetails.dynamicSplitText <- function(x) { # nolint
 
 #' @importFrom grid heightDetails
 #' @noRd
-heightDetails.dynamicSplitText <- function(x) { # nolint
+heightDetails.dynamicSplitText <- function(x) {
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
     attr(x$text, "fixed_text")
   } else {
@@ -410,13 +409,13 @@ heightDetails.dynamicSplitText <- function(x) { # nolint
 
 #' @importFrom grid widthDetails
 #' @noRd
-widthDetails.dynamicSplitText <- function(x) { # nolint
+widthDetails.dynamicSplitText <- function(x) {
   x$width
 }
 
 #' @importFrom grid drawDetails
 #' @noRd
-drawDetails.dynamicSplitText <- function(x, recording) { # nolint
+drawDetails.dynamicSplitText <- function(x, recording) {
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
     attr(x$text, "fixed_text")
   } else {

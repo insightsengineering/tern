@@ -121,7 +121,7 @@ h_map_for_count_abnormal <- function(df,
     colnames(low_levels_df) <- variables$anl
     low_levels_df <- do.call("rbind", replicate(nrow(map_low), low_levels_df, simplify = FALSE))
     rownames(map_low) <- NULL # Just to avoid strange row index in case upstream functions changed
-    map_low <- map_low[rep(seq_len(nrow(map_low)), each = length(low_levels)), , drop = FALSE] # nolint
+    map_low <- map_low[rep(seq_len(nrow(map_low)), each = length(low_levels)), , drop = FALSE]
     map_low <- cbind(map_low, low_levels_df)
 
     # Define high direction of map
@@ -132,7 +132,7 @@ h_map_for_count_abnormal <- function(df,
     colnames(high_levels_df) <- variables$anl
     high_levels_df <- do.call("rbind", replicate(nrow(map_high), high_levels_df, simplify = FALSE))
     rownames(map_high) <- NULL
-    map_high <- map_high[rep(seq_len(nrow(map_high)), each = length(high_levels)), , drop = FALSE] # nolint
+    map_high <- map_high[rep(seq_len(nrow(map_high)), each = length(high_levels)), , drop = FALSE]
     map_high <- cbind(map_high, high_levels_df)
 
     # Define normal of map

@@ -17,7 +17,7 @@ adsl_local <- data.frame(
 testthat::test_that("s_count_patients_sum_exposure works as expected", {
   df <- anl_local
   adsl <- adsl_local
-  result <- s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl)) # nolintr
+  result <- s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl))
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)

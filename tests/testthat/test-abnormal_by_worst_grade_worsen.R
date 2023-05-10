@@ -55,10 +55,10 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
   p3 <- input_data %>% dplyr::filter(WGRLOFL == "Y" & GRADDR == "B")
   p4 <- input_data %>% dplyr::filter(WGRHIFL == "Y" & GRADDR == "B")
 
-  p1$GRADDR <- "Low" # nolint
-  p2$GRADDR <- "High" # nolint
-  p3$GRADDR <- "Low" # nolint
-  p4$GRADDR <- "High" # nolint
+  p1$GRADDR <- "Low"
+  p2$GRADDR <- "High"
+  p3$GRADDR <- "Low"
+  p4$GRADDR <- "High"
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)

@@ -740,7 +740,7 @@ desctools_binomci <- function(x,
       1
   })]), 1, paste, collapse = ":")
   res <- t(sapply(1:maxdim, function(i) {
-    iBinomCI( # nolint
+    iBinomCI(
       x = lgp$x[i],
       n = lgp$n[i], conf.level = lgp$conf.level[i], sides = lgp$sides[i],
       method = lgp$method[i], rand = lgp$rand[i]

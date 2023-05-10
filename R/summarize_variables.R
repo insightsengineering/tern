@@ -211,7 +211,7 @@ s_summary <- function(x,
 #' lapply(X, function(x) s_summary(x$x))
 #'
 #' @export
-s_summary.numeric <- function(x, # nolint
+s_summary.numeric <- function(x,
                               na.rm = TRUE, # nolint
                               denom,
                               .N_row, # nolint
@@ -369,7 +369,7 @@ s_summary.factor <- function(x,
     }
   )
 
-  y$n_blq <- sum(grepl("BLQ|LTR|<[1-9]", x)) # nolint
+  y$n_blq <- sum(grepl("BLQ|LTR|<[1-9]", x))
 
   y
 }

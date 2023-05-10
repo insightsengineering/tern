@@ -322,7 +322,9 @@ g_km <- function(df,
   }
 
   if (annot_at_risk || annot_surv_med || annot_coxph) {
-    lyt <- h_km_layout(data = data_plot, g_el = g_el, title = title, footnotes = footnotes, annot_at_risk = annot_at_risk) # nolint
+    lyt <- h_km_layout(
+      data = data_plot, g_el = g_el, title = title, footnotes = footnotes, annot_at_risk = annot_at_risk
+    )
     ttl_row <- as.numeric(!is.null(title))
     foot_row <- as.numeric(!is.null(footnotes))
     km_grob <- grid::gTree(
@@ -508,12 +510,12 @@ h_data_plot <- function(fit_km,
     FUN = function(tbl) {
       first_row <- tbl[1L, ]
       first_row$time <- 0
-      # nolint start
+      start
       first_row$n.risk <- sum(first_row[, c("n.risk", "n.event", "n.censor")])
       first_row$n.event <- first_row$n.censor <- 0
       first_row$estimate <- first_row$conf.high <- first_row$conf.low <- 1
       first_row$std.error <- 0
-      # nolint end
+      end
       rbind(
         first_row,
         tbl

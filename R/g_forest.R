@@ -145,7 +145,7 @@
 #' }
 #'
 #' @export
-g_forest <- function(tbl, # nolint
+g_forest <- function(tbl,
                      col_x = attr(tbl, "col_x"),
                      col_ci = attr(tbl, "col_ci"),
                      vline = 1,
@@ -584,7 +584,7 @@ cell_in_rows <- function(row_name,
 #' Calculate the `grob` corresponding to the dot line within the forest plot.
 #'
 #' @noRd
-forest_dot_line <- function(x, # nolint
+forest_dot_line <- function(x,
                             lower,
                             upper,
                             row_index,
@@ -821,5 +821,5 @@ vp_forest_table_part <- function(nrow,
 #'
 #' @noRd
 grid.forest <- function(...) { # nolint
-  grid::grid.draw(forest_grob(...)) # nolint
+  grid::grid.draw(forest_grob(...))
 }

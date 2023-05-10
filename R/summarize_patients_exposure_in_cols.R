@@ -46,11 +46,11 @@ NULL
 #' }
 #'
 #' @keywords internal
-s_count_patients_sum_exposure <- function(df, # nolintr
+s_count_patients_sum_exposure <- function(df,
                                           .var = "AVAL",
                                           id = "USUBJID",
                                           labelstr = "",
-                                          .N_col, # nolintr
+                                          .N_col, # nolint
                                           custom_label = NULL) {
   assert_df_with_variables(df, list(.var = .var, id = id))
   checkmate::assert_string(id)
@@ -128,7 +128,7 @@ s_count_patients_sum_exposure <- function(df, # nolintr
 #' result4
 #'
 #' @export
-summarize_patients_exposure_in_cols <- function(lyt,
+summarize_patients_exposure_in_cols <- function(lyt, # nolint
                                                 var,
                                                 ...,
                                                 .stats = c("n_patients", "sum_exposure"),

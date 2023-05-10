@@ -72,7 +72,7 @@ h_coxreg_inter_effect <- function(x,
 #'   item is a vector of levels at which the interaction should be estimated.
 #'
 #' @export
-h_coxreg_inter_effect.numeric <- function(x, # nolint
+h_coxreg_inter_effect.numeric <- function(x,
                                           effect,
                                           covar,
                                           mod,
@@ -123,7 +123,7 @@ h_coxreg_inter_effect.numeric <- function(x, # nolint
 #' @param data (`data.frame`)\cr the data frame on which the model was fit.
 #'
 #' @export
-h_coxreg_inter_effect.factor <- function(x, # nolint
+h_coxreg_inter_effect.factor <- function(x,
                                          effect,
                                          covar,
                                          mod,
@@ -268,8 +268,8 @@ h_coxreg_inter_estimations <- function(variable,
   design_mat <- within(
     data = design_mat,
     expr = {
-      inter <- paste0(variable, ":", given) # nolint
-      rev_inter <- paste0(given, ":", variable) # nolint
+      inter <- paste0(variable, ":", given)
+      rev_inter <- paste0(given, ":", variable)
     }
   )
   split_by_variable <- design_mat$variable

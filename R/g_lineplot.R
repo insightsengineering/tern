@@ -116,7 +116,7 @@
 #' g_lineplot(adlb_f, table = c("n", "mean"))
 #'
 #' @export
-g_lineplot <- function(df, # nolint
+g_lineplot <- function(df,
                        alt_counts_df = NULL,
                        variables = control_lineplot_vars(),
                        mid = "mean",

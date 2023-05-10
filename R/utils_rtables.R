@@ -209,7 +209,7 @@ as.rtable <- function(x, ...) { # nolint
 #' as.rtable(x)
 #'
 #' @export
-as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
+as.rtable.data.frame <- function(x, format = "xx.xx", ...) {
   checkmate::assert_numeric(unlist(x))
   do.call(
     rtable,

@@ -135,7 +135,7 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
 #'
 #' s_count_occurrences_by_grade(
 #'   df,
-#'   .N_col = 10L, # nolint
+#'   .N_col = 10L,
 #'   .var = "AETOXGR",
 #'   id = "USUBJID",
 #'   grade_groups = list("ANY" = levels(df$AETOXGR))
@@ -206,7 +206,7 @@ s_count_occurrences_by_grade <- function(df,
 #' afun <- make_afun(a_count_occurrences_by_grade, .ungroup_stats = "count_fraction")
 #' afun(
 #'   df,
-#'   .N_col = 10L, # nolint
+#'   .N_col = 10L,
 #'   .var = "AETOXGR",
 #'   id = "USUBJID",
 #'   grade_groups = list("ANY" = levels(df$AETOXGR))

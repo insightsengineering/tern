@@ -127,8 +127,8 @@ estimate_coef <- function(variable, given,
   design_mat <- within(
     data = design_mat,
     expr = {
-      inter <- paste0(variable, ":", given) # nolint
-      rev_inter <- paste0(given, ":", variable) # nolint
+      inter <- paste0(variable, ":", given)
+      rev_inter <- paste0(given, ":", variable)
     }
   )
 

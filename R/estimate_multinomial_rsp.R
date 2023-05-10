@@ -34,8 +34,7 @@ NULL
 #' )
 #'
 #' @export
-d_onco_rsp_label <- function(x) { # nolint
-
+d_onco_rsp_label <- function(x) {
   x <- as.character(x)
   desc <- c(
     CR           = "Complete Response (CR)",
@@ -78,7 +77,7 @@ d_onco_rsp_label <- function(x) { # nolint
 #'
 #' @export
 s_length_proportion <- function(x,
-                                .N_col, # nolint snake_case
+                                .N_col, # nolint
                                 ...) {
   checkmate::assert_multi_class(x, classes = c("factor", "character"))
   checkmate::assert_vector(x, min.len = 0, max.len = .N_col)

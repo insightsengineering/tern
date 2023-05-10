@@ -127,7 +127,7 @@ stack_grobs <- function(...,
 #' }
 #'
 #' @keywords internal
-arrange_grobs <- function(..., # nolint
+arrange_grobs <- function(...,
                           grobs = list(...),
                           ncol = NULL, nrow = NULL,
                           padding_ht = grid::unit(2, "line"),
@@ -258,12 +258,12 @@ draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
   grid::grid.draw(grob)
 }
 
-tern_grob <- function(x) { # nolint
+tern_grob <- function(x) {
   class(x) <- unique(c("ternGrob", class(x)))
   x
 }
 
-print.ternGrob <- function(x, ...) { # nolint
+print.ternGrob <- function(x, ...) {
   grid::grid.newpage()
   grid::grid.draw(x)
 }
