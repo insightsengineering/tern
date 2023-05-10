@@ -4,13 +4,14 @@
 #'
 #' The primary analysis variable `.var` denotes the unique patient identifier.
 #'
+#' @inheritParams argument_convention
+#'
 #' @name count_patients_with_event
 NULL
 
 #' @describeIn count_patients_with_event Statistics function which counts the number of patients for which
 #'   the defined event has occurred.
 #'
-#' @inheritParams argument_convention
 #' @inheritParams summarize_variables
 #' @param .var (`character`)\cr name of the column that contains the unique identifier.
 #' @param filters (`character`)\cr a character vector specifying the column names and flag variables
@@ -99,8 +100,6 @@ a_count_patients_with_event <- make_afun(
 
 #' @describeIn count_patients_with_event Layout-creating function which can take statistics function
 #'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
-#'
-#' @inheritParams argument_convention
 #'
 #' @return
 #' * `count_patients_with_event()` returns a layout object suitable for passing to further layouting functions,
@@ -272,8 +271,6 @@ a_count_patients_with_flags <- make_afun(
 
 #' @describeIn count_patients_with_event Layout-creating function which can take statistics function
 #'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
-#'
-#' @inheritParams argument_convention
 #'
 #' @return
 #' * `count_patients_with_flags()` returns a layout object suitable for passing to further layouting functions,

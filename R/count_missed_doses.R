@@ -5,6 +5,8 @@
 #' These are specific functions to count patients with missed doses. The difference to [count_cumulative()] is
 #' mainly the special labels.
 #'
+#' @inheritParams argument_convention
+#'
 #' @seealso Relevant description function [d_count_missed_doses()].
 #'
 #' @name count_missed_doses
@@ -46,7 +48,6 @@ d_count_missed_doses <- function(thresholds) {
 
 #' @describeIn count_missed_doses Statistics function to count patients with missed doses.
 #'
-#' @inheritParams argument_convention
 #' @param thresholds (vector of `count`)\cr number of missed doses the patients at least had.
 #'
 #' @return

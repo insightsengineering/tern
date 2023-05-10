@@ -6,6 +6,7 @@
 #' The effect is estimated as the HR of the tested treatment for a given level
 #' of the covariate, in comparison to the treatment control.
 #'
+#' @inheritParams argument_convention
 #' @param x (`numeric` or `factor`)\cr the values of the effect to be tested.
 #' @param effect (`string`)\cr the name of the effect to be tested and estimated.
 #' @param covar (`string`)\cr the name of the covariate in the model.
@@ -64,7 +65,6 @@ h_coxreg_inter_effect <- function(x,
                                   ...) {
   UseMethod("h_coxreg_inter_effect", x)
 }
-
 
 #' @describeIn cox_regression_inter Estimate the interaction with a `numeric` covariate.
 #'
@@ -217,7 +217,6 @@ h_coxreg_extract_interaction <- function(effect,
 
 #' @describeIn cox_regression_inter Hazard ratio estimation in interactions.
 #'
-#' @inheritParams argument_convention
 #' @param variable,given (`string`)\cr the name of variables in interaction. We seek the estimation
 #'   of the levels of `variable` given the levels of `given`.
 #' @param lvl_var,lvl_given (`character`)\cr corresponding levels has given by [levels()].

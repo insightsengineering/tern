@@ -658,7 +658,6 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #' @describeIn summarize_variables Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @inheritParams argument_convention
 #' @param ... arguments passed to `s_summary()`.
 #'
 #' @return

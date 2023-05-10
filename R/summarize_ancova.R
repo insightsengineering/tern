@@ -5,6 +5,8 @@
 #' Summarize results of ANCOVA. This can be used to analyze multiple endpoints and/or
 #' multiple timepoints within the same response variable `.var`.
 #'
+#' @inheritParams argument_convention
+#'
 #' @name summarize_ancova
 NULL
 
@@ -80,7 +82,6 @@ h_ancova <- function(.var,
 #' @describeIn summarize_ancova Statistics function that produces a named list of results
 #'   of the investigated linear model.
 #'
-#' @inheritParams argument_convention
 #' @inheritParams h_ancova
 #' @param interaction_y (`character`)\cr a selected item inside of the interaction_item column which will be used
 #'   to select the specific ANCOVA results. if the interaction is not needed, the default option is `FALSE`.
@@ -232,8 +233,6 @@ a_ancova <- make_afun(
 
 #' @describeIn summarize_ancova Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
-#'
-#' @inheritParams argument_convention
 #'
 #' @return
 #' * `summarize_ancova()` returns a layout object suitable for passing to further layouting functions,

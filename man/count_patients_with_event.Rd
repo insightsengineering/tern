@@ -276,7 +276,7 @@ afun <- make_afun(a_count_patients_with_flags,
 )
 afun(
   adae,
-  .N_col = 10L, # nolint
+  .N_col = 10L,
   .N_row = 10L,
   .var = "USUBJID",
   flag_variables = c("fl1", "fl2", "fl3", "fl4")

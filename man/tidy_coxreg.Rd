@@ -14,7 +14,8 @@
 \method{tidy}{coxreg.multivar}(x, ...)
 }
 \arguments{
-\item{x}{(\code{list})\cr Result of the Cox regression model fitted by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}.}
+\item{x}{(\code{list})\cr Result of the Cox regression model fitted by \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} (for univariate models)
+or \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} (for multivariate models).}
 
 \item{...}{additional arguments for the lower level functions.}
 }

@@ -5,6 +5,9 @@
 #' Summarize cumulative counts of a (`numeric`) vector that is less than, less or equal to,
 #' greater than, or greater or equal to user-specific thresholds.
 #'
+#' @inheritParams h_count_cumulative
+#' @inheritParams argument_convention
+#'
 #' @seealso Relevant helper function [h_count_cumulative()], and descriptive function [d_count_cumulative()].
 #'
 #' @name count_cumulative
@@ -88,7 +91,6 @@ d_count_cumulative <- function(threshold, lower_tail, include_eq) {
 
 #' @describeIn count_cumulative Statistics function that produces a named list given a numeric vector of thresholds.
 #'
-#' @inheritParams h_count_cumulative
 #' @param thresholds (`numeric`)\cr vector of cutoff value for the counts.
 #'
 #' @return
@@ -147,8 +149,6 @@ a_count_cumulative <- make_afun(
 
 #' @describeIn count_cumulative Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
-#'
-#' @inheritParams argument_convention
 #'
 #' @return
 #' * `count_cumulative()` returns a layout object suitable for passing to further layouting functions,

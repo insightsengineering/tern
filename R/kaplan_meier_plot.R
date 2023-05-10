@@ -709,7 +709,6 @@ h_ggkm <- function(data,
       )
   }
 
-
   if (!is.null(max_time) && !is.null(xticks)) {
     gg <- gg + ggplot2::scale_x_continuous(breaks = xticks, limits = c(min(0, xticks), max(c(xticks, max_time))))
   } else if (!is.null(xticks)) {
@@ -793,7 +792,6 @@ h_decompose_gg <- function(gg) {
   )
   lapply(X = y, function(x) gtable::gtable_filter(g_el, x))
 }
-
 
 #' Helper: KM Layout
 #'
@@ -1097,7 +1095,6 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
     c("N", "Median", f_conf_level(conf.int))
   )
 }
-
 
 #' Helper Function: Survival Estimation Grob
 #'

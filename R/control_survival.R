@@ -1,15 +1,15 @@
-#' Control Function for `CoxPH` Model
+#' Control Function for Cox-PH Model
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' This is an auxiliary function for controlling arguments for Cox-PH model, typically used internally to specify
 #' details of Cox-PH model for [`s_coxph_pairwise()`]. `conf_level` refers to Hazard Ratio estimation.
 #'
+#' @inheritParams argument_convention
 #' @param pval_method (`string`)\cr p-value method for testing hazard ratio = 1.
 #'   Default method is `"log-rank"`, can also be set to `"wald"` or `"likelihood"`.
 #' @param ties (`string`)\cr specifying the method for tie handling. Default is `"efron"`,
 #'   can also be set to `"breslow"` or `"exact"`. See more in [survival::coxph()].
-#' @inheritParams argument_convention
 #'
 #' @return A list of components with the same names as the arguments
 #'

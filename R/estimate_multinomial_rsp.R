@@ -5,6 +5,8 @@
 #' Estimate the proportion along with confidence interval of a proportion
 #' regarding the level of a factor.
 #'
+#' @inheritParams argument_convention
+#'
 #' @seealso Relevant description function [d_onco_rsp_label()].
 #'
 #' @name estimate_multinomial_rsp
@@ -62,11 +64,8 @@ d_onco_rsp_label <- function(x) {
   return(factor(values_label))
 }
 
-
 #' @describeIn estimate_multinomial_rsp Statistics function which feeds the length of `x` as number
 #'   of successes, and `.N_col` as total number of successes and failures into [s_proportion()].
-#'
-#' @inheritParams argument_convention
 #'
 #' @return
 #' * `s_length_proportion()` returns statistics from [s_proportion()].
@@ -110,8 +109,6 @@ a_length_proportion <- make_afun(
 
 #' @describeIn estimate_multinomial_rsp Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
-#'
-#' @inheritParams argument_convention
 #'
 #' @return
 #' * `estimate_multinomial_response()` returns a layout object suitable for passing to further layouting functions,

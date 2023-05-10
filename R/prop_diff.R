@@ -161,7 +161,6 @@ a_proportion_diff <- make_afun(
 #' @describeIn prop_diff Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @inheritParams argument_convention
 #' @param ... arguments passed to `s_proportion_diff()`.
 #'
 #' @return

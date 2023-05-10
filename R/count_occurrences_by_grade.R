@@ -218,7 +218,6 @@ a_count_occurrences_by_grade <- make_afun(
   .formats = c("count_fraction" = format_count_fraction_fixed_dp)
 )
 
-
 #' @describeIn count_occurrences_by_grade Layout-creating function which can take statistics function
 #'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'

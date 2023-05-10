@@ -217,7 +217,6 @@ a_surv_timepoint_diff <- make_afun(
 #' @describeIn survival_timepoint Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @inheritParams argument_convention
 #' @param method (`string`)\cr either `surv` (survival estimations),
 #'   `surv_diff` (difference in survival with the control) or `both`.
 #' @param table_names_suffix (`string`)\cr optional suffix for the `table_names` used for the `rtables` to

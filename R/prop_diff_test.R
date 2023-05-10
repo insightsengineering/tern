@@ -4,6 +4,7 @@
 #'
 #' Various tests were implemented to test the difference between two proportions.
 #'
+#' @inheritParams argument_convention
 #' @param tbl (`matrix`)\cr matrix with two groups in rows and the binary response (`TRUE`/`FALSE`) in columns.
 #'
 #' @seealso [h_prop_diff_test]
@@ -13,7 +14,6 @@ NULL
 
 #' @describeIn prop_diff_test Statistics function which tests the difference between two proportions.
 #'
-#' @inheritParams argument_convention
 #' @param method (`string`)\cr one of `chisq`, `cmh`, `fisher`, or `schouten`; specifies the test used
 #'   to calculate the p-value.
 #'
@@ -141,7 +141,6 @@ a_test_proportion_diff <- make_afun(
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @param ... other arguments are passed to [s_test_proportion_diff()].
-#' @inheritParams argument_convention
 #'
 #' @return
 #' * `test_proportion_diff()` returns a layout object suitable for passing to further layouting functions,

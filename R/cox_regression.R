@@ -40,6 +40,10 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
+#' @inheritParams argument_convention
+#' @param x (`list`)\cr Result of the Cox regression model fitted by [`fit_coxreg_univar()`] (for univariate models)
+#'   or [`fit_coxreg_multivar()`] (for multivariate models).
+#'
 #' @return [tidy()] returns:
 #' * For `summary.coxph` objects,  a `data.frame` with columns: `Pr(>|z|)`, `exp(coef)`, `exp(-coef)`, `lower .95`,
 #'   `upper .95`, `level`, and `n`.
@@ -56,8 +60,6 @@ NULL
 #' @describeIn tidy_coxreg Custom tidy method for [survival::coxph()] summary results.
 #'
 #' Tidy the [survival::coxph()] results into a `data.frame` to extract model results.
-#'
-#' @inheritParams argument_convention
 #'
 #' @method tidy summary.coxph
 #'
@@ -108,9 +110,6 @@ tidy.summary.coxph <- function(x,
 #' @describeIn tidy_coxreg Custom tidy method for a univariate Cox regression.
 #'
 #' Tidy up the result of a Cox regression model fitted by [`fit_coxreg_univar()`].
-#'
-#' @inheritParams argument_convention
-#' @param x (`list`)\cr Result of the Cox regression model fitted by [`fit_coxreg_univar()`].
 #'
 #' @method tidy coxreg.univar
 #'
@@ -199,9 +198,6 @@ tidy.coxreg.univar <- function(x,
 #'
 #' Tidy up the result of a Cox regression model fitted by [`fit_coxreg_multivar()`].
 #'
-#' @inheritParams argument_convention
-#' @param x (`list`)\cr Result of the Cox regression model fitted by [`fit_coxreg_multivar()`].
-#'
 #' @method tidy coxreg.multivar
 #'
 #' @examples
@@ -248,6 +244,15 @@ tidy.coxreg.multivar <- function(x,
 #'
 #' Fitting functions for univariate and multivariate Cox regression models.
 #'
+#' @param variables (`list`)\cr a named list corresponds to the names of variables found in `data`, passed as a named
+#'   list and corresponding to `time`, `event`, `arm`, `strata`, and `covariates` terms. If `arm` is missing from
+#'   `variables`, then only Cox model(s) including the `covariates` will be fitted and the corresponding effect
+#'   estimates will be tabulated later.
+#' @param data (`data.frame`)\cr the dataset containing the variables to fit the models.
+#' @param at (`list` of `numeric`)\cr when the candidate covariate is a `numeric`, use `at` to specify
+#'   the value of the covariate at which the effect should be estimated.
+#' @param control (`list`)\cr a list of parameters as returned by the helper function [control_coxreg()].
+#'
 #' @seealso [h_cox_regression] for relevant helper functions, [cox_regression].
 #'
 #' @examples
@@ -284,15 +289,6 @@ tidy.coxreg.multivar <- function(x,
 NULL
 
 #' @describeIn fit_coxreg Fit a series of univariate Cox regression models given the inputs.
-#'
-#' @param variables (`list`)\cr a named list corresponds to the names of variables found in `data`, passed as a named
-#'   list and corresponding to `time`, `event`, `arm`, `strata`, and `covariates` terms. If `arm` is missing from
-#'   `variables`, then only Cox model(s) including the `covariates` will be fitted and the corresponding effect
-#'   estimates will be tabulated later.
-#' @param data (`data.frame`)\cr the dataset containing the variables to fit the models.
-#' @param at (`list` of `numeric`)\cr when the candidate covariate is a `numeric`, use `at` to specify
-#'   the value of the covariate at which the effect should be estimated.
-#' @param control (`list`)\cr a list of parameters as returned by the helper function [control_coxreg()].
 #'
 #' @return
 #' * `fit_coxreg_univar()` returns a `coxreg.univar` class object which is a named `list`

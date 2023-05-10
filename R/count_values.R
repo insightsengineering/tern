@@ -4,6 +4,8 @@
 #'
 #' We can count the occurrence of specific values in a variable of interest.
 #'
+#' @inheritParams argument_convention
+#'
 #' @note
 #' * For `factor` variables, `s_count_values` checks whether `values` are all included in the levels of `x`
 #'   and fails otherwise.
@@ -15,7 +17,6 @@ NULL
 
 #' @describeIn count_values_funs S3 generic function to count values.
 #'
-#' @inheritParams argument_convention
 #' @inheritParams s_summary.logical
 #' @param values (`character`)\cr specific values that should be counted.
 #'
@@ -87,7 +88,6 @@ s_count_values.logical <- function(x, values = TRUE, ...) {
   s_count_values(as.character(x), values = as.character(values), ...)
 }
 
-
 #' @describeIn count_values_funs Formatted analysis function which is used as `afun`
 #'   in `count_values()`.
 #'
@@ -106,8 +106,6 @@ a_count_values <- make_afun(
 
 #' @describeIn count_values_funs Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
-#'
-#' @inheritParams argument_convention
 #'
 #' @return
 #' * `count_values()` returns a layout object suitable for passing to further layouting functions,

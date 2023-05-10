@@ -245,7 +245,6 @@ format_fraction_threshold <- function(threshold) {
   }
 }
 
-
 #' Formatting Extreme Values
 #'
 #' @description `r lifecycle::badge("stable")`

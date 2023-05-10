@@ -5,6 +5,8 @@
 #' Compares bivariate responses between two groups in terms of odds ratios
 #' along with a confidence interval.
 #'
+#' @inheritParams argument_convention
+#'
 #' @details This function uses either logistic regression for unstratified
 #'   analyses, or conditional logistic regression for stratified analyses.
 #'   The Wald confidence interval with the specified confidence level is
@@ -25,7 +27,6 @@ NULL
 #'   variable names must be passed if a stratified analysis is required.
 #'
 #' @inheritParams split_cols_by_groups
-#' @inheritParams argument_convention
 #'
 #' @return
 #' * `s_odds_ratio()` returns a named list with the statistics `or_ci`
@@ -165,7 +166,6 @@ a_odds_ratio <- make_afun(
 #' @describeIn odds_ratio Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @inheritParams argument_convention
 #' @param ... arguments passed to `s_odds_ratio()`.
 #'
 #' @return

@@ -5,13 +5,14 @@
 #' Counting the number of unique patients and the total number of all and specific events
 #' when a column table layout is required.
 #'
+#' @inheritParams argument_convention
+#'
 #' @name count_patients_events_in_cols
 NULL
 
 #' @describeIn count_patients_events_in_cols Statistics function which counts numbers of patients and multiple
 #'   events defined by filters. Used as analysis function `afun` in `summarize_patients_events_in_cols()`.
 #'
-#' @inheritParams argument_convention
 #' @param filters_list (named `list` of `character`)\cr each element in this list describes one
 #'   type of event describe by filters, in the same format as [s_count_patients_with_event()].
 #'   If it has a label, then this will be used for the column title.
@@ -109,7 +110,6 @@ s_count_patients_and_multiple_events <- function(df, # nolint
 #' @describeIn count_patients_events_in_cols Layout-creating function which can take statistics function
 #'   arguments and additional format arguments. This function is a wrapper for [rtables::summarize_row_groups()].
 #'
-#' @inheritParams argument_convention
 #' @param col_split (`flag`)\cr whether the columns should be split.
 #'   Set to `FALSE` when the required column split has been done already earlier in the layout pipe.
 #'

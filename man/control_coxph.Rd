@@ -2,7 +2,7 @@
 % Please edit documentation in R/control_survival.R
 \name{control_coxph}
 \alias{control_coxph}
-\title{Control Function for \code{CoxPH} Model}
+\title{Control Function for Cox-PH Model}
 \usage{
 control_coxph(
   pval_method = c("log-rank", "wald", "likelihood"),

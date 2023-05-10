@@ -141,7 +141,6 @@ a_coxph_pairwise <- make_afun(
   )
 )
 
-
 #' @describeIn survival_coxph_pairwise Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'

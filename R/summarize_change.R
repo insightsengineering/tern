@@ -7,12 +7,12 @@
 #' Depending on the baseline flag, either the absolute baseline values (at baseline)
 #' or the change from baseline values (post-baseline) are then summarized.
 #'
+#' @inheritParams argument_convention
+#'
 #' @name summarize_change
 NULL
 
 #' @describeIn summarize_change Statistics function that summarizes baseline or post-baseline visits.
-#'
-#' @inheritParams argument_convention
 #'
 #' @return
 #' * `s_change_from_baseline()` returns the same values returned by [`s_summary.numeric()`].
@@ -97,8 +97,6 @@ a_change_from_baseline <- make_afun(
 
 #' @describeIn summarize_change Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
-#'
-#' @inheritParams argument_convention
 #'
 #' @return
 #' * `summarize_change()` returns a layout object suitable for passing to further layouting functions,
