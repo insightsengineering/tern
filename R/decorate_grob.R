@@ -435,7 +435,7 @@ drawDetails.dynamicSplitText <- function(x, recording) {
 #' Automatically updates page number.
 #'
 #' @param npages number of pages in total
-#' @param ... passed on to [`decorate_grob()`]
+#' @param ... passed on to [decorate_grob()]
 #'
 #' @return Closure that increments the page number.
 #'
@@ -470,10 +470,10 @@ decorate_grob_factory <- function(npages, ...) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Note that this uses the [`decorate_grob_factory()`] function.
+#' Note that this uses the [decorate_grob_factory()] function.
 #'
 #' @param grobs a list of grid grobs
-#' @param ... arguments passed on to [`decorate_grob()`].
+#' @param ... arguments passed on to [decorate_grob()].
 #'
 #' @return A decorated grob.
 #'

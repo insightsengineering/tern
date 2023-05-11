@@ -41,8 +41,8 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams argument_convention
-#' @param x (`list`)\cr Result of the Cox regression model fitted by [`fit_coxreg_univar()`] (for univariate models)
-#'   or [`fit_coxreg_multivar()`] (for multivariate models).
+#' @param x (`list`)\cr Result of the Cox regression model fitted by [fit_coxreg_univar()] (for univariate models)
+#'   or [fit_coxreg_multivar()] (for multivariate models).
 #'
 #' @return [tidy()] returns:
 #' * For `summary.coxph` objects,  a `data.frame` with columns: `Pr(>|z|)`, `exp(coef)`, `exp(-coef)`, `lower .95`,
@@ -109,7 +109,7 @@ tidy.summary.coxph <- function(x,
 
 #' @describeIn tidy_coxreg Custom tidy method for a univariate Cox regression.
 #'
-#' Tidy up the result of a Cox regression model fitted by [`fit_coxreg_univar()`].
+#' Tidy up the result of a Cox regression model fitted by [fit_coxreg_univar()].
 #'
 #' @method tidy coxreg.univar
 #'
@@ -196,7 +196,7 @@ tidy.coxreg.univar <- function(x,
 
 #' @describeIn tidy_coxreg Custom tidy method for a multivariate Cox regression.
 #'
-#' Tidy up the result of a Cox regression model fitted by [`fit_coxreg_multivar()`].
+#' Tidy up the result of a Cox regression model fitted by [fit_coxreg_multivar()].
 #'
 #' @method tidy coxreg.multivar
 #'

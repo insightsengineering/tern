@@ -15,7 +15,7 @@
 #'   * `arm` (`factor`)\cr the treatment group variable.
 #'   * `strat` (`character` or `NULL`)\cr variable names indicating stratification factors.
 #' @param control_surv (`list`)\cr parameters for comparison details, specified by using
-#'   the helper function [`control_surv_timepoint`]. Some possible parameter options are:
+#'   the helper function [control_surv_timepoint()]. Some possible parameter options are:
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for survival rate.
 #'   * `conf_type` (`string`)\cr "plain" (default), "log", "log-log" for confidence interval type,
 #'     see more in [survival::survfit()]. Note that the option "none" is no longer supported.
@@ -1252,7 +1252,7 @@ h_tbl_coxph_pairwise <- function(df,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Grob of `rtable` output from [h_tbl_coxph_pairwise]
+#' Grob of `rtable` output from [h_tbl_coxph_pairwise()]
 #'
 #' @inheritParams h_grob_median_surv
 #' @param ... arguments will be passed to [h_tbl_coxph_pairwise()].

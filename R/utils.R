@@ -1,4 +1,4 @@
-#' Re-implemented [`base::range()`] Default S3 method for numerical objects
+#' Re-implemented [range()] Default S3 method for numerical objects
 #'
 #' This function returns `c(NA, NA)` instead of `c(-Inf, Inf)` for zero-length data
 #' without any warnings.
@@ -158,8 +158,7 @@ check_same_n <- function(..., omit_null = TRUE) {
 #'
 #' @param nams (`character`)\cr vector of original names.
 #'
-#' @return A `character` `vector` of proper names, which does not use dots in contrast to
-#'   [base::make.names()].
+#' @return A `character` `vector` of proper names, which does not use dots in contrast to [make.names()].
 #'
 #' @examples
 #' # Internal function - make_names
@@ -255,7 +254,7 @@ combine_vectors <- function(x, y) {
 #' Extract Elements by Name
 #'
 #' This utility function extracts elements from a vector `x` by `names`.
-#' Differences to the standard [base::`[`()] function are:
+#' Differences to the standard `[` function are:
 #'
 #' - If `x` is `NULL`, then still always `NULL` is returned (same as in base function).
 #' - If `x` is not `NULL`, then the intersection of its names is made with `names` and those

@@ -10,8 +10,7 @@ make_names(nams)
 \item{nams}{(\code{character})\cr vector of original names.}
 }
 \value{
-A \code{character} \code{vector} of proper names, which does not use dots in contrast to
-\code{\link[base:make.names]{base::make.names()}}.
+A \code{character} \code{vector} of proper names, which does not use dots in contrast to \code{\link[=make.names]{make.names()}}.
 }
 \description{
 Make Names Without Dots

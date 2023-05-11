@@ -3,7 +3,7 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' This is an auxiliary function for controlling arguments for CoxPH model, typically used internally to specify
-#' details of CoxPH model for [`s_coxph_pairwise()`]. `conf_level` refers to Hazard Ratio estimation.
+#' details of CoxPH model for [s_coxph_pairwise()]. `conf_level` refers to Hazard Ratio estimation.
 #'
 #' @inheritParams argument_convention
 #' @param pval_method (`string`)\cr p-value method for testing hazard ratio = 1.
@@ -29,7 +29,7 @@ control_coxph <- function(pval_method = c("log-rank", "wald", "likelihood"),
 #' @description `r lifecycle::badge("stable")`
 #'
 #' This is an auxiliary function for controlling arguments for `survfit` model, typically used internally to specify
-#' details of `survfit` model for [s_surv_time]. `conf_level` refers to survival time estimation.
+#' details of `survfit` model for [s_surv_time()]. `conf_level` refers to survival time estimation.
 #'
 #' @inheritParams argument_convention
 #' @param conf_type (`string`)\cr confidence interval type. Options are "plain" (default), "log", "log-log",
@@ -54,7 +54,7 @@ control_surv_time <- function(conf_level = 0.95,
 #' @description `r lifecycle::badge("stable")`
 #'
 #' This is an auxiliary function for controlling arguments for `survfit` model, typically used internally to specify
-#' details of `survfit` model for [s_surv_timepoint]. `conf_level` refers to patient risk estimation at a time point.
+#' details of `survfit` model for [s_surv_timepoint()]. `conf_level` refers to patient risk estimation at a time point.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams control_surv_time

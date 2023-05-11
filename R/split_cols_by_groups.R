@@ -220,7 +220,7 @@ split_cols_by_groups <- function(lyt,
 #'
 #' @return A `vector` of column counts.
 #'
-#' @seealso [combine_groups]
+#' @seealso [combine_groups()]
 #'
 #' @examples
 #' ref <- c("A: Drug X", "B: Placebo")

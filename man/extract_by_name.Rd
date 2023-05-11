@@ -16,7 +16,7 @@ extract_by_name(x, names)
 }
 \description{
 This utility function extracts elements from a vector \code{x} by \code{names}.
-Differences to the standard [base::\code{[}()] function are:
+Differences to the standard \code{[} function are:
 }
 \details{
 \itemize{

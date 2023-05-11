@@ -195,7 +195,7 @@ test_proportion_diff <- function(lyt,
 #'
 #' @return A p-value.
 #'
-#' @seealso [prop_diff_test())] for implementation of these helper functions.
+#' @seealso [prop_diff_test()] for implementation of these helper functions.
 #'
 #' @name h_prop_diff_test
 NULL

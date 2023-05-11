@@ -3,7 +3,7 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Sets a list of parameters for summaries of descriptive statistics. Typically used internally to specify
-#' details for [s_summary].
+#' details for [s_summary()].
 #'
 #' @inheritParams argument_convention
 #' @param quantiles (`numeric`)\cr of length two to specify the quantiles to calculate.

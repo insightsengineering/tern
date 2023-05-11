@@ -246,7 +246,7 @@ try_car_anova <- function(mod,
 #' @inheritParams t_coxreg
 #'
 #' @return A list with items `mod` (results of [survival::coxph()]), `msum` (result of `summary`) and
-#'   `aov` (result of [car::Anova]).
+#'   `aov` (result of [car::Anova()]).
 #'
 #' @noRd
 fit_n_aov <- function(formula,

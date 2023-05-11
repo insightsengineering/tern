@@ -15,7 +15,7 @@ NULL
 #' @describeIn summarize_change Statistics function that summarizes baseline or post-baseline visits.
 #'
 #' @return
-#' * `s_change_from_baseline()` returns the same values returned by [`s_summary.numeric()`].
+#' * `s_change_from_baseline()` returns the same values returned by [s_summary.numeric()].
 #'
 #' @note The data in `df` must be either all be from baseline or post-baseline visits. Otherwise
 #'   an error will be thrown.

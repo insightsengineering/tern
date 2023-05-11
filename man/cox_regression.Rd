@@ -42,7 +42,7 @@ summarize_coxreg(
 )
 }
 \arguments{
-\item{model_df}{(\code{data.frame})\cr contains the resulting model fit from a \code{\link{fit_coxreg}}
+\item{model_df}{(\code{data.frame})\cr contains the resulting model fit from a \link{fit_coxreg}
 function with tidying applied via \code{\link[broom:reexports]{broom::tidy()}}.}
 
 \item{.stats}{(\code{character})\cr the name of statistics to be reported among:

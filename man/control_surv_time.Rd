@@ -25,5 +25,5 @@ A list of components with the same names as the arguments
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 This is an auxiliary function for controlling arguments for \code{survfit} model, typically used internally to specify
-details of \code{survfit} model for \link{s_surv_time}. \code{conf_level} refers to survival time estimation.
+details of \code{survfit} model for \code{\link[=s_surv_time]{s_surv_time()}}. \code{conf_level} refers to survival time estimation.
 }

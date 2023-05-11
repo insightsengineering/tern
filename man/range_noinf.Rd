@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{range_noinf}
 \alias{range_noinf}
-\title{Re-implemented \code{\link[base:range]{base::range()}} Default S3 method for numerical objects}
+\title{Re-implemented \code{\link[=range]{range()}} Default S3 method for numerical objects}
 \usage{
 range_noinf(x, na.rm = FALSE, finite = FALSE)
 }

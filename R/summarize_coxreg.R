@@ -48,10 +48,10 @@
 NULL
 
 #' @describeIn cox_regression Statistics function that transforms results tabulated
-#'   from [`fit_coxreg_univar()`] or [`fit_coxreg_multivar()`] into a list.
+#'   from [fit_coxreg_univar()] or [fit_coxreg_multivar()] into a list.
 #'
-#' @param model_df (`data.frame`)\cr contains the resulting model fit from a [`fit_coxreg`]
-#'   function with tidying applied via [`broom::tidy()`].
+#' @param model_df (`data.frame`)\cr contains the resulting model fit from a [fit_coxreg]
+#'   function with tidying applied via [broom::tidy()].
 #' @param .stats (`character`)\cr the name of statistics to be reported among:
 #'   * `n`: number of observations (univariable only)
 #'   * `hr`: hazard ratio
