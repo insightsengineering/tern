@@ -17,8 +17,7 @@ A summary table with statistics \code{N}, \code{Median}, and \verb{XX\% CI} (\co
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Transform a survival fit to a table with groups in rows characterized
-by N, median and confidence interval.
+Transform a survival fit to a table with groups in rows characterized by N, median and confidence interval.
 }
 \examples{
 \dontrun{

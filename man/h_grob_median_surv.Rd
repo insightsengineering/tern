@@ -17,9 +17,9 @@ h_grob_median_surv(
 
 \item{armval}{(\code{string})\cr used as strata name when treatment arm variable only has one level. Default is "All".}
 
-\item{x}{a \code{numeric} value between 0 and 1 specifying x-location.}
+\item{x}{(\code{numeric})\cr a value between 0 and 1 specifying x-location.}
 
-\item{y}{a \code{numeric} value between 0 and 1 specifying y-location.}
+\item{y}{(\code{numeric})\cr a value between 0 and 1 specifying y-location.}
 
 \item{ttheme}{(\code{list})\cr see \code{\link[gridExtra:tableGrob]{gridExtra::ttheme_default()}}.}
 }

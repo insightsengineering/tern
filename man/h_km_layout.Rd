@@ -15,9 +15,8 @@ h_km_layout(data, g_el, title, footnotes, annot_at_risk = TRUE)
 
 \item{footnotes}{(\code{string})\cr footnotes for plot.}
 
-\item{annot_at_risk}{(\code{flag})\cr compute and add the annotation table
-reporting the number of patient at risk matching the main grid of the
-Kaplan-Meier curve.}
+\item{annot_at_risk}{(\code{flag})\cr compute and add the annotation table reporting the number of
+patient at risk matching the main grid of the Kaplan-Meier curve.}
 }
 \value{
 A grid layout.
@@ -28,16 +27,13 @@ A grid layout.
 Prepares a (5 rows) x (2 cols) layout for the Kaplan-Meier curve.
 }
 \details{
-The layout corresponds to a grid of two columns and five rows of unequal
-dimensions. Most of the dimension are fixed, only the curve is flexible and
-will accommodate with the remaining free space.
+The layout corresponds to a grid of two columns and five rows of unequal dimensions. Most of the
+dimension are fixed, only the curve is flexible and will accommodate with the remaining free space.
 \itemize{
-\item The left column gets the annotation of the \code{ggplot} (y-axis) and the
-names of the strata for the patient at risk tabulation.
-The main constraint is about the width of the columns which must allow the
-writing of the strata name.
-\item The right column receive the \code{ggplot}, the legend, the x-axis and the
-patient at risk table.
+\item The left column gets the annotation of the \code{ggplot} (y-axis) and the names of the strata for the patient
+at risk tabulation. The main constraint is about the width of the columns which must allow the writing of
+the strata name.
+\item The right column receive the \code{ggplot}, the legend, the x-axis and the patient at risk table.
 }
 }
 \examples{

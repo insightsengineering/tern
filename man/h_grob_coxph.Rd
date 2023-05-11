@@ -15,9 +15,9 @@ h_grob_coxph(
 \arguments{
 \item{...}{arguments will be passed to \code{\link[=h_tbl_coxph_pairwise]{h_tbl_coxph_pairwise()}}.}
 
-\item{x}{a \code{numeric} value between 0 and 1 specifying x-location.}
+\item{x}{(\code{numeric})\cr a value between 0 and 1 specifying x-location.}
 
-\item{y}{a \code{numeric} value between 0 and 1 specifying y-location.}
+\item{y}{(\code{numeric})\cr a value between 0 and 1 specifying y-location.}
 
 \item{ttheme}{(\code{list})\cr see \code{\link[gridExtra:tableGrob]{gridExtra::ttheme_default()}}.}
 }

@@ -171,6 +171,7 @@ lyt <- basic_table() \%>\%
     table_names = "tbl_rel_fatal"
   )
 build_table(lyt, tern_ex_adae, alt_counts_df = tern_ex_adsl)
+
 }
 \seealso{
 \link{count_patients_with_flags}
