@@ -110,6 +110,8 @@ arguments and additional format arguments. This function is a wrapper for \code{
 
 }}
 \examples{
+library(dplyr)
+
 # `s_count_patients_with_flags()`
 
 # Add labelled flag variables to analysis dataset.

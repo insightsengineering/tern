@@ -24,6 +24,8 @@ NULL
 #'   flag as a list of statistics `n`, `count`, `count_fraction`, and `n_blq`, with one element per flag.
 #'
 #' @examples
+#' library(dplyr)
+#'
 #' # `s_count_patients_with_flags()`
 #'
 #' # Add labelled flag variables to analysis dataset.
