@@ -87,7 +87,6 @@ reference:
       - starts_with("fit_")
       - get_smooths
       - starts_with("logistic_")
-      - pairwise
       - starts_with("tidy.")
       - univariate
 
@@ -172,4 +171,6 @@ reference:
       - starts_with("ex_")
 
   - title: Deprecated Functions
-    desc: No functions are currently deprecated within `tern`.
+    desc: Functions that are currently deprecated within `tern`.
+    contents:
+      - pairwise

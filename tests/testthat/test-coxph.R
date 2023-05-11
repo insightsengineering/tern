@@ -1,15 +1,13 @@
-testthat::test_that("pairwise works correctly", {
-  suppressWarnings(testthat::expect_warning(result <- lm(SEX ~ pairwise(ARM), data = tern_ex_adsl)))
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-})
-
 testthat::test_that("univariate works correctly", {
   result <- testthat::expect_silent(univariate(c("SEX", "AGE", "RACE")))
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
+
+  suppressWarnings(testthat::expect_warning(result2 <- lm(SEX ~ univariate(ARM), data = tern_ex_adsl)))
+
+  res2 <- testthat::expect_silent(result2)
+  testthat::expect_snapshot(res2)
 })
 
 testthat::test_that("rht works correctly", {

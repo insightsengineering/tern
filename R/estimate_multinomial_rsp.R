@@ -40,17 +40,17 @@ d_onco_rsp_label <- function(x) {
   x <- as.character(x)
   desc <- c(
     CR           = "Complete Response (CR)",
-    Missing      = "Missing",
+    PR           = "Partial Response (PR)",
     MR           = "Minimal/Minor Response (MR)",
     MRD          = "Minimal Residual Disease (MRD)",
-    `NA`         = "Not Applicable (NA)",
-    ND           = "Not Done (ND)",
+    SD           = "Stable Disease (SD)",
+    PD           = "Progressive Disease (PD)",
+    `NON CR/PD`  = "Non-CR or Non-PD (NON CR/PD)",
     NE           = "Not Evaluable (NE)",
     `NE/Missing` = "Missing or unevaluable",
-    `NON CR/PD`  = "Non-CR or Non-PD (NON CR/PD)",
-    PD           = "Progressive Disease (PD)",
-    PR           = "Partial Response (PR)",
-    SD           = "Stable Disease (SD)"
+    Missing      = "Missing",
+    `NA`         = "Not Applicable (NA)",
+    ND           = "Not Done (ND)"
   )
 
   values_label <- vapply(
@@ -61,7 +61,7 @@ d_onco_rsp_label <- function(x) {
     }
   )
 
-  return(factor(values_label))
+  return(factor(values_label, levels = c(intersect(desc, values_label), setdiff(values_label, desc))))
 }
 
 #' @describeIn estimate_multinomial_rsp Statistics function which feeds the length of `x` as number

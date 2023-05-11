@@ -8,12 +8,16 @@
 
 ### Enhancements
 * Added `section_div` and `na_level` (`na_str`) to `summarize_vars`.
-* Added `median_range` as a numeric variable statistic option for `summarize_vars`. 
+* Added `median_range` as a numeric variable statistic option for `summarize_vars`.
+* Corrected ordering of factor levels by `d_onco_rsp_label`.
 
 ### Miscellaneous
 * Implemented the `lubridate` package for date variables in `tern` datasets.
 * Organization of `.gitignore` and `.Rbuildignore`.
 * Removed deprecated `footnotes` functions and all related files.
+* Deprecation cycle of `pairwise` function started.
+* Moved `count_patients_with_flags` functions out of `count_patients_with_event.R` and 
+  into `count_patients_with_flags.R`.
 
 # tern 0.8.0
 
