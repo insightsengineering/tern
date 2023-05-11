@@ -5,7 +5,7 @@
     Output
                           CR                     NE                     PR 
       Complete Response (CR)     Not Evaluable (NE)  Partial Response (PR) 
-      Levels: Complete Response (CR) Not Evaluable (NE) Partial Response (PR)
+      Levels: Complete Response (CR) Partial Response (PR) Not Evaluable (NE)
 
 # d_onco_rsp_label describe label with x being a factor
 
@@ -16,7 +16,7 @@
         Complete Response (CR)      Stable Disease (SD)    Partial Response (PR) 
                             PD                       NE 
       Progressive Disease (PD)       Not Evaluable (NE) 
-      5 Levels: Complete Response (CR) Not Evaluable (NE) ... Stable Disease (SD)
+      5 Levels: Complete Response (CR) Partial Response (PR) ... Not Evaluable (NE)
 
 # estimate_multinomial_response returns right result
 

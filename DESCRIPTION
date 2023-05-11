@@ -90,6 +90,7 @@ Collate:
     'count_occurrences_by_grade.R'
     'count_patients_events_in_cols.R'
     'count_patients_with_event.R'
+    'count_patients_with_flags.R'
     'count_values.R'
     'cox_regression.R'
     'cox_regression_inter.R'
