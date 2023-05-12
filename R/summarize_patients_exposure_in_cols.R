@@ -5,90 +5,17 @@
 #' Counting the number of patients and summing analysis value (i.e exposure values) across all patients
 #' when a column table layout is required.
 #'
+#' @inheritParams argument_convention
+#'
 #' @name summarize_patients_exposure_in_cols
 NULL
 
 #' @describeIn summarize_patients_exposure_in_cols Statistics function which counts numbers
 #'   of patients and the sum of exposure across all patients.
 #'
-#' @inheritParams argument_convention
+#' @param ex_var (`character`)\cr name of the variable within `df` containing exposure values.
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
 #'   be used as label.
-#'
-#' @return
-#' * `s_count_patients_sum_exposure()` returns a named `list` with the statistics:
-#'   * `n_patients`: Number of unique patients in `df`.
-#'   * `sum_exposure`: Sum of `.var` across all patients in `df`.
-#'
-#' @examples
-#' set.seed(1)
-#' df <- data.frame(
-#'   USUBJID = c(paste("id", seq(1, 12), sep = "")),
-#'   ARMCD = c(rep("ARM A", 6), rep("ARM B", 6)),
-#'   SEX = c(rep("Female", 6), rep("Male", 6)),
-#'   AVAL = as.numeric(sample(seq(1, 20), 12)),
-#'   stringsAsFactors = TRUE
-#' )
-#' adsl <- data.frame(
-#'   USUBJID = c(paste("id", seq(1, 12), sep = "")),
-#'   ARMCD = c(rep("ARM A", 2), rep("ARM B", 2)),
-#'   SEX = c(rep("Female", 2), rep("Male", 2)),
-#'   stringsAsFactors = TRUE
-#' )
-#'
-#' # Internal function - s_count_patients_sum_exposure
-#' \dontrun{
-#' s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl))
-#' s_count_patients_sum_exposure(
-#'   df = df,
-#'   .N_col = nrow(adsl),
-#'   custom_label = "some user's custom label"
-#' )
-#' }
-#'
-#' @keywords internal
-s_count_patients_sum_exposure <- function(df,
-                                          .var = "AVAL",
-                                          id = "USUBJID",
-                                          labelstr = "",
-                                          .stats = .stats,
-                                          .N_col, # nolint
-                                          custom_label = NULL) {
-  assert_df_with_variables(df, list(.var = .var, id = id))
-  checkmate::assert_string(id)
-  checkmate::assert_string(labelstr)
-  checkmate::assert_string(custom_label, null.ok = TRUE)
-  checkmate::assert_numeric(df[[.var]])
-
-  row_label <- if (labelstr != "") {
-    labelstr
-  } else if (!is.null(custom_label)) {
-    custom_label
-  } else {
-    "Total patients numbers/person time"
-  }
-
-  y <- list()
-
-  y$n_patients <-
-    formatters::with_label(
-      s_num_patients_content(
-        df = df,
-        .N_col = .N_col, # nolintr
-        .var = id,
-        labelstr = ""
-      )$unique,
-      row_label
-    )
-
-  y$sum_exposure <- formatters::with_label(sum(df[[.var]]), row_label)
-  y
-}
-
-#' @describeIn summarize_patients_exposure_in_cols Statistics function which counts numbers
-#'   of patients and the sum of exposure across all patients.
-#'
-#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will be used as label.
 #'
 #' @return
 #' * `s_count_patients_sum_exposure()` returns a named `list` with the statistics:
@@ -114,12 +41,71 @@ s_count_patients_sum_exposure <- function(df,
 #' # Internal function - s_count_patients_sum_exposure
 #' \dontrun{
 #' s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl))
+#' s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl), .stats = "n_patients")
 #' s_count_patients_sum_exposure(
 #'   df = df,
 #'   .N_col = nrow(adsl),
 #'   custom_label = "some user's custom label"
 #' )
 #' }
+#'
+#' @keywords internal
+s_count_patients_sum_exposure <- function(df,
+                                          ex_var = "AVAL",
+                                          id = "USUBJID",
+                                          labelstr = "",
+                                          .stats = c("n_patients", "sum_exposure"),
+                                          .N_col, # nolint
+                                          custom_label = NULL) {
+  assert_df_with_variables(df, list(ex_var = ex_var, id = id))
+  checkmate::assert_string(id)
+  checkmate::assert_string(labelstr)
+  checkmate::assert_string(custom_label, null.ok = TRUE)
+  checkmate::assert_numeric(df[[ex_var]])
+  checkmate::assert_true(all(.stats %in% c("n_patients", "sum_exposure")))
+
+  row_label <- if (labelstr != "") {
+    labelstr
+  } else if (!is.null(custom_label)) {
+    custom_label
+  } else {
+    "Total patients numbers/person time"
+  }
+
+  y <- list()
+
+  if ("n_patients" %in% .stats) {
+    y$n_patients <-
+      formatters::with_label(
+        s_num_patients_content(
+          df = df,
+          .N_col = .N_col, # nolint
+          .var = id,
+          labelstr = ""
+        )$unique,
+        row_label
+      )
+  }
+  if ("sum_exposure" %in% .stats) {
+    y$sum_exposure <- formatters::with_label(sum(df[[ex_var]]), row_label)
+  }
+  y
+}
+
+#' @describeIn summarize_patients_exposure_in_cols Analysis function which is used as `afun` in
+#'   [rtables::analyze_colvars()] within `analyze_patients_exposure_in_cols()` and as `cfun` in
+#'   [rtables::summarize_row_groups()] within `summarize_patients_exposure_in_cols()`.
+#'
+#' @return
+#' * `a_count_patients_sum_exposure()` returns formatted [rtables::CellValue()].
+#'
+#' @examples
+#' tern:::a_count_patients_sum_exposure(
+#'   df = df,
+#'   var = "SEX",
+#'   .N_col = nrow(df),
+#'   .stats = "n_patients"
+#' )
 #'
 #' @keywords internal
 a_count_patients_sum_exposure <- function(df,
@@ -129,63 +115,83 @@ a_count_patients_sum_exposure <- function(df,
                                           labelstr = "",
                                           .N_col, # nolint
                                           .stats,
-                                          .spl_context,
                                           .formats = list(n_patients = "xx (xx.x%)", sum_exposure = "xx"),
                                           custom_label = NULL) {
-  browser()
-  assert_df_with_variables(df, list(var = ex_var, id = id))
-  checkmate::assert_string(id)
-  checkmate::assert_string(labelstr)
-  checkmate::assert_string(custom_label, null.ok = TRUE)
-  checkmate::assert_numeric(df[[ex_var]])
+  if (!is.null(var)) {
+    assert_df_with_variables(df, list(var = var))
+    df[[var]] <- as.factor(df[[var]])
+  }
 
-  y <- list(n_patients = NULL, sum_exposure = NULL)
+  y <- list()
   if (is.null(var)) {
-    row_label <- if (labelstr != "") {
-      labelstr
-    } else if (!is.null(custom_label)) {
-      custom_label
-    } else {
-      "Total patients numbers/person time"
-    }
-
-    y <- list()
-
-    y$n_patients <-
-      formatters::with_label(
-        s_num_patients_content(
-          df = df,
-          .N_col = .N_col,
-          .var = id,
-          labelstr = ""
-        )$unique,
-        row_label
-      )
-
-    y$sum_exposure <- formatters::with_label(sum(df[[var]]), row_label)
-
-    y
+    y[[.stats]] <- list(Total = s_count_patients_sum_exposure(
+      df = df,
+      ex_var = ex_var,
+      id = id,
+      labelstr = labelstr,
+      .N_col = .N_col,
+      .stats = .stats,
+      custom_label = custom_label
+    )[[.stats]])
   } else {
     for (lvl in levels(df[[var]])) {
-      if (.stats == "n_patients") {
-        y$n_patients[[lvl]] <- formatters::with_label(
-          s_num_patients_content(
-            df = subset(df, get(var) == lvl),
-            .N_col = .N_col,
-            .var = id,
-            labelstr = ""
-          )$unique,
-          lvl
-        )
-      } else {
-        y$sum_exposure[[lvl]] <- formatters::with_label(sum(subset(df, get(var) == lvl)[[ex_var]]), lvl)
-      }
+      y[[.stats]][[lvl]] <- s_count_patients_sum_exposure(
+        df = subset(df, get(var) == lvl),
+        ex_var = ex_var,
+        id = id,
+        labelstr = labelstr,
+        .N_col = .N_col,
+        .stats = .stats,
+        custom_label = lvl
+      )[[.stats]]
     }
   }
 
-  in_rows(
-    .list = y[[.stats]],
-    .formats = .formats[[.stats]]
+  in_rows(.list = y[[.stats]], .formats = .formats[[.stats]])
+}
+
+#' @describeIn summarize_patients_exposure_in_cols Layout-creating function which can take statistics
+#'   function arguments and additional format arguments. This function is a wrapper for
+#'   [rtables::split_cols_by_multivar()] and [rtables::summarize_row_groups()].
+#'
+#' @return
+#' * `summarize_patients_exposure_in_cols()` returns a layout object suitable for passing to further
+#'   layouting functions, or to [rtables::build_table()]. Adding this function to an `rtable` layout will
+#'   add formatted content rows, with the statistics from `s_count_patients_sum_exposure()` arranged in
+#'   columns, to the table layout.
+#'
+#' @examples
+#' lyt <- basic_table() %>%
+#'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE)
+#' result <- build_table(lyt, df = df, alt_counts_df = adsl)
+#' result
+#'
+#' lyt2 <- basic_table() %>%
+#'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
+#' result2 <- build_table(lyt2, df = df, alt_counts_df = adsl)
+#' result2
+#'
+#' @export
+summarize_patients_exposure_in_cols <- function(lyt, # nolintr
+                                                var,
+                                                ...,
+                                                .stats = c("n_patients", "sum_exposure"),
+                                                .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
+                                                .indent_mods = NULL,
+                                                col_split = TRUE) {
+  if (col_split) {
+    lyt <- split_cols_by_multivar(
+      lyt = lyt,
+      vars = rep(var, length(.stats)),
+      varlabels = .labels[.stats],
+      extra_args = list(.stats = .stats)
+    )
+  }
+  summarize_row_groups(
+    lyt = lyt,
+    var = var,
+    cfun = a_count_patients_sum_exposure,
+    extra_args = list(...)
   )
 }
 
@@ -203,38 +209,40 @@ a_count_patients_sum_exposure <- function(df,
 #'   add formatted data rows, with the statistics from `s_count_patients_sum_exposure()` arranged in
 #'   columns, to the table layout.
 #'
+#' @note As opposed to [summarize_patients_exposure_in_cols()] which generates content rows, this function
+#'   generates data rows which will _not_ be repeated on multiple pages when pagination is used.
+#'
 #' @examples
-#' lyt <- basic_table() %>%
+#' lyt3 <- basic_table() %>%
 #'   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
 #'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) %>%
-#'   analyze_patients_exposure_in_cols(var = "SEX", ex_var = "AVAL", col_split = FALSE)
-#' result <- build_table(lyt, df = df, alt_counts_df = adsl)
-#' result
-#'
-#' lyt2 <- basic_table() %>%
-#'   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
-#'   analyze_patients_exposure_in_cols(
-#'     var = "AVAL", col_split = TRUE,
-#'     .stats = "n_patients", custom_label = "some custom label"
-#'   ) %>%
-#'   split_rows_by("SEX") %>%
-#'   analyze_patients_exposure_in_cols(var = "AVAL", col_split = FALSE)
-#' result2 <- build_table(lyt2, df = df, alt_counts_df = adsl)
-#' result2
-#'
-#' lyt3 <- basic_table() %>%
-#'   analyze_patients_exposure_in_cols(var = "AVAL", col_split = TRUE)
+#'   analyze_patients_exposure_in_cols(var = "SEX", col_split = FALSE)
 #' result3 <- build_table(lyt3, df = df, alt_counts_df = adsl)
 #' result3
 #'
 #' lyt4 <- basic_table() %>%
-#'   analyze_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
+#'   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
+#'   summarize_patients_exposure_in_cols(
+#'     var = "AVAL", col_split = TRUE,
+#'     .stats = "n_patients", custom_label = "some custom label"
+#'   ) %>%
+#'   analyze_patients_exposure_in_cols(var = "SEX", col_split = FALSE)
 #' result4 <- build_table(lyt4, df = df, alt_counts_df = adsl)
 #' result4
 #'
+#' lyt5 <- basic_table() %>%
+#'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE)
+#' result5 <- build_table(lyt5, df = df, alt_counts_df = adsl)
+#' result5
+#'
+#' lyt6 <- basic_table() %>%
+#'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
+#' result6 <- build_table(lyt6, df = df, alt_counts_df = adsl)
+#' result6
+#'
 #' @export
 analyze_patients_exposure_in_cols <- function(lyt, # nolint
-                                              var,
+                                              var = NULL,
                                               ex_var = "AVAL",
                                               col_split = TRUE,
                                               .stats = c("n_patients", "sum_exposure"),
@@ -243,89 +251,15 @@ analyze_patients_exposure_in_cols <- function(lyt, # nolint
   if (col_split) {
     lyt <- split_cols_by_multivar(
       lyt = lyt,
-      vars = rep(var, length(.stats)),
-      varlabels = .labels[.stats]
+      vars = rep(ex_var, length(.stats)),
+      varlabels = .labels[.stats],
+      extra_args = list(.stats = .stats)
     )
   }
   lyt <- lyt %>% analyze_colvars(
     afun = a_count_patients_sum_exposure,
     indent_mod = .indent_mods,
-    extra_args = list(var = var)
+    extra_args = list(var = var, ex_var = ex_var)
   )
   lyt
-}
-
-#' @describeIn summarize_patients_exposure_in_cols Layout-creating function which can take statistics
-#'   function arguments and additional format arguments. This function is a wrapper for
-#'   [rtables::split_cols_by_multivar()] and [rtables::summarize_row_groups()].
-#'
-#' @return
-#' * `summarize_patients_exposure_in_cols()` returns a layout object suitable for passing to further
-#'   layouting functions, or to [rtables::build_table()]. Adding this function to an `rtable` layout will
-#'   add formatted content rows, with the statistics from `s_count_patients_sum_exposure()` arranged in
-#'   columns, to the table layout.
-#'
-#' @examples
-#' lyt <- basic_table() %>%
-#'   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
-#'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) %>%
-#'   split_rows_by("SEX") %>%
-#'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = FALSE)
-#' result <- build_table(lyt, df = df, alt_counts_df = adsl)
-#' result
-#'
-#' lyt2 <- basic_table() %>%
-#'   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
-#'   summarize_patients_exposure_in_cols(
-#'     var = "AVAL", col_split = TRUE,
-#'     .stats = "n_patients", custom_label = "some custom label"
-#'   ) %>%
-#'   split_rows_by("SEX") %>%
-#'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = FALSE)
-#' result2 <- build_table(lyt2, df = df, alt_counts_df = adsl)
-#' result2
-#'
-#' lyt3 <- basic_table() %>%
-#'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE)
-#' result3 <- build_table(lyt3, df = df, alt_counts_df = adsl)
-#' result3
-#'
-#' lyt4 <- basic_table() %>%
-#'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
-#' result4 <- build_table(lyt4, df = df, alt_counts_df = adsl)
-#' result4
-#'
-#' @export
-summarize_patients_exposure_in_cols <- function(lyt, # nolintr
-                                                var,
-                                                ...,
-                                                .stats = c("n_patients", "sum_exposure"),
-                                                .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
-                                                .indent_mods = NULL,
-                                                col_split = TRUE) {
-  afun_list <- Map(
-    function(stat) {
-      make_afun(
-        s_count_patients_sum_exposure,
-        .stats = stat,
-        .formats = ifelse(stat == "n_patients", "xx (xx.x%)", "xx")
-      )
-    },
-    stat = .stats
-  )
-
-  if (col_split) {
-    lyt <- split_cols_by_multivar(
-      lyt = lyt,
-      vars = rep(var, length(.stats)),
-      varlabels = .labels[.stats],
-      extra_args = list(.stats = .stats)
-    )
-  }
-  summarize_row_groups(
-    lyt = lyt,
-    var = var,
-    cfun = afun_list,
-    extra_args = list(...)
-  )
 }
