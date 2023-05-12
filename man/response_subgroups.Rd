@@ -66,7 +66,8 @@ the required statistics. Tables typically used as part of forest plot.
 \item \code{a_response_subgroups()}: Formatted analysis function which is used as \code{afun} in \code{tabulate_rsp_subgroups()}.
 
 \item \code{tabulate_rsp_subgroups()}: Table-creating function which creates a table
-summarizing binary response by subgroup. This function is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
+summarizing binary response by subgroup. This function is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}
+and \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 
 }}
 \examples{

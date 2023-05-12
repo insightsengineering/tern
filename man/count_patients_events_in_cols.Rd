@@ -123,5 +123,6 @@ basic_table() \%>\%
     custom_label = "\%s Total number of patients and events"
   ) \%>\%
   build_table(df)
+
 }
 \keyword{internal}

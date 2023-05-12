@@ -7,11 +7,15 @@
 These functions are wrappers for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}, applying corresponding \code{tern} content functions
 to add summary rows to a given table layout:
 \itemize{
+\item \code{\link[=add_rowcounts]{add_rowcounts()}}
+\item \code{\link[=estimate_multinomial_response]{estimate_multinomial_response()}} (with \code{\link[rtables:analyze]{rtables::analyze()}})
+\item \code{\link[=h_tab_one_biomarker]{h_tab_one_biomarker()}} (probably to deprecate)
 \item \code{\link[=logistic_summary_by_flag]{logistic_summary_by_flag()}}
 \item \code{\link[=summarize_num_patients]{summarize_num_patients()}}
 \item \code{\link[=summarize_occurrences_by_grade]{summarize_occurrences_by_grade()}}
 \item \code{\link[=summarize_patients_events_in_cols]{summarize_patients_events_in_cols()}}
 \item \code{\link[=summarize_patients_exposure_in_cols]{summarize_patients_exposure_in_cols()}}
+\item \code{\link[=tabulate_rsp_subgroups]{tabulate_rsp_subgroups()}}
 }
 
 Additionally, the \code{\link[=summarize_coxreg]{summarize_coxreg()}} function utilizes \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}

@@ -218,7 +218,8 @@ a_survival_subgroups <- function(.formats = list(
 }
 
 #' @describeIn survival_duration_subgroups Table-creating function which creates a table
-#'   summarizing survival by subgroup. This function is a wrapper for [rtables::analyze_colvars()].
+#'   summarizing survival by subgroup. This function is a wrapper for [rtables::analyze_colvars()]
+#'   and [rtables::summarize_row_groups()].
 #'
 #' @param df (`list`)\cr of data frames containing all analysis variables. List should be
 #'   created using [extract_survival_subgroups()].
