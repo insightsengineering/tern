@@ -251,5 +251,5 @@ testthat::test_that("analyze_num_patients works well for pagination", {
       "Number of events"
     )
   )
-  testthat::expect_identical(to_string_matrix(pag_result[[2]])[3, 1], "e 1.1")
+  testthat::expect_identical(to_string_matrix(pag_result[[4]])[6, 1], "11")
 })

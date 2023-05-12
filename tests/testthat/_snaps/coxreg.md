@@ -628,7 +628,7 @@
       Likelihood ratio test=49.57  on 5 df, p=1.694e-09
       n= 340, number of events= 112 
 
-# tidy.coxreg.multivar method tidies up the multi-variable Cox regression model
+# tidy.coxreg.multivar method tidies up the multivariate Cox regression model
 
     Code
       res
