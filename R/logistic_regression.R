@@ -323,7 +323,7 @@ logistic_regression_cols <- function(lyt,
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Constructor for content functions to be used in [`summarize_logistic()`] to summarize
-#' logistic regression results.
+#' logistic regression results. This function is a wrapper for [rtables::summarize_row_groups()].
 #'
 #' @param flag_var (`string`)\cr variable name identifying which row should be used in this
 #'   content function.

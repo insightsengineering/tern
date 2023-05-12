@@ -300,6 +300,7 @@ lyt <- basic_table() \%>\%
     .labels = c(mean_sd = "Mean, SD")
   )
 build_table(lyt, df = tern_ex_adsl)
+
 }
 \seealso{
 Relevant constructor function \code{\link[=create_afun_compare]{create_afun_compare()}}, and \code{\link[=s_summary]{s_summary()}} which is used internally

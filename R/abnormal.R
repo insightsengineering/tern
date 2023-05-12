@@ -22,7 +22,7 @@
 #'   baseline can be optionally excluded from numerator and denominator.
 #'
 #' @name abnormal
-#' @include formats.R
+#' @include formatting_functions.R
 NULL
 
 #' @describeIn abnormal Statistics function which counts patients with abnormal range values
