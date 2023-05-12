@@ -68,12 +68,14 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Collate:
-    'formats.R'
+    'formatting_functions.R'
     'abnormal.R'
     'abnormal_by_baseline.R'
     'abnormal_by_marked.R'
     'abnormal_by_worst_grade.R'
     'abnormal_by_worst_grade_worsen.R'
+    'analyze_colvars_functions.R'
+    'analyze_functions.R'
     'analyze_vars_in_cols.R'
     'argument_convention.R'
     'combination_function.R'
@@ -139,6 +141,7 @@ Collate:
     'summarize_change.R'
     'summarize_colvars.R'
     'summarize_coxreg.R'
+    'summarize_functions.R'
     'summarize_glm_count.R'
     'summarize_num_patients.R'
     'summarize_patients_exposure_in_cols.R'

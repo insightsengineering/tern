@@ -73,7 +73,8 @@ the required statistics. Tables typically used as part of forest plot.
 \code{afun} in \code{tabulate_survival_subgroups()}.
 
 \item \code{tabulate_survival_subgroups()}: Table-creating function which creates a table
-summarizing survival by subgroup.
+summarizing survival by subgroup. This function is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}
+and \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 
 }}
 \examples{

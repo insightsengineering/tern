@@ -251,7 +251,8 @@ a_coxreg <- function(df,
 }
 
 #' @describeIn cox_regression Layout-creating function which creates a Cox regression summary table
-#'   layout. This function is a wrapper for several `rtables` layouting functions.
+#'   layout. This function is a wrapper for several `rtables` layouting functions. This function
+#'   is a wrapper for [rtables::analyze_colvars()] and [rtables::summarize_row_groups()].
 #'
 #' @inheritParams fit_coxreg_univar
 #' @param multivar (`flag`)\cr Defaults to `FALSE`. If `TRUE` multivariate Cox regression will run, otherwise

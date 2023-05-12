@@ -141,7 +141,8 @@ from \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} or \code{\link[=fit_c
 and \code{cfun} in \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}} within \code{summarize_coxreg()}.
 
 \item \code{summarize_coxreg()}: Layout-creating function which creates a Cox regression summary table
-layout. This function is a wrapper for several \code{rtables} layouting functions.
+layout. This function is a wrapper for several \code{rtables} layouting functions. This function
+is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}} and \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 
 }}
 \examples{

@@ -117,7 +117,6 @@ s_count_patients_and_multiple_events <- function(df, # nolint
 #' * `summarize_patients_events_in_cols()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted content rows
 #'   containing the statistics from `s_count_patients_and_multiple_events()` to the table layout.
-#'
 #' @examples
 #' # `summarize_patients_events_in_cols()`
 #' basic_table() %>%

@@ -109,7 +109,8 @@ c_label_n <- function(df,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This works analogously to [rtables::add_colcounts()] but on the rows.
+#' This works analogously to [rtables::add_colcounts()] but on the rows. This function
+#'  is a wrapper for [rtables::summarize_row_groups()].
 #'
 #' @inheritParams argument_convention
 #'

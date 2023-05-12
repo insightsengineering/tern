@@ -108,7 +108,8 @@ a_length_proportion <- make_afun(
 )
 
 #' @describeIn estimate_multinomial_rsp Layout-creating function which can take statistics function arguments
-#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()] and
+#'   [rtables::summarize_row_groups()].
 #'
 #' @return
 #' * `estimate_multinomial_response()` returns a layout object suitable for passing to further layouting functions,

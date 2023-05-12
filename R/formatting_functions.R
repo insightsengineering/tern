@@ -1,8 +1,11 @@
-#' Additional Formatting Functions
+#' Formatting Functions
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This summarizes the additional Formatting Functions to work with `rtables`.
+#' See below for the list of formatting functions created in `tern` to work with `rtables`.
+#'
+#' Other available formats can be listed via [`formatters::list_valid_format_labels()`]. Additional
+#' custom formats can be created via the [`formatters::sprintf_format()`] function.
 #'
 #' @family formatting functions
 #' @name formatting_functions
