@@ -470,7 +470,6 @@ create_afun_compare <- function(.stats = NULL,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_compare()` to the table layout.
 #'
-#' @export
 #'
 #' @examples
 #' # `compare_vars()` in `rtables` pipelines
@@ -491,6 +490,8 @@ create_afun_compare <- function(.stats = NULL,
 #'     .labels = c(mean_sd = "Mean, SD")
 #'   )
 #' build_table(lyt, df = tern_ex_adsl)
+#'
+#' @export
 compare_vars <- function(lyt,
                          vars,
                          var_labels = vars,

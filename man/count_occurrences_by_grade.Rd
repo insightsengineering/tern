@@ -211,6 +211,7 @@ basic_table() \%>\%
     grade_groups = grade_groups
   ) \%>\%
   build_table(df, alt_counts_df = df_adsl)
+
 }
 \seealso{
 Relevant helper function \code{\link[=h_append_grade_groups]{h_append_grade_groups()}}.

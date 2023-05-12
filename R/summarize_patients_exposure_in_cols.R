@@ -98,8 +98,6 @@ s_count_patients_sum_exposure <- function(df, # nolintr
 #'   add formatted rows, with the statistics from `s_count_patients_sum_exposure()` arranged in
 #'   columns, to the table layout.
 #'
-#' @export
-#'
 #' @examples
 #' lyt <- basic_table() %>%
 #'   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
@@ -129,6 +127,8 @@ s_count_patients_sum_exposure <- function(df, # nolintr
 #'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
 #' result4 <- build_table(lyt4, df = df, alt_counts_df = adsl)
 #' result4
+#'
+#' @export
 summarize_patients_exposure_in_cols <- function(lyt, # nolintr
                                                 var,
                                                 ...,

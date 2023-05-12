@@ -2,6 +2,12 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
+#' From a survival model, a graphic is rendered along with tabulated annotation
+#' including the number of patient at risk at given time and the median survival
+#' per group.
+#'
+#' @inheritParams grid::gTree
+#' @inheritParams argument_convention
 #' @param df (`data.frame`)\cr data set containing all analysis variables.
 #' @param variables (named `list`)\cr variable names. Details are:
 #'   * `tte` (`numeric`)\cr variable indicating time-to-event duration values.
@@ -13,7 +19,6 @@
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for survival rate.
 #'   * `conf_type` (`string`)\cr "plain" (default), "log", "log-log" for confidence interval type,
 #'     see more in [survival::survfit()]. Note that the option "none" is no longer supported.
-#' @param data (`data.frame`)\cr survival data as pre-processed by `h_data_plot`.
 #' @param xticks (`numeric`, `number`, or `NULL`)\cr numeric vector of ticks or single number with spacing
 #'   between ticks on the x axis. If `NULL` (default), [labeling::extended()] is used to determine
 #'   an optimal tick position on the x axis.
@@ -56,24 +61,7 @@
 #' @param position_surv_med (`numeric`)\cr x and y positions for plotting annotation table estimating median survival
 #'   time per group.
 #'
-#' @name kaplan_meier
-NULL
-
-#' Kaplan-Meier Plot
-#'
-#' @description `r lifecycle::badge("stable")`
-#'
-#' From a survival model, a graphic is rendered along with tabulated annotation
-#' including the number of patient at risk at given time and the median survival
-#' per group.
-#'
-#' @inheritParams grid::gTree
-#' @inheritParams kaplan_meier
-#' @inheritParams argument_convention
-#'
 #' @return A `grob` of class `gTree`.
-#'
-#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -167,6 +155,8 @@ NULL
 #'   position_surv_med = c(1, 0.7)
 #' )
 #' }
+#'
+#' @export
 g_km <- function(df,
                  variables,
                  control_surv = control_surv_timepoint(),
@@ -459,7 +449,7 @@ g_km <- function(df,
 #' - adds a `censor` column,
 #' - filters the rows before `max_time`.
 #'
-#' @inheritParams kaplan_meier
+#' @inheritParams g_km
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
 #' @param armval (`string`)\cr used as strata name when treatment arm
 #' variable only has one level. Default is "All".
@@ -538,8 +528,8 @@ h_data_plot <- function(fit_km,
 #' exists it is kept as is. It is based on the same function `ggplot2` relies on,
 #' and is required in the graphic and the patient-at-risk annotation table.
 #'
-#' @inheritParams kaplan_meier
-#'
+#' @inheritParams g_km
+#' @inheritParams h_ggkm
 #' @return A vector of positions to use for x-axis ticks on a `ggplot` object.
 #'
 #'
@@ -594,7 +584,8 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #'
 #' Draw the Kaplan-Meier plot using `ggplot2`.
 #'
-#' @inheritParams kaplan_meier
+#' @inheritParams g_km
+#' @param data (`data.frame`)\cr survival data as pre-processed by `h_data_plot`.
 #'
 #' @return A `ggplot` object.
 #'
@@ -801,7 +792,8 @@ h_decompose_gg <- function(gg) {
 #'
 #' Prepares a (5 rows) x (2 cols) layout for the Kaplan-Meier curve.
 #'
-#' @inheritParams kaplan_meier
+#' @inheritParams g_km
+#' @inheritParams h_ggkm
 #' @param g_el (`list` of `gtable`)\cr list as obtained by `h_decompose_gg()`.
 #' @param annot_at_risk (`flag`)\cr compute and add the annotation table
 #'   reporting the number of patient at risk matching the main grid of the
@@ -916,7 +908,8 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
 #' Two Graphical Objects are obtained, one corresponding to row labeling and
 #' the second to the number of patient at risk.
 #'
-#' @inheritParams kaplan_meier
+#' @inheritParams g_km
+#' @inheritParams h_ggkm
 #' @param annot_tbl (`data.frame`)\cr annotation as prepared
 #'   by [survival::summary.survfit()] which includes the number of
 #'   patients at risk at given time points.
@@ -1108,7 +1101,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' The survival fit is transformed in a grob containing a table with groups in
 #' rows characterized by N, median and 95% confidence interval.
 #'
-#' @inheritParams kaplan_meier
+#' @inheritParams g_km
 #' @param ttheme (`list`)\cr see [gridExtra::ttheme_default()].
 #' @param x a `numeric` value between 0 and 1 specifying x-location.
 #' @param y a `numeric` value between 0 and 1 specifying y-location.

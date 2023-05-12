@@ -24,8 +24,10 @@ reference:
   - title: Overview Pages
     contents:
       - tern-package
+      - analyze_functions
+      - analyze_colvars_functions
+      - summarize_functions
       - formatting_functions
-      - kaplan_meier
 
   - title: Control Functions
     desc: These functions capture options in lists and take care of defaults

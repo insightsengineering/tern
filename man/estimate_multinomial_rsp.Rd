@@ -79,7 +79,8 @@ of successes, and \code{.N_col} as total number of successes and failures into \
 in \code{estimate_multinomial_response()}.
 
 \item \code{estimate_multinomial_response()}: Layout-creating function which can take statistics function arguments
-and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}} and
+\code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 
 }}
 \examples{
@@ -112,6 +113,7 @@ html
 \dontrun{
 Viewer(html)
 }
+
 }
 \seealso{
 Relevant description function \code{\link[=d_onco_rsp_label]{d_onco_rsp_label()}}.

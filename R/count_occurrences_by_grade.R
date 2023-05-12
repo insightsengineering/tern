@@ -294,7 +294,6 @@ count_occurrences_by_grade <- function(lyt,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted content rows
 #'   containing the statistics from `s_count_occurrences_by_grade()` to the table layout.
 #'
-#' @export
 #' @examples
 #' # Layout creating function with custom format.
 #' basic_table() %>%
@@ -314,6 +313,8 @@ count_occurrences_by_grade <- function(lyt,
 #'     grade_groups = grade_groups
 #'   ) %>%
 #'   build_table(df, alt_counts_df = df_adsl)
+#'
+#' @export
 summarize_occurrences_by_grade <- function(lyt,
                                            var,
                                            ...,

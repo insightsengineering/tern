@@ -109,7 +109,8 @@ a_length_proportion <- make_afun(
 )
 
 #' @describeIn estimate_multinomial_rsp Layout-creating function which can take statistics function arguments
-#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()] and
+#'   [rtables::summarize_row_groups()].
 #'
 #' @inheritParams argument_convention
 #'
@@ -117,8 +118,6 @@ a_length_proportion <- make_afun(
 #' * `estimate_multinomial_response()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_length_proportion()` to the table layout.
-#'
-#' @export
 #'
 #' @examples
 #' library(dplyr)
@@ -146,6 +145,8 @@ a_length_proportion <- make_afun(
 #' \dontrun{
 #' Viewer(html)
 #' }
+#'
+#' @export
 estimate_multinomial_response <- function(lyt,
                                           var,
                                           ...,
