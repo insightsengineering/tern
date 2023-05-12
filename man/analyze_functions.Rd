@@ -8,7 +8,6 @@ These functions are wrappers of \code{\link[rtables:analyze]{rtables::analyze()}
 to add an analysis to a given table layout:
 \itemize{
 \item \code{\link[=analyze_num_patients]{analyze_num_patients()}}
-\item \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}}
 \item \code{\link[=compare_vars]{compare_vars()}}
 \item \code{\link[=count_abnormal]{count_abnormal()}}
 \item \code{\link[=count_abnormal_by_baseline]{count_abnormal_by_baseline()}}
@@ -39,6 +38,6 @@ to add an analysis to a given table layout:
 \seealso{
 \itemize{
 \item \link{summarize_functions} for functions which are wrappers for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
-\item \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}} which is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
+\item \link{analyze_colvars_functions} for functions that are wrappers for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
 }
 }

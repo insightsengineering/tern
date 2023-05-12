@@ -20,6 +20,6 @@ Additionally, the \code{\link[=summarize_coxreg]{summarize_coxreg()}} function u
 \seealso{
 \itemize{
 \item \link{analyze_functions} for functions which are wrappers for \code{\link[rtables:analyze]{rtables::analyze()}}.
-\item \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}} which is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
+\item \link{analyze_colvars_functions} for functions that are wrappers for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
 }
 }
