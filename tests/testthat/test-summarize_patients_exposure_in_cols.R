@@ -27,7 +27,7 @@ testthat::test_that("a_count_patients_sum_exposure works as expected", {
   result <- a_count_patients_sum_exposure(
     df = anl_local,
     var = "SEX",
-    .N_col = nrow(adsl),
+    .N_col = nrow(adsl_local),
     .stats = "n_patients"
   )
 
