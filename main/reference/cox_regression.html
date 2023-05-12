@@ -39,17 +39,6 @@ size in a survival analysis."><!-- mathjax --><script src="https://cdnjs.cloudfl
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -252,7 +241,8 @@ from <code><a href="fit_coxreg.html">fit_coxreg_univar()</a></code> or <code><a 
 <li><p><code>a_coxreg()</code>: Analysis function which is used as <code>afun</code> in <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>
 and <code>cfun</code> in <code><a href="https://rdrr.io/pkg/rtables/man/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code> within <code>summarize_coxreg()</code>.</p></li>
 <li><p><code>summarize_coxreg()</code>: Layout-creating function which creates a Cox regression summary table
-layout. This function is a wrapper for several <code>rtables</code> layouting functions.</p></li>
+layout. This function is a wrapper for several <code>rtables</code> layouting functions. This function
+is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze_colvars.html" class="external-link">rtables::analyze_colvars()</a></code> and <code><a href="https://rdrr.io/pkg/rtables/man/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

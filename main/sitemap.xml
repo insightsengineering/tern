@@ -67,6 +67,12 @@
     <loc>https://insightsengineering.github.io/tern/main/reference/afun_selected_stats.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/main/reference/analyze_colvars_functions.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/main/reference/analyze_functions.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/analyze_vars_in_cols.html</loc>
   </url>
   <url>
@@ -481,9 +487,6 @@
     <loc>https://insightsengineering.github.io/tern/main/reference/individual_patient_plot.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern/main/reference/kaplan_meier.html</loc>
-  </url>
-  <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/labels_or_names.html</loc>
   </url>
   <url>
@@ -575,6 +578,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/summarize_colvars.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/main/reference/summarize_functions.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/summarize_glm_count.html</loc>
