@@ -89,7 +89,9 @@ testthat::test_that(
       ) %>%
       build_table(df = df, alt_counts_df = adsl)
 
-    invisible(capture.output({result <- col_paths_summary(table)$label}))
+    invisible(capture.output({
+      result <- col_paths_summary(table)$label
+    }))
 
     res <- testthat::expect_silent(result)
     testthat::expect_snapshot(res)
