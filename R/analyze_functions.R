@@ -6,7 +6,6 @@
 #' to add an analysis to a given table layout:
 #'
 #' * [analyze_num_patients()]
-#' * [analyze_vars_in_cols()]
 #' * [compare_vars()]
 #' * [count_abnormal()]
 #' * [count_abnormal_by_baseline()]
@@ -35,7 +34,7 @@
 #'
 #' @seealso
 #'   * [summarize_functions] for functions which are wrappers for [rtables::summarize_row_groups()].
-#'   * [analyze_vars_in_cols()] which is a wrapper for [rtables::analyze_colvars()].
+#'   * [analyze_colvars_functions] for functions that are wrappers for [rtables::analyze_colvars()].
 #'
 #' @name analyze_functions
 NULL

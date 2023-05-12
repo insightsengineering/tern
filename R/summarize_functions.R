@@ -16,7 +16,7 @@
 #'
 #' @seealso
 #'   * [analyze_functions] for functions which are wrappers for [rtables::analyze()].
-#'   * [analyze_vars_in_cols()] which is a wrapper for [rtables::analyze_colvars()].
+#'   * [analyze_colvars_functions] for functions that are wrappers for [rtables::analyze_colvars()].
 #'
 #' @name summarize_functions
 NULL
