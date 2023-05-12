@@ -12,6 +12,9 @@
 * Corrected ordering of factor levels by `d_onco_rsp_label`.
 * Added new "Analyze Functions" and "Summarize Functions" overview pages.
 * Moved all KM plot documentation to the `g_km` function.
+* Added new analyze function `analyze_patients_exposure_in_cols` and analysis function
+  `a_count_patients_sum_exposure` to be used by this analyze function and 
+  `summarize_patients_exposure_in_cols`.
 
 ### Miscellaneous
 * Implemented the `lubridate` package for date variables in `tern` datasets.
