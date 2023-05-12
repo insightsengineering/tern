@@ -91,7 +91,7 @@ NULL
 #' tidy(msum)
 #'
 #' @export
-tidy.summary.coxph <- function(x,
+tidy.summary.coxph <- function(x, # nolint
                                ...) {
   checkmate::assert_class(x, "summary.coxph")
   pval <- x$coefficients
@@ -138,7 +138,7 @@ tidy.summary.coxph <- function(x,
 #' tidy(mod2)
 #'
 #' @export
-tidy.coxreg.univar <- function(x,
+tidy.coxreg.univar <- function(x, # nolint
                                ...) {
   checkmate::assert_class(x, "coxreg.univar")
   mod <- x$mod
@@ -211,7 +211,7 @@ tidy.coxreg.univar <- function(x,
 #' broom::tidy(multivar_model)
 #'
 #' @export
-tidy.coxreg.multivar <- function(x,
+tidy.coxreg.multivar <- function(x, # nolint
                                  ...) {
   checkmate::assert_class(x, "coxreg.multivar")
   vars <- c(x$vars$arm, x$vars$covariates)

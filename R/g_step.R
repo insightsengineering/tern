@@ -168,7 +168,7 @@ g_step <- function(df,
 #' broom::tidy(step_matrix)
 #'
 #' @export
-tidy.step <- function(x, ...) {
+tidy.step <- function(x, ...) { # nolint
   checkmate::assert_class(x, "step")
   dat <- as.data.frame(x)
   nams <- names(dat)

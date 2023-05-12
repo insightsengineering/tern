@@ -257,7 +257,7 @@ fit_logistic <- function(data,
 #' df2 <- tidy(mod2, conf_level = 0.99)
 #'
 #' @export
-tidy.glm <- function(fit_glm,
+tidy.glm <- function(fit_glm, # nolint
                      conf_level = 0.95,
                      at = NULL) {
   checkmate::assert_class(fit_glm, "glm")
