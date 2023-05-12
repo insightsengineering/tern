@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.956492411467116" branch-rate="0" lines-covered="8508" lines-valid="8895" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-05-11 18:10:06">
+<coverage line-rate="0.956492411467116" branch-rate="0" lines-covered="8508" lines-valid="8895" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-05-12 12:54:49">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
@@ -6607,7 +6607,7 @@
             <line number="115" hits="4" branch="false"/>
           </lines>
         </class>
-        <class name="formats.R" filename="R/formats.R" line-rate="0.973913043478261" branch-rate="0" complexity="0">
+        <class name="formatting_functions.R" filename="R/formatting_functions.R" line-rate="0.973913043478261" branch-rate="0" complexity="0">
           <methods>
             <method name="format_fraction" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
