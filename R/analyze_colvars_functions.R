@@ -7,7 +7,7 @@
 #'
 #' * [analyze_vars_in_cols()] (extended wrapper, never used in other `tern` functions)
 #' * [summarize_colvars()] (low level wrapper, never used in other `tern` functions)
-#' * [summarize_coxreg()] (if the analysis is multivariate)
+#' * [summarize_coxreg()] (contains also [rtables::summarize_row_groups()])
 #' * [tabulate_rsp_subgroups()]
 #' * [tabulate_survival_subgroups()]
 #'

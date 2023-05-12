@@ -218,7 +218,7 @@ a_survival_subgroups <- function(.formats = list(
 }
 
 #' @describeIn survival_duration_subgroups Table-creating function which creates a table
-#'   summarizing survival by subgroup.
+#'   summarizing survival by subgroup. This function is a wrapper for [rtables::analyze_colvars()].
 #'
 #' @param df (`list`)\cr of data frames containing all analysis variables. List should be
 #'   created using [extract_survival_subgroups()].
@@ -236,9 +236,7 @@ a_survival_subgroups <- function(.formats = list(
 #'
 #' @return An `rtables` table summarizing survival by subgroup.
 #'
-#' @export
 #' @examples
-#'
 #' ## Table with default columns.
 #' basic_table() %>%
 #'   tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])
@@ -250,6 +248,8 @@ a_survival_subgroups <- function(.formats = list(
 #'     vars = c("n_tot_events", "n_events", "median", "hr", "ci", "pval"),
 #'     time_unit = adtte_f$AVALU[1]
 #'   )
+#'
+#' @export
 tabulate_survival_subgroups <- function(lyt,
                                         df,
                                         vars = c("n_tot_events", "n_events", "median", "hr", "ci"),

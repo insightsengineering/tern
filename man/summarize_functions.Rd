@@ -15,7 +15,8 @@ to add summary rows to a given table layout:
 }
 
 Additionally, the \code{\link[=summarize_coxreg]{summarize_coxreg()}} function utilizes \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
-(in combination with several other \code{rtables} functions) to output a Cox regression summary table.
+(in combination with several other \code{rtables} functions like \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}) to
+output a Cox regression summary table.
 }
 \seealso{
 \itemize{

@@ -9,7 +9,7 @@ to add an analysis to a given table layout:
 \itemize{
 \item \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}} (extended wrapper, never used in other \code{tern} functions)
 \item \code{\link[=summarize_colvars]{summarize_colvars()}} (low level wrapper, never used in other \code{tern} functions)
-\item \code{\link[=summarize_coxreg]{summarize_coxreg()}} (if the analysis is multivariate)
+\item \code{\link[=summarize_coxreg]{summarize_coxreg()}} (contains also \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}})
 \item \code{\link[=tabulate_rsp_subgroups]{tabulate_rsp_subgroups()}}
 \item \code{\link[=tabulate_survival_subgroups]{tabulate_survival_subgroups()}}
 }

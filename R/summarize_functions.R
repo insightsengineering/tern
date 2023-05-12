@@ -12,7 +12,8 @@
 #' * [summarize_patients_exposure_in_cols()]
 #'
 #' Additionally, the [summarize_coxreg()] function utilizes [`rtables::summarize_row_groups()`]
-#' (in combination with several other `rtables` functions) to output a Cox regression summary table.
+#' (in combination with several other `rtables` functions like [rtables::analyze_colvars()]) to
+#' output a Cox regression summary table.
 #'
 #' @seealso
 #'   * [analyze_functions] for functions which are wrappers for [rtables::analyze()].

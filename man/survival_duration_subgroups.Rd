@@ -74,7 +74,7 @@ the required statistics. Tables typically used as part of forest plot.
 \code{afun} in \code{tabulate_survival_subgroups()}.
 
 \item \code{tabulate_survival_subgroups()}: Table-creating function which creates a table
-summarizing survival by subgroup.
+summarizing survival by subgroup. This function is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
 
 }}
 \examples{
@@ -122,7 +122,6 @@ df
 a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
 }
 
-
 ## Table with default columns.
 basic_table() \%>\%
   tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])
@@ -134,6 +133,7 @@ basic_table() \%>\%
     vars = c("n_tot_events", "n_events", "median", "hr", "ci", "pval"),
     time_unit = adtte_f$AVALU[1]
   )
+
 }
 \seealso{
 \code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}}

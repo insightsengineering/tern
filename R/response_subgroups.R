@@ -186,7 +186,7 @@ a_response_subgroups <- function(.formats = list(
 }
 
 #' @describeIn response_subgroups Table-creating function which creates a table
-#'   summarizing binary response by subgroup.
+#'   summarizing binary response by subgroup. This function is a wrapper for [rtables::analyze_colvars()].
 #'
 #' @param df (`list`)\cr of data frames containing all analysis variables. List should be
 #'   created using [extract_rsp_subgroups()].
@@ -202,8 +202,6 @@ a_response_subgroups <- function(.formats = list(
 #'
 #' @return An `rtables` table summarizing binary response by subgroup.
 #'
-#' @export
-#'
 #' @examples
 #' ## Table with default columns.
 #' basic_table() %>%
@@ -215,6 +213,8 @@ a_response_subgroups <- function(.formats = list(
 #'     df = df,
 #'     vars = c("n_tot", "n", "n_rsp", "prop", "or", "ci")
 #'   )
+#'
+#' @export
 tabulate_rsp_subgroups <- function(lyt,
                                    df,
                                    vars = c("n_tot", "n", "prop", "or", "ci")) {
