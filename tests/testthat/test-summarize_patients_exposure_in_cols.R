@@ -17,12 +17,23 @@ adsl_local <- data.frame(
 testthat::test_that("s_count_patients_sum_exposure works as expected", {
   df <- anl_local
   adsl <- adsl_local
-  result <- s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl))
+  result <- s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl), .stats = c("n_patients", "sum_exposure"))
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("a_count_patients_sum_exposure works as expected", {
+  result <- a_count_patients_sum_exposure(
+    df = anl_local,
+    var = "SEX",
+    .N_col = nrow(adsl_local),
+    .stats = "n_patients"
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
 
 testthat::test_that("summarize_patients_exposure_in_cols works well with default arguments", {
   df <- anl_local
@@ -78,9 +89,60 @@ testthat::test_that(
       ) %>%
       build_table(df = df, alt_counts_df = adsl)
 
-    invisible(capture.output(result <- col_paths_summary(table)$label))
+    invisible(capture.output({
+      result <- col_paths_summary(table)$label
+    }))
 
     res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+  }
+)
+
+testthat::test_that("analyze_patients_exposure_in_cols works well with default arguments", {
+  df <- anl_local
+  adsl <- adsl_local
+
+  result <- basic_table() %>%
+    split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
+    analyze_patients_exposure_in_cols(var = "SEX", col_split = TRUE) %>%
+    build_table(df = df, alt_counts_df = adsl)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("analyze_patients_exposure_in_cols works well with custom arguments", {
+  df <- anl_local
+  adsl <- adsl_local
+
+  result <- basic_table() %>%
+    split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
+    analyze_patients_exposure_in_cols(
+      var = "SEX",
+      col_split = TRUE,
+      .stats = "sum_exposure"
+    ) %>%
+    build_table(df = df, alt_counts_df = adsl)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that(
+  "analyze_patients_exposure_in_cols works with no variable split and only one statistic",
+  code = {
+    df <- anl_local
+    adsl <- adsl_local
+
+    table <- basic_table() %>%
+      analyze_patients_exposure_in_cols(
+        ex_var = "AVAL",
+        col_split = TRUE,
+        .stats = "n_patients"
+      ) %>%
+      build_table(df = df, alt_counts_df = adsl)
+
+    res <- testthat::expect_silent(table)
     testthat::expect_snapshot(res)
   }
 )
