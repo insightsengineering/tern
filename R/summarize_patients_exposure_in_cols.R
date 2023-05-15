@@ -197,7 +197,7 @@ summarize_patients_exposure_in_cols <- function(lyt, # nolintr
 
 #' @describeIn summarize_patients_exposure_in_cols Layout-creating function which can take statistics
 #'   function arguments and additional format arguments. This function is a wrapper for
-#'   [rtables::split_cols_by_multivar()] and [rtables::analyze()].
+#'   [rtables::split_cols_by_multivar()] and [rtables::analyze_colvars()].
 #'
 #' @inheritParams argument_convention
 #' @param col_split (`flag`)\cr whether the columns should be split. Set to `FALSE` when the required
@@ -226,19 +226,14 @@ summarize_patients_exposure_in_cols <- function(lyt, # nolintr
 #'     var = "AVAL", col_split = TRUE,
 #'     .stats = "n_patients", custom_label = "some custom label"
 #'   ) %>%
-#'   analyze_patients_exposure_in_cols(var = "SEX", col_split = FALSE)
+#'   analyze_patients_exposure_in_cols(var = "SEX", col_split = FALSE, ex_var = "AVAL")
 #' result4 <- build_table(lyt4, df = df, alt_counts_df = adsl)
 #' result4
 #'
 #' lyt5 <- basic_table() %>%
-#'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE)
+#'   analyze_patients_exposure_in_cols(var = "SEX", col_split = TRUE, ex_var = "AVAL")
 #' result5 <- build_table(lyt5, df = df, alt_counts_df = adsl)
 #' result5
-#'
-#' lyt6 <- basic_table() %>%
-#'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
-#' result6 <- build_table(lyt6, df = df, alt_counts_df = adsl)
-#' result6
 #'
 #' @export
 analyze_patients_exposure_in_cols <- function(lyt, # nolint
