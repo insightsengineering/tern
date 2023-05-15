@@ -14,8 +14,7 @@ NULL
 #'   of patients and the sum of exposure across all patients.
 #'
 #' @param ex_var (`character`)\cr name of the variable within `df` containing exposure values.
-#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
-#'   be used as label.
+#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will be used as label.
 #'
 #' @return
 #' * `s_count_patients_sum_exposure()` returns a named `list` with the statistics:
@@ -208,8 +207,8 @@ summarize_patients_exposure_in_cols <- function(lyt, # nolint
 #'   add formatted data rows, with the statistics from `s_count_patients_sum_exposure()` arranged in
 #'   columns, to the table layout.
 #'
-#' @note As opposed to [summarize_patients_exposure_in_cols()] which generates content rows, 
-#'   `analyze_patients_exposure_in_cols()` generates data rows which will _not_ be repeated on multiple 
+#' @note As opposed to [summarize_patients_exposure_in_cols()] which generates content rows,
+#'   `analyze_patients_exposure_in_cols()` generates data rows which will _not_ be repeated on multiple
 #'   pages when pagination is used.
 #'
 #' @examples

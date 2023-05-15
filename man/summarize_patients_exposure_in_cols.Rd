@@ -134,8 +134,9 @@ function arguments and additional format arguments. This function is a wrapper f
 
 }}
 \note{
-As opposed to \code{\link[=summarize_patients_exposure_in_cols]{summarize_patients_exposure_in_cols()}} which generates content rows, this function
-generates data rows which will \emph{not} be repeated on multiple pages when pagination is used.
+As opposed to \code{\link[=summarize_patients_exposure_in_cols]{summarize_patients_exposure_in_cols()}} which generates content rows,
+\code{analyze_patients_exposure_in_cols()} generates data rows which will \emph{not} be repeated on multiple
+pages when pagination is used.
 }
 \examples{
 set.seed(1)
