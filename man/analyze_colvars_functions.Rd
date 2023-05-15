@@ -7,6 +7,7 @@
 These functions are wrappers of \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}} which apply corresponding \code{tern} statistics functions
 to add an analysis to a given table layout:
 \itemize{
+\item \code{\link[=analyze_patients_exposure_in_cols]{analyze_patients_exposure_in_cols()}}
 \item \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}} (extended wrapper, never used in other \code{tern} functions)
 \item \code{\link[=summarize_colvars]{summarize_colvars()}} (low level wrapper, never used in other \code{tern} functions)
 \item \code{\link[=summarize_coxreg]{summarize_coxreg()}} (contains also \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}})

@@ -5,6 +5,7 @@
 #' These functions are wrappers of [rtables::analyze_colvars()] which apply corresponding `tern` statistics functions
 #' to add an analysis to a given table layout:
 #'
+#' * [analyze_patients_exposure_in_cols()]
 #' * [analyze_vars_in_cols()] (extended wrapper, never used in other `tern` functions)
 #' * [summarize_colvars()] (low level wrapper, never used in other `tern` functions)
 #' * [summarize_coxreg()] (contains also [rtables::summarize_row_groups()])
