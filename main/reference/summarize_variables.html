@@ -39,17 +39,6 @@ is used as a statistics function in combination with the analyze function summar
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -251,7 +240,7 @@ See more about <code>type</code> in <code><a href="https://rdrr.io/r/stats/quant
 
 
 <dt>verbose</dt>
-<dd><p>defaults to <code>TRUE</code>. It prints out warnings and messages. It is mainly used
+<dd><p>(<code>logical</code>)<br> Defaults to <code>TRUE</code>, which prints out warnings and messages. It is mainly used
 to print out information about factor casting.</p></dd>
 
 
@@ -357,8 +346,7 @@ the statistics from <code>s_summary()</code> to the table layout.</p></li>
 <li><p><code>s_summary(character)</code>: Method for <code>character</code> class. This makes an automatic
 conversion to factor (with a warning) and then forwards to the method for factors.</p></li>
 <li><p><code>s_summary(logical)</code>: Method for <code>logical</code> class.</p></li>
-<li><p><code>a_summary()</code>: Formatted analysis function which is used as <code>afun</code>
-in <code>summarize_vars()</code>.</p></li>
+<li><p><code>a_summary()</code>: Formatted analysis function which is used as <code>afun</code> in <code>summarize_vars()</code>.</p></li>
 <li><p><code>a_summary(numeric)</code>: Formatted analysis function method for <code>numeric</code> class.</p></li>
 <li><p><code>a_summary(factor)</code>: Formatted analysis function method for <code>factor</code> class.</p></li>
 <li><p><code>a_summary(character)</code>: Formatted analysis function method for <code>character</code> class.</p></li>
@@ -369,11 +357,10 @@ and additional format arguments. This function is a wrapper for <code><a href="h
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
     
-<ul><li><p>If <code>x</code> is an empty vector, <code>NA</code> is returned. This is the expected
-feature so as to return <code>rcell</code> content in <code>rtables</code> when the
-intersection of a column and a row delimits an empty data selection.</p></li>
-<li><p>When the <code>mean</code> function is applied to an empty vector, <code>NA</code> will
-be returned instead of <code>NaN</code>, the latter being standard behavior in R.</p></li>
+<ul><li><p>If <code>x</code> is an empty vector, <code>NA</code> is returned. This is the expected feature so as to return <code>rcell</code> content in
+<code>rtables</code> when the intersection of a column and a row delimits an empty data selection.</p></li>
+<li><p>When the <code>mean</code> function is applied to an empty vector, <code>NA</code> will be returned instead of <code>NaN</code>, the latter
+being standard behavior in R.</p></li>
 </ul><ul><li><p>If <code>x</code> is an empty <code>factor</code>, a list is still returned for <code>counts</code> with one element
 per factor level. If there are no levels in <code>x</code>, the function fails.</p></li>
 <li><p>If <code>x</code> contains <code>NA</code>, it is expected that <code>NA</code> have been conveyed to <code>na_level</code>
@@ -1869,6 +1856,7 @@ created from character variables before passing the dataset to <code><a href="ht
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `s_summary.logical`</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Basic usage:</span></span></span>
@@ -1973,6 +1961,7 @@ created from character variables before passing the dataset to <code><a href="ht
 <span class="r-out co"><span class="r-pr">#&gt;</span> 22    geom_mean               NA          0              Geometric Mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 23 geom_mean_ci               NA          0       Geometric Mean 95% CI</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 24      geom_cv               NA          0         CV % Geometric Mean</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `a_summary.factor`</span></span></span>
 <span class="r-in"><span><span class="co"># We need to ungroup `count` and `count_fraction` first so that the rtables formatting</span></span></span>
 <span class="r-in"><span><span class="co"># functions can be applied correctly.</span></span></span>
@@ -1992,6 +1981,7 @@ created from character variables before passing the dataset to <code><a href="ht
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6        b        1 (20%)          0         b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7        c        1 (20%)          0         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8    n_blq              0          0     n_blq</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `a_summary.character`</span></span></span>
 <span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">make_afun</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/getS3method.html" class="external-link">getS3method</a></span><span class="op">(</span><span class="st">"a_summary"</span>, <span class="st">"character"</span><span class="op">)</span>,</span></span>
@@ -2009,6 +1999,7 @@ created from character variables before passing the dataset to <code><a href="ht
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6        B        1 (25%)          0         B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7        C        1 (25%)          0         C</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8    n_blq              0          0     n_blq</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `a_summary.logical`</span></span></span>
 <span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">make_afun</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/getS3method.html" class="external-link">getS3method</a></span><span class="op">(</span><span class="st">"a_summary"</span>, <span class="st">"logical"</span><span class="op">)</span></span></span>
@@ -2021,6 +2012,7 @@ created from character variables before passing the dataset to <code><a href="ht
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2          count              3          0          count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 count_fraction        3 (60%)          0 count_fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4          n_blq              0          0          n_blq</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Fabricated dataset.</span></span></span>
 <span class="r-in"><span><span class="va">dta_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
@@ -2179,6 +2171,7 @@ created from character variables before passing the dataset to <code><a href="ht
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/Viewer.html" class="external-link">Viewer</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -41,17 +41,6 @@ of the covariate, in comparison to the treatment control."><!-- mathjax --><scri
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -192,10 +181,8 @@ is obtained as $sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$.</p>
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
 <ul><li><p><code>h_coxreg_inter_effect()</code>: S3 generic helper function to determine interaction effect.</p></li>
-<li><p><code>h_coxreg_inter_effect(numeric)</code>: Estimate the interaction with a <code>numeric</code>
-covariate.</p></li>
-<li><p><code>h_coxreg_inter_effect(factor)</code>: Estimate the interaction with a <code>factor</code>
-covariate.</p></li>
+<li><p><code>h_coxreg_inter_effect(numeric)</code>: Estimate the interaction with a <code>numeric</code> covariate.</p></li>
+<li><p><code>h_coxreg_inter_effect(factor)</code>: Estimate the interaction with a <code>factor</code> covariate.</p></li>
 <li><p><code>h_coxreg_extract_interaction()</code>: A higher level function to get
 the results of the interaction test and the estimated values.</p></li>
 <li><p><code>h_coxreg_inter_estimations()</code>: Hazard ratio estimation in interactions.</p></li>
@@ -251,6 +238,7 @@ the results of the interaction test and the estimated values.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> armcd2/covar12 0.2716689 1.257692        NA         NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> armcd2/covar13 0.2244668 1.351415        NA         NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> armcd2/covar14 0.2315248 2.062715        NA         NA</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">armcd</span> <span class="op">*</span> <span class="va">covar1</span>, data <span class="op">=</span> <span class="va">dta_bladder</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">h_coxreg_inter_estimations</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  variable <span class="op">=</span> <span class="st">"armcd"</span>, given <span class="op">=</span> <span class="st">"covar1"</span>,</span></span>

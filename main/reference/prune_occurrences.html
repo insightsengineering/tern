@@ -43,17 +43,6 @@ functions."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -122,14 +111,13 @@ first content rows of leaf tables and flags whether these leaf tables should be 
 
 
 <dt>atleast</dt>
-<dd><p>(<code>count</code> or <code>proportion</code>)<br> threshold which should be met in order to
-keep the row.</p></dd>
+<dd><p>(<code>count</code> or <code>proportion</code>)<br> threshold which should be met in order to keep the row.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>arguments for row or column access, see <code><a href="rtables_access.html">rtables_access</a></code>: either
-<code>col_names</code> (<code>character</code>) including the names of the columns which should be used,
-or alternatively <code>col_indices</code> (<code>integer</code>) giving the indices directly instead.</p></dd>
+<dd><p>arguments for row or column access, see <a href="rtables_access.html">rtables_access</a>: either <code>col_names</code> (<code>character</code>) including
+the names of the columns which should be used, or alternatively <code>col_indices</code> (<code>integer</code>) giving the indices
+directly instead.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -140,8 +128,7 @@ or alternatively <code>col_indices</code> (<code>integer</code>) giving the indi
 to prune an <code>rtables</code> table.</p></li>
 </ul><ul><li><p><code>keep_content_rows()</code> returns a pruning function that checks the condition on the first content
 row of leaf tables in the table.</p></li>
-</ul><ul><li><p><code>has_count_in_cols()</code> returns a condition function that sums the counts in the specified
-column.</p></li>
+</ul><ul><li><p><code>has_count_in_cols()</code> returns a condition function that sums the counts in the specified column.</p></li>
 </ul><ul><li><p><code>has_count_in_any_col()</code> returns a condition function that compares the counts in the
 specified columns with the threshold.</p></li>
 </ul><ul><li><p><code>has_fraction_in_cols()</code> returns a condition function that sums the counts in the
@@ -164,8 +151,7 @@ children left.</p></li>
 a condition for the (first) content row in leaf tables. This removes all leaf tables where
 the first content row does not fulfill the condition. It does not check individual rows.
 It then proceeds recursively by removing the sub tree if there are no children left.</p></li>
-<li><p><code>has_count_in_cols()</code>: Constructor for creating condition functions on total counts in
-the specified columns.</p></li>
+<li><p><code>has_count_in_cols()</code>: Constructor for creating condition functions on total counts in the specified columns.</p></li>
 <li><p><code>has_count_in_any_col()</code>: Constructor for creating condition functions on any of the counts in
 the specified columns satisfying a threshold.</p></li>
 <li><p><code>has_fraction_in_cols()</code>: Constructor for creating condition functions on total fraction in
@@ -201,6 +187,7 @@ should be pruned, to conform with the <code><a href="https://rdrr.io/pkg/rtables
 <span class="r-in"><span><span class="va">is_non_empty</span> <span class="op">&lt;-</span> <span class="op">!</span><span class="fu"><a href="combination_function.html">CombinationFunction</a></span><span class="op">(</span><span class="va">all_zero_or_na</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">prune_table</span><span class="op">(</span><span class="va">tab</span>, <span class="fu">keep_rows</span><span class="op">(</span><span class="va">is_non_empty</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `keep_content_rows`</span></span></span>
 <span class="r-in"><span><span class="co"># Internal function - has_count_in_cols</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
@@ -219,21 +206,25 @@ should be pruned, to conform with the <code><a href="https://rdrr.io/pkg/rtables
 <span class="r-in"><span><span class="va">any_more_than_one</span> <span class="op">&lt;-</span> <span class="fu">has_count_in_any_col</span><span class="op">(</span>atleast <span class="op">=</span> <span class="fl">1L</span>, col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">prune_table</span><span class="op">(</span><span class="va">tab</span>, <span class="fu">keep_rows</span><span class="op">(</span><span class="va">any_more_than_one</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="co"># `has_fraction_in_cols`</span></span></span>
 <span class="r-in"><span><span class="va">more_than_five_percent</span> <span class="op">&lt;-</span> <span class="fu">has_fraction_in_cols</span><span class="op">(</span>atleast <span class="op">=</span> <span class="fl">0.05</span>, col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">prune_table</span><span class="op">(</span><span class="va">tab</span>, <span class="fu">keep_rows</span><span class="op">(</span><span class="va">more_than_five_percent</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="co"># `has_fraction_in_any_col`</span></span></span>
 <span class="r-in"><span><span class="va">any_atleast_five_percent</span> <span class="op">&lt;-</span> <span class="fu">has_fraction_in_any_col</span><span class="op">(</span>atleast <span class="op">=</span> <span class="fl">0.05</span>, col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">prune_table</span><span class="op">(</span><span class="va">tab</span>, <span class="fu">keep_rows</span><span class="op">(</span><span class="va">more_than_five_percent</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="co"># `has_fractions_difference`</span></span></span>
 <span class="r-in"><span><span class="va">more_than_five_percent_diff</span> <span class="op">&lt;-</span> <span class="fu">has_fractions_difference</span><span class="op">(</span>atleast <span class="op">=</span> <span class="fl">0.05</span>, col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">prune_table</span><span class="op">(</span><span class="va">tab</span>, <span class="fu">keep_rows</span><span class="op">(</span><span class="va">more_than_five_percent_diff</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Internal function - has_counts_difference</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="va">more_than_one_diff</span> <span class="op">&lt;-</span> <span class="fu">has_counts_difference</span><span class="op">(</span>atleast <span class="op">=</span> <span class="fl">1L</span>, col_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span><span class="op">)</span></span></span>

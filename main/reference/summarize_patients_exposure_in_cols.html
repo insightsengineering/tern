@@ -39,17 +39,6 @@ when a column table layout is required."><!-- mathjax --><script src="https://cd
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -158,8 +147,7 @@ when a column table layout is required.</p>
 
 
 <dt>custom_label</dt>
-<dd><p>(<code>string</code> or <code>NULL</code>)<br> if provided and <code>labelstr</code> is empty then this will
-be used as label.</p></dd>
+<dd><p>(<code>string</code> or <code>NULL</code>)<br> if provided and <code>labelstr</code> is empty then this will be used as label.</p></dd>
 
 
 <dt>var</dt>
@@ -226,8 +214,9 @@ function arguments and additional format arguments. This function is a wrapper f
 </ul></div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
-    <p>As opposed to <code>summarize_patients_exposure_in_cols()</code> which generates content rows, this function
-generates data rows which will <em>not</em> be repeated on multiple pages when pagination is used.</p>
+    <p>As opposed to <code>summarize_patients_exposure_in_cols()</code> which generates content rows,
+<code>analyze_patients_exposure_in_cols()</code> generates data rows which will <em>not</em> be repeated on multiple
+pages when pagination is used.</p>
     </div>
 
     <div class="section level2">

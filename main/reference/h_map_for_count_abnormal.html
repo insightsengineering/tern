@@ -39,17 +39,6 @@ trim_levels_to_map split function. Based on different method, the map is constru
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -107,18 +96,13 @@ trim_levels_to_map split function. Based on different method, the map is constru
 
 
 <dt>abnormal</dt>
-<dd><p>(named <code>list</code>)<br> identifying the abnormal range level(s) in <code>df</code>. Based on the levels of abnormality
-of the input dataset, it can be something like <code>list(Low = "LOW LOW", High = "HIGH HIGH")</code> or
+<dd><p>(named <code>list</code>)<br> identifying the abnormal range level(s) in <code>df</code>. Based on the levels of
+abnormality of the input dataset, it can be something like <code>list(Low = "LOW LOW", High = "HIGH HIGH")</code> or
 <code>abnormal = list(Low = "LOW", High = "HIGH"))</code></p></dd>
 
 
 <dt>method</dt>
-<dd><p>(<code>string</code>)<br> indicates how the returned map will be constructed. Can be either <code>"default"</code> or
-<code>"range"</code>.
-If method is <code>"default"</code>, the returned map will only have the abnormal directions that are observed in the <code>df</code>, and
-records with all normal values will be excluded to avoid error in creating layout.
-If method is <code>"range"</code>, the returned map will be based on the rule that at least one observation with low range &gt; 0
-for low direction and at least one observation with high range is not missing for high direction.</p></dd>
+<dd><p>(<code>string</code>)<br> indicates how the returned map will be constructed. Can be <code>"default"</code> or <code>"range"</code>.</p></dd>
 
 
 <dt>na_level</dt>
@@ -130,6 +114,13 @@ for low direction and at least one observation with high range is not missing fo
     
 
 <p>A map <code>data.frame</code>.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
+    <p>If method is <code>"default"</code>, the returned map will only have the abnormal directions that are observed in the
+<code>df</code>, and records with all normal values will be excluded to avoid error in creating layout. If method is
+<code>"range"</code>, the returned map will be based on the rule that at least one observation with low range &gt; 0
+for low direction and at least one observation with high range is not missing for high direction.</p>
     </div>
 
     <div class="section level2">
@@ -192,6 +183,7 @@ for low direction and at least one observation with high range is not missing fo
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   CPR    LOW</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4   CPR   HIGH</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6   CPR NORMAL</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -45,17 +45,6 @@ groups_lists optionally specifies groupings for subgroups variables."><!-- mathj
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -115,14 +104,13 @@ confidence intervals and p-values, for multiple biomarkers across population sub
 
 
 <dt>groups_lists</dt>
-<dd><p>(named <code>list</code> of <code>list</code>)<br> optionally contains for each <code>subgroups</code> variable a
-list, which specifies the new group levels via the names and the
-levels that belong to it in the character vectors that are elements of the list.</p></dd>
+<dd><p>(named <code>list</code> of <code>list</code>)<br> optionally contains for each <code>subgroups</code> variable a list, which
+specifies the new group levels via the names and the levels that belong to it in the character vectors that are
+elements of the list.</p></dd>
 
 
 <dt>control</dt>
-<dd><p>(<code>list</code>)<br> a list of parameters as returned by the
-helper function <code><a href="control_coxreg.html">control_coxreg()</a></code>.</p></dd>
+<dd><p>(<code>list</code>)<br> a list of parameters as returned by the helper function <code><a href="control_coxreg.html">control_coxreg()</a></code>.</p></dd>
 
 
 <dt>label_all</dt>
@@ -250,6 +238,7 @@ helper function <code><a href="control_coxreg.html">control_coxreg()</a></code>.
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 Continuous Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7 Continuous Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8 Continuous Level Biomarker 2 analysis</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
