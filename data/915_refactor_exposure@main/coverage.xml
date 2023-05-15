@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.95664837011314" branch-rate="0" lines-covered="8540" lines-valid="8927" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-05-12 23:00:34">
+<coverage line-rate="0.95664837011314" branch-rate="0" lines-covered="8540" lines-valid="8927" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-05-15 08:32:08">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
@@ -16957,19 +16957,19 @@
             </method>
             <method name="analyze_patients_exposure_in_cols" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="246" hits="3" branch="false"/>
+                <line number="247" hits="3" branch="false"/>
+                <line number="248" hits="3" branch="false"/>
+                <line number="249" hits="3" branch="false"/>
+                <line number="250" hits="3" branch="false"/>
                 <line number="251" hits="3" branch="false"/>
                 <line number="252" hits="3" branch="false"/>
-                <line number="253" hits="3" branch="false"/>
                 <line number="254" hits="3" branch="false"/>
                 <line number="255" hits="3" branch="false"/>
                 <line number="256" hits="3" branch="false"/>
                 <line number="257" hits="3" branch="false"/>
+                <line number="258" hits="3" branch="false"/>
                 <line number="259" hits="3" branch="false"/>
-                <line number="260" hits="3" branch="false"/>
-                <line number="261" hits="3" branch="false"/>
-                <line number="262" hits="3" branch="false"/>
-                <line number="263" hits="3" branch="false"/>
-                <line number="264" hits="3" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -17040,19 +17040,19 @@
             <line number="193" hits="5" branch="false"/>
             <line number="194" hits="5" branch="false"/>
             <line number="195" hits="5" branch="false"/>
+            <line number="246" hits="3" branch="false"/>
+            <line number="247" hits="3" branch="false"/>
+            <line number="248" hits="3" branch="false"/>
+            <line number="249" hits="3" branch="false"/>
+            <line number="250" hits="3" branch="false"/>
             <line number="251" hits="3" branch="false"/>
             <line number="252" hits="3" branch="false"/>
-            <line number="253" hits="3" branch="false"/>
             <line number="254" hits="3" branch="false"/>
             <line number="255" hits="3" branch="false"/>
             <line number="256" hits="3" branch="false"/>
             <line number="257" hits="3" branch="false"/>
+            <line number="258" hits="3" branch="false"/>
             <line number="259" hits="3" branch="false"/>
-            <line number="260" hits="3" branch="false"/>
-            <line number="261" hits="3" branch="false"/>
-            <line number="262" hits="3" branch="false"/>
-            <line number="263" hits="3" branch="false"/>
-            <line number="264" hits="3" branch="false"/>
           </lines>
         </class>
         <class name="summarize_variables.R" filename="R/summarize_variables.R" line-rate="0.990783410138249" branch-rate="0" complexity="0">
