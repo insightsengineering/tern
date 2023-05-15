@@ -172,5 +172,6 @@ basic_table() \%>\%
     variables = list(id = "ID", baseline = "BL_RANGE")
   ) \%>\%
   build_table(df2)
+
 }
 \keyword{internal}

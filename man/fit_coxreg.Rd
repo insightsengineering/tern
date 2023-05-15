@@ -11,21 +11,17 @@ fit_coxreg_univar(variables, data, at = list(), control = control_coxreg())
 fit_coxreg_multivar(variables, data, control = control_coxreg())
 }
 \arguments{
-\item{variables}{(\code{list})\cr a named list corresponds to the names of variables found
-in \code{data}, passed as a named list and corresponding to \code{time}, \code{event}, \code{arm},
-\code{strata}, and \code{covariates} terms. If \code{arm} is missing from \code{variables}, then
-only Cox model(s) including the \code{covariates} will be fitted and the corresponding
-effect estimates will be tabulated later.}
+\item{variables}{(\code{list})\cr a named list corresponds to the names of variables found in \code{data}, passed as a named
+list and corresponding to \code{time}, \code{event}, \code{arm}, \code{strata}, and \code{covariates} terms. If \code{arm} is missing from
+\code{variables}, then only Cox model(s) including the \code{covariates} will be fitted and the corresponding effect
+estimates will be tabulated later.}
 
-\item{data}{(\code{data.frame})\cr the dataset containing the variables to fit the
-models.}
+\item{data}{(\code{data.frame})\cr the dataset containing the variables to fit the models.}
 
-\item{at}{(\code{list} of \code{numeric})\cr when the candidate covariate is a
-\code{numeric}, use \code{at} to specify the value of the covariate at which the
-effect should be estimated.}
+\item{at}{(\code{list} of \code{numeric})\cr when the candidate covariate is a \code{numeric}, use \code{at} to specify
+the value of the covariate at which the effect should be estimated.}
 
-\item{control}{(\code{list})\cr a list of parameters as returned by the
-helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
+\item{control}{(\code{list})\cr a list of parameters as returned by the helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 }
 \value{
 \itemize{
@@ -58,8 +54,7 @@ Fitting functions for univariate and multivariate Cox regression models.
 }
 \section{Functions}{
 \itemize{
-\item \code{fit_coxreg_univar()}: Fit a series of univariate Cox regression models
-given the inputs.
+\item \code{fit_coxreg_univar()}: Fit a series of univariate Cox regression models given the inputs.
 
 \item \code{fit_coxreg_multivar()}: Fit a multivariate Cox regression model.
 

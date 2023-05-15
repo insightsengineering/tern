@@ -42,16 +42,16 @@ summarize_coxreg(
 )
 }
 \arguments{
-\item{model_df}{(\code{data.frame})\cr contains the resulting model fit from a \code{\link{fit_coxreg}}
+\item{model_df}{(\code{data.frame})\cr contains the resulting model fit from a \link{fit_coxreg}
 function with tidying applied via \code{\link[broom:reexports]{broom::tidy()}}.}
 
 \item{.stats}{(\code{character})\cr the name of statistics to be reported among:
 \itemize{
-\item \code{n}: number of observations (univariable only)
+\item \code{n}: number of observations (univariate only)
 \item \code{hr}: hazard ratio
 \item \code{ci}: confidence interval
 \item \code{pval}: p-value of the treatment effect
-\item \code{pval_inter}: p-value of the interaction effect between the treatment and the covariate (univariable only)
+\item \code{pval_inter}: p-value of the interaction effect between the treatment and the covariate (univariate only)
 }}
 
 \item{.which_vars}{(\code{character})\cr which rows should statistics be returned for from the given model.
@@ -74,16 +74,14 @@ is "var_main" \code{.var_nms} should be only the variable name.}
 \item{var_main}{(\code{flag})\cr whether main effects should be calculated. Defaults to \code{FALSE}.}
 
 \item{multivar}{(\code{flag})\cr Defaults to \code{FALSE}. If \code{TRUE} multivariate Cox regression will run, otherwise
-univariable Cox regression will run.}
+univariate Cox regression will run.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
-\item{at}{(\code{list} of \code{numeric})\cr when the candidate covariate is a
-\code{numeric}, use \code{at} to specify the value of the covariate at which the
-effect should be estimated.}
+\item{at}{(\code{list} of \code{numeric})\cr when the candidate covariate is a \code{numeric}, use \code{at} to specify
+the value of the covariate at which the effect should be estimated.}
 
-\item{control}{(\code{list})\cr a list of parameters as returned by the
-helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
+\item{control}{(\code{list})\cr a list of parameters as returned by the helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 
 \item{.spl_context}{(\code{data.frame})\cr gives information about ancestor split states
 that is passed by \code{rtables}.}
@@ -124,8 +122,7 @@ containing the chosen statistics to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Fits a Cox regression model and estimates hazard ratio to describe the effect
-size in a survival analysis.
+Fits a Cox regression model and estimates hazard ratio to describe the effect size in a survival analysis.
 }
 \details{
 Cox models are the most commonly used methods to estimate the magnitude of
@@ -178,7 +175,7 @@ plot(
 
 # s_coxreg
 
-# Univariable
+# Univariate
 u1_variables <- list(
   time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2")
 )
@@ -186,14 +183,14 @@ univar_model <- fit_coxreg_univar(variables = u1_variables, data = dta_bladder)
 df1 <- broom::tidy(univar_model)
 s_coxreg(model_df = df1, .stats = "hr")
 
-# Univariable with interactions
+# Univariate with interactions
 univar_model_inter <- fit_coxreg_univar(
   variables = u1_variables, control = control_coxreg(interaction = TRUE), data = dta_bladder
 )
 df1_inter <- broom::tidy(univar_model_inter)
 s_coxreg(model_df = df1_inter, .stats = "hr", .which_vars = "inter", .var_nms = "COVAR1")
 
-# Univariable without treatment arm - only "COVAR2" covariate effects
+# Univariate without treatment arm - only "COVAR2" covariate effects
 u2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 univar_covs_model <- fit_coxreg_univar(variables = u2_variables, data = dta_bladder)
 df1_covs <- broom::tidy(univar_covs_model)
@@ -272,7 +269,7 @@ result_multivar_covs
 helper functions, and \link{tidy_coxreg} for custom tidy methods.
 
 \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} and \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} which also take the \code{variables}, \code{data},
-\code{at} (univariable only), and \code{control} arguments but return unformatted univariable and multivariate
+\code{at} (univariate only), and \code{control} arguments but return unformatted univariate and multivariate
 Cox regression models, respectively.
 }
 \keyword{internal}

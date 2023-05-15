@@ -5,6 +5,9 @@
 #' Helper functions used in [fit_coxreg_univar()] and [fit_coxreg_multivar()].
 #'
 #' @inheritParams argument_convention
+#' @inheritParams h_coxreg_univar_extract
+#' @inheritParams cox_regression_inter
+#' @inheritParams control_coxreg
 #'
 #' @seealso [cox_regression]
 #'
@@ -13,9 +16,6 @@ NULL
 
 #' @describeIn h_cox_regression Helper for Cox regression formula. Creates a list of formulas. It is used
 #'   internally by [fit_coxreg_univar()] for the comparison of univariate Cox regression models.
-#'
-#' @inheritParams argument_convention
-#' @inheritParams control_coxreg
 #'
 #' @return
 #' * `h_coxreg_univar_formulas()` returns a `character` vector coercible into formulas (e.g [stats::as.formula()]).
@@ -109,12 +109,8 @@ h_coxreg_univar_formulas <- function(variables,
 #'   string. It is used internally by [fit_coxreg_multivar()] for the comparison of multivariate Cox
 #'   regression models. Interactions will not be included in multivariate Cox regression model.
 #'
-#' @inheritParams argument_convention
-#'
 #' @return
 #' * `h_coxreg_multivar_formula()` returns a `string` coercible into a formula (e.g [stats::as.formula()]).
-#'
-#' @export
 #'
 #' @examples
 #' # `h_coxreg_multivar_formula`
@@ -140,6 +136,8 @@ h_coxreg_univar_formulas <- function(variables,
 #'     strata = "SITE"
 #'   )
 #' )
+#'
+#' @export
 h_coxreg_multivar_formula <- function(variables) {
   checkmate::assert_list(variables, names = "named")
   has_arm <- "arm" %in% names(variables)
@@ -163,10 +161,8 @@ h_coxreg_multivar_formula <- function(variables) {
 }
 
 #' @describeIn h_cox_regression Utility function to help tabulate the result of
-#' a univariate Cox regression model.
+#'   a univariate Cox regression model.
 #'
-#' @inheritParams argument_convention
-#' @inheritParams cox_regression_inter
 #' @param effect (`string`)\cr the treatment variable.
 #' @param mod (`coxph`)\cr Cox regression model fitted by [survival::coxph()].
 #'
@@ -237,14 +233,9 @@ h_coxreg_univar_extract <- function(effect,
 #' @describeIn h_cox_regression Tabulation of multivariate Cox regressions. Utility function to help
 #'   tabulate the result of a multivariate Cox regression model for a treatment/covariate variable.
 #'
-#' @inheritParams argument_convention
-#' @inheritParams h_coxreg_univar_extract
-#'
 #' @return
 #' * `h_coxreg_multivar_extract()` returns a `data.frame` with variables `pval`, `hr`, `lcl`, `ucl`, `level`,
 #'   `n`, `term`, and `term_label`.
-#'
-#' @export
 #'
 #' @examples
 #' mod <- coxph(Surv(time, status) ~ armcd + var1, data = dta_simple)
@@ -252,6 +243,8 @@ h_coxreg_univar_extract <- function(effect,
 #'   var = "var1", mod = mod, data = dta_simple
 #' )
 #' result
+#'
+#' @export
 h_coxreg_multivar_extract <- function(var,
                                       data,
                                       mod,

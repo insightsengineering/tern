@@ -114,8 +114,7 @@ Summarize p-value, HR and CIs from stratified or unstratified CoxPH model.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_coxph_pairwise()}: Statistics function which analyzes HR, CIs of HR and p-value
-of a coxph model.
+\item \code{s_coxph_pairwise()}: Statistics function which analyzes HR, CIs of HR and p-value of a coxph model.
 
 \item \code{a_coxph_pairwise()}: Formatted analysis function which is used as \code{afun} in \code{coxph_pairwise()}.
 
@@ -165,5 +164,6 @@ basic_table() \%>\%
     control = control_coxph(pval_method = "wald")
   ) \%>\%
   build_table(df = adtte_f)
+
 }
 \keyword{internal}

@@ -638,10 +638,10 @@ h_glm_inter_term_extract <- function(odds_ratio_var,
 #'
 #' @return Tabulated statistics for the given variable(s) from the logistic regression model.
 #'
-#' @export
-#'
 #' @examples
 #' h_logistic_simple_terms("AGE", mod1)
+#'
+#' @export
 h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
   checkmate::assert_multi_class(fit_glm, c("glm", "clogit"))
   if (inherits(fit_glm, "glm")) {

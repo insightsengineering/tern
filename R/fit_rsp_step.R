@@ -28,7 +28,6 @@
 #'
 #' @seealso [control_step()] and [control_logistic()] for the available
 #'   customization options.
-#' @export
 #'
 #' @examples
 #' # Testing dataset with just two treatment arms.
@@ -93,6 +92,8 @@
 #'   data = adrs_f,
 #'   control = c(control_logistic(), control_step(bandwidth = 0.6))
 #' )
+#'
+#' @export
 fit_rsp_step <- function(variables,
                          data,
                          control = c(control_step(), control_logistic())) {

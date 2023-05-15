@@ -42,10 +42,9 @@ A named list of two elements:
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Prepares response rates and odds ratios for population subgroups in data frames. Simple wrapper
-for \code{\link[=h_odds_ratio_subgroups_df]{h_odds_ratio_subgroups_df()}} and \code{\link[=h_proportion_subgroups_df]{h_proportion_subgroups_df()}}.
-Result is a list of two data frames: \code{prop} and \code{or}.
-\code{variables} corresponds to the names of variables found in \code{data}, passed as a named
-list and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups} and \code{strat}.
+for \code{\link[=h_odds_ratio_subgroups_df]{h_odds_ratio_subgroups_df()}} and \code{\link[=h_proportion_subgroups_df]{h_proportion_subgroups_df()}}. Result is a list of two
+\code{data.frames}: \code{prop} and \code{or}. \code{variables} corresponds to the names of variables found in \code{data},
+passed as a named \code{list} and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups} and \code{strat}.
 \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
 }
 \examples{
@@ -93,6 +92,7 @@ df_grouped <- extract_rsp_subgroups(
   )
 )
 df_grouped
+
 }
 \seealso{
 \link{response_subgroups}

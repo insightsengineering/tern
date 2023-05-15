@@ -20,8 +20,7 @@ h_tab_surv_one_biomarker(df, vars, time_unit)
 
 \item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
-\item{control}{(\code{list})\cr a list of parameters as returned by the
-helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
+\item{control}{(\code{list})\cr a list of parameters as returned by the helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 
 \item{df}{(\code{data.frame})\cr results for a single biomarker, as part of what is
 returned by \code{\link[=extract_survival_biomarkers]{extract_survival_biomarkers()}} (it needs a couple of columns which are
@@ -39,8 +38,7 @@ see the example).}
 Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as both \code{hr} and \code{ci} are required.
 }}
 
-\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
-displaying unit.}
+\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
 }
 \value{
 \itemize{

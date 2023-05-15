@@ -182,4 +182,5 @@ lyt <- basic_table() \%>\%
 lyt \%>\%
   build_table(df, alt_counts_df = df_adsl) \%>\%
   prune_table()
+
 }

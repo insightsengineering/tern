@@ -18,9 +18,9 @@ score_occurrences_cont_cols(...)
 \arguments{
 \item{table_row}{(\code{TableRow})\cr an analysis row in a occurrence table.}
 
-\item{...}{arguments for row or column access, see \code{\link{rtables_access}}: either
-\code{col_names} (\code{character}) including the names of the columns which should be used,
-or alternatively \code{col_indices} (\code{integer}) giving the indices directly instead.}
+\item{...}{arguments for row or column access, see \link{rtables_access}: either \code{col_names} (\code{character}) including
+the names of the columns which should be used, or alternatively \code{col_indices} (\code{integer}) giving the indices
+directly instead.}
 }
 \value{
 \itemize{
@@ -109,6 +109,7 @@ tbl_sorted <- tbl \%>\%
   sort_at_path(path = c("AEBODSYS"), scorefun = score_subtable_all, decreasing = FALSE)
 
 tbl_sorted
+
 }
 \seealso{
 \code{\link[=h_row_first_values]{h_row_first_values()}}

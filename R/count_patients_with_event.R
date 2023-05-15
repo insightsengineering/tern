@@ -4,6 +4,8 @@
 #'
 #' The primary analysis variable `.var` denotes the unique patient identifier.
 #'
+#' @inheritParams argument_convention
+#'
 #' @seealso [count_patients_with_flags]
 #'
 #' @name count_patients_with_event
@@ -12,19 +14,16 @@ NULL
 #' @describeIn count_patients_with_event Statistics function which counts the number of patients for which
 #'   the defined event has occurred.
 #'
-#' @inheritParams argument_convention
+#' @inheritParams summarize_variables
 #' @param .var (`character`)\cr name of the column that contains the unique identifier.
 #' @param filters (`character`)\cr a character vector specifying the column names and flag variables
 #'   to be used for counting the number of unique identifiers satisfying such conditions.
 #'   Multiple column names and flags are accepted in this format
 #'   `c("column_name1" = "flag1", "column_name2" = "flag2")`.
 #'   Note that only equality is being accepted as condition.
-#' @inheritParams summarize_variables
 #'
 #' @return
 #' * `s_count_patients_with_event()` returns the count and fraction of unique identifiers with the defined event.
-#'
-#' @export
 #'
 #' @examples
 #' library(dplyr)
@@ -48,6 +47,8 @@ NULL
 #'   denom = "N_col",
 #'   .N_col = 456
 #' )
+#'
+#' @export
 s_count_patients_with_event <- function(df,
                                         .var,
                                         filters,
@@ -82,8 +83,6 @@ s_count_patients_with_event <- function(df,
 #' @return
 #' * `a_count_patients_with_event()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @export
-#'
 #' @examples
 #' # `a_count_patients_with_event()`
 #'
@@ -94,6 +93,8 @@ s_count_patients_with_event <- function(df,
 #'   .N_col = 100,
 #'   .N_row = 100
 #' )
+#'
+#' @export
 a_count_patients_with_event <- make_afun(
   s_count_patients_with_event,
   .formats = c(count_fraction = format_count_fraction_fixed_dp)
@@ -102,14 +103,11 @@ a_count_patients_with_event <- make_afun(
 #' @describeIn count_patients_with_event Layout-creating function which can take statistics function
 #'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @inheritParams argument_convention
-#'
 #' @return
 #' * `count_patients_with_event()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_count_patients_with_event()` to the table layout.
 #'
-#' @export
 #' @examples
 #' # `count_patients_with_event()`
 #'
@@ -142,6 +140,8 @@ a_count_patients_with_event <- make_afun(
 #'     table_names = "tbl_rel_fatal"
 #'   )
 #' build_table(lyt, tern_ex_adae, alt_counts_df = tern_ex_adsl)
+#'
+#' @export
 count_patients_with_event <- function(lyt,
                                       vars,
                                       ...,

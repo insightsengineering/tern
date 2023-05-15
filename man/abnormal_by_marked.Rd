@@ -194,7 +194,6 @@ basic_table() \%>\%
   ) \%>\%
   build_table(df = df)
 
-
 basic_table() \%>\%
   split_cols_by("ARMCD") \%>\%
   split_rows_by("PARAMCD") \%>\%

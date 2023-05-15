@@ -11,8 +11,7 @@
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{at}{(\code{NULL} or \code{numeric})\cr optional values for the interaction variable. Otherwise
-the median is used.}
+\item{at}{(\code{NULL} or \code{numeric})\cr optional values for the interaction variable. Otherwise the median is used.}
 }
 \value{
 A \code{data.frame} containing the tidied model.

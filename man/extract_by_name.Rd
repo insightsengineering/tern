@@ -16,7 +16,9 @@ extract_by_name(x, names)
 }
 \description{
 This utility function extracts elements from a vector \code{x} by \code{names}.
-Differences to the standard [base::\code{[}()] function are:
+Differences to the standard \code{[} function are:
+}
+\details{
 \itemize{
 \item If \code{x} is \code{NULL}, then still always \code{NULL} is returned (same as in base function).
 \item If \code{x} is not \code{NULL}, then the intersection of its names is made with \code{names} and those

@@ -155,7 +155,7 @@ See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 \item \code{test_mean} (\code{numeric})\cr value to test against the mean under the null hypothesis when calculating p-value.
 }}
 
-\item{verbose}{defaults to \code{TRUE}. It prints out warnings and messages. It is mainly used
+\item{verbose}{(\code{logical})\cr Defaults to \code{TRUE}, which prints out warnings and messages. It is mainly used
 to print out information about factor casting.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -268,8 +268,7 @@ conversion to factor (with a warning) and then forwards to the method for factor
 
 \item \code{s_summary(logical)}: Method for \code{logical} class.
 
-\item \code{a_summary()}: Formatted analysis function which is used as \code{afun}
-in \code{summarize_vars()}.
+\item \code{a_summary()}: Formatted analysis function which is used as \code{afun} in \code{summarize_vars()}.
 
 \item \code{a_summary(numeric)}: Formatted analysis function method for \code{numeric} class.
 
@@ -285,11 +284,10 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 }}
 \note{
 \itemize{
-\item If \code{x} is an empty vector, \code{NA} is returned. This is the expected
-feature so as to return \code{rcell} content in \code{rtables} when the
-intersection of a column and a row delimits an empty data selection.
-\item When the \code{mean} function is applied to an empty vector, \code{NA} will
-be returned instead of \code{NaN}, the latter being standard behavior in R.
+\item If \code{x} is an empty vector, \code{NA} is returned. This is the expected feature so as to return \code{rcell} content in
+\code{rtables} when the intersection of a column and a row delimits an empty data selection.
+\item When the \code{mean} function is applied to an empty vector, \code{NA} will be returned instead of \code{NaN}, the latter
+being standard behavior in R.
 }
 
 \itemize{
@@ -360,6 +358,7 @@ s_summary(x, denom = "N_col", .N_col = 20L)
 ## Basic usage:
 s_summary(c("a", "a", "b", "c", "a"), .var = "x", verbose = FALSE)
 s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE, verbose = FALSE)
+
 # `s_summary.logical`
 
 ## Basic usage:
@@ -377,6 +376,7 @@ s_summary(x, denom = "N_col", .N_col = 20L)
 
 # `a_summary.numeric`
 a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
+
 # `a_summary.factor`
 # We need to ungroup `count` and `count_fraction` first so that the rtables formatting
 # functions can be applied correctly.
@@ -385,17 +385,20 @@ afun <- make_afun(
   .ungroup_stats = c("count", "count_fraction")
 )
 afun(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+
 # `a_summary.character`
 afun <- make_afun(
   getS3method("a_summary", "character"),
   .ungroup_stats = c("count", "count_fraction")
 )
 afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
+
 # `a_summary.logical`
 afun <- make_afun(
   getS3method("a_summary", "logical")
 )
 afun(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
+
 ## Fabricated dataset.
 dta_test <- data.frame(
   USUBJID = rep(1:6, each = 3),
@@ -447,4 +450,5 @@ results <- build_table(l, df = dta_test)
 \dontrun{
 Viewer(results)
 }
+
 }

@@ -11,7 +11,7 @@ draw_grob(grob, newpage = TRUE, vp = NULL)
 
 \item{newpage}{draw on a new page}
 
-\item{vp}{a \code{\link{viewport}} object (or \code{NULL}).}
+\item{vp}{a \code{\link[=viewport]{viewport()}} object (or \code{NULL}).}
 }
 \value{
 A \code{grob}.
@@ -36,4 +36,5 @@ num \%>\%
   draw_grob()
 showViewport()
 }
+
 }

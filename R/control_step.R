@@ -11,12 +11,12 @@
 #'   covered in each window. Suggest `TRUE` if the biomarker variable is not uniformly
 #'   distributed.
 #' @param bandwidth (`number` or `NULL`)\cr indicating the bandwidth of each window.
-#'    Depending on the argument `use_percentile`, it can be either the length of actual-value
-#'    windows on the real biomarker scale, or percentage windows.
-#'    If `use_percentile = TRUE`, it should be a number between 0 and 1.
-#'    If `NULL`, treat the bandwidth to be infinity, which means only one global model will be fitted.
-#'    By default, `0.25` is used for percentage windows and one quarter of the range of the `biomarker`
-#'    variable for actual-value windows.
+#'   Depending on the argument `use_percentile`, it can be either the length of actual-value
+#'   windows on the real biomarker scale, or percentage windows.
+#'   If `use_percentile = TRUE`, it should be a number between 0 and 1.
+#'   If `NULL`, treat the bandwidth to be infinity, which means only one global model will be fitted.
+#'   By default, `0.25` is used for percentage windows and one quarter of the range of the `biomarker`
+#'   variable for actual-value windows.
 #' @param degree (`count`)\cr the degree of polynomial function of the biomarker as an interaction term
 #'   with the treatment arm fitted at each window. If 0 (default), then the biomarker variable
 #'   is not included in the model fitted in each biomarker window.

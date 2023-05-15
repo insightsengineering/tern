@@ -2,33 +2,27 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This function is useful to label grid grobs (also \code{ggplot2}, and \code{lattice} plots)
+#' This function is useful to label grid grobs (also `ggplot2`, and `lattice` plots)
 #' with title, footnote, and page numbers.
 #'
 #' @inheritParams grid::grob
-#' @param grob a grid grob object, optionally \code{NULL} if only a \code{grob} with
-#'   the decoration should be shown.
-#' @param titles vector of character strings. Vector elements are separated by a
-#'   newline and strings are wrapped according to the page with.
-#' @param footnotes vector of character string. Same rules as for \code{titles}.
-#' @param page string with page numeration, if \code{NULL} then no page number is displayed.
+#' @param grob a grid grob object, optionally `NULL` if only a `grob` with the decoration should be shown.
+#' @param titles vector of character strings. Vector elements are separated by a newline and strings are wrapped
+#'   according to the page width.
+#' @param footnotes vector of character string. Same rules as for `titles`.
+#' @param page string with page numeration, if `NULL` then no page number is displayed.
 #' @param width_titles unit object
 #' @param width_footnotes unit object
-#' @param border boolean, whether a a border should be drawn around the plot or
-#'   not.
+#' @param border boolean, whether a a border should be drawn around the plot or not.
 #' @param margins unit object of length 4
 #' @param padding  unit object of length 4
 #' @param outer_margins  unit object of length 4
-#' @param gp_titles a \code{gpar} object
-#' @param gp_footnotes a \code{gpar} object
-#'
-#' @details
-#' The titles and footnotes will be ragged, i.e. each title will be wrapped
-#' individually.
+#' @param gp_titles a `gpar` object
+#' @param gp_footnotes a `gpar` object
 #'
 #' @return A grid grob (`gTree`).
 #'
-#' @export
+#' @details The titles and footnotes will be ragged, i.e. each title will be wrapped individually.
 #'
 #' @examples
 #' library(grid)
@@ -87,7 +81,7 @@
 #'   )
 #' )
 #'
-#' ## with \code{ggplot2}
+#' ## with ggplot2
 #' library(ggplot2)
 #'
 #' p_gg <- ggplot2::ggplot(iris, aes(Sepal.Length, Sepal.Width, col = Species)) +
@@ -104,7 +98,7 @@
 #'   )
 #' )
 #'
-#' ## with \code{lattice}
+#' ## with lattice
 #' library(lattice)
 #'
 #' xyplot(Sepal.Length ~ Petal.Length, data = iris, col = iris$Species)
@@ -119,7 +113,7 @@
 #'   )
 #' )
 #'
-#' # with \code{gridExtra} - no borders
+#' # with gridExtra - no borders
 #' library(gridExtra)
 #' grid.newpage()
 #' grid.draw(
@@ -132,6 +126,8 @@
 #'     border = FALSE
 #'   )
 #' )
+#'
+#' @export
 decorate_grob <- function(grob,
                           titles,
                           footnotes,
@@ -232,8 +228,7 @@ decorate_grob <- function(grob,
 
 #' @importFrom grid validDetails
 #' @noRd
-validDetails.decoratedGrob <- function(x) { # nolint
-
+validDetails.decoratedGrob <- function(x) {
   checkmate::assert_character(x$titles)
   checkmate::assert_character(x$footnotes)
 
@@ -258,13 +253,13 @@ validDetails.decoratedGrob <- function(x) { # nolint
 
 #' @importFrom grid widthDetails
 #' @noRd
-widthDetails.decoratedGrob <- function(x) { # nolint
+widthDetails.decoratedGrob <- function(x) {
   grid::unit(1, "null")
 }
 
 #' @importFrom grid heightDetails
 #' @noRd
-heightDetails.decoratedGrob <- function(x) { # nolint
+heightDetails.decoratedGrob <- function(x) {
   grid::unit(1, "null")
 }
 
@@ -307,8 +302,7 @@ split_string <- function(text, width) {
 #'
 #' @return A text grob.
 #'
-#' @details
-#' This code is taken from R Graphics by \code{Paul Murell}, 2nd edition
+#' @details This code is taken from R Graphics by Paul Murell, 2nd edition
 #'
 #' @examples
 #' # Internal function - split_text_grob
@@ -395,7 +389,7 @@ split_text_grob <- function(text,
 
 #' @importFrom grid validDetails
 #' @noRd
-validDetails.dynamicSplitText <- function(x) { # nolint
+validDetails.dynamicSplitText <- function(x) {
   checkmate::assert_character(x$text)
   checkmate::assert_true(grid::is.unit(x$width))
   checkmate::assert_vector(x$width, len = 1)
@@ -404,7 +398,7 @@ validDetails.dynamicSplitText <- function(x) { # nolint
 
 #' @importFrom grid heightDetails
 #' @noRd
-heightDetails.dynamicSplitText <- function(x) { # nolint
+heightDetails.dynamicSplitText <- function(x) {
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
     attr(x$text, "fixed_text")
   } else {
@@ -415,13 +409,13 @@ heightDetails.dynamicSplitText <- function(x) { # nolint
 
 #' @importFrom grid widthDetails
 #' @noRd
-widthDetails.dynamicSplitText <- function(x) { # nolint
+widthDetails.dynamicSplitText <- function(x) {
   x$width
 }
 
 #' @importFrom grid drawDetails
 #' @noRd
-drawDetails.dynamicSplitText <- function(x, recording) { # nolint
+drawDetails.dynamicSplitText <- function(x, recording) {
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
     attr(x$text, "fixed_text")
   } else {
@@ -441,11 +435,9 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
 #' Automatically updates page number.
 #'
 #' @param npages number of pages in total
-#' @param ... passed on to \code{\link{decorate_grob}}
+#' @param ... passed on to [decorate_grob()]
 #'
 #' @return Closure that increments the page number.
-#'
-#' @keywords internal
 #'
 #' @examples
 #' # Internal function - decorate_grob_factory
@@ -461,6 +453,8 @@ drawDetails.dynamicSplitText <- function(x, recording) { # nolint
 #' draw_grob(pf(NULL))
 #' draw_grob(pf(NULL))
 #' }
+#'
+#' @keywords internal
 decorate_grob_factory <- function(npages, ...) {
   current_page <- 0
   function(grob) {
@@ -476,10 +470,10 @@ decorate_grob_factory <- function(npages, ...) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Note that this uses the `decorate_grob_factory` function.
+#' Note that this uses the [decorate_grob_factory()] function.
 #'
 #' @param grobs a list of grid grobs
-#' @param ... arguments passed on to \code{\link{decorate_grob}}
+#' @param ... arguments passed on to [decorate_grob()].
 #'
 #' @return A decorated grob.
 #'

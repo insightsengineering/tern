@@ -48,6 +48,7 @@ h_count_cumulative(x, 5, .N_col = .N_col)
 h_count_cumulative(x, 5, lower_tail = FALSE, include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
 h_count_cumulative(x, 0, lower_tail = FALSE, .N_col = .N_col)
 h_count_cumulative(x, 100, lower_tail = FALSE, .N_col = .N_col)
+
 }
 \seealso{
 \link{count_cumulative}

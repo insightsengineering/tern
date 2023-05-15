@@ -86,8 +86,10 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 \examples{
 s_length_proportion(rep("CR", 10), .N_col = 100)
 s_length_proportion(factor(character(0)), .N_col = 100)
+
 a_length_proportion(rep("CR", 10), .N_col = 100)
 a_length_proportion(factor(character(0)), .N_col = 100)
+
 library(dplyr)
 
 # Use of the layout creating function.

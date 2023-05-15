@@ -14,10 +14,12 @@
 #'
 #' @return A list of components with the same names as the arguments.
 #'
-#' @export
+#' @seealso [incidence_rate]
+#'
 #' @examples
 #' control_incidence_rate(0.9, "exact", "month", 100)
-#' @seealso [incidence_rate]
+#'
+#' @export
 control_incidence_rate <- function(conf_level = 0.95,
                                    conf_type = c("normal", "normal_log", "exact", "byar"),
                                    time_unit_input = c("year", "day", "week", "month"),

@@ -7,11 +7,10 @@
 cfun_by_flag(analysis_var, flag_var, format = "xx")
 }
 \arguments{
-\item{analysis_var}{(\code{string})\cr variable name for the column containing values to be
-returned by the content function.}
+\item{analysis_var}{(\code{string})\cr variable name for the column containing values to be returned by the
+content function.}
 
-\item{flag_var}{(\code{string})\cr variable name for the logical column identifying which
-row should be returned.}
+\item{flag_var}{(\code{string})\cr variable name for the logical column identifying which row should be returned.}
 
 \item{format}{(\code{string})\cr \code{rtables} format to use.}
 }

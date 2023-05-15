@@ -6,19 +6,17 @@
 #' `trim_levels_to_map` split function. Based on different method, the map is constructed differently.
 #'
 #' @inheritParams argument_convention
-#' @param abnormal (named `list`)\cr identifying the abnormal range level(s) in `df`. Based on the levels of abnormality
-#' of the input dataset, it can be something like `list(Low = "LOW LOW", High = "HIGH HIGH")` or
-#' `abnormal = list(Low = "LOW", High = "HIGH"))`
-#' @param method (`string`)\cr indicates how the returned map will be constructed. Can be either `"default"` or
-#' `"range"`.
-#' If method is `"default"`, the returned map will only have the abnormal directions that are observed in the `df`, and
-#' records with all normal values will be excluded to avoid error in creating layout.
-#' If method is `"range"`, the returned map will be based on the rule that at least one observation with low range > 0
-#' for low direction and at least one observation with high range is not missing for high direction.
+#' @param abnormal (named `list`)\cr identifying the abnormal range level(s) in `df`. Based on the levels of
+#'   abnormality of the input dataset, it can be something like `list(Low = "LOW LOW", High = "HIGH HIGH")` or
+#'   `abnormal = list(Low = "LOW", High = "HIGH"))`
+#' @param method (`string`)\cr indicates how the returned map will be constructed. Can be `"default"` or `"range"`.
 #'
 #' @return A map `data.frame`.
 #'
-#' @export
+#' @note If method is `"default"`, the returned map will only have the abnormal directions that are observed in the
+#'   `df`, and records with all normal values will be excluded to avoid error in creating layout. If method is
+#'   `"range"`, the returned map will be based on the rule that at least one observation with low range > 0
+#'   for low direction and at least one observation with high range is not missing for high direction.
 #'
 #' @examples
 #' adlb <- df_explicit_na(tern_ex_adlb)
@@ -62,6 +60,8 @@
 #'   method = "range",
 #'   na_level = "<Missing>"
 #' )
+#'
+#' @export
 h_map_for_count_abnormal <- function(df,
                                      variables = list(
                                        anl = "ANRIND",
@@ -121,7 +121,7 @@ h_map_for_count_abnormal <- function(df,
     colnames(low_levels_df) <- variables$anl
     low_levels_df <- do.call("rbind", replicate(nrow(map_low), low_levels_df, simplify = FALSE))
     rownames(map_low) <- NULL # Just to avoid strange row index in case upstream functions changed
-    map_low <- map_low[rep(seq_len(nrow(map_low)), each = length(low_levels)), , drop = FALSE] # nolint
+    map_low <- map_low[rep(seq_len(nrow(map_low)), each = length(low_levels)), , drop = FALSE]
     map_low <- cbind(map_low, low_levels_df)
 
     # Define high direction of map
@@ -132,7 +132,7 @@ h_map_for_count_abnormal <- function(df,
     colnames(high_levels_df) <- variables$anl
     high_levels_df <- do.call("rbind", replicate(nrow(map_high), high_levels_df, simplify = FALSE))
     rownames(map_high) <- NULL
-    map_high <- map_high[rep(seq_len(nrow(map_high)), each = length(high_levels)), , drop = FALSE] # nolint
+    map_high <- map_high[rep(seq_len(nrow(map_high)), each = length(high_levels)), , drop = FALSE]
     map_high <- cbind(map_high, high_levels_df)
 
     # Define normal of map

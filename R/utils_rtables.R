@@ -8,8 +8,7 @@
 #' formatted text that needs only to be copied and pasted in the expected output.
 #'
 #' @param x `rtables` table.
-#' @param with_spaces Should the tested table keep the indentation and other relevant
-#'   spaces?
+#' @param with_spaces Should the tested table keep the indentation and other relevant spaces?
 #' @param print_txt_to_copy Utility to have a way to copy the input table directly
 #'   into the expected variable instead of copying it too manually.
 #'
@@ -63,10 +62,9 @@ unlist_and_blank_na <- function(x) {
 #'
 #' This can be useful for tabulating model results.
 #'
-#' @param analysis_var (`string`)\cr variable name for the column containing values to be
-#'   returned by the content function.
-#' @param flag_var (`string`)\cr variable name for the logical column identifying which
-#'   row should be returned.
+#' @param analysis_var (`string`)\cr variable name for the column containing values to be returned by the
+#'   content function.
+#' @param flag_var (`string`)\cr variable name for the logical column identifying which row should be returned.
 #' @param format (`string`)\cr `rtables` format to use.
 #'
 #' @return A content function which gives `df$analysis_var` at the row identified by
@@ -212,7 +210,7 @@ as.rtable <- function(x, ...) { # nolint
 #' as.rtable(x)
 #'
 #' @export
-as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
+as.rtable.data.frame <- function(x, format = "xx.xx", ...) {
   checkmate::assert_numeric(unlist(x))
   do.call(
     rtable,
@@ -241,18 +239,15 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' It divides the data in the vector `param` into the groups defined by `f`
-#' based on specified `values`.
-#' It is relevant in `rtables` layers so as to distribute parameters
-#' `.stats` or' `.formats` into lists with items corresponding to
+#' It divides the data in the vector `param` into the groups defined by `f` based on specified `values`. It is relevant
+#' in `rtables` layers so as to distribute parameters `.stats` or' `.formats` into lists with items corresponding to
 #' specific analysis function.
 #'
 #' @param param (`vector`)\cr the parameter to be split.
 #' @param value (`vector`)\cr the value used to split.
 #' @param f (`list` of `vectors`)\cr the reference to make the split
 #'
-#' @return A named `list` with the same element names as `f`, each containing the
-#'   elements specified in `.stats`.
+#' @return A named `list` with the same element names as `f`, each containing the elements specified in `.stats`.
 #'
 #' @examples
 #' f <- list(
@@ -307,7 +302,6 @@ afun_selected_stats <- function(.stats, all_stats) {
     intersect(.stats, all_stats)
   }
 }
-
 
 #' Add Variable Labels to Top Left Corner in Table
 #'

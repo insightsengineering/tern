@@ -2,8 +2,7 @@
 % Please edit documentation in R/h_stack_by_baskets.R
 \name{h_stack_by_baskets}
 \alias{h_stack_by_baskets}
-\title{Helper Function to create a new \code{SMQ} variable in \code{ADAE} by stacking
-\code{SMQ} and/or \code{CQ} records.}
+\title{Helper Function to create a new \code{SMQ} variable in \code{ADAE} by stacking \code{SMQ} and/or \code{CQ} records.}
 \usage{
 h_stack_by_baskets(
   df,
@@ -21,12 +20,10 @@ h_stack_by_baskets(
 
 \item{smq_varlabel}{(\code{string})\cr a label for the new variable created.}
 
-\item{keys}{(\code{character})\cr names of the key variables to be returned
-along with the new variable created.}
+\item{keys}{(\code{character})\cr names of the key variables to be returned along with the new variable created.}
 
-\item{aag_summary}{(\code{data.frame})\cr containing the \code{SMQ} baskets
-and the levels of interest for the final \code{SMQ} variable. This is useful when
-there are some levels of interest that are not observed in the \code{df} dataset.
+\item{aag_summary}{(\code{data.frame})\cr containing the \code{SMQ} baskets and the levels of interest for the final \code{SMQ}
+variable. This is useful when there are some levels of interest that are not observed in the \code{df} dataset.
 The two columns of this dataset should be named \code{basket} and \code{basket_name}.}
 
 \item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors with custom \code{string}.}
@@ -38,10 +35,8 @@ records belonging to the baskets selected via the \code{baskets} argument.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Helper Function to create a new \code{SMQ} variable in \code{ADAE} that
-consists of all adverse events belonging to selected
-Standardized/Customized queries.
-The new dataset will only contain records of the adverse events
+Helper Function to create a new \code{SMQ} variable in \code{ADAE} that consists of all adverse events belonging to
+selected Standardized/Customized queries. The new dataset will only contain records of the adverse events
 belonging to any of the selected baskets.
 }
 \examples{
@@ -81,4 +76,5 @@ h_stack_by_baskets(
   keys = c("STUDYID", "USUBJID", "AEDECOD", "ARM"),
   baskets = "SMQ01NAM"
 )
+
 }

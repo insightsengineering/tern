@@ -51,7 +51,7 @@ g_km(
 }}
 
 \item{control_surv}{(\code{list})\cr parameters for comparison details, specified by using
-the helper function \code{\link{control_surv_timepoint}}. Some possible parameter options are:
+the helper function \code{\link[=control_surv_timepoint]{control_surv_timepoint()}}. Some possible parameter options are:
 \itemize{
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for survival rate.
 \item \code{conf_type} (\code{string})\cr "plain" (default), "log", "log-log" for confidence interval type,

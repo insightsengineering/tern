@@ -7,15 +7,15 @@
 #' Depending on the baseline flag, either the absolute baseline values (at baseline)
 #' or the change from baseline values (post-baseline) are then summarized.
 #'
+#' @inheritParams argument_convention
+#'
 #' @name summarize_change
 NULL
 
 #' @describeIn summarize_change Statistics function that summarizes baseline or post-baseline visits.
 #'
-#' @inheritParams argument_convention
-#'
 #' @return
-#' * `s_change_from_baseline()` returns the same values returned by [`s_summary.numeric()`].
+#' * `s_change_from_baseline()` returns the same values returned by [s_summary.numeric()].
 #'
 #' @note The data in `df` must be either all be from baseline or post-baseline visits. Otherwise
 #'   an error will be thrown.
@@ -98,8 +98,6 @@ a_change_from_baseline <- make_afun(
 #' @describeIn summarize_change Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @inheritParams argument_convention
-#'
 #' @return
 #' * `summarize_change()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
@@ -108,9 +106,7 @@ a_change_from_baseline <- make_afun(
 #' @note To be used after a split on visits in the layout, such that each data subset only contains
 #'   either baseline or post-baseline data.
 #'
-#' @export
 #' @examples
-#'
 #' # `summarize_change()`
 #'
 #' ## Fabricated dataset.
@@ -139,6 +135,7 @@ a_change_from_baseline <- make_afun(
 #' Viewer(results)
 #' }
 #'
+#' @export
 summarize_change <- function(lyt,
                              vars,
                              ...,

@@ -18,7 +18,6 @@ An \code{rtables} formatting function that uses threshold \code{digits} to retur
 Create Formatting Function for a single extreme value.
 }
 \examples{
-
 format_fun <- format_extreme_values(2L)
 format_fun(x = 0.127)
 format_fun(x = Inf)

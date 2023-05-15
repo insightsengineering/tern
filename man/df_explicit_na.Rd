@@ -45,7 +45,6 @@ with the \code{char_as_factor} or \code{logical_as_factor} options, the missing 
 be set as the last level.
 }
 \examples{
-
 my_data <- data.frame(
   u = c(TRUE, FALSE, NA, TRUE),
   v = factor(c("A", NA, NA, NA), levels = c("Z", "A")),
@@ -84,6 +83,7 @@ adsl <- df_explicit_na(adsl, na_level = "Missing Values")
 adsl <- tern_ex_adsl
 adsl$AGE[adsl$AGE < 30] <- NA
 adsl <- df_explicit_na(adsl)
+
 }
 \seealso{
 \code{\link[=sas_na]{sas_na()}} and \code{\link[=explicit_na]{explicit_na()}} for other missing data helper functions.

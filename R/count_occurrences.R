@@ -106,7 +106,6 @@ s_count_occurrences <- function(df,
 
 #' @describeIn count_occurrences Formatted analysis function which is used as `afun`
 #'   in `count_occurrences()`.
-#' @export
 #'
 #' @return
 #' * `a_count_occurrences()` returns the corresponding list with formatted [rtables::CellValue()].
@@ -123,6 +122,7 @@ s_count_occurrences <- function(df,
 #'   id = "USUBJID"
 #' )
 #'
+#' @export
 a_count_occurrences <- make_afun(
   s_count_occurrences,
   .formats = c(count = "xx", count_fraction = format_count_fraction_fixed_dp, fraction = format_fraction_fixed_dp)
@@ -135,8 +135,6 @@ a_count_occurrences <- make_afun(
 #' * `count_occurrences()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_count_occurrences()` to the table layout.
-#'
-#' @export
 #'
 #' @examples
 #' library(dplyr)
@@ -165,6 +163,8 @@ a_count_occurrences <- make_afun(
 #' lyt %>%
 #'   build_table(df, alt_counts_df = df_adsl) %>%
 #'   prune_table()
+#'
+#' @export
 count_occurrences <- function(lyt,
                               vars,
                               var_labels = vars,

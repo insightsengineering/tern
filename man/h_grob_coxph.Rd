@@ -15,9 +15,9 @@ h_grob_coxph(
 \arguments{
 \item{...}{arguments will be passed to \code{\link[=h_tbl_coxph_pairwise]{h_tbl_coxph_pairwise()}}.}
 
-\item{x}{a \code{numeric} value between 0 and 1 specifying x-location.}
+\item{x}{(\code{numeric})\cr a value between 0 and 1 specifying x-location.}
 
-\item{y}{a \code{numeric} value between 0 and 1 specifying y-location.}
+\item{y}{(\code{numeric})\cr a value between 0 and 1 specifying y-location.}
 
 \item{ttheme}{(\code{list})\cr see \code{\link[gridExtra:tableGrob]{gridExtra::ttheme_default()}}.}
 }
@@ -28,7 +28,7 @@ and \code{p-value (log-rank)}.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Grob of \code{rtable} output from \link{h_tbl_coxph_pairwise}
+Grob of \code{rtable} output from \code{\link[=h_tbl_coxph_pairwise]{h_tbl_coxph_pairwise()}}
 }
 \examples{
 \dontrun{
@@ -48,4 +48,5 @@ tbl_grob <- h_grob_coxph(
 )
 grid::grid.draw(tbl_grob)
 }
+
 }

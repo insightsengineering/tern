@@ -135,7 +135,7 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
 #'
 #' s_count_occurrences_by_grade(
 #'   df,
-#'   .N_col = 10L, # nolint
+#'   .N_col = 10L,
 #'   .var = "AETOXGR",
 #'   id = "USUBJID",
 #'   grade_groups = list("ANY" = levels(df$AETOXGR))
@@ -200,28 +200,27 @@ s_count_occurrences_by_grade <- function(df,
 #' @return
 #' * `a_count_occurrences_by_grade()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @export
-#'
 #' @examples
 #' #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 #' # function `format_count_fraction()` can be applied correctly.
 #' afun <- make_afun(a_count_occurrences_by_grade, .ungroup_stats = "count_fraction")
 #' afun(
 #'   df,
-#'   .N_col = 10L, # nolint
+#'   .N_col = 10L,
 #'   .var = "AETOXGR",
 #'   id = "USUBJID",
 #'   grade_groups = list("ANY" = levels(df$AETOXGR))
 #' )
 #'
+#' @export
 a_count_occurrences_by_grade <- make_afun(
   s_count_occurrences_by_grade,
   .formats = c("count_fraction" = format_count_fraction_fixed_dp)
 )
 
-
 #' @describeIn count_occurrences_by_grade Layout-creating function which can take statistics function
 #'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
 #' @param var_labels (`character`)\cr labels to show in the result table.
 #'
 #' @return
@@ -229,7 +228,6 @@ a_count_occurrences_by_grade <- make_afun(
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_count_occurrences_by_grade()` to the table layout.
 #'
-#' @export
 #' @examples
 #' # Layout creating function with custom format.
 #' basic_table() %>%
@@ -257,6 +255,7 @@ a_count_occurrences_by_grade <- make_afun(
 #'   ) %>%
 #'   build_table(df, alt_counts_df = df_adsl)
 #'
+#' @export
 count_occurrences_by_grade <- function(lyt,
                                        var,
                                        var_labels = var,

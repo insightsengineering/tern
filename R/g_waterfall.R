@@ -1,7 +1,6 @@
 #' Horizontal Waterfall Plot
 #'
-#' This basic waterfall plot visualizes a quantity \code{height} ordered by value with some
-#' markup.
+#' This basic waterfall plot visualizes a quantity `height` ordered by value with some markup.
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -15,8 +14,6 @@
 #' @param col_legend_title (`character`)\cr text to be displayed as legend title.
 #'
 #' @return A `ggplot` waterfall plot.
-#'
-#' @export
 #'
 #' @examples
 #' library(dplyr)
@@ -60,6 +57,8 @@
 #'   ylab = "Percentage Change",
 #'   title = "Waterfall plot"
 #' )
+#'
+#' @export
 g_waterfall <- function(height,
                         id,
                         col_var = NULL,

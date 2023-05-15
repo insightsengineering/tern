@@ -70,8 +70,8 @@ Patients' individual baseline values can be added to the plot(s) as reference.
 }
 \section{Functions}{
 \itemize{
-\item \code{g_ipp()}: depending on user preference, renders a single
-graphic or compiles a list of graphics that show trends in individual's parameter
+\item \code{g_ipp()}: Plotting function for individual patient plots which, depending on user
+preference, renders a single graphic or compiles a list of graphics that show trends in individual's parameter
 values over time.
 
 }}
@@ -96,6 +96,7 @@ plot_list <- g_ipp(
   max_obs_per_plot = 5
 )
 plot_list
+
 }
 \seealso{
 Relevant helper function \code{\link[=h_g_ipp]{h_g_ipp()}}.

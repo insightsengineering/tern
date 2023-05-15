@@ -1,6 +1,3 @@
-#' @include control_step.R
-NULL
-
 #' Helper Functions for Subgroup Treatment Effect Pattern (STEP) Calculations
 #'
 #' @description `r lifecycle::badge("stable")`
@@ -10,6 +7,7 @@ NULL
 #' @inheritParams argument_convention
 #'
 #' @name h_step
+#' @include control_step.R
 NULL
 
 #' @describeIn h_step creates the windows for STEP, based on the control settings
@@ -69,6 +67,7 @@ h_step_window <- function(x,
 #'   on `data` given `variables` specification, for a single biomarker value `x`.
 #'   This works for both `coxph` and `glm` models, i.e. for calculating log hazard ratio or log odds
 #'   ratio estimates.
+#'
 #' @param model the regression model object.
 #'
 #' @return
@@ -131,6 +130,7 @@ h_step_survival_formula <- function(variables,
 #' @describeIn h_step estimates the model with `formula` built based on
 #'   `variables` in `data` for a given `subset` and `control` parameters for the
 #'   Cox regression.
+#'
 #' @param formula (`formula`)\cr the regression model formula.
 #' @param subset (`logical`)\cr subset vector.
 #'
@@ -237,6 +237,7 @@ h_step_rsp_formula <- function(variables,
 #' @describeIn h_step estimates the model with `formula` built based on
 #'   `variables` in `data` for a given `subset` and `control` parameters for the
 #'   logistic regression.
+#'
 #' @param formula (`formula`)\cr the regression model formula.
 #' @param subset (`logical`)\cr subset vector.
 #'

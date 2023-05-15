@@ -97,6 +97,7 @@ df_grouped <- extract_rsp_biomarkers(
   )
 )
 df_grouped
+
 }
 \seealso{
 \code{\link[=h_logistic_mult_cont_df]{h_logistic_mult_cont_df()}} which is used internally.

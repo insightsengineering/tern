@@ -35,12 +35,11 @@ analysis rows and flags whether these should be kept in the pruned table.}
 \item{content_row_condition}{(\code{CombinationFunction})\cr condition function which works on individual
 first content rows of leaf tables and flags whether these leaf tables should be kept in the pruned table.}
 
-\item{atleast}{(\code{count} or \code{proportion})\cr threshold which should be met in order to
-keep the row.}
+\item{atleast}{(\code{count} or \code{proportion})\cr threshold which should be met in order to keep the row.}
 
-\item{...}{arguments for row or column access, see \code{\link{rtables_access}}: either
-\code{col_names} (\code{character}) including the names of the columns which should be used,
-or alternatively \code{col_indices} (\code{integer}) giving the indices directly instead.}
+\item{...}{arguments for row or column access, see \link{rtables_access}: either \code{col_names} (\code{character}) including
+the names of the columns which should be used, or alternatively \code{col_indices} (\code{integer}) giving the indices
+directly instead.}
 }
 \value{
 \itemize{
@@ -54,8 +53,7 @@ row of leaf tables in the table.
 }
 
 \itemize{
-\item \code{has_count_in_cols()} returns a condition function that sums the counts in the specified
-column.
+\item \code{has_count_in_cols()} returns a condition function that sums the counts in the specified column.
 }
 
 \itemize{
@@ -103,8 +101,7 @@ a condition for the (first) content row in leaf tables. This removes all leaf ta
 the first content row does not fulfill the condition. It does not check individual rows.
 It then proceeds recursively by removing the sub tree if there are no children left.
 
-\item \code{has_count_in_cols()}: Constructor for creating condition functions on total counts in
-the specified columns.
+\item \code{has_count_in_cols()}: Constructor for creating condition functions on total counts in the specified columns.
 
 \item \code{has_count_in_any_col()}: Constructor for creating condition functions on any of the counts in
 the specified columns satisfying a threshold.
@@ -143,6 +140,7 @@ tab <- basic_table() \%>\%
 is_non_empty <- !CombinationFunction(all_zero_or_na)
 prune_table(tab, keep_rows(is_non_empty))
 }
+
 # `keep_content_rows`
 # Internal function - has_count_in_cols
 \dontrun{
@@ -161,21 +159,25 @@ prune_table(tab, keep_rows(more_than_one))
 any_more_than_one <- has_count_in_any_col(atleast = 1L, col_names = names(tab))
 prune_table(tab, keep_rows(any_more_than_one))
 }
+
 \dontrun{
 # `has_fraction_in_cols`
 more_than_five_percent <- has_fraction_in_cols(atleast = 0.05, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_five_percent))
 }
+
 \dontrun{
 # `has_fraction_in_any_col`
 any_atleast_five_percent <- has_fraction_in_any_col(atleast = 0.05, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_five_percent))
 }
+
 \dontrun{
 # `has_fractions_difference`
 more_than_five_percent_diff <- has_fractions_difference(atleast = 0.05, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_five_percent_diff))
 }
+
 # Internal function - has_counts_difference
 \dontrun{
 more_than_one_diff <- has_counts_difference(atleast = 1L, col_names = names(tab))

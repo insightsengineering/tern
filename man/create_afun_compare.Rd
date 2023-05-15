@@ -61,6 +61,7 @@ lyt <- basic_table() \%>\%
     show_labels = "visible"
   )
 build_table(lyt, df = tern_ex_adsl)
+
 }
 \seealso{
 \code{\link[=compare_vars]{compare_vars()}}

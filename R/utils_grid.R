@@ -7,13 +7,11 @@
 #' @param ... grobs.
 #' @param grobs list of grobs.
 #' @param padding unit of length 1, space between each grob.
-#' @param vp a \code{\link{viewport}} object (or \code{NULL}).
+#' @param vp a [viewport()] object (or `NULL`).
 #' @param name a character identifier for the grob.
-#' @param gp A \code{\link{gpar}} object.
+#' @param gp A [gpar()] object.
 #'
 #' @return A `grob`.
-#'
-#' @export
 #'
 #' @examples
 #' library(grid)
@@ -33,6 +31,8 @@
 #'
 #' showViewport()
 #' grid.ls(grobs = TRUE, viewports = TRUE, print = FALSE)
+#'
+#' @export
 stack_grobs <- function(...,
                         grobs = list(...),
                         padding = grid::unit(2, "line"),
@@ -84,7 +84,6 @@ stack_grobs <- function(...,
   )
 }
 
-
 #' Arrange Multiple Grobs
 #'
 #' Arrange grobs as a new grob with \verb{n*m (rows*cols)} layout.
@@ -128,7 +127,7 @@ stack_grobs <- function(...,
 #' }
 #'
 #' @keywords internal
-arrange_grobs <- function(..., # nolint
+arrange_grobs <- function(...,
                           grobs = list(...),
                           ncol = NULL, nrow = NULL,
                           padding_ht = grid::unit(2, "line"),
@@ -220,8 +219,6 @@ arrange_grobs <- function(..., # nolint
   )
 }
 
-
-
 #' Draw `grob`
 #'
 #' @description `r lifecycle::badge("stable")`
@@ -230,11 +227,9 @@ arrange_grobs <- function(..., # nolint
 #'
 #' @param grob grid object
 #' @param newpage draw on a new page
-#' @param vp a \code{\link{viewport}} object (or \code{NULL}).
+#' @param vp a [viewport()] object (or `NULL`).
 #'
 #' @return A `grob`.
-#'
-#' @export
 #'
 #' @examples
 #' library(dplyr)
@@ -251,6 +246,8 @@ arrange_grobs <- function(..., # nolint
 #'   draw_grob()
 #' showViewport()
 #' }
+#'
+#' @export
 draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
   if (newpage) {
     grid::grid.newpage()
@@ -261,12 +258,12 @@ draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
   grid::grid.draw(grob)
 }
 
-tern_grob <- function(x) { # nolint
+tern_grob <- function(x) {
   class(x) <- unique(c("ternGrob", class(x)))
   x
 }
 
-print.ternGrob <- function(x, ...) { # nolint
+print.ternGrob <- function(x, ...) {
   grid::grid.newpage()
   grid::grid.draw(x)
 }

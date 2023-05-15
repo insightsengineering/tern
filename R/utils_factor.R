@@ -10,13 +10,13 @@
 #'
 #' @return A `factor` with the new levels.
 #'
-#' @export
-#'
 #' @examples
 #' x <- factor(letters[1:5], levels = letters[5:1])
 #' combine_levels(x, levels = c("a", "b"))
 #'
 #' combine_levels(x, c("e", "b"))
+#'
+#' @export
 combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/")) {
   checkmate::assert_factor(x)
   checkmate::assert_subset(levels, levels(x))
@@ -38,8 +38,7 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #'
 #' @param x (`atomic`)\cr object to convert.
 #' @param x_name (`string`)\cr name of `x`.
-#' @param na_level (`string`)\cr the explicit missing level which should be used when
-#'   converting a character vector.
+#' @param na_level (`string`)\cr the explicit missing level which should be used when converting a character vector.
 #' @param verbose defaults to `TRUE`. It prints out warnings and messages.
 #'
 #' @return A `factor` with same attributes (except class) as `x`. Does not modify `x` if already a `factor`.
@@ -159,8 +158,6 @@ bins_percent_labels <- function(probs,
 #'   `[-Inf, q1]` where `q1` is the first quantile, the second bin is then `(q1, q2]`, etc.,
 #'   and the last bin is `(qn, +Inf]` where `qn` is the last quantile.
 #'
-#' @export
-#'
 #' @examples
 #' # Default is to cut into quartile bins.
 #' cut_quantile_bins(cars$speed)
@@ -176,6 +173,8 @@ bins_percent_labels <- function(probs,
 #' which(is.na(ozone_binned))
 #' # So you might want to make these explicit.
 #' explicit_na(ozone_binned)
+#'
+#' @export
 cut_quantile_bins <- function(x,
                               probs = c(0.25, 0.5, 0.75),
                               labels = NULL,
@@ -193,7 +192,6 @@ cut_quantile_bins <- function(x,
     # Early return if there are only NAs in input.
     return(factor(x, ordered = ordered, levels = labels))
   }
-
 
   quantiles <- stats::quantile(
     x,
@@ -225,10 +223,10 @@ cut_quantile_bins <- function(x,
 #'
 #' @return A modified `factor` with observations as well as levels from `discard` dropped.
 #'
-#' @export
-#'
 #' @examples
 #' fct_discard(factor(c("a", "b", "c")), "c")
+#'
+#' @export
 fct_discard <- function(x, discard) {
   checkmate::assert_factor(x)
   checkmate::assert_character(discard, any.missing = FALSE)

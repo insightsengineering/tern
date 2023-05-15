@@ -14,8 +14,7 @@ NULL
 #'   of patients and the sum of exposure across all patients.
 #'
 #' @param ex_var (`character`)\cr name of the variable within `df` containing exposure values.
-#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
-#'   be used as label.
+#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will be used as label.
 #'
 #' @return
 #' * `s_count_patients_sum_exposure()` returns a named `list` with the statistics:
@@ -172,7 +171,7 @@ a_count_patients_sum_exposure <- function(df,
 #' result2
 #'
 #' @export
-summarize_patients_exposure_in_cols <- function(lyt, # nolintr
+summarize_patients_exposure_in_cols <- function(lyt, # nolint
                                                 var,
                                                 ...,
                                                 .stats = c("n_patients", "sum_exposure"),
@@ -199,7 +198,6 @@ summarize_patients_exposure_in_cols <- function(lyt, # nolintr
 #'   function arguments and additional format arguments. This function is a wrapper for
 #'   [rtables::split_cols_by_multivar()] and [rtables::analyze_colvars()].
 #'
-#' @inheritParams argument_convention
 #' @param col_split (`flag`)\cr whether the columns should be split. Set to `FALSE` when the required
 #'   column split has been done already earlier in the layout pipe.
 #'
@@ -209,8 +207,9 @@ summarize_patients_exposure_in_cols <- function(lyt, # nolintr
 #'   add formatted data rows, with the statistics from `s_count_patients_sum_exposure()` arranged in
 #'   columns, to the table layout.
 #'
-#' @note As opposed to [summarize_patients_exposure_in_cols()] which generates content rows, this function
-#'   generates data rows which will _not_ be repeated on multiple pages when pagination is used.
+#' @note As opposed to [summarize_patients_exposure_in_cols()] which generates content rows,
+#'   `analyze_patients_exposure_in_cols()` generates data rows which will _not_ be repeated on multiple
+#'   pages when pagination is used.
 #'
 #' @examples
 #' lyt3 <- basic_table() %>%

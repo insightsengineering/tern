@@ -77,6 +77,7 @@ p <- h_g_ipp(
   add_baseline_hline = TRUE
 )
 p
+
 }
 \seealso{
 \code{\link[=g_ipp]{g_ipp()}} which uses this function.

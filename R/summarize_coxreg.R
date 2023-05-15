@@ -2,8 +2,7 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Fits a Cox regression model and estimates hazard ratio to describe the effect
-#' size in a survival analysis.
+#' Fits a Cox regression model and estimates hazard ratio to describe the effect size in a survival analysis.
 #'
 #' @inheritParams argument_convention
 #'
@@ -15,7 +14,7 @@
 #'   analysis (NEST Team, 2020).
 #'
 #' @seealso [fit_coxreg] for relevant fitting functions, [h_cox_regression] for relevant
-#' helper functions, and [tidy_coxreg] for custom tidy methods.
+#'   helper functions, and [tidy_coxreg] for custom tidy methods.
 #'
 #' @examples
 #' library(survival)
@@ -49,16 +48,16 @@
 NULL
 
 #' @describeIn cox_regression Statistics function that transforms results tabulated
-#'   from [`fit_coxreg_univar()`] or [`fit_coxreg_multivar()`] into a list.
+#'   from [fit_coxreg_univar()] or [fit_coxreg_multivar()] into a list.
 #'
-#' @param model_df (`data.frame`)\cr contains the resulting model fit from a [`fit_coxreg`]
-#'   function with tidying applied via [`broom::tidy()`].
+#' @param model_df (`data.frame`)\cr contains the resulting model fit from a [fit_coxreg]
+#'   function with tidying applied via [broom::tidy()].
 #' @param .stats (`character`)\cr the name of statistics to be reported among:
-#'   * `n`: number of observations (univariable only)
+#'   * `n`: number of observations (univariate only)
 #'   * `hr`: hazard ratio
 #'   * `ci`: confidence interval
 #'   * `pval`: p-value of the treatment effect
-#'   * `pval_inter`: p-value of the interaction effect between the treatment and the covariate (univariable only)
+#'   * `pval_inter`: p-value of the interaction effect between the treatment and the covariate (univariate only)
 #' @param .which_vars (`character`)\cr which rows should statistics be returned for from the given model.
 #'   Defaults to "all". Other options include "var_main" for main effects, "inter" for interaction effects,
 #'   and "multi_lvl" for multivariate model covariate level rows. When `.which_vars` is "all" specific
@@ -71,12 +70,10 @@ NULL
 #' @return
 #' * `s_coxreg()` returns the selected statistic for from the Cox regression model for the selected variable(s).
 #'
-#' @export
-#'
 #' @examples
 #' # s_coxreg
 #'
-#' # Univariable
+#' # Univariate
 #' u1_variables <- list(
 #'   time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2")
 #' )
@@ -84,14 +81,14 @@ NULL
 #' df1 <- broom::tidy(univar_model)
 #' s_coxreg(model_df = df1, .stats = "hr")
 #'
-#' # Univariable with interactions
+#' # Univariate with interactions
 #' univar_model_inter <- fit_coxreg_univar(
 #'   variables = u1_variables, control = control_coxreg(interaction = TRUE), data = dta_bladder
 #' )
 #' df1_inter <- broom::tidy(univar_model_inter)
 #' s_coxreg(model_df = df1_inter, .stats = "hr", .which_vars = "inter", .var_nms = "COVAR1")
 #'
-#' # Univariable without treatment arm - only "COVAR2" covariate effects
+#' # Univariate without treatment arm - only "COVAR2" covariate effects
 #' u2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 #' univar_covs_model <- fit_coxreg_univar(variables = u2_variables, data = dta_bladder)
 #' df1_covs <- broom::tidy(univar_covs_model)
@@ -115,6 +112,7 @@ NULL
 #' df2_covs <- broom::tidy(multivar_covs_model)
 #' s_coxreg(model_df = df2_covs, .stats = "hr")
 #'
+#' @export
 s_coxreg <- function(model_df, .stats, .which_vars = "all", .var_nms = NULL) {
   assert_df_with_variables(model_df, list(term = "term", stat = .stats))
   checkmate::assert_multi_class(model_df$term, classes = c("factor", "character"))
@@ -258,7 +256,7 @@ a_coxreg <- function(df,
 #'
 #' @inheritParams fit_coxreg_univar
 #' @param multivar (`flag`)\cr Defaults to `FALSE`. If `TRUE` multivariate Cox regression will run, otherwise
-#'   univariable Cox regression will run.
+#'   univariate Cox regression will run.
 #' @param common_var (`character`)\cr the name of a factor variable in the dataset which takes the same value
 #'   for all rows. This should be created during pre-processing if no such variable currently exists.
 #' @param .section_div (`character`)\cr string which should be repeated as a section divider between sections.
@@ -270,9 +268,8 @@ a_coxreg <- function(df,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add a Cox regression table
 #'   containing the chosen statistics to the table layout.
 #'
-#' @export
 #' @seealso [fit_coxreg_univar()] and [fit_coxreg_multivar()] which also take the `variables`, `data`,
-#'   `at` (univariable only), and `control` arguments but return unformatted univariable and multivariate
+#'   `at` (univariate only), and `control` arguments but return unformatted univariate and multivariate
 #'   Cox regression models, respectively.
 #'
 #' @examples
@@ -307,6 +304,7 @@ a_coxreg <- function(df,
 #'   build_table(dta_bladder)
 #' result_multivar_covs
 #'
+#' @export
 summarize_coxreg <- function(lyt,
                              variables,
                              control = control_coxreg(),

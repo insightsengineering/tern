@@ -352,6 +352,7 @@ desctools_binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c( # noli
 #' @param method (`character`)\cr method to use. Can be one out of: "wald", "wilson", "wilsoncc", "agresti-coull",
 #'   "jeffreys", "modified wilson", "modified jeffreys", "clopper-pearson", "arcsine", "logit", "witting", "pratt",
 #'   "midp", "lik", and "blaker".
+#'
 #' @return A `matrix` with 3 columns containing:
 #'   * `est`: estimate of proportion difference.
 #'   * `lwr.ci`: lower end of the confidence interval.
@@ -739,7 +740,7 @@ desctools_binomci <- function(x,
       1
   })]), 1, paste, collapse = ":")
   res <- t(sapply(1:maxdim, function(i) {
-    iBinomCI( # nolint
+    iBinomCI(
       x = lgp$x[i],
       n = lgp$n[i], conf.level = lgp$conf.level[i], sides = lgp$sides[i],
       method = lgp$method[i], rand = lgp$rand[i]

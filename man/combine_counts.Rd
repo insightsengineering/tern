@@ -16,8 +16,7 @@ levels that belong to it in the character vectors that are elements of the list.
 A \code{vector} of column counts.
 }
 \description{
-Simplifies the estimation of column counts, especially when group combination
-is required.
+Simplifies the estimation of column counts, especially when group combination is required.
 }
 \examples{
 ref <- c("A: Drug X", "B: Placebo")
@@ -52,6 +51,6 @@ basic_table() \%>\%
 
 }
 \seealso{
-\link{combine_groups}
+\code{\link[=combine_groups]{combine_groups()}}
 }
 \keyword{internal}

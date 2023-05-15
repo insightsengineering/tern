@@ -26,8 +26,7 @@ tabulate_survival_biomarkers(
 Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as both \code{hr} and \code{ci} are required.
 }}
 
-\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
-displaying unit.}
+\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
 }
 \value{
 An \code{rtables} table summarizing biomarker effects on survival by subgroup.
@@ -97,6 +96,7 @@ tab <- tabulate_survival_biomarkers(
 \dontrun{
 g_forest(tab, xlim = c(0.8, 1.2))
 }
+
 }
 \seealso{
 \code{\link[=h_tab_surv_one_biomarker]{h_tab_surv_one_biomarker()}} which is used internally, \code{\link[=extract_survival_biomarkers]{extract_survival_biomarkers()}}.

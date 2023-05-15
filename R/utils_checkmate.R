@@ -9,7 +9,7 @@
 #' @param include_boundaries (`logical`)\cr whether to include boundaries when testing
 #'   for proportions.
 #' @param na_level (`character`)\cr the string you have been using to represent NA or
-#'   missing data. For `NA` values please consider using directly `base::is.na` or
+#'   missing data. For `NA` values please consider using directly [is.na()] or
 #'   similar approaches.
 #' @param (`integer`)\cr minimum number of factor levels. Default is `1`.
 #' @param ... a collection of objects to test.

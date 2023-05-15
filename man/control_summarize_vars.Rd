@@ -29,5 +29,5 @@ A list of components with the same names as the arguments.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Sets a list of parameters for summaries of descriptive statistics. Typically used internally to specify
-details for \link{s_summary}.
+details for \code{\link[=s_summary]{s_summary()}}.
 }

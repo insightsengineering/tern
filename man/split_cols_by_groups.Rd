@@ -101,7 +101,6 @@ basic_table() \%>\%
   analyze("AGE") \%>\%
   build_table(DM)
 
-
 # Use group definition with reference column (first item of groups).
 basic_table() \%>\%
   split_cols_by_groups("ARM", groups, ref_group = names(groups)[1]) \%>\%
@@ -117,6 +116,7 @@ basic_table() \%>\%
     }
   ) \%>\%
   build_table(DM)
+
 }
 \seealso{
 \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}}

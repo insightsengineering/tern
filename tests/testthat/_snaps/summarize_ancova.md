@@ -3,10 +3,10 @@
     Code
       res
     Output
-       Species    emmean     SE  df lower.CL upper.CL
-       setosa       6.15 0.3371 143     5.49     6.82
-       versicolor   5.72 0.0668 143     5.59     5.85
-       virginica    5.41 0.1488 143     5.11     5.70
+       Species      emmean        SE  df lower.CL upper.CL
+       setosa     6.154823 0.3370913 143 5.488497 6.821149
+       versicolor 5.717409 0.0668085 143 5.585349 5.849469
+       virginica  5.406377 0.1487946 143 5.112255 5.700498
       
       Confidence level used: 0.95 
 

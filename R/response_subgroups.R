@@ -51,11 +51,10 @@ NULL
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Prepares response rates and odds ratios for population subgroups in data frames. Simple wrapper
-#' for [h_odds_ratio_subgroups_df()] and [h_proportion_subgroups_df()].
-#'   Result is a list of two data frames: `prop` and `or`.
-#'   `variables` corresponds to the names of variables found in `data`, passed as a named
-#'   list and requires elements `rsp`, `arm` and optionally `subgroups` and `strat`.
-#'   `groups_lists` optionally specifies groupings for `subgroups` variables.
+#' for [h_odds_ratio_subgroups_df()] and [h_proportion_subgroups_df()]. Result is a list of two
+#' `data.frames`: `prop` and `or`. `variables` corresponds to the names of variables found in `data`,
+#' passed as a named `list` and requires elements `rsp`, `arm` and optionally `subgroups` and `strat`.
+#' `groups_lists` optionally specifies groupings for `subgroups` variables.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams response_subgroups
@@ -68,7 +67,6 @@ NULL
 #'     `subgroup`, `var`, `var_label`, and `row_type`.
 #'
 #' @seealso [response_subgroups]
-#' @export
 #'
 #' @examples
 #' library(dplyr)
@@ -115,6 +113,8 @@ NULL
 #'   )
 #' )
 #' df_grouped
+#'
+#' @export
 extract_rsp_subgroups <- function(variables,
                                   data,
                                   groups_lists = list(),
@@ -340,8 +340,7 @@ tabulate_rsp_subgroups <- function(lyt,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Internal function to check variables included in
-#' [tabulate_rsp_subgroups] and create column labels.
+#' Internal function to check variables included in [tabulate_rsp_subgroups()] and create column labels.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams tabulate_rsp_subgroups
