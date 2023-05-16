@@ -18,6 +18,9 @@ NULL
 #' @return
 #' * `s_proportion_diff()` returns a named list of elements `diff` and `diff_ci`.
 #'
+#' @note When performing a stratified analysis, methods `"cmh"`, `"strat_newcombe"`, and `"strat_newcombecc"` are
+#'   not permitted.
+#'
 #' @examples
 #' # Summary
 #'
@@ -64,6 +67,12 @@ s_proportion_diff <- function(df,
                                 "strat_newcombe", "strat_newcombecc"
                               ),
                               weights_method = "cmh") {
+  if (is.null(variables$strata) & !method %in% c("waldcc", "wald", "ha", "newcombe", "newcombecc")) {
+    stop(paste(
+      "When performing a stratified analysis, methods 'cmh', 'strat_newcombe', and 'strat_newcombecc' are not",
+      "permitted. Please choose a different method."
+    ))
+  }
   method <- match.arg(method)
   y <- list(diff = "", diff_ci = "")
 

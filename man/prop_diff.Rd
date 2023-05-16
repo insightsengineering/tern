@@ -113,6 +113,10 @@ in terms of responder proportion.
 and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
+\note{
+When performing a stratified analysis, methods \code{"cmh"}, \code{"strat_newcombe"}, and \code{"strat_newcombecc"} are
+not permitted.
+}
 \examples{
 # Summary
 
