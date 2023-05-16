@@ -109,7 +109,6 @@ summarize_vars(
   lyt,
   vars,
   var_labels = vars,
-  na_level = NA_character_,
   nested = TRUE,
   ...,
   show_labels = "default",
