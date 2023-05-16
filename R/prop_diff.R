@@ -18,7 +18,7 @@ NULL
 #' @return
 #' * `s_proportion_diff()` returns a named list of elements `diff` and `diff_ci`.
 #'
-#' @note When performing a stratified analysis, methods `"cmh"`, `"strat_newcombe"`, and `"strat_newcombecc"` are
+#' @note When performing an unstratified analysis, methods `"cmh"`, `"strat_newcombe"`, and `"strat_newcombecc"` are
 #'   not permitted.
 #'
 #' @examples
@@ -68,9 +68,9 @@ s_proportion_diff <- function(df,
                               ),
                               weights_method = "cmh") {
   method <- match.arg(method)
-  if (is.null(variables$strata) && !method %in% c("waldcc", "wald", "ha", "newcombe", "newcombecc")) {
+  if (is.null(variables$strata) && checkmate::test_subset(method, c("cmh", "strat_newcombe", "strat_newcombecc"))) {
     stop(paste(
-      "When performing a stratified analysis, methods 'cmh', 'strat_newcombe', and 'strat_newcombecc' are not",
+      "When performing an unstratified analysis, methods 'cmh', 'strat_newcombe', and 'strat_newcombecc' are not",
       "permitted. Please choose a different method."
     ))
   }

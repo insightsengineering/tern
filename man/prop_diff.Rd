@@ -114,7 +114,7 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 
 }}
 \note{
-When performing a stratified analysis, methods \code{"cmh"}, \code{"strat_newcombe"}, and \code{"strat_newcombecc"} are
+When performing an unstratified analysis, methods \code{"cmh"}, \code{"strat_newcombe"}, and \code{"strat_newcombecc"} are
 not permitted.
 }
 \examples{
