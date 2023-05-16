@@ -1,26 +1,25 @@
-# tern 0.8.1.9012
+# tern 0.8.2
 
 ### Breaking Changes
-* Refactored `s_coxreg` and `summarize_coxreg`. Added new analysis function `a_coxreg`.
+* Refactored `s_coxreg` and `summarize_coxreg`to work with new analysis function `a_coxreg`.
 
 ### Bug Fixes
 * Fixed missing label for `TRTEDTM` in `tern` datasets.
 
 ### Enhancements
-* Added `section_div` and `na_level` (`na_str`) to `summarize_vars`.
+* Added `section_div` and `na_level` arguments to `summarize_vars`.
 * Added `median_range` as a numeric variable statistic option for `summarize_vars`.
 * Corrected ordering of factor levels by `d_onco_rsp_label`.
-* Added new "Analyze Functions" and "Summarize Functions" overview pages.
-* Moved all KM plot documentation to the `g_km` function.
-* Added `a_count_patients_sum_exposure` for new analyze function `analyze_patients_exposure_in_cols` and `summarize_patients_exposure_in_cols`.
+* Added new "Analyze Functions", "Summarize Functions", and "Analyze Functions on Columns" overview pages.
+* Consolidated all KM plot documentation within the `g_km` function.
+* Added `a_count_patients_sum_exposure` for `summarize_patients_exposure_in_cols` and new analyze function `analyze_patients_exposure_in_cols`.
 
 ### Miscellaneous
 * Implemented the `lubridate` package for date variables in `tern` datasets.
-* Organization of `.gitignore` and `.Rbuildignore`.
+* Organized `.gitignore` and `.Rbuildignore` files.
 * Removed deprecated `footnotes` functions and all related files.
-* Deprecation cycle of `pairwise` function started.
-* Moved `count_patients_with_flags` functions out of `count_patients_with_event.R` and 
-  into `count_patients_with_flags.R`.
+* Started deprecation cycle for `pairwise` function.
+* Moved `count_patients_with_flags` functions from `count_patients_with_event.R` to `count_patients_with_flags.R`.
 
 # tern 0.8.0
 

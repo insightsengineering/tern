@@ -24,16 +24,16 @@ The `tern` R package contains analysis functions to create tables and graphs use
 The package provides a large range of functionality, for example:
 
 <!-- markdownlint-disable MD007 MD030 -->
--   data visualizations:
+-   Data visualizations:
     -   forest plots
     -   line plots
     -   Kaplan-Meier plots
     -   ...
--   statistical model fits:
+-   Statistical model fits:
     -   logistic regression
     -   Cox regression
     -   ...
--   summary tables:
+-   Summary tables:
     -   unique patients
     -   exposure across patients
     -   change from baseline for parameters
@@ -53,14 +53,14 @@ if (!require("remotes")) install.packages("remotes")
 remotes::install_github("insightsengineering/tern@*release")
 ```
 
-A stable release of all `NEST` packages from October 2022 is also available [here](https://github.com/insightsengineering/depository#readme).
+A stable release of all NEST packages from October 2022 is also available [here](https://github.com/insightsengineering/depository#readme).
 
 See package vignettes `browseVignettes(package = "tern")` for usage of this package.
 
 ## Related
 
 * [`rtables`](https://insightsengineering.github.io/rtables/main/) - table engine used
-* [TLG Catalog](https://insightsengineering.github.io/tlg-catalog/) - examples for clinical trials tables and graphs
+* [TLG Catalog](https://insightsengineering.github.io/tlg-catalog/) - website showcasing many examples of clinical trial tables, listings, and graphs
 * [`teal.modules.clinical`](https://insightsengineering.github.io/teal.modules.clinical/main/) - `teal` modules for interactive data analysis
 
 ## Acknowledgment
