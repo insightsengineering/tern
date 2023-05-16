@@ -19,15 +19,7 @@ s_compare(x, .ref_group, .in_ref_col, ...)
 
 \method{s_compare}{numeric}(x, .ref_group, .in_ref_col, ...)
 
-\method{s_compare}{factor}(
-  x,
-  .ref_group,
-  .in_ref_col,
-  denom = "n",
-  na.rm = TRUE,
-  na_level = "<Missing>",
-  ...
-)
+\method{s_compare}{factor}(x, .ref_group, .in_ref_col, denom = "n", na.rm = TRUE, ...)
 
 \method{s_compare}{character}(
   x,
@@ -35,7 +27,6 @@ s_compare(x, .ref_group, .in_ref_col, ...)
   .in_ref_col,
   denom = "n",
   na.rm = TRUE,
-  na_level = "<Missing>",
   .var,
   verbose = TRUE,
   ...
@@ -47,15 +38,7 @@ a_compare(x, .ref_group, .in_ref_col, ..., .var)
 
 \method{a_compare}{numeric}(x, .ref_group, .in_ref_col, ...)
 
-\method{a_compare}{factor}(
-  x,
-  .ref_group,
-  .in_ref_col,
-  denom = "n",
-  na.rm = TRUE,
-  na_level = "<Missing>",
-  ...
-)
+\method{a_compare}{factor}(x, .ref_group, .in_ref_col, denom = "n", na.rm = TRUE, ...)
 
 \method{a_compare}{character}(
   x,
@@ -63,7 +46,6 @@ a_compare(x, .ref_group, .in_ref_col, ..., .var)
   .in_ref_col,
   denom = "n",
   na.rm = TRUE,
-  na_level = "<Missing>",
   .var,
   verbose = TRUE,
   ...
@@ -98,8 +80,6 @@ compare_vars(
 can only be \code{n} (number of values in this row and column intersection).}
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
-
-\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors with custom \code{string}.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
@@ -192,8 +172,6 @@ will be generated correctly. In particular for sparse tables this very likely ca
 Therefore it is always better to manually convert character variables to factors during pre-processing.
 \item For \code{compare_vars()}, the column split must define a reference group via \code{ref_group} so that the comparison
 is well defined.
-\item When factor variables contains \code{NA}, it is expected that \code{NA} values have been conveyed to \code{na_level}
-appropriately beforehand via \code{\link[=df_explicit_na]{df_explicit_na()}}.
 }
 }
 \examples{

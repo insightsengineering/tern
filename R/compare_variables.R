@@ -16,8 +16,6 @@
 #'   Therefore it is always better to manually convert character variables to factors during pre-processing.
 #' * For `compare_vars()`, the column split must define a reference group via `ref_group` so that the comparison
 #'   is well defined.
-#' * When factor variables contains `NA`, it is expected that `NA` values have been conveyed to `na_level`
-#'   appropriately beforehand via [df_explicit_na()].
 #'
 #' @seealso Relevant constructor function [create_afun_compare()], and [s_summary()] which is used internally
 #'   to compute a summary within `s_compare()`.
@@ -104,24 +102,22 @@ s_compare.factor <- function(x,
                              .in_ref_col,
                              denom = "n",
                              na.rm = TRUE, # nolint
-                             na_level = "<Missing>",
                              ...) {
   checkmate::assert_flag(.in_ref_col)
-  assert_valid_factor(x, any.missing = FALSE)
-  assert_valid_factor(.ref_group, any.missing = FALSE)
+  assert_valid_factor(x)
+  assert_valid_factor(.ref_group)
   denom <- match.arg(denom)
 
   y <- s_summary.factor(
     x = x,
     denom = denom,
     na.rm = na.rm,
-    na_level = na_level,
     ...
   )
 
   if (na.rm) {
-    x <- fct_discard(x, na_level)
-    .ref_group <- fct_discard(.ref_group, na_level)
+    x <- x[!is.na(x)] %>% fct_discard("<Missing>")
+    .ref_group <- .ref_group[!is.na(.ref_group)] %>% fct_discard("<Missing>")
   }
 
   checkmate::assert_factor(x, levels = levels(.ref_group), min.levels = 2)
@@ -171,19 +167,17 @@ s_compare.character <- function(x,
                                 .in_ref_col,
                                 denom = "n",
                                 na.rm = TRUE, # nolint
-                                na_level = "<Missing>",
                                 .var,
                                 verbose = TRUE,
                                 ...) {
-  x <- as_factor_keep_attributes(x, x_name = .var, na_level = na_level, verbose = verbose)
-  .ref_group <- as_factor_keep_attributes(.ref_group, x_name = .var, na_level = na_level, verbose = verbose)
+  x <- as_factor_keep_attributes(x, x_name = .var, verbose = verbose)
+  .ref_group <- as_factor_keep_attributes(.ref_group, x_name = .var, verbose = verbose)
   s_compare(
     x = x,
     .ref_group = .ref_group,
     .in_ref_col = .in_ref_col,
     denom = denom,
     na.rm = na.rm,
-    na_level = na_level,
     ...
   )
 }
