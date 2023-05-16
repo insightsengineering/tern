@@ -650,6 +650,46 @@
       [1] 0
       
 
+# s_summary works when factors have NA levels
+
+    Code
+      res
+    Output
+      $n
+      [1] 7
+      
+      $count
+      $count$Female
+      [1] 2
+      
+      $count$Male
+      [1] 2
+      
+      $count$Unknown
+      [1] 2
+      
+      $count$<NA>
+      [1] 1
+      
+      
+      $count_fraction
+      $count_fraction$Female
+      [1] 2.0000000 0.2857143
+      
+      $count_fraction$Male
+      [1] 2.0000000 0.2857143
+      
+      $count_fraction$Unknown
+      [1] 2.0000000 0.2857143
+      
+      $count_fraction$<NA>
+      [1] 1.0000000 0.1428571
+      
+      
+      $n_blq
+      [1] 0
+      
+
 # s_summary works with factors with NA values handled and correctly removes them by default
 
     Code

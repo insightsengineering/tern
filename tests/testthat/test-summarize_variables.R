@@ -69,9 +69,12 @@ testthat::test_that("s_summary fails with factors that have no levels or have em
   testthat::expect_error(s_summary(factor()))
 })
 
-testthat::test_that("s_summary fails when factors have NA levels", {
+testthat::test_that("s_summary works when factors have NA levels", {
   x <- factor(c("Female", "Male", "Female", "Male", "Unknown", "Unknown", NA))
-  testthat::expect_error(s_summary(x, na.rm = FALSE))
+  result <- s_summary(x, na.rm = FALSE)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_summary works with factors with NA values handled and correctly removes them by default", {

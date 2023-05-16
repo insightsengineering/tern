@@ -125,7 +125,6 @@ s_summary <- function(x,
                       denom,
                       .N_row, # nolint
                       .N_col, # nolint
-                      na_level,
                       .var,
                       ...) {
   checkmate::assert_flag(na.rm)
@@ -216,7 +215,6 @@ s_summary.numeric <- function(x,
                               denom,
                               .N_row, # nolint
                               .N_col, # nolint
-                              na_level,
                               .var,
                               control = control_summarize_vars(),
                               ...) {
@@ -315,8 +313,6 @@ s_summary.numeric <- function(x,
 #' @note
 #' * If `x` is an empty `factor`, a list is still returned for `counts` with one element
 #'   per factor level. If there are no levels in `x`, the function fails.
-#' * If `x` contains `NA`, it is expected that `NA` have been conveyed to `na_level`
-#'   appropriately beforehand with [df_explicit_na()] or [explicit_na()].
 #'
 #' @method s_summary factor
 #'
@@ -345,12 +341,11 @@ s_summary.factor <- function(x,
                              denom = c("n", "N_row", "N_col"),
                              .N_row, # nolint
                              .N_col, # nolint
-                             na_level = "<Missing>",
                              ...) {
-  assert_valid_factor(x, any.missing = FALSE)
+  assert_valid_factor(x)
   denom <- match.arg(denom)
 
-  if (na.rm) x <- fct_discard(x, na_level)
+  if (na.rm) x <- x[!is.na(x)] %>% fct_discard("<Missing>")
 
   y <- list()
 
@@ -400,15 +395,13 @@ s_summary.character <- function(x,
                                 denom = c("n", "N_row", "N_col"),
                                 .N_row, # nolint
                                 .N_col, # nolint
-                                na_level = "<Missing>",
                                 .var,
                                 verbose = TRUE,
                                 ...) {
-  y <- as_factor_keep_attributes(x, x_name = .var, na_level = na_level, verbose = verbose)
+  y <- as_factor_keep_attributes(x, x_name = .var, verbose = verbose)
   s_summary(
     x = y,
     na.rm = na.rm,
-    na_level = na_level,
     denom = denom,
     .N_row = .N_row,
     .N_col = .N_col,
@@ -722,7 +715,6 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 summarize_vars <- function(lyt,
                            vars,
                            var_labels = vars,
-                           na_level = NA_character_,
                            nested = TRUE,
                            ...,
                            show_labels = "default",
@@ -739,7 +731,6 @@ summarize_vars <- function(lyt,
     vars = vars,
     var_labels = var_labels,
     afun = afun,
-    na_str = na_level,
     nested = nested,
     extra_args = list(...),
     inclNAs = TRUE,
