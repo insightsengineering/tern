@@ -33,4 +33,5 @@ control_logistic(conf_level = 0.9)
 
 # Use a different response definition.
 control_logistic(response_definition = "I(response \%in\% c('CR', 'PR'))")
+
 }

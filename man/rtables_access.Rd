@@ -30,10 +30,9 @@ check_names_indices(table_row, col_names = NULL, col_indices = NULL)
 
 \item{col_names}{(\code{character})\cr the names of the columns to extract from.}
 
-\item{col_indices}{(\code{integer})\cr the indices of the columns to extract from.
-If \code{col_names} are provided, then these are inferred from the names of
-\code{table_row}. (Note that this currently only works well with a single
-column split.)}
+\item{col_indices}{(\code{integer})\cr the indices of the columns to extract from. If \code{col_names} are provided,
+then these are inferred from the names of \code{table_row}. Note that this currently only works well with a single
+column split.}
 
 \item{table}{(\code{VTableNodeInfo})\cr an occurrence table or row.}
 }
@@ -70,8 +69,8 @@ column split.)}
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 These are a couple of functions that help with accessing the data in \code{rtables} objects.
-Currently these work for occurrence tables, which are defined
-as having a count as the first element and a fraction as the second element in each cell.
+Currently these work for occurrence tables, which are defined as having a count as the first
+element and a fraction as the second element in each cell.
 }
 \section{Functions}{
 \itemize{
@@ -81,12 +80,10 @@ cell and from specified columns in a \code{TableRow}. Defaults to all columns.
 \item \code{h_row_counts()}: Helper function that extracts row values and checks if they are
 convertible to integers (\code{integerish} values).
 
-\item \code{h_row_fractions()}: helper function to extract fractions from specified columns
-in a \code{TableRow}. More specifically it extracts the second values from each
-content cell and checks it is a fraction.
+\item \code{h_row_fractions()}: helper function to extract fractions from specified columns in a \code{TableRow}.
+More specifically it extracts the second values from each content cell and checks it is a fraction.
 
-\item \code{h_col_counts()}: Helper function to extract column counts from specified columns
-in a table.
+\item \code{h_col_counts()}: Helper function to extract column counts from specified columns in a table.
 
 \item \code{h_content_first_row()}: Helper function to get first row of content table of current table.
 

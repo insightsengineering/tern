@@ -5,6 +5,8 @@
 #' Summarize results of ANCOVA. This can be used to analyze multiple endpoints and/or
 #' multiple timepoints within the same response variable `.var`.
 #'
+#' @inheritParams argument_convention
+#'
 #' @name summarize_ancova
 NULL
 
@@ -13,17 +15,14 @@ NULL
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams argument_convention
-#' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called
-#'   in `.var` and `variables`.
-#' @param variables (named `list` of `strings`)\cr list of additional analysis variables, with
-#'   expected elements:
-#'   - `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
-#'     groups will be summarized. Specifically, the first level of `arm` variable is taken as the
-#'     reference group.
-#'   - `covariates` (`character`)\cr a vector that can contain single variable names (such as
-#'     `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
+#' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called in `.var` and `variables`.
+#' @param variables (named `list` of `strings`)\cr list of additional analysis variables, with expected elements:
+#'   * `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple groups will be
+#'     summarized. Specifically, the first level of `arm` variable is taken as the reference group.
+#'   * `covariates` (`character`)\cr a vector that can contain single variable names (such as `"X1"`), and/or
+#'     interaction terms indicated by `"X1 * X2"`.
 #' @param interaction_item (`character`)\cr name of the variable that should have interactions
-#'   with arm. if the interaction is not needed, the default option is NULL.
+#'   with arm. if the interaction is not needed, the default option is `NULL`.
 #'
 #' @return The summary of a linear model.
 #'
@@ -83,11 +82,9 @@ h_ancova <- function(.var,
 #' @describeIn summarize_ancova Statistics function that produces a named list of results
 #'   of the investigated linear model.
 #'
-#' @inheritParams argument_convention
 #' @inheritParams h_ancova
-#' @param interaction_y (`character`)\cr a selected item inside of the interaction_item column
-#'   which will be used to select the specific ANCOVA results. if the interaction is not
-#'   needed, the default option is FALSE
+#' @param interaction_y (`character`)\cr a selected item inside of the interaction_item column which will be used
+#'   to select the specific ANCOVA results. if the interaction is not needed, the default option is `FALSE`.
 #'
 #' @return
 #' * `s_ancova()` returns a named list of 5 statistics:
@@ -236,14 +233,11 @@ a_ancova <- make_afun(
 
 #' @describeIn summarize_ancova Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
-#' @inheritParams argument_convention
 #'
 #' @return
 #' * `summarize_ancova()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_ancova()` to the table layout.
-#'
-#' @export
 #'
 #' @examples
 #' basic_table() %>%
@@ -263,6 +257,8 @@ a_ancova <- make_afun(
 #'     conf_level = 0.95, var_labels = "Adjusted comparison (covariates: Sepal.Length and Sepal.Width)"
 #'   ) %>%
 #'   build_table(iris)
+#'
+#' @export
 summarize_ancova <- function(lyt,
                              vars,
                              var_labels,

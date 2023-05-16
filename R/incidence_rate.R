@@ -105,7 +105,6 @@ s_incidence_rate <- function(df,
   )
 }
 
-
 #' @describeIn incidence_rate Formatted analysis function which is used as `afun`
 #'   in `estimate_incidence_rate()`.
 #'

@@ -112,5 +112,5 @@ result
 
 }
 \seealso{
-\link{summarize_vars}, \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
+\code{\link[=summarize_vars]{summarize_vars()}}, \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
 }

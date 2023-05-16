@@ -55,4 +55,5 @@ l <- basic_table() \%>\%
   analyze(vars = "AVAL", afun = afun)
 
 build_table(l, df = dta_test)
+
 }

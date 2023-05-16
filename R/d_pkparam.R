@@ -4,10 +4,10 @@
 #'
 #' @return `data.frame` of PK parameters
 #'
-#' @export
-#'
 #' @examples
 #' pk_reference_dataset <- d_pkparam()
+#'
+#' @export
 d_pkparam <- function() {
   pk_dataset <- as.data.frame(matrix(
     c(

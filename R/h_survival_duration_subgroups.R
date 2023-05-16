@@ -40,7 +40,6 @@
 NULL
 
 #' @describeIn h_survival_duration_subgroups helper to prepare a data frame of median survival times by arm.
-#' @inheritParams h_survival_duration_subgroups
 #'
 #' @return
 #' * `h_survtime_df()` returns a `data.frame` with columns `arm`, `n`, `n_events`, and `median`.
@@ -389,8 +388,6 @@ h_coxph_subgroups_df <- function(variables,
 #'
 #' Split a dataframe into a non-nested list of subsets.
 #'
-#' @details Main functionality is to prepare data for use in forest plot layouts.
-#'
 #' @inheritParams survival_duration_subgroups
 #' @param data (`data.frame`)\cr dataset to split.
 #' @param subgroups (`character`)\cr names of factor variables from `data` used to create subsets.
@@ -398,6 +395,8 @@ h_coxph_subgroups_df <- function(variables,
 #'   determines the order in the downstream table.
 #'
 #' @return A list with subset data (`df`) and metadata about the subset (`df_labels`).
+#'
+#' @details Main functionality is to prepare data for use in forest plot layouts.
 #'
 #' @examples
 #' df <- data.frame(

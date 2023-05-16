@@ -23,11 +23,10 @@ decorate_grob(
 )
 }
 \arguments{
-\item{grob}{a grid grob object, optionally \code{NULL} if only a \code{grob} with
-the decoration should be shown.}
+\item{grob}{a grid grob object, optionally \code{NULL} if only a \code{grob} with the decoration should be shown.}
 
-\item{titles}{vector of character strings. Vector elements are separated by a
-newline and strings are wrapped according to the page with.}
+\item{titles}{vector of character strings. Vector elements are separated by a newline and strings are wrapped
+according to the page width.}
 
 \item{footnotes}{vector of character string. Same rules as for \code{titles}.}
 
@@ -37,8 +36,7 @@ newline and strings are wrapped according to the page with.}
 
 \item{width_footnotes}{unit object}
 
-\item{border}{boolean, whether a a border should be drawn around the plot or
-not.}
+\item{border}{boolean, whether a a border should be drawn around the plot or not.}
 
 \item{margins}{unit object of length 4}
 
@@ -69,8 +67,7 @@ This function is useful to label grid grobs (also \code{ggplot2}, and \code{latt
 with title, footnote, and page numbers.
 }
 \details{
-The titles and footnotes will be ragged, i.e. each title will be wrapped
-individually.
+The titles and footnotes will be ragged, i.e. each title will be wrapped individually.
 }
 \examples{
 library(grid)
@@ -129,7 +126,7 @@ grid.draw(
   )
 )
 
-## with \code{ggplot2}
+## with ggplot2
 library(ggplot2)
 
 p_gg <- ggplot2::ggplot(iris, aes(Sepal.Length, Sepal.Width, col = Species)) +
@@ -146,7 +143,7 @@ grid.draw(
   )
 )
 
-## with \code{lattice}
+## with lattice
 library(lattice)
 
 xyplot(Sepal.Length ~ Petal.Length, data = iris, col = iris$Species)
@@ -161,7 +158,7 @@ grid.draw(
   )
 )
 
-# with \code{gridExtra} - no borders
+# with gridExtra - no borders
 library(gridExtra)
 grid.newpage()
 grid.draw(
@@ -174,4 +171,5 @@ grid.draw(
     border = FALSE
   )
 )
+
 }

@@ -66,7 +66,7 @@ testthat::test_that("a_coxreg works as expected", {
 
 # summarize_coxreg ----
 
-testthat::test_that("summarize_coxreg adds the univariable Cox regression layer to rtables", {
+testthat::test_that("summarize_coxreg adds the univariate Cox regression layer to rtables", {
   lyt <- basic_table() %>%
     summarize_coxreg(
       variables = variables,
@@ -108,7 +108,7 @@ testthat::test_that("summarize_coxreg .section_div argument works", {
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("summarize_coxreg works with interactions in univariable case", {
+testthat::test_that("summarize_coxreg works with interactions in univariate case", {
   variables <- list(time = "TIME", event = "STATUS", arm = "ARMCD", covariates = c("AGE", "COVAR1", "COVAR2"))
 
   result <- basic_table() %>%
@@ -122,7 +122,7 @@ testthat::test_that("summarize_coxreg works with interactions in univariable cas
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("summarize_coxreg 'at' argument works in univariable case", {
+testthat::test_that("summarize_coxreg 'at' argument works in univariate case", {
   variables <- list(time = "TIME", event = "STATUS", arm = "ARMCD", covariates = c("AGE", "COVAR2"))
 
   result <- basic_table() %>%
@@ -150,7 +150,7 @@ testthat::test_that("summarize_coxreg na_level argument works", {
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("summarize_coxreg works without treatment arm in univariable case", {
+testthat::test_that("summarize_coxreg works without treatment arm in univariate case", {
   result <- basic_table() %>%
     summarize_coxreg(
       variables = variables_no_arm,
@@ -162,7 +162,7 @@ testthat::test_that("summarize_coxreg works without treatment arm in univariable
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("summarize_coxreg works with numeric covariate without treatment arm in univariable case", {
+testthat::test_that("summarize_coxreg works with numeric covariate without treatment arm in univariate case", {
   variables_no_arm <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "AGE"))
 
   result <- basic_table() %>%

@@ -2,21 +2,18 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Various tests were implemented to test the difference between two
-#' proportions.
+#' Various tests were implemented to test the difference between two proportions.
 #'
-#' @param tbl (`matrix`)\cr matrix with two groups in rows and the binary response
-#'   (`TRUE`/`FALSE`) in columns.
+#' @inheritParams argument_convention
+#' @param tbl (`matrix`)\cr matrix with two groups in rows and the binary response (`TRUE`/`FALSE`) in columns.
 #'
 #' @seealso [h_prop_diff_test]
 #'
 #' @name prop_diff_test
 NULL
 
-#' @describeIn prop_diff_test Statistics function which tests the difference
-#'  between two proportions.
+#' @describeIn prop_diff_test Statistics function which tests the difference between two proportions.
 #'
-#' @inheritParams argument_convention
 #' @param method (`string`)\cr one of `chisq`, `cmh`, `fisher`, or `schouten`; specifies the test used
 #'   to calculate the p-value.
 #'
@@ -25,7 +22,6 @@ NULL
 #'   describing the method used. The p-value tests the null hypothesis that proportions in two groups are the same.
 #'
 #' @examples
-#'
 #' # Statistics function
 #' dta <- data.frame(
 #'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
@@ -97,8 +93,7 @@ s_test_proportion_diff <- function(df,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This is an auxiliary function that describes the analysis in
-#' `s_test_proportion_diff`.
+#' This is an auxiliary function that describes the analysis in `s_test_proportion_diff`.
 #'
 #' @inheritParams s_test_proportion_diff
 #'
@@ -146,14 +141,11 @@ a_test_proportion_diff <- make_afun(
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @param ... other arguments are passed to [s_test_proportion_diff()].
-#' @inheritParams argument_convention
 #'
 #' @return
 #' * `test_proportion_diff()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_test_proportion_diff()` to the table layout.
-#'
-#' @export
 #'
 #' @examples
 #' # With `rtables` pipelines.
@@ -165,6 +157,8 @@ a_test_proportion_diff <- make_afun(
 #'   )
 #'
 #' build_table(l, df = dta)
+#'
+#' @export
 test_proportion_diff <- function(lyt,
                                  vars,
                                  ...,
@@ -195,21 +189,18 @@ test_proportion_diff <- function(lyt,
 
 #' Helper Functions to Test Proportion Differences
 #'
-#' Helper functions to implement various tests on the difference between two
-#' proportions.
+#' Helper functions to implement various tests on the difference between two proportions.
 #'
-#' @param tbl (`matrix`)\cr matrix with two groups in rows and the binary response
-#'   (`TRUE`/`FALSE`) in columns.
+#' @param tbl (`matrix`)\cr matrix with two groups in rows and the binary response (`TRUE`/`FALSE`) in columns.
 #'
 #' @return A p-value.
 #'
-#' @seealso [prop_diff_test())] for implementation of these helper functions.
+#' @seealso [prop_diff_test()] for implementation of these helper functions.
 #'
 #' @name h_prop_diff_test
 NULL
 
-#' @describeIn h_prop_diff_test performs Chi-Squared test.
-#'   Internally calls [stats::prop.test()].
+#' @describeIn h_prop_diff_test performs Chi-Squared test. Internally calls [stats::prop.test()].
 #'
 #' @examples
 #' # Non-stratified proportion difference test
@@ -241,9 +232,8 @@ prop_chisq <- function(tbl) {
   stats::prop.test(tbl, correct = FALSE)$p.value
 }
 
-#' @describeIn h_prop_diff_test performs stratified Cochran-Mantel-Haenszel test.
-#'   Internally calls [stats::mantelhaen.test()]. Note that strata with less than two observations
-#'   are automatically discarded.
+#' @describeIn h_prop_diff_test performs stratified Cochran-Mantel-Haenszel test. Internally calls
+#'   [stats::mantelhaen.test()]. Note that strata with less than two observations are automatically discarded.
 #'
 #' @param ary (`array`, 3 dimensions)\cr array with two groups in rows, the binary response
 #'   (`TRUE`/`FALSE`) in columns, and the strata in the third dimension.
@@ -277,8 +267,7 @@ prop_cmh <- function(ary) {
   stats::mantelhaen.test(ary, correct = FALSE)$p.value
 }
 
-#' @describeIn h_prop_diff_test performs the Chi-Squared test with Schouten
-#'   correction.
+#' @describeIn h_prop_diff_test performs the Chi-Squared test with Schouten correction.
 #'
 #' @seealso For information on the Schouten correction (Schouten, 1980),
 #'   visit https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.4710220305.
@@ -314,8 +303,7 @@ prop_schouten <- function(tbl) {
   1 - stats::pchisq(t_schouten, df = 1)
 }
 
-#' @describeIn h_prop_diff_test performs the Fisher's exact test.
-#'   Internally calls [stats::fisher.test()].
+#' @describeIn h_prop_diff_test performs the Fisher's exact test. Internally calls [stats::fisher.test()].
 #'
 #' @examples
 #' ## Fisher's exact test

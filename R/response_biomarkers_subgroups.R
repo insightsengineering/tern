@@ -113,8 +113,6 @@ tabulate_rsp_biomarkers <- function(df,
 #'
 #' @seealso [h_logistic_mult_cont_df()] which is used internally.
 #'
-#' @export
-#'
 #' @examples
 #' library(dplyr)
 #' library(forcats)
@@ -165,6 +163,8 @@ tabulate_rsp_biomarkers <- function(df,
 #'   )
 #' )
 #' df_grouped
+#'
+#' @export
 extract_rsp_biomarkers <- function(variables,
                                    data,
                                    groups_lists = list(),

@@ -27,6 +27,7 @@ NULL
 #' @describeIn h_response_biomarkers_subgroups helps with converting the "response" function variable list
 #'   to the "logistic regression" variable list. The reason is that currently there is an
 #'   inconsistency between the variable names accepted by `extract_rsp_subgroups()` and `fit_logistic()`.
+#'
 #' @param biomarker (`string`)\cr the name of the biomarker variable.
 #'
 #' @return
@@ -159,6 +160,7 @@ h_logistic_mult_cont_df <- function(variables,
 
 #' @describeIn h_response_biomarkers_subgroups prepares a single sub-table given a `df_sub` containing
 #'   the results for a single biomarker.
+#'
 #' @param df (`data.frame`)\cr results for a single biomarker, as part of what is
 #'   returned by [extract_rsp_biomarkers()] (it needs a couple of columns which are
 #'   added by that high-level function relative to what is returned by [h_logistic_mult_cont_df()],

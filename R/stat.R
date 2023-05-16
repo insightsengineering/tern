@@ -2,24 +2,17 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Convenient function for calculating the mean confidence interval.
-#' It calculates the arithmetic as well as the geometric mean.
-#' It can be used as a `ggplot` helper function for plotting.
+#' Convenient function for calculating the mean confidence interval. It calculates the arithmetic as well as the
+#' geometric mean. It can be used as a `ggplot` helper function for plotting.
 #'
 #' @inheritParams argument_convention
-#' @param n_min (`number`)\cr a minimum number of non-missing `x` to estimate
-#'     the confidence interval for mean.
-#' @param gg_helper (`logical`)\cr `TRUE` when output should be aligned
-#' for the use with `ggplot`.
-#' @param geom_mean (`logical`)\cr `TRUE` when the geometric mean should be
-#' calculated
+#' @param n_min (`number`)\cr a minimum number of non-missing `x` to estimate the confidence interval for mean.
+#' @param gg_helper (`logical`)\cr `TRUE` when output should be aligned for the use with `ggplot`.
+#' @param geom_mean (`logical`)\cr `TRUE` when the geometric mean should be calculated.
 #'
 #' @return A named `vector` of values `mean_ci_lwr` and `mean_ci_upr`.
 #'
-#' @export
-#'
 #' @examples
-#'
 #' stat_mean_ci(sample(10), gg_helper = FALSE)
 #'
 #' p <- ggplot2::ggplot(mtcars, ggplot2::aes(cyl, mpg)) +
@@ -41,6 +34,8 @@
 #'   fun.args = list(conf_level = 0.5, geom_mean = TRUE),
 #'   geom = "errorbar"
 #' )
+#'
+#' @export
 stat_mean_ci <- function(x,
                          conf_level = 0.95,
                          na.rm = TRUE, # nolint
@@ -86,21 +81,17 @@ stat_mean_ci <- function(x,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Convenient function for calculating the median confidence interval.
-#' It can be used as a `ggplot` helper function for plotting.
+#' Convenient function for calculating the median confidence interval. It can be used as a `ggplot` helper
+#' function for plotting.
 #'
 #' @inheritParams argument_convention
-#' @param gg_helper (`logical`)\cr `TRUE` when output should be aligned
-#' for the use with `ggplot`.
+#' @param gg_helper (`logical`)\cr `TRUE` when output should be aligned for the use with `ggplot`.
 #'
 #' @details The function was adapted from `DescTools/versions/0.99.35/source`
 #'
 #' @return A named `vector` of values `median_ci_lwr` and `median_ci_upr`.
 #'
-#' @export
-#'
 #' @examples
-#'
 #' stat_median_ci(sample(10), gg_helper = FALSE)
 #'
 #' p <- ggplot2::ggplot(mtcars, ggplot2::aes(cyl, mpg)) +
@@ -109,6 +100,8 @@ stat_mean_ci <- function(x,
 #'   fun.data = stat_median_ci,
 #'   geom = "errorbar"
 #' )
+#'
+#' @export
 stat_median_ci <- function(x,
                            conf_level = 0.95,
                            na.rm = TRUE, # nolint
@@ -148,9 +141,8 @@ stat_median_ci <- function(x,
 #' Convenient function for calculating the two-sided p-value of the mean.
 #'
 #' @inheritParams argument_convention
-#' @param n_min (`number`)\cr a minimum number of non-missing `x` to estimate
-#'     the p-value of the mean.
-#' @param test_mean (`number`)\cr mean value to test under the null hypothesis.
+#' @param n_min (`numeric`)\cr a minimum number of non-missing `x` to estimate the p-value of the mean.
+#' @param test_mean (`numeric`)\cr mean value to test under the null hypothesis.
 #'
 #' @return A p-value.
 #'

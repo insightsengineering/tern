@@ -19,6 +19,6 @@ An \code{rtables} table object with statistics in columns.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Please see \code{\link[=h_tab_surv_one_biomarker]{h_tab_surv_one_biomarker()}} and \code{\link[=h_tab_rsp_one_biomarker]{h_tab_rsp_one_biomarker()}},
-which use this function for examples. This function is a wrapper for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
+Please see \code{\link[=h_tab_surv_one_biomarker]{h_tab_surv_one_biomarker()}} and \code{\link[=h_tab_rsp_one_biomarker]{h_tab_rsp_one_biomarker()}}, which use this function for examples.
+This function is a wrapper for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 }

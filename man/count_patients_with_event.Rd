@@ -129,6 +129,7 @@ s_count_patients_with_event(
   denom = "N_col",
   .N_col = 456
 )
+
 # `a_count_patients_with_event()`
 
 a_count_patients_with_event(
@@ -138,6 +139,7 @@ a_count_patients_with_event(
   .N_col = 100,
   .N_row = 100
 )
+
 # `count_patients_with_event()`
 
 lyt <- basic_table() \%>\%
@@ -169,6 +171,7 @@ lyt <- basic_table() \%>\%
     table_names = "tbl_rel_fatal"
   )
 build_table(lyt, tern_ex_adae, alt_counts_df = tern_ex_adsl)
+
 }
 \seealso{
 \link{count_patients_with_flags}

@@ -93,6 +93,7 @@ step_matrix <- fit_rsp_step(
 )
 step_data <- broom::tidy(step_matrix)
 g_step(step_data)
+
 }
 \seealso{
 Custom tidy method \code{\link[=tidy.step]{tidy.step()}}.

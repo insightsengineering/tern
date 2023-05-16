@@ -33,18 +33,17 @@
 NULL
 
 #' @describeIn h_response_subgroups helper to prepare a data frame of binary responses by arm.
-#' @inheritParams h_response_subgroups
 #'
 #' @return
 #' * `h_proportion_df()` returns a `data.frame` with columns `arm`, `n`, `n_rsp`, and `prop`.
 #'
-#' @export
 #' @examples
-#'
 #' h_proportion_df(
 #'   c(TRUE, FALSE, FALSE),
 #'   arm = factor(c("A", "A", "B"), levels = c("A", "B"))
 #' )
+#'
+#' @export
 h_proportion_df <- function(rsp, arm) {
   checkmate::assert_logical(rsp)
   assert_valid_factor(arm, len = length(rsp))
@@ -88,8 +87,6 @@ h_proportion_df <- function(rsp, arm) {
 #' * `h_proportion_subgroups_df()` returns a `data.frame` with columns `arm`, `n`, `n_rsp`, `prop`, `subgroup`,
 #'   `var`, `var_label`, and `row_type`.
 #'
-#' @export
-#'
 #' @examples
 #' h_proportion_subgroups_df(
 #'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
@@ -108,6 +105,8 @@ h_proportion_df <- function(rsp, arm) {
 #'     )
 #'   )
 #' )
+#'
+#' @export
 h_proportion_subgroups_df <- function(variables,
                                       data,
                                       groups_lists = list(),
@@ -157,8 +156,6 @@ h_proportion_subgroups_df <- function(variables,
 #' * `h_odds_ratio_df()` returns a `data.frame` with columns `arm`, `n_tot`, `or`, `lcl`, `ucl`, `conf_level`, and
 #'   optionally `pval` and `pval_label`.
 #'
-#' @export
-#'
 #' @examples
 #' # Unstratatified analysis.
 #' h_odds_ratio_df(
@@ -176,6 +173,8 @@ h_proportion_subgroups_df <- function(variables,
 #'   strata_data = adrs_f[, c("STRATA1", "STRATA2")],
 #'   method = "cmh"
 #' )
+#'
+#' @export
 h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, method = NULL) {
   assert_valid_factor(arm, n.levels = 2, len = length(rsp))
 
@@ -284,8 +283,6 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
 #' * `h_odds_ratio_subgroups_df()` returns a `data.frame` with columns `arm`, `n_tot`, `or`, `lcl`, `ucl`,
 #'   `conf_level`, `subgroup`, `var`, `var_label`, and `row_type`.
 #'
-#' @export
-#'
 #' @examples
 #' # Unstratified analysis.
 #' h_odds_ratio_subgroups_df(
@@ -320,6 +317,8 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
 #'     )
 #'   )
 #' )
+#'
+#' @export
 h_odds_ratio_subgroups_df <- function(variables,
                                       data,
                                       groups_lists = list(),

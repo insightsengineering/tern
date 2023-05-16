@@ -50,4 +50,5 @@ h_tbl_coxph_pairwise(
   control_coxph_pw = control_coxph(conf_level = 0.9)
 )
 }
+
 }

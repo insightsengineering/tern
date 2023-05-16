@@ -5,6 +5,8 @@
 #' Estimate the proportion along with confidence interval of a proportion
 #' regarding the level of a factor.
 #'
+#' @inheritParams argument_convention
+#'
 #' @seealso Relevant description function [d_onco_rsp_label()].
 #'
 #' @name estimate_multinomial_rsp
@@ -21,7 +23,6 @@ NULL
 #' @return Response labels.
 #'
 #' @seealso [estimate_multinomial_rsp()]
-#' @export
 #'
 #' @examples
 #' d_onco_rsp_label(
@@ -33,8 +34,9 @@ NULL
 #' d_onco_rsp_label(
 #'   c("CR", "PR", "hello", "hi")
 #' )
-d_onco_rsp_label <- function(x) { # nolint
-
+#'
+#' @export
+d_onco_rsp_label <- function(x) {
   x <- as.character(x)
   desc <- c(
     CR           = "Complete Response (CR)",
@@ -62,22 +64,19 @@ d_onco_rsp_label <- function(x) { # nolint
   return(factor(values_label, levels = c(intersect(desc, values_label), setdiff(values_label, desc))))
 }
 
-
 #' @describeIn estimate_multinomial_rsp Statistics function which feeds the length of `x` as number
 #'   of successes, and `.N_col` as total number of successes and failures into [s_proportion()].
-#'
-#' @inheritParams argument_convention
 #'
 #' @return
 #' * `s_length_proportion()` returns statistics from [s_proportion()].
 #'
-#' @export
-#'
 #' @examples
 #' s_length_proportion(rep("CR", 10), .N_col = 100)
 #' s_length_proportion(factor(character(0)), .N_col = 100)
+#'
+#' @export
 s_length_proportion <- function(x,
-                                .N_col, # nolint snake_case
+                                .N_col, # nolint
                                 ...) {
   checkmate::assert_multi_class(x, classes = c("factor", "character"))
   checkmate::assert_vector(x, min.len = 0, max.len = .N_col)
@@ -95,11 +94,11 @@ s_length_proportion <- function(x,
 #' @return
 #' * `a_length_proportion()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @export
-#'
 #' @examples
 #' a_length_proportion(rep("CR", 10), .N_col = 100)
 #' a_length_proportion(factor(character(0)), .N_col = 100)
+#'
+#' @export
 a_length_proportion <- make_afun(
   s_length_proportion,
   .formats = c(
@@ -111,8 +110,6 @@ a_length_proportion <- make_afun(
 #' @describeIn estimate_multinomial_rsp Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()] and
 #'   [rtables::summarize_row_groups()].
-#'
-#' @inheritParams argument_convention
 #'
 #' @return
 #' * `estimate_multinomial_response()` returns a layout object suitable for passing to further layouting functions,

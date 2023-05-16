@@ -95,7 +95,7 @@ s_count_abnormal_by_marked <- function(df,
   checkmate::assert_multi_class(df[[variables$id]], classes = c("factor", "character"))
 
 
-  first_row <- .spl_context[.spl_context$split == variables[["param"]], ] # nolint
+  first_row <- .spl_context[.spl_context$split == variables[["param"]], ]
   # Patients in the denominator have at least one post-baseline visit.
   subj <- first_row$full_parent_df[[1]][[variables[["id"]]]]
   subj_cur_col <- subj[first_row$cur_col_subset[[1]]]
@@ -192,7 +192,6 @@ a_count_abnormal_by_marked <- make_afun(
 #'     )
 #'   ) %>%
 #'   build_table(df = df)
-#'
 #'
 #' basic_table() %>%
 #'   split_cols_by("ARMCD") %>%

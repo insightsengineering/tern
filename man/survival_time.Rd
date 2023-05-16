@@ -129,5 +129,6 @@ basic_table() \%>\%
     control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
   ) \%>\%
   build_table(df = adtte_f)
+
 }
 \keyword{internal}

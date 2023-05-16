@@ -61,12 +61,11 @@ by a statistics function.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{interaction_y}{(\code{character})\cr a selected item inside of the interaction_item column
-which will be used to select the specific ANCOVA results. if the interaction is not
-needed, the default option is FALSE}
+\item{interaction_y}{(\code{character})\cr a selected item inside of the interaction_item column which will be used
+to select the specific ANCOVA results. if the interaction is not needed, the default option is \code{FALSE}.}
 
 \item{interaction_item}{(\code{character})\cr name of the variable that should have interactions
-with arm. if the interaction is not needed, the default option is NULL.}
+with arm. if the interaction is not needed, the default option is \code{NULL}.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
@@ -175,5 +174,6 @@ basic_table() \%>\%
     conf_level = 0.95, var_labels = "Adjusted comparison (covariates: Sepal.Length and Sepal.Width)"
   ) \%>\%
   build_table(iris)
+
 }
 \keyword{internal}

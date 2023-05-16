@@ -64,8 +64,7 @@ analyze_patients_exposure_in_cols(
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
 
-\item{custom_label}{(\code{string} or \code{NULL})\cr if provided and \code{labelstr} is empty then this will
-be used as label.}
+\item{custom_label}{(\code{string} or \code{NULL})\cr if provided and \code{labelstr} is empty then this will be used as label.}
 
 \item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
@@ -135,8 +134,9 @@ function arguments and additional format arguments. This function is a wrapper f
 
 }}
 \note{
-As opposed to \code{\link[=summarize_patients_exposure_in_cols]{summarize_patients_exposure_in_cols()}} which generates content rows, this function
-generates data rows which will \emph{not} be repeated on multiple pages when pagination is used.
+As opposed to \code{\link[=summarize_patients_exposure_in_cols]{summarize_patients_exposure_in_cols()}} which generates content rows,
+\code{analyze_patients_exposure_in_cols()} generates data rows which will \emph{not} be repeated on multiple
+pages when pagination is used.
 }
 \examples{
 set.seed(1)

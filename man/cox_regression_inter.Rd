@@ -101,11 +101,9 @@ is obtained as $sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$.
 \itemize{
 \item \code{h_coxreg_inter_effect()}: S3 generic helper function to determine interaction effect.
 
-\item \code{h_coxreg_inter_effect(numeric)}: Estimate the interaction with a \code{numeric}
-covariate.
+\item \code{h_coxreg_inter_effect(numeric)}: Estimate the interaction with a \code{numeric} covariate.
 
-\item \code{h_coxreg_inter_effect(factor)}: Estimate the interaction with a \code{factor}
-covariate.
+\item \code{h_coxreg_inter_effect(factor)}: Estimate the interaction with a \code{factor} covariate.
 
 \item \code{h_coxreg_extract_interaction()}: A higher level function to get
 the results of the interaction test and the estimated values.
@@ -149,6 +147,7 @@ h_coxreg_extract_interaction(
   mod = mod, effect = "armcd", covar = "covar1", data = dta_bladder,
   control = control_coxreg()
 )
+
 mod <- coxph(Surv(time, status) ~ armcd * covar1, data = dta_bladder)
 result <- h_coxreg_inter_estimations(
   variable = "armcd", given = "covar1",

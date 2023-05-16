@@ -24,7 +24,6 @@
 #' @note For the default degree 0 the `biomarker` variable is not included in the model.
 #'
 #' @seealso [control_step()] and [control_coxph()] for the available customization options.
-#' @export
 #'
 #' @examples
 #' # Testing dataset with just two treatment arms.
@@ -73,6 +72,8 @@
 #'   data = adtte_f,
 #'   control = c(control_coxph(), control_step(bandwidth = NULL, degree = 3, num_points = 5L))
 #' )
+#'
+#' @export
 fit_survival_step <- function(variables,
                               data,
                               control = c(control_step(), control_coxph())) {

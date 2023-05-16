@@ -5,6 +5,8 @@
 #' Summarize results of a Poisson Negative Binomial Regression.
 #' This can be used to analyze count and/or frequency data using a linear model.
 #'
+#' @inheritParams argument_convention
+#'
 #' @name summarize_glm_count
 NULL
 
@@ -14,6 +16,8 @@ NULL
 #'
 #' Helper functions that can be used to return the results of various Poisson models.
 #'
+#' @inheritParams argument_convention
+#'
 #' @seealso [summarize_glm_count]
 #'
 #' @name h_glm_count
@@ -21,7 +25,6 @@ NULL
 
 #' @describeIn h_glm_count Helper function to return results of a poisson model.
 #'
-#' @inheritParams argument_convention
 #' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called
 #'   in `.var` and `variables`.
 #' @param variables (named `list` of `strings`)\cr list of additional analysis variables, with
@@ -90,14 +93,12 @@ h_glm_poisson <- function(.var,
 
 #' @describeIn h_glm_count Helper function to return results of a quasipoisson model.
 #'
-#' @inheritParams argument_convention
 #' @inheritParams summarize_glm_count
 #'
 #' @return
 #' * `h_glm_quasipoisson()` returns the results of a Quasi-Poisson model.
 #'
 #' @examples
-#'
 #' # Internal function - h_glm_quasipoisson
 #' \dontrun{
 #' h_glm_quasipoisson(
@@ -149,7 +150,6 @@ h_glm_quasipoisson <- function(.var,
 #' @describeIn h_glm_count Helper function to return the results of the
 #'   selected model (poisson, quasipoisson, negative binomial).
 #'
-#' @inheritParams argument_convention
 #' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called
 #'   in `.var` and `variables`.
 #' @param variables (named `list` of `strings`)\cr list of additional analysis variables, with
@@ -194,17 +194,13 @@ h_glm_count <- function(.var,
   )
 }
 
-
 #' @describeIn h_glm_count Helper function to return the estimated means.
 #'
-#' @inheritParams argument_convention
-#' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called
-#'   in `.var` and `variables`.
+#' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called in `.var` and `variables`.
 #' @param conf_level (`numeric`)\cr value used to derive the confidence interval for the rate.
 #' @param obj (`glm.fit`)\cr fitted model object used to derive the mean rate estimates in each treatment arm.
-#' @param `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
-#'   groups will be summarized. Specifically, the first level of `arm` variable is taken as the
-#'   reference group.
+#' @param `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple groups will be
+#'   summarized. Specifically, the first level of `arm` variable is taken as the reference group.
 #'
 #' @return
 #' * `h_ppmeans()` returns the estimated means.
@@ -267,7 +263,6 @@ h_ppmeans <- function(obj, .df_row, arm, conf_level) {
 #' @describeIn summarize_glm_count Statistics function that produces a named list of results
 #'   of the investigated Poisson model.
 #'
-#' @inheritParams argument_convention
 #' @inheritParams h_glm_count
 #'
 #' @return
@@ -390,7 +385,6 @@ s_glm_count <- function(df,
 #' * `a_glm_count()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
-#'
 #' # Internal function - s_change_from_baseline
 #' \dontrun{
 #' a_glm_count(
@@ -431,14 +425,11 @@ a_glm_count <- make_afun(
 #' @describeIn summarize_glm_count Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @inheritParams argument_convention
-#'
 #' @return
 #' * `summarize_glm_count()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_glm_count()` to the table layout.
 #'
-#' @export
 #' @examples
 #' library(dplyr)
 #' anl <- tern_ex_adtte %>% filter(PARAMCD == "TNE")
@@ -480,6 +471,8 @@ a_glm_count <- make_afun(
 #'     )
 #'   )
 #' build_table(lyt = lyt, df = anl)
+#'
+#' @export
 summarize_glm_count <- function(lyt,
                                 vars,
                                 var_labels,

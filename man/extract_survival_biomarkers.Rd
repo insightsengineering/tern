@@ -17,12 +17,11 @@ extract_survival_biomarkers(
 
 \item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
-\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
-list, which specifies the new group levels via the names and the
-levels that belong to it in the character vectors that are elements of the list.}
+\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a list, which
+specifies the new group levels via the names and the levels that belong to it in the character vectors that are
+elements of the list.}
 
-\item{control}{(\code{list})\cr a list of parameters as returned by the
-helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
+\item{control}{(\code{list})\cr a list of parameters as returned by the helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
 }
@@ -93,6 +92,7 @@ df_grouped <- extract_survival_biomarkers(
   )
 )
 df_grouped
+
 }
 \seealso{
 \code{\link[=h_coxreg_mult_cont_df]{h_coxreg_mult_cont_df()}} which is used internally, \code{\link[=tabulate_survival_biomarkers]{tabulate_survival_biomarkers()}}.

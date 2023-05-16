@@ -36,6 +36,7 @@ NULL
 #' Description function that produces the labels for [s_count_abnormal_by_baseline()].
 #'
 #' @inheritParams abnormal_by_baseline
+#'
 #' @return Abnormal category labels for [s_count_abnormal_by_baseline()].
 #'
 #' @examples

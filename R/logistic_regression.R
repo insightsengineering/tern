@@ -213,13 +213,13 @@ fit_logistic <- function(data,
 #' with `binomial` family.
 #'
 #' @inheritParams argument_convention
-#' @param at (`NULL` or `numeric`)\cr optional values for the interaction variable. Otherwise
-#'   the median is used.
+#' @param at (`NULL` or `numeric`)\cr optional values for the interaction variable. Otherwise the median is used.
 #' @param fit_glm logistic regression model fitted by [stats::glm()] with "binomial" family.
 #'
 #' @return A `data.frame` containing the tidied model.
 #'
 #' @method tidy glm
+#'
 #' @seealso [h_logistic_regression] for relevant helper functions.
 #'
 #' @examples
@@ -291,7 +291,7 @@ tidy.glm <- function(fit_glm, # nolint
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Layout-creating function which creates a multivariate column layout summarizing logistic
-#'   regression results. This function is a wrapper for [rtables::split_cols_by_multivar()].
+#' regression results. This function is a wrapper for [rtables::split_cols_by_multivar()].
 #'
 #' @inheritParams argument_convention
 #'

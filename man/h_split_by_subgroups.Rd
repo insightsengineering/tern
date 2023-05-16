@@ -13,9 +13,9 @@ h_split_by_subgroups(data, subgroups, groups_lists = list())
 Unused levels not present in \code{data} are dropped. Note that the order in this vector
 determines the order in the downstream table.}
 
-\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
-list, which specifies the new group levels via the names and the
-levels that belong to it in the character vectors that are elements of the list.}
+\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a list, which
+specifies the new group levels via the names and the levels that belong to it in the character vectors that are
+elements of the list.}
 }
 \value{
 A list with subset data (\code{df}) and metadata about the subset (\code{df_labels}).

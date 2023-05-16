@@ -9,9 +9,8 @@ h_grob_tbl_at_risk(data, annot_tbl, xlim)
 \arguments{
 \item{data}{(\code{data.frame})\cr survival data as pre-processed by \code{h_data_plot}.}
 
-\item{annot_tbl}{(\code{data.frame})\cr annotation as prepared
-by \code{\link[survival:summary.survfit]{survival::summary.survfit()}} which includes the number of
-patients at risk at given time points.}
+\item{annot_tbl}{(\code{data.frame})\cr annotation as prepared by \code{\link[survival:summary.survfit]{survival::summary.survfit()}} which
+includes the number of patients at risk at given time points.}
 
 \item{xlim}{(\code{numeric})\cr the maximum value on the x-axis (used to
 ensure the at risk table aligns with the KM graph).}
@@ -22,7 +21,7 @@ A named \code{list} of two \code{gTree} objects: \code{at_risk} and \code{label}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Two Graphical Objects are obtained, one corresponding to row labeling and
+Two graphical objects are obtained, one corresponding to row labeling and
 the second to the number of patient at risk.
 }
 \examples{

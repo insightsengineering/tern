@@ -9,8 +9,7 @@ to_string_matrix(x, with_spaces = FALSE, print_txt_to_copy = FALSE)
 \arguments{
 \item{x}{\code{rtables} table.}
 
-\item{with_spaces}{Should the tested table keep the indentation and other relevant
-spaces?}
+\item{with_spaces}{Should the tested table keep the indentation and other relevant spaces?}
 
 \item{print_txt_to_copy}{Utility to have a way to copy the input table directly
 into the expected variable instead of copying it too manually.}

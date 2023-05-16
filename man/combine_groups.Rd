@@ -19,8 +19,7 @@ A \code{list} with first item \code{ref} (reference) and second item \code{trt} 
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Facilitate the re-combination of groups divided as reference and
-treatment groups; it helps in arranging groups of
+Facilitate the re-combination of groups divided as reference and treatment groups; it helps in arranging groups of
 columns in the \code{rtables} framework and teal modules.
 }
 \examples{
@@ -34,4 +33,5 @@ basic_table() \%>\%
   add_colcounts() \%>\%
   summarize_vars("AGE") \%>\%
   build_table(DM)
+
 }

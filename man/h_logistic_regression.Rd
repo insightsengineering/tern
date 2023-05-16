@@ -216,6 +216,7 @@ h_glm_interaction_extract("ARMCD:AGE", mod2)
 h_glm_inter_term_extract("AGE", "ARMCD", mod2)
 
 h_logistic_simple_terms("AGE", mod1)
+
 h_logistic_inter_terms(c("RACE", "AGE", "ARMCD", "AGE:ARMCD"), mod2)
 
 }

@@ -19,8 +19,7 @@ h_ppmeans(obj, .df_row, arm, conf_level)
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.df_row}{(\code{data.frame})\cr data set that includes all the variables that are called
-in \code{.var} and \code{variables}.}
+\item{.df_row}{(\code{data.frame})\cr data set that includes all the variables that are called in \code{.var} and \code{variables}.}
 
 \item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables, with
 expected elements:
@@ -42,9 +41,8 @@ reference group.
 \item{`distribution`(`character`)\cr}{a character value specifying the distribution
 used in the regression (poisson, quasipoisson).}
 
-\item{`arm`}{(\code{string})\cr group variable, for which the covariate adjusted means of multiple
-groups will be summarized. Specifically, the first level of \code{arm} variable is taken as the
-reference group.}
+\item{`arm`}{(\code{string})\cr group variable, for which the covariate adjusted means of multiple groups will be
+summarized. Specifically, the first level of \code{arm} variable is taken as the reference group.}
 }
 \value{
 \itemize{
@@ -89,7 +87,6 @@ h_glm_poisson(
   variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = NULL)
 )
 }
-
 
 # Internal function - h_glm_quasipoisson
 \dontrun{

@@ -6,6 +6,7 @@
 #' The effect is estimated as the HR of the tested treatment for a given level
 #' of the covariate, in comparison to the treatment control.
 #'
+#' @inheritParams argument_convention
 #' @param x (`numeric` or `factor`)\cr the values of the effect to be tested.
 #' @param effect (`string`)\cr the name of the effect to be tested and estimated.
 #' @param covar (`string`)\cr the name of the covariate in the model.
@@ -65,14 +66,13 @@ h_coxreg_inter_effect <- function(x,
   UseMethod("h_coxreg_inter_effect", x)
 }
 
-
-#' @describeIn cox_regression_inter Estimate the interaction with a `numeric`
-#'   covariate.
+#' @describeIn cox_regression_inter Estimate the interaction with a `numeric` covariate.
 #'
 #' @param at (`list`)\cr a list with items named after the covariate, every
 #'   item is a vector of levels at which the interaction should be estimated.
+#'
 #' @export
-h_coxreg_inter_effect.numeric <- function(x, # nolint
+h_coxreg_inter_effect.numeric <- function(x,
                                           effect,
                                           covar,
                                           mod,
@@ -118,12 +118,12 @@ h_coxreg_inter_effect.numeric <- function(x, # nolint
   )
 }
 
-#' @describeIn cox_regression_inter Estimate the interaction with a `factor`
-#'   covariate.
+#' @describeIn cox_regression_inter Estimate the interaction with a `factor` covariate.
 #'
 #' @param data (`data.frame`)\cr the data frame on which the model was fit.
+#'
 #' @export
-h_coxreg_inter_effect.factor <- function(x, # nolint
+h_coxreg_inter_effect.factor <- function(x,
                                          effect,
                                          covar,
                                          mod,
@@ -161,14 +161,14 @@ h_coxreg_inter_effect.factor <- function(x, # nolint
 #' * `h_coxreg_extract_interaction()` returns the result of an interaction test and the estimated values. If
 #'   no interaction, [h_coxreg_univar_extract()] is applied instead.
 #'
-#' @export
-#'
 #' @examples
 #' mod <- coxph(Surv(time, status) ~ armcd * covar1, data = dta_bladder)
 #' h_coxreg_extract_interaction(
 #'   mod = mod, effect = "armcd", covar = "covar1", data = dta_bladder,
 #'   control = control_coxreg()
 #' )
+#'
+#' @export
 h_coxreg_extract_interaction <- function(effect,
                                          covar,
                                          mod,
@@ -217,7 +217,6 @@ h_coxreg_extract_interaction <- function(effect,
 
 #' @describeIn cox_regression_inter Hazard ratio estimation in interactions.
 #'
-#' @inheritParams argument_convention
 #' @param variable,given (`string`)\cr the name of variables in interaction. We seek the estimation
 #'   of the levels of `variable` given the levels of `given`.
 #' @param lvl_var,lvl_given (`character`)\cr corresponding levels has given by [levels()].
@@ -268,8 +267,8 @@ h_coxreg_inter_estimations <- function(variable,
   design_mat <- within(
     data = design_mat,
     expr = {
-      inter <- paste0(variable, ":", given) # nolint
-      rev_inter <- paste0(given, ":", variable) # nolint
+      inter <- paste0(variable, ":", given)
+      rev_inter <- paste0(given, ":", variable)
     }
   )
   split_by_variable <- design_mat$variable

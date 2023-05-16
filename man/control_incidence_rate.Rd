@@ -33,6 +33,7 @@ internally to specify details in \code{s_incidence_rate()}.
 }
 \examples{
 control_incidence_rate(0.9, "exact", "month", 100)
+
 }
 \seealso{
 \link{incidence_rate}

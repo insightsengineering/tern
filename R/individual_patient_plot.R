@@ -43,7 +43,7 @@ NULL
 #' @return A `ggplot` line plot.
 #'
 #' @seealso [g_ipp()] which uses this function.
-#' @export
+#'
 #' @examples
 #' library(dplyr)
 #' library(nestcolor)
@@ -63,6 +63,8 @@ NULL
 #'   add_baseline_hline = TRUE
 #' )
 #' p
+#'
+#' @export
 h_g_ipp <- function(df,
                     xvar,
                     yvar,
@@ -144,15 +146,12 @@ h_g_ipp <- function(df,
   p
 }
 
-#' Plotting Function for Individual Patient Plot
-#'
-#' @describeIn individual_patient_plot depending on user preference, renders a single
-#' graphic or compiles a list of graphics that show trends in individual's parameter
-#' values over time.
+#' @describeIn individual_patient_plot Plotting function for individual patient plots which, depending on user
+#'   preference, renders a single graphic or compiles a list of graphics that show trends in individual's parameter
+#'   values over time.
 #'
 #' @return A `ggplot` object or a list of `ggplot` objects.
 #'
-#' @export
 #' @examples
 #' library(dplyr)
 #' library(nestcolor)
@@ -174,6 +173,8 @@ h_g_ipp <- function(df,
 #'   max_obs_per_plot = 5
 #' )
 #' plot_list
+#'
+#' @export
 g_ipp <- function(df,
                   xvar,
                   yvar,

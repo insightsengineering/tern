@@ -25,8 +25,7 @@ are required.
 
 \item{method}{(\code{character})\cr p-value method for testing hazard ratio = 1.}
 
-\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
-displaying unit.}
+\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
 }
 \value{
 A \code{list} of variables and their labels to tabulate.
@@ -34,8 +33,7 @@ A \code{list} of variables and their labels to tabulate.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Internal function to check variables included in \code{\link[=tabulate_survival_subgroups]{tabulate_survival_subgroups()}}
-and create column labels.
+Internal function to check variables included in \code{\link[=tabulate_survival_subgroups]{tabulate_survival_subgroups()}} and create column labels.
 }
 \note{
 At least one of \code{n_tot} and \code{n_tot_events} must be provided in \code{vars}.

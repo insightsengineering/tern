@@ -128,8 +128,8 @@ estimate_coef <- function(variable, given,
   design_mat <- within(
     data = design_mat,
     expr = {
-      inter <- paste0(variable, ":", given) # nolint
-      rev_inter <- paste0(given, ":", variable) # nolint
+      inter <- paste0(variable, ":", given)
+      rev_inter <- paste0(given, ":", variable)
     }
   )
 
@@ -186,8 +186,7 @@ estimate_coef <- function(variable, given,
 #'
 #' @inheritParams car::Anova
 #'
-#' @return A list with item `aov` for the result of the model and
-#'   `error_text` for the captured warnings.
+#' @return A list with item `aov` for the result of the model and `error_text` for the captured warnings.
 #'
 #' @examples
 #' # `car::Anova` on cox regression model including strata and expected
@@ -241,14 +240,13 @@ try_car_anova <- function(mod,
 
 #' Fit the Cox Regression Model and Anova
 #'
-#' The functions allows to derive from the [survival::coxph()] results
-#' the effect p.values using [car::Anova()]. This last package introduces
-#' more flexibility to get the effect p.values.
+#' The functions allows to derive from the [survival::coxph()] results the effect p.values using [car::Anova()].
+#' This last package introduces more flexibility to get the effect p.values.
 #'
 #' @inheritParams t_coxreg
 #'
-#' @return A list with items `mod` (results of [survival::coxph()]),
-#'   `msum` (result of `summary`) and `aov` (result of [car::Anova]).
+#' @return A list with items `mod` (results of [survival::coxph()]), `msum` (result of `summary`) and
+#'   `aov` (result of [car::Anova()]).
 #'
 #' @noRd
 fit_n_aov <- function(formula,
@@ -353,6 +351,7 @@ check_increments <- function(increments, covariates) {
 #' @details The output is limited to single effect terms. Work in ongoing for estimation of interaction terms
 #'   but is out of scope as defined by the  Global Data Standards Repository
 #'   (**`GDS_Standard_TLG_Specs_Tables_2.doc`**).
+#'
 #' @seealso [estimate_coef()].
 #'
 #' @examples
