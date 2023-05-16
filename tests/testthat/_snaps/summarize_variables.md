@@ -1128,3 +1128,26 @@
       Median      NA      3.5         5.5   
       Min - Max   NA   3.0 - 4.0   5.0 - 6.0
 
+# `summarize_vars` na_level argument works with non-default input
+
+    Code
+      res
+    Output
+          all obs
+      ———————————
+      n      4   
+      a   2 (50%)
+      b   2 (50%)
+
+---
+
+    Code
+      res
+    Output
+           all obs 
+      —————————————
+      n       6    
+      a   2 (33.3%)
+      b   2 (33.3%)
+      c   2 (33.3%)
+
