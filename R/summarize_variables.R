@@ -313,6 +313,9 @@ s_summary.numeric <- function(x,
 #' @note
 #' * If `x` is an empty `factor`, a list is still returned for `counts` with one element
 #'   per factor level. If there are no levels in `x`, the function fails.
+#' * When factor variables contain `NA`, these `NA` values are excluded by default. To include `NA` values
+#'   set `na.rm = TRUE` and missing values will be displayed as an `<NA>` level. Alternatively, an explicit
+#'   factor level can be defined for `NA` values during pre-processing via [df_explicit_na()].
 #'
 #' @method s_summary factor
 #'

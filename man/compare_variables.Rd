@@ -170,6 +170,9 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 between columns, therefore a row-based proportion would not make sense. Proportion based on \code{N_col} would
 be difficult since we use counts for the chi-squared test statistic, therefore missing values should be accounted
 for as explicit factor levels.
+\item When factor variables contain \code{NA}, these \code{NA} values are excluded by default. To include \code{NA} values
+set \code{na.rm = TRUE} and missing values will be displayed as an \verb{<NA>} level. Alternatively, an explicit
+factor level can be defined for \code{NA} values during pre-processing via \code{\link[=df_explicit_na]{df_explicit_na()}}.
 \item For character variables, automatic conversion to factor does not guarantee that the table
 will be generated correctly. In particular for sparse tables this very likely can fail.
 Therefore it is always better to manually convert character variables to factors during pre-processing.
