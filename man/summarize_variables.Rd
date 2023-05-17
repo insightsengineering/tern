@@ -289,10 +289,12 @@ being standard behavior in R.
 per factor level. If there are no levels in \code{x}, the function fails.
 }
 
-Automatic conversion of character to factor does not guarantee that the table
+\itemize{
+\item Automatic conversion of character to factor does not guarantee that the table
 can be generated correctly. In particular for sparse tables this very likely can fail.
 It is therefore better to always pre-process the dataset such that factors are manually
 created from character variables before passing the dataset to \code{\link[rtables:build_table]{rtables::build_table()}}.
+}
 }
 \examples{
 # `s_summary.numeric`
