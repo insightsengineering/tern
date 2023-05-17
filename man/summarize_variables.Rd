@@ -288,7 +288,7 @@ being standard behavior in R.
 \item If \code{x} is an empty \code{factor}, a list is still returned for \code{counts} with one element
 per factor level. If there are no levels in \code{x}, the function fails.
 \item When factor variables contain \code{NA}, these \code{NA} values are excluded by default. To include \code{NA} values
-set \code{na.rm = TRUE} and missing values will be displayed as an \verb{<NA>} level. Alternatively, an explicit
+set \code{na.rm = FALSE} and missing values will be displayed as an \code{NA} level. Alternatively, an explicit
 factor level can be defined for \code{NA} values during pre-processing via \code{\link[=df_explicit_na]{df_explicit_na()}}.
 }
 

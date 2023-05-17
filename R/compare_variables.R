@@ -12,7 +12,7 @@
 #'   be difficult since we use counts for the chi-squared test statistic, therefore missing values should be accounted
 #'   for as explicit factor levels.
 #' * When factor variables contain `NA`, these `NA` values are excluded by default. To include `NA` values
-#'   set `na.rm = TRUE` and missing values will be displayed as an `<NA>` level. Alternatively, an explicit
+#'   set `na.rm = FALSE` and missing values will be displayed as an `NA` level. Alternatively, an explicit
 #'   factor level can be defined for `NA` values during pre-processing via [df_explicit_na()].
 #' * For character variables, automatic conversion to factor does not guarantee that the table
 #'   will be generated correctly. In particular for sparse tables this very likely can fail.
