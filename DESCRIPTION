@@ -30,7 +30,7 @@ Imports:
     dplyr,
     emmeans (>= 1.4.5),
     forcats (>= 1.0.0),
-    formatters (>= 0.4.1.9002),
+    formatters (>= 0.4.1.9003),
     ggplot2 (>= 3.4.0),
     grid,
     gridExtra,
