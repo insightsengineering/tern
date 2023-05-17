@@ -35,7 +35,7 @@ analyze_vars_in_cols(
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
 underneath analyses, which is not allowed.}
 
-\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors with custom \code{string}.}
+\item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 }
