@@ -121,6 +121,9 @@ s_compare.factor <- function(x,
   if (na.rm) {
     x <- x[!is.na(x)] %>% fct_discard("<Missing>")
     .ref_group <- .ref_group[!is.na(.ref_group)] %>% fct_discard("<Missing>")
+  } else {
+    x <- x %>% explicit_na(label = "NA")
+    .ref_group <- .ref_group %>% explicit_na(label = "NA")
   }
 
   checkmate::assert_factor(x, levels = levels(.ref_group), min.levels = 2)

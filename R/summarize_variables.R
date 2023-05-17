@@ -354,7 +354,6 @@ s_summary.factor <- function(x,
     x <- x %>% explicit_na(label = "NA")
   }
 
-
   y <- list()
 
   y$n <- length(x)
