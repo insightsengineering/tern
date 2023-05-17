@@ -5,6 +5,7 @@
 
 ### Bug Fixes
 * Fixed missing label for `TRTEDTM` in `tern` datasets.
+* Fixed improper implementation of `na_level` argument in `summarize_vars` preventing it from having an effect.
 
 ### Enhancements
 * Added `section_div` and `na_level` arguments to `summarize_vars`.
@@ -13,6 +14,7 @@
 * Added new "Analyze Functions", "Summarize Functions", and "Analyze Functions on Columns" overview pages.
 * Consolidated all KM plot documentation within the `g_km` function.
 * Added `a_count_patients_sum_exposure` for `summarize_patients_exposure_in_cols` and new analyze function `analyze_patients_exposure_in_cols`.
+* Added more informative error when the user selects an invalid method for unstratified analyses in `s_proportion_diff`.
 
 ### Miscellaneous
 * Implemented the `lubridate` package for date variables in `tern` datasets.

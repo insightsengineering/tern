@@ -109,7 +109,6 @@ summarize_vars(
   lyt,
   vars,
   var_labels = vars,
-  na_level = NA_character_,
   nested = TRUE,
   ...,
   show_labels = "default",
@@ -297,10 +296,12 @@ per factor level. If there are no levels in \code{x}, the function fails.
 appropriately beforehand with \code{\link[=df_explicit_na]{df_explicit_na()}} or \code{\link[=explicit_na]{explicit_na()}}.
 }
 
-Automatic conversion of character to factor does not guarantee that the table
+\itemize{
+\item Automatic conversion of character to factor does not guarantee that the table
 can be generated correctly. In particular for sparse tables this very likely can fail.
 It is therefore better to always pre-process the dataset such that factors are manually
 created from character variables before passing the dataset to \code{\link[rtables:build_table]{rtables::build_table()}}.
+}
 }
 \examples{
 # `s_summary.numeric`
