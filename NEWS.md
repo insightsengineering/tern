@@ -5,6 +5,7 @@
 
 ### Bug Fixes
 * Fixed missing label for `TRTEDTM` in `tern` datasets.
+* Fixed improper implementation of `na_level` argument in `summarize_vars` preventing it from having an effect.
 
 ### Enhancements
 * Added `section_div` and `na_level` (`na_str`) to `summarize_vars`.
