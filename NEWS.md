@@ -13,7 +13,7 @@
 * Added new "Analyze Functions" and "Summarize Functions" overview pages.
 * Moved all KM plot documentation to the `g_km` function.
 * Added `a_count_patients_sum_exposure` for new analyze function `analyze_patients_exposure_in_cols` and `summarize_patients_exposure_in_cols`.
-* Added more informative error when an invalid method is selected for unstratified analyses in `s_proportion_diff`.
+* Added more informative error when the user selects an invalid method for unstratified analyses in `s_proportion_diff`.
 
 ### Miscellaneous
 * Implemented the `lubridate` package for date variables in `tern` datasets.
