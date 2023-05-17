@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.956234609357511" branch-rate="0" lines-covered="8543" lines-valid="8934" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-05-16 20:49:01">
+<coverage line-rate="0.956234609357511" branch-rate="0" lines-covered="8543" lines-valid="8934" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-05-17 14:17:26">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
@@ -18648,9 +18648,9 @@
             </method>
             <method name="assert_proportion_value" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="271" hits="5676" branch="false"/>
-                <line number="272" hits="5664" branch="false"/>
-                <line number="273" hits="5664" branch="false"/>
+                <line number="271" hits="5700" branch="false"/>
+                <line number="272" hits="5688" branch="false"/>
+                <line number="273" hits="5688" branch="false"/>
                 <line number="274" hits="2006" branch="false"/>
                 <line number="275" hits="2004" branch="false"/>
               </lines>
@@ -18720,9 +18720,9 @@
             <line number="211" hits="6" branch="false"/>
             <line number="213" hits="178" branch="false"/>
             <line number="216" hits="180" branch="false"/>
-            <line number="271" hits="5676" branch="false"/>
-            <line number="272" hits="5664" branch="false"/>
-            <line number="273" hits="5664" branch="false"/>
+            <line number="271" hits="5700" branch="false"/>
+            <line number="272" hits="5688" branch="false"/>
+            <line number="273" hits="5688" branch="false"/>
             <line number="274" hits="2006" branch="false"/>
             <line number="275" hits="2004" branch="false"/>
           </lines>
