@@ -380,7 +380,8 @@ s_summary.factor <- function(x,
 #' @param verbose (`logical`)\cr Defaults to `TRUE`, which prints out warnings and messages. It is mainly used
 #'   to print out information about factor casting.
 #'
-#' @note Automatic conversion of character to factor does not guarantee that the table
+#' @note
+#' * Automatic conversion of character to factor does not guarantee that the table
 #'   can be generated correctly. In particular for sparse tables this very likely can fail.
 #'   It is therefore better to always pre-process the dataset such that factors are manually
 #'   created from character variables before passing the dataset to [rtables::build_table()].
@@ -722,7 +723,6 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 summarize_vars <- function(lyt,
                            vars,
                            var_labels = vars,
-                           na_level = NA_character_,
                            nested = TRUE,
                            ...,
                            show_labels = "default",
@@ -739,7 +739,6 @@ summarize_vars <- function(lyt,
     vars = vars,
     var_labels = var_labels,
     afun = afun,
-    na_str = na_level,
     nested = nested,
     extra_args = list(...),
     inclNAs = TRUE,

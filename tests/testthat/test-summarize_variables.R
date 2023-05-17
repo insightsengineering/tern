@@ -345,3 +345,23 @@ testthat::test_that("`summarize_vars` works with empty named numeric variables",
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("`summarize_vars` na_level argument works with non-default input", {
+  dta <- tibble::tibble(
+    foo = factor(c("a", "a", "b", "b", "c", "c"), levels = c("a", "b", "c"))
+  )
+
+  result <- basic_table() %>%
+    summarize_vars(vars = "foo", na_level = "c") %>%
+    build_table(dta)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  result <- basic_table() %>%
+    summarize_vars(vars = "foo", na_level = "c", na.rm = FALSE) %>%
+    build_table(dta)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})

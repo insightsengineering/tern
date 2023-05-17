@@ -43,7 +43,7 @@
         row_name formatted_cell indent_mod row_label
       1  Label 1            340          0   Label 1
 
-# summarize_coxreg adds the univariable Cox regression layer to rtables
+# summarize_coxreg adds the univariate Cox regression layer to rtables
 
     Code
       res
@@ -97,7 +97,7 @@
        * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
         Sex (F/M)           340       0.62       (0.42, 0.92)   0.0182 
 
-# summarize_coxreg works with interactions in univariable case
+# summarize_coxreg works with interactions in univariate case
 
     Code
       res
@@ -118,7 +118,7 @@
           F                           0.67       (0.36, 1.22)                                
           M                           0.60       (0.36, 0.99)                                
 
-# summarize_coxreg 'at' argument works in univariable case
+# summarize_coxreg 'at' argument works in univariate case
 
     Code
       res
@@ -155,7 +155,7 @@
           F                           0.67       (0.36, 1.22)                     ---        
           M                           0.60       (0.36, 0.99)                     ---        
 
-# summarize_coxreg works without treatment arm in univariable case
+# summarize_coxreg works without treatment arm in univariate case
 
     Code
       res
@@ -170,7 +170,7 @@
         Sex (F/M) (reference = F)                                                
           M                                     1.33       (0.97, 1.82)   0.1414 
 
-# summarize_coxreg works with numeric covariate without treatment arm in univariable case
+# summarize_coxreg works with numeric covariate without treatment arm in univariate case
 
     Code
       res
