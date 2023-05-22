@@ -12,7 +12,7 @@ Helper functions that can be used to return the results of various Poisson model
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,7 +29,7 @@ Helper functions that can be used to return the results of various Poisson model
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/generate_tern_data.html">Example Data Generation</a>
+    <a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a>
     <a class="dropdown-item" href="../articles/tables.html">Tabulation</a>
     <a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a>
   </div>
@@ -44,10 +44,18 @@ Helper functions that can be used to return the results of various Poisson model
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
 <!-- end dropdown for versions -->
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-reports">
+    <a class="dropdown-item" href="../coverage-report/">Coverage report</a>
+    <a class="dropdown-item" href="../unit-test-report/">Unit test report</a>
+  </div>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -93,8 +101,7 @@ by a statistics function.</p></dd>
 
 
 <dt>.df_row</dt>
-<dd><p>(<code>data.frame</code>)<br> data set that includes all the variables that are called
-in <code>.var</code> and <code>variables</code>.</p></dd>
+<dd><p>(<code>data.frame</code>)<br> data set that includes all the variables that are called in <code>.var</code> and <code>variables</code>.</p></dd>
 
 
 <dt>variables</dt>
@@ -126,11 +133,19 @@ used in the regression (poisson, quasipoisson).</p></dd>
 
 
 <dt>`arm`</dt>
-<dd><p>(<code>string</code>)<br> group variable, for which the covariate adjusted means of multiple
-groups will be summarized. Specifically, the first level of <code>arm</code> variable is taken as the
-reference group.</p></dd>
+<dd><p>(<code>string</code>)<br> group variable, for which the covariate adjusted means of multiple groups will be
+summarized. Specifically, the first level of <code>arm</code> variable is taken as the reference group.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<ul><li><p><code>h_glm_poisson()</code> returns the results of a Poisson model.</p></li>
+</ul><ul><li><p><code>h_glm_quasipoisson()</code> returns the results of a Quasi-Poisson model.</p></li>
+</ul><ul><li><p><code>h_glm_count()</code> returns the results of the selected model.</p></li>
+</ul><ul><li><p><code>h_ppmeans()</code> returns the estimated means.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
@@ -156,12 +171,11 @@ selected model (poisson, quasipoisson, negative binomial).</p></li>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Internal function - h_glm_quasipoisson</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu">h_glm_quasipoisson</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
-<span class="r-in"><span>  .df_row <span class="op">=</span> <span class="va">anl</span>,</span></span>
+<span class="r-in"><span>  .df_row <span class="op">=</span> <span class="va">adtte</span>,</span></span>
 <span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"ARM"</span>, offset <span class="op">=</span> <span class="st">"lgTMATRSK"</span>, covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"REGION1"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>

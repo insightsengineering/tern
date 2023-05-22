@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,7 +27,7 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/generate_tern_data.html">Example Data Generation</a>
+    <a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a>
     <a class="dropdown-item" href="../articles/tables.html">Tabulation</a>
     <a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a>
   </div>
@@ -42,10 +42,18 @@
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
 <!-- end dropdown for versions -->
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-reports">
+    <a class="dropdown-item" href="../coverage-report/">Coverage report</a>
+    <a class="dropdown-item" href="../unit-test-report/">Unit test report</a>
+  </div>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -136,7 +144,7 @@ Collection to store assertion messages. See <code><a href="https://mllg.github.i
 
 <dt>na_level</dt>
 <dd><p>(<code>character</code>)<br> the string you have been using to represent NA or
-missing data. For <code>NA</code> values please consider using directly <code><a href="https://rdrr.io/r/base/NA.html" class="external-link">base::is.na</a></code> or
+missing data. For <code>NA</code> values please consider using directly <code><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na()</a></code> or
 similar approaches.</p></dd>
 
 
@@ -188,14 +196,20 @@ for proportions.</p></dd>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<p>Nothing if assertion passes, otherwise prints the error message.</p>
+    </div>
+    <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>assert_list_of_variables()</code>: Check whether <code>x</code> is a valid list of variable names.
-<code>NULL</code> elements of the list <code>x</code> are dropped out with <code>Filter(Negate(is.null), x)</code>.</p></li>
+<ul><li><p><code>assert_list_of_variables()</code>: Checks whether <code>x</code> is a valid list of variable names.
+<code>NULL</code> elements of the list <code>x</code> are dropped with <code>Filter(Negate(is.null), x)</code>.</p></li>
 <li><p><code>assert_df_with_variables()</code>: Check whether <code>df</code> is a data frame with the analysis <code>variables</code>.
 Please notice how this produces an error when not all variables are present in the
 data.frame while the opposite is not required.</p></li>
-<li><p><code>assert_valid_factor()</code>: Check whether <code>x</code> is a valid factor (has levels and no empty
+<li><p><code>assert_valid_factor()</code>: Check whether <code>x</code> is a valid factor (i.e. has levels and no empty
 string levels). Note that <code>NULL</code> and <code>NA</code> elements are allowed.</p></li>
 <li><p><code>assert_df_with_factors()</code>: Check whether <code>df</code> is a data frame where the analysis <code>variables</code>
 are all factors. Note that the creation of <code>NA</code> by direct call of <code><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor()</a></code> will

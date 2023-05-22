@@ -14,7 +14,7 @@ rows characterized by N, median and 95% confidence interval."><!-- mathjax --><s
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +31,7 @@ rows characterized by N, median and 95% confidence interval."><!-- mathjax --><s
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/generate_tern_data.html">Example Data Generation</a>
+    <a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a>
     <a class="dropdown-item" href="../articles/tables.html">Tabulation</a>
     <a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a>
   </div>
@@ -46,10 +46,18 @@ rows characterized by N, median and 95% confidence interval."><!-- mathjax --><s
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
 <!-- end dropdown for versions -->
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-reports">
+    <a class="dropdown-item" href="../coverage-report/">Coverage report</a>
+    <a class="dropdown-item" href="../unit-test-report/">Unit test report</a>
+  </div>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -95,22 +103,27 @@ rows characterized by N, median and 95% confidence interval.</p>
 
 
 <dt>armval</dt>
-<dd><p>(<code>string</code>)<br> used as strata name when treatment arm
-variable only has one level. Default is "All".</p></dd>
+<dd><p>(<code>string</code>)<br> used as strata name when treatment arm variable only has one level. Default is "All".</p></dd>
 
 
 <dt>x</dt>
-<dd><p>a <code>numeric</code> value between 0 and 1 specifying x-location.</p></dd>
+<dd><p>(<code>numeric</code>)<br> a value between 0 and 1 specifying x-location.</p></dd>
 
 
 <dt>y</dt>
-<dd><p>a <code>numeric</code> value between 0 and 1 specifying y-location.</p></dd>
+<dd><p>(<code>numeric</code>)<br> a value between 0 and 1 specifying y-location.</p></dd>
 
 
 <dt>ttheme</dt>
 <dd><p>(<code>list</code>)<br> see <code><a href="https://rdrr.io/pkg/gridExtra/man/tableGrob.html" class="external-link">gridExtra::ttheme_default()</a></code>.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<p>A <code>grob</code> of a table containing statistics <code>N</code>, <code>Median</code>, and <code>XX% CI</code> (<code>XX</code> taken from <code>fit_km</code>).</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

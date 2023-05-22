@@ -14,7 +14,7 @@ mainly the special labels."><!-- mathjax --><script src="https://cdnjs.cloudflar
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +31,7 @@ mainly the special labels."><!-- mathjax --><script src="https://cdnjs.cloudflar
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/generate_tern_data.html">Example Data Generation</a>
+    <a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a>
     <a class="dropdown-item" href="../articles/tables.html">Tabulation</a>
     <a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a>
   </div>
@@ -46,10 +46,18 @@ mainly the special labels."><!-- mathjax --><script src="https://cdnjs.cloudflar
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
 <!-- end dropdown for versions -->
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-reports">
+    <a class="dropdown-item" href="../coverage-report/">Coverage report</a>
+    <a class="dropdown-item" href="../unit-test-report/">Unit test report</a>
+  </div>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -123,11 +131,11 @@ mainly the special labels.</p>
 
 
 <dt>var_labels</dt>
-<dd><p>character for label.</p></dd>
+<dd><p>(<code>character</code>)<br> character for label.</p></dd>
 
 
 <dt>show_labels</dt>
-<dd><p>label visibility: one of "default", "visible" and "hidden".</p></dd>
+<dd><p>(<code>string</code>)<br> label visibility: one of "default", "visible" and "hidden".</p></dd>
 
 
 <dt>...</dt>
@@ -159,22 +167,22 @@ to avoid warnings from <code>rtables</code>.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p><code>s_count_nonmissing()</code> returns the statistic <code>n</code> which is the count of non-missing values in <code>x</code>.</p>
-
-
-<p><code>s_count_missed_doses()</code> returns the statistics <code>n</code> and
-<code>count_fraction</code> with one element for each threshold.</p>
-    </div>
+<ul><li><p><code>s_count_nonmissing()</code> returns the statistic <code>n</code> which is the count of non-missing values in <code>x</code>.</p></li>
+</ul><ul><li><p><code>s_count_missed_doses()</code> returns the statistics <code>n</code> and <code>count_fraction</code> with one element for each threshold.</p></li>
+</ul><ul><li><p><code>a_count_missed_doses()</code> returns the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
+</ul><ul><li><p><code>count_missed_doses()</code> returns a layout object suitable for passing to further layouting functions,
+or to <code><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted rows containing
+the statistics from <code>s_count_missed_doses()</code> to the table layout.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
 <ul><li><p><code>s_count_nonmissing()</code>: Statistics function to count non-missing values.</p></li>
-<li><p><code>s_count_missed_doses()</code>: Statistics function to count patients with missed doses when <code>x</code>
-is the vector of number of missed doses with one value for each patient.</p></li>
-<li><p><code>a_count_missed_doses()</code>: Formatted Analysis function to count non-missing values.</p></li>
-<li><p><code>count_missed_doses()</code>: Layout creating function which can be be used for creating
-summary tables for summarizing missed doses given user-specified <code>thresholds</code>. This is
-an additional layer on top of <code>count_cumulative</code> specifically for missed doses.</p></li>
+<li><p><code>s_count_missed_doses()</code>: Statistics function to count patients with missed doses.</p></li>
+<li><p><code>a_count_missed_doses()</code>: Formatted analysis function which is used as <code>afun</code>
+in <code>count_missed_doses()</code>.</p></li>
+<li><p><code>count_missed_doses()</code>: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -229,6 +237,7 @@ an additional layer on top of <code>count_cumulative</code> specifically for mis
 <span class="r-out co"><span class="r-pr">#&gt;</span>   At least 5 missed doses    54 (78.3%)   51 (69.9%)     54 (93.1%)  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   At least 10 missed doses   31 (44.9%)   40 (54.8%)     31 (53.4%)  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   At least 15 missed doses   17 (24.6%)   23 (31.5%)     20 (34.5%)  </span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

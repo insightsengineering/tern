@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,7 +27,7 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/generate_tern_data.html">Example Data Generation</a>
+    <a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a>
     <a class="dropdown-item" href="../articles/tables.html">Tabulation</a>
     <a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a>
   </div>
@@ -42,10 +42,18 @@
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
 <!-- end dropdown for versions -->
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-reports">
+    <a class="dropdown-item" href="../coverage-report/">Coverage report</a>
+    <a class="dropdown-item" href="../unit-test-report/">Unit test report</a>
+  </div>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -84,37 +92,29 @@ Elements of <code>x</code> must be <code>numeric</code> vectors.</p></dd>
 
 
 <dt>format</dt>
-<dd><p>(named <code>character</code> or <code>NULL</code>)<br>
-format patterns for <code>x</code>. Names of the <code>format</code> must match the names of <code>x</code>.
-This parameter is passed directly to the <code><a href="https://rdrr.io/pkg/rtables/man/format_rcell.html" class="external-link">rtables::format_rcell</a></code>
+<dd><p>(named <code>character</code> or <code>NULL</code>)<br> format patterns for <code>x</code>. Names of the <code>format</code> must
+match the names of <code>x</code>. This parameter is passed directly to the <code><a href="https://rdrr.io/pkg/rtables/man/format_rcell.html" class="external-link">rtables::format_rcell</a></code>
 function through the <code>format</code> parameter.</p></dd>
 
 
 <dt>labels</dt>
-<dd><p>(named <code>character</code> or <code>NULL</code>)<br>
-optional labels for <code>x</code>. Names of the <code>labels</code> must match the names of <code>x</code>.
-When a label is not specified for an element of <code>x</code>,
+<dd><p>(named <code>character</code> or <code>NULL</code>)<br> optional labels for <code>x</code>. Names of the <code>labels</code> must
+match the names of <code>x</code>. When a label is not specified for an element of <code>x</code>,
 then this function tries to use <code>label</code> or <code>names</code> (in this order) attribute of that element
-(depending on which one exists and it is not <code>NULL</code> or <code>NA</code> or <code>NaN</code>).
-If none of these attributes are attached to a given element of <code>x</code>,
-then the label is automatically generated.</p></dd>
+(depending on which one exists and it is not <code>NULL</code> or <code>NA</code> or <code>NaN</code>). If none of these attributes
+are attached to a given element of <code>x</code>, then the label is automatically generated.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>1-row <code>data.frame</code> object</p>
-    </div>
-    <div class="section level2">
-    <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
-    <p>Wojciech Wojciak wojciech.wojciak@contractors.roche.com</p>
+<p>A single row <code>data.frame</code> object.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">mean_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">48</span>, <span class="fl">51</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">mean_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">48</span>, <span class="fl">51</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fl">50</span>, mean_ci <span class="op">=</span> <span class="va">mean_ci</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">format</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="st">"xx.x"</span>, mean_ci <span class="op">=</span> <span class="st">"(xx.xx, xx.xx)"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="st">"My Mean"</span><span class="op">)</span></span></span>

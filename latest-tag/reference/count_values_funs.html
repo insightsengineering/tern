@@ -12,7 +12,7 @@ We can count the occurrence of specific values in a variable of interest."><!-- 
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,7 +29,7 @@ We can count the occurrence of specific values in a variable of interest."><!-- 
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/generate_tern_data.html">Example Data Generation</a>
+    <a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a>
     <a class="dropdown-item" href="../articles/tables.html">Tabulation</a>
     <a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a>
   </div>
@@ -44,10 +44,18 @@ We can count the occurrence of specific values in a variable of interest."><!-- 
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
 <!-- end dropdown for versions -->
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-reports">
+    <a class="dropdown-item" href="../coverage-report/">Coverage report</a>
+    <a class="dropdown-item" href="../unit-test-report/">Unit test report</a>
+  </div>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -183,28 +191,33 @@ to avoid warnings from <code>rtables</code>.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>See <code><a href="summarize_variables.html">s_summary.logical()</a></code> for the returned statistics, as this is used inside.</p>
-    </div>
+<ul><li><p><code>s_count_values()</code> returns output of <code><a href="summarize_variables.html">s_summary()</a></code> for specified values of a non-numeric variable.</p></li>
+</ul><ul><li><p><code>a_count_values()</code> returns the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
+</ul><ul><li><p><code>count_values()</code> returns a layout object suitable for passing to further layouting functions,
+or to <code><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted rows containing
+the statistics from <code>s_count_values()</code> to the table layout.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>s_count_values()</code>: Statistics Function which is a generic function to count values.</p></li>
-<li><p><code>s_count_values(character)</code>: Method for <code>character</code> vectors <code>x</code>.</p></li>
-<li><p><code>s_count_values(factor)</code>: method for <code>factor</code> vectors <code>x</code>. This checks whether <code>values</code> are all
-included in the levels of <code>x</code> and fails otherwise. It then proceeds by converting to <code>character</code>
-and calling <code>s_count_values.character</code>.</p></li>
-<li><p><code>s_count_values(logical)</code>: method for <code>logical</code> vectors <code>x</code>.</p></li>
-<li><p><code>a_count_values()</code>: Formatted Analysis function which can be further customized by calling
-<code><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">rtables::make_afun()</a></code> on it. It is used as <code>afun</code> in <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
-<li><p><code>count_values()</code>: Analyze Function which adds the counting analysis to
-the input layout. Note that additional formatting arguments can be used
-here.</p></li>
+<ul><li><p><code>s_count_values()</code>: S3 generic function to count values.</p></li>
+<li><p><code>s_count_values(character)</code>: Method for <code>character</code> class.</p></li>
+<li><p><code>s_count_values(factor)</code>: Method for <code>factor</code> class. This makes an automatic
+conversion to <code>character</code> and then forwards to the method for characters.</p></li>
+<li><p><code>s_count_values(logical)</code>: Method for <code>logical</code> class.</p></li>
+<li><p><code>a_count_values()</code>: Formatted analysis function which is used as <code>afun</code>
+in <code>count_values()</code>.</p></li>
+<li><p><code>count_values()</code>: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
-    <p>Variable labels are shown when there is more than one element in <code>vars</code>, otherwise they
-are hidden.</p>
-    </div>
+    
+<ul><li><p>For <code>factor</code> variables, <code>s_count_values</code> checks whether <code>values</code> are all included in the levels of <code>x</code>
+and fails otherwise.</p></li>
+<li><p>For <code>count_values()</code>, variable labels are shown when there is more than one element in <code>vars</code>,
+otherwise they are hidden.</p></li>
+</ul></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -235,6 +248,7 @@ are hidden.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `s_count_values.factor`</span></span></span>
 <span class="r-in"><span><span class="fu">s_count_values</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"a"</span><span class="op">)</span><span class="op">)</span>, values <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
@@ -249,6 +263,7 @@ are hidden.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `s_count_values.logical`</span></span></span>
 <span class="r-in"><span><span class="fu">s_count_values</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
@@ -263,6 +278,7 @@ are hidden.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `a_count_values`</span></span></span>
 <span class="r-in"><span><span class="fu">a_count_values</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"a"</span><span class="op">)</span><span class="op">)</span>, values <span class="op">=</span> <span class="st">"a"</span>, .N_col <span class="op">=</span> <span class="fl">10</span>, .N_row <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
@@ -272,6 +288,7 @@ are hidden.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2          count              2          0          count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 count_fraction     2 (66.67%)          0 count_fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4          n_blq              0          0          n_blq</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `count_values`</span></span></span>
 <span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">count_values</span><span class="op">(</span><span class="st">"Species"</span>, values <span class="op">=</span> <span class="st">"setosa"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -279,6 +296,7 @@ are hidden.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            all obs  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> setosa   50 (33.33%)</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -14,7 +14,7 @@ multiple timepoints within the same response variable .var."><!-- mathjax --><sc
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +31,7 @@ multiple timepoints within the same response variable .var."><!-- mathjax --><sc
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/generate_tern_data.html">Example Data Generation</a>
+    <a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a>
     <a class="dropdown-item" href="../articles/tables.html">Tabulation</a>
     <a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a>
   </div>
@@ -46,10 +46,18 @@ multiple timepoints within the same response variable .var."><!-- mathjax --><sc
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
 <!-- end dropdown for versions -->
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-reports">
+    <a class="dropdown-item" href="../coverage-report/">Coverage report</a>
+    <a class="dropdown-item" href="../unit-test-report/">Unit test report</a>
+  </div>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -151,14 +159,13 @@ by a statistics function.</p></dd>
 
 
 <dt>interaction_y</dt>
-<dd><p>(<code>character</code>)<br> a selected item inside of the interaction_item column
-which will be used to select the specific ANCOVA results. if the interaction is not
-needed, the default option is FALSE</p></dd>
+<dd><p>(<code>character</code>)<br> a selected item inside of the interaction_item column which will be used
+to select the specific ANCOVA results. if the interaction is not needed, the default option is <code>FALSE</code>.</p></dd>
 
 
 <dt>interaction_item</dt>
 <dd><p>(<code>character</code>)<br> name of the variable that should have interactions
-with arm. if the interaction is not needed, the default option is NULL.</p></dd>
+with arm. if the interaction is not needed, the default option is <code>NULL</code>.</p></dd>
 
 
 <dt>lyt</dt>
@@ -170,7 +177,7 @@ with arm. if the interaction is not needed, the default option is NULL.</p></dd>
 
 
 <dt>var_labels</dt>
-<dd><p>character for label.</p></dd>
+<dd><p>(<code>character</code>)<br> character for label.</p></dd>
 
 
 <dt>...</dt>
@@ -178,7 +185,7 @@ with arm. if the interaction is not needed, the default option is NULL.</p></dd>
 
 
 <dt>show_labels</dt>
-<dd><p>label visibility: one of "default", "visible" and "hidden".</p></dd>
+<dd><p>(<code>string</code>)<br> label visibility: one of "default", "visible" and "hidden".</p></dd>
 
 
 <dt>table_names</dt>
@@ -206,34 +213,27 @@ to avoid warnings from <code>rtables</code>.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A named list of 5 statistics:</p><dl><dt>n</dt>
-<dd><p>count of complete sample size for the group.</p></dd>
-
-<dt>lsmean</dt>
-<dd><p>estimated marginal means in the group.</p></dd>
-
-<dt>lsmean_diff</dt>
-<dd><p>difference in estimated marginal means in comparison to the reference group.
-If working with the reference group, this will be empty.</p></dd>
-
-<dt>lsmean_diff_ci</dt>
-<dd><p>confidence level for difference in estimated marginal means in comparison to the
-reference group.</p></dd>
-
-<dt>pval</dt>
-<dd><p>p-value (not adjusted for multiple comparisons).</p></dd>
-
-
-</dl></div>
+<ul><li><p><code>s_ancova()</code> returns a named list of 5 statistics:</p><ul><li><p><code>n</code>: Count of complete sample size for the group.</p></li>
+<li><p><code>lsmean</code>: Estimated marginal means in the group.</p></li>
+<li><p><code>lsmean_diff</code>: Difference in estimated marginal means in comparison to the reference group.
+If working with the reference group, this will be empty.</p></li>
+<li><p><code>lsmean_diff_ci</code>: Confidence level for difference in estimated marginal means in comparison
+to the reference group.</p></li>
+<li><p><code>pval</code>: p-value (not adjusted for multiple comparisons).</p></li>
+</ul></li>
+</ul><ul><li><p><code>a_ancova()</code> returns the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
+</ul><ul><li><p><code>summarize_ancova()</code> returns a layout object suitable for passing to further layouting functions,
+or to <code><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted rows containing
+the statistics from <code>s_ancova()</code> to the table layout.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
 <ul><li><p><code>s_ancova()</code>: Statistics function that produces a named list of results
 of the investigated linear model.</p></li>
-<li><p><code>a_ancova()</code>: Formatted Analysis function which can be further customized by calling
-<code><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">rtables::make_afun()</a></code> on it. It is used as <code>afun</code> in <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
-<li><p><code>summarize_ancova()</code>: Layout creating function which can be be used for creating
-summary tables for analysis of covariance (ANCOVA).</p></li>
+<li><p><code>a_ancova()</code>: Formatted analysis function which is used as <code>afun</code> in <code>summarize_ancova()</code>.</p></li>
+<li><p><code>summarize_ancova()</code>: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
 </ul></div>
 
     <div class="section level2">
@@ -297,6 +297,7 @@ summary tables for analysis of covariance (ANCOVA).</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Difference in Adjusted Means                                                2.17           3.05    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI                                                                (1.96, 2.38)   (2.81, 3.29)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     p-value                                                                 &lt;0.0001        &lt;0.0001   </span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

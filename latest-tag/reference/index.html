@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,7 +27,7 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/generate_tern_data.html">Example Data Generation</a>
+    <a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a>
     <a class="dropdown-item" href="../articles/tables.html">Tabulation</a>
     <a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a>
   </div>
@@ -42,10 +42,18 @@
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
 <!-- end dropdown for versions -->
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-reports">
+    <a class="dropdown-item" href="../coverage-report/">Coverage report</a>
+    <a class="dropdown-item" href="../unit-test-report/">Unit test report</a>
+  </div>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -83,14 +91,24 @@
         <dd>tern Package</dd>
       </dl><dl><dt>
           
-          <code><a href="formatting_functions.html">formatting_functions</a></code> 
+          <code><a href="analyze_functions.html">analyze_functions</a></code> 
         </dt>
-        <dd>Additional Formatting Functions</dd>
+        <dd>Analyze Functions</dd>
       </dl><dl><dt>
           
-          <code><a href="kaplan_meier.html">kaplan_meier</a></code> 
+          <code><a href="analyze_colvars_functions.html">analyze_colvars_functions</a></code> 
         </dt>
-        <dd>Kaplan-Meier Plot</dd>
+        <dd>Analyze Functions on Columns</dd>
+      </dl><dl><dt>
+          
+          <code><a href="summarize_functions.html">summarize_functions</a></code> 
+        </dt>
+        <dd>Summarize Functions</dd>
+      </dl><dl><dt>
+          
+          <code><a href="formatting_functions.html">formatting_functions</a></code> 
+        </dt>
+        <dd>Formatting Functions</dd>
       </dl></div><div class="section level2">
       <h2 id="control-functions">Control Functions<a class="anchor" aria-label="anchor" href="#control-functions"></a></h2>
       
@@ -106,7 +124,7 @@
           
           <code><a href="control_coxph.html">control_coxph()</a></code> 
         </dt>
-        <dd>Control Function for <code>CoxPH</code> Model</dd>
+        <dd>Control Function for CoxPH Model</dd>
       </dl><dl><dt>
           
           <code><a href="control_coxreg.html">control_coxreg()</a></code> 
@@ -160,6 +178,16 @@
 
       <dl><dt>
           
+          <code><a href="analyze_colvars_functions.html">analyze_colvars_functions</a></code> 
+        </dt>
+        <dd>Analyze Functions on Columns</dd>
+      </dl><dl><dt>
+          
+          <code><a href="analyze_functions.html">analyze_functions</a></code> 
+        </dt>
+        <dd>Analyze Functions</dd>
+      </dl><dl><dt>
+          
           <code><a href="analyze_vars_in_cols.html">analyze_vars_in_cols()</a></code> 
         </dt>
         <dd>Summary numeric variables in columns</dd>
@@ -167,7 +195,12 @@
           
           <code><a href="summarize_num_patients.html">s_num_patients()</a></code> <code><a href="summarize_num_patients.html">s_num_patients_content()</a></code> <code><a href="summarize_num_patients.html">summarize_num_patients()</a></code> <code><a href="summarize_num_patients.html">analyze_num_patients()</a></code> 
         </dt>
-        <dd>Number of patients</dd>
+        <dd>Number of Patients</dd>
+      </dl><dl><dt>
+          
+          <code><a href="summarize_patients_exposure_in_cols.html">s_count_patients_sum_exposure()</a></code> <code><a href="summarize_patients_exposure_in_cols.html">a_count_patients_sum_exposure()</a></code> <code><a href="summarize_patients_exposure_in_cols.html">summarize_patients_exposure_in_cols()</a></code> <code><a href="summarize_patients_exposure_in_cols.html">analyze_patients_exposure_in_cols()</a></code> 
+        </dt>
+        <dd>Counting Patients Summing Exposure Across All Patients in Columns</dd>
       </dl><dl><dt>
           
           <code><a href="compare_variables.html">s_compare()</a></code> <code><a href="compare_variables.html">a_compare()</a></code> <code><a href="compare_variables.html">compare_vars()</a></code> 
@@ -225,9 +258,14 @@
         <dd>Counting Patients and Events in Columns</dd>
       </dl><dl><dt>
           
-          <code><a href="count_patients_with_event.html">s_count_patients_with_event()</a></code> <code><a href="count_patients_with_event.html">a_count_patients_with_event()</a></code> <code><a href="count_patients_with_event.html">count_patients_with_event()</a></code> <code><a href="count_patients_with_event.html">s_count_patients_with_flags()</a></code> <code><a href="count_patients_with_event.html">a_count_patients_with_flags()</a></code> <code><a href="count_patients_with_event.html">count_patients_with_flags()</a></code> 
+          <code><a href="count_patients_with_event.html">s_count_patients_with_event()</a></code> <code><a href="count_patients_with_event.html">a_count_patients_with_event()</a></code> <code><a href="count_patients_with_event.html">count_patients_with_event()</a></code> 
         </dt>
         <dd>Count the Number of Patients with a Particular Event</dd>
+      </dl><dl><dt>
+          
+          <code><a href="count_patients_with_flags.html">s_count_patients_with_flags()</a></code> <code><a href="count_patients_with_flags.html">a_count_patients_with_flags()</a></code> <code><a href="count_patients_with_flags.html">count_patients_with_flags()</a></code> 
+        </dt>
+        <dd>Count the Number of Patients with Particular Flags</dd>
       </dl><dl><dt>
           
           <code><a href="count_values_funs.html">s_count_values()</a></code> <code><a href="count_values_funs.html">a_count_values()</a></code> <code><a href="count_values_funs.html">count_values()</a></code> 
@@ -260,7 +298,7 @@
         <dd>Proportion Difference</dd>
       </dl><dl><dt>
           
-          <code><a href="cox_regression.html">s_coxreg()</a></code> <code><a href="cox_regression.html">summarize_coxreg()</a></code> 
+          <code><a href="cox_regression.html">s_coxreg()</a></code> <code><a href="cox_regression.html">a_coxreg()</a></code> <code><a href="cox_regression.html">summarize_coxreg()</a></code> 
         </dt>
         <dd>Cox Proportional Hazards Regression</dd>
       </dl><dl><dt>
@@ -280,6 +318,11 @@
         <dd>Summarize Variables in Columns</dd>
       </dl><dl><dt>
           
+          <code><a href="summarize_functions.html">summarize_functions</a></code> 
+        </dt>
+        <dd>Summarize Functions</dd>
+      </dl><dl><dt>
+          
           <code><a href="summarize_glm_count.html">s_glm_count()</a></code> <code><a href="summarize_glm_count.html">a_glm_count()</a></code> <code><a href="summarize_glm_count.html">summarize_glm_count()</a></code> 
         </dt>
         <dd>Summary for Poisson Negative Binomial.</dd>
@@ -287,12 +330,7 @@
           
           <code><a href="summarize_logistic.html">summarize_logistic()</a></code> 
         </dt>
-        <dd>Multi-Variable Logistic Regression Table</dd>
-      </dl><dl><dt>
-          
-          <code><a href="summarize_patients_exposure_in_cols.html">s_count_patients_sum_exposure()</a></code> <code><a href="summarize_patients_exposure_in_cols.html">summarize_patients_exposure_in_cols()</a></code> 
-        </dt>
-        <dd>Counting Patients Summing Exposure Across All Patients in Columns</dd>
+        <dd>Multivariate Logistic Regression Table</dd>
       </dl><dl><dt>
           
           <code><a href="summarize_variables.html">s_summary()</a></code> <code><a href="summarize_variables.html">a_summary()</a></code> <code><a href="summarize_variables.html">summarize_vars()</a></code> 
@@ -418,7 +456,7 @@
           
           <code><a href="h_logistic_regression.html">h_get_interaction_vars()</a></code> <code><a href="h_logistic_regression.html">h_interaction_coef_name()</a></code> <code><a href="h_logistic_regression.html">h_or_cat_interaction()</a></code> <code><a href="h_logistic_regression.html">h_or_cont_interaction()</a></code> <code><a href="h_logistic_regression.html">h_or_interaction()</a></code> <code><a href="h_logistic_regression.html">h_simple_term_labels()</a></code> <code><a href="h_logistic_regression.html">h_interaction_term_labels()</a></code> <code><a href="h_logistic_regression.html">h_glm_simple_term_extract()</a></code> <code><a href="h_logistic_regression.html">h_glm_interaction_extract()</a></code> <code><a href="h_logistic_regression.html">h_glm_inter_term_extract()</a></code> <code><a href="h_logistic_regression.html">h_logistic_simple_terms()</a></code> <code><a href="h_logistic_regression.html">h_logistic_inter_terms()</a></code> 
         </dt>
-        <dd>Helper Functions for Multi-Variable Logistic Regression</dd>
+        <dd>Helper Functions for Multivariate Logistic Regression</dd>
       </dl><dl><dt>
           
           <code><a href="h_map_for_count_abnormal.html">h_map_for_count_abnormal()</a></code> 
@@ -433,7 +471,7 @@
           
           <code><a href="h_pkparam_sort.html">h_pkparam_sort()</a></code> 
         </dt>
-        <dd>Sort <code>PK PARAM</code> variable</dd>
+        <dd>Sort Data by <code>PK PARAM</code> Variable</dd>
       </dl><dl><dt>
           
           <code><a href="h_prop_diff.html">prop_diff_wald()</a></code> <code><a href="h_prop_diff.html">prop_diff_ha()</a></code> <code><a href="h_prop_diff.html">prop_diff_nc()</a></code> <code><a href="h_prop_diff.html">prop_diff_cmh()</a></code> <code><a href="h_prop_diff.html">prop_diff_strat_nc()</a></code> 
@@ -468,8 +506,7 @@
           
           <code><a href="h_stack_by_baskets.html">h_stack_by_baskets()</a></code> 
         </dt>
-        <dd>Helper Function to create a new <code>SMQ</code> variable in <code>ADAE</code> by stacking
-<code>SMQ</code> and/or <code>CQ</code> records.</dd>
+        <dd>Helper Function to create a new <code>SMQ</code> variable in <code>ADAE</code> by stacking <code>SMQ</code> and/or <code>CQ</code> records.</dd>
       </dl><dl><dt>
           
           <code><a href="h_step.html">h_step_window()</a></code> <code><a href="h_step.html">h_step_trt_effect()</a></code> <code><a href="h_step.html">h_step_survival_formula()</a></code> <code><a href="h_step.html">h_step_survival_est()</a></code> <code><a href="h_step.html">h_step_rsp_formula()</a></code> <code><a href="h_step.html">h_step_rsp_est()</a></code> 
@@ -570,17 +607,12 @@
           
           <code><a href="logistic_regression_cols.html">logistic_regression_cols()</a></code> 
         </dt>
-        <dd>Logistic Regression Multi-Variable Column Layout Function</dd>
+        <dd>Logistic Regression Multivariate Column Layout Function</dd>
       </dl><dl><dt>
           
           <code><a href="logistic_summary_by_flag.html">logistic_summary_by_flag()</a></code> 
         </dt>
         <dd>Logistic Regression Summary Table Constructor Function</dd>
-      </dl><dl><dt>
-          
-          <code><a href="pairwise.html">pairwise()</a></code> 
-        </dt>
-        <dd>Pairwise Formula Special Term</dd>
       </dl><dl><dt>
           
           <code><a href="tidy.glm.html">tidy(<i>&lt;glm&gt;</i>)</a></code> 
@@ -1063,7 +1095,7 @@
       </dl></div><div class="section level2">
       <h2 id="deprecated-functions">Deprecated Functions<a class="anchor" aria-label="anchor" href="#deprecated-functions"></a></h2>
       
-      
+      <p class="section-desc"></p><p>Functions that are currently deprecated within <code>tern</code>.</p>
 
       
     </div><div id="" class="section level2">
@@ -1073,19 +1105,9 @@
 
       <dl><dt>
           
-          <code><a href="add_footnotes-set.html">`add_footnotes&lt;-`()</a></code> 
+          <code><a href="pairwise.html">pairwise()</a></code> 
         </dt>
-        <dd>Add Footnotes</dd>
-      </dl><dl><dt>
-          
-          <code><a href="footnotes-set.html">`footnotes&lt;-`()</a></code> 
-        </dt>
-        <dd>Assign Footnotes</dd>
-      </dl><dl><dt>
-          
-          <code><a href="footnotes.html">footnotes()</a></code> 
-        </dt>
-        <dd>Retrieve Footnotes</dd>
+        <dd>Pairwise Formula Special Term</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

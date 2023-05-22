@@ -14,7 +14,7 @@ across population subgroups."><!-- mathjax --><script src="https://cdnjs.cloudfl
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +31,7 @@ across population subgroups."><!-- mathjax --><script src="https://cdnjs.cloudfl
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/generate_tern_data.html">Example Data Generation</a>
+    <a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a>
     <a class="dropdown-item" href="../articles/tables.html">Tabulation</a>
     <a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a>
   </div>
@@ -46,10 +46,18 @@ across population subgroups."><!-- mathjax --><script src="https://cdnjs.cloudfl
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
 <!-- end dropdown for versions -->
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-reports">
+    <a class="dropdown-item" href="../coverage-report/">Coverage report</a>
+    <a class="dropdown-item" href="../unit-test-report/">Unit test report</a>
+  </div>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -94,21 +102,26 @@ across population subgroups.</p>
 
 
 <dt>vars</dt>
-<dd><p>(<code>character</code>)<br> the names of statistics to be reported among:</p><ul><li><p><code>n_tot_events</code>: total number of events per group.</p></li>
-<li><p><code>n_tot</code>: total number of observations per group.</p></li>
-<li><p><code>median</code>: median survival time.</p></li>
-<li><p><code>hr</code>: hazard ratio.</p></li>
-<li><p><code>ci</code>: confidence interval of hazard ratio.</p></li>
+<dd><p>(<code>character</code>)<br> the names of statistics to be reported among:</p><ul><li><p><code>n_tot_events</code>: Total number of events per group.</p></li>
+<li><p><code>n_tot</code>: Total number of observations per group.</p></li>
+<li><p><code>median</code>: Median survival time.</p></li>
+<li><p><code>hr</code>: Hazard ratio.</p></li>
+<li><p><code>ci</code>: Confidence interval of hazard ratio.</p></li>
 <li><p><code>pval</code>: p-value of the effect.
 Note, one of the statistics <code>n_tot</code> and <code>n_tot_events</code>, as well as both <code>hr</code> and <code>ci</code> are required.</p></li>
 </ul></dd>
 
 
 <dt>time_unit</dt>
-<dd><p>(<code>string</code>)<br> label with unit of median survival time. Default <code>NULL</code> skips
-displaying unit.</p></dd>
+<dd><p>(<code>string</code>)<br> label with unit of median survival time. Default <code>NULL</code> skips displaying unit.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<p>An <code>rtables</code> table summarizing biomarker effects on survival by subgroup.</p>
+    </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>These functions create a layout starting from a data frame which contains
@@ -117,7 +130,8 @@ the required statistics. The tables are then typically used as input for forest 
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>tabulate_survival_biomarkers()</code>: table creating function.</p></li>
+<ul><li><p><code>tabulate_survival_biomarkers()</code>: Table-creating function which creates a table
+summarizing biomarker effects on survival by subgroup.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
@@ -187,6 +201,7 @@ created by combining multiple subtables.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 Continuous Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7 Continuous Level Biomarker 2 analysis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8 Continuous Level Biomarker 2 analysis</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Table with default columns.</span></span></span>
 <span class="r-in"><span><span class="fu">tabulate_survival_biomarkers</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                  Total n   Total Events   Median   Hazard Ratio   95% Wald CI    p-value (Wald)</span>
@@ -215,6 +230,7 @@ created by combining multiple subtables.</p>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="g_forest.html">g_forest</a></span><span class="op">(</span><span class="va">tab</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">1.2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
