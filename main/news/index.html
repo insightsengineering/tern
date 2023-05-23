@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1.9012</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,18 +35,6 @@
 <li class="active nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -75,33 +63,33 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.8.1.9012" id="tern-0819012">tern 0.8.1.9012<a class="anchor" aria-label="anchor" href="#tern-0819012"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.8.2" id="tern-082">tern 0.8.2<a class="anchor" aria-label="anchor" href="#tern-082"></a></h2>
 <div class="section level4">
-<h4 id="breaking-changes-0-8-1-9012">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-8-1-9012"></a></h4>
-<ul><li>Refactored <code>s_coxreg</code> and <code>summarize_coxreg</code>. Added new analysis function <code>a_coxreg</code>.</li>
+<h4 id="breaking-changes-0-8-2">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-8-2"></a></h4>
+<ul><li>Refactored <code>s_coxreg</code> and <code>summarize_coxreg</code>to work with new analysis function <code>a_coxreg</code>.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="bug-fixes-0-8-1-9012">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-8-1-9012"></a></h4>
+<h4 id="bug-fixes-0-8-2">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-8-2"></a></h4>
 <ul><li>Fixed missing label for <code>TRTEDTM</code> in <code>tern</code> datasets.</li>
 <li>Fixed improper implementation of <code>na_level</code> argument in <code>summarize_vars</code> preventing it from having an effect.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="enhancements-0-8-1-9012">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-8-1-9012"></a></h4>
-<ul><li>Added <code>section_div</code> and <code>na_level</code> (<code>na_str</code>) to <code>summarize_vars</code>.</li>
+<h4 id="enhancements-0-8-2">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-8-2"></a></h4>
+<ul><li>Added <code>section_div</code> and <code>na_level</code> arguments to <code>summarize_vars</code>.</li>
 <li>Added <code>median_range</code> as a numeric variable statistic option for <code>summarize_vars</code>.</li>
 <li>Corrected ordering of factor levels by <code>d_onco_rsp_label</code>.</li>
-<li>Added new “Analyze Functions” and “Summarize Functions” overview pages.</li>
-<li>Moved all KM plot documentation to the <code>g_km</code> function.</li>
-<li>Added <code>a_count_patients_sum_exposure</code> for new analyze function <code>analyze_patients_exposure_in_cols</code> and <code>summarize_patients_exposure_in_cols</code>.</li>
+<li>Added new “Analyze Functions”, “Summarize Functions”, and “Analyze Functions on Columns” overview pages.</li>
+<li>Consolidated all KM plot documentation within the <code>g_km</code> function.</li>
+<li>Added <code>a_count_patients_sum_exposure</code> for <code>summarize_patients_exposure_in_cols</code> and new analyze function <code>analyze_patients_exposure_in_cols</code>.</li>
 <li>Added more informative error when the user selects an invalid method for unstratified analyses in <code>s_proportion_diff</code>.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="miscellaneous-0-8-1-9012">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-8-1-9012"></a></h4>
+<h4 id="miscellaneous-0-8-2">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-8-2"></a></h4>
 <ul><li>Implemented the <code>lubridate</code> package for date variables in <code>tern</code> datasets.</li>
-<li>Organization of <code>.gitignore</code> and <code>.Rbuildignore</code>.</li>
+<li>Organized <code>.gitignore</code> and <code>.Rbuildignore</code> files.</li>
 <li>Removed deprecated <code>footnotes</code> functions and all related files.</li>
-<li>Deprecation cycle of <code>pairwise</code> function started.</li>
-<li>Moved <code>count_patients_with_flags</code> functions out of <code>count_patients_with_event.R</code> and into <code>count_patients_with_flags.R</code>.</li>
+<li>Started deprecation cycle for <code>pairwise</code> function.</li>
+<li>Moved <code>count_patients_with_flags</code> functions from <code>count_patients_with_event.R</code> to <code>count_patients_with_flags.R</code>.</li>
 </ul></div>
 </div>
     <div class="section level2">
