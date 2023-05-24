@@ -1,3 +1,8 @@
+# tern 0.8.2.9000
+
+### Miscellaneous
+* Updated README to include installation instructions for CRAN.
+
 # tern 0.8.2
 
 ### Breaking Changes
