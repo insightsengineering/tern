@@ -9,6 +9,7 @@
 #' @importFrom formatters propose_column_widths
 #' @importFrom magrittr %>%
 #' @importFrom methods new
+#' @importFrom Rdpack reprompt
 #' @importFrom rlang .data
 #' @importFrom survival coxph strata Surv
 #' @importFrom stats pchisq
