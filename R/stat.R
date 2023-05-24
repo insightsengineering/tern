@@ -191,13 +191,15 @@ stat_mean_pval <- function(x,
 #' @param list_names (`character`)\cr names of each variable/level corresponding to pair of proportions in
 #'   `frac_x` and `frac_y`. Must be of equal length to `frac_x` and `frac_y`.
 #' @param pct (`logical`)\cr should output be returned as percentage instead of a fraction. Defaults to `TRUE`.
-#' @returns list of proportion differences and CIs corresponding to each pair of proportions in `frac_x` and `frac_y`.
+#'
+#' @return list of proportion differences and CIs corresponding to each pair of proportions in `frac_x` and `frac_y`.
 #'   Each list element consists of 3 statistics: proportion difference, CI lower bound, and CI upper bound.
 #'
-#' @export
 #' @examples
 #' stat_propdiff_ci(frac_x = list(0.375), frac_y = list(0.01), N_x = 5, N_y = 5, list_names = "x", conf_level = 0.9)
 #' stat_propdiff_ci(frac_x = list(0.5, 0.75, 1), frac_y = list(0.25, 0.05, 0.5), N_x = 10, N_y = 20, pct = FALSE)
+#'
+#' @export
 stat_propdiff_ci <- function(frac_x, frac_y, N_x, N_y, list_names = NULL, conf_level = 0.95, pct = TRUE) {
   checkmate::assert_list(frac_x, types = "numeric")
   checkmate::assert_list(frac_y, types = "numeric", len = length(frac_x))

@@ -190,7 +190,8 @@ count_occurrences <- function(lyt,
     n_spl <- length(.spl_context$split)
     n_riskdiff_col <- sum(.spl_context[[riskdiff$arm_x]][[n_spl]], .spl_context[[riskdiff$arm_y]][[n_spl]])
     if (.spl_context$cur_col_n[n_spl] == n_riskdiff_col) {
-      N_col_x <- round(.N_col / 2) # fix value after rtables#517 # nolint
+      browser()
+      N_col_x <- round(.N_col / 2) # fix value after rtables#517 - should be alt_counts_df .N_col if one exists # nolint
       N_col_y <- round(.N_col / 2) # fix value after rtables#517 # nolint
       s_x <- s_count_occurrences(df[df$ARM == riskdiff$arm_x, ], "N_col", N_col_x, df, .var = .var, ...)
       s_y <- s_count_occurrences(df[df$ARM == riskdiff$arm_y, ], "N_col", N_col_y, df, .var = .var, ...)
