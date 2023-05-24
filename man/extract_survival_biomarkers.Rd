@@ -17,23 +17,26 @@ extract_survival_biomarkers(
 
 \item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
-\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
-list, which specifies the new group levels via the names and the
-levels that belong to it in the character vectors that are elements of the list.}
+\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a list, which
+specifies the new group levels via the names and the levels that belong to it in the character vectors that are
+elements of the list.}
 
-\item{control}{(\code{list})\cr a list of parameters as returned by the
-helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
+\item{control}{(\code{list})\cr a list of parameters as returned by the helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
+}
+\value{
+A \code{data.frame} with columns \code{biomarker}, \code{biomarker_label}, \code{n_tot}, \code{n_tot_events},
+\code{median}, \code{hr}, \code{lcl}, \code{ucl}, \code{conf_level}, \code{pval}, \code{pval_label}, \code{subgroup}, \code{var},
+\code{var_label}, and \code{row_type}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Prepares estimates for number of events, patients and median survival
-times, as well as hazard ratio estimates, confidence intervals and p-values, for multiple biomarkers across
-population subgroups in a single data frame.
-\code{variables} corresponds to the names of variables found in \code{data}, passed as a named list and requires elements
-\code{tte}, \code{is_event}, \code{biomarkers} (vector of continuous biomarker variables) and optionally \code{subgroups} and \code{strat}.
+Prepares estimates for number of events, patients and median survival times, as well as hazard ratio estimates,
+confidence intervals and p-values, for multiple biomarkers across population subgroups in a single data frame.
+\code{variables} corresponds to the names of variables found in \code{data}, passed as a named \code{list} and requires elements
+\code{tte}, \code{is_event}, \code{biomarkers} (vector of continuous biomarker variables), and optionally \code{subgroups} and \code{strat}.
 \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
 }
 \examples{
@@ -89,6 +92,7 @@ df_grouped <- extract_survival_biomarkers(
   )
 )
 df_grouped
+
 }
 \seealso{
 \code{\link[=h_coxreg_mult_cont_df]{h_coxreg_mult_cont_df()}} which is used internally, \code{\link[=tabulate_survival_biomarkers]{tabulate_survival_biomarkers()}}.

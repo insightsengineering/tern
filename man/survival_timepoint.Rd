@@ -61,25 +61,25 @@ surv_timepoint(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{time_point}{(\code{number}) \cr survival time point of interest.}
+\item{time_point}{(\code{number})\cr survival time point of interest.}
 
 \item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
-\item{control}{a (\code{list}) of parameters for comparison details, specified by using \cr
-the helper function \code{\link{control_surv_timepoint}}. Some possible parameter options are: \cr
+\item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
+\code{\link[=control_surv_timepoint]{control_surv_timepoint()}}. Some possible parameter options are:
 \itemize{
-\item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for survival rate.
-\item \code{conf_type}: (\code{string}) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
-see more in \code{\link[survival:survfit]{survival::survfit()}}. Note that the option "none" is no longer supported.
-\item \code{time_point}: (\code{number}) \cr survival time point of interest.
+\item \code{conf_level} (\code{proportion})\cr confidence level of the interval for survival rate.
+\item \code{conf_type} (\code{string})\cr confidence interval type. Options are "plain" (default), "log", "log-log",
+see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "none" is no longer supported.
+\item \code{time_point} (\code{number})\cr survival time point of interest.
 }}
 
-\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
+\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
@@ -92,9 +92,9 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}. Note that the o
 \item{table_names_suffix}{(\code{string})\cr optional suffix for the \code{table_names} used for the \code{rtables} to
 avoid warnings from duplicate table names.}
 
-\item{var_labels}{character for label.}
+\item{var_labels}{(\code{character})\cr character for label.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{method}{(\code{string})\cr either \code{surv} (survival estimations),
 \code{surv_diff} (difference in survival with the control) or \code{both}.}
@@ -108,40 +108,59 @@ avoid warnings from duplicate table names.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-The statistics are:
 \itemize{
-\item \code{pt_at_risk} : patients remaining at risk.
-\item \code{event_free_rate} : event free rate (\%).
-\item \code{rate_se} : standard error of event free rate.
-\item \code{rate_ci} : confidence interval for event free rate.
+\item \code{s_surv_timepoint()} returns the statistics:
+\itemize{
+\item \code{pt_at_risk}: Patients remaining at risk.
+\item \code{event_free_rate}: Event-free rate (\%).
+\item \code{rate_se}: Standard error of event free rate.
+\item \code{rate_ci}: Confidence interval for event free rate.
+}
 }
 
-The statistics are:
 \itemize{
-\item \code{rate_diff} : event free rate difference between two groups.
-\item \code{rate_diff_ci} : confidence interval for the difference.
-\item \code{ztest_pval} : p-value to test the difference is 0.
+\item \code{a_surv_timepoint()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{s_surv_timepoint_diff()} returns the statistics:
+\itemize{
+\item \code{rate_diff}: Event-free rate difference between two groups.
+\item \code{rate_diff_ci}: Confidence interval for the difference.
+\item \code{ztest_pval}: p-value to test the difference is 0.
+}
+}
+
+\itemize{
+\item \code{a_surv_timepoint_diff()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{surv_timepoint()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_surv_timepoint()} and/or \code{s_surv_timepoint_diff()} to the table layout depending on
+the value of \code{method}.
 }
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Summarize patient's survival rate and difference of survival rates between groups at a time point.
+Summarize patients' survival rate and difference of survival rates between groups at a time point.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_surv_timepoint()}: Statistics Function which analyzes survival rate.
+\item \code{s_surv_timepoint()}: Statistics function which analyzes survival rate.
 
-\item \code{a_surv_timepoint()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_surv_timepoint()}: Formatted analysis function which is used as \code{afun} in \code{surv_timepoint()}
+when \code{method = "surv"}.
 
-\item \code{s_surv_timepoint_diff()}: Statistics Function which analyzes difference between two survival rates.
+\item \code{s_surv_timepoint_diff()}: Statistics function which analyzes difference between two survival rates.
 
-\item \code{a_surv_timepoint_diff()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_surv_timepoint_diff()}: Formatted analysis function which is used as \code{afun} in \code{surv_timepoint()}
+when \code{method = "surv_diff"}.
 
-\item \code{surv_timepoint()}: Analyze Function which adds the survival rate analysis to the input layout.
-Note that additional formatting arguments can be used here.
+\item \code{surv_timepoint()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{
@@ -232,5 +251,6 @@ basic_table() \%>\%
     method = "both"
   ) \%>\%
   build_table(df = adtte_f)
+
 }
 \keyword{internal}

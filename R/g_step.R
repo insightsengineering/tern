@@ -13,9 +13,9 @@
 #'   ribbon area, or `NULL` to not plot a CI ribbon.
 #' @param col (`character`)\cr colors.
 #'
-#' @return The `ggplot2` object.
+#' @return A `ggplot` STEP graph.
+#'
 #' @seealso Custom tidy method [tidy.step()].
-#' @export
 #'
 #' @examples
 #' library(nestcolor)
@@ -76,6 +76,8 @@
 #' )
 #' step_data <- broom::tidy(step_matrix)
 #' g_step(step_data)
+#'
+#' @export
 g_step <- function(df,
                    use_percentile = "Percentile Center" %in% names(df),
                    est = list(col = "blue", lty = 1),
@@ -141,11 +143,13 @@ g_step <- function(df,
 #'
 #' @param x (`step` matrix)\cr results from [fit_survival_step()].
 #' @param ... not used here.
+#'
 #' @return A `tibble` with one row per STEP subgroup. The estimates and CIs are on the HR or OR scale,
-#'   respectively. Additional attributes carry meta data also used for plotting.
+#'   respectively. Additional attributes carry metadata also used for plotting.
+#'
 #' @seealso [g_step()] which consumes the result from this function.
+#'
 #' @method tidy step
-#' @export
 #'
 #' @examples
 #' library(survival)
@@ -162,6 +166,8 @@ g_step <- function(df,
 #'   control = c(control_coxph(), control_step(num_points = 10, degree = 2))
 #' )
 #' broom::tidy(step_matrix)
+#'
+#' @export
 tidy.step <- function(x, ...) { # nolint
   checkmate::assert_class(x, "step")
   dat <- as.data.frame(x)

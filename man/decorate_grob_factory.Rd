@@ -9,10 +9,10 @@ decorate_grob_factory(npages, ...)
 \arguments{
 \item{npages}{number of pages in total}
 
-\item{...}{passed on to \code{\link{decorate_grob}}}
+\item{...}{passed on to \code{\link[=decorate_grob]{decorate_grob()}}}
 }
 \value{
-closure that increments the page number
+Closure that increments the page number.
 }
 \description{
 Automatically updates page number.
@@ -31,8 +31,6 @@ draw_grob(pf(NULL))
 draw_grob(pf(NULL))
 draw_grob(pf(NULL))
 }
-}
-\author{
-Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
+
 }
 \keyword{internal}

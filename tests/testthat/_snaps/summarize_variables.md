@@ -111,6 +111,12 @@
       max 
        NA 
       
+      $median_range
+      median    min    max 
+          NA     NA     NA 
+      attr(,"label")
+      [1] "Median (Min - Max)"
+      
       $cv
       cv 
       NA 
@@ -224,6 +230,12 @@
       $max
       max 
         1 
+      
+      $median_range
+      median    min    max 
+           1      1      1 
+      attr(,"label")
+      [1] "Median (Min - Max)"
       
       $cv
       cv 
@@ -339,6 +351,12 @@
       max 
        NA 
       
+      $median_range
+      median    min    max 
+          NA     NA     NA 
+      attr(,"label")
+      [1] "Median (Min - Max)"
+      
       $cv
       cv 
       NA 
@@ -453,6 +471,12 @@
       max 
         2 
       
+      $median_range
+      median    min    max 
+         1.5    1.0    2.0 
+      attr(,"label")
+      [1] "Median (Min - Max)"
+      
       $cv
             cv 
       47.14045 
@@ -566,6 +590,12 @@
       $max
       max 
        10 
+      
+      $median_range
+      median    min    max 
+         6.5    1.0   10.0 
+      attr(,"label")
+      [1] "Median (Min - Max)"
       
       $cv
             cv 
@@ -1097,4 +1127,27 @@
       Mean (SD)   NA   3.5 (0.7)   5.5 (0.7)
       Median      NA      3.5         5.5   
       Min - Max   NA   3.0 - 4.0   5.0 - 6.0
+
+# `summarize_vars` na_level argument works with non-default input
+
+    Code
+      res
+    Output
+          all obs
+      ———————————
+      n      4   
+      a   2 (50%)
+      b   2 (50%)
+
+---
+
+    Code
+      res
+    Output
+           all obs 
+      —————————————
+      n       6    
+      a   2 (33.3%)
+      b   2 (33.3%)
+      c   2 (33.3%)
 

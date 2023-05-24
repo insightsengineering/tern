@@ -58,10 +58,12 @@ count_values(
 
 \item{.N_row}{(\code{count})\cr column-wise N (column count) for the full column that is passed by \code{rtables}.}
 
-\item{denom}{(\code{string})\cr choice of denominator for proportion:\cr
-can be \code{n} (number of values in this row and column intersection), \code{N_row} (total
-number of values in this row across columns), or \code{N_col} (total number of values in
-this column across rows).}
+\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
+\itemize{
+\item \code{n}: number of values in this row and column intersection.
+\item \code{N_row}: total number of values in this row across columns.
+\item \code{N_col}: total number of values in this column across rows.
+}}
 
 \item{...}{additional arguments for the lower level functions.}
 
@@ -81,7 +83,19 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-See \code{\link[=s_summary.logical]{s_summary.logical()}} for the returned statistics, as this is used inside.
+\itemize{
+\item \code{s_count_values()} returns output of \code{\link[=s_summary]{s_summary()}} for specified values of a non-numeric variable.
+}
+
+\itemize{
+\item \code{a_count_values()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{count_values()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_values()} to the table layout.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -90,40 +104,47 @@ We can count the occurrence of specific values in a variable of interest.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_values()}: Statistics Function which is a generic function to count values.
+\item \code{s_count_values()}: S3 generic function to count values.
 
-\item \code{s_count_values(character)}: Method for \code{character} vectors \code{x}.
+\item \code{s_count_values(character)}: Method for \code{character} class.
 
-\item \code{s_count_values(factor)}: method for \code{factor} vectors \code{x}. This checks whether \code{values} are all
-included in the levels of \code{x} and fails otherwise. It then proceeds by converting to \code{character}
-and calling \code{s_count_values.character}.
+\item \code{s_count_values(factor)}: Method for \code{factor} class. This makes an automatic
+conversion to \code{character} and then forwards to the method for characters.
 
-\item \code{s_count_values(logical)}: method for \code{logical} vectors \code{x}.
+\item \code{s_count_values(logical)}: Method for \code{logical} class.
 
-\item \code{a_count_values()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_count_values()}: Formatted analysis function which is used as \code{afun}
+in \code{count_values()}.
 
-\item \code{count_values()}: Analyze Function which adds the counting analysis to
-the input layout. Note that additional formatting arguments can be used
-here.
+\item \code{count_values()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \note{
-Variable labels are shown when there is more than one element in \code{vars}, otherwise they
-are hidden.
+\itemize{
+\item For \code{factor} variables, \code{s_count_values} checks whether \code{values} are all included in the levels of \code{x}
+and fails otherwise.
+\item For \code{count_values()}, variable labels are shown when there is more than one element in \code{vars},
+otherwise they are hidden.
+}
 }
 \examples{
 # `s_count_values.character`
 s_count_values(x = c("a", "b", "a"), values = "a")
 s_count_values(x = c("a", "b", "a", NA, NA), values = "b", na.rm = FALSE)
+
 # `s_count_values.factor`
 s_count_values(x = factor(c("a", "b", "a")), values = "a")
+
 # `s_count_values.logical`
 s_count_values(x = c(TRUE, FALSE, TRUE))
+
 # `a_count_values`
 a_count_values(x = factor(c("a", "b", "a")), values = "a", .N_col = 10, .N_row = 10)
+
 # `count_values`
 basic_table() \%>\%
   count_values("Species", values = "setosa") \%>\%
   build_table(iris)
+
 }

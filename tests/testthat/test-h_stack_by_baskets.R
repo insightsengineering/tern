@@ -2,7 +2,7 @@
 adae_local <- tern_ex_adae[1:20, ] %>% df_explicit_na()
 
 testthat::test_that("h_stack_by_baskets returns the correct dataframe", {
-  result <- h_stack_by_baskets(df = adae_local)
+  result <- h_stack_by_baskets(df = adae_local) %>% data.frame()
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -33,8 +33,10 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  paste("h_stack_by_baskets returns an empty dataframe with desired variables and labels when there are no",
-  "adverse events falling within any of the baskets selected"),
+  paste(
+    "h_stack_by_baskets returns an empty dataframe with desired variables and labels when there are no",
+    "adverse events falling within any of the baskets selected"
+  ),
   code = {
     adae <- adae_local
     baskets <- grep("^(SMQ|CQ).*(NAM)$", names(adae), value = TRUE)

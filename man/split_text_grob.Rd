@@ -54,11 +54,14 @@ split_text_grob(
 
 \item{vp}{A Grid viewport object (or NULL).}
 }
+\value{
+A text grob.
+}
 \description{
 Dynamically wrap text.
 }
 \details{
-This code is taken from R Graphics by \code{Paul Murell}, 2nd edition
+This code is taken from R Graphics by Paul Murell, 2nd edition
 }
 \examples{
 # Internal function - split_text_grob

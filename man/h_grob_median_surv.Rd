@@ -15,14 +15,16 @@ h_grob_median_surv(
 \arguments{
 \item{fit_km}{(\code{survfit})\cr result of \code{\link[survival:survfit]{survival::survfit()}}.}
 
-\item{armval}{(\code{string}) \cr used as strata name when treatment arm
-variable only has one level. Default is "All".}
+\item{armval}{(\code{string})\cr used as strata name when treatment arm variable only has one level. Default is "All".}
 
-\item{x}{a \code{numeric} value between 0 and 1 specifying x-location.}
+\item{x}{(\code{numeric})\cr a value between 0 and 1 specifying x-location.}
 
-\item{y}{a \code{numeric} value between 0 and 1 specifying y-location.}
+\item{y}{(\code{numeric})\cr a value between 0 and 1 specifying y-location.}
 
 \item{ttheme}{(\code{list})\cr see \code{\link[gridExtra:tableGrob]{gridExtra::ttheme_default()}}.}
+}
+\value{
+A \code{grob} of a table containing statistics \code{N}, \code{Median}, and \verb{XX\% CI} (\code{XX} taken from \code{fit_km}).
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

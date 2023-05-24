@@ -7,11 +7,15 @@
 sas_na(x, empty = TRUE, whitespaces = TRUE)
 }
 \arguments{
-\item{x}{factor or character vector}
+\item{x}{(\code{factor} or \code{character} vector)\cr values for which any missing values should be substituted.}
 
-\item{empty}{boolean if true empty strings get replaced by \code{NA}}
+\item{empty}{(\code{logical})\cr if \code{TRUE} empty strings get replaced by \code{NA}.}
 
-\item{whitespaces}{boolean, if true then strings made from whitespaces only get replaced with \code{NA}}
+\item{whitespaces}{(\code{logical})\cr if \code{TRUE} then strings made from whitespaces only get replaced with \code{NA}.}
+}
+\value{
+\code{x} with \code{""} and/or whitespace-only values substituted by \code{NA}, depending on the values of
+\code{empty} and \code{whitespaces}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -24,4 +28,5 @@ sas_na(c("1", "", " ", "   ", "b"))
 sas_na(factor(c("", " ", "b")))
 
 is.na(sas_na(c("1", "", " ", "   ", "b")))
+
 }

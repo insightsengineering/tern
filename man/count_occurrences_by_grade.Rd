@@ -52,7 +52,7 @@ summarize_occurrences_by_grade(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
@@ -60,7 +60,7 @@ by a statistics function.}
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
 
-\item{id}{(\code{string}) \cr subject variable name.}
+\item{id}{(\code{string})\cr subject variable name.}
 
 \item{grade_groups}{(named \code{list} of \code{character})\cr containing groupings of grades.}
 
@@ -74,7 +74,7 @@ in the the output list; in this case only the grade groups names will be include
 
 \item{var_labels}{(\code{character})\cr labels to show in the result table.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{...}{additional arguments for the lower level functions.}
 
@@ -89,6 +89,28 @@ to avoid warnings from \code{rtables}.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 }
+\value{
+\itemize{
+\item \code{s_count_occurrences_by_grade()} returns a list of counts and fractions with one element per grade level or
+grade level grouping.
+}
+
+\itemize{
+\item \code{a_count_occurrences_by_grade()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{count_occurrences_by_grade()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_occurrences_by_grade()} to the table layout.
+}
+
+\itemize{
+\item \code{summarize_occurrences_by_grade()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted content rows
+containing the statistics from \code{s_count_occurrences_by_grade()} to the table layout.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -98,18 +120,17 @@ greatest intensity/highest grade level.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_occurrences_by_grade()}: Statistics function which given occurrence data counts the
-number of patients by highest grade. Returns a list of counts and fractions with one element
-per grade level or grade level grouping.
+\item \code{s_count_occurrences_by_grade()}: Statistics function which counts the
+number of patients by highest grade.
 
-\item \code{a_count_occurrences_by_grade()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_count_occurrences_by_grade()}: Formatted analysis function which is used as \code{afun}
+in \code{count_occurrences_by_grade()}.
 
-\item \code{count_occurrences_by_grade()}: Layout creating function which can be used for creating tables,
-which can take statistics function arguments and additional format arguments (see below).
+\item \code{count_occurrences_by_grade()}: Layout-creating function which can take statistics function
+arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{summarize_occurrences_by_grade()}: Layout creating function which adds content rows using the
-statistics function and additional format arguments (see below).
+\item \code{summarize_occurrences_by_grade()}: Layout-creating function which can take content function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 
 }}
 \examples{
@@ -130,7 +151,7 @@ df_adsl <- df \%>\%
 
 s_count_occurrences_by_grade(
   df,
-  .N_col = 10L, # nolint
+  .N_col = 10L,
   .var = "AETOXGR",
   id = "USUBJID",
   grade_groups = list("ANY" = levels(df$AETOXGR))
@@ -141,7 +162,7 @@ s_count_occurrences_by_grade(
 afun <- make_afun(a_count_occurrences_by_grade, .ungroup_stats = "count_fraction")
 afun(
   df,
-  .N_col = 10L, # nolint
+  .N_col = 10L,
   .var = "AETOXGR",
   id = "USUBJID",
   grade_groups = list("ANY" = levels(df$AETOXGR))
@@ -191,6 +212,7 @@ basic_table() \%>\%
     grade_groups = grade_groups
   ) \%>\%
   build_table(df, alt_counts_df = df_adsl)
+
 }
 \seealso{
 Relevant helper function \code{\link[=h_append_grade_groups]{h_append_grade_groups()}}.

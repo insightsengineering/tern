@@ -6,7 +6,7 @@ df <- data.frame(
   PARAM = rep(c("ALT", "CPR"), 6),
   ANRIND = c("NORMAL", "NORMAL", "LOW", "HIGH", "LOW", "LOW", "HIGH", "HIGH", rep("NORMAL", 4))
 )
-df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) # nolint
+df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL"))
 
 testthat::test_that("h_map_for_count_abnormal returns the correct map for default method with healthy single input", {
   result <- h_map_for_count_abnormal(
@@ -20,15 +20,16 @@ testthat::test_that("h_map_for_count_abnormal returns the correct map for defaul
   # order of anl variable within the split_rows group because the order of split_rows is something we want to check
   result <- result %>%
     dplyr::group_by(PARAM) %>%
-    dplyr::arrange(ANRIND, .by_group = TRUE)
+    dplyr::arrange(ANRIND, .by_group = TRUE) %>%
+    data.frame()
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
 
 testthat::test_that("h_map_for_count_abnormal returns the correct map for range method with healthy single input", {
-  df$ANRLO <- 5 # nolint
-  df$ANRHI <- 20 # nolint
+  df$ANRLO <- 5
+  df$ANRHI <- 20
 
   result <- h_map_for_count_abnormal(
     df = df,
@@ -41,7 +42,8 @@ testthat::test_that("h_map_for_count_abnormal returns the correct map for range 
   # order of anl variable within the split_rows group because the order of split_rows is something we want to check
   result <- result %>%
     dplyr::group_by(PARAM) %>%
-    dplyr::arrange(ANRIND, .by_group = TRUE)
+    dplyr::arrange(ANRIND, .by_group = TRUE) %>%
+    data.frame()
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -62,7 +64,8 @@ testthat::test_that(
     # order of anl variable within the split_rows group because the order of split_rows is something we want to check
     result <- result %>%
       dplyr::group_by(PARAM) %>%
-      dplyr::arrange(ANRIND, .by_group = TRUE)
+      dplyr::arrange(ANRIND, .by_group = TRUE) %>%
+      data.frame()
 
     res <- testthat::expect_silent(result)
     testthat::expect_snapshot(res)
@@ -74,8 +77,8 @@ testthat::test_that(
 testthat::test_that(
   "h_map_for_count_abnormal returns the correct map for range method with unused LOW LOW/HIGH HIGH input",
   code = {
-    df$ANRLO <- 5 # nolint
-    df$ANRHI <- 20 # nolint
+    df$ANRLO <- 5
+    df$ANRHI <- 20
 
     result <- h_map_for_count_abnormal(
       df = df,
@@ -88,7 +91,8 @@ testthat::test_that(
     # order of anl variable within the split_rows group because the order of split_rows is something we want to check
     result <- result %>%
       dplyr::group_by(PARAM) %>%
-      dplyr::arrange(ANRIND, .by_group = TRUE)
+      dplyr::arrange(ANRIND, .by_group = TRUE) %>%
+      data.frame()
 
     res <- testthat::expect_silent(result)
     testthat::expect_snapshot(res)
@@ -102,7 +106,7 @@ testthat::test_that(
     df <- df %>% dplyr::mutate(
       ANRIND = ifelse(PARAM == "ALT" & ANRIND == "LOW" & USUBJID == "1", "LOW LOW", as.character(ANRIND))
     )
-    df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL", "LOW LOW", "HIGH HIGH")) # nolint
+    df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL", "LOW LOW", "HIGH HIGH"))
     result <- h_map_for_count_abnormal(
       df = df,
       variables = list(anl = "ANRIND", split_rows = "PARAM"),
@@ -114,7 +118,8 @@ testthat::test_that(
     # order of anl variable within the split_rows group because the order of split_rows is something we want to check
     result <- result %>%
       dplyr::group_by(PARAM) %>%
-      dplyr::arrange(ANRIND, .by_group = TRUE)
+      dplyr::arrange(ANRIND, .by_group = TRUE) %>%
+      data.frame()
 
     res <- testthat::expect_silent(result)
     testthat::expect_snapshot(res)
@@ -126,10 +131,10 @@ testthat::test_that(
 testthat::test_that(
   "h_map_for_count_abnormal returns the correct map for range method with unused LOW LOW/HIGH HIGH input",
   code = {
-    df$ANRLO <- 5 # nolint
-    df$ANRHI <- 20 # nolint
-    df$ANRIND <- "NORMAL" # nolint
-    df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL")) # nolint
+    df$ANRLO <- 5
+    df$ANRHI <- 20
+    df$ANRIND <- "NORMAL"
+    df$ANRIND <- factor(df$ANRIND, levels = c("LOW", "HIGH", "NORMAL"))
 
     result <- h_map_for_count_abnormal(
       df = df,
@@ -142,7 +147,8 @@ testthat::test_that(
     # order of anl variable within the split_rows group because the order of split_rows is something we want to check
     result <- result %>%
       dplyr::group_by(PARAM) %>%
-      dplyr::arrange(ANRIND, .by_group = TRUE)
+      dplyr::arrange(ANRIND, .by_group = TRUE) %>%
+      data.frame()
 
     res <- testthat::expect_silent(result)
     testthat::expect_snapshot(res)
@@ -153,10 +159,10 @@ testthat::test_that(
 testthat::test_that(
   "h_map_for_count_abnormal returns the correct map for range method with unused LOW LOW/HIGH HIGH input",
   code = {
-    df$ANRLO <- 5 # nolint
-    df$ANRHI <- 20 # nolint
-    df$ANRLO <- ifelse(df$PARAM == "ALT", 0, df$ANRLO) # nolint
-    df$ANRHI <- ifelse(df$PARAM == "CPR", NA, df$ANRHI) # nolint
+    df$ANRLO <- 5
+    df$ANRHI <- 20
+    df$ANRLO <- ifelse(df$PARAM == "ALT", 0, df$ANRLO)
+    df$ANRHI <- ifelse(df$PARAM == "CPR", NA, df$ANRHI)
 
     result <- h_map_for_count_abnormal(
       df = df,
@@ -169,7 +175,8 @@ testthat::test_that(
     # order of anl variable within the split_rows group because the order of split_rows is something we want to check
     result <- result %>%
       dplyr::group_by(PARAM) %>%
-      dplyr::arrange(ANRIND, .by_group = TRUE)
+      dplyr::arrange(ANRIND, .by_group = TRUE) %>%
+      data.frame()
 
     res <- testthat::expect_silent(result)
     testthat::expect_snapshot(res)

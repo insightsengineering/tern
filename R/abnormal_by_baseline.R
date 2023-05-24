@@ -2,29 +2,31 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @details
-#' Note that `df` should be filtered to include only post-baseline records.
-#'
-#' Primary analysis variable `.var` indicates the abnormal range result (character or factor), and additional
-#'   analysis variables are `id` (character or factor) and `baseline` (character or factor). For each
-#'   direction specified in `abnormal` (e.g. high or low) we condition on baseline range result and count
-#'   patients in the numerator and denominator as follows:
-#' * `Not <abnormal>`
-#'   * `denom`: the number of patients without abnormality at baseline (excluding those with missing baseline)
-#'   * `num`:  the number of patients in `denom` who also have at least one abnormality post-baseline
-#' * `<Abnormal>`
-#'   * `denom`: the number of patients with abnormality at baseline
-#'   * `num`: the number of patients in `denom` who also have at least one abnormality post-baseline
-#' * `Total`
-#'   * `denom`: the number of patients with at least one valid measurement post-baseline
-#'   * `num`: the number of patients in `denom` who also have at least one abnormality post-baseline
+#' Primary analysis variable `.var` indicates the abnormal range result (`character` or `factor`), and additional
+#' analysis variables are `id` (`character` or `factor`) and `baseline` (`character` or `factor`). For each
+#' direction specified in `abnormal` (e.g. high or low) we condition on baseline range result and count
+#' patients in the numerator and denominator as follows:
+#'   * `Not <Abnormal>`
+#'     * `denom`: the number of patients without abnormality at baseline (excluding those with missing baseline)
+#'     * `num`:  the number of patients in `denom` who also have at least one abnormality post-baseline
+#'   * `<Abnormal>`
+#'     * `denom`: the number of patients with abnormality at baseline
+#'     * `num`: the number of patients in `denom` who also have at least one abnormality post-baseline
+#'   * `Total`
+#'     * `denom`: the number of patients with at least one valid measurement post-baseline
+#'     * `num`: the number of patients in `denom` who also have at least one abnormality post-baseline
 #'
 #' @inheritParams argument_convention
 #' @param abnormal (`character`)\cr identifying the abnormal range level(s) in `.var`.
+#'
+#' @note
+#' * `df` should be filtered to include only post-baseline records.
+#' * If the baseline variable or analysis variable contains `NA`, it is expected that `NA` has been
+#'   conveyed to `na_level` appropriately beforehand with [df_explicit_na()] or [explicit_na()].
+#'
 #' @seealso Relevant description function [d_count_abnormal_by_baseline()].
 #'
 #' @name abnormal_by_baseline
-#' @include formats.R
 NULL
 
 #' Description Function for [s_count_abnormal_by_baseline()]
@@ -34,6 +36,8 @@ NULL
 #' Description function that produces the labels for [s_count_abnormal_by_baseline()].
 #'
 #' @inheritParams abnormal_by_baseline
+#'
+#' @return Abnormal category labels for [s_count_abnormal_by_baseline()].
 #'
 #' @examples
 #' d_count_abnormal_by_baseline("LOW")
@@ -52,14 +56,14 @@ d_count_abnormal_by_baseline <- function(abnormal) {
   )
 }
 
-#' @describeIn abnormal_by_baseline For a single `abnormal` level, produce a statistic `fraction` which is
-#'   a named list with 3 elements: `not_abnormal`, `abnormal` and `total`.
-#'   Each element contains a vector with `num` and `denom` counts of patients.
-#'   Please note that if the baseline variable or analysis variable contains `NA`, it is expected that `NA` has been
-#'   conveyed to `na_level` appropriately beforehand with `df_explicit_na()` or `explicit_na()`.
+#' @describeIn abnormal_by_baseline Statistics function for a single `abnormal` level.
 #'
-#' @param na_level (`string`) \cr the explicit `na_level` argument you used in the pre-processing steps (maybe with
-#'   `df_explicit_na()`). The default is `"<Missing>"`.
+#' @param na_level (`string`)\cr the explicit `na_level` argument you used in the pre-processing steps (maybe with
+#'   [df_explicit_na()]). The default is `"<Missing>"`.
+#'
+#' @return
+#' * `s_count_abnormal_by_baseline()` returns statistic `fraction` which is a named list with 3 labeled elements:
+#'   `not_abnormal`, `abnormal`, and `total`. Each element contains a vector with `num` and `denom` patient counts.
 #'
 #' @examples
 #' df <- data.frame(
@@ -138,9 +142,11 @@ s_count_abnormal_by_baseline <- function(df,
   ))
 }
 
-#' @describeIn abnormal_by_baseline Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @return [a_count_abnormal_by_baseline()] returns the corresponding list with formatted [rtables::CellValue()].
+#' @describeIn abnormal_by_baseline Formatted analysis function which is used as `afun`
+#'   in `count_abnormal_by_baseline()`.
+#'
+#' @return
+#' * `a_count_abnormal_by_baseline()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' # Internal function - a_count_abnormal_by_baseline
@@ -157,13 +163,15 @@ a_count_abnormal_by_baseline <- make_afun(
   .formats = c(fraction = format_fraction)
 )
 
-#' @describeIn abnormal_by_baseline Layout creating function which can be used for creating tables, which can take
-#'   statistics function arguments and additional format arguments (see below).
+#' @describeIn abnormal_by_baseline Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @inheritParams argument_convention
+#' @return
+#' * `count_abnormal_by_baseline()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_abnormal_by_baseline()` to the table layout.
 #'
 #' @examples
-#'
 #' # Layout creating function.
 #' basic_table() %>%
 #'   count_abnormal_by_baseline(var = "ANRIND", abnormal = c(High = "HIGH")) %>%

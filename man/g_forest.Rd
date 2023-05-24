@@ -31,11 +31,9 @@ g_forest(
 \item{col_ci}{(\code{integer})\cr column index with confidence intervals. By default tries
 to get this from \code{tbl} attribute \code{col_ci}, otherwise needs to be manually specified.}
 
-\item{vline}{(\code{number})\cr
-x coordinate for vertical line, if \code{NULL} then the line is omitted.}
+\item{vline}{(\code{number})\cr x coordinate for vertical line, if \code{NULL} then the line is omitted.}
 
-\item{forest_header}{(\code{character}, length 2)\cr
-text displayed to the left and right of \code{vline}, respectively.
+\item{forest_header}{(\code{character}, length 2)\cr text displayed to the left and right of \code{vline}, respectively.
 If \code{vline = NULL} then \code{forest_header} needs to be \code{NULL} too.
 By default tries to get this from \code{tbl} attribute \code{forest_header}.}
 
@@ -43,23 +41,21 @@ By default tries to get this from \code{tbl} attribute \code{forest_header}.}
 
 \item{logx}{(\code{flag})\cr show the x-values on logarithm scale.}
 
-\item{x_at}{(\verb{numeric)\\cr x-tick locations, if }NULL` they get automatically chosen.}
+\item{x_at}{(\code{numeric})\cr x-tick locations, if \code{NULL} they get automatically chosen.}
 
-\item{width_row_names}{(\code{unit})\cr
-width for row names. If \code{NULL} the widths get automatically calculated. See \code{\link[grid:unit]{grid::unit()}}.}
+\item{width_row_names}{(\code{unit})\cr width for row names.
+If \code{NULL} the widths get automatically calculated. See \code{\link[grid:unit]{grid::unit()}}.}
 
-\item{width_columns}{(\code{unit})\cr
-widths for the table columns. If \code{NULL} the widths get automatically calculated. See \code{\link[grid:unit]{grid::unit()}}.}
+\item{width_columns}{(\code{unit})\cr widths for the table columns.
+If \code{NULL} the widths get automatically calculated. See \code{\link[grid:unit]{grid::unit()}}.}
 
-\item{width_forest}{(\code{unit})\cr
-width for the forest column. If \code{NULL} the widths get automatically calculated. See \code{\link[grid:unit]{grid::unit()}}.}
+\item{width_forest}{(\code{unit})\cr width for the forest column.
+If \code{NULL} the widths get automatically calculated. See \code{\link[grid:unit]{grid::unit()}}.}
 
-\item{col_symbol_size}{(\code{integer})\cr
-column index from \code{tbl} containing data to be used to determine relative
-size for estimator plot symbol. Typically, the symbol size is proportional to the
-sample size used to calculate the estimator. If \code{NULL}, the same symbol
-size is used for all subgroups. By default tries to get this from
-\code{tbl} attribute \code{col_symbol_size}, otherwise needs to be manually specified.}
+\item{col_symbol_size}{(\code{integer})\cr column index from \code{tbl} containing data to be used
+to determine relative size for estimator plot symbol. Typically, the symbol size is proportional
+to the sample size used to calculate the estimator. If \code{NULL}, the same symbol size is used for all subgroups.
+By default tries to get this from \code{tbl} attribute \code{col_symbol_size}, otherwise needs to be manually specified.}
 
 \item{col}{(\code{character})\cr color(s).}
 
@@ -69,7 +65,7 @@ size is used for all subgroups. By default tries to get this from
 Only considered if \code{draw = TRUE} is used.}
 }
 \value{
-(\code{gtree}) object containing the forest plot and table
+\code{gTree} object containing the forest plot and table.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -189,4 +185,5 @@ g_forest(
   forest_header = c("Hello", "World")
 )
 }
+
 }

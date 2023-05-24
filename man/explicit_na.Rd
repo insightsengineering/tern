@@ -7,9 +7,12 @@
 explicit_na(x, label = "<Missing>")
 }
 \arguments{
-\item{x}{factor or character vector}
+\item{x}{(\code{factor} or \code{character} vector)\cr values for which any missing values should be substituted.}
 
-\item{label}{character string that missing data should be replaced with}
+\item{label}{(\code{character})\cr string that missing data should be replaced with.}
+}
+\value{
+\code{x} with any \code{NA} values substituted by \code{label}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -24,4 +27,5 @@ explicit_na(factor(c(NA, "a", "b")))
 is.na(explicit_na(factor(c(NA, "a", "b"))))
 
 explicit_na(sas_na(c("a", "")))
+
 }

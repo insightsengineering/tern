@@ -2,12 +2,15 @@
 % Please edit documentation in R/coxph.R
 \name{univariate}
 \alias{univariate}
-\title{Univariate formula special term}
+\title{Univariate Formula Special Term}
 \usage{
 univariate(x)
 }
 \arguments{
-\item{x}{A vector of variable name separated by comas.}
+\item{x}{A vector of variable name separated by commas.}
+}
+\value{
+When used within a model formula, produces univariate models for each variable provided.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

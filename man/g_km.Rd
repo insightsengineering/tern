@@ -32,27 +32,29 @@ g_km(
   annot_at_risk = TRUE,
   annot_surv_med = TRUE,
   annot_coxph = FALSE,
+  annot_stats = NULL,
+  annot_stats_vlines = FALSE,
   control_coxph_pw = control_coxph(),
   position_coxph = c(0, 0.05),
   position_surv_med = c(0.9, 0.9)
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{variables}{(named \code{list}) of variable names. Details are: \cr
+\item{variables}{(named \code{list})\cr variable names. Details are:
 \itemize{
-\item \code{tte}: variable indicating time-to-event duration values (\code{numeric}).
-\item \code{is_event}: event variable (\code{logical}) \cr \code{TRUE} if event, \code{FALSE} if time to event is censored.
-\item \code{arm}: the treatment group variable (\code{factor}).
-\item \code{strat}: (\code{character} or \code{NULL}) variable names indicating stratification factors.
+\item \code{tte} (\code{numeric})\cr variable indicating time-to-event duration values.
+\item \code{is_event} (\code{logical})\cr event variable. \code{TRUE} if event, \code{FALSE} if time to event is censored.
+\item \code{arm} (\code{factor})\cr the treatment group variable.
+\item \code{strat} (\code{character} or \code{NULL})\cr variable names indicating stratification factors.
 }}
 
-\item{control_surv}{a (\code{list}) of parameters for comparison details, specified by using \cr
-the helper function \code{\link{control_surv_timepoint}}. Some possible parameter options are: \cr
+\item{control_surv}{(\code{list})\cr parameters for comparison details, specified by using
+the helper function \code{\link[=control_surv_timepoint]{control_surv_timepoint()}}. Some possible parameter options are:
 \itemize{
-\item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for survival rate.
-\item \code{conf_type}: (\code{string}) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
+\item \code{conf_level} (\code{proportion})\cr confidence level of the interval for survival rate.
+\item \code{conf_type} (\code{string})\cr "plain" (default), "log", "log-log" for confidence interval type,
 see more in \code{\link[survival:survfit]{survival::survfit()}}. Note that the option "none" is no longer supported.
 }}
 
@@ -71,20 +73,16 @@ to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 
 \item{size}{(\code{numeric})\cr size of censored point, a class of \code{unit}.}
 
-\item{max_time}{(\code{numeric})\cr maximum value to show on X axis.
-Only data values less than or up to to this threshold value will be plotted.(\code{NULL} for
-default)}
+\item{max_time}{(\code{numeric})\cr maximum value to show on X axis. Only data values less than or up to
+this threshold value will be plotted (defaults to \code{NULL}).}
 
-\item{xticks}{(\code{numeric}, \code{number}, or \code{NULL})\cr
-numeric vector of ticks or single number with spacing
-between ticks on the x axis.
-If \code{NULL} (default), \code{\link[labeling:extended]{labeling::extended()}} is used to determine
+\item{xticks}{(\code{numeric}, \code{number}, or \code{NULL})\cr numeric vector of ticks or single number with spacing
+between ticks on the x axis. If \code{NULL} (default), \code{\link[labeling:extended]{labeling::extended()}} is used to determine
 an optimal tick position on the x axis.}
 
 \item{xlab}{(\code{string})\cr label of x-axis.}
 
-\item{yval}{(\code{string})\cr value of y-axis. Should be either
-\code{Survival} (default) or \code{Failure} probability.}
+\item{yval}{(\code{string})\cr value of y-axis. Options are \code{Survival} (default) and \code{Failure} probability.}
 
 \item{ylab}{(\code{string})\cr label of y-axis.}
 
@@ -106,39 +104,43 @@ Only considered if \code{draw = TRUE} is used.}
 \item{name}{a character identifier for the grob.  Used to find the
     grob on the display list and/or as a child of another grob. }
 
-\item{font_size}{(\code{number}) \cr font size to be used.}
+\item{font_size}{(\code{number})\cr font size to be used.}
 
 \item{ci_ribbon}{(\code{flag})\cr draw the confidence interval around the Kaplan-Meier curve.}
 
-\item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to
-control outlook of the Kaplan-Meier curve.}
+\item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to control outlook of the Kaplan-Meier curve.}
 
-\item{annot_at_risk}{(\code{flag})\cr compute and add the annotation table
-reporting the number of patient at risk matching the main grid of the
-Kaplan-Meier curve.}
+\item{annot_at_risk}{(\code{flag})\cr compute and add the annotation table reporting the number of patient at risk
+matching the main grid of the Kaplan-Meier curve.}
 
-\item{annot_surv_med}{(\code{flag})\cr compute and add the annotation table
-on the Kaplan-Meier curve estimating the median survival time per group.}
+\item{annot_surv_med}{(\code{flag})\cr compute and add the annotation table on the Kaplan-Meier curve estimating the
+median survival time per group.}
 
 \item{annot_coxph}{(\code{flag})\cr add the annotation table from a \code{\link[survival:coxph]{survival::coxph()}} model.}
 
-\item{control_coxph_pw}{(\code{list}) \cr parameters for comparison details, specified by using \cr
-the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are: \cr
+\item{annot_stats}{(\code{string})\cr statistics annotations to add to the plot. Options are
+\code{median} (median survival follow-up time) and \code{min} (minimum survival follow-up time).}
+
+\item{annot_stats_vlines}{(\code{flag})\cr add vertical lines corresponding to each of the statistics
+specified by \code{annot_stats}. If \code{annot_stats} is \code{NULL} no lines will be added.}
+
+\item{control_coxph_pw}{(\code{list})\cr parameters for comparison details, specified by using
+the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are:
 \itemize{
-\item \code{pval_method}: (\code{string}) \cr p-value method for testing hazard ratio = 1.
+\item \code{pval_method} (\code{string})\cr p-value method for testing hazard ratio = 1.
 Default method is "log-rank", can also be set to "wald" or "likelihood".
-\item \code{ties}: (\code{string}) \cr specifying the method for tie handling. Default is "efron",
+\item \code{ties} (\code{string})\cr method for tie handling. Default is "efron",
 can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]{survival::coxph()}}
-\item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for HR.
+\item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
 }}
 
-\item{position_coxph}{\code{numeric} \cr x and y positions for plotting \code{\link[survival:coxph]{survival::coxph()}} model.}
+\item{position_coxph}{(\code{numeric})\cr x and y positions for plotting \code{\link[survival:coxph]{survival::coxph()}} model.}
 
-\item{position_surv_med}{\code{numeric} \cr x and y positions for plotting annotation table
-estimating median survival time per group}
+\item{position_surv_med}{(\code{numeric})\cr x and y positions for plotting annotation table estimating median survival
+time per group.}
 }
 \value{
-a \code{grob} of class \code{gTree}.
+A \code{grob} of class \code{gTree}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -173,6 +175,12 @@ res <- g_km(
 res <- g_km(df = df, variables = variables, ggtheme = theme_minimal())
 res <- g_km(df = df, variables = variables, ggtheme = theme_minimal(), lty = 1:3)
 res <- g_km(df = df, variables = variables, max = 2000)
+res <- g_km(
+  df = df,
+  variables = variables,
+  annot_stats = c("min", "median"),
+  annot_stats_vlines = TRUE
+)
 
 # 2. Example - Arrange several KM curve on a single graph device
 
@@ -233,4 +241,5 @@ g_km(
   position_surv_med = c(1, 0.7)
 )
 }
+
 }

@@ -3,14 +3,29 @@
 \name{summarize_patients_exposure_in_cols}
 \alias{summarize_patients_exposure_in_cols}
 \alias{s_count_patients_sum_exposure}
+\alias{a_count_patients_sum_exposure}
+\alias{analyze_patients_exposure_in_cols}
 \title{Counting Patients Summing Exposure Across All Patients in Columns}
 \usage{
 s_count_patients_sum_exposure(
   df,
-  .var = "AVAL",
+  ex_var = "AVAL",
+  id = "USUBJID",
+  labelstr = "",
+  .stats = c("n_patients", "sum_exposure"),
+  .N_col,
+  custom_label = NULL
+)
+
+a_count_patients_sum_exposure(
+  df,
+  var = NULL,
+  ex_var = "AVAL",
   id = "USUBJID",
   labelstr = "",
   .N_col,
+  .stats,
+  .formats = list(n_patients = "xx (xx.x\%)", sum_exposure = "xx"),
   custom_label = NULL
 )
 
@@ -23,42 +38,75 @@ summarize_patients_exposure_in_cols(
   .indent_mods = NULL,
   col_split = TRUE
 )
+
+analyze_patients_exposure_in_cols(
+  lyt,
+  var = NULL,
+  ex_var = "AVAL",
+  col_split = TRUE,
+  .stats = c("n_patients", "sum_exposure"),
+  .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
+  .indent_mods = 0L
+)
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
+\item{ex_var}{(\code{character})\cr name of the variable within \code{df} containing exposure values.}
 
-\item{id}{(\code{string}) \cr subject variable name.}
+\item{id}{(\code{string})\cr subject variable name.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions).}
 
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
 
-\item{custom_label}{(\code{string} or \code{NULL})\cr if provided and \code{labelstr} is empty then this will
-be used as label.}
+\item{custom_label}{(\code{string} or \code{NULL})\cr if provided and \code{labelstr} is empty then this will be used as label.}
+
+\item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
-
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
-\item{col_split}{(\code{flag})\cr whether the columns should be split.
-Set to \code{FALSE} when the required column split has been done already earlier in the layout pipe.}
+\item{col_split}{(\code{flag})\cr whether the columns should be split. Set to \code{FALSE} when the required
+column split has been done already earlier in the layout pipe.}
 }
 \value{
-\code{\link[=s_count_patients_sum_exposure]{s_count_patients_sum_exposure()}} returns a list with the statistics:\cr
 \itemize{
-\item \code{n_patients}: number of unique patients in \code{df}.
-\item \code{sum_exposure}: sum of \code{.var} across all patients in \code{df}.
+\item \code{s_count_patients_sum_exposure()} returns a named \code{list} with the statistics:
+\itemize{
+\item \code{n_patients}: Number of unique patients in \code{df}.
+\item \code{sum_exposure}: Sum of \code{ex_var} across all patients in \code{df}.
+}
+}
+
+\itemize{
+\item \code{a_count_patients_sum_exposure()} returns formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{summarize_patients_exposure_in_cols()} returns a layout object suitable for passing to further
+layouting functions, or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will
+add formatted content rows, with the statistics from \code{s_count_patients_sum_exposure()} arranged in
+columns, to the table layout.
+}
+
+\itemize{
+\item \code{analyze_patients_exposure_in_cols()} returns a layout object suitable for passing to further
+layouting functions, or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will
+add formatted data rows, with the statistics from \code{s_count_patients_sum_exposure()} arranged in
+columns, to the table layout.
 }
 }
 \description{
@@ -72,10 +120,24 @@ when a column table layout is required.
 \item \code{s_count_patients_sum_exposure()}: Statistics function which counts numbers
 of patients and the sum of exposure across all patients.
 
-\item \code{summarize_patients_exposure_in_cols()}: Layout creating function which adds the count
-statistics of patients and the sum of analysis value in the column layout as content rows.
+\item \code{a_count_patients_sum_exposure()}: Analysis function which is used as \code{afun} in
+\code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}} within \code{analyze_patients_exposure_in_cols()} and as \code{cfun} in
+\code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}} within \code{summarize_patients_exposure_in_cols()}.
+
+\item \code{summarize_patients_exposure_in_cols()}: Layout-creating function which can take statistics
+function arguments and additional format arguments. This function is a wrapper for
+\code{\link[rtables:split_cols_by_multivar]{rtables::split_cols_by_multivar()}} and \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
+
+\item \code{analyze_patients_exposure_in_cols()}: Layout-creating function which can take statistics
+function arguments and additional format arguments. This function is a wrapper for
+\code{\link[rtables:split_cols_by_multivar]{rtables::split_cols_by_multivar()}} and \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
 
 }}
+\note{
+As opposed to \code{\link[=summarize_patients_exposure_in_cols]{summarize_patients_exposure_in_cols()}} which generates content rows,
+\code{analyze_patients_exposure_in_cols()} generates data rows which will \emph{not} be repeated on multiple
+pages when pagination is used.
+}
 \examples{
 set.seed(1)
 df <- data.frame(
@@ -95,6 +157,7 @@ adsl <- data.frame(
 # Internal function - s_count_patients_sum_exposure
 \dontrun{
 s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl))
+s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl), .stats = "n_patients")
 s_count_patients_sum_exposure(
   df = df,
   .N_col = nrow(adsl),
@@ -102,34 +165,44 @@ s_count_patients_sum_exposure(
 )
 }
 
+tern:::a_count_patients_sum_exposure(
+  df = df,
+  var = "SEX",
+  .N_col = nrow(df),
+  .stats = "n_patients"
+)
 
 lyt <- basic_table() \%>\%
-  split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) \%>\%
-  summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) \%>\%
-  split_rows_by("SEX") \%>\%
-  summarize_patients_exposure_in_cols(var = "AVAL", col_split = FALSE)
+  summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE)
 result <- build_table(lyt, df = df, alt_counts_df = adsl)
 result
 
 lyt2 <- basic_table() \%>\%
+  summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
+result2 <- build_table(lyt2, df = df, alt_counts_df = adsl)
+result2
+
+lyt3 <- basic_table() \%>\%
+  split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) \%>\%
+  summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) \%>\%
+  analyze_patients_exposure_in_cols(var = "SEX", col_split = FALSE)
+result3 <- build_table(lyt3, df = df, alt_counts_df = adsl)
+result3
+
+lyt4 <- basic_table() \%>\%
   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) \%>\%
   summarize_patients_exposure_in_cols(
     var = "AVAL", col_split = TRUE,
     .stats = "n_patients", custom_label = "some custom label"
   ) \%>\%
-  split_rows_by("SEX") \%>\%
-  summarize_patients_exposure_in_cols(var = "AVAL", col_split = FALSE)
-result2 <- build_table(lyt2, df = df, alt_counts_df = adsl)
-result2
-
-lyt3 <- basic_table() \%>\%
-  summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE)
-result3 <- build_table(lyt3, df = df, alt_counts_df = adsl)
-result3
-
-lyt4 <- basic_table() \%>\%
-  summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
+  analyze_patients_exposure_in_cols(var = "SEX", col_split = FALSE, ex_var = "AVAL")
 result4 <- build_table(lyt4, df = df, alt_counts_df = adsl)
 result4
+
+lyt5 <- basic_table() \%>\%
+  analyze_patients_exposure_in_cols(var = "SEX", col_split = TRUE, ex_var = "AVAL")
+result5 <- build_table(lyt5, df = df, alt_counts_df = adsl)
+result5
+
 }
 \keyword{internal}

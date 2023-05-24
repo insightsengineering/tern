@@ -11,30 +11,26 @@
 #'   `tbl` attribute `col_x`, otherwise needs to be manually specified.
 #' @param col_ci (`integer`)\cr column index with confidence intervals. By default tries
 #'   to get this from `tbl` attribute `col_ci`, otherwise needs to be manually specified.
-#' @param vline (`number`)\cr
-#'   x coordinate for vertical line, if `NULL` then the line is omitted.
-#' @param forest_header (`character`, length 2)\cr
-#'   text displayed to the left and right of `vline`, respectively.
+#' @param vline (`number`)\cr x coordinate for vertical line, if `NULL` then the line is omitted.
+#' @param forest_header (`character`, length 2)\cr text displayed to the left and right of `vline`, respectively.
 #'   If `vline = NULL` then `forest_header` needs to be `NULL` too.
 #'   By default tries to get this from `tbl` attribute `forest_header`.
 #' @param xlim (`numeric`)\cr limits for x axis.
 #' @param logx (`flag`)\cr show the x-values on logarithm scale.
-#' @param x_at (`numeric)\cr x-tick locations, if `NULL` they get automatically chosen.
-#' @param width_row_names (`unit`)\cr
-#'  width for row names. If `NULL` the widths get automatically calculated. See [grid::unit()].
-#' @param width_columns (`unit`)\cr
-#'  widths for the table columns. If `NULL` the widths get automatically calculated. See [grid::unit()].
-#' @param width_forest (`unit`)\cr
-#'  width for the forest column. If `NULL` the widths get automatically calculated. See [grid::unit()].
-#' @param col_symbol_size (`integer`)\cr
-#'  column index from `tbl` containing data to be used to determine relative
-#'  size for estimator plot symbol. Typically, the symbol size is proportional to the
-#'  sample size used to calculate the estimator. If `NULL`, the same symbol
-#'  size is used for all subgroups. By default tries to get this from
-#'  `tbl` attribute `col_symbol_size`, otherwise needs to be manually specified.
+#' @param x_at (`numeric`)\cr x-tick locations, if `NULL` they get automatically chosen.
+#' @param width_row_names (`unit`)\cr width for row names.
+#'   If `NULL` the widths get automatically calculated. See [grid::unit()].
+#' @param width_columns (`unit`)\cr widths for the table columns.
+#'   If `NULL` the widths get automatically calculated. See [grid::unit()].
+#' @param width_forest (`unit`)\cr width for the forest column.
+#'   If `NULL` the widths get automatically calculated. See [grid::unit()].
+#' @param col_symbol_size (`integer`)\cr column index from `tbl` containing data to be used
+#'   to determine relative size for estimator plot symbol. Typically, the symbol size is proportional
+#'   to the sample size used to calculate the estimator. If `NULL`, the same symbol size is used for all subgroups.
+#'   By default tries to get this from `tbl` attribute `col_symbol_size`, otherwise needs to be manually specified.
 #' @param col (`character`)\cr color(s).
-#' @return (`gtree`) object containing the forest plot and table
-#' @export
+#'
+#' @return `gTree` object containing the forest plot and table.
 #'
 #' @examples
 #' \dontrun{
@@ -147,7 +143,9 @@
 #'   forest_header = c("Hello", "World")
 #' )
 #' }
-g_forest <- function(tbl, # nolint
+#'
+#' @export
+g_forest <- function(tbl,
                      col_x = attr(tbl, "col_x"),
                      col_ci = attr(tbl, "col_ci"),
                      vline = 1,
@@ -245,12 +243,6 @@ g_forest <- function(tbl, # nolint
     col = col,
     vp = grid::plotViewport(margins = rep(1, 4))
   )
-
-  fn <- footnotes(tbl)
-  if (!is.null(fn)) {
-    footnotes(grob_forest) <- fn
-    message("grob footnote is not added to plot; suggest to use decorate_grob() to further decorate the grob")
-  }
 
   if (draw) {
     if (newpage) grid::grid.newpage()
@@ -592,7 +584,7 @@ cell_in_rows <- function(row_name,
 #' Calculate the `grob` corresponding to the dot line within the forest plot.
 #'
 #' @noRd
-forest_dot_line <- function(x, # nolint
+forest_dot_line <- function(x,
                             lower,
                             upper,
                             row_index,
@@ -667,6 +659,8 @@ forest_dot_line <- function(x, # nolint
 }
 
 #' Create a Viewport Tree for the Forest Plot
+#'
+#' @return A viewport tree.
 #'
 #' @examples
 #' library(grid)
@@ -827,5 +821,5 @@ vp_forest_table_part <- function(nrow,
 #'
 #' @noRd
 grid.forest <- function(...) { # nolint
-  grid::grid.draw(forest_grob(...)) # nolint
+  grid::grid.draw(forest_grob(...))
 }

@@ -1,4 +1,4 @@
-#' Helper Functions for Multi-Variable Logistic Regression
+#' Helper Functions for Multivariate Logistic Regression
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -10,8 +10,6 @@
 #'   [survival::clogit()], currently this is used only by [extract_rsp_biomarkers()].
 #' @param x (`string` or `character`)\cr a variable or interaction term in `fit_glm` (depending on the
 #'   helper function).
-#'
-#' @name h_logistic_regression
 #'
 #' @examples
 #' library(dplyr)
@@ -43,10 +41,14 @@
 #'     interaction = "AGE"
 #'   )
 #' )
+#'
+#' @name h_logistic_regression
 NULL
 
 #' @describeIn h_logistic_regression Helper function to extract interaction variable names from a fitted
 #'   model assuming only one interaction term.
+#'
+#' @return Vector of names of interaction variables.
 #'
 #' @export
 h_get_interaction_vars <- function(fit_glm) {
@@ -67,6 +69,8 @@ h_get_interaction_vars <- function(fit_glm) {
 #'   the interaction level.
 #' @param second_var_with_level (`character` of length 2)\cr the second variable name with
 #'   the interaction level.
+#'
+#' @return Name of coefficient.
 #'
 #' @export
 h_interaction_coef_name <- function(interaction_vars,
@@ -91,6 +95,8 @@ h_interaction_coef_name <- function(interaction_vars,
 #'
 #' @param odds_ratio_var (`string`)\cr the odds ratio variable.
 #' @param interaction_var (`string`)\cr the interaction variable.
+#'
+#' @return Odds ratio.
 #'
 #' @export
 h_or_cat_interaction <- function(odds_ratio_var,
@@ -144,6 +150,9 @@ h_or_cat_interaction <- function(odds_ratio_var,
 #'
 #' @param at (`NULL` or `numeric`)\cr optional values for the interaction variable. Otherwise
 #'   the median is used.
+#'
+#' @return Odds ratio.
+#'
 #' @note We don't provide a function for the case when both variables are continuous because
 #'   this does not arise in this table, as the treatment arm variable will always be involved
 #'   and categorical.
@@ -239,6 +248,8 @@ h_or_cont_interaction <- function(odds_ratio_var,
 #'   in case of an interaction. This is a wrapper for [h_or_cont_interaction()] and
 #'   [h_or_cat_interaction()].
 #'
+#' @return Odds ratio.
+#'
 #' @export
 h_or_interaction <- function(odds_ratio_var,
                              interaction_var,
@@ -272,6 +283,8 @@ h_or_interaction <- function(odds_ratio_var,
 #' @param terms (`character`)\cr simple terms.
 #' @param table (`table`)\cr table containing numbers for terms.
 #'
+#' @return Term labels containing numbers of patients.
+#'
 #' @export
 h_simple_term_labels <- function(terms,
                                  table) {
@@ -289,6 +302,8 @@ h_simple_term_labels <- function(terms,
 #' @param terms2 (`character`)\cr terms for second dimension (rows).
 #' @param any (`flag`)\cr whether any of `term1` and `term2` can be fulfilled to count the
 #'   number of patients. In that case they can only be scalar (strings).
+#'
+#' @return Term labels containing numbers of patients.
 #'
 #' @export
 h_interaction_term_labels <- function(terms1,
@@ -317,6 +332,8 @@ h_interaction_term_labels <- function(terms1,
 
 #' @describeIn h_logistic_regression Helper function to tabulate the main effect
 #'   results of a (conditional) logistic regression model.
+#'
+#' @return Tabulated main effect results from a logistic regression model.
 #'
 #' @examples
 #' h_glm_simple_term_extract("AGE", mod1)
@@ -414,6 +431,8 @@ h_glm_simple_term_extract <- function(x, fit_glm) {
 
 #' @describeIn h_logistic_regression Helper function to tabulate the interaction term
 #'   results of a logistic regression model.
+#'
+#' @return Tabulated interaction term results from a logistic regression model.
 #'
 #' @examples
 #' h_glm_interaction_extract("ARMCD:AGE", mod2)
@@ -520,6 +539,8 @@ h_glm_interaction_extract <- function(x, fit_glm) {
 #'   [h_or_interaction()] and [h_glm_simple_term_extract()] which puts the results
 #'   in the right data frame format.
 #'
+#' @return A `data.frame` of tabulated interaction term results from a logistic regression model.
+#'
 #' @examples
 #' h_glm_inter_term_extract("AGE", "ARMCD", mod2)
 #'
@@ -614,10 +635,13 @@ h_glm_inter_term_extract <- function(odds_ratio_var,
 
 #' @describeIn h_logistic_regression Helper function to tabulate the results including
 #'   odds ratios and confidence intervals of simple terms.
-#' @export
+#'
+#' @return Tabulated statistics for the given variable(s) from the logistic regression model.
 #'
 #' @examples
 #' h_logistic_simple_terms("AGE", mod1)
+#'
+#' @export
 h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
   checkmate::assert_multi_class(fit_glm, c("glm", "clogit"))
   if (inherits(fit_glm, "glm")) {
@@ -643,6 +667,8 @@ h_logistic_simple_terms <- function(x, fit_glm, conf_level = 0.95) {
 
 #' @describeIn h_logistic_regression Helper function to tabulate the results including
 #'   odds ratios and confidence intervals of interaction terms.
+#'
+#' @return Tabulated statistics for the given variable(s) from the logistic regression model.
 #'
 #' @examples
 #' h_logistic_inter_terms(c("RACE", "AGE", "ARMCD", "AGE:ARMCD"), mod2)

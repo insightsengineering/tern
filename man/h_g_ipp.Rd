@@ -21,7 +21,7 @@ h_g_ipp(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{xvar}{(\code{string})\cr time point variable to be plotted on x-axis.}
 
@@ -37,7 +37,7 @@ h_g_ipp(
 
 \item{subtitle}{(\code{string})\cr subtitle for plot.}
 
-\item{caption}{(\code{character} scalar) \cr optional caption below the plot.}
+\item{caption}{(\code{character} scalar)\cr optional caption below the plot.}
 
 \item{add_baseline_hline}{(\code{flag})\cr adds horizontal line at baseline y-value on
 plot when TRUE.}
@@ -49,6 +49,9 @@ Ignored when \code{add_baseline_hline} is FALSE.}
 by \code{ggplot2} to control outlook of plot. Use \code{ggplot2::theme()} to tweak the display.}
 
 \item{col}{(\code{character})\cr lines colors.}
+}
+\value{
+A \code{ggplot} line plot.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -74,6 +77,7 @@ p <- h_g_ipp(
   add_baseline_hline = TRUE
 )
 p
+
 }
 \seealso{
 \code{\link[=g_ipp]{g_ipp()}} which uses this function.

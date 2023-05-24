@@ -54,12 +54,12 @@ the heuristic implemented in \code{\link[checkmate]{vname}}.}
 \item{add}{[\code{AssertCollection}]\cr
 Collection to store assertion messages. See \code{\link[checkmate]{AssertCollection}}.}
 
-\item{df}{(\verb{data frame})\cr data set to test.}
+\item{df}{(\code{data.frame})\cr data set to test.}
 
 \item{variables}{(named \code{list} of \code{character})\cr list of variables to test.}
 
 \item{na_level}{(\code{character})\cr the string you have been using to represent NA or
-missing data. For \code{NA} values please consider using directly \code{base::is.na} or
+missing data. For \code{NA} values please consider using directly \code{\link[=is.na]{is.na()}} or
 similar approaches.}
 
 \item{min.levels}{[\code{integer(1)}]\cr
@@ -91,19 +91,22 @@ for proportions.}
 
 \item{...}{a collection of objects to test.}
 }
+\value{
+Nothing if assertion passes, otherwise prints the error message.
+}
 \description{
 Additional assertion functions which can be used together with the \code{checkmate} package.
 }
 \section{Functions}{
 \itemize{
-\item \code{assert_list_of_variables()}: Check whether \code{x} is a valid list of variable names.
-\code{NULL} elements of the list \code{x} are dropped out with \code{Filter(Negate(is.null), x)}.
+\item \code{assert_list_of_variables()}: Checks whether \code{x} is a valid list of variable names.
+\code{NULL} elements of the list \code{x} are dropped with \code{Filter(Negate(is.null), x)}.
 
 \item \code{assert_df_with_variables()}: Check whether \code{df} is a data frame with the analysis \code{variables}.
 Please notice how this produces an error when not all variables are present in the
 data.frame while the opposite is not required.
 
-\item \code{assert_valid_factor()}: Check whether \code{x} is a valid factor (has levels and no empty
+\item \code{assert_valid_factor()}: Check whether \code{x} is a valid factor (i.e. has levels and no empty
 string levels). Note that \code{NULL} and \code{NA} elements are allowed.
 
 \item \code{assert_df_with_factors()}: Check whether \code{df} is a data frame where the analysis \code{variables}

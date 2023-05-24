@@ -6,17 +6,17 @@
 #' as incidence rate. Primary analysis variable is the person-years at risk.
 #'
 #' @inheritParams argument_convention
-#' @param control (`list`) \cr parameters for estimation details, specified by using
-#'   the helper function [control_incidence_rate()]. Possible parameter options are: \cr
-#' * `conf_level`: (`proportion`) \cr confidence level for the estimated incidence rate.
-#' * `conf_type`: (`string`) \cr `normal` (default), `normal_log`, `exact`, or `byar`
-#'   for confidence interval type.
-#' * `time_unit_input`: (`string`) \cr `day`, `week`, `month`, or `year` (default)
-#'   indicating time unit for data input.
-#' * `time_unit_output`: (`numeric`) \cr time unit for desired output (in person-years).
-#' @param person_years (`numeric`) \cr total person-years at risk.
-#' @param alpha (`numeric`) \cr two-sided alpha-level for confidence interval.
-#' @param n_events (`integer`) \cr number of events observed.
+#' @param control (`list`)\cr parameters for estimation details, specified by using
+#'   the helper function [control_incidence_rate()]. Possible parameter options are:
+#'   * `conf_level` (`proportion`)\cr confidence level for the estimated incidence rate.
+#'   * `conf_type` (`string`)\cr `normal` (default), `normal_log`, `exact`, or `byar`
+#'     for confidence interval type.
+#'   * `time_unit_input` (`string`)\cr `day`, `week`, `month`, or `year` (default)
+#'     indicating time unit for data input.
+#'   * `time_unit_output` (`numeric`)\cr time unit for desired output (in person-years).
+#' @param person_years (`numeric`)\cr total person-years at risk.
+#' @param alpha (`numeric`)\cr two-sided alpha-level for confidence interval.
+#' @param n_events (`integer`)\cr number of events observed.
 #'
 #' @seealso [control_incidence_rate()] and helper functions [h_incidence_rate].
 #'
@@ -26,14 +26,14 @@ NULL
 #' @describeIn incidence_rate Statistics function which estimates the incidence rate and the
 #'   associated confidence interval.
 #'
-#' @return The statistics are:
-#'   * `person_years`: total person-years at risk
-#'   * `n_events`: total number of events observed
-#'   * `rate`: estimated incidence rate
-#'   * `rate_ci`: confidence interval for the incidence rate
+#' @return
+#' * `s_incidence_rate()` returns the following statistics:
+#'   - `person_years`: Total person-years at risk.
+#'   - `n_events`: Total number of events observed.
+#'   - `rate`: Estimated incidence rate.
+#'   - `rate_ci`: Confidence interval for the incidence rate.
 #'
 #' @examples
-#'
 #' library(dplyr)
 #'
 #' df <- data.frame(
@@ -105,9 +105,11 @@ s_incidence_rate <- function(df,
   )
 }
 
-
-#' @describeIn incidence_rate Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn incidence_rate Formatted analysis function which is used as `afun`
+#'   in `estimate_incidence_rate()`.
+#'
+#' @return
+#' * `a_incidence_rate()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' # Internal function - a_incidence_rate
@@ -131,8 +133,13 @@ a_incidence_rate <- make_afun(
   )
 )
 
-#' @describeIn incidence_rate Layout creating function which adds analyze rows using the statistics
-#' function `s_incidence_rate` and desired format.
+#' @describeIn incidence_rate Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `estimate_incidence_rate()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_incidence_rate()` to the table layout.
 #'
 #' @examples
 #' basic_table() %>%
@@ -180,17 +187,19 @@ estimate_incidence_rate <- function(lyt,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param control (`list`) \cr parameters for estimation details, specified by using
-#'   the helper function [control_incidence_rate()]. Possible parameter options are: \cr
-#' * `conf_level`: (`proportion`) \cr confidence level for the estimated incidence rate.
-#' * `conf_type`: (`string`) \cr `normal` (default), `normal_log`, `exact`, or `byar`
-#'   for confidence interval type.
-#' * `time_unit_input`: (`string`) \cr `day`, `week`, `month`, or `year` (default)
-#'   indicating time unit for data input.
-#' * `time_unit_output`: (`numeric`) \cr time unit for desired output (in person-years).
-#' @param person_years (`numeric`) \cr total person-years at risk.
-#' @param alpha (`numeric`) \cr two-sided alpha-level for confidence interval.
-#' @param n_events (`integer`) \cr number of events observed.
+#' @param control (`list`)\cr parameters for estimation details, specified by using
+#'   the helper function [control_incidence_rate()]. Possible parameter options are:
+#'   * `conf_level`: (`proportion`)\cr confidence level for the estimated incidence rate.
+#'   * `conf_type`: (`string`)\cr `normal` (default), `normal_log`, `exact`, or `byar`
+#'     for confidence interval type.
+#'   * `time_unit_input`: (`string`)\cr `day`, `week`, `month`, or `year` (default)
+#'     indicating time unit for data input.
+#'   * `time_unit_output`: (`numeric`)\cr time unit for desired output (in person-years).
+#' @param person_years (`numeric`)\cr total person-years at risk.
+#' @param alpha (`numeric`)\cr two-sided alpha-level for confidence interval.
+#' @param n_events (`integer`)\cr number of events observed.
+#'
+#' @return Estimated incidence rate `rate` and associated confidence interval `rate_ci`.
 #'
 #' @seealso [incidence_rate]
 #'

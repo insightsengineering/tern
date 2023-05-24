@@ -19,7 +19,7 @@ testthat::test_that("fit_rsp_step works as expected with default options", {
     covariates = "AGE",
     response = "RSP"
   )
- suppressWarnings(testthat::expect_warning(result <- fit_rsp_step(
+  suppressWarnings(testthat::expect_warning(result <- fit_rsp_step(
     variables = variables,
     data = data
   )))

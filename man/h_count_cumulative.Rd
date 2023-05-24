@@ -28,18 +28,17 @@ count, default is \code{TRUE}.}
 \item{.N_col}{(\code{count})\cr denominator for fraction calculation.}
 }
 \value{
-A named vector of 2:
+A named vector with items:
 \itemize{
-\item \code{count}: the count of values less than, less or equal to, greater than, or
-greater or equal to a threshold of user specification.
+\item \code{count}: the count of values less than, less or equal to, greater than, or greater or equal to a threshold
+of user specification.
 \item \code{fraction}: the fraction of the count.
 }
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Helper function to calculate count and fraction of
-\code{x} values in the lower or upper tail given a threshold.
+Helper function to calculate count and fraction of \code{x} values in the lower or upper tail given a threshold.
 }
 \examples{
 set.seed(1, kind = "Mersenne-Twister")
@@ -49,6 +48,7 @@ h_count_cumulative(x, 5, .N_col = .N_col)
 h_count_cumulative(x, 5, lower_tail = FALSE, include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
 h_count_cumulative(x, 0, lower_tail = FALSE, .N_col = .N_col)
 h_count_cumulative(x, 100, lower_tail = FALSE, .N_col = .N_col)
+
 }
 \seealso{
 \link{count_cumulative}

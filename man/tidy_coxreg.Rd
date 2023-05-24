@@ -14,9 +14,21 @@
 \method{tidy}{coxreg.multivar}(x, ...)
 }
 \arguments{
-\item{x}{(\code{list})\cr Result of the Cox regression model fitted by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}.}
+\item{x}{(\code{list})\cr Result of the Cox regression model fitted by \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} (for univariate models)
+or \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} (for multivariate models).}
 
 \item{...}{additional arguments for the lower level functions.}
+}
+\value{
+\code{\link[=tidy]{tidy()}} returns:
+\itemize{
+\item For \code{summary.coxph} objects,  a \code{data.frame} with columns: \verb{Pr(>|z|)}, \code{exp(coef)}, \code{exp(-coef)}, \verb{lower .95},
+\verb{upper .95}, \code{level}, and \code{n}.
+\item For \code{coxreg.univar} objects, a \code{data.frame} with columns: \code{effect}, \code{term}, \code{term_label}, \code{level}, \code{n}, \code{hr},
+\code{lcl}, \code{ucl}, \code{pval}, and \code{ci}.
+\item For \code{coxreg.multivar} objects, a \code{data.frame} with columns: \code{term}, \code{pval}, \code{term_label}, \code{hr}, \code{lcl}, \code{ucl},
+\code{level}, and \code{ci}.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -27,11 +39,11 @@
 
 Tidy the \code{\link[survival:coxph]{survival::coxph()}} results into a \code{data.frame} to extract model results.
 
-\item \code{tidy(coxreg.univar)}: Custom tidy method for a Univariate Cox Regression
+\item \code{tidy(coxreg.univar)}: Custom tidy method for a univariate Cox regression.
 
 Tidy up the result of a Cox regression model fitted by \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}}.
 
-\item \code{tidy(coxreg.multivar)}: Custom tidy method for a Multi-variable Cox Regression
+\item \code{tidy(coxreg.multivar)}: Custom tidy method for a multivariate Cox regression.
 
 Tidy up the result of a Cox regression model fitted by \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}.
 
@@ -62,6 +74,7 @@ dta_bladder$age <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 formula <- "survival::Surv(time, status) ~ armcd + covar1"
 msum <- summary(coxph(stats::as.formula(formula), data = dta_bladder))
 tidy(msum)
+
 ## Cox regression: arm + 1 covariate.
 mod1 <- fit_coxreg_univar(
   variables = list(
@@ -84,6 +97,7 @@ mod2 <- fit_coxreg_univar(
 
 tidy(mod1)
 tidy(mod2)
+
 multivar_model <- fit_coxreg_multivar(
   variables = list(
     time = "time", event = "status", arm = "armcd",
@@ -92,6 +106,7 @@ multivar_model <- fit_coxreg_multivar(
   data = dta_bladder
 )
 broom::tidy(multivar_model)
+
 }
 \seealso{
 \link{cox_regression}

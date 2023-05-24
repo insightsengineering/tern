@@ -5,7 +5,7 @@
 \alias{s_num_patients}
 \alias{s_num_patients_content}
 \alias{analyze_num_patients}
-\title{Number of patients}
+\title{Number of Patients}
 \usage{
 s_num_patients(
   x,
@@ -33,6 +33,7 @@ summarize_num_patients(
   .labels = c(unique = "Number of patients with at least one event", nonunique =
     "Number of events"),
   riskdiff = NULL,
+  indent_mod = 0L,
   ...
 )
 
@@ -50,7 +51,7 @@ analyze_num_patients(
 )
 }
 \arguments{
-\item{x}{(\code{character} or \code{factor}) \cr vector of patient IDs.}
+\item{x}{(\code{character} or \code{factor})\cr vector of patient IDs.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions).}
@@ -58,18 +59,18 @@ analyze_num_patients(
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
 
-\item{count_by}{(\code{character} or \code{factor}) \cr optional vector to be combined with \code{x} when counting
+\item{count_by}{(\code{character} or \code{factor})\cr optional vector to be combined with \code{x} when counting
 \code{nonunique} records.}
 
-\item{unique_count_suffix}{(\code{logical}) \cr should \code{"(n)"} suffix be added to \code{unique_count} labels.
+\item{unique_count_suffix}{(\code{logical})\cr should \code{"(n)"} suffix be added to \code{unique_count} labels.
 Defaults to \code{TRUE}.}
 
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{required}{(\code{character} or \code{NULL}) optional name of a variable that is required to be non-missing.}
+\item{required}{(\code{character} or \code{NULL})\cr optional name of a variable that is required to be non-missing.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
@@ -79,23 +80,41 @@ by a statistics function.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
+\item{indent_mod}{(\code{count})\cr it can be negative. Modifier for the default indent position for the
+structure created by this function(subtable, content table, or row) and
+all of that structure's children. Defaults to 0, which corresponds to the
+unmodified default behavior.}
+
 \item{...}{additional arguments for the lower level functions.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
-
-\item{indent_mod}{(\code{count}) \cr it can be negative. Modifier for the default indent position for the
-structure created by this function(subtable, content table, or row) and
-all of that structure's children. Defaults to 0, which corresponds to the
-unmodified default behavior.}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 }
 \value{
-A list with:
 \itemize{
-\item \code{unique}: vector of count and percentage.
-\item \code{nonunique} : vector of count.
-\item \code{unique_count}: count.
+\item \code{s_num_patients()} returns a named \code{list} of 3 statistics:
+\itemize{
+\item \code{unique}: Vector of counts and percentages.
+\item \code{nonunique}: Vector of counts.
+\item \code{unique_count}: Counts.
+}
+}
+
+\itemize{
+\item \code{s_num_patients_content()} returns the same values as \code{s_num_patients()}.
+}
+
+\itemize{
+\item \code{summarize_num_patients()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_num_patients_content()} to the table layout.
+}
+
+\itemize{
+\item \code{analyze_num_patients()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_num_patients_content()} to the table layout.
 }
 }
 \description{
@@ -117,21 +136,20 @@ when pagination is involved.
 unique patients, the corresponding percentage taken with respect to the
 total number of patients, and the number of non-unique patients.
 
-\item \code{s_num_patients_content()}: Counts the number of unique patients in a column
-(variable), the corresponding percentage taken with respect to the total
-number of patients, and the number of non-unique patients in the column.
-Function serves as a wrapper that carries over both expected arguments \code{df}
-and \code{labelstr} in \code{cfun} of \code{\link[=summarize_row_groups]{summarize_row_groups()}}.
+\item \code{s_num_patients_content()}: Statistics function which counts the number of unique patients
+in a column (variable), the corresponding percentage taken with respect to the total number of
+patients, and the number of non-unique patients in the column.
 
-\item \code{summarize_num_patients()}: Layout creating function which adds content rows using the statistics
-function \code{\link[=s_num_patients_content]{s_num_patients_content()}} and desired format.
+\item \code{summarize_num_patients()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 
-\item \code{analyze_num_patients()}: Identically to \code{\link[=summarize_num_patients]{summarize_num_patients()}},
-This function creates a layout which adds content rows using the statistics
-function \code{\link[=s_num_patients_content]{s_num_patients_content()}} and desired format. Differently from its
-counterpart, this function does not impose the produced rows to be repeated.
+\item \code{analyze_num_patients()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
+\note{
+As opposed to \code{\link[=summarize_num_patients]{summarize_num_patients()}}, this function does not repeat the produced rows.
+}
 \examples{
 # Use the statistics function to count number of unique and nonunique patients.
 s_num_patients(x = as.character(c(1, 1, 1, 2, 4, NA)), labelstr = "", .N_col = 6L)
@@ -141,6 +159,7 @@ s_num_patients(
   .N_col = 6L,
   count_by = as.character(c(1, 1, 2, 1, 1, 1))
 )
+
 # Count number of unique and non-unique patients.
 df <- data.frame(
   USUBJID = as.character(c(1, 2, 1, 4, NA)),
@@ -154,6 +173,7 @@ df_by_event <- data.frame(
 )
 s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID")
 s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
+
 df_tmp <- data.frame(
   USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
   ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),

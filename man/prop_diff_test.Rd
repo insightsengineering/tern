@@ -29,6 +29,7 @@ test_proportion_diff(
   lyt,
   vars,
   ...,
+  var_labels = vars,
   show_labels = "hidden",
   table_names = vars,
   .stats = NULL,
@@ -38,19 +39,18 @@ test_proportion_diff(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
+\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
-\item{method}{(\code{string})\cr
-one of (\code{chisq}, \code{cmh}, \code{fisher}, \code{schouten}; specifies the test used
+\item{method}{(\code{string})\cr one of \code{chisq}, \code{cmh}, \code{fisher}, or \code{schouten}; specifies the test used
 to calculate the p-value.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -59,7 +59,9 @@ to calculate the p-value.}
 
 \item{...}{other arguments are passed to \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{var_labels}{(\code{character})\cr character for label.}
+
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
@@ -72,36 +74,40 @@ to avoid warnings from \code{rtables}.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
-\item{tbl}{(\code{matrix})\cr
-with two groups in rows and the binary response (\code{TRUE}/\code{FALSE}) in
-columns.}
+\item{tbl}{(\code{matrix})\cr matrix with two groups in rows and the binary response (\code{TRUE}/\code{FALSE}) in columns.}
 }
 \value{
-Named \code{list} with a single item \code{pval} with an attribute \code{label}
-describing the method used. The p-value tests the null hypothesis that
-proportions in two groups are the same.
+\itemize{
+\item \code{s_test_proportion_diff()} returns a named \code{list} with a single item \code{pval} with an attribute \code{label}
+describing the method used. The p-value tests the null hypothesis that proportions in two groups are the same.
+}
+
+\itemize{
+\item \code{a_test_proportion_diff()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{test_proportion_diff()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_test_proportion_diff()} to the table layout.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Various tests were implemented to test the difference between two
-proportions.
+Various tests were implemented to test the difference between two proportions.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_test_proportion_diff()}: Statistics function which tests the difference
-between two proportions.
+\item \code{s_test_proportion_diff()}: Statistics function which tests the difference between two proportions.
 
-\item \code{a_test_proportion_diff()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_test_proportion_diff()}: Formatted analysis function which is used as \code{afun} in \code{test_proportion_diff()}.
 
-\item \code{test_proportion_diff()}: Layout creating function which can be used for
-creating tables, which can take statistics function arguments and
-additional format arguments.
+\item \code{test_proportion_diff()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{
-
 # Statistics function
 dta <- data.frame(
   rsp = sample(c(TRUE, FALSE), 100, TRUE),
@@ -142,6 +148,7 @@ l <- basic_table() \%>\%
   )
 
 build_table(l, df = dta)
+
 }
 \seealso{
 \link{h_prop_diff_test}

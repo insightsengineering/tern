@@ -13,20 +13,21 @@ s_cox_multivariate(
 )
 }
 \arguments{
-\item{formula}{A \code{formula} corresponding to the investigated \code{\link[survival:Surv]{survival model}}
+\item{formula}{(\code{formula})\cr A formula corresponding to the investigated \code{\link[survival:Surv]{survival::Surv()}} survival model
 including covariates.}
 
-\item{data}{A \code{data.frame} which includes the variable in formula and covariates.}
+\item{data}{(\code{data.frame})\cr A data frame which includes the variable in formula and covariates.}
 
-\item{conf_level}{The level of confidence for the hazard ration interval estimations. Default is 0.95.}
+\item{conf_level}{(\code{proportion})\cr The confidence level for the hazard ratio interval estimations. Default is 0.95.}
 
-\item{pval_method}{The method used for the estimation of p.values, should be one of \code{"wald"} (default) or
-\code{"likelihood"}.}
+\item{pval_method}{(\code{character})\cr The method used for the estimation of p-values, should be one of
+"wald" (default) or "likelihood".}
 
-\item{...}{Optional parameters passed to \code{\link[survival:coxph]{coxph()}}
-\itemize{
-\item \code{ties} a character string specifying the method for tie handling, one of \code{exact} (default), \code{efron}, \code{breslow}.
-}}
+\item{...}{Optional parameters passed to \code{\link[survival:coxph]{survival::coxph()}}. Can include \code{ties}, a character string specifying the
+method for tie handling, one of \code{exact} (default), \code{efron}, \code{breslow}.}
+}
+\value{
+A \code{list} with elements \code{mod}, \code{msum}, \code{aov}, and \code{coef_inter}.
 }
 \description{
 Analyses based on multivariate Cox model are usually not performed for the Controlled Substance Reporting or

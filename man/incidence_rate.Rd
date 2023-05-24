@@ -36,24 +36,24 @@ estimate_incidence_rate(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{n_events}{(\code{integer}) \cr number of events observed.}
+\item{n_events}{(\code{integer})\cr number of events observed.}
 
 \item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
-\item{control}{(\code{list}) \cr parameters for estimation details, specified by using
-the helper function \code{\link[=control_incidence_rate]{control_incidence_rate()}}. Possible parameter options are: \cr
+\item{control}{(\code{list})\cr parameters for estimation details, specified by using
+the helper function \code{\link[=control_incidence_rate]{control_incidence_rate()}}. Possible parameter options are:
 \itemize{
-\item \code{conf_level}: (\code{proportion}) \cr confidence level for the estimated incidence rate.
-\item \code{conf_type}: (\code{string}) \cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
+\item \code{conf_level} (\code{proportion})\cr confidence level for the estimated incidence rate.
+\item \code{conf_type} (\code{string})\cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
 for confidence interval type.
-\item \code{time_unit_input}: (\code{string}) \cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
+\item \code{time_unit_input} (\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
 indicating time unit for data input.
-\item \code{time_unit_output}: (\code{numeric}) \cr time unit for desired output (in person-years).
+\item \code{time_unit_output} (\code{numeric})\cr time unit for desired output (in person-years).
 }}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -62,7 +62,7 @@ indicating time unit for data input.
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
@@ -75,17 +75,29 @@ to avoid warnings from \code{rtables}.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
-\item{person_years}{(\code{numeric}) \cr total person-years at risk.}
+\item{person_years}{(\code{numeric})\cr total person-years at risk.}
 
-\item{alpha}{(\code{numeric}) \cr two-sided alpha-level for confidence interval.}
+\item{alpha}{(\code{numeric})\cr two-sided alpha-level for confidence interval.}
 }
 \value{
-The statistics are:
 \itemize{
-\item \code{person_years}: total person-years at risk
-\item \code{n_events}: total number of events observed
-\item \code{rate}: estimated incidence rate
-\item \code{rate_ci}: confidence interval for the incidence rate
+\item \code{s_incidence_rate()} returns the following statistics:
+\itemize{
+\item \code{person_years}: Total person-years at risk.
+\item \code{n_events}: Total number of events observed.
+\item \code{rate}: Estimated incidence rate.
+\item \code{rate_ci}: Confidence interval for the incidence rate.
+}
+}
+
+\itemize{
+\item \code{a_incidence_rate()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{estimate_incidence_rate()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_incidence_rate()} to the table layout.
 }
 }
 \description{
@@ -99,15 +111,14 @@ as incidence rate. Primary analysis variable is the person-years at risk.
 \item \code{s_incidence_rate()}: Statistics function which estimates the incidence rate and the
 associated confidence interval.
 
-\item \code{a_incidence_rate()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_incidence_rate()}: Formatted analysis function which is used as \code{afun}
+in \code{estimate_incidence_rate()}.
 
-\item \code{estimate_incidence_rate()}: Layout creating function which adds analyze rows using the statistics
-function \code{s_incidence_rate} and desired format.
+\item \code{estimate_incidence_rate()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{
-
 library(dplyr)
 
 df <- data.frame(

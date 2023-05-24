@@ -17,7 +17,7 @@ estimate_coef(
 }
 \arguments{
 \item{variable, given}{Names of two variable in interaction. We seek the estimation of the levels of \code{variable}
-given the levels of \code{given}}
+given the levels of \code{given}.}
 
 \item{lvl_var, lvl_given}{corresponding levels has given by \code{levels}.}
 
@@ -32,11 +32,11 @@ given the levels of \code{given}}
 \value{
 A list of matrix (one per level of variable) with rows corresponding to the combinations of
 \code{variable} and \code{given}, with columns:
-\describe{
-\item{coef_hat}{Estimation of the coefficient}
-\item{coef_se}{Standard error of the estimation.}
-\item{hr}{Hazard ratio.}
-\item{lcl,ucl}{lower/upper confidence limit of the hazard ratio}
+\itemize{
+\item \code{coef_hat}: Estimation of the coefficient.
+\item \code{coef_se}: Standard error of the estimation.
+\item \code{hr}: Hazard ratio.
+\item \verb{lcl, ucl}: Lower/upper confidence limit of the hazard ratio.
 }
 }
 \description{
@@ -48,8 +48,8 @@ Given the cox regression investigating the effect of Arm (A, B, C; reference A)
 and Sex (F, M; reference Female). The model is abbreviated: y ~ Arm + Sex + Arm x Sex.
 The cox regression estimates the coefficients along with a variance-covariance matrix for:
 \itemize{
-\item b1 (arm b), b2 (arm c),
-\item b3 (sex m),
+\item b1 (arm b), b2 (arm c)
+\item b3 (sex m)
 \item b4 (arm b: sex m), b5 (arm c: sex m)
 }
 

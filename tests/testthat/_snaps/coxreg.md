@@ -628,7 +628,7 @@
       Likelihood ratio test=49.57  on 5 df, p=1.694e-09
       n= 340, number of events= 112 
 
-# tidy.coxreg.multivar method tidies up the multi-variable Cox regression model
+# tidy.coxreg.multivar method tidies up the multivariate Cox regression model
 
     Code
       res
@@ -651,68 +651,4 @@
       covar1.4 0.1847729 0.1015025 0.3363563     4 0.1015025, 0.3363563
       covar2.1                  NA        NA  <NA>                     
       covar2.2   1.28109 0.8786364 1.8678847     M 0.8786364, 1.8678847
-
-# s_coxreg converts tabulated results in a list
-
-    Code
-      res
-    Output
-      $hr
-      $hr$`2 vs control (1)`
-      [1] 0.6386426
-      
-      
-      $hr
-      $hr$`A Covariate Label`
-      [1] 0.607037
-      
-      
-      $hr
-      $hr$`Sex (F/M)`
-      [1] 0.6242738
-      
-      
-
-# summarize_coxreg adds the univariate Cox regression layer to rtables
-
-    Code
-      res
-    Output
-                             n    Hazard Ratio      90% CI      p-value
-      —————————————————————————————————————————————————————————————————
-      Treatment:                                                       
-        2 vs control (1)    340       0.64       (0.46, 0.89)   0.0253 
-      Covariate:                                                       
-        A Covariate Label   340       0.61       (0.44, 0.85)   0.0136 
-        Sex (F/M)           340       0.63       (0.45, 0.87)   0.0191 
-
-# summarize_coxreg adds the multi-variable Cox regression layer to rtables
-
-    Code
-      res
-    Output
-                                          Hazard Ratio      90% CI      p-value
-      —————————————————————————————————————————————————————————————————————————
-      ARM (reference = 1)                                                      
-      2                                       0.61       (0.41, 0.90)   0.0123 
-      A Covariate Label (reference = 1)                                 <0.0001
-      2                                       0.46       (0.28, 0.73)   0.0011 
-      3                                       0.31       (0.18, 0.51)   <0.0001
-      4                                       0.18       (0.10, 0.33)   <0.0001
-      Sex (F/M) (reference = F)                                                
-      M                                       1.29       (0.88, 1.89)   0.1911 
-
-# summarize_coxreg works without treatment arm in univariate case
-
-    Code
-      res
-    Output
-                                          Hazard Ratio      90% CI      p-value
-      —————————————————————————————————————————————————————————————————————————
-      A Covariate Label (reference = 1)                                 <0.0001
-      2                                       0.45       (0.28, 0.71)   0.0007 
-      3                                       0.31       (0.19, 0.52)   <0.0001
-      4                                       0.18       (0.10, 0.33)   <0.0001
-      Sex (F/M) (reference = F)                                                
-      M                                       1.33       (0.91, 1.94)   0.1414 
 

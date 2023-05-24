@@ -10,13 +10,18 @@ add_rowcounts(lyt)
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 }
 \value{
-The modified layout where the latest row split labels now have the row-wise
-total counts (i.e. without column based subsetting) attached in parentheses.
+A modified layout where the latest row split labels now have the row-wise
+total counts (i.e. without column-based subsetting) attached in parentheses.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This works analogously to \code{\link[rtables:add_colcounts]{rtables::add_colcounts()}} but on the rows.
+This works analogously to \code{\link[rtables:add_colcounts]{rtables::add_colcounts()}} but on the rows. This function
+is a wrapper for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
+}
+\note{
+Row count values are contained in these row count rows but are not displayed
+so that they are not considered zero rows by default when pruning.
 }
 \examples{
 basic_table() \%>\%

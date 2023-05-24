@@ -32,12 +32,12 @@ count_abnormal_by_worst_grade(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.spl_context}{(\verb{data frame})\cr gives information about ancestor split states
+\item{.spl_context}{(\code{data.frame})\cr gives information about ancestor split states
 that is passed by \code{rtables}.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
@@ -55,16 +55,26 @@ that is passed by \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-\code{\link[=s_count_abnormal_by_worst_grade]{s_count_abnormal_by_worst_grade()}} the single statistic \code{count_fraction} with grade 1 to 4
-and "Any" results.
+\itemize{
+\item \code{s_count_abnormal_by_worst_grade()} returns the single statistic \code{count_fraction} with grades 1 to 4 and
+"Any" results.
+}
 
-\code{\link[=a_count_abnormal_by_worst_grade]{a_count_abnormal_by_worst_grade()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+\itemize{
+\item \code{a_count_abnormal_by_worst_grade()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{count_abnormal_by_worst_grade()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_abnormal_by_worst_grade()} to the table layout.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Primary analysis variable \code{.var} indicates the toxicity grade (factor), and additional
-analysis variables are \code{id} (character or factor), \code{param} (\code{factor}) and \code{grade_dir} (\code{factor}).
+Primary analysis variable \code{.var} indicates the toxicity grade (\code{factor}), and additional
+analysis variables are \code{id} (\code{character} or \code{factor}), \code{param} (\code{factor}) and \code{grade_dir} (\code{factor}).
 The pre-processing steps are crucial when using this function.
 For a certain direction (e.g. high or low) this function counts
 patients in the denominator as number of patients with at least one valid measurement during treatment,
@@ -75,29 +85,29 @@ and patients in the numerator as follows:
 }
 }
 \details{
-The pre-processing steps are crucial when using this function. From the standard
-lab grade variable \code{ATOXGR}, derive the following two variables:
+The pre-processing steps are crucial when using this function. From the standard lab grade variable
+\code{ATOXGR}, derive the following two variables:
 \itemize{
 \item A grade direction variable (e.g. \code{GRADE_DIR}) is required in order to obtain
 the correct denominators when building the layout as it is used to define row splitting.
 \item A toxicity grade variable (e.g. \code{GRADE_ANL}) where all negative values from
 \code{ATOXGR} are replaced by their absolute values.
-\item Prior to tabulation, \code{df} must filtered to include only post-baseline records with worst grade flags.
 }
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_abnormal_by_worst_grade()}: Statistics function which counts patients with worst grade,
-consisting of counts and percentages of patients with worst grade
-\code{1} to \code{4}, and \code{Any} non-zero grade.
+\item \code{s_count_abnormal_by_worst_grade()}: Statistics function which counts patients by worst grade.
 
-\item \code{a_count_abnormal_by_worst_grade()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_count_abnormal_by_worst_grade()}: Formatted analysis function which is used as \code{afun}
+in \code{count_abnormal_by_worst_grade()}.
 
-\item \code{count_abnormal_by_worst_grade()}: Layout creating function which can be used for creating tables,
-which can take statistics function arguments and additional format arguments (see below).
+\item \code{count_abnormal_by_worst_grade()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
+\note{
+Prior to tabulation, \code{df} must be filtered to include only post-baseline records with worst grade flags.
+}
 \examples{
 library(dplyr)
 library(forcats)
@@ -117,12 +127,13 @@ adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
 adlb_f <- adlb \%>\%
   filter(!AVISIT \%in\% c("SCREENING", "BASELINE")) \%>\%
   mutate(
-    GRADE_DIR = factor(case_when(
-      ATOXGR \%in\% c("-1", "-2", "-3", "-4") ~ "LOW",
-      ATOXGR == "0" ~ "ZERO",
-      ATOXGR \%in\% c("1", "2", "3", "4") ~ "HIGH"
-    ),
-    levels = c("LOW", "ZERO", "HIGH")
+    GRADE_DIR = factor(
+      case_when(
+        ATOXGR \%in\% c("-1", "-2", "-3", "-4") ~ "LOW",
+        ATOXGR == "0" ~ "ZERO",
+        ATOXGR \%in\% c("1", "2", "3", "4") ~ "HIGH"
+      ),
+      levels = c("LOW", "ZERO", "HIGH")
     ),
     GRADE_ANL = fct_relevel(
       fct_recode(ATOXGR, `1` = "-1", `2` = "-2", `3` = "-3", `4` = "-4"),

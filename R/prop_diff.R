@@ -11,9 +11,15 @@ NULL
 
 #' @describeIn prop_diff Statistics function estimating the difference
 #'   in terms of responder proportion.
-#' @param method (`string`)\cr
-#'   the method used for the confidence interval estimation.
+#'
 #' @inheritParams prop_diff_strat_nc
+#' @param method (`string`)\cr the method used for the confidence interval estimation.
+#'
+#' @return
+#' * `s_proportion_diff()` returns a named list of elements `diff` and `diff_ci`.
+#'
+#' @note When performing an unstratified analysis, methods `"cmh"`, `"strat_newcombe"`, and `"strat_newcombecc"` are
+#'   not permitted.
 #'
 #' @examples
 #' # Summary
@@ -62,6 +68,12 @@ s_proportion_diff <- function(df,
                               ),
                               weights_method = "cmh") {
   method <- match.arg(method)
+  if (is.null(variables$strata) && checkmate::test_subset(method, c("cmh", "strat_newcombe", "strat_newcombecc"))) {
+    stop(paste(
+      "When performing an unstratified analysis, methods 'cmh', 'strat_newcombe', and 'strat_newcombecc' are not",
+      "permitted. Please choose a different method."
+    ))
+  }
   y <- list(diff = "", diff_ci = "")
 
   if (!.in_ref_col) {
@@ -98,26 +110,26 @@ s_proportion_diff <- function(df,
     }
 
     y <- switch(method,
-                "wald" = prop_diff_wald(rsp, grp, conf_level, correct = FALSE),
-                "waldcc" = prop_diff_wald(rsp, grp, conf_level, correct = TRUE),
-                "ha" = prop_diff_ha(rsp, grp, conf_level),
-                "newcombe" = prop_diff_nc(rsp, grp, conf_level, correct = FALSE),
-                "newcombecc" = prop_diff_nc(rsp, grp, conf_level, correct = TRUE),
-                "strat_newcombe" = prop_diff_strat_nc(rsp,
-                                                      grp,
-                                                      strata,
-                                                      weights_method,
-                                                      conf_level,
-                                                      correct = FALSE
-                ),
-                "strat_newcombecc" = prop_diff_strat_nc(rsp,
-                                                        grp,
-                                                        strata,
-                                                        weights_method,
-                                                        conf_level,
-                                                        correct = TRUE
-                ),
-                "cmh" = prop_diff_cmh(rsp, grp, strata, conf_level)[c("diff", "diff_ci")]
+      "wald" = prop_diff_wald(rsp, grp, conf_level, correct = FALSE),
+      "waldcc" = prop_diff_wald(rsp, grp, conf_level, correct = TRUE),
+      "ha" = prop_diff_ha(rsp, grp, conf_level),
+      "newcombe" = prop_diff_nc(rsp, grp, conf_level, correct = FALSE),
+      "newcombecc" = prop_diff_nc(rsp, grp, conf_level, correct = TRUE),
+      "strat_newcombe" = prop_diff_strat_nc(rsp,
+        grp,
+        strata,
+        weights_method,
+        conf_level,
+        correct = FALSE
+      ),
+      "strat_newcombecc" = prop_diff_strat_nc(rsp,
+        grp,
+        strata,
+        weights_method,
+        conf_level,
+        correct = TRUE
+      ),
+      "cmh" = prop_diff_cmh(rsp, grp, strata, conf_level)[c("diff", "diff_ci")]
     )
 
     y$diff <- y$diff * 100
@@ -133,8 +145,10 @@ s_proportion_diff <- function(df,
   y
 }
 
-#' @describeIn prop_diff Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn prop_diff Formatted analysis function which is used as `afun` in `estimate_proportion_diff()`.
+#'
+#' @return
+#' * `a_proportion_diff()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' a_proportion_diff(
@@ -149,17 +163,19 @@ s_proportion_diff <- function(df,
 #' @export
 a_proportion_diff <- make_afun(
   s_proportion_diff,
-  .formats =  c(diff = "xx.x", diff_ci = "(xx.x, xx.x)"),
+  .formats = c(diff = "xx.x", diff_ci = "(xx.x, xx.x)"),
   .indent_mods = c(diff = 0L, diff_ci = 1L)
 )
 
-#' @describeIn prop_diff Adds a descriptive analyze layer to `rtables`
-#'   pipelines. The analysis is applied to a `dataframe` and return the
-#'   estimations, in `rcells`. The ellipsis (`...`) conveys arguments to
-#'   `s_proportion_diff()`, for instance `na.rm = FALSE` if missing data
-#'   should be accounted for.
-#' @inheritParams rtables::analyze
+#' @describeIn prop_diff Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
 #' @param ... arguments passed to `s_proportion_diff()`.
+#'
+#' @return
+#' * `estimate_proportion_diff()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_proportion_diff()` to the table layout.
 #'
 #' @examples
 #' l <- basic_table() %>%
@@ -236,9 +252,10 @@ check_diff_prop_ci <- function(rsp,
 #' `s_proportion_diff`.
 #'
 #' @inheritParams s_proportion_diff
-#' @param long (`logical`)\cr
-#'   Whether a long or a short (default) description is required.
-#' @return String describing the analysis.
+#' @param long (`logical`)\cr Whether a long or a short (default) description is required.
+#'
+#' @return A `string` describing the analysis.
+#'
 #' @seealso [prop_diff]
 #'
 #' @export
@@ -277,9 +294,11 @@ d_proportion_diff <- function(conf_level,
 #'
 #' @inheritParams argument_convention
 #' @inheritParams prop_diff
-#' @param grp (`factor`)\cr
-#'   vector assigning observations to one out of two groups
+#' @param grp (`factor`)\cr vector assigning observations to one out of two groups
 #'   (e.g. reference and treatment group).
+#'
+#' @return A named `list` of elements `diff` (proportion difference) and `diff_ci`
+#'   (proportion difference confidence interval).
 #'
 #' @seealso [prop_diff()] for implementation of these helper functions.
 #'
@@ -291,9 +310,8 @@ NULL
 #'   approximation. It is possible to include a continuity correction for Wald's
 #'   interval.
 #'
-#' @param correct `logical`\cr
-#'   include the continuity correction. For further information, see for example
-#'   [stats::prop.test()].
+#' @param correct (`logical`)\cr whether to include the continuity correction. For further
+#'   information, see [stats::prop.test()].
 #'
 #' @examples
 #' # Wald confidence interval
@@ -371,9 +389,6 @@ prop_diff_ha <- function(rsp,
   )
 }
 
-
-
-
 #' @describeIn h_prop_diff Newcombe confidence interval. It is based on
 #'   the Wilson score confidence interval for a single binomial proportion.
 #'
@@ -418,15 +433,12 @@ prop_diff_nc <- function(rsp,
   )
 }
 
-
-#' @describeIn h_prop_diff Calculates the weighted difference.
-#'     This is defined as the difference in response rates between the
-#'     experimental treatment group and the control treatment group, adjusted
-#'     for stratification factors by applying Cochran-Mantel-Haenszel (CMH)
-#'     weights. For the CMH chi-squared test, use [stats::mantelhaen.test()].
+#' @describeIn h_prop_diff Calculates the weighted difference. This is defined as the difference in
+#'   response rates between the experimental treatment group and the control treatment group, adjusted
+#'   for stratification factors by applying Cochran-Mantel-Haenszel (CMH) weights. For the CMH chi-squared
+#'   test, use [stats::mantelhaen.test()].
 #'
-#' @param strata (`factor`)\cr
-#'   with one level per stratum and same length as `rsp`.
+#' @param strata (`factor`)\cr variable with one level per stratum and same length as `rsp`.
 #'
 #' @examples
 #' # Cochran-Mantel-Haenszel confidence interval
@@ -510,19 +522,18 @@ prop_diff_cmh <- function(rsp,
   )
 }
 
-#' @describeIn h_prop_diff Calculates the stratified Newcombe confidence interval
-#'   and difference in response rates between the experimental treatment group
-#'   and the control treatment group, adjusted for stratification factors. This
-#'   implementation follows closely the one proposed by
-#'   \insertCite{Yan2010-jt;textual}{tern}. Weights can be estimated from the
-#'   heuristic proposed in [prop_strat_wilson()] or from CMH-derived weights
+#' @describeIn h_prop_diff Calculates the stratified Newcombe confidence interval and difference in response
+#'   rates between the experimental treatment group and the control treatment group, adjusted for stratification
+#'   factors. This implementation follows closely the one proposed by \insertCite{Yan2010-jt;textual}{tern}.
+#'   Weights can be estimated from the heuristic proposed in [prop_strat_wilson()] or from CMH-derived weights
 #'   (see [prop_diff_cmh()]).
 #'
-#' @param strata (`factor`)\cr
-#'   with one level per stratum and same length as `rsp`.
-#' @param weights_method (`string`) \cr
-#'   it can be one of `c("cmh", "heuristic")` and directs the way weights are
-#'   estimated.
+#' @param strata (`factor`)\cr variable with one level per stratum and same length as `rsp`.
+#' @param weights_method (`string`)\cr weights method. Can be either `"cmh"` or `"heuristic"`
+#'   and directs the way weights are estimated.
+#'
+#' @references
+#' - \insertRef{Yan2010-jt}{tern}
 #'
 #' @examples
 #' # Stratified Newcombe confidence interval
@@ -547,11 +558,6 @@ prop_diff_cmh <- function(rsp,
 #'   weights_method = "wilson_h",
 #'   conf_level = 0.90
 #' )
-#'
-#' @references
-#' - \insertRef{Yan2010-jt}{tern}
-#'
-#' @importFrom Rdpack reprompt
 #'
 #' @export
 prop_diff_strat_nc <- function(rsp,

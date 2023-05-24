@@ -2,20 +2,21 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This Analyze Function uses the new S3 generic function [s_summary()] to summarize
-#' different variables that are arranged in columns.
-#' Additional standard formatting arguments are available.
+#' This analyze function uses the S3 generic function [s_summary()] to summarize different variables
+#' that are arranged in columns. Additional standard formatting arguments are available. It is a
+#' minimal wrapper for [rtables::analyze_colvars()].
 #'
 #' @inheritParams argument_convention
 #' @param ... arguments passed to `s_summary()`.
 #'
-#' @seealso [rtables::split_cols_by_multivar()]
+#' @return
+#' A layout object suitable for passing to further layouting functions, or to [rtables::build_table()].
+#' Adding this function to an `rtable` layout will summarize the given variables, arrange the output
+#' in columns, and add it to the table layout.
 #'
-#' @template formatting_arguments
+#' @seealso [rtables::split_cols_by_multivar()] and [analyze_colvars_functions].
 #'
-#' @export
 #' @examples
-#'
 #' dta_test <- data.frame(
 #'   USUBJID = rep(1:6, each = 3),
 #'   PARAMCD = rep("lab", 6 * 3),
@@ -52,6 +53,8 @@
 #'   split_cols_by_multivar(vars = c("AVAL", "CHG")) %>%
 #'   summarize_colvars(na.rm = FALSE) %>%
 #'   build_table(dta_test)
+#'
+#' @export
 summarize_colvars <- function(lyt,
                               ...,
                               .stats = c("n", "mean_sd", "median", "range", "count_fraction"),

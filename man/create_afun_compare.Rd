@@ -20,9 +20,13 @@ create_afun_compare(
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
+\value{
+Combined formatted analysis function for use in \code{\link[=compare_vars]{compare_vars()}}.
+}
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Constructor function which creates a combined Formatted
-Analysis function for use in layout creating functions \code{\link[=compare_vars]{compare_vars()}}.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+Constructor function which creates a combined formatted analysis function.
 }
 \note{
 Since \code{\link[=a_compare]{a_compare()}} is generic and we want customization of the formatting arguments
@@ -57,7 +61,8 @@ lyt <- basic_table() \%>\%
     show_labels = "visible"
   )
 build_table(lyt, df = tern_ex_adsl)
+
 }
 \seealso{
-\link{compare_variables}
+\code{\link[=compare_vars]{compare_vars()}}
 }

@@ -12,8 +12,8 @@ control_surv_timepoint(
 \arguments{
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{conf_type}{(\code{string}) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
-see more in \code{\link[survival:survfit]{survival::survfit()}}. Note that the option "none" is no longer supported.}
+\item{conf_type}{(\code{string})\cr confidence interval type. Options are "plain" (default), "log", "log-log",
+see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "none" is no longer supported.}
 }
 \value{
 A list of components with the same names as the arguments
@@ -22,5 +22,5 @@ A list of components with the same names as the arguments
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 This is an auxiliary function for controlling arguments for \code{survfit} model, typically used internally to specify
-details of \code{survfit} model for \link{s_surv_timepoint}. \code{conf_level} refers to patient risk estimation at a time point.
+details of \code{survfit} model for \code{\link[=s_surv_timepoint]{s_surv_timepoint()}}. \code{conf_level} refers to patient risk estimation at a time point.
 }

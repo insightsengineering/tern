@@ -3,18 +3,18 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Sets a list of parameters for summaries of descriptive statistics. Typically used internally to specify
-#' details for [s_summary].
+#' details for [s_summary()].
 #'
 #' @inheritParams argument_convention
-#' @param quantiles (`numeric`) \cr of length two to specify the quantiles to calculate.
-#' @param quantile_type (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
-#'   Default is set to `2` as this matches the default quantile algorithm in SAS `proc univariate` set by `QNTLDEF=5`.
+#' @param quantiles (`numeric`)\cr of length two to specify the quantiles to calculate.
+#' @param quantile_type (`numeric`)\cr between 1 and 9 selecting quantile algorithms to be used.
+#'   Default is set to 2 as this matches the default quantile algorithm in SAS `proc univariate` set by `QNTLDEF=5`.
 #'   This differs from R's default. See more about `type` in [stats::quantile()].
-#' @param test_mean (`numeric`) \cr to test against the mean under the null hypothesis when calculating p-value.
+#' @param test_mean (`numeric`)\cr to test against the mean under the null hypothesis when calculating p-value.
 #'
 #' @return A list of components with the same names as the arguments.
-#' @export
 #'
+#' @export
 control_summarize_vars <- function(conf_level = 0.95,
                                    quantiles = c(0.25, 0.75),
                                    quantile_type = 2,
@@ -29,13 +29,11 @@ control_summarize_vars <- function(conf_level = 0.95,
 
 #' Format Function for Descriptive Statistics
 #'
-#' @description
+#' Returns format patterns for descriptive statistics. The format is understood by the `rtables`.
 #'
-#' Returns format patterns for descriptive statistics.
-#' The format is understood by the `rtables`.
+#' @param type (`string`)\cr choice of a summary data type. Only `counts` and `numeric` types are currently supported.
 #'
-#' @param type (`string`)\cr choice of a summary data type.
-#' Only `counts` and `numeric` types are currently supported.
+#' @return A named `vector` of default statistic formats for the given data type.
 #'
 #' @keywords internal
 summary_formats <- function(type = "numeric") {
@@ -68,6 +66,7 @@ summary_formats <- function(type = "numeric") {
       cv = "xx.x",
       min = "xx.x",
       max = "xx.x",
+      median_range = "xx.x (xx.x - xx.x)",
       geom_mean = "xx.x",
       geom_cv = "xx.x"
     )
@@ -76,9 +75,9 @@ summary_formats <- function(type = "numeric") {
 
 #' Label Function for Descriptive Statistics
 #'
-#' @description
-#'
 #' Returns labels of descriptive statistics for numeric variables.
+#'
+#' @return A named `vector` of default statistic labels.
 #'
 #' @keywords internal
 summary_labels <- function() {
@@ -93,6 +92,7 @@ summary_labels <- function() {
     mad = "Median Absolute Deviation",
     iqr = "IQR",
     range = "Min - Max",
+    median_range = "Median (Min - Max)",
     cv = "CV (%)",
     min = "Minimum",
     max = "Maximum",
@@ -106,17 +106,18 @@ summary_labels <- function() {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' We use the new S3 generic function [s_summary()] to implement summaries for
-#' different `x` objects. This is used as Statistics Function in combination
-#' with the new Analyze Function [summarize_vars()].
+#' We use the S3 generic function [s_summary()] to implement summaries for different `x` objects. This
+#' is used as a statistics function in combination with the analyze function [summarize_vars()].
+#'
+#' @inheritParams argument_convention
 #'
 #' @name summarize_variables
 NULL
 
-#' @inheritParams argument_convention
+#' @describeIn summarize_variables S3 generic function to produces a variable summary.
 #'
-#' @describeIn summarize_variables `s_summary` is a S3 generic function to produce
-#'   an object description.
+#' @return
+#' * `s_summary()` returns different statistics depending on the class of `x`.
 #'
 #' @export
 s_summary <- function(x,
@@ -131,49 +132,50 @@ s_summary <- function(x,
   UseMethod("s_summary", x)
 }
 
-#' @describeIn summarize_variables Method for numeric class. Note that,
-#'   if `x` is an empty vector, `NA` is returned. This is the expected
-#'   feature so as to return `rcell` content in `rtables` when the
-#'   intersection of a column and a row delimits an empty data selection.
-#'   Also, when the `mean` function is applied to an empty vector, `NA` will
-#'   be returned instead of `NaN`, the latter being standard behavior in R.
+#' @describeIn summarize_variables Method for `numeric` class.
 #'
-#' @param control a (`list`) of parameters for descriptive statistics details, specified by using \cr
-#'    the helper function [control_summarize_vars()]. Some possible parameter options are: \cr
-#' * `conf_level`: (`proportion`)\cr confidence level of the interval for mean and median.
-#' * `quantiles`: numeric vector of length two to specify the quantiles.
-#' * `quantile_type` (`numeric`) \cr between 1 and 9 selecting quantile algorithms to be used. \cr
-#'   See more about `type` in [stats::quantile()].
-#' * `test_mean`: (`numeric`) \cr to test against the mean under the null hypothesis when calculating p-value.
+#' @param control (`list`)\cr parameters for descriptive statistics details, specified by using
+#'   the helper function [control_summarize_vars()]. Some possible parameter options are:
+#'   * `conf_level` (`proportion`)\cr confidence level of the interval for mean and median.
+#'   * `quantiles` (`numeric`)\cr vector of length two to specify the quantiles.
+#'   * `quantile_type` (`numeric`)\cr between 1 and 9 selecting quantile algorithms to be used.
+#'     See more about `type` in [stats::quantile()].
+#'   * `test_mean` (`numeric`)\cr value to test against the mean under the null hypothesis when calculating p-value.
 #'
-#' @return If `x` is of class `numeric`, returns a list with named items: \cr
-#' - `n`: the [length()] of `x`.
-#' - `sum`: the [sum()] of `x`.
-#' - `mean`: the [mean()] of `x`.
-#' - `sd`: the [stats::sd()] of `x`.
-#' - `se`: the standard error of `x` mean, i.e.: (`sd()/sqrt(length())]`).
-#' - `mean_sd`: the [mean()] and [stats::sd()] of `x`.
-#' - `mean_se`: the [mean()] of `x` and its standard error (see above).
-#' - `mean_ci`: the CI for the mean of `x` (from [stat_mean_ci()]).
-#' - `mean_sei`: the SE interval for the mean of `x`, i.e.: ([mean()] -/+ [stats::sd()]/[sqrt()]).
-#' - `mean_sdi`: the SD interval for the mean of `x`, i.e.: ([mean()] -/+ [stats::sd()]).
-#' - `mean_pval`: the two-sided p-value of the mean of `x` (from [stat_mean_pval()]).
-#' - `median`: the [stats::median()] of `x`.
-#' - `mad`:
-#' the median absolute deviation of `x`, i.e.: ([stats::median()] of `xc`, where `xc` = `x` - [stats::median()]).
-#' - `median_ci`: the CI for the median of `x` (from [stat_median_ci()]).
-#' - `quantiles`: two sample quantiles of `x` (from [stats::quantile()]).
-#' - `iqr`: the [stats::IQR()] of `x`.
-#' - `range`: the [range_noinf()] of `x`.
-#' - `min`: the [max()] of `x`.
-#' - `max`: the [min()] of `x`.
-#' - `cv`: the coefficient of variation of `x`, i.e.: (`sd()/mean() * 100`).
-#' - `geom_mean`: the geometric mean of `x`, i.e.: (`exp(mean(log(x)))`).
-#' - `geom_cv`: the geometric coefficient of variation of `x`, i.e.: (`sqrt(exp(sd(log(x))^2) - 1)*100`).
+#' @return
+#'   * If `x` is of class `numeric`, returns a `list` with the following named `numeric` items:
+#'     * `n`: The [length()] of `x`.
+#'     * `sum`: The [sum()] of `x`.
+#'     * `mean`: The [mean()] of `x`.
+#'     * `sd`: The [stats::sd()] of `x`.
+#'     * `se`: The standard error of `x` mean, i.e.: (`sd(x) / sqrt(length(x))`).
+#'     * `mean_sd`: The [mean()] and [stats::sd()] of `x`.
+#'     * `mean_se`: The [mean()] of `x` and its standard error (see above).
+#'     * `mean_ci`: The CI for the mean of `x` (from [stat_mean_ci()]).
+#'     * `mean_sei`: The SE interval for the mean of `x`, i.e.: ([mean()] -/+ [stats::sd()] / [sqrt()]).
+#'     * `mean_sdi`: The SD interval for the mean of `x`, i.e.: ([mean()] -/+ [stats::sd()]).
+#'     * `mean_pval`: The two-sided p-value of the mean of `x` (from [stat_mean_pval()]).
+#'     * `median`: The [stats::median()] of `x`.
+#'     * `mad`: The median absolute deviation of `x`, i.e.: ([stats::median()] of `xc`,
+#'       where `xc` = `x` - [stats::median()]).
+#'     * `median_ci`: The CI for the median of `x` (from [stat_median_ci()]).
+#'     * `quantiles`: Two sample quantiles of `x` (from [stats::quantile()]).
+#'     * `iqr`: The [stats::IQR()] of `x`.
+#'     * `range`: The [range_noinf()] of `x`.
+#'     * `min`: The [max()] of `x`.
+#'     * `max`: The [min()] of `x`.
+#'     * `median_range`: The [median()] and [range_noinf()] of `x`.
+#'     * `cv`: The coefficient of variation of `x`, i.e.: ([stats::sd()] / [mean()] * 100).
+#'     * `geom_mean`: The geometric mean of `x`, i.e.: (`exp(mean(log(x)))`).
+#'     * `geom_cv`: The geometric coefficient of variation of `x`, i.e.: (`sqrt(exp(sd(log(x)) ^ 2) - 1) * 100`).
+#'
+#' @note
+#' * If `x` is an empty vector, `NA` is returned. This is the expected feature so as to return `rcell` content in
+#'   `rtables` when the intersection of a column and a row delimits an empty data selection.
+#' * When the `mean` function is applied to an empty vector, `NA` will be returned instead of `NaN`, the latter
+#'   being standard behavior in R.
 #'
 #' @method s_summary numeric
-#'
-#' @export
 #'
 #' @examples
 #' # `s_summary.numeric`
@@ -207,7 +209,9 @@ s_summary <- function(x,
 #' ## By comparison with `lapply`:
 #' X <- split(dta_test, f = with(dta_test, interaction(Group, sub_group)))
 #' lapply(X, function(x) s_summary(x$x))
-s_summary.numeric <- function(x, # nolint
+#'
+#' @export
+s_summary.numeric <- function(x,
                               na.rm = TRUE, # nolint
                               denom,
                               .N_row, # nolint
@@ -278,6 +282,8 @@ s_summary.numeric <- function(x, # nolint
   y$min <- y$range[1]
   y$max <- y$range[2]
 
+  y$median_range <- formatters::with_label(c(y$median, y$range), "Median (Min - Max)")
+
   y$cv <- c("cv" = unname(y$sd) / unname(y$mean) * 100)
 
   # Convert negative values to NA for log calculation.
@@ -292,25 +298,27 @@ s_summary.numeric <- function(x, # nolint
   y
 }
 
-#' @describeIn summarize_variables Method for factor class. Note that,
-#'   if `x` is an empty factor, then still a list is returned for `counts` with one element
-#'   per factor level. If there are no levels in `x`, the function fails. If `x` contains `NA`,
-#'   it is expected that `NA` have been conveyed to `na_level` appropriately beforehand with
-#'   [df_explicit_na()] or [explicit_na()].
-#' @param denom (`string`)\cr choice of denominator for factor proportions:\cr
-#'   can be `n` (number of values in this row and column intersection), `N_row` (total
-#'   number of values in this row across columns), or `N_col` (total number of values in
-#'   this column across rows).
-#' @return If `x` is of class `factor` or converted from `character`, returns a list with
-#'   named items:
-#'   - `n`: the [length()] of `x`.
-#'   - `count`: a list with the number of cases for each level of the
-#'      factor `x`
-#'   - `count_fraction`: similar to `count` but also includes the proportion of cases for each level of the
-#'      factor `x` relative to the denominator, or `NA` if the denominator is zero.
-#' @method s_summary factor
+#' @describeIn summarize_variables Method for `factor` class.
 #'
-#' @export
+#' @param denom (`string`)\cr choice of denominator for factor proportions. Options are:
+#'   * `n`: number of values in this row and column intersection.
+#'   * `N_row`: total number of values in this row across columns.
+#'   * `N_col`: total number of values in this column across rows.
+#'
+#' @return
+#'   * If `x` is of class `factor` or converted from `character`, returns a `list` with named `numeric` items:
+#'     * `n`: The [length()] of `x`.
+#'     * `count`: A list with the number of cases for each level of the factor `x`.
+#'     * `count_fraction`: Similar to `count` but also includes the proportion of cases for each level of the
+#'       factor `x` relative to the denominator, or `NA` if the denominator is zero.
+#'
+#' @note
+#' * If `x` is an empty `factor`, a list is still returned for `counts` with one element
+#'   per factor level. If there are no levels in `x`, the function fails.
+#' * If `x` contains `NA`, it is expected that `NA` have been conveyed to `na_level`
+#'   appropriately beforehand with [df_explicit_na()] or [explicit_na()].
+#'
+#' @method s_summary factor
 #'
 #' @examples
 #' # `s_summary.factor`
@@ -330,6 +338,8 @@ s_summary.numeric <- function(x, # nolint
 #' x <- factor(c("a", "a", "b", "c", "a"))
 #' s_summary(x, denom = "N_row", .N_row = 10L)
 #' s_summary(x, denom = "N_col", .N_col = 20L)
+#'
+#' @export
 s_summary.factor <- function(x,
                              na.rm = TRUE, # nolint
                              denom = c("n", "N_row", "N_col"),
@@ -359,22 +369,24 @@ s_summary.factor <- function(x,
     }
   )
 
-  y$n_blq <- sum(grepl("BLQ|LTR|<[1-9]", x)) # nolint
+  y$n_blq <- sum(grepl("BLQ|LTR|<[1-9]", x))
 
   y
 }
 
-#' @describeIn summarize_variables Method for character class. This makes an automatic
+#' @describeIn summarize_variables Method for `character` class. This makes an automatic
 #'   conversion to factor (with a warning) and then forwards to the method for factors.
-#' @param verbose defaults to `TRUE`. It prints out warnings and messages. It is mainly used
+#'
+#' @param verbose (`logical`)\cr Defaults to `TRUE`, which prints out warnings and messages. It is mainly used
 #'   to print out information about factor casting.
-#' @note Automatic conversion of character to factor does not guarantee that the table
+#'
+#' @note
+#' * Automatic conversion of character to factor does not guarantee that the table
 #'   can be generated correctly. In particular for sparse tables this very likely can fail.
 #'   It is therefore better to always pre-process the dataset such that factors are manually
 #'   created from character variables before passing the dataset to [rtables::build_table()].
-#' @method s_summary character
 #'
-#' @export
+#' @method s_summary character
 #'
 #' @examples
 #' # `s_summary.character`
@@ -382,6 +394,8 @@ s_summary.factor <- function(x,
 #' ## Basic usage:
 #' s_summary(c("a", "a", "b", "c", "a"), .var = "x", verbose = FALSE)
 #' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE, verbose = FALSE)
+#'
+#' @export
 s_summary.character <- function(x,
                                 na.rm = TRUE, # nolint
                                 denom = c("n", "N_row", "N_col"),
@@ -403,20 +417,21 @@ s_summary.character <- function(x,
   )
 }
 
-#' @describeIn summarize_variables Method for logical class.
-#' @param denom (`string`)\cr choice of denominator for proportion:\cr
-#'   can be `n` (number of values in this row and column intersection), `N_row` (total
-#'   number of values in this row across columns), or `N_col` (total number of values in
-#'   this column across rows).
-#' @return If `x` is of class `logical`, returns a list with named items:
-#'   - `n`: the [length()] of `x` (possibly after removing `NA`s).
-#'   - `count`: count of `TRUE` in `x`.
-#'   - `count_fraction`: count and proportion of `TRUE` in `x` relative to the denominator,
-#'      or `NA` if the denominator is zero. Note that `NA`s in `x` are never counted or leading
-#'      to `NA` here.
-#' @method s_summary logical
+#' @describeIn summarize_variables Method for `logical` class.
 #'
-#' @export
+#' @param denom (`string`)\cr choice of denominator for proportion. Options are:
+#'   * `n`: number of values in this row and column intersection.
+#'   * `N_row`: total number of values in this row across columns.
+#'   * `N_col`: total number of values in this column across rows.
+#'
+#' @return
+#'   * If `x` is of class `logical`, returns a `list` with named `numeric` items:
+#'     * `n`: The [length()] of `x` (possibly after removing `NA`s).
+#'     * `count`: Count of `TRUE` in `x`.
+#'     * `count_fraction`: Count and proportion of `TRUE` in `x` relative to the denominator, or `NA` if the
+#'       denominator is zero. Note that `NA`s in `x` are never counted or leading to `NA` here.
+#'
+#' @method s_summary logical
 #'
 #' @examples
 #' # `s_summary.logical`
@@ -433,6 +448,8 @@ s_summary.character <- function(x,
 #' x <- c(TRUE, FALSE, TRUE, TRUE)
 #' s_summary(x, denom = "N_row", .N_row = 10L)
 #' s_summary(x, denom = "N_col", .N_col = 20L)
+#'
+#' @export
 s_summary.logical <- function(x,
                               na.rm = TRUE, # nolint
                               denom = c("n", "N_row", "N_col"),
@@ -455,8 +472,10 @@ s_summary.logical <- function(x,
   y
 }
 
-#' @describeIn summarize_variables S3 generic Formatted Analysis function to produce
-#'   an object description. It is used as `afun` in [rtables::analyze()].
+#' @describeIn summarize_variables Formatted analysis function which is used as `afun` in `summarize_vars()`.
+#'
+#' @return
+#' * `a_summary()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @export
 a_summary <- function(x,
@@ -470,13 +489,13 @@ a_summary <- function(x,
 .a_summary_numeric_formats <- summary_formats()
 .a_summary_numeric_labels <- summary_labels()
 
-#' @describeIn summarize_variables Formatted Analysis function method for `numeric`.
-#'
-#' @export
+#' @describeIn summarize_variables Formatted analysis function method for `numeric` class.
 #'
 #' @examples
 #' # `a_summary.numeric`
 #' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
+#'
+#' @export
 a_summary.numeric <- make_afun(
   s_summary.numeric,
   .formats = .a_summary_numeric_formats,
@@ -485,9 +504,7 @@ a_summary.numeric <- make_afun(
 
 .a_summary_counts_formats <- summary_formats(type = "counts")
 
-#' @describeIn summarize_variables Method for `factor`.
-#'
-#' @export
+#' @describeIn summarize_variables Formatted analysis function method for `factor` class.
 #'
 #' @examples
 #' # `a_summary.factor`
@@ -498,14 +515,14 @@ a_summary.numeric <- make_afun(
 #'   .ungroup_stats = c("count", "count_fraction")
 #' )
 #' afun(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+#'
+#' @export
 a_summary.factor <- make_afun(
   s_summary.factor,
   .formats = .a_summary_counts_formats
 )
 
-#' @describeIn summarize_variables Formatted Analysis function method for `character`.
-#'
-#' @export
+#' @describeIn summarize_variables Formatted analysis function method for `character` class.
 #'
 #' @examples
 #' # `a_summary.character`
@@ -514,14 +531,14 @@ a_summary.factor <- make_afun(
 #'   .ungroup_stats = c("count", "count_fraction")
 #' )
 #' afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
+#'
+#' @export
 a_summary.character <- make_afun(
   s_summary.character,
   .formats = .a_summary_counts_formats
 )
 
-#' @describeIn summarize_variables Formatted Analysis function method for `logical`.
-#'
-#' @export
+#' @describeIn summarize_variables Formatted analysis function method for `logical` class.
 #'
 #' @examples
 #' # `a_summary.logical`
@@ -529,6 +546,8 @@ a_summary.character <- make_afun(
 #'   getS3method("a_summary", "logical")
 #' )
 #' afun(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
+#'
+#' @export
 a_summary.logical <- make_afun(
   s_summary.logical,
   .formats = .a_summary_counts_formats
@@ -536,9 +555,13 @@ a_summary.logical <- make_afun(
 
 #' Constructor Function for [summarize_vars()] and [summarize_colvars()]
 #'
-#' @description Constructor function which creates a combined Formatted
-#' Analysis function for use in layout creating functions [summarize_vars()] and
-#' [summarize_colvars()].
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Constructor function which creates a combined formatted analysis function.
+#'
+#' @inheritParams argument_convention
+#'
+#' @return Combined formatted analysis function for use in [summarize_vars()].
 #'
 #' @note Since [a_summary()] is generic and we want customization of the formatting arguments
 #'   via [rtables::make_afun()], we need to create another temporary generic function, with
@@ -546,9 +569,6 @@ a_summary.logical <- make_afun(
 #'   we need to wrap them in a combined `afun`. Since this is required by two layout creating
 #'   functions (and possibly others in the future), we provide a constructor that does this:
 #'   [create_afun_summary()].
-#' @inheritParams argument_convention
-#'
-#' @export
 #'
 #' @examples
 #' # `create_afun_summary()` to create combined `afun`
@@ -574,6 +594,8 @@ a_summary.logical <- make_afun(
 #'   analyze(vars = "AVAL", afun = afun)
 #'
 #' build_table(l, df = dta_test)
+#'
+#' @export
 create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
   function(x,
            ...,
@@ -634,18 +656,15 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
   }
 }
 
-#' @describeIn summarize_variables Analyze Function to add a descriptive analyze
-#'   layer to `rtables` pipelines. The analysis is applied to a vector and
-#'   return the summary, in `rcells`. The ellipsis (`...`) conveys arguments to
-#'   [s_summary()], for instance `na.rm = FALSE` if missing data should be
-#'   accounted for. When factor variables contains `NA`, it is expected that `NA`
-#'   have been conveyed to `na_level` appropriately beforehand with
-#'   [df_explicit_na()].
-#' @inheritParams rtables::analyze
+#' @describeIn summarize_variables Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
 #' @param ... arguments passed to `s_summary()`.
 #'
-#' @template formatting_arguments
-#' @export
+#' @return
+#' * `summarize_vars()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_summary()` to the table layout.
 #'
 #' @examples
 #' ## Fabricated dataset.
@@ -699,6 +718,8 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #' \dontrun{
 #' Viewer(results)
 #' }
+#'
+#' @export
 summarize_vars <- function(lyt,
                            vars,
                            var_labels = vars,
@@ -706,6 +727,7 @@ summarize_vars <- function(lyt,
                            ...,
                            show_labels = "default",
                            table_names = vars,
+                           section_div = NA_character_,
                            .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
                            .formats = NULL,
                            .labels = NULL,
@@ -721,6 +743,7 @@ summarize_vars <- function(lyt,
     extra_args = list(...),
     inclNAs = TRUE,
     show_labels = show_labels,
-    table_names = table_names
+    table_names = table_names,
+    section_div = section_div
   )
 }

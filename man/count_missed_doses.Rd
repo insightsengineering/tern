@@ -38,9 +38,9 @@ count_missed_doses(
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{var_labels}{character for label.}
+\item{var_labels}{(\code{character})\cr character for label.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{...}{additional arguments for the lower level functions.}
 
@@ -56,10 +56,23 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-\code{\link[=s_count_nonmissing]{s_count_nonmissing()}} returns the statistic \code{n} which is the count of non-missing values in \code{x}.
+\itemize{
+\item \code{s_count_nonmissing()} returns the statistic \code{n} which is the count of non-missing values in \code{x}.
+}
 
-\code{\link[=s_count_missed_doses]{s_count_missed_doses()}} returns the statistics \code{n} and
-\code{count_fraction} with one element for each threshold.
+\itemize{
+\item \code{s_count_missed_doses()} returns the statistics \code{n} and \code{count_fraction} with one element for each threshold.
+}
+
+\itemize{
+\item \code{a_count_missed_doses()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{count_missed_doses()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_missed_doses()} to the table layout.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -71,14 +84,13 @@ mainly the special labels.
 \itemize{
 \item \code{s_count_nonmissing()}: Statistics function to count non-missing values.
 
-\item \code{s_count_missed_doses()}: Statistics function to count patients with missed doses when \code{x}
-is the vector of number of missed doses with one value for each patient.
+\item \code{s_count_missed_doses()}: Statistics function to count patients with missed doses.
 
-\item \code{a_count_missed_doses()}: Formatted Analysis function to count non-missing values.
+\item \code{a_count_missed_doses()}: Formatted analysis function which is used as \code{afun}
+in \code{count_missed_doses()}.
 
-\item \code{count_missed_doses()}: Layout creating function which can be be used for creating
-summary tables for summarizing missed doses given user-specified \code{thresholds}. This is
-an additional layer on top of \code{count_cumulative} specifically for missed doses.
+\item \code{count_missed_doses()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{
@@ -119,6 +131,7 @@ basic_table() \%>\%
   add_colcounts() \%>\%
   count_missed_doses("AVAL", thresholds = c(1, 5, 10, 15), var_labels = "Missed Doses") \%>\%
   build_table(anl, alt_counts_df = tern_ex_adsl)
+
 }
 \seealso{
 Relevant description function \code{\link[=d_count_missed_doses]{d_count_missed_doses()}}.

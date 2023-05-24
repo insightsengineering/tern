@@ -12,30 +12,29 @@ control_coxreg(
 )
 }
 \arguments{
-\item{pval_method}{(\code{string})\cr the method used for estimation of p.values;
-\code{wald} (default) or \code{likelihood}.}
+\item{pval_method}{(\code{string})\cr the method used for estimation of p.values; \code{wald} (default) or \code{likelihood}.}
 
-\item{ties}{(\code{string})\cr among \code{exact} (equivalent to \code{DISCRETE} in SAS),
-\code{efron} and \code{breslow}, see \code{\link[survival:coxph]{survival::coxph()}}.
-Note: there is no equivalent of SAS \code{EXACT} method in R.}
+\item{ties}{(\code{string})\cr among \code{exact} (equivalent to \code{DISCRETE} in SAS), \code{efron} and \code{breslow},
+see \code{\link[survival:coxph]{survival::coxph()}}. Note: there is no equivalent of SAS \code{EXACT} method in R.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{interaction}{(\code{flag})\cr if \code{TRUE}, the model includes the
-interaction between the studied treatment and candidate covariate. Note that
-for univariate models without treatment arm, and multivariate models, no
-interaction can be used so that this needs to be \code{FALSE}.}
+\item{interaction}{(\code{flag})\cr if \code{TRUE}, the model includes the interaction between the studied
+treatment and candidate covariate. Note that for univariate models without treatment arm, and
+multivariate models, no interaction can be used so that this needs to be \code{FALSE}.}
 }
 \value{
-A \code{list} of item corresponding to the arguments.
+A \code{list} of items with names corresponding to the arguments.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Sets a list of parameters for Cox regression fit. Used internally,
-see \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} and \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}.
+Sets a list of parameters for Cox regression fit. Used internally.
 }
 \examples{
 control_coxreg()
 
+}
+\seealso{
+\code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} and \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}}.
 }

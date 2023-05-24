@@ -13,7 +13,7 @@
 }
 \value{
 A \code{tibble} with one row per STEP subgroup. The estimates and CIs are on the HR or OR scale,
-respectively. Additional attributes carry meta data also used for plotting.
+respectively. Additional attributes carry metadata also used for plotting.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -35,6 +35,7 @@ step_matrix <- fit_survival_step(
   control = c(control_coxph(), control_step(num_points = 10, degree = 2))
 )
 broom::tidy(step_matrix)
+
 }
 \seealso{
 \code{\link[=g_step]{g_step()}} which consumes the result from this function.

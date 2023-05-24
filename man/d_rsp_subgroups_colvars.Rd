@@ -11,17 +11,14 @@ d_rsp_subgroups_colvars(vars, conf_level = NULL, method = NULL)
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{method}{(\code{string})\cr
-specifies the test used to calculate the p-value for the difference between
-two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL}
-so no test is performed.}
+\item{method}{(\code{string})\cr specifies the test used to calculate the p-value for the difference between
+two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL} so no test is performed.}
 }
 \value{
-\code{list} of variables to tabulate and their labels.
+A \code{list} of variables to tabulate and their labels.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Internal function to check variables included in
-\link{tabulate_rsp_subgroups} and create column labels.
+Internal function to check variables included in \code{\link[=tabulate_rsp_subgroups]{tabulate_rsp_subgroups()}} and create column labels.
 }

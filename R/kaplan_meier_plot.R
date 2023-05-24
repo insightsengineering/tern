@@ -2,25 +2,27 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param df (`data frame`)\cr data set containing all analysis variables.
-#' @param variables (named `list`) of variable names. Details are: \cr
-#' * `tte`: variable indicating time-to-event duration values (`numeric`).
-#' * `is_event`: event variable (`logical`) \cr `TRUE` if event, `FALSE` if time to event is censored.
-#' * `arm`: the treatment group variable (`factor`).
-#' * `strat`: (`character` or `NULL`) variable names indicating stratification factors.
-#' @param control_surv a (`list`) of parameters for comparison details, specified by using \cr
-#'    the helper function [`control_surv_timepoint`]. Some possible parameter options are: \cr
-#' * `conf_level`: (`proportion`)\cr confidence level of the interval for survival rate.
-#' * `conf_type`: (`string`) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
-#'    see more in [survival::survfit()]. Note that the option "none" is no longer supported.
-#' @param data (`data.frame`)\cr survival data as pre-processed by `h_data_plot`.
-#' @param xticks (`numeric`, `number`, or `NULL`)\cr
-#'   numeric vector of ticks or single number with spacing
-#'   between ticks on the x axis.
-#'   If `NULL` (default), [labeling::extended()] is used to determine
+#' From a survival model, a graphic is rendered along with tabulated annotation
+#' including the number of patient at risk at given time and the median survival
+#' per group.
+#'
+#' @inheritParams grid::gTree
+#' @inheritParams argument_convention
+#' @param df (`data.frame`)\cr data set containing all analysis variables.
+#' @param variables (named `list`)\cr variable names. Details are:
+#'   * `tte` (`numeric`)\cr variable indicating time-to-event duration values.
+#'   * `is_event` (`logical`)\cr event variable. `TRUE` if event, `FALSE` if time to event is censored.
+#'   * `arm` (`factor`)\cr the treatment group variable.
+#'   * `strat` (`character` or `NULL`)\cr variable names indicating stratification factors.
+#' @param control_surv (`list`)\cr parameters for comparison details, specified by using
+#'   the helper function [control_surv_timepoint()]. Some possible parameter options are:
+#'   * `conf_level` (`proportion`)\cr confidence level of the interval for survival rate.
+#'   * `conf_type` (`string`)\cr "plain" (default), "log", "log-log" for confidence interval type,
+#'     see more in [survival::survfit()]. Note that the option "none" is no longer supported.
+#' @param xticks (`numeric`, `number`, or `NULL`)\cr numeric vector of ticks or single number with spacing
+#'   between ticks on the x axis. If `NULL` (default), [labeling::extended()] is used to determine
 #'   an optimal tick position on the x axis.
-#' @param yval (`string`)\cr value of y-axis. Should be either
-#'   `Survival` (default) or `Failure` probability.
+#' @param yval (`string`)\cr value of y-axis. Options are `Survival` (default) and `Failure` probability.
 #' @param censor_show (`flag`)\cr whether to show censored.
 #' @param xlab (`string`)\cr label of x-axis.
 #' @param ylab (`string`)\cr label of y-axis.
@@ -34,49 +36,32 @@
 #'   to number of strata from [survival::survfit()].
 #' @param pch (`numeric`, `string`)\cr value or character of points symbol to indicate censored cases.
 #' @param size (`numeric`)\cr size of censored point, a class of `unit`.
-#' @param max_time (`numeric`)\cr maximum value to show on X axis.
-#' Only data values less than or up to to this threshold value will be plotted.(`NULL` for
-#'    default)
-#' @param font_size (`number`) \cr font size to be used.
+#' @param max_time (`numeric`)\cr maximum value to show on X axis. Only data values less than or up to
+#'   this threshold value will be plotted (defaults to `NULL`).
+#' @param font_size (`number`)\cr font size to be used.
 #' @param ci_ribbon (`flag`)\cr draw the confidence interval around the Kaplan-Meier curve.
-#' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to
-#'   control outlook of the Kaplan-Meier curve.
-#' @param annot_at_risk (`flag`)\cr compute and add the annotation table
-#'   reporting the number of patient at risk matching the main grid of the
-#'   Kaplan-Meier curve.
-#' @param annot_surv_med (`flag`)\cr compute and add the annotation table
-#'   on the Kaplan-Meier curve estimating the median survival time per group.
+#' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to control outlook of the Kaplan-Meier curve.
+#' @param annot_at_risk (`flag`)\cr compute and add the annotation table reporting the number of patient at risk
+#'   matching the main grid of the Kaplan-Meier curve.
+#' @param annot_surv_med (`flag`)\cr compute and add the annotation table on the Kaplan-Meier curve estimating the
+#'   median survival time per group.
 #' @param annot_coxph (`flag`)\cr add the annotation table from a [survival::coxph()] model.
-#' @param control_coxph_pw (`list`) \cr parameters for comparison details, specified by using \cr
-#'    the helper function [control_coxph()]. Some possible parameter options are: \cr
-#' * `pval_method`: (`string`) \cr p-value method for testing hazard ratio = 1.
-#'   Default method is "log-rank", can also be set to "wald" or "likelihood".
-#' * `ties`: (`string`) \cr specifying the method for tie handling. Default is "efron",
-#'   can also be set to "breslow" or "exact". See more in [survival::coxph()]
-#' * `conf_level`: (`proportion`)\cr confidence level of the interval for HR.
-#' @param position_coxph `numeric` \cr x and y positions for plotting [survival::coxph()] model.
-#' @param position_surv_med `numeric` \cr x and y positions for plotting annotation table
-#'    estimating median survival time per group
+#' @param annot_stats (`string`)\cr statistics annotations to add to the plot. Options are
+#'   `median` (median survival follow-up time) and `min` (minimum survival follow-up time).
+#' @param annot_stats_vlines (`flag`)\cr add vertical lines corresponding to each of the statistics
+#'   specified by `annot_stats`. If `annot_stats` is `NULL` no lines will be added.
+#' @param control_coxph_pw (`list`)\cr parameters for comparison details, specified by using
+#'   the helper function [control_coxph()]. Some possible parameter options are:
+#'   * `pval_method` (`string`)\cr p-value method for testing hazard ratio = 1.
+#'     Default method is "log-rank", can also be set to "wald" or "likelihood".
+#'   * `ties` (`string`)\cr method for tie handling. Default is "efron",
+#'     can also be set to "breslow" or "exact". See more in [survival::coxph()]
+#'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
+#' @param position_coxph (`numeric`)\cr x and y positions for plotting [survival::coxph()] model.
+#' @param position_surv_med (`numeric`)\cr x and y positions for plotting annotation table estimating median survival
+#'   time per group.
 #'
-#' @name kaplan_meier
-#'
-NULL
-
-#' Kaplan-Meier Plot
-#'
-#' @description `r lifecycle::badge("stable")`
-#'
-#' From a survival model, a graphic is rendered along with tabulated annotation
-#' including the number of patient at risk at given time and the median survival
-#' per group.
-#'
-#' @return a `grob` of class `gTree`.
-#'
-#' @inheritParams grid::gTree
-#' @inheritParams kaplan_meier
-#' @inheritParams argument_convention
-#'
-#' @export
+#' @return A `grob` of class `gTree`.
 #'
 #' @examples
 #' \dontrun{
@@ -104,6 +89,12 @@ NULL
 #' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal())
 #' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal(), lty = 1:3)
 #' res <- g_km(df = df, variables = variables, max = 2000)
+#' res <- g_km(
+#'   df = df,
+#'   variables = variables,
+#'   annot_stats = c("min", "median"),
+#'   annot_stats_vlines = TRUE
+#' )
 #'
 #' # 2. Example - Arrange several KM curve on a single graph device
 #'
@@ -164,6 +155,8 @@ NULL
 #'   position_surv_med = c(1, 0.7)
 #' )
 #' }
+#'
+#' @export
 g_km <- function(df,
                  variables,
                  control_surv = control_surv_timepoint(),
@@ -191,6 +184,8 @@ g_km <- function(df,
                  annot_at_risk = TRUE,
                  annot_surv_med = TRUE,
                  annot_coxph = FALSE,
+                 annot_stats = NULL,
+                 annot_stats_vlines = FALSE,
                  control_coxph_pw = control_coxph(),
                  position_coxph = c(0, 0.05),
                  position_surv_med = c(0.9, 0.9)) {
@@ -199,6 +194,8 @@ g_km <- function(df,
   checkmate::assert_string(title, null.ok = TRUE)
   checkmate::assert_string(footnotes, null.ok = TRUE)
   checkmate::assert_character(col, null.ok = TRUE)
+  checkmate::assert_subset(annot_stats, c("median", "min"))
+  checkmate::assert_logical(annot_stats_vlines)
 
   tte <- variables$tte
   is_event <- variables$is_event
@@ -247,7 +244,46 @@ g_km <- function(df,
     ci_ribbon = ci_ribbon
   )
 
-  g_el <- h_decompose_gg(gg) # nolint
+  if (!is.null(annot_stats)) {
+    if ("median" %in% annot_stats) {
+      fit_km_all <- survival::survfit(
+        formula = stats::as.formula(paste0("survival::Surv(", tte, ", ", is_event, ") ~ ", 1)),
+        data = df,
+        conf.int = control_surv$conf_level,
+        conf.type = control_surv$conf_type
+      )
+      gg <- gg +
+        geom_text(
+          size = 8 / ggplot2::.pt, col = 1,
+          x = stats::median(fit_km_all) + 0.065 * max(data_plot$time),
+          y = ifelse(yval == "Survival", 0.62, 0.38),
+          label = paste("Median F/U:\n", round(stats::median(fit_km_all), 1), tolower(df$AVALU[1]))
+        )
+      if (annot_stats_vlines) {
+        gg <- gg +
+          geom_segment(aes(x = stats::median(fit_km_all), xend = stats::median(fit_km_all), y = -Inf, yend = Inf),
+            linetype = 2, col = "darkgray"
+          )
+      }
+    }
+    if ("min" %in% annot_stats) {
+      min_fu <- min(df[[tte]])
+      gg <- gg +
+        geom_text(
+          size = 8 / ggplot2::.pt, col = 1,
+          x = min_fu + max(data_plot$time) * ifelse(yval == "Survival", 0.05, 0.07),
+          y = ifelse(yval == "Survival", 1.0, 0.05),
+          label = paste("Min. F/U:\n", round(min_fu, 1), tolower(df$AVALU[1]))
+        )
+      if (annot_stats_vlines) {
+        gg <- gg +
+          geom_segment(aes(x = min_fu, xend = min_fu, y = Inf, yend = -Inf), linetype = 2, col = "darkgray")
+      }
+    }
+    gg <- gg + ggplot2::guides(fill = ggplot2::guide_legend(override.aes = list(shape = NA, label = "")))
+  }
+
+  g_el <- h_decompose_gg(gg)
 
   if (annot_at_risk) {
     # This is the content of the table that will be below the graph.
@@ -276,7 +312,9 @@ g_km <- function(df,
   }
 
   if (annot_at_risk || annot_surv_med || annot_coxph) {
-    lyt <- h_km_layout(data = data_plot, g_el = g_el, title = title, footnotes = footnotes, annot_at_risk = annot_at_risk) # nolint
+    lyt <- h_km_layout(
+      data = data_plot, g_el = g_el, title = title, footnotes = footnotes, annot_at_risk = annot_at_risk
+    )
     ttl_row <- as.numeric(!is.null(title))
     foot_row <- as.numeric(!is.null(footnotes))
     km_grob <- grid::gTree(
@@ -401,24 +439,25 @@ g_km <- function(df,
 
 #' Helper function: tidy survival fit
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Convert the survival fit data into a data frame designed for plotting
 #' within `g_km`.
 #'
-#' @description `r lifecycle::badge("stable")`
-#'
 #' This starts from the [broom::tidy()] result, and then:
-#' - post-processes the `strata` column into a factor,
-#' - extends each stratum by an additional first row with time 0
-#' and probability 1 so that downstream plot lines start at those coordinates,
-#' - adds a `censor` column,
-#' - filters the rows before `max_time`.
+#'   * Post-processes the `strata` column into a factor.
+#'   * Extends each stratum by an additional first row with time 0 and probability 1 so that
+#'     downstream plot lines start at those coordinates.
+#'   * Adds a `censor` column.
+#'   * Filters the rows before `max_time`.
 #'
-#' @inheritParams kaplan_meier
+#' @inheritParams g_km
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
-#' @param armval (`string`) \cr used as strata name when treatment arm
-#' variable only has one level. Default is "All".
+#' @param armval (`string`)\cr used as strata name when treatment arm variable only has one level. Default is "All".
+#'
+#' @return A `tibble` with columns `time`, `n.risk`, `n.event`, `n.censor`, `estimate`, `std.error`, `conf.high`,
+#'   `conf.low`, `strata`, and `censor`.
+#'
 #' @examples
 #' \dontrun{
 #' library(dplyr)
@@ -461,12 +500,10 @@ h_data_plot <- function(fit_km,
     FUN = function(tbl) {
       first_row <- tbl[1L, ]
       first_row$time <- 0
-      # nolint start
       first_row$n.risk <- sum(first_row[, c("n.risk", "n.event", "n.censor")])
       first_row$n.event <- first_row$n.censor <- 0
       first_row$estimate <- first_row$conf.high <- first_row$conf.low <- 1
       first_row$std.error <- 0
-      # nolint end
       rbind(
         first_row,
         tbl
@@ -484,13 +521,16 @@ h_data_plot <- function(fit_km,
 
 #' Helper function: x tick positions
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Calculate the positions of ticks on the x-axis. However, if `xticks` already
 #' exists it is kept as is. It is based on the same function `ggplot2` relies on,
 #' and is required in the graphic and the patient-at-risk annotation table.
 #'
-#' @inheritParams kaplan_meier
+#' @inheritParams g_km
+#' @inheritParams h_ggkm
+#'
+#' @return A vector of positions to use for x-axis ticks on a `ggplot` object.
 #'
 #' @examples
 #' \dontrun{
@@ -543,7 +583,11 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #'
 #' Draw the Kaplan-Meier plot using `ggplot2`.
 #'
-#' @inheritParams kaplan_meier
+#' @inheritParams g_km
+#' @param data (`data.frame`)\cr survival data as pre-processed by `h_data_plot`.
+#'
+#' @return A `ggplot` object.
+#'
 #' @examples
 #' \dontrun{
 #' library(dplyr)
@@ -655,7 +699,6 @@ h_ggkm <- function(data,
       )
   }
 
-
   if (!is.null(max_time) && !is.null(xticks)) {
     gg <- gg + ggplot2::scale_x_continuous(breaks = xticks, limits = c(min(0, xticks), max(c(xticks, max_time))))
   } else if (!is.null(xticks)) {
@@ -667,7 +710,6 @@ h_ggkm <- function(data,
   } else if (!is.null(max_time)) {
     gg <- gg + ggplot2::scale_x_continuous(limits = c(0, max_time))
   }
-
 
   if (!is.null(ggtheme)) {
     gg <- gg + ggtheme
@@ -684,14 +726,17 @@ h_ggkm <- function(data,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The elements composing the `ggplot` are extracted and organized in a
-#' list containing:
-#' the panel (`panel`),
-#' the y-axis and its label (`yaxis`, `ylab`),
-#' idem for the x-axis (`xaxis`, `xlab`),
-#' the legend (`guide`).
+#' The elements composing the `ggplot` are extracted and organized in a `list`.
 #'
 #' @param gg (`ggplot`)\cr a graphic to decompose.
+#'
+#' @return A named `list` with elements:
+#'   * `panel`: The panel.
+#'   * `yaxis`: The y-axis.
+#'   * `xaxis`: The x-axis.
+#'   * `xlab`: The x-axis label.
+#'   * `ylab`: The y-axis label.
+#'   * `guide`: The legend.
 #'
 #' @examples
 #' \dontrun{
@@ -737,30 +782,26 @@ h_decompose_gg <- function(gg) {
   lapply(X = y, function(x) gtable::gtable_filter(g_el, x))
 }
 
-
 #' Helper: KM Layout
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Prepares a (5 rows) x (2 cols) layout for the Kaplan-Meier curve.
 #'
-#' @inheritParams kaplan_meier
+#' @inheritParams g_km
+#' @inheritParams h_ggkm
 #' @param g_el (`list` of `gtable`)\cr list as obtained by `h_decompose_gg()`.
-#' @param annot_at_risk (`flag`)\cr compute and add the annotation table
-#'   reporting the number of patient at risk matching the main grid of the
-#'   Kaplan-Meier curve.
-#' @export
+#' @param annot_at_risk (`flag`)\cr compute and add the annotation table reporting the number of
+#'   patient at risk matching the main grid of the Kaplan-Meier curve.
 #'
-#' @details
-#' The layout corresponds to a grid of two columns and five rows of unequal
-#' dimensions. Most of the dimension are fixed, only the curve is flexible and
-#' will accommodate with the remaining free space.
-#' - The left column gets the annotation of the `ggplot` (y-axis) and the
-#'   names of the strata for the patient at risk tabulation.
-#'   The main constraint is about the width of the columns which must allow the
-#'   writing of the strata name.
-#' - The right column receive the `ggplot`, the legend, the x-axis and the
-#' patient at risk table.
+#' @return A grid layout.
+#'
+#' @details The layout corresponds to a grid of two columns and five rows of unequal dimensions. Most of the
+#'   dimension are fixed, only the curve is flexible and will accommodate with the remaining free space.
+#'   * The left column gets the annotation of the `ggplot` (y-axis) and the names of the strata for the patient
+#'     at risk tabulation. The main constraint is about the width of the columns which must allow the writing of
+#'     the strata name.
+#'   * The right column receive the `ggplot`, the legend, the x-axis and the patient at risk table.
 #'
 #' @examples
 #' \dontrun{
@@ -783,6 +824,7 @@ h_decompose_gg <- function(gg) {
 #' grid.show.layout(lyt)
 #' }
 #'
+#' @export
 h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
@@ -853,15 +895,17 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Two Graphical Objects are obtained, one corresponding to row labeling and
+#' Two graphical objects are obtained, one corresponding to row labeling and
 #' the second to the number of patient at risk.
 #'
-#' @inheritParams kaplan_meier
-#' @param annot_tbl (`data.frame`)\cr annotation as prepared
-#'   by [survival::summary.survfit()] which includes the number of
-#'   patients at risk at given time points.
+#' @inheritParams g_km
+#' @inheritParams h_ggkm
+#' @param annot_tbl (`data.frame`)\cr annotation as prepared by [survival::summary.survfit()] which
+#'   includes the number of patients at risk at given time points.
 #' @param xlim (`numeric`)\cr the maximum value on the x-axis (used to
 #'   ensure the at risk table aligns with the KM graph).
+#'
+#' @return A named `list` of two `gTree` objects: `at_risk` and `label`.
 #'
 #' @examples
 #' \dontrun{
@@ -996,10 +1040,11 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Transform a survival fit to a table with groups in rows characterized
-#' by N, median and confidence interval.
+#' Transform a survival fit to a table with groups in rows characterized by N, median and confidence interval.
 #'
 #' @inheritParams h_data_plot
+#'
+#' @return A summary table with statistics `N`, `Median`, and `XX% CI` (`XX` taken from `fit_km`).
 #'
 #' @examples
 #' \dontrun{
@@ -1027,7 +1072,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
   conf.int <- summary(fit_km)$conf.int # nolint
   y$records <- round(y$records)
   y$median <- signif(y$median, 4)
-  y$`CI` <- paste0( # nolint
+  y$`CI` <- paste0(
     "(", signif(y[[paste0(conf.int, "LCL")]], 4), ", ", signif(y[[paste0(conf.int, "UCL")]], 4), ")"
   )
   stats::setNames(
@@ -1036,7 +1081,6 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
   )
 }
 
-
 #' Helper Function: Survival Estimation Grob
 #'
 #' @description `r lifecycle::badge("stable")`
@@ -1044,11 +1088,13 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' The survival fit is transformed in a grob containing a table with groups in
 #' rows characterized by N, median and 95% confidence interval.
 #'
-#' @inheritParams kaplan_meier
-#' @param ttheme (`list`)\cr see [gridExtra::ttheme_default()].
-#' @param x a `numeric` value between 0 and 1 specifying x-location.
-#' @param y a `numeric` value between 0 and 1 specifying y-location.
+#' @inheritParams g_km
 #' @inheritParams h_data_plot
+#' @param ttheme (`list`)\cr see [gridExtra::ttheme_default()].
+#' @param x (`numeric`)\cr a value between 0 and 1 specifying x-location.
+#' @param y (`numeric`)\cr a value between 0 and 1 specifying y-location.
+#'
+#' @return A `grob` of a table containing statistics `N`, `Median`, and `XX% CI` (`XX` taken from `fit_km`).
 #'
 #' @examples
 #' \dontrun{
@@ -1071,7 +1117,7 @@ h_grob_median_surv <- function(fit_km,
                                x = 0.9,
                                y = 0.9,
                                ttheme = gridExtra::ttheme_default()) {
-  data <- h_tbl_median_surv(fit_km, armval = armval) # nolint
+  data <- h_tbl_median_surv(fit_km, armval = armval)
   gt <- gridExtra::tableGrob(d = data, theme = ttheme)
   vp <- grid::viewport(
     x = grid::unit(x, "npc") + grid::unit(1, "lines"),
@@ -1095,10 +1141,10 @@ h_grob_median_surv <- function(fit_km,
 #'
 #' Build the y-axis annotation from a decomposed `ggplot`.
 #'
-#' @param ylab (`gtable`)\cr the y-lab as a graphical object derived from
-#'   a `ggplot`.
-#' @param yaxis (`gtable`)\cr the y-axis as a graphical object derived from
-#'   a `ggplot`.
+#' @param ylab (`gtable`)\cr the y-lab as a graphical object derived from a `ggplot`.
+#' @param yaxis (`gtable`)\cr the y-axis as a graphical object derived from a `ggplot`.
+#'
+#' @return a `gTree` object containing the y-axis annotation from a `ggplot`.
 #'
 #' @examples
 #' \dontrun{
@@ -1145,10 +1191,12 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Create an `rtable` of pairwise stratified or unstratified CoxPH analysis results.
+#' Create a `data.frame` of pairwise stratified or unstratified CoxPH analysis results.
 #'
 #' @inheritParams g_km
-#' @export
+#'
+#' @return A `data.frame` containing statistics `HR`, `XX% CI` (`XX` taken from `control_coxph_pw`),
+#'   and `p-value (log-rank)`.
 #'
 #' @examples
 #' \dontrun{
@@ -1164,6 +1212,8 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #'   control_coxph_pw = control_coxph(conf_level = 0.9)
 #' )
 #' }
+#'
+#' @export
 h_tbl_coxph_pairwise <- function(df,
                                  variables,
                                  control_coxph_pw = control_coxph()) {
@@ -1184,7 +1234,7 @@ h_tbl_coxph_pairwise <- function(df,
     )
     res_df <- data.frame(
       hr = format(round(res$hr, 2), nsmall = 2),
-      hr_ci = paste0( # nolint
+      hr_ci = paste0(
         "(", format(round(res$hr_ci[1], 2), nsmall = 2), ", ",
         format(round(res$hr_ci[2], 2), nsmall = 2), ")"
       ),
@@ -1202,13 +1252,15 @@ h_tbl_coxph_pairwise <- function(df,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Grob of `rtable` output from [h_tbl_coxph_pairwise]
+#' Grob of `rtable` output from [h_tbl_coxph_pairwise()]
 #'
 #' @inheritParams h_grob_median_surv
 #' @param ... arguments will be passed to [h_tbl_coxph_pairwise()].
-#' @param x a `numeric` value between 0 and 1 specifying x-location.
-#' @param y a `numeric` value between 0 and 1 specifying y-location.
-#' @export
+#' @param x (`numeric`)\cr a value between 0 and 1 specifying x-location.
+#' @param y (`numeric`)\cr a value between 0 and 1 specifying y-location.
+#'
+#' @return A `grob` of a table containing statistics `HR`, `XX% CI` (`XX` taken from `control_coxph_pw`),
+#'   and `p-value (log-rank)`.
 #'
 #' @examples
 #' \dontrun{
@@ -1228,6 +1280,8 @@ h_tbl_coxph_pairwise <- function(df,
 #' )
 #' grid::grid.draw(tbl_grob)
 #' }
+#'
+#' @export
 h_grob_coxph <- function(...,
                          x = 0,
                          y = 0,
@@ -1236,9 +1290,9 @@ h_grob_coxph <- function(...,
                            padding = grid::unit(c(1, .5), "lines"),
                            core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = .5))
                          )) {
-  data <- h_tbl_coxph_pairwise(...) # nolint
+  data <- h_tbl_coxph_pairwise(...)
   tryCatch(
-    expr = { # nolint
+    expr = {
       gt <- gridExtra::tableGrob(d = data, theme = ttheme) # ERROR 'data' must be of a vector type, was 'NULL'
       vp <- grid::viewport(
         x = grid::unit(x, "npc") + grid::unit(1, "lines"),

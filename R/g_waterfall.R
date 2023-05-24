@@ -1,30 +1,19 @@
 #' Horizontal Waterfall Plot
 #'
-#' This basic waterfall plot visualizes a quantity \code{height} ordered by value with some
-#' markup.
+#' This basic waterfall plot visualizes a quantity `height` ordered by value with some markup.
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param height (\code{numeric} vector)\cr
-#'   Contains values to be plotted as the waterfall bars
-#' @param id (vector)\cr
-#'   Contains of IDs used as the x-axis label for the waterfall bars
+#' @param height (`numeric``)\cr vector containing values to be plotted as the waterfall bars.
+#' @param id (`character`)\cr vector containing IDs to use as the x-axis label for the waterfall bars.
 #' @param col (`character`)\cr colors.
-#' @param col_var (`factor`, `character` or `NULL`)\cr
-#'   Categorical variable for bar coloring. `NULL` by default.
-#' @param xlab (\code{character} value)\cr
-#'   x label. Default is \code{ID}.
-#' @param ylab (\code{character} value)\cr
-#'   y label. Default is \code{Value}.
-#' @param title (\code{character} value)\cr
-#'   Text to be displayed as plot title.
-#' @param col_legend_title (\code{character} value)\cr
-#'   Text to be displayed as legend title.
-#' @return (\code{ggplot} object)\cr
-#'   Waterfall plot
-#' @template author_song24
+#' @param col_var (`factor`, `character` or `NULL`)\cr categorical variable for bar coloring. `NULL` by default.
+#' @param xlab (`character`)\cr x label. Default is `"ID"`.
+#' @param ylab (`character`)\cr y label. Default is `"Value"`.
+#' @param title (`character`)\cr text to be displayed as plot title.
+#' @param col_legend_title (`character`)\cr text to be displayed as legend title.
 #'
-#' @export
+#' @return A `ggplot` waterfall plot.
 #'
 #' @examples
 #' library(dplyr)
@@ -68,6 +57,8 @@
 #'   ylab = "Percentage Change",
 #'   title = "Waterfall plot"
 #' )
+#'
+#' @export
 g_waterfall <- function(height,
                         id,
                         col_var = NULL,

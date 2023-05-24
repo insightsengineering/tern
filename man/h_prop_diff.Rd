@@ -29,22 +29,22 @@ prop_diff_strat_nc(
 \arguments{
 \item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
 
-\item{grp}{(\code{factor})\cr
-vector assigning observations to one out of two groups
+\item{grp}{(\code{factor})\cr vector assigning observations to one out of two groups
 (e.g. reference and treatment group).}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{correct}{\code{logical}\cr
-include the continuity correction. For further information, see for example
-\code{\link[stats:prop.test]{stats::prop.test()}}.}
+\item{correct}{(\code{logical})\cr whether to include the continuity correction. For further
+information, see \code{\link[stats:prop.test]{stats::prop.test()}}.}
 
-\item{strata}{(\code{factor})\cr
-with one level per stratum and same length as \code{rsp}.}
+\item{strata}{(\code{factor})\cr variable with one level per stratum and same length as \code{rsp}.}
 
-\item{weights_method}{(\code{string}) \cr
-it can be one of \code{c("cmh", "heuristic")} and directs the way weights are
-estimated.}
+\item{weights_method}{(\code{string})\cr weights method. Can be either \code{"cmh"} or \code{"heuristic"}
+and directs the way weights are estimated.}
+}
+\value{
+A named \code{list} of elements \code{diff} (proportion difference) and \code{diff_ci}
+(proportion difference confidence interval).
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -61,18 +61,15 @@ interval.
 \item \code{prop_diff_nc()}: Newcombe confidence interval. It is based on
 the Wilson score confidence interval for a single binomial proportion.
 
-\item \code{prop_diff_cmh()}: Calculates the weighted difference.
-This is defined as the difference in response rates between the
-experimental treatment group and the control treatment group, adjusted
-for stratification factors by applying Cochran-Mantel-Haenszel (CMH)
-weights. For the CMH chi-squared test, use \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}.
+\item \code{prop_diff_cmh()}: Calculates the weighted difference. This is defined as the difference in
+response rates between the experimental treatment group and the control treatment group, adjusted
+for stratification factors by applying Cochran-Mantel-Haenszel (CMH) weights. For the CMH chi-squared
+test, use \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}.
 
-\item \code{prop_diff_strat_nc()}: Calculates the stratified Newcombe confidence interval
-and difference in response rates between the experimental treatment group
-and the control treatment group, adjusted for stratification factors. This
-implementation follows closely the one proposed by
-\insertCite{Yan2010-jt;textual}{tern}. Weights can be estimated from the
-heuristic proposed in \code{\link[=prop_strat_wilson]{prop_strat_wilson()}} or from CMH-derived weights
+\item \code{prop_diff_strat_nc()}: Calculates the stratified Newcombe confidence interval and difference in response
+rates between the experimental treatment group and the control treatment group, adjusted for stratification
+factors. This implementation follows closely the one proposed by \insertCite{Yan2010-jt;textual}{tern}.
+Weights can be estimated from the heuristic proposed in \code{\link[=prop_strat_wilson]{prop_strat_wilson()}} or from CMH-derived weights
 (see \code{\link[=prop_diff_cmh]{prop_diff_cmh()}}).
 
 }}

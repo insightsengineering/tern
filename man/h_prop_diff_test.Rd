@@ -17,32 +17,27 @@ prop_schouten(tbl)
 prop_fisher(tbl)
 }
 \arguments{
-\item{tbl}{(\code{matrix})\cr
-with two groups in rows and the binary response (\code{TRUE}/\code{FALSE}) in
-columns.}
+\item{tbl}{(\code{matrix})\cr matrix with two groups in rows and the binary response (\code{TRUE}/\code{FALSE}) in columns.}
 
-\item{ary}{(\code{array}, 3 dimensions)\cr
-with two groups in rows, the binary response (\code{TRUE}/\code{FALSE}) in
-columns, the strata in the third dimension.}
+\item{ary}{(\code{array}, 3 dimensions)\cr array with two groups in rows, the binary response
+(\code{TRUE}/\code{FALSE}) in columns, and the strata in the third dimension.}
+}
+\value{
+A p-value.
 }
 \description{
-Helper functions to implement various tests on the difference between two
-proportions.
+Helper functions to implement various tests on the difference between two proportions.
 }
 \section{Functions}{
 \itemize{
-\item \code{prop_chisq()}: performs Chi-Squared test.
-Internally calls \code{\link[stats:prop.test]{stats::prop.test()}}.
+\item \code{prop_chisq()}: performs Chi-Squared test. Internally calls \code{\link[stats:prop.test]{stats::prop.test()}}.
 
-\item \code{prop_cmh()}: performs stratified Cochran-Mantel-Haenszel test.
-Internally calls \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}. Note that strata with less than two observations
-are automatically discarded.
+\item \code{prop_cmh()}: performs stratified Cochran-Mantel-Haenszel test. Internally calls
+\code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}. Note that strata with less than two observations are automatically discarded.
 
-\item \code{prop_schouten()}: performs the Chi-Squared test with Schouten
-correction.
+\item \code{prop_schouten()}: performs the Chi-Squared test with Schouten correction.
 
-\item \code{prop_fisher()}: performs the Fisher's exact test.
-Internally calls \code{\link[stats:fisher.test]{stats::fisher.test()}}.
+\item \code{prop_fisher()}: performs the Fisher's exact test. Internally calls \code{\link[stats:fisher.test]{stats::fisher.test()}}.
 
 }}
 \examples{
@@ -93,9 +88,7 @@ prop_fisher(tbl)
 
 }
 \seealso{
-[prop_diff_test())] for implementation of these helper functions.
-
-[prop_diff_test())]: R:prop_diff_test())
+\code{\link[=prop_diff_test]{prop_diff_test()}} for implementation of these helper functions.
 
 For information on the Schouten correction (Schouten, 1980),
 visit https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.4710220305.

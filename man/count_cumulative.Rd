@@ -55,9 +55,9 @@ count, default is \code{TRUE}.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{var_labels}{character for label.}
+\item{var_labels}{(\code{character})\cr character for label.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
@@ -71,13 +71,20 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-A named list:
 \itemize{
-\item \code{count_fraction}: a list with each \code{thresholds} value as a component, each component
-contains a vector for the count and fraction.
+\item \code{s_count_cumulative()} returns a named list of \code{count_fraction}s: a list with each \code{thresholds} value as a
+component, each component containing a vector for the count and fraction.
 }
 
-\code{\link[=a_count_cumulative]{a_count_cumulative()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+\itemize{
+\item \code{a_count_cumulative()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{count_cumulative()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_cumulative()} to the table layout.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -87,16 +94,13 @@ greater than, or greater or equal to user-specific thresholds.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_cumulative()}: Statistics function that produces a named lists given a
-(\code{numeric}) vector of thresholds.
+\item \code{s_count_cumulative()}: Statistics function that produces a named list given a numeric vector of thresholds.
 
-\item \code{a_count_cumulative()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_count_cumulative()}: Formatted analysis function which is used as \code{afun}
+in \code{count_cumulative()}.
 
-\item \code{count_cumulative()}: Layout creating function which can be be used for creating
-summary tables for cumulative counts of a variable. The ellipsis (\code{...}) conveys
-arguments to \code{s_count_cumulative()}, for instance \code{lower_tail = FALSE} if upper tail
-should be accounted for.
+\item \code{count_cumulative()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{
@@ -128,6 +132,6 @@ basic_table() \%>\%
 
 }
 \seealso{
-Relevant helper function \code{\link[=h_count_cumulative]{h_count_cumulative()}}, and descriptive function \code{\link[=d_count_cumulative]{d_count_cumulative()}}
+Relevant helper function \code{\link[=h_count_cumulative]{h_count_cumulative()}}, and descriptive function \code{\link[=d_count_cumulative]{d_count_cumulative()}}.
 }
 \keyword{internal}

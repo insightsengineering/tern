@@ -15,18 +15,21 @@ tabulate_survival_biomarkers(
 \item{df}{(\code{data.frame})\cr containing all analysis variables, as returned by
 \code{\link[=extract_survival_biomarkers]{extract_survival_biomarkers()}}.}
 
-\item{vars}{(\code{character})\cr the name of statistics to be reported among
-\code{n_tot_events} (total number of events per group),
-\code{n_tot} (total number of observations per group),
-\code{median} (median survival time),
-\code{hr} (hazard ratio),
-\code{ci} (confidence interval of hazard ratio) and
-\code{pval} (p value of the effect).
-Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as both \code{hr} and \code{ci}
-are required.}
+\item{vars}{(\code{character})\cr the names of statistics to be reported among:
+\itemize{
+\item \code{n_tot_events}: Total number of events per group.
+\item \code{n_tot}: Total number of observations per group.
+\item \code{median}: Median survival time.
+\item \code{hr}: Hazard ratio.
+\item \code{ci}: Confidence interval of hazard ratio.
+\item \code{pval}: p-value of the effect.
+Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as both \code{hr} and \code{ci} are required.
+}}
 
-\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
-displaying unit.}
+\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
+}
+\value{
+An \code{rtables} table summarizing biomarker effects on survival by subgroup.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -40,7 +43,8 @@ the required statistics. The tables are then typically used as input for forest 
 }
 \section{Functions}{
 \itemize{
-\item \code{tabulate_survival_biomarkers()}: table creating function.
+\item \code{tabulate_survival_biomarkers()}: Table-creating function which creates a table
+summarizing biomarker effects on survival by subgroup.
 
 }}
 \note{
@@ -77,6 +81,7 @@ df <- extract_survival_biomarkers(
   data = adtte_f
 )
 df
+
 ## Table with default columns.
 tabulate_survival_biomarkers(df)
 
@@ -91,6 +96,7 @@ tab <- tabulate_survival_biomarkers(
 \dontrun{
 g_forest(tab, xlim = c(0.8, 1.2))
 }
+
 }
 \seealso{
 \code{\link[=h_tab_surv_one_biomarker]{h_tab_surv_one_biomarker()}} which is used internally, \code{\link[=extract_survival_biomarkers]{extract_survival_biomarkers()}}.

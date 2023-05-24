@@ -14,7 +14,7 @@
 \alias{h_glm_inter_term_extract}
 \alias{h_logistic_simple_terms}
 \alias{h_logistic_inter_terms}
-\title{Helper Functions for Multi-Variable Logistic Regression}
+\title{Helper Functions for Multivariate Logistic Regression}
 \usage{
 h_get_interaction_vars(fit_glm)
 
@@ -99,6 +99,31 @@ helper function).}
 
 \item{...}{additional arguments for the lower level functions.}
 }
+\value{
+Vector of names of interaction variables.
+
+Name of coefficient.
+
+Odds ratio.
+
+Odds ratio.
+
+Odds ratio.
+
+Term labels containing numbers of patients.
+
+Term labels containing numbers of patients.
+
+Tabulated main effect results from a logistic regression model.
+
+Tabulated interaction term results from a logistic regression model.
+
+A \code{data.frame} of tabulated interaction term results from a logistic regression model.
+
+Tabulated statistics for the given variable(s) from the logistic regression model.
+
+Tabulated statistics for the given variable(s) from the logistic regression model.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -182,6 +207,7 @@ mod2 <- fit_logistic(
     interaction = "AGE"
   )
 )
+
 h_glm_simple_term_extract("AGE", mod1)
 h_glm_simple_term_extract("ARMCD", mod1)
 
@@ -190,6 +216,7 @@ h_glm_interaction_extract("ARMCD:AGE", mod2)
 h_glm_inter_term_extract("AGE", "ARMCD", mod2)
 
 h_logistic_simple_terms("AGE", mod1)
+
 h_logistic_inter_terms(c("RACE", "AGE", "ARMCD", "AGE:ARMCD"), mod2)
 
 }

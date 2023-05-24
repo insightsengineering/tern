@@ -31,27 +31,25 @@ analyze_vars_in_cols(
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions).}
 
-\item{nested}{boolean. Should this layout instruction be applied within the
-existing layout structure \emph{if possible} (\code{TRUE}, the default) or as a
-new top-level element (`FALSE). Ignored if it would nest a split underneath
-analyses, which is not allowed.}
+\item{nested}{(\code{flag})\cr whether this layout instruction be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
+underneath analyses, which is not allowed.}
 
 \item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors with custom \code{string}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 }
+\value{
+A layout object suitable for passing to further layouting functions, or to \code{\link[rtables:build_table]{rtables::build_table()}}.
+Adding this function to an \code{rtable} layout will summarize the given variables, arrange the output
+in columns, and add it to the table layout.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This function can be used to produce summary tables for PK datasets where
-the relevant statistic is on the columns instead of on the rows.
+Layout-creating function which can be used for creating column-wise summary tables, primarily
+used for PK data sets. This function is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
 }
-\section{Functions}{
-\itemize{
-\item \code{analyze_vars_in_cols()}: Layout creating
-function which can be used for creating summary tables in columns, primarily used for PK data sets.
-
-}}
 \examples{
 library(dplyr)
 
@@ -111,7 +109,8 @@ lyt <- basic_table() \%>\%
   )
 result <- build_table(lyt, df = adpp)
 result
+
 }
 \seealso{
-\link{summarize_vars}, \link[rtables:analyze_colvars]{rtables::analyze_colvars}.
+\code{\link[=summarize_vars]{summarize_vars()}}, \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
 }

@@ -13,18 +13,18 @@ control_lineplot_vars(
 )
 }
 \arguments{
-\item{x}{(\code{character} scalar) x variable name. \cr}
+\item{x}{(\code{character})\cr x variable name.}
 
-\item{y}{(\code{character} scalar) y variable name. \cr}
+\item{y}{(\code{character})\cr y variable name.}
 
-\item{strata}{(\code{character} scalar or \code{NA}) strata variable name. \cr}
+\item{strata}{(\code{character} or \code{NA})\cr strata variable name.}
 
-\item{paramcd}{(\code{character} scalar or \code{NA}) paramcd variable name. \cr}
+\item{paramcd}{(\code{character} or \code{NA})\cr paramcd variable name.}
 
-\item{y_unit}{(\code{character} scalar or \code{NA}) y_unit variable name. \cr}
+\item{y_unit}{(\code{character} or \code{NA})\cr y_unit variable name.}
 }
 \value{
-A named character vector with names of variables.
+A named character vector of variable names.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -35,7 +35,5 @@ A variable's default value can be overwritten for any variable.
 \examples{
 control_lineplot_vars()
 control_lineplot_vars(strata = NA)
-}
-\author{
-Wojciech Wojciak wojciech.wojciak@contractors.roche.com
+
 }

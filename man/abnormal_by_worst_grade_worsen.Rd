@@ -31,16 +31,16 @@ count_abnormal_lab_worsen_by_baseline(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{variables}{(named \code{list} of \code{string}) \cr list of additional analysis variables including:
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables including:
 \itemize{
-\item \code{id} (\code{string}): \cr subject variable name
-\item \code{baseline_var} (\code{string}): \cr name of the data column containing baseline toxicity variable
-\item \code{direction_var} (\code{string}): See \code{direction_var} for more detail
+\item \code{id} (\code{string})\cr subject variable name.
+\item \code{baseline_var} (\code{string})\cr name of the data column containing baseline toxicity variable.
+\item \code{direction_var} (\code{string})\cr see \code{direction_var} for more details.
 }}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -59,12 +59,22 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-\code{\link[=s_count_abnormal_lab_worsen_by_baseline]{s_count_abnormal_lab_worsen_by_baseline()}} returns the
-counts and fraction of patients whose worst post-baseline lab grades are worse than
-their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
+\itemize{
+\item \code{s_count_abnormal_lab_worsen_by_baseline()} returns the counts and fraction of patients whose worst
+post-baseline lab grades are worse than their baseline grades, for post-baseline worst grades
+"1", "2", "3", "4" and "Any".
+}
 
-\code{\link[=a_count_abnormal_lab_worsen_by_baseline]{a_count_abnormal_lab_worsen_by_baseline()}} returns
-the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+\itemize{
+\item \code{a_count_abnormal_lab_worsen_by_baseline()} returns the corresponding list with
+formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{count_abnormal_lab_worsen_by_baseline()} returns a layout object suitable for passing to further layouting
+functions, or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted
+rows containing the statistics from \code{s_count_abnormal_lab_worsen_by_baseline()} to the table layout.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -73,16 +83,14 @@ Patient count and fraction for laboratory events (worsen from baseline) shift ta
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_abnormal_lab_worsen_by_baseline()}: Statistics function which calculates the
-counts and fraction of patients whose worst post-baseline lab grades are worse than
-their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
+\item \code{s_count_abnormal_lab_worsen_by_baseline()}: Statistics function for patients whose worst post-baseline
+lab grades are worse than their baseline grades.
 
-\item \code{a_count_abnormal_lab_worsen_by_baseline()}: Formatted Analysis function which can be further customized by
-calling \code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_count_abnormal_lab_worsen_by_baseline()}: Formatted analysis function which is used as \code{afun}
+in \code{count_abnormal_lab_worsen_by_baseline()}.
 
-\item \code{count_abnormal_lab_worsen_by_baseline()}: Layout
-creating function which can be used for creating tables, which can take statistics
-function arguments and additional format arguments (see below).
+\item \code{count_abnormal_lab_worsen_by_baseline()}: Layout-creating function which can take statistics function
+arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{
@@ -146,6 +154,6 @@ basic_table() \%>\%
 
 }
 \seealso{
-Relevant helper functions \code{\link[=h_adlb_worsen]{h_adlb_worsen()}} and \code{\link[=h_worsen_counter]{h_worsen_counter()}}.
+Relevant helper functions \code{\link[=h_adlb_worsen]{h_adlb_worsen()}} and \code{\link[=h_worsen_counter]{h_worsen_counter()}}
 }
 \keyword{internal}

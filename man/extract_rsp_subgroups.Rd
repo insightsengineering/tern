@@ -24,21 +24,27 @@ levels that belong to it in the character vectors that are elements of the list.
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{method}{(\code{string})\cr
-specifies the test used to calculate the p-value for the difference between
-two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL}
-so no test is performed.}
+\item{method}{(\code{string})\cr specifies the test used to calculate the p-value for the difference between
+two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL} so no test is performed.}
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
+}
+\value{
+A named list of two elements:
+\itemize{
+\item \code{prop}: A \code{data.frame} containing columns \code{arm}, \code{n}, \code{n_rsp}, \code{prop}, \code{subgroup}, \code{var},
+\code{var_label}, and \code{row_type}.
+\item \code{or}: A \code{data.frame} containing columns \code{arm}, \code{n_tot}, \code{or}, \code{lcl}, \code{ucl}, \code{conf_level},
+\code{subgroup}, \code{var}, \code{var_label}, and \code{row_type}.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Prepares response rates and odds ratios for population subgroups in data frames. Simple wrapper
-for \code{\link[=h_odds_ratio_subgroups_df]{h_odds_ratio_subgroups_df()}} and \code{\link[=h_proportion_subgroups_df]{h_proportion_subgroups_df()}}.
-Result is a list of two data frames: \code{prop} and \code{or}.
-\code{variables} corresponds to the names of variables found in \code{data}, passed as a named
-list and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups} and \code{strat}.
+for \code{\link[=h_odds_ratio_subgroups_df]{h_odds_ratio_subgroups_df()}} and \code{\link[=h_proportion_subgroups_df]{h_proportion_subgroups_df()}}. Result is a list of two
+\code{data.frames}: \code{prop} and \code{or}. \code{variables} corresponds to the names of variables found in \code{data},
+passed as a named \code{list} and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups} and \code{strat}.
 \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
 }
 \examples{
@@ -86,6 +92,7 @@ df_grouped <- extract_rsp_subgroups(
   )
 )
 df_grouped
+
 }
 \seealso{
 \link{response_subgroups}

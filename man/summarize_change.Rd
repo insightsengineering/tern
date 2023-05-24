@@ -22,7 +22,7 @@ summarize_change(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
@@ -49,7 +49,19 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-See \code{\link[=s_summary.numeric]{s_summary.numeric()}} for the return values.
+\itemize{
+\item \code{s_change_from_baseline()} returns the same values returned by \code{\link[=s_summary.numeric]{s_summary.numeric()}}.
+}
+
+\itemize{
+\item \code{a_change_from_baseline()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{summarize_change()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_change_from_baseline()} to the table layout.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -61,20 +73,20 @@ or the change from baseline values (post-baseline) are then summarized.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_change_from_baseline()}: Statistics Function that summarizes baseline or post-baseline visits.
+\item \code{s_change_from_baseline()}: Statistics function that summarizes baseline or post-baseline visits.
 
-\item \code{a_change_from_baseline()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_change_from_baseline()}: Formatted analysis function which is used as \code{afun} in \code{summarize_change()}.
 
-\item \code{summarize_change()}: Analyze Function for change from baseline analysis.
-To be used after a split on visits in the layout, such that each data
-subset only contains either baseline or post-baseline data. Allows additional
-formatting options.
+\item \code{summarize_change()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \note{
 The data in \code{df} must be either all be from baseline or post-baseline visits. Otherwise
 an error will be thrown.
+
+To be used after a split on visits in the layout, such that each data subset only contains
+either baseline or post-baseline data.
 }
 \examples{
 df <- data.frame(
@@ -100,7 +112,6 @@ a_change_from_baseline(
   variables = list(value = "val", baseline_flag = "is_bl")
 )
 }
-
 
 # `summarize_change()`
 

@@ -9,15 +9,15 @@ h_xticks(data, xticks = NULL, max_time = NULL)
 \arguments{
 \item{data}{(\code{data.frame})\cr survival data as pre-processed by \code{h_data_plot}.}
 
-\item{xticks}{(\code{numeric}, \code{number}, or \code{NULL})\cr
-numeric vector of ticks or single number with spacing
-between ticks on the x axis.
-If \code{NULL} (default), \code{\link[labeling:extended]{labeling::extended()}} is used to determine
+\item{xticks}{(\code{numeric}, \code{number}, or \code{NULL})\cr numeric vector of ticks or single number with spacing
+between ticks on the x axis. If \code{NULL} (default), \code{\link[labeling:extended]{labeling::extended()}} is used to determine
 an optimal tick position on the x axis.}
 
-\item{max_time}{(\code{numeric})\cr maximum value to show on X axis.
-Only data values less than or up to to this threshold value will be plotted.(\code{NULL} for
-default)}
+\item{max_time}{(\code{numeric})\cr maximum value to show on X axis. Only data values less than or up to
+this threshold value will be plotted (defaults to \code{NULL}).}
+}
+\value{
+A vector of positions to use for x-axis ticks on a \code{ggplot} object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

@@ -6,8 +6,8 @@
        [1] "n"            "sum"          "mean"         "sd"           "se"          
        [6] "mean_sd"      "mean_se"      "mean_ci"      "mean_sei"     "mean_sdi"    
       [11] "mean_pval"    "median"       "mad"          "median_ci"    "quantiles"   
-      [16] "iqr"          "range"        "min"          "max"          "cv"          
-      [21] "geom_mean"    "geom_mean_ci" "geom_cv"      "pval"        
+      [16] "iqr"          "range"        "min"          "max"          "median_range"
+      [21] "cv"           "geom_mean"    "geom_mean_ci" "geom_cv"      "pval"        
 
 # s_compare for numeric does not give p-value when not at least 2 values in each group
 

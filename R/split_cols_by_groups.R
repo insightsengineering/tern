@@ -1,7 +1,6 @@
 #' Convert List of Groups to Data Frame
 #'
-#' This converts a list of group levels into a data frame format which is expected by
-#' [rtables::add_combo_levels()].
+#' This converts a list of group levels into a data frame format which is expected by [rtables::add_combo_levels()].
 #'
 #' @param groups_list (named `list` of `character`)\cr specifies the new group levels via the names and the
 #'   levels that belong to it in the character vectors that are elements of the list.
@@ -31,22 +30,18 @@ groups_list_to_df <- function(groups_list) {
   )
 }
 
-
 #' Reference and Treatment Group Combination
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Facilitate the re-combination of groups divided as reference and
-#' treatment groups; it helps in arranging groups of
+#' Facilitate the re-combination of groups divided as reference and treatment groups; it helps in arranging groups of
 #' columns in the `rtables` framework and teal modules.
 #'
 #' @param fct (`factor`)\cr the variable with levels which needs to be grouped.
 #' @param ref (`string`)\cr the reference level(s).
 #' @param collapse (`string`)\cr a character string to separate `fct` and `ref`.
 #'
-#' @return a `list` with first item `ref` (reference) and second item `trt`
-#'   (treatment).
-#' @export
+#' @return A `list` with first item `ref` (reference) and second item `trt` (treatment).
 #'
 #' @examples
 #' groups <- combine_groups(
@@ -59,6 +54,8 @@ groups_list_to_df <- function(groups_list) {
 #'   add_colcounts() %>%
 #'   summarize_vars("AGE") %>%
 #'   build_table(DM)
+#'
+#' @export
 combine_groups <- function(fct,
                            ref = NULL,
                            collapse = "/") {
@@ -88,15 +85,14 @@ combine_groups <- function(fct,
 #'
 #' @inheritParams argument_convention
 #' @inheritParams groups_list_to_df
-#' @param ... additional arguments, see _note_ section.
+#' @param ... additional arguments to [rtables::split_cols_by()] in order. For instance, to
+#'   control formats (`format`), add a joint column for all groups (`incl_all`).
 #'
-#' @note The ellipse (`...`) conveys arguments to [rtables::split_cols_by()]
-#'   in order, for instance, to control formats (`format`), add a joint column
-#'   for all groups (`incl_all`).
+#' @return A layout object suitable for passing to further layouting functions. Adding
+#'   this function to an `rtable` layout will add a column split including the given
+#'   groups to the table layout.
 #'
 #' @seealso [rtables::split_cols_by()]
-#' @return the modified layout.
-#' @export
 #'
 #' @examples
 #' # 1 - Basic use
@@ -171,7 +167,6 @@ combine_groups <- function(fct,
 #'   analyze("AGE") %>%
 #'   build_table(DM)
 #'
-#'
 #' # Use group definition with reference column (first item of groups).
 #' basic_table() %>%
 #'   split_cols_by_groups("ARM", groups, ref_group = names(groups)[1]) %>%
@@ -187,6 +182,8 @@ combine_groups <- function(fct,
 #'     }
 #'   ) %>%
 #'   build_table(DM)
+#'
+#' @export
 split_cols_by_groups <- function(lyt,
                                  var,
                                  groups_list = NULL,
@@ -216,12 +213,14 @@ split_cols_by_groups <- function(lyt,
 
 #' Combine Counts
 #'
-#' Simplifies the estimation of column counts, especially when group combination
-#' is required.
+#' Simplifies the estimation of column counts, especially when group combination is required.
 #'
-#' @seealso [combine_groups]
 #' @inheritParams combine_groups
 #' @inheritParams groups_list_to_df
+#'
+#' @return A `vector` of column counts.
+#'
+#' @seealso [combine_groups()]
 #'
 #' @examples
 #' ref <- c("A: Drug X", "B: Placebo")

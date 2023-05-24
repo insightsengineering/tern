@@ -2,12 +2,9 @@
 % Please edit documentation in R/desctools_binom_diff.R
 \name{desctools_binom}
 \alias{desctools_binom}
-\alias{h_recycle}
 \alias{desctools_binomci}
 \title{Confidence Intervals for a Difference of Binomials}
 \usage{
-h_recycle(...)
-
 desctools_binom(
   x1,
   n1,
@@ -32,34 +29,35 @@ desctools_binomci(
 )
 }
 \arguments{
-\item{conf.level}{\cr confidence level, defaults to 0.95}
+\item{conf.level}{(\code{proportion})\cr confidence level, defaults to 0.95.}
 
-\item{sides}{\cr a character string specifying the side of the confidence interval. Must be one of "two-sided" (default), "left" or "right".}
+\item{sides}{(\code{character})\cr side of the confidence interval to compute. Must be one of "two-sided" (default),
+"left", or "right".}
 
-\item{method}{\cr character string specifying which method to use. Can be one out of: "wald", "wilson", "wilsoncc", "agresti-coull", "jeffreys", "modified wilson", "modified jeffreys", "clopper-pearson", "arcsine.
-", "logit", "witting", "pratt", "midp", "lik" and "blaker"
+\item{method}{(\code{character})\cr method to use. Can be one out of: "wald", "wilson", "wilsoncc", "agresti-coull",
+"jeffreys", "modified wilson", "modified jeffreys", "clopper-pearson", "arcsine", "logit", "witting", "pratt",
+"midp", "lik", and "blaker".}
 
-@return A matric with 3 columns containing:
-\itemize{
-\item \code{est}: estimate of proportion difference.
-\item \code{lwrci}: lower end of the confidence interval
-\item \code{upci}:  upper end of the confidence interval.
-}}
+\item{x}{(\code{count})\cr number of successes}
 
-\item{x}{\cr number of successes}
+\item{n}{(\code{count})\cr number of trials}
 
-\item{n}{\cr number of trials}
-
-\item{grp}{(\code{factor})\cr
-vector assigning observations to one out of two groups
+\item{grp}{(\code{factor})\cr vector assigning observations to one out of two groups
 (e.g. reference and treatment group).}
 }
 \value{
-A named list of 3 values:
+A \code{matrix} of 3 values:
 \itemize{
 \item \code{est}: estimate of proportion difference.
-\item \code{lwrci}: estimate of lower end of the confidence interval
-\item \code{upci}: estimate of upper end of the confidence interval.
+\item \code{lwr.ci}: estimate of lower end of the confidence interval.
+\item \code{upr.ci}: estimate of upper end of the confidence interval.
+}
+
+A \code{matrix} with 3 columns containing:
+\itemize{
+\item \code{est}: estimate of proportion difference.
+\item \code{lwr.ci}: lower end of the confidence interval.
+\item \code{upr.ci}: upper end of the confidence interval.
 }
 }
 \description{
@@ -69,17 +67,14 @@ Several confidence intervals for the difference between proportions.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_recycle()}: This function recycles all supplied elements to the maximal dimension.
-
-\item \code{desctools_binom()}: Several Confidence Intervals for the difference between proportions.
+\item \code{desctools_binom()}: Several confidence intervals for the difference between proportions.
 
 \item \code{desctools_binomci()}: Compute confidence intervals for binomial proportions.
 
 }}
 \examples{
-# Internal function -
+# Internal function - desctools_binom
 \dontrun{
-
 set.seed(2)
 rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 grp <- factor(c(rep("A", 10), rep("B", 10)))

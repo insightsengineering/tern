@@ -13,6 +13,8 @@ month2day(x)
 A \code{numeric} vector with the time in days.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Conversion of Months to Days. This is an approximative calculation because it
 considers each month as having an average of 30.4375 days.
 }

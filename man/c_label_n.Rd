@@ -7,7 +7,7 @@
 c_label_n(df, labelstr, .N_row)
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions).}
@@ -15,13 +15,13 @@ c_label_n(df, labelstr, .N_row)
 \item{.N_row}{(\code{count})\cr column-wise N (column count) for the full column that is passed by \code{rtables}.}
 }
 \value{
-\code{CellValue} that just has the right label.
+A \code{list} containing "row_count" with the row count value and the correct label.
 }
 \description{
 This takes the label of the latest row split level and adds the row total in parentheses.
 }
 \note{
-Important is here to not use \code{df} but \code{.N_row} in the implementation, because the former
-is already split by columns and will refer to the first column of the data only.
+It is important here to not use \code{df} but rather \code{.N_row} in the implementation, because
+the former is already split by columns and will refer to the first column of the data only.
 }
 \keyword{internal}

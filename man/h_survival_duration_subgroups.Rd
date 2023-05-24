@@ -38,25 +38,43 @@ h_coxph_subgroups_df(
 
 \item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
-\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
-list, which specifies the new group levels via the names and the
-levels that belong to it in the character vectors that are elements of the list.}
+\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a list, which
+specifies the new group levels via the names and the levels that belong to it in the character vectors that are
+elements of the list.}
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
 
-\item{strata_data}{(\code{factor}, \code{data.frame} or \code{NULL})\cr
-required if stratified analysis is performed.}
+\item{strata_data}{(\code{factor}, \code{data.frame} or \code{NULL})\cr required if stratified analysis is performed.}
 
-\item{control}{(\code{list}) \cr parameters for comparison details, specified by using \cr
-the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are: \cr
+\item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
+\code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are:
 \itemize{
-\item \code{pval_method}: (\code{string}) \cr p-value method for testing hazard ratio = 1.
-Default method is "log-rank" which comes from \code{\link[survival:survdiff]{survival::survdiff()}}, can also be set to "wald" or "likelihood"
-that comes from \code{\link[survival:coxph]{survival::coxph()}}.
-\item \code{ties}: (\code{string}) \cr specifying the method for tie handling. Default is "efron",
+\item \code{pval_method} (\code{string})\cr p-value method for testing hazard ratio = 1. Default method is "log-rank" which
+comes from \code{\link[survival:survdiff]{survival::survdiff()}}, can also be set to "wald" or "likelihood" (from \code{\link[survival:coxph]{survival::coxph()}}).
+\item \code{ties} (\code{string})\cr specifying the method for tie handling. Default is "efron",
 can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]{survival::coxph()}}
-\item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for HR.
+\item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
 }}
+}
+\value{
+\itemize{
+\item \code{h_survtime_df()} returns a \code{data.frame} with columns \code{arm}, \code{n}, \code{n_events}, and \code{median}.
+}
+
+\itemize{
+\item \code{h_survtime_subgroups_df()} returns a \code{data.frame} with columns \code{arm}, \code{n}, \code{n_events}, \code{median}, \code{subgroup},
+\code{var}, \code{var_label}, and \code{row_type}.
+}
+
+\itemize{
+\item \code{h_coxph_df()} returns a \code{data.frame} with columns \code{arm}, \code{n_tot}, \code{n_tot_events}, \code{hr}, \code{lcl}, \code{ucl},
+\code{conf_level}, \code{pval} and \code{pval_label}.
+}
+
+\itemize{
+\item \code{h_coxph_subgroups_df()} returns a \code{data.frame} with columns \code{arm}, \code{n_tot}, \code{n_tot_events}, \code{hr},
+\code{lcl}, \code{ucl}, \code{conf_level}, \code{pval}, \code{pval_label}, \code{subgroup}, \code{var}, \code{var_label}, and \code{row_type}.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -65,7 +83,7 @@ Helper functions that tabulate in a data frame statistics such as median surviva
 time and hazard ratio for population subgroups.
 }
 \details{
-Main functionality is to prepare data for use in a layout creating function.
+Main functionality is to prepare data for use in a layout-creating function.
 }
 \section{Functions}{
 \itemize{

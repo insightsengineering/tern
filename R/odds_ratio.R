@@ -5,26 +5,32 @@
 #' Compares bivariate responses between two groups in terms of odds ratios
 #' along with a confidence interval.
 #'
+#' @inheritParams argument_convention
+#'
 #' @details This function uses either logistic regression for unstratified
 #'   analyses, or conditional logistic regression for stratified analyses.
 #'   The Wald confidence interval with the specified confidence level is
-#'   calculated. Note that, for stratified analyses, there is currently no
-#'   implementation for conditional likelihood confidence intervals,
-#'   therefore the likelihood confidence interval as an option is not yet
-#'   available. Besides, when `rsp` contains only responders or non-responders,
-#'   then the result values will be `NA`, because no odds ratio estimation is
-#'   possible.
+#'   calculated.
+#'
+#' @note For stratified analyses, there is currently no implementation for conditional
+#'   likelihood confidence intervals, therefore the likelihood confidence interval is not
+#'   yet available as an option. Besides, when `rsp` contains only responders or non-responders,
+#'   then the result values will be `NA`, because no odds ratio estimation is possible.
+#'
 #' @seealso Relevant helper function [h_odds_ratio()].
 #'
 #' @name odds_ratio
 NULL
 
 #' @describeIn odds_ratio Statistics function which estimates the odds ratio
-#'   between a treatment and a control. Note that a `variables` list with `arm` and `strata` names
-#'   needs to be passed if a stratified analysis is required.
+#'   between a treatment and a control. A `variables` list with `arm` and `strata`
+#'   variable names must be passed if a stratified analysis is required.
+#'
 #' @inheritParams split_cols_by_groups
-#' @inheritParams argument_convention
-#' @export
+#'
+#' @return
+#' * `s_odds_ratio()` returns a named list with the statistics `or_ci`
+#'   (containing `est`, `lcl`, and `ucl`) and `n_tot`.
 #'
 #' @examples
 #' set.seed(12)
@@ -52,6 +58,8 @@ NULL
 #'   .df_row = dta,
 #'   variables = list(arm = "grp", strata = "strata")
 #' )
+#'
+#' @export
 s_odds_ratio <- function(df,
                          .var,
                          .ref_group,
@@ -134,9 +142,10 @@ s_odds_ratio <- function(df,
   y
 }
 
-#' @describeIn odds_ratio Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
+#' @describeIn odds_ratio Formatted analysis function which is used as `afun` in `estimate_odds_ratio()`.
+#'
+#' @return
+#' * `a_odds_ratio()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' a_odds_ratio(
@@ -146,19 +155,23 @@ s_odds_ratio <- function(df,
 #'   .in_ref_col = FALSE,
 #'   .df_row = dta
 #' )
+#'
+#' @export
 a_odds_ratio <- make_afun(
   s_odds_ratio,
   .formats = c(or_ci = "xx.xx (xx.xx - xx.xx)"),
   .indent_mods = c(or_ci = 1L)
 )
 
-#' @describeIn odds_ratio Layout creating function which can be used for creating
-#'   tables, which can take statistics function arguments and additional format
-#'   arguments (see below).
+#' @describeIn odds_ratio Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @inheritParams argument_convention
 #' @param ... arguments passed to `s_odds_ratio()`.
-#' @export
+#'
+#' @return
+#' * `estimate_odds_ratio()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_odds_ratio()` to the table layout.
 #'
 #' @examples
 #' dta <- data.frame(
@@ -171,6 +184,8 @@ a_odds_ratio <- make_afun(
 #'   estimate_odds_ratio(vars = "rsp")
 #'
 #' build_table(l, df = dta)
+#'
+#' @export
 estimate_odds_ratio <- function(lyt,
                                 vars,
                                 ...,
@@ -205,18 +220,18 @@ estimate_odds_ratio <- function(lyt,
 #' Functions to calculate odds ratios in [estimate_odds_ratio()].
 #'
 #' @inheritParams argument_convention
-#' @param data (`data frame`)\cr
-#'   with at least the variables `rsp`, `grp`, and in addition `strata` for [or_clogit()].
+#' @param data (`data.frame`)\cr data frame containing at least the variables `rsp` and `grp`, and optionally
+#'   `strata` for [or_clogit()].
+#'
+#' @return A named `list` of elements `or_ci` and `n_tot`.
 #'
 #' @seealso [odds_ratio]
 #'
 #' @name h_odds_ratio
 NULL
 
-#' @describeIn h_odds_ratio estimates the odds ratio based on [stats::glm()]. Note that there must be
+#' @describeIn h_odds_ratio Estimates the odds ratio based on [stats::glm()]. Note that there must be
 #'   exactly 2 groups in `data` as specified by the `grp` variable.
-#'
-#' @export
 #'
 #' @examples
 #' # Data with 2 groups.
@@ -229,6 +244,8 @@ NULL
 #'
 #' # Odds ratio based on glm.
 #' or_glm(data, conf_level = 0.95)
+#'
+#' @export
 or_glm <- function(data, conf_level) {
   checkmate::assert_logical(data$rsp)
   assert_proportion_value(conf_level)
@@ -259,8 +276,6 @@ or_glm <- function(data, conf_level) {
 #'   the whole data set including all groups, since the results are not the same as when doing
 #'   pairwise comparisons between the groups.
 #'
-#' @export
-#'
 #' @examples
 #' # Data with 3 groups.
 #' data <- data.frame(
@@ -272,6 +287,8 @@ or_glm <- function(data, conf_level) {
 #'
 #' # Odds ratio based on stratified estimation by conditional logistic regression.
 #' or_clogit(data, conf_level = 0.95)
+#'
+#' @export
 or_clogit <- function(data, conf_level) {
   checkmate::assert_logical(data$rsp)
   assert_proportion_value(conf_level)

@@ -1,25 +1,27 @@
 #' `rtables` Access Helper Functions
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' These are a couple of functions that help with accessing the data in `rtables` objects.
-#' Currently these work for occurrence tables, which are defined
-#' as having a count as the first element and a fraction as the second element in each cell.
+#' Currently these work for occurrence tables, which are defined as having a count as the first
+#' element and a fraction as the second element in each cell.
 #'
 #' @seealso [prune_occurrences] for usage of these functions.
 #'
 #' @name rtables_access
 NULL
 
-#' @describeIn rtables_access helper function to extract the first values from each content
+#' @describeIn rtables_access Helper function to extract the first values from each content
 #'   cell and from specified columns in a `TableRow`. Defaults to all columns.
 #'
 #' @param table_row (`TableRow`)\cr an analysis row in a occurrence table.
 #' @param col_names (`character`)\cr the names of the columns to extract from.
-#' @param col_indices (`integer`)\cr the indices of the columns to extract from.
-#'   If `col_names` are provided, then these are inferred from the names of
-#'   `table_row`. (Note that this currently only works well with a single
-#'   column split.)
+#' @param col_indices (`integer`)\cr the indices of the columns to extract from. If `col_names` are provided,
+#'   then these are inferred from the names of `table_row`. Note that this currently only works well with a single
+#'   column split.
+#'
+#' @return
+#' * `h_row_first_values()` returns a `vector` of numeric values.
 #'
 #' @examples
 #' tbl <- basic_table() %>%
@@ -40,9 +42,8 @@ NULL
 #'
 #' @export
 h_row_first_values <- function(table_row,
-                         col_names = NULL,
-                         col_indices = NULL) {
-
+                               col_names = NULL,
+                               col_indices = NULL) {
   col_indices <- check_names_indices(table_row, col_names, col_indices)
   checkmate::assert_integerish(col_indices)
   checkmate::assert_subset(col_indices, seq_len(ncol(table_row)))
@@ -61,7 +62,10 @@ h_row_first_values <- function(table_row,
 }
 
 #' @describeIn rtables_access Helper function that extracts row values and checks if they are
-#'  convertible to integers (`integerish` values).
+#'   convertible to integers (`integerish` values).
+#'
+#' @return
+#' * `h_row_counts()` returns a `vector` of numeric values.
 #'
 #' @examples
 #' # Row counts (integer values)
@@ -71,7 +75,7 @@ h_row_first_values <- function(table_row,
 #' # Using values with integers
 #' tree_row_elem <- collect_leaves(tbl[3, ])[[1]]
 #' result <- h_row_counts(tree_row_elem)
-#' #result
+#' # result
 #'
 #' @export
 h_row_counts <- function(table_row,
@@ -82,9 +86,11 @@ h_row_counts <- function(table_row,
   counts
 }
 
-#' @describeIn rtables_access helper function to extract fractions from specified columns
-#'   in a `TableRow`. More specifically it extracts the second values from each
-#'   content cell and checks it is a fraction.
+#' @describeIn rtables_access helper function to extract fractions from specified columns in a `TableRow`.
+#'   More specifically it extracts the second values from each content cell and checks it is a fraction.
+#'
+#' @return
+#' * `h_row_fractions()` returns a `vector` of proportions.
 #'
 #' @examples
 #' # Row fractions
@@ -102,9 +108,12 @@ h_row_fractions <- function(table_row,
   fractions
 }
 
-#' @describeIn rtables_access Helper function to extract column counts from specified columns
-#'   in a table.
+#' @describeIn rtables_access Helper function to extract column counts from specified columns in a table.
+#'
 #' @param table (`VTableNodeInfo`)\cr an occurrence table or row.
+#'
+#' @return
+#' * `h_col_counts()` returns a `vector` of column counts.
 #'
 #' @export
 h_col_counts <- function(table,
@@ -117,6 +126,9 @@ h_col_counts <- function(table,
 
 #' @describeIn rtables_access Helper function to get first row of content table of current table.
 #'
+#' @return
+#' * `h_content_first_row()` returns a row from an `rtables` table.
+#'
 #' @export
 h_content_first_row <- function(table) {
   ct <- content_table(table)
@@ -124,6 +136,9 @@ h_content_first_row <- function(table) {
 }
 
 #' @describeIn rtables_access Helper function which says whether current table is a leaf in the tree.
+#'
+#' @return
+#' * `is_leaf_table()` returns a `logical` value indicating whether current table is a leaf.
 #'
 #' @keywords internal
 is_leaf_table <- function(table) {
@@ -134,14 +149,19 @@ is_leaf_table <- function(table) {
 
 #' @describeIn rtables_access Internal helper function that tests standard inputs for column indices.
 #'
+#' @return
+#' * `check_names_indices` returns column indices.
+#'
 #' @keywords internal
 check_names_indices <- function(table_row,
                                 col_names = NULL,
                                 col_indices = NULL) {
   if (!is.null(col_names)) {
     if (!is.null(col_indices)) {
-      stop("Inserted both col_names and col_indices when selecting row values. ",
-           "Please choose one.")
+      stop(
+        "Inserted both col_names and col_indices when selecting row values. ",
+        "Please choose one."
+      )
     }
     col_indices <- h_col_indices(table_row, col_names)
   }

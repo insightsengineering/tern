@@ -24,20 +24,20 @@ surv_time(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
 \item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
-\item{control}{a (\code{list}) of parameters for comparison details, specified by using \cr
-the helper function \link{control_surv_time}. Some possible parameter options are: \cr
+\item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
+\code{\link[=control_surv_time]{control_surv_time()}}. Some possible parameter options are:
 \itemize{
-\item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for survival time.
-\item \code{conf_type}: (\code{string}) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
-see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option, "none" is not supported.
-\item \code{quantiles}: numeric vector of length two to specify the quantiles of survival time.
+\item \code{conf_level} (\code{proportion})\cr confidence level of the interval for survival time.
+\item \code{conf_type} (\code{string})\cr confidence interval type. Options are "plain" (default), "log", or "log-log",
+see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "none" is not supported.
+\item \code{quantiles} (\code{numeric})\cr vector of length two to specify the quantiles of survival time.
 }}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -46,7 +46,7 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option, "n
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{var_labels}{character for label.}
+\item{var_labels}{(\code{character})\cr character for label.}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
@@ -60,32 +60,42 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-The statistics are:
 \itemize{
-\item \code{median} : median survival time.
-\item \code{median_ci} : confidence interval for median time.
-\item \code{quantiles} : survival time for two specified quantiles.
-\item \code{range_censor} : survival time range for censored observations.
-\item \code{range_event} : survival time range for observations with events.
-\item \code{range} : survival time range for all observations.
+\item \code{s_surv_time()} returns the statistics:
+\itemize{
+\item \code{median}: Median survival time.
+\item \code{median_ci}: Confidence interval for median time.
+\item \code{quantiles}: Survival time for two specified quantiles.
+\item \code{range_censor}: Survival time range for censored observations.
+\item \code{range_event}: Survival time range for observations with events.
+\item \code{range}: Survival time range for all observations.
+}
+}
+
+\itemize{
+\item \code{a_surv_time()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{surv_time()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_surv_time()} to the table layout.
 }
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Summarize median survival time and CIs, percentiles of survival times, \cr
-survival time range of censored/event patients.
+Summarize median survival time and CIs, percentiles of survival times, survival
+time range of censored/event patients.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_surv_time()}: Statistics Function which analyzes survival times.
-\code{range_censor} and \code{range_event}.
+\item \code{s_surv_time()}: Statistics function which analyzes survival times.
 
-\item \code{a_surv_time()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_surv_time()}: Formatted analysis function which is used as \code{afun} in \code{surv_time()}.
 
-\item \code{surv_time()}: Analyze Function which adds the survival times analysis
-to the input layout. Note that additional formatting arguments can be used here.
+\item \code{surv_time()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{
@@ -119,5 +129,6 @@ basic_table() \%>\%
     control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
   ) \%>\%
   build_table(df = adtte_f)
+
 }
 \keyword{internal}

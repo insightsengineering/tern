@@ -15,10 +15,13 @@ create_afun_summary(.stats, .formats, .labels, .indent_mods)
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
+\value{
+Combined formatted analysis function for use in \code{\link[=summarize_vars]{summarize_vars()}}.
+}
 \description{
-Constructor function which creates a combined Formatted
-Analysis function for use in layout creating functions \code{\link[=summarize_vars]{summarize_vars()}} and
-\code{\link[=summarize_colvars]{summarize_colvars()}}.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+Constructor function which creates a combined formatted analysis function.
 }
 \note{
 Since \code{\link[=a_summary]{a_summary()}} is generic and we want customization of the formatting arguments
@@ -52,4 +55,5 @@ l <- basic_table() \%>\%
   analyze(vars = "AVAL", afun = afun)
 
 build_table(l, df = dta_test)
+
 }

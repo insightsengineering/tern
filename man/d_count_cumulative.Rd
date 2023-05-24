@@ -15,13 +15,10 @@ d_count_cumulative(threshold, lower_tail, include_eq)
 count, default is \code{TRUE}.}
 }
 \value{
-a descriptive \code{string}.
+Labels for \code{\link[=s_count_cumulative]{s_count_cumulative()}}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This is a helper function that describes analysis in \code{\link[=s_count_cumulative]{s_count_cumulative()}}.
-}
-\seealso{
-\code{\link[=s_count_cumulative]{s_count_cumulative()}}
+This is a helper function that describes the analysis in \code{\link[=s_count_cumulative]{s_count_cumulative()}}.
 }

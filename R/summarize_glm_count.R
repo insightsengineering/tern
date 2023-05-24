@@ -5,8 +5,9 @@
 #' Summarize results of a Poisson Negative Binomial Regression.
 #' This can be used to analyze count and/or frequency data using a linear model.
 #'
-#' @name summarize_glm_count
+#' @inheritParams argument_convention
 #'
+#' @name summarize_glm_count
 NULL
 
 #' Helper Functions for Poisson Models.
@@ -15,30 +16,33 @@ NULL
 #'
 #' Helper functions that can be used to return the results of various Poisson models.
 #'
+#' @inheritParams argument_convention
+#'
 #' @seealso [summarize_glm_count]
 #'
 #' @name h_glm_count
-#'
 NULL
 
 #' @describeIn h_glm_count Helper function to return results of a poisson model.
-#' @inheritParams argument_convention
-#' @param .df_row (`data frame`)\cr data set that includes all the variables that are called
+#'
+#' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called
 #'   in `.var` and `variables`.
 #' @param variables (named `list` of `strings`)\cr list of additional analysis variables, with
 #'   expected elements:
-#'   - `arm`: (`string`)\cr group variable, for which the covariate adjusted means of multiple
-#'   groups will be summarized. Specifically, the first level of `arm` variable is taken as the
-#'   reference group.
-#'   - `covariates`: (`character`)\cr a vector that can contain single variable names (such as
-#'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
-#'   - `offset`: (`numeric`)\cr a numeric vector or scalar adding an offset.
+#'   * `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
+#'     groups will be summarized. Specifically, the first level of `arm` variable is taken as the
+#'     reference group.
+#'   * `covariates` (`character`)\cr a vector that can contain single variable names (such as
+#'     `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
+#'   * `offset` (`numeric`)\cr a numeric vector or scalar adding an offset.
 #' @param `weights`(`character`)\cr a character vector specifying weights used
-#'  in averaging predictions. Number of weights must equal the number of levels included in the covariates.
-#'  Weights option passed to emmeans function (hyperlink) (link to emmeans documentation)
+#'   in averaging predictions. Number of weights must equal the number of levels included in the covariates.
+#'   Weights option passed to emmeans function (hyperlink) (link to emmeans documentation)
+#'
+#' @return
+#' * `h_glm_poisson()` returns the results of a Poisson model.
 #'
 #' @examples
-#'
 #' # Internal function - h_glm_poisson
 #' \dontrun{
 #' h_glm_poisson(
@@ -88,16 +92,18 @@ h_glm_poisson <- function(.var,
 }
 
 #' @describeIn h_glm_count Helper function to return results of a quasipoisson model.
-#' @inheritParams argument_convention
+#'
 #' @inheritParams summarize_glm_count
 #'
-#' @examples
+#' @return
+#' * `h_glm_quasipoisson()` returns the results of a Quasi-Poisson model.
 #'
+#' @examples
 #' # Internal function - h_glm_quasipoisson
 #' \dontrun{
 #' h_glm_quasipoisson(
 #'   .var = "AVAL",
-#'   .df_row = anl,
+#'   .df_row = adtte,
 #'   variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = c("REGION1"))
 #' )
 #' }
@@ -142,25 +148,26 @@ h_glm_quasipoisson <- function(.var,
 }
 
 #' @describeIn h_glm_count Helper function to return the results of the
-#' selected model (poisson, quasipoisson, negative binomial).
-#' @inheritParams argument_convention
-#' @param .df_row (`data frame`)\cr data set that includes all the variables that are called
+#'   selected model (poisson, quasipoisson, negative binomial).
+#'
+#' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called
 #'   in `.var` and `variables`.
 #' @param variables (named `list` of `strings`)\cr list of additional analysis variables, with
 #'   expected elements:
-#'   - `arm`: (`string`)\cr group variable, for which the covariate adjusted means of multiple
-#'   groups will be summarized. Specifically, the first level of `arm` variable is taken as the
-#'   reference group.
-#'   - `covariates`: (`character`)\cr a vector that can contain single variable names (such as
-#'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
-#'   - `offset`: (`numeric`)\cr a numeric vector or scalar adding an offset.
+#'   * `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
+#'     groups will be summarized. Specifically, the first level of `arm` variable is taken as the
+#'     reference group.
+#'   * `covariates` (`character`)\cr a vector that can contain single variable names (such as
+#'     `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
+#'   * `offset` (`numeric`)\cr a numeric vector or scalar adding an offset.
 #' @param `weights`(`character`)\cr character vector specifying weights used in averaging predictions.
 #' @param `distribution`(`character`)\cr a character value specifying the distribution
-#' used in the regression (poisson, quasipoisson).
+#'   used in the regression (poisson, quasipoisson).
 #'
+#' @return
+#' * `h_glm_count()` returns the results of the selected model.
 #'
 #' @examples
-#'
 #' # Internal function - h_glm_count
 #' \dontrun{
 #' h_glm_count(
@@ -187,20 +194,18 @@ h_glm_count <- function(.var,
   )
 }
 
-
 #' @describeIn h_glm_count Helper function to return the estimated means.
-#' @inheritParams argument_convention
-#' @param .df_row (`data frame`)\cr data set that includes all the variables that are called
-#'   in `.var` and `variables`.
-# `list` of `strings`)\cr list of model fitting results.
-#' @param conf_level (`numeric`) value used to derive the confidence interval for the rate.
-#' @param obj (`glm.fit`) fitted model object used to derive the mean rate estimates in each treatment arm.
-#' @param `arm`: (`string`)\cr group variable, for which the covariate adjusted means of multiple
-#'   groups will be summarized. Specifically, the first level of `arm` variable is taken as the
-#'   reference group.
+#'
+#' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called in `.var` and `variables`.
+#' @param conf_level (`numeric`)\cr value used to derive the confidence interval for the rate.
+#' @param obj (`glm.fit`)\cr fitted model object used to derive the mean rate estimates in each treatment arm.
+#' @param `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple groups will be
+#'   summarized. Specifically, the first level of `arm` variable is taken as the reference group.
+#'
+#' @return
+#' * `h_ppmeans()` returns the estimated means.
 #'
 #' @examples
-#'
 #' # Internal function - h_ppmeans
 #' \dontrun{
 #' fits <- h_glm_count(
@@ -256,21 +261,20 @@ h_ppmeans <- function(obj, .df_row, arm, conf_level) {
 }
 
 #' @describeIn summarize_glm_count Statistics function that produces a named list of results
-#'   of the investigated poisson model.
-#' @inheritParams argument_convention
+#'   of the investigated Poisson model.
+#'
 #' @inheritParams h_glm_count
 #'
-#' @return A named list of 5 statistics:
-#'   - `n`: count of complete sample size for the group.
-#'   - `rate`: estimated event rate per follow-up time.
-#'   - `rate_ci`: confidence level for estimated rate per follow-up time.
-#'   - `rate_ratio`: Ratio of event rates in each treatment arm to the reference arm.
-#'   - `rate_ratio_ci`: confidence level for the rate ratio.
-#'   - `pval`: p-value.
-#'
+#' @return
+#' * `s_glm_count()` returns a named `list` of 5 statistics:
+#'   * `n`: Count of complete sample size for the group.
+#'   * `rate`: Estimated event rate per follow-up time.
+#'   * `rate_ci`: Confidence level for estimated rate per follow-up time.
+#'   * `rate_ratio`: Ratio of event rates in each treatment arm to the reference arm.
+#'   * `rate_ratio_ci`: Confidence level for the rate ratio.
+#'   * `pval`: p-value.
 #'
 #' @examples
-#'
 #' # Internal function - s_change_from_baseline
 #' \dontrun{
 #' s_glm_count(
@@ -375,11 +379,12 @@ s_glm_count <- function(df,
   }
 }
 
-#' @describeIn summarize_glm_count Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn summarize_glm_count Formatted analysis function which is used as `afun` in `summarize_glm_count()`.
+#'
+#' @return
+#' * `a_glm_count()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
-#'
 #' # Internal function - s_change_from_baseline
 #' \dontrun{
 #' a_glm_count(
@@ -417,10 +422,14 @@ a_glm_count <- make_afun(
   .null_ref_cells = FALSE
 )
 
-#' @describeIn summarize_glm_count Layout creating function which can be be used for creating
-#'   summary tables for analysis of count data using generalized linear models (poisson, quasipoisson).
-#' @inheritParams argument_convention
-#' @export
+#' @describeIn summarize_glm_count Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `summarize_glm_count()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_glm_count()` to the table layout.
+#'
 #' @examples
 #' library(dplyr)
 #' anl <- tern_ex_adtte %>% filter(PARAMCD == "TNE")
@@ -462,6 +471,8 @@ a_glm_count <- make_afun(
 #'     )
 #'   )
 #' build_table(lyt = lyt, df = anl)
+#'
+#' @export
 summarize_glm_count <- function(lyt,
                                 vars,
                                 var_labels,

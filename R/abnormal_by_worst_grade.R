@@ -2,35 +2,34 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Primary analysis variable `.var` indicates the toxicity grade (factor), and additional
-#' analysis variables are `id` (character or factor), `param` (`factor`) and `grade_dir` (`factor`).
+#' Primary analysis variable `.var` indicates the toxicity grade (`factor`), and additional
+#' analysis variables are `id` (`character` or `factor`), `param` (`factor`) and `grade_dir` (`factor`).
 #' The pre-processing steps are crucial when using this function.
 #' For a certain direction (e.g. high or low) this function counts
 #' patients in the denominator as number of patients with at least one valid measurement during treatment,
 #' and patients in the numerator as follows:
-#'  * `1` to `4`: Numerator is number of patients with worst grades 1-4 respectively;
-#'  * `Any`: Numerator is number of patients with at least one abnormality, which means grade is different from 0.
-#'
-#' @details
-#' The pre-processing steps are crucial when using this function. From the standard
-#' lab grade variable `ATOXGR`, derive the following two variables:
-#' * A grade direction variable (e.g. `GRADE_DIR`) is required in order to obtain
-#'   the correct denominators when building the layout as it is used to define row splitting.
-#' * A toxicity grade variable (e.g. `GRADE_ANL`) where all negative values from
-#'   `ATOXGR` are replaced by their absolute values.
-#' * Prior to tabulation, `df` must filtered to include only post-baseline records with worst grade flags.
+#'   * `1` to `4`: Numerator is number of patients with worst grades 1-4 respectively;
+#'   * `Any`: Numerator is number of patients with at least one abnormality, which means grade is different from 0.
 #'
 #' @inheritParams argument_convention
 #'
-#' @name abnormal_by_worst_grade
+#' @details The pre-processing steps are crucial when using this function. From the standard lab grade variable
+#'   `ATOXGR`, derive the following two variables:
+#'   * A grade direction variable (e.g. `GRADE_DIR`) is required in order to obtain
+#'     the correct denominators when building the layout as it is used to define row splitting.
+#'   * A toxicity grade variable (e.g. `GRADE_ANL`) where all negative values from
+#'     `ATOXGR` are replaced by their absolute values.
 #'
+#' @note Prior to tabulation, `df` must be filtered to include only post-baseline records with worst grade flags.
+#'
+#' @name abnormal_by_worst_grade
 NULL
 
-#' @describeIn abnormal_by_worst_grade Statistics function which counts patients with worst grade,
-#'   consisting of counts and percentages of patients with worst grade
-#'   `1` to `4`, and `Any` non-zero grade.
-#' @return [s_count_abnormal_by_worst_grade()] the single statistic `count_fraction` with grade 1 to 4
-#'   and "Any" results.
+#' @describeIn abnormal_by_worst_grade Statistics function which counts patients by worst grade.
+#'
+#' @return
+#' * `s_count_abnormal_by_worst_grade()` returns the single statistic `count_fraction` with grades 1 to 4 and
+#'   "Any" results.
 #'
 #' @examples
 #' library(dplyr)
@@ -51,12 +50,13 @@ NULL
 #' adlb_f <- adlb %>%
 #'   filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
 #'   mutate(
-#'     GRADE_DIR = factor(case_when(
-#'       ATOXGR %in% c("-1", "-2", "-3", "-4") ~ "LOW",
-#'       ATOXGR == "0" ~ "ZERO",
-#'       ATOXGR %in% c("1", "2", "3", "4") ~ "HIGH"
-#'     ),
-#'     levels = c("LOW", "ZERO", "HIGH")
+#'     GRADE_DIR = factor(
+#'       case_when(
+#'         ATOXGR %in% c("-1", "-2", "-3", "-4") ~ "LOW",
+#'         ATOXGR == "0" ~ "ZERO",
+#'         ATOXGR %in% c("1", "2", "3", "4") ~ "HIGH"
+#'       ),
+#'       levels = c("LOW", "ZERO", "HIGH")
 #'     ),
 #'     GRADE_ANL = fct_relevel(
 #'       fct_recode(ATOXGR, `1` = "-1", `2` = "-2", `3` = "-3", `4` = "-4"),
@@ -106,7 +106,7 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
 
   # To verify that the `split_rows_by` are performed with correct variables.
   checkmate::assert_subset(c(variables[["param"]], variables[["grade_dir"]]), .spl_context$split)
-  first_row <- .spl_context[.spl_context$split == variables[["param"]], ] # nolint
+  first_row <- .spl_context[.spl_context$split == variables[["param"]], ]
   x_lvls <- c(setdiff(levels(df[[.var]]), "0"), "Any")
   result <- split(numeric(0), factor(x_lvls))
 
@@ -122,7 +122,7 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
     } else {
       df_lvl <- df[df[[.var]] != 0, ]
     }
-    num <- nrow(unique(df_lvl[, c("USUBJID")]))
+    num <- length(unique(df_lvl[["USUBJID"]]))
     fraction <- ifelse(denom == 0, 0, num / denom)
     result[[lvl]] <- formatters::with_label(c(count = num, fraction = fraction), lvl)
   }
@@ -131,10 +131,11 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
   result
 }
 
-#' @describeIn abnormal_by_worst_grade Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn abnormal_by_worst_grade Formatted analysis function which is used as `afun`
+#'   in `count_abnormal_by_worst_grade()`.
 #'
-#' @return [a_count_abnormal_by_worst_grade()] returns the corresponding list with formatted [rtables::CellValue()].
+#' @return
+#' * `a_count_abnormal_by_worst_grade()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' # Internal function - a_count_abnormal_by_worst_grade
@@ -151,8 +152,13 @@ a_count_abnormal_by_worst_grade <- make_afun( # nolint
   .formats = c(count_fraction = format_count_fraction)
 )
 
-#' @describeIn abnormal_by_worst_grade Layout creating function which can be used for creating tables,
-#'    which can take statistics function arguments and additional format arguments (see below).
+#' @describeIn abnormal_by_worst_grade Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `count_abnormal_by_worst_grade()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_abnormal_by_worst_grade()` to the table layout.
 #'
 #' @examples
 #' # Map excludes records without abnormal grade since they should not be displayed

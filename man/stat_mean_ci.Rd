@@ -20,24 +20,22 @@ stat_mean_ci(
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{n_min}{(\code{number})\cr a minimum number of non-missing \code{x} to estimate
-the confidence interval for mean.}
+\item{n_min}{(\code{number})\cr a minimum number of non-missing \code{x} to estimate the confidence interval for mean.}
 
-\item{gg_helper}{(\code{logical})\cr \code{TRUE} when output should be aligned
-for the use with \code{ggplot}.}
+\item{gg_helper}{(\code{logical})\cr \code{TRUE} when output should be aligned for the use with \code{ggplot}.}
 
-\item{geom_mean}{(\code{logical})\cr \code{TRUE} when the geometric mean should be
-calculated}
+\item{geom_mean}{(\code{logical})\cr \code{TRUE} when the geometric mean should be calculated.}
+}
+\value{
+A named \code{vector} of values \code{mean_ci_lwr} and \code{mean_ci_upr}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Convenient function for calculating the mean confidence interval.
-It calculates the arithmetic as well as the geometric mean.
-It can be used as a \code{ggplot} helper function for plotting.
+Convenient function for calculating the mean confidence interval. It calculates the arithmetic as well as the
+geometric mean. It can be used as a \code{ggplot} helper function for plotting.
 }
 \examples{
-
 stat_mean_ci(sample(10), gg_helper = FALSE)
 
 p <- ggplot2::ggplot(mtcars, ggplot2::aes(cyl, mpg)) +
@@ -59,4 +57,5 @@ p + ggplot2::stat_summary(
   fun.args = list(conf_level = 0.5, geom_mean = TRUE),
   geom = "errorbar"
 )
+
 }

@@ -1,9 +1,9 @@
 # tern <a href='https://github.com/insightsengineering/tern'><img src="man/figures/tern.png" align="right" height="139" style="max-width: 100%;"/></a>
 
 <!-- start badges -->
-[![Check 🛠](https://github.com/insightsengineering/tern/actions/workflows/check.yaml/badge.svg)](https://github.com/insightsengineering/tern/actions/workflows/check.yaml)
+[![Check 🛠](https://github.com/insightsengineering/tern/actions/workflows/check.yaml/badge.svg)](https://insightsengineering.github.io/tern/main/unit-test-report/)
 [![Docs 📚](https://github.com/insightsengineering/tern/actions/workflows/docs.yaml/badge.svg)](https://insightsengineering.github.io/tern/)
-[![Code Coverage 📔](https://raw.githubusercontent.com/insightsengineering/tern/_xml_coverage_reports/data/main/badge.svg)](https://raw.githubusercontent.com/insightsengineering/tern/_xml_coverage_reports/data/main/coverage.xml)
+[![Code Coverage 📔](https://raw.githubusercontent.com/insightsengineering/tern/_xml_coverage_reports/data/main/badge.svg)](https://insightsengineering.github.io/tern/main/coverage-report/)
 
 ![GitHub forks](https://img.shields.io/github/forks/insightsengineering/tern?style=social)
 ![GitHub Repo stars](https://img.shields.io/github/stars/insightsengineering/tern?style=social)
@@ -24,16 +24,16 @@ The `tern` R package contains analysis functions to create tables and graphs use
 The package provides a large range of functionality, for example:
 
 <!-- markdownlint-disable MD007 MD030 -->
--   data visualizations:
+-   Data visualizations:
     -   forest plots
     -   line plots
     -   Kaplan-Meier plots
     -   ...
--   statistical model fits:
+-   Statistical model fits:
     -   logistic regression
     -   Cox regression
     -   ...
--   summary tables:
+-   Summary tables:
     -   unique patients
     -   exposure across patients
     -   change from baseline for parameters
@@ -41,11 +41,11 @@ The package provides a large range of functionality, for example:
 
 <!-- markdownlint-enable MD007 MD030 -->
 
-Many of these outputs are available to be added into `teal` applications for interactive exploration of data. These `teal` modules are available in the [`teal.modules.clinical`](https://insightsengineering.github.io/teal.modules.clinical) package.
+Many of these outputs are available to be added into [`teal`](https://insightsengineering.github.io/teal/main/) applications for interactive exploration of data. These `teal` modules are available in the [`teal.modules.clinical`](https://insightsengineering.github.io/teal.modules.clinical/main/) package.
 
 ## Installation
 
-For releases from August 2022 it is recommended that you [create and use a Github PAT](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) to install the latest version of this package. Once you have the PAT, run the following:
+It is recommended that you [create and use a Github PAT](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) to install the latest version of this package. Once you have the PAT, run the following:
 
 ```r
 Sys.setenv(GITHUB_PAT = "your_access_token_here")
@@ -53,11 +53,15 @@ if (!require("remotes")) install.packages("remotes")
 remotes::install_github("insightsengineering/tern@*release")
 ```
 
-A stable release of all `NEST` packages from June 2022 is also available [here](https://github.com/insightsengineering/depository#readme).
-
-In order to run many of the examples you will also need to install the [`scda`](https://insightsengineering.github.io/scda) package.
+A stable release of all NEST packages from October 2022 is also available [here](https://github.com/insightsengineering/depository#readme).
 
 See package vignettes `browseVignettes(package = "tern")` for usage of this package.
+
+## Related
+
+* [`rtables`](https://insightsengineering.github.io/rtables/main/) - table engine used
+* [TLG Catalog](https://insightsengineering.github.io/tlg-catalog/) - website showcasing many examples of clinical trial tables, listings, and graphs
+* [`teal.modules.clinical`](https://insightsengineering.github.io/teal.modules.clinical/main/) - `teal` modules for interactive data analysis
 
 ## Acknowledgment
 

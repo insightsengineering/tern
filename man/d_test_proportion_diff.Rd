@@ -7,8 +7,7 @@
 d_test_proportion_diff(method)
 }
 \arguments{
-\item{method}{(\code{string})\cr
-one of (\code{chisq}, \code{cmh}, \code{fisher}, \code{schouten}; specifies the test used
+\item{method}{(\code{string})\cr one of \code{chisq}, \code{cmh}, \code{fisher}, or \code{schouten}; specifies the test used
 to calculate the p-value.}
 }
 \value{
@@ -17,6 +16,5 @@ to calculate the p-value.}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This is an auxiliary function that describes the analysis in
-\code{s_test_proportion_diff}.
+This is an auxiliary function that describes the analysis in \code{s_test_proportion_diff}.
 }

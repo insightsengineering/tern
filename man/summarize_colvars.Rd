@@ -26,26 +26,19 @@ summarize_colvars(
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
+\value{
+A layout object suitable for passing to further layouting functions, or to \code{\link[rtables:build_table]{rtables::build_table()}}.
+Adding this function to an \code{rtable} layout will summarize the given variables, arrange the output
+in columns, and add it to the table layout.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This Analyze Function uses the new S3 generic function \code{\link[=s_summary]{s_summary()}} to summarize
-different variables that are arranged in columns.
-Additional standard formatting arguments are available.
+This analyze function uses the S3 generic function \code{\link[=s_summary]{s_summary()}} to summarize different variables
+that are arranged in columns. Additional standard formatting arguments are available. It is a
+minimal wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
 }
-\section{Formatting arguments}{
-
-These additional formatting arguments can be passed to the layout creating function:
-\describe{
-\item{.stats}{(\code{character})\cr names of the statistics to use}
-\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
-}
-}
-
 \examples{
-
 dta_test <- data.frame(
   USUBJID = rep(1:6, each = 3),
   PARAMCD = rep("lab", 6 * 3),
@@ -82,7 +75,8 @@ basic_table() \%>\%
   split_cols_by_multivar(vars = c("AVAL", "CHG")) \%>\%
   summarize_colvars(na.rm = FALSE) \%>\%
   build_table(dta_test)
+
 }
 \seealso{
-\code{\link[rtables:split_cols_by_multivar]{rtables::split_cols_by_multivar()}}
+\code{\link[rtables:split_cols_by_multivar]{rtables::split_cols_by_multivar()}} and \link{analyze_colvars_functions}.
 }

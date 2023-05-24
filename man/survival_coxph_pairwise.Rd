@@ -41,9 +41,9 @@ coxph_pairwise(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
+\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
@@ -52,17 +52,16 @@ by a statistics function.}
 
 \item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
-\item{strat}{(\code{character} or \code{NULL}) variable names indicating stratification factors.}
+\item{strat}{(\code{character} or \code{NULL})\cr variable names indicating stratification factors.}
 
-\item{control}{(\code{list}) \cr parameters for comparison details, specified by using \cr
-the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are: \cr
+\item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
+\code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are:
 \itemize{
-\item \code{pval_method}: (\code{string}) \cr p-value method for testing hazard ratio = 1.
-Default method is "log-rank" which comes from \code{\link[survival:survdiff]{survival::survdiff()}}, can also be set to "wald" or "likelihood"
-that comes from \code{\link[survival:coxph]{survival::coxph()}}.
-\item \code{ties}: (\code{string}) \cr specifying the method for tie handling. Default is "efron",
+\item \code{pval_method} (\code{string})\cr p-value method for testing hazard ratio = 1. Default method is "log-rank" which
+comes from \code{\link[survival:survdiff]{survival::survdiff()}}, can also be set to "wald" or "likelihood" (from \code{\link[survival:coxph]{survival::coxph()}}).
+\item \code{ties} (\code{string})\cr specifying the method for tie handling. Default is "efron",
 can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]{survival::coxph()}}
-\item \code{conf_level}: (\code{proportion})\cr confidence level of the interval for HR.
+\item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
 }}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -71,9 +70,9 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{var_labels}{character for label.}
+\item{var_labels}{(\code{character})\cr character for label.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
@@ -87,13 +86,25 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-The statistics are:
 \itemize{
-\item \code{pvalue} : p-value to test HR = 1.
-\item \code{hr} : hazard ratio.
-\item \code{hr_ci} : confidence interval for hazard ratio.
-\item \code{n_tot} : total number of observations
-\item \code{n_tot_events} : total number of events
+\item \code{s_coxph_pairwise()} returns the statistics:
+\itemize{
+\item \code{pvalue}: p-value to test HR = 1.
+\item \code{hr}: Hazard ratio.
+\item \code{hr_ci}: Confidence interval for hazard ratio.
+\item \code{n_tot}: Total number of observations.
+\item \code{n_tot_events}: Total number of events.
+}
+}
+
+\itemize{
+\item \code{a_coxph_pairwise()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{coxph_pairwise()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_coxph_pairwise()} to the table layout.
 }
 }
 \description{
@@ -103,13 +114,12 @@ Summarize p-value, HR and CIs from stratified or unstratified CoxPH model.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_coxph_pairwise()}: Statistics Function which analyzes HR, CIs of HR and p-value with coxph model.
+\item \code{s_coxph_pairwise()}: Statistics function which analyzes HR, CIs of HR and p-value of a coxph model.
 
-\item \code{a_coxph_pairwise()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_coxph_pairwise()}: Formatted analysis function which is used as \code{afun} in \code{coxph_pairwise()}.
 
-\item \code{coxph_pairwise()}: Analyze Function which adds the pairwise coxph analysis
-to the input layout. Note that additional formatting arguments can be used here.
+\item \code{coxph_pairwise()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{
@@ -154,5 +164,6 @@ basic_table() \%>\%
     control = control_coxph(pval_method = "wald")
   ) \%>\%
   build_table(df = adtte_f)
+
 }
 \keyword{internal}

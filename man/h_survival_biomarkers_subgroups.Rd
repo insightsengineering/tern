@@ -20,26 +20,39 @@ h_tab_surv_one_biomarker(df, vars, time_unit)
 
 \item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
-\item{control}{(\code{list})\cr a list of parameters as returned by the
-helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
+\item{control}{(\code{list})\cr a list of parameters as returned by the helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 
 \item{df}{(\code{data.frame})\cr results for a single biomarker, as part of what is
 returned by \code{\link[=extract_survival_biomarkers]{extract_survival_biomarkers()}} (it needs a couple of columns which are
 added by that high-level function relative to what is returned by \code{\link[=h_coxreg_mult_cont_df]{h_coxreg_mult_cont_df()}},
 see the example).}
 
-\item{vars}{(\code{character})\cr the name of statistics to be reported among
-\code{n_tot_events} (total number of events per group),
-\code{n_tot} (total number of observations per group),
-\code{median} (median survival time),
-\code{hr} (hazard ratio),
-\code{ci} (confidence interval of hazard ratio) and
-\code{pval} (p value of the effect).
-Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as both \code{hr} and \code{ci}
-are required.}
+\item{vars}{(\code{character})\cr the names of statistics to be reported among:
+\itemize{
+\item \code{n_tot_events}: Total number of events per group.
+\item \code{n_tot}: Total number of observations per group.
+\item \code{median}: Median survival time.
+\item \code{hr}: Hazard ratio.
+\item \code{ci}: Confidence interval of hazard ratio.
+\item \code{pval}: p-value of the effect.
+Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as both \code{hr} and \code{ci} are required.
+}}
 
-\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
-displaying unit.}
+\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
+}
+\value{
+\itemize{
+\item \code{h_surv_to_coxreg_variables()} returns a named \code{list} of elements \code{time}, \code{event}, \code{arm},
+\code{covariates}, and \code{strata}.
+}
+
+\itemize{
+\item \code{h_coxreg_mult_cont_df()} returns a \code{data.frame} containing estimates and statistics for the selected biomarkers.
+}
+
+\itemize{
+\item \code{h_tab_surv_one_biomarker()} returns an \code{rtables} table object with the given statistics arranged in columns.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

@@ -5,14 +5,18 @@
 #' These are specific functions to count patients with missed doses. The difference to [count_cumulative()] is
 #' mainly the special labels.
 #'
+#' @inheritParams argument_convention
+#'
 #' @seealso Relevant description function [d_count_missed_doses()].
 #'
 #' @name count_missed_doses
-#'
 NULL
 
 #' @describeIn count_missed_doses Statistics function to count non-missing values.
-#' @return [s_count_nonmissing()] returns the statistic `n` which is the count of non-missing values in `x`.
+#'
+#' @return
+#' * `s_count_nonmissing()` returns the statistic `n` which is the count of non-missing values in `x`.
+#'
 #' @examples
 #' set.seed(1)
 #' x <- c(sample(1:10, 10), NA)
@@ -32,7 +36,9 @@ s_count_nonmissing <- function(x) {
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams s_count_missed_doses
+#'
 #' @return [d_count_missed_doses()] returns a named `character` vector with the labels.
+#'
 #' @seealso [s_count_missed_doses()]
 #'
 #' @export
@@ -40,12 +46,12 @@ d_count_missed_doses <- function(thresholds) {
   paste0("At least ", thresholds, " missed dose", ifelse(thresholds > 1, "s", ""))
 }
 
-#' @describeIn count_missed_doses Statistics function to count patients with missed doses when `x`
-#'   is the vector of number of missed doses with one value for each patient.
-#' @inheritParams argument_convention
+#' @describeIn count_missed_doses Statistics function to count patients with missed doses.
+#'
 #' @param thresholds (vector of `count`)\cr number of missed doses the patients at least had.
-#' @return [s_count_missed_doses()] returns the statistics `n` and
-#'  `count_fraction` with one element for each threshold.
+#'
+#' @return
+#' * `s_count_missed_doses()` returns the statistics `n` and `count_fraction` with one element for each threshold.
 #'
 #' @examples
 #' # Internal function - s_count_missed_doses
@@ -72,7 +78,11 @@ s_count_missed_doses <- function(x,
   c(n_stat, stat)
 }
 
-#' @describeIn count_missed_doses Formatted Analysis function to count non-missing values.
+#' @describeIn count_missed_doses Formatted analysis function which is used as `afun`
+#'   in `count_missed_doses()`.
+#'
+#' @return
+#' * `a_count_missed_doses()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' # Internal function - a_count_missed_doses
@@ -89,12 +99,16 @@ a_count_missed_doses <- make_afun(
   .formats = c(n = "xx", count_fraction = format_count_fraction)
 )
 
-#' @describeIn count_missed_doses Layout creating function which can be be used for creating
-#'   summary tables for summarizing missed doses given user-specified `thresholds`. This is
-#'   an additional layer on top of `count_cumulative` specifically for missed doses.
-#' @inheritParams argument_convention
+#' @describeIn count_missed_doses Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
 #' @inheritParams s_count_cumulative
-#' @export
+#'
+#' @return
+#' * `count_missed_doses()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_missed_doses()` to the table layout.
+#'
 #' @examples
 #' library(dplyr)
 #'
@@ -112,6 +126,8 @@ a_count_missed_doses <- make_afun(
 #'   add_colcounts() %>%
 #'   count_missed_doses("AVAL", thresholds = c(1, 5, 10, 15), var_labels = "Missed Doses") %>%
 #'   build_table(anl, alt_counts_df = tern_ex_adsl)
+#'
+#' @export
 count_missed_doses <- function(lyt,
                                vars,
                                var_labels = vars,

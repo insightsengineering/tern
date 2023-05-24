@@ -1,8 +1,8 @@
-#' Multi-Variable Logistic Regression Table
+#' Multivariate Logistic Regression Table
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Layout creating function which summarizes a logistic variable regression for binary outcome with
+#' Layout-creating function which summarizes a logistic variable regression for binary outcome with
 #' categorical/continuous covariates in model statement. For each covariate category (if categorical)
 #' or specified values (if continuous), present degrees of freedom, regression parameter estimate and
 #' standard error (SE) relative to reference group or category. Report odds ratios for each covariate
@@ -11,11 +11,15 @@
 #' that covariate has no effect on response in model containing all specified covariates.
 #' Allow option to include one two-way interaction and present similar output for
 #' each interaction degree of freedom.
-#' Note: For the formula, the variable names need to be standard dataframe column name without
-#' special characters.
 #'
 #' @inheritParams argument_convention
-#' @param drop_and_remove_str string to be dropped and removed
+#' @param drop_and_remove_str (`character`)\cr string to be dropped and removed.
+#'
+#' @return A layout object suitable for passing to further layouting functions, or to [rtables::build_table()].
+#'   Adding this function to an `rtable` layout will add a logistic regression variable summary to the table layout.
+#'
+#' @note For the formula, the variable names need to be standard `data.frame` column names without
+#'   special characters.
 #'
 #' @examples
 #' library(dplyr)
@@ -101,25 +105,21 @@ summarize_logistic <- function(lyt,
 #' Fit a (conditional) logistic regression model.
 #'
 #' @inheritParams argument_convention
-#' @param data (`data frame`)\cr the data frame on which the model was fit.
+#' @param data (`data.frame`)\cr the data frame on which the model was fit.
 #' @param response_definition (`string`)\cr the definition of what an event is in terms of `response`.
 #'   This will be used when fitting the (conditional) logistic regression model on the left hand
 #'   side of the formula.
 #'
+#' @return A fitted logistic regression model.
+#'
 #' @section Model Specification:
 #'
-#' The `variables` list needs to include the following elements:\cr
-#' - `arm`: usual treatment arm variable name.
-#' - `response`: the response arm variable name. Usually this is a 0/1 variable.
-#' - `covariates`: this is either `NULL` (no covariates) or
-#'      a character vector of covariate variable names.
-#' - `interaction`: this is either `NULL` (no interaction) or a string of a single
-#'      covariate variable name already included in `covariates`. Then the interaction
-#'      with the treatment arm is included in the model.
-#'
-#' @details Note this function may hang or error for certain datasets when an old version of the
-#'   survival package (< 3.2-13) is used.
-#' @export
+#' The `variables` list needs to include the following elements:
+#'   * `arm`: Treatment arm variable name.
+#'   * `response`: The response arm variable name. Usually this is a 0/1 variable.
+#'   * `covariates`: This is either `NULL` (no covariates) or a character vector of covariate variable names.
+#'   * `interaction`: This is either `NULL` (no interaction) or a string of a single covariate variable name already
+#'     included in `covariates`. Then the interaction with the treatment arm is included in the model.
 #'
 #' @examples
 #' library(dplyr)
@@ -150,6 +150,8 @@ summarize_logistic <- function(lyt,
 #'     interaction = "AGE"
 #'   )
 #' )
+#'
+#' @export
 fit_logistic <- function(data,
                          variables = list(
                            response = "Response",
@@ -211,10 +213,13 @@ fit_logistic <- function(data,
 #' with `binomial` family.
 #'
 #' @inheritParams argument_convention
-#' @param at (`NULL` or `numeric`)\cr optional values for the interaction variable. Otherwise
-#'   the median is used.
+#' @param at (`NULL` or `numeric`)\cr optional values for the interaction variable. Otherwise the median is used.
 #' @param fit_glm logistic regression model fitted by [stats::glm()] with "binomial" family.
+#'
+#' @return A `data.frame` containing the tidied model.
+#'
 #' @method tidy glm
+#'
 #' @seealso [h_logistic_regression] for relevant helper functions.
 #'
 #' @examples
@@ -281,14 +286,18 @@ tidy.glm <- function(fit_glm, # nolint
   df
 }
 
-#' Logistic Regression Multi-Variable Column Layout Function
+#' Logistic Regression Multivariate Column Layout Function
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Layout creating function for a multi-variable column layout summarizing
-#' logistic regression results.
+#' Layout-creating function which creates a multivariate column layout summarizing logistic
+#' regression results. This function is a wrapper for [rtables::split_cols_by_multivar()].
 #'
 #' @inheritParams argument_convention
+#'
+#' @return A layout object suitable for passing to further layouting functions. Adding this
+#'   function to an `rtable` layout will split the table into columns corresponding to
+#'   statistics `df`, `estimate`, `std_error`, `odds_ratio`, `ci`, and `pvalue`.
 #'
 #' @export
 logistic_regression_cols <- function(lyt,
@@ -313,11 +322,13 @@ logistic_regression_cols <- function(lyt,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Constructor for content functions to be used to summarize
-#' logistic regression results.
+#' Constructor for content functions to be used in [`summarize_logistic()`] to summarize
+#' logistic regression results. This function is a wrapper for [rtables::summarize_row_groups()].
 #'
 #' @param flag_var (`string`)\cr variable name identifying which row should be used in this
 #'   content function.
+#'
+#' @return A content function.
 #'
 #' @export
 logistic_summary_by_flag <- function(flag_var) {

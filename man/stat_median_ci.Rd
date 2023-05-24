@@ -13,20 +13,21 @@ stat_median_ci(x, conf_level = 0.95, na.rm = TRUE, gg_helper = TRUE)
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{gg_helper}{(\code{logical})\cr \code{TRUE} when output should be aligned
-for the use with \code{ggplot}.}
+\item{gg_helper}{(\code{logical})\cr \code{TRUE} when output should be aligned for the use with \code{ggplot}.}
+}
+\value{
+A named \code{vector} of values \code{median_ci_lwr} and \code{median_ci_upr}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Convenient function for calculating the median confidence interval.
-It can be used as a \code{ggplot} helper function for plotting.
+Convenient function for calculating the median confidence interval. It can be used as a \code{ggplot} helper
+function for plotting.
 }
 \details{
 The function was adapted from \verb{DescTools/versions/0.99.35/source}
 }
 \examples{
-
 stat_median_ci(sample(10), gg_helper = FALSE)
 
 p <- ggplot2::ggplot(mtcars, ggplot2::aes(cyl, mpg)) +
@@ -35,4 +36,5 @@ p + ggplot2::stat_summary(
   fun.data = stat_median_ci,
   geom = "errorbar"
 )
+
 }

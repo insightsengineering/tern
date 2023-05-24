@@ -6,6 +6,9 @@
 \usage{
 summary_labels()
 }
+\value{
+A named \code{vector} of default statistic labels.
+}
 \description{
 Returns labels of descriptive statistics for numeric variables.
 }

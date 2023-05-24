@@ -41,16 +41,18 @@ count_occurrences(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{denom}{(\code{string})\cr choice of denominator for patient proportions:\cr
-can be \code{N_col} (total number of patients in this column across rows) or
-\code{n} (number of patients with any occurrences).}
+\item{denom}{(\code{string})\cr choice of denominator for patient proportions. Can be:
+\itemize{
+\item \code{N_col}: total number of patients in this column across rows
+\item \code{n}: number of patients with any occurrences
+}}
 
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
 
-\item{.df_row}{(\verb{data frame})\cr data frame across all of the columns for the given row split.}
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
 \item{drop}{(\code{flag})\cr should non appearing occurrence levels be dropped from the resulting table.
 Note that in that case the remaining occurrence levels in the table are sorted alphabetically.}
@@ -58,15 +60,15 @@ Note that in that case the remaining occurrence levels in the table are sorted a
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{id}{(\code{string}) \cr subject variable name.}
+\item{id}{(\code{string})\cr subject variable name.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{var_labels}{character for label.}
+\item{var_labels}{(\code{character})\cr character for label.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{...}{additional arguments for the lower level functions.}
 
@@ -82,36 +84,51 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-A list with:
 \itemize{
-\item \code{count}: list of counts with one element per occurrence
+\item \code{s_count_occurrences()} returns a list with:
+\itemize{
+\item \code{count}: list of counts with one element per occurrence.
 \item \code{count_fraction}: list of counts and fractions with one element per occurrence.
 \item \code{fraction}: list of numerators and denominators with one element per occurrence.
 }
 }
+
+\itemize{
+\item \code{a_count_occurrences()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{count_occurrences()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_occurrences()} to the table layout.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
+
 Functions for analyzing frequencies and fractions of occurrences for patients with occurrence
 data. Primary analysis variables are the dictionary terms. All occurrences are counted for total
 counts. Multiple occurrences within patient at the lowest term level displayed in the table are
-counted only once. Note that by default occurrences which don't appear in a given row split
-are dropped from the table and the occurrences in the table are sorted alphabetically per row split.
-Therefore the corresponding layout needs to use \code{split_fun = drop_split_levels} in the \code{split_rows_by}
-calls. Use \code{drop = FALSE} if you would like to show all occurrences.
+counted only once.
 }
 \section{Functions}{
 \itemize{
 \item \code{s_count_occurrences()}: Statistics function which counts number of patients that report an
 occurrence.
 
-\item \code{a_count_occurrences()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_count_occurrences()}: Formatted analysis function which is used as \code{afun}
+in \code{count_occurrences()}.
 
-\item \code{count_occurrences()}: Analyze Function that counts occurrences as part of \code{rtables} layouts.
+\item \code{count_occurrences()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
+\note{
+By default, occurrences which don't appear in a given row split are dropped from the table and
+the occurrences in the table are sorted alphabetically per row split. Therefore, the corresponding layout
+needs to use \code{split_fun = drop_split_levels} in the \code{split_rows_by} calls. Use \code{drop = FALSE} if you would
+like to show all occurrences.
+}
 \examples{
 df <- data.frame(
   USUBJID = as.character(c(1, 1, 2, 4, 4, 4)),
@@ -128,6 +145,7 @@ s_count_occurrences(
   .var = "MHDECOD",
   id = "USUBJID"
 )
+
 #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 # function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(a_count_occurrences, .ungroup_stats = c("count", "count_fraction", "fraction"))
@@ -165,4 +183,5 @@ lyt <- basic_table() \%>\%
 lyt \%>\%
   build_table(df, alt_counts_df = df_adsl) \%>\%
   prune_table()
+
 }

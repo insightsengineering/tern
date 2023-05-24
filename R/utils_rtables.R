@@ -8,12 +8,11 @@
 #' formatted text that needs only to be copied and pasted in the expected output.
 #'
 #' @param x `rtables` table.
-#' @param with_spaces Should the tested table keep the indentation and other relevant
-#'   spaces?
+#' @param with_spaces Should the tested table keep the indentation and other relevant spaces?
 #' @param print_txt_to_copy Utility to have a way to copy the input table directly
 #'   into the expected variable instead of copying it too manually.
 #'
-#' @return A matrix of strings
+#' @return A `matrix` of `string`s.
 #'
 #' @export
 to_string_matrix <- function(x, with_spaces = FALSE, print_txt_to_copy = FALSE) {
@@ -46,8 +45,8 @@ to_string_matrix <- function(x, with_spaces = FALSE, print_txt_to_copy = FALSE) 
 #'
 #' @param x (`vector`)\cr input for a cell.
 #'
-#' @return Either empty character vector if all entries in `x` are missing (`NA`), or otherwise
-#'   the unlisted version of `x`
+#' @return An empty `character` vector if all entries in `x` are missing (`NA`), otherwise
+#'   the unlisted version of `x`.
 #'
 #' @keywords internal
 unlist_and_blank_na <- function(x) {
@@ -63,13 +62,12 @@ unlist_and_blank_na <- function(x) {
 #'
 #' This can be useful for tabulating model results.
 #'
-#' @param analysis_var (`string`)\cr variable name for the column containing values to be
-#'   returned by the content function.
-#' @param flag_var (`string`)\cr variable name for the logical column identifying which
-#'   row should be returned.
+#' @param analysis_var (`string`)\cr variable name for the column containing values to be returned by the
+#'   content function.
+#' @param flag_var (`string`)\cr variable name for the logical column identifying which row should be returned.
 #' @param format (`string`)\cr `rtables` format to use.
 #'
-#' @return Content function which just gives `df$analysis_var` at the row identified by
+#' @return A content function which gives `df$analysis_var` at the row identified by
 #'   `.df_row$flag` in the given format.
 #'
 #' @keywords internal
@@ -94,34 +92,33 @@ cfun_by_flag <- function(analysis_var,
 #'
 #' @inheritParams argument_convention
 #'
-#' @return `CellValue` that just has the right label.
+#' @return A `list` containing "row_count" with the row count value and the correct label.
 #'
-#' @note Important is here to not use `df` but `.N_row` in the implementation, because the former
-#'   is already split by columns and will refer to the first column of the data only.
+#' @note It is important here to not use `df` but rather `.N_row` in the implementation, because
+#'   the former is already split by columns and will refer to the first column of the data only.
 #'
 #' @keywords internal
 c_label_n <- function(df,
                       labelstr,
-                      .N_row # nolint
-) {
+                      .N_row) { # nolint
   label <- paste0(labelstr, " (N=", .N_row, ")")
-  CellValue(
-    val = NULL,
-    label = label
-  )
+  list(row_count = formatters::with_label(c(.N_row, .N_row), label))
 }
 
 #' Layout Creating Function to Add Row Total Counts
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This works analogously to [rtables::add_colcounts()] but on the rows.
+#' This works analogously to [rtables::add_colcounts()] but on the rows. This function
+#'  is a wrapper for [rtables::summarize_row_groups()].
 #'
 #' @inheritParams argument_convention
 #'
-#' @return The modified layout where the latest row split labels now have the row-wise
-#'   total counts (i.e. without column based subsetting) attached in parentheses.
+#' @return A modified layout where the latest row split labels now have the row-wise
+#'   total counts (i.e. without column-based subsetting) attached in parentheses.
 #'
+#' @note Row count values are contained in these row count rows but are not displayed
+#'   so that they are not considered zero rows by default when pruning.
 #'
 #' @examples
 #' basic_table() %>%
@@ -134,9 +131,14 @@ c_label_n <- function(df,
 #'
 #' @export
 add_rowcounts <- function(lyt) {
+  c_lbl_n_fun <- make_afun(
+    c_label_n,
+    .stats = c("row_count"),
+    .formats = c(row_count = function(x, ...) "")
+  )
   summarize_row_groups(
     lyt,
-    cfun = c_label_n
+    cfun = c_lbl_n_fun
   )
 }
 
@@ -150,13 +152,13 @@ add_rowcounts <- function(lyt) {
 #' @param table_tree (`VTableTree`)\cr table to extract the indices from.
 #' @param col_names (`character`)\cr vector of column names.
 #'
-#' @return the vector of column indices.
+#' @return A vector of column indices.
 #'
 #' @export
 h_col_indices <- function(table_tree, col_names) {
   checkmate::assert_class(table_tree, "VTableNodeInfo")
-  checkmate::assert_subset(col_names, names(table_tree), empty.ok = FALSE)
-  match(col_names, names(table_tree))
+  checkmate::assert_subset(col_names, names(attr(col_info(table_tree), "cextra_args")), empty.ok = FALSE)
+  match(col_names, names(attr(col_info(table_tree), "cextra_args")))
 }
 
 #' Labels or Names of List Elements
@@ -166,7 +168,7 @@ h_col_indices <- function(table_tree, col_names) {
 #'
 #' @param x a list
 #'
-#' @return a character vector with the labels or names for the list elements
+#' @return A `character` vector with the labels or names for the list elements.
 #'
 #' @keywords internal
 labels_or_names <- function(x) {
@@ -180,15 +182,14 @@ labels_or_names <- function(x) {
 
 #' Convert to `rtable`
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' This is a new generic function to convert objects to `rtable` tables.
 #'
 #' @param x the object which should be converted to an `rtable`.
 #' @param ... additional arguments for methods.
 #'
-#' @return The `rtable` object. Note that the concrete class will depend on the method
-#'   which is used.
+#' @return An `rtables` table object. Note that the concrete class will depend on the method used.
 #'
 #' @export
 as.rtable <- function(x, ...) { # nolint
@@ -198,6 +199,7 @@ as.rtable <- function(x, ...) { # nolint
 #' @describeIn as.rtable method for converting `data.frame` that contain numeric columns to `rtable`.
 #'
 #' @param format the format which should be used for the columns.
+#'
 #' @method as.rtable data.frame
 #'
 #' @examples
@@ -208,7 +210,7 @@ as.rtable <- function(x, ...) { # nolint
 #' as.rtable(x)
 #'
 #' @export
-as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
+as.rtable.data.frame <- function(x, format = "xx.xx", ...) {
   checkmate::assert_numeric(unlist(x))
   do.call(
     rtable,
@@ -237,15 +239,15 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) { # nolint
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' It divides the data in the vector `param` into the groups defined by `f`
-#' based on specified `values`.
-#' It is relevant in `rtables` layers so as to distribute parameters
-#' `.stats` or' `.formats` into lists with items corresponding to
+#' It divides the data in the vector `param` into the groups defined by `f` based on specified `values`. It is relevant
+#' in `rtables` layers so as to distribute parameters `.stats` or' `.formats` into lists with items corresponding to
 #' specific analysis function.
 #'
 #' @param param (`vector`)\cr the parameter to be split.
 #' @param value (`vector`)\cr the value used to split.
 #' @param f (`list` of `vectors`)\cr the reference to make the split
+#'
+#' @return A named `list` with the same element names as `f`, each containing the elements specified in `.stats`.
 #'
 #' @examples
 #' f <- list(
@@ -288,7 +290,7 @@ h_split_param <- function(param,
 #'   in this context that all default statistics should be used.
 #' @param all_stats (`character`)\cr all statistics which can be selected here potentially.
 #'
-#' @return Character vector with the selected statistics.
+#' @return A `character` vector with the selected statistics.
 #'
 #' @keywords internal
 afun_selected_stats <- function(.stats, all_stats) {
@@ -301,7 +303,6 @@ afun_selected_stats <- function(.stats, all_stats) {
   }
 }
 
-
 #' Add Variable Labels to Top Left Corner in Table
 #'
 #' @description `r lifecycle::badge("stable")`
@@ -310,16 +311,16 @@ afun_selected_stats <- function(.stats, all_stats) {
 #' from a given dataset in the top left corner. If a variable label is not found then the
 #' variable name itself is used instead. Multiple variable labels are concatenated with slashes.
 #'
-#' @note This is not an optimal implementation of course, since we are using here the data set
-#'   itself during the layout creation. When we have a more mature `rtables` implementation then
-#'   this will also be improved or not necessary anymore.
-#'
 #' @inheritParams argument_convention
 #' @param vars (`character`)\cr variable names of which the labels are to be looked up in `df`.
 #' @param indent (`integer`)\cr non-negative number of nested indent space, default to 0L which means no indent.
-#' 1L means two spaces indent, 2L means four spaces indent and so on.
+#'   1L means two spaces indent, 2L means four spaces indent and so on.
 #'
-#' @return The modified layout.
+#' @return A modified layout with the new variable label(s) added to the top-left material.
+#'
+#' @note This is not an optimal implementation of course, since we are using here the data set
+#'   itself during the layout creation. When we have a more mature `rtables` implementation then
+#'   this will also be improved or not necessary anymore.
 #'
 #' @examples
 #' lyt <- basic_table() %>%

@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.7.10.9042
-Date: 2023-02-09
+Version: 0.8.2
+Date: 2023-05-03
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = "aut"),
@@ -21,7 +21,7 @@ URL: https://github.com/insightsengineering/tern
 BugReports: https://github.com/insightsengineering/tern/issues
 Depends:
     R (>= 3.6),
-    rtables (>= 0.5.3.4)
+    rtables (>= 0.6.1)
 Imports:
     broom,
     car,
@@ -30,8 +30,8 @@ Imports:
     dplyr,
     emmeans (>= 1.4.5),
     forcats (>= 1.0.0),
-    formatters (>= 0.3.4.13),
-    ggplot2,
+    formatters (>= 0.5.0),
+    ggplot2 (>= 3.4.0),
     grid,
     gridExtra,
     gtable,
@@ -43,14 +43,15 @@ Imports:
     rlang,
     scales,
     stats,
-    survival (>= 3.1-11),
+    survival (>= 3.2-13),
     tibble,
     tidyr,
     utils
 Suggests:
     knitr,
     lattice,
-    nestcolor (>= 0.1.0),
+    lubridate,
+    nestcolor (>= 0.1.1),
     rmarkdown,
     stringr,
     testthat (>= 3.0)
@@ -67,12 +68,14 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Collate:
-    'formats.R'
+    'formatting_functions.R'
     'abnormal.R'
     'abnormal_by_baseline.R'
     'abnormal_by_marked.R'
     'abnormal_by_worst_grade.R'
     'abnormal_by_worst_grade_worsen.R'
+    'analyze_colvars_functions.R'
+    'analyze_functions.R'
     'analyze_vars_in_cols.R'
     'argument_convention.R'
     'combination_function.R'
@@ -88,6 +91,7 @@ Collate:
     'count_occurrences_by_grade.R'
     'count_patients_events_in_cols.R'
     'count_patients_with_event.R'
+    'count_patients_with_flags.R'
     'count_values.R'
     'cox_regression.R'
     'cox_regression_inter.R'
@@ -101,7 +105,6 @@ Collate:
     'estimate_proportion.R'
     'fit_rsp_step.R'
     'fit_survival_step.R'
-    'footnotes.R'
     'g_forest.R'
     'g_lineplot.R'
     'g_step.R'
@@ -137,6 +140,8 @@ Collate:
     'summarize_ancova.R'
     'summarize_change.R'
     'summarize_colvars.R'
+    'summarize_coxreg.R'
+    'summarize_functions.R'
     'summarize_glm_count.R'
     'summarize_num_patients.R'
     'summarize_patients_exposure_in_cols.R'
@@ -150,4 +155,3 @@ Collate:
     'utils_factor.R'
     'utils_grid.R'
     'utils_rtables.R'
-    'wrap_text.R'

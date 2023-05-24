@@ -7,9 +7,12 @@
 check_same_n(..., omit_null = TRUE)
 }
 \arguments{
-\item{...}{data.frames or vectors}
+\item{...}{(\code{data.frame}s or \code{vector}s)\cr any data frames/vectors.}
 
-\item{omit_null}{are \code{NULL} elements in \code{...} to be omitted from the check?}
+\item{omit_null}{(\code{logical})\cr whether \code{NULL} elements in \code{...} should be omitted from the check.}
+}
+\value{
+A \code{logical} value.
 }
 \description{
 Checks if the elements in \code{...} have the same dimension.

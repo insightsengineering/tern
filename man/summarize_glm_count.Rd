@@ -48,16 +48,16 @@ summarize_glm_count(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.df_row}{(\verb{data frame})\cr data frame across all of the columns for the given row split.}
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
-\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
+\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
@@ -67,11 +67,11 @@ by a statistics function.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{var_labels}{character for label.}
+\item{var_labels}{(\code{character})\cr character for label.}
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
@@ -85,14 +85,26 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-A named list of 5 statistics:
 \itemize{
-\item \code{n}: count of complete sample size for the group.
-\item \code{rate}: estimated event rate per follow-up time.
-\item \code{rate_ci}: confidence level for estimated rate per follow-up time.
+\item \code{s_glm_count()} returns a named \code{list} of 5 statistics:
+\itemize{
+\item \code{n}: Count of complete sample size for the group.
+\item \code{rate}: Estimated event rate per follow-up time.
+\item \code{rate_ci}: Confidence level for estimated rate per follow-up time.
 \item \code{rate_ratio}: Ratio of event rates in each treatment arm to the reference arm.
-\item \code{rate_ratio_ci}: confidence level for the rate ratio.
+\item \code{rate_ratio_ci}: Confidence level for the rate ratio.
 \item \code{pval}: p-value.
+}
+}
+
+\itemize{
+\item \code{a_glm_count()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{summarize_glm_count()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_glm_count()} to the table layout.
 }
 }
 \description{
@@ -104,17 +116,15 @@ This can be used to analyze count and/or frequency data using a linear model.
 \section{Functions}{
 \itemize{
 \item \code{s_glm_count()}: Statistics function that produces a named list of results
-of the investigated poisson model.
+of the investigated Poisson model.
 
-\item \code{a_glm_count()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_glm_count()}: Formatted analysis function which is used as \code{afun} in \code{summarize_glm_count()}.
 
-\item \code{summarize_glm_count()}: Layout creating function which can be be used for creating
-summary tables for analysis of count data using generalized linear models (poisson, quasipoisson).
+\item \code{summarize_glm_count()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{
-
 # Internal function - s_change_from_baseline
 \dontrun{
 s_glm_count(
@@ -129,7 +139,6 @@ s_glm_count(
   rate_mean_method = "ppmeans"
 )
 }
-
 
 # Internal function - s_change_from_baseline
 \dontrun{
@@ -186,5 +195,6 @@ lyt <- basic_table() \%>\%
     )
   )
 build_table(lyt = lyt, df = anl)
+
 }
 \keyword{internal}

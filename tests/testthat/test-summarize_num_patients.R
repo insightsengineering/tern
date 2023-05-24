@@ -251,7 +251,7 @@ testthat::test_that("analyze_num_patients works well for pagination", {
       "Number of events"
     )
   )
-  testthat::expect_identical(to_string_matrix(pag_result[[2]])[3, 1], "e 1.1")
+  testthat::expect_identical(to_string_matrix(pag_result[[3]])[6, 1], "17")
 })
 
 testthat::test_that("summarize_num_patients works as expected with risk difference column", {

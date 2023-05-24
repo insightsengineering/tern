@@ -7,7 +7,7 @@
 get_smooths(df, x, y, groups = NULL, level = 0.95)
 }
 \arguments{
-\item{df}{(\code{data.frame})\cr.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{x}{(\code{character})\cr value with x column name.}
 
@@ -15,11 +15,11 @@ get_smooths(df, x, y, groups = NULL, level = 0.95)
 
 \item{groups}{(\code{character})\cr vector with optional grouping variables names.}
 
-\item{level}{(\code{numeric}) level of confidence interval to use (0.95 by default).}
+\item{level}{(\code{numeric})\cr level of confidence interval to use (0.95 by default).}
 }
 \value{
-A \code{data.frame} with original \code{x}, smoothed \code{y}, \code{ylow}, \code{yhigh} and
-optional \code{groups} variables formatted to factor type.
+A \code{data.frame} with original \code{x}, smoothed \code{y}, \code{ylow}, and \code{yhigh}, and
+optional \code{groups} variables formatted as \code{factor} type.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

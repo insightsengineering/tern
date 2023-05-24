@@ -4,12 +4,7 @@ preprocess_adrs <- function(adrs) {
   adrs_labels <- formatters::var_labels(adrs)
   adrs %>%
     dplyr::filter(PARAMCD == "BESRSPI") %>%
-    dplyr::mutate(rsp = AVALC == "CR") %>%
-    var_relabel(
-      AGE = "Age",
-      BMRKR1 = "Continuous Level Biomarker 1",
-      rsp = "Response"
-    )
+    dplyr::mutate(rsp = with_label(AVALC == "CR", "Response"))
 }
 
 adrs_local <- tern_ex_adrs %>%

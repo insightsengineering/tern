@@ -26,14 +26,11 @@ h_ggkm(
 \arguments{
 \item{data}{(\code{data.frame})\cr survival data as pre-processed by \code{h_data_plot}.}
 
-\item{xticks}{(\code{numeric}, \code{number}, or \code{NULL})\cr
-numeric vector of ticks or single number with spacing
-between ticks on the x axis.
-If \code{NULL} (default), \code{\link[labeling:extended]{labeling::extended()}} is used to determine
+\item{xticks}{(\code{numeric}, \code{number}, or \code{NULL})\cr numeric vector of ticks or single number with spacing
+between ticks on the x axis. If \code{NULL} (default), \code{\link[labeling:extended]{labeling::extended()}} is used to determine
 an optimal tick position on the x axis.}
 
-\item{yval}{(\code{string})\cr value of y-axis. Should be either
-\code{Survival} (default) or \code{Failure} probability.}
+\item{yval}{(\code{string})\cr value of y-axis. Options are \code{Survival} (default) and \code{Failure} probability.}
 
 \item{censor_show}{(\code{flag})\cr whether to show censored.}
 
@@ -45,9 +42,8 @@ an optimal tick position on the x axis.}
 
 \item{footnotes}{(\code{string})\cr footnotes for plot.}
 
-\item{max_time}{(\code{numeric})\cr maximum value to show on X axis.
-Only data values less than or up to to this threshold value will be plotted.(\code{NULL} for
-default)}
+\item{max_time}{(\code{numeric})\cr maximum value to show on X axis. Only data values less than or up to
+this threshold value will be plotted (defaults to \code{NULL}).}
 
 \item{lwd}{(\code{numeric})\cr line width. Length of a vector should be equal
 to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
@@ -64,8 +60,10 @@ to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 
 \item{ci_ribbon}{(\code{flag})\cr draw the confidence interval around the Kaplan-Meier curve.}
 
-\item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to
-control outlook of the Kaplan-Meier curve.}
+\item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to control outlook of the Kaplan-Meier curve.}
+}
+\value{
+A \code{ggplot} object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

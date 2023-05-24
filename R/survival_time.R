@@ -2,30 +2,30 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Summarize median survival time and CIs, percentiles of survival times, \cr
-#' survival time range of censored/event patients.
+#' Summarize median survival time and CIs, percentiles of survival times, survival
+#' time range of censored/event patients.
 #'
 #' @inheritParams argument_convention
-#' @param control a (`list`) of parameters for comparison details, specified by using \cr
-#'    the helper function [control_surv_time]. Some possible parameter options are: \cr
-#' * `conf_level`: (`proportion`)\cr confidence level of the interval for survival time.
-#' * `conf_type`: (`string`) \cr "plain" (default), "log", "log-log" for confidence interval type, \cr
-#'    see more in [survival::survfit()]. Note option, "none" is not supported.
-#' * `quantiles`: numeric vector of length two to specify the quantiles of survival time.
+#' @param control (`list`)\cr parameters for comparison details, specified by using the helper function
+#'   [control_surv_time()]. Some possible parameter options are:
+#'   * `conf_level` (`proportion`)\cr confidence level of the interval for survival time.
+#'   * `conf_type` (`string`)\cr confidence interval type. Options are "plain" (default), "log", or "log-log",
+#'     see more in [survival::survfit()]. Note option "none" is not supported.
+#'   * `quantiles` (`numeric`)\cr vector of length two to specify the quantiles of survival time.
 #'
 #' @name survival_time
 NULL
 
-#' @describeIn survival_time Statistics Function which analyzes survival times.
-#'  `range_censor` and `range_event`.
+#' @describeIn survival_time Statistics function which analyzes survival times.
 #'
-#' @return The statistics are:
-#' * `median` : median survival time.
-#' * `median_ci` : confidence interval for median time.
-#' * `quantiles` : survival time for two specified quantiles.
-#' * `range_censor` : survival time range for censored observations.
-#' * `range_event` : survival time range for observations with events.
-#' * `range` : survival time range for all observations.
+#' @return
+#' * `s_surv_time()` returns the statistics:
+#'   * `median`: Median survival time.
+#'   * `median_ci`: Confidence interval for median time.
+#'   * `quantiles`: Survival time for two specified quantiles.
+#'   * `range_censor`: Survival time range for censored observations.
+#'   * `range_event`: Survival time range for observations with events.
+#'   * `range`: Survival time range for all observations.
 #'
 #' @examples
 #' library(dplyr)
@@ -83,8 +83,10 @@ s_surv_time <- function(df,
   )
 }
 
-#' @describeIn survival_time Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn survival_time Formatted analysis function which is used as `afun` in `surv_time()`.
+#'
+#' @return
+#' * `a_surv_time()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' # Internal function - a_surv_time
@@ -113,10 +115,14 @@ a_surv_time <- make_afun(
   )
 )
 
-#' @describeIn survival_time Analyze Function which adds the survival times analysis
-#'   to the input layout. Note that additional formatting arguments can be used here.
-#' @inheritParams argument_convention
-#' @export
+#' @describeIn survival_time Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `surv_time()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_surv_time()` to the table layout.
+#'
 #' @examples
 #' basic_table() %>%
 #'   split_cols_by(var = "ARMCD") %>%
@@ -128,6 +134,8 @@ a_surv_time <- make_afun(
 #'     control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
 #'   ) %>%
 #'   build_table(df = adtte_f)
+#'
+#' @export
 surv_time <- function(lyt,
                       vars,
                       ...,

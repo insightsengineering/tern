@@ -12,7 +12,7 @@ fit_logistic(
 )
 }
 \arguments{
-\item{data}{(\verb{data frame})\cr the data frame on which the model was fit.}
+\item{data}{(\code{data.frame})\cr the data frame on which the model was fit.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
@@ -20,27 +20,24 @@ fit_logistic(
 This will be used when fitting the (conditional) logistic regression model on the left hand
 side of the formula.}
 }
+\value{
+A fitted logistic regression model.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Fit a (conditional) logistic regression model.
 }
-\details{
-Note this function may hang or error for certain datasets when an old version of the
-survival package (< 3.2-13) is used.
-}
 \section{Model Specification}{
 
 
-The \code{variables} list needs to include the following elements:\cr
+The \code{variables} list needs to include the following elements:
 \itemize{
-\item \code{arm}: usual treatment arm variable name.
-\item \code{response}: the response arm variable name. Usually this is a 0/1 variable.
-\item \code{covariates}: this is either \code{NULL} (no covariates) or
-a character vector of covariate variable names.
-\item \code{interaction}: this is either \code{NULL} (no interaction) or a string of a single
-covariate variable name already included in \code{covariates}. Then the interaction
-with the treatment arm is included in the model.
+\item \code{arm}: Treatment arm variable name.
+\item \code{response}: The response arm variable name. Usually this is a 0/1 variable.
+\item \code{covariates}: This is either \code{NULL} (no covariates) or a character vector of covariate variable names.
+\item \code{interaction}: This is either \code{NULL} (no interaction) or a string of a single covariate variable name already
+included in \code{covariates}. Then the interaction with the treatment arm is included in the model.
 }
 }
 
@@ -73,4 +70,5 @@ mod2 <- fit_logistic(
     interaction = "AGE"
   )
 )
+
 }

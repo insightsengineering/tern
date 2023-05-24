@@ -1,29 +1,28 @@
-#' Number of patients
+#' Number of Patients
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Count the number of unique and non-unique patients in a column (variable).
 #'
 #' @inheritParams argument_convention
-#' @param x (`character` or `factor`) \cr vector of patient IDs.
-#' @param count_by (`character` or `factor`) \cr optional vector to be combined with `x` when counting
-#' `nonunique` records.
-#' @param unique_count_suffix (`logical`) \cr should `"(n)"` suffix be added to `unique_count` labels.
-#' Defaults to `TRUE`.
+#' @param x (`character` or `factor`)\cr vector of patient IDs.
+#' @param count_by (`character` or `factor`)\cr optional vector to be combined with `x` when counting
+#'   `nonunique` records.
+#' @param unique_count_suffix (`logical`)\cr should `"(n)"` suffix be added to `unique_count` labels.
+#'   Defaults to `TRUE`.
 #'
 #' @name summarize_num_patients
 NULL
 
 #' @describeIn summarize_num_patients Statistics function which counts the number of
-#' unique patients, the corresponding percentage taken with respect to the
-#' total number of patients, and the number of non-unique patients.
+#'   unique patients, the corresponding percentage taken with respect to the
+#'   total number of patients, and the number of non-unique patients.
 #'
-#' @return A list with:
-#'   - `unique`: vector of count and percentage.
-#'   - `nonunique` : vector of count.
-#'   - `unique_count`: count.
-#'
-#' @export
+#' @return
+#' * `s_num_patients()` returns a named `list` of 3 statistics:
+#'   * `unique`: Vector of counts and percentages.
+#'   * `nonunique`: Vector of counts.
+#'   * `unique_count`: Counts.
 #'
 #' @examples
 #' # Use the statistics function to count number of unique and nonunique patients.
@@ -34,6 +33,8 @@ NULL
 #'   .N_col = 6L,
 #'   count_by = as.character(c(1, 1, 2, 1, 1, 1))
 #' )
+#'
+#' @export
 s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_suffix = TRUE) { # nolint
 
   checkmate::assert_string(labelstr)
@@ -59,14 +60,14 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_su
   out
 }
 
-#' @describeIn summarize_num_patients Counts the number of unique patients in a column
-#' (variable), the corresponding percentage taken with respect to the total
-#' number of patients, and the number of non-unique patients in the column.
-#' Function serves as a wrapper that carries over both expected arguments `df`
-#' and `labelstr` in `cfun` of [summarize_row_groups()].
+#' @describeIn summarize_num_patients Statistics function which counts the number of unique patients
+#'   in a column (variable), the corresponding percentage taken with respect to the total number of
+#'   patients, and the number of non-unique patients in the column.
 #'
-#' @param required (`character` or `NULL`) optional name of a variable that is required to be non-missing.
-#' @export
+#' @param required (`character` or `NULL`)\cr optional name of a variable that is required to be non-missing.
+#'
+#' @return
+#' * `s_num_patients_content()` returns the same values as `s_num_patients()`.
 #'
 #' @examples
 #' # Count number of unique and non-unique patients.
@@ -82,8 +83,15 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_su
 #' )
 #' s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID")
 #' s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
-s_num_patients_content <- function(df, labelstr = "", .N_col, .var, required = NULL, count_by = NULL, unique_count_suffix = TRUE) { # nolint
-
+#'
+#' @export
+s_num_patients_content <- function(df,
+                                   labelstr = "",
+                                   .N_col, # nolint
+                                   .var,
+                                   required = NULL,
+                                   count_by = NULL,
+                                   unique_count_suffix = TRUE) {
   checkmate::assert_string(.var)
   checkmate::assert_data_frame(df)
   if (is.null(count_by)) {
@@ -118,8 +126,13 @@ c_num_patients <- make_afun(
   .formats = c(unique = format_count_fraction_fixed_dp, nonunique = "xx", unique_count = "xx")
 )
 
-#' @describeIn summarize_num_patients Layout creating function which adds content rows using the statistics
-#' function [s_num_patients_content()] and desired format.
+#' @describeIn summarize_num_patients Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::summarize_row_groups()].
+#'
+#' @return
+#' * `summarize_num_patients()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_num_patients_content()` to the table layout.
 #'
 #' @export
 summarize_num_patients <- function(lyt,
@@ -130,6 +143,7 @@ summarize_num_patients <- function(lyt,
                                      unique = "Number of patients with at least one event",
                                      nonunique = "Number of events"
                                    ),
+                                   indent_mod = 0L,
                                    riskdiff = NULL,
                                    ...) {
   if (is.null(.stats)) .stats <- c("unique", "nonunique", "unique_count")
@@ -165,14 +179,18 @@ summarize_num_patients <- function(lyt,
     lyt = lyt,
     var = var,
     cfun = ifelse(is.null(riskdiff), cfun, cfun_riskdiff),
-    extra_args = list(...)
+    extra_args = list(...),
+    indent_mod = indent_mod
   )
 }
 
-#' @describeIn summarize_num_patients Identically to [summarize_num_patients()],
-#'   This function creates a layout which adds content rows using the statistics
-#'   function [s_num_patients_content()] and desired format. Differently from its
-#'   counterpart, this function does not impose the produced rows to be repeated.
+#' @describeIn summarize_num_patients Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `analyze_num_patients()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_num_patients_content()` to the table layout.
 #'
 #' @details In general, functions that starts with `analyze*` are expected to
 #'   work like [rtables::analyze()], while functions that starts with `summarize*`
@@ -180,6 +198,8 @@ summarize_num_patients <- function(lyt,
 #'   value for each dividing split in the row and column space, but, being it
 #'   bound to the fundamental splits, it is repeated by design in every page
 #'   when pagination is involved.
+#'
+#' @note As opposed to [summarize_num_patients()], this function does not repeat the produced rows.
 #'
 #' @examples
 #' df_tmp <- data.frame(

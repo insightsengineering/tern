@@ -5,7 +5,7 @@
 \alias{s_count_abnormal_by_marked}
 \alias{a_count_abnormal_by_marked}
 \alias{count_abnormal_by_marked}
-\title{Count patients with marked laboratory abnormalities}
+\title{Count Patients with Marked Laboratory Abnormalities}
 \usage{
 s_count_abnormal_by_marked(
   df,
@@ -34,12 +34,12 @@ count_abnormal_by_marked(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.spl_context}{(\verb{data frame})\cr gives information about ancestor split states
+\item{.spl_context}{(\code{data.frame})\cr gives information about ancestor split states
 that is passed by \code{rtables}.}
 
 \item{category}{(\code{list})\cr with different marked category names for single
@@ -60,20 +60,28 @@ and last or replicated.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-\code{\link[=s_count_abnormal_by_marked]{s_count_abnormal_by_marked()}} the single statistic \code{count_fraction}
-with \verb{Single, not last}, \verb{Last or replicated} and \code{Any} results.
+\itemize{
+\item \code{s_count_abnormal_by_marked()} returns statistic \code{count_fraction} with \verb{Single, not last},
+\verb{Last or replicated}, and \code{Any} results.
+}
 
-\code{\link[=a_count_abnormal_by_marked]{a_count_abnormal_by_marked()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+\itemize{
+\item \code{a_count_abnormal_by_marked()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{count_abnormal_by_marked()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_abnormal_by_marked()} to the table layout.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Primary analysis variable \code{.var} indicates whether single, replicated
-or last marked laboratory abnormality was observed (factor).
-Additional analysis variables are \code{id} (character or factor) and \code{direction} indicating
-the direction of the abnormality (factor).
-Denominator is number of patients with at least one valid measurement during
-treatment (post-baseline), and patients in the numerator are considered as follows:
+Primary analysis variable \code{.var} indicates whether single, replicated or last marked laboratory
+abnormality was observed (\code{factor}). Additional analysis variables are \code{id} (\code{character} or \code{factor})
+and \code{direction} (\code{factor}) indicating the direction of the abnormality. Denominator is number of
+patients with at least one valid measurement during the analysis.
 \itemize{
 \item For \verb{Single, not last} and \verb{Last or replicated}: Numerator is number of patients
 with \verb{Single, not last} and \verb{Last or replicated} levels, respectively.
@@ -81,24 +89,22 @@ with \verb{Single, not last} and \verb{Last or replicated} levels, respectively.
 replicated marked abnormalities.
 }
 }
-\details{
-Note that \verb{Single, not last} and \verb{Last or replicated} levels are
-mutually exclusive. If a patient has abnormalities that meet both the \verb{Single, not last}
-and \verb{Last or replicated} criteria, then the patient will be counted only under the \verb{Last or replicated} category.
-}
 \section{Functions}{
 \itemize{
-\item \code{s_count_abnormal_by_marked()}: Statistics function which returns
-the counts and fractions of patients with \verb{Single, not last}, \verb{Last or replicated} and \code{Any}
-marked laboratory abnormalities for a single \code{abnormal} level.
+\item \code{s_count_abnormal_by_marked()}: Statistics function for patients with marked lab abnormalities.
 
-\item \code{a_count_abnormal_by_marked()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_count_abnormal_by_marked()}: Formatted analysis function which is used as \code{afun}
+in \code{count_abnormal_by_marked()}.
 
-\item \code{count_abnormal_by_marked()}: Layout creating function which can be used for creating tables,
-which can take statistics function arguments and additional format arguments (see below).
+\item \code{count_abnormal_by_marked()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
+\note{
+\verb{Single, not last} and \verb{Last or replicated} levels are mutually exclusive. If a patient has
+abnormalities that meet both the \verb{Single, not last} and \verb{Last or replicated} criteria, then the
+patient will be counted only under the \verb{Last or replicated} category.
+}
 \examples{
 library(dplyr)
 
@@ -117,12 +123,13 @@ df <- data.frame(
 )
 
 df <- df \%>\%
-  mutate(abn_dir = factor(case_when(
-    ANRIND == "LOW LOW" ~ "Low",
-    ANRIND == "HIGH HIGH" ~ "High",
-    TRUE ~ ""
-  ),
-  levels = c("Low", "High")
+  mutate(abn_dir = factor(
+    case_when(
+      ANRIND == "LOW LOW" ~ "Low",
+      ANRIND == "HIGH HIGH" ~ "High",
+      TRUE ~ ""
+    ),
+    levels = c("Low", "High")
   ))
 
 # Select only post-baseline records.
@@ -186,7 +193,6 @@ basic_table() \%>\%
     )
   ) \%>\%
   build_table(df = df)
-
 
 basic_table() \%>\%
   split_cols_by("ARMCD") \%>\%

@@ -7,13 +7,16 @@
 #' Depending on the baseline flag, either the absolute baseline values (at baseline)
 #' or the change from baseline values (post-baseline) are then summarized.
 #'
-#' @name summarize_change
+#' @inheritParams argument_convention
 #'
+#' @name summarize_change
 NULL
 
-#' @inheritParams argument_convention
-#' @describeIn summarize_change Statistics Function that summarizes baseline or post-baseline visits.
-#' @return See [s_summary.numeric()] for the return values.
+#' @describeIn summarize_change Statistics function that summarizes baseline or post-baseline visits.
+#'
+#' @return
+#' * `s_change_from_baseline()` returns the same values returned by [s_summary.numeric()].
+#'
 #' @note The data in `df` must be either all be from baseline or post-baseline visits. Otherwise
 #'   an error will be thrown.
 #'
@@ -56,8 +59,10 @@ s_change_from_baseline <- function(df,
   s_summary(combined, na.rm = na.rm, ...)
 }
 
-#' @describeIn summarize_change Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn summarize_change Formatted analysis function which is used as `afun` in `summarize_change()`.
+#'
+#' @return
+#' * `a_change_from_baseline()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' # Internal function - a_change_from_baseline
@@ -90,15 +95,18 @@ a_change_from_baseline <- make_afun(
   )
 )
 
-#' @describeIn summarize_change Analyze Function for change from baseline analysis.
-#'   To be used after a split on visits in the layout, such that each data
-#'   subset only contains either baseline or post-baseline data. Allows additional
-#'   formatting options.
-#' @inheritParams argument_convention
+#' @describeIn summarize_change Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @export
+#' @return
+#' * `summarize_change()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_change_from_baseline()` to the table layout.
+#'
+#' @note To be used after a split on visits in the layout, such that each data subset only contains
+#'   either baseline or post-baseline data.
+#'
 #' @examples
-#'
 #' # `summarize_change()`
 #'
 #' ## Fabricated dataset.
@@ -127,6 +135,7 @@ a_change_from_baseline <- make_afun(
 #' Viewer(results)
 #' }
 #'
+#' @export
 summarize_change <- function(lyt,
                              vars,
                              ...,

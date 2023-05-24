@@ -5,13 +5,13 @@
 #' Tabulate the estimated effects of multiple continuous biomarker variables
 #' across population subgroups.
 #'
-#' @details These functions create a layout starting from a data frame which contains
-#'   the required statistics. The tables are then typically used as input for forest plots.
-#'
 #' @inheritParams argument_convention
 #' @inheritParams fit_coxreg_multivar
 #' @inheritParams survival_duration_subgroups
-#' @name survival_biomarkers_subgroups
+#'
+#' @details These functions create a layout starting from a data frame which contains
+#'   the required statistics. The tables are then typically used as input for forest plots.
+#'
 #' @examples
 #' library(dplyr)
 #'
@@ -41,25 +41,30 @@
 #'   data = adtte_f
 #' )
 #' df
+#'
+#' @name survival_biomarkers_subgroups
 NULL
 
 #' Prepares Survival Data Estimates for Multiple Biomarkers in a Single Data Frame
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Prepares estimates for number of events, patients and median survival
-#' times, as well as hazard ratio estimates, confidence intervals and p-values, for multiple biomarkers across
-#' population subgroups in a single data frame.
-#' `variables` corresponds to the names of variables found in `data`, passed as a named list and requires elements
-#' `tte`, `is_event`, `biomarkers` (vector of continuous biomarker variables) and optionally `subgroups` and `strat`.
+#' Prepares estimates for number of events, patients and median survival times, as well as hazard ratio estimates,
+#' confidence intervals and p-values, for multiple biomarkers across population subgroups in a single data frame.
+#' `variables` corresponds to the names of variables found in `data`, passed as a named `list` and requires elements
+#' `tte`, `is_event`, `biomarkers` (vector of continuous biomarker variables), and optionally `subgroups` and `strat`.
 #' `groups_lists` optionally specifies groupings for `subgroups` variables.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams fit_coxreg_multivar
 #' @inheritParams survival_duration_subgroups
 #'
+#' @return A `data.frame` with columns `biomarker`, `biomarker_label`, `n_tot`, `n_tot_events`,
+#'   `median`, `hr`, `lcl`, `ucl`, `conf_level`, `pval`, `pval_label`, `subgroup`, `var`,
+#'   `var_label`, and `row_type`.
+#'
 #' @seealso [h_coxreg_mult_cont_df()] which is used internally, [tabulate_survival_biomarkers()].
-#' @export
+#'
 #' @examples
 #' # Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,
 #' # in multiple regression models containing one covariate `RACE`,
@@ -113,6 +118,8 @@ NULL
 #'   )
 #' )
 #' df_grouped
+#'
+#' @export
 extract_survival_biomarkers <- function(variables,
                                         data,
                                         groups_lists = list(),
@@ -160,24 +167,27 @@ extract_survival_biomarkers <- function(variables,
   }
 }
 
-#' @describeIn survival_biomarkers_subgroups table creating function.
+#' @describeIn survival_biomarkers_subgroups Table-creating function which creates a table
+#'   summarizing biomarker effects on survival by subgroup.
 #'
 #' @param df (`data.frame`)\cr containing all analysis variables, as returned by
 #'   [extract_survival_biomarkers()].
-#' @param vars (`character`)\cr the name of statistics to be reported among
-#'  `n_tot_events` (total number of events per group),
-#'  `n_tot` (total number of observations per group),
-#'  `median` (median survival time),
-#'  `hr` (hazard ratio),
-#'  `ci` (confidence interval of hazard ratio) and
-#'  `pval` (p value of the effect).
-#'  Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci`
-#'  are required.
-#' @seealso [h_tab_surv_one_biomarker()] which is used internally, [extract_survival_biomarkers()].
+#' @param vars (`character`)\cr the names of statistics to be reported among:
+#'   * `n_tot_events`: Total number of events per group.
+#'   * `n_tot`: Total number of observations per group.
+#'   * `median`: Median survival time.
+#'   * `hr`: Hazard ratio.
+#'   * `ci`: Confidence interval of hazard ratio.
+#'   * `pval`: p-value of the effect.
+#'   Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci` are required.
+#'
+#' @return An `rtables` table summarizing biomarker effects on survival by subgroup.
+#'
 #' @note In contrast to [tabulate_survival_subgroups()] this tabulation function does
 #'   not start from an input layout `lyt`. This is because internally the table is
 #'   created by combining multiple subtables.
-#' @export
+#'
+#' @seealso [h_tab_surv_one_biomarker()] which is used internally, [extract_survival_biomarkers()].
 #'
 #' @examples
 #' ## Table with default columns.
@@ -194,6 +204,8 @@ extract_survival_biomarkers <- function(variables,
 #' \dontrun{
 #' g_forest(tab, xlim = c(0.8, 1.2))
 #' }
+#'
+#' @export
 tabulate_survival_biomarkers <- function(df,
                                          vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
                                          time_unit = NULL) {

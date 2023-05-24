@@ -35,36 +35,44 @@ h_coxreg_inter_estimations(
 
 \item{mod}{(\code{coxph})\cr a fitted Cox regression model (see \code{\link[survival:coxph]{survival::coxph()}}).}
 
-\item{label}{(\code{string})\cr the label to be return as \code{term_label}
-(see \code{return}).}
+\item{label}{(\code{string})\cr the label to be returned as \code{term_label}.}
 
-\item{control}{(\code{list})\cr a list of controls as returned by
-\code{\link[=control_coxreg]{control_coxreg()}}.}
+\item{control}{(\code{list})\cr a list of controls as returned by \code{\link[=control_coxreg]{control_coxreg()}}.}
 
 \item{...}{see methods.}
 
 \item{at}{(\code{list})\cr a list with items named after the covariate, every
 item is a vector of levels at which the interaction should be estimated.}
 
-\item{data}{(\verb{data frame})\cr the data frame on which the model was fit.}
+\item{data}{(\code{data.frame})\cr the data frame on which the model was fit.}
 
-\item{variable, given}{(\code{string})\cr
-the name of variables in interaction. We seek the estimation of the levels
-of \code{variable} given the levels of \code{given}.}
+\item{variable, given}{(\code{string})\cr the name of variables in interaction. We seek the estimation
+of the levels of \code{variable} given the levels of \code{given}.}
 
-\item{lvl_var, lvl_given}{(\code{character})\cr
-corresponding levels has given by \code{\link[=levels]{levels()}}.}
+\item{lvl_var, lvl_given}{(\code{character})\cr corresponding levels has given by \code{\link[=levels]{levels()}}.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 }
 \value{
-A list of matrix (one per level of variable) with rows corresponding to the combinations of
-\code{variable} and \code{given}, with columns:
-\describe{
-\item{coef_hat}{Estimation of the coefficient}
-\item{coef_se}{Standard error of the estimation.}
-\item{hr}{Hazard ratio.}
-\item{lcl,ucl}{lower/upper confidence limit of the hazard ratio}
+\itemize{
+\item \code{h_coxreg_inter_effect()} returns a \code{data.frame} of covariate interaction effects consisting of the following
+variables: \code{effect}, \code{term}, \code{term_label}, \code{level}, \code{n}, \code{hr}, \code{lcl}, \code{ucl}, \code{pval}, and \code{pval_inter}.
+}
+
+\itemize{
+\item \code{h_coxreg_extract_interaction()} returns the result of an interaction test and the estimated values. If
+no interaction, \code{\link[=h_coxreg_univar_extract]{h_coxreg_univar_extract()}} is applied instead.
+}
+
+\itemize{
+\item \code{h_coxreg_inter_estimations()} returns a list of matrices (one per level of variable) with rows corresponding
+to the combinations of \code{variable} and \code{given}, with columns:
+\itemize{
+\item \code{coef_hat}: Estimation of the coefficient.
+\item \code{coef_se}: Standard error of the estimation.
+\item \code{hr}: Hazard ratio.
+\item \verb{lcl, ucl}: Lower/upper confidence limit of the hazard ratio.
+}
 }
 }
 \description{
@@ -79,8 +87,8 @@ Given the cox regression investigating the effect of Arm (A, B, C; reference A)
 and Sex (F, M; reference Female) and the model being abbreviated: y ~ Arm + Sex + Arm:Sex.
 The cox regression estimates the coefficients along with a variance-covariance matrix for:
 \itemize{
-\item b1 (arm b), b2 (arm c),
-\item b3 (sex m),
+\item b1 (arm b), b2 (arm c)
+\item b3 (sex m)
 \item b4 (arm b: sex m), b5 (arm c: sex m)
 }
 
@@ -91,17 +99,16 @@ is obtained as $sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_coxreg_inter_effect(numeric)}: Estimate the interaction with a numerical
-covariate
+\item \code{h_coxreg_inter_effect()}: S3 generic helper function to determine interaction effect.
 
-\item \code{h_coxreg_inter_effect(factor)}: Estimate the interaction with a factor
-covariate.
+\item \code{h_coxreg_inter_effect(numeric)}: Estimate the interaction with a \code{numeric} covariate.
 
-\item \code{h_coxreg_extract_interaction()}: a higher level function that returns
-the test of the interaction test and the estimated values. If
-no interaction, \code{\link[=h_coxreg_univar_extract]{h_coxreg_univar_extract()}} is applied.
+\item \code{h_coxreg_inter_effect(factor)}: Estimate the interaction with a \code{factor} covariate.
 
-\item \code{h_coxreg_inter_estimations()}: hazard ratio estimation in interactions.
+\item \code{h_coxreg_extract_interaction()}: A higher level function to get
+the results of the interaction test and the estimated values.
+
+\item \code{h_coxreg_inter_estimations()}: Hazard ratio estimation in interactions.
 
 }}
 \examples{
@@ -140,6 +147,7 @@ h_coxreg_extract_interaction(
   mod = mod, effect = "armcd", covar = "covar1", data = dta_bladder,
   control = control_coxreg()
 )
+
 mod <- coxph(Surv(time, status) ~ armcd * covar1, data = dta_bladder)
 result <- h_coxreg_inter_estimations(
   variable = "armcd", given = "covar1",
@@ -148,4 +156,5 @@ result <- h_coxreg_inter_estimations(
   mod = mod, conf_level = .95
 )
 result
+
 }

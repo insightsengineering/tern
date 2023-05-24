@@ -19,22 +19,25 @@ h_incidence_rate_byar(person_years, n_events, alpha = 0.05)
 h_incidence_rate(person_years, n_events, control = control_incidence_rate())
 }
 \arguments{
-\item{person_years}{(\code{numeric}) \cr total person-years at risk.}
+\item{person_years}{(\code{numeric})\cr total person-years at risk.}
 
-\item{n_events}{(\code{integer}) \cr number of events observed.}
+\item{n_events}{(\code{integer})\cr number of events observed.}
 
-\item{alpha}{(\code{numeric}) \cr two-sided alpha-level for confidence interval.}
+\item{alpha}{(\code{numeric})\cr two-sided alpha-level for confidence interval.}
 
-\item{control}{(\code{list}) \cr parameters for estimation details, specified by using
-the helper function \code{\link[=control_incidence_rate]{control_incidence_rate()}}. Possible parameter options are: \cr
+\item{control}{(\code{list})\cr parameters for estimation details, specified by using
+the helper function \code{\link[=control_incidence_rate]{control_incidence_rate()}}. Possible parameter options are:
 \itemize{
-\item \code{conf_level}: (\code{proportion}) \cr confidence level for the estimated incidence rate.
-\item \code{conf_type}: (\code{string}) \cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
+\item \code{conf_level}: (\code{proportion})\cr confidence level for the estimated incidence rate.
+\item \code{conf_type}: (\code{string})\cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
 for confidence interval type.
-\item \code{time_unit_input}: (\code{string}) \cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
+\item \code{time_unit_input}: (\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
 indicating time unit for data input.
-\item \code{time_unit_output}: (\code{numeric}) \cr time unit for desired output (in person-years).
+\item \code{time_unit_output}: (\code{numeric})\cr time unit for desired output (in person-years).
 }}
+}
+\value{
+Estimated incidence rate \code{rate} and associated confidence interval \code{rate_ci}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

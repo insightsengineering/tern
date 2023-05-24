@@ -19,32 +19,47 @@ h_ppmeans(obj, .df_row, arm, conf_level)
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.df_row}{(\verb{data frame})\cr data set that includes all the variables that are called
-in \code{.var} and \code{variables}.}
+\item{.df_row}{(\code{data.frame})\cr data set that includes all the variables that are called in \code{.var} and \code{variables}.}
 
 \item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables, with
 expected elements:
 \itemize{
-\item \code{arm}: (\code{string})\cr group variable, for which the covariate adjusted means of multiple
+\item \code{arm} (\code{string})\cr group variable, for which the covariate adjusted means of multiple
 groups will be summarized. Specifically, the first level of \code{arm} variable is taken as the
 reference group.
-\item \code{covariates}: (\code{character})\cr a vector that can contain single variable names (such as
+\item \code{covariates} (\code{character})\cr a vector that can contain single variable names (such as
 \code{"X1"}), and/or interaction terms indicated by \code{"X1 * X2"}.
-\item \code{offset}: (\code{numeric})\cr a numeric vector or scalar adding an offset.
+\item \code{offset} (\code{numeric})\cr a numeric vector or scalar adding an offset.
 }}
 
-\item{obj}{(\code{glm.fit}) fitted model object used to derive the mean rate estimates in each treatment arm.}
+\item{obj}{(\code{glm.fit})\cr fitted model object used to derive the mean rate estimates in each treatment arm.}
 
-\item{conf_level}{(\code{numeric}) value used to derive the confidence interval for the rate.}
+\item{conf_level}{(\code{numeric})\cr value used to derive the confidence interval for the rate.}
 
 \item{`weights`(`character`)\cr}{character vector specifying weights used in averaging predictions.}
 
 \item{`distribution`(`character`)\cr}{a character value specifying the distribution
 used in the regression (poisson, quasipoisson).}
 
-\item{`arm`:}{(\code{string})\cr group variable, for which the covariate adjusted means of multiple
-groups will be summarized. Specifically, the first level of \code{arm} variable is taken as the
-reference group.}
+\item{`arm`}{(\code{string})\cr group variable, for which the covariate adjusted means of multiple groups will be
+summarized. Specifically, the first level of \code{arm} variable is taken as the reference group.}
+}
+\value{
+\itemize{
+\item \code{h_glm_poisson()} returns the results of a Poisson model.
+}
+
+\itemize{
+\item \code{h_glm_quasipoisson()} returns the results of a Quasi-Poisson model.
+}
+
+\itemize{
+\item \code{h_glm_count()} returns the results of the selected model.
+}
+
+\itemize{
+\item \code{h_ppmeans()} returns the estimated means.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -64,7 +79,6 @@ selected model (poisson, quasipoisson, negative binomial).
 
 }}
 \examples{
-
 # Internal function - h_glm_poisson
 \dontrun{
 h_glm_poisson(
@@ -74,16 +88,14 @@ h_glm_poisson(
 )
 }
 
-
 # Internal function - h_glm_quasipoisson
 \dontrun{
 h_glm_quasipoisson(
   .var = "AVAL",
-  .df_row = anl,
+  .df_row = adtte,
   variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = c("REGION1"))
 )
 }
-
 
 # Internal function - h_glm_count
 \dontrun{
@@ -94,7 +106,6 @@ h_glm_count(
   distribution = "poisson"
 )
 }
-
 
 # Internal function - h_ppmeans
 \dontrun{

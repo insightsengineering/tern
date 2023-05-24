@@ -42,16 +42,16 @@ estimate_odds_ratio(
 )
 }
 \arguments{
-\item{df}{(\verb{data frame})\cr data set containing all analysis variables.}
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
+\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
-\item{.df_row}{(\verb{data frame})\cr data frame across all of the columns for the given row split.}
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
@@ -66,7 +66,7 @@ levels that belong to it in the character vectors that are elements of the list.
 
 \item{...}{arguments passed to \code{s_odds_ratio()}.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
@@ -79,6 +79,22 @@ to avoid warnings from \code{rtables}.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
+\value{
+\itemize{
+\item \code{s_odds_ratio()} returns a named list with the statistics \code{or_ci}
+(containing \code{est}, \code{lcl}, and \code{ucl}) and \code{n_tot}.
+}
+
+\itemize{
+\item \code{a_odds_ratio()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{estimate_odds_ratio()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_odds_ratio()} to the table layout.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -89,27 +105,26 @@ along with a confidence interval.
 This function uses either logistic regression for unstratified
 analyses, or conditional logistic regression for stratified analyses.
 The Wald confidence interval with the specified confidence level is
-calculated. Note that, for stratified analyses, there is currently no
-implementation for conditional likelihood confidence intervals,
-therefore the likelihood confidence interval as an option is not yet
-available. Besides, when \code{rsp} contains only responders or non-responders,
-then the result values will be \code{NA}, because no odds ratio estimation is
-possible.
+calculated.
 }
 \section{Functions}{
 \itemize{
 \item \code{s_odds_ratio()}: Statistics function which estimates the odds ratio
-between a treatment and a control. Note that a \code{variables} list with \code{arm} and \code{strata} names
-needs to be passed if a stratified analysis is required.
+between a treatment and a control. A \code{variables} list with \code{arm} and \code{strata}
+variable names must be passed if a stratified analysis is required.
 
-\item \code{a_odds_ratio()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_odds_ratio()}: Formatted analysis function which is used as \code{afun} in \code{estimate_odds_ratio()}.
 
-\item \code{estimate_odds_ratio()}: Layout creating function which can be used for creating
-tables, which can take statistics function arguments and additional format
-arguments (see below).
+\item \code{estimate_odds_ratio()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
+\note{
+For stratified analyses, there is currently no implementation for conditional
+likelihood confidence intervals, therefore the likelihood confidence interval is not
+yet available as an option. Besides, when \code{rsp} contains only responders or non-responders,
+then the result values will be \code{NA}, because no odds ratio estimation is possible.
+}
 \examples{
 set.seed(12)
 dta <- data.frame(
@@ -136,6 +151,7 @@ s_odds_ratio(
   .df_row = dta,
   variables = list(arm = "grp", strata = "strata")
 )
+
 a_odds_ratio(
   df = subset(dta, grp == "A"),
   .var = "rsp",
@@ -143,6 +159,7 @@ a_odds_ratio(
   .in_ref_col = FALSE,
   .df_row = dta
 )
+
 dta <- data.frame(
   rsp = sample(c(TRUE, FALSE), 100, TRUE),
   grp = factor(rep(c("A", "B"), each = 50))
@@ -153,6 +170,7 @@ l <- basic_table() \%>\%
   estimate_odds_ratio(vars = "rsp")
 
 build_table(l, df = dta)
+
 }
 \seealso{
 Relevant helper function \code{\link[=h_odds_ratio]{h_odds_ratio()}}.

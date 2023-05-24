@@ -15,26 +15,23 @@ update_weights_strat_wilson(
 )
 }
 \arguments{
-\item{vars}{(\code{numeric}) \cr
-normalized proportions for each strata.}
+\item{vars}{(\code{numeric})\cr normalized proportions for each strata.}
 
-\item{strata_qnorm}{(\code{numeric}) \cr
-initial estimation with identical weights of the quantiles.}
+\item{strata_qnorm}{(\code{numeric})\cr initial estimation with identical weights of the quantiles.}
 
-\item{initial_weights}{(\code{numeric}) \cr
-initial weights used to calculate \code{strata_qnorm}. This can be optimized in
-the future if we need to estimate better initial weights.}
+\item{initial_weights}{(\code{numeric})\cr initial weights used to calculate \code{strata_qnorm}. This can
+be optimized in the future if we need to estimate better initial weights.}
 
-\item{n_per_strata}{(\code{numeric}) \cr
-number of elements in each strata.}
+\item{n_per_strata}{(\code{numeric})\cr number of elements in each strata.}
 
-\item{max_iterations}{(\code{count}) \cr
-maximum number of iterations to be tried. Convergence is always checked.}
+\item{max_iterations}{(\code{count})\cr maximum number of iterations to be tried. Convergence is always checked.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{tol}{(\code{number}) \cr
-tolerance threshold for convergence.}
+\item{tol}{(\code{number})\cr tolerance threshold for convergence.}
+}
+\value{
+A \code{list} of 3 elements: \code{n_it}, \code{weights}, and \code{diff_v}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

@@ -11,10 +11,12 @@ stat_mean_pval(x, na.rm = TRUE, n_min = 2, test_mean = 0)
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{n_min}{(\code{number})\cr a minimum number of non-missing \code{x} to estimate
-the p-value of the mean.}
+\item{n_min}{(\code{numeric})\cr a minimum number of non-missing \code{x} to estimate the p-value of the mean.}
 
-\item{test_mean}{(\code{number})\cr mean value to test under the null hypothesis.}
+\item{test_mean}{(\code{numeric})\cr mean value to test under the null hypothesis.}
+}
+\value{
+A p-value.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

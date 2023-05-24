@@ -174,7 +174,11 @@
     Code
       res
     Output
-      rcell:  
+      $row_count
+      [1] 4 4
+      attr(,"label")
+      [1] "female (N=4)"
+      
 
 # add_rowcounts works with one row split
 
@@ -239,6 +243,34 @@
           mean      32.50   43.00    NA      NA     30.00    NA      NA      NA      NA  
         M (N=3)                                                                          
           mean       NA      NA      NA      NA     38.00    NA     29.50    NA      NA  
+
+# add_rowcounts works with pruning
+
+    Code
+      res
+    Output
+                                    A: Drug X   B: Placebo   C: Combination
+      —————————————————————————————————————————————————————————————————————
+      F (N=187)                                                            
+        ASIAN                          44           37             40      
+        BLACK OR AFRICAN AMERICAN      18           12             13      
+        WHITE                           8           7              8       
+      M (N=169)                                                            
+        ASIAN                          35           31             44      
+        BLACK OR AFRICAN AMERICAN      10           12             14      
+        WHITE                           6           7              10      
+
+---
+
+    Code
+      res
+    Output
+                                    A: Drug X   B: Placebo   C: Combination
+      —————————————————————————————————————————————————————————————————————
+      F (N=187)                                                            
+        ASIAN                          44           37             40      
+        BLACK OR AFRICAN AMERICAN      18           12             13      
+        WHITE                           8           7              8       
 
 # h_col_indices works as expected
 

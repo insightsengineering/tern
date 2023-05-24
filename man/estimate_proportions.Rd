@@ -44,12 +44,11 @@ estimate_proportion(
 )
 }
 \arguments{
-\item{df}{(\code{logical} or \code{data.frame})\cr
-if only a logical vector is used, it indicates whether each subject is a
-responder or not. \code{TRUE} represents a successful outcome. If a \code{data.frame}
-is provided, also the \code{strata} variable names must be provided in
-\code{variables} as a list element with the strata strings. In the case of
-\code{data.frame}, the logical vector of responses must be indicated as a
+\item{df}{(\code{logical} or \code{data.frame})\cr if only a logical vector is used,
+it indicates whether each subject is a responder or not. \code{TRUE} represents
+a successful outcome. If a \code{data.frame} is provided, also the \code{strata} variable
+names must be provided in \code{variables} as a list element with the strata strings.
+In the case of \code{data.frame}, the logical vector of responses must be indicated as a
 variable name in \code{.var}.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
@@ -57,19 +56,15 @@ by a statistics function.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{method}{(\code{string}) \cr
-the method used to construct the confidence interval for proportion of
-successful outcomes; one of \code{waldcc}, \code{wald}, \code{clopper-pearson}, \code{wilson},
-\code{wilsonc}, \code{strat_wilson}, \code{strat_wilsonc}, \code{agresti-coull} or \code{jeffreys}.}
+\item{method}{(\code{string})\cr the method used to construct the confidence interval
+for proportion of successful outcomes; one of \code{waldcc}, \code{wald}, \code{clopper-pearson},
+\code{wilson}, \code{wilsonc}, \code{strat_wilson}, \code{strat_wilsonc}, \code{agresti-coull} or \code{jeffreys}.}
 
-\item{weights}{(\code{numeric} or \code{NULL}) \cr
-weights for each level of the strata. If \code{NULL}, they are
-estimated using the iterative algorithm proposed in
-\insertCite{Yan2010-jt;textual}{tern} that minimizes the weighted squared
-length of the confidence interval.}
+\item{weights}{(\code{numeric} or \code{NULL})\cr weights for each level of the strata. If \code{NULL}, they are
+estimated using the iterative algorithm proposed in \insertCite{Yan2010-jt;textual}{tern} that
+minimizes the weighted squared length of the confidence interval.}
 
-\item{max_iterations}{(\code{count}) \cr
-maximum number of iterations for the iterative procedure used
+\item{max_iterations}{(\code{count})\cr maximum number of iterations for the iterative procedure used
 to find estimates of optimal weights.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
@@ -82,7 +77,7 @@ to find estimates of optimal weights.}
 
 \item{...}{other arguments are ultimately conveyed to \code{\link[=s_proportion]{s_proportion()}}.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
@@ -95,6 +90,22 @@ to avoid warnings from \code{rtables}.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
+\value{
+\itemize{
+\item \code{s_proportion()} returns statistics \code{n_prop} (\code{n} and proportion) and \code{prop_ci} (proportion CI) for a
+given variable.
+}
+
+\itemize{
+\item \code{a_proportion()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{estimate_proportion()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_proportion()} to the table layout.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -102,17 +113,17 @@ Estimate the proportion of responders within a studied population.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_proportion()}: statistics function estimating a
+\item \code{s_proportion()}: Statistics function estimating a
 proportion along with its confidence interval.
 
-\item \code{a_proportion()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_proportion()}: Formatted analysis function which is used as \code{afun}
+in \code{estimate_proportion()}.
 
-\item \code{estimate_proportion()}: used in a \code{rtables} pipeline.
+\item \code{estimate_proportion()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{
-
 # Case with only logical vector.
 rsp_v <- c(1, 0, 1, 0, 1, 1, 0, 0)
 s_proportion(rsp_v)

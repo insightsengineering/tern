@@ -10,9 +10,12 @@ logistic_summary_by_flag(flag_var)
 \item{flag_var}{(\code{string})\cr variable name identifying which row should be used in this
 content function.}
 }
+\value{
+A content function.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Constructor for content functions to be used to summarize
-logistic regression results.
+Constructor for content functions to be used in \code{\link[=summarize_logistic]{summarize_logistic()}} to summarize
+logistic regression results. This function is a wrapper for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 }

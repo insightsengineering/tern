@@ -88,7 +88,7 @@ compare_vars(
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{.ref_group}{(\verb{data frame} or \code{vector})\cr the data corresponding to the reference group.}
+\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
@@ -104,21 +104,20 @@ can only be \code{n} (number of values in this row and column intersection).}
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{verbose}{defaults to \code{TRUE}. It prints out warnings and messages. It is mainly used
-to print out information about factor casting.}
+\item{verbose}{(\code{logical})\cr Whether warnings and messages should be printed. Mainly used
+to print out information about factor casting. Defaults to \code{TRUE}.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{var_labels}{character for label.}
+\item{var_labels}{(\code{character})\cr character for label.}
 
-\item{nested}{boolean. Should this layout instruction be applied within the
-existing layout structure \emph{if possible} (\code{TRUE}, the default) or as a
-new top-level element (`FALSE). Ignored if it would nest a split underneath
-analyses, which is not allowed.}
+\item{nested}{(\code{flag})\cr whether this layout instruction be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
+underneath analyses, which is not allowed.}
 
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
@@ -132,92 +131,71 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-If \code{x} is of class \code{numeric}, returns a list with named items:
 \itemize{
-\item all items from \code{\link[=s_summary.numeric]{s_summary.numeric()}}.
-\item \code{pval}: the p-value.
+\item \code{s_compare()} returns output of \code{\link[=s_summary]{s_summary()}} and comparisons versus the reference group in the form of p-values.
 }
 
-If \code{x} is of class \code{factor} or converted from \code{character}, returns a list with
-named items:
 \itemize{
-\item all items from \code{\link[=s_summary.factor]{s_summary.factor()}}.
-\item \code{pval}: the p-value.
+\item \code{a_compare()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 
-If \code{x} is of class \code{logical}, returns a list with named items:
 \itemize{
-\item all items from \code{\link[=s_summary.logical]{s_summary.logical()}}.
-\item \code{pval}: the p-value.
+\item \code{compare_vars()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_compare()} to the table layout.
 }
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-We use the new S3 generic function \code{\link[=s_compare]{s_compare()}} to implement comparisons for
-different \code{x} objects. This is used as Statistics Function in combination
-with the new Analyze Function \code{\link[=compare_vars]{compare_vars()}}.
+Comparison with a reference group for different \code{x} objects.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_compare()}: \code{s_compare} is a S3 generic function to produce
-an object description and comparison versus the reference column in the form
-of p-values.
+\item \code{s_compare()}: S3 generic function to produce a comparison summary.
 
-\item \code{s_compare(numeric)}: Method for numeric class. This uses the standard t-test
+\item \code{s_compare(numeric)}: Method for \code{numeric} class. This uses the standard t-test
 to calculate the p-value.
 
-\item \code{s_compare(factor)}: Method for factor class. This uses the chi-squared test
-to calculate the p-value. Note that the \code{denom} for factor proportions can only be \code{n} here
-since the usage is for comparing proportions between columns.
-Therefore a row-based proportion would not make sense. Also proportion based on \code{N_col} would
-be difficult since for the chi-squared test statistic we use the counts. Therefore
-missing values should be accounted for explicitly as factor levels.
+\item \code{s_compare(factor)}: Method for \code{factor} class. This uses the chi-squared test
+to calculate the p-value.
 
-\item \code{s_compare(character)}: Method for character class. This makes an automatic
-conversion to factor (with a warning) and then forwards to the method for factors.
+\item \code{s_compare(character)}: Method for \code{character} class. This makes an automatic
+conversion to \code{factor} (with a warning) and then forwards to the method for factors.
 
-\item \code{s_compare(logical)}: Method for logical class. A chi-squared test
+\item \code{s_compare(logical)}: Method for \code{logical} class. A chi-squared test
 is used. If missing values are not removed, then they are counted as \code{FALSE}.
 
-\item \code{a_compare()}: S3 generic Formatted Analysis function to produce
-an object description and comparison versus the reference column in the form
-of p-values. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{a_compare()}: Formatted analysis function which is used as \code{afun}
+in \code{compare_vars()}.
 
-\item \code{a_compare(numeric)}: Formatted Analysis function method for \code{numeric}.
+\item \code{a_compare(numeric)}: Formatted analysis function method for \code{numeric} class.
 
-\item \code{a_compare(factor)}: Formatted Analysis function method for \code{factor}.
+\item \code{a_compare(factor)}: Formatted analysis function method for \code{factor} class.
 
-\item \code{a_compare(character)}: Formatted Analysis function method for \code{character}.
+\item \code{a_compare(character)}: Formatted analysis function method for \code{character} class.
 
-\item \code{a_compare(logical)}: Formatted Analysis function method for \code{logical}.
+\item \code{a_compare(logical)}: Formatted analysis function method for \code{logical} class.
 
-\item \code{compare_vars()}: Analyze Function to add a comparison of variables to
-\code{rtables} pipelines. The column split needs to have the reference group defined
-via \code{ref_group} so that the comparison is well defined.
-The ellipsis (\code{...}) conveys arguments to \code{\link[=s_compare]{s_compare()}}.
-When factor variables contains \code{NA}, it is expected that \code{NA}
-have been conveyed to \code{na_level} appropriately beforehand with
-\code{\link[=df_explicit_na]{df_explicit_na()}}.
+\item \code{compare_vars()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \note{
-Automatic conversion of character to factor does not guarantee that the table
-can be generated correctly. In particular for sparse tables this very likely can fail.
-It is therefore better to always pre-process the dataset such that factors are manually
-created from character variables before passing the dataset to \code{\link[rtables:build_table]{rtables::build_table()}}.
+\itemize{
+\item For factor variables, \code{denom} for factor proportions can only be \code{n} since the purpose is to compare proportions
+between columns, therefore a row-based proportion would not make sense. Proportion based on \code{N_col} would
+be difficult since we use counts for the chi-squared test statistic, therefore missing values should be accounted
+for as explicit factor levels.
+\item For character variables, automatic conversion to factor does not guarantee that the table
+will be generated correctly. In particular for sparse tables this very likely can fail.
+Therefore it is always better to manually convert character variables to factors during pre-processing.
+\item For \code{compare_vars()}, the column split must define a reference group via \code{ref_group} so that the comparison
+is well defined.
+\item When factor variables contains \code{NA}, it is expected that \code{NA} values have been conveyed to \code{na_level}
+appropriately beforehand via \code{\link[=df_explicit_na]{df_explicit_na()}}.
 }
-\section{Formatting arguments}{
-
-These additional formatting arguments can be passed to the layout creating function:
-\describe{
-\item{.stats}{(\code{character})\cr names of the statistics to use}
-\item{.indent_mods}{(\code{integer})\cr named vector of indent modifiers for the labels}
-\item{.formats}{(\code{character} or \code{list})\cr named vector of formats for the statistics}
-\item{.labels}{(\code{character})\cr named vector of labels for the statistics (without indent)}
 }
-}
-
 \examples{
 # `s_compare.numeric`
 
@@ -229,6 +207,7 @@ s_compare(rnorm(10, 5, 1), .ref_group = 1, .in_ref_col = FALSE)
 
 ## Empty numeric does not fail, it returns NA-filled items and no p-value.
 s_compare(numeric(), .ref_group = numeric(), .in_ref_col = FALSE)
+
 # `s_compare.factor`
 
 ## Basic usage:
@@ -241,6 +220,7 @@ x <- explicit_na(factor(c("a", "a", "b", "c", "a", NA, NA)))
 y <- explicit_na(factor(c("a", "b", "c", NA)))
 s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
 s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
+
 # `s_compare.character`
 
 ## Basic usage:
@@ -272,6 +252,7 @@ x <- c(NA, TRUE, FALSE)
 y <- c(NA, NA, NA, NA, FALSE)
 s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
 s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
+
 # `a_compare.numeric`
 a_compare(
   rnorm(10, 5, 1),
@@ -279,6 +260,7 @@ a_compare(
   .in_ref_col = FALSE,
   .var = "bla"
 )
+
 # `a_compare.factor`
 # We need to ungroup `count` and `count_fraction` first so that the `rtables` formatting
 # functions can be applied correctly.
@@ -289,6 +271,7 @@ afun <- make_afun(
 x <- factor(c("a", "a", "b", "c", "a"))
 y <- factor(c("a", "a", "b", "c"))
 afun(x, .ref_group = y, .in_ref_col = FALSE)
+
 # `a_compare.character`
 afun <- make_afun(
   getS3method("a_compare", "character"),
@@ -297,6 +280,7 @@ afun <- make_afun(
 x <- c("A", "B", "A", "C")
 y <- c("B", "A", "C")
 afun(x, .ref_group = y, .in_ref_col = FALSE, .var = "x", verbose = FALSE)
+
 # `a_compare.logical`
 afun <- make_afun(
   getS3method("a_compare", "logical")
@@ -304,6 +288,7 @@ afun <- make_afun(
 x <- c(TRUE, FALSE, FALSE, TRUE, TRUE)
 y <- c(TRUE, FALSE)
 afun(x, .ref_group = y, .in_ref_col = FALSE)
+
 # `compare_vars()` in `rtables` pipelines
 
 ## Default output within a `rtables` pipeline.
@@ -322,9 +307,9 @@ lyt <- basic_table() \%>\%
     .labels = c(mean_sd = "Mean, SD")
   )
 build_table(lyt, df = tern_ex_adsl)
+
 }
 \seealso{
-Relevant constructor function \code{\link[=create_afun_compare]{create_afun_compare()}}.
-
-\code{\link[=s_summary]{s_summary()}} which is used internally for the summary part per column.
+Relevant constructor function \code{\link[=create_afun_compare]{create_afun_compare()}}, and \code{\link[=s_summary]{s_summary()}} which is used internally
+to compute a summary within \code{s_compare()}.
 }

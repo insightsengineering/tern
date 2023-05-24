@@ -9,12 +9,15 @@ decorate_grob_set(grobs, ...)
 \arguments{
 \item{grobs}{a list of grid grobs}
 
-\item{...}{arguments passed on to \code{\link{decorate_grob}}}
+\item{...}{arguments passed on to \code{\link[=decorate_grob]{decorate_grob()}}.}
+}
+\value{
+A decorated grob.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Note that this uses the \code{decorate_grob_factory} function.
+Note that this uses the \code{\link[=decorate_grob_factory]{decorate_grob_factory()}} function.
 }
 \examples{
 library(ggplot2)
@@ -53,7 +56,4 @@ draw_grob(lg[[1]])
 draw_grob(lg[[2]])
 draw_grob(lg[[6]])
 
-}
-\author{
-Adrian Waddell (waddella) \email{adrian.waddell@roche.com}
 }

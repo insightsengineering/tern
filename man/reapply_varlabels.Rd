@@ -9,9 +9,12 @@ reapply_varlabels(x, varlabels, ...)
 \arguments{
 \item{x}{(\code{vector})\cr vector of elements that needs new labels.}
 
-\item{varlabels}{(\code{vector})\cr labels for \code{x}.}
+\item{varlabels}{(\code{character})\cr vector of labels for \code{x}.}
 
 \item{...}{further parameters to be added to the list.}
+}
+\value{
+\code{x} with variable labels reapplied.
 }
 \description{
 This is a helper function that is used in tests.

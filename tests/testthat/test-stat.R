@@ -1,176 +1,184 @@
 testthat::test_that(
-  "stat_mean_ci works for series without NAs (including extreme case n = 1 and various n_min values)", {
-  # n = 1, na.rm = TRUE, n_min = 2
-  result <- stat_mean_ci(x = 1, gg_helper = FALSE)
+  "stat_mean_ci works for series without NAs (including extreme case n = 1 and various n_min values)",
+  {
+    # n = 1, na.rm = TRUE, n_min = 2
+    result <- stat_mean_ci(x = 1, gg_helper = FALSE)
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
 
-  result_gg <- stat_mean_ci(x = 1)
+    result_gg <- stat_mean_ci(x = 1)
 
-  res <- testthat::expect_silent(result_gg)
-  testthat::expect_snapshot(res)
+    res <- testthat::expect_silent(result_gg)
+    testthat::expect_snapshot(res)
 
-  # n = 2, na.rm = TRUE, n_min = 2
-  result <- round(stat_mean_ci(x = 1:2, gg_helper = FALSE), digits = 2)
+    # n = 2, na.rm = TRUE, n_min = 2
+    result <- round(stat_mean_ci(x = 1:2, gg_helper = FALSE), digits = 2)
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
 
-  # n = 2, na.rm = TRUE, n_min = 3
-  result <- stat_mean_ci(x = 1:2, n_min = 3, gg_helper = FALSE)
+    # n = 2, na.rm = TRUE, n_min = 3
+    result <- stat_mean_ci(x = 1:2, n_min = 3, gg_helper = FALSE)
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-})
-
-testthat::test_that(
-  "stat_mean_ci works for series with NAs (including extreme case n = 1 and various n_min values)", {
-  # n = 0, na.rm = TRUE, n_min = 2
-  result <- stat_mean_ci(x = rep(NA, 10), gg_helper = FALSE)
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-
-  result_gg <- stat_mean_ci(x = rep(NA, 10))
-
-  res <- testthat::expect_silent(result_gg)
-  testthat::expect_snapshot(res)
-
-  # n = 0, na.rm = FALSE, n_min = 2
-  result <- stat_mean_ci(x = rep(NA, 10), na.rm = FALSE, gg_helper = FALSE)
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-
-  result_gg <- stat_mean_ci(x = rep(NA, 10), na.rm = FALSE)
-
-  res <- testthat::expect_silent(result_gg)
-  testthat::expect_snapshot(res)
-
-  # n = 1, na.rm = TRUE, n_min = 2
-  result <- stat_mean_ci(x = c(1, NA, NA, NA), gg_helper = FALSE)
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-
-  # n = 1, na.rm = FALSE, n_min = 2
-  result <- stat_mean_ci(x = c(1, NA, NA, NA), na.rm = FALSE, gg_helper = FALSE)
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-
-  # n = 2, na.rm = TRUE, n_min = 2
-  result <- round(stat_mean_ci(x = c(1:2, NA, NA, NA), gg_helper = FALSE), digits = 2)
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-
-  result_gg <- round(stat_mean_ci(x = c(1:2, NA, NA, NA)), digits = 2)
-
-  res <- testthat::expect_silent(result_gg)
-  testthat::expect_snapshot(res)
-
-  # n = 2, na.rm = TRUE, n_min = 3
-  result <- stat_mean_ci(x = c(1:2, NA, NA, NA), n_min = 3, gg_helper = FALSE)
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-
-  # n = 2, na.rm = FALSE, n_min = 2
-  result <- stat_mean_ci(x = c(1:2, NA, NA, NA), na.rm = FALSE, gg_helper = FALSE)
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-
-  # n = 2, na.rm = FALSE, n_min = 3
-  result <- round(
-    stat_mean_ci(
-      x = c(1:2, NA, NA, NA), na.rm = FALSE, n_min = 3, gg_helper = FALSE
-    ),
-    digits = 2
-  )
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-})
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+  }
+)
 
 testthat::test_that(
-  "stat_mean_pval works for series without NAs (including extreme case n = 1 and various n_min values)", {
-  # n = 1, na.rm = TRUE, n_min = 2
-  result <- stat_mean_pval(x = 1)
+  "stat_mean_ci works for series with NAs (including extreme case n = 1 and various n_min values)",
+  {
+    # n = 0, na.rm = TRUE, n_min = 2
+    result <- stat_mean_ci(x = rep(NA, 10), gg_helper = FALSE)
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
 
-  # n = 2, na.rm = TRUE, n_min = 2
-  result <- round(stat_mean_pval(x = 1:2), digits = 2)
+    result_gg <- stat_mean_ci(x = rep(NA, 10))
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+    res <- testthat::expect_silent(result_gg)
+    testthat::expect_snapshot(res)
 
-  # n = 2, na.rm = TRUE, n_min = 3
-  result <- stat_mean_pval(x = 1:2, n_min = 3)
+    # n = 0, na.rm = FALSE, n_min = 2
+    result <- stat_mean_ci(x = rep(NA, 10), na.rm = FALSE, gg_helper = FALSE)
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-})
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+
+    result_gg <- stat_mean_ci(x = rep(NA, 10), na.rm = FALSE)
+
+    res <- testthat::expect_silent(result_gg)
+    testthat::expect_snapshot(res)
+
+    # n = 1, na.rm = TRUE, n_min = 2
+    result <- stat_mean_ci(x = c(1, NA, NA, NA), gg_helper = FALSE)
+
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+
+    # n = 1, na.rm = FALSE, n_min = 2
+    result <- stat_mean_ci(x = c(1, NA, NA, NA), na.rm = FALSE, gg_helper = FALSE)
+
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+
+    # n = 2, na.rm = TRUE, n_min = 2
+    result <- round(stat_mean_ci(x = c(1:2, NA, NA, NA), gg_helper = FALSE), digits = 2)
+
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+
+    result_gg <- round(stat_mean_ci(x = c(1:2, NA, NA, NA)), digits = 2)
+
+    res <- testthat::expect_silent(result_gg)
+    testthat::expect_snapshot(res)
+
+    # n = 2, na.rm = TRUE, n_min = 3
+    result <- stat_mean_ci(x = c(1:2, NA, NA, NA), n_min = 3, gg_helper = FALSE)
+
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+
+    # n = 2, na.rm = FALSE, n_min = 2
+    result <- stat_mean_ci(x = c(1:2, NA, NA, NA), na.rm = FALSE, gg_helper = FALSE)
+
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+
+    # n = 2, na.rm = FALSE, n_min = 3
+    result <- round(
+      stat_mean_ci(
+        x = c(1:2, NA, NA, NA), na.rm = FALSE, n_min = 3, gg_helper = FALSE
+      ),
+      digits = 2
+    )
+
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+  }
+)
 
 testthat::test_that(
-  "stat_mean_pval works for series with NAs (including extreme case n = 1 and various n_min values)", {
-  # n = 0, na.rm = TRUE, n_min = 2
-  result <- stat_mean_pval(x = rep(NA, 10))
+  "stat_mean_pval works for series without NAs (including extreme case n = 1 and various n_min values)",
+  {
+    # n = 1, na.rm = TRUE, n_min = 2
+    result <- stat_mean_pval(x = 1)
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
 
-  # n = 0, na.rm = FALSE, n_min = 2
-  result <- stat_mean_pval(x = rep(NA, 10), na.rm = FALSE)
+    # n = 2, na.rm = TRUE, n_min = 2
+    result <- round(stat_mean_pval(x = 1:2), digits = 2)
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
 
-  # n = 1, na.rm = TRUE, n_min = 2
-  result <- stat_mean_pval(x = c(1, NA, NA, NA))
+    # n = 2, na.rm = TRUE, n_min = 3
+    result <- stat_mean_pval(x = 1:2, n_min = 3)
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+  }
+)
 
-  # n = 1, na.rm = FALSE, n_min = 2
-  result <- stat_mean_pval(x = c(1, NA, NA, NA), na.rm = FALSE)
+testthat::test_that(
+  "stat_mean_pval works for series with NAs (including extreme case n = 1 and various n_min values)",
+  {
+    # n = 0, na.rm = TRUE, n_min = 2
+    result <- stat_mean_pval(x = rep(NA, 10))
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
 
-  # n = 2, na.rm = TRUE, n_min = 2
-  result <- round(stat_mean_pval(x = c(1:2, NA, NA, NA)), digits = 2)
+    # n = 0, na.rm = FALSE, n_min = 2
+    result <- stat_mean_pval(x = rep(NA, 10), na.rm = FALSE)
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
 
-  # n = 2, na.rm = TRUE, n_min = 3
-  result <- stat_mean_pval(x = c(1:2, NA, NA, NA), n_min = 3)
+    # n = 1, na.rm = TRUE, n_min = 2
+    result <- stat_mean_pval(x = c(1, NA, NA, NA))
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
 
-  # n = 2, na.rm = FALSE, n_min = 2
-  result <- stat_mean_pval(x = c(1:2, NA, NA, NA), na.rm = FALSE)
+    # n = 1, na.rm = FALSE, n_min = 2
+    result <- stat_mean_pval(x = c(1, NA, NA, NA), na.rm = FALSE)
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
 
-  # n = 2, na.rm = FALSE, n_min = 3
-  result <- round(
-    stat_mean_pval(
-      x = c(1:2, NA, NA, NA), na.rm = FALSE, n_min = 3
-    ),
-    digits = 2
-  )
+    # n = 2, na.rm = TRUE, n_min = 2
+    result <- round(stat_mean_pval(x = c(1:2, NA, NA, NA)), digits = 2)
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-})
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+
+    # n = 2, na.rm = TRUE, n_min = 3
+    result <- stat_mean_pval(x = c(1:2, NA, NA, NA), n_min = 3)
+
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+
+    # n = 2, na.rm = FALSE, n_min = 2
+    result <- stat_mean_pval(x = c(1:2, NA, NA, NA), na.rm = FALSE)
+
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+
+    # n = 2, na.rm = FALSE, n_min = 3
+    result <- round(
+      stat_mean_pval(
+        x = c(1:2, NA, NA, NA), na.rm = FALSE, n_min = 3
+      ),
+      digits = 2
+    )
+
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+  }
+)
 
 testthat::test_that("stat_mean_pval returns the correct p-value", {
   # n = 5, na.rm = TRUE, test_mean = 0
