@@ -116,9 +116,7 @@ prop_jeffreys(rsp, conf_level = 0.95)
 
 }
 \references{
-\itemize{
-\item \insertRef{Yan2010-jt}{tern}
-}
+\insertRef{Yan2010-jt}{tern}
 }
 \seealso{
 \link{estimate_proportions}, descriptive function \code{\link[=d_proportion]{d_proportion()}},

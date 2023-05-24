@@ -238,7 +238,7 @@ prop_wilson <- function(rsp, conf_level, correct = FALSE) {
 #'   [stats::prop.test()].
 #'
 #' @references
-#' - \insertRef{Yan2010-jt}{tern}
+#' \insertRef{Yan2010-jt}{tern}
 #'
 #' @examples
 #' # Stratified Wilson confidence interval with unequal probabilities
