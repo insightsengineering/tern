@@ -236,3 +236,62 @@ testthat::test_that("surv_timepoint no warning when multipled layers generated",
       build_table(df = adtte_f)
   )
 })
+
+testthat::test_that("surv_timepoint has proper indentation", {
+  # This is a regression test from tern#936
+  adtte_f <- tern_ex_adtte %>%
+    dplyr::filter(PARAMCD == "OS") %>%
+    dplyr::mutate(
+      AVAL = day2month(AVAL),
+      is_event = CNSR == 0,
+      is_not_event = CNSR == 1
+    )
+  lyt <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by(
+      var = "ARM", ref_group = "A: Drug X"
+    ) %>%
+    summarize_vars(
+      vars = "is_event",
+      .stats = "count_fraction",
+      .labels = c(count_fraction = "Patients with event (%)")
+    ) %>%
+    summarize_vars(
+      vars = "is_not_event",
+      .stats = "count_fraction",
+      .labels = c(count_fraction = "Patients without event (%)"),
+      nested = FALSE,
+      show_labels = "hidden"
+    ) %>%
+    surv_timepoint(
+      vars = "AVAL",
+      var_labels = "Months",
+      time_point = c(6, 12),
+      is_event = "is_event",
+      method = "surv",
+      table_names_suffix = "1",
+      control = control_surv_timepoint()
+    ) %>%
+    surv_timepoint(
+      vars = "AVAL",
+      var_labels = "Months",
+      time_point = c(6, 12),
+      is_event = "is_event",
+      method = "surv_diff",
+      table_names_suffix = "2",
+      control = control_surv_timepoint()
+    ) %>%
+    surv_timepoint(
+      vars = "AVAL",
+      var_labels = "Months",
+      time_point = c(6, 12),
+      is_event = "is_event",
+      method = "both",
+      table_names_suffix = "3",
+      control = control_surv_timepoint()
+    )
+
+  result <- build_table(lyt, df = adtte_f, alt_counts_df = tern_ex_adsl)
+
+  testthat::expect_snapshot(make_row_df(result)$indent)
+  testthat::expect_snapshot(result[c(1:5, nrow(result) - 9:1),1])
+})
