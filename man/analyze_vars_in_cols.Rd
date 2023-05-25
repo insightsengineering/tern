@@ -12,6 +12,7 @@ analyze_vars_in_cols(
   .labels = c(n = "n", mean = "Mean", sd = "SD", se = "SE", cv = "CV (\%)", geom_cv =
     "CV \% Geometric Mean"),
   labelstr = " ",
+  do_row_groups = FALSE,
   nested = TRUE,
   na_level = NULL,
   .formats = NULL

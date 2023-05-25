@@ -34,3 +34,22 @@ testthat::test_that("custom labels can be set with labelstr", {
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+
+testthat::test_that("custom labels can be set for all lines", {
+basic_table() %>%
+  split_rows_by("SEX") %>%
+  tern::analyze_vars_in_cols(
+      var = c("AGE"),
+      do_row_groups = TRUE
+  ) %>%
+  # split_rows_by("RACE", child_labels = "hidden", split_fun = drop_split_levels) %>%
+  # tern::analyze_vars_in_cols(
+  #   vars = c("AGE"),
+  #   inherit_row_labels = FALSE,
+  #   do_row_groups = TRUE
+  # ) %>%
+  build_table(df = tern_ex_adpp)
+
+})
+summary_formats <- tern:::summary_formats

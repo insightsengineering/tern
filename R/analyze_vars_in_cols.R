@@ -96,6 +96,7 @@ analyze_vars_in_cols <- function(lyt,
                                    geom_cv = "CV % Geometric Mean"
                                  ),
                                  labelstr = " ",
+                                 do_row_groups = FALSE,
                                  nested = TRUE,
                                  na_level = NULL,
                                  .formats = NULL) {
@@ -113,18 +114,40 @@ analyze_vars_in_cols <- function(lyt,
     formats_v <- .formats
   }
 
-  afun_list <- Map(
-    function(stat) {
-      make_afun(
-        s_summary,
-        .labels = labelstr,
-        .stats = stat,
-        .format_na_strs = na_level,
-        .formats = formats_v[names(formats_v) == stat]
-      )
-    },
-    stat = .stats
-  )
+  if (length(labelstr) == 1L) {
+    labelstr <- rep(labelstr, length(.stats))
+  }
+
+  # if (isFALSE(inherit_row_labels)) {
+  #   afun_list <- Map(
+  #     function(stat) {
+  #       make_afun(
+  #         s_summary,
+  #         .labels = labelstr,
+  #         .stats = stat,
+  #         .format_na_strs = na_level,
+  #         .formats = formats_v[names(formats_v) == stat]
+  #       )
+  #     },
+  #     stat = .stats
+  #   )
+  #
+  # } else {
+    afun_list <- Map(
+      function(stat) {
+        function(u, .spl_context, labelstr, ...) {
+          # browser()
+          res <- s_summary(u, ...)[[stat]]
+          lbl <- ifelse(do_row_groups, labelstr, .spl_context$value[nrow(.spl_context)])
+          rcell(res,
+                label = lbl,
+                format = formats_v[names(formats_v) == stat][[1]],
+                format_na_str = na_level)
+        }
+      },
+      stat = .stats
+    )
+  # }
 
   # Check for vars in the case that one or more are used
   if (length(vars) == 1) {
@@ -141,10 +164,19 @@ analyze_vars_in_cols <- function(lyt,
     vars = vars,
     varlabels = .labels[.stats]
   )
-
-  analyze_colvars(lyt,
-    afun = afun_list,
-    nested = nested,
-    extra_args = list(...)
-  )
+  browser()
+  if (do_row_groups) {
+    summarize_row_groups(
+      lyt = lyt,
+      var = vars[1],
+      cfun = afun_list,
+      extra_args = list(...)
+    )
+  } else {
+    analyze_colvars(lyt,
+      afun = afun_list,
+      nested = nested,
+      extra_args = list(...)
+    )
+  }
 }
