@@ -144,9 +144,7 @@ prop_diff_strat_nc(
 
 }
 \references{
-\itemize{
-\item \insertRef{Yan2010-jt}{tern}
-}
+\insertRef{Yan2010-jt}{tern}
 }
 \seealso{
 \code{\link[=prop_diff]{prop_diff()}} for implementation of these helper functions.

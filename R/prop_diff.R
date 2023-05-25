@@ -533,7 +533,7 @@ prop_diff_cmh <- function(rsp,
 #'   and directs the way weights are estimated.
 #'
 #' @references
-#' - \insertRef{Yan2010-jt}{tern}
+#' \insertRef{Yan2010-jt}{tern}
 #'
 #' @examples
 #' # Stratified Newcombe confidence interval
