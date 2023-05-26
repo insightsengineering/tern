@@ -35,21 +35,29 @@ testthat::test_that("custom labels can be set with labelstr", {
   testthat::expect_snapshot(res)
 })
 
-
 testthat::test_that("custom labels can be set for all lines", {
-basic_table() %>%
-  split_rows_by("SEX") %>%
-  tern::analyze_vars_in_cols(
+  lyt <- basic_table() %>%
+    split_rows_by("SEX") %>%
+    analyze_vars_in_cols(
       var = c("AGE"),
       do_row_groups = TRUE
-  ) %>%
-  # split_rows_by("RACE", child_labels = "hidden", split_fun = drop_split_levels) %>%
-  # tern::analyze_vars_in_cols(
-  #   vars = c("AGE"),
-  #   inherit_row_labels = FALSE,
-  #   do_row_groups = TRUE
-  # ) %>%
-  build_table(df = tern_ex_adpp)
+    ) %>%
+    split_rows_by("RACE", child_labels = "hidden", split_fun = drop_split_levels) %>%
+    analyze_vars_in_cols(
+      vars = c("AGE"),
+      split_col_vars = FALSE
+    )
 
+  tbl <- testthat::expect_silent(build_table(lyt, df = tern_ex_adpp, alt_counts_df = tern_ex_adsl))
+
+  testthat::expect_snapshot(tbl)
+
+  # It really works if I can sort it
+  scorefun <- function(col) {
+    function(tt) {
+      cell_values(tt)[[col]]
+    }
+  }
+
+  testthat::expect_snapshot(sort_at_path(tbl, c("SEX", "*", "RACE"), scorefun(1)))
 })
-summary_formats <- tern:::summary_formats
