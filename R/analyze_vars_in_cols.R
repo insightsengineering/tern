@@ -140,9 +140,10 @@ analyze_vars_in_cols <- function(lyt,
         res <- s_summary(u, ...)[[stat]]
         lbl <- ifelse(do_row_groups, labelstr, .spl_context$value[nrow(.spl_context)])
         rcell(res,
-              label = lbl,
-              format = formats_v[names(formats_v) == stat][[1]],
-              format_na_str = na_level)
+          label = lbl,
+          format = formats_v[names(formats_v) == stat][[1]],
+          format_na_str = na_level
+        )
       }
     },
     stat = .stats

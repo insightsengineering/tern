@@ -293,5 +293,5 @@ testthat::test_that("surv_timepoint has proper indentation", {
   result <- build_table(lyt, df = adtte_f, alt_counts_df = tern_ex_adsl)
 
   testthat::expect_snapshot(make_row_df(result)$indent)
-  testthat::expect_snapshot(result[c(1:5, nrow(result) - 9:1),1])
+  testthat::expect_snapshot(result[c(1:5, nrow(result) - 9:1), 1])
 })
