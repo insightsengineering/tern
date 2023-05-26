@@ -32,7 +32,8 @@ summarize_num_patients(
   .formats = NULL,
   .labels = c(unique = "Number of patients with at least one event", nonunique =
     "Number of events"),
-  indent_mod = 0L,
+  indent_mod = lifecycle::deprecated(),
+  .indent_mods = 0L,
   ...
 )
 
@@ -44,7 +45,8 @@ analyze_num_patients(
   .labels = c(unique = "Number of patients with at least one event", nonunique =
     "Number of events"),
   show_labels = c("default", "visible", "hidden"),
-  indent_mod = 0L,
+  indent_mod = lifecycle::deprecated(),
+  .indent_mods = 0L,
   ...
 )
 }
@@ -78,10 +80,9 @@ by a statistics function.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{indent_mod}{(\code{count})\cr it can be negative. Modifier for the default indent position for the
-structure created by this function(subtable, content table, or row) and
-all of that structure's children. Defaults to 0, which corresponds to the
-unmodified default behavior.}
+\item{indent_mod}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{.indent_mods} argument instead.}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
 \item{...}{additional arguments for the lower level functions.}
 
