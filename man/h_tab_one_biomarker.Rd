@@ -4,7 +4,7 @@
 \alias{h_tab_one_biomarker}
 \title{Helper Function for Tabulation of a Single Biomarker Result}
 \usage{
-h_tab_one_biomarker(df, afuns, colvars)
+h_tab_one_biomarker(df, afuns, colvars, .indent_mods = 0L)
 }
 \arguments{
 \item{df}{(\code{data.frame})\cr results for a single biomarker.}

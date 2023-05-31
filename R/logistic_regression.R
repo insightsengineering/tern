@@ -78,13 +78,14 @@
 #' @export
 summarize_logistic <- function(lyt,
                                conf_level,
-                               drop_and_remove_str = "") {
+                               drop_and_remove_str = "",
+                               .indent_mods = NULL) {
   # checks
   checkmate::assert_string(drop_and_remove_str)
 
   sum_logistic_variable_test <- logistic_summary_by_flag("is_variable_summary")
-  sum_logistic_term_estimates <- logistic_summary_by_flag("is_term_summary")
-  sum_logistic_odds_ratios <- logistic_summary_by_flag("is_reference_summary")
+  sum_logistic_term_estimates <- logistic_summary_by_flag("is_term_summary", .indent_mods = .indent_mods)
+  sum_logistic_odds_ratios <- logistic_summary_by_flag("is_reference_summary", .indent_mods = .indent_mods)
   split_fun <- drop_and_remove_levels(drop_and_remove_str)
 
   lyt <- logistic_regression_cols(lyt, conf_level = conf_level)
@@ -331,16 +332,16 @@ logistic_regression_cols <- function(lyt,
 #' @return A content function.
 #'
 #' @export
-logistic_summary_by_flag <- function(flag_var) {
+logistic_summary_by_flag <- function(flag_var, .indent_mods = NULL) {
   checkmate::assert_string(flag_var)
   function(lyt) {
     cfun_list <- list(
-      df = cfun_by_flag("df", flag_var, format = "xx."),
-      estimate = cfun_by_flag("estimate", flag_var, format = "xx.xxx"),
-      std_error = cfun_by_flag("std_error", flag_var, format = "xx.xxx"),
-      odds_ratio = cfun_by_flag("odds_ratio", flag_var, format = ">999.99"),
-      ci = cfun_by_flag("ci", flag_var, format = format_extreme_values_ci(2L)),
-      pvalue = cfun_by_flag("pvalue", flag_var, format = "x.xxxx | (<0.0001)")
+      df = cfun_by_flag("df", flag_var, format = "xx.", indent_mod = .indent_mods),
+      estimate = cfun_by_flag("estimate", flag_var, format = "xx.xxx", indent_mod = .indent_mods),
+      std_error = cfun_by_flag("std_error", flag_var, format = "xx.xxx", indent_mod = .indent_mods),
+      odds_ratio = cfun_by_flag("odds_ratio", flag_var, format = ">999.99", indent_mod = .indent_mods),
+      ci = cfun_by_flag("ci", flag_var, format = format_extreme_values_ci(2L), indent_mod = .indent_mods),
+      pvalue = cfun_by_flag("pvalue", flag_var, format = "x.xxxx | (<0.0001)", indent_mod = .indent_mods)
     )
     summarize_row_groups(
       lyt = lyt,

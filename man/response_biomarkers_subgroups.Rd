@@ -7,7 +7,8 @@
 \usage{
 tabulate_rsp_biomarkers(
   df,
-  vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval")
+  vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
+  .indent_mods = 0L
 )
 }
 \arguments{
@@ -54,6 +55,17 @@ adrs_f <- adrs \%>\%
   filter(PARAMCD == "BESRSPI") \%>\%
   mutate(rsp = AVALC == "CR")
 formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
+
+df <- extract_rsp_biomarkers(
+  variables = list(
+    rsp = "rsp",
+    biomarkers = c("BMRKR1", "AGE"),
+    covariates = "SEX",
+    subgroups = "BMRKR2"
+  ),
+  data = adrs_f
+)
+
 \dontrun{
 ## Table with default columns.
 # df <- <need_data_input_to_work>

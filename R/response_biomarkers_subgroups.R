@@ -38,6 +38,17 @@
 #'   filter(PARAMCD == "BESRSPI") %>%
 #'   mutate(rsp = AVALC == "CR")
 #' formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
+#'
+#' df <- extract_rsp_biomarkers(
+#'   variables = list(
+#'     rsp = "rsp",
+#'     biomarkers = c("BMRKR1", "AGE"),
+#'     covariates = "SEX",
+#'     subgroups = "BMRKR2"
+#'   ),
+#'   data = adrs_f
+#' )
+#'
 #' \dontrun{
 #' ## Table with default columns.
 #' # df <- <need_data_input_to_work>
@@ -56,7 +67,8 @@
 #' @export
 #' @name response_biomarkers_subgroups
 tabulate_rsp_biomarkers <- function(df,
-                                    vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval")) {
+                                    vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
+                                    .indent_mods = 0L) {
   checkmate::assert_data_frame(df)
   checkmate::assert_character(df$biomarker)
   checkmate::assert_character(df$biomarker_label)
@@ -66,7 +78,8 @@ tabulate_rsp_biomarkers <- function(df,
   tabs <- lapply(df_subs, FUN = function(df_sub) {
     tab_sub <- h_tab_rsp_one_biomarker(
       df = df_sub,
-      vars = vars
+      vars = vars,
+      .indent_mods = .indent_mods
     )
     # Insert label row as first row in table.
     label_at_path(tab_sub, path = row_paths(tab_sub)[[1]][1]) <- df_sub$biomarker_label[1]

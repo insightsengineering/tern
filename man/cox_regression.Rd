@@ -21,6 +21,7 @@ a_coxreg(
   .spl_context,
   .stats,
   .formats,
+  .indent_mods = NULL,
   na_level = "",
   cache_env = NULL
 )
@@ -88,6 +89,8 @@ that is passed by \code{rtables}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+
 \item{na_level}{(\code{string})\cr custom string to replace all \code{NA} values with. Defaults to \code{""}.}
 
 \item{cache_env}{(\code{environment})\cr an environment object used to cache the regression model in order to
@@ -97,8 +100,6 @@ avoid repeatedly fitting the same model for every row in the table. Defaults to 
 
 \item{common_var}{(\code{character})\cr the name of a factor variable in the dataset which takes the same value
 for all rows. This should be created during pre-processing if no such variable currently exists.}
-
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
 \item{.section_div}{(\code{character})\cr string which should be repeated as a section divider between sections.
 Defaults to \code{NA} for no section divider. If a vector of two strings are given, the first will be used between

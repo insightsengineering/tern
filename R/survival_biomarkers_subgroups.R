@@ -208,7 +208,8 @@ extract_survival_biomarkers <- function(variables,
 #' @export
 tabulate_survival_biomarkers <- function(df,
                                          vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
-                                         time_unit = NULL) {
+                                         time_unit = NULL,
+                                         .indent_mods = 0L) {
   checkmate::assert_data_frame(df)
   checkmate::assert_character(df$biomarker)
   checkmate::assert_character(df$biomarker_label)
@@ -219,7 +220,8 @@ tabulate_survival_biomarkers <- function(df,
     tab_sub <- h_tab_surv_one_biomarker(
       df = df_sub,
       vars = vars,
-      time_unit = time_unit
+      time_unit = time_unit,
+      .indent_mods = .indent_mods
     )
     # Insert label row as first row in table.
     label_at_path(tab_sub, path = row_paths(tab_sub)[[1]][1]) <- df_sub$biomarker_label[1]
