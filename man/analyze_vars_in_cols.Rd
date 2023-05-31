@@ -11,8 +11,8 @@ analyze_vars_in_cols(
   .stats = c("n", "mean", "sd", "se", "cv", "geom_cv"),
   .labels = c(n = "n", mean = "Mean", sd = "SD", se = "SE", cv = "CV (\%)", geom_cv =
     "CV \% Geometric Mean"),
-  labelstr = NULL,
-  summarize_row_groups = FALSE,
+  row_labels = NULL,
+  do_summarize_row_groups = FALSE,
   split_col_vars = TRUE,
   .indent_mods = NULL,
   nested = TRUE,
@@ -31,11 +31,12 @@ analyze_vars_in_cols(
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
-(must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
-for more information.}
+\item{row_labels}{(\code{character})\cr as this function works in columns space, usual \code{.labels}
+character vector applies on the column space. You can change the row labels by defining this
+parameter to a named character vector with names corresponding to the split values. It defaults
+to \code{NULL} and if it contains only one \code{string}, it will duplicate that as a row label.}
 
-\item{summarize_row_groups}{(\code{flag})\cr defaults to \code{FALSE} and applies the analysis to the current
+\item{do_summarize_row_groups}{(\code{flag})\cr defaults to \code{FALSE} and applies the analysis to the current
 label rows. This is a wrapper of \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}} and it can accept \code{labelstr}
 to define row labels. This behavior is not supported as we never need to overload row labels.}
 
@@ -59,7 +60,7 @@ Adding this function to an \code{rtable} layout will summarize the given variabl
 in columns, and add it to the table layout.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Layout-creating function which can be used for creating column-wise summary tables, primarily
 used for PK data sets. This function is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
@@ -73,8 +74,8 @@ them.
 
 Here \code{labelstr} behaves differently than usual. If it is not defined (default as \code{NULL}),
 row labels are assigned automatically to the split values in case of \code{rtables::analyze_colvars}
-(\code{summarize_row_groups = FALSE}, the default), and to the group label for
-\code{summarize_row_groups = TRUE}.
+(\code{do_summarize_row_groups = FALSE}, the default), and to the group label for
+\code{do_summarize_row_groups = TRUE}.
 }
 \examples{
 library(dplyr)

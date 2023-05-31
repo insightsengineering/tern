@@ -1,13 +1,17 @@
 #' Summary numeric variables in columns
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("experimental")`
 #'
 #' Layout-creating function which can be used for creating column-wise summary tables, primarily
 #' used for PK data sets. This function is a wrapper for [rtables::analyze_colvars()].
 #'
 #' @inheritParams argument_convention
 #' @inheritParams rtables::analyze_colvars
-#' @param summarize_row_groups (`flag`)\cr defaults to `FALSE` and applies the analysis to the current
+#' @param row_labels (`character`)\cr as this function works in columns space, usual `.labels`
+#'   character vector applies on the column space. You can change the row labels by defining this
+#'   parameter to a named character vector with names corresponding to the split values. It defaults
+#'   to `NULL` and if it contains only one `string`, it will duplicate that as a row label.
+#' @param do_summarize_row_groups (`flag`)\cr defaults to `FALSE` and applies the analysis to the current
 #'   label rows. This is a wrapper of [rtables::summarize_row_groups()] and it can accept `labelstr`
 #'   to define row labels. This behavior is not supported as we never need to overload row labels.
 #' @param split_col_vars (`flag`)\cr defaults to `TRUE` and puts the analysis results onto the columns.
@@ -27,8 +31,8 @@
 #'
 #'   Here `labelstr` behaves differently than usual. If it is not defined (default as `NULL`),
 #'   row labels are assigned automatically to the split values in case of `rtables::analyze_colvars`
-#'   (`summarize_row_groups = FALSE`, the default), and to the group label for
-#'   `summarize_row_groups = TRUE`.
+#'   (`do_summarize_row_groups = FALSE`, the default), and to the group label for
+#'   `do_summarize_row_groups = TRUE`.
 #'
 #' @seealso [summarize_vars()], [rtables::analyze_colvars()].
 #'
@@ -113,19 +117,19 @@ analyze_vars_in_cols <- function(lyt,
                                    cv = "CV (%)",
                                    geom_cv = "CV % Geometric Mean"
                                  ),
-                                 labelstr = NULL,
-                                 summarize_row_groups = FALSE,
+                                 row_labels = NULL,
+                                 do_summarize_row_groups = FALSE,
                                  split_col_vars = TRUE,
                                  .indent_mods = NULL,
                                  nested = TRUE,
                                  na_level = NULL,
                                  .formats = NULL) {
   checkmate::assert_string(na_level, null.ok = TRUE)
-  checkmate::assert_string(labelstr, null.ok = TRUE)
+  checkmate::assert_character(row_labels, null.ok = TRUE)
   checkmate::assert_int(.indent_mods, null.ok = TRUE)
   checkmate::assert_flag(nested)
   checkmate::assert_flag(split_col_vars)
-  checkmate::assert_flag(summarize_row_groups)
+  checkmate::assert_flag(do_summarize_row_groups)
 
   # Automatic assignment of formats
   if (is.null(.formats)) {
@@ -136,33 +140,6 @@ analyze_vars_in_cols <- function(lyt,
   } else {
     formats_v <- .formats
   }
-
-  # Avoiding recursive argument, but keep the param name consistent
-  lbl_str <- labelstr
-
-  afun_list <- Map(
-    function(stat) {
-      function(u, .spl_context, labelstr = lbl_str, ...) {
-        res <- s_summary(u, ...)[[stat]]
-        if (summarize_row_groups) {
-          lbl <- ifelse(is.null(labelstr), " ", labelstr)
-        } else {
-          lbl <- ifelse(is.null(labelstr),
-            .spl_context$value[nrow(.spl_context)],
-            labelstr
-          )
-        }
-
-        rcell(res,
-          label = lbl,
-          format = formats_v[names(formats_v) == stat][[1]],
-          format_na_str = na_level,
-          indent_mod = ifelse(is.null(.indent_mods), 0L, .indent_mods)
-        )
-      }
-    },
-    stat = .stats
-  )
 
   # Check for vars in the case that one or more are used
   if (length(vars) == 1) {
@@ -193,6 +170,7 @@ analyze_vars_in_cols <- function(lyt,
       )
     }
 
+    # Main col split
     lyt <- split_cols_by_multivar(
       lyt = lyt,
       vars = vars,
@@ -200,17 +178,91 @@ analyze_vars_in_cols <- function(lyt,
     )
   }
 
-  if (summarize_row_groups) {
+  if (do_summarize_row_groups) {
     if (length(unique(vars)) > 1) {
-      stop("When using summarize_row_groups only one label level var should be inserted.")
+      stop("When using do_summarize_row_groups only one label level var should be inserted.")
     }
+
+    # Function list for do_summarize_row_groups. Slightly different handling of labels
+    cfun_list <- Map(
+      function(stat) {
+        function(u, .spl_context, labelstr, ...) {
+          # Statistic
+          res <- s_summary(u, ...)[[stat]]
+
+          # Label check and replacement
+          if (length(row_labels) > 1) {
+            if (!(labelstr %in% names(row_labels))) {
+              stop("Replacing the labels in do_summarize_row_groups needs a named vector",
+                   "that contains the split values. In the current split variable ",
+                   .spl_context$split[nrow(.spl_context)],
+                   " the labelstr value (split value by default) ", labelstr, " is not in",
+                   " row_labels names: ", names(row_labels))
+            }
+            lbl <- unlist(row_labels[labelstr])
+          } else {
+            lbl <- labelstr
+          }
+
+          # Cell creation
+          rcell(res,
+                label = lbl,
+                format = formats_v[names(formats_v) == stat][[1]],
+                format_na_str = na_level,
+                indent_mod = ifelse(is.null(.indent_mods), 0L, .indent_mods)
+          )
+        }
+      },
+      stat = .stats
+    )
+
+    # Main call to rtables
     summarize_row_groups(
       lyt = lyt,
       var = unique(vars),
-      cfun = afun_list,
+      cfun = cfun_list,
       extra_args = list(...)
     )
   } else {
+    # Function list for analyze_colvars
+    afun_list <- Map(
+      function(stat) {
+        function(u, .spl_context, ...) {
+          # Main statistics
+          res <- s_summary(u, ...)[[stat]]
+
+          # Label from context
+          label_from_context <- .spl_context$value[nrow(.spl_context)]
+
+          # Label switcher
+          if (is.null(row_labels)) {
+            lbl <- label_from_context
+          } else {
+            if (length(row_labels) > 1) {
+              if (!(label_from_context %in% names(row_labels))) {
+                stop("Replacing the labels in do_summarize_row_groups needs a named vector",
+                     "that contains the split values. In the current split variable ",
+                     .spl_context$split[nrow(.spl_context)],
+                     " the split value ", label_from_context, " is not in",
+                     " row_labels names: ", names(row_labels))
+              }
+              lbl <- unlist(row_labels[label_from_context])
+            }
+          }
+
+          # Cell creation
+          rcell(res,
+                label = lbl,
+                format = formats_v[names(formats_v) == stat][[1]],
+                format_na_str = na_level,
+                indent_mod = ifelse(is.null(.indent_mods), 0L, .indent_mods)
+          )
+        }
+      },
+      stat = .stats
+    )
+
+    # Main call to rtables
     analyze_colvars(lyt,
       afun = afun_list,
       nested = nested,
