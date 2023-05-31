@@ -49,16 +49,32 @@ testthat::test_that("custom labels can be set with labelstr", {
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("custom labels can be set for all lines", {
+testthat::test_that("custom labels can be set with labelstr and summarize", {
+  # TODO: fix this
+  lbl <- "some custom label"
   lyt <- basic_table() %>%
     split_rows_by("SEX") %>%
     analyze_vars_in_cols(
-      var = c("AGE"),
-      do_row_groups = TRUE
+      vars = "AGE",
+      labelstr = lbl,
+      summarize_row_groups = TRUE
+    )
+  result <- build_table(lyt, df = adpp)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("summarize works with nested analyze", {
+  lyt <- basic_table() %>%
+    split_rows_by("SEX") %>%
+    analyze_vars_in_cols(
+      var = "AGE",
+      summarize_row_groups = TRUE
     ) %>%
     split_rows_by("RACE", child_labels = "hidden", split_fun = drop_split_levels) %>%
     analyze_vars_in_cols(
-      vars = c("AGE"),
+      vars = "AGE",
       split_col_vars = FALSE
     )
 

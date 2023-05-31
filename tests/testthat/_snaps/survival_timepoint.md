@@ -166,3 +166,33 @@
         99% CI                                  (-26.94, 7.66)   (-32.17, 6.10)
         p-value (Z-test)                            0.1511           0.0794    
 
+# surv_timepoint has proper indentation
+
+    Code
+      make_row_df(result)$indent
+    Output
+       [1] 0 0 0 1 1 1 0 1 1 1 0 1 1 1 0 1 1 1 0 1 1 1 1 1 1 0 1 1 1 1 1 1
+
+---
+
+    Code
+      result[c(1:5, nrow(result) - 9:1), 1]
+    Output
+                                          A: Drug X   
+                                            (N=69)    
+      ————————————————————————————————————————————————
+      Patients with event (%)             44 (63.8%)  
+      Patients without event (%)          25 (36.2%)  
+      6 Months                                        
+        Patients remaining at risk            56      
+        Event Free Rate (%)                 86.46     
+        Difference in Event Free Rate                 
+        95% CI                                        
+        p-value (Z-test)                              
+      12 Months                                       
+        Patients remaining at risk            50      
+        Event Free Rate (%)                 81.69     
+        95% CI                          (72.30, 91.07)
+        Difference in Event Free Rate                 
+        95% CI                                        
+
