@@ -1,5 +1,8 @@
 # tern 0.8.2.9001
 
+### Enhancements
+* Added explicit zero counts to `g_km` plot "at risk" annotation tables.
+
 ### Miscellaneous
 * Updated README to include installation instructions for CRAN.
 
