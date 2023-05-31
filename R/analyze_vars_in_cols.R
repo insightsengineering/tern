@@ -137,9 +137,6 @@ analyze_vars_in_cols <- function(lyt,
     formats_v <- .formats
   }
 
-  # if (length(labelstr) == 1L) {
-  #   labelstr <- rep(labelstr, length(.stats))
-  # }
   # Avoiding recursive argument, but keep the param name consistent
   lbl_str <- labelstr
 
