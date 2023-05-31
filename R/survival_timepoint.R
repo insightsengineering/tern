@@ -339,6 +339,7 @@ surv_timepoint <- function(lyt,
         var_labels = paste(tpt, var_labels),
         table_names = paste0("surv_diff_", tpt, table_names_suffix),
         show_labels = ifelse(method == "both", "hidden", show_labels),
+        indent_mod = ifelse(method == "both", 1L, 0L),
         afun = afun_surv_diff,
         extra_args = list(
           is_event = list(...)$is_event,
