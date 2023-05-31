@@ -215,14 +215,14 @@ testthat::test_that("surv_timepoint for survival diff works with customized argu
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("surv_timepoint no warning when multipled layers generated", {
+testthat::test_that("surv_timepoint works with method = both", {
   adtte_f <- tern_ex_adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(
       AVAL = day2month(AVAL),
       is_event = CNSR == 0
     )
-  testthat::expect_silent(
+  result <- testthat::expect_silent(
     basic_table() %>%
       split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
       add_colcounts() %>%
@@ -235,6 +235,7 @@ testthat::test_that("surv_timepoint no warning when multipled layers generated",
       ) %>%
       build_table(df = adtte_f)
   )
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("surv_timepoint has proper indentation", {
@@ -261,6 +262,7 @@ testthat::test_that("surv_timepoint has proper indentation", {
       .labels = c(count_fraction = "Patients without event (%)"),
       nested = FALSE,
       show_labels = "hidden"
+      # The following creates an error: .indent_mods = 1L (TODO: check this)
     ) %>%
     surv_timepoint(
       vars = "AVAL",
@@ -269,7 +271,8 @@ testthat::test_that("surv_timepoint has proper indentation", {
       is_event = "is_event",
       method = "surv",
       table_names_suffix = "1",
-      control = control_surv_timepoint()
+      control = control_surv_timepoint(),
+      .indent_mods = 1L
     ) %>%
     surv_timepoint(
       vars = "AVAL",
@@ -278,7 +281,8 @@ testthat::test_that("surv_timepoint has proper indentation", {
       is_event = "is_event",
       method = "surv_diff",
       table_names_suffix = "2",
-      control = control_surv_timepoint()
+      control = control_surv_timepoint(),
+      .indent_mods = 1L
     ) %>%
     surv_timepoint(
       vars = "AVAL",
@@ -287,7 +291,8 @@ testthat::test_that("surv_timepoint has proper indentation", {
       is_event = "is_event",
       method = "both",
       table_names_suffix = "3",
-      control = control_surv_timepoint()
+      control = control_surv_timepoint(),
+      .indent_mods = 1L # These do nothing atm (TODO: fix this behavior)
     )
 
   result <- build_table(lyt, df = adtte_f, alt_counts_df = tern_ex_adsl)

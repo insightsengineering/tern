@@ -166,6 +166,30 @@
         99% CI                                  (-26.94, 7.66)   (-32.17, 6.10)
         p-value (Z-test)                            0.1511           0.0794    
 
+# surv_timepoint works with method = both
+
+    Code
+      res
+    Output
+      ARM                              
+        SEX             n    Mean   SE 
+      —————————————————————————————————
+      A: Drug X                        
+        F                              
+          F             0     NA    NA 
+        M                              
+          M             0     NA    NA 
+      B: Placebo                       
+        F                              
+          F             0     NA    NA 
+        M                              
+          M             0     NA    NA 
+      C: Combination                   
+        F                              
+          F            288   36.0   0.4
+        M                              
+          M            234   36.3   0.6
+
 # surv_timepoint has proper indentation
 
     Code
