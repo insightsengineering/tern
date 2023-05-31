@@ -193,11 +193,13 @@ analyze_vars_in_cols <- function(lyt,
           # Label check and replacement
           if (length(row_labels) > 1) {
             if (!(labelstr %in% names(row_labels))) {
-              stop("Replacing the labels in do_summarize_row_groups needs a named vector",
-                   "that contains the split values. In the current split variable ",
-                   .spl_context$split[nrow(.spl_context)],
-                   " the labelstr value (split value by default) ", labelstr, " is not in",
-                   " row_labels names: ", names(row_labels))
+              stop(
+                "Replacing the labels in do_summarize_row_groups needs a named vector",
+                "that contains the split values. In the current split variable ",
+                .spl_context$split[nrow(.spl_context)],
+                " the labelstr value (split value by default) ", labelstr, " is not in",
+                " row_labels names: ", names(row_labels)
+              )
             }
             lbl <- unlist(row_labels[labelstr])
           } else {
@@ -206,10 +208,10 @@ analyze_vars_in_cols <- function(lyt,
 
           # Cell creation
           rcell(res,
-                label = lbl,
-                format = formats_v[names(formats_v) == stat][[1]],
-                format_na_str = na_level,
-                indent_mod = ifelse(is.null(.indent_mods), 0L, .indent_mods)
+            label = lbl,
+            format = formats_v[names(formats_v) == stat][[1]],
+            format_na_str = na_level,
+            indent_mod = ifelse(is.null(.indent_mods), 0L, .indent_mods)
           )
         }
       },
@@ -240,11 +242,13 @@ analyze_vars_in_cols <- function(lyt,
           } else {
             if (length(row_labels) > 1) {
               if (!(label_from_context %in% names(row_labels))) {
-                stop("Replacing the labels in do_summarize_row_groups needs a named vector",
-                     "that contains the split values. In the current split variable ",
-                     .spl_context$split[nrow(.spl_context)],
-                     " the split value ", label_from_context, " is not in",
-                     " row_labels names: ", names(row_labels))
+                stop(
+                  "Replacing the labels in do_summarize_row_groups needs a named vector",
+                  "that contains the split values. In the current split variable ",
+                  .spl_context$split[nrow(.spl_context)],
+                  " the split value ", label_from_context, " is not in",
+                  " row_labels names: ", names(row_labels)
+                )
               }
               lbl <- unlist(row_labels[label_from_context])
             }
@@ -252,10 +256,10 @@ analyze_vars_in_cols <- function(lyt,
 
           # Cell creation
           rcell(res,
-                label = lbl,
-                format = formats_v[names(formats_v) == stat][[1]],
-                format_na_str = na_level,
-                indent_mod = ifelse(is.null(.indent_mods), 0L, .indent_mods)
+            label = lbl,
+            format = formats_v[names(formats_v) == stat][[1]],
+            format_na_str = na_level,
+            indent_mod = ifelse(is.null(.indent_mods), 0L, .indent_mods)
           )
         }
       },

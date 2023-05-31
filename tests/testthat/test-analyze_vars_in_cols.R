@@ -62,9 +62,11 @@ testthat::test_that("custom labels can be set with row_labels for analyze_colvar
   testthat::expect_snapshot(res)
 
   # Partial change does not work (stop needs to be as it is more informative)
-  lbl <- c("ASIAN" = "Asian Statistic",
-           "BLACK OR AFRICAN AMERICAN",
-           "Black or African American Statistic")
+  lbl <- c(
+    "ASIAN" = "Asian Statistic",
+    "BLACK OR AFRICAN AMERICAN",
+    "Black or African American Statistic"
+  )
   lyt <- basic_table() %>%
     split_rows_by("RACE", split_fun = drop_split_levels) %>%
     analyze_vars_in_cols(
@@ -113,9 +115,11 @@ testthat::test_that("custom labels can be set with row_labels and summarize", {
   testthat::expect_snapshot(res)
 
   # Partial change does not work (stop needs to be as it is more informative)
-  lbl <- c("ASIAN" = "Asian Statistic",
-           "BLACK OR AFRICAN AMERICAN",
-           "Black or African American Statistic")
+  lbl <- c(
+    "ASIAN" = "Asian Statistic",
+    "BLACK OR AFRICAN AMERICAN",
+    "Black or African American Statistic"
+  )
   lyt <- basic_table() %>%
     split_rows_by("RACE", split_fun = drop_split_levels) %>%
     analyze_vars_in_cols(
