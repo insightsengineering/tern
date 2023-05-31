@@ -146,14 +146,14 @@ analyze_vars_in_cols <- function(lyt,
   afun_list <- Map(
     function(stat) {
       function(u, .spl_context, labelstr = lbl_str, ...) {
-
         res <- s_summary(u, ...)[[stat]]
         if (summarize_row_groups) {
           lbl <- ifelse(is.null(labelstr), " ", labelstr)
         } else {
           lbl <- ifelse(is.null(labelstr),
-                        .spl_context$value[nrow(.spl_context)],
-                        labelstr)
+            .spl_context$value[nrow(.spl_context)],
+            labelstr
+          )
         }
 
         rcell(res,
@@ -178,7 +178,6 @@ analyze_vars_in_cols <- function(lyt,
   }
 
   if (split_col_vars) {
-
     # Checking there is not a previous identical column split
     clyt <- tail(clayout(lyt), 1)[[1]]
 
@@ -189,10 +188,12 @@ analyze_vars_in_cols <- function(lyt,
     )
 
     if (any(sapply(clyt, identical, y = get_last_col_split(dummy_lyt)))) {
-      stop("Column split called again with the same values. ",
-           "This can create many unwanted columns. Please consider adding ",
-           "split_col_vars = FALSE to the last call of ",
-           deparse(sys.calls()[[sys.nframe()-1]]), ".")
+      stop(
+        "Column split called again with the same values. ",
+        "This can create many unwanted columns. Please consider adding ",
+        "split_col_vars = FALSE to the last call of ",
+        deparse(sys.calls()[[sys.nframe() - 1]]), "."
+      )
     }
 
     lyt <- split_cols_by_multivar(
