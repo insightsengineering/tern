@@ -57,7 +57,12 @@ surv_timepoint(
     "ztest_pval"),
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL
+  .indent_mods = if (method == "both") {
+     c(rate_diff = 1L, rate_diff_ci = 2L,
+    ztest_pval = 2L)
+ } else {
+     c(rate_diff_ci = 1L, ztest_pval = 1L)
+ }
 )
 }
 \arguments{

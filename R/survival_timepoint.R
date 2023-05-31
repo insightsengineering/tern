@@ -202,11 +202,6 @@ s_surv_timepoint_diff <- function(df,
 #' @keywords internal
 a_surv_timepoint_diff <- make_afun(
   s_surv_timepoint_diff,
-  .indent_mods = c(
-    rate_diff = 1L,
-    rate_diff_ci = 2L,
-    ztest_pval = 2L
-  ),
   .formats = c(
     rate_diff = "xx.xx",
     rate_diff_ci = "(xx.xx, xx.xx)",
@@ -285,7 +280,11 @@ surv_timepoint <- function(lyt,
                            ),
                            .formats = NULL,
                            .labels = NULL,
-                           .indent_mods = NULL) {
+                           .indent_mods = if (method == "both") {
+                             c(rate_diff = 1L, rate_diff_ci = 2L, ztest_pval = 2L)
+                           } else {
+                             c(rate_diff_ci = 1L, ztest_pval = 1L)
+                           }) {
   method <- match.arg(method)
   checkmate::assert_string(table_names_suffix)
 
