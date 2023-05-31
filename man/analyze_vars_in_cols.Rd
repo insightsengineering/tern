@@ -11,9 +11,10 @@ analyze_vars_in_cols(
   .stats = c("n", "mean", "sd", "se", "cv", "geom_cv"),
   .labels = c(n = "n", mean = "Mean", sd = "SD", se = "SE", cv = "CV (\%)", geom_cv =
     "CV \% Geometric Mean"),
-  labelstr = " ",
-  do_row_groups = FALSE,
+  labelstr = NULL,
+  summarize_row_groups = FALSE,
   split_col_vars = TRUE,
+  .indent_mods = NULL,
   nested = TRUE,
   na_level = NULL,
   .formats = NULL
@@ -31,15 +32,18 @@ analyze_vars_in_cols(
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
-(must be present as second argument in Content Row Functions).}
+(must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
+for more information.}
 
-\item{do_row_groups}{(\code{flag})\cr defaults to \code{FALSE} and applies the analysis to the current
+\item{summarize_row_groups}{(\code{flag})\cr defaults to \code{FALSE} and applies the analysis to the current
 label rows. This is a wrapper of \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}} and it can accept \code{labelstr}
 to define row labels. This behavior is not supported as we never need to overload row labels.}
 
 \item{split_col_vars}{(\code{flag})\cr defaults to \code{TRUE} and puts the analysis results onto the columns.
 This option allows you to add multiple instances of this functions, also in a nested fashion,
-without adding more splits.}
+without adding more splits. This split must happen only one time on a single layout.}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
@@ -66,6 +70,11 @@ This is an experimental implementation of \code{\link[rtables:summarize_row_grou
 support to more complex analysis pipelines on the column space. For the same reasons,
 we encourage to read the examples carefully and file issues for cases that differ from
 them.
+
+Here \code{labelstr} behaves differently than usual. If it is not defined (default as \code{NULL}),
+row labels are assigned automatically to the split values in case of \code{rtables::analyze_colvars}
+(\code{summarize_row_groups = FALSE}, the default), and to the group label for
+\code{summarize_row_groups = TRUE}.
 }
 \examples{
 library(dplyr)

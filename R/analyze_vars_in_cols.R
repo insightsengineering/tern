@@ -7,12 +7,12 @@
 #'
 #' @inheritParams argument_convention
 #' @inheritParams rtables::analyze_colvars
-#' @param do_row_groups (`flag`)\cr defaults to `FALSE` and applies the analysis to the current
+#' @param summarize_row_groups (`flag`)\cr defaults to `FALSE` and applies the analysis to the current
 #'   label rows. This is a wrapper of [rtables::summarize_row_groups()] and it can accept `labelstr`
 #'   to define row labels. This behavior is not supported as we never need to overload row labels.
 #' @param split_col_vars (`flag`)\cr defaults to `TRUE` and puts the analysis results onto the columns.
 #'   This option allows you to add multiple instances of this functions, also in a nested fashion,
-#'   without adding more splits.
+#'   without adding more splits. This split must happen only one time on a single layout.
 #'
 #' @return
 #' A layout object suitable for passing to further layouting functions, or to [rtables::build_table()].
@@ -24,6 +24,11 @@
 #'   support to more complex analysis pipelines on the column space. For the same reasons,
 #'   we encourage to read the examples carefully and file issues for cases that differ from
 #'   them.
+#'
+#'   Here `labelstr` behaves differently than usual. If it is not defined (default as `NULL`),
+#'   row labels are assigned automatically to the split values in case of `rtables::analyze_colvars`
+#'   (`summarize_row_groups = FALSE`, the default), and to the group label for
+#'   `summarize_row_groups = TRUE`.
 #'
 #' @seealso [summarize_vars()], [rtables::analyze_colvars()].
 #'
@@ -108,17 +113,19 @@ analyze_vars_in_cols <- function(lyt,
                                    cv = "CV (%)",
                                    geom_cv = "CV % Geometric Mean"
                                  ),
-                                 labelstr = " ",
-                                 do_row_groups = FALSE,
+                                 labelstr = NULL,
+                                 summarize_row_groups = FALSE,
                                  split_col_vars = TRUE,
+                                 .indent_mods = NULL,
                                  nested = TRUE,
                                  na_level = NULL,
                                  .formats = NULL) {
   checkmate::assert_string(na_level, null.ok = TRUE)
-  checkmate::assert_string(labelstr)
+  checkmate::assert_string(labelstr, null.ok = TRUE)
+  checkmate::assert_int(.indent_mods, null.ok = TRUE)
   checkmate::assert_flag(nested)
-  checkmate::assert_flag(do_row_groups)
   checkmate::assert_flag(split_col_vars)
+  checkmate::assert_flag(summarize_row_groups)
 
   # Automatic assignment of formats
   if (is.null(.formats)) {
@@ -130,19 +137,30 @@ analyze_vars_in_cols <- function(lyt,
     formats_v <- .formats
   }
 
-  if (length(labelstr) == 1L) {
-    labelstr <- rep(labelstr, length(.stats))
-  }
+  # if (length(labelstr) == 1L) {
+  #   labelstr <- rep(labelstr, length(.stats))
+  # }
+  # Avoiding recursive argument, but keep the param name consistent
+  lbl_str <- labelstr
 
   afun_list <- Map(
     function(stat) {
-      function(u, .spl_context, labelstr, ...) {
+      function(u, .spl_context, labelstr = lbl_str, ...) {
+
         res <- s_summary(u, ...)[[stat]]
-        lbl <- ifelse(do_row_groups, labelstr, .spl_context$value[nrow(.spl_context)])
+        if (summarize_row_groups) {
+          lbl <- ifelse(is.null(labelstr), " ", labelstr)
+        } else {
+          lbl <- ifelse(is.null(labelstr),
+                        .spl_context$value[nrow(.spl_context)],
+                        labelstr)
+        }
+
         rcell(res,
           label = lbl,
           format = formats_v[names(formats_v) == stat][[1]],
-          format_na_str = na_level
+          format_na_str = na_level,
+          indent_mod = ifelse(is.null(.indent_mods), 0L, .indent_mods)
         )
       }
     },
@@ -160,6 +178,23 @@ analyze_vars_in_cols <- function(lyt,
   }
 
   if (split_col_vars) {
+
+    # Checking there is not a previous identical column split
+    clyt <- tail(clayout(lyt), 1)[[1]]
+
+    dummy_lyt <- split_cols_by_multivar(
+      lyt = basic_table(),
+      vars = vars,
+      varlabels = .labels[.stats]
+    )
+
+    if (any(sapply(clyt, identical, y = get_last_col_split(dummy_lyt)))) {
+      stop("Column split called again with the same values. ",
+           "This can create many unwanted columns. Please consider adding ",
+           "split_col_vars = FALSE to the last call of ",
+           deparse(sys.calls()[[sys.nframe()-1]]), ".")
+    }
+
     lyt <- split_cols_by_multivar(
       lyt = lyt,
       vars = vars,
@@ -167,10 +202,13 @@ analyze_vars_in_cols <- function(lyt,
     )
   }
 
-  if (do_row_groups) {
+  if (summarize_row_groups) {
+    if (length(unique(vars)) > 1) {
+      stop("When using summarize_row_groups only one label level var should be inserted.")
+    }
     summarize_row_groups(
       lyt = lyt,
-      var = vars[1],
+      var = unique(vars),
       cfun = afun_list,
       extra_args = list(...)
     )
@@ -181,4 +219,11 @@ analyze_vars_in_cols <- function(lyt,
       extra_args = list(...)
     )
   }
+}
+
+# TODO: multiple analyze calls WITHOUT the row split
+
+# Help function
+get_last_col_split <- function(lyt) {
+  tail(tail(clayout(lyt), 1)[[1]], 1)[[1]]
 }

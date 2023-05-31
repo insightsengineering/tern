@@ -32,7 +32,8 @@
 #'   all of that structure's children. Defaults to 0, which corresponds to the
 #'   unmodified default behavior.
 #' @param labelstr (`character`)\cr label of the level of the parent split currently being summarized
-#'   (must be present as second argument in Content Row Functions).
+#'   (must be present as second argument in Content Row Functions). See [rtables::summarize_row_groups()]
+#'   for more information.
 #' @param lyt (`layout`)\cr input layout where analyses will be added to.
 #' @param na.rm (`flag`)\cr whether `NA` values should be removed from `x` prior to analysis.
 #' @param na_level (`string`)\cr used to replace all `NA` or empty values in factors with custom `string`.
