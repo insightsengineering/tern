@@ -36,7 +36,9 @@ in columns, and add it to the table layout.
 
 This analyze function uses the S3 generic function \code{\link[=s_summary]{s_summary()}} to summarize different variables
 that are arranged in columns. Additional standard formatting arguments are available. It is a
-minimal wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
+minimal wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}. The latter function is meant to add different
+analysis methods for each column variables as different rows. To have the analysis methods as
+column labels, please refer to \code{\link[=analyze_vars_in_col]{analyze_vars_in_col()}}.
 }
 \examples{
 dta_test <- data.frame(
@@ -53,7 +55,7 @@ basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   split_rows_by("AVISIT") \%>\%
   split_cols_by_multivar(vars = c("AVAL", "CHG")) \%>\%
-  summarize_colvars() \%>\%
+  analyze() \%>\%
   build_table(dta_test)
 
 ## Selection of statistics, formats and labels also work.

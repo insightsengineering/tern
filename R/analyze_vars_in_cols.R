@@ -39,10 +39,16 @@
 #' @examples
 #' library(dplyr)
 #'
+#' # Data preparation
 #' adpp <- tern_ex_adpp %>% h_pkparam_sort()
+#'
 #' lyt <- basic_table() %>%
-#'   split_rows_by(var = "ARM", label_pos = "topleft") %>%
-#'   split_rows_by(var = "SEX", label_pos = "topleft") %>%
+#'   split_rows_by(var = "STRATA1", label_pos = "topleft") %>%
+#'   split_rows_by(
+#'     var = "SEX",
+#'     label_pos = "topleft",
+#'     child_label = "hidden"
+#'   ) %>% # Removes duplicated labels
 #'   analyze_vars_in_cols(vars = "AGE")
 #' result <- build_table(lyt = lyt, df = adpp)
 #' result
@@ -50,52 +56,68 @@
 #' # By selecting just some statistics and ad-hoc labels
 #' lyt <- basic_table() %>%
 #'   split_rows_by(var = "ARM", label_pos = "topleft") %>%
-#'   split_rows_by(var = "SEX", label_pos = "topleft") %>%
+#'   split_rows_by(
+#'     var = "SEX",
+#'     label_pos = "topleft",
+#'     child_labels = "hidden",
+#'     split_fun = drop_split_levels
+#'   ) %>%
 #'   analyze_vars_in_cols(
 #'     vars = "AGE",
-#'     .stats = c("n", "cv", "geom_mean", "mean_ci", "median", "min", "max"),
+#'     .stats = c("n", "cv", "geom_mean"),
 #'     .labels = c(
-#'       n = "myN",
-#'       cv = "myCV",
-#'       geom_mean = "myGeomMean",
-#'       mean_ci = "Mean (95%CI)",
-#'       median = "Median",
-#'       min = "Minimum",
-#'       max = "Maximum"
+#'       n = "aN",
+#'       cv = "aCV",
+#'       geom_mean = "aGeomMean"
 #'     )
 #'   )
 #' result <- build_table(lyt = lyt, df = adpp)
 #' result
 #'
+#' # Changing row labels
 #' lyt <- basic_table() %>%
 #'   analyze_vars_in_cols(
 #'     vars = "AGE",
-#'     labelstr = "some custom label"
+#'     row_labels = "some custom label"
 #'   )
 #' result <- build_table(lyt, df = adpp)
 #' result
 #'
+#' # Pharmacokinetic parameters
 #' lyt <- basic_table() %>%
-#'   split_rows_by(var = "TLG_DISPLAY", split_label = "PK Parameter", label_pos = "topleft") %>%
+#'   split_rows_by(
+#'     var = "TLG_DISPLAY",
+#'     split_label = "PK Parameter",
+#'     label_pos = "topleft",
+#'     child_label = "hidden"
+#'   ) %>%
+#'   analyze_vars_in_cols(
+#'     vars = "AVAL"
+#'   )
+#' result <- build_table(lyt, df = adpp)
+#' result
+#'
+#' # Multiple calls (summarize label and analyze underneath)
+#' lyt <- basic_table() %>%
+#'   split_rows_by(
+#'     var = "TLG_DISPLAY",
+#'     split_label = "PK Parameter",
+#'     label_pos = "topleft"
+#'   ) %>%
 #'   analyze_vars_in_cols(
 #'     vars = "AVAL",
-#'     .stats = c("n", "mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max"),
-#'     .labels = c(
-#'       n = "n",
-#'       mean = "Mean",
-#'       sd = "SD",
-#'       cv = "CV (%)",
-#'       geom_mean = "Geometric Mean",
-#'       geom_cv = "CV % Geometric Mean",
-#'       median = "Median",
-#'       min = "Minimum",
-#'       max = "Maximum"
-#'     )
+#'     do_summarize_row_groups = TRUE # does a summarize level
+#'   ) %>%
+#'   split_rows_by("SEX",
+#'     child_label = "hidden",
+#'     label_pos = "topleft"
+#'   ) %>%
+#'   analyze_vars_in_cols(
+#'     vars = "AVAL",
+#'     split_col_vars = FALSE # avoids re-splitting the columns
 #'   )
 #' result <- build_table(lyt, df = adpp)
 #' result
-#'
-#' # Multiple calls
 #'
 #' @export
 analyze_vars_in_cols <- function(lyt,
@@ -276,8 +298,6 @@ analyze_vars_in_cols <- function(lyt,
     )
   }
 }
-
-# TODO: multiple analyze calls WITHOUT the row split
 
 # Help function
 get_last_col_split <- function(lyt) {
