@@ -237,4 +237,3 @@ testthat::test_that("surv_timepoint works with method = both", {
   )
   testthat::expect_snapshot(res)
 })
-
