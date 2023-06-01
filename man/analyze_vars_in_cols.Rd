@@ -11,7 +11,10 @@ analyze_vars_in_cols(
   .stats = c("n", "mean", "sd", "se", "cv", "geom_cv"),
   .labels = c(n = "n", mean = "Mean", sd = "SD", se = "SE", cv = "CV (\%)", geom_cv =
     "CV \% Geometric Mean"),
-  labelstr = " ",
+  row_labels = NULL,
+  do_summarize_row_groups = FALSE,
+  split_col_vars = TRUE,
+  .indent_mods = NULL,
   nested = TRUE,
   na_level = NULL,
   .formats = NULL
@@ -28,8 +31,20 @@ analyze_vars_in_cols(
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
-(must be present as second argument in Content Row Functions).}
+\item{row_labels}{(\code{character})\cr as this function works in columns space, usual \code{.labels}
+character vector applies on the column space. You can change the row labels by defining this
+parameter to a named character vector with names corresponding to the split values. It defaults
+to \code{NULL} and if it contains only one \code{string}, it will duplicate that as a row label.}
+
+\item{do_summarize_row_groups}{(\code{flag})\cr defaults to \code{FALSE} and applies the analysis to the current
+label rows. This is a wrapper of \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}} and it can accept \code{labelstr}
+to define row labels. This behavior is not supported as we never need to overload row labels.}
+
+\item{split_col_vars}{(\code{flag})\cr defaults to \code{TRUE} and puts the analysis results onto the columns.
+This option allows you to add multiple instances of this functions, also in a nested fashion,
+without adding more splits. This split must happen only one time on a single layout.}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
@@ -45,10 +60,22 @@ Adding this function to an \code{rtable} layout will summarize the given variabl
 in columns, and add it to the table layout.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Layout-creating function which can be used for creating column-wise summary tables, primarily
 used for PK data sets. This function is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
+}
+\note{
+This is an experimental implementation of \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}} and
+\code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}} that may be subjected to changes as \code{rtables} extends its
+support to more complex analysis pipelines on the column space. For the same reasons,
+we encourage to read the examples carefully and file issues for cases that differ from
+them.
+
+Here \code{labelstr} behaves differently than usual. If it is not defined (default as \code{NULL}),
+row labels are assigned automatically to the split values in case of \code{rtables::analyze_colvars}
+(\code{do_summarize_row_groups = FALSE}, the default), and to the group label for
+\code{do_summarize_row_groups = TRUE}.
 }
 \examples{
 library(dplyr)
@@ -89,7 +116,6 @@ lyt <- basic_table() \%>\%
 result <- build_table(lyt, df = adpp)
 result
 
-# PKPT03
 lyt <- basic_table() \%>\%
   split_rows_by(var = "TLG_DISPLAY", split_label = "PK Parameter", label_pos = "topleft") \%>\%
   analyze_vars_in_cols(
@@ -109,6 +135,8 @@ lyt <- basic_table() \%>\%
   )
 result <- build_table(lyt, df = adpp)
 result
+
+# Multiple calls
 
 }
 \seealso{
