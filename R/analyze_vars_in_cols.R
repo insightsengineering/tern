@@ -251,6 +251,8 @@ analyze_vars_in_cols <- function(lyt,
                 )
               }
               lbl <- unlist(row_labels[label_from_context])
+            } else {
+              lbl <- row_labels
             }
           }
 
