@@ -24,7 +24,9 @@ summarize_colvars(
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
+should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
+for that statistic's row label.}
 }
 \value{
 A layout object suitable for passing to further layouting functions, or to \code{\link[rtables:build_table]{rtables::build_table()}}.
