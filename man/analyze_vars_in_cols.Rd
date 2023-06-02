@@ -62,8 +62,9 @@ in columns, and add it to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Layout-creating function which can be used for creating column-wise summary tables, primarily
-used for PK data sets. This function is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
+Layout-creating function which can be used for creating column-wise summary tables.
+This function sets the analysis methods as column labels and is a wrapper for
+\code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}. It was designed principally for PK tables.
 }
 \note{
 This is an experimental implementation of \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}} and

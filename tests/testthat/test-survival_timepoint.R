@@ -235,5 +235,5 @@ testthat::test_that("surv_timepoint works with method = both", {
       ) %>%
       build_table(df = adtte_f)
   )
-  testthat::expect_snapshot(res)
+  testthat::expect_snapshot(result)
 })

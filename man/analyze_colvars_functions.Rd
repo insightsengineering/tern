@@ -4,15 +4,26 @@
 \alias{analyze_colvars_functions}
 \title{Analyze Functions on Columns}
 \description{
-These functions are wrappers of \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}} which apply corresponding \code{tern} statistics functions
-to add an analysis to a given table layout:
+These functions are wrappers of \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}} which apply corresponding \code{tern}
+statistics functions to add an analysis to a given table layout. In particular, these functions
+where designed to have the analysis methods split into different columns.
 \itemize{
-\item \code{\link[=analyze_patients_exposure_in_cols]{analyze_patients_exposure_in_cols()}}
-\item \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}} (extended wrapper, never used in other \code{tern} functions)
-\item \code{\link[=summarize_colvars]{summarize_colvars()}} (low level wrapper, never used in other \code{tern} functions)
-\item \code{\link[=summarize_coxreg]{summarize_coxreg()}} (contains also \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}})
-\item \code{\link[=tabulate_rsp_subgroups]{tabulate_rsp_subgroups()}}
-\item \code{\link[=tabulate_survival_subgroups]{tabulate_survival_subgroups()}}
+\item \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}}: fundamental tabulation of analysis methods onto columns.
+In other words, the analysis methods are defined in the column space, i.e. they become
+column labels. By changing the variable vector, the list of functions can be applied on
+different variables, with the caveat of having the same number of statistical functions.
+\item \code{\link[=tabulate_rsp_subgroups]{tabulate_rsp_subgroups()}}: similarly to \code{analyze_vars_in_cols}, this
+function combines \code{analyze_colvars} and \code{summarize_row_groups} in a compact way
+to produce standard tables that show analysis methods as columns.
+\item \code{\link[=tabulate_survival_subgroups]{tabulate_survival_subgroups()}}: this function is very similar to the above, but
+it is used for other tables.
+\item \code{\link[=analyze_patients_exposure_in_cols]{analyze_patients_exposure_in_cols()}}: based only on \code{analyze_colvars}. It needs
+\code{\link[=summarize_patients_exposure_in_cols]{summarize_patients_exposure_in_cols()}} to leverage nesting of label rows analysis
+with \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
+\item \code{\link[=summarize_coxreg]{summarize_coxreg()}}: generally based on \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}, it behaves
+similarly to \verb{tabulate_*} functions described above as it is designed to provide
+specific standard tables that may contain nested structure with a combination of
+\code{summarize_row_groups()} and \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
 }
 }
 \seealso{

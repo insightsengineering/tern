@@ -2,8 +2,9 @@
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#' Layout-creating function which can be used for creating column-wise summary tables, primarily
-#' used for PK data sets. This function is a wrapper for [rtables::analyze_colvars()].
+#' Layout-creating function which can be used for creating column-wise summary tables.
+#' This function sets the analysis methods as column labels and is a wrapper for
+#' [rtables::analyze_colvars()]. It was designed principally for PK tables.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams rtables::analyze_colvars
