@@ -33,7 +33,7 @@
 #'   split_cols_by("ARM") %>%
 #'   split_rows_by("AVISIT") %>%
 #'   split_cols_by_multivar(vars = c("AVAL", "CHG")) %>%
-#'   analyze() %>%
+#'   summarize_colvars() %>%
 #'   build_table(dta_test)
 #'
 #' ## Selection of statistics, formats and labels also work.
