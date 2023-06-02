@@ -38,7 +38,7 @@ This analyze function uses the S3 generic function \code{\link[=s_summary]{s_sum
 that are arranged in columns. Additional standard formatting arguments are available. It is a
 minimal wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}. The latter function is meant to add different
 analysis methods for each column variables as different rows. To have the analysis methods as
-column labels, please refer to \code{\link[=analyze_vars_in_col]{analyze_vars_in_col()}}.
+column labels, please refer to \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}}.
 }
 \examples{
 dta_test <- data.frame(

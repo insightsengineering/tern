@@ -6,7 +6,7 @@
 #' that are arranged in columns. Additional standard formatting arguments are available. It is a
 #' minimal wrapper for [rtables::analyze_colvars()]. The latter function is meant to add different
 #' analysis methods for each column variables as different rows. To have the analysis methods as
-#' column labels, please refer to [analyze_vars_in_col()].
+#' column labels, please refer to [analyze_vars_in_cols()].
 #'
 #' @inheritParams argument_convention
 #' @param ... arguments passed to `s_summary()`.
