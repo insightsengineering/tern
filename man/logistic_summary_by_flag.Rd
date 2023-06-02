@@ -9,6 +9,8 @@ logistic_summary_by_flag(flag_var, .indent_mods = NULL)
 \arguments{
 \item{flag_var}{(\code{string})\cr variable name identifying which row should be used in this
 content function.}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
 A content function.

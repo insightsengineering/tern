@@ -12,6 +12,8 @@ h_tab_one_biomarker(df, afuns, colvars, .indent_mods = 0L)
 \item{afuns}{(named \code{list} of \code{function})\cr analysis functions.}
 
 \item{colvars}{(\code{list} with \code{vars} and \code{labels})\cr variables to tabulate and their labels.}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
 An \code{rtables} table object with statistics in columns.

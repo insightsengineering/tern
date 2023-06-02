@@ -5,6 +5,7 @@
 #' Please see [h_tab_surv_one_biomarker()] and [h_tab_rsp_one_biomarker()], which use this function for examples.
 #' This function is a wrapper for [rtables::summarize_row_groups()].
 #'
+#' @inheritParams argument_convention
 #' @param df (`data.frame`)\cr results for a single biomarker.
 #' @param afuns (named `list` of `function`)\cr analysis functions.
 #' @param colvars (`list` with `vars` and `labels`)\cr variables to tabulate and their labels.

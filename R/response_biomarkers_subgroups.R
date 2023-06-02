@@ -5,6 +5,7 @@
 #' Tabulate the estimated effects of multiple continuous biomarker variables
 #' on a binary response endpoint across population subgroups.
 #'
+#' @inheritParams argument_convention
 #' @param df (`data.frame`)\cr containing all analysis variables, as returned by
 #'   [extract_rsp_biomarkers()].
 #' @param vars (`character`)\cr the names of statistics to be reported among:
@@ -51,7 +52,6 @@
 #'
 #' \dontrun{
 #' ## Table with default columns.
-#' # df <- <need_data_input_to_work>
 #' tabulate_rsp_biomarkers(df)
 #'
 #' ## Table with a manually chosen set of columns: leave out "pval", reorder.

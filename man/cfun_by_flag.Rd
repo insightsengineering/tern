@@ -4,7 +4,7 @@
 \alias{cfun_by_flag}
 \title{Constructor for Content Functions given Data Frame with Flag Input}
 \usage{
-cfun_by_flag(analysis_var, flag_var, format = "xx", indent_mod = NULL)
+cfun_by_flag(analysis_var, flag_var, format = "xx", .indent_mods = NULL)
 }
 \arguments{
 \item{analysis_var}{(\code{string})\cr variable name for the column containing values to be returned by the

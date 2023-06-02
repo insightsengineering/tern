@@ -25,6 +25,8 @@ tabulate_rsp_biomarkers(
 \item \code{pval}: p-value of the effect.
 Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.
 }}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
 An \code{rtables} table summarizing biomarker effects on binary response by subgroup.
@@ -68,7 +70,6 @@ df <- extract_rsp_biomarkers(
 
 \dontrun{
 ## Table with default columns.
-# df <- <need_data_input_to_work>
 tabulate_rsp_biomarkers(df)
 
 ## Table with a manually chosen set of columns: leave out "pval", reorder.
