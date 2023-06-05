@@ -971,7 +971,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
   annot_tbl <- expand.grid(
     time = seq(0, xlim, y_int),
     strata = unique(annot_tbl$strata)
-  ) %>% left_join(annot_tbl, by = c("time", "strata"))
+  ) %>% dplyr::left_join(annot_tbl, by = c("time", "strata"))
   annot_tbl[is.na(annot_tbl)] <- 0
   y_str_unit <- as.numeric(annot_tbl$strata)
   vp_table <- grid::plotViewport(margins = grid::unit(c(0, 0, 0, 0), "lines"))
