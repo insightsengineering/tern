@@ -152,13 +152,13 @@ testthat::test_that("patients_exposure_in_cols works with totals after the row s
     main_footer = "* Patient Time is the sum of patients and times",
     show_colcounts = TRUE
   ) %>%
-    analyze_patients_exposure_in_cols(
-      var = "SEX",
-      col_split = TRUE,
-      add_total_level = TRUE,
-      custom_label = "REAL TOTAL"
-    ) %>%
-    append_topleft(c("", "Sex"))
+  analyze_patients_exposure_in_cols(
+    var = "SEX",
+    col_split = TRUE,
+    add_total_level = TRUE,
+    custom_label = "REAL TOTAL"
+  ) %>%
+  append_topleft(c("", "Sex"))
 
   tbl <- build_table(lyt, anl_local)
 

@@ -248,6 +248,20 @@ summarize_patients_exposure_in_cols <- function(lyt, # nolint
 #' result5 <- build_table(lyt5, df = df, alt_counts_df = adsl)
 #' result5
 #'
+#' # Adding total levels and custom label
+#' lyt <- basic_table(
+#'   show_colcounts = TRUE
+#' ) %>%
+#'   analyze_patients_exposure_in_cols(
+#'     var = "ARMCD",
+#'     col_split = TRUE,
+#'     add_total_level = TRUE,
+#'     custom_label = "TOTAL"
+#'   ) %>%
+#'   append_topleft(c("", "Sex"))
+#'
+#' tbl <- build_table(lyt, anl_local)
+#'
 #' @export
 analyze_patients_exposure_in_cols <- function(lyt, # nolint
                                               var = NULL,
