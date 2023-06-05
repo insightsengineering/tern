@@ -29,7 +29,8 @@ Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as bot
 
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 }
 \value{
 An \code{rtables} table summarizing biomarker effects on survival by subgroup.

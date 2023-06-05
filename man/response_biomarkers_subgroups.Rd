@@ -26,7 +26,8 @@ tabulate_rsp_biomarkers(
 Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.
 }}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 }
 \value{
 An \code{rtables} table summarizing biomarker effects on binary response by subgroup.

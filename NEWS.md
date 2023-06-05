@@ -6,7 +6,7 @@
 
 ### Miscellaneous
 * Updated README to include installation instructions for CRAN.
-* Began deprecation of `indent_mod` argument which is replaced by the `.indent_mods` argument in `summarize_num_patients` and `analyze_num_patients`.
+* Began deprecation of `indent_mod` argument and replace it with the `.indent_mods` argument in `summarize_num_patients` and `analyze_num_patients`.
 
 # tern 0.8.2
 

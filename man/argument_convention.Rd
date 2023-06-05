@@ -19,7 +19,8 @@
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
