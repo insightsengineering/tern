@@ -2,6 +2,7 @@
 
 ### Enhancements
 * Added explicit zero counts to `g_km` plot "at risk" annotation tables.
+* Added a flag for total level split in `analyze_patients_exposure_in_cols`.
 
 ### Miscellaneous
 * Updated README to include installation instructions for CRAN.

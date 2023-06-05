@@ -18,6 +18,8 @@
 #'   by a statistics function.
 #' @param .spl_context (`data.frame`)\cr gives information about ancestor split states
 #'   that is passed by `rtables`.
+#' @param add_total_level (`flag`)\cr adds one level after the others with all the other levels
+#'   that constitute the split.
 #' @param col_by (`factor`)\cr defining column groups.
 #' @param conf_level (`proportion`)\cr confidence level of the interval.
 #' @param data (`data.frame`)\cr the dataset containing the variables to summarize.

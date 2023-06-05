@@ -42,8 +42,7 @@ testthat::test_that("summarize_patients_exposure_in_cols works well with default
   result <- basic_table() %>%
     split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
     summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) %>%
-    split_rows_by("SEX") %>%
-    summarize_patients_exposure_in_cols(var = "AVAL", col_split = FALSE) %>%
+    analyze_patients_exposure_in_cols(var = "SEX", col_split = FALSE) %>%
     build_table(df = df, alt_counts_df = adsl)
 
   res <- testthat::expect_silent(result)
@@ -62,9 +61,8 @@ testthat::test_that("summarize_patients_exposure_in_cols works well with custom 
       custom_label = "xyz",
       .stats = "sum_exposure"
     ) %>%
-    split_rows_by("SEX") %>%
-    summarize_patients_exposure_in_cols(
-      var = "AVAL",
+    analyze_patients_exposure_in_cols(
+      var = "SEX",
       col_split = FALSE,
       .stats = "sum_exposure"
     ) %>%
@@ -146,3 +144,24 @@ testthat::test_that(
     testthat::expect_snapshot(res)
   }
 )
+
+testthat::test_that("patients_exposure_in_cols works with totals after the row split", {
+  # Fixes adding total as last analyze level, issue #950
+  lyt <- basic_table(
+    title = "Extent of Exposure",
+    main_footer = "* Patient Time is the sum of patients and times",
+    show_colcounts = TRUE
+  ) %>%
+  analyze_patients_exposure_in_cols(
+    var = "SEX",
+    col_split = TRUE,
+    add_total_level = TRUE,
+    custom_label = "REAL TOTAL"
+  ) %>%
+  append_topleft(c("", "Sex"))
+
+  tbl <- build_table(lyt, anl_local)
+
+  res <- testthat::expect_silent(tbl)
+  testthat::expect_snapshot(res)
+})
