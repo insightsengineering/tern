@@ -407,7 +407,12 @@ s_summary.character <- function(x,
                                 .var,
                                 verbose = TRUE,
                                 ...) {
-  y <- as_factor_keep_attributes(x, x_name = .var, verbose = verbose)
+  if (na.rm) {
+    y <- as_factor_keep_attributes(x, x_name = .var, verbose = verbose)
+  } else {
+    y <- as_factor_keep_attributes(x, x_name = .var, verbose = verbose, na_level = "NA")
+  }
+
   s_summary(
     x = y,
     na.rm = na.rm,

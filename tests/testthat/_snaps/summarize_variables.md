@@ -844,7 +844,7 @@
       $count$Unknown
       [1] 4
       
-      $count$`<Missing>`
+      $count$`NA`
       [1] 1
       
       
@@ -858,7 +858,7 @@
       $count_fraction$Unknown
       [1] 4.0 0.4
       
-      $count_fraction$`<Missing>`
+      $count_fraction$`NA`
       [1] 1.0 0.1
       
       
