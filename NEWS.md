@@ -1,4 +1,4 @@
-# tern 0.8.2.9002
+# tern 0.8.2.9003
 
 ### Enhancements
 * Added explicit zero counts to `g_km` plot "at risk" annotation tables.
