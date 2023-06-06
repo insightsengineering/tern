@@ -11,7 +11,8 @@
 #' @param .N_row (`count`)\cr column-wise N (column count) for the full column that is passed by `rtables`.
 #' @param .ref_group (`data.frame` or `vector`)\cr the data corresponding to the reference group.
 #' @param .stats (`character`)\cr statistics to select for the table.
-#' @param .indent_mods (named `integer`)\cr indent modifiers for the labels.
+#' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+#'   unmodified default behavior. Can be negative.
 #' @param .formats (named `character` or `list`)\cr formats for the statistics.
 #' @param .labels (named `character`)\cr labels for the statistics (without indent).
 #' @param .var (`string`)\cr single variable name that is passed by `rtables` when requested
@@ -29,10 +30,7 @@
 #'   Note that in that case the remaining occurrence levels in the table are sorted alphabetically.
 #' @param id (`string`)\cr subject variable name.
 #' @param is_event (`logical`)\cr `TRUE` if event, `FALSE` if time to event is censored.
-#' @param indent_mod (`count`)\cr it can be negative. Modifier for the default indent position for the
-#'   structure created by this function(subtable, content table, or row) and
-#'   all of that structure's children. Defaults to 0, which corresponds to the
-#'   unmodified default behavior.
+#' @param indent_mod `r lifecycle::badge("deprecated")` Please use the `.indent_mods` argument instead.
 #' @param labelstr (`character`)\cr label of the level of the parent split currently being summarized
 #'   (must be present as second argument in Content Row Functions). See [rtables::summarize_row_groups()]
 #'   for more information.

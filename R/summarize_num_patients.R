@@ -143,8 +143,14 @@ summarize_num_patients <- function(lyt,
                                      unique = "Number of patients with at least one event",
                                      nonunique = "Number of events"
                                    ),
-                                   indent_mod = 0L,
+                                   indent_mod = lifecycle::deprecated(),
+                                   .indent_mods = 0L,
                                    ...) {
+  if (lifecycle::is_present(indent_mod)) {
+    lifecycle::deprecate_warn("0.8.2", "summarize_num_patients(indent_mod)", "summarize_num_patients(.indent_mods)")
+    .indent_mods <- indent_mod
+  }
+
   if (is.null(.stats)) .stats <- c("unique", "nonunique", "unique_count")
   if (length(.labels) > length(.stats)) .labels <- .labels[names(.labels) %in% .stats]
 
@@ -160,7 +166,7 @@ summarize_num_patients <- function(lyt,
     var = var,
     cfun = cfun,
     extra_args = list(...),
-    indent_mod = indent_mod
+    indent_mod = .indent_mods
   )
 }
 
@@ -204,8 +210,14 @@ analyze_num_patients <- function(lyt,
                                    nonunique = "Number of events"
                                  ),
                                  show_labels = c("default", "visible", "hidden"),
-                                 indent_mod = 0L,
+                                 indent_mod = lifecycle::deprecated(),
+                                 .indent_mods = 0L,
                                  ...) {
+  if (lifecycle::is_present(indent_mod)) {
+    lifecycle::deprecate_warn("0.8.2", "analyze_num_patients(indent_mod)", "analyze_num_patients(.indent_mods)")
+    .indent_mods <- indent_mod
+  }
+
   if (is.null(.stats)) .stats <- c("unique", "nonunique", "unique_count")
   if (length(.labels) > length(.stats)) .labels <- .labels[names(.labels) %in% .stats]
 
@@ -222,6 +234,6 @@ analyze_num_patients <- function(lyt,
     vars = vars,
     extra_args = list(...),
     show_labels = show_labels,
-    indent_mod = indent_mod
+    indent_mod = .indent_mods
   )
 }
