@@ -73,8 +73,8 @@ for more information.}
 \item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{add_total_level}{(\code{flag})\cr adds one level after the others with all the other levels
-that constitute the split.}
+\item{add_total_level}{(\code{flag})\cr adds a "total" level after the others which includes all the levels
+that constitute the split. A custom label can be set for this level via the \code{custom_label} argument.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
