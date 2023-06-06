@@ -260,7 +260,8 @@ summarize_patients_exposure_in_cols <- function(lyt, # nolint
 #'   ) %>%
 #'   append_topleft(c("", "Sex"))
 #'
-#' tbl <- build_table(lyt, anl_local)
+#' tbl <- build_table(lyt, df = df, alt_counts_df = adsl)
+#' tbl
 #'
 #' @export
 analyze_patients_exposure_in_cols <- function(lyt, # nolint

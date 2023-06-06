@@ -222,7 +222,8 @@ lyt <- basic_table(
   ) \%>\%
   append_topleft(c("", "Sex"))
 
-tbl <- build_table(lyt, anl_local)
+tbl <- build_table(lyt, df = df, alt_counts_df = adsl)
+tbl
 
 }
 \keyword{internal}
