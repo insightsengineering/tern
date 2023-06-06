@@ -14,7 +14,7 @@ when a column table layout is required."><!-- mathjax --><script src="https://cd
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2.9005</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,18 +39,6 @@ when a column table layout is required."><!-- mathjax --><script src="https://cd
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -103,6 +91,7 @@ when a column table layout is required.</p>
 <span>  ex_var <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
 <span>  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
 <span>  labelstr <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  add_total_level <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">.N_col</span>,</span>
 <span>  <span class="va">.stats</span>,</span>
 <span>  .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>n_patients <span class="op">=</span> <span class="st">"xx (xx.x%)"</span>, sum_exposure <span class="op">=</span> <span class="st">"xx"</span><span class="op">)</span>,</span>
@@ -124,9 +113,11 @@ when a column table layout is required.</p>
 <span>  var <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ex_var <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
 <span>  col_split <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  add_total_level <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_patients"</span>, <span class="st">"sum_exposure"</span><span class="op">)</span>,</span>
 <span>  .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>n_patients <span class="op">=</span> <span class="st">"Patients"</span>, sum_exposure <span class="op">=</span> <span class="st">"Person time"</span><span class="op">)</span>,</span>
-<span>  .indent_mods <span class="op">=</span> <span class="fl">0L</span></span>
+<span>  .indent_mods <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -166,6 +157,11 @@ for more information.</p></dd>
 <dt>var</dt>
 <dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
 by a statistics function.</p></dd>
+
+
+<dt>add_total_level</dt>
+<dd><p>(<code>flag</code>)<br> adds a "total" level after the others which includes all the levels
+that constitute the split. A custom label can be set for this level via the <code>custom_label</code> argument.</p></dd>
 
 
 <dt>.formats</dt>
@@ -326,6 +322,27 @@ pages when pagination is used.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Female   6 (50.0%)       46     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Male     6 (50.0%)       68     </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Adding total levels and custom label</span></span></span>
+<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  show_colcounts <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">analyze_patients_exposure_in_cols</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    var <span class="op">=</span> <span class="st">"ARMCD"</span>,</span></span>
+<span class="r-in"><span>    col_split <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>    add_total_level <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>    custom_label <span class="op">=</span> <span class="st">"TOTAL"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">append_topleft</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"Sex"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu">build_table</span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">df</span>, alt_counts_df <span class="op">=</span> <span class="va">adsl</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tbl</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Patients     Person time</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sex       (N=12)        (N=12)   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ARM A    6 (50.0%)        46     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ARM B    6 (50.0%)        68     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TOTAL   12 (100.0%)       114    </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
