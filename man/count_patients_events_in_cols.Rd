@@ -39,7 +39,8 @@ If it has a label, then this will be used for the column title.}
 that corresponding table cells will stay blank.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
-(must be present as second argument in Content Row Functions).}
+(must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
+for more information.}
 
 \item{custom_label}{(\code{string} or \code{NULL})\cr if provided and \code{labelstr} is empty then this will
 be used as label.}

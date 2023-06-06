@@ -67,7 +67,8 @@ by a statistics function.}
 in the the output list; in this case only the grade groups names will be included in the output.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
-(must be present as second argument in Content Row Functions).}
+(must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
+for more information.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
