@@ -166,3 +166,17 @@
         99% CI                                  (-26.94, 7.66)   (-32.17, 6.10)
         p-value (Z-test)                            0.1511           0.0794    
 
+# surv_timepoint works with method = both
+
+    Code
+      res
+    Output
+               AVAL   CHG
+      ———————————————————
+      V1                 
+        mean    6      0 
+      V2                 
+        mean    5     -1 
+      V3                 
+        mean    4     -2 
+

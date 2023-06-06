@@ -26,6 +26,11 @@
 #' * [estimate_proportion()]
 #' * [estimate_proportion_diff()]
 #' * [summarize_ancova()]
+#' * [summarize_colvars()]: even if this function uses [rtables::analyze_colvars()],
+#'   it applies the analysis methods as different rows for one or more
+#'   variables that are split into different columns. In comparison, [analyze_colvars_functions]
+#'   leverage `analyze_colvars` to have the context split in rows and the analysis
+#'   methods in columns.
 #' * [summarize_change()]
 #' * [summarize_vars()]
 #' * [surv_time()]
