@@ -23,6 +23,7 @@ a_count_patients_sum_exposure(
   ex_var = "AVAL",
   id = "USUBJID",
   labelstr = "",
+  add_total_level = FALSE,
   .N_col,
   .stats,
   .formats = list(n_patients = "xx (xx.x\%)", sum_exposure = "xx"),
@@ -44,9 +45,11 @@ analyze_patients_exposure_in_cols(
   var = NULL,
   ex_var = "AVAL",
   col_split = TRUE,
+  add_total_level = FALSE,
   .stats = c("n_patients", "sum_exposure"),
   .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
-  .indent_mods = 0L
+  .indent_mods = 0L,
+  ...
 )
 }
 \arguments{
@@ -69,6 +72,9 @@ for more information.}
 
 \item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
+
+\item{add_total_level}{(\code{flag})\cr adds a "total" level after the others which includes all the levels
+that constitute the split. A custom label can be set for this level via the \code{custom_label} argument.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
@@ -205,6 +211,21 @@ lyt5 <- basic_table() \%>\%
   analyze_patients_exposure_in_cols(var = "SEX", col_split = TRUE, ex_var = "AVAL")
 result5 <- build_table(lyt5, df = df, alt_counts_df = adsl)
 result5
+
+# Adding total levels and custom label
+lyt <- basic_table(
+  show_colcounts = TRUE
+) \%>\%
+  analyze_patients_exposure_in_cols(
+    var = "ARMCD",
+    col_split = TRUE,
+    add_total_level = TRUE,
+    custom_label = "TOTAL"
+  ) \%>\%
+  append_topleft(c("", "Sex"))
+
+tbl <- build_table(lyt, df = df, alt_counts_df = adsl)
+tbl
 
 }
 \keyword{internal}

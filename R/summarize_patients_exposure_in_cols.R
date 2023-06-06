@@ -112,10 +112,13 @@ a_count_patients_sum_exposure <- function(df,
                                           ex_var = "AVAL",
                                           id = "USUBJID",
                                           labelstr = "",
+                                          add_total_level = FALSE,
                                           .N_col, # nolint
                                           .stats,
                                           .formats = list(n_patients = "xx (xx.x%)", sum_exposure = "xx"),
                                           custom_label = NULL) {
+  checkmate::assert_flag(add_total_level)
+
   if (!is.null(var)) {
     assert_df_with_variables(df, list(var = var))
     df[[var]] <- as.factor(df[[var]])
@@ -142,6 +145,17 @@ a_count_patients_sum_exposure <- function(df,
         .N_col = .N_col,
         .stats = .stats,
         custom_label = lvl
+      )[[.stats]]
+    }
+    if (add_total_level) {
+      y[[.stats]][["Total"]] <- s_count_patients_sum_exposure(
+        df = df,
+        ex_var = ex_var,
+        id = id,
+        labelstr = labelstr,
+        .N_col = .N_col,
+        .stats = .stats,
+        custom_label = custom_label
       )[[.stats]]
     }
   }
@@ -234,14 +248,31 @@ summarize_patients_exposure_in_cols <- function(lyt, # nolint
 #' result5 <- build_table(lyt5, df = df, alt_counts_df = adsl)
 #' result5
 #'
+#' # Adding total levels and custom label
+#' lyt <- basic_table(
+#'   show_colcounts = TRUE
+#' ) %>%
+#'   analyze_patients_exposure_in_cols(
+#'     var = "ARMCD",
+#'     col_split = TRUE,
+#'     add_total_level = TRUE,
+#'     custom_label = "TOTAL"
+#'   ) %>%
+#'   append_topleft(c("", "Sex"))
+#'
+#' tbl <- build_table(lyt, df = df, alt_counts_df = adsl)
+#' tbl
+#'
 #' @export
 analyze_patients_exposure_in_cols <- function(lyt, # nolint
                                               var = NULL,
                                               ex_var = "AVAL",
                                               col_split = TRUE,
+                                              add_total_level = FALSE,
                                               .stats = c("n_patients", "sum_exposure"),
                                               .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
-                                              .indent_mods = 0L) {
+                                              .indent_mods = 0L,
+                                              ...) {
   if (col_split) {
     lyt <- split_cols_by_multivar(
       lyt = lyt,
@@ -253,7 +284,14 @@ analyze_patients_exposure_in_cols <- function(lyt, # nolint
   lyt <- lyt %>% analyze_colvars(
     afun = a_count_patients_sum_exposure,
     indent_mod = .indent_mods,
-    extra_args = list(var = var, ex_var = ex_var)
+    extra_args = c(
+      list(
+        var = var,
+        ex_var = ex_var,
+        add_total_level = add_total_level
+      ),
+      ...
+    )
   )
   lyt
 }

@@ -1,7 +1,8 @@
-# tern 0.8.2.9005
+# tern 0.8.2.9006
 
 ### Enhancements
 * Added explicit zero counts to `g_km` plot "at risk" annotation tables.
+* Added a flag for total level split in `analyze_patients_exposure_in_cols`.
 * Implemented `.indent_mods` argument in functions `h_tab_one_biomarker`, `h_tab_rsp_one_biomarker`, `h_tab_surv_one_biomarker`, `summarize_logistic`, `logistic_summary_by_flag`, `tabulate_rsp_biomarkers`, a_coxreg, `summarize_coxreg`, `tabulate_survival_biomarkers`, `surv_time`, `surv_timepoint`, and `cfun_by_flag`.
 
 ### Miscellaneous
