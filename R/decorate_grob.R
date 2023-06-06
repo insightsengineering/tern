@@ -371,10 +371,35 @@ split_text_grob <- function(text,
     attr(text, "fixed_text") <- paste(vapply(text, split_string, character(1), width = width), collapse = "\n")
   }
 
-  grid::grob(
-    text = text,
+  wrap_grob_text <- function(text, width) {
+    strings <- strsplit(text, " ")
+    out_string <- NA
+    for (string_i in 1:length(strings)) {
+      newline_str <- strings[[string_i]]
+      if (is.na(out_string[string_i])) {
+        out_string[string_i] <- newline_str[[1]][[1]]
+        linewidth <- stringWidth(out_string[string_i])
+      }
+      gapwidth <- stringWidth(" ")
+      availwidth <- as.numeric(width)
+      for (i in 2:length(newline_str)) {
+        width_i <- stringWidth(newline_str[i])
+        if (convertWidth(linewidth + gapwidth + width_i, unitType(width), valueOnly = TRUE) < availwidth) {
+          sep <- " "
+          linewidth <- linewidth + gapwidth + width_i
+        } else {
+          sep <- "\n"
+          linewidth <- width_i
+        }
+        out_string[string_i] <- paste(out_string[string_i], newline_str[i], sep = sep)
+      }
+    }
+    paste(out_string, collapse = "\n")
+  }
+
+  grid::grid.text(
+    label = wrap_grob_text(text, width),
     x = x, y = y,
-    width = width,
     just = just,
     hjust = hjust,
     vjust = vjust,
@@ -382,8 +407,7 @@ split_text_grob <- function(text,
     check.overlap = FALSE,
     name = name,
     gp = gp,
-    vp = vp,
-    cl = "dynamicSplitText"
+    vp = vp
   )
 }
 
