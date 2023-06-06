@@ -132,7 +132,7 @@ decorate_grob <- function(grob,
                           titles,
                           footnotes,
                           page = "",
-                          width_titles = grid::unit(1, "npc"),
+                          width_titles = grid::unit(1, "npc") - grid::stringWidth(page),
                           width_footnotes = grid::unit(1, "npc") - grid::stringWidth(page),
                           border = TRUE,
                           margins = grid::unit(c(1, 0, 1, 0), "lines"),
@@ -354,14 +354,13 @@ split_text_grob <- function(text,
                             name = NULL,
                             gp = grid::gpar(),
                             vp = NULL) {
-  if (!grid::is.unit(x)) {
-    x <- grid::unit(x, default.units)
-  }
-  if (!grid::is.unit(y)) {
-    y <- grid::unit(y, default.units)
-  }
+  if (!grid::is.unit(x)) x <- grid::unit(x, default.units)
+  if (!grid::is.unit(y)) y <- grid::unit(y, default.units)
+  if (!grid::is.unit(width)) width <- grid::unit(width, default.units)
+  if (grid::unitType(x) %in% c("sum", "min", "max")) x <- grid::convertUnit(x, default.units)
+  if (grid::unitType(y) %in% c("sum", "min", "max")) y <- grid::convertUnit(y, default.units)
+  if (grid::unitType(width) %in% c("sum", "min", "max")) width <- grid::convertUnit(width, default.units)
 
-  checkmate::assert_true(grid::is.unit(width))
   checkmate::assert_vector(width, len = 1)
 
   ## if it is a fixed unit then we do not need to recalculate when viewport resized
@@ -382,16 +381,18 @@ split_text_grob <- function(text,
       }
       gapwidth <- stringWidth(" ")
       availwidth <- as.numeric(width)
-      for (i in 2:length(newline_str)) {
-        width_i <- stringWidth(newline_str[i])
-        if (convertWidth(linewidth + gapwidth + width_i, unitType(width), valueOnly = TRUE) < availwidth) {
-          sep <- " "
-          linewidth <- linewidth + gapwidth + width_i
-        } else {
-          sep <- "\n"
-          linewidth <- width_i
+      if (length(newline_str) > 1) {
+        for (i in 2:length(newline_str)) {
+          width_i <- stringWidth(newline_str[i])
+          if (convertWidth(linewidth + gapwidth + width_i, unitType(width), valueOnly = TRUE) < availwidth) {
+            sep <- " "
+            linewidth <- linewidth + gapwidth + width_i
+          } else {
+            sep <- "\n"
+            linewidth <- width_i
+          }
+          out_string[string_i] <- paste(out_string[string_i], newline_str[i], sep = sep)
         }
-        out_string[string_i] <- paste(out_string[string_i], newline_str[i], sep = sep)
       }
     }
     paste(out_string, collapse = "\n")
@@ -407,7 +408,8 @@ split_text_grob <- function(text,
     check.overlap = FALSE,
     name = name,
     gp = gp,
-    vp = vp
+    vp = vp,
+    draw = FALSE
   )
 }
 
