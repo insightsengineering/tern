@@ -57,7 +57,8 @@ all of that structure's children. Defaults to 0, which corresponds to the
 unmodified default behavior.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
-(must be present as second argument in Content Row Functions).}
+(must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
+for more information.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
