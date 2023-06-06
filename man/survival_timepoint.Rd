@@ -57,7 +57,12 @@ surv_timepoint(
     "ztest_pval"),
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL
+  .indent_mods = if (method == "both") {
+     c(rate_diff = 1L, rate_diff_ci = 2L,
+    ztest_pval = 2L)
+ } else {
+     c(rate_diff_ci = 1L, ztest_pval = 1L)
+ }
 )
 }
 \arguments{
@@ -105,7 +110,9 @@ avoid warnings from duplicate table names.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
+should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
+for that statistic's row label.}
 }
 \value{
 \itemize{

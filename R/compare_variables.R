@@ -361,6 +361,9 @@ a_compare.logical <- make_afun(
 #' Constructor function which creates a combined formatted analysis function.
 #'
 #' @inheritParams argument_convention
+#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
+#'   for that statistic's row label.
 #'
 #' @return Combined formatted analysis function for use in [compare_vars()].
 #'
@@ -474,6 +477,9 @@ create_afun_compare <- function(.stats = NULL,
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @param ... arguments passed to `s_compare()`.
+#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
+#'   for that statistic's row label.
 #'
 #' @return
 #' * `compare_vars()` returns a layout object suitable for passing to further layouting functions,

@@ -7,11 +7,10 @@
 #' @import rtables ggplot2
 #' @importFrom broom tidy
 #' @importFrom formatters propose_column_widths
-#' @importFrom lifecycle badge
-#' @importFrom methods new
 #' @importFrom magrittr %>%
+#' @importFrom methods new
 #' @importFrom Rdpack reprompt
-#' @importFrom rlang .data := !!
+#' @importFrom rlang .data
 #' @importFrom survival coxph strata Surv
 #' @importFrom stats pchisq
 NULL

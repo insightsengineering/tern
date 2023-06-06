@@ -3,12 +3,12 @@
     Code
       res
     Output
-       Species      emmean        SE  df lower.CL upper.CL
-       setosa     6.154823 0.3370913 143 5.488497 6.821149
-       versicolor 5.717409 0.0668085 143 5.585349 5.849469
-       virginica  5.406377 0.1487946 143 5.112255 5.700498
-      
-      Confidence level used: 0.95 
+      # A tibble: 3 x 6
+        Species    estimate std.error    df conf.low conf.high
+        <chr>         <dbl>     <dbl> <dbl>    <dbl>     <dbl>
+      1 setosa         6.15    0.337    143     5.49      6.82
+      2 versicolor     5.72    0.0668   143     5.59      5.85
+      3 virginica      5.41    0.149    143     5.11      5.70
 
 # s_ancova works with healthy input
 

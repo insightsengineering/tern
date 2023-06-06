@@ -202,11 +202,6 @@ s_surv_timepoint_diff <- function(df,
 #' @keywords internal
 a_surv_timepoint_diff <- make_afun(
   s_surv_timepoint_diff,
-  .indent_mods = c(
-    rate_diff = 1L,
-    rate_diff_ci = 2L,
-    ztest_pval = 2L
-  ),
   .formats = c(
     rate_diff = "xx.xx",
     rate_diff_ci = "(xx.xx, xx.xx)",
@@ -221,6 +216,9 @@ a_surv_timepoint_diff <- make_afun(
 #'   `surv_diff` (difference in survival with the control) or `both`.
 #' @param table_names_suffix (`string`)\cr optional suffix for the `table_names` used for the `rtables` to
 #'   avoid warnings from duplicate table names.
+#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
+#'   for that statistic's row label.
 #'
 #' @return
 #' * `surv_timepoint()` returns a layout object suitable for passing to further layouting functions,
@@ -282,7 +280,11 @@ surv_timepoint <- function(lyt,
                            ),
                            .formats = NULL,
                            .labels = NULL,
-                           .indent_mods = NULL) {
+                           .indent_mods = if (method == "both") {
+                             c(rate_diff = 1L, rate_diff_ci = 2L, ztest_pval = 2L)
+                           } else {
+                             c(rate_diff_ci = 1L, ztest_pval = 1L)
+                           }) {
   method <- match.arg(method)
   checkmate::assert_string(table_names_suffix)
 

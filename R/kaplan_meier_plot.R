@@ -967,6 +967,12 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
 h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
+  y_int <- annot_tbl$time[2] - annot_tbl$time[1]
+  annot_tbl <- expand.grid(
+    time = seq(0, xlim, y_int),
+    strata = unique(annot_tbl$strata)
+  ) %>% dplyr::left_join(annot_tbl, by = c("time", "strata"))
+  annot_tbl[is.na(annot_tbl)] <- 0
   y_str_unit <- as.numeric(annot_tbl$strata)
   vp_table <- grid::plotViewport(margins = grid::unit(c(0, 0, 0, 0), "lines"))
   gb_table_left_annot <- grid::gList(

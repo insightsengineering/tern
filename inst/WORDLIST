@@ -18,7 +18,6 @@ Clopper
 Coull
 CoxPH
 Forkers
-Github
 Haenszel
 Hauck
 Hoffmann
@@ -31,6 +30,7 @@ MedDRA
 Murell
 Newcombe
 Pharmacokinetics
+README
 Repo
 Sabanés
 Satterthwaite
@@ -49,6 +49,7 @@ coercible
 colvars
 coull
 coxph
+coxreg
 doi
 efron
 funder

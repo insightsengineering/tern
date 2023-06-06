@@ -1,30 +1,39 @@
-# tern 0.8.1.9012
+# tern 0.8.2.9005
+
+### Enhancements
+* Added explicit zero counts to `g_km` plot "at risk" annotation tables.
+* Implemented `.indent_mods` argument in functions `h_tab_one_biomarker`, `h_tab_rsp_one_biomarker`, `h_tab_surv_one_biomarker`, `summarize_logistic`, `logistic_summary_by_flag`, `tabulate_rsp_biomarkers`, a_coxreg, `summarize_coxreg`, `tabulate_survival_biomarkers`, `surv_time`, `surv_timepoint`, and `cfun_by_flag`.
+
+### Miscellaneous
+* Updated README to include installation instructions for CRAN.
+* Began deprecation of `indent_mod` argument and replace it with the `.indent_mods` argument in `summarize_num_patients` and `analyze_num_patients`.
+
+# tern 0.8.2
 
 ### Breaking Changes
-* Refactored `s_coxreg` and `summarize_coxreg`. Added new analysis function `a_coxreg`.
+* Refactored `s_coxreg` and `summarize_coxreg`to work with new analysis function `a_coxreg`.
 
 ### Bug Fixes
 * Fixed missing label for `TRTEDTM` in `tern` datasets.
 * Fixed improper implementation of `na_level` argument in `summarize_vars` preventing it from having an effect.
 
 ### Enhancements
-* Added `section_div` and `na_level` (`na_str`) to `summarize_vars`.
+* Added `section_div` and `na_level` arguments to `summarize_vars`.
 * Added `median_range` as a numeric variable statistic option for `summarize_vars`.
 * Corrected ordering of factor levels by `d_onco_rsp_label`.
-* Added new "Analyze Functions" and "Summarize Functions" overview pages.
-* Moved all KM plot documentation to the `g_km` function.
-* Added `a_count_patients_sum_exposure` for new analyze function `analyze_patients_exposure_in_cols` and `summarize_patients_exposure_in_cols`.
+* Added new "Analyze Functions", "Summarize Functions", and "Analyze Functions on Columns" overview pages.
+* Consolidated all KM plot documentation within the `g_km` function.
+* Added `a_count_patients_sum_exposure` for `summarize_patients_exposure_in_cols` and new analyze function `analyze_patients_exposure_in_cols`.
 * Added more informative error when the user selects an invalid method for unstratified analyses in `s_proportion_diff`.
 * Updated `s_summary` and `s_compare` to allow `NA` values in input variables. For factor variables with `NA`s, if `na.rm = FALSE` an explicit `NA` level will be automatically added. `na.rm = TRUE` will also consider `"<Missing>"` values and excldue them.
 * Updated purpose of `na_level` parameter in `s_summary` and `s_compare` to align with other `tern` functions: Previously used as string to consider as `NA` when setting `na.rm = TRUE`. Now used as string to print in place of `NA` values in output table.
 
 ### Miscellaneous
 * Implemented the `lubridate` package for date variables in `tern` datasets.
-* Organization of `.gitignore` and `.Rbuildignore`.
+* Organized `.gitignore` and `.Rbuildignore` files.
 * Removed deprecated `footnotes` functions and all related files.
-* Deprecation cycle of `pairwise` function started.
-* Moved `count_patients_with_flags` functions out of `count_patients_with_event.R` and 
-  into `count_patients_with_flags.R`.
+* Started deprecation cycle for `pairwise` function.
+* Moved `count_patients_with_flags` functions from `count_patients_with_event.R` to `count_patients_with_flags.R`.
 
 # tern 0.8.0
 

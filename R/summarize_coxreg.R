@@ -184,6 +184,7 @@ a_coxreg <- function(df,
                      .spl_context,
                      .stats,
                      .formats,
+                     .indent_mods = NULL,
                      na_level = "",
                      cache_env = NULL) {
   cov_no_arm <- !multivar && !"arm" %in% names(variables) && control$interaction # special case: univar no arm
@@ -244,7 +245,7 @@ a_coxreg <- function(df,
     names(var_vals)
   }
   in_rows(
-    .list = var_vals, .names = var_names, .labels = var_names,
+    .list = var_vals, .names = var_names, .labels = var_names, .indent_mods = .indent_mods,
     .formats = stats::setNames(rep(.formats, length(var_names)), var_names),
     .format_na_strs = stats::setNames(rep(na_level, length(var_names)), var_names)
   )
@@ -350,7 +351,7 @@ summarize_coxreg <- function(lyt,
       vars = rep(common_var, length(.stats)),
       varlabels = stat_labels,
       extra_args = list(
-        .stats = .stats, .formats = .formats, na_level = rep(na_level, length(.stats)),
+        .stats = .stats, .formats = .formats, .indent_mods = .indent_mods, na_level = rep(na_level, length(.stats)),
         cache_env = replicate(length(.stats), list(env))
       )
     )

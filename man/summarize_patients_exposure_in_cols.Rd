@@ -57,7 +57,8 @@ analyze_patients_exposure_in_cols(
 \item{id}{(\code{string})\cr subject variable name.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
-(must be present as second argument in Content Row Functions).}
+(must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
+for more information.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
@@ -77,7 +78,8 @@ by a statistics function.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 
 \item{col_split}{(\code{flag})\cr whether the columns should be split. Set to \code{FALSE} when the required
 column split has been done already earlier in the layout pipe.}
