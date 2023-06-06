@@ -2,9 +2,11 @@
 
 ### Enhancements
 * Added explicit zero counts to `g_km` plot "at risk" annotation tables.
+* Implemented `.indent_mods` argument in functions `h_tab_one_biomarker`, `h_tab_rsp_one_biomarker`, `h_tab_surv_one_biomarker`, `summarize_logistic`, `logistic_summary_by_flag`, `tabulate_rsp_biomarkers`, a_coxreg, `summarize_coxreg`, `tabulate_survival_biomarkers`, `surv_time`, `surv_timepoint`, and `cfun_by_flag`.
 
 ### Miscellaneous
 * Updated README to include installation instructions for CRAN.
+* Began deprecation of `indent_mod` argument and replace it with the `.indent_mods` argument in `summarize_num_patients` and `analyze_num_patients`.
 
 # tern 0.8.2
 

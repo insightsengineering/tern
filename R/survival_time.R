@@ -97,14 +97,6 @@ s_surv_time <- function(df,
 #' @keywords internal
 a_surv_time <- make_afun(
   s_surv_time,
-  .indent_mods = c(
-    "median" = 0L,
-    "median_ci" = 1L,
-    "quantiles" = 0L,
-    "range_censor" = 0L,
-    "range_event" = 0L,
-    "range" = 0L
-  ),
   .formats = c(
     "median" = "xx.x",
     "median_ci" = "(xx.x, xx.x)",
@@ -117,6 +109,10 @@ a_surv_time <- make_afun(
 
 #' @describeIn survival_time Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
+#'   for that statistic's row label.
 #'
 #' @return
 #' * `surv_time()` returns a layout object suitable for passing to further layouting functions,
@@ -144,13 +140,16 @@ surv_time <- function(lyt,
                       .stats = c("median", "median_ci", "quantiles", "range_censor", "range_event"),
                       .formats = NULL,
                       .labels = NULL,
-                      .indent_mods = NULL) {
+                      .indent_mods = c(
+                        "median" = 0L, "median_ci" = 1L, "quantiles" = 0L,
+                        "range_censor" = 0L, "range_event" = 0L, "range" = 0L
+                      )) {
   afun <- make_afun(
     a_surv_time,
     .stats = .stats,
     .formats = .formats,
     .labels = .labels,
-    .indent_mods = .indent_mods
+    .indent_mods = extract_by_name(.indent_mods, .stats)
   )
   analyze(
     lyt,

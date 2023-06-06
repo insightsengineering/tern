@@ -10,6 +10,9 @@
 #'
 #' @inheritParams argument_convention
 #' @param ... arguments passed to `s_summary()`.
+#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
+#'   for that statistic's row label.
 #'
 #' @return
 #' A layout object suitable for passing to further layouting functions, or to [rtables::build_table()].

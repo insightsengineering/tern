@@ -44,7 +44,8 @@ to define row labels. This behavior is not supported as we never need to overloa
 This option allows you to add multiple instances of this functions, also in a nested fashion,
 without adding more splits. This split must happen only one time on a single layout.}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split

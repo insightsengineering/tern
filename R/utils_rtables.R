@@ -73,14 +73,15 @@ unlist_and_blank_na <- function(x) {
 #' @keywords internal
 cfun_by_flag <- function(analysis_var,
                          flag_var,
-                         format = "xx") {
+                         format = "xx",
+                         .indent_mods = NULL) {
   checkmate::assert_string(analysis_var)
   checkmate::assert_string(flag_var)
   function(df, labelstr) {
     row_index <- which(df[[flag_var]])
     x <- unlist_and_blank_na(df[[analysis_var]][row_index])
     formatters::with_label(
-      rcell(x, format = format),
+      rcell(x, format = format, indent_mod = .indent_mods),
       labelstr
     )
   }
