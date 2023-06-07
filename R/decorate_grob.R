@@ -268,7 +268,7 @@ heightDetails.decoratedGrob <- function(x) {
 split_string <- function(text, width) {
   strings <- strsplit(text, " ")
   out_string <- NA
-  for (string_i in 1:length(strings)) {
+  for (string_i in seq_along(strings)) {
     newline_str <- strings[[string_i]]
     if (length(newline_str) == 0) newline_str <- ""
     if (is.na(out_string[string_i])) {
@@ -278,7 +278,7 @@ split_string <- function(text, width) {
     gapwidth <- grid::stringWidth(" ")
     availwidth <- as.numeric(width)
     if (length(newline_str) > 1) {
-      for (i in 2:length(newline_str)) {
+      for (i in seq(2, length(newline_str))) {
         width_i <- grid::stringWidth(newline_str[i])
         if (convertWidth(linewidth + gapwidth + width_i, unitType(width), valueOnly = TRUE) < availwidth) {
           sep <- " "
