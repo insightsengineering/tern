@@ -9,7 +9,7 @@ decorate_grob(
   titles,
   footnotes,
   page = "",
-  width_titles = grid::unit(1, "npc"),
+  width_titles = grid::unit(1, "npc") - grid::stringWidth(page),
   width_footnotes = grid::unit(1, "npc") - grid::stringWidth(page),
   border = TRUE,
   margins = grid::unit(c(1, 0, 1, 0), "lines"),

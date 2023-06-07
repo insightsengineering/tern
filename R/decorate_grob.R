@@ -266,30 +266,32 @@ heightDetails.decoratedGrob <- function(x) {
 # Adapted from Paul Murell R Graphics 2nd Edition
 # https://www.stat.auckland.ac.nz/~paul/RG2e/interactgrid-splittext.R
 split_string <- function(text, width) {
-  availwidth <- grid::convertWidth(width, "in", valueOnly = TRUE)
-  textwidth <- grid::convertWidth(grid::stringWidth(text), "in", valueOnly = TRUE)
-  strings <- strsplit(text, " ")[[1]]
-
-  if (textwidth <= availwidth || length(strings) == 1) {
-    text
-  } else {
-    gapwidth <- grid::stringWidth(" ")
-    newstring <- strings[1]
-    linewidth <- grid::stringWidth(newstring)
-
-    for (i in 2:length(strings)) {
-      str_width <- grid::stringWidth(strings[i])
-      if (grid::convertWidth(linewidth + gapwidth + str_width, "in", valueOnly = TRUE) < availwidth) {
-        sep <- " "
-        linewidth <- linewidth + gapwidth + str_width
-      } else {
-        sep <- "\n"
-        linewidth <- str_width
-      }
-      newstring <- paste(newstring, strings[i], sep = sep)
+  strings <- strsplit(text, " ")
+  out_string <- NA
+  for (string_i in 1:length(strings)) {
+    newline_str <- strings[[string_i]]
+    if (length(newline_str) == 0) newline_str <- ""
+    if (is.na(out_string[string_i])) {
+      out_string[string_i] <- newline_str[[1]][[1]]
+      linewidth <- grid::stringWidth(out_string[string_i])
     }
-    newstring
+    gapwidth <- grid::stringWidth(" ")
+    availwidth <- as.numeric(width)
+    if (length(newline_str) > 1) {
+      for (i in 2:length(newline_str)) {
+        width_i <- grid::stringWidth(newline_str[i])
+        if (convertWidth(linewidth + gapwidth + width_i, unitType(width), valueOnly = TRUE) < availwidth) {
+          sep <- " "
+          linewidth <- linewidth + gapwidth + width_i
+        } else {
+          sep <- "\n"
+          linewidth <- width_i
+        }
+        out_string[string_i] <- paste(out_string[string_i], newline_str[i], sep = sep)
+      }
+    }
   }
+  paste(out_string, collapse = "\n")
 }
 
 #' Split Text According To Available Text Width
@@ -361,8 +363,6 @@ split_text_grob <- function(text,
   if (grid::unitType(y) %in% c("sum", "min", "max")) y <- grid::convertUnit(y, default.units)
   if (grid::unitType(width) %in% c("sum", "min", "max")) width <- grid::convertUnit(width, default.units)
 
-  checkmate::assert_vector(width, len = 1)
-
   ## if it is a fixed unit then we do not need to recalculate when viewport resized
   if (!inherits(width, "unit.arithmetic") &&
     !is.null(attr(width, "unit")) &&
@@ -370,36 +370,8 @@ split_text_grob <- function(text,
     attr(text, "fixed_text") <- paste(vapply(text, split_string, character(1), width = width), collapse = "\n")
   }
 
-  wrap_grob_text <- function(text, width) {
-    strings <- strsplit(text, " ")
-    out_string <- NA
-    for (string_i in 1:length(strings)) {
-      newline_str <- strings[[string_i]]
-      if (is.na(out_string[string_i])) {
-        out_string[string_i] <- newline_str[[1]][[1]]
-        linewidth <- stringWidth(out_string[string_i])
-      }
-      gapwidth <- stringWidth(" ")
-      availwidth <- as.numeric(width)
-      if (length(newline_str) > 1) {
-        for (i in 2:length(newline_str)) {
-          width_i <- stringWidth(newline_str[i])
-          if (convertWidth(linewidth + gapwidth + width_i, unitType(width), valueOnly = TRUE) < availwidth) {
-            sep <- " "
-            linewidth <- linewidth + gapwidth + width_i
-          } else {
-            sep <- "\n"
-            linewidth <- width_i
-          }
-          out_string[string_i] <- paste(out_string[string_i], newline_str[i], sep = sep)
-        }
-      }
-    }
-    paste(out_string, collapse = "\n")
-  }
-
   grid::grid.text(
-    label = wrap_grob_text(text, width),
+    label = split_string(text, width),
     x = x, y = y,
     just = just,
     hjust = hjust,
