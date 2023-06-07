@@ -280,7 +280,7 @@ split_string <- function(text, width) {
     if (length(newline_str) > 1) {
       for (i in seq(2, length(newline_str))) {
         width_i <- grid::stringWidth(newline_str[i])
-        if (convertWidth(linewidth + gapwidth + width_i, unitType(width), valueOnly = TRUE) < availwidth) {
+        if (grid::convertWidth(linewidth + gapwidth + width_i, grid::unitType(width), valueOnly = TRUE) < availwidth) {
           sep <- " "
           linewidth <- linewidth + gapwidth + width_i
         } else {
