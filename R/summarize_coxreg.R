@@ -192,7 +192,9 @@ a_coxreg <- function(df,
   var_lbl <- formatters::var_labels(df)[cov] # check for df labels
   if (length(labelstr) > 1) {
     labelstr <- if (cov %in% names(labelstr)) labelstr[[cov]] else var_lbl # use df labels if none
-  } else if (!is.na(var_lbl) && labelstr == cov && cov %in% variables$covariates) labelstr <- var_lbl
+  } else if (!is.na(var_lbl) && labelstr == cov && cov %in% variables$covariates) {
+    labelstr <- var_lbl
+  }
   if (eff || multivar || cov_no_arm) {
     control$interaction <- FALSE
   } else {
