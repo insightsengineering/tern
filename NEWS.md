@@ -26,6 +26,8 @@
 * Consolidated all KM plot documentation within the `g_km` function.
 * Added `a_count_patients_sum_exposure` for `summarize_patients_exposure_in_cols` and new analyze function `analyze_patients_exposure_in_cols`.
 * Added more informative error when the user selects an invalid method for unstratified analyses in `s_proportion_diff`.
+* Updated `s_summary` and `s_compare` to allow `NA` values in input variables. For factor variables with `NA`s, if `na.rm = FALSE` an explicit `NA` level will be automatically added. `na.rm = TRUE` will also consider `"<Missing>"` values and exclude them.
+* Updated purpose of `na_level` parameter in `s_summary` and `s_compare` to align with other `tern` functions. Instead of being a string to consider as `NA` when setting `na.rm = TRUE`, it now defines a string to print in place of `NA` values in the output table.
 
 ### Miscellaneous
 * Implemented the `lubridate` package for date variables in `tern` datasets.

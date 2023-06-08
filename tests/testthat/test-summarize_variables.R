@@ -69,9 +69,12 @@ testthat::test_that("s_summary fails with factors that have no levels or have em
   testthat::expect_error(s_summary(factor()))
 })
 
-testthat::test_that("s_summary fails when factors have NA levels", {
+testthat::test_that("s_summary works when factors have NA levels", {
   x <- factor(c("Female", "Male", "Female", "Male", "Unknown", "Unknown", NA))
-  testthat::expect_error(s_summary(x, na.rm = FALSE))
+  result <- s_summary(x, na.rm = FALSE)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_summary works with factors with NA values handled and correctly removes them by default", {
@@ -234,6 +237,14 @@ testthat::test_that("`summarize_vars` works with healthy factor input", {
 
 testthat::test_that("`summarize_vars` works with healthy factor input, alternative `na.rm = FALSE`", {
   dta <- data.frame(foo = factor(c("a", NA, "b", "a", NA)))
+
+  result <- basic_table() %>%
+    summarize_vars(vars = "foo", na.rm = FALSE) %>%
+    build_table(dta)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
   dta <- df_explicit_na(dta)
 
   result <- basic_table() %>%
@@ -329,6 +340,26 @@ testthat::test_that("`summarize_vars` works with logical input", {
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("`summarize_vars` works with healthy logical input, alternative `na.rm = FALSE`", {
+  dta <- data.frame(foo = factor(c(TRUE, NA, FALSE, TRUE, NA)))
+
+  result <- basic_table() %>%
+    summarize_vars(vars = "foo", na.rm = FALSE) %>%
+    build_table(dta)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  dta <- df_explicit_na(dta)
+
+  result <- basic_table() %>%
+    summarize_vars(vars = "foo", na.rm = FALSE) %>%
+    build_table(dta)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("`summarize_vars` works with empty named numeric variables", {
   dta <- tibble::tibble(
     foo = factor(c("a", "a", "b", "b", "c", "c"), levels = c("a", "b", "c")),
@@ -346,20 +377,18 @@ testthat::test_that("`summarize_vars` works with empty named numeric variables",
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("`summarize_vars` na_level argument works with non-default input", {
-  dta <- tibble::tibble(
-    foo = factor(c("a", "a", "b", "b", "c", "c"), levels = c("a", "b", "c"))
+testthat::test_that("summarize_vars 'na_level' argument works as expected", {
+  dta <- data.frame(
+    USUBJID = rep(1:6, each = 3),
+    AVISIT  = rep(paste0("V", 1:3), 6),
+    ARM     = rep(LETTERS[1:3], rep(6, 3)),
+    AVAL    = c(9:1, rep(NA, 9))
   )
 
   result <- basic_table() %>%
-    summarize_vars(vars = "foo", na_level = "c") %>%
-    build_table(dta)
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-
-  result <- basic_table() %>%
-    summarize_vars(vars = "foo", na_level = "c", na.rm = FALSE) %>%
+    split_cols_by(var = "ARM") %>%
+    split_rows_by(var = "AVISIT") %>%
+    summarize_vars(vars = "AVAL", na_level = "-") %>%
     build_table(dta)
 
   res <- testthat::expect_silent(result)

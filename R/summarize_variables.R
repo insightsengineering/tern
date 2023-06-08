@@ -125,7 +125,6 @@ s_summary <- function(x,
                       denom,
                       .N_row, # nolint
                       .N_col, # nolint
-                      na_level,
                       .var,
                       ...) {
   checkmate::assert_flag(na.rm)
@@ -216,7 +215,6 @@ s_summary.numeric <- function(x,
                               denom,
                               .N_row, # nolint
                               .N_col, # nolint
-                              na_level,
                               .var,
                               control = control_summarize_vars(),
                               ...) {
@@ -315,8 +313,10 @@ s_summary.numeric <- function(x,
 #' @note
 #' * If `x` is an empty `factor`, a list is still returned for `counts` with one element
 #'   per factor level. If there are no levels in `x`, the function fails.
-#' * If `x` contains `NA`, it is expected that `NA` have been conveyed to `na_level`
-#'   appropriately beforehand with [df_explicit_na()] or [explicit_na()].
+#' * If factor variables contain `NA`, these `NA` values are excluded by default. To include `NA` values
+#'   set `na.rm = FALSE` and missing values will be displayed as an `NA` level. Alternatively, an explicit
+#'   factor level can be defined for `NA` values during pre-processing via [df_explicit_na()] - the
+#'   default `na_level` (`"<Missing>"`) will also be excluded when `na.rm` is set to `TRUE`.
 #'
 #' @method s_summary factor
 #'
@@ -345,12 +345,15 @@ s_summary.factor <- function(x,
                              denom = c("n", "N_row", "N_col"),
                              .N_row, # nolint
                              .N_col, # nolint
-                             na_level = "<Missing>",
                              ...) {
-  assert_valid_factor(x, any.missing = FALSE)
+  assert_valid_factor(x)
   denom <- match.arg(denom)
 
-  if (na.rm) x <- fct_discard(x, na_level)
+  if (na.rm) {
+    x <- x[!is.na(x)] %>% fct_discard("<Missing>")
+  } else {
+    x <- x %>% explicit_na(label = "NA")
+  }
 
   y <- list()
 
@@ -401,15 +404,18 @@ s_summary.character <- function(x,
                                 denom = c("n", "N_row", "N_col"),
                                 .N_row, # nolint
                                 .N_col, # nolint
-                                na_level = "<Missing>",
                                 .var,
                                 verbose = TRUE,
                                 ...) {
-  y <- as_factor_keep_attributes(x, x_name = .var, na_level = na_level, verbose = verbose)
+  if (na.rm) {
+    y <- as_factor_keep_attributes(x, x_name = .var, verbose = verbose)
+  } else {
+    y <- as_factor_keep_attributes(x, x_name = .var, verbose = verbose, na_level = "NA")
+  }
+
   s_summary(
     x = y,
     na.rm = na.rm,
-    na_level = na_level,
     denom = denom,
     .N_row = .N_row,
     .N_col = .N_col,
@@ -731,6 +737,7 @@ summarize_vars <- function(lyt,
                            var_labels = vars,
                            nested = TRUE,
                            ...,
+                           na_level = NA_character_,
                            show_labels = "default",
                            table_names = vars,
                            section_div = NA_character_,
@@ -747,6 +754,7 @@ summarize_vars <- function(lyt,
     afun = afun,
     nested = nested,
     extra_args = list(...),
+    na_str = na_level,
     inclNAs = TRUE,
     show_labels = show_labels,
     table_names = table_names,

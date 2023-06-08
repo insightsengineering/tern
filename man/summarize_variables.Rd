@@ -15,7 +15,7 @@
 \alias{summarize_vars}
 \title{Summarize Variables}
 \usage{
-s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, na_level, .var, ...)
+s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
 
 \method{s_summary}{numeric}(
   x,
@@ -23,7 +23,6 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, na_level, .var, ...)
   denom,
   .N_row,
   .N_col,
-  na_level,
   .var,
   control = control_summarize_vars(),
   ...
@@ -35,7 +34,6 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, na_level, .var, ...)
   denom = c("n", "N_row", "N_col"),
   .N_row,
   .N_col,
-  na_level = "<Missing>",
   ...
 )
 
@@ -45,7 +43,6 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, na_level, .var, ...)
   denom = c("n", "N_row", "N_col"),
   .N_row,
   .N_col,
-  na_level = "<Missing>",
   .var,
   verbose = TRUE,
   ...
@@ -68,7 +65,6 @@ a_summary(x, ..., .N_row, .N_col, .var)
   denom,
   .N_row,
   .N_col,
-  na_level,
   .var,
   control = control_summarize_vars(),
   ...
@@ -80,7 +76,6 @@ a_summary(x, ..., .N_row, .N_col, .var)
   denom = c("n", "N_row", "N_col"),
   .N_row,
   .N_col,
-  na_level = "<Missing>",
   ...
 )
 
@@ -90,7 +85,6 @@ a_summary(x, ..., .N_row, .N_col, .var)
   denom = c("n", "N_row", "N_col"),
   .N_row,
   .N_col,
-  na_level = "<Missing>",
   .var,
   verbose = TRUE,
   ...
@@ -111,6 +105,7 @@ summarize_vars(
   var_labels = vars,
   nested = TRUE,
   ...,
+  na_level = NA_character_,
   show_labels = "default",
   table_names = vars,
   section_div = NA_character_,
@@ -136,8 +131,6 @@ summarize_vars(
 
 \item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
-
-\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors with custom \code{string}.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
@@ -166,6 +159,8 @@ to print out information about factor casting.}
 \item{nested}{(\code{flag})\cr whether this layout instruction be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
 underneath analyses, which is not allowed.}
+
+\item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
@@ -294,8 +289,10 @@ being standard behavior in R.
 \itemize{
 \item If \code{x} is an empty \code{factor}, a list is still returned for \code{counts} with one element
 per factor level. If there are no levels in \code{x}, the function fails.
-\item If \code{x} contains \code{NA}, it is expected that \code{NA} have been conveyed to \code{na_level}
-appropriately beforehand with \code{\link[=df_explicit_na]{df_explicit_na()}} or \code{\link[=explicit_na]{explicit_na()}}.
+\item If factor variables contain \code{NA}, these \code{NA} values are excluded by default. To include \code{NA} values
+set \code{na.rm = FALSE} and missing values will be displayed as an \code{NA} level. Alternatively, an explicit
+factor level can be defined for \code{NA} values during pre-processing via \code{\link[=df_explicit_na]{df_explicit_na()}} - the
+default \code{na_level} (\code{"<Missing>"}) will also be excluded when \code{na.rm} is set to \code{TRUE}.
 }
 
 \itemize{

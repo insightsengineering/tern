@@ -650,6 +650,46 @@
       [1] 0
       
 
+# s_summary works when factors have NA levels
+
+    Code
+      res
+    Output
+      $n
+      [1] 7
+      
+      $count
+      $count$Female
+      [1] 2
+      
+      $count$Male
+      [1] 2
+      
+      $count$Unknown
+      [1] 2
+      
+      $count$`NA`
+      [1] 1
+      
+      
+      $count_fraction
+      $count_fraction$Female
+      [1] 2.0000000 0.2857143
+      
+      $count_fraction$Male
+      [1] 2.0000000 0.2857143
+      
+      $count_fraction$Unknown
+      [1] 2.0000000 0.2857143
+      
+      $count_fraction$`NA`
+      [1] 1.0000000 0.1428571
+      
+      
+      $n_blq
+      [1] 0
+      
+
 # s_summary works with factors with NA values handled and correctly removes them by default
 
     Code
@@ -804,7 +844,7 @@
       $count$Unknown
       [1] 4
       
-      $count$`<Missing>`
+      $count$`NA`
       [1] 1
       
       
@@ -818,7 +858,7 @@
       $count_fraction$Unknown
       [1] 4.0 0.4
       
-      $count_fraction$`<Missing>`
+      $count_fraction$`NA`
       [1] 1.0 0.1
       
       
@@ -974,6 +1014,18 @@
     Code
       res
     Output
+           all obs
+      ————————————
+      n       5   
+      a    2 (40%)
+      b    1 (20%)
+      NA   2 (40%)
+
+---
+
+    Code
+      res
+    Output
                   all obs
       ———————————————————
       n              5   
@@ -1116,6 +1168,30 @@
       n                   5   
       count_fraction   3 (60%)
 
+# `summarize_vars` works with healthy logical input, alternative `na.rm = FALSE`
+
+    Code
+      res
+    Output
+              all obs
+      ———————————————
+      n          5   
+      FALSE   1 (20%)
+      TRUE    2 (40%)
+      NA      2 (40%)
+
+---
+
+    Code
+      res
+    Output
+                  all obs
+      ———————————————————
+      n              5   
+      FALSE       1 (20%)
+      TRUE        2 (40%)
+      <Missing>   2 (40%)
+
 # `summarize_vars` works with empty named numeric variables
 
     Code
@@ -1128,26 +1204,26 @@
       Median      NA      3.5         5.5   
       Min - Max   NA   3.0 - 4.0   5.0 - 6.0
 
-# `summarize_vars` na_level argument works with non-default input
+# summarize_vars 'na_level' argument works as expected
 
     Code
       res
     Output
-          all obs
-      ———————————
-      n      4   
-      a   2 (50%)
-      b   2 (50%)
-
----
-
-    Code
-      res
-    Output
-           all obs 
-      —————————————
-      n       6    
-      a   2 (33.3%)
-      b   2 (33.3%)
-      c   2 (33.3%)
+                        A           B       C
+      ———————————————————————————————————————
+      V1                                     
+        n               2           1       0
+        Mean (SD)   7.5 (2.1)    3.0 (-)    -
+        Median         7.5         3.0      -
+        Min - Max   6.0 - 9.0   3.0 - 3.0   -
+      V2                                     
+        n               2           1       0
+        Mean (SD)   6.5 (2.1)    2.0 (-)    -
+        Median         6.5         2.0      -
+        Min - Max   5.0 - 8.0   2.0 - 2.0   -
+      V3                                     
+        n               2           1       0
+        Mean (SD)   5.5 (2.1)    1.0 (-)    -
+        Median         5.5         1.0      -
+        Min - Max   4.0 - 7.0   1.0 - 1.0   -
 

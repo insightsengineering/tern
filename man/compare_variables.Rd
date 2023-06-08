@@ -19,15 +19,7 @@ s_compare(x, .ref_group, .in_ref_col, ...)
 
 \method{s_compare}{numeric}(x, .ref_group, .in_ref_col, ...)
 
-\method{s_compare}{factor}(
-  x,
-  .ref_group,
-  .in_ref_col,
-  denom = "n",
-  na.rm = TRUE,
-  na_level = "<Missing>",
-  ...
-)
+\method{s_compare}{factor}(x, .ref_group, .in_ref_col, denom = "n", na.rm = TRUE, ...)
 
 \method{s_compare}{character}(
   x,
@@ -35,7 +27,6 @@ s_compare(x, .ref_group, .in_ref_col, ...)
   .in_ref_col,
   denom = "n",
   na.rm = TRUE,
-  na_level = "<Missing>",
   .var,
   verbose = TRUE,
   ...
@@ -47,15 +38,7 @@ a_compare(x, .ref_group, .in_ref_col, ..., .var)
 
 \method{a_compare}{numeric}(x, .ref_group, .in_ref_col, ...)
 
-\method{a_compare}{factor}(
-  x,
-  .ref_group,
-  .in_ref_col,
-  denom = "n",
-  na.rm = TRUE,
-  na_level = "<Missing>",
-  ...
-)
+\method{a_compare}{factor}(x, .ref_group, .in_ref_col, denom = "n", na.rm = TRUE, ...)
 
 \method{a_compare}{character}(
   x,
@@ -63,7 +46,6 @@ a_compare(x, .ref_group, .in_ref_col, ..., .var)
   .in_ref_col,
   denom = "n",
   na.rm = TRUE,
-  na_level = "<Missing>",
   .var,
   verbose = TRUE,
   ...
@@ -77,6 +59,7 @@ compare_vars(
   var_labels = vars,
   nested = TRUE,
   ...,
+  na_level = NA_character_,
   show_labels = "default",
   table_names = vars,
   .stats = c("n", "mean_sd", "count_fraction", "pval"),
@@ -99,8 +82,6 @@ can only be \code{n} (number of values in this row and column intersection).}
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors with custom \code{string}.}
-
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
@@ -116,6 +97,8 @@ to print out information about factor casting. Defaults to \code{TRUE}.}
 \item{nested}{(\code{flag})\cr whether this layout instruction be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
 underneath analyses, which is not allowed.}
+
+\item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
@@ -189,13 +172,15 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 between columns, therefore a row-based proportion would not make sense. Proportion based on \code{N_col} would
 be difficult since we use counts for the chi-squared test statistic, therefore missing values should be accounted
 for as explicit factor levels.
+\item If factor variables contain \code{NA}, these \code{NA} values are excluded by default. To include \code{NA} values
+set \code{na.rm = FALSE} and missing values will be displayed as an \code{NA} level. Alternatively, an explicit
+factor level can be defined for \code{NA} values during pre-processing via \code{\link[=df_explicit_na]{df_explicit_na()}} - the
+default \code{na_level} (\code{"<Missing>"}) will also be excluded when \code{na.rm} is set to \code{TRUE}.
 \item For character variables, automatic conversion to factor does not guarantee that the table
 will be generated correctly. In particular for sparse tables this very likely can fail.
 Therefore it is always better to manually convert character variables to factors during pre-processing.
 \item For \code{compare_vars()}, the column split must define a reference group via \code{ref_group} so that the comparison
 is well defined.
-\item When factor variables contains \code{NA}, it is expected that \code{NA} values have been conveyed to \code{na_level}
-appropriately beforehand via \code{\link[=df_explicit_na]{df_explicit_na()}}.
 }
 }
 \examples{

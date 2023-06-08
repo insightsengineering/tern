@@ -62,7 +62,7 @@ for more information.}
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors with custom \code{string}.}
+\item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split

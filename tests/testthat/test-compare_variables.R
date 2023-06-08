@@ -114,3 +114,13 @@ testthat::test_that("compare_vars works with custom settings", {
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("compare_vars 'na_level' argument works as expected", {
+  result <- basic_table() %>%
+    split_cols_by("ARMCD", ref_group = "ARM B") %>%
+    compare_vars("ARM", na_level = "-") %>%
+    build_table(tern_ex_adsl)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
