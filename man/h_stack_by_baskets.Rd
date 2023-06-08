@@ -26,7 +26,7 @@ h_stack_by_baskets(
 variable. This is useful when there are some levels of interest that are not observed in the \code{df} dataset.
 The two columns of this dataset should be named \code{basket} and \code{basket_name}.}
 
-\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors with custom \code{string}.}
+\item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 }
 \value{
 \code{data.frame} with variables in \code{keys} taken from \code{df} and new variable \code{SMQ} containing
