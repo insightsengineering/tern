@@ -67,12 +67,12 @@ testthat::test_that("a_coxreg works as expected", {
 # summarize_coxreg ----
 
 testthat::test_that("summarize_coxreg adds the univariate Cox regression layer to rtables", {
-  lyt <- basic_table() %>%
+  result <- basic_table() %>%
     summarize_coxreg(
       variables = variables,
       control = control_coxreg(ties = "breslow", conf_level = 0.90)
-    )
-  result <- lyt %>% build_table(df = dta_bladder)
+    ) %>%
+    build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -90,10 +90,18 @@ testthat::test_that("summarize_coxreg adds the univariate Cox regression layer t
 
   # no labels
   formatters::var_labels(dta_bladder) <- rep(NA_character_, ncol(dta_bladder))
-  result <- lyt %>% build_table(df = dta_bladder)
+  result <- basic_table() %>%
+    summarize_coxreg(
+      variables = variables,
+      control = control_coxreg(ties = "breslow", conf_level = 0.90)
+    ) %>%
+    build_table(df = dta_bladder)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
+
+  # pagination
+  testthat::expect_silent(pag_result <- paginate_table(result, lpp = 10))
 })
 
 testthat::test_that("summarize_coxreg .section_div argument works", {
