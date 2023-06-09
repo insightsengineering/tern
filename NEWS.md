@@ -5,6 +5,9 @@
 * Added a flag for total level split in `analyze_patients_exposure_in_cols`.
 * Implemented `.indent_mods` argument in functions `h_tab_one_biomarker`, `h_tab_rsp_one_biomarker`, `h_tab_surv_one_biomarker`, `summarize_logistic`, `logistic_summary_by_flag`, `tabulate_rsp_biomarkers`, a_coxreg, `summarize_coxreg`, `tabulate_survival_biomarkers`, `surv_time`, `surv_timepoint`, and `cfun_by_flag`.
 
+### Bug Fixes
+* Fixed bug in `split_text_grob` preventing titles and footnotes from being properly formatted and printed by `decorate_grob`.
+
 ### Miscellaneous
 * Updated README to include installation instructions for CRAN.
 * Began deprecation of `indent_mod` argument and replace it with the `.indent_mods` argument in `summarize_num_patients` and `analyze_num_patients`.
@@ -13,10 +16,6 @@
 
 ### Breaking Changes
 * Refactored `s_coxreg` and `summarize_coxreg`to work with new analysis function `a_coxreg`.
-
-### Bug Fixes
-* Fixed missing label for `TRTEDTM` in `tern` datasets.
-* Fixed improper implementation of `na_level` argument in `summarize_vars` preventing it from having an effect.
 
 ### Enhancements
 * Added `section_div` and `na_level` arguments to `summarize_vars`.
@@ -28,6 +27,10 @@
 * Added more informative error when the user selects an invalid method for unstratified analyses in `s_proportion_diff`.
 * Updated `s_summary` and `s_compare` to allow `NA` values in input variables. For factor variables with `NA`s, if `na.rm = FALSE` an explicit `NA` level will be automatically added. `na.rm = TRUE` will also consider `"<Missing>"` values and exclude them.
 * Updated purpose of `na_level` parameter in `s_summary` and `s_compare` to align with other `tern` functions. Instead of being a string to consider as `NA` when setting `na.rm = TRUE`, it now defines a string to print in place of `NA` values in the output table.
+
+### Bug Fixes
+* Fixed missing label for `TRTEDTM` in `tern` datasets.
+* Fixed improper implementation of `na_level` argument in `summarize_vars` preventing it from having an effect.
 
 ### Miscellaneous
 * Implemented the `lubridate` package for date variables in `tern` datasets.
