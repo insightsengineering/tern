@@ -5,6 +5,7 @@
 * Added a flag for total level split in `analyze_patients_exposure_in_cols`.
 * Implemented `.indent_mods` argument in functions `h_tab_one_biomarker`, `h_tab_rsp_one_biomarker`, `h_tab_surv_one_biomarker`, `summarize_logistic`, `logistic_summary_by_flag`, `tabulate_rsp_biomarkers`, a_coxreg, `summarize_coxreg`, `tabulate_survival_biomarkers`, `surv_time`, `surv_timepoint`, and `cfun_by_flag`.
 * Updated `summarize_coxreg` to print covariates in data rows for univariate Cox regression with no interactions and content rows otherwise.
+* Removed "baseline status" text from `d_count_abnormal_by_baseline` labels.
 
 ### Bug Fixes
 * Fixed bug in `split_text_grob` preventing titles and footnotes from being properly formatted and printed by `decorate_grob`.
