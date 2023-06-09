@@ -61,7 +61,6 @@ RdMacros:
     Rdpack
 Remotes:
     insightsengineering/nestcolor@*release
-Config/Needs/website: insightsengineering/nesttemplate
 Config/Needs/verdepcheck:
     insightsengineering/rtables,
     tidymodels/broom,
@@ -75,18 +74,22 @@ Config/Needs/verdepcheck:
     tidyverse/ggplot2,
     gridExtra,
     r-lib/gtable,
+    labeling,
     r-lib/lifecycle,
     tidyverse/magrittr,
     GeoBosh/Rdpack,
     r-lib/rlang,
     r-lib/scales,
+    survival,
     tidyverse/tibble,
     tidyverse/tidyr,
     yihui/knitr,
+    lattice,
     tidyverse/lubridate,
     insightsengineering/nestcolor,
     tidyverse/stringr,
     r-lib/testthat
+Config/Needs/website: insightsengineering/nesttemplate
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
