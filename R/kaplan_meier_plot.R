@@ -1122,14 +1122,42 @@ h_grob_median_surv <- function(fit_km,
                                armval = "All",
                                x = 0.9,
                                y = 0.9,
+                               width = grid::unit(0.7, "npc"),
+                               height = grid::unit(0.25, "npc"),
                                ttheme = gridExtra::ttheme_default()) {
+  width <- convertUnit(width, "in")
+  height <- convertUnit(height, "in")
+
   data <- h_tbl_median_surv(fit_km, armval = armval)
-  gt <- gridExtra::tableGrob(d = data, theme = ttheme)
+  w <- paste("  ", c(
+    rownames(data)[which.max(nchar(rownames(data)))],
+    sapply(names(data), function(x) c(x, data[[x]])[which.max(nchar(c(x, data[[x]])))])
+  ))
+  w_unit <- grid::convertWidth(grid::stringWidth(w), "in", valueOnly = TRUE)
+  w_txt <- sapply(1:64, function(x) {
+    par(ps = x)
+    strwidth(w[4], units = "in")
+  })
+  f_size_w <- which.max(w_txt[w_txt < as.numeric((w_unit / sum(w_unit)) * width)[4]])
+
+  h_txt <- sapply(1:64, function(x) {
+    par(ps = x)
+    strheight(grid::stringHeight("X"), units = "in")
+  })
+  f_size_h <- which.max(h_txt[h_txt < as.numeric(grid::unit(as.numeric(height) / 4, grid::unitType(height)))])
+
+  gt <- gridExtra::tableGrob(
+    d = data,
+    theme = gridExtra::ttheme_default(base_size = min(f_size_w, f_size_h))
+  )
+  gt$widths <- ((w_unit / sum(w_unit)) * width)
+  gt$heights <- rep(grid::unit(as.numeric(height) / 4, grid::unitType(height)), nrow(gt))
+
   vp <- grid::viewport(
     x = grid::unit(x, "npc") + grid::unit(1, "lines"),
     y = grid::unit(y, "npc") + grid::unit(1.5, "lines"),
-    height = sum(gt$heights),
-    width = sum(gt$widths),
+    height = height,
+    width = width,
     just = c("right", "top")
   )
 
