@@ -44,9 +44,8 @@ NULL
 #'
 #' @export
 d_count_abnormal_by_baseline <- function(abnormal) {
-  null_name <- paste0(toupper(substr(abnormal, 1, 1)), tolower(substring(abnormal, 2)))
   not_abn_name <- paste("Not", tolower(abnormal))
-  abn_name <- null_name
+  abn_name <- paste0(toupper(substr(abnormal, 1, 1)), tolower(substring(abnormal, 2)))
   total_name <- "Total"
 
   list(
