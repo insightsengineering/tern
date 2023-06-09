@@ -718,6 +718,7 @@ h_ggkm <- function(data,
   gg + ggplot2::theme(
     legend.position = "bottom",
     legend.title = ggplot2::element_blank(),
+    legend.key.height = unit(0.02, "npc"),
     panel.grid.major.x = ggplot2::element_line(linewidth = 2)
   )
 }
@@ -855,9 +856,9 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
   ht_x <- c(
     ht_x,
     1,
-    grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
-    grid::convertX(g_el$guide$heights, "pt"),
-    nlines + 1,
+    grid::convertX(with(g_el, xaxis$height + ylab$width), "pt") + grid::unit(5, "pt"),
+    grid::convertX(g_el$guide$heights, "pt") + grid::unit(2, "pt"),
+    nlines + 0.5,
     grid::convertX(with(g_el, xaxis$height + ylab$width), "pt")
   )
   ht_units <- c(
@@ -1122,14 +1123,14 @@ h_grob_median_surv <- function(fit_km,
                                armval = "All",
                                x = 0.9,
                                y = 0.9,
-                               width = grid::unit(0.7, "npc"),
-                               height = grid::unit(0.25, "npc"),
+                               width = grid::unit(0.45, "npc"),
+                               height = grid::unit(0.2, "npc"),
                                ttheme = gridExtra::ttheme_default()) {
   width <- convertUnit(width, "in")
   height <- convertUnit(height, "in")
 
   data <- h_tbl_median_surv(fit_km, armval = armval)
-  w <- paste("  ", c(
+  w <- paste(" ", c(
     rownames(data)[which.max(nchar(rownames(data)))],
     sapply(names(data), function(x) c(x, data[[x]])[which.max(nchar(c(x, data[[x]])))])
   ))
