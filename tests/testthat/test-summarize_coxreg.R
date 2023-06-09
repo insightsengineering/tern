@@ -101,7 +101,7 @@ testthat::test_that("summarize_coxreg adds the univariate Cox regression layer t
   testthat::expect_snapshot(res)
 
   # pagination
-  testthat::expect_silent(invisible(capture.output(cat(export_as_txt(result, lpp = 10)))))
+  testthat::expect_silent(pag_result <- paginate_table(result, lpp = 10))
 })
 
 testthat::test_that("summarize_coxreg .section_div argument works", {
