@@ -63,7 +63,9 @@ Remotes:
     insightsengineering/nestcolor@*release
 Config/Needs/website: insightsengineering/nesttemplate
 Config/Needs/verdepcheck:
+    insightsengineering/rtables,
     tidymodels/broom,
+    car,
     mllg/checkmate,
     wilkelab/cowplot,
     tidyverse/dplyr,
@@ -71,6 +73,7 @@ Config/Needs/verdepcheck:
     tidyverse/forcats,
     insightsengineering/formatters,
     tidyverse/ggplot2,
+    gridExtra,
     r-lib/gtable,
     r-lib/lifecycle,
     tidyverse/magrittr,
