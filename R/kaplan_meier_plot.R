@@ -207,7 +207,7 @@ g_km <- function(df,
   checkmate::assert_character(col, null.ok = TRUE)
   checkmate::assert_subset(annot_stats, c("median", "min"))
   checkmate::assert_logical(annot_stats_vlines)
-  checkmate::assert_true(all(sapply(width_annots, is.unit)))
+  checkmate::assert_true(all(sapply(width_annots, grid::is.unit)))
 
   tte <- variables$tte
   is_event <- variables$is_event
@@ -1140,7 +1140,7 @@ h_grob_median_surv <- function(fit_km,
                                ttheme = gridExtra::ttheme_default()) {
   data <- h_tbl_median_surv(fit_km, armval = armval)
 
-  width <- convertUnit(width, "in")
+  width <- grid::convertUnit(width, "in")
   height <- width * (nrow(data) + 1) / 12
 
   w <- paste(" ", c(
@@ -1347,7 +1347,7 @@ h_grob_coxph <- function(...,
                          )) {
   data <- h_tbl_coxph_pairwise(...)
 
-  width <- convertUnit(width, "in")
+  width <- grid::convertUnit(width, "in")
   height <- width * (nrow(data) + 1) / 12
 
   w <- paste("    ", c(
