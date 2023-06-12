@@ -1113,6 +1113,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' @param ttheme (`list`)\cr see [gridExtra::ttheme_default()].
 #' @param x (`numeric`)\cr a value between 0 and 1 specifying x-location.
 #' @param y (`numeric`)\cr a value between 0 and 1 specifying y-location.
+#' @param width (`unit`)\cr width (as a unit) to use when printing the grob.
 #'
 #' @return A `grob` of a table containing statistics `N`, `Median`, and `XX% CI` (`XX` taken from `fit_km`).
 #'
@@ -1150,14 +1151,14 @@ h_grob_median_surv <- function(fit_km,
   w_unit <- grid::convertWidth(grid::stringWidth(w), "in", valueOnly = TRUE)
 
   w_txt <- sapply(1:64, function(x) {
-    par(ps = x)
-    strwidth(w[4], units = "in")
+    graphics::par(ps = x)
+    graphics::strwidth(w[4], units = "in")
   })
   f_size_w <- which.max(w_txt[w_txt < as.numeric((w_unit / sum(w_unit)) * width)[4]])
 
   h_txt <- sapply(1:64, function(x) {
-    par(ps = x)
-    strheight(grid::stringHeight("X"), units = "in")
+    graphics::par(ps = x)
+    graphics::strheight(grid::stringHeight("X"), units = "in")
   })
   f_size_h <- which.max(h_txt[h_txt < as.numeric(grid::unit(as.numeric(height) / 4, grid::unitType(height)))])
 
@@ -1313,6 +1314,7 @@ h_tbl_coxph_pairwise <- function(df,
 #' @param ... arguments will be passed to [h_tbl_coxph_pairwise()].
 #' @param x (`numeric`)\cr a value between 0 and 1 specifying x-location.
 #' @param y (`numeric`)\cr a value between 0 and 1 specifying y-location.
+#' @param width (`unit`)\cr width (as a unit) to use when printing the grob.
 #'
 #' @return A `grob` of a table containing statistics `HR`, `XX% CI` (`XX` taken from `control_coxph_pw`),
 #'   and `p-value (log-rank)`.
@@ -1355,15 +1357,16 @@ h_grob_coxph <- function(...,
     sapply(names(data), function(x) c(x, data[[x]])[which.max(nchar(c(x, data[[x]])))])
   ))
   w_unit <- grid::convertWidth(grid::stringWidth(w), "in", valueOnly = TRUE)
+
   w_txt <- sapply(1:64, function(x) {
-    par(ps = x)
-    strwidth(w[4], units = "in")
+    graphics::par(ps = x)
+    graphics::strwidth(w[4], units = "in")
   })
   f_size_w <- which.max(w_txt[w_txt < as.numeric((w_unit / sum(w_unit)) * width)[4]])
 
   h_txt <- sapply(1:64, function(x) {
-    par(ps = x)
-    strheight(grid::stringHeight("X"), units = "in")
+    graphics::par(ps = x)
+    graphics::strheight(grid::stringHeight("X"), units = "in")
   })
   f_size_h <- which.max(h_txt[h_txt < as.numeric(grid::unit(as.numeric(height) / 4, grid::unitType(height)))])
 
