@@ -33,7 +33,7 @@ Imports:
     formatters (>= 0.5.0),
     ggplot2 (>= 3.4.0),
     grid,
-    gridExtra,
+    gridExtra (>= 2.0.0),
     gtable,
     labeling,
     lifecycle (>= 1.0.3),
@@ -45,7 +45,7 @@ Imports:
     stats,
     survival (>= 3.2-13),
     tibble (>= 2.1.3),
-    tidyr (>= 0.2.0),
+    tidyr (>= 1.0.0),
     utils
 Suggests:
     knitr (>= 1.42),
