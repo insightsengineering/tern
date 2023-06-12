@@ -990,7 +990,6 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
   annot_tbl[is.na(annot_tbl)] <- 0
   y_str_unit <- as.numeric(annot_tbl$strata)
   vp_table <- grid::plotViewport(margins = grid::unit(c(0, 0, 0, 0), "lines"))
-  # browser()
   gb_table_left_annot <- grid::gList(
     grid::rectGrob(
       x = 0, y = grid::unit(c(1:nlines) - 1, "lines"),
