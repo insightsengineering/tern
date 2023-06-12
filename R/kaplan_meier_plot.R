@@ -143,7 +143,7 @@
 #'   font_size = 15,
 #'   annot_coxph = TRUE,
 #'   control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
-#'   position_coxph = c(0.4, 0.5)
+#'   position_coxph = c(0.5, 0.5)
 #' )
 #'
 #' # Change position of the treatment group annotation table.
@@ -187,8 +187,8 @@ g_km <- function(df,
                  annot_stats = NULL,
                  annot_stats_vlines = FALSE,
                  control_coxph_pw = control_coxph(),
-                 position_coxph = c(0, 0.05),
-                 position_surv_med = c(0.9, 0.9)) {
+                 position_coxph = c(-0.03, -0.02),
+                 position_surv_med = c(0.95, 0.9)) {
   checkmate::assert_list(variables)
   checkmate::assert_subset(c("tte", "arm", "is_event"), names(variables))
   checkmate::assert_string(title, null.ok = TRUE)
@@ -976,6 +976,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
   annot_tbl[is.na(annot_tbl)] <- 0
   y_str_unit <- as.numeric(annot_tbl$strata)
   vp_table <- grid::plotViewport(margins = grid::unit(c(0, 0, 0, 0), "lines"))
+  # browser()
   gb_table_left_annot <- grid::gList(
     grid::rectGrob(
       x = 0, y = grid::unit(c(1:nlines) - 1, "lines"),
@@ -984,12 +985,11 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
     ),
     grid::textGrob(
       label = unique(annot_tbl$strata),
-      x = .95,
+      x = 0.5,
       y = grid::unit(
-        (max(unique(y_str_unit)) - unique(y_str_unit)) + .5,
+        (max(unique(y_str_unit)) - unique(y_str_unit)) + 0.75,
         "native"
       ),
-      hjust = 1,
       gp = grid::gpar(fontface = "italic", fontsize = 10)
     )
   )
@@ -1123,17 +1123,19 @@ h_grob_median_surv <- function(fit_km,
                                armval = "All",
                                x = 0.9,
                                y = 0.9,
-                               width = grid::unit(0.4, "npc"),
+                               width = grid::unit(0.3, "npc"),
                                ttheme = gridExtra::ttheme_default()) {
-  width <- convertUnit(width, "in")
-  height <- width / 3
-
   data <- h_tbl_median_surv(fit_km, armval = armval)
+
+  width <- convertUnit(width, "in")
+  height <- width * (nrow(data) + 1) / 12
+
   w <- paste(" ", c(
     rownames(data)[which.max(nchar(rownames(data)))],
     sapply(names(data), function(x) c(x, data[[x]])[which.max(nchar(c(x, data[[x]])))])
   ))
   w_unit <- grid::convertWidth(grid::stringWidth(w), "in", valueOnly = TRUE)
+
   w_txt <- sapply(1:64, function(x) {
     par(ps = x)
     strwidth(w[4], units = "in")
@@ -1146,9 +1148,15 @@ h_grob_median_surv <- function(fit_km,
   })
   f_size_h <- which.max(h_txt[h_txt < as.numeric(grid::unit(as.numeric(height) / 4, grid::unitType(height)))])
 
+  if (ttheme$core$fg_params$fontsize == 12) {
+    ttheme$core$fg_params$fontsize <- min(f_size_w, f_size_h)
+    ttheme$colhead$fg_params$fontsize <- min(f_size_w, f_size_h)
+    ttheme$rowhead$fg_params$fontsize <- min(f_size_w, f_size_h)
+  }
+
   gt <- gridExtra::tableGrob(
     d = data,
-    theme = gridExtra::ttheme_default(base_size = min(f_size_w, f_size_h))
+    theme = ttheme
   )
   gt$widths <- ((w_unit / sum(w_unit)) * width)
   gt$heights <- rep(grid::unit(as.numeric(height) / 4, grid::unitType(height)), nrow(gt))
@@ -1319,20 +1327,52 @@ h_tbl_coxph_pairwise <- function(df,
 h_grob_coxph <- function(...,
                          x = 0,
                          y = 0,
+                         width = grid::unit(0.4, "npc"),
                          ttheme = gridExtra::ttheme_default(
-                           base_size = 12,
                            padding = grid::unit(c(1, .5), "lines"),
                            core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = .5))
                          )) {
   data <- h_tbl_coxph_pairwise(...)
+
+  width <- convertUnit(width, "in")
+  height <- width * (nrow(data) + 1) / 12
+
+  w <- paste("    ", c(
+    rownames(data)[which.max(nchar(rownames(data)))],
+    sapply(names(data), function(x) c(x, data[[x]])[which.max(nchar(c(x, data[[x]])))])
+  ))
+  w_unit <- grid::convertWidth(grid::stringWidth(w), "in", valueOnly = TRUE)
+  w_txt <- sapply(1:64, function(x) {
+    par(ps = x)
+    strwidth(w[4], units = "in")
+  })
+  f_size_w <- which.max(w_txt[w_txt < as.numeric((w_unit / sum(w_unit)) * width)[4]])
+
+  h_txt <- sapply(1:64, function(x) {
+    par(ps = x)
+    strheight(grid::stringHeight("X"), units = "in")
+  })
+  f_size_h <- which.max(h_txt[h_txt < as.numeric(grid::unit(as.numeric(height) / 4, grid::unitType(height)))])
+
+  if (ttheme$core$fg_params$fontsize == 12) {
+    ttheme$core$fg_params$fontsize <- min(f_size_w, f_size_h)
+    ttheme$colhead$fg_params$fontsize <- min(f_size_w, f_size_h)
+    ttheme$rowhead$fg_params$fontsize <- min(f_size_w, f_size_h)
+  }
+
   tryCatch(
     expr = {
-      gt <- gridExtra::tableGrob(d = data, theme = ttheme) # ERROR 'data' must be of a vector type, was 'NULL'
+      gt <- gridExtra::tableGrob(
+        d = data,
+        theme = ttheme
+      ) # ERROR 'data' must be of a vector type, was 'NULL'
+      gt$widths <- ((w_unit / sum(w_unit)) * width)
+      gt$heights <- rep(grid::unit(as.numeric(height) / 4, grid::unitType(height)), nrow(gt))
       vp <- grid::viewport(
         x = grid::unit(x, "npc") + grid::unit(1, "lines"),
         y = grid::unit(y, "npc") + grid::unit(1.5, "lines"),
-        height = sum(gt$heights),
-        width = sum(gt$widths),
+        height = height,
+        width = width,
         just = c("left", "bottom")
       )
       grid::gList(
