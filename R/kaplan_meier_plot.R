@@ -1123,11 +1123,10 @@ h_grob_median_surv <- function(fit_km,
                                armval = "All",
                                x = 0.9,
                                y = 0.9,
-                               width = grid::unit(0.45, "npc"),
-                               height = grid::unit(0.2, "npc"),
+                               width = grid::unit(0.4, "npc"),
                                ttheme = gridExtra::ttheme_default()) {
   width <- convertUnit(width, "in")
-  height <- convertUnit(height, "in")
+  height <- width / 3
 
   data <- h_tbl_median_surv(fit_km, armval = armval)
   w <- paste(" ", c(
