@@ -60,6 +60,9 @@
 #' @param position_coxph (`numeric`)\cr x and y positions for plotting [survival::coxph()] model.
 #' @param position_surv_med (`numeric`)\cr x and y positions for plotting annotation table estimating median survival
 #'   time per group.
+#' @param width_annots (named `list` of `unit`s)\cr a named list of widths for annotation tables with names `surv_med`
+#'   (median survival time table) and `coxph` ([survival::coxph()] model table), where each value is the width
+#'   (in units) to implement when printing the annotation table.
 #'
 #' @return A `grob` of class `gTree`.
 #'
@@ -138,6 +141,13 @@
 #'   annot_coxph = TRUE
 #' )
 #'
+#' # Change widths/sizes of surv_med and coxph annotation tables.
+#' g_km(
+#'   df = df, variables = c(variables, list(strat = "SEX")),
+#'   annot_coxph = TRUE,
+#'   width_annots = list(surv_med = grid::unit(2, "in"), coxph = grid::unit(3, "in"))
+#' )
+#'
 #' g_km(
 #'   df = df, variables = c(variables, list(strat = "SEX")),
 #'   font_size = 15,
@@ -188,7 +198,8 @@ g_km <- function(df,
                  annot_stats_vlines = FALSE,
                  control_coxph_pw = control_coxph(),
                  position_coxph = c(-0.03, -0.02),
-                 position_surv_med = c(0.95, 0.9)) {
+                 position_surv_med = c(0.95, 0.9),
+                 width_annots = list(surv_med = grid::unit(0.3, "npc"), coxph = grid::unit(0.4, "npc"))) {
   checkmate::assert_list(variables)
   checkmate::assert_subset(c("tte", "arm", "is_event"), names(variables))
   checkmate::assert_string(title, null.ok = TRUE)
@@ -196,6 +207,7 @@ g_km <- function(df,
   checkmate::assert_character(col, null.ok = TRUE)
   checkmate::assert_subset(annot_stats, c("median", "min"))
   checkmate::assert_logical(annot_stats_vlines)
+  checkmate::assert_true(all(sapply(width_annots, is.unit)))
 
   tte <- variables$tte
   is_event <- variables$is_event
@@ -343,6 +355,7 @@ g_km <- function(df,
               armval = armval,
               x = position_surv_med[1],
               y = position_surv_med[2],
+              width = if (!is.null(width_annots[["surv_med"]])) width_annots[["surv_med"]] else grid::unit(0.3, "npc"),
               ttheme = gridExtra::ttheme_default(base_size = font_size)
             )
           )
@@ -356,6 +369,7 @@ g_km <- function(df,
               control_coxph_pw = control_coxph_pw,
               x = position_coxph[1],
               y = position_coxph[2],
+              width = if (!is.null(width_annots[["coxph"]])) width_annots[["coxph"]] else grid::unit(0.4, "npc"),
               ttheme = gridExtra::ttheme_default(
                 base_size = font_size,
                 padding = grid::unit(c(1, .5), "lines"),

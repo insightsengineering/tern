@@ -8,8 +8,9 @@ h_grob_coxph(
   ...,
   x = 0,
   y = 0,
-  ttheme = gridExtra::ttheme_default(base_size = 12, padding = grid::unit(c(1, 0.5),
-    "lines"), core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = 0.5)))
+  width = grid::unit(0.4, "npc"),
+  ttheme = gridExtra::ttheme_default(padding = grid::unit(c(1, 0.5), "lines"), core =
+    list(bg_params = list(fill = c("grey95", "grey90"), alpha = 0.5)))
 )
 }
 \arguments{

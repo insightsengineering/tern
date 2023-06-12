@@ -9,6 +9,7 @@ h_grob_median_surv(
   armval = "All",
   x = 0.9,
   y = 0.9,
+  width = grid::unit(0.3, "npc"),
   ttheme = gridExtra::ttheme_default()
 )
 }
