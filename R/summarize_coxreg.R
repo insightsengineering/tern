@@ -190,7 +190,11 @@ a_coxreg <- function(df,
   cov_no_arm <- !multivar && !"arm" %in% names(variables) && control$interaction # special case: univar no arm
   cov <- tail(.spl_context$value, 1) # current variable/covariate
   var_lbl <- formatters::var_labels(df)[cov] # check for df labels
-  if (!is.na(var_lbl) && labelstr == cov && cov %in% variables$covariates) labelstr <- var_lbl # use df labels if none
+  if (length(labelstr) > 1) {
+    labelstr <- if (cov %in% names(labelstr)) labelstr[[cov]] else var_lbl # use df labels if none
+  } else if (!is.na(var_lbl) && labelstr == cov && cov %in% variables$covariates) {
+    labelstr <- var_lbl
+  }
   if (eff || multivar || cov_no_arm) {
     control$interaction <- FALSE
   } else {
@@ -374,7 +378,7 @@ summarize_coxreg <- function(lyt,
       lyt <- lyt %>%
         analyze_colvars(
           afun = a_coxreg,
-          extra_args = list(eff = TRUE, control = control, variables = variables, multivar = multivar)
+          extra_args = list(eff = TRUE, control = control, variables = variables, multivar = multivar, labelstr = "")
         )
     }
   }
@@ -386,15 +390,31 @@ summarize_coxreg <- function(lyt,
         varlabels = varlabels,
         split_label = "Covariate:",
         nested = FALSE,
+        child_labels = if (multivar || control$interaction || !"arm" %in% names(variables)) "default" else "hidden",
         section_div = tail(.section_div, 1)
-      ) %>%
-      summarize_row_groups(
-        cfun = a_coxreg,
-        extra_args = list(
-          variables = variables, at = at, control = control, multivar = multivar,
-          var_main = if (multivar) multivar else control$interaction
-        )
       )
+    if (multivar || control$interaction || !"arm" %in% names(variables)) {
+      lyt <- lyt %>%
+        summarize_row_groups(
+          cfun = a_coxreg,
+          extra_args = list(
+            variables = variables, at = at, control = control, multivar = multivar,
+            var_main = if (multivar) multivar else control$interaction
+          )
+        )
+    } else {
+      if (!is.null(varlabels)) names(varlabels) <- variables$covariates
+      lyt <- lyt %>%
+        analyze_colvars(
+          afun = a_coxreg,
+          extra_args = list(
+            variables = variables, at = at, control = control, multivar = multivar,
+            var_main = if (multivar) multivar else control$interaction,
+            labelstr = if (is.null(varlabels)) "" else varlabels
+          )
+        )
+    }
+
     if (!"arm" %in% names(variables)) control$interaction <- TRUE # special case: univar no arm
     if (multivar || control$interaction) { # covariate level effects
       lyt <- lyt %>%

@@ -1,9 +1,11 @@
-# tern 0.8.2.9008
+# tern 0.8.2.9010
 
 ### Enhancements
 * Added explicit zero counts to `g_km` plot "at risk" annotation tables.
 * Added a flag for total level split in `analyze_patients_exposure_in_cols`.
 * Implemented `.indent_mods` argument in functions `h_tab_one_biomarker`, `h_tab_rsp_one_biomarker`, `h_tab_surv_one_biomarker`, `summarize_logistic`, `logistic_summary_by_flag`, `tabulate_rsp_biomarkers`, a_coxreg, `summarize_coxreg`, `tabulate_survival_biomarkers`, `surv_time`, `surv_timepoint`, and `cfun_by_flag`.
+* Updated `summarize_coxreg` to print covariates in data rows for univariate Cox regression with no interactions and content rows otherwise.
+* Removed "baseline status" text from `d_count_abnormal_by_baseline` labels.
 * Improved default sizing of annotation tables in `g_km` and added dynamic scaling of the `surv_med` and `coxph` annotation tables, with customization via the `width_annots` argument.
 
 ### Bug Fixes
