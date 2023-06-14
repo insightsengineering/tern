@@ -24,7 +24,7 @@ Depends:
     rtables (>= 0.6.1)
 Imports:
     broom (>= 0.5.1),
-    car (>= 3.0-1),
+    car (>= 3.0-4),
     checkmate (>= 2.0.0),
     cowplot,
     dplyr (>= 1.0.2),
