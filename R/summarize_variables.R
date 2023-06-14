@@ -22,14 +22,14 @@ control_summarize_vars <- function(conf_level = 0.95,
   checkmate::assert_vector(quantiles, len = 2)
   checkmate::assert_int(quantile_type, lower = 1, upper = 9)
   checkmate::assert_numeric(test_mean)
-  nullo <- lapply(quantiles, assert_proportion_value)
+  lapply(quantiles, assert_proportion_value)
   assert_proportion_value(conf_level)
   list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type, test_mean = test_mean)
 }
 
 #' Format Function for Descriptive Statistics
 #'
-#' Returns format patterns for descriptive statistics. The format is understood by the `rtables`.
+#' Returns format patterns for descriptive statistics. The format is understood by `rtables`.
 #'
 #' @param type (`string`)\cr choice of a summary data type. Only `counts` and `numeric` types are currently supported.
 #'
@@ -77,29 +77,46 @@ summary_formats <- function(type = "numeric") {
 #'
 #' Returns labels of descriptive statistics for numeric variables.
 #'
-#' @return A named `vector` of default statistic labels.
+#' @param type (`string`)\cr choice of a summary data type. Only `counts` and `numeric` types are currently supported.
+#'
+#' @return A named `vector` of default statistic labels for the given data type.
 #'
 #' @keywords internal
-summary_labels <- function() {
-  c(
-    mean = "Mean",
-    sum = "Sum",
-    sd = "SD",
-    se = "SE",
-    mean_sd = "Mean (SD)",
-    mean_se = "Mean (SE)",
-    median = "Median",
-    mad = "Median Absolute Deviation",
-    iqr = "IQR",
-    range = "Min - Max",
-    median_range = "Median (Min - Max)",
-    cv = "CV (%)",
-    min = "Minimum",
-    max = "Maximum",
-    geom_mean = "Geometric Mean",
-    geom_cv = "CV % Geometric Mean",
-    n = "n"
-  )
+summary_labels <- function(type = "numeric") {
+  if (type == "counts") {
+    c(
+      n = "n",
+      count = "count",
+      count_fraction = "count_fraction",
+      n_blq = "n_blq"
+    )
+  } else {
+    c(
+      n = "n",
+      sum = "Sum",
+      mean = "Mean",
+      sd = "SD",
+      se = "SE",
+      mean_sd = "Mean (SD)",
+      mean_se = "Mean (SE)",
+      mean_ci = "Mean 95% CI",
+      mean_sei = "Mean -/+ 1xSE",
+      mean_sdi = "Mean -/+ 1xSD",
+      mean_pval = "Mean p-value (H0: mean = 0)",
+      median = "Median",
+      mad = "Median Absolute Deviation",
+      median_ci = "Median 95% CI",
+      quantiles = "25% and 75%-ile",
+      iqr = "IQR",
+      range = "Min - Max",
+      cv = "CV (%)",
+      min = "Minimum",
+      max = "Maximum",
+      median_range = "Median (Min - Max)",
+      geom_mean = "Geometric Mean",
+      geom_cv = "CV % Geometric Mean"
+    )
+  }
 }
 
 #' Summarize Variables
@@ -408,9 +425,9 @@ s_summary.character <- function(x,
                                 verbose = TRUE,
                                 ...) {
   if (na.rm) {
-    y <- as_factor_keep_attributes(x, x_name = .var, verbose = verbose)
+    y <- as_factor_keep_attributes(x, verbose = verbose)
   } else {
-    y <- as_factor_keep_attributes(x, x_name = .var, verbose = verbose, na_level = "NA")
+    y <- as_factor_keep_attributes(x, verbose = verbose, na_level = "NA")
   }
 
   s_summary(
@@ -478,86 +495,83 @@ s_summary.logical <- function(x,
   y
 }
 
-#' @describeIn summarize_variables Formatted analysis function which is used as `afun` in `summarize_vars()`.
+.a_summary_numeric_formats <- summary_formats()
+.a_summary_numeric_labels <- summary_labels()
+.a_summary_numeric_indent_mods <- rep(0L, length(summary_labels())) %>% `names<-`(names(.a_summary_numeric_labels))
+.a_summary_counts_formats <- summary_formats(type = "counts")
+.a_summary_counts_labels <- summary_labels(type = "counts")
+.a_summary_counts_indent_mods <- rep(0L, length(.a_summary_counts_labels)) %>% `names<-`(names(.a_summary_counts_labels))
+
+#' @describeIn summarize_variables Formatted analysis function which is used as `afun` in `summarize_vars()` and
+#'   `cfun` in `summarize_colvars()`.
 #'
 #' @return
 #' * `a_summary()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
+#' @examples
+#' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
+#' a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+#' a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
+#' a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
+#'
 #' @export
 a_summary <- function(x,
-                      ...,
-                      .N_row, # nolint
-                      .N_col, # nolint
-                      .var) {
-  UseMethod("a_summary", x)
+                      .N_col,
+                      .N_row,
+                      .stats = NULL,
+                      .formats = NULL,
+                      .labels = NULL,
+                      .indent_mods = NULL,
+                      na_level = NA_character_,
+                      ...) {
+  # browser()
+  if (is.null(.stats)) .stats <- names(if (is.numeric(x)) .a_summary_numeric_formats else .a_summary_counts_formats)
+  if (is.null(.formats)) .formats <- if (is.numeric(x)) .a_summary_numeric_formats else .a_summary_counts_formats
+  if (is.null(.labels)) .labels <- if (is.numeric(x)) .a_summary_numeric_labels else .a_summary_counts_labels
+  if (length(.indent_mods) == 1 & is.null(names(.indent_mods))) {
+    .indent_mods <- rep(.indent_mods, length(.stats)) %>% `names<-`(.stats)
+  }
+  x_stats <- s_summary(x = x, .N_col = .N_col, .N_row = .N_row, ...)
+  if (is.numeric(x)) {
+    .labels[c("mean_ci", "mean_pval", "median_ci", "quantiles")] <- sapply(
+      c("mean_ci", "mean_pval", "median_ci", "quantiles"),
+      function(x) attr(x_stats[[x]], "label")
+    )
+  }
+  .stats <- intersect(.stats, names(x_stats))
+  x_stats <- x_stats[.stats]
+  # browser()
+  if (!is.numeric(x) && !is.logical(x)) {
+    for (stat in c("count", "count_fraction")) {
+      for (a in names(x_stats[[stat]])) {
+        a_lvl <- paste(stat, a, sep = ".")
+        .stats <- c(.stats, a_lvl)
+        .formats[a_lvl] <- .formats[stat]
+        .labels[a_lvl] <- a
+        .indent_mods[a_lvl] <- .indent_mods[stat]
+      }
+    }
+
+    x_stats <- unlist(x_stats, recursive = FALSE)
+    .stats <- names(x_stats)
+  }
+  .formats_x <- extract_by_name(
+    .formats, .stats, if (is.numeric(x)) .a_summary_numeric_formats else .a_summary_counts_formats
+  )
+  .labels_x <- extract_by_name(.labels, .stats, if (is.numeric(x)) .a_summary_numeric_labels)
+  .indent_mods_x <- extract_by_name(
+    .indent_mods, .stats, if (is.numeric(x)) .a_summary_numeric_indent_mods else .a_summary_counts_indent_mods
+  )
+
+  in_rows(
+    .list = x_stats,
+    .formats = .formats_x,
+    .names = .labels_x,
+    .labels = .labels_x,
+    .indent_mods = .indent_mods_x,
+    .format_na_strs = na_level
+  )
 }
-
-.a_summary_numeric_formats <- summary_formats()
-.a_summary_numeric_labels <- summary_labels()
-
-#' @describeIn summarize_variables Formatted analysis function method for `numeric` class.
-#'
-#' @examples
-#' # `a_summary.numeric`
-#' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
-#'
-#' @export
-a_summary.numeric <- make_afun(
-  s_summary.numeric,
-  .formats = .a_summary_numeric_formats,
-  .labels = .a_summary_numeric_labels
-)
-
-.a_summary_counts_formats <- summary_formats(type = "counts")
-
-#' @describeIn summarize_variables Formatted analysis function method for `factor` class.
-#'
-#' @examples
-#' # `a_summary.factor`
-#' # We need to ungroup `count` and `count_fraction` first so that the rtables formatting
-#' # functions can be applied correctly.
-#' afun <- make_afun(
-#'   getS3method("a_summary", "factor"),
-#'   .ungroup_stats = c("count", "count_fraction")
-#' )
-#' afun(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
-#'
-#' @export
-a_summary.factor <- make_afun(
-  s_summary.factor,
-  .formats = .a_summary_counts_formats
-)
-
-#' @describeIn summarize_variables Formatted analysis function method for `character` class.
-#'
-#' @examples
-#' # `a_summary.character`
-#' afun <- make_afun(
-#'   getS3method("a_summary", "character"),
-#'   .ungroup_stats = c("count", "count_fraction")
-#' )
-#' afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
-#'
-#' @export
-a_summary.character <- make_afun(
-  s_summary.character,
-  .formats = .a_summary_counts_formats
-)
-
-#' @describeIn summarize_variables Formatted analysis function method for `logical` class.
-#'
-#' @examples
-#' # `a_summary.logical`
-#' afun <- make_afun(
-#'   getS3method("a_summary", "logical")
-#' )
-#' afun(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
-#'
-#' @export
-a_summary.logical <- make_afun(
-  s_summary.logical,
-  .formats = .a_summary_counts_formats
-)
 
 #' Constructor Function for [summarize_vars()] and [summarize_colvars()]
 #'
@@ -572,97 +586,13 @@ a_summary.logical <- make_afun(
 #'
 #' @return Combined formatted analysis function for use in [summarize_vars()].
 #'
-#' @note Since [a_summary()] is generic and we want customization of the formatting arguments
-#'   via [rtables::make_afun()], we need to create another temporary generic function, with
-#'   corresponding customized methods. Then in order for the methods to be found,
-#'   we need to wrap them in a combined `afun`. Since this is required by two layout creating
-#'   functions (and possibly others in the future), we provide a constructor that does this:
-#'   [create_afun_summary()].
-#'
-#' @examples
-#' # `create_afun_summary()` to create combined `afun`
-#'
-#' afun <- create_afun_summary(
-#'   .stats = NULL,
-#'   .formats = c(median = "xx."),
-#'   .labels = c(median = "My median"),
-#'   .indent_mods = c(median = 1L)
-#' )
-#' ## Fabricated dataset.
-#' dta_test <- data.frame(
-#'   USUBJID = rep(1:6, each = 3),
-#'   PARAMCD = rep("lab", 6 * 3),
-#'   AVISIT  = rep(paste0("V", 1:3), 6),
-#'   ARM     = rep(LETTERS[1:3], rep(6, 3)),
-#'   AVAL    = c(9:1, rep(NA, 9))
-#' )
-#'
-#' l <- basic_table() %>%
-#'   split_cols_by(var = "ARM") %>%
-#'   split_rows_by(var = "AVISIT") %>%
-#'   analyze(vars = "AVAL", afun = afun)
-#'
-#' build_table(l, df = dta_test)
-#'
 #' @export
 create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
-  function(x,
-           ...,
-           .N_row, # nolint
-           .N_col, # nolint
-           .var) {
-    afun <- function(x, ...) {
-      UseMethod("afun", x)
-    }
-
-    numeric_stats <- afun_selected_stats(
-      .stats,
-      all_stats = names(.a_summary_numeric_formats)
-    )
-    afun.numeric <- make_afun( # nolint
-      a_summary.numeric,
-      .stats = numeric_stats,
-      .formats = extract_by_name(.formats, numeric_stats),
-      .labels = extract_by_name(.labels, numeric_stats),
-      .indent_mods = extract_by_name(.indent_mods, numeric_stats)
-    )
-
-    factor_stats <- afun_selected_stats(.stats, c("n", "count", "count_fraction"))
-    ungroup_stats <- afun_selected_stats(.stats, c("count", "count_fraction"))
-    afun.factor <- make_afun( # nolint
-      a_summary.factor,
-      .stats = factor_stats,
-      .formats = extract_by_name(.formats, factor_stats),
-      .labels = extract_by_name(.labels, factor_stats),
-      .indent_mods = extract_by_name(.indent_mods, factor_stats),
-      .ungroup_stats = ungroup_stats
-    )
-
-    afun.character <- make_afun( # nolint
-      a_summary.character,
-      .stats = factor_stats,
-      .formats = extract_by_name(.formats, factor_stats),
-      .labels = extract_by_name(.labels, factor_stats),
-      .indent_mods = extract_by_name(.indent_mods, factor_stats),
-      .ungroup_stats = ungroup_stats
-    )
-
-    afun.logical <- make_afun( # nolint
-      a_summary.logical,
-      .stats = factor_stats,
-      .formats = extract_by_name(.formats, factor_stats),
-      .labels = extract_by_name(.labels, factor_stats),
-      .indent_mods = extract_by_name(.indent_mods, factor_stats)
-    )
-
-    afun(
-      x = x,
-      ...,
-      .N_row = .N_row,
-      .N_col = .N_col,
-      .var = .var
-    )
-  }
+  lifecycle::deprecate_stop(
+    "0.8.2",
+    "create_afun_summary()",
+    "a_summary()"
+  )
 }
 
 #' @describeIn summarize_variables Layout-creating function which can take statistics function arguments
@@ -745,16 +675,15 @@ summarize_vars <- function(lyt,
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = NULL) {
-  afun <- create_afun_summary(.stats, .formats, .labels, .indent_mods)
-
   analyze(
     lyt = lyt,
     vars = vars,
     var_labels = var_labels,
-    afun = afun,
+    afun = a_summary,
     nested = nested,
-    extra_args = list(...),
-    na_str = na_level,
+    extra_args = list(
+      .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_level = na_level, ...
+    ),
     inclNAs = TRUE,
     show_labels = show_labels,
     table_names = table_names,

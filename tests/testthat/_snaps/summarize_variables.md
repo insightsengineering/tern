@@ -920,47 +920,6 @@
       [1] 0
       
 
-# create_afun_summary creates an `afun` that works
-
-    Code
-      res
-    Output
-                               A              B          C    
-      ————————————————————————————————————————————————————————
-      V1                                                      
-        AVAL                                                  
-          n                    2              1          0    
-            My median          8              3          NA   
-          Min - Max        6.0 - 9.0      3.0 - 3.0      NA   
-          Mean 95% CI   (-11.56, 26.56)      NA          NA   
-        ARM                                                   
-          n                    2              2          2    
-          A                2 (100%)           0          0    
-          B                    0          2 (100%)       0    
-          C                    0              0       2 (100%)
-      V2                                                      
-        AVAL                                                  
-          n                    2              1          0    
-            My median          6              2          NA   
-          Min - Max        5.0 - 8.0      2.0 - 2.0      NA   
-          Mean 95% CI   (-12.56, 25.56)      NA          NA   
-        ARM                                                   
-          n                    2              2          2    
-          A                2 (100%)           0          0    
-          B                    0          2 (100%)       0    
-          C                    0              0       2 (100%)
-      V3                                                      
-        AVAL                                                  
-          n                    2              1          0    
-            My median          6              1          NA   
-          Min - Max        4.0 - 7.0      1.0 - 1.0      NA   
-          Mean 95% CI   (-13.56, 24.56)      NA          NA   
-        ARM                                                   
-          n                    2              2          2    
-          A                2 (100%)           0          0    
-          B                    0          2 (100%)       0    
-          C                    0              0       2 (100%)
-
 # `summarize_vars` works with healthy input, default `na.rm = TRUE`.
 
     Code

@@ -160,33 +160,6 @@ testthat::test_that("s_summary works with logical vectors and by if requested do
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("create_afun_summary creates an `afun` that works", {
-  afun <- create_afun_summary(
-    .stats = c("n", "count_fraction", "median", "range", "mean_ci"),
-    .formats = c(median = "xx."),
-    .labels = c(median = "My median"),
-    .indent_mods = c(median = 1L)
-  )
-  dta_test <- data.frame(
-    USUBJID = rep(1:6, each = 3),
-    PARAMCD = rep("lab", 6 * 3),
-    AVISIT = rep(paste0("V", 1:3), 6),
-    ARM = rep(LETTERS[1:3], rep(6, 3)),
-    AVAL = c(9:1, rep(NA, 9)),
-    stringsAsFactors = TRUE
-  )
-
-  l <- basic_table() %>%
-    split_cols_by(var = "ARM") %>%
-    split_rows_by(var = "AVISIT") %>%
-    analyze(vars = c("AVAL", "ARM"), afun = afun)
-
-  result <- build_table(l, df = dta_test)
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-})
-
 testthat::test_that("`summarize_vars` works with healthy input, default `na.rm = TRUE`.", {
   dta_test <- data.frame(AVAL = c(1:4, NA, NA))
 

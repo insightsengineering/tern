@@ -13,6 +13,6 @@ summary_formats(type = "numeric")
 A named \code{vector} of default statistic formats for the given data type.
 }
 \description{
-Returns format patterns for descriptive statistics. The format is understood by the \code{rtables}.
+Returns format patterns for descriptive statistics. The format is understood by \code{rtables}.
 }
 \keyword{internal}

@@ -259,25 +259,34 @@ combine_vectors <- function(x, y) {
 #' - If `x` is `NULL`, then still always `NULL` is returned (same as in base function).
 #' - If `x` is not `NULL`, then the intersection of its names is made with `names` and those
 #'   elements are returned. That is, `names` which don't appear in `x` are not returned as `NA`s.
+#' - If `x_defaults` is not `NULL`, these values will be used to fill in any values that are in
+#'   `names` but not in `x`.
 #'
 #' @param x (named `vector`)\cr where to extract named elements from.
 #' @param names (`character`)\cr vector of names to extract.
+#' @param x_defaults (named `vector`)\cr named vector of default values to fill in for each value in `names` if no
+#'   corresponding value in `x` exists.
 #'
 #' @return `NULL` if `x` is `NULL`, otherwise the extracted elements from `x`.
 #'
 #' @keywords internal
-extract_by_name <- function(x, names) {
-  if (is.null(x)) {
-    return(NULL)
-  }
+extract_by_name <- function(x, names, x_defaults = NULL) {
+  if (is.null(x)) return(NULL)
   checkmate::assert_named(x)
   checkmate::assert_character(names)
   which_extract <- intersect(names(x), names)
-  if (length(which_extract) > 0) {
-    x[which_extract]
-  } else {
-    NULL
+  x_fill <- c()
+  if (!is.null(x_defaults)) {
+    checkmate::assert_named(x_defaults)
+    x_fill <- x_defaults
   }
+  if (length(which_extract) > 0) {
+    x_fill[which_extract] <- x[which_extract]
+    x_fill <- x_fill[names]
+  } else {
+    x_fill <- NULL
+  }
+  x_fill
 }
 
 #' Labels for Adverse Event Baskets

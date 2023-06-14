@@ -62,15 +62,16 @@
 #' @export
 summarize_colvars <- function(lyt,
                               ...,
+                              na_level = NA_character_,
                               .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
                               .formats = NULL,
                               .labels = NULL,
                               .indent_mods = NULL) {
-  afun <- create_afun_summary(.stats, .formats, .labels, .indent_mods)
-
   analyze_colvars(
     lyt,
-    afun = afun,
-    extra_args = list(...)
+    afun = a_summary,
+    extra_args =  list(
+      .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_level = na_level, ...
+    )
   )
 }

@@ -8,10 +8,6 @@
 \alias{s_summary.character}
 \alias{s_summary.logical}
 \alias{a_summary}
-\alias{a_summary.numeric}
-\alias{a_summary.factor}
-\alias{a_summary.character}
-\alias{a_summary.logical}
 \alias{summarize_vars}
 \title{Summarize Variables}
 \usage{
@@ -57,45 +53,15 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
   ...
 )
 
-a_summary(x, ..., .N_row, .N_col, .var)
-
-\method{a_summary}{numeric}(
+a_summary(
   x,
-  na.rm = TRUE,
-  denom,
-  .N_row,
   .N_col,
-  .var,
-  control = control_summarize_vars(),
-  ...
-)
-
-\method{a_summary}{factor}(
-  x,
-  na.rm = TRUE,
-  denom = c("n", "N_row", "N_col"),
   .N_row,
-  .N_col,
-  ...
-)
-
-\method{a_summary}{character}(
-  x,
-  na.rm = TRUE,
-  denom = c("n", "N_row", "N_col"),
-  .N_row,
-  .N_col,
-  .var,
-  verbose = TRUE,
-  ...
-)
-
-\method{a_summary}{logical}(
-  x,
-  na.rm = TRUE,
-  denom = c("n", "N_row", "N_col"),
-  .N_row,
-  .N_col,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL,
+  na_level = NA_character_,
   ...
 )
 
@@ -150,6 +116,18 @@ See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 \item{verbose}{(\code{logical})\cr Defaults to \code{TRUE}, which prints out warnings and messages. It is mainly used
 to print out information about factor casting.}
 
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
+should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
+for that statistic's row label.}
+
+\item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
@@ -160,8 +138,6 @@ to print out information about factor casting.}
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
 underneath analyses, which is not allowed.}
 
-\item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
-
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
@@ -169,16 +145,6 @@ to avoid warnings from \code{rtables}.}
 
 \item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
 defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
-
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
-
-\item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
-should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
-for that statistic's row label.}
 }
 \value{
 \itemize{
@@ -264,15 +230,8 @@ conversion to factor (with a warning) and then forwards to the method for factor
 
 \item \code{s_summary(logical)}: Method for \code{logical} class.
 
-\item \code{a_summary()}: Formatted analysis function which is used as \code{afun} in \code{summarize_vars()}.
-
-\item \code{a_summary(numeric)}: Formatted analysis function method for \code{numeric} class.
-
-\item \code{a_summary(factor)}: Formatted analysis function method for \code{factor} class.
-
-\item \code{a_summary(character)}: Formatted analysis function method for \code{character} class.
-
-\item \code{a_summary(logical)}: Formatted analysis function method for \code{logical} class.
+\item \code{a_summary()}: Formatted analysis function which is used as \code{afun} in \code{summarize_vars()} and
+\code{cfun} in \code{summarize_colvars()}.
 
 \item \code{summarize_vars()}: Layout-creating function which can take statistics function arguments
 and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
@@ -374,30 +333,10 @@ x <- c(TRUE, FALSE, TRUE, TRUE)
 s_summary(x, denom = "N_row", .N_row = 10L)
 s_summary(x, denom = "N_col", .N_col = 20L)
 
-# `a_summary.numeric`
 a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
-
-# `a_summary.factor`
-# We need to ungroup `count` and `count_fraction` first so that the rtables formatting
-# functions can be applied correctly.
-afun <- make_afun(
-  getS3method("a_summary", "factor"),
-  .ungroup_stats = c("count", "count_fraction")
-)
-afun(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
-
-# `a_summary.character`
-afun <- make_afun(
-  getS3method("a_summary", "character"),
-  .ungroup_stats = c("count", "count_fraction")
-)
-afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
-
-# `a_summary.logical`
-afun <- make_afun(
-  getS3method("a_summary", "logical")
-)
-afun(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
+a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
+a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
 
 ## Fabricated dataset.
 dta_test <- data.frame(
