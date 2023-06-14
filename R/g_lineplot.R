@@ -210,7 +210,7 @@ g_lineplot <- function(df,
       .groups = "drop"
     )
 
-  df_stats <- df_stats %>% dplyr::filter(!is.na(mid))
+  df_stats <- df_stats[!is.na(df_stats[[mid]]), ]
 
   # add number of objects N in strata
   if (!is.null(strata) && !is.null(alt_counts_df)) {
