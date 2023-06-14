@@ -3,8 +3,7 @@ testthat::test_that("h_ancova works with healthy input", {
     .var = "Sepal.Length",
     .df_row = iris,
     variables = list(arm = "Species", covariates = c("Petal.Length * Petal.Width", "Sepal.Width"))
-  ) %>%
-    as.data.frame()
+  )
 
   res <- testthat::expect_silent(broom::tidy(result))
   testthat::expect_snapshot(res)
