@@ -266,18 +266,18 @@ tidy.glm <- function(x,
   checkmate::assert_set_equal(x$family$family, "binomial")
 
   terms_name <- attr(stats::terms(x), "term.labels")
-  xs_class <- attr(fit_glm$terms, "dataClasses")
+  xs_class <- attr(x$terms, "dataClasses")
   interaction <- terms_name[which(!terms_name %in% names(xs_class))]
   df <- if (length(interaction) == 0) {
     h_logistic_simple_terms(
       x = terms_name,
-      fit_glm = fit_glm,
+      fit_glm = x,
       conf_level = conf_level
     )
   } else {
     h_logistic_inter_terms(
       x = terms_name,
-      fit_glm = fit_glm,
+      fit_glm = x,
       conf_level = conf_level,
       at = at
     )
