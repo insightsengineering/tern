@@ -244,119 +244,90 @@ s_compare.logical <- function(x,
   y
 }
 
+.a_compare_numeric_formats <- c(.a_summary_numeric_formats, pval = "x.xxxx | (<0.0001)")
+.a_compare_numeric_labels <- c(.a_summary_numeric_labels, pval = "p-value (t-test)")
+.a_compare_numeric_indent_mods <- c(.a_summary_numeric_indent_mods, pval = 0L)
+.a_compare_counts_formats <- c(.a_summary_counts_formats, pval = "x.xxxx | (<0.0001)")
+.a_compare_counts_labels <- c(.a_summary_counts_labels, pval = "p-value (chi-squared test)")
+.a_compare_counts_indent_mods <- c(.a_summary_counts_indent_mods, pval = 0L)
+
 #' @describeIn compare_variables Formatted analysis function which is used as `afun`
 #'   in `compare_vars()`.
 #'
 #' @return
 #' * `a_compare()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
+#' @examples
+#' a_compare(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .in_ref_col = FALSE, .var = "bla")
+#' a_compare(factor(c("a", "a", "b", "c", "a")), .ref_group = factor(c("a", "a", "b", "c")), .in_ref_col = FALSE)
+#' a_compare(c("A", "B", "A", "C"), .ref_group = c("B", "A", "C"), .in_ref_col = FALSE, .var = "x", verbose = FALSE)
+#' a_compare(c(TRUE, FALSE, FALSE, TRUE, TRUE), .ref_group = c(TRUE, FALSE), .in_ref_col = FALSE)
+#'
 #' @export
 a_compare <- function(x,
+                      .N_col,
+                      .N_row,
                       .ref_group,
                       .in_ref_col,
-                      ...,
-                      .var) {
-  UseMethod("a_compare", x)
+                      .stats = NULL,
+                      .formats = NULL,
+                      .labels = NULL,
+                      .indent_mods = NULL,
+                      na_level = NA_character_,
+                      ...) {
+  # browser()
+  if (is.null(.stats)) .stats <- names(if (is.numeric(x)) .a_compare_numeric_formats else .a_compare_counts_formats)
+  if (is.null(.formats)) .formats <- if (is.numeric(x)) .a_compare_numeric_formats else .a_compare_counts_formats
+  if (is.null(.labels)) .labels <- if (is.numeric(x)) .a_compare_numeric_labels else .a_compare_counts_labels
+  if (length(.indent_mods) == 1 & is.null(names(.indent_mods))) {
+    .indent_mods <- rep(.indent_mods, length(.stats)) %>% `names<-`(.stats)
+  }
+  x_stats <- s_compare(x = x, .N_col = .N_col, .N_row = .N_row, .ref_group = .ref_group, .in_ref_col = .in_ref_col, ...)
+  if (is.numeric(x)) {
+    .labels[c("mean_ci", "mean_pval", "median_ci", "quantiles")] <- sapply(
+      c("mean_ci", "mean_pval", "median_ci", "quantiles"),
+      function(x) attr(x_stats[[x]], "label")
+    )
+  }
+  .stats <- intersect(.stats, names(x_stats))
+  x_stats <- x_stats[.stats]
+  # browser()
+  if (!is.numeric(x) && !is.logical(x)) {
+    for (stat in c("count", "count_fraction")) {
+      for (a in names(x_stats[[stat]])) {
+        a_lvl <- paste(stat, a, sep = ".")
+        .stats <- c(.stats, a_lvl)
+        .formats[a_lvl] <- .formats[stat]
+        .labels[a_lvl] <- a
+        .indent_mods[a_lvl] <- .indent_mods[stat]
+      }
+    }
+    if (.in_ref_col) x_stats[["pval"]] <- "pvalue"
+    x_stats <- unlist(x_stats, recursive = FALSE)
+    if (.in_ref_col) x_stats[["pval"]] <- character()
+    .stats <- names(x_stats)
+  }
+  .formats_x <- extract_by_name(
+    .formats, .stats, if (is.numeric(x)) .a_compare_numeric_formats else .a_compare_counts_formats
+  )
+  .labels_x <- extract_by_name(.labels, .stats, if (is.numeric(x)) .a_compare_numeric_labels else .a_compare_counts_labels)
+  .indent_mods_x <- extract_by_name(
+    .indent_mods, .stats, if (is.numeric(x)) .a_compare_numeric_indent_mods else .a_compare_counts_indent_mods
+  )
+
+  in_rows(
+    .list = x_stats,
+    .formats = .formats_x,
+    .names = .labels_x,
+    .labels = .labels_x,
+    .indent_mods = .indent_mods_x,
+    .format_na_strs = na_level
+  )
 }
-
-#' @describeIn compare_variables Formatted analysis function method for `numeric` class.
-#'
-#' @examples
-#' # `a_compare.numeric`
-#' a_compare(
-#'   rnorm(10, 5, 1),
-#'   .ref_group = rnorm(20, -5, 1),
-#'   .in_ref_col = FALSE,
-#'   .var = "bla"
-#' )
-#'
-#' @export
-a_compare.numeric <- make_afun(
-  s_compare.numeric,
-  .formats = c(
-    .a_summary_numeric_formats,
-    pval = "x.xxxx | (<0.0001)"
-  ),
-  .labels = c(
-    .a_summary_numeric_labels,
-    pval = "p-value (t-test)"
-  ),
-  .null_ref_cells = FALSE
-)
-
-.a_compare_counts_formats <- c(
-  .a_summary_counts_formats,
-  pval = "x.xxxx | (<0.0001)"
-)
-
-.a_compare_counts_labels <- c(
-  pval = "p-value (chi-squared test)"
-)
-
-#' @describeIn compare_variables Formatted analysis function method for `factor` class.
-#'
-#' @examples
-#' # `a_compare.factor`
-#' # We need to ungroup `count` and `count_fraction` first so that the `rtables` formatting
-#' # functions can be applied correctly.
-#' afun <- make_afun(
-#'   getS3method("a_compare", "factor"),
-#'   .ungroup_stats = c("count", "count_fraction")
-#' )
-#' x <- factor(c("a", "a", "b", "c", "a"))
-#' y <- factor(c("a", "a", "b", "c"))
-#' afun(x, .ref_group = y, .in_ref_col = FALSE)
-#'
-#' @export
-a_compare.factor <- make_afun(
-  s_compare.factor,
-  .formats = .a_compare_counts_formats,
-  .labels = .a_compare_counts_labels,
-  .null_ref_cells = FALSE
-)
-
-#' @describeIn compare_variables Formatted analysis function method for `character` class.
-#'
-#' @examples
-#' # `a_compare.character`
-#' afun <- make_afun(
-#'   getS3method("a_compare", "character"),
-#'   .ungroup_stats = c("count", "count_fraction")
-#' )
-#' x <- c("A", "B", "A", "C")
-#' y <- c("B", "A", "C")
-#' afun(x, .ref_group = y, .in_ref_col = FALSE, .var = "x", verbose = FALSE)
-#'
-#' @export
-a_compare.character <- make_afun(
-  s_compare.character,
-  .formats = .a_compare_counts_formats,
-  .labels = .a_compare_counts_labels,
-  .null_ref_cells = FALSE
-)
-
-#' @describeIn compare_variables Formatted analysis function method for `logical` class.
-#'
-#' @examples
-#' # `a_compare.logical`
-#' afun <- make_afun(
-#'   getS3method("a_compare", "logical")
-#' )
-#' x <- c(TRUE, FALSE, FALSE, TRUE, TRUE)
-#' y <- c(TRUE, FALSE)
-#' afun(x, .ref_group = y, .in_ref_col = FALSE)
-#'
-#' @export
-a_compare.logical <- make_afun(
-  s_compare.logical,
-  .formats = .a_compare_counts_formats,
-  .labels = .a_compare_counts_labels,
-  .null_ref_cells = FALSE
-)
 
 #' Constructor Function for [compare_vars()]
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("deprecated")`
 #'
 #' Constructor function which creates a combined formatted analysis function.
 #'
@@ -367,110 +338,20 @@ a_compare.logical <- make_afun(
 #'
 #' @return Combined formatted analysis function for use in [compare_vars()].
 #'
-#' @note Since [a_compare()] is generic and we want customization of the formatting arguments
-#'   via [rtables::make_afun()], we need to create another temporary generic function, with
-#'   corresponding customized methods. Then in order for the methods to be found,
-#'   we need to wrap them in a combined `afun`. Since this is required by two layout creating
-#'   functions (and possibly others in the future), we provide a constructor that does this:
-#'   [create_afun_compare()].
+#' @note This function has been deprecated in favor of direct implementation of `a_compare()`.
 #'
 #' @seealso [compare_vars()]
-#'
-#' @examples
-#' # `create_afun_compare()` to create combined `afun`
-#'
-#' afun <- create_afun_compare(
-#'   .stats = c("n", "count_fraction", "mean_sd", "pval"),
-#'   .indent_mods = c(pval = 1L)
-#' )
-#'
-#' lyt <- basic_table() %>%
-#'   split_cols_by("ARMCD", ref_group = "ARM A") %>%
-#'   analyze(
-#'     "AGE",
-#'     afun = afun,
-#'     show_labels = "visible"
-#'   )
-#' build_table(lyt, df = tern_ex_adsl)
-#'
-#' lyt <- basic_table() %>%
-#'   split_cols_by("ARMCD", ref_group = "ARM A") %>%
-#'   analyze(
-#'     "SEX",
-#'     afun = afun,
-#'     show_labels = "visible"
-#'   )
-#' build_table(lyt, df = tern_ex_adsl)
 #'
 #' @export
 create_afun_compare <- function(.stats = NULL,
                                 .formats = NULL,
                                 .labels = NULL,
                                 .indent_mods = NULL) {
-  function(x,
-           .ref_group,
-           .in_ref_col,
-           ...,
-           .var) {
-    afun <- function(x, ...) {
-      UseMethod("afun", x)
-    }
-
-    numeric_stats <- afun_selected_stats(
-      .stats,
-      all_stats = c(names(.a_summary_numeric_formats), "pval")
-    )
-    afun.numeric <- make_afun( # nolint
-      a_compare.numeric,
-      .stats = numeric_stats,
-      .formats = extract_by_name(.formats, numeric_stats),
-      .labels = extract_by_name(.labels, numeric_stats),
-      .indent_mods = extract_by_name(.indent_mods, numeric_stats),
-      .null_ref_cells = FALSE
-    )
-
-    factor_stats <- afun_selected_stats(
-      .stats,
-      all_stats = names(.a_compare_counts_formats)
-    )
-    ungroup_stats <- afun_selected_stats(.stats, c("count", "count_fraction"))
-    afun.factor <- make_afun( # nolint
-      a_compare.factor,
-      .stats = factor_stats,
-      .formats = extract_by_name(.formats, factor_stats),
-      .labels = extract_by_name(.labels, factor_stats),
-      .indent_mods = extract_by_name(.indent_mods, factor_stats),
-      .ungroup_stats = ungroup_stats,
-      .null_ref_cells = FALSE
-    )
-
-    afun.character <- make_afun( # nolint
-      a_compare.character,
-      .stats = factor_stats,
-      .formats = extract_by_name(.formats, factor_stats),
-      .labels = extract_by_name(.labels, factor_stats),
-      .indent_mods = extract_by_name(.indent_mods, factor_stats),
-      .ungroup_stats = ungroup_stats,
-      .null_ref_cells = FALSE
-    )
-
-    afun.logical <- make_afun( # nolint
-      a_compare.logical,
-      .stats = factor_stats,
-      .formats = extract_by_name(.formats, factor_stats),
-      .labels = extract_by_name(.labels, factor_stats),
-      .indent_mods = extract_by_name(.indent_mods, factor_stats),
-      .null_ref_cells = FALSE
-    )
-
-    afun(
-      x = x,
-      .ref_group = .ref_group,
-      .in_ref_col = .in_ref_col,
-      ...,
-      .var = .var
-    )
-  }
+  lifecycle::deprecate_stop(
+    "0.8.2",
+    "create_afun_compare()",
+    "a_compare()"
+  )
 }
 
 #' @describeIn compare_variables Layout-creating function which can take statistics function arguments
@@ -515,22 +396,23 @@ compare_vars <- function(lyt,
                          na_level = NA_character_,
                          show_labels = "default",
                          table_names = vars,
+                         section_div = NA_character_,
                          .stats = c("n", "mean_sd", "count_fraction", "pval"),
                          .formats = NULL,
                          .labels = NULL,
                          .indent_mods = NULL) {
-  afun <- create_afun_compare(.stats, .formats, .labels, .indent_mods)
-
   analyze(
     lyt = lyt,
     vars = vars,
     var_labels = var_labels,
-    afun = afun,
+    afun = a_compare,
     nested = nested,
-    extra_args = list(...),
-    na_str = na_level,
+    extra_args = list(
+      .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_level = na_level, ...
+    ),
     inclNAs = TRUE,
     show_labels = show_labels,
-    table_names = table_names
+    table_names = table_names,
+    section_div = section_div
   )
 }

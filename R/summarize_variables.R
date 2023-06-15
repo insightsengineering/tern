@@ -558,7 +558,7 @@ a_summary <- function(x,
   .formats_x <- extract_by_name(
     .formats, .stats, if (is.numeric(x)) .a_summary_numeric_formats else .a_summary_counts_formats
   )
-  .labels_x <- extract_by_name(.labels, .stats, if (is.numeric(x)) .a_summary_numeric_labels)
+  .labels_x <- extract_by_name(.labels, .stats, if (is.numeric(x)) .a_summary_numeric_labels else .a_summary_counts_labels)
   .indent_mods_x <- extract_by_name(
     .indent_mods, .stats, if (is.numeric(x)) .a_summary_numeric_indent_mods else .a_summary_counts_indent_mods
   )
@@ -575,7 +575,7 @@ a_summary <- function(x,
 
 #' Constructor Function for [summarize_vars()] and [summarize_colvars()]
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("deprecated")`
 #'
 #' Constructor function which creates a combined formatted analysis function.
 #'
@@ -585,6 +585,10 @@ a_summary <- function(x,
 #'   for that statistic's row label.
 #'
 #' @return Combined formatted analysis function for use in [summarize_vars()].
+#'
+#' @note This function has been deprecated in favor of direct implementation of `a_summary()`.
+#'
+#' @seealso [summarize_vars()]
 #'
 #' @export
 create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {

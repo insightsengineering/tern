@@ -21,7 +21,13 @@ for that statistic's row label.}
 Combined formatted analysis function for use in \code{\link[=summarize_vars]{summarize_vars()}}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 Constructor function which creates a combined formatted analysis function.
+}
+\note{
+This function has been deprecated in favor of direct implementation of \code{a_summary()}.
+}
+\seealso{
+\code{\link[=summarize_vars]{summarize_vars()}}
 }
