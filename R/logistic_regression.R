@@ -258,7 +258,7 @@ fit_logistic <- function(data,
 #' df2 <- tidy(mod2, conf_level = 0.99)
 #'
 #' @export
-tidy.glm <- function(x,
+tidy.glm <- function(x, # nolint
                      conf_level = 0.95,
                      at = NULL,
                      ...) {
