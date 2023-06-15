@@ -57,10 +57,13 @@ a_summary(
   x,
   .N_col,
   .N_row,
+  .var,
+  .df_row,
   .stats = NULL,
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL,
+  na.rm = TRUE,
   na_level = NA_character_,
   ...
 )
@@ -71,6 +74,7 @@ summarize_vars(
   var_labels = vars,
   nested = TRUE,
   ...,
+  na.rm = TRUE,
   na_level = NA_character_,
   show_labels = "default",
   table_names = vars,
@@ -115,6 +119,8 @@ See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 
 \item{verbose}{(\code{logical})\cr Defaults to \code{TRUE}, which prints out warnings and messages. It is mainly used
 to print out information about factor casting.}
+
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 

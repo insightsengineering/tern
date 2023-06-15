@@ -281,7 +281,9 @@ a_compare <- function(x,
   if (is.null(.stats)) .stats <- names(if (is.numeric(x)) .a_compare_numeric_labels else .a_compare_counts_labels)
   if (is.null(.formats)) .formats <- if (is.numeric(x)) .a_compare_numeric_formats else .a_compare_counts_formats
   if (is.null(.labels)) .labels <- if (is.numeric(x)) .a_compare_numeric_labels else .a_compare_counts_labels
-  if (is.null(.indent_mods)) .indent_mods <- if (is.numeric(x)) .a_compare_numeric_indent_mods else .a_compare_counts_indent_mods
+  if (is.null(.indent_mods)) {
+    .indent_mods <- if (is.numeric(x)) .a_compare_numeric_indent_mods else .a_compare_counts_indent_mods
+  }
   if (length(.indent_mods) == 1 & is.null(names(.indent_mods))) {
     .indent_mods <- rep(.indent_mods, length(.stats)) %>% `names<-`(.stats)
   }
@@ -293,37 +295,15 @@ a_compare <- function(x,
       function(x) attr(x_stats[[x]], "label")
     )
   }
-  # browser()
   .stats <- intersect(.stats, names(x_stats))
   x_stats <- x_stats[.stats]
   if (!is.numeric(x) && !is.logical(x)) {
-    for (stat in c("count", "count_fraction")) {
-      for (a in names(x_stats[[stat]])) {
-        a <- if (a == "na-level") "NA" else a
-        a_lvl <- paste(stat, a, sep = ".")
-        .stats <- c(.stats, a_lvl)
-        .formats <- append(.formats, .formats[stat] %>% `names<-`(a_lvl), after = if (stat %in% names(.formats)) {
-          which(names(.formats) == stat) - 1 + which(names(x_stats[[stat]]) == a)
-        } else {
-          length(.formats)
-        })
-        .labels <- append(.labels, a %>% `names<-`(a_lvl), after = if (stat %in% names(.labels)) {
-          which(names(.labels) == stat) - 1 + which(names(x_stats[[stat]]) == a)
-        } else {
-          length(.labels)
-        })
-        .indent_mods <- append(.indent_mods, .indent_mods[stat] %>% `names<-`(a_lvl), after = if (stat %in% names(.indent_mods)) {
-          which(names(.indent_mods) == stat) - 1 + which(names(x_stats[[stat]]) == a)
-        } else {
-          length(.indent_mods)
-        })
-      }
-    }
-    if (.in_ref_col) x_stats[["pval"]] <- "pvalue"
-    x_stats <- unlist(x_stats, recursive = FALSE)
-    if (.in_ref_col) x_stats[["pval"]] <- character()
-    names(x_stats) <- gsub("na-level", "NA", names(x_stats))
-    .stats <- names(x_stats)
+    x_ungrp <- ungroup_stats(x_stats, .stats, .formats, .labels, .indent_mods, .in_ref_col)
+    x_stats <- x_ungrp[["x"]]
+    .stats <- x_ungrp[[".stats"]]
+    .formats <- x_ungrp[[".formats"]]
+    .labels <- x_ungrp[[".labels"]]
+    .indent_mods <- x_ungrp[[".indent_mods"]]
   }
   .formats_x <- extract_by_name(
     .formats, .stats, if (is.numeric(x)) .a_compare_numeric_formats else .a_compare_counts_formats
@@ -332,6 +312,7 @@ a_compare <- function(x,
   .indent_mods_x <- extract_by_name(
     .indent_mods, .stats, if (is.numeric(x)) .a_compare_numeric_indent_mods else .a_compare_counts_indent_mods
   )
+
   in_rows(
     .list = x_stats,
     .formats = .formats_x,

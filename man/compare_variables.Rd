@@ -34,12 +34,15 @@ a_compare(
   x,
   .N_col,
   .N_row,
+  .var,
+  .df_row,
   .ref_group,
   .in_ref_col,
   .stats = NULL,
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL,
+  na.rm = TRUE,
   na_level = NA_character_,
   ...
 )
@@ -50,6 +53,7 @@ compare_vars(
   var_labels = vars,
   nested = TRUE,
   ...,
+  na.rm = TRUE,
   na_level = NA_character_,
   show_labels = "default",
   table_names = vars,
@@ -84,6 +88,8 @@ to print out information about factor casting. Defaults to \code{TRUE}.}
 (i.e. with no column-based subsetting) that is passed by \code{rtables}.}
 
 \item{.N_row}{(\code{count})\cr column-wise N (column count) for the full column that is passed by \code{rtables}.}
+
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
