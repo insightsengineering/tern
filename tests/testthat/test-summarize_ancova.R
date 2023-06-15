@@ -114,7 +114,7 @@ testthat::test_that("summarize_ancova works with interaction", {
       substr(Petal.Width, 3, 3) < 5 & substr(Petal.Width, 3, 3) > 2 ~ "B",
       TRUE ~ "C"
     )) %>%
-    mutate(p_group = as.factor(p_group))
+    dplyr::mutate(p_group = as.factor(p_group))
 
   result <- basic_table() %>%
     split_cols_by("Species", ref_group = "setosa") %>%
@@ -135,8 +135,8 @@ testthat::test_that("summarize_ancova works with interaction", {
   emmeans_fit <- emmeans::emmeans(lm_fit, specs = c("Species", "p_group"), data = iris_new)
   emmean <- emmeans_fit %>%
     as.data.frame() %>%
-    filter(p_group == "B") %>%
-    select(emmean) %>%
+    dplyr::filter(p_group == "B") %>%
+    dplyr::select(emmean) %>%
     unlist() %>%
     round(., 2)
   testthat::expect_equal(as.numeric(emmean), as.numeric(result_matrix[5, 2:4]), tolerance = 0.0000001)
@@ -144,8 +144,9 @@ testthat::test_that("summarize_ancova works with interaction", {
   emmeans_contrasts <- emmeans::contrast(emmeans_fit, method = "trt.vs.ctrl", ref = 4)
   sum_contrasts <- summary(emmeans_contrasts, infer = TRUE, adjust = "none") %>%
     as.data.frame() %>%
-    filter(contrast %in% c("versicolor B - setosa B", "virginica B - setosa B")) %>%
-    select(estimate, lower.CL, upper.CL) %>%
+    # older version of emmeans reports contrast in form of "<group>,<value>" whereas the newer: "<group> <value>"
+    dplyr::filter(grepl("versicolor.B - setosa.B|virginica.B - setosa.B", contrast)) %>%
+    dplyr::select(estimate, lower.CL, upper.CL) %>%
     round(., 2)
   ci_a <- paste0("(", as.numeric(sum_contrasts[1, 2]), ", ", as.numeric(sum_contrasts[1, 3]), ")")
   ci_b <- paste0("(", as.numeric(sum_contrasts[2, 2]), ", ", as.numeric(sum_contrasts[2, 3]), ")")
