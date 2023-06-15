@@ -46,6 +46,7 @@ with binomial family."><!-- mathjax --><script src="https://cdnjs.cloudflare.com
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
@@ -92,12 +93,12 @@ with <code>binomial</code> family.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for glm</span></span>
-<span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit_glm</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span>, at <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">x</span>, conf_level <span class="op">=</span> <span class="fl">0.95</span>, at <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>fit_glm</dt>
+    <dl><dt>x</dt>
 <dd><p>logistic regression model fitted by <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">stats::glm()</a></code> with "binomial" family.</p></dd>
 
 
@@ -107,6 +108,10 @@ with <code>binomial</code> family.</p>
 
 <dt>at</dt>
 <dd><p>(<code>NULL</code> or <code>numeric</code>)<br> optional values for the interaction variable. Otherwise the median is used.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>additional arguments for the lower level functions.</p></dd>
 
 </dl></div>
     <div class="section level2">
