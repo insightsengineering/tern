@@ -524,7 +524,6 @@ a_summary <- function(x,
                       .indent_mods = NULL,
                       na_level = NA_character_,
                       ...) {
-  # browser()
   if (is.null(.stats)) .stats <- names(if (is.numeric(x)) .a_summary_numeric_formats else .a_summary_counts_formats)
   if (is.null(.formats)) .formats <- if (is.numeric(x)) .a_summary_numeric_formats else .a_summary_counts_formats
   if (is.null(.labels)) .labels <- if (is.numeric(x)) .a_summary_numeric_labels else .a_summary_counts_labels
@@ -540,7 +539,6 @@ a_summary <- function(x,
   }
   .stats <- intersect(.stats, names(x_stats))
   x_stats <- x_stats[.stats]
-  # browser()
   if (!is.numeric(x) && !is.logical(x)) {
     for (stat in c("count", "count_fraction")) {
       for (a in names(x_stats[[stat]])) {
