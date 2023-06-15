@@ -1,4 +1,4 @@
-# tern 0.8.2.9010
+# tern 0.8.2.9012
 
 ### Enhancements
 * Added explicit zero counts to `g_km` plot "at risk" annotation tables.
@@ -9,6 +9,7 @@
 
 ### Bug Fixes
 * Fixed bug in `split_text_grob` preventing titles and footnotes from being properly formatted and printed by `decorate_grob`.
+* Fixed bug in `g_lineplot` preventing lines from being added to the plot when midpoint statistic calculations result in `NA` value(s).
 
 ### Miscellaneous
 * Updated README to include installation instructions for CRAN.
