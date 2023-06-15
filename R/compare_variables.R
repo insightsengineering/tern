@@ -267,42 +267,62 @@ s_compare.logical <- function(x,
 a_compare <- function(x,
                       .N_col,
                       .N_row,
+                      .var,
+                      .df_row,
                       .ref_group,
                       .in_ref_col,
                       .stats = NULL,
                       .formats = NULL,
                       .labels = NULL,
                       .indent_mods = NULL,
+                      na.rm = TRUE,
                       na_level = NA_character_,
                       ...) {
-  if (is.null(.stats)) .stats <- names(if (is.numeric(x)) .a_compare_numeric_formats else .a_compare_counts_formats)
+  if (is.null(.stats)) .stats <- names(if (is.numeric(x)) .a_compare_numeric_labels else .a_compare_counts_labels)
   if (is.null(.formats)) .formats <- if (is.numeric(x)) .a_compare_numeric_formats else .a_compare_counts_formats
   if (is.null(.labels)) .labels <- if (is.numeric(x)) .a_compare_numeric_labels else .a_compare_counts_labels
+  if (is.null(.indent_mods)) .indent_mods <- if (is.numeric(x)) .a_compare_numeric_indent_mods else .a_compare_counts_indent_mods
   if (length(.indent_mods) == 1 & is.null(names(.indent_mods))) {
     .indent_mods <- rep(.indent_mods, length(.stats)) %>% `names<-`(.stats)
   }
-  x_stats <- s_compare(x = x, .N_col = .N_col, .N_row = .N_row, .ref_group = .ref_group, .in_ref_col = .in_ref_col, ...)
+  if (any(is.na(.df_row[[.var]])) && !any(is.na(x)) && !na.rm) levels(x) <- c(levels(x), "na-level")
+  x_stats <- s_compare(x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, .ref_group = .ref_group, .in_ref_col = .in_ref_col, ...)
   if (is.numeric(x)) {
     .labels[c("mean_ci", "mean_pval", "median_ci", "quantiles")] <- sapply(
       c("mean_ci", "mean_pval", "median_ci", "quantiles"),
       function(x) attr(x_stats[[x]], "label")
     )
   }
+  # browser()
   .stats <- intersect(.stats, names(x_stats))
   x_stats <- x_stats[.stats]
   if (!is.numeric(x) && !is.logical(x)) {
     for (stat in c("count", "count_fraction")) {
       for (a in names(x_stats[[stat]])) {
+        a <- if (a == "na-level") "NA" else a
         a_lvl <- paste(stat, a, sep = ".")
         .stats <- c(.stats, a_lvl)
-        .formats[a_lvl] <- .formats[stat]
-        .labels[a_lvl] <- a
-        .indent_mods[a_lvl] <- .indent_mods[stat]
+        .formats <- append(.formats, .formats[stat] %>% `names<-`(a_lvl), after = if (stat %in% names(.formats)) {
+          which(names(.formats) == stat) - 1 + which(names(x_stats[[stat]]) == a)
+        } else {
+          length(.formats)
+        })
+        .labels <- append(.labels, a %>% `names<-`(a_lvl), after = if (stat %in% names(.labels)) {
+          which(names(.labels) == stat) - 1 + which(names(x_stats[[stat]]) == a)
+        } else {
+          length(.labels)
+        })
+        .indent_mods <- append(.indent_mods, .indent_mods[stat] %>% `names<-`(a_lvl), after = if (stat %in% names(.indent_mods)) {
+          which(names(.indent_mods) == stat) - 1 + which(names(x_stats[[stat]]) == a)
+        } else {
+          length(.indent_mods)
+        })
       }
     }
     if (.in_ref_col) x_stats[["pval"]] <- "pvalue"
     x_stats <- unlist(x_stats, recursive = FALSE)
     if (.in_ref_col) x_stats[["pval"]] <- character()
+    names(x_stats) <- gsub("na-level", "NA", names(x_stats))
     .stats <- names(x_stats)
   }
   .formats_x <- extract_by_name(
@@ -312,7 +332,6 @@ a_compare <- function(x,
   .indent_mods_x <- extract_by_name(
     .indent_mods, .stats, if (is.numeric(x)) .a_compare_numeric_indent_mods else .a_compare_counts_indent_mods
   )
-
   in_rows(
     .list = x_stats,
     .formats = .formats_x,
@@ -391,6 +410,7 @@ compare_vars <- function(lyt,
                          var_labels = vars,
                          nested = TRUE,
                          ...,
+                         na.rm = TRUE,
                          na_level = NA_character_,
                          show_labels = "default",
                          table_names = vars,
@@ -406,7 +426,7 @@ compare_vars <- function(lyt,
     afun = a_compare,
     nested = nested,
     extra_args = list(
-      .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_level = na_level, ...
+      .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na.rm = na.rm, na_level = na_level, ...
     ),
     inclNAs = TRUE,
     show_labels = show_labels,
