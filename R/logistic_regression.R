@@ -215,7 +215,7 @@ fit_logistic <- function(data,
 #'
 #' @inheritParams argument_convention
 #' @param at (`NULL` or `numeric`)\cr optional values for the interaction variable. Otherwise the median is used.
-#' @param fit_glm logistic regression model fitted by [stats::glm()] with "binomial" family.
+#' @param x logistic regression model fitted by [stats::glm()] with "binomial" family.
 #'
 #' @return A `data.frame` containing the tidied model.
 #'
@@ -258,13 +258,14 @@ fit_logistic <- function(data,
 #' df2 <- tidy(mod2, conf_level = 0.99)
 #'
 #' @export
-tidy.glm <- function(fit_glm, # nolint
+tidy.glm <- function(x,
                      conf_level = 0.95,
-                     at = NULL) {
-  checkmate::assert_class(fit_glm, "glm")
-  checkmate::assert_set_equal(fit_glm$family$family, "binomial")
+                     at = NULL,
+                     ...) {
+  checkmate::assert_class(x, "glm")
+  checkmate::assert_set_equal(x$family$family, "binomial")
 
-  terms_name <- attr(stats::terms(fit_glm), "term.labels")
+  terms_name <- attr(stats::terms(x), "term.labels")
   xs_class <- attr(fit_glm$terms, "dataClasses")
   interaction <- terms_name[which(!terms_name %in% names(xs_class))]
   df <- if (length(interaction) == 0) {
