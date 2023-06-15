@@ -59,8 +59,6 @@ VignetteBuilder:
 RdMacros:
     lifecycle,
     Rdpack
-Remotes:
-    insightsengineering/nestcolor@*release
 Config/Needs/verdepcheck:
     insightsengineering/rtables,
     tidymodels/broom,
