@@ -12,7 +12,7 @@ Fits a Cox regression model and estimates hazard ratio to describe the effect si
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.3</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,7 @@ Fits a Cox regression model and estimates hazard ratio to describe the effect si
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
@@ -101,6 +102,7 @@ Fits a Cox regression model and estimates hazard ratio to describe the effect si
 <span>  <span class="va">.spl_context</span>,</span>
 <span>  <span class="va">.stats</span>,</span>
 <span>  <span class="va">.formats</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  na_level <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  cache_env <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
@@ -158,7 +160,8 @@ is "var_main" <code>.var_nms</code> should be only the variable name.</p></dd>
 
 <dt>labelstr</dt>
 <dd><p>(<code>character</code>)<br> label of the level of the parent split currently being summarized
-(must be present as second argument in Content Row Functions).</p></dd>
+(must be present as second argument in Content Row Functions). See <code><a href="https://rdrr.io/pkg/rtables/man/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>
+for more information.</p></dd>
 
 
 <dt>eff</dt>
@@ -196,6 +199,11 @@ that is passed by <code>rtables</code>.</p></dd>
 <dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics.</p></dd>
 
 
+<dt>.indent_mods</dt>
+<dd><p>(named <code>integer</code>)<br> indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.</p></dd>
+
+
 <dt>na_level</dt>
 <dd><p>(<code>string</code>)<br> custom string to replace all <code>NA</code> values with. Defaults to <code>""</code>.</p></dd>
 
@@ -212,10 +220,6 @@ avoid repeatedly fitting the same model for every row in the table. Defaults to 
 <dt>common_var</dt>
 <dd><p>(<code>character</code>)<br> the name of a factor variable in the dataset which takes the same value
 for all rows. This should be created during pre-processing if no such variable currently exists.</p></dd>
-
-
-<dt>.indent_mods</dt>
-<dd><p>(named <code>integer</code>)<br> indent modifiers for the labels.</p></dd>
 
 
 <dt>.section_div</dt>
