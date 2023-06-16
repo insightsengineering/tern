@@ -7,6 +7,7 @@
 # doc
 ^CODE_OF_CONDUCT\.md$
 ^docs$
+LICENSE
 ^LICENSE\.md$
 ^SECURITY\.md$
 
