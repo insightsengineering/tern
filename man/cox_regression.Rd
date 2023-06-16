@@ -275,4 +275,3 @@ helper functions, and \link{tidy_coxreg} for custom tidy methods.
 \code{at} (univariate only), and \code{control} arguments but return unformatted univariate and multivariate
 Cox regression models, respectively.
 }
-\keyword{internal}

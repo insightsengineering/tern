@@ -172,7 +172,7 @@ s_coxreg <- function(model_df, .stats, .which_vars = "all", .var_nms = NULL) {
 #'   .formats = "xx.xxxx"
 #' )
 #'
-#' @keywords internal
+#' @export
 a_coxreg <- function(df,
                      labelstr,
                      eff = FALSE,
