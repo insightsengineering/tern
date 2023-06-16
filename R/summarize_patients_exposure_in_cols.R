@@ -106,7 +106,7 @@ s_count_patients_sum_exposure <- function(df,
 #'   .stats = "n_patients"
 #' )
 #'
-#' @keywords internal
+#' @export
 a_count_patients_sum_exposure <- function(df,
                                           var = NULL,
                                           ex_var = "AVAL",
