@@ -103,6 +103,11 @@ avoid repeatedly fitting the same model for every row in the table. Defaults to 
 \item{common_var}{(\code{character})\cr the name of a factor variable in the dataset which takes the same value
 for all rows. This should be created during pre-processing if no such variable currently exists.}
 
+\item{varlabels}{(\code{list})\cr a named list corresponds to the names of variables found in data, passed
+as a named list and corresponding to time, event, arm, strata, and covariates terms. If arm is missing
+from variables, then only Cox model(s) including the covariates will be fitted and the corresponding
+effect estimates will be tabulated later.}
+
 \item{.section_div}{(\code{character})\cr string which should be repeated as a section divider between sections.
 Defaults to \code{NA} for no section divider. If a vector of two strings are given, the first will be used between
 treatment and covariate sections and the second between different covariates.}

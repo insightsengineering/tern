@@ -149,6 +149,10 @@ s_coxreg <- function(model_df, .stats, .which_vars = "all", .var_nms = NULL) {
 #' @param na_level (`string`)\cr custom string to replace all `NA` values with. Defaults to `""`.
 #' @param cache_env (`environment`)\cr an environment object used to cache the regression model in order to
 #'   avoid repeatedly fitting the same model for every row in the table. Defaults to `NULL` (no caching).
+#' @param varlabels (`list`)\cr a named list corresponds to the names of variables found in data, passed
+#'   as a named list and corresponding to time, event, arm, strata, and covariates terms. If arm is missing
+#'   from variables, then only Cox model(s) including the covariates will be fitted and the corresponding
+#'   effect estimates will be tabulated later.
 #'
 #' @return
 #' * `a_coxreg()` returns formatted [rtables::CellValue()].
