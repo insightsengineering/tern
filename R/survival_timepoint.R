@@ -38,7 +38,6 @@ NULL
 #' df <- adtte_f %>%
 #'   filter(ARMCD == "ARM A")
 #'
-#'
 #' @keywords internal
 s_surv_timepoint <- function(df,
                              .var,

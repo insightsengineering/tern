@@ -79,7 +79,6 @@ NULL
 #'   cur_col_subset = I(cur_col_subset)
 #' )
 #'
-#'
 #' @keywords internal
 s_count_abnormal_by_worst_grade <- function(df, # nolint
                                             .var = "GRADE_ANL",
