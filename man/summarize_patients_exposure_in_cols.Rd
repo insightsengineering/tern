@@ -173,7 +173,7 @@ s_count_patients_sum_exposure(
 )
 }
 
-tern:::a_count_patients_sum_exposure(
+a_count_patients_sum_exposure(
   df = df,
   var = "SEX",
   .N_col = nrow(df),

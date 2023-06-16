@@ -38,20 +38,6 @@ check_list_of_variables <- function(x) {
 #' @describeIn assertions Checks whether `x` is a valid list of variable names.
 #'   `NULL` elements of the list `x` are dropped with `Filter(Negate(is.null), x)`.
 #'
-#' @examples
-#' # Check whether `x` is a valid list of variable names.
-#'
-#' # Internal function - assert_list_of_variables
-#' \dontrun{
-#' assert_list_of_variables(list(val = "a"))
-#' assert_list_of_variables(list(val = c("a", "b")))
-#' assert_list_of_variables(list(val = c("a", "b"), val2 = NULL))
-#'
-#' # The following calls fail
-#' assert_list_of_variables(list(1, 2))
-#' assert_list_of_variables(list("bla" = 2))
-#' }
-#'
 #' @keywords internal
 assert_list_of_variables <- checkmate::makeAssertionFunction(check_list_of_variables)
 
@@ -89,43 +75,6 @@ check_df_with_variables <- function(df, variables, na_level = NULL) {
 #' @describeIn assertions Check whether `df` is a data frame with the analysis `variables`.
 #'   Please notice how this produces an error when not all variables are present in the
 #'   data.frame while the opposite is not required.
-#'
-#' @examples
-#' # Check whether `df` contains the analysis `variables`.
-#'
-#' # Internal function - assert_df_with_variables
-#' \dontrun{
-#' assert_df_with_variables(
-#'   df = data.frame(a = 5, b = 3),
-#'   variables = list(val = "a")
-#' )
-#' assert_df_with_variables(
-#'   df = data.frame(a = 5, b = 3),
-#'   variables = list(val = c("a", "b"))
-#' )
-#' assert_df_with_variables(
-#'   df = data.frame(a = 5, b = 3),
-#'   variables = list(val = c("a", "b"))
-#' )
-#' assert_df_with_variables(
-#'   df = data.frame(a = 5, b = 3, e = "<Missing>"),
-#'   variables = list(val = c("a", "b")), na_level = "<Missing>"
-#' )
-#'
-#' # The following calls fail
-#' assert_df_with_variables(
-#'   df = matrix(1:5, ncol = 2, nrow = 3),
-#'   variables = list(val = "a")
-#' )
-#' assert_df_with_variables(
-#'   df = data.frame(a = 5, b = 3),
-#'   variables = list(val = c("a", "b", "c"))
-#' )
-#' assert_df_with_variables(
-#'   df = data.frame(a = 5, b = 3, e = "<Missing>"),
-#'   variables = list(val = c("a", "b", "e")), na_level = "<Missing>"
-#' )
-#' }
 #'
 #' @keywords internal
 assert_df_with_variables <- checkmate::makeAssertionFunction(check_df_with_variables)
@@ -219,52 +168,10 @@ check_df_with_factors <- function(df,
 #'   are all factors. Note that the creation of `NA` by direct call of `factor()` will
 #'   trim `NA` levels out of the vector list itself.
 #'
-#' @examples
-#' # Check whether `df` contains all factor analysis `variables`.
-#' adf <- data.frame(a = factor(c("A", "B")), b = 3)
-#' bdf <- data.frame(a = factor(letters[1:3]), b = factor(c(1, 2, 3)), d = 3)
-#'
-#' # Internal function - assert_df_with_factors
-#' \dontrun{
-#' assert_df_with_factors(df = adf, variables = list(val = "a"))
-#' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
-#' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)
-#' assert_df_with_factors(
-#'   df = data.frame(a = factor(c("A", NA, "B")), b = 3),
-#'   variable = list(val = "a"),
-#'   min.levels = 2,
-#'   max.levels = 2
-#' )
-#'
-#' # The following calls fail
-#' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
-#' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
-#' assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = ""))
-#' assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = "d"))
-#' assert_df_with_factors(
-#'   df = bdf,
-#'   variables = list(val = "a", val = "b"),
-#'   min.levels = 1,
-#'   max.levels = 1
-#' )
-#' }
-#'
 #' @keywords internal
 assert_df_with_factors <- checkmate::makeAssertionFunction(check_df_with_factors)
 
 #' @describeIn assertions Check whether `x` is a proportion: number between 0 and 1.
-#'
-#' @examples
-#' # Check whether `x` is between 0 and 1.
-#' # Internal function - assert_proportion_value
-#' \dontrun{
-#' assert_proportion_value(x = 0, include_boundaries = TRUE)
-#' assert_proportion_value(x = 0.3)
-#'
-#' # These fail
-#' assert_proportion_value(x = 1.3)
-#' assert_proportion_value(x = 1)
-#' }
 #'
 #' @keywords internal
 assert_proportion_value <- function(x, include_boundaries = FALSE) {

@@ -9,19 +9,6 @@
 #'
 #' @return A 2-element vector of class `numeric`.
 #'
-#' @examples
-#' # Internal function - range_noinf
-#' \dontrun{
-#' range_noinf(1:5)
-#' range_noinf(c(1:5, NA, NA), na.rm = TRUE)
-#' range_noinf(numeric(), na.rm = TRUE)
-#' range_noinf(c(1:5, NA, NA, Inf), na.rm = TRUE, finite = TRUE)
-#' range_noinf(Inf)
-#' range_noinf(Inf, na.rm = TRUE, finite = TRUE)
-#' range_noinf(c(Inf, NA), na.rm = FALSE, finite = TRUE)
-#' range_noinf(c(1, Inf, NA), na.rm = FALSE, finite = TRUE)
-#' }
-#'
 #' @keywords internal
 range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
 
@@ -160,12 +147,6 @@ check_same_n <- function(..., omit_null = TRUE) {
 #'
 #' @return A `character` `vector` of proper names, which does not use dots in contrast to [make.names()].
 #'
-#' @examples
-#' # Internal function - make_names
-#' \dontrun{
-#' make_names(c("foo Bar", "1 2 3 bla"))
-#' }
-#'
 #' @keywords internal
 make_names <- function(nams) {
   orig <- make.names(nams)
@@ -218,10 +199,6 @@ day2month <- function(x) {
 #' @examples
 #' x <- c(NA, NA, NA)
 #' # Internal function - empty_vector_if_na
-#' \dontrun{
-#' empty_vector_if_na(x)
-#' }
-#'
 #' @keywords internal
 empty_vector_if_na <- function(x) {
   if (all(is.na(x))) {
@@ -413,12 +390,6 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
 #' @param x (`any`)\cr vector in which to count non-missing values.
 #'
 #' @return Number of non-missing values.
-#'
-#' @examples
-#' # Internal function - n_available
-#' \dontrun{
-#' n_available(c(1, NA, 2))
-#' }
 #'
 #' @keywords internal
 n_available <- function(x) {

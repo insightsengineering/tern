@@ -38,10 +38,6 @@ NULL
 #' df <- adtte_f %>%
 #'   filter(ARMCD == "ARM A")
 #'
-#' # Internal function - s_surv_timepoint
-#' \dontrun{
-#' s_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
-#' }
 #'
 #' @keywords internal
 s_surv_timepoint <- function(df,
@@ -90,12 +86,6 @@ s_surv_timepoint <- function(df,
 #' @return
 #' * `a_surv_timepoint()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @examples
-#' # Internal function - a_surv_timepoint
-#' \dontrun{
-#' a_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
-#' }
-#'
 #' @keywords internal
 a_surv_timepoint <- make_afun(
   s_surv_timepoint,
@@ -124,19 +114,6 @@ a_surv_timepoint <- make_afun(
 #' @examples
 #' df_ref_group <- adtte_f %>%
 #'   filter(ARMCD == "ARM B")
-#'
-#' # Internal function - s_surv_timepoint_diff
-#' \dontrun{
-#' s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
-#' s_surv_timepoint_diff(
-#'   df,
-#'   df_ref_group,
-#'   .in_ref_col = FALSE,
-#'   .var = "AVAL",
-#'   time_point = 7,
-#'   is_event = "is_event"
-#' )
-#' }
 #'
 #' @keywords internal
 s_surv_timepoint_diff <- function(df,
@@ -185,19 +162,6 @@ s_surv_timepoint_diff <- function(df,
 #'
 #' @return
 #' * `a_surv_timepoint_diff()` returns the corresponding list with formatted [rtables::CellValue()].
-#'
-#' @examples
-#' # Internal function - a_surv_timepoint_diff
-#' \dontrun{
-#' a_surv_timepoint_diff(
-#'   df,
-#'   df_ref_group,
-#'   .in_ref_col = FALSE,
-#'   .var = "AVAL",
-#'   time_point = 7,
-#'   is_event = "is_event"
-#' )
-#' }
 #'
 #' @keywords internal
 a_surv_timepoint_diff <- make_afun(
