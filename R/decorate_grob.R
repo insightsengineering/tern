@@ -304,7 +304,7 @@ split_string <- function(text, width) {
 #'
 #' @return A text grob.
 #'
-#' @details This code is taken from R Graphics by Paul Murell, 2nd edition
+#' @details This code is taken from `R Graphics by Paul Murell, 2nd edition`
 #'
 #' @examples
 #' # Internal function - split_text_grob

@@ -91,6 +91,6 @@ prop_fisher(tbl)
 \code{\link[=prop_diff_test]{prop_diff_test()}} for implementation of these helper functions.
 
 For information on the Schouten correction (Schouten, 1980),
-visit https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.4710220305.
+visit \url{https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.4710220305}.
 }
 \keyword{internal}

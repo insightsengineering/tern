@@ -284,11 +284,11 @@ extract_by_name <- function(x, names) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param aesi (`character`)\cr with standardized MedDRA query name (e.g. `SMQzzNAM`) or customized query
+#' @param aesi (`character`)\cr with standardized `MedDRA` query name (e.g. `SMQzzNAM`) or customized query
 #'   name (e.g. `CQzzNAM`).
 #' @param scope (`character`)\cr with scope of query (e.g. `SMQzzSC`).
 #'
-#' @return A `string` with the standard label for the AE basket.
+#' @return A `string` with the standard label for the `AE` basket.
 #'
 #' @examples
 #' adae <- tern_ex_adae

@@ -46,7 +46,7 @@ g_lineplot(
 \item \code{y} (\code{character})\cr name of y-axis variable.
 \item \code{strata} (\code{character})\cr name of grouping variable, i.e. treatment arm. Can be \code{NA} to indicate lack of groups.
 \item \code{paramcd} (\code{character})\cr name of the variable for parameter's code. Used for y-axis label and plot's subtitle.
-Can be \code{NA} if paramcd is not to be added to the y-axis label or subtitle.
+Can be \code{NA} if \code{paramcd} is not to be added to the y-axis label or subtitle.
 \item \code{y_unit} (\code{character})\cr name of variable with units of \code{y}. Used for y-axis label and plot's subtitle.
 Can be \code{NA} if y unit is not to be added to the y-axis label or subtitle.
 }}
@@ -89,7 +89,7 @@ or two-element numeric vector).}
 
 \item{y_lab}{(\code{character})\cr y-axis label. If equal to \code{NULL}, then no label will be added.}
 
-\item{y_lab_add_paramcd}{(\code{logical})\cr should paramcd, i.e. \code{unique(df[[variables["paramcd"]]])} be added to the
+\item{y_lab_add_paramcd}{(\code{logical})\cr should \code{paramcd}, i.e. \code{unique(df[[variables["paramcd"]]])} be added to the
 y-axis label \code{y_lab}?}
 
 \item{y_lab_add_unit}{(\code{logical})\cr should y unit, i.e. \code{unique(df[[variables["y_unit"]]])} be added to the y-axis
@@ -99,7 +99,7 @@ label \code{y_lab}?}
 
 \item{subtitle}{(\code{character})\cr plot subtitle.}
 
-\item{subtitle_add_paramcd}{(\code{logical})\cr should paramcd, i.e. \code{unique(df[[variables["paramcd"]]])} be added to
+\item{subtitle_add_paramcd}{(\code{logical})\cr should \code{paramcd}, i.e. \code{unique(df[[variables["paramcd"]]])} be added to
 the plot's subtitle \code{subtitle}?}
 
 \item{subtitle_add_unit}{(\code{logical})\cr should y unit, i.e. \code{unique(df[[variables["y_unit"]]])} be added to the

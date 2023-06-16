@@ -56,14 +56,14 @@ function with tidying applied via \code{\link[broom:reexports]{broom::tidy()}}.}
 }}
 
 \item{.which_vars}{(\code{character})\cr which rows should statistics be returned for from the given model.
-Defaults to "all". Other options include "var_main" for main effects, "inter" for interaction effects,
-and "multi_lvl" for multivariate model covariate level rows. When \code{.which_vars} is "all" specific
+Defaults to "all". Other options include "var_main" for main effects, \code{"inter"} for interaction effects,
+and \code{"multi_lvl"} for multivariate model covariate level rows. When \code{.which_vars} is "all" specific
 variables can be selected by specifying \code{.var_nms}.}
 
 \item{.var_nms}{(\code{character})\cr the \code{term} value of rows in \code{df} for which \code{.stats} should be returned. Typically
 this is the name of a variable. If using variable labels, \code{var} should be a vector of both the desired
 variable name and the variable label in that order to see all \code{.stats} related to that variable. When \code{.which_vars}
-is "var_main" \code{.var_nms} should be only the variable name.}
+is \code{"var_main"} \code{.var_nms} should be only the variable name.}
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 

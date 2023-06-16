@@ -190,7 +190,7 @@ estimate_coef <- function(variable, given,
 #'
 #' @examples
 #' # `car::Anova` on cox regression model including strata and expected
-#' # a likelihood ratio test triggers a warning as only Wald method is
+#' # a likelihood ratio test triggers a warning as only `Wald` method is
 #' # accepted.
 #'
 #' library(survival)
@@ -238,7 +238,7 @@ try_car_anova <- function(mod,
   return(y)
 }
 
-#' Fit the Cox Regression Model and Anova
+#' Fit the Cox Regression Model and `Anova`
 #'
 #' The functions allows to derive from the [survival::coxph()] results the effect p.values using [car::Anova()].
 #' This last package introduces more flexibility to get the effect p.values.
@@ -342,7 +342,7 @@ check_increments <- function(increments, covariates) {
 #' @param data (`data.frame`)\cr A data frame which includes the variable in formula and covariates.
 #' @param conf_level (`proportion`)\cr The confidence level for the hazard ratio interval estimations. Default is 0.95.
 #' @param pval_method (`character`)\cr The method used for the estimation of p-values, should be one of
-#'   "wald" (default) or "likelihood".
+#'   `"wald"` (default) or `"likelihood"`.
 #' @param ... Optional parameters passed to [survival::coxph()]. Can include `ties`, a character string specifying the
 #'   method for tie handling, one of `exact` (default), `efron`, `breslow`.
 #'

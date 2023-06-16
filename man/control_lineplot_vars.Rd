@@ -2,7 +2,7 @@
 % Please edit documentation in R/g_lineplot.R
 \name{control_lineplot_vars}
 \alias{control_lineplot_vars}
-\title{Control Function for g_lineplot Function}
+\title{Control Function for \code{g_lineplot} Function}
 \usage{
 control_lineplot_vars(
   x = "AVISIT",
@@ -19,7 +19,7 @@ control_lineplot_vars(
 
 \item{strata}{(\code{character} or \code{NA})\cr strata variable name.}
 
-\item{paramcd}{(\code{character} or \code{NA})\cr paramcd variable name.}
+\item{paramcd}{(\code{character} or \code{NA})\cr \code{paramcd} variable name.}
 
 \item{y_unit}{(\code{character} or \code{NA})\cr y_unit variable name.}
 }

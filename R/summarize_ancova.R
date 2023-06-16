@@ -1,8 +1,8 @@
-#' Summary for analysis of covariance (ANCOVA).
+#' Summary for analysis of covariance (`ANCOVA`).
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Summarize results of ANCOVA. This can be used to analyze multiple endpoints and/or
+#' Summarize results of `ANCOVA`. This can be used to analyze multiple endpoints and/or
 #' multiple timepoints within the same response variable `.var`.
 #'
 #' @inheritParams argument_convention
@@ -84,7 +84,7 @@ h_ancova <- function(.var,
 #'
 #' @inheritParams h_ancova
 #' @param interaction_y (`character`)\cr a selected item inside of the interaction_item column which will be used
-#'   to select the specific ANCOVA results. if the interaction is not needed, the default option is `FALSE`.
+#'   to select the specific `ANCOVA` results. if the interaction is not needed, the default option is `FALSE`.
 #'
 #' @return
 #' * `s_ancova()` returns a named list of 5 statistics:

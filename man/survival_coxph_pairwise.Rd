@@ -5,7 +5,7 @@
 \alias{s_coxph_pairwise}
 \alias{a_coxph_pairwise}
 \alias{coxph_pairwise}
-\title{Pairwise CoxPH model}
+\title{Pairwise \code{CoxPH} model}
 \usage{
 s_coxph_pairwise(
   df,
@@ -57,10 +57,10 @@ by a statistics function.}
 \item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
 \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are:
 \itemize{
-\item \code{pval_method} (\code{string})\cr p-value method for testing hazard ratio = 1. Default method is "log-rank" which
-comes from \code{\link[survival:survdiff]{survival::survdiff()}}, can also be set to "wald" or "likelihood" (from \code{\link[survival:coxph]{survival::coxph()}}).
-\item \code{ties} (\code{string})\cr specifying the method for tie handling. Default is "efron",
-can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]{survival::coxph()}}
+\item \code{pval_method} (\code{string})\cr p-value method for testing hazard ratio = 1. Default method is \code{"log-rank"} which
+comes from \code{\link[survival:survdiff]{survival::survdiff()}}, can also be set to \code{"wald"} or \code{"likelihood"} (from \code{\link[survival:coxph]{survival::coxph()}}).
+\item \code{ties} (\code{string})\cr specifying the method for tie handling. Default is \code{"efron"},
+can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[survival:coxph]{survival::coxph()}}
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
 }}
 
@@ -111,11 +111,11 @@ the statistics from \code{s_coxph_pairwise()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Summarize p-value, HR and CIs from stratified or unstratified CoxPH model.
+Summarize p-value, HR and CIs from stratified or unstratified \code{CoxPH} model.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_coxph_pairwise()}: Statistics function which analyzes HR, CIs of HR and p-value of a coxph model.
+\item \code{s_coxph_pairwise()}: Statistics function which analyzes HR, CIs of HR and p-value of a \code{coxph} model.
 
 \item \code{a_coxph_pairwise()}: Formatted analysis function which is used as \code{afun} in \code{coxph_pairwise()}.
 

@@ -11,7 +11,7 @@
 #'   * `y` (`character`)\cr name of y-axis variable.
 #'   * `strata` (`character`)\cr name of grouping variable, i.e. treatment arm. Can be `NA` to indicate lack of groups.
 #'   * `paramcd` (`character`)\cr name of the variable for parameter's code. Used for y-axis label and plot's subtitle.
-#'     Can be `NA` if paramcd is not to be added to the y-axis label or subtitle.
+#'     Can be `NA` if `paramcd` is not to be added to the y-axis label or subtitle.
 #'   * `y_unit` (`character`)\cr name of variable with units of `y`. Used for y-axis label and plot's subtitle.
 #'     Can be `NA` if y unit is not to be added to the y-axis label or subtitle.
 #' @param mid (`character` or `NULL`)\cr names of the statistics that will be plotted as midpoints.
@@ -39,13 +39,13 @@
 #'   or two-element numeric vector).
 #' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to control styling of the plot.
 #' @param y_lab (`character`)\cr y-axis label. If equal to `NULL`, then no label will be added.
-#' @param y_lab_add_paramcd (`logical`)\cr should paramcd, i.e. `unique(df[[variables["paramcd"]]])` be added to the
+#' @param y_lab_add_paramcd (`logical`)\cr should `paramcd`, i.e. `unique(df[[variables["paramcd"]]])` be added to the
 #'   y-axis label `y_lab`?
 #' @param y_lab_add_unit (`logical`)\cr should y unit, i.e. `unique(df[[variables["y_unit"]]])` be added to the y-axis
 #'   label `y_lab`?
 #' @param title (`character`)\cr plot title.
 #' @param subtitle (`character`)\cr plot subtitle.
-#' @param subtitle_add_paramcd (`logical`)\cr should paramcd, i.e. `unique(df[[variables["paramcd"]]])` be added to
+#' @param subtitle_add_paramcd (`logical`)\cr should `paramcd`, i.e. `unique(df[[variables["paramcd"]]])` be added to
 #'   the plot's subtitle `subtitle`?
 #' @param subtitle_add_unit (`logical`)\cr should y unit, i.e. `unique(df[[variables["y_unit"]]])` be added to the
 #'   plot's subtitle `subtitle`?
@@ -404,7 +404,7 @@ g_lineplot <- function(df,
   }
 }
 
-#' Helper function to get the right formatting in the optional table in g_lineplot.
+#' Helper function to get the right formatting in the optional table in `g_lineplot`.
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -461,7 +461,7 @@ h_format_row <- function(x, format, labels = NULL) {
   row
 }
 
-#' Control Function for g_lineplot Function
+#' Control Function for `g_lineplot` Function
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -471,7 +471,7 @@ h_format_row <- function(x, format, labels = NULL) {
 #' @param x (`character`)\cr x variable name.
 #' @param y (`character`)\cr y variable name.
 #' @param strata (`character` or `NA`)\cr strata variable name.
-#' @param paramcd (`character` or `NA`)\cr paramcd variable name.
+#' @param paramcd (`character` or `NA`)\cr `paramcd` variable name.
 #' @param y_unit (`character` or `NA`)\cr y_unit variable name.
 #'
 #' @return A named character vector of variable names.
