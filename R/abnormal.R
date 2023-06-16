@@ -33,7 +33,20 @@ NULL
 #'
 #' @return
 #' * `s_count_abnormal()` returns the statistic `fraction` which is a vector with `num` and `denom` counts of patients.
+#' @examples
+#' library(dplyr)
 #'
+#' df <- data.frame(
+#'   USUBJID = as.character(c(1, 1, 2, 2)),
+#'   ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
+#'   BNRIND = factor(c("NORMAL", "NORMAL", "HIGH", "HIGH")),
+#'   ONTRTFL = c("", "Y", "", "Y"),
+#'   stringsAsFactors = FALSE
+#' )
+#'
+#' # Select only post-baseline records.
+#' df <- df %>%
+#'   filter(ONTRTFL == "Y")
 #' @keywords internal
 s_count_abnormal <- function(df,
                              .var,
