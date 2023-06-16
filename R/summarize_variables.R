@@ -542,6 +542,12 @@ a_summary <- function(x,
                       na_level = NA_character_,
                       compare = FALSE,
                       ...) {
+  # Remove all-NA rows
+  in_tot_col <- nrow(.df_row) == length(x)
+  .df_row <- .df_row[rowSums(is.na(.df_row)) != ncol(.df_row), ]
+  if (in_tot_col && !identical(.df_row[[.var]], x)) x <-  .df_row[[.var]]
+
+  if (any(is.na(.df_row[[.var]])) && !any(is.na(x)) && !na.rm) levels(x) <- c(levels(x), "na-level")
   x_stats <- if (!compare) {
     s_summary(x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, ...)
   } else {
@@ -572,7 +578,6 @@ a_summary <- function(x,
   if (length(.indent_mods) == 1 & is.null(names(.indent_mods))) {
     .indent_mods <- rep(.indent_mods, length(.stats)) %>% `names<-`(.stats)
   }
-  if (any(is.na(.df_row[[.var]])) && !any(is.na(x)) && !na.rm) levels(x) <- c(levels(x), "na-level")
 
   .stats <- intersect(.stats, names(x_stats))
   x_stats <- x_stats[.stats]

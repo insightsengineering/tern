@@ -318,17 +318,17 @@ ungroup_stats <- function(x, .stats, .formats, .labels, .indent_mods, .in_ref_co
       a_lvl <- paste(stat, a, sep = ".")
       .stats <- c(.stats, a_lvl)
       .formats <- append(.formats, .formats[stat] %>% `names<-`(a_lvl), after = if (stat %in% names(.formats)) {
-        which(names(.formats) == stat) - 1 + which(names(x[[stat]]) == a)
+        which(names(.formats) == stat) - 1 + which(names(x[[stat]]) == if (a != "NA" | "NA" %in% names(x[[stat]])) a else "na-level")
       } else {
         length(.formats)
       })
       .labels <- append(.labels, a %>% `names<-`(a_lvl), after = if (stat %in% names(.labels)) {
-        which(names(.labels) == stat) - 1 + which(names(x[[stat]]) == a)
+        which(names(.labels) == stat) - 1 + which(names(x[[stat]]) == if (a != "NA" | "NA" %in% names(x[[stat]])) a else "na-level")
       } else {
         length(.labels)
       })
       .indent_mods <- append(.indent_mods, .indent_mods[stat] %>% `names<-`(a_lvl), after = if (stat %in% names(.indent_mods)) {
-        which(names(.indent_mods) == stat) - 1 + which(names(x[[stat]]) == a)
+        which(names(.indent_mods) == stat) - 1 + which(names(x[[stat]]) == if (a != "NA" | "NA" %in% names(x[[stat]])) a else "na-level")
       } else {
         length(.indent_mods)
       })
