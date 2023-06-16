@@ -15,11 +15,4 @@ Number of non-missing values.
 \description{
 Small utility function for better readability.
 }
-\examples{
-# Internal function - n_available
-\dontrun{
-n_available(c(1, NA, 2))
-}
-
-}
 \keyword{internal}

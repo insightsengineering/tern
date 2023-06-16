@@ -20,18 +20,4 @@ A 2-element vector of class \code{numeric}.
 This function returns \code{c(NA, NA)} instead of \code{c(-Inf, Inf)} for zero-length data
 without any warnings.
 }
-\examples{
-# Internal function - range_noinf
-\dontrun{
-range_noinf(1:5)
-range_noinf(c(1:5, NA, NA), na.rm = TRUE)
-range_noinf(numeric(), na.rm = TRUE)
-range_noinf(c(1:5, NA, NA, Inf), na.rm = TRUE, finite = TRUE)
-range_noinf(Inf)
-range_noinf(Inf, na.rm = TRUE, finite = TRUE)
-range_noinf(c(Inf, NA), na.rm = FALSE, finite = TRUE)
-range_noinf(c(1, Inf, NA), na.rm = FALSE, finite = TRUE)
-}
-
-}
 \keyword{internal}

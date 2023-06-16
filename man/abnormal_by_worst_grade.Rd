@@ -157,7 +157,6 @@ spl_context <- data.frame(
   cur_col_subset = I(cur_col_subset)
 )
 
-
 # Map excludes records without abnormal grade since they should not be displayed
 # in the table.
 map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) \%>\%
