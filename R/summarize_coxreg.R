@@ -154,7 +154,7 @@ s_coxreg <- function(model_df, .stats, .which_vars = "all", .var_nms = NULL) {
 #' * `a_coxreg()` returns formatted [rtables::CellValue()].
 #'
 #' @examples
-#' tern:::a_coxreg(
+#' a_coxreg(
 #'   df = dta_bladder,
 #'   labelstr = "Label 1",
 #'   variables = u1_variables,
@@ -163,7 +163,7 @@ s_coxreg <- function(model_df, .stats, .which_vars = "all", .var_nms = NULL) {
 #'   .formats = "xx"
 #' )
 #'
-#' tern:::a_coxreg(
+#' a_coxreg(
 #'   df = dta_bladder,
 #'   labelstr = "",
 #'   variables = u1_variables,
