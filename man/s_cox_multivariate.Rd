@@ -58,13 +58,6 @@ adtte_f <- filter(
 adtte_f$SEX <- droplevels(adtte_f$SEX)
 adtte_f$RACE <- droplevels(adtte_f$RACE)
 
-# Internal function - s_cox_multivariate
-\dontrun{
-s_cox_multivariate(
-  formula = Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = adtte_f
-)
-}
-
 }
 \seealso{
 \code{\link[=estimate_coef]{estimate_coef()}}.

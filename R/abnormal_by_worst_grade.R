@@ -79,14 +79,6 @@ NULL
 #'   cur_col_subset = I(cur_col_subset)
 #' )
 #'
-#' # Internal function - s_count_abnormal_by_worst_grade
-#' \dontrun{
-#' s_count_abnormal_by_worst_grade(
-#'   df = adlb_f_alt,
-#'   .spl_context = spl_context,
-#'   .var = "GRADE_ANL"
-#' )
-#' }
 #'
 #' @keywords internal
 s_count_abnormal_by_worst_grade <- function(df, # nolint
@@ -137,14 +129,6 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
 #' @return
 #' * `a_count_abnormal_by_worst_grade()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @examples
-#' # Internal function - a_count_abnormal_by_worst_grade
-#' \dontrun{
-#' # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
-#' # so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
-#' afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
-#' afun(df = adlb_f_alt, .spl_context = spl_context)
-#' }
 #'
 #' @keywords internal
 a_count_abnormal_by_worst_grade <- make_afun( # nolint

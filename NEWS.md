@@ -14,6 +14,7 @@
 * Fixed `tern:::tidy.glm` formals to respect `broom:::tidy.default` formals.
 
 ### Miscellaneous
+* Remove examples for unexported functions.
 * Updated README to include installation instructions for CRAN.
 * Began deprecation of `indent_mod` argument and replace it with the `.indent_mods` argument in `summarize_num_patients` and `analyze_num_patients`.
 
