@@ -31,7 +31,8 @@ Combined formatted analysis function for use in \code{\link[=compare_vars]{compa
 Constructor function which creates a combined formatted analysis function.
 }
 \note{
-This function has been deprecated in favor of direct implementation of \code{a_compare()}.
+This function has been deprecated in favor of direct implementation of \code{a_summary()} with argument \code{compare}
+set to \code{TRUE}.
 }
 \seealso{
 \code{\link[=compare_vars]{compare_vars()}}

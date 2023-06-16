@@ -57,14 +57,17 @@ a_summary(
   x,
   .N_col,
   .N_row,
-  .var,
-  .df_row,
+  .var = NULL,
+  .df_row = NULL,
+  .ref_group = NULL,
+  .in_ref_col = NULL,
   .stats = NULL,
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL,
   na.rm = TRUE,
   na_level = NA_character_,
+  compare = FALSE,
   ...
 )
 
@@ -122,6 +125,10 @@ to print out information about factor casting.}
 
 \item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
+\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
+
+\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
@@ -133,6 +140,9 @@ should be a name-value pair with name corresponding to a statistic specified in 
 for that statistic's row label.}
 
 \item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{compare}{(\code{logical})\cr Whether comparison statistics should be analyzed instead of summary statistics
+(\code{compare = TRUE} adds \code{pval} statistic comparing against reference group).}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
@@ -237,7 +247,7 @@ conversion to factor (with a warning) and then forwards to the method for factor
 \item \code{s_summary(logical)}: Method for \code{logical} class.
 
 \item \code{a_summary()}: Formatted analysis function which is used as \code{afun} in \code{summarize_vars()} and
-\code{cfun} in \code{summarize_colvars()}.
+\code{compare_vars()} and as \code{cfun} in \code{summarize_colvars()}.
 
 \item \code{summarize_vars()}: Layout-creating function which can take statistics function arguments
 and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
@@ -266,6 +276,8 @@ can be generated correctly. In particular for sparse tables this very likely can
 It is therefore better to always pre-process the dataset such that factors are manually
 created from character variables before passing the dataset to \code{\link[rtables:build_table]{rtables::build_table()}}.
 }
+
+To use for comparison (with p-value statistic added), parameter \code{compare} must be set to \code{TRUE}.
 }
 \examples{
 # `s_summary.numeric`
@@ -339,10 +351,17 @@ x <- c(TRUE, FALSE, TRUE, TRUE)
 s_summary(x, denom = "N_row", .N_row = 10L)
 s_summary(x, denom = "N_col", .N_col = 20L)
 
-a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
-a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
-a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
-a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
+# summary analysis - compare = FALSE
+a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla", .df_row = c())
+a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10, .df_row = c())
+a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, .df_row = c(), verbose = FALSE)
+a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10, .df_row = c())
+
+# comparison analysis - compare = TRUE
+a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .in_ref_col = FALSE, .var = "bla", compare = TRUE)
+a_summary(factor(c("a", "a", "b", "c", "a")), .ref_group = factor(c("a", "a", "b", "c")), .in_ref_col = FALSE, compare = TRUE)
+a_summary(c("A", "B", "A", "C"), .ref_group = c("B", "A", "C"), .in_ref_col = FALSE, .var = "x", verbose = FALSE, compare = TRUE)
+a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .ref_group = c(TRUE, FALSE), .in_ref_col = FALSE, compare = TRUE)
 
 ## Fabricated dataset.
 dta_test <- data.frame(
@@ -373,8 +392,7 @@ l <- basic_table() \%>\%
     .labels = c(n = "n", mean_sd = "Mean, SD", quantiles = c("Q1 - Q3"))
   )
 
-results <- build_table(l, df = dta_test)
-as_html(results)
+build_table(l, df = dta_test)
 
 ## Use arguments interpreted by `s_summary`.
 l <- basic_table() \%>\%
@@ -382,7 +400,7 @@ l <- basic_table() \%>\%
   split_rows_by(var = "AVISIT") \%>\%
   summarize_vars(vars = "AVAL", na.rm = FALSE)
 
-results <- build_table(l, df = dta_test)
+build_table(l, df = dta_test)
 
 ## Handle `NA` levels first when summarizing factors.
 dta_test$AVISIT <- NA_character_
@@ -391,9 +409,6 @@ l <- basic_table() \%>\%
   split_cols_by(var = "ARM") \%>\%
   summarize_vars(vars = "AVISIT", na.rm = FALSE)
 
-results <- build_table(l, df = dta_test)
-\dontrun{
-Viewer(results)
-}
+build_table(l, df = dta_test)
 
 }

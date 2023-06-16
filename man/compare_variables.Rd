@@ -180,6 +180,8 @@ Therefore it is always better to manually convert character variables to factors
 \item For \code{compare_vars()}, the column split must define a reference group via \code{ref_group} so that the comparison
 is well defined.
 }
+
+This function has been deprecated in favor of \code{a_summary()} with argument \code{compare} set to \code{TRUE}.
 }
 \examples{
 # `s_compare.numeric`
@@ -238,11 +240,6 @@ y <- c(NA, NA, NA, NA, FALSE)
 s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
 s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
 
-a_compare(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .in_ref_col = FALSE, .var = "bla")
-a_compare(factor(c("a", "a", "b", "c", "a")), .ref_group = factor(c("a", "a", "b", "c")), .in_ref_col = FALSE)
-a_compare(c("A", "B", "A", "C"), .ref_group = c("B", "A", "C"), .in_ref_col = FALSE, .var = "x", verbose = FALSE)
-a_compare(c(TRUE, FALSE, FALSE, TRUE, TRUE), .ref_group = c(TRUE, FALSE), .in_ref_col = FALSE)
-
 # `compare_vars()` in `rtables` pipelines
 
 ## Default output within a `rtables` pipeline.
@@ -264,6 +261,8 @@ build_table(lyt, df = tern_ex_adsl)
 
 }
 \seealso{
-Relevant constructor function \code{\link[=create_afun_compare]{create_afun_compare()}}, and \code{\link[=s_summary]{s_summary()}} which is used internally
-to compute a summary within \code{s_compare()}.
+Relevant constructor function \code{\link[=create_afun_compare]{create_afun_compare()}}, \code{\link[=s_summary]{s_summary()}} which is used internally
+to compute a summary within \code{s_compare()}, and \code{\link[=a_compare]{a_compare()}} which is used (with \code{compare = TRUE}) as the analysis
+function for \code{compare_vars()}.
 }
+\keyword{internal}

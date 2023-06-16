@@ -21,8 +21,9 @@
 #' * For `compare_vars()`, the column split must define a reference group via `ref_group` so that the comparison
 #'   is well defined.
 #'
-#' @seealso Relevant constructor function [create_afun_compare()], and [s_summary()] which is used internally
-#'   to compute a summary within `s_compare()`.
+#' @seealso Relevant constructor function [create_afun_compare()], [s_summary()] which is used internally
+#'   to compute a summary within `s_compare()`, and [a_compare()] which is used (with `compare = TRUE`) as the analysis
+#'   function for `compare_vars()`.
 #'
 #' @name compare_variables
 #' @include summarize_variables.R
@@ -177,8 +178,8 @@ s_compare.character <- function(x,
                                 .var,
                                 verbose = TRUE,
                                 ...) {
-  x <- as_factor_keep_attributes(x, x_name = .var, verbose = verbose)
-  .ref_group <- as_factor_keep_attributes(.ref_group, x_name = .var, verbose = verbose)
+  x <- as_factor_keep_attributes(x, verbose = verbose)
+  .ref_group <- as_factor_keep_attributes(.ref_group, verbose = verbose)
   s_compare(
     x = x,
     .ref_group = .ref_group,
@@ -244,26 +245,15 @@ s_compare.logical <- function(x,
   y
 }
 
-.a_compare_numeric_formats <- c(.a_summary_numeric_formats, pval = "x.xxxx | (<0.0001)")
-.a_compare_numeric_labels <- c(.a_summary_numeric_labels, pval = "p-value (t-test)")
-.a_compare_numeric_indent_mods <- c(.a_summary_numeric_indent_mods, pval = 0L)
-.a_compare_counts_formats <- c(.a_summary_counts_formats, pval = "x.xxxx | (<0.0001)")
-.a_compare_counts_labels <- c(.a_summary_counts_labels, pval = "p-value (chi-squared test)")
-.a_compare_counts_indent_mods <- c(.a_summary_counts_indent_mods, pval = 0L)
-
 #' @describeIn compare_variables Formatted analysis function which is used as `afun`
 #'   in `compare_vars()`.
 #'
 #' @return
 #' * `a_compare()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @examples
-#' a_compare(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .in_ref_col = FALSE, .var = "bla")
-#' a_compare(factor(c("a", "a", "b", "c", "a")), .ref_group = factor(c("a", "a", "b", "c")), .in_ref_col = FALSE)
-#' a_compare(c("A", "B", "A", "C"), .ref_group = c("B", "A", "C"), .in_ref_col = FALSE, .var = "x", verbose = FALSE)
-#' a_compare(c(TRUE, FALSE, FALSE, TRUE, TRUE), .ref_group = c(TRUE, FALSE), .in_ref_col = FALSE)
+#' @note This function has been deprecated in favor of `a_summary()` with argument `compare` set to `TRUE`.
 #'
-#' @export
+#' @keywords internal
 a_compare <- function(x,
                       .N_col,
                       .N_row,
@@ -278,48 +268,10 @@ a_compare <- function(x,
                       na.rm = TRUE,
                       na_level = NA_character_,
                       ...) {
-  if (is.null(.stats)) .stats <- names(if (is.numeric(x)) .a_compare_numeric_labels else .a_compare_counts_labels)
-  if (is.null(.formats)) .formats <- if (is.numeric(x)) .a_compare_numeric_formats else .a_compare_counts_formats
-  if (is.null(.labels)) .labels <- if (is.numeric(x)) .a_compare_numeric_labels else .a_compare_counts_labels
-  if (is.null(.indent_mods)) {
-    .indent_mods <- if (is.numeric(x)) .a_compare_numeric_indent_mods else .a_compare_counts_indent_mods
-  }
-  if (length(.indent_mods) == 1 & is.null(names(.indent_mods))) {
-    .indent_mods <- rep(.indent_mods, length(.stats)) %>% `names<-`(.stats)
-  }
-  if (any(is.na(.df_row[[.var]])) && !any(is.na(x)) && !na.rm) levels(x) <- c(levels(x), "na-level")
-  x_stats <- s_compare(x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, .ref_group = .ref_group, .in_ref_col = .in_ref_col, ...)
-  if (is.numeric(x)) {
-    .labels[c("mean_ci", "mean_pval", "median_ci", "quantiles")] <- sapply(
-      c("mean_ci", "mean_pval", "median_ci", "quantiles"),
-      function(x) attr(x_stats[[x]], "label")
-    )
-  }
-  .stats <- intersect(.stats, names(x_stats))
-  x_stats <- x_stats[.stats]
-  if (!is.numeric(x) && !is.logical(x)) {
-    x_ungrp <- ungroup_stats(x_stats, .stats, .formats, .labels, .indent_mods, .in_ref_col)
-    x_stats <- x_ungrp[["x"]]
-    .stats <- x_ungrp[[".stats"]]
-    .formats <- x_ungrp[[".formats"]]
-    .labels <- x_ungrp[[".labels"]]
-    .indent_mods <- x_ungrp[[".indent_mods"]]
-  }
-  .formats_x <- extract_by_name(
-    .formats, .stats, if (is.numeric(x)) .a_compare_numeric_formats else .a_compare_counts_formats
-  )
-  .labels_x <- extract_by_name(.labels, .stats, if (is.numeric(x)) .a_compare_numeric_labels else .a_compare_counts_labels)
-  .indent_mods_x <- extract_by_name(
-    .indent_mods, .stats, if (is.numeric(x)) .a_compare_numeric_indent_mods else .a_compare_counts_indent_mods
-  )
-
-  in_rows(
-    .list = x_stats,
-    .formats = .formats_x,
-    .names = .labels_x,
-    .labels = .labels_x,
-    .indent_mods = .indent_mods_x,
-    .format_na_strs = na_level
+  lifecycle::deprecate_stop(
+    "0.8.2",
+    "a_compare()",
+    "a_summary(compare = TRUE)"
   )
 }
 
@@ -336,7 +288,8 @@ a_compare <- function(x,
 #'
 #' @return Combined formatted analysis function for use in [compare_vars()].
 #'
-#' @note This function has been deprecated in favor of direct implementation of `a_compare()`.
+#' @note This function has been deprecated in favor of direct implementation of `a_summary()` with argument `compare`
+#'   set to `TRUE`.
 #'
 #' @seealso [compare_vars()]
 #'
@@ -348,7 +301,7 @@ create_afun_compare <- function(.stats = NULL,
   lifecycle::deprecate_stop(
     "0.8.2",
     "create_afun_compare()",
-    "a_compare()"
+    "a_summary(compare = TRUE)"
   )
 }
 
@@ -404,10 +357,10 @@ compare_vars <- function(lyt,
     lyt = lyt,
     vars = vars,
     var_labels = var_labels,
-    afun = a_compare,
+    afun = a_summary,
     nested = nested,
     extra_args = list(
-      .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na.rm = na.rm, na_level = na_level, ...
+      .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na.rm = na.rm, na_level = na_level, compare = TRUE, ...
     ),
     inclNAs = TRUE,
     show_labels = show_labels,

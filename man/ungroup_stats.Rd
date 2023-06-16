@@ -26,9 +26,9 @@ A \code{list} with modified elements \code{x}, \code{.stats}, \code{.formats}, \
 \description{
 Ungroups grouped non-numeric statistics (\code{count} and \code{count_fraction}) within input vectors \code{.stats}, \code{.formats},
 \code{.labels}, and \code{.indent_mods}. Formats explicit \code{NA} level in each input vector and changes p-value to
-\code{character()} if current column is a reference column. Used within \code{a_summary()} and \code{a_compare()}.
+\code{character()} if current column is a reference column. Used within \code{\link[=a_summary]{a_summary()}}.
 }
 \seealso{
-\code{\link[=a_summary]{a_summary()}} and \code{\link[=a_compare]{a_compare()}} which use this function internally.
+\code{\link[=a_summary]{a_summary()}} which uses this function internally.
 }
 \keyword{internal}

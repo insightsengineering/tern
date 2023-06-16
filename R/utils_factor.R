@@ -301,13 +301,13 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
 #'
 #' Ungroups grouped non-numeric statistics (`count` and `count_fraction`) within input vectors `.stats`, `.formats`,
 #' `.labels`, and `.indent_mods`. Formats explicit `NA` level in each input vector and changes p-value to
-#' `character()` if current column is a reference column. Used within `a_summary()` and `a_compare()`.
+#' `character()` if current column is a reference column. Used within [`a_summary()`].
 #'
 #' @inheritParams argument_convention
 #'
 #' @return A `list` with modified elements `x`, `.stats`, `.formats`, `.labels`, and `.indent_mods`.
 #'
-#' @seealso [a_summary()] and [a_compare()] which use this function internally.
+#' @seealso [a_summary()] which uses this function internally.
 #'
 #' @keywords internal
 ungroup_stats <- function(x, .stats, .formats, .labels, .indent_mods, .in_ref_col = FALSE) {

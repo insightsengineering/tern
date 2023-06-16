@@ -495,59 +495,89 @@ s_summary.logical <- function(x,
   y
 }
 
-.a_summary_numeric_formats <- summary_formats()
-.a_summary_numeric_labels <- summary_labels()
-.a_summary_numeric_indent_mods <- rep(0L, length(summary_labels())) %>% `names<-`(names(.a_summary_numeric_labels))
-.a_summary_counts_formats <- summary_formats(type = "counts")
-.a_summary_counts_labels <- summary_labels(type = "counts")
-.a_summary_counts_indent_mods <- rep(0L, length(.a_summary_counts_labels)) %>% `names<-`(names(.a_summary_counts_labels))
+.a_compare_numeric_formats <- c(summary_formats(), pval = "x.xxxx | (<0.0001)")
+.a_compare_numeric_labels <- c(summary_labels(), pval = "p-value (t-test)")
+.a_compare_numeric_indents <- c(rep(0L, length(.a_compare_numeric_labels)) %>% `names<-`(names(.a_compare_numeric_labels)))
+.a_compare_counts_formats <- c(summary_formats(type = "counts"), pval = "x.xxxx | (<0.0001)")
+.a_compare_counts_labels <- c(summary_labels(type = "counts"), pval = "p-value (chi-squared test)")
+.a_compare_counts_indents <- c(rep(0L, length(.a_compare_counts_labels)) %>% `names<-`(names(.a_compare_counts_labels)))
 
 #' @describeIn summarize_variables Formatted analysis function which is used as `afun` in `summarize_vars()` and
-#'   `cfun` in `summarize_colvars()`.
+#'   `compare_vars()` and as `cfun` in `summarize_colvars()`.
+#'
+#' @param compare (`logical`)\cr Whether comparison statistics should be analyzed instead of summary statistics
+#'   (`compare = TRUE` adds `pval` statistic comparing against reference group).
 #'
 #' @return
 #' * `a_summary()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
+#' @note To use for comparison (with p-value statistic added), parameter `compare` must be set to `TRUE`.
+#'
 #' @examples
-#' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
-#' a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
-#' a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
-#' a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
+#' # summary analysis - compare = FALSE
+#' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla", .df_row = c())
+#' a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10, .df_row = c())
+#' a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, .df_row = c(), verbose = FALSE)
+#' a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10, .df_row = c())
+#'
+#' # comparison analysis - compare = TRUE
+#' a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .in_ref_col = FALSE, .var = "bla", compare = TRUE)
+#' a_summary(factor(c("a", "a", "b", "c", "a")), .ref_group = factor(c("a", "a", "b", "c")), .in_ref_col = FALSE, compare = TRUE)
+#' a_summary(c("A", "B", "A", "C"), .ref_group = c("B", "A", "C"), .in_ref_col = FALSE, .var = "x", verbose = FALSE, compare = TRUE)
+#' a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .ref_group = c(TRUE, FALSE), .in_ref_col = FALSE, compare = TRUE)
 #'
 #' @export
 a_summary <- function(x,
                       .N_col,
                       .N_row,
-                      .var,
-                      .df_row,
+                      .var = NULL,
+                      .df_row = NULL,
+                      .ref_group = NULL,
+                      .in_ref_col = NULL,
                       .stats = NULL,
                       .formats = NULL,
                       .labels = NULL,
                       .indent_mods = NULL,
                       na.rm = TRUE,
                       na_level = NA_character_,
+                      compare = FALSE,
                       ...) {
-  if (is.null(.stats)) .stats <- names(if (is.numeric(x)) .a_summary_numeric_formats else .a_summary_counts_formats)
-  if (is.null(.formats)) .formats <- if (is.numeric(x)) .a_summary_numeric_formats else .a_summary_counts_formats
-  if (is.null(.labels)) .labels <- if (is.numeric(x)) .a_summary_numeric_labels else .a_summary_counts_labels
+  x_stats <- if (!compare) {
+    s_summary(x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, ...)
+  } else {
+    s_compare(
+      x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, .ref_group = .ref_group, .in_ref_col = .in_ref_col, ...
+    )
+  }
+
+  if (is.null(.stats)) {
+    .stats <- names(get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_formats")))
+    if (!compare) .stats <- head(.stats, -1)
+  }
+  if (is.null(.formats)) {
+    .formats <- get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_formats"))
+    if (!compare) .formats <- head(.formats, -1)
+  }
+  if (is.null(.labels)) {
+    if (is.numeric(x)) .a_compare_numeric_labels[c("mean_ci", "mean_pval", "median_ci", "quantiles")] <- sapply(
+      c("mean_ci", "mean_pval", "median_ci", "quantiles"), function(x) attr(x_stats[[x]], "label")
+    )
+    .labels <- get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_labels"))
+    if (!compare) .labels <- head(.labels, -1)
+  }
   if (is.null(.indent_mods)) {
-    .indent_mods <- if (is.numeric(x)) .a_summary_numeric_indent_mods else .a_summary_counts_indent_mods
+    .indent_mods <- get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_indents"))
+    if (!compare) .indent_mods <- head(.indent_mods, -1)
   }
   if (length(.indent_mods) == 1 & is.null(names(.indent_mods))) {
     .indent_mods <- rep(.indent_mods, length(.stats)) %>% `names<-`(.stats)
   }
   if (any(is.na(.df_row[[.var]])) && !any(is.na(x)) && !na.rm) levels(x) <- c(levels(x), "na-level")
-  x_stats <- s_summary(x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, ...)
-  if (is.numeric(x)) {
-    .labels[c("mean_ci", "mean_pval", "median_ci", "quantiles")] <- sapply(
-      c("mean_ci", "mean_pval", "median_ci", "quantiles"),
-      function(x) attr(x_stats[[x]], "label")
-    )
-  }
+
   .stats <- intersect(.stats, names(x_stats))
   x_stats <- x_stats[.stats]
   if (!is.numeric(x) && !is.logical(x)) {
-    x_ungrp <- ungroup_stats(x_stats, .stats, .formats, .labels, .indent_mods)
+    x_ungrp <- ungroup_stats(x_stats, .stats, .formats, .labels, .indent_mods, if (compare) .in_ref_col else FALSE)
     x_stats <- x_ungrp[["x"]]
     .stats <- x_ungrp[[".stats"]]
     .formats <- x_ungrp[[".formats"]]
@@ -555,11 +585,11 @@ a_summary <- function(x,
     .indent_mods <- x_ungrp[[".indent_mods"]]
   }
   .formats_x <- extract_by_name(
-    .formats, .stats, if (is.numeric(x)) .a_summary_numeric_formats else .a_summary_counts_formats
+    .formats, .stats, get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_formats"))
   )
-  .labels_x <- extract_by_name(.labels, .stats, if (is.numeric(x)) .a_summary_numeric_labels else .a_summary_counts_labels)
+  .labels_x <- extract_by_name(.labels, .stats, get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_labels")))
   .indent_mods_x <- extract_by_name(
-    .indent_mods, .stats, if (is.numeric(x)) .a_summary_numeric_indent_mods else .a_summary_counts_indent_mods
+    .indent_mods, .stats, get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_indents"))
   )
 
   in_rows(
@@ -641,8 +671,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'     .labels = c(n = "n", mean_sd = "Mean, SD", quantiles = c("Q1 - Q3"))
 #'   )
 #'
-#' results <- build_table(l, df = dta_test)
-#' as_html(results)
+#' build_table(l, df = dta_test)
 #'
 #' ## Use arguments interpreted by `s_summary`.
 #' l <- basic_table() %>%
@@ -650,7 +679,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'   split_rows_by(var = "AVISIT") %>%
 #'   summarize_vars(vars = "AVAL", na.rm = FALSE)
 #'
-#' results <- build_table(l, df = dta_test)
+#' build_table(l, df = dta_test)
 #'
 #' ## Handle `NA` levels first when summarizing factors.
 #' dta_test$AVISIT <- NA_character_
@@ -659,10 +688,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'   split_cols_by(var = "ARM") %>%
 #'   summarize_vars(vars = "AVISIT", na.rm = FALSE)
 #'
-#' results <- build_table(l, df = dta_test)
-#' \dontrun{
-#' Viewer(results)
-#' }
+#' build_table(l, df = dta_test)
 #'
 #' @export
 summarize_vars <- function(lyt,
