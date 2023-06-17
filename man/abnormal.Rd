@@ -113,6 +113,19 @@ baseline can be optionally excluded from numerator and denominator.
 }
 }
 \examples{
+library(dplyr)
+
+df <- data.frame(
+  USUBJID = as.character(c(1, 1, 2, 2)),
+  ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
+  BNRIND = factor(c("NORMAL", "NORMAL", "HIGH", "HIGH")),
+  ONTRTFL = c("", "Y", "", "Y"),
+  stringsAsFactors = FALSE
+)
+
+# Select only post-baseline records.
+df <- df \%>\%
+  filter(ONTRTFL == "Y")
 # Layout creating function.
 basic_table() \%>\%
   count_abnormal(var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW")) \%>\%

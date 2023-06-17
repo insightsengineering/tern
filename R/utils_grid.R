@@ -96,7 +96,7 @@ stack_grobs <- function(...,
 #'
 #' @return A `grob`.
 #'
-#' @keywords internal
+#' @export
 arrange_grobs <- function(...,
                           grobs = list(...),
                           ncol = NULL, nrow = NULL,
@@ -205,8 +205,7 @@ arrange_grobs <- function(...,
 #' library(dplyr)
 #' library(grid)
 #'
-#' # Internal function - arrange_grob
-#' \dontrun{
+#' \donttest{
 #' rect <- rectGrob(width = grid::unit(0.5, "npc"), height = grid::unit(0.5, "npc"))
 #' rect %>% draw_grob(vp = grid::viewport(angle = 45))
 #'

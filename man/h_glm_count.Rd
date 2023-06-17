@@ -78,53 +78,6 @@ selected model (poisson, quasipoisson, negative binomial).
 \item \code{h_ppmeans()}: Helper function to return the estimated means.
 
 }}
-\examples{
-# Internal function - h_glm_poisson
-\dontrun{
-h_glm_poisson(
-  .var = "AVAL",
-  .df_row = anl,
-  variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = NULL)
-)
-}
-
-# Internal function - h_glm_quasipoisson
-\dontrun{
-h_glm_quasipoisson(
-  .var = "AVAL",
-  .df_row = adtte,
-  variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = c("REGION1"))
-)
-}
-
-# Internal function - h_glm_count
-\dontrun{
-h_glm_count(
-  .var = "AVAL",
-  .df_row = anl,
-  variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = NULL),
-  distribution = "poisson"
-)
-}
-
-# Internal function - h_ppmeans
-\dontrun{
-fits <- h_glm_count(
-  .var = "AVAL",
-  .df_row = anl,
-  variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
-  distribution = "quasipoisson"
-)
-
-h_ppmeans(
-  obj = fits$glm_fit,
-  .df_row = anl,
-  arm = "ARM",
-  conf_level = 0.95
-)
-}
-
-}
 \seealso{
 \link{summarize_glm_count}
 }

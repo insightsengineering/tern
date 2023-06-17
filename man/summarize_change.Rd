@@ -96,23 +96,6 @@ df <- data.frame(
   val = c(4, 5, 6)
 )
 
-# Internal function - s_change_from_baseline
-\dontrun{
-s_change_from_baseline(
-  df,
-  .var = "chg",
-  variables = list(value = "val", baseline_flag = "is_bl")
-)
-}
-
-# Internal function - a_change_from_baseline
-\dontrun{
-a_change_from_baseline(
-  df,
-  .var = "chg",
-  variables = list(value = "val", baseline_flag = "is_bl")
-)
-}
 
 # `summarize_change()`
 
@@ -138,7 +121,7 @@ results <- basic_table() \%>\%
   split_rows_by("AVISIT") \%>\%
   summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL")) \%>\%
   build_table(dta_test)
-\dontrun{
+\donttest{
 Viewer(results)
 }
 

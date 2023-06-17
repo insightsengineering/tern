@@ -26,7 +26,7 @@ A named \code{list} with elements:
 The elements composing the \code{ggplot} are extracted and organized in a \code{list}.
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(survival)
 library(grid)

@@ -13,12 +13,9 @@
 #'   "Grade 3-4 (%)" = c("3", "4"),
 #'   "Grade 5 (%)" = "5"
 #' )
-#' # Internal function - groups_list_to_df
-#' \dontrun{
 #' groups_list_to_df(grade_groups)
-#' }
 #'
-#' @keywords internal
+#' @export
 groups_list_to_df <- function(groups_list) {
   checkmate::assert_list(groups_list, names = "named")
   lapply(groups_list, checkmate::assert_character)
@@ -226,8 +223,6 @@ split_cols_by_groups <- function(lyt,
 #' ref <- c("A: Drug X", "B: Placebo")
 #' groups <- combine_groups(fct = DM$ARM, ref = ref)
 #'
-#' # Internal function - combine_counts
-#' \dontrun{
 #' col_counts <- combine_counts(
 #'   fct = DM$ARM,
 #'   groups_list = groups
@@ -251,9 +246,8 @@ split_cols_by_groups <- function(lyt,
 #'   add_colcounts() %>%
 #'   summarize_vars("AGE") %>%
 #'   build_table(DM, col_counts = col_counts)
-#' }
 #'
-#' @keywords internal
+#' @export
 combine_counts <- function(fct, groups_list = NULL) {
   checkmate::assert_multi_class(fct, classes = c("factor", "character"))
 

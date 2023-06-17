@@ -34,7 +34,7 @@ tbl <- rtable(
 )
 
 # Internal function - forest_viewport
-\dontrun{
+\donttest{
 v <- forest_viewport(tbl)
 
 grid::grid.newpage()

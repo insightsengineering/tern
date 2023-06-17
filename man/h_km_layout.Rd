@@ -37,7 +37,7 @@ the strata name.
 }
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(survival)
 

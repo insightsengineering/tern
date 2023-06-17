@@ -447,7 +447,7 @@ l <- basic_table() \%>\%
   summarize_vars(vars = "AVISIT", na.rm = FALSE)
 
 results <- build_table(l, df = dta_test)
-\dontrun{
+\donttest{
 Viewer(results)
 }
 
