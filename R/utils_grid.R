@@ -95,7 +95,34 @@ stack_grobs <- function(...,
 #' @param padding_wt unit of length 1, horizontal space between each grob.
 #'
 #' @return A `grob`.
+#' @examples
+#' library(grid)
 #'
+#' \donttest{
+#' num <- lapply(1:9, textGrob)
+#' grid::grid.newpage()
+#' grid.draw(arrange_grobs(grobs = num, ncol = 2))
+#'
+#' showViewport()
+#'
+#' g1 <- circleGrob(gp = gpar(col = "blue"))
+#' g2 <- circleGrob(gp = gpar(col = "red"))
+#' g3 <- textGrob("TEST TEXT")
+#' grid::grid.newpage()
+#' grid.draw(arrange_grobs(g1, g2, g3, nrow = 2))
+#'
+#' showViewport()
+#'
+#' grid::grid.newpage()
+#' grid.draw(arrange_grobs(g1, g2, g3, ncol = 3))
+#'
+#' grid::grid.newpage()
+#' grid::pushViewport(grid::viewport(layout = grid::grid.layout(1, 2)))
+#' vp1 <- grid::viewport(layout.pos.row = 1, layout.pos.col = 2)
+#' grid.draw(arrange_grobs(g1, g2, g3, ncol = 2, vp = vp1))
+#'
+#' showViewport()
+#' }
 #' @export
 arrange_grobs <- function(...,
                           grobs = list(...),

@@ -120,7 +120,7 @@ trim \code{NA} levels out of the vector list itself.
 # Check whether `x` is a valid factor.
 
 # Internal function - assert_valid_factor
-\dontrun{
+\donttest{
 assert_valid_factor(factor(c("a", NULL)))
 assert_valid_factor(factor(c("a", "b")))
 assert_valid_factor(factor(c("a", "b")), len = 2)

@@ -109,37 +109,6 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 
 }}
 \examples{
-# Statistics function
-dta <- data.frame(
-  rsp = sample(c(TRUE, FALSE), 100, TRUE),
-  grp = factor(rep(c("A", "B"), each = 50)),
-  strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
-)
-
-# Internal function - s_test_proportion_diff
-\dontrun{
-s_test_proportion_diff(
-  df = subset(dta, grp == "A"),
-  .var = "rsp",
-  .ref_group = subset(dta, grp == "B"),
-  .in_ref_col = FALSE,
-  variables = list(strata = "strat"),
-  method = "cmh"
-)
-}
-
-# Internal function - a_test_proportion_diff
-\dontrun{
-a_test_proportion_diff(
-  df = subset(dta, grp == "A"),
-  .var = "rsp",
-  .ref_group = subset(dta, grp == "B"),
-  .in_ref_col = FALSE,
-  variables = list(strata = "strat"),
-  method = "cmh"
-)
-}
-
 # With `rtables` pipelines.
 l <- basic_table() \%>\%
   split_cols_by(var = "grp", ref_group = "B") \%>\%
