@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.953529153879877" branch-rate="0" lines-covered="8700" lines-valid="9124" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-06-17 01:12:12">
+<coverage line-rate="0.953529153879877" branch-rate="0" lines-covered="8700" lines-valid="9124" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-06-17 01:25:55">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
@@ -7406,27 +7406,28 @@
             </method>
             <method name="forest_viewport" signature="" line-rate="0.962962962962963" branch-rate="0" complexity="0">
               <lines>
+                <line number="693" hits="2" branch="false"/>
                 <line number="694" hits="2" branch="false"/>
                 <line number="695" hits="2" branch="false"/>
-                <line number="696" hits="2" branch="false"/>
-                <line number="697" hits="0" branch="false"/>
-                <line number="699" hits="2" branch="false"/>
-                <line number="700" hits="0" branch="false"/>
-                <line number="703" hits="2" branch="false"/>
-                <line number="705" hits="2" branch="false"/>
+                <line number="696" hits="0" branch="false"/>
+                <line number="698" hits="2" branch="false"/>
+                <line number="699" hits="0" branch="false"/>
+                <line number="702" hits="2" branch="false"/>
+                <line number="704" hits="2" branch="false"/>
+                <line number="706" hits="2" branch="false"/>
                 <line number="707" hits="2" branch="false"/>
                 <line number="708" hits="2" branch="false"/>
-                <line number="709" hits="2" branch="false"/>
+                <line number="710" hits="2" branch="false"/>
                 <line number="711" hits="2" branch="false"/>
                 <line number="712" hits="2" branch="false"/>
                 <line number="713" hits="2" branch="false"/>
                 <line number="714" hits="2" branch="false"/>
-                <line number="715" hits="2" branch="false"/>
+                <line number="718" hits="2" branch="false"/>
                 <line number="719" hits="2" branch="false"/>
                 <line number="720" hits="2" branch="false"/>
                 <line number="721" hits="2" branch="false"/>
                 <line number="722" hits="2" branch="false"/>
-                <line number="723" hits="2" branch="false"/>
+                <line number="724" hits="2" branch="false"/>
                 <line number="725" hits="2" branch="false"/>
                 <line number="726" hits="2" branch="false"/>
                 <line number="727" hits="2" branch="false"/>
@@ -7438,13 +7439,13 @@
                 <line number="733" hits="2" branch="false"/>
                 <line number="734" hits="2" branch="false"/>
                 <line number="735" hits="2" branch="false"/>
-                <line number="736" hits="2" branch="false"/>
-                <line number="738" hits="2" branch="false"/>
+                <line number="737" hits="2" branch="false"/>
+                <line number="739" hits="2" branch="false"/>
                 <line number="740" hits="2" branch="false"/>
-                <line number="741" hits="2" branch="false"/>
+                <line number="742" hits="2" branch="false"/>
                 <line number="743" hits="2" branch="false"/>
-                <line number="744" hits="2" branch="false"/>
-                <line number="746" hits="2" branch="false"/>
+                <line number="745" hits="2" branch="false"/>
+                <line number="747" hits="2" branch="false"/>
                 <line number="748" hits="2" branch="false"/>
                 <line number="749" hits="2" branch="false"/>
                 <line number="750" hits="2" branch="false"/>
@@ -7459,11 +7460,11 @@
                 <line number="759" hits="2" branch="false"/>
                 <line number="760" hits="2" branch="false"/>
                 <line number="761" hits="2" branch="false"/>
-                <line number="762" hits="2" branch="false"/>
               </lines>
             </method>
             <method name="vp_forest_table_part" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="776" hits="4" branch="false"/>
                 <line number="777" hits="4" branch="false"/>
                 <line number="778" hits="4" branch="false"/>
                 <line number="779" hits="4" branch="false"/>
@@ -7502,12 +7503,11 @@
                 <line number="812" hits="4" branch="false"/>
                 <line number="813" hits="4" branch="false"/>
                 <line number="814" hits="4" branch="false"/>
-                <line number="815" hits="4" branch="false"/>
               </lines>
             </method>
             <method name="grid.forest" signature="" line-rate="0" branch-rate="0" complexity="0">
               <lines>
-                <line number="824" hits="0" branch="false"/>
+                <line number="823" hits="0" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -7855,27 +7855,28 @@
             <line number="654" hits="7" branch="false"/>
             <line number="655" hits="7" branch="false"/>
             <line number="657" hits="2" branch="false"/>
+            <line number="693" hits="2" branch="false"/>
             <line number="694" hits="2" branch="false"/>
             <line number="695" hits="2" branch="false"/>
-            <line number="696" hits="2" branch="false"/>
-            <line number="697" hits="0" branch="false"/>
-            <line number="699" hits="2" branch="false"/>
-            <line number="700" hits="0" branch="false"/>
-            <line number="703" hits="2" branch="false"/>
-            <line number="705" hits="2" branch="false"/>
+            <line number="696" hits="0" branch="false"/>
+            <line number="698" hits="2" branch="false"/>
+            <line number="699" hits="0" branch="false"/>
+            <line number="702" hits="2" branch="false"/>
+            <line number="704" hits="2" branch="false"/>
+            <line number="706" hits="2" branch="false"/>
             <line number="707" hits="2" branch="false"/>
             <line number="708" hits="2" branch="false"/>
-            <line number="709" hits="2" branch="false"/>
+            <line number="710" hits="2" branch="false"/>
             <line number="711" hits="2" branch="false"/>
             <line number="712" hits="2" branch="false"/>
             <line number="713" hits="2" branch="false"/>
             <line number="714" hits="2" branch="false"/>
-            <line number="715" hits="2" branch="false"/>
+            <line number="718" hits="2" branch="false"/>
             <line number="719" hits="2" branch="false"/>
             <line number="720" hits="2" branch="false"/>
             <line number="721" hits="2" branch="false"/>
             <line number="722" hits="2" branch="false"/>
-            <line number="723" hits="2" branch="false"/>
+            <line number="724" hits="2" branch="false"/>
             <line number="725" hits="2" branch="false"/>
             <line number="726" hits="2" branch="false"/>
             <line number="727" hits="2" branch="false"/>
@@ -7887,13 +7888,13 @@
             <line number="733" hits="2" branch="false"/>
             <line number="734" hits="2" branch="false"/>
             <line number="735" hits="2" branch="false"/>
-            <line number="736" hits="2" branch="false"/>
-            <line number="738" hits="2" branch="false"/>
+            <line number="737" hits="2" branch="false"/>
+            <line number="739" hits="2" branch="false"/>
             <line number="740" hits="2" branch="false"/>
-            <line number="741" hits="2" branch="false"/>
+            <line number="742" hits="2" branch="false"/>
             <line number="743" hits="2" branch="false"/>
-            <line number="744" hits="2" branch="false"/>
-            <line number="746" hits="2" branch="false"/>
+            <line number="745" hits="2" branch="false"/>
+            <line number="747" hits="2" branch="false"/>
             <line number="748" hits="2" branch="false"/>
             <line number="749" hits="2" branch="false"/>
             <line number="750" hits="2" branch="false"/>
@@ -7908,7 +7909,7 @@
             <line number="759" hits="2" branch="false"/>
             <line number="760" hits="2" branch="false"/>
             <line number="761" hits="2" branch="false"/>
-            <line number="762" hits="2" branch="false"/>
+            <line number="776" hits="4" branch="false"/>
             <line number="777" hits="4" branch="false"/>
             <line number="778" hits="4" branch="false"/>
             <line number="779" hits="4" branch="false"/>
@@ -7947,8 +7948,7 @@
             <line number="812" hits="4" branch="false"/>
             <line number="813" hits="4" branch="false"/>
             <line number="814" hits="4" branch="false"/>
-            <line number="815" hits="4" branch="false"/>
-            <line number="824" hits="0" branch="false"/>
+            <line number="823" hits="0" branch="false"/>
           </lines>
         </class>
         <class name="g_lineplot.R" filename="R/g_lineplot.R" line-rate="0.85427135678392" branch-rate="0" complexity="0">
