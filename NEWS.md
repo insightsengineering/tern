@@ -15,7 +15,7 @@
 
 ### Miscellaneous
 * Remove examples for unexported functions.
-* Export functions `has_count_in_cols`, `has_counts_difference`, `combine_counts`, `h_tab_rsp_one_biomarker`, `arrange_grobs`, `a_count_patients_sum_exposure`, `a_coxreg`, `forest_viewport`.
+* Export functions `has_count_in_cols`, `has_counts_difference`, `combine_counts`, `h_tab_rsp_one_biomarker`, `arrange_grobs`, `a_count_patients_sum_exposure`, `a_coxreg`, `groups_list_to_df`, `forest_viewport`.
 * Updated README to include installation instructions for CRAN.
 * Began deprecation of `indent_mod` argument and replace it with the `.indent_mods` argument in `summarize_num_patients` and `analyze_num_patients`.
 
