@@ -45,7 +45,6 @@ NULL
 #'   mutate(is_event = CNSR == 0) %>%
 #'   mutate(n_events = as.integer(is_event))
 #'
-#'
 #' @keywords internal
 s_incidence_rate <- function(df,
                              .var,

@@ -106,7 +106,6 @@ h_ancova <- function(.var,
 #' .ref_group <- iris %>% filter(Species == "setosa")
 #' conf_level <- 0.95
 #'
-#'
 #' @keywords internal
 s_ancova <- function(df,
                      .var,

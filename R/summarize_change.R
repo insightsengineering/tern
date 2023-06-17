@@ -27,7 +27,6 @@ NULL
 #'   val = c(4, 5, 6)
 #' )
 #'
-#'
 #' @keywords internal
 s_change_from_baseline <- function(df,
                                    .var,
