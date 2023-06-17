@@ -110,9 +110,7 @@ result <- max(h_row_first_values(tree_row_elem))
 result
 
 # Row counts (integer values)
-\donttest{
-h_row_counts(tree_row_elem) # Fails because there are no integers
-}
+# h_row_counts(tree_row_elem) # Fails because there are no integers
 # Using values with integers
 tree_row_elem <- collect_leaves(tbl[3, ])[[1]]
 result <- h_row_counts(tree_row_elem)
