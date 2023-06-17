@@ -113,7 +113,7 @@ tbl <- build_table(lyt, dta_test)
 
 html <- as_html(tbl)
 html
-\dontrun{
+\donttest{
 Viewer(html)
 }
 

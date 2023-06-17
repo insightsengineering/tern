@@ -100,18 +100,6 @@ df <- data.frame(
   AEBODSYS = rep(c("SOC1", "SOC2", "SOC3"), c(3, 3, 1))
 )
 
-# Internal function - s_count_patients_and_multiple_events
-\dontrun{
-s_count_patients_and_multiple_events(
-  df = df,
-  id = "USUBJID",
-  filters_list = list(
-    serious = c(AESER = "Y"),
-    fatal = c(AESDTH = "Y")
-  )
-)
-}
-
 # `summarize_patients_events_in_cols()`
 basic_table() \%>\%
   summarize_patients_events_in_cols(

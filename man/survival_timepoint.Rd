@@ -182,43 +182,8 @@ adtte_f <- tern_ex_adtte \%>\%
 df <- adtte_f \%>\%
   filter(ARMCD == "ARM A")
 
-# Internal function - s_surv_timepoint
-\dontrun{
-s_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
-}
-
-# Internal function - a_surv_timepoint
-\dontrun{
-a_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
-}
-
 df_ref_group <- adtte_f \%>\%
   filter(ARMCD == "ARM B")
-
-# Internal function - s_surv_timepoint_diff
-\dontrun{
-s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
-s_surv_timepoint_diff(
-  df,
-  df_ref_group,
-  .in_ref_col = FALSE,
-  .var = "AVAL",
-  time_point = 7,
-  is_event = "is_event"
-)
-}
-
-# Internal function - a_surv_timepoint_diff
-\dontrun{
-a_surv_timepoint_diff(
-  df,
-  df_ref_group,
-  .in_ref_col = FALSE,
-  .var = "AVAL",
-  time_point = 7,
-  is_event = "is_event"
-)
-}
 
 # Survival at given time points.
 basic_table() \%>\%

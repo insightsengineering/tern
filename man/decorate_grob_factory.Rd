@@ -17,20 +17,4 @@ Closure that increments the page number.
 \description{
 Automatically updates page number.
 }
-\examples{
-# Internal function - decorate_grob_factory
-\dontrun{
-pf <- decorate_grob_factory(
-  titles = "This is a test\nHello World",
-  footnotes = "Here belong the footnotess",
-  npages = 3
-)
-
-library(grid)
-draw_grob(pf(NULL))
-draw_grob(pf(NULL))
-draw_grob(pf(NULL))
-}
-
-}
 \keyword{internal}

@@ -33,7 +33,7 @@
 #' @return `gTree` object containing the forest plot and table.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(forcats)
 #' library(nestcolor)
@@ -285,7 +285,7 @@ g_forest <- function(tbl,
 #' symbol_scale <- c(1, 1.25, 1.5)
 #'
 #' # Internal function - forest_grob
-#' \dontrun{
+#' \donttest{
 #' p <- forest_grob(tbl, x, lower, upper,
 #'   vline = 1, forest_header = c("A", "B"),
 #'   x_at = c(.1, 1, 10), xlim = c(0.1, 10), logx = TRUE, symbol_size = symbol_scale,
@@ -676,7 +676,7 @@ forest_dot_line <- function(x,
 #' )
 #'
 #' # Internal function - forest_viewport
-#' \dontrun{
+#' \donttest{
 #' v <- forest_viewport(tbl)
 #'
 #' grid::grid.newpage()

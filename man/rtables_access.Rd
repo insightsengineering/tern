@@ -110,7 +110,7 @@ result <- max(h_row_first_values(tree_row_elem))
 result
 
 # Row counts (integer values)
-\dontrun{
+\donttest{
 h_row_counts(tree_row_elem) # Fails because there are no integers
 }
 # Using values with integers

@@ -117,59 +117,10 @@ trim \code{NA} levels out of the vector list itself.
 
 }}
 \examples{
-# Check whether `x` is a valid list of variable names.
-
-# Internal function - assert_list_of_variables
-\dontrun{
-assert_list_of_variables(list(val = "a"))
-assert_list_of_variables(list(val = c("a", "b")))
-assert_list_of_variables(list(val = c("a", "b"), val2 = NULL))
-
-# The following calls fail
-assert_list_of_variables(list(1, 2))
-assert_list_of_variables(list("bla" = 2))
-}
-
-# Check whether `df` contains the analysis `variables`.
-
-# Internal function - assert_df_with_variables
-\dontrun{
-assert_df_with_variables(
-  df = data.frame(a = 5, b = 3),
-  variables = list(val = "a")
-)
-assert_df_with_variables(
-  df = data.frame(a = 5, b = 3),
-  variables = list(val = c("a", "b"))
-)
-assert_df_with_variables(
-  df = data.frame(a = 5, b = 3),
-  variables = list(val = c("a", "b"))
-)
-assert_df_with_variables(
-  df = data.frame(a = 5, b = 3, e = "<Missing>"),
-  variables = list(val = c("a", "b")), na_level = "<Missing>"
-)
-
-# The following calls fail
-assert_df_with_variables(
-  df = matrix(1:5, ncol = 2, nrow = 3),
-  variables = list(val = "a")
-)
-assert_df_with_variables(
-  df = data.frame(a = 5, b = 3),
-  variables = list(val = c("a", "b", "c"))
-)
-assert_df_with_variables(
-  df = data.frame(a = 5, b = 3, e = "<Missing>"),
-  variables = list(val = c("a", "b", "e")), na_level = "<Missing>"
-)
-}
-
 # Check whether `x` is a valid factor.
 
 # Internal function - assert_valid_factor
-\dontrun{
+\donttest{
 assert_valid_factor(factor(c("a", NULL)))
 assert_valid_factor(factor(c("a", "b")))
 assert_valid_factor(factor(c("a", "b")), len = 2)
@@ -183,46 +134,6 @@ assert_valid_factor(factor(c("a", NA)), any.missing = FALSE)
 assert_valid_factor(factor(NULL))
 assert_valid_factor(factor(c(NULL, "")))
 assert_valid_factor(factor())
-}
-
-# Check whether `df` contains all factor analysis `variables`.
-adf <- data.frame(a = factor(c("A", "B")), b = 3)
-bdf <- data.frame(a = factor(letters[1:3]), b = factor(c(1, 2, 3)), d = 3)
-
-# Internal function - assert_df_with_factors
-\dontrun{
-assert_df_with_factors(df = adf, variables = list(val = "a"))
-assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
-assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)
-assert_df_with_factors(
-  df = data.frame(a = factor(c("A", NA, "B")), b = 3),
-  variable = list(val = "a"),
-  min.levels = 2,
-  max.levels = 2
-)
-
-# The following calls fail
-assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
-assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
-assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = ""))
-assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = "d"))
-assert_df_with_factors(
-  df = bdf,
-  variables = list(val = "a", val = "b"),
-  min.levels = 1,
-  max.levels = 1
-)
-}
-
-# Check whether `x` is between 0 and 1.
-# Internal function - assert_proportion_value
-\dontrun{
-assert_proportion_value(x = 0, include_boundaries = TRUE)
-assert_proportion_value(x = 0.3)
-
-# These fail
-assert_proportion_value(x = 1.3)
-assert_proportion_value(x = 1)
 }
 
 }

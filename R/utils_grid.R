@@ -95,12 +95,10 @@ stack_grobs <- function(...,
 #' @param padding_wt unit of length 1, horizontal space between each grob.
 #'
 #' @return A `grob`.
-#'
 #' @examples
 #' library(grid)
 #'
-#' # Internal function - arrange_grobs
-#' \dontrun{
+#' \donttest{
 #' num <- lapply(1:9, textGrob)
 #' grid::grid.newpage()
 #' grid.draw(arrange_grobs(grobs = num, ncol = 2))
@@ -125,8 +123,7 @@ stack_grobs <- function(...,
 #'
 #' showViewport()
 #' }
-#'
-#' @keywords internal
+#' @export
 arrange_grobs <- function(...,
                           grobs = list(...),
                           ncol = NULL, nrow = NULL,
@@ -235,8 +232,7 @@ arrange_grobs <- function(...,
 #' library(dplyr)
 #' library(grid)
 #'
-#' # Internal function - arrange_grob
-#' \dontrun{
+#' \donttest{
 #' rect <- rectGrob(width = grid::unit(0.5, "npc"), height = grid::unit(0.5, "npc"))
 #' rect %>% draw_grob(vp = grid::viewport(angle = 45))
 #'

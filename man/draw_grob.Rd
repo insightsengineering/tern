@@ -25,8 +25,7 @@ Draw grob on device page.
 library(dplyr)
 library(grid)
 
-# Internal function - arrange_grob
-\dontrun{
+\donttest{
 rect <- rectGrob(width = grid::unit(0.5, "npc"), height = grid::unit(0.5, "npc"))
 rect \%>\% draw_grob(vp = grid::viewport(angle = 45))
 

@@ -69,7 +69,7 @@ df <- extract_rsp_biomarkers(
   data = adrs_f
 )
 
-\dontrun{
+\donttest{
 ## Table with default columns.
 tabulate_rsp_biomarkers(df)
 

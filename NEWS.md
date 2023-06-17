@@ -1,4 +1,4 @@
-# tern 0.8.2.9014
+# tern 0.8.3
 
 ### Enhancements
 * Added explicit zero counts to `g_km` plot "at risk" annotation tables.
@@ -14,6 +14,8 @@
 * Fixed `tern:::tidy.glm` formals to respect `broom:::tidy.default` formals.
 
 ### Miscellaneous
+* Remove examples for unexported functions.
+* Export functions `has_count_in_cols`, `has_counts_difference`, `combine_counts`, `h_tab_rsp_one_biomarker`, `groups_list_to_df`, `arrange_grobs`.
 * Updated README to include installation instructions for CRAN.
 * Began deprecation of `indent_mod` argument and replace it with the `.indent_mods` argument in `summarize_num_patients` and `analyze_num_patients`.
 
