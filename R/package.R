@@ -13,7 +13,6 @@
 #' @importFrom rlang .data
 #' @importFrom survival coxph strata Surv
 #' @importFrom stats pchisq
-#' @importFrom grid grid.show.layout
 NULL
 
 # Resolve missing global definitions:

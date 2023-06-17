@@ -40,6 +40,7 @@ the strata name.
 \donttest{
 library(dplyr)
 library(survival)
+library(grid)
 
 fit_km <- tern_ex_adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
