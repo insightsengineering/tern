@@ -37,7 +37,6 @@ NULL
 #'   stringsAsFactors = TRUE
 #' )
 #'
-#'
 #' @keywords internal
 s_count_patients_sum_exposure <- function(df,
                                           ex_var = "AVAL",
