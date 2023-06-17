@@ -15,7 +15,7 @@ forest_viewport(
 )
 }
 \arguments{
-\item{tbl}{rtable object}
+\item{tbl}{(\code{rtable})}
 
 \item{width_row_names}{(\code{grid::unit})\cr Width of row names}
 
