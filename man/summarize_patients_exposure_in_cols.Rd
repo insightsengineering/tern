@@ -162,7 +162,6 @@ adsl <- data.frame(
   stringsAsFactors = TRUE
 )
 
-
 a_count_patients_sum_exposure(
   df = df,
   var = "SEX",

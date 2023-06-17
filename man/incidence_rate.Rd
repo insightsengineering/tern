@@ -131,7 +131,6 @@ df <- data.frame(
   mutate(is_event = CNSR == 0) \%>\%
   mutate(n_events = as.integer(is_event))
 
-
 basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   add_colcounts() \%>\%

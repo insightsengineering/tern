@@ -109,6 +109,12 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 
 }}
 \examples{
+dta <- data.frame(
+  rsp = sample(c(TRUE, FALSE), 100, TRUE),
+  grp = factor(rep(c("A", "B"), each = 50)),
+  strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+)
+
 # With `rtables` pipelines.
 l <- basic_table() \%>\%
   split_cols_by(var = "grp", ref_group = "B") \%>\%
