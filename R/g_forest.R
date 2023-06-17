@@ -675,7 +675,6 @@ forest_dot_line <- function(x,
 #'   rrow("row 3", 1.2, 0.8, 1.2)
 #' )
 #'
-#' # Internal function - forest_viewport
 #' \donttest{
 #' v <- forest_viewport(tbl)
 #'
@@ -683,7 +682,7 @@ forest_dot_line <- function(x,
 #' showViewport(v)
 #' }
 #'
-#' @keywords internal
+#' @export
 forest_viewport <- function(tbl,
                             width_row_names = NULL,
                             width_columns = NULL,

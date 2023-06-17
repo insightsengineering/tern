@@ -33,7 +33,6 @@ tbl <- rtable(
   rrow("row 3", 1.2, 0.8, 1.2)
 )
 
-# Internal function - forest_viewport
 \donttest{
 v <- forest_viewport(tbl)
 
@@ -42,4 +41,3 @@ showViewport(v)
 }
 
 }
-\keyword{internal}
