@@ -16,12 +16,4 @@ levels that belong to it in the character vectors that are elements of the list.
 \description{
 This converts a list of group levels into a data frame format which is expected by \code{\link[rtables:add_combo_levels]{rtables::add_combo_levels()}}.
 }
-\examples{
-grade_groups <- list(
-  "Any Grade (\%)" = c("1", "2", "3", "4", "5"),
-  "Grade 3-4 (\%)" = c("3", "4"),
-  "Grade 5 (\%)" = "5"
-)
-groups_list_to_df(grade_groups)
-
-}
+\keyword{internal}

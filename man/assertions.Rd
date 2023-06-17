@@ -116,25 +116,4 @@ trim \code{NA} levels out of the vector list itself.
 \item \code{assert_proportion_value()}: Check whether \code{x} is a proportion: number between 0 and 1.
 
 }}
-\examples{
-# Check whether `x` is a valid factor.
-
-# Internal function - assert_valid_factor
-\donttest{
-assert_valid_factor(factor(c("a", NULL)))
-assert_valid_factor(factor(c("a", "b")))
-assert_valid_factor(factor(c("a", "b")), len = 2)
-assert_valid_factor(factor(c("a", NA)), any.missing = TRUE)
-assert_valid_factor(factor("A", levels = c("A", "B")))
-
-# The following calls fail
-assert_valid_factor(-1)
-assert_valid_factor(factor(c("a", "")))
-assert_valid_factor(factor(c("a", NA)), any.missing = FALSE)
-assert_valid_factor(factor(NULL))
-assert_valid_factor(factor(c(NULL, "")))
-assert_valid_factor(factor())
-}
-
-}
 \keyword{internal}
