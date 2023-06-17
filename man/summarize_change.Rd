@@ -96,7 +96,6 @@ df <- data.frame(
   val = c(4, 5, 6)
 )
 
-
 # `summarize_change()`
 
 ## Fabricated dataset.

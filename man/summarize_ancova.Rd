@@ -140,7 +140,6 @@ variables <- list(arm = "Species", covariates = "Sepal.Length * Sepal.Width")
 .ref_group <- iris \%>\% filter(Species == "setosa")
 conf_level <- 0.95
 
-
 basic_table() \%>\%
   split_cols_by("Species", ref_group = "setosa") \%>\%
   add_colcounts() \%>\%
