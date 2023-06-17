@@ -659,7 +659,13 @@ forest_dot_line <- function(x,
 }
 
 #' Create a Viewport Tree for the Forest Plot
-#'
+#' @param tbl rtable object
+#' @param width_row_names (`grid::unit`)\cr Width of row names
+#' @param width_columns (`grid::unit`)\cr Width of column spans
+#' @param width_forest (`grid::unit`)\cr Width of the forest plot
+#' @param gap_column (`grid::unit`)\cr Gap width between the columns
+#' @param gap_header (`grid::unit`)\cr Gap width between the header
+#' @param mat_form matrix print form of the table
 #' @return A viewport tree.
 #'
 #' @examples
