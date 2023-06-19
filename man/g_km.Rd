@@ -35,8 +35,9 @@ g_km(
   annot_stats = NULL,
   annot_stats_vlines = FALSE,
   control_coxph_pw = control_coxph(),
-  position_coxph = c(0, 0.05),
-  position_surv_med = c(0.9, 0.9)
+  position_coxph = c(-0.03, -0.02),
+  position_surv_med = c(0.95, 0.9),
+  width_annots = list(surv_med = grid::unit(0.3, "npc"), coxph = grid::unit(0.4, "npc"))
 )
 }
 \arguments{
@@ -138,6 +139,10 @@ can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[s
 
 \item{position_surv_med}{(\code{numeric})\cr x and y positions for plotting annotation table estimating median survival
 time per group.}
+
+\item{width_annots}{(named \code{list} of \code{unit}s)\cr a named list of widths for annotation tables with names \code{surv_med}
+(median survival time table) and \code{coxph} (\code{\link[survival:coxph]{survival::coxph()}} model table), where each value is the width
+(in units) to implement when printing the annotation table.}
 }
 \value{
 A \code{grob} of class \code{gTree}.
@@ -224,12 +229,19 @@ g_km(
   annot_coxph = TRUE
 )
 
+# Change widths/sizes of surv_med and coxph annotation tables.
+g_km(
+  df = df, variables = c(variables, list(strat = "SEX")),
+  annot_coxph = TRUE,
+  width_annots = list(surv_med = grid::unit(2, "in"), coxph = grid::unit(3, "in"))
+)
+
 g_km(
   df = df, variables = c(variables, list(strat = "SEX")),
   font_size = 15,
   annot_coxph = TRUE,
   control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
-  position_coxph = c(0.4, 0.5)
+  position_coxph = c(0.5, 0.5)
 )
 
 # Change position of the treatment group annotation table.

@@ -9,6 +9,7 @@ h_grob_median_surv(
   armval = "All",
   x = 0.9,
   y = 0.9,
+  width = grid::unit(0.3, "npc"),
   ttheme = gridExtra::ttheme_default()
 )
 }
@@ -20,6 +21,8 @@ h_grob_median_surv(
 \item{x}{(\code{numeric})\cr a value between 0 and 1 specifying x-location.}
 
 \item{y}{(\code{numeric})\cr a value between 0 and 1 specifying y-location.}
+
+\item{width}{(\code{unit})\cr width (as a unit) to use when printing the grob.}
 
 \item{ttheme}{(\code{list})\cr see \code{\link[gridExtra:tableGrob]{gridExtra::ttheme_default()}}.}
 }
