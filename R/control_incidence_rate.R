@@ -6,11 +6,13 @@
 #' internally to specify details in `s_incidence_rate()`.
 #'
 #' @inheritParams argument_convention
+#' @param conf_type (`string`)\cr `normal` (default), `normal_log`, `exact`, or `byar`
+#'   for confidence interval type.
 #' @param input_time_unit (`string`)\cr `day`, `week`, `month`, or `year` (default)
 #'   indicating time unit for data input.
 #' @param n_pt_years_rate (`numeric`)\cr number of patient-years to use when calculating AE rate.
-#' @param conf_type (`string`)\cr `normal` (default), `normal_log`, `exact`, or `byar`
-#'   for confidence interval type.
+#' @param time_unit_input `r lifecycle::badge("deprecated")` Please use the `input_time_unit` argument instead.
+#' @param time_unit_output `r lifecycle::badge("deprecated")` Please use the `n_pt_years_rate` argument instead.
 #'
 #' @return A list of components with the same names as the arguments.
 #'

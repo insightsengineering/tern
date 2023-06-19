@@ -23,6 +23,10 @@ for confidence interval type.}
 indicating time unit for data input.}
 
 \item{n_pt_years_rate}{(\code{numeric})\cr number of patient-years to use when calculating AE rate.}
+
+\item{time_unit_input}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{input_time_unit} argument instead.}
+
+\item{time_unit_output}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{n_pt_years_rate} argument instead.}
 }
 \value{
 A list of components with the same names as the arguments.
