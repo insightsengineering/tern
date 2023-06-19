@@ -15,7 +15,8 @@
 
 ### Miscellaneous
 * Updated README to include installation instructions for CRAN.
-* Began deprecation of `indent_mod` argument and replace it with the `.indent_mods` argument in `summarize_num_patients` and `analyze_num_patients`.
+* Began deprecation of `indent_mod` argument and replaced it with the `.indent_mods` argument in `summarize_num_patients` and `analyze_num_patients`.
+* Began deprecation of `time_unit_input` and `time_unit_output` arguments and replaced them with the `input_time_unit` and `n_pt_years_rate`, respectively, in `control_incidence_rate`.
 
 # tern 0.8.2
 

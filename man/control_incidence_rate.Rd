@@ -7,8 +7,10 @@
 control_incidence_rate(
   conf_level = 0.95,
   conf_type = c("normal", "normal_log", "exact", "byar"),
-  time_unit_input = c("year", "day", "week", "month"),
-  time_unit_output = 1
+  input_time_unit = c("year", "day", "week", "month"),
+  n_pt_years_rate = 1,
+  time_unit_input = lifecycle::deprecated(),
+  time_unit_output = lifecycle::deprecated()
 )
 }
 \arguments{
@@ -17,10 +19,10 @@ control_incidence_rate(
 \item{conf_type}{(\code{string})\cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
 for confidence interval type.}
 
-\item{time_unit_input}{(\code{string})\cr \code{day}, \code{month}, or \code{year} (default)
+\item{input_time_unit}{(\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
 indicating time unit for data input.}
 
-\item{time_unit_output}{(\code{numeric})\cr time unit for desired output (in person-years).}
+\item{n_pt_years_rate}{(\code{numeric})\cr number of patient-years to use when calculating AE rate.}
 }
 \value{
 A list of components with the same names as the arguments.
