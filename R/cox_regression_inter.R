@@ -154,6 +154,43 @@ h_coxreg_inter_effect.factor <- function(x,
   )
 }
 
+#' @describeIn cox_regression_inter Estimate the interaction with a `character` covariate. This makes an automatic
+#'   conversion to `factor` and then forwards to the method for factors.
+#'
+#' @param verbose (`logical`)\cr Defaults to `FALSE`, which prints out warnings and messages. It is mainly used
+#'   to print out information about factor casting.
+#'
+#' @note
+#' * Automatic conversion of character to factor does not guarantee results can be generated correctly. It is
+#'   therefore better to always pre-process the dataset such that factors are manually created from character
+#'   variables before passing the dataset to [rtables::build_table()].
+#'
+#' @export
+h_coxreg_inter_effect.character <- function(x,
+                                            effect,
+                                            covar,
+                                            mod,
+                                            label,
+                                            control,
+                                            data,
+                                            verbose = FALSE,
+                                            ...) {
+  y <- as_factor_keep_attributes(x, verbose = verbose)
+  data[[effect]] <- as_factor_keep_attributes(data[[effect]], verbose = FALSE)
+  data[[covar]] <- as_factor_keep_attributes(data[[covar]], verbose = FALSE)
+
+  h_coxreg_inter_effect(
+    x = y,
+    effect = effect,
+    covar = covar,
+    mod = mod,
+    label = label,
+    control = control,
+    data = data,
+    ...
+  )
+}
+
 #' @describeIn cox_regression_inter A higher level function to get
 #'   the results of the interaction test and the estimated values.
 #'

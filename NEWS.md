@@ -7,6 +7,7 @@
 * Updated `summarize_coxreg` to print covariates in data rows for univariate Cox regression with no interactions and content rows otherwise.
 * Removed "baseline status" text from `d_count_abnormal_by_baseline` labels.
 * Improved default sizing of annotation tables in `g_km` and added dynamic scaling of the `surv_med` and `coxph` annotation tables, with customization via the `width_annots` argument.
+* Added method for `character` class to `h_coxreg_inter_effect` enabling `character` covariates in `summarize_coxreg`.
 
 ### Bug Fixes
 * Fixed bug in `split_text_grob` preventing titles and footnotes from being properly formatted and printed by `decorate_grob`.
