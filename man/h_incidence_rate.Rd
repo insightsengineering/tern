@@ -33,7 +33,7 @@ the helper function \code{\link[=control_incidence_rate]{control_incidence_rate(
 for confidence interval type.
 \item \code{input_time_unit}: (\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
 indicating time unit for data input.
-\item \code{n_pt_years_rate}: (\code{numeric})\cr time unit for desired output (in person-years).
+\item \code{num_pt_year}: (\code{numeric})\cr time unit for desired output (in person-years).
 }}
 }
 \value{
@@ -81,7 +81,7 @@ h_incidence_rate(
   control_incidence_rate(
     conf_level = 0.9,
     conf_type = "normal_log",
-    n_pt_years_rate = 100
+    num_pt_year = 100
   )
 )
 }

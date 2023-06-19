@@ -3,7 +3,7 @@ testthat::test_that("control_incidence_rate works with customized parameters", {
     conf_level = 0.9,
     conf_type = "exact",
     input_time_unit = "month",
-    n_pt_years_rate = 100
+    num_pt_year = 100
   )
 
   res <- testthat::expect_silent(result)
@@ -14,7 +14,7 @@ testthat::test_that("control_incidence_rate fails with wrong input", {
   testthat::expect_error(control_incidence_rate(conf_level = 1.1))
   testthat::expect_error(control_incidence_rate(conf_type = "wald"))
   testthat::expect_error(control_incidence_rate(input_time_unit = "decade"))
-  testthat::expect_error(control_incidence_rate(n_pt_years_rate = "one"))
+  testthat::expect_error(control_incidence_rate(num_pt_year = "one"))
 })
 
 testthat::test_that("h_incidence_rate_normal works as expected with healthy input", {
@@ -49,7 +49,7 @@ testthat::test_that("h_incidence_rate works as expected with healthy input", {
   result <- h_incidence_rate(
     200,
     2,
-    control_incidence_rate(conf_level = 0.9, conf_type = "normal_log", n_pt_years_rate = 100)
+    control_incidence_rate(conf_level = 0.9, conf_type = "normal_log", num_pt_year = 100)
   )
 
   res <- testthat::expect_silent(result)
@@ -73,7 +73,7 @@ testthat::test_that("s_incidence_rate works as expected with healthy input", {
       conf_level = 0.9,
       conf_type = "normal_log",
       input_time_unit = "month",
-      n_pt_years_rate = 100
+      num_pt_year = 100
     )
   )
 
@@ -101,7 +101,7 @@ testthat::test_that("estimate_incidence_rate works as expected with healthy inpu
         conf_level = 0.9,
         conf_type = "normal_log",
         input_time_unit = "month",
-        n_pt_years_rate = 100
+        num_pt_year = 100
       )
     ) %>%
     build_table(df)

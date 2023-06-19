@@ -8,7 +8,7 @@ control_incidence_rate(
   conf_level = 0.95,
   conf_type = c("normal", "normal_log", "exact", "byar"),
   input_time_unit = c("year", "day", "week", "month"),
-  n_pt_years_rate = 1,
+  num_pt_year = 1,
   time_unit_input = lifecycle::deprecated(),
   time_unit_output = lifecycle::deprecated()
 )
@@ -22,11 +22,11 @@ for confidence interval type.}
 \item{input_time_unit}{(\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
 indicating time unit for data input.}
 
-\item{n_pt_years_rate}{(\code{numeric})\cr number of patient-years to use when calculating AE rate.}
+\item{num_pt_year}{(\code{numeric})\cr number of patient-years to use when calculating AE rate.}
 
 \item{time_unit_input}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{input_time_unit} argument instead.}
 
-\item{time_unit_output}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{n_pt_years_rate} argument instead.}
+\item{time_unit_output}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{num_pt_year} argument instead.}
 }
 \value{
 A list of components with the same names as the arguments.

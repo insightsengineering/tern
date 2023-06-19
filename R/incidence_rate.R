@@ -13,7 +13,7 @@
 #'     for confidence interval type.
 #'   * `input_time_unit` (`string`)\cr `day`, `week`, `month`, or `year` (default)
 #'     indicating time unit for data input.
-#'   * `n_pt_years_rate` (`numeric`)\cr time unit for desired output (in person-years).
+#'   * `num_pt_year` (`numeric`)\cr time unit for desired output (in person-years).
 #' @param person_years (`numeric`)\cr total person-years at risk.
 #' @param alpha (`numeric`)\cr two-sided alpha-level for confidence interval.
 #' @param n_events (`integer`)\cr number of events observed.
@@ -53,7 +53,7 @@ NULL
 #'   n_events = "n_events",
 #'   control = control_incidence_rate(
 #'     input_time_unit = "month",
-#'     n_pt_years_rate = 100
+#'     num_pt_year = 100
 #'   )
 #' )
 #' }
@@ -82,7 +82,7 @@ s_incidence_rate <- function(df,
   }
 
   input_time_unit <- control$input_time_unit
-  n_pt_years_rate <- control$n_pt_years_rate
+  num_pt_year <- control$num_pt_year
   conf_level <- control$conf_level
   person_years <- sum(df[[.var]], na.rm = TRUE) * (
     1 * (input_time_unit == "year") +
@@ -100,7 +100,7 @@ s_incidence_rate <- function(df,
   list(
     person_years = formatters::with_label(person_years, "Total patient-years at risk"),
     n_events = formatters::with_label(n_events, "Number of adverse events observed"),
-    rate = formatters::with_label(result$rate, paste("AE rate per", n_pt_years_rate, "patient-years")),
+    rate = formatters::with_label(result$rate, paste("AE rate per", num_pt_year, "patient-years")),
     rate_ci = formatters::with_label(result$rate_ci, f_conf_level(conf_level))
   )
 }
@@ -118,7 +118,7 @@ s_incidence_rate <- function(df,
 #'   df,
 #'   .var = "AVAL",
 #'   n_events = "n_events",
-#'   control = control_incidence_rate(input_time_unit = "month", n_pt_years_rate = 100)
+#'   control = control_incidence_rate(input_time_unit = "month", num_pt_year = 100)
 #' )
 #' }
 #'
@@ -150,7 +150,7 @@ a_incidence_rate <- make_afun(
 #'     n_events = "n_events",
 #'     control = control_incidence_rate(
 #'       input_time_unit = "month",
-#'       n_pt_years_rate = 100
+#'       num_pt_year = 100
 #'     )
 #'   ) %>%
 #'   build_table(df)
@@ -194,7 +194,7 @@ estimate_incidence_rate <- function(lyt,
 #'     for confidence interval type.
 #'   * `input_time_unit`: (`string`)\cr `day`, `week`, `month`, or `year` (default)
 #'     indicating time unit for data input.
-#'   * `n_pt_years_rate`: (`numeric`)\cr time unit for desired output (in person-years).
+#'   * `num_pt_year`: (`numeric`)\cr time unit for desired output (in person-years).
 #' @param person_years (`numeric`)\cr total person-years at risk.
 #' @param alpha (`numeric`)\cr two-sided alpha-level for confidence interval.
 #' @param n_events (`integer`)\cr number of events observed.
@@ -311,7 +311,7 @@ h_incidence_rate_byar <- function(person_years,
 #'   control_incidence_rate(
 #'     conf_level = 0.9,
 #'     conf_type = "normal_log",
-#'     n_pt_years_rate = 100
+#'     num_pt_year = 100
 #'   )
 #' )
 #' }
@@ -328,9 +328,9 @@ h_incidence_rate <- function(person_years,
     byar = h_incidence_rate_byar(person_years, n_events, alpha)
   )
 
-  n_pt_years_rate <- control$n_pt_years_rate
+  num_pt_year <- control$num_pt_year
   list(
-    rate = est$rate * n_pt_years_rate,
-    rate_ci = est$rate_ci * n_pt_years_rate
+    rate = est$rate * num_pt_year,
+    rate_ci = est$rate_ci * num_pt_year
   )
 }
