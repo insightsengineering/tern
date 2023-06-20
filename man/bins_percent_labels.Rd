@@ -20,18 +20,4 @@ A \code{character} vector with labels in the format \verb{[0\%,20\%]}, \verb{(20
 This creates labels for quantile based bins in percent. This assumes the right-closed
 intervals as produced by \code{\link[=cut_quantile_bins]{cut_quantile_bins()}}.
 }
-\examples{
-# Internal function - bins_percent_labels
-\dontrun{
-# Just pass the internal probability bounds, then 0 and 100\% will be added automatically.
-bins_percent_labels(c(0.2, 0.5))
-
-# Determine how to round.
-bins_percent_labels(0.35224, digits = 1)
-
-# Passing an empty vector just gives a single bin 0-100\%.
-bins_percent_labels(c(0, 1))
-}
-
-}
 \keyword{internal}

@@ -727,7 +727,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'   summarize_vars(vars = "AVISIT", na.rm = FALSE)
 #'
 #' results <- build_table(l, df = dta_test)
-#' \dontrun{
+#' \donttest{
 #' Viewer(results)
 #' }
 #'

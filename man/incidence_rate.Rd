@@ -131,29 +131,6 @@ df <- data.frame(
   mutate(is_event = CNSR == 0) \%>\%
   mutate(n_events = as.integer(is_event))
 
-# Internal function - s_incidence_rate
-\dontrun{
-s_incidence_rate(
-  df,
-  .var = "AVAL",
-  n_events = "n_events",
-  control = control_incidence_rate(
-    input_time_unit = "month",
-    num_pt_year = 100
-  )
-)
-}
-
-# Internal function - a_incidence_rate
-\dontrun{
-a_incidence_rate(
-  df,
-  .var = "AVAL",
-  n_events = "n_events",
-  control = control_incidence_rate(input_time_unit = "month", num_pt_year = 100)
-)
-}
-
 basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   add_colcounts() \%>\%

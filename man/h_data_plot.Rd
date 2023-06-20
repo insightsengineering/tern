@@ -34,7 +34,7 @@ downstream plot lines start at those coordinates.
 }
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(survival)
 

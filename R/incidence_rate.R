@@ -45,19 +45,6 @@ NULL
 #'   mutate(is_event = CNSR == 0) %>%
 #'   mutate(n_events = as.integer(is_event))
 #'
-#' # Internal function - s_incidence_rate
-#' \dontrun{
-#' s_incidence_rate(
-#'   df,
-#'   .var = "AVAL",
-#'   n_events = "n_events",
-#'   control = control_incidence_rate(
-#'     input_time_unit = "month",
-#'     num_pt_year = 100
-#'   )
-#' )
-#' }
-#'
 #' @keywords internal
 s_incidence_rate <- function(df,
                              .var,
@@ -111,16 +98,6 @@ s_incidence_rate <- function(df,
 #' @return
 #' * `a_incidence_rate()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @examples
-#' # Internal function - a_incidence_rate
-#' \dontrun{
-#' a_incidence_rate(
-#'   df,
-#'   .var = "AVAL",
-#'   n_events = "n_events",
-#'   control = control_incidence_rate(input_time_unit = "month", num_pt_year = 100)
-#' )
-#' }
 #'
 #' @keywords internal
 a_incidence_rate <- make_afun(
@@ -300,21 +277,6 @@ h_incidence_rate_byar <- function(person_years,
 #' @describeIn h_incidence_rate Helper function to estimate the incidence rate and
 #'   associated confidence interval.
 #'
-#' @examples
-#' # Internal function - h_incidence_rate
-#' \dontrun{
-#' h_incidence_rate(200, 2)
-#'
-#' h_incidence_rate(
-#'   200,
-#'   2,
-#'   control_incidence_rate(
-#'     conf_level = 0.9,
-#'     conf_type = "normal_log",
-#'     num_pt_year = 100
-#'   )
-#' )
-#' }
 #'
 #' @keywords internal
 h_incidence_rate <- function(person_years,

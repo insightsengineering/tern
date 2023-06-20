@@ -71,21 +71,6 @@ h_incidence_rate_exact(200, 2)
 
 h_incidence_rate_byar(200, 2)
 
-# Internal function - h_incidence_rate
-\dontrun{
-h_incidence_rate(200, 2)
-
-h_incidence_rate(
-  200,
-  2,
-  control_incidence_rate(
-    conf_level = 0.9,
-    conf_type = "normal_log",
-    num_pt_year = 100
-  )
-)
-}
-
 }
 \seealso{
 \link{incidence_rate}
