@@ -55,7 +55,7 @@ g_km(
 the helper function \code{\link[=control_surv_timepoint]{control_surv_timepoint()}}. Some possible parameter options are:
 \itemize{
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for survival rate.
-\item \code{conf_type} (\code{string})\cr "plain" (default), "log", "log-log" for confidence interval type,
+\item \code{conf_type} (\code{string})\cr \code{"plain"} (default), \code{"log"}, \code{"log-log"} for confidence interval type,
 see more in \code{\link[survival:survfit]{survival::survfit()}}. Note that the option "none" is no longer supported.
 }}
 
@@ -129,9 +129,9 @@ specified by \code{annot_stats}. If \code{annot_stats} is \code{NULL} no lines w
 the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are:
 \itemize{
 \item \code{pval_method} (\code{string})\cr p-value method for testing hazard ratio = 1.
-Default method is "log-rank", can also be set to "wald" or "likelihood".
-\item \code{ties} (\code{string})\cr method for tie handling. Default is "efron",
-can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]{survival::coxph()}}
+Default method is \code{"log-rank"}, can also be set to \code{"wald"} or \code{"likelihood"}.
+\item \code{ties} (\code{string})\cr method for tie handling. Default is \code{"efron"},
+can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[survival:coxph]{survival::coxph()}}
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
 }}
 

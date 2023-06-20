@@ -17,7 +17,7 @@
 #' @param control_surv (`list`)\cr parameters for comparison details, specified by using
 #'   the helper function [control_surv_timepoint()]. Some possible parameter options are:
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for survival rate.
-#'   * `conf_type` (`string`)\cr "plain" (default), "log", "log-log" for confidence interval type,
+#'   * `conf_type` (`string`)\cr `"plain"` (default), `"log"`, `"log-log"` for confidence interval type,
 #'     see more in [survival::survfit()]. Note that the option "none" is no longer supported.
 #' @param xticks (`numeric`, `number`, or `NULL`)\cr numeric vector of ticks or single number with spacing
 #'   between ticks on the x axis. If `NULL` (default), [labeling::extended()] is used to determine
@@ -53,9 +53,9 @@
 #' @param control_coxph_pw (`list`)\cr parameters for comparison details, specified by using
 #'   the helper function [control_coxph()]. Some possible parameter options are:
 #'   * `pval_method` (`string`)\cr p-value method for testing hazard ratio = 1.
-#'     Default method is "log-rank", can also be set to "wald" or "likelihood".
-#'   * `ties` (`string`)\cr method for tie handling. Default is "efron",
-#'     can also be set to "breslow" or "exact". See more in [survival::coxph()]
+#'     Default method is `"log-rank"`, can also be set to `"wald"` or `"likelihood"`.
+#'   * `ties` (`string`)\cr method for tie handling. Default is `"efron"`,
+#'     can also be set to `"breslow"` or `"exact"`. See more in [survival::coxph()]
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
 #' @param position_coxph (`numeric`)\cr x and y positions for plotting [survival::coxph()] model.
 #' @param position_surv_med (`numeric`)\cr x and y positions for plotting annotation table estimating median survival
@@ -467,7 +467,7 @@ g_km <- function(df,
 #'
 #' @inheritParams g_km
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
-#' @param armval (`string`)\cr used as strata name when treatment arm variable only has one level. Default is "All".
+#' @param armval (`string`)\cr used as strata name when treatment arm variable only has one level. Default is `"All"`.
 #'
 #' @return A `tibble` with columns `time`, `n.risk`, `n.event`, `n.censor`, `estimate`, `std.error`, `conf.high`,
 #'   `conf.low`, `strata`, and `censor`.
@@ -1244,11 +1244,11 @@ h_grob_y_annot <- function(ylab, yaxis) {
   )
 }
 
-#' Helper Function: Pairwise CoxPH table
+#' Helper Function: Pairwise `CoxPH` table
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Create a `data.frame` of pairwise stratified or unstratified CoxPH analysis results.
+#' Create a `data.frame` of pairwise stratified or unstratified `CoxPH` analysis results.
 #'
 #' @inheritParams g_km
 #'
@@ -1305,7 +1305,7 @@ h_tbl_coxph_pairwise <- function(df,
   do.call(rbind, results)
 }
 
-#' Helper Function: CoxPH Grob
+#' Helper Function: `CoxPH` Grob
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
