@@ -182,8 +182,8 @@ h_coxreg_inter_effect.character <- function(x,
                                             verbose = FALSE,
                                             ...) {
   y <- as_factor_keep_attributes(x, verbose = verbose)
-  data[[effect]] <- as_factor_keep_attributes(data[[effect]], verbose = FALSE)
   data[[covar]] <- as_factor_keep_attributes(data[[covar]], verbose = FALSE)
+  if (is.character(data[[effect]])) data[[effect]] <- as_factor_keep_attributes(data[[effect]], verbose = FALSE)
 
   h_coxreg_inter_effect(
     x = y,
