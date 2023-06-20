@@ -36,7 +36,7 @@ The survival fit is transformed in a grob containing a table with groups in
 rows characterized by N, median and 95\% confidence interval.
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(survival)
 library(grid)

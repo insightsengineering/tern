@@ -25,7 +25,7 @@ Two graphical objects are obtained, one corresponding to row labeling and
 the second to the number of patient at risk.
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(survival)
 library(grid)

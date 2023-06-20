@@ -126,28 +126,6 @@ df <- data.frame(
 # Select only post-baseline records.
 df <- df \%>\%
   filter(ONTRTFL == "Y")
-
-# Internal function - s_count_abnormal
-\dontrun{
-# For abnormal level "HIGH" we get the following counts.
-s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
-
-# Optionally exclude patients with abnormality at baseline.
-s_count_abnormal(
-  df,
-  .var = "ANRIND",
-  abnormal = list(high = "HIGH", low = "LOW"),
-  exclude_base_abn = TRUE
-)
-}
-
-# Internal function - a_count_abnormal
-\dontrun{
-# Use the Formatted Analysis function for `analyze()`.
-a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")
-a_fun(df, .var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"))
-}
-
 # Layout creating function.
 basic_table() \%>\%
   count_abnormal(var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW")) \%>\%

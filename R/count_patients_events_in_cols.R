@@ -40,18 +40,6 @@ NULL
 #'   AEBODSYS = rep(c("SOC1", "SOC2", "SOC3"), c(3, 3, 1))
 #' )
 #'
-#' # Internal function - s_count_patients_and_multiple_events
-#' \dontrun{
-#' s_count_patients_and_multiple_events(
-#'   df = df,
-#'   id = "USUBJID",
-#'   filters_list = list(
-#'     serious = c(AESER = "Y"),
-#'     fatal = c(AESDTH = "Y")
-#'   )
-#' )
-#' }
-#'
 #' @keywords internal
 s_count_patients_and_multiple_events <- function(df, # nolint
                                                  id,

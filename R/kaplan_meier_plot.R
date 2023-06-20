@@ -67,7 +67,7 @@
 #' @return A `grob` of class `gTree`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(ggplot2)
 #' library(survival)
@@ -473,7 +473,7 @@ g_km <- function(df,
 #'   `conf.low`, `strata`, and `censor`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #'
@@ -547,7 +547,7 @@ h_data_plot <- function(fit_km,
 #' @return A vector of positions to use for x-axis ticks on a `ggplot` object.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #'
@@ -603,7 +603,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' @return A `ggplot` object.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #'
@@ -754,7 +754,7 @@ h_ggkm <- function(data,
 #'   * `guide`: The legend.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
@@ -819,9 +819,10 @@ h_decompose_gg <- function(gg) {
 #'   * The right column receive the `ggplot`, the legend, the x-axis and the patient at risk table.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
+#' library(grid)
 #'
 #' fit_km <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
@@ -923,7 +924,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
 #' @return A named `list` of two `gTree` objects: `at_risk` and `label`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
@@ -1067,7 +1068,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 #' @return A summary table with statistics `N`, `Median`, and `XX% CI` (`XX` taken from `fit_km`).
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #'
@@ -1118,7 +1119,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' @return A `grob` of a table containing statistics `N`, `Median`, and `XX% CI` (`XX` taken from `fit_km`).
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
@@ -1203,7 +1204,7 @@ h_grob_median_surv <- function(fit_km,
 #' @return a `gTree` object containing the y-axis annotation from a `ggplot`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
@@ -1255,7 +1256,7 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #'   and `p-value (log-rank)`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #'
 #' adtte <- tern_ex_adtte %>%
@@ -1320,7 +1321,7 @@ h_tbl_coxph_pairwise <- function(df,
 #'   and `p-value (log-rank)`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)

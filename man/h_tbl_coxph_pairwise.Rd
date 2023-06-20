@@ -37,7 +37,7 @@ and \code{p-value (log-rank)}.
 Create a \code{data.frame} of pairwise stratified or unstratified \code{CoxPH} analysis results.
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 
 adtte <- tern_ex_adtte \%>\%

@@ -140,24 +140,6 @@ variables <- list(arm = "Species", covariates = "Sepal.Length * Sepal.Width")
 .ref_group <- iris \%>\% filter(Species == "setosa")
 conf_level <- 0.95
 
-# Internal function - s_ancova
-\dontrun{
-s_ancova(
-  df, .var, .df_row, variables, .ref_group,
-  .in_ref_col = FALSE,
-  conf_level, interaction_y = FALSE, interaction_item = NULL
-)
-}
-
-# Internal function - a_ancova
-\dontrun{
-a_ancova(
-  df, .var, .df_row, variables, .ref_group,
-  .in_ref_col = FALSE,
-  interaction_y = FALSE, interaction_item = NULL, conf_level
-)
-}
-
 basic_table() \%>\%
   split_cols_by("Species", ref_group = "setosa") \%>\%
   add_colcounts() \%>\%

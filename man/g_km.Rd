@@ -155,7 +155,7 @@ including the number of patient at risk at given time and the median survival
 per group.
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(ggplot2)
 library(survival)

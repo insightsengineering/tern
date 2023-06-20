@@ -139,7 +139,7 @@ a_length_proportion <- make_afun(
 #'
 #' html <- as_html(tbl)
 #' html
-#' \dontrun{
+#' \donttest{
 #' Viewer(html)
 #' }
 #'

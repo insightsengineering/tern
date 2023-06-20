@@ -103,6 +103,11 @@ avoid repeatedly fitting the same model for every row in the table. Defaults to 
 \item{common_var}{(\code{character})\cr the name of a factor variable in the dataset which takes the same value
 for all rows. This should be created during pre-processing if no such variable currently exists.}
 
+\item{varlabels}{(\code{list})\cr a named list corresponds to the names of variables found in data, passed
+as a named list and corresponding to time, event, arm, strata, and covariates terms. If arm is missing
+from variables, then only Cox model(s) including the covariates will be fitted and the corresponding
+effect estimates will be tabulated later.}
+
 \item{.section_div}{(\code{character})\cr string which should be repeated as a section divider between sections.
 Defaults to \code{NA} for no section divider. If a vector of two strings are given, the first will be used between
 treatment and covariate sections and the second between different covariates.}
@@ -217,7 +222,7 @@ multivar_covs_model <- fit_coxreg_multivar(variables = m2_variables, data = dta_
 df2_covs <- broom::tidy(multivar_covs_model)
 s_coxreg(model_df = df2_covs, .stats = "hr")
 
-tern:::a_coxreg(
+a_coxreg(
   df = dta_bladder,
   labelstr = "Label 1",
   variables = u1_variables,
@@ -226,7 +231,7 @@ tern:::a_coxreg(
   .formats = "xx"
 )
 
-tern:::a_coxreg(
+a_coxreg(
   df = dta_bladder,
   labelstr = "",
   variables = u1_variables,
@@ -275,4 +280,3 @@ helper functions, and \link{tidy_coxreg} for custom tidy methods.
 \code{at} (univariate only), and \code{control} arguments but return unformatted univariate and multivariate
 Cox regression models, respectively.
 }
-\keyword{internal}

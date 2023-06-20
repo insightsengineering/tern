@@ -20,7 +20,7 @@ A summary table with statistics \code{N}, \code{Median}, and \verb{XX\% CI} (\co
 Transform a survival fit to a table with groups in rows characterized by N, median and confidence interval.
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(survival)
 

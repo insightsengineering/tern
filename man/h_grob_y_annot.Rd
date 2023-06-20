@@ -20,7 +20,7 @@ a \code{gTree} object containing the y-axis annotation from a \code{ggplot}.
 Build the y-axis annotation from a decomposed \code{ggplot}.
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(survival)
 library(grid)

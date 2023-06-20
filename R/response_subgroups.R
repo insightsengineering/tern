@@ -144,12 +144,6 @@ extract_rsp_subgroups <- function(variables,
 #' @return
 #' * `a_response_subgroups()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @examples
-#' # Internal function - a_response_subgroups
-#' \dontrun{
-#' a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx%"))
-#' }
-#'
 #' @keywords internal
 a_response_subgroups <- function(.formats = list(
                                    n = "xx",
