@@ -9,7 +9,7 @@
 
 ### Bug Fixes
 * Fixed bug in `split_text_grob` preventing titles and footnotes from being properly formatted and printed by `decorate_grob`.
-* Fixed bug in `g_lineplot` preventing lines from being added to the plot when midpoint statistic calculations result in `NA` value(s).
+* Fixed bug in `g_lineplot` preventing the addition of lines to the plot when midpoint statistic calculations result in `NA` value(s).
 
 ### Miscellaneous
 * Updated `README` to include installation instructions for CRAN.
