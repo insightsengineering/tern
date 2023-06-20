@@ -1,4 +1,4 @@
-# tern 0.8.3.9000
+# tern 0.8.3.9001
 
 ### Miscellaneous
 * Began deprecation of `time_unit_input` and `time_unit_output` arguments and replaced them with the `input_time_unit` and `n_pt_years_rate`, respectively, in `control_incidence_rate`.
