@@ -1,24 +1,24 @@
-#' Pairwise CoxPH model
+#' Pairwise `CoxPH` model
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Summarize p-value, HR and CIs from stratified or unstratified CoxPH model.
+#' Summarize p-value, HR and CIs from stratified or unstratified `CoxPH` model.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams s_surv_time
 #' @param strat (`character` or `NULL`)\cr variable names indicating stratification factors.
 #' @param control (`list`)\cr parameters for comparison details, specified by using the helper function
 #'   [control_coxph()]. Some possible parameter options are:
-#'   * `pval_method` (`string`)\cr p-value method for testing hazard ratio = 1. Default method is "log-rank" which
-#'     comes from [survival::survdiff()], can also be set to "wald" or "likelihood" (from [survival::coxph()]).
-#'   * `ties` (`string`)\cr specifying the method for tie handling. Default is "efron",
-#'     can also be set to "breslow" or "exact". See more in [survival::coxph()]
+#'   * `pval_method` (`string`)\cr p-value method for testing hazard ratio = 1. Default method is `"log-rank"` which
+#'     comes from [survival::survdiff()], can also be set to `"wald"` or `"likelihood"` (from [survival::coxph()]).
+#'   * `ties` (`string`)\cr specifying the method for tie handling. Default is `"efron"`,
+#'     can also be set to `"breslow"` or `"exact"`. See more in [survival::coxph()]
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
 #'
 #' @name survival_coxph_pairwise
 NULL
 
-#' @describeIn survival_coxph_pairwise Statistics function which analyzes HR, CIs of HR and p-value of a coxph model.
+#' @describeIn survival_coxph_pairwise Statistics function which analyzes HR, CIs of HR and p-value of a `coxph` model.
 #'
 #' @return
 #' * `s_coxph_pairwise()` returns the statistics:

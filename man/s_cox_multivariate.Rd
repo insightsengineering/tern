@@ -21,7 +21,7 @@ including covariates.}
 \item{conf_level}{(\code{proportion})\cr The confidence level for the hazard ratio interval estimations. Default is 0.95.}
 
 \item{pval_method}{(\code{character})\cr The method used for the estimation of p-values, should be one of
-"wald" (default) or "likelihood".}
+\code{"wald"} (default) or \code{"likelihood"}.}
 
 \item{...}{Optional parameters passed to \code{\link[survival:coxph]{survival::coxph()}}. Can include \code{ties}, a character string specifying the
 method for tie handling, one of \code{exact} (default), \code{efron}, \code{breslow}.}

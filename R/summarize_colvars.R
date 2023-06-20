@@ -19,7 +19,7 @@
 #' Adding this function to an `rtable` layout will summarize the given variables, arrange the output
 #' in columns, and add it to the table layout.
 #'
-#' @seealso [rtables::split_cols_by_multivar()] and [analyze_colvars_functions].
+#' @seealso [rtables::split_cols_by_multivar()] and [`analyze_colvars_functions`].
 #'
 #' @examples
 #' dta_test <- data.frame(

@@ -11,7 +11,7 @@
 #' @name abnormal_by_worst_grade_worsen
 NULL
 
-#' Helper Function to Prepare ADLB with Worst Labs
+#' Helper Function to Prepare `ADLB` with Worst Labs
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

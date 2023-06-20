@@ -2,7 +2,7 @@
 % Please edit documentation in R/abnormal_by_worst_grade_worsen.R
 \name{h_adlb_worsen}
 \alias{h_adlb_worsen}
-\title{Helper Function to Prepare ADLB with Worst Labs}
+\title{Helper Function to Prepare \code{ADLB} with Worst Labs}
 \usage{
 h_adlb_worsen(
   adlb,
