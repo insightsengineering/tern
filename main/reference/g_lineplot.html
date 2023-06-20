@@ -37,23 +37,6 @@ Line plot with the optional table."><!-- mathjax --><script src="https://cdnjs.c
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -136,7 +119,7 @@ Line plot with the optional table."><!-- mathjax --><script src="https://cdnjs.c
 <li><p><code>y</code> (<code>character</code>)<br> name of y-axis variable.</p></li>
 <li><p><code>strata</code> (<code>character</code>)<br> name of grouping variable, i.e. treatment arm. Can be <code>NA</code> to indicate lack of groups.</p></li>
 <li><p><code>paramcd</code> (<code>character</code>)<br> name of the variable for parameter's code. Used for y-axis label and plot's subtitle.
-Can be <code>NA</code> if paramcd is not to be added to the y-axis label or subtitle.</p></li>
+Can be <code>NA</code> if <code>paramcd</code> is not to be added to the y-axis label or subtitle.</p></li>
 <li><p><code>y_unit</code> (<code>character</code>)<br> name of variable with units of <code>y</code>. Used for y-axis label and plot's subtitle.
 Can be <code>NA</code> if y unit is not to be added to the y-axis label or subtitle.</p></li>
 </ul></dd>
@@ -207,7 +190,7 @@ or two-element numeric vector).</p></dd>
 
 
 <dt>y_lab_add_paramcd</dt>
-<dd><p>(<code>logical</code>)<br> should paramcd, i.e. <code>unique(df[[variables["paramcd"]]])</code> be added to the
+<dd><p>(<code>logical</code>)<br> should <code>paramcd</code>, i.e. <code>unique(df[[variables["paramcd"]]])</code> be added to the
 y-axis label <code>y_lab</code>?</p></dd>
 
 
@@ -225,7 +208,7 @@ label <code>y_lab</code>?</p></dd>
 
 
 <dt>subtitle_add_paramcd</dt>
-<dd><p>(<code>logical</code>)<br> should paramcd, i.e. <code>unique(df[[variables["paramcd"]]])</code> be added to
+<dd><p>(<code>logical</code>)<br> should <code>paramcd</code>, i.e. <code>unique(df[[variables["paramcd"]]])</code> be added to
 the plot's subtitle <code>subtitle</code>?</p></dd>
 
 

@@ -37,23 +37,6 @@ Fits a Cox regression model and estimates hazard ratio to describe the effect si
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -143,8 +126,8 @@ function with tidying applied via <code><a href="https://broom.tidymodels.org/re
 
 <dt>.which_vars</dt>
 <dd><p>(<code>character</code>)<br> which rows should statistics be returned for from the given model.
-Defaults to "all". Other options include "var_main" for main effects, "inter" for interaction effects,
-and "multi_lvl" for multivariate model covariate level rows. When <code>.which_vars</code> is "all" specific
+Defaults to "all". Other options include "var_main" for main effects, <code>"inter"</code> for interaction effects,
+and <code>"multi_lvl"</code> for multivariate model covariate level rows. When <code>.which_vars</code> is "all" specific
 variables can be selected by specifying <code>.var_nms</code>.</p></dd>
 
 
@@ -152,7 +135,7 @@ variables can be selected by specifying <code>.var_nms</code>.</p></dd>
 <dd><p>(<code>character</code>)<br> the <code>term</code> value of rows in <code>df</code> for which <code>.stats</code> should be returned. Typically
 this is the name of a variable. If using variable labels, <code>var</code> should be a vector of both the desired
 variable name and the variable label in that order to see all <code>.stats</code> related to that variable. When <code>.which_vars</code>
-is "var_main" <code>.var_nms</code> should be only the variable name.</p></dd>
+is <code>"var_main"</code> <code>.var_nms</code> should be only the variable name.</p></dd>
 
 
 <dt>df</dt>
