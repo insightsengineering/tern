@@ -117,12 +117,12 @@ is obtained as $sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$.
 \itemize{
 \item \code{h_coxreg_inter_effect()}: S3 generic helper function to determine interaction effect.
 
-\item \code{h_coxreg_inter_effect(numeric)}: Estimate the interaction with a \code{numeric} covariate.
+\item \code{h_coxreg_inter_effect(numeric)}: Method for \code{numeric} class. Estimates the interaction with a \code{numeric} covariate.
 
-\item \code{h_coxreg_inter_effect(factor)}: Estimate the interaction with a \code{factor} covariate.
+\item \code{h_coxreg_inter_effect(factor)}: Method for \code{factor} class. Estimate the interaction with a \code{factor} covariate.
 
-\item \code{h_coxreg_inter_effect(character)}: Estimate the interaction with a \code{character} covariate. This makes an automatic
-conversion to \code{factor} and then forwards to the method for factors.
+\item \code{h_coxreg_inter_effect(character)}: Method for \code{numeric} class. Estimate the interaction with a \code{character} covariate.
+This makes an automatic conversion to \code{factor} and then forwards to the method for factors.
 
 \item \code{h_coxreg_extract_interaction()}: A higher level function to get
 the results of the interaction test and the estimated values.

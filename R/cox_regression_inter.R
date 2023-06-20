@@ -66,7 +66,9 @@ h_coxreg_inter_effect <- function(x,
   UseMethod("h_coxreg_inter_effect", x)
 }
 
-#' @describeIn cox_regression_inter Estimate the interaction with a `numeric` covariate.
+#' @describeIn cox_regression_inter Method for `numeric` class. Estimates the interaction with a `numeric` covariate.
+#'
+#' @method h_coxreg_inter_effect numeric
 #'
 #' @param at (`list`)\cr a list with items named after the covariate, every
 #'   item is a vector of levels at which the interaction should be estimated.
@@ -118,7 +120,9 @@ h_coxreg_inter_effect.numeric <- function(x,
   )
 }
 
-#' @describeIn cox_regression_inter Estimate the interaction with a `factor` covariate.
+#' @describeIn cox_regression_inter Method for `factor` class. Estimate the interaction with a `factor` covariate.
+#'
+#' @method h_coxreg_inter_effect factor
 #'
 #' @param data (`data.frame`)\cr the data frame on which the model was fit.
 #'
@@ -154,8 +158,10 @@ h_coxreg_inter_effect.factor <- function(x,
   )
 }
 
-#' @describeIn cox_regression_inter Estimate the interaction with a `character` covariate. This makes an automatic
-#'   conversion to `factor` and then forwards to the method for factors.
+#' @describeIn cox_regression_inter Method for `numeric` class. Estimate the interaction with a `character` covariate.
+#'   This makes an automatic conversion to `factor` and then forwards to the method for factors.
+#'
+#' @method h_coxreg_inter_effect character
 #'
 #' @param verbose (`logical`)\cr Defaults to `FALSE`, which prints out warnings and messages. It is mainly used
 #'   to print out information about factor casting.
