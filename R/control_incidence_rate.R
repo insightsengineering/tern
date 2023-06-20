@@ -10,7 +10,7 @@
 #'   for confidence interval type.
 #' @param input_time_unit (`string`)\cr `day`, `week`, `month`, or `year` (default)
 #'   indicating time unit for data input.
-#' @param num_pt_year (`numeric`)\cr number of patient-years to use when calculating AE rate.
+#' @param num_pt_year (`numeric`)\cr number of patient-years to use when calculating adverse event rates.
 #' @param time_unit_input `r lifecycle::badge("deprecated")` Please use the `input_time_unit` argument instead.
 #' @param time_unit_output `r lifecycle::badge("deprecated")` Please use the `num_pt_year` argument instead.
 #'
