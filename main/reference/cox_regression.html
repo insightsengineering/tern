@@ -12,7 +12,7 @@ Fits a Cox regression model and estimates hazard ratio to describe the effect si
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2.9013</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.3</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,23 +37,6 @@ Fits a Cox regression model and estimates hazard ratio to describe the effect si
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -221,6 +204,13 @@ avoid repeatedly fitting the same model for every row in the table. Defaults to 
 <dt>common_var</dt>
 <dd><p>(<code>character</code>)<br> the name of a factor variable in the dataset which takes the same value
 for all rows. This should be created during pre-processing if no such variable currently exists.</p></dd>
+
+
+<dt>varlabels</dt>
+<dd><p>(<code>list</code>)<br> a named list corresponds to the names of variables found in data, passed
+as a named list and corresponding to time, event, arm, strata, and covariates terms. If arm is missing
+from variables, then only Cox model(s) including the covariates will be fitted and the corresponding
+effect estimates will be tabulated later.</p></dd>
 
 
 <dt>.section_div</dt>
@@ -420,7 +410,7 @@ Cox regression models, respectively.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">a_coxreg</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="fu">a_coxreg</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  df <span class="op">=</span> <span class="va">dta_bladder</span>,</span></span>
 <span class="r-in"><span>  labelstr <span class="op">=</span> <span class="st">"Label 1"</span>,</span></span>
 <span class="r-in"><span>  variables <span class="op">=</span> <span class="va">u1_variables</span>,</span></span>
@@ -433,7 +423,7 @@ Cox regression models, respectively.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   row_name formatted_cell indent_mod row_label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  Label 1            340          0   Label 1</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">tern</span><span class="fu">:::</span><span class="fu">a_coxreg</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="fu">a_coxreg</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  df <span class="op">=</span> <span class="va">dta_bladder</span>,</span></span>
 <span class="r-in"><span>  labelstr <span class="op">=</span> <span class="st">""</span>,</span></span>
 <span class="r-in"><span>  variables <span class="op">=</span> <span class="va">u1_variables</span>,</span></span>
