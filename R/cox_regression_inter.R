@@ -158,7 +158,7 @@ h_coxreg_inter_effect.factor <- function(x,
   )
 }
 
-#' @describeIn cox_regression_inter Method for `numeric` class. Estimate the interaction with a `character` covariate.
+#' @describeIn cox_regression_inter Method for `character` class. Estimate the interaction with a `character` covariate.
 #'   This makes an automatic conversion to `factor` and then forwards to the method for factors.
 #'
 #' @method h_coxreg_inter_effect character
@@ -182,8 +182,8 @@ h_coxreg_inter_effect.character <- function(x,
                                             verbose = FALSE,
                                             ...) {
   y <- as_factor_keep_attributes(x, verbose = verbose)
-  data[[covar]] <- as_factor_keep_attributes(data[[covar]], verbose = FALSE)
   if (is.character(data[[effect]])) data[[effect]] <- as_factor_keep_attributes(data[[effect]], verbose = FALSE)
+  if (is.character(data[[covar]])) data[[covar]] <- as_factor_keep_attributes(data[[covar]], verbose = FALSE)
 
   h_coxreg_inter_effect(
     x = y,
