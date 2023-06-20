@@ -167,12 +167,6 @@ extract_survival_subgroups <- function(variables,
 #' @return
 #' * `a_survival_subgroups()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @examples
-#' # Internal function - a_survival_subgroups
-#' \dontrun{
-#' a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
-#' }
-#'
 #' @keywords internal
 a_survival_subgroups <- function(.formats = list(
                                    n = "xx",

@@ -95,11 +95,6 @@ df <- extract_rsp_subgroups(
 )
 df
 
-# Internal function - a_response_subgroups
-\dontrun{
-a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx\%"))
-}
-
 ## Table with default columns.
 basic_table() \%>\%
   tabulate_rsp_subgroups(df)

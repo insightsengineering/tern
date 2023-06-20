@@ -35,19 +35,6 @@ h_recycle <- function(...) {
 #'   * `lwr.ci`: estimate of lower end of the confidence interval.
 #'   * `upr.ci`: estimate of upper end of the confidence interval.
 #'
-#' @examples
-#' # Internal function - desctools_binom
-#' \dontrun{
-#' set.seed(2)
-#' rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
-#' grp <- factor(c(rep("A", 10), rep("B", 10)))
-#' tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
-#' desctools_binom(
-#'   tbl[1], sum(tbl[1], tbl[3]), tbl[2], sum(tbl[2], tbl[4]),
-#'   conf.level = 0.90, method = "waldcc"
-#' )
-#' }
-#'
 #' @keywords internal
 desctools_binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c( # nolint
                               "two.sided",

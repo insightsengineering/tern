@@ -105,23 +105,6 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 
 }}
 \examples{
-# Internal function - s_count_cumulative
-\dontrun{
-set.seed(1, kind = "Mersenne-Twister")
-x <- c(sample(1:10, 10), NA)
-.N_col <- length(x)
-s_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
-s_count_cumulative(x, thresholds = c(0, 5, 11), include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
-}
-
-# Internal function - a_count_cumulative
-\dontrun{
-# Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
-# so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
-afun <- make_afun(a_count_cumulative, .ungroup_stats = "count_fraction")
-afun(x, thresholds = c(0, 5, 11), .N_col = .N_col)
-}
-
 basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   add_colcounts() \%>\%

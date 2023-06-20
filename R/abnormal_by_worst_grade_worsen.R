@@ -293,19 +293,6 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 #'   worst_flag_high = c("WGRHIFL" = "Y"),
 #'   direction_var = "GRADDR"
 #' )
-#' # Internal function - s_count_abnormal_lab_worsen_by_baseline
-#' \dontrun{
-#' # Patients with worsening lab grade for CRP in the direction of low
-#' s_count_abnormal_lab_worsen_by_baseline(
-#'   df = df %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
-#'   .var = "ATOXGR",
-#'   variables = list(
-#'     id = "USUBJID",
-#'     baseline_var = "BTOXGR",
-#'     direction_var = "GRADDR"
-#'   )
-#' )
-#' }
 #'
 #' @keywords internal
 s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
@@ -333,16 +320,6 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
 #' @return
 #' * `a_count_abnormal_lab_worsen_by_baseline()` returns the corresponding list with
 #'   formatted [rtables::CellValue()].
-#'
-#' @examples
-#' # Internal function - a_count_abnormal_lab_worsen_by_baseline
-#' \dontrun{
-#' a_count_abnormal_lab_worsen_by_baseline(
-#'   df = df %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
-#'   .var = "ATOXGR",
-#'   variables = list(id = "USUBJID", baseline_var = "BTOXGR", direction_var = "GRADDR")
-#' )
-#' }
 #'
 #' @keywords internal
 a_count_abnormal_lab_worsen_by_baseline <- make_afun( # nolint

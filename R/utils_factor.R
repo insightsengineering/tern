@@ -43,13 +43,6 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #'
 #' @return A `factor` with same attributes (except class) as `x`. Does not modify `x` if already a `factor`.
 #'
-#' @examples
-#' # Internal function - as_factor_keep_attributes
-#' \dontrun{
-#' as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"), verbose = FALSE)
-#' as_factor_keep_attributes(c("a", "b", ""), "id", verbose = FALSE)
-#' }
-#'
 #' @keywords internal
 as_factor_keep_attributes <- function(x,
                                       x_name = deparse(substitute(x)),
@@ -103,19 +96,6 @@ as_factor_keep_attributes <- function(x,
 #' @param digits (`integer`)\cr number of decimal places to round the percent numbers.
 #'
 #' @return A `character` vector with labels in the format `[0%,20%]`, `(20%,50%]`, etc.
-#'
-#' @examples
-#' # Internal function - bins_percent_labels
-#' \dontrun{
-#' # Just pass the internal probability bounds, then 0 and 100% will be added automatically.
-#' bins_percent_labels(c(0.2, 0.5))
-#'
-#' # Determine how to round.
-#' bins_percent_labels(0.35224, digits = 1)
-#'
-#' # Passing an empty vector just gives a single bin 0-100%.
-#' bins_percent_labels(c(0, 1))
-#' }
 #'
 #' @keywords internal
 bins_percent_labels <- function(probs,
