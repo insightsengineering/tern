@@ -49,10 +49,10 @@ elements of the list.}
 \item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
 \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are:
 \itemize{
-\item \code{pval_method} (\code{string})\cr p-value method for testing hazard ratio = 1. Default method is "log-rank" which
-comes from \code{\link[survival:survdiff]{survival::survdiff()}}, can also be set to "wald" or "likelihood" (from \code{\link[survival:coxph]{survival::coxph()}}).
-\item \code{ties} (\code{string})\cr specifying the method for tie handling. Default is "efron",
-can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]{survival::coxph()}}
+\item \code{pval_method} (\code{string})\cr p-value method for testing hazard ratio = 1. Default method is \code{"log-rank"} which
+comes from \code{\link[survival:survdiff]{survival::survdiff()}}, can also be set to \code{"wald"} or \code{"likelihood"} (from \code{\link[survival:coxph]{survival::coxph()}}).
+\item \code{ties} (\code{string})\cr specifying the method for tie handling. Default is \code{"efron"},
+can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[survival:coxph]{survival::coxph()}}
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
 }}
 }

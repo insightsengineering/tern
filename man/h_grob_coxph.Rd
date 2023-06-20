@@ -2,7 +2,7 @@
 % Please edit documentation in R/kaplan_meier_plot.R
 \name{h_grob_coxph}
 \alias{h_grob_coxph}
-\title{Helper Function: CoxPH Grob}
+\title{Helper Function: \code{CoxPH} Grob}
 \usage{
 h_grob_coxph(
   ...,
