@@ -472,7 +472,7 @@ h_format_row <- function(x, format, labels = NULL) {
 #' @param y (`character`)\cr y variable name.
 #' @param strata (`character` or `NA`)\cr strata variable name.
 #' @param paramcd (`character` or `NA`)\cr `paramcd` variable name.
-#' @param y_unit (`character` or `NA`)\cr y_unit variable name.
+#' @param y_unit (`character` or `NA`)\cr `y_unit` variable name.
 #'
 #' @return A named character vector of variable names.
 #'

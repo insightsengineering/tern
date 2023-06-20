@@ -21,7 +21,7 @@ control_lineplot_vars(
 
 \item{paramcd}{(\code{character} or \code{NA})\cr \code{paramcd} variable name.}
 
-\item{y_unit}{(\code{character} or \code{NA})\cr y_unit variable name.}
+\item{y_unit}{(\code{character} or \code{NA})\cr \code{y_unit} variable name.}
 }
 \value{
 A named character vector of variable names.
