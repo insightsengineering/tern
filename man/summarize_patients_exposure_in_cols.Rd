@@ -162,18 +162,7 @@ adsl <- data.frame(
   stringsAsFactors = TRUE
 )
 
-# Internal function - s_count_patients_sum_exposure
-\dontrun{
-s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl))
-s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl), .stats = "n_patients")
-s_count_patients_sum_exposure(
-  df = df,
-  .N_col = nrow(adsl),
-  custom_label = "some user's custom label"
-)
-}
-
-tern:::a_count_patients_sum_exposure(
+a_count_patients_sum_exposure(
   df = df,
   var = "SEX",
   .N_col = nrow(df),

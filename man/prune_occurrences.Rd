@@ -125,7 +125,7 @@ functions positively, too. However, note that the result of \code{\link[=keep_ro
 should be pruned, to conform with the \code{\link[rtables:prune_table]{rtables::prune_table()}} interface.
 }
 \examples{
-\dontrun{
+\donttest{
 tab <- basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   split_rows_by("RACE") \%>\%
@@ -135,54 +135,50 @@ tab <- basic_table() \%>\%
   build_table(DM)
 }
 
-\dontrun{
+\donttest{
 # `keep_rows`
 is_non_empty <- !CombinationFunction(all_zero_or_na)
 prune_table(tab, keep_rows(is_non_empty))
 }
 
 # `keep_content_rows`
-# Internal function - has_count_in_cols
-\dontrun{
+\donttest{
 more_than_twenty <- has_count_in_cols(atleast = 20L, col_names = names(tab))
 prune_table(tab, keep_content_rows(more_than_twenty))
 }
 
-# Internal function - has_count_in_cols
-\dontrun{
+\donttest{
 more_than_one <- has_count_in_cols(atleast = 1L, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_one))
 }
 
-\dontrun{
+\donttest{
 # `has_count_in_any_col`
 any_more_than_one <- has_count_in_any_col(atleast = 1L, col_names = names(tab))
 prune_table(tab, keep_rows(any_more_than_one))
 }
 
-\dontrun{
+\donttest{
 # `has_fraction_in_cols`
 more_than_five_percent <- has_fraction_in_cols(atleast = 0.05, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_five_percent))
 }
 
-\dontrun{
+\donttest{
 # `has_fraction_in_any_col`
 any_atleast_five_percent <- has_fraction_in_any_col(atleast = 0.05, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_five_percent))
 }
 
-\dontrun{
+\donttest{
 # `has_fractions_difference`
 more_than_five_percent_diff <- has_fractions_difference(atleast = 0.05, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_five_percent_diff))
 }
 
-# Internal function - has_counts_difference
-\dontrun{
+\donttest{
 more_than_one_diff <- has_counts_difference(atleast = 1L, col_names = names(tab))
 prune_table(tab, keep_rows(more_than_one_diff))
 }
 
 }
-\keyword{internal}

@@ -71,7 +71,7 @@ A \code{ggplot} object.
 Draw the Kaplan-Meier plot using \code{ggplot2}.
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(survival)
 

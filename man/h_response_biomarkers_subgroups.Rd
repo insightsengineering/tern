@@ -130,12 +130,9 @@ df1$row_type <- "content"
 df1$var <- "ALL"
 df1$var_label <- "All patients"
 
-# Internal function - h_tab_rsp_one_biomarker
-\dontrun{
 h_tab_rsp_one_biomarker(
   df1,
   vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval")
 )
-}
 
 }
