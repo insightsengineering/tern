@@ -8,8 +8,9 @@ h_grob_coxph(
   ...,
   x = 0,
   y = 0,
-  ttheme = gridExtra::ttheme_default(base_size = 12, padding = grid::unit(c(1, 0.5),
-    "lines"), core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = 0.5)))
+  width = grid::unit(0.4, "npc"),
+  ttheme = gridExtra::ttheme_default(padding = grid::unit(c(1, 0.5), "lines"), core =
+    list(bg_params = list(fill = c("grey95", "grey90"), alpha = 0.5)))
 )
 }
 \arguments{
@@ -18,6 +19,8 @@ h_grob_coxph(
 \item{x}{(\code{numeric})\cr a value between 0 and 1 specifying x-location.}
 
 \item{y}{(\code{numeric})\cr a value between 0 and 1 specifying y-location.}
+
+\item{width}{(\code{unit})\cr width (as a unit) to use when printing the grob.}
 
 \item{ttheme}{(\code{list})\cr see \code{\link[gridExtra:tableGrob]{gridExtra::ttheme_default()}}.}
 }
@@ -31,7 +34,7 @@ and \code{p-value (log-rank)}.
 Grob of \code{rtable} output from \code{\link[=h_tbl_coxph_pairwise]{h_tbl_coxph_pairwise()}}
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(survival)
 library(grid)

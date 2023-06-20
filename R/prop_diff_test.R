@@ -21,25 +21,6 @@ NULL
 #' * `s_test_proportion_diff()` returns a named `list` with a single item `pval` with an attribute `label`
 #'   describing the method used. The p-value tests the null hypothesis that proportions in two groups are the same.
 #'
-#' @examples
-#' # Statistics function
-#' dta <- data.frame(
-#'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
-#'   grp = factor(rep(c("A", "B"), each = 50)),
-#'   strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
-#' )
-#'
-#' # Internal function - s_test_proportion_diff
-#' \dontrun{
-#' s_test_proportion_diff(
-#'   df = subset(dta, grp == "A"),
-#'   .var = "rsp",
-#'   .ref_group = subset(dta, grp == "B"),
-#'   .in_ref_col = FALSE,
-#'   variables = list(strata = "strat"),
-#'   method = "cmh"
-#' )
-#' }
 #'
 #' @keywords internal
 s_test_proportion_diff <- function(df,
@@ -117,18 +98,6 @@ d_test_proportion_diff <- function(method) {
 #' @return
 #' * `a_test_proportion_diff()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @examples
-#' # Internal function - a_test_proportion_diff
-#' \dontrun{
-#' a_test_proportion_diff(
-#'   df = subset(dta, grp == "A"),
-#'   .var = "rsp",
-#'   .ref_group = subset(dta, grp == "B"),
-#'   .in_ref_col = FALSE,
-#'   variables = list(strata = "strat"),
-#'   method = "cmh"
-#' )
-#' }
 #'
 #' @keywords internal
 a_test_proportion_diff <- make_afun(
@@ -148,6 +117,12 @@ a_test_proportion_diff <- make_afun(
 #'   the statistics from `s_test_proportion_diff()` to the table layout.
 #'
 #' @examples
+#' dta <- data.frame(
+#'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
+#'   grp = factor(rep(c("A", "B"), each = 50)),
+#'   strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+#' )
+#'
 #' # With `rtables` pipelines.
 #' l <- basic_table() %>%
 #'   split_cols_by(var = "grp", ref_group = "B") %>%
@@ -202,25 +177,6 @@ NULL
 
 #' @describeIn h_prop_diff_test performs Chi-Squared test. Internally calls [stats::prop.test()].
 #'
-#' @examples
-#' # Non-stratified proportion difference test
-#'
-#' ## Data
-#' A <- 20
-#' B <- 20
-#' set.seed(1)
-#' rsp <- c(
-#'   sample(c(TRUE, FALSE), size = A, prob = c(3 / 4, 1 / 4), replace = TRUE),
-#'   sample(c(TRUE, FALSE), size = A, prob = c(1 / 2, 1 / 2), replace = TRUE)
-#' )
-#' grp <- c(rep("A", A), rep("B", B))
-#' tbl <- table(grp, rsp)
-#'
-#' ## Chi-Squared test
-#' # Internal function - prop_chisq
-#' \dontrun{
-#' prop_chisq(tbl)
-#' }
 #'
 #' @keywords internal
 prop_chisq <- function(tbl) {
@@ -238,20 +194,6 @@ prop_chisq <- function(tbl) {
 #' @param ary (`array`, 3 dimensions)\cr array with two groups in rows, the binary response
 #'   (`TRUE`/`FALSE`) in columns, and the strata in the third dimension.
 #'
-#' @examples
-#' # Stratified proportion difference test
-#'
-#' ## Data
-#' rsp <- sample(c(TRUE, FALSE), 100, TRUE)
-#' grp <- factor(rep(c("A", "B"), each = 50))
-#' strata <- factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
-#' tbl <- table(grp, rsp, strata)
-#'
-#' ## Cochran-Mantel-Haenszel test
-#' # Internal function - prop_cmh
-#' \dontrun{
-#' prop_cmh(tbl)
-#' }
 #'
 #' @keywords internal
 prop_cmh <- function(ary) {
@@ -272,12 +214,6 @@ prop_cmh <- function(ary) {
 #' @seealso For information on the Schouten correction (Schouten, 1980),
 #'   visit \url{https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.4710220305}.
 #'
-#' @examples
-#' ## Chi-Squared test + Schouten correction.
-#' # Internal function - prop_schouten
-#' \dontrun{
-#' prop_schouten(tbl)
-#' }
 #'
 #' @keywords internal
 prop_schouten <- function(tbl) {
@@ -305,12 +241,6 @@ prop_schouten <- function(tbl) {
 
 #' @describeIn h_prop_diff_test performs the Fisher's exact test. Internally calls [stats::fisher.test()].
 #'
-#' @examples
-#' ## Fisher's exact test
-#' # Internal function - prop_fisher
-#' \dontrun{
-#' prop_fisher(tbl)
-#' }
 #'
 #' @keywords internal
 prop_fisher <- function(tbl) {

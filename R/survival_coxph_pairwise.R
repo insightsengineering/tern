@@ -39,11 +39,6 @@ NULL
 #' df_ref_group <- adtte_f %>%
 #'   filter(ARMCD == "ARM B")
 #'
-#' # Internal function - s_coxph_pairwise
-#' \dontrun{
-#' s_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
-#' }
-#'
 #' @keywords internal
 s_coxph_pairwise <- function(df,
                              .ref_group,
@@ -122,11 +117,6 @@ s_coxph_pairwise <- function(df,
 #' @return
 #' * `a_coxph_pairwise()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @examples
-#' # Internal function - a_coxph_pairwise
-#' \dontrun{
-#' a_coxph_pairwise(df, df_ref_group, .in_ref_col = FALSE, .var = "AVAL", is_event = "is_event")
-#' }
 #'
 #' @keywords internal
 a_coxph_pairwise <- make_afun(

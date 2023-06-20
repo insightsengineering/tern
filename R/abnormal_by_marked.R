@@ -67,15 +67,6 @@ NULL
 #'   full_parent_df = I(full_parent_df),
 #'   cur_col_subset = I(cur_col_subset)
 #' )
-#' # Internal function - s_count_abnormal_by_marked
-#' \dontrun{
-#' s_count_abnormal_by_marked(
-#'   df = df_crp %>% filter(abn_dir == "High"),
-#'   .spl_context = spl_context,
-#'   .var = "AVALCAT1",
-#'   variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
-#' )
-#' }
 #'
 #' @keywords internal
 s_count_abnormal_by_marked <- function(df,
@@ -137,18 +128,6 @@ s_count_abnormal_by_marked <- function(df,
 #' @return
 #' * `a_count_abnormal_by_marked()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @examples
-#' # Internal function - a_count_abnormal_by_marked
-#' \dontrun{
-#' # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
-#' # so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
-#' afun <- make_afun(a_count_abnormal_by_marked, .ungroup_stats = "count_fraction")
-#' afun(
-#'   df = df_crp %>% filter(abn_dir == "High"),
-#'   .spl_context = spl_context,
-#'   variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
-#' )
-#' }
 #'
 #' @keywords internal
 a_count_abnormal_by_marked <- make_afun(

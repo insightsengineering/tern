@@ -201,7 +201,7 @@ extract_survival_biomarkers <- function(variables,
 #' )
 #'
 #' ## Finally produce the forest plot.
-#' \dontrun{
+#' \donttest{
 #' g_forest(tab, xlim = c(0.8, 1.2))
 #' }
 #'

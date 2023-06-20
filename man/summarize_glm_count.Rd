@@ -126,36 +126,6 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 
 }}
 \examples{
-# Internal function - s_change_from_baseline
-\dontrun{
-s_glm_count(
-  df = anl \%>\%
-    filter(ARMCD == "ARM B"),
-  .df_row = anl,
-  .var = "AVAL",
-  .in_ref_col = TRUE,
-  variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
-  conf_level = 0.95,
-  distribution = "quasipoisson",
-  rate_mean_method = "ppmeans"
-)
-}
-
-# Internal function - s_change_from_baseline
-\dontrun{
-a_glm_count(
-  df = anl \%>\%
-    filter(ARMCD == "ARM A"),
-  .var = "AVAL",
-  .df_row = anl,
-  variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
-  .ref_group = "ARM B", .in_ref_col = TRUE,
-  conf_level = 0.95,
-  distribution = "poisson",
-  rate_mean_method = "ppmeans"
-)
-}
-
 library(dplyr)
 anl <- tern_ex_adtte \%>\% filter(PARAMCD == "TNE")
 anl$AVAL_f <- as.factor(anl$AVAL)
