@@ -25,7 +25,7 @@
 control_incidence_rate <- function(conf_level = 0.95,
                                    conf_type = c("normal", "normal_log", "exact", "byar"),
                                    input_time_unit = c("year", "day", "week", "month"),
-                                   num_pt_year = 1,
+                                   num_pt_year = 100,
                                    time_unit_input = lifecycle::deprecated(),
                                    time_unit_output = lifecycle::deprecated()) {
   if (lifecycle::is_present(time_unit_input)) {
