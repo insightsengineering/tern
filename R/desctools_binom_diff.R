@@ -336,9 +336,9 @@ desctools_binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c( # noli
 #' @param conf.level (`proportion`)\cr confidence level, defaults to 0.95.
 #' @param sides (`character`)\cr side of the confidence interval to compute. Must be one of `"two-sided"` (default),
 #'   `"left"`, or `"right"`.
-#' @param method (`character`)\cr method to use. Can be one out of: `"wald"`, `"wilson"`, `"wilsoncc"`, `"agresti-coull"`,
-#'   `"jeffreys"`, `"modified wilson"`, `"modified jeffreys"`, `"clopper-pearson"`, `"arcsine"`, `"logit"`, `"witting"`, `"pratt"`,
-#'   `"midp"`, `"lik"`, and `"blaker"`.
+#' @param method (`character`)\cr method to use. Can be one out of: `"wald"`, `"wilson"`, `"wilsoncc"`,
+#' `"agresti-coull"`, `"jeffreys"`, `"modified wilson"`, `"modified jeffreys"`, `"clopper-pearson"`, `"arcsine"`,
+#' `"logit"`, `"witting"`, `"pratt"`, `"midp"`, `"lik"`, and `"blaker"`.
 #'
 #' @return A `matrix` with 3 columns containing:
 #'   * `est`: estimate of proportion difference.
