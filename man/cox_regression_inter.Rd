@@ -5,6 +5,7 @@
 \alias{h_coxreg_inter_effect}
 \alias{h_coxreg_inter_effect.numeric}
 \alias{h_coxreg_inter_effect.factor}
+\alias{h_coxreg_inter_effect.character}
 \alias{h_coxreg_extract_interaction}
 \alias{h_coxreg_inter_estimations}
 \title{Cox Regression Helper: Interactions}
@@ -14,6 +15,18 @@ h_coxreg_inter_effect(x, effect, covar, mod, label, control, ...)
 \method{h_coxreg_inter_effect}{numeric}(x, effect, covar, mod, label, control, at, ...)
 
 \method{h_coxreg_inter_effect}{factor}(x, effect, covar, mod, label, control, data, ...)
+
+\method{h_coxreg_inter_effect}{character}(
+  x,
+  effect,
+  covar,
+  mod,
+  label,
+  control,
+  data,
+  verbose = FALSE,
+  ...
+)
 
 h_coxreg_extract_interaction(effect, covar, mod, data, at, control)
 
@@ -27,7 +40,7 @@ h_coxreg_inter_estimations(
 )
 }
 \arguments{
-\item{x}{(\code{numeric} or \code{factor})\cr the values of the effect to be tested.}
+\item{x}{(\code{numeric} or \code{factor})\cr the values of the covariate to be tested.}
 
 \item{effect}{(\code{string})\cr the name of the effect to be tested and estimated.}
 
@@ -45,6 +58,9 @@ h_coxreg_inter_estimations(
 item is a vector of levels at which the interaction should be estimated.}
 
 \item{data}{(\code{data.frame})\cr the data frame on which the model was fit.}
+
+\item{verbose}{(\code{logical})\cr Defaults to \code{FALSE}, which prints out warnings and messages. It is mainly used
+to print out information about factor casting.}
 
 \item{variable, given}{(\code{string})\cr the name of variables in interaction. We seek the estimation
 of the levels of \code{variable} given the levels of \code{given}.}
@@ -101,9 +117,12 @@ is obtained as $sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$.
 \itemize{
 \item \code{h_coxreg_inter_effect()}: S3 generic helper function to determine interaction effect.
 
-\item \code{h_coxreg_inter_effect(numeric)}: Estimate the interaction with a \code{numeric} covariate.
+\item \code{h_coxreg_inter_effect(numeric)}: Method for \code{numeric} class. Estimates the interaction with a \code{numeric} covariate.
 
-\item \code{h_coxreg_inter_effect(factor)}: Estimate the interaction with a \code{factor} covariate.
+\item \code{h_coxreg_inter_effect(factor)}: Method for \code{factor} class. Estimate the interaction with a \code{factor} covariate.
+
+\item \code{h_coxreg_inter_effect(character)}: Method for \code{character} class. Estimate the interaction with a \code{character} covariate.
+This makes an automatic conversion to \code{factor} and then forwards to the method for factors.
 
 \item \code{h_coxreg_extract_interaction()}: A higher level function to get
 the results of the interaction test and the estimated values.
@@ -111,6 +130,13 @@ the results of the interaction test and the estimated values.
 \item \code{h_coxreg_inter_estimations()}: Hazard ratio estimation in interactions.
 
 }}
+\note{
+\itemize{
+\item Automatic conversion of character to factor does not guarantee results can be generated correctly. It is
+therefore better to always pre-process the dataset such that factors are manually created from character
+variables before passing the dataset to \code{\link[rtables:build_table]{rtables::build_table()}}.
+}
+}
 \examples{
 library(survival)
 

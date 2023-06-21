@@ -455,6 +455,34 @@ testthat::test_that("h_coxreg_inter_effect.numerics works with _:_ in effect lev
   testthat::expect_equal(result[, -1], expected[, -1], ignore_attr = TRUE)
 })
 
+testthat::test_that("h_coxreg_inter_effect works with character covariate", {
+  dta_bladder_raw$covar2 <- as.character(dta_bladder_raw$covar2)
+
+  mod1 <- survival::coxph(survival::Surv(time, status) ~ armcd * covar2, data = dta_bladder_raw)
+  testthat::expect_silent(
+    h_coxreg_extract_interaction(
+      effect = "armcd", covar = "covar2", mod = mod1, control = control_coxreg(),
+      at = list(), data = dta_bladder_raw
+    )
+  )
+  testthat::expect_silent(
+    h_coxreg_inter_effect(
+      x = dta_bladder_raw[["covar2"]],
+      effect = "armcd", covar = "covar2", mod = mod1, control = control_coxreg(),
+      at = list(), data = dta_bladder_raw
+    )
+  )
+
+  mod2 <- survival::coxph(survival::Surv(time, status) ~ armcd * covar2 + strata(covar1), data = dta_bladder_raw)
+  testthat::expect_silent(
+    h_coxreg_inter_effect(
+      x = dta_bladder_raw[["covar2"]],
+      effect = "armcd", covar = "covar2", mod = mod2, data = dta_bladder_raw,
+      at = list(), control = control_coxreg()
+    )
+  )
+})
+
 # h_coxreg_inter_estimations ----
 
 testthat::test_that("h_coxreg_inter_estimations' results identical to soon deprecated estimate_coef", {
