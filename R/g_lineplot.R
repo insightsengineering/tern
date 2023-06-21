@@ -107,7 +107,7 @@
 #'   adlb,
 #'   adsl,
 #'   table = c("n", "mean", "mean_ci"),
-#'   control = control_summarize_vars(conf_level = 0.80),
+#'   control = control_analyze_vars(conf_level = 0.80),
 #'   title = "Plot of Mean and 80% Confidence Limits by Visit"
 #' )
 #'

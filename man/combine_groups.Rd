@@ -31,7 +31,7 @@ groups <- combine_groups(
 basic_table() \%>\%
   split_cols_by_groups("ARM", groups) \%>\%
   add_colcounts() \%>\%
-  summarize_vars("AGE") \%>\%
+  analyze_vars("AGE") \%>\%
   build_table(DM)
 
 }

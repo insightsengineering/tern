@@ -81,7 +81,7 @@ The table layout is materialized with the `rtables::build_table` function and th
 
 The `tern` analytical functions are wrappers around the `rtables::analyze` function; they offer various methods useful from the perspective of clinical trials and other statistical projects.
 
-Examples of the `tern` analytical functions are `tern::count_occurrences`, `tern::summarize_ancova` and `tern::summarize_vars`. 
+Examples of the `tern` analytical functions are `tern::count_occurrences`, `tern::summarize_ancova` and `tern::analyze_vars`. 
 As there is no one prefix to identify all `tern` analytical functions it is recommended to use the reference subsection on [the tern website](https://insightsengineering.github.io/tern/main/reference/index.html).
 
 In the `rtables` code below we first describe the two tables and assign the descriptions to the variables `lyt` and `lyt2`. We then built the tables using the actual data with `rtables::build_table`. The description of a table is called a table **layout**. The **analyze instruction** adds to the layout that the `ARM` variable should be analyzed with the `mean` analysis function and the result should be rounded to 1 decimal place.
@@ -102,14 +102,14 @@ lyt <- rtables::basic_table() %>%
   rtables::analyze(vars = "AVAL", mean, format = "xx.x")
 ```
 
-Below the only `tern` function is `summarize_vars` which replaces the `rtables::analyze` function above.
+Below the only `tern` function is `analyze_vars` which replaces the `rtables::analyze` function above.
 
 ```{r}
-# Create table layout with tern summarize_vars analyze function
+# Create table layout with tern analyze_vars analyze function
 lyt2 <- rtables::basic_table() %>%
   rtables::split_cols_by(var = "ARM") %>%
   rtables::split_rows_by(var = "AVISIT") %>%
-  tern::summarize_vars(vars = "AVAL", .formats = c("mean_sd" = "(xx.xx, xx.xx)"))
+  tern::analyze_vars(vars = "AVAL", .formats = c("mean_sd" = "(xx.xx, xx.xx)"))
 ```
 
 ```{r}

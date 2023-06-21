@@ -53,7 +53,7 @@ The table layout is materialized with the `rtables::build_table` function and th
 
 The `tern` analyze functions are wrappers around `rtables::analyze` function, they offer various methods useful from the perspective of clinical trials and other statistical projects.
 
-Examples of the `tern` analyze functions are `tern::count_occurrences`, `tern::summarize_ancova` or  `tern::summarize_vars`. 
+Examples of the `tern` analyze functions are `tern::count_occurrences`, `tern::summarize_ancova` or  `tern::analyze_vars`. 
 As there is no one prefix to identify all `tern` analyze functions it is recommended to use the [the tern website functions reference](https://insightsengineering.github.io/tern/main/reference/index.html).
 
 ### Internals of `tern` Analyze Functions 
@@ -114,7 +114,7 @@ We are going to create 3 different tables using `tern` analyze functions and the
 
 |         Table       |   `tern` analyze functions      |
 |---------------------|:---------------------------------|
-| **Demographic Table** | `summarize_vars()` and `summarize_num_patients()` |
+| **Demographic Table** | `analyze_vars()` and `summarize_num_patients()` |
 | **Adverse event Table** | `count_occurrences()` |
 | **Response Table** | `estimate_proportion()`, `estimate_proportion_diff()` and `test_proportion_diff()` |
 
@@ -122,7 +122,7 @@ We are going to create 3 different tables using `tern` analyze functions and the
 
 Demographic tables provide a summary of the characteristics of patients enrolled in a clinical trial. Typically the table columns represent treatment arms and variables summarized in the table are demographic properties such as age, sex, race, etc. 
 
-In the example below the only function from `tern` is `summarize_vars()` and the remaining layout functions are from `rtables`. 
+In the example below the only function from `tern` is `analyze_vars()` and the remaining layout functions are from `rtables`. 
 
 ```{r}
 # Select variables to include in table.
@@ -133,7 +133,7 @@ basic_table() %>%
   split_cols_by(var = "ARM") %>%
   add_overall_col("All Patients") %>%
   add_colcounts() %>%
-  summarize_vars(
+  analyze_vars(
     vars = vars,
     var_labels = var_labels
   ) %>%
@@ -153,16 +153,16 @@ basic_table() %>%
   split_cols_by(var = "ARM") %>%
   add_overall_col("All Patients") %>%
   add_colcounts() %>%
-  summarize_vars(
+  analyze_vars(
     vars = vars,
     var_labels = var_labels
   ) %>%
   build_table(adsl)
 ```
 
-The `tern` package includes many functions similar to `summarize_vars()`. These functions are called layout creating functions and are used in combination with other `rtables` layout functions just like in the examples above. Layout creating functions are wrapping calls to `rtables` `analyze()`, `analyze_colvars()` and `summarize_row_groups()` and provide options for easy formatting and analysis modifications. 
+The `tern` package includes many functions similar to `analyze_vars()`. These functions are called layout creating functions and are used in combination with other `rtables` layout functions just like in the examples above. Layout creating functions are wrapping calls to `rtables` `analyze()`, `analyze_colvars()` and `summarize_row_groups()` and provide options for easy formatting and analysis modifications. 
 
-To customize the display for the demographics table, we can do so via the arguments in `summarize_vars()`. Most layout creating functions in `tern` include the standard arguments `.stats`, `.formats`, `.labels` and `.indent_mods` which control which statistics are displayed and how the numbers are formatted. Refer to the package help with `help("summarize_vars")` or `?summarize_vars` to see the full set of options.
+To customize the display for the demographics table, we can do so via the arguments in `analyze_vars()`. Most layout creating functions in `tern` include the standard arguments `.stats`, `.formats`, `.labels` and `.indent_mods` which control which statistics are displayed and how the numbers are formatted. Refer to the package help with `help("analyze_vars")` or `?analyze_vars` to see the full set of options.
 
 For this example we will change the default summary for numeric variables to include the number of records, and the mean and standard deviation (in a single statistic, i.e. within a single cell). For categorical variables we modify the summary to include the number of records and the counts of categories. We also modify the display format for the mean and standard deviation to print two decimal places instead of just one.
 
@@ -172,7 +172,7 @@ basic_table() %>%
   split_cols_by(var = "ARM") %>%
   add_overall_col("All Patients") %>%
   add_colcounts() %>%
-  summarize_vars(
+  analyze_vars(
     vars = vars,
     var_labels = var_labels,
     .stats = c("n", "mean_sd", "count"),
@@ -188,7 +188,7 @@ lyt <- basic_table() %>%
   split_cols_by(var = "ARM") %>%
   add_overall_col("All Patients") %>%
   add_colcounts() %>%
-  summarize_vars(
+  analyze_vars(
     vars = vars,
     var_labels = var_labels
   )
@@ -469,7 +469,7 @@ Tabulation with `tern` builds on top of the the layout tabulation framework from
 
 The `tern` analyze functions introduced in this vignette are:
 
-* `summarize_vars()`
+* `analyze_vars()`
 * `summarize_num_patients()`
 * `count_occurrences()`
 * `estimate_proportion()`

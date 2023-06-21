@@ -49,7 +49,7 @@ groups_list_to_df <- function(groups_list) {
 #' basic_table() %>%
 #'   split_cols_by_groups("ARM", groups) %>%
 #'   add_colcounts() %>%
-#'   summarize_vars("AGE") %>%
+#'   analyze_vars("AGE") %>%
 #'   build_table(DM)
 #'
 #' @export
@@ -231,7 +231,7 @@ split_cols_by_groups <- function(lyt,
 #' basic_table() %>%
 #'   split_cols_by_groups("ARM", groups) %>%
 #'   add_colcounts() %>%
-#'   summarize_vars("AGE") %>%
+#'   analyze_vars("AGE") %>%
 #'   build_table(DM, col_counts = col_counts)
 #'
 #' ref <- "A: Drug X"
@@ -244,7 +244,7 @@ split_cols_by_groups <- function(lyt,
 #' basic_table() %>%
 #'   split_cols_by_groups("ARM", groups) %>%
 #'   add_colcounts() %>%
-#'   summarize_vars("AGE") %>%
+#'   analyze_vars("AGE") %>%
 #'   build_table(DM, col_counts = col_counts)
 #'
 #' @export

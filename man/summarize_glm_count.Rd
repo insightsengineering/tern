@@ -133,7 +133,7 @@ anl$AVAL_f <- as.factor(anl$AVAL)
 lyt <- basic_table() \%>\%
   split_cols_by("ARM", ref_group = "B: Placebo") \%>\%
   add_colcounts() \%>\%
-  summarize_vars(
+  analyze_vars(
     "AVAL_f",
     var_labels = "Number of exacerbations per patient",
     .stats = c("count_fraction"),

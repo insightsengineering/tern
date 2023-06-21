@@ -35,7 +35,7 @@
 #'   (`do_summarize_row_groups = FALSE`, the default), and to the group label for
 #'   `do_summarize_row_groups = TRUE`.
 #'
-#' @seealso [summarize_vars()], [rtables::analyze_colvars()].
+#' @seealso [analyze_vars()], [rtables::analyze_colvars()].
 #'
 #' @examples
 #' library(dplyr)

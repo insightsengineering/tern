@@ -14,7 +14,7 @@ NULL
 #' @describeIn count_patients_with_flags Statistics function which counts the number of patients for which
 #'   a particular flag variable is `TRUE`.
 #'
-#' @inheritParams summarize_variables
+#' @inheritParams analyze_variables
 #' @param .var (`character`)\cr name of the column that contains the unique identifier.
 #' @param flag_variables (`character`)\cr a character vector specifying the names of `logical`
 #'   variables from analysis dataset used for counting the number of unique identifiers.
