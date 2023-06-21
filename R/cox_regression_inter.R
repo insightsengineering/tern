@@ -7,7 +7,7 @@
 #' of the covariate, in comparison to the treatment control.
 #'
 #' @inheritParams argument_convention
-#' @param x (`numeric` or `factor`)\cr the values of the effect to be tested.
+#' @param x (`numeric` or `factor`)\cr the values of the covariate to be tested.
 #' @param effect (`string`)\cr the name of the effect to be tested and estimated.
 #' @param covar (`string`)\cr the name of the covariate in the model.
 #' @param mod (`coxph`)\cr the Cox regression model.
@@ -135,10 +135,11 @@ h_coxreg_inter_effect.factor <- function(x,
                                          control,
                                          data,
                                          ...) {
+  lvl_given = levels(x)
   y <- h_coxreg_inter_estimations(
     variable = effect, given = covar,
     lvl_var = levels(data[[effect]]),
-    lvl_given = levels(data[[covar]]),
+    lvl_given = lvl_given,
     mod = mod,
     conf_level = 0.95
   )[[1]]
@@ -146,8 +147,8 @@ h_coxreg_inter_effect.factor <- function(x,
   data.frame(
     effect = "Covariate:",
     term = rep(covar, nrow(y)),
-    term_label = as.character(paste0("  ", levels(data[[covar]]))),
-    level = as.character(levels(data[[covar]])),
+    term_label = as.character(paste0("  ", lvl_given)),
+    level = as.character(lvl_given),
     n = NA,
     hr = y[, "hr"],
     lcl = y[, "lcl"],
@@ -183,7 +184,6 @@ h_coxreg_inter_effect.character <- function(x,
                                             ...) {
   y <- as_factor_keep_attributes(x, verbose = verbose)
   if (is.character(data[[effect]])) data[[effect]] <- as_factor_keep_attributes(data[[effect]], verbose = FALSE)
-  if (is.character(data[[covar]])) data[[covar]] <- as_factor_keep_attributes(data[[covar]], verbose = FALSE)
 
   h_coxreg_inter_effect(
     x = y,

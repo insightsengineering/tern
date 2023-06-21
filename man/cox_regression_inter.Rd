@@ -40,7 +40,7 @@ h_coxreg_inter_estimations(
 )
 }
 \arguments{
-\item{x}{(\code{numeric} or \code{factor})\cr the values of the effect to be tested.}
+\item{x}{(\code{numeric} or \code{factor})\cr the values of the covariate to be tested.}
 
 \item{effect}{(\code{string})\cr the name of the effect to be tested and estimated.}
 
