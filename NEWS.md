@@ -1,7 +1,7 @@
 # tern 0.8.3.9001
 
 ### Enhancements
-* Started deprecation cycle for `summarize_vars` and `control_summarize_vars` names by using aliases. Renamed into `analyze_vars` and `control_analyze_vars` to reflect underlying `rtables`machinery.
+* Started deprecation cycle for `summarize_vars` and `control_summarize_vars`. Renamed into `analyze_vars` and `control_analyze_vars` to reflect underlying `rtables`machinery while keeping backward compatability with aliases.
 
 ### Miscellaneous
 * Began deprecation of `time_unit_input` and `time_unit_output` arguments and replaced them with the `input_time_unit` and `n_pt_years_rate`, respectively, in `control_incidence_rate`.

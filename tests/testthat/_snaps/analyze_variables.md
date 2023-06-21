@@ -1,4 +1,4 @@
-# control_summarize_vars works with customized parameters
+# control_analyze_vars works with customized parameters
 
     Code
       res

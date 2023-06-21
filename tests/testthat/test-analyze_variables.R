@@ -1,5 +1,5 @@
-testthat::test_that("control_summarize_vars works with customized parameters", {
-  result <- control_summarize_vars(
+testthat::test_that("control_analyze_vars works with customized parameters", {
+  result <- control_analyze_vars(
     conf_level = 0.9,
     quantiles = c(0.1, 0.9)
   )
@@ -8,9 +8,9 @@ testthat::test_that("control_summarize_vars works with customized parameters", {
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("control_summarize_vars fails wrong inputs", {
-  testthat::expect_error(control_summarize_vars(quantiles = c(25, 75)))
-  testthat::expect_error(control_summarize_vars(conf_level = 95))
+testthat::test_that("control_analyze_vars fails wrong inputs", {
+  testthat::expect_error(control_analyze_vars(quantiles = c(25, 75)))
+  testthat::expect_error(control_analyze_vars(conf_level = 95))
 })
 
 testthat::test_that("s_summary return NA for x length 0L", {
@@ -204,7 +204,7 @@ testthat::test_that("`analyze_vars` works with healthy input, and control functi
   l <- basic_table() %>%
     analyze_vars(
       vars = "AVAL",
-      control = control_summarize_vars(quantiles = c(0.1, 0.9), conf_level = 0.9),
+      control = control_analyze_vars(quantiles = c(0.1, 0.9), conf_level = 0.9),
       .stats = c("n", "mean_sd", "mean_se", "mean_ci", "quantiles")
     )
   result <- build_table(l, df = dta_test)
