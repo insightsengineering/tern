@@ -135,7 +135,7 @@ h_coxreg_inter_effect.factor <- function(x,
                                          control,
                                          data,
                                          ...) {
-  lvl_given = levels(x)
+  lvl_given <- levels(x)
   y <- h_coxreg_inter_estimations(
     variable = effect, given = covar,
     lvl_var = levels(data[[effect]]),
