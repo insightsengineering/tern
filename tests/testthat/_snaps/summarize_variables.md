@@ -961,7 +961,7 @@
           B                    0          2 (100%)       0    
           C                    0              0       2 (100%)
 
-# `summarize_vars` works with healthy input, default `na.rm = TRUE`.
+# `analyze_vars` works with healthy input, default `na.rm = TRUE`.
 
     Code
       res
@@ -973,7 +973,7 @@
       Median         2.5   
       Min - Max   1.0 - 4.0
 
-# `summarize_vars` works with healthy input, and control function.
+# `analyze_vars` works with healthy input, and control function.
 
     Code
       res
@@ -986,7 +986,7 @@
       Mean 90% CI       (3.30, 6.70)
       10% and 90%-ile    1.0 - 9.0  
 
-# `summarize_vars` works with healthy input, alternative `na.rm = FALSE`
+# `analyze_vars` works with healthy input, alternative `na.rm = FALSE`
 
     Code
       res
@@ -998,7 +998,7 @@
       Median        NA   
       Min - Max     NA   
 
-# `summarize_vars` works with healthy factor input
+# `analyze_vars` works with healthy factor input
 
     Code
       res
@@ -1009,7 +1009,7 @@
       a   2 (66.7%)
       b   1 (33.3%)
 
-# `summarize_vars` works with healthy factor input, alternative `na.rm = FALSE`
+# `analyze_vars` works with healthy factor input, alternative `na.rm = FALSE`
 
     Code
       res
@@ -1033,7 +1033,7 @@
       b           1 (20%)
       <Missing>   2 (40%)
 
-# `summarize_vars` works with factors and different denominators
+# `analyze_vars` works with factors and different denominators
 
     Code
       res
@@ -1062,7 +1062,7 @@
         OTHER                                           0            0              0       
         UNKNOWN                                         0            0              0       
 
-# summarize_vars works in demographic table example
+# analyze_vars works in demographic table example
 
     Code
       res
@@ -1158,7 +1158,7 @@
         CAN                                           0            0              0       
         CHE                                           0            0              0       
 
-# `summarize_vars` works with logical input
+# `analyze_vars` works with logical input
 
     Code
       res
@@ -1168,7 +1168,7 @@
       n                   5   
       count_fraction   3 (60%)
 
-# `summarize_vars` works with healthy logical input, alternative `na.rm = FALSE`
+# `analyze_vars` works with healthy logical input, alternative `na.rm = FALSE`
 
     Code
       res
@@ -1192,7 +1192,7 @@
       TRUE        2 (40%)
       <Missing>   2 (40%)
 
-# `summarize_vars` works with empty named numeric variables
+# `analyze_vars` works with empty named numeric variables
 
     Code
       res
@@ -1204,7 +1204,7 @@
       Median      NA      3.5         5.5   
       Min - Max   NA   3.0 - 4.0   5.0 - 6.0
 
-# summarize_vars 'na_level' argument works as expected
+# analyze_vars 'na_level' argument works as expected
 
     Code
       res
