@@ -147,8 +147,8 @@ h_coxreg_inter_effect.factor <- function(x,
   data.frame(
     effect = "Covariate:",
     term = rep(covar, nrow(y)),
-    term_label = as.character(paste0("  ", lvl_given)),
-    level = as.character(lvl_given),
+    term_label = paste0("  ", lvl_given),
+    level = lvl_given,
     n = NA,
     hr = y[, "hr"],
     lcl = y[, "lcl"],
@@ -180,10 +180,8 @@ h_coxreg_inter_effect.character <- function(x,
                                             label,
                                             control,
                                             data,
-                                            verbose = FALSE,
                                             ...) {
-  y <- as_factor_keep_attributes(x, verbose = verbose)
-  if (is.character(data[[effect]])) data[[effect]] <- as_factor_keep_attributes(data[[effect]], verbose = FALSE)
+  y <- as.factor(x)
 
   h_coxreg_inter_effect(
     x = y,

@@ -16,17 +16,7 @@ h_coxreg_inter_effect(x, effect, covar, mod, label, control, ...)
 
 \method{h_coxreg_inter_effect}{factor}(x, effect, covar, mod, label, control, data, ...)
 
-\method{h_coxreg_inter_effect}{character}(
-  x,
-  effect,
-  covar,
-  mod,
-  label,
-  control,
-  data,
-  verbose = FALSE,
-  ...
-)
+\method{h_coxreg_inter_effect}{character}(x, effect, covar, mod, label, control, data, ...)
 
 h_coxreg_extract_interaction(effect, covar, mod, data, at, control)
 
@@ -59,15 +49,15 @@ item is a vector of levels at which the interaction should be estimated.}
 
 \item{data}{(\code{data.frame})\cr the data frame on which the model was fit.}
 
-\item{verbose}{(\code{logical})\cr Defaults to \code{FALSE}, which prints out warnings and messages. It is mainly used
-to print out information about factor casting.}
-
 \item{variable, given}{(\code{string})\cr the name of variables in interaction. We seek the estimation
 of the levels of \code{variable} given the levels of \code{given}.}
 
 \item{lvl_var, lvl_given}{(\code{character})\cr corresponding levels has given by \code{\link[=levels]{levels()}}.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
+\item{verbose}{(\code{logical})\cr Defaults to \code{FALSE}, which prints out warnings and messages. It is mainly used
+to print out information about factor casting.}
 }
 \value{
 \itemize{
