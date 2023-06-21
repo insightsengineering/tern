@@ -164,9 +164,6 @@ h_coxreg_inter_effect.factor <- function(x,
 #'
 #' @method h_coxreg_inter_effect character
 #'
-#' @param verbose (`logical`)\cr Defaults to `FALSE`, which prints out warnings and messages. It is mainly used
-#'   to print out information about factor casting.
-#'
 #' @note
 #' * Automatic conversion of character to factor does not guarantee results can be generated correctly. It is
 #'   therefore better to always pre-process the dataset such that factors are manually created from character

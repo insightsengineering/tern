@@ -55,9 +55,6 @@ of the levels of \code{variable} given the levels of \code{given}.}
 \item{lvl_var, lvl_given}{(\code{character})\cr corresponding levels has given by \code{\link[=levels]{levels()}}.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
-
-\item{verbose}{(\code{logical})\cr Defaults to \code{FALSE}, which prints out warnings and messages. It is mainly used
-to print out information about factor casting.}
 }
 \value{
 \itemize{
