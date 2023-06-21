@@ -22,7 +22,7 @@ for confidence interval type.}
 \item{input_time_unit}{(\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
 indicating time unit for data input.}
 
-\item{num_pt_year}{(\code{numeric})\cr number of patient-years to use when calculating AE rate.}
+\item{num_pt_year}{(\code{numeric})\cr number of patient-years to use when calculating \code{AE} rate.}
 
 \item{time_unit_input}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{input_time_unit} argument instead.}
 
