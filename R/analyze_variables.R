@@ -21,9 +21,9 @@
 #' @export control_analyze_vars control_summarize_vars
 #' @aliases control_summarize_vars
 control_analyze_vars <- function(conf_level = 0.95,
-                                   quantiles = c(0.25, 0.75),
-                                   quantile_type = 2,
-                                   test_mean = 0) {
+                                 quantiles = c(0.25, 0.75),
+                                 quantile_type = 2,
+                                 test_mean = 0) {
   checkmate::assert_vector(quantiles, len = 2)
   checkmate::assert_int(quantile_type, lower = 1, upper = 9)
   checkmate::assert_numeric(test_mean)
@@ -745,18 +745,18 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #' @export analyze_vars summarize_vars
 #' @aliases summarize_vars
 analyze_vars <- function(lyt,
-                           vars,
-                           var_labels = vars,
-                           nested = TRUE,
-                           ...,
-                           na_level = NA_character_,
-                           show_labels = "default",
-                           table_names = vars,
-                           section_div = NA_character_,
-                           .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
-                           .formats = NULL,
-                           .labels = NULL,
-                           .indent_mods = NULL) {
+                         vars,
+                         var_labels = vars,
+                         nested = TRUE,
+                         ...,
+                         na_level = NA_character_,
+                         show_labels = "default",
+                         table_names = vars,
+                         section_div = NA_character_,
+                         .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
+                         .formats = NULL,
+                         .labels = NULL,
+                         .indent_mods = NULL) {
   afun <- create_afun_summary(.stats, .formats, .labels, .indent_mods)
 
   analyze(
