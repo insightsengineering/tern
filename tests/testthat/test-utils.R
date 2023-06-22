@@ -94,7 +94,6 @@ testthat::test_that("extract_by_name x_defaults argument works as expected", {
     x = c(a = "xx", b = function(x) paste(x, "bla")),
     names = c("b", "c"),
     x_defaults = c(c = "c_default")
-
   )
   expected <- c(b = function(x) paste(x, "bla"), c = "c_default")
   testthat::expect_identical(result, expected)
