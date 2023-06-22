@@ -544,10 +544,10 @@ a_summary <- function(x,
                       .df_row = NULL,
                       .ref_group = NULL,
                       .in_ref_col = FALSE,
-                      .stats = NULL,
-                      .formats = NULL,
-                      .labels = NULL,
-                      .indent_mods = NULL,
+                      .stats = names(get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"), "_labels"))),
+                      .formats = get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"), "_formats")),
+                      .labels = get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"), "_labels")),
+                      .indent_mods = get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"), "_indents")),
                       na.rm = TRUE, # nolint
                       na_level = NA_character_,
                       compare = FALSE,
@@ -560,34 +560,23 @@ a_summary <- function(x,
   }
 
   if (any(is.na(.df_row[[.var]])) && !any(is.na(x)) && !na.rm) levels(x) <- c(levels(x), "na-level")
-  x_stats <- if (!compare) {
-    s_summary(x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, ...)
+  if (!compare) {
+    x_stats <- s_summary(x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, ...)
+    .stats <- setdiff(.stats, "pval")
+    .formats <- .formats[setdiff(names(.formats), "pval")]
+    .labels <- .labels[setdiff(names(.labels), "pval")]
+    if (!is.null(names(.indent_mods))) .indent_mods <- .indent_mods[setdiff(names(.indent_mods), "pval")]
   } else {
-    s_compare(
+    x_stats <- s_compare(
       x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, .ref_group = .ref_group, .in_ref_col = .in_ref_col, ...
     )
   }
-
-  if (is.null(.stats)) {
-    .stats <- names(get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_formats")))
-    if (!compare) .stats <- head(.stats, -1)
-  }
-  if (is.null(.formats)) {
-    .formats <- get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_formats"))
-    if (!compare) .formats <- head(.formats, -1)
-  }
   if (is.numeric(x)) {
-    .a_compare_numeric_labels[c("mean_ci", "mean_pval", "median_ci", "quantiles")] <- sapply(
-      c("mean_ci", "mean_pval", "median_ci", "quantiles"), function(x) attr(x_stats[[x]], "label")
-    )
-  }
-  if (is.null(.labels)) {
-    .labels <- get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_labels"))
-    if (!compare) .labels <- head(.labels, -1)
-  }
-  if (is.null(.indent_mods)) {
-    .indent_mods <- get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_indents"))
-    if (!compare) .indent_mods <- head(.indent_mods, -1)
+    for (i in intersect(.stats, c("mean_ci", "mean_pval", "median_ci", "quantiles"))) {
+      if (!i %in% names(.labels) || .labels[[i]] == .a_compare_numeric_labels[[i]]) {
+        .labels[[i]] <- attr(x_stats[[i]], "label")
+      }
+    }
   }
   if (length(.indent_mods) == 1 && is.null(names(.indent_mods))) {
     .indent_mods <- rep(.indent_mods, length(.stats)) %>% `names<-`(.stats)
@@ -596,13 +585,13 @@ a_summary <- function(x,
   .stats <- intersect(.stats, names(x_stats))
   x_stats <- x_stats[.stats]
   .formats <- extract_by_name(
-    .formats, .stats, get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_formats"))
+    .formats, .stats, get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"), "_formats"))
   )
   .labels <- extract_by_name(
-    .labels, .stats, get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_labels"))
+    .labels, .stats, get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"), "_labels"))
   )
   .indent_mods <- extract_by_name(
-    .indent_mods, .stats, get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_indents"))
+    .indent_mods, .stats, get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"), "_indents"))
   )
 
   if (!is.numeric(x) && !is.logical(x)) {
@@ -727,16 +716,18 @@ summarize_vars <- function(lyt,
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = NULL) {
+  extra_args <- list(.stats = .stats, na.rm = na.rm, na_level = na_level, ...)
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
   analyze(
     lyt = lyt,
     vars = vars,
     var_labels = var_labels,
     afun = a_summary,
     nested = nested,
-    extra_args = list(
-      .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods,
-      na.rm = na.rm, na_level = na_level, ...
-    ),
+    extra_args = extra_args,
     inclNAs = TRUE,
     show_labels = show_labels,
     table_names = table_names,

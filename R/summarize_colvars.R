@@ -67,11 +67,14 @@ summarize_colvars <- function(lyt,
                               .formats = NULL,
                               .labels = NULL,
                               .indent_mods = NULL) {
+  extra_args <- list(.stats = .stats, na_level = na_level, ...)
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
   analyze_colvars(
     lyt,
     afun = a_summary,
-    extra_args =  list(
-      .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_level = na_level, ...
-    )
+    extra_args =  extra_args
   )
 }
