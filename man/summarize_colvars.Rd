@@ -85,5 +85,5 @@ basic_table() \%>\%
 
 }
 \seealso{
-\code{\link[rtables:split_cols_by_multivar]{rtables::split_cols_by_multivar()}} and \link{analyze_colvars_functions}.
+\code{\link[rtables:split_cols_by_multivar]{rtables::split_cols_by_multivar()}} and \code{\link{analyze_colvars_functions}}.
 }

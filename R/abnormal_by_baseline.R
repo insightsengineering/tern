@@ -64,19 +64,6 @@ d_count_abnormal_by_baseline <- function(abnormal) {
 #' * `s_count_abnormal_by_baseline()` returns statistic `fraction` which is a named list with 3 labeled elements:
 #'   `not_abnormal`, `abnormal`, and `total`. Each element contains a vector with `num` and `denom` patient counts.
 #'
-#' @examples
-#' df <- data.frame(
-#'   USUBJID = as.character(c(1:6)),
-#'   ANRIND = factor(c(rep("LOW", 4), "NORMAL", "HIGH")),
-#'   BNRIND = factor(c("LOW", "NORMAL", "HIGH", NA, "LOW", "NORMAL"))
-#' )
-#' df <- df_explicit_na(df)
-#'
-#' # Internal function - s_count_abnormal_by_baseline
-#' \dontrun{
-#' # Just for one abnormal level.
-#' s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
-#' }
 #'
 #' @keywords internal
 s_count_abnormal_by_baseline <- function(df,
@@ -147,14 +134,6 @@ s_count_abnormal_by_baseline <- function(df,
 #' @return
 #' * `a_count_abnormal_by_baseline()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @examples
-#' # Internal function - a_count_abnormal_by_baseline
-#' \dontrun{
-#' # Use the Formatted Analysis function for `analyze()`. We need to ungroup `fraction` first
-#' # so that the `rtables` formatting function `format_fraction()` can be applied correctly.
-#' afun <- make_afun(a_count_abnormal_by_baseline, .ungroup_stats = "fraction")
-#' afun(df, .var = "ANRIND", abnormal = "LOW")
-#' }
 #'
 #' @keywords internal
 a_count_abnormal_by_baseline <- make_afun(
@@ -171,6 +150,13 @@ a_count_abnormal_by_baseline <- make_afun(
 #'   the statistics from `s_count_abnormal_by_baseline()` to the table layout.
 #'
 #' @examples
+#' df <- data.frame(
+#'   USUBJID = as.character(c(1:6)),
+#'   ANRIND = factor(c(rep("LOW", 4), "NORMAL", "HIGH")),
+#'   BNRIND = factor(c("LOW", "NORMAL", "HIGH", NA, "LOW", "NORMAL"))
+#' )
+#' df <- df_explicit_na(df)
+#'
 #' # Layout creating function.
 #' basic_table() %>%
 #'   count_abnormal_by_baseline(var = "ANRIND", abnormal = c(High = "HIGH")) %>%

@@ -2,8 +2,8 @@ testthat::test_that("control_incidence_rate works with customized parameters", {
   result <- control_incidence_rate(
     conf_level = 0.9,
     conf_type = "exact",
-    time_unit_input = "month",
-    time_unit_output = 100
+    input_time_unit = "month",
+    num_pt_year = 100
   )
 
   res <- testthat::expect_silent(result)
@@ -13,8 +13,8 @@ testthat::test_that("control_incidence_rate works with customized parameters", {
 testthat::test_that("control_incidence_rate fails with wrong input", {
   testthat::expect_error(control_incidence_rate(conf_level = 1.1))
   testthat::expect_error(control_incidence_rate(conf_type = "wald"))
-  testthat::expect_error(control_incidence_rate(time_unit_input = "decade"))
-  testthat::expect_error(control_incidence_rate(time_unit_output = "one"))
+  testthat::expect_error(control_incidence_rate(input_time_unit = "decade"))
+  testthat::expect_error(control_incidence_rate(num_pt_year = "one"))
 })
 
 testthat::test_that("h_incidence_rate_normal works as expected with healthy input", {
@@ -49,7 +49,7 @@ testthat::test_that("h_incidence_rate works as expected with healthy input", {
   result <- h_incidence_rate(
     200,
     2,
-    control_incidence_rate(conf_level = 0.9, conf_type = "normal_log", time_unit_output = 100)
+    control_incidence_rate(conf_level = 0.9, conf_type = "normal_log", num_pt_year = 100)
   )
 
   res <- testthat::expect_silent(result)
@@ -72,8 +72,8 @@ testthat::test_that("s_incidence_rate works as expected with healthy input", {
     control = control_incidence_rate(
       conf_level = 0.9,
       conf_type = "normal_log",
-      time_unit_input = "month",
-      time_unit_output = 100
+      input_time_unit = "month",
+      num_pt_year = 100
     )
   )
 
@@ -100,8 +100,8 @@ testthat::test_that("estimate_incidence_rate works as expected with healthy inpu
       control = control_incidence_rate(
         conf_level = 0.9,
         conf_type = "normal_log",
-        time_unit_input = "month",
-        time_unit_output = 100
+        input_time_unit = "month",
+        num_pt_year = 100
       )
     ) %>%
     build_table(df)

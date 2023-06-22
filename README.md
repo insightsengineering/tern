@@ -6,7 +6,7 @@
 [![Code Coverage 📔](https://raw.githubusercontent.com/insightsengineering/tern/_xml_coverage_reports/data/main/badge.svg)](https://insightsengineering.github.io/tern/main/coverage-report/)
 
 ![GitHub forks](https://img.shields.io/github/forks/insightsengineering/tern?style=social)
-![GitHub Repo stars](https://img.shields.io/github/stars/insightsengineering/tern?style=social)
+![GitHub repo stars](https://img.shields.io/github/stars/insightsengineering/tern?style=social)
 
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/insightsengineering/tern)
 ![GitHub contributors](https://img.shields.io/github/contributors/insightsengineering/tern)

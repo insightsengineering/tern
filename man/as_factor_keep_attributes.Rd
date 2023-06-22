@@ -28,12 +28,4 @@ Converts \code{x} to a factor and keeps its attributes. Warns appropriately such
 can decide whether they prefer converting to factor manually (e.g. for full control of
 factor levels).
 }
-\examples{
-# Internal function - as_factor_keep_attributes
-\dontrun{
-as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"), verbose = FALSE)
-as_factor_keep_attributes(c("a", "b", ""), "id", verbose = FALSE)
-}
-
-}
 \keyword{internal}

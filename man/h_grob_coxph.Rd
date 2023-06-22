@@ -2,7 +2,7 @@
 % Please edit documentation in R/kaplan_meier_plot.R
 \name{h_grob_coxph}
 \alias{h_grob_coxph}
-\title{Helper Function: CoxPH Grob}
+\title{Helper Function: \code{CoxPH} Grob}
 \usage{
 h_grob_coxph(
   ...,
@@ -34,7 +34,7 @@ and \code{p-value (log-rank)}.
 Grob of \code{rtable} output from \code{\link[=h_tbl_coxph_pairwise]{h_tbl_coxph_pairwise()}}
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(survival)
 library(grid)

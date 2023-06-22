@@ -38,11 +38,6 @@ NULL
 #'   )
 #' df <- adtte_f %>% filter(ARMCD == "ARM A")
 #'
-#' # Internal function - s_surv_time
-#' \dontrun{
-#' s_surv_time(df, .var = "AVAL", is_event = "is_event")
-#' }
-#'
 #' @keywords internal
 s_surv_time <- function(df,
                         .var,
@@ -87,12 +82,6 @@ s_surv_time <- function(df,
 #'
 #' @return
 #' * `a_surv_time()` returns the corresponding list with formatted [rtables::CellValue()].
-#'
-#' @examples
-#' # Internal function - a_surv_time
-#' \dontrun{
-#' a_surv_time(df, .var = "AVAL", is_event = "is_event")
-#' }
 #'
 #' @keywords internal
 a_surv_time <- make_afun(

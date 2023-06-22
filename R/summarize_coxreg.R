@@ -59,13 +59,13 @@ NULL
 #'   * `pval`: p-value of the treatment effect
 #'   * `pval_inter`: p-value of the interaction effect between the treatment and the covariate (univariate only)
 #' @param .which_vars (`character`)\cr which rows should statistics be returned for from the given model.
-#'   Defaults to "all". Other options include "var_main" for main effects, "inter" for interaction effects,
-#'   and "multi_lvl" for multivariate model covariate level rows. When `.which_vars` is "all" specific
+#'   Defaults to "all". Other options include "var_main" for main effects, `"inter"` for interaction effects,
+#'   and `"multi_lvl"` for multivariate model covariate level rows. When `.which_vars` is "all" specific
 #'   variables can be selected by specifying `.var_nms`.
 #' @param .var_nms (`character`)\cr the `term` value of rows in `df` for which `.stats` should be returned. Typically
 #'   this is the name of a variable. If using variable labels, `var` should be a vector of both the desired
 #'   variable name and the variable label in that order to see all `.stats` related to that variable. When `.which_vars`
-#'   is "var_main" `.var_nms` should be only the variable name.
+#'   is `"var_main"` `.var_nms` should be only the variable name.
 #'
 #' @return
 #' * `s_coxreg()` returns the selected statistic for from the Cox regression model for the selected variable(s).
@@ -149,12 +149,16 @@ s_coxreg <- function(model_df, .stats, .which_vars = "all", .var_nms = NULL) {
 #' @param na_level (`string`)\cr custom string to replace all `NA` values with. Defaults to `""`.
 #' @param cache_env (`environment`)\cr an environment object used to cache the regression model in order to
 #'   avoid repeatedly fitting the same model for every row in the table. Defaults to `NULL` (no caching).
+#' @param varlabels (`list`)\cr a named list corresponds to the names of variables found in data, passed
+#'   as a named list and corresponding to time, event, arm, strata, and covariates terms. If arm is missing
+#'   from variables, then only Cox model(s) including the covariates will be fitted and the corresponding
+#'   effect estimates will be tabulated later.
 #'
 #' @return
 #' * `a_coxreg()` returns formatted [rtables::CellValue()].
 #'
 #' @examples
-#' tern:::a_coxreg(
+#' a_coxreg(
 #'   df = dta_bladder,
 #'   labelstr = "Label 1",
 #'   variables = u1_variables,
@@ -163,7 +167,7 @@ s_coxreg <- function(model_df, .stats, .which_vars = "all", .var_nms = NULL) {
 #'   .formats = "xx"
 #' )
 #'
-#' tern:::a_coxreg(
+#' a_coxreg(
 #'   df = dta_bladder,
 #'   labelstr = "",
 #'   variables = u1_variables,
@@ -172,7 +176,7 @@ s_coxreg <- function(model_df, .stats, .which_vars = "all", .var_nms = NULL) {
 #'   .formats = "xx.xxxx"
 #' )
 #'
-#' @keywords internal
+#' @export
 a_coxreg <- function(df,
                      labelstr,
                      eff = FALSE,

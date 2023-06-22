@@ -9,9 +9,9 @@
 \alias{tern_ex_adpp}
 \alias{tern_ex_adrs}
 \alias{tern_ex_adtte}
-\title{Simulated CDISC Data for Examples}
+\title{Simulated \code{CDISC} Data for Examples}
 \format{
-rds (data.frame)
+\code{rds} (data.frame)
 
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 200 rows and 21 columns.
 
@@ -39,21 +39,21 @@ tern_ex_adrs
 tern_ex_adtte
 }
 \description{
-Simulated CDISC Data for Examples
+Simulated \code{CDISC} Data for Examples
 }
 \section{Functions}{
 \itemize{
-\item \code{tern_ex_adsl}: ADSL data
+\item \code{tern_ex_adsl}: \code{ADSL} data
 
-\item \code{tern_ex_adae}: ADAE data
+\item \code{tern_ex_adae}: \code{ADAE} data
 
-\item \code{tern_ex_adlb}: ADLB data
+\item \code{tern_ex_adlb}: \code{ADLB} data
 
-\item \code{tern_ex_adpp}: ADPP data
+\item \code{tern_ex_adpp}: \code{ADPP} data
 
-\item \code{tern_ex_adrs}: ADRS data
+\item \code{tern_ex_adrs}: \code{ADRS} data
 
-\item \code{tern_ex_adtte}: ADTTE data
+\item \code{tern_ex_adtte}: \code{ADTTE} data
 
 }}
 \keyword{datasets}

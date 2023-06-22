@@ -33,6 +33,45 @@
       
       
 
+# s_coxreg works with character covariates in the univariate case when interaction = TRUE
+
+    Code
+      res
+    Output
+      $hr
+      $hr$`2 vs control (1)`
+      [1] 0.6386426
+      
+      
+      $hr
+      $hr$`A Covariate Label`
+      numeric(0)
+      
+      $hr$`  1`
+      [1] 0.6284569
+      
+      $hr$`  2`
+      [1] 0.5806499
+      
+      $hr$`  3`
+      [1] 0.5486103
+      
+      $hr$`  4`
+      [1] 0.6910725
+      
+      
+      $hr
+      $hr$`Sex (F/M)`
+      numeric(0)
+      
+      $hr$`  F`
+      [1] 0.6678243
+      
+      $hr$`  M`
+      [1] 0.5954021
+      
+      
+
 # a_coxreg works as expected
 
     Code

@@ -105,14 +105,6 @@ rht <- function(x) {
 #' mmat <- stats::model.matrix(mod)[1, ]
 #' mmat[!mmat == 0] <- 0
 #'
-#' # Internal function - estimate_coef
-#' \dontrun{
-#' estimate_coef(
-#'   variable = "ARMCD", given = "SEX", lvl_var = "ARM A", lvl_given = "M",
-#'   coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod), conf_level = .95
-#' )
-#' }
-#'
 #' @keywords internal
 estimate_coef <- function(variable, given,
                           lvl_var, lvl_given,
@@ -190,7 +182,7 @@ estimate_coef <- function(variable, given,
 #'
 #' @examples
 #' # `car::Anova` on cox regression model including strata and expected
-#' # a likelihood ratio test triggers a warning as only Wald method is
+#' # a likelihood ratio test triggers a warning as only `Wald` method is
 #' # accepted.
 #'
 #' library(survival)
@@ -199,12 +191,6 @@ estimate_coef <- function(variable, given,
 #'   formula = Surv(time = futime, event = fustat) ~ factor(rx) + strata(ecog.ps),
 #'   data = ovarian
 #' )
-#'
-#' # Internal function - try_car_anova
-#' \dontrun{
-#' with_wald <- try_car_anova(mod = mod, test.statistic = "Wald")
-#' with_lr <- try_car_anova(mod = mod, test.statistic = "LR")
-#' }
 #'
 #' @keywords internal
 try_car_anova <- function(mod,
@@ -238,7 +224,7 @@ try_car_anova <- function(mod,
   return(y)
 }
 
-#' Fit the Cox Regression Model and Anova
+#' Fit the Cox Regression Model and `Anova`
 #'
 #' The functions allows to derive from the [survival::coxph()] results the effect p.values using [car::Anova()].
 #' This last package introduces more flexibility to get the effect p.values.
@@ -342,7 +328,7 @@ check_increments <- function(increments, covariates) {
 #' @param data (`data.frame`)\cr A data frame which includes the variable in formula and covariates.
 #' @param conf_level (`proportion`)\cr The confidence level for the hazard ratio interval estimations. Default is 0.95.
 #' @param pval_method (`character`)\cr The method used for the estimation of p-values, should be one of
-#'   "wald" (default) or "likelihood".
+#'   `"wald"` (default) or `"likelihood"`.
 #' @param ... Optional parameters passed to [survival::coxph()]. Can include `ties`, a character string specifying the
 #'   method for tie handling, one of `exact` (default), `efron`, `breslow`.
 #'
@@ -367,13 +353,6 @@ check_increments <- function(increments, covariates) {
 #' )
 #' adtte_f$SEX <- droplevels(adtte_f$SEX)
 #' adtte_f$RACE <- droplevels(adtte_f$RACE)
-#'
-#' # Internal function - s_cox_multivariate
-#' \dontrun{
-#' s_cox_multivariate(
-#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = adtte_f
-#' )
-#' }
 #'
 #' @keywords internal
 s_cox_multivariate <- function(formula, data,

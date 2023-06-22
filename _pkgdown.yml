@@ -110,6 +110,7 @@ reference:
       - is_leaf_table
       - split_cols_by_groups
       - to_string_matrix
+      - groups_list_to_df
 
   - title: rtables Formatting Functions
     desc: These functions provide customized formatting rules to work with the
@@ -137,6 +138,7 @@ reference:
       - h_g_ipp
       - matches(".*grob.*")
       - h_xticks
+      - forest_viewport
 
   - title: Data Helper Functions
     desc: These functions are used by other functions to derive data.

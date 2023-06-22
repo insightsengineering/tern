@@ -17,7 +17,7 @@
 #' @param control_surv (`list`)\cr parameters for comparison details, specified by using
 #'   the helper function [control_surv_timepoint()]. Some possible parameter options are:
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for survival rate.
-#'   * `conf_type` (`string`)\cr "plain" (default), "log", "log-log" for confidence interval type,
+#'   * `conf_type` (`string`)\cr `"plain"` (default), `"log"`, `"log-log"` for confidence interval type,
 #'     see more in [survival::survfit()]. Note that the option "none" is no longer supported.
 #' @param xticks (`numeric`, `number`, or `NULL`)\cr numeric vector of ticks or single number with spacing
 #'   between ticks on the x axis. If `NULL` (default), [labeling::extended()] is used to determine
@@ -53,9 +53,9 @@
 #' @param control_coxph_pw (`list`)\cr parameters for comparison details, specified by using
 #'   the helper function [control_coxph()]. Some possible parameter options are:
 #'   * `pval_method` (`string`)\cr p-value method for testing hazard ratio = 1.
-#'     Default method is "log-rank", can also be set to "wald" or "likelihood".
-#'   * `ties` (`string`)\cr method for tie handling. Default is "efron",
-#'     can also be set to "breslow" or "exact". See more in [survival::coxph()]
+#'     Default method is `"log-rank"`, can also be set to `"wald"` or `"likelihood"`.
+#'   * `ties` (`string`)\cr method for tie handling. Default is `"efron"`,
+#'     can also be set to `"breslow"` or `"exact"`. See more in [survival::coxph()]
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
 #' @param position_coxph (`numeric`)\cr x and y positions for plotting [survival::coxph()] model.
 #' @param position_surv_med (`numeric`)\cr x and y positions for plotting annotation table estimating median survival
@@ -67,7 +67,7 @@
 #' @return A `grob` of class `gTree`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(ggplot2)
 #' library(survival)
@@ -467,13 +467,13 @@ g_km <- function(df,
 #'
 #' @inheritParams g_km
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
-#' @param armval (`string`)\cr used as strata name when treatment arm variable only has one level. Default is "All".
+#' @param armval (`string`)\cr used as strata name when treatment arm variable only has one level. Default is `"All"`.
 #'
 #' @return A `tibble` with columns `time`, `n.risk`, `n.event`, `n.censor`, `estimate`, `std.error`, `conf.high`,
 #'   `conf.low`, `strata`, and `censor`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #'
@@ -547,7 +547,7 @@ h_data_plot <- function(fit_km,
 #' @return A vector of positions to use for x-axis ticks on a `ggplot` object.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #'
@@ -603,7 +603,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' @return A `ggplot` object.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #'
@@ -754,7 +754,7 @@ h_ggkm <- function(data,
 #'   * `guide`: The legend.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
@@ -819,9 +819,10 @@ h_decompose_gg <- function(gg) {
 #'   * The right column receive the `ggplot`, the legend, the x-axis and the patient at risk table.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
+#' library(grid)
 #'
 #' fit_km <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
@@ -923,7 +924,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
 #' @return A named `list` of two `gTree` objects: `at_risk` and `label`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
@@ -1067,7 +1068,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 #' @return A summary table with statistics `N`, `Median`, and `XX% CI` (`XX` taken from `fit_km`).
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #'
@@ -1118,7 +1119,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' @return A `grob` of a table containing statistics `N`, `Median`, and `XX% CI` (`XX` taken from `fit_km`).
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
@@ -1203,7 +1204,7 @@ h_grob_median_surv <- function(fit_km,
 #' @return a `gTree` object containing the y-axis annotation from a `ggplot`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
@@ -1243,11 +1244,11 @@ h_grob_y_annot <- function(ylab, yaxis) {
   )
 }
 
-#' Helper Function: Pairwise CoxPH table
+#' Helper Function: Pairwise `CoxPH` table
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Create a `data.frame` of pairwise stratified or unstratified CoxPH analysis results.
+#' Create a `data.frame` of pairwise stratified or unstratified `CoxPH` analysis results.
 #'
 #' @inheritParams g_km
 #'
@@ -1255,7 +1256,7 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #'   and `p-value (log-rank)`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #'
 #' adtte <- tern_ex_adtte %>%
@@ -1304,7 +1305,7 @@ h_tbl_coxph_pairwise <- function(df,
   do.call(rbind, results)
 }
 
-#' Helper Function: CoxPH Grob
+#' Helper Function: `CoxPH` Grob
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -1320,7 +1321,7 @@ h_tbl_coxph_pairwise <- function(df,
 #'   and `p-value (log-rank)`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)

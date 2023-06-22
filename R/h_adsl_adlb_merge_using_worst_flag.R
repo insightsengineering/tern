@@ -1,4 +1,4 @@
-#' Helper Function for Deriving Analysis Datasets for LBT13 and LBT14
+#' Helper Function for Deriving Analysis Datasets for `LBT13` and `LBT14`
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
