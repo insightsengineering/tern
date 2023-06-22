@@ -262,17 +262,17 @@ a_compare <- function(x,
                       .df_row = NULL,
                       .ref_group = NULL,
                       .in_ref_col = FALSE,
-                      .stats = NULL,
-                      .formats = NULL,
-                      .labels = NULL,
-                      .indent_mods = NULL,
+                      .stats = names(get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"), "_labels"))),
+                      .formats = get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"), "_formats")),
+                      .labels = get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"), "_labels")),
+                      .indent_mods = get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"), "_indents")),
                       na.rm = TRUE, # nolint
                       na_level = NA_character_,
                       ...) {
   lifecycle::deprecate_warn(
-    "0.8.2",
+    "0.8.3",
     "a_compare()",
-    "a_summary(compare = TRUE)"
+    details = "Please use a_summary() with argument `compare` set to TRUE instead."
   )
   a_summary(
     x = x,
@@ -317,9 +317,9 @@ create_afun_compare <- function(.stats = NULL,
                                 .labels = NULL,
                                 .indent_mods = NULL) {
   lifecycle::deprecate_stop(
-    "0.8.2",
+    "0.8.3",
     "create_afun_compare()",
-    "a_summary(compare = TRUE)"
+    details = "Please use a_summary(compare = TRUE) directly instead."
   )
 }
 

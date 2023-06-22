@@ -636,9 +636,9 @@ a_summary <- function(x,
 #' @export
 create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
   lifecycle::deprecate_stop(
-    "0.8.2",
+    "0.8.3",
     "create_afun_summary()",
-    "a_summary()"
+    details = "Please use a_summary() directly instead."
   )
 }
 

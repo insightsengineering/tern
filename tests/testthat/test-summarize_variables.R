@@ -458,3 +458,9 @@ testthat::test_that("summarize_vars 'na_level' argument works as expected", {
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+# Deprecated functions
+
+testthat::test_that("create_afun_summary returns error message", {
+  testthat::expect_error(create_afun_summary())
+})

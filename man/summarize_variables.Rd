@@ -61,10 +61,14 @@ a_summary(
   .df_row = NULL,
   .ref_group = NULL,
   .in_ref_col = FALSE,
-  .stats = NULL,
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = NULL,
+  .stats = names(get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"),
+    "_labels"))),
+  .formats = get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"),
+    "_formats")),
+  .labels = get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"),
+    "_labels")),
+  .indent_mods = get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"),
+    "_indents")),
   na.rm = TRUE,
   na_level = NA_character_,
   compare = FALSE,
@@ -363,13 +367,16 @@ a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
 # comparison analysis - compare = TRUE
 a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
 a_summary(
-  factor(c("a", "a", "b", "c", "a")), .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
+  factor(c("a", "a", "b", "c", "a")),
+  .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
 )
 a_summary(
-  c("A", "B", "A", "C"), .ref_group = c("B", "A", "C"), .var = "x", compare = TRUE, verbose = FALSE
+  c("A", "B", "A", "C"),
+  .ref_group = c("B", "A", "C"), .var = "x", compare = TRUE, verbose = FALSE
 )
 a_summary(
-  c(TRUE, FALSE, FALSE, TRUE, TRUE), .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare = TRUE
+  c(TRUE, FALSE, FALSE, TRUE, TRUE),
+  .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare = TRUE
 )
 
 ## Fabricated dataset.
