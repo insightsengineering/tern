@@ -316,22 +316,25 @@ ungroup_stats <- function(x, .stats, .formats, .labels, .indent_mods, .in_ref_co
     for (a in names(x[[stat]])) {
       a <- if (a == "na-level") "NA" else a
       a_lvl <- paste(stat, a, sep = ".")
+      a_name <- if (a != "NA" || "NA" %in% names(x[[stat]])) a else "na-level"
       .stats <- c(.stats, a_lvl)
       .formats <- append(.formats, .formats[stat] %>% `names<-`(a_lvl), after = if (stat %in% names(.formats)) {
-        which(names(.formats) == stat) - 1 + which(names(x[[stat]]) == if (a != "NA" | "NA" %in% names(x[[stat]])) a else "na-level")
+        which(names(.formats) == stat) - 1 + which(names(x[[stat]]) == a_name)
       } else {
         length(.formats)
       })
       .labels <- append(.labels, a %>% `names<-`(a_lvl), after = if (stat %in% names(.labels)) {
-        which(names(.labels) == stat) - 1 + which(names(x[[stat]]) == if (a != "NA" | "NA" %in% names(x[[stat]])) a else "na-level")
+        which(names(.labels) == stat) - 1 + which(names(x[[stat]]) == a_name)
       } else {
         length(.labels)
       })
-      .indent_mods <- append(.indent_mods, .indent_mods[stat] %>% `names<-`(a_lvl), after = if (stat %in% names(.indent_mods)) {
-        which(names(.indent_mods) == stat) - 1 + which(names(x[[stat]]) == if (a != "NA" | "NA" %in% names(x[[stat]])) a else "na-level")
-      } else {
-        length(.indent_mods)
-      })
+      .indent_mods <- append(
+        .indent_mods, .indent_mods[stat] %>% `names<-`(a_lvl), after = if (stat %in% names(.indent_mods)) {
+          which(names(.indent_mods) == stat) - 1 + which(names(x[[stat]]) == a_name)
+        } else {
+          length(.indent_mods)
+        }
+      )
     }
   }
 
@@ -344,8 +347,8 @@ ungroup_stats <- function(x, .stats, .formats, .labels, .indent_mods, .in_ref_co
   list(
     x = x,
     .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods
+    .formats = .formats[.stats],
+    .labels = .labels[.stats],
+    .indent_mods = .indent_mods[.stats]
   )
 }

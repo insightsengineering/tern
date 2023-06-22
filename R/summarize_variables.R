@@ -497,7 +497,9 @@ s_summary.logical <- function(x,
 
 .a_compare_numeric_formats <- c(summary_formats(), pval = "x.xxxx | (<0.0001)")
 .a_compare_numeric_labels <- c(summary_labels(), pval = "p-value (t-test)")
-.a_compare_numeric_indents <- c(rep(0L, length(.a_compare_numeric_labels)) %>% `names<-`(names(.a_compare_numeric_labels)))
+.a_compare_numeric_indents <- c(
+  rep(0L, length(.a_compare_numeric_labels)) %>% `names<-`(names(.a_compare_numeric_labels))
+)
 .a_compare_counts_formats <- c(summary_formats(type = "counts"), pval = "x.xxxx | (<0.0001)")
 .a_compare_counts_labels <- c(summary_labels(type = "counts"), pval = "p-value (chi-squared test)")
 .a_compare_counts_indents <- c(rep(0L, length(.a_compare_counts_labels)) %>% `names<-`(names(.a_compare_counts_labels)))
@@ -511,41 +513,51 @@ s_summary.logical <- function(x,
 #' @return
 #' * `a_summary()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @note To use for comparison (with p-value statistic added), parameter `compare` must be set to `TRUE`.
+#' @note
+#' * To use for comparison (with additional p-value statistic), parameter `compare` must be set to `TRUE`.
+#' * Ensure that either all `NA` values are converted to an explicit `NA` level or all `NA` values are left as is.
 #'
 #' @examples
 #' # summary analysis - compare = FALSE
-#' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla", .df_row = c())
-#' a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10, .df_row = c())
-#' a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, .df_row = c(), verbose = FALSE)
-#' a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10, .df_row = c())
+#' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
+#' a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+#' a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
+#' a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
 #'
 #' # comparison analysis - compare = TRUE
-#' a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .in_ref_col = FALSE, .var = "bla", compare = TRUE)
-#' a_summary(factor(c("a", "a", "b", "c", "a")), .ref_group = factor(c("a", "a", "b", "c")), .in_ref_col = FALSE, compare = TRUE)
-#' a_summary(c("A", "B", "A", "C"), .ref_group = c("B", "A", "C"), .in_ref_col = FALSE, .var = "x", verbose = FALSE, compare = TRUE)
-#' a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .ref_group = c(TRUE, FALSE), .in_ref_col = FALSE, compare = TRUE)
+#' a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
+#' a_summary(
+#'   factor(c("a", "a", "b", "c", "a")), .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
+#' )
+#' a_summary(
+#'   c("A", "B", "A", "C"), .ref_group = c("B", "A", "C"), .var = "x", compare = TRUE, verbose = FALSE
+#' )
+#' a_summary(
+#'   c(TRUE, FALSE, FALSE, TRUE, TRUE), .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare = TRUE
+#' )
 #'
 #' @export
 a_summary <- function(x,
-                      .N_col,
-                      .N_row,
+                      .N_col, # nolint
+                      .N_row, # nolint
                       .var = NULL,
                       .df_row = NULL,
                       .ref_group = NULL,
-                      .in_ref_col = NULL,
+                      .in_ref_col = FALSE,
                       .stats = NULL,
                       .formats = NULL,
                       .labels = NULL,
                       .indent_mods = NULL,
-                      na.rm = TRUE,
+                      na.rm = TRUE, # nolint
                       na_level = NA_character_,
                       compare = FALSE,
                       ...) {
   # Remove all-NA rows
-  in_tot_col <- nrow(.df_row) == length(x)
-  .df_row <- .df_row[rowSums(is.na(.df_row)) != ncol(.df_row), ]
-  if (in_tot_col && !identical(.df_row[[.var]], x)) x <-  .df_row[[.var]]
+  if (!is.null(.df_row) && ncol(.df_row) > 1) {
+    in_tot_col <- nrow(.df_row) == length(x)
+    .df_row <- .df_row[rowSums(is.na(.df_row)) != ncol(.df_row), ]
+    if (in_tot_col && !identical(.df_row[[.var]], x)) x <- .df_row[[.var]]
+  }
 
   if (any(is.na(.df_row[[.var]])) && !any(is.na(x)) && !na.rm) levels(x) <- c(levels(x), "na-level")
   x_stats <- if (!compare) {
@@ -564,10 +576,12 @@ a_summary <- function(x,
     .formats <- get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_formats"))
     if (!compare) .formats <- head(.formats, -1)
   }
-  if (is.null(.labels)) {
-    if (is.numeric(x)) .a_compare_numeric_labels[c("mean_ci", "mean_pval", "median_ci", "quantiles")] <- sapply(
+  if (is.numeric(x)) {
+    .a_compare_numeric_labels[c("mean_ci", "mean_pval", "median_ci", "quantiles")] <- sapply(
       c("mean_ci", "mean_pval", "median_ci", "quantiles"), function(x) attr(x_stats[[x]], "label")
     )
+  }
+  if (is.null(.labels)) {
     .labels <- get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_labels"))
     if (!compare) .labels <- head(.labels, -1)
   }
@@ -575,34 +589,37 @@ a_summary <- function(x,
     .indent_mods <- get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_indents"))
     if (!compare) .indent_mods <- head(.indent_mods, -1)
   }
-  if (length(.indent_mods) == 1 & is.null(names(.indent_mods))) {
+  if (length(.indent_mods) == 1 && is.null(names(.indent_mods))) {
     .indent_mods <- rep(.indent_mods, length(.stats)) %>% `names<-`(.stats)
   }
 
   .stats <- intersect(.stats, names(x_stats))
   x_stats <- x_stats[.stats]
+  .formats <- extract_by_name(
+    .formats, .stats, get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_formats"))
+  )
+  .labels <- extract_by_name(
+    .labels, .stats, get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_labels"))
+  )
+  .indent_mods <- extract_by_name(
+    .indent_mods, .stats, get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_indents"))
+  )
+
   if (!is.numeric(x) && !is.logical(x)) {
-    x_ungrp <- ungroup_stats(x_stats, .stats, .formats, .labels, .indent_mods, if (compare) .in_ref_col else FALSE)
+    x_ungrp <- ungroup_stats(x_stats, .stats, .formats, .labels, .indent_mods, .in_ref_col)
     x_stats <- x_ungrp[["x"]]
     .stats <- x_ungrp[[".stats"]]
     .formats <- x_ungrp[[".formats"]]
     .labels <- x_ungrp[[".labels"]]
     .indent_mods <- x_ungrp[[".indent_mods"]]
   }
-  .formats_x <- extract_by_name(
-    .formats, .stats, get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_formats"))
-  )
-  .labels_x <- extract_by_name(.labels, .stats, get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_labels")))
-  .indent_mods_x <- extract_by_name(
-    .indent_mods, .stats, get(paste0(".a_compare_", if (is.numeric(x)) "numeric" else "counts", "_indents"))
-  )
 
   in_rows(
     .list = x_stats,
-    .formats = .formats_x,
-    .names = .labels_x,
-    .labels = .labels_x,
-    .indent_mods = .indent_mods_x,
+    .formats = .formats,
+    .names = .labels,
+    .labels = .labels,
+    .indent_mods = .indent_mods,
     .format_na_strs = na_level
   )
 }
@@ -701,7 +718,7 @@ summarize_vars <- function(lyt,
                            var_labels = vars,
                            nested = TRUE,
                            ...,
-                           na.rm = TRUE,
+                           na.rm = TRUE, # nolint
                            na_level = NA_character_,
                            show_labels = "default",
                            table_names = vars,
@@ -717,7 +734,8 @@ summarize_vars <- function(lyt,
     afun = a_summary,
     nested = nested,
     extra_args = list(
-      .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na.rm = na.rm, na_level = na_level, ...
+      .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods,
+      na.rm = na.rm, na_level = na_level, ...
     ),
     inclNAs = TRUE,
     show_labels = show_labels,

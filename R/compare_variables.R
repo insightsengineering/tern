@@ -128,6 +128,7 @@ s_compare.factor <- function(x,
     .ref_group <- .ref_group %>% explicit_na(label = "NA")
   }
 
+  if ("NA" %in% levels(x)) levels(.ref_group) <- c(levels(.ref_group), "NA")
   checkmate::assert_factor(x, levels = levels(.ref_group), min.levels = 2)
 
   y$pval <- if (!.in_ref_col && length(x) > 0 && length(.ref_group) > 0) {
@@ -251,27 +252,44 @@ s_compare.logical <- function(x,
 #' @return
 #' * `a_compare()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @note This function has been deprecated in favor of `a_summary()` with argument `compare` set to `TRUE`.
+#' @note `a_compare()` has been deprecated in favor of `a_summary()` with argument `compare` set to `TRUE`.
 #'
 #' @keywords internal
 a_compare <- function(x,
-                      .N_col,
-                      .N_row,
-                      .var,
-                      .df_row,
-                      .ref_group,
-                      .in_ref_col,
+                      .N_col, # nolint
+                      .N_row, # nolint
+                      .var = NULL,
+                      .df_row = NULL,
+                      .ref_group = NULL,
+                      .in_ref_col = FALSE,
                       .stats = NULL,
                       .formats = NULL,
                       .labels = NULL,
                       .indent_mods = NULL,
-                      na.rm = TRUE,
+                      na.rm = TRUE, # nolint
                       na_level = NA_character_,
                       ...) {
-  lifecycle::deprecate_stop(
+  lifecycle::deprecate_warn(
     "0.8.2",
     "a_compare()",
     "a_summary(compare = TRUE)"
+  )
+  a_summary(
+    x = x,
+    .N_col = .N_col,
+    .N_row = .N_row,
+    .var = .var,
+    .df_row = .df_row,
+    .ref_group = .ref_group,
+    .in_ref_col = .in_ref_col,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods,
+    na.rm = na.rm,
+    na_level = na_level,
+    compare = TRUE,
+    ...
   )
 }
 
@@ -344,7 +362,7 @@ compare_vars <- function(lyt,
                          var_labels = vars,
                          nested = TRUE,
                          ...,
-                         na.rm = TRUE,
+                         na.rm = TRUE, # nolint
                          na_level = NA_character_,
                          show_labels = "default",
                          table_names = vars,
@@ -360,7 +378,8 @@ compare_vars <- function(lyt,
     afun = a_summary,
     nested = nested,
     extra_args = list(
-      .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na.rm = na.rm, na_level = na_level, compare = TRUE, ...
+      .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods,
+      na.rm = na.rm, na_level = na_level, compare = TRUE, ...
     ),
     inclNAs = TRUE,
     show_labels = show_labels,

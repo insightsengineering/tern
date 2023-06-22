@@ -1,5 +1,7 @@
 # tern 0.8.2.9014
 
+### Breaking Changes
+
 ### Enhancements
 * Added explicit zero counts to `g_km` plot "at risk" annotation tables.
 * Added a flag for total level split in `analyze_patients_exposure_in_cols`.
@@ -7,6 +9,8 @@
 * Updated `summarize_coxreg` to print covariates in data rows for univariate Cox regression with no interactions and content rows otherwise.
 * Removed "baseline status" text from `d_count_abnormal_by_baseline` labels.
 * Improved default sizing of annotation tables in `g_km` and added dynamic scaling of the `surv_med` and `coxph` annotation tables, with customization via the `width_annots` argument.
+* Refactored `a_summary` to no longer use helper function `create_afun_summary`. 
+* Refactored `summarize_vars` and `compare_vars` to use refactored `a_summary`.
 
 ### Bug Fixes
 * Fixed bug in `split_text_grob` preventing titles and footnotes from being properly formatted and printed by `decorate_grob`.
@@ -15,7 +19,9 @@
 
 ### Miscellaneous
 * Updated README to include installation instructions for CRAN.
-* Began deprecation of `indent_mod` argument and replace it with the `.indent_mods` argument in `summarize_num_patients` and `analyze_num_patients`.
+* Began deprecation of `indent_mod` argument and replaced it with the `.indent_mods` argument in `summarize_num_patients` and `analyze_num_patients`.
+* Deprecated `a_compare` and replaced it with `a_summary` with argument `compare = TRUE`.
+* Deprecated helper functions `create_afun_summary` and `create_afun_compare` which are no longer used by `a_summary` and `a_compare` respectively.
 
 # tern 0.8.2
 

@@ -34,10 +34,10 @@ a_compare(
   x,
   .N_col,
   .N_row,
-  .var,
-  .df_row,
-  .ref_group,
-  .in_ref_col,
+  .var = NULL,
+  .df_row = NULL,
+  .ref_group = NULL,
+  .in_ref_col = FALSE,
   .stats = NULL,
   .formats = NULL,
   .labels = NULL,
@@ -181,7 +181,7 @@ Therefore it is always better to manually convert character variables to factors
 is well defined.
 }
 
-This function has been deprecated in favor of \code{a_summary()} with argument \code{compare} set to \code{TRUE}.
+\code{a_compare()} has been deprecated in favor of \code{a_summary()} with argument \code{compare} set to \code{TRUE}.
 }
 \examples{
 # `s_compare.numeric`

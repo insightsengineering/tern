@@ -60,7 +60,7 @@ a_summary(
   .var = NULL,
   .df_row = NULL,
   .ref_group = NULL,
-  .in_ref_col = NULL,
+  .in_ref_col = FALSE,
   .stats = NULL,
   .formats = NULL,
   .labels = NULL,
@@ -277,7 +277,10 @@ It is therefore better to always pre-process the dataset such that factors are m
 created from character variables before passing the dataset to \code{\link[rtables:build_table]{rtables::build_table()}}.
 }
 
-To use for comparison (with p-value statistic added), parameter \code{compare} must be set to \code{TRUE}.
+\itemize{
+\item To use for comparison (with additional p-value statistic), parameter \code{compare} must be set to \code{TRUE}.
+\item Ensure that either all \code{NA} values are converted to an explicit \code{NA} level or all \code{NA} values are left as is.
+}
 }
 \examples{
 # `s_summary.numeric`
@@ -352,16 +355,22 @@ s_summary(x, denom = "N_row", .N_row = 10L)
 s_summary(x, denom = "N_col", .N_col = 20L)
 
 # summary analysis - compare = FALSE
-a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla", .df_row = c())
-a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10, .df_row = c())
-a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, .df_row = c(), verbose = FALSE)
-a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10, .df_row = c())
+a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
+a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
+a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
 
 # comparison analysis - compare = TRUE
-a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .in_ref_col = FALSE, .var = "bla", compare = TRUE)
-a_summary(factor(c("a", "a", "b", "c", "a")), .ref_group = factor(c("a", "a", "b", "c")), .in_ref_col = FALSE, compare = TRUE)
-a_summary(c("A", "B", "A", "C"), .ref_group = c("B", "A", "C"), .in_ref_col = FALSE, .var = "x", verbose = FALSE, compare = TRUE)
-a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .ref_group = c(TRUE, FALSE), .in_ref_col = FALSE, compare = TRUE)
+a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
+a_summary(
+  factor(c("a", "a", "b", "c", "a")), .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
+)
+a_summary(
+  c("A", "B", "A", "C"), .ref_group = c("B", "A", "C"), .var = "x", compare = TRUE, verbose = FALSE
+)
+a_summary(
+  c(TRUE, FALSE, FALSE, TRUE, TRUE), .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare = TRUE
+)
 
 ## Fabricated dataset.
 dta_test <- data.frame(
