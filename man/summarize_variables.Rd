@@ -8,10 +8,6 @@
 \alias{s_summary.character}
 \alias{s_summary.logical}
 \alias{a_summary}
-\alias{a_summary.numeric}
-\alias{a_summary.factor}
-\alias{a_summary.character}
-\alias{a_summary.logical}
 \alias{summarize_vars}
 \title{Summarize Variables}
 \usage{
@@ -57,45 +53,21 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
   ...
 )
 
-a_summary(x, ..., .N_row, .N_col, .var)
-
-\method{a_summary}{numeric}(
+a_summary(
   x,
-  na.rm = TRUE,
-  denom,
-  .N_row,
   .N_col,
-  .var,
-  control = control_summarize_vars(),
-  ...
-)
-
-\method{a_summary}{factor}(
-  x,
-  na.rm = TRUE,
-  denom = c("n", "N_row", "N_col"),
   .N_row,
-  .N_col,
-  ...
-)
-
-\method{a_summary}{character}(
-  x,
+  .var = NULL,
+  .df_row = NULL,
+  .ref_group = NULL,
+  .in_ref_col = FALSE,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL,
   na.rm = TRUE,
-  denom = c("n", "N_row", "N_col"),
-  .N_row,
-  .N_col,
-  .var,
-  verbose = TRUE,
-  ...
-)
-
-\method{a_summary}{logical}(
-  x,
-  na.rm = TRUE,
-  denom = c("n", "N_row", "N_col"),
-  .N_row,
-  .N_col,
+  na_level = NA_character_,
+  compare = FALSE,
   ...
 )
 
@@ -105,6 +77,7 @@ summarize_vars(
   var_labels = vars,
   nested = TRUE,
   ...,
+  na.rm = TRUE,
   na_level = NA_character_,
   show_labels = "default",
   table_names = vars,
@@ -150,25 +123,11 @@ See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 \item{verbose}{(\code{logical})\cr Defaults to \code{TRUE}, which prints out warnings and messages. It is mainly used
 to print out information about factor casting.}
 
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
-\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
-\item{var_labels}{(\code{character})\cr character for label.}
-
-\item{nested}{(\code{flag})\cr whether this layout instruction be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
-underneath analyses, which is not allowed.}
-
-\item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
-
-\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
-
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
-
-\item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
-defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
+\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
@@ -179,6 +138,29 @@ defined by this split instruction, or \code{NA_character_} (the default) for no 
 \item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
 should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
 for that statistic's row label.}
+
+\item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{compare}{(\code{logical})\cr Whether comparison statistics should be analyzed instead of summary statistics
+(\code{compare = TRUE} adds \code{pval} statistic comparing against reference group).}
+
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{var_labels}{(\code{character})\cr character for label.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
+underneath analyses, which is not allowed.}
+
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
+
+\item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
+defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
 }
 \value{
 \itemize{
@@ -264,15 +246,8 @@ conversion to factor (with a warning) and then forwards to the method for factor
 
 \item \code{s_summary(logical)}: Method for \code{logical} class.
 
-\item \code{a_summary()}: Formatted analysis function which is used as \code{afun} in \code{summarize_vars()}.
-
-\item \code{a_summary(numeric)}: Formatted analysis function method for \code{numeric} class.
-
-\item \code{a_summary(factor)}: Formatted analysis function method for \code{factor} class.
-
-\item \code{a_summary(character)}: Formatted analysis function method for \code{character} class.
-
-\item \code{a_summary(logical)}: Formatted analysis function method for \code{logical} class.
+\item \code{a_summary()}: Formatted analysis function which is used as \code{afun} in \code{summarize_vars()} and
+\code{compare_vars()} and as \code{cfun} in \code{summarize_colvars()}.
 
 \item \code{summarize_vars()}: Layout-creating function which can take statistics function arguments
 and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
@@ -300,6 +275,11 @@ default \code{na_level} (\code{"<Missing>"}) will also be excluded when \code{na
 can be generated correctly. In particular for sparse tables this very likely can fail.
 It is therefore better to always pre-process the dataset such that factors are manually
 created from character variables before passing the dataset to \code{\link[rtables:build_table]{rtables::build_table()}}.
+}
+
+\itemize{
+\item To use for comparison (with additional p-value statistic), parameter \code{compare} must be set to \code{TRUE}.
+\item Ensure that either all \code{NA} values are converted to an explicit \code{NA} level or all \code{NA} values are left as is.
 }
 }
 \examples{
@@ -374,30 +354,23 @@ x <- c(TRUE, FALSE, TRUE, TRUE)
 s_summary(x, denom = "N_row", .N_row = 10L)
 s_summary(x, denom = "N_col", .N_col = 20L)
 
-# `a_summary.numeric`
+# summary analysis - compare = FALSE
 a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
+a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
+a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
 
-# `a_summary.factor`
-# We need to ungroup `count` and `count_fraction` first so that the rtables formatting
-# functions can be applied correctly.
-afun <- make_afun(
-  getS3method("a_summary", "factor"),
-  .ungroup_stats = c("count", "count_fraction")
+# comparison analysis - compare = TRUE
+a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
+a_summary(
+  factor(c("a", "a", "b", "c", "a")), .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
 )
-afun(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
-
-# `a_summary.character`
-afun <- make_afun(
-  getS3method("a_summary", "character"),
-  .ungroup_stats = c("count", "count_fraction")
+a_summary(
+  c("A", "B", "A", "C"), .ref_group = c("B", "A", "C"), .var = "x", compare = TRUE, verbose = FALSE
 )
-afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
-
-# `a_summary.logical`
-afun <- make_afun(
-  getS3method("a_summary", "logical")
+a_summary(
+  c(TRUE, FALSE, FALSE, TRUE, TRUE), .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare = TRUE
 )
-afun(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
 
 ## Fabricated dataset.
 dta_test <- data.frame(
@@ -428,8 +401,7 @@ l <- basic_table() \%>\%
     .labels = c(n = "n", mean_sd = "Mean, SD", quantiles = c("Q1 - Q3"))
   )
 
-results <- build_table(l, df = dta_test)
-as_html(results)
+build_table(l, df = dta_test)
 
 ## Use arguments interpreted by `s_summary`.
 l <- basic_table() \%>\%
@@ -437,7 +409,7 @@ l <- basic_table() \%>\%
   split_rows_by(var = "AVISIT") \%>\%
   summarize_vars(vars = "AVAL", na.rm = FALSE)
 
-results <- build_table(l, df = dta_test)
+build_table(l, df = dta_test)
 
 ## Handle `NA` levels first when summarizing factors.
 dta_test$AVISIT <- NA_character_
@@ -446,9 +418,6 @@ l <- basic_table() \%>\%
   split_cols_by(var = "ARM") \%>\%
   summarize_vars(vars = "AVISIT", na.rm = FALSE)
 
-results <- build_table(l, df = dta_test)
-\donttest{
-Viewer(results)
-}
+build_table(l, df = dta_test)
 
 }

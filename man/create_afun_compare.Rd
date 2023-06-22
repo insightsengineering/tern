@@ -26,44 +26,13 @@ for that statistic's row label.}
 Combined formatted analysis function for use in \code{\link[=compare_vars]{compare_vars()}}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 Constructor function which creates a combined formatted analysis function.
 }
 \note{
-Since \code{\link[=a_compare]{a_compare()}} is generic and we want customization of the formatting arguments
-via \code{\link[rtables:make_afun]{rtables::make_afun()}}, we need to create another temporary generic function, with
-corresponding customized methods. Then in order for the methods to be found,
-we need to wrap them in a combined \code{afun}. Since this is required by two layout creating
-functions (and possibly others in the future), we provide a constructor that does this:
-\code{\link[=create_afun_compare]{create_afun_compare()}}.
-}
-\examples{
-# `create_afun_compare()` to create combined `afun`
-
-afun <- create_afun_compare(
-  .stats = c("n", "count_fraction", "mean_sd", "pval"),
-  .indent_mods = c(pval = 1L)
-)
-
-lyt <- basic_table() \%>\%
-  split_cols_by("ARMCD", ref_group = "ARM A") \%>\%
-  analyze(
-    "AGE",
-    afun = afun,
-    show_labels = "visible"
-  )
-build_table(lyt, df = tern_ex_adsl)
-
-lyt <- basic_table() \%>\%
-  split_cols_by("ARMCD", ref_group = "ARM A") \%>\%
-  analyze(
-    "SEX",
-    afun = afun,
-    show_labels = "visible"
-  )
-build_table(lyt, df = tern_ex_adsl)
-
+This function has been deprecated in favor of direct implementation of \code{a_summary()} with argument \code{compare}
+set to \code{TRUE}.
 }
 \seealso{
 \code{\link[=compare_vars]{compare_vars()}}

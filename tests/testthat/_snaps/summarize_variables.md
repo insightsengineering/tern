@@ -920,46 +920,228 @@
       [1] 0
       
 
-# create_afun_summary creates an `afun` that works
+# a_summary works with healthy input.
 
     Code
       res
     Output
-                               A              B          C    
-      ————————————————————————————————————————————————————————
-      V1                                                      
-        AVAL                                                  
-          n                    2              1          0    
-            My median          8              3          NA   
-          Min - Max        6.0 - 9.0      3.0 - 3.0      NA   
-          Mean 95% CI   (-11.56, 26.56)      NA          NA   
-        ARM                                                   
-          n                    2              2          2    
-          A                2 (100%)           0          0    
-          B                    0          2 (100%)       0    
-          C                    0              0       2 (100%)
-      V2                                                      
-        AVAL                                                  
-          n                    2              1          0    
-            My median          6              2          NA   
-          Min - Max        5.0 - 8.0      2.0 - 2.0      NA   
-          Mean 95% CI   (-12.56, 25.56)      NA          NA   
-        ARM                                                   
-          n                    2              2          2    
-          A                2 (100%)           0          0    
-          B                    0          2 (100%)       0    
-          C                    0              0       2 (100%)
-      V3                                                      
-        AVAL                                                  
-          n                    2              1          0    
-            My median          6              1          NA   
-          Min - Max        4.0 - 7.0      1.0 - 1.0      NA   
-          Mean 95% CI   (-13.56, 24.56)      NA          NA   
-        ARM                                                   
-          n                    2              2          2    
-          A                2 (100%)           0          0    
-          B                    0          2 (100%)       0    
-          C                    0              0       2 (100%)
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+                            row_name   formatted_cell indent_mod                   row_label
+      1                            n               10          0                           n
+      2                          Sum              1.3          0                         Sum
+      3                         Mean              0.1          0                        Mean
+      4                           SD              0.8          0                          SD
+      5                           SE              0.2          0                          SE
+      6                    Mean (SD)        0.1 (0.8)          0                   Mean (SD)
+      7                    Mean (SE)        0.1 (0.2)          0                   Mean (SE)
+      8                  Mean 95% CI    (-0.43, 0.69)          0                 Mean 95% CI
+      9                Mean -/+ 1xSE    (-0.11, 0.38)          0               Mean -/+ 1xSE
+      10               Mean -/+ 1xSD    (-0.65, 0.91)          0               Mean -/+ 1xSD
+      11 Mean p-value (H0: mean = 0)             0.61          0 Mean p-value (H0: mean = 0)
+      12                      Median              0.3          0                      Median
+      13   Median Absolute Deviation             -0.0          0   Median Absolute Deviation
+      14               Median 95% CI    (-0.82, 0.74)          0               Median 95% CI
+      15             25% and 75%-ile       -0.6 - 0.6          0             25% and 75%-ile
+      16                         IQR              1.2          0                         IQR
+      17                   Min - Max       -0.8 - 1.6          0                   Min - Max
+      18                      CV (%)            590.4          0                      CV (%)
+      19                     Minimum             -0.8          0                     Minimum
+      20                     Maximum              1.6          0                     Maximum
+      21          Median (Min - Max) 0.3 (-0.8 - 1.6)          0          Median (Min - Max)
+      22              Geometric Mean               NA          0              Geometric Mean
+      23         CV % Geometric Mean               NA          0         CV % Geometric Mean
+
+---
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+        row_name formatted_cell indent_mod row_label
+      1        n              5          0         n
+      2        a              3          0         a
+      3        b              1          0         b
+      4        c              1          0         c
+      5        a        3 (60%)          0         a
+      6        b        1 (20%)          0         b
+      7        c        1 (20%)          0         c
+      8    n_blq              0          0     n_blq
+
+---
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+        row_name formatted_cell indent_mod row_label
+      1        n              4          0         n
+      2        A              2          0         A
+      3        B              1          0         B
+      4        C              1          0         C
+      5        A        2 (50%)          0         A
+      6        B        1 (25%)          0         B
+      7        C        1 (25%)          0         C
+      8    n_blq              0          0     n_blq
+
+---
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+              row_name formatted_cell indent_mod      row_label
+      1              n              5          0              n
+      2          count              3          0          count
+      3 count_fraction        3 (60%)          0 count_fraction
+      4          n_blq              0          0          n_blq
+
+# a_summary works with custom input.
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+             row_name formatted_cell indent_mod     row_label
+      1      std. dev              1          3      std. dev
+      2 Median 95% CI   -0.62 - 1.12          3 Median 95% CI
+
+---
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+                  row_name formatted_cell indent_mod         row_label
+      1  number of records           5.00         -1 number of records
+      2                  a              2          5                 a
+      3                  b              1          5                 b
+      4                  c              1          5                 c
+      5                 NA              1          5                NA
+      6                  a        2 (40%)          0                 a
+      7                  b        1 (20%)          0                 b
+      8                  c        1 (20%)          0                 c
+      9                 NA        1 (20%)          0                NA
+      10             n_blq              0          0             n_blq
+
+# a_summary works with healthy input when compare = TRUE.
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+                            row_name  formatted_cell indent_mod                   row_label
+      1                            n              10          0                           n
+      2                          Sum            51.3          0                         Sum
+      3                         Mean             5.1          0                        Mean
+      4                           SD             0.8          0                          SD
+      5                           SE             0.2          0                          SE
+      6                    Mean (SD)       5.1 (0.8)          0                   Mean (SD)
+      7                    Mean (SE)       5.1 (0.2)          0                   Mean (SE)
+      8                  Mean 95% CI    (4.57, 5.69)          0                 Mean 95% CI
+      9                Mean -/+ 1xSE    (4.89, 5.38)          0               Mean -/+ 1xSE
+      10               Mean -/+ 1xSD    (4.35, 5.91)          0               Mean -/+ 1xSD
+      11 Mean p-value (H0: mean = 0)            0.00          0 Mean p-value (H0: mean = 0)
+      12                      Median             5.3          0                      Median
+      13   Median Absolute Deviation            -0.0          0   Median Absolute Deviation
+      14               Median 95% CI    (4.18, 5.74)          0               Median 95% CI
+      15             25% and 75%-ile       4.4 - 5.6          0             25% and 75%-ile
+      16                         IQR             1.2          0                         IQR
+      17                   Min - Max       4.2 - 6.6          0                   Min - Max
+      18                      CV (%)            15.2          0                      CV (%)
+      19                     Minimum             4.2          0                     Minimum
+      20                     Maximum             6.6          0                     Maximum
+      21          Median (Min - Max) 5.3 (4.2 - 6.6)          0          Median (Min - Max)
+      22              Geometric Mean             5.1          0              Geometric Mean
+      23         CV % Geometric Mean            15.2          0         CV % Geometric Mean
+      24            p-value (t-test)         <0.0001          0            p-value (t-test)
+
+---
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+                          row_name formatted_cell indent_mod                  row_label
+      1                          n              5          0                          n
+      2                          a              3          0                          a
+      3                          b              1          0                          b
+      4                          c              1          0                          c
+      5                          a        3 (60%)          0                          a
+      6                          b        1 (20%)          0                          b
+      7                          c        1 (20%)          0                          c
+      8                      n_blq              0          0                      n_blq
+      9 p-value (chi-squared test)         0.9560          0 p-value (chi-squared test)
+
+---
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+                          row_name formatted_cell indent_mod                  row_label
+      1                          n              4          0                          n
+      2                          A              2          0                          A
+      3                          B              1          0                          B
+      4                          C              1          0                          C
+      5                          A        2 (50%)          0                          A
+      6                          B        1 (25%)          0                          B
+      7                          C        1 (25%)          0                          C
+      8                      n_blq              0          0                      n_blq
+      9 p-value (chi-squared test)         0.9074          0 p-value (chi-squared test)
+
+---
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+                          row_name formatted_cell indent_mod                  row_label
+      1                          n              5          0                          n
+      2                      count              3          0                      count
+      3             count_fraction        3 (60%)          0             count_fraction
+      4                      n_blq              0          0                      n_blq
+      5 p-value (chi-squared test)         0.8091          0 p-value (chi-squared test)
+
+# a_summary works with custom input when compare = TRUE.
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+             row_name formatted_cell indent_mod     row_label
+      1        pvalue        <0.0001          3        pvalue
+      2 Median 95% CI   -0.41 - 1.10          3 Median 95% CI
+
+---
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+                           row_name formatted_cell indent_mod                  row_label
+      1           number of records           5.00         -1          number of records
+      2                           a              2          5                          a
+      3                           b              1          5                          b
+      4                           c              1          5                          c
+      5                          NA              1          5                         NA
+      6                           a        2 (40%)          0                          a
+      7                           b        1 (20%)          0                          b
+      8                           c        1 (20%)          0                          c
+      9                          NA        1 (20%)          0                         NA
+      10                      n_blq              0          0                      n_blq
+      11 p-value (chi-squared test)         0.8254          0 p-value (chi-squared test)
 
 # `summarize_vars` works with healthy input, default `na.rm = TRUE`.
 

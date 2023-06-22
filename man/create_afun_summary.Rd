@@ -21,41 +21,13 @@ for that statistic's row label.}
 Combined formatted analysis function for use in \code{\link[=summarize_vars]{summarize_vars()}}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 Constructor function which creates a combined formatted analysis function.
 }
 \note{
-Since \code{\link[=a_summary]{a_summary()}} is generic and we want customization of the formatting arguments
-via \code{\link[rtables:make_afun]{rtables::make_afun()}}, we need to create another temporary generic function, with
-corresponding customized methods. Then in order for the methods to be found,
-we need to wrap them in a combined \code{afun}. Since this is required by two layout creating
-functions (and possibly others in the future), we provide a constructor that does this:
-\code{\link[=create_afun_summary]{create_afun_summary()}}.
+This function has been deprecated in favor of direct implementation of \code{a_summary()}.
 }
-\examples{
-# `create_afun_summary()` to create combined `afun`
-
-afun <- create_afun_summary(
-  .stats = NULL,
-  .formats = c(median = "xx."),
-  .labels = c(median = "My median"),
-  .indent_mods = c(median = 1L)
-)
-## Fabricated dataset.
-dta_test <- data.frame(
-  USUBJID = rep(1:6, each = 3),
-  PARAMCD = rep("lab", 6 * 3),
-  AVISIT  = rep(paste0("V", 1:3), 6),
-  ARM     = rep(LETTERS[1:3], rep(6, 3)),
-  AVAL    = c(9:1, rep(NA, 9))
-)
-
-l <- basic_table() \%>\%
-  split_cols_by(var = "ARM") \%>\%
-  split_rows_by(var = "AVISIT") \%>\%
-  analyze(vars = "AVAL", afun = afun)
-
-build_table(l, df = dta_test)
-
+\seealso{
+\code{\link[=summarize_vars]{summarize_vars()}}
 }
