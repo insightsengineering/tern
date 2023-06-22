@@ -4,6 +4,8 @@
 * Added method for `character` class to `h_coxreg_inter_effect` enabling `character` covariates in `summarize_coxreg`.
 * Refactored `a_summary` to no longer use helper function `create_afun_summary`. 
 * Refactored `summarize_vars` and `compare_vars` to use refactored `a_summary`.
+* Created new helper function `ungroup_stats` to ungroup and format statistics calculated for each level of a factor variable.
+* Added new argument `x_defaults` to `extract_by_name` to allow user to specify default values to implement for values in `names` that are not specified in `x`.
 
 ### Miscellaneous
 * Began deprecation of `time_unit_input` and `time_unit_output` arguments and replaced them with the `input_time_unit` and `num_pt_year`, respectively, in `control_incidence_rate`.

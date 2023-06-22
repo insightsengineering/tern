@@ -262,7 +262,7 @@ extract_by_name <- function(x, names, x_defaults = NULL) {
   if (length(which_extract) > 0) {
     x_fill[which_extract] <- x[which_extract]
     x_fill <- if (!is.null(x_defaults)) x_fill[names] else x_fill[which_extract]
-  } else if (!is.null(x_defaults)) {
+  } else if (length(intersect(names(x_defaults), names)) > 0) {
     x_fill <- x_fill[names]
   } else {
     x_fill <- NULL
