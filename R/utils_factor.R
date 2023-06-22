@@ -276,3 +276,60 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
   x <- forcats::fct_collapse(.f, ..., other_level = .na_level)
   do.call(forcats::fct_relevel, args = c(list(.f = x), as.list(new_lvls)))
 }
+
+#' Ungroup and Format Non-Numeric Statistics
+#'
+#' Ungroups grouped non-numeric statistics (`count` and `count_fraction`) within input vectors `.stats`, `.formats`,
+#' `.labels`, and `.indent_mods`. Formats explicit `NA` level in each input vector and changes p-value to
+#' `character()` if current column is a reference column. Used within [`a_summary()`].
+#'
+#' @inheritParams argument_convention
+#'
+#' @return A `list` with modified elements `x`, `.stats`, `.formats`, `.labels`, and `.indent_mods`.
+#'
+#' @seealso [a_summary()] which uses this function internally.
+#'
+#' @keywords internal
+ungroup_stats <- function(x, .stats, .formats, .labels, .indent_mods, .in_ref_col = FALSE) {
+  checkmate::assert_true(!is.numeric(x) & !is.logical(x))
+  for (stat in c("count", "count_fraction")) {
+    for (a in names(x[[stat]])) {
+      a <- if (a == "na-level") "NA" else a
+      a_lvl <- paste(stat, a, sep = ".")
+      a_name <- if (a != "NA" || "NA" %in% names(x[[stat]])) a else "na-level"
+      .stats <- c(.stats, a_lvl)
+      .formats <- append(.formats, .formats[stat] %>% `names<-`(a_lvl), after = if (stat %in% names(.formats)) {
+        which(names(.formats) == stat) - 1 + which(names(x[[stat]]) == a_name)
+      } else {
+        length(.formats)
+      })
+      .labels <- append(.labels, a %>% `names<-`(a_lvl), after = if (stat %in% names(.labels)) {
+        which(names(.labels) == stat) - 1 + which(names(x[[stat]]) == a_name)
+      } else {
+        length(.labels)
+      })
+      .indent_mods <- append(
+        .indent_mods, .indent_mods[stat] %>% `names<-`(a_lvl),
+        after = if (stat %in% names(.indent_mods)) {
+          which(names(.indent_mods) == stat) - 1 + which(names(x[[stat]]) == a_name)
+        } else {
+          length(.indent_mods)
+        }
+      )
+    }
+  }
+
+  if (.in_ref_col && "pval" %in% names(x)) x[["pval"]] <- "pvalue"
+  x <- unlist(x, recursive = FALSE)
+  if (.in_ref_col && "pval" %in% names(x)) x[["pval"]] <- character()
+  names(x) <- gsub("na-level", "NA", names(x))
+  .stats <- names(x)
+
+  list(
+    x = x,
+    .stats = .stats,
+    .formats = .formats[.stats],
+    .labels = .labels[.stats],
+    .indent_mods = .indent_mods[.stats]
+  )
+}

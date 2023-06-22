@@ -67,7 +67,6 @@ reference:
   - title: Analysis Helper Functions
     desc: These functions are useful in defining an analysis.
     contents:
-      - starts_with("create_", internal = TRUE)
       - starts_with("h_")
       - starts_with("or_")
       - starts_with("prop_")

@@ -8,10 +8,6 @@
 \alias{s_compare.character}
 \alias{s_compare.logical}
 \alias{a_compare}
-\alias{a_compare.numeric}
-\alias{a_compare.factor}
-\alias{a_compare.character}
-\alias{a_compare.logical}
 \alias{compare_vars}
 \title{Compare Variables Between Groups}
 \usage{
@@ -34,24 +30,22 @@ s_compare(x, .ref_group, .in_ref_col, ...)
 
 \method{s_compare}{logical}(x, .ref_group, .in_ref_col, na.rm = TRUE, denom = "n", ...)
 
-a_compare(x, .ref_group, .in_ref_col, ..., .var)
-
-\method{a_compare}{numeric}(x, .ref_group, .in_ref_col, ...)
-
-\method{a_compare}{factor}(x, .ref_group, .in_ref_col, denom = "n", na.rm = TRUE, ...)
-
-\method{a_compare}{character}(
+a_compare(
   x,
-  .ref_group,
-  .in_ref_col,
-  denom = "n",
+  .N_col,
+  .N_row,
+  .var = NULL,
+  .df_row = NULL,
+  .ref_group = NULL,
+  .in_ref_col = FALSE,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL,
   na.rm = TRUE,
-  .var,
-  verbose = TRUE,
+  na_level = NA_character_,
   ...
 )
-
-\method{a_compare}{logical}(x, .ref_group, .in_ref_col, na.rm = TRUE, denom = "n", ...)
 
 compare_vars(
   lyt,
@@ -59,9 +53,11 @@ compare_vars(
   var_labels = vars,
   nested = TRUE,
   ...,
+  na.rm = TRUE,
   na_level = NA_character_,
   show_labels = "default",
   table_names = vars,
+  section_div = NA_character_,
   .stats = c("n", "mean_sd", "count_fraction", "pval"),
   .formats = NULL,
   .labels = NULL,
@@ -88,22 +84,12 @@ by a statistics function.}
 \item{verbose}{(\code{logical})\cr Whether warnings and messages should be printed. Mainly used
 to print out information about factor casting. Defaults to \code{TRUE}.}
 
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
+(i.e. with no column-based subsetting) that is passed by \code{rtables}.}
 
-\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+\item{.N_row}{(\code{count})\cr column-wise N (column count) for the full column that is passed by \code{rtables}.}
 
-\item{var_labels}{(\code{character})\cr character for label.}
-
-\item{nested}{(\code{flag})\cr whether this layout instruction be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
-underneath analyses, which is not allowed.}
-
-\item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
-
-\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
-
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
@@ -114,6 +100,26 @@ to avoid warnings from \code{rtables}.}
 \item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
 should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
 for that statistic's row label.}
+
+\item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{var_labels}{(\code{character})\cr character for label.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
+underneath analyses, which is not allowed.}
+
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
+
+\item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
+defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
 }
 \value{
 \itemize{
@@ -154,14 +160,6 @@ is used. If missing values are not removed, then they are counted as \code{FALSE
 \item \code{a_compare()}: Formatted analysis function which is used as \code{afun}
 in \code{compare_vars()}.
 
-\item \code{a_compare(numeric)}: Formatted analysis function method for \code{numeric} class.
-
-\item \code{a_compare(factor)}: Formatted analysis function method for \code{factor} class.
-
-\item \code{a_compare(character)}: Formatted analysis function method for \code{character} class.
-
-\item \code{a_compare(logical)}: Formatted analysis function method for \code{logical} class.
-
 \item \code{compare_vars()}: Layout-creating function which can take statistics function arguments
 and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
@@ -182,6 +180,8 @@ Therefore it is always better to manually convert character variables to factors
 \item For \code{compare_vars()}, the column split must define a reference group via \code{ref_group} so that the comparison
 is well defined.
 }
+
+\code{a_compare()} has been deprecated in favor of \code{a_summary()} with argument \code{compare} set to \code{TRUE}.
 }
 \examples{
 # `s_compare.numeric`
@@ -240,42 +240,6 @@ y <- c(NA, NA, NA, NA, FALSE)
 s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
 s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
 
-# `a_compare.numeric`
-a_compare(
-  rnorm(10, 5, 1),
-  .ref_group = rnorm(20, -5, 1),
-  .in_ref_col = FALSE,
-  .var = "bla"
-)
-
-# `a_compare.factor`
-# We need to ungroup `count` and `count_fraction` first so that the `rtables` formatting
-# functions can be applied correctly.
-afun <- make_afun(
-  getS3method("a_compare", "factor"),
-  .ungroup_stats = c("count", "count_fraction")
-)
-x <- factor(c("a", "a", "b", "c", "a"))
-y <- factor(c("a", "a", "b", "c"))
-afun(x, .ref_group = y, .in_ref_col = FALSE)
-
-# `a_compare.character`
-afun <- make_afun(
-  getS3method("a_compare", "character"),
-  .ungroup_stats = c("count", "count_fraction")
-)
-x <- c("A", "B", "A", "C")
-y <- c("B", "A", "C")
-afun(x, .ref_group = y, .in_ref_col = FALSE, .var = "x", verbose = FALSE)
-
-# `a_compare.logical`
-afun <- make_afun(
-  getS3method("a_compare", "logical")
-)
-x <- c(TRUE, FALSE, FALSE, TRUE, TRUE)
-y <- c(TRUE, FALSE)
-afun(x, .ref_group = y, .in_ref_col = FALSE)
-
 # `compare_vars()` in `rtables` pipelines
 
 ## Default output within a `rtables` pipeline.
@@ -297,6 +261,8 @@ build_table(lyt, df = tern_ex_adsl)
 
 }
 \seealso{
-Relevant constructor function \code{\link[=create_afun_compare]{create_afun_compare()}}, and \code{\link[=s_summary]{s_summary()}} which is used internally
-to compute a summary within \code{s_compare()}.
+Relevant constructor function \code{\link[=create_afun_compare]{create_afun_compare()}}, \code{\link[=s_summary]{s_summary()}} which is used internally
+to compute a summary within \code{s_compare()}, and \code{\link[=a_compare]{a_compare()}} which is used (with \code{compare = TRUE}) as the analysis
+function for \code{compare_vars()}.
 }
+\keyword{internal}

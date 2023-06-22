@@ -4,12 +4,15 @@
 \alias{extract_by_name}
 \title{Extract Elements by Name}
 \usage{
-extract_by_name(x, names)
+extract_by_name(x, names, x_defaults = NULL)
 }
 \arguments{
 \item{x}{(named \code{vector})\cr where to extract named elements from.}
 
 \item{names}{(\code{character})\cr vector of names to extract.}
+
+\item{x_defaults}{(named \code{vector})\cr named vector of default values to fill in for each value in \code{names} if no
+corresponding value in \code{x} exists.}
 }
 \value{
 \code{NULL} if \code{x} is \code{NULL}, otherwise the extracted elements from \code{x}.
@@ -23,6 +26,8 @@ Differences to the standard \code{[} function are:
 \item If \code{x} is \code{NULL}, then still always \code{NULL} is returned (same as in base function).
 \item If \code{x} is not \code{NULL}, then the intersection of its names is made with \code{names} and those
 elements are returned. That is, \code{names} which don't appear in \code{x} are not returned as \code{NA}s.
+\item If \code{x_defaults} is not \code{NULL}, these values will be used to fill in any values that are in
+\code{names} but not in \code{x}.
 }
 }
 \keyword{internal}

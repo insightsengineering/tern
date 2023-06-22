@@ -160,29 +160,93 @@ testthat::test_that("s_summary works with logical vectors and by if requested do
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("create_afun_summary creates an `afun` that works", {
-  afun <- create_afun_summary(
-    .stats = c("n", "count_fraction", "median", "range", "mean_ci"),
-    .formats = c(median = "xx."),
-    .labels = c(median = "My median"),
-    .indent_mods = c(median = 1L)
+testthat::test_that("a_summary works with healthy input.", {
+  options("width" = 100)
+  # numeric input
+  set.seed(1)
+  result <- a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # factor input
+  result <- a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # character input
+  result <- a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # logical input
+  result <- a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("a_summary works with custom input.", {
+  options("width" = 100)
+  result <- a_summary(
+    rnorm(10),
+    .N_col = 10, .N_row = 20, control_summarize_vars(conf_level = 0.90), .stats = c("sd", "median_ci"),
+    .formats = c(sd = "xx.", median_ci = "xx.xx - xx.xx"), .labels = c(sd = "std. dev"), .indent_mods = 3L
   )
-  dta_test <- data.frame(
-    USUBJID = rep(1:6, each = 3),
-    PARAMCD = rep("lab", 6 * 3),
-    AVISIT = rep(paste0("V", 1:3), 6),
-    ARM = rep(LETTERS[1:3], rep(6, 3)),
-    AVAL = c(9:1, rep(NA, 9)),
-    stringsAsFactors = TRUE
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  result <- a_summary(
+    factor(c("a", "a", "b", "c", NA)),
+    .N_row = 10, .N_col = 10, .formats = c(n = "xx.xx"),
+    .labels = c(n = "number of records"), .indent_mods = c(n = -1L, count = 5L), na.rm = FALSE
   )
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
 
-  l <- basic_table() %>%
-    split_cols_by(var = "ARM") %>%
-    split_rows_by(var = "AVISIT") %>%
-    analyze(vars = c("AVAL", "ARM"), afun = afun)
+testthat::test_that("a_summary works with healthy input when compare = TRUE.", {
+  options("width" = 100)
+  # numeric input
+  set.seed(1)
+  result <- a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
-  result <- build_table(l, df = dta_test)
+  # factor input
+  result <- a_summary(
+    factor(c("a", "a", "b", "c", "a")),
+    .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
+  )
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 
+  # character input
+  result <- a_summary(c("A", "B", "A", "C"), .ref_group = c("B", "A", "C"), .var = "x", compare = TRUE, verbose = FALSE)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # logical input
+  result <- a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .ref_group = c(TRUE, FALSE), compare = TRUE)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("a_summary works with custom input when compare = TRUE.", {
+  options("width" = 100)
+  result <- a_summary(
+    rnorm(10),
+    .ref_group = rnorm(20, -5, 1), .N_col = 10, .N_row = 20, control_summarize_vars(conf_level = 0.90),
+    .stats = c("pval", "median_ci"), .formats = c(median_ci = "xx.xx - xx.xx"), .labels = c(pval = "pvalue"),
+    .indent_mods = 3L, compare = TRUE
+  )
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  result <- a_summary(
+    factor(c("a", "a", "b", "c", NA)),
+    .ref_group = factor(c("a", "a", "b", "c")), .N_row = 10, .N_col = 10,
+    .formats = c(n = "xx.xx"), .labels = c(n = "number of records"), .indent_mods = c(n = -1L, count = 5L),
+    na.rm = FALSE, compare = TRUE
+  )
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
