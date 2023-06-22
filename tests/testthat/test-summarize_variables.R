@@ -187,14 +187,16 @@ testthat::test_that("a_summary works with healthy input.", {
 testthat::test_that("a_summary works with custom input.", {
   options("width" = 100)
   result <- a_summary(
-    rnorm(10), .N_col = 10, .N_row = 20, control_summarize_vars(conf_level = 0.90), .stats = c("sd", "median_ci"),
+    rnorm(10),
+    .N_col = 10, .N_row = 20, control_summarize_vars(conf_level = 0.90), .stats = c("sd", "median_ci"),
     .formats = c(sd = "xx.", median_ci = "xx.xx - xx.xx"), .labels = c(sd = "std. dev"), .indent_mods = 3L
   )
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   result <- a_summary(
-    factor(c("a", "a", "b", "c", NA)), .N_row = 10, .N_col = 10, .formats = c(n = "xx.xx"),
+    factor(c("a", "a", "b", "c", NA)),
+    .N_row = 10, .N_col = 10, .formats = c(n = "xx.xx"),
     .labels = c(n = "number of records"), .indent_mods = c(n = -1L, count = 5L), na.rm = FALSE
   )
   res <- testthat::expect_silent(result)
@@ -211,7 +213,8 @@ testthat::test_that("a_summary works with healthy input when compare = TRUE.", {
 
   # factor input
   result <- a_summary(
-    factor(c("a", "a", "b", "c", "a")), .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
+    factor(c("a", "a", "b", "c", "a")),
+    .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
   )
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -230,7 +233,8 @@ testthat::test_that("a_summary works with healthy input when compare = TRUE.", {
 testthat::test_that("a_summary works with custom input when compare = TRUE.", {
   options("width" = 100)
   result <- a_summary(
-    rnorm(10), .ref_group = rnorm(20, -5, 1), .N_col = 10, .N_row = 20, control_summarize_vars(conf_level = 0.90),
+    rnorm(10),
+    .ref_group = rnorm(20, -5, 1), .N_col = 10, .N_row = 20, control_summarize_vars(conf_level = 0.90),
     .stats = c("pval", "median_ci"), .formats = c(median_ci = "xx.xx - xx.xx"), .labels = c(pval = "pvalue"),
     .indent_mods = 3L, compare = TRUE
   )
@@ -238,7 +242,8 @@ testthat::test_that("a_summary works with custom input when compare = TRUE.", {
   testthat::expect_snapshot(res)
 
   result <- a_summary(
-    factor(c("a", "a", "b", "c", NA)), .ref_group = factor(c("a", "a", "b", "c")), .N_row = 10, .N_col = 10,
+    factor(c("a", "a", "b", "c", NA)),
+    .ref_group = factor(c("a", "a", "b", "c")), .N_row = 10, .N_col = 10,
     .formats = c(n = "xx.xx"), .labels = c(n = "number of records"), .indent_mods = c(n = -1L, count = 5L),
     na.rm = FALSE, compare = TRUE
   )

@@ -527,13 +527,16 @@ s_summary.logical <- function(x,
 #' # comparison analysis - compare = TRUE
 #' a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
 #' a_summary(
-#'   factor(c("a", "a", "b", "c", "a")), .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
+#'   factor(c("a", "a", "b", "c", "a")),
+#'   .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
 #' )
 #' a_summary(
-#'   c("A", "B", "A", "C"), .ref_group = c("B", "A", "C"), .var = "x", compare = TRUE, verbose = FALSE
+#'   c("A", "B", "A", "C"),
+#'   .ref_group = c("B", "A", "C"), .var = "x", compare = TRUE, verbose = FALSE
 #' )
 #' a_summary(
-#'   c(TRUE, FALSE, FALSE, TRUE, TRUE), .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare = TRUE
+#'   c(TRUE, FALSE, FALSE, TRUE, TRUE),
+#'   .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare = TRUE
 #' )
 #'
 #' @export

@@ -309,7 +309,8 @@ ungroup_stats <- function(x, .stats, .formats, .labels, .indent_mods, .in_ref_co
         length(.labels)
       })
       .indent_mods <- append(
-        .indent_mods, .indent_mods[stat] %>% `names<-`(a_lvl), after = if (stat %in% names(.indent_mods)) {
+        .indent_mods, .indent_mods[stat] %>% `names<-`(a_lvl),
+        after = if (stat %in% names(.indent_mods)) {
           which(names(.indent_mods) == stat) - 1 + which(names(x[[stat]]) == a_name)
         } else {
           length(.indent_mods)

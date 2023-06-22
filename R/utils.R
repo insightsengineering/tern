@@ -248,7 +248,9 @@ combine_vectors <- function(x, y) {
 #'
 #' @keywords internal
 extract_by_name <- function(x, names, x_defaults = NULL) {
-  if (is.null(x)) return(NULL)
+  if (is.null(x)) {
+    return(NULL)
+  }
   checkmate::assert_named(x)
   checkmate::assert_character(names)
   which_extract <- intersect(names(x), names)
