@@ -177,3 +177,4 @@ reference:
     desc: Functions that are currently deprecated within `tern`.
     contents:
       - pairwise
+      - starts_with("create_")
