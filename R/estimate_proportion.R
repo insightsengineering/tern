@@ -277,7 +277,7 @@ prop_strat_wilson <- function(rsp,
   assert_proportion_value(conf_level)
 
   tbl <- table(rsp, strata)
-  n_strata <- ncol(tbl)
+  n_strata <- length(unique(strata))
 
   # Checking the weights and maximum number of iterations.
   do_iter <- FALSE
@@ -289,8 +289,9 @@ prop_strat_wilson <- function(rsp,
     if (is.null(max_iterations)) max_iterations <- 10
     checkmate::assert_int(max_iterations, na.ok = FALSE, null.ok = FALSE, lower = 1)
   }
-  checkmate::assert_numeric(weights, lower = 0, upper = 1, any.missing = FALSE, len = ncol(tbl))
-  checkmate::assert_int(sum(weights), lower = 1, upper = 1)
+  checkmate::assert_numeric(weights, lower = 0, upper = 1, any.missing = FALSE, len = n_strata)
+  sum_weights <- checkmate::assert_int(sum(weights))
+  if (as.integer(sum_weights + 0.5) != 1L) stop("Sum of weights must be 1L.")
 
 
   xs <- tbl["TRUE", ]
