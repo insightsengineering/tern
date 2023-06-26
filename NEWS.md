@@ -5,6 +5,7 @@
 
 ### Miscellaneous
 * Began deprecation of `time_unit_input` and `time_unit_output` arguments and replaced them with the `input_time_unit` and `num_pt_year`, respectively, in `control_incidence_rate`.
+* Removed deprecated `pairwise` function.
 
 # tern 0.8.3
 
