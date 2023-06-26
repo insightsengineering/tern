@@ -1,25 +1,3 @@
-#' Pairwise Formula Special Term
-#'
-#' @description `r lifecycle::badge("deprecated")`
-#'
-#' The special term `pairwise` indicate that the model should be fitted individually for
-#' every tested level in comparison to the reference level.
-#'
-#' @param x the variable for which pairwise result is expected.
-#'
-#' @return Variable "paired".
-#'
-#' @details Let's `ARM` being a factor with level A, B, C; let's be B the reference level,
-#'   a model calling the formula including `pairwise(ARM)` will result in two models:
-#'   * A model including only levels A and B, and effect of A estimated in reference to B.
-#'   * A model including only levels C and B, the effect of C estimated in reference to B.
-#'
-#' @export
-pairwise <- function(x) {
-  lifecycle::deprecate_warn("0.8.1.9013", "pairwise()", "univariate()")
-  structure(x, varname = deparse(substitute(x)))
-}
-
 #' Univariate Formula Special Term
 #'
 #' @description `r lifecycle::badge("stable")`
