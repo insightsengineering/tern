@@ -47,6 +47,11 @@ testthat::test_that("format_count_fraction works with count of 0", {
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("format_count_fraction works with NA input", {
+  result <- format_count_fraction(NA)
+  testthat::expect_identical(result, "NA")
+})
+
 testthat::test_that("format_count_fraction_fixed_dp works with healthy inputs", {
   result <- format_count_fraction_fixed_dp(c(2, 0.5))
 
