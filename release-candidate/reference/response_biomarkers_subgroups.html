@@ -14,7 +14,7 @@ on a binary response endpoint across population subgroups."><!-- mathjax --><scr
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,6 +46,7 @@ on a binary response endpoint across population subgroups."><!-- mathjax --><scr
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
@@ -167,9 +168,23 @@ created by combining multiple subtables.</p>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs_f</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co">## Table with default columns.</span></span></span>
 <span class="r-in"><span><span class="fu">tabulate_rsp_biomarkers</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                  Total n   Responders   Response (%)   Odds Ratio      95% CI      p-value (Wald)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Age                                                                                                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   All Patients                     200        164          82.0%          1.00      (0.95, 1.05)       0.8530    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Continuous Level Biomarker 2                                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     LOW                            70          53          75.7%          0.93      (0.85, 1.01)       0.0845    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     MEDIUM                         68          58          85.3%          0.99      (0.88, 1.11)       0.8190    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     HIGH                           62          53          85.5%          1.06      (0.96, 1.18)       0.2419    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Continuous Level Biomarker 1                                                                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   All Patients                     200        164          82.0%          0.98      (0.88, 1.08)       0.6353    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Continuous Level Biomarker 2                                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     LOW                            70          53          75.7%          1.15      (0.95, 1.40)       0.1584    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     MEDIUM                         68          58          85.3%          0.88      (0.73, 1.06)       0.1700    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     HIGH                           62          53          85.5%          0.88      (0.72, 1.08)       0.2104    </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Table with a manually chosen set of columns: leave out "pval", reorder.</span></span></span>
 <span class="r-in"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu">tabulate_rsp_biomarkers</span><span class="op">(</span></span></span>
@@ -179,7 +194,8 @@ created by combining multiple subtables.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Finally produce the forest plot.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="g_forest.html">g_forest</a></span><span class="op">(</span><span class="va">tab</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.7</span>, <span class="fl">1.4</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-plt img"><img src="response_biomarkers_subgroups-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

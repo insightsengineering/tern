@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,6 +42,7 @@
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
@@ -167,50 +168,9 @@
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>This code is taken from R Graphics by Paul Murell, 2nd edition</p>
+    <p>This code is taken from <code>R Graphics by Paul Murell, 2nd edition</code></p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Internal function - split_text_grob</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="va">sg</span> <span class="op">&lt;-</span> <span class="fu">split_text_grob</span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="st">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"dapibus dolor, ac mattis erat. Nunc metus lectus, imperdiet ut enim eu,"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"commodo scelerisque urna. Vestibulum facilisis metus vel nibh tempor, sed"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"elementum sem tempus. Morbi quis arcu condimentum, maximus lorem id,"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"tristique ante. Nullam a nunc dui. Fusce quis lacus nec ante dignissim"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"faucibus nec vitae tellus. Suspendisse mollis et sapien eu ornare. Vestibulum"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"placerat neque nec justo efficitur, ornare varius nulla imperdiet. Nunc justo"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"sapien, vestibulum eget efficitur eget, porttitor id ante. Nulla tempor"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"luctus massa id elementum. Praesent dictum, neque vitae vestibulum malesuada,"</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"nunc nisi blandit lacus, sit amet tristique odio dui sit amet velit."</span></span></span>
-<span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/grobWidth.html" class="external-link">grobHeight</a></span><span class="op">(</span><span class="va">sg</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html" class="external-link">grid.newpage</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grid/plotViewport.html" class="external-link">plotViewport</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/grid.rect.html" class="external-link">grid.rect</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/grid.draw.html" class="external-link">grid.draw</a></span><span class="op">(</span><span class="va">sg</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/grid.rect.html" class="external-link">grid.rect</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/grobWidth.html" class="external-link">grobHeight</a></span><span class="op">(</span><span class="va">sg</span><span class="op">)</span>, width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"cm"</span><span class="op">)</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># stack split_text_grob</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html" class="external-link">grid.newpage</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grid/plotViewport.html" class="external-link">plotViewport</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/grid.rect.html" class="external-link">grid.rect</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/grid.draw.html" class="external-link">grid.draw</a></span><span class="op">(</span><span class="fu">split_text_grob</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Hello, this is a test"</span>, <span class="st">"and yet another test"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  just <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"top"</span><span class="op">)</span>, x <span class="op">=</span> <span class="fl">0</span>, y <span class="op">=</span> <span class="fl">1</span></span></span>
-<span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

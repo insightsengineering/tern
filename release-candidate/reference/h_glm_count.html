@@ -12,7 +12,7 @@ Helper functions that can be used to return the results of various Poisson model
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,7 @@ Helper functions that can be used to return the results of various Poisson model
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
@@ -165,55 +166,6 @@ selected model (poisson, quasipoisson, negative binomial).</p></li>
     <div class="dont-index"><p><a href="summarize_glm_count.html">summarize_glm_count</a></p></div>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Internal function - h_glm_poisson</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">h_glm_poisson</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
-<span class="r-in"><span>  .df_row <span class="op">=</span> <span class="va">anl</span>,</span></span>
-<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"ARM"</span>, offset <span class="op">=</span> <span class="st">"lgTMATRSK"</span>, covariates <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - h_glm_quasipoisson</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">h_glm_quasipoisson</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
-<span class="r-in"><span>  .df_row <span class="op">=</span> <span class="va">adtte</span>,</span></span>
-<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"ARM"</span>, offset <span class="op">=</span> <span class="st">"lgTMATRSK"</span>, covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"REGION1"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - h_glm_count</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">h_glm_count</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
-<span class="r-in"><span>  .df_row <span class="op">=</span> <span class="va">anl</span>,</span></span>
-<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"ARMCD"</span>, offset <span class="op">=</span> <span class="st">"lgTMATRSK"</span>, covariates <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  distribution <span class="op">=</span> <span class="st">"poisson"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - h_ppmeans</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="va">fits</span> <span class="op">&lt;-</span> <span class="fu">h_glm_count</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
-<span class="r-in"><span>  .df_row <span class="op">=</span> <span class="va">anl</span>,</span></span>
-<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"ARMCD"</span>, offset <span class="op">=</span> <span class="st">"lgTMATRSK"</span>, covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"REGION1"</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  distribution <span class="op">=</span> <span class="st">"quasipoisson"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">h_ppmeans</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  obj <span class="op">=</span> <span class="va">fits</span><span class="op">$</span><span class="va">glm_fit</span>,</span></span>
-<span class="r-in"><span>  .df_row <span class="op">=</span> <span class="va">anl</span>,</span></span>
-<span class="r-in"><span>  arm <span class="op">=</span> <span class="st">"ARM"</span>,</span></span>
-<span class="r-in"><span>  conf_level <span class="op">=</span> <span class="fl">0.95</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
