@@ -12,7 +12,7 @@ Summarize p-value, HR and CIs from stratified or unstratified CoxPH model."><!--
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,6 +50,7 @@ Summarize p-value, HR and CIs from stratified or unstratified CoxPH model."><!--
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
@@ -78,14 +79,14 @@ Summarize p-value, HR and CIs from stratified or unstratified CoxPH model."><!--
 </nav><div class="container template-reference-topic">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Pairwise CoxPH model</h1>
+      <img src="" class="logo" alt=""><h1>Pairwise <code>CoxPH</code> model</h1>
       <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/HEAD/R/survival_coxph_pairwise.R" class="external-link"><code>R/survival_coxph_pairwise.R</code></a></small>
       <div class="d-none name"><code>survival_coxph_pairwise.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
     <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="figures/lifecycle-stable.svg" alt="[Stable]"></a></p>
-<p>Summarize p-value, HR and CIs from stratified or unstratified CoxPH model.</p>
+<p>Summarize p-value, HR and CIs from stratified or unstratified <code>CoxPH</code> model.</p>
     </div>
 
     <div class="section level2">
@@ -153,10 +154,10 @@ by a statistics function.</p></dd>
 
 <dt>control</dt>
 <dd><p>(<code>list</code>)<br> parameters for comparison details, specified by using the helper function
-<code><a href="control_coxph.html">control_coxph()</a></code>. Some possible parameter options are:</p><ul><li><p><code>pval_method</code> (<code>string</code>)<br> p-value method for testing hazard ratio = 1. Default method is "log-rank" which
-comes from <code><a href="https://rdrr.io/pkg/survival/man/survdiff.html" class="external-link">survival::survdiff()</a></code>, can also be set to "wald" or "likelihood" (from <code><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">survival::coxph()</a></code>).</p></li>
-<li><p><code>ties</code> (<code>string</code>)<br> specifying the method for tie handling. Default is "efron",
-can also be set to "breslow" or "exact". See more in <code><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">survival::coxph()</a></code></p></li>
+<code><a href="control_coxph.html">control_coxph()</a></code>. Some possible parameter options are:</p><ul><li><p><code>pval_method</code> (<code>string</code>)<br> p-value method for testing hazard ratio = 1. Default method is <code>"log-rank"</code> which
+comes from <code><a href="https://rdrr.io/pkg/survival/man/survdiff.html" class="external-link">survival::survdiff()</a></code>, can also be set to <code>"wald"</code> or <code>"likelihood"</code> (from <code><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">survival::coxph()</a></code>).</p></li>
+<li><p><code>ties</code> (<code>string</code>)<br> specifying the method for tie handling. Default is <code>"efron"</code>,
+can also be set to <code>"breslow"</code> or <code>"exact"</code>. See more in <code><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">survival::coxph()</a></code></p></li>
 <li><p><code>conf_level</code> (<code>proportion</code>)<br> confidence level of the interval for HR.</p></li>
 </ul></dd>
 
@@ -199,7 +200,8 @@ to avoid warnings from <code>rtables</code>.</p></dd>
 
 
 <dt>.indent_mods</dt>
-<dd><p>(named <code>integer</code>)<br> indent modifiers for the labels.</p></dd>
+<dd><p>(named <code>integer</code>)<br> indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -220,7 +222,7 @@ the statistics from <code>s_coxph_pairwise()</code> to the table layout.</p></li
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>s_coxph_pairwise()</code>: Statistics function which analyzes HR, CIs of HR and p-value of a coxph model.</p></li>
+<ul><li><p><code>s_coxph_pairwise()</code>: Statistics function which analyzes HR, CIs of HR and p-value of a <code>coxph</code> model.</p></li>
 <li><p><code>a_coxph_pairwise()</code>: Formatted analysis function which is used as <code>afun</code> in <code>coxph_pairwise()</code>.</p></li>
 <li><p><code>coxph_pairwise()</code>: Layout-creating function which can take statistics function arguments
 and additional format arguments. This function is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
@@ -237,16 +239,6 @@ and additional format arguments. This function is a wrapper for <code><a href="h
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ARMCD</span> <span class="op">==</span> <span class="st">"ARM A"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df_ref_group</span> <span class="op">&lt;-</span> <span class="va">adtte_f</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ARMCD</span> <span class="op">==</span> <span class="st">"ARM B"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - s_coxph_pairwise</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">s_coxph_pairwise</span><span class="op">(</span><span class="va">df</span>, <span class="va">df_ref_group</span>, .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>, .var <span class="op">=</span> <span class="st">"AVAL"</span>, is_event <span class="op">=</span> <span class="st">"is_event"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - a_coxph_pairwise</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">a_coxph_pairwise</span><span class="op">(</span><span class="va">df</span>, <span class="va">df_ref_group</span>, .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>, .var <span class="op">=</span> <span class="st">"AVAL"</span>, is_event <span class="op">=</span> <span class="st">"is_event"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>

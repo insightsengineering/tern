@@ -12,7 +12,7 @@ Summarize patients' survival rate and difference of survival rates between group
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,6 +50,7 @@ Summarize patients' survival rate and difference of survival rates between group
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
@@ -138,7 +139,12 @@ Summarize patients' survival rate and difference of survival rates between group
 <span>    <span class="st">"ztest_pval"</span><span class="op">)</span>,</span>
 <span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  .indent_mods <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="va">method</span> <span class="op">==</span> <span class="st">"both"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>     <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>rate_diff <span class="op">=</span> <span class="fl">1L</span>, rate_diff_ci <span class="op">=</span> <span class="fl">2L</span>,</span>
+<span>    ztest_pval <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></span>
+<span> <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>     <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>rate_diff_ci <span class="op">=</span> <span class="fl">1L</span>, ztest_pval <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span>
+<span> <span class="op">}</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -221,7 +227,9 @@ avoid warnings from duplicate table names.</p></dd>
 
 
 <dt>.indent_mods</dt>
-<dd><p>(named <code>integer</code>)<br> indent modifiers for the labels.</p></dd>
+<dd><p>(named <code>vector</code> of <code>integer</code>)<br> indent modifiers for the labels. Each element of the vector
+should be a name-value pair with name corresponding to a statistic specified in <code>.stats</code> and value the indentation
+for that statistic's row label.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -270,43 +278,8 @@ and additional format arguments. This function is a wrapper for <code><a href="h
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">adtte_f</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ARMCD</span> <span class="op">==</span> <span class="st">"ARM A"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - s_surv_timepoint</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">s_surv_timepoint</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"AVAL"</span>, time_point <span class="op">=</span> <span class="fl">7</span>, is_event <span class="op">=</span> <span class="st">"is_event"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - a_surv_timepoint</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">a_surv_timepoint</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"AVAL"</span>, time_point <span class="op">=</span> <span class="fl">7</span>, is_event <span class="op">=</span> <span class="st">"is_event"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">df_ref_group</span> <span class="op">&lt;-</span> <span class="va">adtte_f</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ARMCD</span> <span class="op">==</span> <span class="st">"ARM B"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - s_surv_timepoint_diff</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">s_surv_timepoint_diff</span><span class="op">(</span><span class="va">df</span>, <span class="va">df_ref_group</span>, .in_ref_col <span class="op">=</span> <span class="cn">TRUE</span>, .var <span class="op">=</span> <span class="st">"AVAL"</span>, is_event <span class="op">=</span> <span class="st">"is_event"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">s_surv_timepoint_diff</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">df</span>,</span></span>
-<span class="r-in"><span>  <span class="va">df_ref_group</span>,</span></span>
-<span class="r-in"><span>  .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
-<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
-<span class="r-in"><span>  time_point <span class="op">=</span> <span class="fl">7</span>,</span></span>
-<span class="r-in"><span>  is_event <span class="op">=</span> <span class="st">"is_event"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - a_surv_timepoint_diff</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">a_surv_timepoint_diff</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">df</span>,</span></span>
-<span class="r-in"><span>  <span class="va">df_ref_group</span>,</span></span>
-<span class="r-in"><span>  .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
-<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
-<span class="r-in"><span>  time_point <span class="op">=</span> <span class="fl">7</span>,</span></span>
-<span class="r-in"><span>  is_event <span class="op">=</span> <span class="st">"is_event"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Survival at given time points.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -360,16 +333,16 @@ and additional format arguments. This function is a wrapper for <code><a href="h
 <span class="r-in"><span>    method <span class="op">=</span> <span class="st">"both"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">adtte_f</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                     ARM A            ARM B            ARM C     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                     (N=69)           (N=73)           (N=58)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9 Months                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Patients remaining at risk          53               53               39      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Event Free Rate (%)               84.89            75.25            71.86     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   95% CI                        (76.24, 93.53)   (65.32, 85.17)   (60.14, 83.57)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Difference in Event Free Rate                        -9.64            -13.03    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 95% CI                                           (-22.80, 3.52)   (-27.59, 1.53)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p-value (Z-test)                                     0.1511           0.0794    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                       ARM A            ARM B            ARM C     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                       (N=69)           (N=73)           (N=58)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 Months                                                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Patients remaining at risk            53               53               39      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Event Free Rate (%)                 84.89            75.25            71.86     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   95% CI                          (76.24, 93.53)   (65.32, 85.17)   (60.14, 83.57)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Difference in Event Free Rate                        -9.64            -13.03    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     95% CI                                         (-22.80, 3.52)   (-27.59, 1.53)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     p-value (Z-test)                                   0.1511           0.0794    </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

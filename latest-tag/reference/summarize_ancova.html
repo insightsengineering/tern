@@ -14,7 +14,7 @@ multiple timepoints within the same response variable .var."><!-- mathjax --><sc
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,6 +52,7 @@ multiple timepoints within the same response variable .var."><!-- mathjax --><sc
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
@@ -80,14 +81,14 @@ multiple timepoints within the same response variable .var."><!-- mathjax --><sc
 </nav><div class="container template-reference-topic">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Summary for analysis of covariance (ANCOVA).</h1>
+      <img src="" class="logo" alt=""><h1>Summary for analysis of covariance (<code>ANCOVA</code>).</h1>
       <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/HEAD/R/summarize_ancova.R" class="external-link"><code>R/summarize_ancova.R</code></a></small>
       <div class="d-none name"><code>summarize_ancova.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
     <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="figures/lifecycle-stable.svg" alt="[Stable]"></a></p>
-<p>Summarize results of ANCOVA. This can be used to analyze multiple endpoints and/or
+<p>Summarize results of <code>ANCOVA</code>. This can be used to analyze multiple endpoints and/or
 multiple timepoints within the same response variable <code>.var</code>.</p>
     </div>
 
@@ -166,7 +167,7 @@ by a statistics function.</p></dd>
 
 <dt>interaction_y</dt>
 <dd><p>(<code>character</code>)<br> a selected item inside of the interaction_item column which will be used
-to select the specific ANCOVA results. if the interaction is not needed, the default option is <code>FALSE</code>.</p></dd>
+to select the specific <code>ANCOVA</code> results. if the interaction is not needed, the default option is <code>FALSE</code>.</p></dd>
 
 
 <dt>interaction_item</dt>
@@ -212,7 +213,8 @@ to avoid warnings from <code>rtables</code>.</p></dd>
 
 
 <dt>.indent_mods</dt>
-<dd><p>(named <code>integer</code>)<br> indent modifiers for the labels.</p></dd>
+<dd><p>(named <code>integer</code>)<br> indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -252,24 +254,6 @@ and additional format arguments. This function is a wrapper for <code><a href="h
 <span class="r-in"><span><span class="va">variables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"Species"</span>, covariates <span class="op">=</span> <span class="st">"Sepal.Length * Sepal.Width"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">.ref_group</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">==</span> <span class="st">"setosa"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">conf_level</span> <span class="op">&lt;-</span> <span class="fl">0.95</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - s_ancova</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">s_ancova</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">df</span>, <span class="va">.var</span>, <span class="va">.df_row</span>, <span class="va">variables</span>, <span class="va">.ref_group</span>,</span></span>
-<span class="r-in"><span>  .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
-<span class="r-in"><span>  <span class="va">conf_level</span>, interaction_y <span class="op">=</span> <span class="cn">FALSE</span>, interaction_item <span class="op">=</span> <span class="cn">NULL</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - a_ancova</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">a_ancova</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">df</span>, <span class="va">.var</span>, <span class="va">.df_row</span>, <span class="va">variables</span>, <span class="va">.ref_group</span>,</span></span>
-<span class="r-in"><span>  .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
-<span class="r-in"><span>  interaction_y <span class="op">=</span> <span class="cn">FALSE</span>, interaction_item <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">conf_level</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">split_cols_by</span><span class="op">(</span><span class="st">"Species"</span>, ref_group <span class="op">=</span> <span class="st">"setosa"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>

@@ -12,7 +12,7 @@ Functions to calculate different proportion confidence intervals for use in esti
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,6 +50,7 @@ Functions to calculate different proportion confidence intervals for use in esti
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
@@ -157,18 +158,17 @@ interval for unequal proportions as described in Yan and Su (2010)</p></li>
 Also referred to as the <code>exact</code> method.</p></li>
 <li><p><code>prop_wald()</code>: Calculates the Wald interval by following the usual textbook definition
 for a single proportion confidence interval using the normal approximation.</p></li>
-<li><p><code>prop_agresti_coull()</code>: Calculates the Agresti-Coull interval (created by Alan Agresti and Brent Coull) by
+<li><p><code>prop_agresti_coull()</code>: Calculates the <code>Agresti-Coull</code> interval (created by <code>Alan Agresti</code> and <code>Brent Coull</code>) by
 (for 95% CI) adding two successes and two failures to the data and then using the Wald formula to construct a CI.</p></li>
 <li><p><code>prop_jeffreys()</code>: Calculates the Jeffreys interval, an equal-tailed interval based on the
 non-informative Jeffreys prior for a binomial proportion.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    
-<ul><li><p>Yan X, Su XG (2010).
+    <p>Yan X, Su XG (2010).
 “Stratified Wilson and Newcombe Confidence Intervals for Multiple Binomial Proportions.”
-<em>Stat. Biopharm. Res.</em>, <b>2</b>(3), 329--335.</p></li>
-</ul></div>
+<em>Stat. Biopharm. Res.</em>, <b>2</b>(3), 329--335.</p>
+    </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><a href="estimate_proportions.html">estimate_proportions</a>, descriptive function <code><a href="d_proportion.html">d_proportion()</a></code>,

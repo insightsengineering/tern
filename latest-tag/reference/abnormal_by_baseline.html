@@ -46,7 +46,7 @@ num: the number of patients in denom who also have at least one abnormality post
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,6 +84,7 @@ num: the number of patients in denom who also have at least one abnormality post
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
@@ -214,7 +215,8 @@ to avoid warnings from <code>rtables</code>.</p></dd>
 
 
 <dt>.indent_mods</dt>
-<dd><p>(named <code>integer</code>)<br> indent modifiers for the labels.</p></dd>
+<dd><p>(named <code>integer</code>)<br> indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -258,30 +260,16 @@ conveyed to <code>na_level</code> appropriately beforehand with <code><a href="d
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="df_explicit_na.html">df_explicit_na</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - s_count_abnormal_by_baseline</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="co"># Just for one abnormal level.</span></span></span>
-<span class="r-in"><span><span class="fu">s_count_abnormal_by_baseline</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"ANRIND"</span>, abnormal <span class="op">=</span> <span class="st">"HIGH"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - a_count_abnormal_by_baseline</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="co"># Use the Formatted Analysis function for `analyze()`. We need to ungroup `fraction` first</span></span></span>
-<span class="r-in"><span><span class="co"># so that the `rtables` formatting function `format_fraction()` can be applied correctly.</span></span></span>
-<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu">make_afun</span><span class="op">(</span><span class="va">a_count_abnormal_by_baseline</span>, .ungroup_stats <span class="op">=</span> <span class="st">"fraction"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">afun</span><span class="op">(</span><span class="va">df</span>, .var <span class="op">=</span> <span class="st">"ANRIND"</span>, abnormal <span class="op">=</span> <span class="st">"LOW"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Layout creating function.</span></span></span>
 <span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">count_abnormal_by_baseline</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ANRIND"</span>, abnormal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>High <span class="op">=</span> <span class="st">"HIGH"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                all obs  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> High                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Not high baseline status    1/4 (25%) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   High baseline status           0/1    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Total                      1/6 (16.7%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                all obs  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> High                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Not high    1/4 (25%) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   High           0/1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Total      1/6 (16.7%)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Passing of statistics function and formatting arguments.</span></span></span>
 <span class="r-in"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
@@ -299,12 +287,12 @@ conveyed to <code>na_level</code> appropriately beforehand with <code><a href="d
 <span class="r-in"><span>    .indent_mods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>fraction <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                 all obs</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Low                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       Not low baseline status    1 / 3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       Low baseline status        0 / 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       Total                      1 / 4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 all obs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Low                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Not low    1 / 3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Low        0 / 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Total      1 / 4 </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

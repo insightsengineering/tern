@@ -14,7 +14,7 @@ when reading about the user-facing functions."><!-- mathjax --><script src="http
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,6 +52,7 @@ when reading about the user-facing functions."><!-- mathjax --><script src="http
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
@@ -97,7 +98,7 @@ when reading about the user-facing functions.</p>
 <span></span>
 <span><span class="fu">h_logistic_mult_cont_df</span><span class="op">(</span><span class="va">variables</span>, <span class="va">data</span>, control <span class="op">=</span> <span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">h_tab_rsp_one_biomarker</span><span class="op">(</span><span class="va">df</span>, <span class="va">vars</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">h_tab_rsp_one_biomarker</span><span class="op">(</span><span class="va">df</span>, <span class="va">vars</span>, .indent_mods <span class="op">=</span> <span class="fl">0L</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -135,6 +136,11 @@ see the example).</p></dd>
 <li><p><code>pval</code>: p-value of the effect.
 Note, the statistics <code>n_tot</code>, <code>or</code> and <code>ci</code> are required.</p></li>
 </ul></dd>
+
+
+<dt>.indent_mods</dt>
+<dd><p>(named <code>integer</code>)<br> indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -238,13 +244,13 @@ the results for a single biomarker.</p></li>
 <span class="r-in"><span><span class="va">df1</span><span class="op">$</span><span class="va">var</span> <span class="op">&lt;-</span> <span class="st">"ALL"</span></span></span>
 <span class="r-in"><span><span class="va">df1</span><span class="op">$</span><span class="va">var_label</span> <span class="op">&lt;-</span> <span class="st">"All patients"</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Internal function - h_tab_rsp_one_biomarker</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu">h_tab_rsp_one_biomarker</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">df1</span>,</span></span>
 <span class="r-in"><span>  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_tot"</span>, <span class="st">"n_rsp"</span>, <span class="st">"prop"</span>, <span class="st">"or"</span>, <span class="st">"ci"</span>, <span class="st">"pval"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                Total n   Responders   Response (%)   Odds Ratio      95% CI      p-value (Wald)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> All patients     200        164          82.0%          0.98      (0.88, 1.08)       0.6353    </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

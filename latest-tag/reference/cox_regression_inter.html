@@ -16,7 +16,7 @@ of the covariate, in comparison to the treatment control."><!-- mathjax --><scri
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,6 +54,7 @@ of the covariate, in comparison to the treatment control."><!-- mathjax --><scri
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
@@ -104,6 +105,9 @@ of the covariate, in comparison to the treatment control.</p>
 <span><span class="co"># S3 method for factor</span></span>
 <span><span class="fu">h_coxreg_inter_effect</span><span class="op">(</span><span class="va">x</span>, <span class="va">effect</span>, <span class="va">covar</span>, <span class="va">mod</span>, <span class="va">label</span>, <span class="va">control</span>, <span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># S3 method for character</span></span>
+<span><span class="fu">h_coxreg_inter_effect</span><span class="op">(</span><span class="va">x</span>, <span class="va">effect</span>, <span class="va">covar</span>, <span class="va">mod</span>, <span class="va">label</span>, <span class="va">control</span>, <span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">h_coxreg_extract_interaction</span><span class="op">(</span><span class="va">effect</span>, <span class="va">covar</span>, <span class="va">mod</span>, <span class="va">data</span>, <span class="va">at</span>, <span class="va">control</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">h_coxreg_inter_estimations</span><span class="op">(</span></span>
@@ -119,7 +123,7 @@ of the covariate, in comparison to the treatment control.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
-<dd><p>(<code>numeric</code> or <code>factor</code>)<br> the values of the effect to be tested.</p></dd>
+<dd><p>(<code>numeric</code> or <code>factor</code>)<br> the values of the covariate to be tested.</p></dd>
 
 
 <dt>effect</dt>
@@ -199,11 +203,20 @@ is obtained as $sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$.</p>
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
 <ul><li><p><code>h_coxreg_inter_effect()</code>: S3 generic helper function to determine interaction effect.</p></li>
-<li><p><code>h_coxreg_inter_effect(numeric)</code>: Estimate the interaction with a <code>numeric</code> covariate.</p></li>
-<li><p><code>h_coxreg_inter_effect(factor)</code>: Estimate the interaction with a <code>factor</code> covariate.</p></li>
+<li><p><code>h_coxreg_inter_effect(numeric)</code>: Method for <code>numeric</code> class. Estimates the interaction with a <code>numeric</code> covariate.</p></li>
+<li><p><code>h_coxreg_inter_effect(factor)</code>: Method for <code>factor</code> class. Estimate the interaction with a <code>factor</code> covariate.</p></li>
+<li><p><code>h_coxreg_inter_effect(character)</code>: Method for <code>character</code> class. Estimate the interaction with a <code>character</code> covariate.
+This makes an automatic conversion to <code>factor</code> and then forwards to the method for factors.</p></li>
 <li><p><code>h_coxreg_extract_interaction()</code>: A higher level function to get
 the results of the interaction test and the estimated values.</p></li>
 <li><p><code>h_coxreg_inter_estimations()</code>: Hazard ratio estimation in interactions.</p></li>
+</ul></div>
+    <div class="section level2">
+    <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
+    
+<ul><li><p>Automatic conversion of character to factor does not guarantee results can be generated correctly. It is
+therefore better to always pre-process the dataset such that factors are manually created from character
+variables before passing the dataset to <code><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">rtables::build_table()</a></code>.</p></li>
 </ul></div>
 
     <div class="section level2">

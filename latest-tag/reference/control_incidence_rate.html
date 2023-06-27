@@ -14,7 +14,7 @@ internally to specify details in s_incidence_rate()."><!-- mathjax --><script sr
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,6 +52,7 @@ internally to specify details in s_incidence_rate()."><!-- mathjax --><script sr
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
@@ -96,8 +97,10 @@ internally to specify details in <code><a href="incidence_rate.html">s_incidence
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">control_incidence_rate</span><span class="op">(</span></span>
 <span>  conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span>  conf_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"normal"</span>, <span class="st">"normal_log"</span>, <span class="st">"exact"</span>, <span class="st">"byar"</span><span class="op">)</span>,</span>
-<span>  time_unit_input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"year"</span>, <span class="st">"day"</span>, <span class="st">"week"</span>, <span class="st">"month"</span><span class="op">)</span>,</span>
-<span>  time_unit_output <span class="op">=</span> <span class="fl">1</span></span>
+<span>  input_time_unit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"year"</span>, <span class="st">"day"</span>, <span class="st">"week"</span>, <span class="st">"month"</span><span class="op">)</span>,</span>
+<span>  num_pt_year <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  time_unit_input <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  time_unit_output <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -112,13 +115,21 @@ internally to specify details in <code><a href="incidence_rate.html">s_incidence
 for confidence interval type.</p></dd>
 
 
-<dt>time_unit_input</dt>
-<dd><p>(<code>string</code>)<br><code>day</code>, <code>month</code>, or <code>year</code> (default)
+<dt>input_time_unit</dt>
+<dd><p>(<code>string</code>)<br><code>day</code>, <code>week</code>, <code>month</code>, or <code>year</code> (default)
 indicating time unit for data input.</p></dd>
 
 
+<dt>num_pt_year</dt>
+<dd><p>(<code>numeric</code>)<br> number of patient-years to use when calculating adverse event rates.</p></dd>
+
+
+<dt>time_unit_input</dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> Please use the <code>input_time_unit</code> argument instead.</p></dd>
+
+
 <dt>time_unit_output</dt>
-<dd><p>(<code>numeric</code>)<br> time unit for desired output (in person-years).</p></dd>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> Please use the <code>num_pt_year</code> argument instead.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -141,10 +152,10 @@ indicating time unit for data input.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $conf_type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "exact"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $time_unit_input</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $input_time_unit</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "month"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $time_unit_output</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $num_pt_year</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 100</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
