@@ -1,4 +1,4 @@
-# tern 0.8.3.9002
+# tern 0.8.4.9000
 
 ### Enhancements
 * Added method for `character` class to `h_coxreg_inter_effect` enabling `character` covariates in `summarize_coxreg`.
@@ -11,6 +11,10 @@
 * Began deprecation of `time_unit_input` and `time_unit_output` arguments and replaced them with the `input_time_unit` and `num_pt_year`, respectively, in `control_incidence_rate`.
 * Deprecated `a_compare` and replaced it with `a_summary` with argument `compare = TRUE`.
 * Deprecated helper functions `create_afun_summary` and `create_afun_compare` which are no longer used by `a_summary` and `a_compare` respectively.
+* Removed deprecated `pairwise` function.
+
+### Bug fixes
+* Fixed long double assertion check in `sum(weights)` for `M1mac` installation.
 
 # tern 0.8.3
 
