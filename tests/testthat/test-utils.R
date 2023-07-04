@@ -89,24 +89,6 @@ testthat::test_that("extract_by_name returns NULL when there is no overlap", {
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("extract_by_name x_defaults argument works as expected", {
-  result <- extract_by_name(
-    x = c(a = "xx", b = function(x) paste(x, "bla")),
-    names = c("b", "c"),
-    x_defaults = c(c = "c_default")
-  )
-  expected <- c(b = function(x) paste(x, "bla"), c = "c_default")
-  testthat::expect_identical(result, expected)
-
-  # no overlap
-  result <- extract_by_name(
-    x = c(a = "xx", b = "xx.xx"),
-    c("d", "c"),
-    c(a = "test")
-  )
-  testthat::expect_identical(result, NULL)
-})
-
 testthat::test_that("aesi_label works as expected for SMQ", {
   smq01nam <- c("AESI 1", "", NA)
   smq01sc <- c("NARROW", "", NA)

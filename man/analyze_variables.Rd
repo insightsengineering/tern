@@ -408,36 +408,26 @@ x <- c(TRUE, FALSE, TRUE, TRUE)
 s_summary(x, denom = "N_row", .N_row = 10L)
 s_summary(x, denom = "N_col", .N_col = 20L)
 
-# `a_summary.factor`
-# We need to ungroup `count` and `count_fraction` first so that the rtables formatting
-# functions can be applied correctly.
-afun <- make_afun(
-  getS3method("a_summary", "factor"),
-  .ungroup_stats = c("count", "count_fraction")
-)
-afun(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
+a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
 
-# `a_summary.factor`
-# We need to ungroup `count` and `count_fraction` first so that the rtables formatting
-# functions can be applied correctly.
-afun <- make_afun(
-  getS3method("a_summary", "factor"),
-  .ungroup_stats = c("count", "count_fraction")
+a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+a_summary(
+  factor(c("a", "a", "b", "c", "a")),
+  .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
 )
-afun(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
 
-# `a_summary.character`
-afun <- make_afun(
-  getS3method("a_summary", "character"),
-  .ungroup_stats = c("count", "count_fraction")
+a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
+a_summary(
+  c("A", "B", "A", "C"),
+  .ref_group = c("B", "A", "C"), .var = "x", compare = TRUE, verbose = FALSE
 )
-afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
 
-# `a_summary.logical`
-afun <- make_afun(
-  getS3method("a_summary", "logical")
+a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
+a_summary(
+  c(TRUE, FALSE, FALSE, TRUE, TRUE),
+  .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare = TRUE
 )
-afun(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
 
 ## Fabricated dataset.
 dta_test <- data.frame(

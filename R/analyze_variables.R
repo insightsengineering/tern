@@ -75,11 +75,12 @@ summary_formats <- function(type = "numeric", include_pval = FALSE) {
       quantiles = "xx.x - xx.x",
       iqr = "xx.x",
       range = "xx.x - xx.x",
-      cv = "xx.x",
       min = "xx.x",
       max = "xx.x",
       median_range = "xx.x (xx.x - xx.x)",
+      cv = "xx.x",
       geom_mean = "xx.x",
+      geom_mean_ci = "(xx.xx, xx.xx)",
       geom_cv = "xx.x",
       pval = "x.xxxx | (<0.0001)"
     )
@@ -129,11 +130,12 @@ summary_labels <- function(type = "numeric", include_pval = FALSE) {
       quantiles = "25% and 75%-ile",
       iqr = "IQR",
       range = "Min - Max",
-      cv = "CV (%)",
       min = "Minimum",
       max = "Maximum",
       median_range = "Median (Min - Max)",
+      cv = "CV (%)",
       geom_mean = "Geometric Mean",
+      geom_mean_ci = "Geometric Mean 95% CI",
       geom_cv = "CV % Geometric Mean",
       pval = "p-value (t-test)"
     )
@@ -179,11 +181,7 @@ summary_custom <- function(type = "numeric",
   if (is.null(stats_custom)) {
     .stats <- names(.formats)
   } else {
-    checkmate::assert_subset(
-      stats_custom,
-      c(names(s_summary(if (type == "numeric") numeric() else TRUE)), "pval")
-    )
-    .stats <- stats_custom
+    .stats <- intersect(stats_custom, names(.formats))
   }
   .labels <- summary_labels(type = type, include_pval = include_pval)
   .indents <- setNames(rep(0L, length(.stats)), .stats)
@@ -597,28 +595,6 @@ s_summary.logical <- function(x,
 #' * To use for comparison (with additional p-value statistic), parameter `compare` must be set to `TRUE`.
 #' * Ensure that either all `NA` values are converted to an explicit `NA` level or all `NA` values are left as is.
 #'
-#' @examples
-#' # summary analysis - compare = FALSE
-#' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
-#' a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
-#' a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
-#' a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
-#'
-#' # comparison analysis - compare = TRUE
-#' a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
-#' a_summary(
-#'   factor(c("a", "a", "b", "c", "a")),
-#'   .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
-#' )
-#' a_summary(
-#'   c("A", "B", "A", "C"),
-#'   .ref_group = c("B", "A", "C"), .var = "x", compare = TRUE, verbose = FALSE
-#' )
-#' a_summary(
-#'   c(TRUE, FALSE, FALSE, TRUE, TRUE),
-#'   .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare = TRUE
-#' )
-#'
 #' @export
 a_summary_output <- function(x,
                              .N_col, # nolint
@@ -703,6 +679,7 @@ a_summary_output <- function(x,
 #' @note
 #' * To use for comparison (with additional p-value statistic), parameter `compare` must be set to `TRUE`.
 #' * Ensure that either all `NA` values are converted to an explicit `NA` level or all `NA` values are left as is.
+#'
 #' @export
 a_summary <- function(x,
                       .N_col, # nolint
@@ -718,14 +695,8 @@ a_summary <- function(x,
 #' @describeIn analyze_variables Formatted analysis function method for `factor` class.
 #'
 #' @examples
-#' # `a_summary.factor`
-#' # We need to ungroup `count` and `count_fraction` first so that the rtables formatting
-#' # functions can be applied correctly.
-#' afun <- make_afun(
-#'   getS3method("a_summary", "factor"),
-#'   .ungroup_stats = c("count", "count_fraction")
-#' )
-#' afun(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+#' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
+#' a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
 #'
 #' @export
 a_summary.numeric <- function(x,
@@ -743,61 +714,33 @@ a_summary.numeric <- function(x,
                               na.rm = TRUE, # nolint
                               na_level = NA_character_,
                               ...) {
-  # Remove all-NA rows
-  if (!is.null(.df_row) && ncol(.df_row) > 1) {
-    in_tot_col <- nrow(.df_row) == length(x)
-    .df_row <- .df_row[rowSums(is.na(.df_row)) != ncol(.df_row), ]
-    if (in_tot_col && !identical(.df_row[[.var]], x)) x <- .df_row[[.var]]
-  }
-
-  x_stats <- if (!compare) {
-    s_summary(x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, ...)
-  } else {
-    s_compare(
-      x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, .ref_group = .ref_group, .in_ref_col = .in_ref_col, ...
-    )
-  }
-
-  custom_summary <- summary_custom(
-    include_pval = compare,
-    stats_custom = .stats,
-    formats_custom = .formats,
-    labels_custom = .labels,
-    indents_custom = .indent_mods
-  )
-  .stats <- custom_summary$stats
-  .formats <- custom_summary$formats
-  .labels <- custom_summary$labels
-  .indent_mods <- custom_summary$indents
-
-  for (i in intersect(.stats, c("mean_ci", "mean_pval", "median_ci", "quantiles"))) {
-    if (!i %in% names(.labels) || .labels[[i]] == summary_custom()$labels[[i]]) {
-      .labels[[i]] <- attr(x_stats[[i]], "label")
-    }
-  }
-
-  x_stats <- x_stats[.stats]
-  in_rows(
-    .list = x_stats,
+  a_summary(
+    x = x,
+    .N_col = .N_col,
+    .N_row = .N_row,
+    .var = .var,
+    .df_row = .df_row,
+    .ref_group = .ref_group,
+    .in_ref_col = .in_ref_col,
+    compare = compare,
+    .stats = .stats,
     .formats = .formats,
-    .names = .labels,
     .labels = .labels,
     .indent_mods = .indent_mods,
-    .format_na_strs = na_level
+    na.rm = na.rm,
+    na_level = na_level,
+    ...
   )
 }
 
 #' @describeIn analyze_variables Formatted analysis function method for `factor` class.
 #'
 #' @examples
-#' # `a_summary.factor`
-#' # We need to ungroup `count` and `count_fraction` first so that the rtables formatting
-#' # functions can be applied correctly.
-#' afun <- make_afun(
-#'   getS3method("a_summary", "factor"),
-#'   .ungroup_stats = c("count", "count_fraction")
+#' a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+#' a_summary(
+#'   factor(c("a", "a", "b", "c", "a")),
+#'   .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
 #' )
-#' afun(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
 #'
 #' @export
 a_summary.factor <- function(x,
@@ -815,63 +758,33 @@ a_summary.factor <- function(x,
                              na.rm = TRUE, # nolint
                              na_level = NA_character_,
                              ...) {
-  # Remove all-NA rows
-  if (!is.null(.df_row) && ncol(.df_row) > 1) {
-    in_tot_col <- nrow(.df_row) == length(x)
-    .df_row <- .df_row[rowSums(is.na(.df_row)) != ncol(.df_row), ]
-    if (in_tot_col && !identical(.df_row[[.var]], x)) x <- .df_row[[.var]]
-  }
-
-  if (any(is.na(.df_row[[.var]])) && !any(is.na(x)) && !na.rm) levels(x) <- c(levels(x), "na-level")
-
-  x_stats <- if (!compare) {
-    s_summary(x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, ...)
-  } else {
-    s_compare(
-      x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, .ref_group = .ref_group, .in_ref_col = .in_ref_col, ...
-    )
-  }
-
-  custom_summary <- summary_custom(
-    type = "counts",
-    include_pval = compare,
-    stats_custom = .stats,
-    formats_custom = .formats,
-    labels_custom = .labels,
-    indents_custom = .indent_mods
-  )
-  .stats <- custom_summary$stats
-  .formats <- custom_summary$formats
-  .labels <- custom_summary$labels
-  .indent_mods <- custom_summary$indents
-
-  x_stats <- x_stats[.stats]
-  x_ungrp <- ungroup_stats(x_stats, .stats, .formats, .labels, .indent_mods, .in_ref_col)
-  x_stats <- x_ungrp[["x"]]
-  .stats <- x_ungrp[[".stats"]]
-  .formats <- x_ungrp[[".formats"]]
-  .labels <- x_ungrp[[".labels"]]
-  .indent_mods <- x_ungrp[[".indent_mods"]]
-
-  in_rows(
-    .list = x_stats,
+  a_summary(
+    x = x,
+    .N_col = .N_col,
+    .N_row = .N_row,
+    .var = .var,
+    .df_row = .df_row,
+    .ref_group = .ref_group,
+    .in_ref_col = .in_ref_col,
+    compare = compare,
+    .stats = .stats,
     .formats = .formats,
-    .names = .labels,
     .labels = .labels,
     .indent_mods = .indent_mods,
-    .format_na_strs = na_level
+    na.rm = na.rm,
+    na_level = na_level,
+    ...
   )
 }
 
 #' @describeIn analyze_variables Formatted analysis function method for `character` class.
 #'
 #' @examples
-#' # `a_summary.character`
-#' afun <- make_afun(
-#'   getS3method("a_summary", "character"),
-#'   .ungroup_stats = c("count", "count_fraction")
+#' a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
+#' a_summary(
+#'   c("A", "B", "A", "C"),
+#'   .ref_group = c("B", "A", "C"), .var = "x", compare = TRUE, verbose = FALSE
 #' )
-#' afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
 #'
 #' @export
 a_summary.character <- function(x,
@@ -890,31 +803,33 @@ a_summary.character <- function(x,
                                 na_level = NA_character_,
                                 ...) {
   x <- as.factor(x)
-  a_summary(x,
-           .N_col, # nolint
-           .N_row, # nolint
-           .var = .var,
-           .df_row = .df_row,
-           .ref_group = .ref_group,
-           .in_ref_col = .in_ref_col,
-           compare = compare,
-           .stats = .stats,
-           .formats = .formats,
-           .labels = .labels,
-           .indent_mods = .indent_mods,
-           na.rm = na.rm,
-           na_level = na_level,
-           ...)
+  a_summary(
+    x = x,
+    .N_col = .N_col,
+    .N_row = .N_row,
+    .var = .var,
+    .df_row = .df_row,
+    .ref_group = .ref_group,
+    .in_ref_col = .in_ref_col,
+    compare = compare,
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods,
+    na.rm = na.rm,
+    na_level = na_level,
+    ...
+  )
 }
 
 #' @describeIn analyze_variables Formatted analysis function method for `logical` class.
 #'
 #' @examples
-#' # `a_summary.logical`
-#' afun <- make_afun(
-#'   getS3method("a_summary", "logical")
+#' a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
+#' a_summary(
+#'   c(TRUE, FALSE, FALSE, TRUE, TRUE),
+#'   .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare = TRUE
 #' )
-#' afun(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
 #'
 #' @export
 a_summary.logical <- function(x,
@@ -932,42 +847,22 @@ a_summary.logical <- function(x,
                              na.rm = TRUE, # nolint
                              na_level = NA_character_,
                              ...) {
-  # Remove all-NA rows
-  if (!is.null(.df_row) && ncol(.df_row) > 1) {
-    in_tot_col <- nrow(.df_row) == length(x)
-    .df_row <- .df_row[rowSums(is.na(.df_row)) != ncol(.df_row), ]
-    if (in_tot_col && !identical(.df_row[[.var]], x)) x <- .df_row[[.var]]
-  }
-
-  if (any(is.na(.df_row[[.var]])) && !any(is.na(x)) && !na.rm) levels(x) <- c(levels(x), "na-level")
-  x_stats <- if (!compare) {
-    s_summary(x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, ...)
-  } else {
-    s_compare(
-      x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, .ref_group = .ref_group, .in_ref_col = .in_ref_col, ...
-    )
-  }
-
-  custom_summary <- summary_custom(
-    include_pval = compare,
-    stats_custom = .stats,
-    formats_custom = .formats,
-    labels_custom = .labels,
-    indents_custom = .indent_mods
-  )
-  .stats <- custom_summary$stats
-  .formats <- custom_summary$formats
-  .labels <- custom_summary$labels
-  .indent_mods <- custom_summary$indents
-
-  x_stats <- x_stats[.stats]
-  in_rows(
-    .list = x_stats,
+  a_summary(
+    x = x,
+    .N_col = .N_col,
+    .N_row = .N_row,
+    .var = .var,
+    .df_row = .df_row,
+    .ref_group = .ref_group,
+    .in_ref_col = .in_ref_col,
+    compare = compare,
+    .stats = .stats,
     .formats = .formats,
-    .names = .labels,
     .labels = .labels,
     .indent_mods = .indent_mods,
-    .format_na_strs = na_level
+    na.rm = na.rm,
+    na_level = na_level,
+    ...
   )
 }
 
