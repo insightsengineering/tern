@@ -21,7 +21,7 @@ utils::globalVariables(c(
   "x",
   "control_coxph",
   "control_incidence_rate",
-  "control_summarize_vars",
+  "control_analyze_vars",
   "control_surv_time",
   "control_surv_timepoint"
 ))

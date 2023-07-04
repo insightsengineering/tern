@@ -25,7 +25,7 @@
 #'   to compute a summary within `s_compare()`.
 #'
 #' @name compare_variables
-#' @include summarize_variables.R
+#' @include analyze_variables.R
 NULL
 
 #' @describeIn compare_variables S3 generic function to produce a comparison summary.

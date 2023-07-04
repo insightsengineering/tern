@@ -4,7 +4,7 @@ tab <- basic_table() %>%
   split_rows_by("RACE") %>%
   split_rows_by("STRATA1") %>%
   summarize_row_groups() %>%
-  summarize_vars("COUNTRY", .stats = "count_fraction") %>%
+  analyze_vars("COUNTRY", .stats = "count_fraction") %>%
   build_table(DM)
 
 testthat::test_that("keep_rows works in a special case identical to standard pruning", {
