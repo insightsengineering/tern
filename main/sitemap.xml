@@ -73,6 +73,9 @@
     <loc>https://insightsengineering.github.io/tern/main/reference/analyze_functions.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/main/reference/analyze_variables.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/analyze_vars_in_cols.html</loc>
   </url>
   <url>
@@ -127,6 +130,9 @@
     <loc>https://insightsengineering.github.io/tern/main/reference/compare_variables.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/main/reference/control_analyze_vars.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/control_coxph.html</loc>
   </url>
   <url>
@@ -143,9 +149,6 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/control_step.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/main/reference/control_summarize_vars.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/control_surv_time.html</loc>
@@ -590,9 +593,6 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/summarize_patients_exposure_in_cols.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/main/reference/summarize_variables.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/main/reference/summary_formats.html</loc>
