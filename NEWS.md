@@ -1,4 +1,4 @@
-# tern 0.8.4.9000
+# tern 0.8.4.9001
 
 ### Enhancements
 * Added method for `character` class to `h_coxreg_inter_effect` enabling `character` covariates in `summarize_coxreg`.
