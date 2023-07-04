@@ -4,7 +4,7 @@
 \alias{summary_labels}
 \title{Label Function for Descriptive Statistics}
 \usage{
-summary_labels(type = "numeric")
+summary_labels(type = "numeric", include_pval = FALSE)
 }
 \arguments{
 \item{type}{(\code{string})\cr choice of a summary data type. Only \code{counts} and \code{numeric} types are currently supported.}
@@ -15,4 +15,8 @@ A named \code{vector} of default statistic labels for the given data type.
 \description{
 Returns labels of descriptive statistics for numeric variables.
 }
-\keyword{internal}
+\examples{
+summary_labels()
+summary_labels(type = "count", include_pval = TRUE)
+
+}
