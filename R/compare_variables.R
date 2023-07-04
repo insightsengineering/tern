@@ -26,7 +26,7 @@
 #'   function for `compare_vars()`.
 #'
 #' @name compare_variables
-#' @include summarize_variables.R
+#' @include analyze_variables.R
 NULL
 
 #' @describeIn compare_variables S3 generic function to produce a comparison summary.

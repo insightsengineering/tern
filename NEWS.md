@@ -1,4 +1,4 @@
-# tern 0.8.4.9000
+# tern 0.8.4.9001
 
 ### Enhancements
 * Added method for `character` class to `h_coxreg_inter_effect` enabling `character` covariates in `summarize_coxreg`.
@@ -6,6 +6,9 @@
 * Refactored `summarize_vars` and `compare_vars` to use refactored `a_summary`.
 * Created new internal helper function `ungroup_stats` to ungroup and format statistics calculated for factor variables.
 * Added new argument `x_defaults` to `extract_by_name` to allow user to specify default values to implement for values in `names` that are not specified in `x`.
+
+### Enhancements
+* Started deprecation cycle for `summarize_vars` and `control_summarize_vars`. Renamed into `analyze_vars` and `control_analyze_vars` to reflect underlying `rtables` machinery while keeping backward compatibility with aliases.
 
 ### Miscellaneous
 * Began deprecation of `time_unit_input` and `time_unit_output` arguments and replaced them with the `input_time_unit` and `num_pt_year`, respectively, in `control_incidence_rate`.

@@ -3,7 +3,7 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Sets a list of parameters for summaries of descriptive statistics. Typically used internally to specify
-#' details for [s_summary()].
+#' details for [s_summary()]. This function family is mainly used by [analyze_vars()].
 #'
 #' @inheritParams argument_convention
 #' @param quantiles (`numeric`)\cr of length two to specify the quantiles to calculate.
@@ -12,13 +12,18 @@
 #'   This differs from R's default. See more about `type` in [stats::quantile()].
 #' @param test_mean (`numeric`)\cr to test against the mean under the null hypothesis when calculating p-value.
 #'
+#' @note Deprecation cycle started for `control_summarize_vars` as it is going to renamed into
+#'   `control_analyze_vars`. Intention is to reflect better the core underlying `rtables`
+#'   functions; in this case [analyze_vars()] wraps [rtables::analyze()].
+#'
 #' @return A list of components with the same names as the arguments.
 #'
-#' @export
-control_summarize_vars <- function(conf_level = 0.95,
-                                   quantiles = c(0.25, 0.75),
-                                   quantile_type = 2,
-                                   test_mean = 0) {
+#' @export control_analyze_vars control_summarize_vars
+#' @aliases control_summarize_vars
+control_analyze_vars <- function(conf_level = 0.95,
+                                 quantiles = c(0.25, 0.75),
+                                 quantile_type = 2,
+                                 test_mean = 0) {
   checkmate::assert_vector(quantiles, len = 2)
   checkmate::assert_int(quantile_type, lower = 1, upper = 9)
   checkmate::assert_numeric(test_mean)
@@ -26,6 +31,8 @@ control_summarize_vars <- function(conf_level = 0.95,
   assert_proportion_value(conf_level)
   list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type, test_mean = test_mean)
 }
+
+control_summarize_vars <- control_analyze_vars
 
 #' Format Function for Descriptive Statistics
 #'
@@ -119,19 +126,19 @@ summary_labels <- function(type = "numeric") {
   }
 }
 
-#' Summarize Variables
+#' Analyze Variables
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' We use the S3 generic function [s_summary()] to implement summaries for different `x` objects. This
-#' is used as a statistics function in combination with the analyze function [summarize_vars()].
+#' is used as a statistics function in combination with the analyze function [analyze_vars()].
 #'
 #' @inheritParams argument_convention
 #'
-#' @name summarize_variables
+#' @name analyze_variables
 NULL
 
-#' @describeIn summarize_variables S3 generic function to produces a variable summary.
+#' @describeIn analyze_variables S3 generic function to produces a variable summary.
 #'
 #' @return
 #' * `s_summary()` returns different statistics depending on the class of `x`.
@@ -148,10 +155,10 @@ s_summary <- function(x,
   UseMethod("s_summary", x)
 }
 
-#' @describeIn summarize_variables Method for `numeric` class.
+#' @describeIn analyze_variables Method for `numeric` class.
 #'
 #' @param control (`list`)\cr parameters for descriptive statistics details, specified by using
-#'   the helper function [control_summarize_vars()]. Some possible parameter options are:
+#'   the helper function [control_analyze_vars()]. Some possible parameter options are:
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for mean and median.
 #'   * `quantiles` (`numeric`)\cr vector of length two to specify the quantiles.
 #'   * `quantile_type` (`numeric`)\cr between 1 and 9 selecting quantile algorithms to be used.
@@ -233,7 +240,7 @@ s_summary.numeric <- function(x,
                               .N_row, # nolint
                               .N_col, # nolint
                               .var,
-                              control = control_summarize_vars(),
+                              control = control_analyze_vars(),
                               ...) {
   checkmate::assert_numeric(x)
 
@@ -313,7 +320,7 @@ s_summary.numeric <- function(x,
   y
 }
 
-#' @describeIn summarize_variables Method for `factor` class.
+#' @describeIn analyze_variables Method for `factor` class.
 #'
 #' @param denom (`string`)\cr choice of denominator for factor proportions. Options are:
 #'   * `n`: number of values in this row and column intersection.
@@ -394,7 +401,7 @@ s_summary.factor <- function(x,
   y
 }
 
-#' @describeIn summarize_variables Method for `character` class. This makes an automatic
+#' @describeIn analyze_variables Method for `character` class. This makes an automatic
 #'   conversion to factor (with a warning) and then forwards to the method for factors.
 #'
 #' @param verbose (`logical`)\cr Defaults to `TRUE`, which prints out warnings and messages. It is mainly used
@@ -440,7 +447,7 @@ s_summary.character <- function(x,
   )
 }
 
-#' @describeIn summarize_variables Method for `logical` class.
+#' @describeIn analyze_variables Method for `logical` class.
 #'
 #' @param denom (`string`)\cr choice of denominator for proportion. Options are:
 #'   * `n`: number of values in this row and column intersection.
@@ -495,6 +502,7 @@ s_summary.logical <- function(x,
   y
 }
 
+<<<<<<< HEAD:R/summarize_variables.R
 .a_compare_numeric_formats <- c(summary_formats(), pval = "x.xxxx | (<0.0001)")
 .a_compare_numeric_labels <- c(summary_labels(), pval = "p-value (t-test)")
 .a_compare_numeric_indents <- c(
@@ -509,13 +517,32 @@ s_summary.logical <- function(x,
 #'
 #' @param compare (`logical`)\cr Whether comparison statistics should be analyzed instead of summary statistics
 #'   (`compare = TRUE` adds `pval` statistic comparing against reference group).
+=======
+#' @describeIn analyze_variables Formatted analysis function which is used as `afun` in `analyze_vars()`.
+>>>>>>> main:R/analyze_variables.R
 #'
 #' @return
 #' * `a_summary()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
+<<<<<<< HEAD:R/summarize_variables.R
 #' @note
 #' * To use for comparison (with additional p-value statistic), parameter `compare` must be set to `TRUE`.
 #' * Ensure that either all `NA` values are converted to an explicit `NA` level or all `NA` values are left as is.
+=======
+#' @export
+a_summary <- function(x,
+                      ...,
+                      .N_row, # nolint
+                      .N_col, # nolint
+                      .var) {
+  UseMethod("a_summary", x)
+}
+
+.a_summary_numeric_formats <- summary_formats()
+.a_summary_numeric_labels <- summary_labels()
+
+#' @describeIn analyze_variables Formatted analysis function method for `numeric` class.
+>>>>>>> main:R/analyze_variables.R
 #'
 #' @examples
 #' # summary analysis - compare = FALSE
@@ -585,6 +612,7 @@ a_summary <- function(x,
     .indent_mods <- rep(.indent_mods, length(.stats)) %>% `names<-`(.stats)
   }
 
+<<<<<<< HEAD:R/summarize_variables.R
   .stats <- intersect(.stats, names(x_stats))
   x_stats <- x_stats[.stats]
   .formats <- extract_by_name(
@@ -615,8 +643,58 @@ a_summary <- function(x,
     .format_na_strs = na_level
   )
 }
+=======
+#' @describeIn analyze_variables Formatted analysis function method for `factor` class.
+#'
+#' @examples
+#' # `a_summary.factor`
+#' # We need to ungroup `count` and `count_fraction` first so that the rtables formatting
+#' # functions can be applied correctly.
+#' afun <- make_afun(
+#'   getS3method("a_summary", "factor"),
+#'   .ungroup_stats = c("count", "count_fraction")
+#' )
+#' afun(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+#'
+#' @export
+a_summary.factor <- make_afun(
+  s_summary.factor,
+  .formats = .a_summary_counts_formats
+)
 
-#' Constructor Function for [summarize_vars()] and [summarize_colvars()]
+#' @describeIn analyze_variables Formatted analysis function method for `character` class.
+#'
+#' @examples
+#' # `a_summary.character`
+#' afun <- make_afun(
+#'   getS3method("a_summary", "character"),
+#'   .ungroup_stats = c("count", "count_fraction")
+#' )
+#' afun(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
+#'
+#' @export
+a_summary.character <- make_afun(
+  s_summary.character,
+  .formats = .a_summary_counts_formats
+)
+
+#' @describeIn analyze_variables Formatted analysis function method for `logical` class.
+#'
+#' @examples
+#' # `a_summary.logical`
+#' afun <- make_afun(
+#'   getS3method("a_summary", "logical")
+#' )
+#' afun(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
+#'
+#' @export
+a_summary.logical <- make_afun(
+  s_summary.logical,
+  .formats = .a_summary_counts_formats
+)
+>>>>>>> main:R/analyze_variables.R
+
+#' Constructor Function for [analyze_vars()] and [summarize_colvars()]
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
@@ -627,7 +705,7 @@ a_summary <- function(x,
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.
 #'
-#' @return Combined formatted analysis function for use in [summarize_vars()].
+#' @return Combined formatted analysis function for use in [analyze_vars()].
 #'
 #' @note This function has been deprecated in favor of direct implementation of `a_summary()`.
 #'
@@ -642,7 +720,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
   )
 }
 
-#' @describeIn summarize_variables Layout-creating function which can take statistics function arguments
+#' @describeIn analyze_variables Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @param ... arguments passed to `s_summary()`.
@@ -650,8 +728,12 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.
 #'
+#' @note Deprecation cycle started for `summarize_vars` as it is going to renamed into
+#'   `analyze_vars`. Intention is to reflect better the core underlying `rtables`
+#'   functions; in this case [rtables::analyze()].
+#'
 #' @return
-#' * `summarize_vars()` returns a layout object suitable for passing to further layouting functions,
+#' * `analyze_vars()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_summary()` to the table layout.
 #'
@@ -665,12 +747,12 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'   AVAL    = c(9:1, rep(NA, 9))
 #' )
 #'
-#' # `summarize_vars()` in `rtables` pipelines
+#' # `analyze_vars()` in `rtables` pipelines
 #' ## Default output within a `rtables` pipeline.
 #' l <- basic_table() %>%
 #'   split_cols_by(var = "ARM") %>%
 #'   split_rows_by(var = "AVISIT") %>%
-#'   summarize_vars(vars = "AVAL")
+#'   analyze_vars(vars = "AVAL")
 #'
 #' build_table(l, df = dta_test)
 #'
@@ -678,7 +760,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #' l <- basic_table() %>%
 #'   split_cols_by(var = "ARM") %>%
 #'   split_rows_by(var = "AVISIT") %>%
-#'   summarize_vars(
+#'   analyze_vars(
 #'     vars = "AVAL",
 #'     .stats = c("n", "mean_sd", "quantiles"),
 #'     .formats = c("mean_sd" = "xx.x, xx.x"),
@@ -691,7 +773,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #' l <- basic_table() %>%
 #'   split_cols_by(var = "ARM") %>%
 #'   split_rows_by(var = "AVISIT") %>%
-#'   summarize_vars(vars = "AVAL", na.rm = FALSE)
+#'   analyze_vars(vars = "AVAL", na.rm = FALSE)
 #'
 #' build_table(l, df = dta_test)
 #'
@@ -700,10 +782,11 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #' dta_test <- df_explicit_na(dta_test)
 #' l <- basic_table() %>%
 #'   split_cols_by(var = "ARM") %>%
-#'   summarize_vars(vars = "AVISIT", na.rm = FALSE)
+#'   analyze_vars(vars = "AVISIT", na.rm = FALSE)
 #'
 #' build_table(l, df = dta_test)
 #'
+<<<<<<< HEAD:R/summarize_variables.R
 #' @export
 summarize_vars <- function(lyt,
                            vars,
@@ -723,6 +806,24 @@ summarize_vars <- function(lyt,
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+=======
+#' @export analyze_vars summarize_vars
+#' @aliases summarize_vars
+analyze_vars <- function(lyt,
+                         vars,
+                         var_labels = vars,
+                         nested = TRUE,
+                         ...,
+                         na_level = NA_character_,
+                         show_labels = "default",
+                         table_names = vars,
+                         section_div = NA_character_,
+                         .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
+                         .formats = NULL,
+                         .labels = NULL,
+                         .indent_mods = NULL) {
+  afun <- create_afun_summary(.stats, .formats, .labels, .indent_mods)
+>>>>>>> main:R/analyze_variables.R
 
   analyze(
     lyt = lyt,
@@ -737,3 +838,5 @@ summarize_vars <- function(lyt,
     section_div = section_div
   )
 }
+
+summarize_vars <- analyze_vars

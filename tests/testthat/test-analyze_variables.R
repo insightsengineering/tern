@@ -1,5 +1,5 @@
-testthat::test_that("control_summarize_vars works with customized parameters", {
-  result <- control_summarize_vars(
+testthat::test_that("control_analyze_vars works with customized parameters", {
+  result <- control_analyze_vars(
     conf_level = 0.9,
     quantiles = c(0.1, 0.9)
   )
@@ -8,9 +8,9 @@ testthat::test_that("control_summarize_vars works with customized parameters", {
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("control_summarize_vars fails wrong inputs", {
-  testthat::expect_error(control_summarize_vars(quantiles = c(25, 75)))
-  testthat::expect_error(control_summarize_vars(conf_level = 95))
+testthat::test_that("control_analyze_vars fails wrong inputs", {
+  testthat::expect_error(control_analyze_vars(quantiles = c(25, 75)))
+  testthat::expect_error(control_analyze_vars(conf_level = 95))
 })
 
 testthat::test_that("s_summary return NA for x length 0L", {
@@ -251,24 +251,24 @@ testthat::test_that("a_summary works with custom input when compare = TRUE.", {
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("`summarize_vars` works with healthy input, default `na.rm = TRUE`.", {
+testthat::test_that("`analyze_vars` works with healthy input, default `na.rm = TRUE`.", {
   dta_test <- data.frame(AVAL = c(1:4, NA, NA))
 
   l <- basic_table() %>%
-    summarize_vars(vars = "AVAL")
+    analyze_vars(vars = "AVAL")
   result <- build_table(l, df = dta_test)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("`summarize_vars` works with healthy input, and control function.", {
+testthat::test_that("`analyze_vars` works with healthy input, and control function.", {
   dta_test <- data.frame(AVAL = c(1:9))
 
   l <- basic_table() %>%
-    summarize_vars(
+    analyze_vars(
       vars = "AVAL",
-      control = control_summarize_vars(quantiles = c(0.1, 0.9), conf_level = 0.9),
+      control = control_analyze_vars(quantiles = c(0.1, 0.9), conf_level = 0.9),
       .stats = c("n", "mean_sd", "mean_se", "mean_ci", "quantiles")
     )
   result <- build_table(l, df = dta_test)
@@ -277,33 +277,33 @@ testthat::test_that("`summarize_vars` works with healthy input, and control func
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("`summarize_vars` works with healthy input, alternative `na.rm = FALSE`", {
+testthat::test_that("`analyze_vars` works with healthy input, alternative `na.rm = FALSE`", {
   dta_test <- data.frame(AVAL = c(1:4, NA, NA))
 
   l <- basic_table() %>%
-    summarize_vars(vars = "AVAL", na.rm = FALSE)
+    analyze_vars(vars = "AVAL", na.rm = FALSE)
   result <- build_table(l, df = dta_test)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("`summarize_vars` works with healthy factor input", {
+testthat::test_that("`analyze_vars` works with healthy factor input", {
   dta <- data.frame(foo = factor(c("a", "b", "a")))
 
   result <- basic_table() %>%
-    summarize_vars(vars = "foo") %>%
+    analyze_vars(vars = "foo") %>%
     build_table(dta)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("`summarize_vars` works with healthy factor input, alternative `na.rm = FALSE`", {
+testthat::test_that("`analyze_vars` works with healthy factor input, alternative `na.rm = FALSE`", {
   dta <- data.frame(foo = factor(c("a", NA, "b", "a", NA)))
 
   result <- basic_table() %>%
-    summarize_vars(vars = "foo", na.rm = FALSE) %>%
+    analyze_vars(vars = "foo", na.rm = FALSE) %>%
     build_table(dta)
 
   res <- testthat::expect_silent(result)
@@ -312,14 +312,14 @@ testthat::test_that("`summarize_vars` works with healthy factor input, alternati
   dta <- df_explicit_na(dta)
 
   result <- basic_table() %>%
-    summarize_vars(vars = "foo", na.rm = FALSE) %>%
+    analyze_vars(vars = "foo", na.rm = FALSE) %>%
     build_table(dta)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("`summarize_vars` works with factors and different denominators", {
+testthat::test_that("`analyze_vars` works with factors and different denominators", {
   start <- basic_table() %>%
     split_cols_by("ARM") %>%
     add_colcounts() %>%
@@ -327,15 +327,15 @@ testthat::test_that("`summarize_vars` works with factors and different denominat
     add_rowcounts()
 
   result_n <- start %>%
-    summarize_vars("RACE", denom = "n") %>%
+    analyze_vars("RACE", denom = "n") %>%
     build_table(DM)
 
   result_ncol <- start %>%
-    summarize_vars("RACE", denom = "N_col") %>%
+    analyze_vars("RACE", denom = "N_col") %>%
     build_table(DM)
 
   result <- start %>%
-    summarize_vars("RACE", denom = "N_row") %>%
+    analyze_vars("RACE", denom = "N_row") %>%
     build_table(DM)
 
   testthat::expect_false(identical(result_n, result_ncol))
@@ -345,25 +345,25 @@ testthat::test_that("`summarize_vars` works with factors and different denominat
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("summarize_vars works in demographic table example", {
+testthat::test_that("analyze_vars works in demographic table example", {
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
     split_rows_by("RACE") %>%
-    summarize_vars("COUNTRY", .stats = "count_fraction") %>%
+    analyze_vars("COUNTRY", .stats = "count_fraction") %>%
     build_table(DM)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("`summarize_vars` works with character input and gives the same result as with factor", {
+testthat::test_that("`analyze_vars` works with character input and gives the same result as with factor", {
   dta <- data.frame(
     foo = c("a", "b", "a"),
     stringsAsFactors = FALSE
   )
 
   l <- basic_table() %>%
-    summarize_vars(vars = "foo")
+    analyze_vars(vars = "foo")
   testthat::expect_warning(result <- build_table(l, dta))
 
   dta_factor <- dta %>%
@@ -373,7 +373,7 @@ testthat::test_that("`summarize_vars` works with character input and gives the s
   testthat::expect_identical(result, expected)
 })
 
-testthat::test_that("`summarize_vars` does not work with sparse character input due to missing statistics", {
+testthat::test_that("`analyze_vars` does not work with sparse character input due to missing statistics", {
   dta <- data.frame(
     foo = c("a", "b", "a"),
     boo = c("e", "e", "f"),
@@ -382,7 +382,7 @@ testthat::test_that("`summarize_vars` does not work with sparse character input 
 
   l <- basic_table() %>%
     split_cols_by("boo") %>%
-    summarize_vars(vars = "foo")
+    analyze_vars(vars = "foo")
   suppressWarnings(testthat::expect_error(testthat::expect_warning(build_table(l, dta))))
 
   # But when converting to factor, it works because we keep the levels information across columns.
@@ -391,24 +391,24 @@ testthat::test_that("`summarize_vars` does not work with sparse character input 
   testthat::expect_silent(build_table(l, dta_factor))
 })
 
-testthat::test_that("`summarize_vars` works with logical input", {
+testthat::test_that("`analyze_vars` works with logical input", {
   dta <- data.frame(
     boo = c(TRUE, FALSE, FALSE, TRUE, TRUE)
   )
 
   result <- basic_table() %>%
-    summarize_vars(vars = "boo") %>%
+    analyze_vars(vars = "boo") %>%
     build_table(dta)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("`summarize_vars` works with healthy logical input, alternative `na.rm = FALSE`", {
+testthat::test_that("`analyze_vars` works with healthy logical input, alternative `na.rm = FALSE`", {
   dta <- data.frame(foo = factor(c(TRUE, NA, FALSE, TRUE, NA)))
 
   result <- basic_table() %>%
-    summarize_vars(vars = "foo", na.rm = FALSE) %>%
+    analyze_vars(vars = "foo", na.rm = FALSE) %>%
     build_table(dta)
 
   res <- testthat::expect_silent(result)
@@ -417,14 +417,14 @@ testthat::test_that("`summarize_vars` works with healthy logical input, alternat
   dta <- df_explicit_na(dta)
 
   result <- basic_table() %>%
-    summarize_vars(vars = "foo", na.rm = FALSE) %>%
+    analyze_vars(vars = "foo", na.rm = FALSE) %>%
     build_table(dta)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("`summarize_vars` works with empty named numeric variables", {
+testthat::test_that("`analyze_vars` works with empty named numeric variables", {
   dta <- tibble::tibble(
     foo = factor(c("a", "a", "b", "b", "c", "c"), levels = c("a", "b", "c")),
     boo = 1:6
@@ -434,14 +434,14 @@ testthat::test_that("`summarize_vars` works with empty named numeric variables",
 
   result <- basic_table() %>%
     split_cols_by("foo") %>%
-    summarize_vars(vars = "boo") %>%
+    analyze_vars(vars = "boo") %>%
     build_table(dta)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("summarize_vars 'na_level' argument works as expected", {
+testthat::test_that("analyze_vars 'na_level' argument works as expected", {
   dta <- data.frame(
     USUBJID = rep(1:6, each = 3),
     AVISIT  = rep(paste0("V", 1:3), 6),
@@ -452,7 +452,7 @@ testthat::test_that("summarize_vars 'na_level' argument works as expected", {
   result <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     split_rows_by(var = "AVISIT") %>%
-    summarize_vars(vars = "AVAL", na_level = "-") %>%
+    analyze_vars(vars = "AVAL", na_level = "-") %>%
     build_table(dta)
 
   res <- testthat::expect_silent(result)
