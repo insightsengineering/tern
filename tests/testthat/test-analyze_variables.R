@@ -364,7 +364,7 @@ testthat::test_that("`analyze_vars` works with character input and gives the sam
 
   l <- basic_table() %>%
     analyze_vars(vars = "foo")
-  testthat::expect_warning(result <- build_table(l, dta))
+  result <- build_table(l, dta)
 
   dta_factor <- dta %>%
     dplyr::mutate(foo = factor(foo))

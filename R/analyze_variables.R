@@ -177,12 +177,10 @@ summary_custom <- function(type = "numeric",
                            formats_custom = NULL,
                            labels_custom = NULL,
                            indents_custom = NULL) {
+  if ("pval" %in% stats_custom) include_pval <- TRUE
+
   .formats <- summary_formats(type = type, include_pval = include_pval)
-  if (is.null(stats_custom)) {
-    .stats <- names(.formats)
-  } else {
-    .stats <- intersect(stats_custom, names(.formats))
-  }
+  .stats <- if (is.null(stats_custom)) names(.formats) else intersect(stats_custom, names(.formats))
   .labels <- summary_labels(type = type, include_pval = include_pval)
   .indents <- setNames(rep(0L, length(.stats)), .stats)
 
@@ -603,13 +601,14 @@ a_summary_output <- function(x,
                              .df_row,
                              .ref_group,
                              .in_ref_col,
+                             compare,
+                             type,
                              .stats,
                              .formats,
                              .labels,
                              .indent_mods,
                              na.rm, # nolint
                              na_level,
-                             compare,
                              ...) {
   # Remove all-NA rows
   if (!is.null(.df_row) && ncol(.df_row) > 1) {
@@ -628,6 +627,7 @@ a_summary_output <- function(x,
   }
 
   custom_summary <- summary_custom(
+    type = type,
     include_pval = compare,
     stats_custom = .stats,
     formats_custom = .formats,
@@ -714,7 +714,7 @@ a_summary.numeric <- function(x,
                               na.rm = TRUE, # nolint
                               na_level = NA_character_,
                               ...) {
-  a_summary(
+  a_summary_output(
     x = x,
     .N_col = .N_col,
     .N_row = .N_row,
@@ -723,6 +723,7 @@ a_summary.numeric <- function(x,
     .ref_group = .ref_group,
     .in_ref_col = .in_ref_col,
     compare = compare,
+    type = "numeric",
     .stats = .stats,
     .formats = .formats,
     .labels = .labels,
@@ -758,7 +759,7 @@ a_summary.factor <- function(x,
                              na.rm = TRUE, # nolint
                              na_level = NA_character_,
                              ...) {
-  a_summary(
+  a_summary_output(
     x = x,
     .N_col = .N_col,
     .N_row = .N_row,
@@ -767,6 +768,7 @@ a_summary.factor <- function(x,
     .ref_group = .ref_group,
     .in_ref_col = .in_ref_col,
     compare = compare,
+    type = "counts",
     .stats = .stats,
     .formats = .formats,
     .labels = .labels,
@@ -803,7 +805,8 @@ a_summary.character <- function(x,
                                 na_level = NA_character_,
                                 ...) {
   x <- as.factor(x)
-  a_summary(
+  .ref_group <- as.factor(.ref_group)
+  a_summary_output(
     x = x,
     .N_col = .N_col,
     .N_row = .N_row,
@@ -812,6 +815,7 @@ a_summary.character <- function(x,
     .ref_group = .ref_group,
     .in_ref_col = .in_ref_col,
     compare = compare,
+    type = "counts",
     .stats = .stats,
     .formats = .formats,
     .labels = .labels,
@@ -833,21 +837,21 @@ a_summary.character <- function(x,
 #'
 #' @export
 a_summary.logical <- function(x,
-                             .N_col, # nolint
-                             .N_row, # nolint
-                             .var = NULL,
-                             .df_row = NULL,
-                             .ref_group = NULL,
-                             .in_ref_col = FALSE,
-                             compare = FALSE,
-                             .stats = summary_custom(type = "counts", include_pval = compare)$stats,
-                             .formats = summary_custom(type = "counts", include_pval = compare)$formats,
-                             .labels = summary_custom(type = "counts", include_pval = compare)$labels,
-                             .indent_mods = summary_custom(type = "counts", include_pval = compare)$indents,
-                             na.rm = TRUE, # nolint
-                             na_level = NA_character_,
-                             ...) {
-  a_summary(
+                              .N_col, # nolint
+                              .N_row, # nolint
+                              .var = NULL,
+                              .df_row = NULL,
+                              .ref_group = NULL,
+                              .in_ref_col = FALSE,
+                              compare = FALSE,
+                              .stats = summary_custom(type = "counts", include_pval = compare)$stats,
+                              .formats = summary_custom(type = "counts", include_pval = compare)$formats,
+                              .labels = summary_custom(type = "counts", include_pval = compare)$labels,
+                              .indent_mods = summary_custom(type = "counts", include_pval = compare)$indents,
+                              na.rm = TRUE, # nolint
+                              na_level = NA_character_,
+                              ...) {
+  a_summary_output(
     x = x,
     .N_col = .N_col,
     .N_row = .N_row,
@@ -856,6 +860,7 @@ a_summary.logical <- function(x,
     .ref_group = .ref_group,
     .in_ref_col = .in_ref_col,
     compare = compare,
+    type = "counts",
     .stats = .stats,
     .formats = .formats,
     .labels = .labels,
@@ -960,19 +965,19 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'
 #' @export
 analyze_vars <- function(lyt,
-                           vars,
-                           var_labels = vars,
-                           nested = TRUE,
-                           ...,
-                           na.rm = TRUE, # nolint
-                           na_level = NA_character_,
-                           show_labels = "default",
-                           table_names = vars,
-                           section_div = NA_character_,
-                           .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
-                           .formats = NULL,
-                           .labels = NULL,
-                           .indent_mods = NULL) {
+                         vars,
+                         var_labels = vars,
+                         nested = TRUE,
+                         ...,
+                         na.rm = TRUE, # nolint
+                         na_level = NA_character_,
+                         show_labels = "default",
+                         table_names = vars,
+                         section_div = NA_character_,
+                         .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
+                         .formats = NULL,
+                         .labels = NULL,
+                         .indent_mods = NULL) {
   extra_args <- list(.stats = .stats, na.rm = na.rm, na_level = na_level, ...)
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels

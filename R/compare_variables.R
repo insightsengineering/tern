@@ -262,12 +262,6 @@ a_compare <- function(x,
                       .df_row = NULL,
                       .ref_group = NULL,
                       .in_ref_col = FALSE,
-                      .stats = names(get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"), "_labels"))),
-                      .formats = get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"), "_formats")),
-                      .labels = get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"), "_labels")),
-                      .indent_mods = get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"), "_indents")),
-                      na.rm = TRUE, # nolint
-                      na_level = NA_character_,
                       ...) {
   lifecycle::deprecate_warn(
     "0.8.3",
@@ -282,12 +276,6 @@ a_compare <- function(x,
     .df_row = .df_row,
     .ref_group = .ref_group,
     .in_ref_col = .in_ref_col,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods,
-    na.rm = na.rm,
-    na_level = na_level,
     compare = TRUE,
     ...
   )

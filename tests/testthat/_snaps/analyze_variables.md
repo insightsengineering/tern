@@ -945,12 +945,13 @@
       15             25% and 75%-ile       -0.6 - 0.6          0             25% and 75%-ile
       16                         IQR              1.2          0                         IQR
       17                   Min - Max       -0.8 - 1.6          0                   Min - Max
-      18                      CV (%)            590.4          0                      CV (%)
-      19                     Minimum             -0.8          0                     Minimum
-      20                     Maximum              1.6          0                     Maximum
-      21          Median (Min - Max) 0.3 (-0.8 - 1.6)          0          Median (Min - Max)
+      18                     Minimum             -0.8          0                     Minimum
+      19                     Maximum              1.6          0                     Maximum
+      20          Median (Min - Max) 0.3 (-0.8 - 1.6)          0          Median (Min - Max)
+      21                      CV (%)            590.4          0                      CV (%)
       22              Geometric Mean               NA          0              Geometric Mean
-      23         CV % Geometric Mean               NA          0         CV % Geometric Mean
+      23       Geometric Mean 95% CI               NA          0       Geometric Mean 95% CI
+      24         CV % Geometric Mean               NA          0         CV % Geometric Mean
 
 ---
 
@@ -1054,13 +1055,14 @@
       15             25% and 75%-ile       4.4 - 5.6          0             25% and 75%-ile
       16                         IQR             1.2          0                         IQR
       17                   Min - Max       4.2 - 6.6          0                   Min - Max
-      18                      CV (%)            15.2          0                      CV (%)
-      19                     Minimum             4.2          0                     Minimum
-      20                     Maximum             6.6          0                     Maximum
-      21          Median (Min - Max) 5.3 (4.2 - 6.6)          0          Median (Min - Max)
+      18                     Minimum             4.2          0                     Minimum
+      19                     Maximum             6.6          0                     Maximum
+      20          Median (Min - Max) 5.3 (4.2 - 6.6)          0          Median (Min - Max)
+      21                      CV (%)            15.2          0                      CV (%)
       22              Geometric Mean             5.1          0              Geometric Mean
-      23         CV % Geometric Mean            15.2          0         CV % Geometric Mean
-      24            p-value (t-test)         <0.0001          0            p-value (t-test)
+      23       Geometric Mean 95% CI    (4.56, 5.66)          0       Geometric Mean 95% CI
+      24         CV % Geometric Mean            15.2          0         CV % Geometric Mean
+      25            p-value (t-test)         <0.0001          0            p-value (t-test)
 
 ---
 
