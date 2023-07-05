@@ -3,7 +3,7 @@
 ### Enhancements
 * Added method for `character` class to `h_coxreg_inter_effect` enabling `character` covariates in `summarize_coxreg`.
 * Started deprecation cycle for `summarize_vars` and `control_summarize_vars`. Renamed into `analyze_vars` and `control_analyze_vars` to reflect underlying `rtables` machinery while keeping backward compatibility with aliases.
-* Added assertion to `g_km` which checks whether there is only one arm present in the data when `annot_coxph` is true.
+* Added assertion to `g_km` which checks whether there is one arm present in the data when `annot_coxph` is true.
 
 ### Miscellaneous
 * Began deprecation of `time_unit_input` and `time_unit_output` arguments and replaced them with the `input_time_unit` and `num_pt_year`, respectively, in `control_incidence_rate`.
