@@ -284,15 +284,24 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
 #' `character()` if current column is a reference column. Used within [`a_summary()`].
 #'
 #' @inheritParams argument_convention
+#' @param x  (`named list` of `numeric`)\cr list of numeric statistics containing the statistics to ungroup.
+#' @param which_stats (`vector` of `character`)\cr which statistics should be ungrouped.
 #'
 #' @return A `list` with modified elements `x`, `.stats`, `.formats`, `.labels`, and `.indent_mods`.
 #'
 #' @seealso [a_summary()] which uses this function internally.
 #'
 #' @keywords internal
-ungroup_stats <- function(x, .stats, .formats, .labels, .indent_mods, .in_ref_col = FALSE) {
-  checkmate::assert_true(!is.numeric(x) & !is.logical(x))
-  for (stat in c("count", "count_fraction")) {
+ungroup_stats <- function(x,
+                          .stats,
+                          .formats,
+                          .labels,
+                          .indent_mods,
+                          .in_ref_col = FALSE,
+                          which_stats = c("count", "count_fraction")) {
+  checkmate::assert_list(x)
+
+  for (stat in which_stats) {
     for (a in names(x[[stat]])) {
       a <- if (a == "na-level") "NA" else a
       a_lvl <- paste(stat, a, sep = ".")

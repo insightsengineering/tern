@@ -34,13 +34,23 @@ control_analyze_vars <- function(conf_level = 0.95,
 
 control_summarize_vars <- control_analyze_vars
 
-#' Format Function for Descriptive Statistics
+#' Summary Statistic Settings Functions
 #'
-#' Returns format patterns for descriptive statistics. The format is understood by `rtables`.
+#' @description `r lifecycle::badge("stable")`
 #'
-#' @param type (`string`)\cr choice of a summary data type. Only `counts` and `numeric` types are currently supported.
+#' Functions to retrieve default settings for summary statistics and customize these settings.
 #'
-#' @return A named `vector` of default statistic formats for the given data type.
+#' @param type (`character`)\cr choice of summary data type. Only `counts` and `numeric` types are currently supported.
+#' @param include_pval (`logical`)\cr whether p-value should be included as a default statistic.
+#'
+#' @name summary_stats
+NULL
+
+#' @describeIn summary_stats Function to retrieve default formats for summary statistics. Returns format patterns for
+#'   descriptive statistics which are understood by `rtables`.
+#'
+#' @return
+#' * `summary_formats` returns a named `vector` of default statistic formats for the given data type.
 #'
 #' @examples
 #' summary_formats()
@@ -89,13 +99,11 @@ summary_formats <- function(type = "numeric", include_pval = FALSE) {
   fmts
 }
 
-#' Label Function for Descriptive Statistics
+#' @describeIn summary_stats Function to retrieve default labels for summary statistics. Returns labels of descriptive
+#'   statistics which are understood by `rtables`.
 #'
-#' Returns labels of descriptive statistics for numeric variables.
-#'
-#' @param type (`string`)\cr choice of a summary data type. Only `counts` and `numeric` types are currently supported.
-#'
-#' @return A named `vector` of default statistic labels for the given data type.
+#' @return
+#' * `summary_labels` returns a named `vector` of default statistic labels for the given data type.
 #'
 #' @examples
 #' summary_labels()
@@ -144,30 +152,33 @@ summary_labels <- function(type = "numeric", include_pval = FALSE) {
   lbls
 }
 
-#' Set Defaults Settings for Summary Statistics
+#' @describeIn summary_stats Function to configure settings for default or custom summary statistics for a given data
+#'   type. In addition to selecting a custom subset of statistics, the user can also set custom formats, labels, and
+#'   indent modifiers for any of these statistics.
 #'
-#' @inheritParams summary_formats
-#' @param include_pval (`logical`)\cr whether p-value should be included as a default statistic.
-#' @param stats_custom (`named vector` of `character`) vector of statistics to include if not the defaults. This
+#' @param stats_custom (`named vector` of `character`)\cr vector of statistics to include if not the defaults. This
 #'   argument overrides `include_pval` and other custom value arguments such that only settings for these statistics
 #'   will be returned.
-#' @param formats_custom (`named vector` of `character`) vector of custom statistics formats to use in place of the
+#' @param formats_custom (`named vector` of `character`)\cr vector of custom statistics formats to use in place of the
 #'   defaults defined in [`summary_formats()`]. Names should be a subset of the statistics defined in `stats_custom` (or
 #'   default statistics if this is `NULL`).
-#' @param labels_custom (`named vector` of `character`) vector of custom statistics labels to use in place of the
+#' @param labels_custom (`named vector` of `character`)\cr vector of custom statistics labels to use in place of the
 #'   defaults defined in [`summary_labels()`]. Names should be a subset of the statistics defined in `stats_custom` (or
 #'   default statistics if this is `NULL`).
-#' @param indents_custom (`integer` or `named vector` of `integer`) vector of custom indentation modifiers for
+#' @param indent_mods_custom (`integer` or `named vector` of `integer`)\cr vector of custom indentation modifiers for
 #'   statistics to use instead of the default of `0L` for all statistics. Names should be a subset of the statistics
 #'   defined in `stats_custom` (or default statistics if this is `NULL`). Alternatively, the same indentation modifier
-#'   can be applied to all statistics by setting `indents_custom` to a single integer value.
+#'   can be applied to all statistics by setting `indent_mods_custom` to a single integer value.
+#'
+#' @return
+#' * `summary_custom` returns a `list` of 4 named elements: `stats`, `formats`, `labels`, and `indent_mods`.
 #'
 #' @examples
 #' summary_custom()
 #' summary_custom(type = "counts", include_pval = TRUE)
 #' summary_custom(
 #'   include_pval = TRUE, stats_custom = c("n", "mean", "sd", "pval"),
-#'   labels_custom = c(sd = "Std. Dev."), indents_custom = 3L
+#'   labels_custom = c(sd = "Std. Dev."), indent_mods_custom = 3L
 #' )
 #'
 #' @export
@@ -176,21 +187,21 @@ summary_custom <- function(type = "numeric",
                            stats_custom = NULL,
                            formats_custom = NULL,
                            labels_custom = NULL,
-                           indents_custom = NULL) {
+                           indent_mods_custom = NULL) {
   if ("pval" %in% stats_custom) include_pval <- TRUE
 
   .formats <- summary_formats(type = type, include_pval = include_pval)
   .stats <- if (is.null(stats_custom)) names(.formats) else intersect(stats_custom, names(.formats))
   .labels <- summary_labels(type = type, include_pval = include_pval)
-  .indents <- setNames(rep(0L, length(.stats)), .stats)
+  .indent_mods <- setNames(rep(0L, length(.stats)), .stats)
 
   if (!is.null(formats_custom)) .formats[names(formats_custom)] <- formats_custom
   if (!is.null(labels_custom)) .labels[names(labels_custom)] <- labels_custom
-  if (!is.null(indents_custom)) {
-    if (is.null(names(indents_custom)) && length(indents_custom) == 1) {
-      .indents[names(.indents)] <- indents_custom
+  if (!is.null(indent_mods_custom)) {
+    if (is.null(names(indent_mods_custom)) && length(indent_mods_custom) == 1) {
+      .indent_mods[names(.indent_mods)] <- indent_mods_custom
     } else {
-      .indents[names(indents_custom)] <- indents_custom
+      .indent_mods[names(indent_mods_custom)] <- indent_mods_custom
     }
   }
 
@@ -198,7 +209,7 @@ summary_custom <- function(type = "numeric",
     stats = .stats,
     formats = .formats[.stats],
     labels = .labels[.stats],
-    indents = .indents[.stats]
+    indent_mods = .indent_mods[.stats]
   )
 }
 
@@ -499,6 +510,7 @@ s_summary.factor <- function(x,
 #' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE, verbose = FALSE)
 #'
 #' @export
+
 s_summary.character <- function(x,
                                 na.rm = TRUE, # nolint
                                 denom = c("n", "N_row", "N_col"),
@@ -578,20 +590,22 @@ s_summary.logical <- function(x,
   y
 }
 
-
-
-#' @describeIn summarize_variables Formatted analysis function which is used as `afun` in `summarize_vars()` and
-#'   `compare_vars()` and as `cfun` in `summarize_colvars()`.
+#' @describeIn analyze_variables Formatted analysis helper function which is used within `a_summary`.
 #'
 #' @param compare (`logical`)\cr Whether comparison statistics should be analyzed instead of summary statistics
 #'   (`compare = TRUE` adds `pval` statistic comparing against reference group).
+#' @param type (`character`)\cr type of statistics to calculate given `x`. If `x` is numeric `type` should be
+#'   `"numeric"`, otherwise type should be `"counts"`.
 #'
 #' @return
-#' * `a_summary()` returns the corresponding list with formatted [rtables::CellValue()].
+#' * `a_summary_output()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @note
 #' * To use for comparison (with additional p-value statistic), parameter `compare` must be set to `TRUE`.
 #' * Ensure that either all `NA` values are converted to an explicit `NA` level or all `NA` values are left as is.
+#'
+#' @examples
+#' a_summary_output()
 #'
 #' @export
 a_summary_output <- function(x,
@@ -632,12 +646,12 @@ a_summary_output <- function(x,
     stats_custom = .stats,
     formats_custom = .formats,
     labels_custom = .labels,
-    indents_custom = .indent_mods
+    indent_mods_custom = .indent_mods
   )
   .stats <- custom_summary$stats
   .formats <- custom_summary$formats
   .labels <- custom_summary$labels
-  .indent_mods <- custom_summary$indents
+  .indent_mods <- custom_summary$indent_mods
 
   if (is.numeric(x)) {
     for (i in intersect(.stats, c("mean_ci", "mean_pval", "median_ci", "quantiles"))) {
@@ -648,7 +662,7 @@ a_summary_output <- function(x,
   }
 
   x_stats <- x_stats[.stats]
-  if (is.factor(x)) {
+  if (is.factor(x) || is.character(x)) {
     x_ungrp <- ungroup_stats(x_stats, .stats, .formats, .labels, .indent_mods, .in_ref_col)
     x_stats <- x_ungrp[["x"]]
     .stats <- x_ungrp[[".stats"]]
@@ -667,11 +681,8 @@ a_summary_output <- function(x,
   )
 }
 
-#' @describeIn summarize_variables Formatted analysis function which is used as `afun` in `summarize_vars()` and
+#' @describeIn analyze_variables Formatted analysis function which is used as `afun` in `summarize_vars()` and
 #'   `compare_vars()` and as `cfun` in `summarize_colvars()`.
-#'
-#' @param compare (`logical`)\cr Whether comparison statistics should be analyzed instead of summary statistics
-#'   (`compare = TRUE` adds `pval` statistic comparing against reference group).
 #'
 #' @return
 #' * `a_summary()` returns the corresponding list with formatted [rtables::CellValue()].
@@ -692,7 +703,68 @@ a_summary <- function(x,
   UseMethod("a_summary", x)
 }
 
-#' @describeIn analyze_variables Formatted analysis function method for `factor` class.
+#' @describeIn analyze_variables Formatted analysis function `default` method for non-numeric classes.
+#'
+#' @method a_summary default
+#'
+#' @examples
+#' a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+#' a_summary(
+#'   factor(c("a", "a", "b", "c", "a")),
+#'   .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
+#' )
+#'
+#' a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
+#' a_summary(
+#'   c("A", "B", "A", "C"),
+#'   .ref_group = c("B", "A", "C"), .var = "x", compare = TRUE, verbose = FALSE
+#' )
+#'
+#' a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
+#' a_summary(
+#'   c(TRUE, FALSE, FALSE, TRUE, TRUE),
+#'   .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare = TRUE
+#' )
+#'
+#' @export
+a_summary.default <- function(x,
+                              .N_col, # nolint
+                              .N_row, # nolint
+                              .var = NULL,
+                              .df_row = NULL,
+                              .ref_group = NULL,
+                              .in_ref_col = FALSE,
+                              compare = FALSE,
+                              .stats = summary_custom(type = "counts", include_pval = compare)$stats,
+                              .formats = summary_custom(type = "counts", include_pval = compare)$formats,
+                              .labels = summary_custom(type = "counts", include_pval = compare)$labels,
+                              .indent_mods = summary_custom(type = "counts", include_pval = compare)$indent_mods,
+                              na.rm = TRUE, # nolint
+                              na_level = NA_character_,
+                              ...) {
+  a_summary_output(
+    x = x,
+    .N_col = .N_col,
+    .N_row = .N_row,
+    .var = .var,
+    .df_row = .df_row,
+    .ref_group = .ref_group,
+    .in_ref_col = .in_ref_col,
+    compare = compare,
+    type = "counts",
+    .stats = .stats,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods,
+    na.rm = na.rm,
+    na_level = na_level,
+    ...
+  )
+}
+
+#' @describeIn analyze_variables Formatted analysis function method for `numeric` class.
+#'
+#' @method a_summary numeric
 #'
 #' @examples
 #' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
@@ -710,7 +782,7 @@ a_summary.numeric <- function(x,
                               .stats = summary_custom(include_pval = compare)$stats,
                               .formats = summary_custom(include_pval = compare)$formats,
                               .labels = summary_custom(include_pval = compare)$labels,
-                              .indent_mods = summary_custom(include_pval = compare)$indents,
+                              .indent_mods = summary_custom(include_pval = compare)$indent_mods,
                               na.rm = TRUE, # nolint
                               na_level = NA_character_,
                               ...) {
@@ -724,143 +796,6 @@ a_summary.numeric <- function(x,
     .in_ref_col = .in_ref_col,
     compare = compare,
     type = "numeric",
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods,
-    na.rm = na.rm,
-    na_level = na_level,
-    ...
-  )
-}
-
-#' @describeIn analyze_variables Formatted analysis function method for `factor` class.
-#'
-#' @examples
-#' a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
-#' a_summary(
-#'   factor(c("a", "a", "b", "c", "a")),
-#'   .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
-#' )
-#'
-#' @export
-a_summary.factor <- function(x,
-                             .N_col, # nolint
-                             .N_row, # nolint
-                             .var = NULL,
-                             .df_row = NULL,
-                             .ref_group = NULL,
-                             .in_ref_col = FALSE,
-                             compare = FALSE,
-                             .stats = summary_custom(type = "counts", include_pval = compare)$stats,
-                             .formats = summary_custom(type = "counts", include_pval = compare)$formats,
-                             .labels = summary_custom(type = "counts", include_pval = compare)$labels,
-                             .indent_mods = summary_custom(type = "counts", include_pval = compare)$indents,
-                             na.rm = TRUE, # nolint
-                             na_level = NA_character_,
-                             ...) {
-  a_summary_output(
-    x = x,
-    .N_col = .N_col,
-    .N_row = .N_row,
-    .var = .var,
-    .df_row = .df_row,
-    .ref_group = .ref_group,
-    .in_ref_col = .in_ref_col,
-    compare = compare,
-    type = "counts",
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods,
-    na.rm = na.rm,
-    na_level = na_level,
-    ...
-  )
-}
-
-#' @describeIn analyze_variables Formatted analysis function method for `character` class.
-#'
-#' @examples
-#' a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
-#' a_summary(
-#'   c("A", "B", "A", "C"),
-#'   .ref_group = c("B", "A", "C"), .var = "x", compare = TRUE, verbose = FALSE
-#' )
-#'
-#' @export
-a_summary.character <- function(x,
-                                .N_col, # nolint
-                                .N_row, # nolint
-                                .var = NULL,
-                                .df_row = NULL,
-                                .ref_group = NULL,
-                                .in_ref_col = FALSE,
-                                compare = FALSE,
-                                .stats = summary_custom(type = "counts", include_pval = compare)$stats,
-                                .formats = summary_custom(type = "counts", include_pval = compare)$formats,
-                                .labels = summary_custom(type = "counts", include_pval = compare)$labels,
-                                .indent_mods = summary_custom(type = "counts", include_pval = compare)$indents,
-                                na.rm = TRUE, # nolint
-                                na_level = NA_character_,
-                                ...) {
-  x <- as.factor(x)
-  .ref_group <- as.factor(.ref_group)
-  a_summary_output(
-    x = x,
-    .N_col = .N_col,
-    .N_row = .N_row,
-    .var = .var,
-    .df_row = .df_row,
-    .ref_group = .ref_group,
-    .in_ref_col = .in_ref_col,
-    compare = compare,
-    type = "counts",
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods,
-    na.rm = na.rm,
-    na_level = na_level,
-    ...
-  )
-}
-
-#' @describeIn analyze_variables Formatted analysis function method for `logical` class.
-#'
-#' @examples
-#' a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
-#' a_summary(
-#'   c(TRUE, FALSE, FALSE, TRUE, TRUE),
-#'   .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare = TRUE
-#' )
-#'
-#' @export
-a_summary.logical <- function(x,
-                              .N_col, # nolint
-                              .N_row, # nolint
-                              .var = NULL,
-                              .df_row = NULL,
-                              .ref_group = NULL,
-                              .in_ref_col = FALSE,
-                              compare = FALSE,
-                              .stats = summary_custom(type = "counts", include_pval = compare)$stats,
-                              .formats = summary_custom(type = "counts", include_pval = compare)$formats,
-                              .labels = summary_custom(type = "counts", include_pval = compare)$labels,
-                              .indent_mods = summary_custom(type = "counts", include_pval = compare)$indents,
-                              na.rm = TRUE, # nolint
-                              na_level = NA_character_,
-                              ...) {
-  a_summary_output(
-    x = x,
-    .N_col = .N_col,
-    .N_row = .N_row,
-    .var = .var,
-    .df_row = .df_row,
-    .ref_group = .ref_group,
-    .in_ref_col = .in_ref_col,
-    compare = compare,
-    type = "counts",
     .stats = .stats,
     .formats = .formats,
     .labels = .labels,

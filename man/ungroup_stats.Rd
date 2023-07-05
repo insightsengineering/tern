@@ -4,10 +4,18 @@
 \alias{ungroup_stats}
 \title{Ungroup and Format Non-Numeric Statistics}
 \usage{
-ungroup_stats(x, .stats, .formats, .labels, .indent_mods, .in_ref_col = FALSE)
+ungroup_stats(
+  x,
+  .stats,
+  .formats,
+  .labels,
+  .indent_mods,
+  .in_ref_col = FALSE,
+  which_stats = c("count", "count_fraction")
+)
 }
 \arguments{
-\item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
+\item{x}{(\verb{named list} of \code{numeric})\cr list of numeric statistics containing the statistics to ungroup.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
@@ -19,6 +27,8 @@ ungroup_stats(x, .stats, .formats, .labels, .indent_mods, .in_ref_col = FALSE)
 unmodified default behavior. Can be negative.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+
+\item{which_stats}{(\code{vector} of \code{character})\cr which statistics should be ungrouped.}
 }
 \value{
 A \code{list} with modified elements \code{x}, \code{.stats}, \code{.formats}, \code{.labels}, and \code{.indent_mods}.

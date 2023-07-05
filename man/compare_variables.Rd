@@ -38,16 +38,6 @@ a_compare(
   .df_row = NULL,
   .ref_group = NULL,
   .in_ref_col = FALSE,
-  .stats = names(get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"),
-    "_labels"))),
-  .formats = get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"),
-    "_formats")),
-  .labels = get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"),
-    "_labels")),
-  .indent_mods = get(paste0(".a_compare_", ifelse(is.numeric(x), "numeric", "counts"),
-    "_indents")),
-  na.rm = TRUE,
-  na_level = NA_character_,
   ...
 )
 
@@ -95,18 +85,6 @@ to print out information about factor casting. Defaults to \code{TRUE}.}
 
 \item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
-
-\item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
-should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
-for that statistic's row label.}
-
-\item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
-
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
@@ -117,6 +95,8 @@ for that statistic's row label.}
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
 underneath analyses, which is not allowed.}
 
+\item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
@@ -124,6 +104,16 @@ to avoid warnings from \code{rtables}.}
 
 \item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
 defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
+should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
+for that statistic's row label.}
 }
 \value{
 \itemize{

@@ -7,10 +7,10 @@
 \alias{s_summary.factor}
 \alias{s_summary.character}
 \alias{s_summary.logical}
+\alias{a_summary_output}
+\alias{a_summary}
+\alias{a_summary.default}
 \alias{a_summary.numeric}
-\alias{a_summary.factor}
-\alias{a_summary.character}
-\alias{a_summary.logical}
 \alias{analyze_vars}
 \title{Analyze Variables}
 \usage{
@@ -56,6 +56,45 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
   ...
 )
 
+a_summary_output(
+  x,
+  .N_col,
+  .N_row,
+  .var,
+  .df_row,
+  .ref_group,
+  .in_ref_col,
+  compare,
+  type,
+  .stats,
+  .formats,
+  .labels,
+  .indent_mods,
+  na.rm,
+  na_level,
+  ...
+)
+
+a_summary(x, .N_col, .N_row, .var, .df_row, .ref_group, .in_ref_col, ...)
+
+\method{a_summary}{default}(
+  x,
+  .N_col,
+  .N_row,
+  .var = NULL,
+  .df_row = NULL,
+  .ref_group = NULL,
+  .in_ref_col = FALSE,
+  compare = FALSE,
+  .stats = summary_custom(type = "counts", include_pval = compare)$stats,
+  .formats = summary_custom(type = "counts", include_pval = compare)$formats,
+  .labels = summary_custom(type = "counts", include_pval = compare)$labels,
+  .indent_mods = summary_custom(type = "counts", include_pval = compare)$indent_mods,
+  na.rm = TRUE,
+  na_level = NA_character_,
+  ...
+)
+
 \method{a_summary}{numeric}(
   x,
   .N_col,
@@ -68,61 +107,7 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
   .stats = summary_custom(include_pval = compare)$stats,
   .formats = summary_custom(include_pval = compare)$formats,
   .labels = summary_custom(include_pval = compare)$labels,
-  .indent_mods = summary_custom(include_pval = compare)$indents,
-  na.rm = TRUE,
-  na_level = NA_character_,
-  ...
-)
-
-\method{a_summary}{factor}(
-  x,
-  .N_col,
-  .N_row,
-  .var = NULL,
-  .df_row = NULL,
-  .ref_group = NULL,
-  .in_ref_col = FALSE,
-  compare = FALSE,
-  .stats = summary_custom(type = "counts", include_pval = compare)$stats,
-  .formats = summary_custom(type = "counts", include_pval = compare)$formats,
-  .labels = summary_custom(type = "counts", include_pval = compare)$labels,
-  .indent_mods = summary_custom(type = "counts", include_pval = compare)$indents,
-  na.rm = TRUE,
-  na_level = NA_character_,
-  ...
-)
-
-\method{a_summary}{character}(
-  x,
-  .N_col,
-  .N_row,
-  .var = NULL,
-  .df_row = NULL,
-  .ref_group = NULL,
-  .in_ref_col = FALSE,
-  compare = FALSE,
-  .stats = summary_custom(type = "counts", include_pval = compare)$stats,
-  .formats = summary_custom(type = "counts", include_pval = compare)$formats,
-  .labels = summary_custom(type = "counts", include_pval = compare)$labels,
-  .indent_mods = summary_custom(type = "counts", include_pval = compare)$indents,
-  na.rm = TRUE,
-  na_level = NA_character_,
-  ...
-)
-
-\method{a_summary}{logical}(
-  x,
-  .N_col,
-  .N_row,
-  .var = NULL,
-  .df_row = NULL,
-  .ref_group = NULL,
-  .in_ref_col = FALSE,
-  compare = FALSE,
-  .stats = summary_custom(type = "counts", include_pval = compare)$stats,
-  .formats = summary_custom(type = "counts", include_pval = compare)$formats,
-  .labels = summary_custom(type = "counts", include_pval = compare)$labels,
-  .indent_mods = summary_custom(type = "counts", include_pval = compare)$indents,
+  .indent_mods = summary_custom(include_pval = compare)$indent_mods,
   na.rm = TRUE,
   na_level = NA_character_,
   ...
@@ -185,6 +170,12 @@ to print out information about factor casting.}
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+
+\item{compare}{(\code{logical})\cr Whether comparison statistics should be analyzed instead of summary statistics
+(\code{compare = TRUE} adds \code{pval} statistic comparing against reference group).}
+
+\item{type}{(\code{character})\cr type of statistics to calculate given \code{x}. If \code{x} is numeric \code{type} should be
+\code{"numeric"}, otherwise type should be \code{"counts"}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
@@ -272,6 +263,14 @@ denominator is zero. Note that \code{NA}s in \code{x} are never counted or leadi
 }
 
 \itemize{
+\item \code{a_summary_output()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{a_summary()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
 \item \code{analyze_vars()} returns a layout object suitable for passing to further layouting functions,
 or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
 the statistics from \code{s_summary()} to the table layout.
@@ -296,13 +295,14 @@ conversion to factor (with a warning) and then forwards to the method for factor
 
 \item \code{s_summary(logical)}: Method for \code{logical} class.
 
-\item \code{a_summary(numeric)}: Formatted analysis function method for \code{factor} class.
+\item \code{a_summary_output()}: Formatted analysis helper function which is used within \code{a_summary}.
 
-\item \code{a_summary(factor)}: Formatted analysis function method for \code{factor} class.
+\item \code{a_summary()}: Formatted analysis function which is used as \code{afun} in \code{summarize_vars()} and
+\code{compare_vars()} and as \code{cfun} in \code{summarize_colvars()}.
 
-\item \code{a_summary(character)}: Formatted analysis function method for \code{character} class.
+\item \code{a_summary(default)}: Formatted analysis function \code{default} method for non-numeric classes.
 
-\item \code{a_summary(logical)}: Formatted analysis function method for \code{logical} class.
+\item \code{a_summary(numeric)}: Formatted analysis function method for \code{numeric} class.
 
 \item \code{analyze_vars()}: Layout-creating function which can take statistics function arguments
 and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
@@ -330,6 +330,16 @@ default \code{na_level} (\code{"<Missing>"}) will also be excluded when \code{na
 can be generated correctly. In particular for sparse tables this very likely can fail.
 It is therefore better to always pre-process the dataset such that factors are manually
 created from character variables before passing the dataset to \code{\link[rtables:build_table]{rtables::build_table()}}.
+}
+
+\itemize{
+\item To use for comparison (with additional p-value statistic), parameter \code{compare} must be set to \code{TRUE}.
+\item Ensure that either all \code{NA} values are converted to an explicit \code{NA} level or all \code{NA} values are left as is.
+}
+
+\itemize{
+\item To use for comparison (with additional p-value statistic), parameter \code{compare} must be set to \code{TRUE}.
+\item Ensure that either all \code{NA} values are converted to an explicit \code{NA} level or all \code{NA} values are left as is.
 }
 
 Deprecation cycle started for \code{summarize_vars} as it is going to renamed into
@@ -408,8 +418,7 @@ x <- c(TRUE, FALSE, TRUE, TRUE)
 s_summary(x, denom = "N_row", .N_row = 10L)
 s_summary(x, denom = "N_col", .N_col = 20L)
 
-a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
-a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
+a_summary_output()
 
 a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
 a_summary(
@@ -428,6 +437,9 @@ a_summary(
   c(TRUE, FALSE, FALSE, TRUE, TRUE),
   .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare = TRUE
 )
+
+a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
+a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
 
 ## Fabricated dataset.
 dta_test <- data.frame(

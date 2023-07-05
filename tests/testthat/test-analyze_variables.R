@@ -13,6 +13,39 @@ testthat::test_that("control_analyze_vars fails wrong inputs", {
   testthat::expect_error(control_analyze_vars(conf_level = 95))
 })
 
+testthat::test_that("summary_formats works as expected", {
+  result <- summary_formats()
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  result <- summary_formats(type = "counts", include_pval = TRUE)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("summary_labels works as expected", {
+  result <- summary_labels()
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  result <- summary_labels(type = "counts", include_pval = TRUE)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("summary_custom works as expected", {
+  result <- summary_custom()
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  result <- summary_custom(
+    type = "counts", stats_custom = c("n", "count"),
+    formats_custom = c(n = "xx.xx"), labels_custom = c(count = "#"), indent_mods_custom = 2L
+  )
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("s_summary return NA for x length 0L", {
   x <- numeric()
 
@@ -160,27 +193,72 @@ testthat::test_that("s_summary works with logical vectors and by if requested do
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("a_summary works with healthy input.", {
+testthat::test_that("a_summary_output and a_summary work with healthy input.", {
   options("width" = 100)
-  # numeric input
+
+  # numeric input - a_summary_output
   set.seed(1)
-  result <- a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
+  x <- rnorm(10)
+  result <- a_summary_output(
+    x = x, .N_col = 10, .N_row = 20, .var = "bla", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
+    compare = FALSE, type = "numeric", .stats = summary_custom()$stats, .formats = summary_custom()$formats,
+    .labels = summary_custom()$labels, .indent_mods = summary_custom()$indents, na.rm = TRUE, na_level = NA_character_
+  )
+  res_out <- testthat::expect_silent(result)
+
+  # numeric input - a_summary
+  result <- a_summary(x = x, .N_col = 10, .N_row = 20, .var = "bla")
   res <- testthat::expect_silent(result)
+  testthat::expect_identical(res_out, res)
   testthat::expect_snapshot(res)
 
-  # factor input
-  result <- a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+  # factor input - a_summary_output
+  x <- factor(c("a", "a", "b", "c", "a"))
+  result <- a_summary_output(
+    x = x, .N_col = 10, .N_row = 10, .var = "bla", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
+    compare = FALSE, type = "counts", .stats = summary_custom(type = "counts")$stats,
+    .formats = summary_custom(type = "counts")$formats, .labels = summary_custom(type = "counts")$labels,
+    .indent_mods = summary_custom(type = "counts")$indents, na.rm = TRUE, na_level = NA_character_
+  )
+  res_out <- testthat::expect_silent(result)
+
+  # factor input - a_summary
+  result <- a_summary(x = x, .N_row = 10, .N_col = 10)
   res <- testthat::expect_silent(result)
+  testthat::expect_identical(res_out, res)
   testthat::expect_snapshot(res)
 
-  # character input
-  result <- a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
+  # character input - a_summary_output
+  x <- c("A", "B", "A", "C")
+  result <- a_summary_output(
+    x = x, .N_col = 10, .N_row = 10, .var = "x", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
+    compare = FALSE, type = "counts", .stats = summary_custom(type = "counts")$stats,
+    .formats = summary_custom(type = "counts")$formats, .labels = summary_custom(type = "counts")$labels,
+    .indent_mods = summary_custom(type = "counts")$indents, na.rm = TRUE, na_level = NA_character_,
+    verbose = FALSE
+  )
+  res_out <- testthat::expect_silent(result)
+
+  # character input - a_summary
+  result <- a_summary(x = x, .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
   res <- testthat::expect_silent(result)
+  testthat::expect_identical(res_out, res)
   testthat::expect_snapshot(res)
 
-  # logical input
-  result <- a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
+  # logical input - a_summary_output
+  x <- c(TRUE, FALSE, FALSE, TRUE, TRUE)
+  result <- a_summary_output(
+    x = x, .N_col = 10, .N_row = 10, .var = NULL, .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
+    compare = FALSE, type = "counts", .stats = summary_custom(type = "counts")$stats,
+    .formats = summary_custom(type = "counts")$formats, .labels = summary_custom(type = "counts")$labels,
+    .indent_mods = summary_custom(type = "counts")$indents, na.rm = TRUE, na_level = NA_character_
+  )
+  res_out <- testthat::expect_silent(result)
+
+  # logical input - a_summary
+  result <- a_summary(x = x, .N_row = 10, .N_col = 10)
   res <- testthat::expect_silent(result)
+  testthat::expect_identical(res_out, res)
   testthat::expect_snapshot(res)
 })
 
@@ -364,7 +442,7 @@ testthat::test_that("`analyze_vars` works with character input and gives the sam
 
   l <- basic_table() %>%
     analyze_vars(vars = "foo")
-  result <- build_table(l, dta)
+  testthat::expect_warning(result <- build_table(l, dta))
 
   dta_factor <- dta %>%
     dplyr::mutate(foo = factor(foo))
