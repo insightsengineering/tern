@@ -608,18 +608,21 @@ s_summary.logical <- function(x,
 #' set.seed(1)
 #' x <- rnorm(10)
 #' a_summary_output(
-#'   x = x, .N_col = 10, .N_row = 20, .var = "bla", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
-#'   compare = FALSE, type = "numeric", .stats = summary_custom()$stats, .formats = summary_custom()$formats,
-#'   .labels = summary_custom()$labels, .indent_mods = summary_custom()$indents,
-#'   na.rm = TRUE, na_level = NA_character_
+#'   x = x, .N_col = 10, .N_row = 20, .var = "bla", .df_row = NULL, .ref_group = NULL,
+#'   .in_ref_col = FALSE, compare = FALSE, type = "numeric", .stats = summary_custom()$stats,
+#'   .formats = summary_custom()$formats, .labels = summary_custom()$labels,
+#'   .indent_mods = summary_custom()$indents, na.rm = TRUE, na_level = NA_character_
 #' )
 #'
 #' x <- factor(c("a", "a", "b", "c", "a"))
 #' a_summary_output(
-#'   x = x, .N_col = 10, .N_row = 10, .var = "bla", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
-#'   compare = FALSE, type = "counts", .stats = summary_custom(type = "counts")$stats,
-#'   .formats = summary_custom(type = "counts")$formats, .labels = summary_custom(type = "counts")$labels,
-#'   .indent_mods = summary_custom(type = "counts")$indents, na.rm = TRUE, na_level = NA_character_
+#'   x = x, .N_col = 10, .N_row = 10, .var = "bla", .df_row = NULL, .ref_group = NULL,
+#'   .in_ref_col = FALSE, compare = FALSE, type = "counts",
+#'   .stats = summary_custom(type = "counts")$stats,
+#'   .formats = summary_custom(type = "counts")$formats,
+#'   .labels = summary_custom(type = "counts")$labels,
+#'   .indent_mods = summary_custom(type = "counts")$indents,
+#'   na.rm = TRUE, na_level = NA_character_
 #' )
 #'
 #' @export
