@@ -193,7 +193,7 @@ summary_custom <- function(type = "numeric",
   .formats <- summary_formats(type = type, include_pval = include_pval)
   .stats <- if (is.null(stats_custom)) names(.formats) else intersect(stats_custom, names(.formats))
   .labels <- summary_labels(type = type, include_pval = include_pval)
-  .indent_mods <- setNames(rep(0L, length(.stats)), .stats)
+  .indent_mods <- stats::setNames(rep(0L, length(.stats)), .stats)
 
   if (!is.null(formats_custom)) .formats[names(formats_custom)] <- formats_custom
   if (!is.null(labels_custom)) .labels[names(labels_custom)] <- labels_custom
@@ -681,7 +681,7 @@ a_summary_output <- function(x,
   )
 }
 
-#' @describeIn analyze_variables Formatted analysis function which is used as `afun` in `summarize_vars()` and
+#' @describeIn analyze_variables Formatted analysis function which is used as `afun` in `analyze_vars()` and
 #'   `compare_vars()` and as `cfun` in `summarize_colvars()`.
 #'
 #' @return
@@ -821,7 +821,7 @@ a_summary.numeric <- function(x,
 #'
 #' @note This function has been deprecated in favor of direct implementation of `a_summary()`.
 #'
-#' @seealso [summarize_vars()]
+#' @seealso [analyze_vars()]
 #'
 #' @export
 create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {

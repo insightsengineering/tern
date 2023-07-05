@@ -297,7 +297,7 @@ conversion to factor (with a warning) and then forwards to the method for factor
 
 \item \code{a_summary_output()}: Formatted analysis helper function which is used within \code{a_summary}.
 
-\item \code{a_summary()}: Formatted analysis function which is used as \code{afun} in \code{summarize_vars()} and
+\item \code{a_summary()}: Formatted analysis function which is used as \code{afun} in \code{analyze_vars()} and
 \code{compare_vars()} and as \code{cfun} in \code{summarize_colvars()}.
 
 \item \code{a_summary(default)}: Formatted analysis function \code{default} method for non-numeric classes.

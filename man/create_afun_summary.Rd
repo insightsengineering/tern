@@ -29,5 +29,5 @@ Constructor function which creates a combined formatted analysis function.
 This function has been deprecated in favor of direct implementation of \code{a_summary()}.
 }
 \seealso{
-\code{\link[=summarize_vars]{summarize_vars()}}
+\code{\link[=analyze_vars]{analyze_vars()}}
 }
