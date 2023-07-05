@@ -70,7 +70,7 @@ reference:
       - starts_with("h_")
       - starts_with("or_")
       - starts_with("prop_")
-      - starts_with("summmary_")
+      - summary_stats
       - -starts_with("h_col_")
       - -h_content_first_row
       - -h_data_plot
