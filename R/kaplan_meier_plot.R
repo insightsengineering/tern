@@ -219,6 +219,7 @@ g_km <- function(df,
   checkmate::assert_numeric(df[[tte]], min.len = 1, any.missing = FALSE)
 
   armval <- as.character(unique(df[[arm]]))
+  checkmate::assert_false(annot_coxph && length(armval) < 2)
   if (length(armval) > 1) {
     armval <- NULL
   }
