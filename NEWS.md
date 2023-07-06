@@ -1,8 +1,9 @@
-# tern 0.8.4.9001
+# tern 0.8.4.9002
 
 ### Enhancements
 * Added method for `character` class to `h_coxreg_inter_effect` enabling `character` covariates in `summarize_coxreg`.
 * Started deprecation cycle for `summarize_vars` and `control_summarize_vars`. Renamed into `analyze_vars` and `control_analyze_vars` to reflect underlying `rtables` machinery while keeping backward compatibility with aliases.
+* Added `ylim` argument to `g_km` to allow the user to set custom limits for the y-axis.
 * Added assertion to `g_km` which checks whether there is one arm present in the data when `annot_coxph` is true.
 
 ### Miscellaneous

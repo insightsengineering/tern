@@ -26,6 +26,7 @@
 #' @param censor_show (`flag`)\cr whether to show censored.
 #' @param xlab (`string`)\cr label of x-axis.
 #' @param ylab (`string`)\cr label of y-axis.
+#' @param ylim (`vector` of `numeric`)\cr vector of length 2 containing lower and upper limits for the y-axis.
 #' @param title (`string`)\cr title for plot.
 #' @param footnotes (`string`)\cr footnotes for plot.
 #' @param col (`character`)\cr lines colors. Length of a vector should be equal
@@ -181,6 +182,7 @@ g_km <- function(df,
                  xlab = "Days",
                  yval = c("Survival", "Failure"),
                  ylab = paste(yval, "Probability"),
+                 ylim = c(0, 1),
                  title = NULL,
                  footnotes = NULL,
                  draw = TRUE,
@@ -251,6 +253,7 @@ g_km <- function(df,
     xlab = xlab,
     yval = yval,
     ylab = ylab,
+    ylim = ylim,
     title = title,
     footnotes = footnotes,
     max_time = max_time,
@@ -636,6 +639,7 @@ h_ggkm <- function(data,
                    censor_show,
                    xlab,
                    ylab,
+                   ylim = c(0, 1),
                    title,
                    footnotes = NULL,
                    max_time = NULL,
@@ -648,6 +652,7 @@ h_ggkm <- function(data,
                    ggtheme = nestcolor::theme_nest()) {
   checkmate::assert_numeric(lty, null.ok = TRUE)
   checkmate::assert_character(col, null.ok = TRUE)
+  checkmate::assert_numeric(ylim, finite = TRUE, any.missing = FALSE, len = 2, sorted = TRUE)
 
   # change estimates of survival to estimates of failure (1 - survival)
   if (yval == "Failure") {
@@ -688,7 +693,7 @@ h_ggkm <- function(data,
   }
 
   gg <- gg +
-    ggplot2::coord_cartesian(ylim = c(0, 1)) +
+    ggplot2::coord_cartesian(ylim = ylim) +
     ggplot2::labs(x = xlab, y = ylab, title = title, caption = footnotes)
 
   if (!is.null(col)) {
