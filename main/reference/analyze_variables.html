@@ -14,7 +14,7 @@ is used as a statistics function in combination with the analyze function analyz
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4.9001</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,25 +39,6 @@ is used as a statistics function in combination with the analyze function analyz
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -1956,31 +1937,31 @@ functions; in this case <code><a href="https://rdrr.io/pkg/rtables/man/analyze.h
 <span class="r-in"><span><span class="fu">a_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, .N_col <span class="op">=</span> <span class="fl">10</span>, .N_row <span class="op">=</span> <span class="fl">20</span>, .var <span class="op">=</span> <span class="st">"bla"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        row_name   formatted_cell indent_mod                   row_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1             n               10          0                           n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           sum              2.5          0                         Sum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          mean              0.3          0                        Mean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4            sd              1.2          0                          SD</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5            se              0.4          0                          SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       mean_sd        0.3 (1.2)          0                   Mean (SD)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7       mean_se        0.3 (0.4)          0                   Mean (SE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8       mean_ci    (-0.60, 1.10)          0                 Mean 95% CI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9      mean_sei    (-0.12, 0.63)          0               Mean -/+ 1xSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     mean_sdi    (-0.94, 1.44)          0               Mean -/+ 1xSD</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11    mean_pval             0.52          0 Mean p-value (H0: mean = 0)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12       median              0.1          0                      Median</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13          mad              0.0          0   Median Absolute Deviation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14    median_ci    (-0.71, 1.59)          0               Median 95% CI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15    quantiles       -0.7 - 1.2          0             25% and 75%-ile</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16          iqr              1.9          0                         IQR</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17        range       -1.7 - 2.0          0                   Min - Max</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18          min             -1.7          0                     Minimum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19          max              2.0          0                     Maximum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 median_range 0.1 (-1.7 - 2.0)          0          Median (Min - Max)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21           cv            471.4          0                      CV (%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22    geom_mean               NA          0              Geometric Mean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 geom_mean_ci               NA          0       Geometric Mean 95% CI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24      geom_cv               NA          0         CV % Geometric Mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        row_name    formatted_cell indent_mod                   row_label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1             n                10          0                           n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           sum               0.7          0                         Sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          mean               0.1          0                        Mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4            sd               0.7          0                          SD</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5            se               0.2          0                          SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       mean_sd         0.1 (0.7)          0                   Mean (SD)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7       mean_se         0.1 (0.2)          0                   Mean (SE)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       mean_ci     (-0.44, 0.57)          0                 Mean 95% CI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      mean_sei     (-0.16, 0.29)          0               Mean -/+ 1xSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     mean_sdi     (-0.64, 0.77)          0               Mean -/+ 1xSD</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11    mean_pval              0.78          0 Mean p-value (H0: mean = 0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12       median              -0.1          0                      Median</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13          mad               0.0          0   Median Absolute Deviation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14    median_ci     (-0.75, 1.06)          0               Median 95% CI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15    quantiles        -0.4 - 0.6          0             25% and 75%-ile</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16          iqr               1.1          0                         IQR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17        range        -0.8 - 1.1          0                   Min - Max</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18          min              -0.8          0                     Minimum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19          max               1.1          0                     Maximum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 median_range -0.1 (-0.8 - 1.1)          0          Median (Min - Max)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21           cv            1074.2          0                      CV (%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22    geom_mean                NA          0              Geometric Mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 geom_mean_ci                NA          0       Geometric Mean 95% CI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24      geom_cv                NA          0         CV % Geometric Mean</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `a_summary.factor`</span></span></span>
 <span class="r-in"><span><span class="co"># We need to ungroup `count` and `count_fraction` first so that the rtables formatting</span></span></span>
