@@ -221,7 +221,12 @@ g_km <- function(df,
   checkmate::assert_numeric(df[[tte]], min.len = 1, any.missing = FALSE)
 
   armval <- as.character(unique(df[[arm]]))
-  if (length(armval) > 1) {
+  if (annot_coxph && length(armval) < 2) {
+    stop(paste(
+      "When `annot_coxph` = TRUE, `df` must contain at least 2 levels of `variables$arm`",
+      "in order to calculate the hazard ratio."
+    ))
+  } else if (length(armval) > 1) {
     armval <- NULL
   }
   yval <- match.arg(yval)
