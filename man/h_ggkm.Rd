@@ -11,6 +11,7 @@ h_ggkm(
   censor_show,
   xlab,
   ylab,
+  ylim = c(0, 1),
   title,
   footnotes = NULL,
   max_time = NULL,
@@ -37,6 +38,8 @@ an optimal tick position on the x axis.}
 \item{xlab}{(\code{string})\cr label of x-axis.}
 
 \item{ylab}{(\code{string})\cr label of y-axis.}
+
+\item{ylim}{(\code{vector} of \code{numeric})\cr vector of length 2 containing lower and upper limits for the y-axis.}
 
 \item{title}{(\code{string})\cr title for plot.}
 
