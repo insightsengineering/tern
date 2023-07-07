@@ -18,6 +18,12 @@ NULL
 #' @param .var (`character`)\cr name of the column that contains the unique identifier.
 #' @param flag_variables (`character`)\cr a character vector specifying the names of `logical`
 #'   variables from analysis dataset used for counting the number of unique identifiers.
+#' @param flag_labels (`character`)\cr vector of labels to use for flag variables.
+#'
+#' @note If `flag_labels` is not specified, variables labels will be extracted from `df`. If variables are not
+#'   labelled, variable names will be used instead. Alternatively, a named `vector` can be supplied to
+#'   `flag_variables` such that within each name-value pair the name corresponds to the variable name and the value is
+#'   the label to use for this variable.
 #'
 #' @return
 #' * `s_count_patients_with_flags()` returns the count and the fraction of unique identifiers with each particular
@@ -56,12 +62,22 @@ NULL
 s_count_patients_with_flags <- function(df,
                                         .var,
                                         flag_variables,
+                                        flag_labels = NULL,
                                         .N_col, # nolint
                                         .N_row, # nolint
                                         denom = c("n", "N_row", "N_col")) {
-  if (is.null(names(flag_variables))) flag_variables <- stats::setNames(flag_variables, flag_variables)
-  flag_names <- unname(flag_variables)
-  flag_variables <- names(flag_variables)
+  checkmate::assert_character(flag_variables)
+  if (!is.null(flag_labels)) {
+    checkmate::assert_character(flag_labels, len = length(flag_variables), any.missing = FALSE)
+    flag_names <- flag_labels
+  } else {
+    if (is.null(names(flag_variables))) {
+      flag_names <- var_labels(df[flag_variables], fill = TRUE)
+    } else {
+      flag_names <- unname(flag_variables)
+      flag_variables <- names(flag_variables)
+    }
+  }
 
   checkmate::assert_subset(flag_variables, colnames(df))
   temp <- sapply(flag_variables, function(x) {

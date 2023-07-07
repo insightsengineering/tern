@@ -159,3 +159,81 @@ testthat::test_that("count_patients_with_flags works with label row specified", 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("Custom variable label behaviour works", {
+  adae_local <- tern_ex_adae %>%
+    dplyr::mutate(
+      SER = AESER == "Y",
+      REL = AEREL == "Y",
+      CTC35 = AETOXGR %in% c("3", "4", "5"),
+      CTC45 = AETOXGR %in% c("4", "5")
+    )
+  columns <- c("SER", "REL", "CTC35", "CTC45")
+
+  # No variable labels (variable names used)
+  lyt <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    count_patients_with_flags(
+      "USUBJID",
+      flag_variables = aesi_vars,
+      denom = "N_col",
+      var_labels = "Total number of patients with at least one",
+      show_labels = "visible"
+    )
+  result <- build_table(lyt, df = adae_local, alt_counts_df = tern_ex_adsl)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  labels <- c("Serious AE", "Related AE", "Grade 3-5 AE", "Grade 4/5 AE")
+  for (i in seq_along(columns)) {
+    attr(adae_local[[columns[i]]], "label") <- labels[i]
+  }
+  aesi_vars <- c("SER", "REL", "CTC35", "CTC45")
+
+  # Variable labels from df
+  lyt <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    count_patients_with_flags(
+      "USUBJID",
+      flag_variables = aesi_vars,
+      denom = "N_col",
+      var_labels = "Total number of patients with at least one",
+      show_labels = "visible"
+    )
+  result <- build_table(lyt, df = adae_local, alt_counts_df = tern_ex_adsl)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # Custom labels via flag_labels argument
+  lyt <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    count_patients_with_flags(
+      "USUBJID",
+      flag_variables = aesi_vars,
+      flag_labels = c("Category 1", "Category 2", "Category 3", "Category 4"),
+      denom = "N_col",
+      var_labels = "Total number of patients with at least one",
+      show_labels = "visible"
+    )
+  result <- build_table(lyt, df = adae_local, alt_counts_df = tern_ex_adsl)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # Labels supplied within flag_variables argument
+  lyt <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    count_patients_with_flags(
+      "USUBJID",
+      flag_variables = formatters::var_labels(adae_local[, aesi_vars]),
+      denom = "N_col",
+      var_labels = "Total number of patients with at least one",
+      show_labels = "visible"
+    )
+  result <- build_table(lyt, df = adae_local, alt_counts_df = tern_ex_adsl)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
