@@ -31,6 +31,63 @@ testthat::test_that("s_count_patients_with_flags handles multiple columns", {
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("s_count_patients_with_flags custom variable label behaviour works", {
+  adae_local <- tern_ex_adae %>%
+    dplyr::mutate(
+      SER = AESER == "Y",
+      REL = AEREL == "Y",
+      CTC35 = AETOXGR %in% c("3", "4", "5"),
+      CTC45 = AETOXGR %in% c("4", "5")
+    )
+  aesi_vars <- c("SER", "REL", "CTC35", "CTC45")
+
+  # No variable labels (variable names used)
+  result <- s_count_patients_with_flags(
+    adae_local,
+    .var = "USUBJID",
+    flag_variables = aesi_vars
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  labels <- c("Serious AE", "Related AE", "Grade 3-5 AE", "Grade 4/5 AE")
+  for (i in seq_along(aesi_vars)) {
+    attr(adae_local[[aesi_vars[i]]], "label") <- labels[i]
+  }
+
+  # Variable labels from df
+  result <- s_count_patients_with_flags(
+    adae_local,
+    .var = "USUBJID",
+    flag_variables = aesi_vars
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # Custom labels via flag_labels argument
+  result <- s_count_patients_with_flags(
+    adae_local,
+    .var = "USUBJID",
+    flag_variables = aesi_vars,
+    flag_labels = c("Category 1", "Category 2", "Category 3", "Category 4")
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # Labels supplied within flag_variables argument
+  result <- s_count_patients_with_flags(
+    adae_local,
+    .var = "USUBJID",
+    flag_variables = formatters::var_labels(adae_local[, aesi_vars])
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("count_patients_with_flags works as expected", {
   test_data <- tibble::tibble(
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
@@ -160,7 +217,7 @@ testthat::test_that("count_patients_with_flags works with label row specified", 
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("Custom variable label behaviour works", {
+testthat::test_that("count_patients_with_flags custom variable label behaviour works with var_labels specified", {
   adae_local <- tern_ex_adae %>%
     dplyr::mutate(
       SER = AESER == "Y",
