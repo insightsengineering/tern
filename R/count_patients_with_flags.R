@@ -21,7 +21,7 @@ NULL
 #' @param flag_labels (`character`)\cr vector of labels to use for flag variables.
 #'
 #' @note If `flag_labels` is not specified, variables labels will be extracted from `df`. If variables are not
-#'   labelled, variable names will be used instead. Alternatively, a named `vector` can be supplied to
+#'   labeled, variable names will be used instead. Alternatively, a named `vector` can be supplied to
 #'   `flag_variables` such that within each name-value pair the name corresponds to the variable name and the value is
 #'   the label to use for this variable.
 #'

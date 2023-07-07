@@ -101,3 +101,55 @@
         Grade 3-5 AE                                             47 (68.1%)   46 (63.0%)     41 (70.7%)  
         Grade 4/5 AE                                             34 (49.3%)   38 (52.1%)     32 (55.2%)  
 
+# Custom variable label behaviour works
+
+    Code
+      res
+    Output
+                                                   A: Drug X    B: Placebo   C: Combination
+      —————————————————————————————————————————————————————————————————————————————————————
+      Total number of patients with at least one                                           
+        SER                                        45 (65.2%)   46 (63.0%)     37 (63.8%)  
+        REL                                        49 (71.0%)   48 (65.8%)     40 (69.0%)  
+        CTC35                                      47 (68.1%)   46 (63.0%)     41 (70.7%)  
+        CTC45                                      34 (49.3%)   38 (52.1%)     32 (55.2%)  
+
+---
+
+    Code
+      res
+    Output
+                                                   A: Drug X    B: Placebo   C: Combination
+      —————————————————————————————————————————————————————————————————————————————————————
+      Total number of patients with at least one                                           
+        Serious AE                                 45 (65.2%)   46 (63.0%)     37 (63.8%)  
+        Related AE                                 49 (71.0%)   48 (65.8%)     40 (69.0%)  
+        Grade 3-5 AE                               47 (68.1%)   46 (63.0%)     41 (70.7%)  
+        Grade 4/5 AE                               34 (49.3%)   38 (52.1%)     32 (55.2%)  
+
+---
+
+    Code
+      res
+    Output
+                                                   A: Drug X    B: Placebo   C: Combination
+      —————————————————————————————————————————————————————————————————————————————————————
+      Total number of patients with at least one                                           
+        Category 1                                 45 (65.2%)   46 (63.0%)     37 (63.8%)  
+        Category 2                                 49 (71.0%)   48 (65.8%)     40 (69.0%)  
+        Category 3                                 47 (68.1%)   46 (63.0%)     41 (70.7%)  
+        Category 4                                 34 (49.3%)   38 (52.1%)     32 (55.2%)  
+
+---
+
+    Code
+      res
+    Output
+                                                   A: Drug X    B: Placebo   C: Combination
+      —————————————————————————————————————————————————————————————————————————————————————
+      Total number of patients with at least one                                           
+        Serious AE                                 45 (65.2%)   46 (63.0%)     37 (63.8%)  
+        Related AE                                 49 (71.0%)   48 (65.8%)     40 (69.0%)  
+        Grade 3-5 AE                               47 (68.1%)   46 (63.0%)     41 (70.7%)  
+        Grade 4/5 AE                               34 (49.3%)   38 (52.1%)     32 (55.2%)  
+

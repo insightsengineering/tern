@@ -116,7 +116,7 @@ arguments and additional format arguments. This function is a wrapper for \code{
 }}
 \note{
 If \code{flag_labels} is not specified, variables labels will be extracted from \code{df}. If variables are not
-labelled, variable names will be used instead. Alternatively, a named \code{vector} can be supplied to
+labeled, variable names will be used instead. Alternatively, a named \code{vector} can be supplied to
 \code{flag_variables} such that within each name-value pair the name corresponds to the variable name and the value is
 the label to use for this variable.
 }

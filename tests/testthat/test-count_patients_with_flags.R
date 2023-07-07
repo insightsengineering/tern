@@ -168,7 +168,7 @@ testthat::test_that("Custom variable label behaviour works", {
       CTC35 = AETOXGR %in% c("3", "4", "5"),
       CTC45 = AETOXGR %in% c("4", "5")
     )
-  columns <- c("SER", "REL", "CTC35", "CTC45")
+  aesi_vars <- c("SER", "REL", "CTC35", "CTC45")
 
   # No variable labels (variable names used)
   lyt <- basic_table() %>%
@@ -186,10 +186,9 @@ testthat::test_that("Custom variable label behaviour works", {
   testthat::expect_snapshot(res)
 
   labels <- c("Serious AE", "Related AE", "Grade 3-5 AE", "Grade 4/5 AE")
-  for (i in seq_along(columns)) {
-    attr(adae_local[[columns[i]]], "label") <- labels[i]
+  for (i in seq_along(aesi_vars)) {
+    attr(adae_local[[aesi_vars[i]]], "label") <- labels[i]
   }
-  aesi_vars <- c("SER", "REL", "CTC35", "CTC45")
 
   # Variable labels from df
   lyt <- basic_table() %>%
