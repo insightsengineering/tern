@@ -72,7 +72,7 @@ s_count_patients_with_flags <- function(df,
     flag_names <- flag_labels
   } else {
     if (is.null(names(flag_variables))) {
-      flag_names <- var_labels(df[flag_variables], fill = TRUE)
+      flag_names <- formatters::var_labels(df[flag_variables], fill = TRUE)
     } else {
       flag_names <- unname(flag_variables)
       flag_variables <- names(flag_variables)
@@ -147,7 +147,7 @@ a_count_patients_with_flags <- make_afun(
 #'   add_colcounts() %>%
 #'   count_patients_with_flags(
 #'     "SUBJID",
-#'     flag_variables = formatters::var_labels(adae[, c("fl1", "fl2", "fl3", "fl4")]),
+#'     flag_variables = c("fl1", "fl2", "fl3", "fl4"),
 #'     denom = "N_col"
 #'   )
 #' build_table(lyt2, adae, alt_counts_df = tern_ex_adsl)

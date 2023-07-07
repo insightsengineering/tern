@@ -173,7 +173,7 @@ lyt2 <- basic_table() \%>\%
   add_colcounts() \%>\%
   count_patients_with_flags(
     "SUBJID",
-    flag_variables = formatters::var_labels(adae[, c("fl1", "fl2", "fl3", "fl4")]),
+    flag_variables = c("fl1", "fl2", "fl3", "fl4"),
     denom = "N_col"
   )
 build_table(lyt2, adae, alt_counts_df = tern_ex_adsl)
