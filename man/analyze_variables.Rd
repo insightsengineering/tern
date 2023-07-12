@@ -7,7 +7,6 @@
 \alias{s_summary.factor}
 \alias{s_summary.character}
 \alias{s_summary.logical}
-\alias{a_summary_output}
 \alias{a_summary}
 \alias{a_summary.default}
 \alias{a_summary.numeric}
@@ -53,25 +52,6 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
   denom = c("n", "N_row", "N_col"),
   .N_row,
   .N_col,
-  ...
-)
-
-a_summary_output(
-  x,
-  .N_col,
-  .N_row,
-  .var,
-  .df_row,
-  .ref_group,
-  .in_ref_col,
-  compare,
-  type,
-  .stats,
-  .formats,
-  .labels,
-  .indent_mods,
-  na.rm,
-  na_level,
   ...
 )
 
@@ -174,9 +154,6 @@ to print out information about factor casting.}
 \item{compare}{(\code{logical})\cr Whether comparison statistics should be analyzed instead of summary statistics
 (\code{compare = TRUE} adds \code{pval} statistic comparing against reference group).}
 
-\item{type}{(\code{character})\cr type of statistics to calculate given \code{x}. If \code{x} is numeric \code{type} should be
-\code{"numeric"}, otherwise type should be \code{"counts"}.}
-
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
@@ -206,6 +183,9 @@ to avoid warnings from \code{rtables}.}
 
 \item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
 defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
+
+\item{type}{(\code{character})\cr type of statistics to calculate given \code{x}. If \code{x} is numeric \code{type} should be
+\code{"numeric"}, otherwise type should be \code{"counts"}.}
 }
 \value{
 \itemize{
@@ -263,10 +243,6 @@ denominator is zero. Note that \code{NA}s in \code{x} are never counted or leadi
 }
 
 \itemize{
-\item \code{a_summary_output()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
-}
-
-\itemize{
 \item \code{a_summary()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 
@@ -294,8 +270,6 @@ is used as a statistics function in combination with the analyze function \code{
 conversion to factor (with a warning) and then forwards to the method for factors.
 
 \item \code{s_summary(logical)}: Method for \code{logical} class.
-
-\item \code{a_summary_output()}: Formatted analysis helper function which is used within \code{a_summary}.
 
 \item \code{a_summary()}: Formatted analysis function which is used as \code{afun} in \code{analyze_vars()} and
 \code{compare_vars()} and as \code{cfun} in \code{summarize_colvars()}.
@@ -330,11 +304,6 @@ default \code{na_level} (\code{"<Missing>"}) will also be excluded when \code{na
 can be generated correctly. In particular for sparse tables this very likely can fail.
 It is therefore better to always pre-process the dataset such that factors are manually
 created from character variables before passing the dataset to \code{\link[rtables:build_table]{rtables::build_table()}}.
-}
-
-\itemize{
-\item To use for comparison (with additional p-value statistic), parameter \code{compare} must be set to \code{TRUE}.
-\item Ensure that either all \code{NA} values are converted to an explicit \code{NA} level or all \code{NA} values are left as is.
 }
 
 \itemize{
@@ -417,26 +386,6 @@ s_summary(x, na.rm = FALSE)
 x <- c(TRUE, FALSE, TRUE, TRUE)
 s_summary(x, denom = "N_row", .N_row = 10L)
 s_summary(x, denom = "N_col", .N_col = 20L)
-
-set.seed(1)
-x <- rnorm(10)
-a_summary_output(
-  x = x, .N_col = 10, .N_row = 20, .var = "bla", .df_row = NULL, .ref_group = NULL,
-  .in_ref_col = FALSE, compare = FALSE, type = "numeric", .stats = summary_custom()$stats,
-  .formats = summary_custom()$formats, .labels = summary_custom()$labels,
-  .indent_mods = summary_custom()$indents, na.rm = TRUE, na_level = NA_character_
-)
-
-x <- factor(c("a", "a", "b", "c", "a"))
-a_summary_output(
-  x = x, .N_col = 10, .N_row = 10, .var = "bla", .df_row = NULL, .ref_group = NULL,
-  .in_ref_col = FALSE, compare = FALSE, type = "counts",
-  .stats = summary_custom(type = "counts")$stats,
-  .formats = summary_custom(type = "counts")$formats,
-  .labels = summary_custom(type = "counts")$labels,
-  .indent_mods = summary_custom(type = "counts")$indents,
-  na.rm = TRUE, na_level = NA_character_
-)
 
 a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
 a_summary(
