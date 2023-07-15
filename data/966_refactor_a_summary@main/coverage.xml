@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.951953251812574" branch-rate="0" lines-covered="8797" lines-valid="9241" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-07-12 01:45:31.787872">
+<coverage line-rate="0.952272480746285" branch-rate="0" lines-covered="8779" lines-valid="9219" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-07-15 19:29:46.760695">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
   <packages>
-    <package name="tern" line-rate="0.951953251812574" branch-rate="0" complexity="0">
+    <package name="tern" line-rate="0.952272480746285" branch-rate="0" complexity="0">
       <classes>
         <class name="abnormal_by_baseline.R" filename="R/abnormal_by_baseline.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
@@ -697,7 +697,7 @@
             <line number="167" hits="3" branch="false"/>
           </lines>
         </class>
-        <class name="analyze_variables.R" filename="R/analyze_variables.R" line-rate="0.97979797979798" branch-rate="0" complexity="0">
+        <class name="analyze_variables.R" filename="R/analyze_variables.R" line-rate="0.984455958549223" branch-rate="0" complexity="0">
           <methods>
             <method name="s_summary" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
@@ -815,20 +815,20 @@
                 <line number="375" hits="100" branch="false"/>
               </lines>
             </method>
-            <method name="a_summary_internal" signature="" line-rate="0.954545454545455" branch-rate="0" complexity="0">
+            <method name="a_summary_internal" signature="" line-rate="0.974358974358974" branch-rate="0" complexity="0">
               <lines>
-                <line number="410" hits="274" branch="false"/>
-                <line number="411" hits="258" branch="false"/>
-                <line number="412" hits="258" branch="false"/>
-                <line number="413" hits="0" branch="false"/>
-                <line number="416" hits="0" branch="false"/>
-                <line number="417" hits="274" branch="false"/>
-                <line number="418" hits="255" branch="false"/>
-                <line number="419" hits="274" branch="false"/>
-                <line number="420" hits="19" branch="false"/>
-                <line number="421" hits="19" branch="false"/>
-                <line number="422" hits="19" branch="false"/>
+                <line number="410" hits="0" branch="false"/>
+                <line number="412" hits="274" branch="false"/>
+                <line number="413" hits="255" branch="false"/>
+                <line number="414" hits="274" branch="false"/>
+                <line number="415" hits="19" branch="false"/>
+                <line number="416" hits="19" branch="false"/>
+                <line number="417" hits="19" branch="false"/>
+                <line number="418" hits="274" branch="false"/>
+                <line number="421" hits="274" branch="false"/>
+                <line number="422" hits="274" branch="false"/>
                 <line number="423" hits="274" branch="false"/>
+                <line number="424" hits="274" branch="false"/>
                 <line number="425" hits="274" branch="false"/>
                 <line number="426" hits="274" branch="false"/>
                 <line number="427" hits="274" branch="false"/>
@@ -838,38 +838,36 @@
                 <line number="431" hits="274" branch="false"/>
                 <line number="432" hits="274" branch="false"/>
                 <line number="433" hits="274" branch="false"/>
-                <line number="434" hits="274" branch="false"/>
-                <line number="435" hits="274" branch="false"/>
                 <line number="436" hits="274" branch="false"/>
-                <line number="438" hits="274" branch="false"/>
-                <line number="439" hits="58" branch="false"/>
-                <line number="440" hits="16" branch="false"/>
-                <line number="441" hits="16" branch="false"/>
-                <line number="446" hits="274" branch="false"/>
-                <line number="447" hits="274" branch="false"/>
+                <line number="437" hits="58" branch="false"/>
+                <line number="438" hits="16" branch="false"/>
+                <line number="439" hits="16" branch="false"/>
+                <line number="444" hits="274" branch="false"/>
+                <line number="446" hits="215" branch="false"/>
+                <line number="447" hits="215" branch="false"/>
                 <line number="448" hits="215" branch="false"/>
                 <line number="449" hits="215" branch="false"/>
                 <line number="450" hits="215" branch="false"/>
-                <line number="451" hits="215" branch="false"/>
-                <line number="452" hits="215" branch="false"/>
-                <line number="453" hits="215" branch="false"/>
+                <line number="453" hits="274" branch="false"/>
+                <line number="454" hits="274" branch="false"/>
+                <line number="455" hits="274" branch="false"/>
                 <line number="456" hits="274" branch="false"/>
                 <line number="457" hits="274" branch="false"/>
                 <line number="458" hits="274" branch="false"/>
                 <line number="459" hits="274" branch="false"/>
                 <line number="460" hits="274" branch="false"/>
-                <line number="461" hits="274" branch="false"/>
-                <line number="462" hits="274" branch="false"/>
-                <line number="463" hits="274" branch="false"/>
               </lines>
             </method>
             <method name="a_summary" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="490" hits="273" branch="false"/>
+                <line number="487" hits="273" branch="false"/>
               </lines>
             </method>
             <method name="a_summary.default" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="529" hits="216" branch="false"/>
+                <line number="530" hits="216" branch="false"/>
+                <line number="531" hits="216" branch="false"/>
                 <line number="532" hits="216" branch="false"/>
                 <line number="533" hits="216" branch="false"/>
                 <line number="534" hits="216" branch="false"/>
@@ -885,13 +883,13 @@
                 <line number="544" hits="216" branch="false"/>
                 <line number="545" hits="216" branch="false"/>
                 <line number="546" hits="216" branch="false"/>
-                <line number="547" hits="216" branch="false"/>
-                <line number="548" hits="216" branch="false"/>
-                <line number="549" hits="216" branch="false"/>
               </lines>
             </method>
             <method name="a_summary.numeric" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="573" hits="57" branch="false"/>
+                <line number="574" hits="57" branch="false"/>
+                <line number="575" hits="57" branch="false"/>
                 <line number="576" hits="57" branch="false"/>
                 <line number="577" hits="57" branch="false"/>
                 <line number="578" hits="57" branch="false"/>
@@ -907,26 +905,26 @@
                 <line number="588" hits="57" branch="false"/>
                 <line number="589" hits="57" branch="false"/>
                 <line number="590" hits="57" branch="false"/>
-                <line number="591" hits="57" branch="false"/>
-                <line number="592" hits="57" branch="false"/>
-                <line number="593" hits="57" branch="false"/>
               </lines>
             </method>
             <method name="create_afun_summary" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="612" hits="1" branch="false"/>
+                <line number="613" hits="1" branch="false"/>
+                <line number="614" hits="1" branch="false"/>
                 <line number="615" hits="1" branch="false"/>
                 <line number="616" hits="1" branch="false"/>
-                <line number="617" hits="1" branch="false"/>
-                <line number="618" hits="1" branch="false"/>
-                <line number="619" hits="1" branch="false"/>
               </lines>
             </method>
             <method name="summarize_vars" signature="" line-rate="0.875" branch-rate="0" complexity="0">
               <lines>
-                <line number="703" hits="19" branch="false"/>
-                <line number="704" hits="1" branch="false"/>
-                <line number="705" hits="0" branch="false"/>
-                <line number="706" hits="0" branch="false"/>
+                <line number="700" hits="19" branch="false"/>
+                <line number="701" hits="1" branch="false"/>
+                <line number="702" hits="0" branch="false"/>
+                <line number="703" hits="0" branch="false"/>
+                <line number="705" hits="19" branch="false"/>
+                <line number="706" hits="19" branch="false"/>
+                <line number="707" hits="19" branch="false"/>
                 <line number="708" hits="19" branch="false"/>
                 <line number="709" hits="19" branch="false"/>
                 <line number="710" hits="19" branch="false"/>
@@ -936,9 +934,6 @@
                 <line number="714" hits="19" branch="false"/>
                 <line number="715" hits="19" branch="false"/>
                 <line number="716" hits="19" branch="false"/>
-                <line number="717" hits="19" branch="false"/>
-                <line number="718" hits="19" branch="false"/>
-                <line number="719" hits="19" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -1039,18 +1034,18 @@
             <line number="373" hits="100" branch="false"/>
             <line number="374" hits="100" branch="false"/>
             <line number="375" hits="100" branch="false"/>
-            <line number="410" hits="274" branch="false"/>
-            <line number="411" hits="258" branch="false"/>
-            <line number="412" hits="258" branch="false"/>
-            <line number="413" hits="0" branch="false"/>
-            <line number="416" hits="0" branch="false"/>
-            <line number="417" hits="274" branch="false"/>
-            <line number="418" hits="255" branch="false"/>
-            <line number="419" hits="274" branch="false"/>
-            <line number="420" hits="19" branch="false"/>
-            <line number="421" hits="19" branch="false"/>
-            <line number="422" hits="19" branch="false"/>
+            <line number="410" hits="0" branch="false"/>
+            <line number="412" hits="274" branch="false"/>
+            <line number="413" hits="255" branch="false"/>
+            <line number="414" hits="274" branch="false"/>
+            <line number="415" hits="19" branch="false"/>
+            <line number="416" hits="19" branch="false"/>
+            <line number="417" hits="19" branch="false"/>
+            <line number="418" hits="274" branch="false"/>
+            <line number="421" hits="274" branch="false"/>
+            <line number="422" hits="274" branch="false"/>
             <line number="423" hits="274" branch="false"/>
+            <line number="424" hits="274" branch="false"/>
             <line number="425" hits="274" branch="false"/>
             <line number="426" hits="274" branch="false"/>
             <line number="427" hits="274" branch="false"/>
@@ -1060,30 +1055,28 @@
             <line number="431" hits="274" branch="false"/>
             <line number="432" hits="274" branch="false"/>
             <line number="433" hits="274" branch="false"/>
-            <line number="434" hits="274" branch="false"/>
-            <line number="435" hits="274" branch="false"/>
             <line number="436" hits="274" branch="false"/>
-            <line number="438" hits="274" branch="false"/>
-            <line number="439" hits="58" branch="false"/>
-            <line number="440" hits="16" branch="false"/>
-            <line number="441" hits="16" branch="false"/>
-            <line number="446" hits="274" branch="false"/>
-            <line number="447" hits="274" branch="false"/>
+            <line number="437" hits="58" branch="false"/>
+            <line number="438" hits="16" branch="false"/>
+            <line number="439" hits="16" branch="false"/>
+            <line number="444" hits="274" branch="false"/>
+            <line number="446" hits="215" branch="false"/>
+            <line number="447" hits="215" branch="false"/>
             <line number="448" hits="215" branch="false"/>
             <line number="449" hits="215" branch="false"/>
             <line number="450" hits="215" branch="false"/>
-            <line number="451" hits="215" branch="false"/>
-            <line number="452" hits="215" branch="false"/>
-            <line number="453" hits="215" branch="false"/>
+            <line number="453" hits="274" branch="false"/>
+            <line number="454" hits="274" branch="false"/>
+            <line number="455" hits="274" branch="false"/>
             <line number="456" hits="274" branch="false"/>
             <line number="457" hits="274" branch="false"/>
             <line number="458" hits="274" branch="false"/>
             <line number="459" hits="274" branch="false"/>
             <line number="460" hits="274" branch="false"/>
-            <line number="461" hits="274" branch="false"/>
-            <line number="462" hits="274" branch="false"/>
-            <line number="463" hits="274" branch="false"/>
-            <line number="490" hits="273" branch="false"/>
+            <line number="487" hits="273" branch="false"/>
+            <line number="529" hits="216" branch="false"/>
+            <line number="530" hits="216" branch="false"/>
+            <line number="531" hits="216" branch="false"/>
             <line number="532" hits="216" branch="false"/>
             <line number="533" hits="216" branch="false"/>
             <line number="534" hits="216" branch="false"/>
@@ -1099,9 +1092,9 @@
             <line number="544" hits="216" branch="false"/>
             <line number="545" hits="216" branch="false"/>
             <line number="546" hits="216" branch="false"/>
-            <line number="547" hits="216" branch="false"/>
-            <line number="548" hits="216" branch="false"/>
-            <line number="549" hits="216" branch="false"/>
+            <line number="573" hits="57" branch="false"/>
+            <line number="574" hits="57" branch="false"/>
+            <line number="575" hits="57" branch="false"/>
             <line number="576" hits="57" branch="false"/>
             <line number="577" hits="57" branch="false"/>
             <line number="578" hits="57" branch="false"/>
@@ -1117,18 +1110,18 @@
             <line number="588" hits="57" branch="false"/>
             <line number="589" hits="57" branch="false"/>
             <line number="590" hits="57" branch="false"/>
-            <line number="591" hits="57" branch="false"/>
-            <line number="592" hits="57" branch="false"/>
-            <line number="593" hits="57" branch="false"/>
+            <line number="612" hits="1" branch="false"/>
+            <line number="613" hits="1" branch="false"/>
+            <line number="614" hits="1" branch="false"/>
             <line number="615" hits="1" branch="false"/>
             <line number="616" hits="1" branch="false"/>
-            <line number="617" hits="1" branch="false"/>
-            <line number="618" hits="1" branch="false"/>
-            <line number="619" hits="1" branch="false"/>
-            <line number="703" hits="19" branch="false"/>
-            <line number="704" hits="1" branch="false"/>
-            <line number="705" hits="0" branch="false"/>
-            <line number="706" hits="0" branch="false"/>
+            <line number="700" hits="19" branch="false"/>
+            <line number="701" hits="1" branch="false"/>
+            <line number="702" hits="0" branch="false"/>
+            <line number="703" hits="0" branch="false"/>
+            <line number="705" hits="19" branch="false"/>
+            <line number="706" hits="19" branch="false"/>
+            <line number="707" hits="19" branch="false"/>
             <line number="708" hits="19" branch="false"/>
             <line number="709" hits="19" branch="false"/>
             <line number="710" hits="19" branch="false"/>
@@ -1138,9 +1131,6 @@
             <line number="714" hits="19" branch="false"/>
             <line number="715" hits="19" branch="false"/>
             <line number="716" hits="19" branch="false"/>
-            <line number="717" hits="19" branch="false"/>
-            <line number="718" hits="19" branch="false"/>
-            <line number="719" hits="19" branch="false"/>
           </lines>
         </class>
         <class name="analyze_vars_in_cols.R" filename="R/analyze_vars_in_cols.R" line-rate="0.79646017699115" branch-rate="0" complexity="0">
@@ -1506,10 +1496,6 @@
             </method>
             <method name="a_compare" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="266" hits="1" branch="false"/>
-                <line number="267" hits="1" branch="false"/>
-                <line number="268" hits="1" branch="false"/>
-                <line number="269" hits="1" branch="false"/>
                 <line number="270" hits="1" branch="false"/>
                 <line number="271" hits="1" branch="false"/>
                 <line number="272" hits="1" branch="false"/>
@@ -1522,27 +1508,27 @@
                 <line number="279" hits="1" branch="false"/>
                 <line number="280" hits="1" branch="false"/>
                 <line number="281" hits="1" branch="false"/>
+                <line number="282" hits="1" branch="false"/>
+                <line number="283" hits="1" branch="false"/>
+                <line number="284" hits="1" branch="false"/>
+                <line number="285" hits="1" branch="false"/>
               </lines>
             </method>
             <method name="create_afun_compare" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="307" hits="1" branch="false"/>
-                <line number="308" hits="1" branch="false"/>
-                <line number="309" hits="1" branch="false"/>
-                <line number="310" hits="1" branch="false"/>
                 <line number="311" hits="1" branch="false"/>
+                <line number="312" hits="1" branch="false"/>
+                <line number="313" hits="1" branch="false"/>
+                <line number="314" hits="1" branch="false"/>
+                <line number="315" hits="1" branch="false"/>
               </lines>
             </method>
             <method name="compare_vars" signature="" line-rate="0.9375" branch-rate="0" complexity="0">
               <lines>
-                <line number="362" hits="3" branch="false"/>
-                <line number="363" hits="1" branch="false"/>
-                <line number="364" hits="1" branch="false"/>
-                <line number="365" hits="0" branch="false"/>
-                <line number="367" hits="3" branch="false"/>
-                <line number="368" hits="3" branch="false"/>
-                <line number="369" hits="3" branch="false"/>
-                <line number="370" hits="3" branch="false"/>
+                <line number="366" hits="3" branch="false"/>
+                <line number="367" hits="1" branch="false"/>
+                <line number="368" hits="1" branch="false"/>
+                <line number="369" hits="0" branch="false"/>
                 <line number="371" hits="3" branch="false"/>
                 <line number="372" hits="3" branch="false"/>
                 <line number="373" hits="3" branch="false"/>
@@ -1551,6 +1537,10 @@
                 <line number="376" hits="3" branch="false"/>
                 <line number="377" hits="3" branch="false"/>
                 <line number="378" hits="3" branch="false"/>
+                <line number="379" hits="3" branch="false"/>
+                <line number="380" hits="3" branch="false"/>
+                <line number="381" hits="3" branch="false"/>
+                <line number="382" hits="3" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -1622,10 +1612,6 @@
             <line number="243" hits="0" branch="false"/>
             <line number="244" hits="3" branch="false"/>
             <line number="246" hits="3" branch="false"/>
-            <line number="266" hits="1" branch="false"/>
-            <line number="267" hits="1" branch="false"/>
-            <line number="268" hits="1" branch="false"/>
-            <line number="269" hits="1" branch="false"/>
             <line number="270" hits="1" branch="false"/>
             <line number="271" hits="1" branch="false"/>
             <line number="272" hits="1" branch="false"/>
@@ -1638,19 +1624,19 @@
             <line number="279" hits="1" branch="false"/>
             <line number="280" hits="1" branch="false"/>
             <line number="281" hits="1" branch="false"/>
-            <line number="307" hits="1" branch="false"/>
-            <line number="308" hits="1" branch="false"/>
-            <line number="309" hits="1" branch="false"/>
-            <line number="310" hits="1" branch="false"/>
+            <line number="282" hits="1" branch="false"/>
+            <line number="283" hits="1" branch="false"/>
+            <line number="284" hits="1" branch="false"/>
+            <line number="285" hits="1" branch="false"/>
             <line number="311" hits="1" branch="false"/>
-            <line number="362" hits="3" branch="false"/>
-            <line number="363" hits="1" branch="false"/>
-            <line number="364" hits="1" branch="false"/>
-            <line number="365" hits="0" branch="false"/>
-            <line number="367" hits="3" branch="false"/>
-            <line number="368" hits="3" branch="false"/>
-            <line number="369" hits="3" branch="false"/>
-            <line number="370" hits="3" branch="false"/>
+            <line number="312" hits="1" branch="false"/>
+            <line number="313" hits="1" branch="false"/>
+            <line number="314" hits="1" branch="false"/>
+            <line number="315" hits="1" branch="false"/>
+            <line number="366" hits="3" branch="false"/>
+            <line number="367" hits="1" branch="false"/>
+            <line number="368" hits="1" branch="false"/>
+            <line number="369" hits="0" branch="false"/>
             <line number="371" hits="3" branch="false"/>
             <line number="372" hits="3" branch="false"/>
             <line number="373" hits="3" branch="false"/>
@@ -1659,6 +1645,10 @@
             <line number="376" hits="3" branch="false"/>
             <line number="377" hits="3" branch="false"/>
             <line number="378" hits="3" branch="false"/>
+            <line number="379" hits="3" branch="false"/>
+            <line number="380" hits="3" branch="false"/>
+            <line number="381" hits="3" branch="false"/>
+            <line number="382" hits="3" branch="false"/>
           </lines>
         </class>
         <class name="control_incidence_rate.R" filename="R/control_incidence_rate.R" line-rate="0.6" branch-rate="0" complexity="0">
@@ -19293,7 +19283,7 @@
             <line number="162" hits="2487" branch="false"/>
           </lines>
         </class>
-        <class name="utils_factor.R" filename="R/utils_factor.R" line-rate="0.967741935483871" branch-rate="0" complexity="0">
+        <class name="utils_factor.R" filename="R/utils_factor.R" line-rate="0.990654205607477" branch-rate="0" complexity="0">
           <methods>
             <method name="combine_levels" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
@@ -19410,45 +19400,28 @@
                 <line number="277" hits="3" branch="false"/>
               </lines>
             </method>
-            <method name="ungroup_stats" signature="" line-rate="0.918918918918919" branch-rate="0" complexity="0">
+            <method name="ungroup_stats" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="296" hits="215" branch="false"/>
+                <line number="297" hits="215" branch="false"/>
+                <line number="298" hits="215" branch="false"/>
+                <line number="301" hits="3" branch="false"/>
                 <line number="302" hits="215" branch="false"/>
-                <line number="304" hits="215" branch="false"/>
-                <line number="305" hits="430" branch="false"/>
-                <line number="306" hits="1971" branch="false"/>
-                <line number="307" hits="1971" branch="false"/>
-                <line number="308" hits="1971" branch="false"/>
-                <line number="309" hits="1971" branch="false"/>
-                <line number="310" hits="1971" branch="false"/>
-                <line number="311" hits="1971" branch="false"/>
-                <line number="312" hits="1971" branch="false"/>
-                <line number="313" hits="0" branch="false"/>
-                <line number="314" hits="1971" branch="false"/>
-                <line number="315" hits="1971" branch="false"/>
-                <line number="316" hits="1971" branch="false"/>
-                <line number="317" hits="1971" branch="false"/>
-                <line number="318" hits="0" branch="false"/>
-                <line number="319" hits="1971" branch="false"/>
-                <line number="320" hits="1971" branch="false"/>
-                <line number="321" hits="1971" branch="false"/>
-                <line number="322" hits="1971" branch="false"/>
-                <line number="323" hits="1971" branch="false"/>
-                <line number="324" hits="1971" branch="false"/>
-                <line number="325" hits="0" branch="false"/>
-                <line number="326" hits="1971" branch="false"/>
-                <line number="327" hits="1971" branch="false"/>
-                <line number="331" hits="3" branch="false"/>
-                <line number="332" hits="215" branch="false"/>
-                <line number="333" hits="3" branch="false"/>
-                <line number="334" hits="215" branch="false"/>
-                <line number="335" hits="215" branch="false"/>
-                <line number="337" hits="215" branch="false"/>
-                <line number="338" hits="215" branch="false"/>
-                <line number="339" hits="215" branch="false"/>
-                <line number="340" hits="215" branch="false"/>
-                <line number="341" hits="215" branch="false"/>
-                <line number="342" hits="215" branch="false"/>
-                <line number="343" hits="215" branch="false"/>
+                <line number="305" hits="215" branch="false"/>
+                <line number="306" hits="215" branch="false"/>
+                <line number="307" hits="215" branch="false"/>
+                <line number="308" hits="215" branch="false"/>
+                <line number="309" hits="215" branch="false"/>
+                <line number="310" hits="215" branch="false"/>
+                <line number="311" hits="215" branch="false"/>
+                <line number="312" hits="42" branch="false"/>
+                <line number="313" hits="215" branch="false"/>
+                <line number="315" hits="215" branch="false"/>
+                <line number="316" hits="215" branch="false"/>
+                <line number="317" hits="215" branch="false"/>
+                <line number="318" hits="215" branch="false"/>
+                <line number="319" hits="215" branch="false"/>
+                <line number="320" hits="215" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -19540,43 +19513,26 @@
             <line number="274" hits="1" branch="false"/>
             <line number="276" hits="3" branch="false"/>
             <line number="277" hits="3" branch="false"/>
+            <line number="296" hits="215" branch="false"/>
+            <line number="297" hits="215" branch="false"/>
+            <line number="298" hits="215" branch="false"/>
+            <line number="301" hits="3" branch="false"/>
             <line number="302" hits="215" branch="false"/>
-            <line number="304" hits="215" branch="false"/>
-            <line number="305" hits="430" branch="false"/>
-            <line number="306" hits="1971" branch="false"/>
-            <line number="307" hits="1971" branch="false"/>
-            <line number="308" hits="1971" branch="false"/>
-            <line number="309" hits="1971" branch="false"/>
-            <line number="310" hits="1971" branch="false"/>
-            <line number="311" hits="1971" branch="false"/>
-            <line number="312" hits="1971" branch="false"/>
-            <line number="313" hits="0" branch="false"/>
-            <line number="314" hits="1971" branch="false"/>
-            <line number="315" hits="1971" branch="false"/>
-            <line number="316" hits="1971" branch="false"/>
-            <line number="317" hits="1971" branch="false"/>
-            <line number="318" hits="0" branch="false"/>
-            <line number="319" hits="1971" branch="false"/>
-            <line number="320" hits="1971" branch="false"/>
-            <line number="321" hits="1971" branch="false"/>
-            <line number="322" hits="1971" branch="false"/>
-            <line number="323" hits="1971" branch="false"/>
-            <line number="324" hits="1971" branch="false"/>
-            <line number="325" hits="0" branch="false"/>
-            <line number="326" hits="1971" branch="false"/>
-            <line number="327" hits="1971" branch="false"/>
-            <line number="331" hits="3" branch="false"/>
-            <line number="332" hits="215" branch="false"/>
-            <line number="333" hits="3" branch="false"/>
-            <line number="334" hits="215" branch="false"/>
-            <line number="335" hits="215" branch="false"/>
-            <line number="337" hits="215" branch="false"/>
-            <line number="338" hits="215" branch="false"/>
-            <line number="339" hits="215" branch="false"/>
-            <line number="340" hits="215" branch="false"/>
-            <line number="341" hits="215" branch="false"/>
-            <line number="342" hits="215" branch="false"/>
-            <line number="343" hits="215" branch="false"/>
+            <line number="305" hits="215" branch="false"/>
+            <line number="306" hits="215" branch="false"/>
+            <line number="307" hits="215" branch="false"/>
+            <line number="308" hits="215" branch="false"/>
+            <line number="309" hits="215" branch="false"/>
+            <line number="310" hits="215" branch="false"/>
+            <line number="311" hits="215" branch="false"/>
+            <line number="312" hits="42" branch="false"/>
+            <line number="313" hits="215" branch="false"/>
+            <line number="315" hits="215" branch="false"/>
+            <line number="316" hits="215" branch="false"/>
+            <line number="317" hits="215" branch="false"/>
+            <line number="318" hits="215" branch="false"/>
+            <line number="319" hits="215" branch="false"/>
+            <line number="320" hits="215" branch="false"/>
           </lines>
         </class>
         <class name="utils_grid.R" filename="R/utils_grid.R" line-rate="0.954954954954955" branch-rate="0" complexity="0">
