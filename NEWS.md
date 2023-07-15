@@ -2,19 +2,19 @@
 
 ### Enhancements
 * Added method for `character` class to `h_coxreg_inter_effect` enabling `character` covariates in `summarize_coxreg`.
-* Refactored `a_summary` to no longer use helper function `create_afun_summary`. 
-* Refactored `summarize_vars` and `compare_vars` to use refactored `a_summary`.
-* Created new internal helper function `ungroup_stats` to ungroup and format statistics calculated for factor variables.
 * Started deprecation cycle for `summarize_vars` and `control_summarize_vars`. Renamed into `analyze_vars` and `control_analyze_vars` to reflect underlying `rtables` machinery while keeping backward compatibility with aliases.
 * Added `ylim` argument to `g_km` to allow the user to set custom limits for the y-axis.
 * Added assertion to `g_km` which checks whether there is one arm present in the data when `annot_coxph` is true.
 * Added `flag_labels` argument to `s_count_patients_with_flags` to enable more label handling options in `count_patients_by_flags`. 
+* Refactored `a_summary` to no longer use helper function `create_afun_summary`. 
+* Refactored `summarize_vars` and `compare_vars` to use refactored `a_summary`.
+* Created new internal helper functions `ungroup_stats` to ungroup statistics calculated for factor variables, and `a_summary_internal` to perform calculations for `a_summary`.
 
 ### Miscellaneous
 * Began deprecation of `time_unit_input` and `time_unit_output` arguments and replaced them with the `input_time_unit` and `num_pt_year`, respectively, in `control_incidence_rate`.
+* Removed deprecated `pairwise` function.
 * Deprecated `a_compare` and replaced it with `a_summary` with argument `compare = TRUE`.
 * Deprecated helper functions `create_afun_summary` and `create_afun_compare` which are no longer used by `a_summary` and `a_compare` respectively.
-* Removed deprecated `pairwise` function.
 
 ### Bug Fixes
 * Fixed long double assertion check in `sum(weights)` for `M1mac` installation.
