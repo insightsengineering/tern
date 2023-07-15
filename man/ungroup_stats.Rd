@@ -2,22 +2,12 @@
 % Please edit documentation in R/utils_factor.R
 \name{ungroup_stats}
 \alias{ungroup_stats}
-\title{Ungroup and Format Non-Numeric Statistics}
+\title{Ungroup Non-Numeric Statistics}
 \usage{
-ungroup_stats(
-  x,
-  .stats,
-  .formats,
-  .labels,
-  .indent_mods,
-  .in_ref_col = FALSE,
-  which_stats = c("count", "count_fraction")
-)
+ungroup_stats(x, .formats, .labels, .indent_mods, .in_ref_col = FALSE)
 }
 \arguments{
 \item{x}{(\verb{named list} of \code{numeric})\cr list of numeric statistics containing the statistics to ungroup.}
-
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
@@ -27,16 +17,12 @@ ungroup_stats(
 unmodified default behavior. Can be negative.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
-
-\item{which_stats}{(\code{vector} of \code{character})\cr which statistics should be ungrouped.}
 }
 \value{
-A \code{list} with modified elements \code{x}, \code{.stats}, \code{.formats}, \code{.labels}, and \code{.indent_mods}.
+A \code{list} with modified elements \code{x}, \code{.formats}, \code{.labels}, and \code{.indent_mods}.
 }
 \description{
-Ungroups grouped non-numeric statistics (\code{count} and \code{count_fraction}) within input vectors \code{.stats}, \code{.formats},
-\code{.labels}, and \code{.indent_mods}. Formats explicit \code{NA} level in each input vector and changes p-value to
-\code{character()} if current column is a reference column. Used within \code{\link[=a_summary]{a_summary()}}.
+Ungroups grouped non-numeric statistics within input vectors \code{.formats}, \code{.labels}, and \code{.indent_mods}.
 }
 \seealso{
 \code{\link[=a_summary]{a_summary()}} which uses this function internally.

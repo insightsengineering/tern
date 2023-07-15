@@ -234,6 +234,9 @@ y <- c(NA, NA, NA, NA, FALSE)
 s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
 s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
 
+# `a_compare` deprecated - use `a_summary()` instead
+a_compare(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .stats = c("n", "pval"))
+
 # `compare_vars()` in `rtables` pipelines
 
 ## Default output within a `rtables` pipeline.
@@ -259,4 +262,3 @@ Relevant constructor function \code{\link[=create_afun_compare]{create_afun_comp
 to compute a summary within \code{s_compare()}, and \code{\link[=a_compare]{a_compare()}} which is used (with \code{compare = TRUE}) as the analysis
 function for \code{compare_vars()}.
 }
-\keyword{internal}

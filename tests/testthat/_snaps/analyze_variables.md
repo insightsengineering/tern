@@ -1116,7 +1116,7 @@
       [1] 0
       
 
-# a_summary_output and a_summary work with healthy input.
+# a_summary_internal and a_summary work with healthy input.
 
     Code
       res

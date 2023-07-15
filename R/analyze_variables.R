@@ -406,14 +406,9 @@ a_summary_internal <- function(x,
                                na.rm, # nolint
                                na_level,
                                ...) {
-  # Remove all-NA rows
-  if (!is.null(.df_row) && ncol(.df_row) > 1) {
-    in_tot_col <- nrow(.df_row) == length(x)
-    .df_row <- .df_row[rowSums(is.na(.df_row)) != ncol(.df_row), ]
-    if (in_tot_col && !identical(.df_row[[.var]], x)) x <- .df_row[[.var]]
-  }
+  # If one col has NA vals, must add NA row to other cols (using placeholder lvl `fill-na-level`)
+  if (any(is.na(.df_row[[.var]])) && !any(is.na(x)) && !na.rm) levels(x) <- c(levels(x), "fill-na-level")
 
-  if (any(is.na(.df_row[[.var]])) && !any(is.na(x)) && !na.rm) levels(x) <- c(levels(x), "na-level")
   x_stats <- if (!compare) {
     s_summary(x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, ...)
   } else {
@@ -422,6 +417,7 @@ a_summary_internal <- function(x,
     )
   }
 
+  # Fill in with formatting defaults if needed
   custom_summary <- summary_custom(
     type = type,
     include_pval = compare,
@@ -434,7 +430,9 @@ a_summary_internal <- function(x,
   .formats <- custom_summary$formats
   .labels <- custom_summary$labels
   .indent_mods <- custom_summary$indent_mods
+  x_stats <- x_stats[.stats]
 
+  # Check for custom labels from control_analyze_vars
   if (is.numeric(x)) {
     for (i in intersect(.stats, c("mean_ci", "mean_pval", "median_ci", "quantiles"))) {
       if (!i %in% names(.labels) || .labels[[i]] == summary_custom()$labels[[i]]) {
@@ -443,14 +441,15 @@ a_summary_internal <- function(x,
     }
   }
 
-  x_stats <- x_stats[.stats]
   if (is.factor(x) || is.character(x)) {
-    x_ungrp <- ungroup_stats(x_stats, .stats, .formats, .labels, .indent_mods, .in_ref_col)
+    # Ungroup statistics with values for each level of x
+    x_ungrp <- ungroup_stats(x_stats, .formats, .labels, .indent_mods, .in_ref_col)
     x_stats <- x_ungrp[["x"]]
-    .stats <- x_ungrp[[".stats"]]
     .formats <- x_ungrp[[".formats"]]
-    .labels <- x_ungrp[[".labels"]]
+    .labels <- gsub("fill-na-level", "NA", x_ungrp[[".labels"]])
     .indent_mods <- x_ungrp[[".indent_mods"]]
+
+    if (.in_ref_col && "pval" %in% names(x_stats)) x_stats[["pval"]] <- character()
   }
 
   in_rows(

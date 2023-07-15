@@ -254,7 +254,11 @@ s_compare.logical <- function(x,
 #'
 #' @note `a_compare()` has been deprecated in favor of `a_summary()` with argument `compare` set to `TRUE`.
 #'
-#' @keywords internal
+#' @examples
+#' # `a_compare` deprecated - use `a_summary()` instead
+#' a_compare(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .stats = c("n", "pval"))
+#'
+#' @export
 a_compare <- function(x,
                       .N_col, # nolint
                       .N_row, # nolint

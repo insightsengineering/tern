@@ -277,68 +277,42 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
   do.call(forcats::fct_relevel, args = c(list(.f = x), as.list(new_lvls)))
 }
 
-#' Ungroup and Format Non-Numeric Statistics
+#' Ungroup Non-Numeric Statistics
 #'
-#' Ungroups grouped non-numeric statistics (`count` and `count_fraction`) within input vectors `.stats`, `.formats`,
-#' `.labels`, and `.indent_mods`. Formats explicit `NA` level in each input vector and changes p-value to
-#' `character()` if current column is a reference column. Used within [`a_summary()`].
+#' Ungroups grouped non-numeric statistics within input vectors `.formats`, `.labels`, and `.indent_mods`.
 #'
 #' @inheritParams argument_convention
 #' @param x  (`named list` of `numeric`)\cr list of numeric statistics containing the statistics to ungroup.
-#' @param which_stats (`vector` of `character`)\cr which statistics should be ungrouped.
 #'
-#' @return A `list` with modified elements `x`, `.stats`, `.formats`, `.labels`, and `.indent_mods`.
+#' @return A `list` with modified elements `x`, `.formats`, `.labels`, and `.indent_mods`.
 #'
 #' @seealso [a_summary()] which uses this function internally.
 #'
 #' @keywords internal
 ungroup_stats <- function(x,
-                          .stats,
                           .formats,
                           .labels,
                           .indent_mods,
-                          .in_ref_col = FALSE,
-                          which_stats = c("count", "count_fraction")) {
+                          .in_ref_col = FALSE) {
   checkmate::assert_list(x)
-
-  for (stat in which_stats) {
-    for (a in names(x[[stat]])) {
-      a <- if (a == "na-level") "NA" else a
-      a_lvl <- paste(stat, a, sep = ".")
-      a_name <- if (a != "NA" || "NA" %in% names(x[[stat]])) a else "na-level"
-      .stats <- c(.stats, a_lvl)
-      .formats <- append(.formats, .formats[stat] %>% `names<-`(a_lvl), after = if (stat %in% names(.formats)) {
-        which(names(.formats) == stat) - 1 + which(names(x[[stat]]) == a_name)
-      } else {
-        length(.formats)
-      })
-      .labels <- append(.labels, a %>% `names<-`(a_lvl), after = if (stat %in% names(.labels)) {
-        which(names(.labels) == stat) - 1 + which(names(x[[stat]]) == a_name)
-      } else {
-        length(.labels)
-      })
-      .indent_mods <- append(
-        .indent_mods, .indent_mods[stat] %>% `names<-`(a_lvl),
-        after = if (stat %in% names(.indent_mods)) {
-          which(names(.indent_mods) == stat) - 1 + which(names(x[[stat]]) == a_name)
-        } else {
-          length(.indent_mods)
-        }
-      )
-    }
-  }
-
-  if (.in_ref_col && "pval" %in% names(x)) x[["pval"]] <- "pvalue"
   x <- unlist(x, recursive = FALSE)
-  if (.in_ref_col && "pval" %in% names(x)) x[["pval"]] <- character()
-  names(x) <- gsub("na-level", "NA", names(x))
   .stats <- names(x)
+
+  # Ungroup stats
+  .formats <- lapply(.stats, function(x) {
+    .formats[[if (!grepl("\\.", x)) x else regmatches(x, regexpr("\\.", x), invert = TRUE)[[1]][1]]]
+  })
+  .indent_mods <- sapply(.stats, function(x) {
+    .indent_mods[[if (!grepl("\\.", x)) x else regmatches(x, regexpr("\\.", x), invert = TRUE)[[1]][1]]]
+  })
+  .labels <- sapply(.stats, function(x) {
+    if (!grepl("\\.", x)) .labels[[x]] else regmatches(x, regexpr("\\.", x), invert = TRUE)[[1]][2]
+  })
 
   list(
     x = x,
-    .stats = .stats,
-    .formats = .formats[.stats],
-    .labels = .labels[.stats],
-    .indent_mods = .indent_mods[.stats]
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
   )
 }
