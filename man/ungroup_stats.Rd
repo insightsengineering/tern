@@ -4,7 +4,7 @@
 \alias{ungroup_stats}
 \title{Ungroup Non-Numeric Statistics}
 \usage{
-ungroup_stats(x, .formats, .labels, .indent_mods, .in_ref_col = FALSE)
+ungroup_stats(x, .formats, .labels, .indent_mods)
 }
 \arguments{
 \item{x}{(\verb{named list} of \code{numeric})\cr list of numeric statistics containing the statistics to ungroup.}
@@ -15,8 +15,6 @@ ungroup_stats(x, .formats, .labels, .indent_mods, .in_ref_col = FALSE)
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
-
-\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 }
 \value{
 A \code{list} with modified elements \code{x}, \code{.formats}, \code{.labels}, and \code{.indent_mods}.
@@ -25,6 +23,6 @@ A \code{list} with modified elements \code{x}, \code{.formats}, \code{.labels}, 
 Ungroups grouped non-numeric statistics within input vectors \code{.formats}, \code{.labels}, and \code{.indent_mods}.
 }
 \seealso{
-\code{\link[=a_summary]{a_summary()}} which uses this function internally.
+\code{\link[=a_summary_internal]{a_summary_internal()}} which uses this function internally.
 }
 \keyword{internal}

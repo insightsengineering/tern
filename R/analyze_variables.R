@@ -443,13 +443,11 @@ a_summary_internal <- function(x,
 
   if (is.factor(x) || is.character(x)) {
     # Ungroup statistics with values for each level of x
-    x_ungrp <- ungroup_stats(x_stats, .formats, .labels, .indent_mods, .in_ref_col)
+    x_ungrp <- ungroup_stats(x_stats, .formats, .labels, .indent_mods)
     x_stats <- x_ungrp[["x"]]
     .formats <- x_ungrp[[".formats"]]
     .labels <- gsub("fill-na-level", "NA", x_ungrp[[".labels"]])
     .indent_mods <- x_ungrp[[".indent_mods"]]
-
-    if (.in_ref_col && "pval" %in% names(x_stats)) x_stats[["pval"]] <- character()
   }
 
   in_rows(
