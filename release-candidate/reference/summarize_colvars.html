@@ -20,7 +20,7 @@ column labels, please refer to analyze_vars_in_cols()."><!-- mathjax --><script 
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.5</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,6 +52,7 @@ column labels, please refer to analyze_vars_in_cols()."><!-- mathjax --><script 
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc1">v0.8.5-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
@@ -94,7 +95,7 @@ column labels, please refer to analyze_vars_in_cols()."><!-- mathjax --><script 
 
     <div class="ref-description section level2">
     <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="figures/lifecycle-stable.svg" alt="[Stable]"></a></p>
-<p>This analyze function uses the S3 generic function <code><a href="summarize_variables.html">s_summary()</a></code> to summarize different variables
+<p>This analyze function uses the S3 generic function <code><a href="analyze_variables.html">s_summary()</a></code> to summarize different variables
 that are arranged in columns. Additional standard formatting arguments are available. It is a
 minimal wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze_colvars.html" class="external-link">rtables::analyze_colvars()</a></code>. The latter function is meant to add different
 analysis methods for each column variables as different rows. To have the analysis methods as
@@ -120,7 +121,7 @@ column labels, please refer to <code><a href="analyze_vars_in_cols.html">analyze
 
 
 <dt>...</dt>
-<dd><p>arguments passed to <code><a href="summarize_variables.html">s_summary()</a></code>.</p></dd>
+<dd><p>arguments passed to <code><a href="analyze_variables.html">s_summary()</a></code>.</p></dd>
 
 
 <dt>.stats</dt>
@@ -166,12 +167,12 @@ in columns, and add it to the table layout.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Default output within a `rtables` pipeline.</span></span></span>
-<span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">split_cols_by</span><span class="op">(</span><span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">split_rows_by</span><span class="op">(</span><span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">split_cols_by_multivar</span><span class="op">(</span>vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"CHG"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by_multivar.html" class="external-link">split_cols_by_multivar</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"CHG"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">summarize_colvars</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span><span class="va">dta_test</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">dta_test</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                         A                       B                 C     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 AVAL         CHG        AVAL         CHG      AVAL   CHG</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————————————————————————</span>
@@ -192,16 +193,16 @@ in columns, and add it to the table layout.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max   4.0 - 7.0   3.0 - 6.0   1.0 - 1.0   9.0 - 9.0    NA    NA </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Selection of statistics, formats and labels also work.</span></span></span>
-<span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">split_cols_by</span><span class="op">(</span><span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">split_rows_by</span><span class="op">(</span><span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">split_cols_by_multivar</span><span class="op">(</span>vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"CHG"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by_multivar.html" class="external-link">split_cols_by_multivar</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"CHG"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">summarize_colvars</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean_sd"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean_sd"</span> <span class="op">=</span> <span class="st">"xx.x, xx.x"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>n <span class="op">=</span> <span class="st">"n"</span>, mean_sd <span class="op">=</span> <span class="st">"Mean, SD"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span><span class="va">dta_test</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">dta_test</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                       A                    B               C     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                AVAL       CHG       AVAL       CHG     AVAL   CHG</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————</span>
@@ -216,12 +217,12 @@ in columns, and add it to the table layout.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Mean, SD   5.5, 2.1   4.5, 2.1   1.0, NA   9.0, NA    NA    NA </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Use arguments interpreted by `s_summary`.</span></span></span>
-<span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">split_cols_by</span><span class="op">(</span><span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">split_rows_by</span><span class="op">(</span><span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">split_cols_by_multivar</span><span class="op">(</span>vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"CHG"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by_multivar.html" class="external-link">split_cols_by_multivar</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AVAL"</span>, <span class="st">"CHG"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">summarize_colvars</span><span class="op">(</span>na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span><span class="va">dta_test</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">dta_test</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                         A                       B                 C     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 AVAL         CHG        AVAL         CHG      AVAL   CHG</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————————————————————————</span>
