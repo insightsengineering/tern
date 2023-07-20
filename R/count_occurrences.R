@@ -169,6 +169,7 @@ count_occurrences <- function(lyt,
                               vars,
                               var_labels = vars,
                               show_labels = "hidden",
+                              nested = TRUE,
                               ...,
                               table_names = vars,
                               .stats = "count_fraction",
@@ -191,6 +192,7 @@ count_occurrences <- function(lyt,
     var_labels = var_labels,
     show_labels = show_labels,
     table_names = table_names,
+    nested = nested,
     extra_args = list(...)
   )
 }

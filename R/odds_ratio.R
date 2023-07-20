@@ -188,6 +188,7 @@ a_odds_ratio <- make_afun(
 #' @export
 estimate_odds_ratio <- function(lyt,
                                 vars,
+                                nested = TRUE,
                                 ...,
                                 show_labels = "hidden",
                                 table_names = vars,
@@ -207,6 +208,7 @@ estimate_odds_ratio <- function(lyt,
     lyt,
     vars,
     afun = afun,
+    nested = nested,
     extra_args = list(...),
     show_labels = show_labels,
     table_names = table_names

@@ -140,6 +140,7 @@ a_count_abnormal <- make_afun(
 #' @export
 count_abnormal <- function(lyt,
                            var,
+                           nested = TRUE,
                            ...,
                            table_names = var,
                            .stats = NULL,
@@ -161,6 +162,7 @@ count_abnormal <- function(lyt,
     lyt = lyt,
     vars = var,
     afun = afun,
+    nested = nested,
     table_names = table_names,
     extra_args = list(...),
     show_labels = "hidden"

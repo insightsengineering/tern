@@ -47,7 +47,7 @@ without adding more splits. This split must happen only one time on a single lay
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction be applied within the existing layout structure \emph{if
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
 underneath analyses, which is not allowed.}
 

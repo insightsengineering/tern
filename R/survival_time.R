@@ -123,6 +123,7 @@ a_surv_time <- make_afun(
 #' @export
 surv_time <- function(lyt,
                       vars,
+                      nested = TRUE,
                       ...,
                       var_labels = "Time to Event",
                       table_names = vars,
@@ -143,6 +144,7 @@ surv_time <- function(lyt,
   analyze(
     lyt,
     vars,
+    nested = nested,
     var_labels = var_labels,
     show_labels = "visible",
     table_names = table_names,

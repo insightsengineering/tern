@@ -34,6 +34,7 @@ a_proportion_diff(
 estimate_proportion_diff(
   lyt,
   vars,
+  nested = TRUE,
   ...,
   var_labels = vars,
   show_labels = "hidden",
@@ -66,6 +67,10 @@ and directs the way weights are estimated.}
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
+underneath analyses, which is not allowed.}
 
 \item{...}{arguments passed to \code{s_proportion_diff()}.}
 

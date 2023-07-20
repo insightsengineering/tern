@@ -112,6 +112,7 @@ count_missed_doses <- function(lyt,
                                vars,
                                var_labels = vars,
                                show_labels = "visible",
+                               nested = TRUE,
                                ...,
                                table_names = vars,
                                .stats = NULL,
@@ -133,6 +134,7 @@ count_missed_doses <- function(lyt,
     var_labels = var_labels,
     table_names = table_names,
     show_labels = show_labels,
+    nested = nested,
     extra_args = list(...)
   )
 }

@@ -151,6 +151,7 @@ count_cumulative <- function(lyt,
                              vars,
                              var_labels = vars,
                              show_labels = "visible",
+                             nested = TRUE,
                              ...,
                              table_names = vars,
                              .stats = NULL,
@@ -172,6 +173,7 @@ count_cumulative <- function(lyt,
     table_names = table_names,
     var_labels = var_labels,
     show_labels = show_labels,
+    nested = nested,
     extra_args = list(...)
   )
 }

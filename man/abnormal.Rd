@@ -26,6 +26,7 @@ a_count_abnormal(
 count_abnormal(
   lyt,
   var,
+  nested = TRUE,
   ...,
   table_names = var,
   .stats = NULL,
@@ -50,6 +51,10 @@ for example, \code{abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "
 from numerator and denominator.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
+underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 

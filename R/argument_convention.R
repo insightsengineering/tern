@@ -37,7 +37,7 @@
 #' @param lyt (`layout`)\cr input layout where analyses will be added to.
 #' @param na.rm (`flag`)\cr whether `NA` values should be removed from `x` prior to analysis.
 #' @param na_level (`string`)\cr string used to replace all `NA` or empty values in the output.
-#' @param nested (`flag`)\cr whether this layout instruction be applied within the existing layout structure _if
+#' @param nested (`flag`)\cr whether this layout instruction should be applied within the existing layout structure _if
 #'   possible_ (`TRUE`, the default) or as a new top-level element (`FALSE`). Ignored if it would nest a split
 #'   underneath analyses, which is not allowed.
 #' @param newpage (`flag`)\cr whether the plot should be drawn on a new page.

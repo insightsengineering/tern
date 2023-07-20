@@ -34,6 +34,7 @@ a_proportion(
 estimate_proportion(
   lyt,
   vars,
+  nested = TRUE,
   ...,
   show_labels = "hidden",
   table_names = vars,
@@ -74,6 +75,10 @@ to find estimates of optimal weights.}
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
+underneath analyses, which is not allowed.}
 
 \item{...}{other arguments are ultimately conveyed to \code{\link[=s_proportion]{s_proportion()}}.}
 

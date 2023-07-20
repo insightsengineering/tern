@@ -38,6 +38,7 @@ summarize_glm_count(
   lyt,
   vars,
   var_labels,
+  nested = TRUE,
   ...,
   show_labels = "visible",
   table_names = vars,
@@ -68,6 +69,10 @@ by a statistics function.}
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
 \item{var_labels}{(\code{character})\cr character for label.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
+underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 

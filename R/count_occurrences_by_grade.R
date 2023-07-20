@@ -260,6 +260,7 @@ count_occurrences_by_grade <- function(lyt,
                                        var,
                                        var_labels = var,
                                        show_labels = "default",
+                                       nested = TRUE,
                                        ...,
                                        table_names = var,
                                        .stats = NULL,
@@ -281,6 +282,7 @@ count_occurrences_by_grade <- function(lyt,
     show_labels = show_labels,
     afun = afun,
     table_names = table_names,
+    nested = nested,
     extra_args = list(...)
   )
 }

@@ -94,7 +94,7 @@ to print out information about factor casting. Defaults to \code{TRUE}.}
 
 \item{var_labels}{(\code{character})\cr character for label.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction be applied within the existing layout structure \emph{if
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
 underneath analyses, which is not allowed.}
 
