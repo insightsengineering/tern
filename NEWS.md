@@ -1,8 +1,3 @@
-# tern 0.8.5.9000
-
-### Enhancements
-* Added the `nested` argument to `analyze` wrapper functions `count_abnormal`, `count_abnormal_by_baseline`, `count_abnormal_by_marked`, `count_abnormal_by_worst_grade`, `count_abnormal_lab_worsen_by_baseline`, `count_cumulative`, `count_missed_doses`, `count_occurrences`, `count_occurrences_by_grade`, `count_patients_with_event`, `count_patients_with_flags`, `count_values`, `estimate_multinomial_response`, `estimate_proportion`, `estimate_incidence_rate`, `estimate_odds_ratio`, `estimate_proportion_diff`, `test_proportion_diff`, `summarize_ancova`, `summarize_change`, `summarize_glm_count`, `analyze_num_patients`, `coxph_pairwise`, `surv_time`, and `surv_timepoint`.
-
 # tern 0.8.4.9005
 
 ### Enhancements
@@ -11,6 +6,7 @@
 * Added `ylim` argument to `g_km` to allow the user to set custom limits for the y-axis.
 * Added assertion to `g_km` which checks whether there is one arm present in the data when `annot_coxph` is true.
 * Added `flag_labels` argument to `s_count_patients_with_flags` to enable more label handling options in `count_patients_by_flags`. 
+* Added the `nested` argument to `analyze` wrapper functions `count_abnormal`, `count_abnormal_by_baseline`, `count_abnormal_by_marked`, `count_abnormal_by_worst_grade`, `count_abnormal_lab_worsen_by_baseline`, `count_cumulative`, `count_missed_doses`, `count_occurrences`, `count_occurrences_by_grade`, `count_patients_with_event`, `count_patients_with_flags`, `count_values`, `estimate_multinomial_response`, `estimate_proportion`, `estimate_incidence_rate`, `estimate_odds_ratio`, `estimate_proportion_diff`, `test_proportion_diff`, `summarize_ancova`, `summarize_change`, `summarize_glm_count`, `analyze_num_patients`, `coxph_pairwise`, `surv_time`, and `surv_timepoint`.
 
 ### Miscellaneous
 * Began deprecation of `time_unit_input` and `time_unit_output` arguments and replaced them with the `input_time_unit` and `num_pt_year`, respectively, in `control_incidence_rate`.
