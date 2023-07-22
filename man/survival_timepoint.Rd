@@ -96,7 +96,7 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "no
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{table_names_suffix}{(\code{string})\cr optional suffix for the \code{table_names} used for the \code{rtables} to

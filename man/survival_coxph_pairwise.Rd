@@ -70,7 +70,7 @@ can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[s
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}

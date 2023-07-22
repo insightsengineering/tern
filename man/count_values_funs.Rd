@@ -73,7 +73,7 @@ count_values(
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
