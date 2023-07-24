@@ -14,6 +14,7 @@ a_length_proportion(x, .N_col, ...)
 estimate_multinomial_response(
   lyt,
   var,
+  nested = TRUE,
   ...,
   show_labels = "hidden",
   table_names = var,
@@ -35,6 +36,10 @@ estimate_multinomial_response(
 
 \item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 

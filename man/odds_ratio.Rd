@@ -32,6 +32,7 @@ a_odds_ratio(
 estimate_odds_ratio(
   lyt,
   vars,
+  nested = TRUE,
   ...,
   show_labels = "hidden",
   table_names = vars,
@@ -63,6 +64,10 @@ levels that belong to it in the character vectors that are elements of the list.
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
 
 \item{...}{arguments passed to \code{s_odds_ratio()}.}
 

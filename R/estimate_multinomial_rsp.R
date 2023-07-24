@@ -146,6 +146,7 @@ a_length_proportion <- make_afun(
 #' @export
 estimate_multinomial_response <- function(lyt,
                                           var,
+                                          nested = TRUE,
                                           ...,
                                           show_labels = "hidden",
                                           table_names = var,
@@ -169,6 +170,7 @@ estimate_multinomial_response <- function(lyt,
     afun = afun,
     show_labels = show_labels,
     table_names = table_names,
+    nested = nested,
     extra_args = list(...)
   )
 }

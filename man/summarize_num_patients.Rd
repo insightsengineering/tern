@@ -40,6 +40,7 @@ summarize_num_patients(
 analyze_num_patients(
   lyt,
   vars,
+  nested = TRUE,
   .stats = NULL,
   .formats = NULL,
   .labels = c(unique = "Number of patients with at least one event", nonunique =
@@ -89,6 +90,10 @@ unmodified default behavior. Can be negative.}
 \item{...}{additional arguments for the lower level functions.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 }

@@ -32,6 +32,7 @@ count_occurrences_by_grade(
   var,
   var_labels = var,
   show_labels = "default",
+  nested = TRUE,
   ...,
   table_names = var,
   .stats = NULL,
@@ -75,6 +76,10 @@ for more information.}
 \item{var_labels}{(\code{character})\cr labels to show in the result table.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 

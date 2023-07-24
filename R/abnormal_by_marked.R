@@ -196,6 +196,7 @@ a_count_abnormal_by_marked <- make_afun(
 #' @export
 count_abnormal_by_marked <- function(lyt,
                                      var,
+                                     nested = TRUE,
                                      ...,
                                      .stats = NULL,
                                      .formats = NULL,
@@ -216,6 +217,7 @@ count_abnormal_by_marked <- function(lyt,
     lyt = lyt,
     vars = var,
     afun = afun,
+    nested = nested,
     show_labels = "hidden",
     extra_args = c(list(...))
   )
