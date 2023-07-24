@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.5</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,6 +68,7 @@
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5">v0.8.5</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
@@ -152,9 +153,9 @@ useful from the perspective of clinical trials and other statistical
 projects.</p>
 <p>Examples of the <code>tern</code> analyze functions are
 <code><a href="../reference/count_occurrences.html">tern::count_occurrences</a></code>,
-<code><a href="../reference/summarize_ancova.html">tern::summarize_ancova</a></code> or
-<code><a href="../reference/summarize_variables.html">tern::summarize_vars</a></code>. As there is no one prefix to identify
-all <code>tern</code> analyze functions it is recommended to use the <a href="https://insightsengineering.github.io/tern/main/reference/index.html" class="external-link">the
+<code><a href="../reference/summarize_ancova.html">tern::summarize_ancova</a></code> or <code><a href="../reference/analyze_variables.html">tern::analyze_vars</a></code>.
+As there is no one prefix to identify all <code>tern</code> analyze
+functions it is recommended to use the <a href="https://insightsengineering.github.io/tern/main/reference/index.html" class="external-link">the
 tern website functions reference</a>.</p>
 <div class="section level3">
 <h3 id="internals-of-tern-analyze-functions">Internals of <code>tern</code> Analyze Functions<a class="anchor" aria-label="anchor" href="#internals-of-tern-analyze-functions"></a>
@@ -229,7 +230,7 @@ analyze functions and the <code>rtables</code> interface.</p>
 <tr class="odd">
 <td><strong>Demographic Table</strong></td>
 <td align="left">
-<code><a href="../reference/summarize_variables.html">summarize_vars()</a></code> and
+<code><a href="../reference/analyze_variables.html">analyze_vars()</a></code> and
 <code><a href="../reference/summarize_num_patients.html">summarize_num_patients()</a></code>
 </td>
 </tr>
@@ -255,8 +256,8 @@ patients enrolled in a clinical trial. Typically the table columns
 represent treatment arms and variables summarized in the table are
 demographic properties such as age, sex, race, etc.</p>
 <p>In the example below the only function from <code>tern</code> is
-<code><a href="../reference/summarize_variables.html">summarize_vars()</a></code> and the remaining layout functions are
-from <code>rtables</code>.</p>
+<code><a href="../reference/analyze_variables.html">analyze_vars()</a></code> and the remaining layout functions are from
+<code>rtables</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Select variables to include in table.</span></span>
 <span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AGE"</span>, <span class="st">"SEX"</span><span class="op">)</span></span>
@@ -266,7 +267,7 @@ from <code>rtables</code>.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span><span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/summarize_variables.html">summarize_vars</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/analyze_variables.html">analyze_vars</a></span><span class="op">(</span></span>
 <span>    vars <span class="op">=</span> <span class="va">vars</span>,</span>
 <span>    var_labels <span class="op">=</span> <span class="va">var_labels</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -301,7 +302,7 @@ these types of data processing steps (not used below).</p>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span><span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/summarize_variables.html">summarize_vars</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/analyze_variables.html">analyze_vars</a></span><span class="op">(</span></span>
 <span>    vars <span class="op">=</span> <span class="va">vars</span>,</span>
 <span>    var_labels <span class="op">=</span> <span class="va">var_labels</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -321,21 +322,21 @@ these types of data processing steps (not used below).</p>
 <span><span class="co">#&gt;   U                   2 (1.5%)      3 (2.2%)         4 (3%)         9 (2.2%)  </span></span>
 <span><span class="co">#&gt;   UNDIFFERENTIATED        0         1 (0.7%)        2 (1.5%)        3 (0.8%)</span></span></code></pre></div>
 <p>The <code>tern</code> package includes many functions similar to
-<code><a href="../reference/summarize_variables.html">summarize_vars()</a></code>. These functions are called layout
-creating functions and are used in combination with other
-<code>rtables</code> layout functions just like in the examples above.
-Layout creating functions are wrapping calls to <code>rtables</code>
+<code><a href="../reference/analyze_variables.html">analyze_vars()</a></code>. These functions are called layout creating
+functions and are used in combination with other <code>rtables</code>
+layout functions just like in the examples above. Layout creating
+functions are wrapping calls to <code>rtables</code>
 <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">analyze()</a></code>, <code><a href="https://rdrr.io/pkg/rtables/man/analyze_colvars.html" class="external-link">analyze_colvars()</a></code> and
 <code><a href="https://rdrr.io/pkg/rtables/man/summarize_row_groups.html" class="external-link">summarize_row_groups()</a></code> and provide options for easy
 formatting and analysis modifications.</p>
 <p>To customize the display for the demographics table, we can do so via
-the arguments in <code><a href="../reference/summarize_variables.html">summarize_vars()</a></code>. Most layout creating
+the arguments in <code><a href="../reference/analyze_variables.html">analyze_vars()</a></code>. Most layout creating
 functions in <code>tern</code> include the standard arguments
 <code>.stats</code>, <code>.formats</code>, <code>.labels</code> and
 <code>.indent_mods</code> which control which statistics are displayed
 and how the numbers are formatted. Refer to the package help with
-<code><a href="../reference/summarize_variables.html">help("summarize_vars")</a></code> or <code><a href="../reference/summarize_variables.html">?summarize_vars</a></code> to
-see the full set of options.</p>
+<code><a href="../reference/analyze_variables.html">help("analyze_vars")</a></code> or <code><a href="../reference/analyze_variables.html">?analyze_vars</a></code> to see
+the full set of options.</p>
 <p>For this example we will change the default summary for numeric
 variables to include the number of records, and the mean and standard
 deviation (in a single statistic, i.e. within a single cell). For
@@ -349,7 +350,7 @@ of just one.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span><span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/summarize_variables.html">summarize_vars</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/analyze_variables.html">analyze_vars</a></span><span class="op">(</span></span>
 <span>    vars <span class="op">=</span> <span class="va">vars</span>,</span>
 <span>    var_labels <span class="op">=</span> <span class="va">var_labels</span>,</span>
 <span>    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean_sd"</span>, <span class="st">"count"</span><span class="op">)</span>,</span>
@@ -377,7 +378,7 @@ China subgroups, respectively:</p>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span><span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/summarize_variables.html">summarize_vars</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/analyze_variables.html">analyze_vars</a></span><span class="op">(</span></span>
 <span>    vars <span class="op">=</span> <span class="va">vars</span>,</span>
 <span>    var_labels <span class="op">=</span> <span class="va">var_labels</span></span>
 <span>  <span class="op">)</span></span>
@@ -868,7 +869,7 @@ perform a specific type of analysis.</p>
 <p>The <code>tern</code> analyze functions introduced in this vignette
 are:</p>
 <ul>
-<li><code><a href="../reference/summarize_variables.html">summarize_vars()</a></code></li>
+<li><code><a href="../reference/analyze_variables.html">analyze_vars()</a></code></li>
 <li><code><a href="../reference/summarize_num_patients.html">summarize_num_patients()</a></code></li>
 <li><code><a href="../reference/count_occurrences.html">count_occurrences()</a></code></li>
 <li><code><a href="../reference/estimate_proportions.html">estimate_proportion()</a></code></li>
