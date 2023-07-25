@@ -23,25 +23,25 @@ Depends:
     R (>= 3.6),
     rtables (>= 0.6.5)
 Imports:
-    broom (>= 0.5.1),
+    broom (>= 0.5.4),
     car (>= 3.0-13),
     checkmate (>= 2.1.0),
-    cowplot,
+    cowplot (>= 0.7.0),
     dplyr (>= 1.0.0),
     emmeans (>= 1.4.5),
     forcats (>= 1.0.0),
     formatters (>= 0.5.4),
     ggplot2 (>= 3.4.0),
     grid,
-    gridExtra,
-    gtable,
+    gridExtra (>= 2.0.0),
+    gtable (>= 0.3.0),
     labeling,
     lifecycle (>= 0.2.0),
     magrittr (>= 1.5),
     methods,
-    Rdpack,
-    rlang,
-    scales,
+    Rdpack (>= 2.4),
+    rlang (>= 1.1.0),
+    scales (>= 1.2.0),
     stats,
     survival (>= 3.2-13),
     tibble (>= 2.0.0),
@@ -49,8 +49,8 @@ Imports:
     utils
 Suggests:
     knitr (>= 1.34),
-    lattice,
-    lubridate,
+    lattice (>= 0.18-4),
+    lubridate (>= 1.7.9),
     nestcolor (>= 0.1.1),
     rmarkdown (>= 2.19),
     stringr (>= 1.4.1),
@@ -85,7 +85,8 @@ Config/Needs/verdepcheck:
     insightsengineering/nestcolor,
     rstudio/rmarkdown,
     tidyverse/stringr,
-    r-lib/testthat
+    r-lib/testthat,
+    r-lib/vdiffr
 Config/Needs/website: insightsengineering/nesttemplate
 Config/testthat/edition: 3
 Encoding: UTF-8
