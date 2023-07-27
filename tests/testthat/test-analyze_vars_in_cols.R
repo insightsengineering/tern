@@ -250,7 +250,7 @@ testthat::test_that("analyze_vars_in_cols works well with categorical data", {
   ))
 
   # Alternative to discuss (xxx)
-  count_fraction <- function(x, .spl_context, .N_col) {
+  count_fraction <- function(x, .spl_context, .N_col) { # nolint
     ret_list <- as.list(table(x))
     if (length(x) == 0) {
       aform <- "xx"
