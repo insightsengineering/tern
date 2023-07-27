@@ -244,8 +244,29 @@ testthat::test_that("analyze_vars_in_cols works well with categorical data", {
       .stats = c("count_fraction"),
       .labels = c("count_fraction" = " ")
     )
-  testthat::expect_snapshot(result <- build_table(
+  testthat::expect_snapshot(build_table(
     lyt = lyt,
     df = adpp %>% mutate(counter = factor("n"))
   ))
+
+  # Alternative to discuss (xxx)
+  count_fraction <- function(x, .spl_context, .N_col) {
+    ret_list <- as.list(table(x))
+    if (length(x) == 0) {
+      aform <- "xx"
+    } else {
+      ret_list <- lapply(ret_list, function(i) {
+        c(i, i / .N_col)
+      })
+      aform <- "xx. (xx.%)"
+    }
+    in_rows(.list = ret_list, .formats = aform)
+  }
+
+  testthat::expect_snapshot(basic_table(show_colcounts = TRUE) %>%
+    split_rows_by(var = "STRATA1", label_pos = "topleft") %>%
+    split_cols_by("ARM") %>%
+    analyze(vars = "SEX", afun = count_fraction) %>%
+    append_topleft("  SEX") %>%
+    build_table(adpp))
 })
