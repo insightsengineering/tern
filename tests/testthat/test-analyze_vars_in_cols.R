@@ -208,3 +208,44 @@ testthat::test_that("summarize works with nested analyze", {
 
   testthat::expect_snapshot(tbl_sorted)
 })
+
+testthat::test_that("analyze_vars_in_cols works well with categorical data", {
+  # Regression test after #1013
+  adpp <- tern_ex_adpp %>% h_pkparam_sort()
+
+  lyt <- basic_table() %>%
+    split_rows_by(var = "STRATA1", label_pos = "topleft") %>%
+    split_rows_by(
+      var = "SEX",
+      label_pos = "topleft",
+      child_label = "hidden"
+    ) %>%
+    # split_cols_by("STRATA1") %>%
+    analyze_vars_in_cols(
+      vars = "ARM",
+      .stats = c("n", "count_fraction"),
+      .labels = c("count_fraction" = "argh")
+    )
+  testthat::expect_error(
+    result <- build_table(lyt = lyt, df = adpp),
+    "The analyzed column produced more than one category of results."
+  )
+
+  lyt <- basic_table() %>%
+    split_rows_by(var = "STRATA1", label_pos = "topleft") %>%
+    split_rows_by(
+      var = "SEX",
+      label_pos = "topleft",
+      child_label = "hidden"
+    ) %>%
+    split_cols_by("ARM") %>%
+    analyze_vars_in_cols(
+      vars = "counter",
+      .stats = c("count_fraction"),
+      .labels = c("count_fraction" = " ")
+    )
+  testthat::expect_snapshot(result <- build_table(
+    lyt = lyt,
+    df = adpp %>% mutate(counter = factor("n"))
+  ))
+})
