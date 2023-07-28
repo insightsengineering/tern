@@ -244,6 +244,7 @@ a_ancova <- make_afun(
 summarize_ancova <- function(lyt,
                              vars,
                              var_labels,
+                             nested = TRUE,
                              ...,
                              show_labels = "visible",
                              table_names = vars,
@@ -270,6 +271,7 @@ summarize_ancova <- function(lyt,
     show_labels = show_labels,
     table_names = table_names,
     afun = afun,
+    nested = nested,
     extra_args = list(...)
   )
 }

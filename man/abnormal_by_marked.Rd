@@ -26,6 +26,7 @@ a_count_abnormal_by_marked(
 count_abnormal_by_marked(
   lyt,
   var,
+  nested = TRUE,
   ...,
   .stats = NULL,
   .formats = NULL,
@@ -48,6 +49,10 @@ and last or replicated.}
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 

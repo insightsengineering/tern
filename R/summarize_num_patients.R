@@ -203,6 +203,7 @@ summarize_num_patients <- function(lyt,
 #' @export
 analyze_num_patients <- function(lyt,
                                  vars,
+                                 nested = TRUE,
                                  .stats = NULL,
                                  .formats = NULL,
                                  .labels = c(
@@ -232,6 +233,7 @@ analyze_num_patients <- function(lyt,
     afun = afun,
     lyt = lyt,
     vars = vars,
+    nested = nested,
     extra_args = list(...),
     show_labels = show_labels,
     indent_mod = .indent_mods

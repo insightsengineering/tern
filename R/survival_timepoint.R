@@ -232,6 +232,7 @@ a_surv_timepoint_diff <- make_afun(
 #' @export
 surv_timepoint <- function(lyt,
                            vars,
+                           nested = TRUE,
                            ...,
                            table_names_suffix = "",
                            var_labels = "Time",
@@ -289,6 +290,7 @@ surv_timepoint <- function(lyt,
         table_names = paste0("surv_", tpt, table_names_suffix),
         show_labels = show_labels,
         afun = afun_surv,
+        nested = nested,
         extra_args = list(
           is_event = list(...)$is_event,
           control = list(...)$control,
@@ -305,6 +307,7 @@ surv_timepoint <- function(lyt,
         table_names = paste0("surv_diff_", tpt, table_names_suffix),
         show_labels = ifelse(method == "both", "hidden", show_labels),
         afun = afun_surv_diff,
+        nested = nested,
         extra_args = list(
           is_event = list(...)$is_event,
           control = list(...)$control,

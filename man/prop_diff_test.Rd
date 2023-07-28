@@ -28,6 +28,7 @@ a_test_proportion_diff(
 test_proportion_diff(
   lyt,
   vars,
+  nested = TRUE,
   ...,
   var_labels = vars,
   show_labels = "hidden",
@@ -56,6 +57,10 @@ to calculate the p-value.}
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
 
 \item{...}{other arguments are passed to \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}.}
 

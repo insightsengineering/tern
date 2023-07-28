@@ -144,6 +144,7 @@ a_count_patients_with_event <- make_afun(
 #' @export
 count_patients_with_event <- function(lyt,
                                       vars,
+                                      nested = TRUE,
                                       ...,
                                       table_names = vars,
                                       .stats = "count_fraction",
@@ -162,6 +163,7 @@ count_patients_with_event <- function(lyt,
     lyt,
     vars,
     afun = afun,
+    nested = nested,
     extra_args = list(...),
     show_labels = ifelse(length(vars) > 1, "visible", "hidden"),
     table_names = table_names

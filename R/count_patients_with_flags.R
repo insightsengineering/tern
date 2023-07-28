@@ -157,6 +157,7 @@ count_patients_with_flags <- function(lyt,
                                       var,
                                       var_labels = var,
                                       show_labels = "hidden",
+                                      nested = TRUE,
                                       ...,
                                       table_names = paste0("tbl_flags_", var),
                                       .stats = "count_fraction",
@@ -177,6 +178,7 @@ count_patients_with_flags <- function(lyt,
     show_labels = show_labels,
     afun = afun,
     table_names = table_names,
+    nested = nested,
     extra_args = list(...)
   )
 

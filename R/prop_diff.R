@@ -191,6 +191,7 @@ a_proportion_diff <- make_afun(
 #' @export
 estimate_proportion_diff <- function(lyt,
                                      vars,
+                                     nested = TRUE,
                                      ...,
                                      var_labels = vars,
                                      show_labels = "hidden",
@@ -212,6 +213,7 @@ estimate_proportion_diff <- function(lyt,
     vars,
     afun = afun,
     var_labels = var_labels,
+    nested = nested,
     extra_args = list(...),
     show_labels = show_labels,
     table_names = table_names

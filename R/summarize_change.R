@@ -120,6 +120,7 @@ a_change_from_baseline <- make_afun(
 #' @export
 summarize_change <- function(lyt,
                              vars,
+                             nested = TRUE,
                              ...,
                              table_names = vars,
                              .stats = c("n", "mean_sd", "median", "range"),
@@ -138,6 +139,7 @@ summarize_change <- function(lyt,
     lyt,
     vars,
     afun = afun,
+    nested = nested,
     extra_args = list(...),
     table_names = table_names
   )
