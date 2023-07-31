@@ -65,8 +65,8 @@ for more information.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
-\item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is passed by \code{rtables}.}
+\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+passed by \code{rtables}.}
 
 \item{custom_label}{(\code{string} or \code{NULL})\cr if provided and \code{labelstr} is empty then this will be used as label.}
 

@@ -6,9 +6,10 @@
 #' @param ... additional arguments for the lower level functions.
 #' @param .df_row (`data.frame`)\cr data frame across all of the columns for the given row split.
 #' @param .in_ref_col (`logical`)\cr `TRUE` when working with the reference level, `FALSE` otherwise.
-#' @param .N_col (`count`)\cr row-wise N (row group count) for the group of observations being analyzed
-#'   (i.e. with no column-based subsetting) that is passed by `rtables`.
-#' @param .N_row (`count`)\cr column-wise N (column count) for the full column that is passed by `rtables`.
+#' @param .N_col (`integer`)\cr column-wise N (column count) for the full column being analyzed that is typically
+#'   passed by `rtables`.
+#' @param .N_row (`integer`)\cr row-wise N (row group count) for the group of observations being analyzed
+#'   (i.e. with no column-based subsetting) that is typically passed by `rtables`.
 #' @param .ref_group (`data.frame` or `vector`)\cr the data corresponding to the reference group.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
