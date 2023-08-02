@@ -27,6 +27,7 @@
 #' @param xlab (`string`)\cr label of x-axis.
 #' @param ylab (`string`)\cr label of y-axis.
 #' @param ylim (`vector` of `numeric`)\cr vector of length 2 containing lower and upper limits for the y-axis.
+#'   If `NULL` (default), the minimum and maximum y-values displayed are used as limits.
 #' @param title (`string`)\cr title for plot.
 #' @param footnotes (`string`)\cr footnotes for plot.
 #' @param col (`character`)\cr lines colors. Length of a vector should be equal
@@ -182,7 +183,7 @@ g_km <- function(df,
                  xlab = "Days",
                  yval = c("Survival", "Failure"),
                  ylab = paste(yval, "Probability"),
-                 ylim = c(0, 1),
+                 ylim = NULL,
                  title = NULL,
                  footnotes = NULL,
                  draw = TRUE,
@@ -639,7 +640,7 @@ h_ggkm <- function(data,
                    censor_show,
                    xlab,
                    ylab,
-                   ylim = c(0, 1),
+                   ylim = NULL,
                    title,
                    footnotes = NULL,
                    max_time = NULL,
@@ -652,6 +653,17 @@ h_ggkm <- function(data,
                    ggtheme = nestcolor::theme_nest()) {
   checkmate::assert_numeric(lty, null.ok = TRUE)
   checkmate::assert_character(col, null.ok = TRUE)
+
+  if (is.null(ylim)) {
+    if (!is.null(max_time)) {
+      y_lwr <- min(data[data$time < max_time, ][["estimate"]])
+      y_upr <- max(data[data$time < max_time, ][["estimate"]])
+    } else {
+      y_lwr <- min(data[["estimate"]])
+      y_upr <- max(data[["estimate"]])
+    }
+    ylim <- c(y_lwr, y_upr)
+  }
   checkmate::assert_numeric(ylim, finite = TRUE, any.missing = FALSE, len = 2, sorted = TRUE)
 
   # change estimates of survival to estimates of failure (1 - survival)
