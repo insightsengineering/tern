@@ -32,8 +32,8 @@ count_missed_doses(
 
 \item{thresholds}{(vector of \code{count})\cr number of missed doses the patients at least had.}
 
-\item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is passed by \code{rtables}.}
+\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+passed by \code{rtables}.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
