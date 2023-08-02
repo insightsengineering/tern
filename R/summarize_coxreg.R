@@ -370,16 +370,26 @@ summarize_coxreg <- function(lyt,
         common_var,
         split_label = "Treatment:",
         label_pos = "visible",
+        child_labels = "hidden",
         section_div = head(.section_div, 1)
-      ) %>%
-      summarize_row_groups(
-        cfun = a_coxreg,
-        extra_args = list(
-          variables = variables, control = control, multivar = multivar, eff = TRUE, var_main = multivar
-        )
       )
-    if (multivar) { # treatment level effects
+    if (!multivar) {
       lyt <- lyt %>%
+        analyze_colvars(
+          afun = a_coxreg,
+          extra_args = list(
+            variables = variables, control = control, multivar = multivar, eff = TRUE, var_main = multivar,
+            labelstr = ""
+          )
+        )
+    } else { # treatment level effects
+      lyt <- lyt %>%
+        summarize_row_groups(
+          cfun = a_coxreg,
+          extra_args = list(
+            variables = variables, control = control, multivar = multivar, eff = TRUE, var_main = multivar
+          )
+        ) %>%
         analyze_colvars(
           afun = a_coxreg,
           extra_args = list(eff = TRUE, control = control, variables = variables, multivar = multivar, labelstr = "")
