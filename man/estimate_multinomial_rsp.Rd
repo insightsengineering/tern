@@ -27,8 +27,8 @@ estimate_multinomial_response(
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is passed by \code{rtables}.}
+\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+passed by \code{rtables}.}
 
 \item{...}{additional arguments for the lower level functions.}
 

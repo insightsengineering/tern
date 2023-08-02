@@ -47,10 +47,11 @@ Multiple column names and flags are accepted in this format
 \code{c("column_name1" = "flag1", "column_name2" = "flag2")}.
 Note that only equality is being accepted as condition.}
 
-\item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is passed by \code{rtables}.}
+\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+passed by \code{rtables}.}
 
-\item{.N_row}{(\code{count})\cr column-wise N (column count) for the full column that is passed by \code{rtables}.}
+\item{.N_row}{(\code{integer})\cr row-wise N (row group count) for the group of observations being analyzed
+(i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
 
 \item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
 \itemize{
