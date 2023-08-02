@@ -80,4 +80,3 @@ testthat::test_that("g_km ylim parameter works as expected", {
   )
   vdiffr::expect_doppelganger(title = "g_km_custom_ylim", fig = g_km_custom_ylim)
 })
-
