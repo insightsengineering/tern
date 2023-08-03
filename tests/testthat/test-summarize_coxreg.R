@@ -89,6 +89,9 @@ testthat::test_that("summarize_coxreg adds the univariate Cox regression layer t
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
+  # check for valid table structure
+  testthat::expect_true(validate_table_struct(result))
+
   # custom covariate labels
   result <- basic_table() %>%
     summarize_coxreg(
@@ -238,6 +241,9 @@ testthat::test_that("summarize_coxreg adds the multivariate Cox regression layer
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
+
+  # check for valid table structure
+  testthat::expect_true(validate_table_struct(result))
 
   # custom covariate labels
   result <- basic_table() %>%
