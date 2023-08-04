@@ -55,5 +55,6 @@ downstream_repos:
     repo: insightsengineering/tern.rbmi
     host: https://github.com
   insightsengineering/tlg-catalog:
-    repo: insightsengineering/tlg-catalog/package
+    repo: insightsengineering/tlg-catalog
     host: https://github.com
+    subdir: package
