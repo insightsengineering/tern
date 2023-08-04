@@ -62,9 +62,6 @@ h_stack_by_baskets <- function(df,
                                keys = c("STUDYID", "USUBJID", "ASTDTM", "AEDECOD", "AESEQ"),
                                aag_summary = NULL,
                                na_level = "<Missing>") {
-  # Use of df_explicit_na() in case the user has not previously used
-  df <- df_explicit_na(df, na_level = na_level)
-
   smq_nam <- baskets[startsWith(baskets, "SMQ")]
   # SC corresponding to NAM
   smq_sc <- gsub(pattern = "NAM", replacement = "SC", x = smq_nam, fixed = TRUE)
