@@ -2,6 +2,7 @@
 
 ### Miscellaneous
 * Fix swapped descriptions for the `.N_row` and `.N_col` parameters.
+* Fix bug in `analyze_vars_in_cols` when categorical data was used.
 
 # tern 0.8.5
 
