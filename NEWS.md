@@ -3,7 +3,7 @@
 ### Miscellaneous
 * Fix swapped descriptions for the `.N_row` and `.N_col` parameters.
 * Fix bug in `analyze_vars_in_cols` when categorical data was used.
-* Removed internal `df_explicit_na`. It depends on the needs of users.
+* Removal of internal calls to `df_explicit_na`. Changes in `NA` values should happen externally to `tern` functions, depending on the users' needs.
 
 # tern 0.8.5
 
