@@ -1,4 +1,8 @@
-# tern 0.8.5.9001
+# tern 0.8.5.9005
+
+### Miscellaneous
+* Fix swapped descriptions for the `.N_row` and `.N_col` parameters.
+* Fix bug in `analyze_vars_in_cols` when categorical data was used.
 
 ### Enhancements
 * Refactored `a_summary` to no longer use helper function `create_afun_summary`. 

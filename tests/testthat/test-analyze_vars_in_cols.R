@@ -208,3 +208,65 @@ testthat::test_that("summarize works with nested analyze", {
 
   testthat::expect_snapshot(tbl_sorted)
 })
+
+testthat::test_that("analyze_vars_in_cols works well with categorical data", {
+  # Regression test after #1013
+  adpp <- tern_ex_adpp %>% h_pkparam_sort()
+
+  lyt <- basic_table() %>%
+    split_rows_by(var = "STRATA1", label_pos = "topleft") %>%
+    split_rows_by(
+      var = "SEX",
+      label_pos = "topleft",
+      child_label = "hidden"
+    ) %>%
+    # split_cols_by("STRATA1") %>%
+    analyze_vars_in_cols(
+      vars = "ARM",
+      .stats = c("n", "count_fraction"),
+      .labels = c("count_fraction" = "argh")
+    )
+  testthat::expect_error(
+    result <- build_table(lyt = lyt, df = adpp),
+    "The analyzed column produced more than one category of results."
+  )
+
+  lyt <- basic_table() %>%
+    split_rows_by(var = "STRATA1", label_pos = "topleft") %>%
+    split_rows_by(
+      var = "SEX",
+      label_pos = "topleft",
+      child_label = "hidden"
+    ) %>%
+    split_cols_by("ARM") %>%
+    analyze_vars_in_cols(
+      vars = "counter",
+      .stats = c("count_fraction"),
+      .labels = c("count_fraction" = " ")
+    )
+  testthat::expect_snapshot(build_table(
+    lyt = lyt,
+    df = adpp %>% mutate(counter = factor("n"))
+  ))
+
+  # Alternative to discuss (xxx)
+  count_fraction <- function(x, .spl_context, .N_col) { # nolint
+    ret_list <- as.list(table(x))
+    if (length(x) == 0) {
+      aform <- "xx"
+    } else {
+      ret_list <- lapply(ret_list, function(i) {
+        c(i, i / .N_col)
+      })
+      aform <- "xx. (xx.%)"
+    }
+    in_rows(.list = ret_list, .formats = aform)
+  }
+
+  testthat::expect_snapshot(basic_table(show_colcounts = TRUE) %>%
+    split_rows_by(var = "STRATA1", label_pos = "topleft") %>%
+    split_cols_by("ARM") %>%
+    analyze(vars = "SEX", afun = count_fraction) %>%
+    append_topleft("  SEX") %>%
+    build_table(adpp))
+})

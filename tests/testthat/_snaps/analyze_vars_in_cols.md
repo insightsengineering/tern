@@ -126,3 +126,41 @@
             B                               9    28.0   0.0    0.0    0.0             0.0        
             C                               9    37.6   0.0    0.0    0.0             0.0        
 
+# analyze_vars_in_cols works well with categorical data
+
+    Code
+      build_table(lyt = lyt, df = adpp %>% mutate(counter = factor("n")))
+    Output
+      STRATA1   A: Drug X   B: Placebo   C: Combination
+        SEX                                            
+      —————————————————————————————————————————————————
+      A                                                
+        F           0           0          81 (100%)   
+        M           0           0          81 (100%)   
+      B                                                
+        F           0           0          90 (100%)   
+        M           0           0          81 (100%)   
+      C                                                
+        F           0           0          117 (100%)  
+        M           0           0          72 (100%)   
+
+---
+
+    Code
+      basic_table(show_colcounts = TRUE) %>% split_rows_by(var = "STRATA1",
+        label_pos = "topleft") %>% split_cols_by("ARM") %>% analyze(vars = "SEX",
+        afun = count_fraction) %>% append_topleft("  SEX") %>% build_table(adpp)
+    Output
+      STRATA1   A: Drug X   B: Placebo   C: Combination
+        SEX       (N=0)       (N=0)         (N=522)    
+      —————————————————————————————————————————————————
+      A                                                
+        F           0           0           81 (16%)   
+        M           0           0           81 (16%)   
+      B                                                
+        F           0           0           90 (17%)   
+        M           0           0           81 (16%)   
+      C                                                
+        F           0           0          117 (22%)   
+        M           0           0           72 (14%)   
+
