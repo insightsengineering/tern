@@ -39,7 +39,8 @@ If it has a label, then this will be used for the column title.}
 that corresponding table cells will stay blank.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
-(must be present as second argument in Content Row Functions).}
+(must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
+for more information.}
 
 \item{custom_label}{(\code{string} or \code{NULL})\cr if provided and \code{labelstr} is empty then this will
 be used as label.}
@@ -98,18 +99,6 @@ df <- data.frame(
   AEDECOD = c("A", "A", "A", "B", "B", "C", "D"),
   AEBODSYS = rep(c("SOC1", "SOC2", "SOC3"), c(3, 3, 1))
 )
-
-# Internal function - s_count_patients_and_multiple_events
-\dontrun{
-s_count_patients_and_multiple_events(
-  df = df,
-  id = "USUBJID",
-  filters_list = list(
-    serious = c(AESER = "Y"),
-    fatal = c(AESDTH = "Y")
-  )
-)
-}
 
 # `summarize_patients_events_in_cols()`
 basic_table() \%>\%

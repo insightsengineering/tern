@@ -31,12 +31,12 @@ desctools_binomci(
 \arguments{
 \item{conf.level}{(\code{proportion})\cr confidence level, defaults to 0.95.}
 
-\item{sides}{(\code{character})\cr side of the confidence interval to compute. Must be one of "two-sided" (default),
-"left", or "right".}
+\item{sides}{(\code{character})\cr side of the confidence interval to compute. Must be one of \code{"two-sided"} (default),
+\code{"left"}, or \code{"right"}.}
 
-\item{method}{(\code{character})\cr method to use. Can be one out of: "wald", "wilson", "wilsoncc", "agresti-coull",
-"jeffreys", "modified wilson", "modified jeffreys", "clopper-pearson", "arcsine", "logit", "witting", "pratt",
-"midp", "lik", and "blaker".}
+\item{method}{(\code{character})\cr method to use. Can be one out of: \code{"wald"}, \code{"wilson"}, \code{"wilsoncc"},
+\code{"agresti-coull"}, \code{"jeffreys"}, \code{"modified wilson"}, \code{"modified jeffreys"}, \code{"clopper-pearson"}, \code{"arcsine"},
+\code{"logit"}, \code{"witting"}, \code{"pratt"}, \code{"midp"}, \code{"lik"}, and \code{"blaker"}.}
 
 \item{x}{(\code{count})\cr number of successes}
 
@@ -72,18 +72,4 @@ Several confidence intervals for the difference between proportions.
 \item \code{desctools_binomci()}: Compute confidence intervals for binomial proportions.
 
 }}
-\examples{
-# Internal function - desctools_binom
-\dontrun{
-set.seed(2)
-rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
-grp <- factor(c(rep("A", 10), rep("B", 10)))
-tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
-desctools_binom(
-  tbl[1], sum(tbl[1], tbl[3]), tbl[2], sum(tbl[2], tbl[4]),
-  conf.level = 0.90, method = "waldcc"
-)
-}
-
-}
 \keyword{internal}

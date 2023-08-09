@@ -38,11 +38,6 @@ NULL
 #' df <- adtte_f %>%
 #'   filter(ARMCD == "ARM A")
 #'
-#' # Internal function - s_surv_timepoint
-#' \dontrun{
-#' s_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
-#' }
-#'
 #' @keywords internal
 s_surv_timepoint <- function(df,
                              .var,
@@ -90,12 +85,6 @@ s_surv_timepoint <- function(df,
 #' @return
 #' * `a_surv_timepoint()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @examples
-#' # Internal function - a_surv_timepoint
-#' \dontrun{
-#' a_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
-#' }
-#'
 #' @keywords internal
 a_surv_timepoint <- make_afun(
   s_surv_timepoint,
@@ -124,19 +113,6 @@ a_surv_timepoint <- make_afun(
 #' @examples
 #' df_ref_group <- adtte_f %>%
 #'   filter(ARMCD == "ARM B")
-#'
-#' # Internal function - s_surv_timepoint_diff
-#' \dontrun{
-#' s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
-#' s_surv_timepoint_diff(
-#'   df,
-#'   df_ref_group,
-#'   .in_ref_col = FALSE,
-#'   .var = "AVAL",
-#'   time_point = 7,
-#'   is_event = "is_event"
-#' )
-#' }
 #'
 #' @keywords internal
 s_surv_timepoint_diff <- function(df,
@@ -186,27 +162,9 @@ s_surv_timepoint_diff <- function(df,
 #' @return
 #' * `a_surv_timepoint_diff()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @examples
-#' # Internal function - a_surv_timepoint_diff
-#' \dontrun{
-#' a_surv_timepoint_diff(
-#'   df,
-#'   df_ref_group,
-#'   .in_ref_col = FALSE,
-#'   .var = "AVAL",
-#'   time_point = 7,
-#'   is_event = "is_event"
-#' )
-#' }
-#'
 #' @keywords internal
 a_surv_timepoint_diff <- make_afun(
   s_surv_timepoint_diff,
-  .indent_mods = c(
-    rate_diff = 1L,
-    rate_diff_ci = 2L,
-    ztest_pval = 2L
-  ),
   .formats = c(
     rate_diff = "xx.xx",
     rate_diff_ci = "(xx.xx, xx.xx)",
@@ -221,6 +179,9 @@ a_surv_timepoint_diff <- make_afun(
 #'   `surv_diff` (difference in survival with the control) or `both`.
 #' @param table_names_suffix (`string`)\cr optional suffix for the `table_names` used for the `rtables` to
 #'   avoid warnings from duplicate table names.
+#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
+#'   for that statistic's row label.
 #'
 #' @return
 #' * `surv_timepoint()` returns a layout object suitable for passing to further layouting functions,
@@ -271,6 +232,7 @@ a_surv_timepoint_diff <- make_afun(
 #' @export
 surv_timepoint <- function(lyt,
                            vars,
+                           nested = TRUE,
                            ...,
                            table_names_suffix = "",
                            var_labels = "Time",
@@ -282,7 +244,11 @@ surv_timepoint <- function(lyt,
                            ),
                            .formats = NULL,
                            .labels = NULL,
-                           .indent_mods = NULL) {
+                           .indent_mods = if (method == "both") {
+                             c(rate_diff = 1L, rate_diff_ci = 2L, ztest_pval = 2L)
+                           } else {
+                             c(rate_diff_ci = 1L, ztest_pval = 1L)
+                           }) {
   method <- match.arg(method)
   checkmate::assert_string(table_names_suffix)
 
@@ -324,6 +290,7 @@ surv_timepoint <- function(lyt,
         table_names = paste0("surv_", tpt, table_names_suffix),
         show_labels = show_labels,
         afun = afun_surv,
+        nested = nested,
         extra_args = list(
           is_event = list(...)$is_event,
           control = list(...)$control,
@@ -340,6 +307,7 @@ surv_timepoint <- function(lyt,
         table_names = paste0("surv_diff_", tpt, table_names_suffix),
         show_labels = ifelse(method == "both", "hidden", show_labels),
         afun = afun_surv_diff,
+        nested = nested,
         extra_args = list(
           is_event = list(...)$is_event,
           control = list(...)$control,

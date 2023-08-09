@@ -4,16 +4,12 @@
 # data
 ^data-raw$
 
-# design
-design/*
-
 # doc
-CODE_OF_CONDUCT.md
+^CODE_OF_CONDUCT\.md$
 ^docs$
+LICENSE
 ^LICENSE\.md$
-README.*
-SECURITY.md
-TODO\.md
+^SECURITY\.md$
 
 # git
 ^\.git$

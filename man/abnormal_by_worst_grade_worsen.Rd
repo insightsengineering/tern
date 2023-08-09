@@ -22,6 +22,7 @@ a_count_abnormal_lab_worsen_by_baseline(
 count_abnormal_lab_worsen_by_baseline(
   lyt,
   var,
+  nested = TRUE,
   ...,
   table_names = NULL,
   .stats = NULL,
@@ -45,6 +46,10 @@ by a statistics function.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
 \item{...}{additional arguments for the lower level functions.}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
@@ -56,7 +61,8 @@ to avoid warnings from \code{rtables}.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 }
 \value{
 \itemize{
@@ -113,28 +119,6 @@ df <- h_adlb_worsen(
   worst_flag_high = c("WGRHIFL" = "Y"),
   direction_var = "GRADDR"
 )
-# Internal function - s_count_abnormal_lab_worsen_by_baseline
-\dontrun{
-# Patients with worsening lab grade for CRP in the direction of low
-s_count_abnormal_lab_worsen_by_baseline(
-  df = df \%>\% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
-  .var = "ATOXGR",
-  variables = list(
-    id = "USUBJID",
-    baseline_var = "BTOXGR",
-    direction_var = "GRADDR"
-  )
-)
-}
-
-# Internal function - a_count_abnormal_lab_worsen_by_baseline
-\dontrun{
-a_count_abnormal_lab_worsen_by_baseline(
-  df = df \%>\% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
-  .var = "ATOXGR",
-  variables = list(id = "USUBJID", baseline_var = "BTOXGR", direction_var = "GRADDR")
-)
-}
 
 basic_table() \%>\%
   split_cols_by("ARMCD") \%>\%

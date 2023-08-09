@@ -57,3 +57,4 @@ downstream_repos:
   insightsengineering/tlg-catalog:
     repo: insightsengineering/tlg-catalog
     host: https://github.com
+    subdir: package

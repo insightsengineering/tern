@@ -24,7 +24,9 @@ summarize_colvars(
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
+should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
+for that statistic's row label.}
 }
 \value{
 A layout object suitable for passing to further layouting functions, or to \code{\link[rtables:build_table]{rtables::build_table()}}.
@@ -36,7 +38,9 @@ in columns, and add it to the table layout.
 
 This analyze function uses the S3 generic function \code{\link[=s_summary]{s_summary()}} to summarize different variables
 that are arranged in columns. Additional standard formatting arguments are available. It is a
-minimal wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
+minimal wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}. The latter function is meant to add different
+analysis methods for each column variables as different rows. To have the analysis methods as
+column labels, please refer to \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}}.
 }
 \examples{
 dta_test <- data.frame(
@@ -78,5 +82,5 @@ basic_table() \%>\%
 
 }
 \seealso{
-\code{\link[rtables:split_cols_by_multivar]{rtables::split_cols_by_multivar()}} and \link{analyze_colvars_functions}.
+\code{\link[rtables:split_cols_by_multivar]{rtables::split_cols_by_multivar()}} and \code{\link{analyze_colvars_functions}}.
 }

@@ -1,8 +1,8 @@
-#' Summary for analysis of covariance (ANCOVA).
+#' Summary for analysis of covariance (`ANCOVA`).
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Summarize results of ANCOVA. This can be used to analyze multiple endpoints and/or
+#' Summarize results of `ANCOVA`. This can be used to analyze multiple endpoints and/or
 #' multiple timepoints within the same response variable `.var`.
 #'
 #' @inheritParams argument_convention
@@ -84,7 +84,7 @@ h_ancova <- function(.var,
 #'
 #' @inheritParams h_ancova
 #' @param interaction_y (`character`)\cr a selected item inside of the interaction_item column which will be used
-#'   to select the specific ANCOVA results. if the interaction is not needed, the default option is `FALSE`.
+#'   to select the specific `ANCOVA` results. if the interaction is not needed, the default option is `FALSE`.
 #'
 #' @return
 #' * `s_ancova()` returns a named list of 5 statistics:
@@ -105,15 +105,6 @@ h_ancova <- function(.var,
 #' variables <- list(arm = "Species", covariates = "Sepal.Length * Sepal.Width")
 #' .ref_group <- iris %>% filter(Species == "setosa")
 #' conf_level <- 0.95
-#'
-#' # Internal function - s_ancova
-#' \dontrun{
-#' s_ancova(
-#'   df, .var, .df_row, variables, .ref_group,
-#'   .in_ref_col = FALSE,
-#'   conf_level, interaction_y = FALSE, interaction_item = NULL
-#' )
-#' }
 #'
 #' @keywords internal
 s_ancova <- function(df,
@@ -207,15 +198,6 @@ s_ancova <- function(df,
 #' @return
 #' * `a_ancova()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @examples
-#' # Internal function - a_ancova
-#' \dontrun{
-#' a_ancova(
-#'   df, .var, .df_row, variables, .ref_group,
-#'   .in_ref_col = FALSE,
-#'   interaction_y = FALSE, interaction_item = NULL, conf_level
-#' )
-#' }
 #'
 #' @keywords internal
 a_ancova <- make_afun(
@@ -262,6 +244,7 @@ a_ancova <- make_afun(
 summarize_ancova <- function(lyt,
                              vars,
                              var_labels,
+                             nested = TRUE,
                              ...,
                              show_labels = "visible",
                              table_names = vars,
@@ -288,6 +271,7 @@ summarize_ancova <- function(lyt,
     show_labels = show_labels,
     table_names = table_names,
     afun = afun,
+    nested = nested,
     extra_args = list(...)
   )
 }

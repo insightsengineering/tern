@@ -261,6 +261,7 @@ count_occurrences_by_grade <- function(lyt,
                                        var_labels = var,
                                        show_labels = "default",
                                        riskdiff = NULL,
+                                       nested = TRUE,
                                        ...,
                                        table_names = var,
                                        .stats = NULL,
@@ -301,6 +302,7 @@ count_occurrences_by_grade <- function(lyt,
     show_labels = show_labels,
     afun = ifelse(is.null(riskdiff), afun, afun_riskdiff),
     table_names = table_names,
+    nested = nested,
     extra_args = list(...)
   )
 }

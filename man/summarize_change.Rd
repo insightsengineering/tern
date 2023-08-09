@@ -13,6 +13,7 @@ a_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
 summarize_change(
   lyt,
   vars,
+  nested = TRUE,
   ...,
   table_names = vars,
   .stats = c("n", "mean_sd", "median", "range"),
@@ -37,6 +38,10 @@ by a statistics function.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
 
@@ -46,7 +51,8 @@ to avoid warnings from \code{rtables}.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 }
 \value{
 \itemize{
@@ -95,24 +101,6 @@ df <- data.frame(
   val = c(4, 5, 6)
 )
 
-# Internal function - s_change_from_baseline
-\dontrun{
-s_change_from_baseline(
-  df,
-  .var = "chg",
-  variables = list(value = "val", baseline_flag = "is_bl")
-)
-}
-
-# Internal function - a_change_from_baseline
-\dontrun{
-a_change_from_baseline(
-  df,
-  .var = "chg",
-  variables = list(value = "val", baseline_flag = "is_bl")
-)
-}
-
 # `summarize_change()`
 
 ## Fabricated dataset.
@@ -137,7 +125,7 @@ results <- basic_table() \%>\%
   split_rows_by("AVISIT") \%>\%
   summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL")) \%>\%
   build_table(dta_test)
-\dontrun{
+\donttest{
 Viewer(results)
 }
 

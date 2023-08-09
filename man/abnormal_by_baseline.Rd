@@ -27,6 +27,7 @@ count_abnormal_by_baseline(
   lyt,
   var,
   abnormal,
+  nested = TRUE,
   ...,
   table_names = abnormal,
   .stats = NULL,
@@ -50,6 +51,10 @@ by a statistics function.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
 \item{...}{additional arguments for the lower level functions.}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
@@ -61,7 +66,8 @@ to avoid warnings from \code{rtables}.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 }
 \value{
 \itemize{
@@ -129,20 +135,6 @@ df <- data.frame(
   BNRIND = factor(c("LOW", "NORMAL", "HIGH", NA, "LOW", "NORMAL"))
 )
 df <- df_explicit_na(df)
-
-# Internal function - s_count_abnormal_by_baseline
-\dontrun{
-# Just for one abnormal level.
-s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
-}
-
-# Internal function - a_count_abnormal_by_baseline
-\dontrun{
-# Use the Formatted Analysis function for `analyze()`. We need to ungroup `fraction` first
-# so that the `rtables` formatting function `format_fraction()` can be applied correctly.
-afun <- make_afun(a_count_abnormal_by_baseline, .ungroup_stats = "fraction")
-afun(df, .var = "ANRIND", abnormal = "LOW")
-}
 
 # Layout creating function.
 basic_table() \%>\%

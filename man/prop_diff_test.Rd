@@ -28,6 +28,7 @@ a_test_proportion_diff(
 test_proportion_diff(
   lyt,
   vars,
+  nested = TRUE,
   ...,
   var_labels = vars,
   show_labels = "hidden",
@@ -57,6 +58,10 @@ to calculate the p-value.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
 \item{...}{other arguments are passed to \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}.}
 
 \item{var_labels}{(\code{character})\cr character for label.}
@@ -72,7 +77,8 @@ to avoid warnings from \code{rtables}.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 
 \item{tbl}{(\code{matrix})\cr matrix with two groups in rows and the binary response (\code{TRUE}/\code{FALSE}) in columns.}
 }
@@ -108,36 +114,11 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 
 }}
 \examples{
-# Statistics function
 dta <- data.frame(
   rsp = sample(c(TRUE, FALSE), 100, TRUE),
   grp = factor(rep(c("A", "B"), each = 50)),
   strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
 )
-
-# Internal function - s_test_proportion_diff
-\dontrun{
-s_test_proportion_diff(
-  df = subset(dta, grp == "A"),
-  .var = "rsp",
-  .ref_group = subset(dta, grp == "B"),
-  .in_ref_col = FALSE,
-  variables = list(strata = "strat"),
-  method = "cmh"
-)
-}
-
-# Internal function - a_test_proportion_diff
-\dontrun{
-a_test_proportion_diff(
-  df = subset(dta, grp == "A"),
-  .var = "rsp",
-  .ref_group = subset(dta, grp == "B"),
-  .in_ref_col = FALSE,
-  variables = list(strata = "strat"),
-  method = "cmh"
-)
-}
 
 # With `rtables` pipelines.
 l <- basic_table() \%>\%

@@ -21,6 +21,7 @@ a_coxreg(
   .spl_context,
   .stats,
   .formats,
+  .indent_mods = NULL,
   na_level = "",
   cache_env = NULL
 )
@@ -55,19 +56,20 @@ function with tidying applied via \code{\link[broom:reexports]{broom::tidy()}}.}
 }}
 
 \item{.which_vars}{(\code{character})\cr which rows should statistics be returned for from the given model.
-Defaults to "all". Other options include "var_main" for main effects, "inter" for interaction effects,
-and "multi_lvl" for multivariate model covariate level rows. When \code{.which_vars} is "all" specific
+Defaults to "all". Other options include "var_main" for main effects, \code{"inter"} for interaction effects,
+and \code{"multi_lvl"} for multivariate model covariate level rows. When \code{.which_vars} is "all" specific
 variables can be selected by specifying \code{.var_nms}.}
 
 \item{.var_nms}{(\code{character})\cr the \code{term} value of rows in \code{df} for which \code{.stats} should be returned. Typically
 this is the name of a variable. If using variable labels, \code{var} should be a vector of both the desired
 variable name and the variable label in that order to see all \code{.stats} related to that variable. When \code{.which_vars}
-is "var_main" \code{.var_nms} should be only the variable name.}
+is \code{"var_main"} \code{.var_nms} should be only the variable name.}
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
-(must be present as second argument in Content Row Functions).}
+(must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
+for more information.}
 
 \item{eff}{(\code{flag})\cr whether treatment effect should be calculated. Defaults to \code{FALSE}.}
 
@@ -88,6 +90,9 @@ that is passed by \code{rtables}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
+
 \item{na_level}{(\code{string})\cr custom string to replace all \code{NA} values with. Defaults to \code{""}.}
 
 \item{cache_env}{(\code{environment})\cr an environment object used to cache the regression model in order to
@@ -98,7 +103,10 @@ avoid repeatedly fitting the same model for every row in the table. Defaults to 
 \item{common_var}{(\code{character})\cr the name of a factor variable in the dataset which takes the same value
 for all rows. This should be created during pre-processing if no such variable currently exists.}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{varlabels}{(\code{list})\cr a named list corresponds to the names of variables found in data, passed
+as a named list and corresponding to time, event, arm, strata, and covariates terms. If arm is missing
+from variables, then only Cox model(s) including the covariates will be fitted and the corresponding
+effect estimates will be tabulated later.}
 
 \item{.section_div}{(\code{character})\cr string which should be repeated as a section divider between sections.
 Defaults to \code{NA} for no section divider. If a vector of two strings are given, the first will be used between
@@ -214,7 +222,7 @@ multivar_covs_model <- fit_coxreg_multivar(variables = m2_variables, data = dta_
 df2_covs <- broom::tidy(multivar_covs_model)
 s_coxreg(model_df = df2_covs, .stats = "hr")
 
-tern:::a_coxreg(
+a_coxreg(
   df = dta_bladder,
   labelstr = "Label 1",
   variables = u1_variables,
@@ -223,7 +231,7 @@ tern:::a_coxreg(
   .formats = "xx"
 )
 
-tern:::a_coxreg(
+a_coxreg(
   df = dta_bladder,
   labelstr = "",
   variables = u1_variables,
@@ -272,4 +280,3 @@ helper functions, and \link{tidy_coxreg} for custom tidy methods.
 \code{at} (univariate only), and \code{control} arguments but return unformatted univariate and multivariate
 Cox regression models, respectively.
 }
-\keyword{internal}

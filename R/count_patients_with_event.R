@@ -14,7 +14,7 @@ NULL
 #' @describeIn count_patients_with_event Statistics function which counts the number of patients for which
 #'   the defined event has occurred.
 #'
-#' @inheritParams summarize_variables
+#' @inheritParams analyze_variables
 #' @param .var (`character`)\cr name of the column that contains the unique identifier.
 #' @param filters (`character`)\cr a character vector specifying the column names and flag variables
 #'   to be used for counting the number of unique identifiers satisfying such conditions.
@@ -144,6 +144,7 @@ a_count_patients_with_event <- make_afun(
 #' @export
 count_patients_with_event <- function(lyt,
                                       vars,
+                                      nested = TRUE,
                                       ...,
                                       table_names = vars,
                                       .stats = "count_fraction",
@@ -162,6 +163,7 @@ count_patients_with_event <- function(lyt,
     lyt,
     vars,
     afun = afun,
+    nested = nested,
     extra_args = list(...),
     show_labels = ifelse(length(vars) > 1, "visible", "hidden"),
     table_names = table_names

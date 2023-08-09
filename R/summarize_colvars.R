@@ -4,17 +4,22 @@
 #'
 #' This analyze function uses the S3 generic function [s_summary()] to summarize different variables
 #' that are arranged in columns. Additional standard formatting arguments are available. It is a
-#' minimal wrapper for [rtables::analyze_colvars()].
+#' minimal wrapper for [rtables::analyze_colvars()]. The latter function is meant to add different
+#' analysis methods for each column variables as different rows. To have the analysis methods as
+#' column labels, please refer to [analyze_vars_in_cols()].
 #'
 #' @inheritParams argument_convention
 #' @param ... arguments passed to `s_summary()`.
+#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
+#'   for that statistic's row label.
 #'
 #' @return
 #' A layout object suitable for passing to further layouting functions, or to [rtables::build_table()].
 #' Adding this function to an `rtable` layout will summarize the given variables, arrange the output
 #' in columns, and add it to the table layout.
 #'
-#' @seealso [rtables::split_cols_by_multivar()] and [analyze_colvars_functions].
+#' @seealso [rtables::split_cols_by_multivar()] and [`analyze_colvars_functions`].
 #'
 #' @examples
 #' dta_test <- data.frame(

@@ -35,19 +35,6 @@ h_recycle <- function(...) {
 #'   * `lwr.ci`: estimate of lower end of the confidence interval.
 #'   * `upr.ci`: estimate of upper end of the confidence interval.
 #'
-#' @examples
-#' # Internal function - desctools_binom
-#' \dontrun{
-#' set.seed(2)
-#' rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
-#' grp <- factor(c(rep("A", 10), rep("B", 10)))
-#' tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
-#' desctools_binom(
-#'   tbl[1], sum(tbl[1], tbl[3]), tbl[2], sum(tbl[2], tbl[4]),
-#'   conf.level = 0.90, method = "waldcc"
-#' )
-#' }
-#'
 #' @keywords internal
 desctools_binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c( # nolint
                               "two.sided",
@@ -347,11 +334,11 @@ desctools_binom <- function(x1, n1, x2, n2, conf.level = 0.95, sides = c( # noli
 #' @param x (`count`)\cr number of successes
 #' @param n (`count`)\cr number of trials
 #' @param conf.level (`proportion`)\cr confidence level, defaults to 0.95.
-#' @param sides (`character`)\cr side of the confidence interval to compute. Must be one of "two-sided" (default),
-#'   "left", or "right".
-#' @param method (`character`)\cr method to use. Can be one out of: "wald", "wilson", "wilsoncc", "agresti-coull",
-#'   "jeffreys", "modified wilson", "modified jeffreys", "clopper-pearson", "arcsine", "logit", "witting", "pratt",
-#'   "midp", "lik", and "blaker".
+#' @param sides (`character`)\cr side of the confidence interval to compute. Must be one of `"two-sided"` (default),
+#'   `"left"`, or `"right"`.
+#' @param method (`character`)\cr method to use. Can be one out of: `"wald"`, `"wilson"`, `"wilsoncc"`,
+#' `"agresti-coull"`, `"jeffreys"`, `"modified wilson"`, `"modified jeffreys"`, `"clopper-pearson"`, `"arcsine"`,
+#' `"logit"`, `"witting"`, `"pratt"`, `"midp"`, `"lik"`, and `"blaker"`.
 #'
 #' @return A `matrix` with 3 columns containing:
 #'   * `est`: estimate of proportion difference.

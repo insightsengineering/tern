@@ -151,8 +151,8 @@
       —————————————————————————————————————————————————————————————————————————
       9 Months                                                                 
         Difference in Event Free Rate               -9.64            -13.03    
-        95% CI                                  (-22.80, 3.52)   (-27.59, 1.53)
-        p-value (Z-test)                            0.1511           0.0794    
+          95% CI                                (-22.80, 3.52)   (-27.59, 1.53)
+          p-value (Z-test)                          0.1511           0.0794    
 
 # surv_timepoint for survival diff works with customized arguments
 
@@ -163,6 +163,22 @@
       —————————————————————————————————————————————————————————————————————————
       9 Months                                                                 
         Difference in Event Free Rate               -9.64            -13.03    
-        99% CI                                  (-26.94, 7.66)   (-32.17, 6.10)
-        p-value (Z-test)                            0.1511           0.0794    
+          99% CI                                (-26.94, 7.66)   (-32.17, 6.10)
+          p-value (Z-test)                          0.1511           0.0794    
+
+# surv_timepoint works with method = both
+
+    Code
+      result
+    Output
+                                            ARM A            ARM B            ARM C     
+                                            (N=69)           (N=73)           (N=58)    
+      ——————————————————————————————————————————————————————————————————————————————————
+      9 Months                                                                          
+        Patients remaining at risk            53               53               39      
+        Event Free Rate (%)                 84.89            75.25            71.86     
+        95% CI                          (76.24, 93.53)   (65.32, 85.17)   (60.14, 83.57)
+        Difference in Event Free Rate                        -9.64            -13.03    
+          95% CI                                         (-22.80, 3.52)   (-27.59, 1.53)
+          p-value (Z-test)                                   0.1511           0.0794    
 

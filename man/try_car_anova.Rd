@@ -32,7 +32,7 @@ Captures warnings when executing \link[car:Anova]{car::Anova}.
 }
 \examples{
 # `car::Anova` on cox regression model including strata and expected
-# a likelihood ratio test triggers a warning as only Wald method is
+# a likelihood ratio test triggers a warning as only `Wald` method is
 # accepted.
 
 library(survival)
@@ -41,12 +41,6 @@ mod <- coxph(
   formula = Surv(time = futime, event = fustat) ~ factor(rx) + strata(ecog.ps),
   data = ovarian
 )
-
-# Internal function - try_car_anova
-\dontrun{
-with_wald <- try_car_anova(mod = mod, test.statistic = "Wald")
-with_lr <- try_car_anova(mod = mod, test.statistic = "LR")
-}
 
 }
 \keyword{internal}

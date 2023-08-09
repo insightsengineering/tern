@@ -27,15 +27,6 @@ NULL
 #'   val = c(4, 5, 6)
 #' )
 #'
-#' # Internal function - s_change_from_baseline
-#' \dontrun{
-#' s_change_from_baseline(
-#'   df,
-#'   .var = "chg",
-#'   variables = list(value = "val", baseline_flag = "is_bl")
-#' )
-#' }
-#'
 #' @keywords internal
 s_change_from_baseline <- function(df,
                                    .var,
@@ -64,15 +55,6 @@ s_change_from_baseline <- function(df,
 #' @return
 #' * `a_change_from_baseline()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @examples
-#' # Internal function - a_change_from_baseline
-#' \dontrun{
-#' a_change_from_baseline(
-#'   df,
-#'   .var = "chg",
-#'   variables = list(value = "val", baseline_flag = "is_bl")
-#' )
-#' }
 #'
 #' @keywords internal
 a_change_from_baseline <- make_afun(
@@ -131,13 +113,14 @@ a_change_from_baseline <- make_afun(
 #'   split_rows_by("AVISIT") %>%
 #'   summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL")) %>%
 #'   build_table(dta_test)
-#' \dontrun{
+#' \donttest{
 #' Viewer(results)
 #' }
 #'
 #' @export
 summarize_change <- function(lyt,
                              vars,
+                             nested = TRUE,
                              ...,
                              table_names = vars,
                              .stats = c("n", "mean_sd", "median", "range"),
@@ -156,6 +139,7 @@ summarize_change <- function(lyt,
     lyt,
     vars,
     afun = afun,
+    nested = nested,
     extra_args = list(...),
     table_names = table_names
   )

@@ -26,6 +26,7 @@ a_count_abnormal(
 count_abnormal(
   lyt,
   var,
+  nested = TRUE,
   ...,
   table_names = var,
   .stats = NULL,
@@ -51,6 +52,10 @@ from numerator and denominator.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
 \item{...}{additional arguments for the lower level functions.}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
@@ -62,7 +67,8 @@ to avoid warnings from \code{rtables}.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 }
 \value{
 \itemize{
@@ -125,28 +131,6 @@ df <- data.frame(
 # Select only post-baseline records.
 df <- df \%>\%
   filter(ONTRTFL == "Y")
-
-# Internal function - s_count_abnormal
-\dontrun{
-# For abnormal level "HIGH" we get the following counts.
-s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
-
-# Optionally exclude patients with abnormality at baseline.
-s_count_abnormal(
-  df,
-  .var = "ANRIND",
-  abnormal = list(high = "HIGH", low = "LOW"),
-  exclude_base_abn = TRUE
-)
-}
-
-# Internal function - a_count_abnormal
-\dontrun{
-# Use the Formatted Analysis function for `analyze()`.
-a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")
-a_fun(df, .var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"))
-}
-
 # Layout creating function.
 basic_table() \%>\%
   count_abnormal(var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW")) \%>\%

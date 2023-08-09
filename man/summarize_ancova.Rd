@@ -4,7 +4,7 @@
 \alias{summarize_ancova}
 \alias{s_ancova}
 \alias{a_ancova}
-\title{Summary for analysis of covariance (ANCOVA).}
+\title{Summary for analysis of covariance (\code{ANCOVA}).}
 \usage{
 s_ancova(
   df,
@@ -34,6 +34,7 @@ summarize_ancova(
   lyt,
   vars,
   var_labels,
+  nested = TRUE,
   ...,
   show_labels = "visible",
   table_names = vars,
@@ -62,7 +63,7 @@ by a statistics function.}
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
 \item{interaction_y}{(\code{character})\cr a selected item inside of the interaction_item column which will be used
-to select the specific ANCOVA results. if the interaction is not needed, the default option is \code{FALSE}.}
+to select the specific \code{ANCOVA} results. if the interaction is not needed, the default option is \code{FALSE}.}
 
 \item{interaction_item}{(\code{character})\cr name of the variable that should have interactions
 with arm. if the interaction is not needed, the default option is \code{NULL}.}
@@ -72,6 +73,10 @@ with arm. if the interaction is not needed, the default option is \code{NULL}.}
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
 \item{var_labels}{(\code{character})\cr character for label.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 
@@ -86,7 +91,8 @@ to avoid warnings from \code{rtables}.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 }
 \value{
 \itemize{
@@ -115,7 +121,7 @@ the statistics from \code{s_ancova()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Summarize results of ANCOVA. This can be used to analyze multiple endpoints and/or
+Summarize results of \code{ANCOVA}. This can be used to analyze multiple endpoints and/or
 multiple timepoints within the same response variable \code{.var}.
 }
 \section{Functions}{
@@ -138,24 +144,6 @@ df <- iris \%>\% filter(Species == "virginica")
 variables <- list(arm = "Species", covariates = "Sepal.Length * Sepal.Width")
 .ref_group <- iris \%>\% filter(Species == "setosa")
 conf_level <- 0.95
-
-# Internal function - s_ancova
-\dontrun{
-s_ancova(
-  df, .var, .df_row, variables, .ref_group,
-  .in_ref_col = FALSE,
-  conf_level, interaction_y = FALSE, interaction_item = NULL
-)
-}
-
-# Internal function - a_ancova
-\dontrun{
-a_ancova(
-  df, .var, .df_row, variables, .ref_group,
-  .in_ref_col = FALSE,
-  interaction_y = FALSE, interaction_item = NULL, conf_level
-)
-}
 
 basic_table() \%>\%
   split_cols_by("Species", ref_group = "setosa") \%>\%

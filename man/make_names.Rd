@@ -15,11 +15,4 @@ A \code{character} \code{vector} of proper names, which does not use dots in con
 \description{
 Make Names Without Dots
 }
-\examples{
-# Internal function - make_names
-\dontrun{
-make_names(c("foo Bar", "1 2 3 bla"))
-}
-
-}
 \keyword{internal}

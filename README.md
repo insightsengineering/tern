@@ -6,7 +6,7 @@
 [![Code Coverage 📔](https://raw.githubusercontent.com/insightsengineering/tern/_xml_coverage_reports/data/main/badge.svg)](https://insightsengineering.github.io/tern/main/coverage-report/)
 
 ![GitHub forks](https://img.shields.io/github/forks/insightsengineering/tern?style=social)
-![GitHub Repo stars](https://img.shields.io/github/stars/insightsengineering/tern?style=social)
+![GitHub repo stars](https://img.shields.io/github/stars/insightsengineering/tern?style=social)
 
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/insightsengineering/tern)
 ![GitHub contributors](https://img.shields.io/github/contributors/insightsengineering/tern)
@@ -45,15 +45,20 @@ Many of these outputs are available to be added into [`teal`](https://insightsen
 
 ## Installation
 
-It is recommended that you [create and use a Github PAT](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) to install the latest version of this package. Once you have the PAT, run the following:
+`tern` is available on CRAN and you can install the latest released version with:
 
 ```r
-Sys.setenv(GITHUB_PAT = "your_access_token_here")
-if (!require("remotes")) install.packages("remotes")
-remotes::install_github("insightsengineering/tern@*release")
+install.packages("tern")
 ```
 
-A stable release of all NEST packages from October 2022 is also available [here](https://github.com/insightsengineering/depository#readme).
+or you can install the latest development version directly from GitHub by running the following:
+
+```r
+if (!require("remotes")) install.packages("remotes")
+remotes::install_github("insightsengineering/tern")
+```
+
+Note that it is recommended you [create and use a `GITHUB_PAT`](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) if installing from GitHub.
 
 See package vignettes `browseVignettes(package = "tern")` for usage of this package.
 

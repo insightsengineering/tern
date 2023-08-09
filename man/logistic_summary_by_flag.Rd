@@ -4,11 +4,14 @@
 \alias{logistic_summary_by_flag}
 \title{Logistic Regression Summary Table Constructor Function}
 \usage{
-logistic_summary_by_flag(flag_var)
+logistic_summary_by_flag(flag_var, .indent_mods = NULL)
 }
 \arguments{
 \item{flag_var}{(\code{string})\cr variable name identifying which row should be used in this
 content function.}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 }
 \value{
 A content function.

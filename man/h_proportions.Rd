@@ -67,7 +67,7 @@ Also referred to as the \code{exact} method.
 \item \code{prop_wald()}: Calculates the Wald interval by following the usual textbook definition
 for a single proportion confidence interval using the normal approximation.
 
-\item \code{prop_agresti_coull()}: Calculates the Agresti-Coull interval (created by Alan Agresti and Brent Coull) by
+\item \code{prop_agresti_coull()}: Calculates the \code{Agresti-Coull} interval (created by \verb{Alan Agresti} and \verb{Brent Coull}) by
 (for 95\% CI) adding two successes and two failures to the data and then using the Wald formula to construct a CI.
 
 \item \code{prop_jeffreys()}: Calculates the Jeffreys interval, an equal-tailed interval based on the
@@ -116,9 +116,7 @@ prop_jeffreys(rsp, conf_level = 0.95)
 
 }
 \references{
-\itemize{
-\item \insertRef{Yan2010-jt}{tern}
-}
+\insertRef{Yan2010-jt}{tern}
 }
 \seealso{
 \link{estimate_proportions}, descriptive function \code{\link[=d_proportion]{d_proportion()}},

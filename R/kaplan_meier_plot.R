@@ -17,7 +17,7 @@
 #' @param control_surv (`list`)\cr parameters for comparison details, specified by using
 #'   the helper function [control_surv_timepoint()]. Some possible parameter options are:
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for survival rate.
-#'   * `conf_type` (`string`)\cr "plain" (default), "log", "log-log" for confidence interval type,
+#'   * `conf_type` (`string`)\cr `"plain"` (default), `"log"`, `"log-log"` for confidence interval type,
 #'     see more in [survival::survfit()]. Note that the option "none" is no longer supported.
 #' @param xticks (`numeric`, `number`, or `NULL`)\cr numeric vector of ticks or single number with spacing
 #'   between ticks on the x axis. If `NULL` (default), [labeling::extended()] is used to determine
@@ -26,6 +26,8 @@
 #' @param censor_show (`flag`)\cr whether to show censored.
 #' @param xlab (`string`)\cr label of x-axis.
 #' @param ylab (`string`)\cr label of y-axis.
+#' @param ylim (`vector` of `numeric`)\cr vector of length 2 containing lower and upper limits for the y-axis.
+#'   If `NULL` (default), the minimum and maximum y-values displayed are used as limits.
 #' @param title (`string`)\cr title for plot.
 #' @param footnotes (`string`)\cr footnotes for plot.
 #' @param col (`character`)\cr lines colors. Length of a vector should be equal
@@ -53,18 +55,21 @@
 #' @param control_coxph_pw (`list`)\cr parameters for comparison details, specified by using
 #'   the helper function [control_coxph()]. Some possible parameter options are:
 #'   * `pval_method` (`string`)\cr p-value method for testing hazard ratio = 1.
-#'     Default method is "log-rank", can also be set to "wald" or "likelihood".
-#'   * `ties` (`string`)\cr method for tie handling. Default is "efron",
-#'     can also be set to "breslow" or "exact". See more in [survival::coxph()]
+#'     Default method is `"log-rank"`, can also be set to `"wald"` or `"likelihood"`.
+#'   * `ties` (`string`)\cr method for tie handling. Default is `"efron"`,
+#'     can also be set to `"breslow"` or `"exact"`. See more in [survival::coxph()]
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
 #' @param position_coxph (`numeric`)\cr x and y positions for plotting [survival::coxph()] model.
 #' @param position_surv_med (`numeric`)\cr x and y positions for plotting annotation table estimating median survival
 #'   time per group.
+#' @param width_annots (named `list` of `unit`s)\cr a named list of widths for annotation tables with names `surv_med`
+#'   (median survival time table) and `coxph` ([survival::coxph()] model table), where each value is the width
+#'   (in units) to implement when printing the annotation table.
 #'
 #' @return A `grob` of class `gTree`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(ggplot2)
 #' library(survival)
@@ -138,12 +143,19 @@
 #'   annot_coxph = TRUE
 #' )
 #'
+#' # Change widths/sizes of surv_med and coxph annotation tables.
+#' g_km(
+#'   df = df, variables = c(variables, list(strat = "SEX")),
+#'   annot_coxph = TRUE,
+#'   width_annots = list(surv_med = grid::unit(2, "in"), coxph = grid::unit(3, "in"))
+#' )
+#'
 #' g_km(
 #'   df = df, variables = c(variables, list(strat = "SEX")),
 #'   font_size = 15,
 #'   annot_coxph = TRUE,
 #'   control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
-#'   position_coxph = c(0.4, 0.5)
+#'   position_coxph = c(0.5, 0.5)
 #' )
 #'
 #' # Change position of the treatment group annotation table.
@@ -171,6 +183,7 @@ g_km <- function(df,
                  xlab = "Days",
                  yval = c("Survival", "Failure"),
                  ylab = paste(yval, "Probability"),
+                 ylim = NULL,
                  title = NULL,
                  footnotes = NULL,
                  draw = TRUE,
@@ -187,8 +200,9 @@ g_km <- function(df,
                  annot_stats = NULL,
                  annot_stats_vlines = FALSE,
                  control_coxph_pw = control_coxph(),
-                 position_coxph = c(0, 0.05),
-                 position_surv_med = c(0.9, 0.9)) {
+                 position_coxph = c(-0.03, -0.02),
+                 position_surv_med = c(0.95, 0.9),
+                 width_annots = list(surv_med = grid::unit(0.3, "npc"), coxph = grid::unit(0.4, "npc"))) {
   checkmate::assert_list(variables)
   checkmate::assert_subset(c("tte", "arm", "is_event"), names(variables))
   checkmate::assert_string(title, null.ok = TRUE)
@@ -196,6 +210,7 @@ g_km <- function(df,
   checkmate::assert_character(col, null.ok = TRUE)
   checkmate::assert_subset(annot_stats, c("median", "min"))
   checkmate::assert_logical(annot_stats_vlines)
+  checkmate::assert_true(all(sapply(width_annots, grid::is.unit)))
 
   tte <- variables$tte
   is_event <- variables$is_event
@@ -207,7 +222,12 @@ g_km <- function(df,
   checkmate::assert_numeric(df[[tte]], min.len = 1, any.missing = FALSE)
 
   armval <- as.character(unique(df[[arm]]))
-  if (length(armval) > 1) {
+  if (annot_coxph && length(armval) < 2) {
+    stop(paste(
+      "When `annot_coxph` = TRUE, `df` must contain at least 2 levels of `variables$arm`",
+      "in order to calculate the hazard ratio."
+    ))
+  } else if (length(armval) > 1) {
     armval <- NULL
   }
   yval <- match.arg(yval)
@@ -234,6 +254,7 @@ g_km <- function(df,
     xlab = xlab,
     yval = yval,
     ylab = ylab,
+    ylim = ylim,
     title = title,
     footnotes = footnotes,
     max_time = max_time,
@@ -343,6 +364,7 @@ g_km <- function(df,
               armval = armval,
               x = position_surv_med[1],
               y = position_surv_med[2],
+              width = if (!is.null(width_annots[["surv_med"]])) width_annots[["surv_med"]] else grid::unit(0.3, "npc"),
               ttheme = gridExtra::ttheme_default(base_size = font_size)
             )
           )
@@ -356,6 +378,7 @@ g_km <- function(df,
               control_coxph_pw = control_coxph_pw,
               x = position_coxph[1],
               y = position_coxph[2],
+              width = if (!is.null(width_annots[["coxph"]])) width_annots[["coxph"]] else grid::unit(0.4, "npc"),
               ttheme = gridExtra::ttheme_default(
                 base_size = font_size,
                 padding = grid::unit(c(1, .5), "lines"),
@@ -453,13 +476,13 @@ g_km <- function(df,
 #'
 #' @inheritParams g_km
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
-#' @param armval (`string`)\cr used as strata name when treatment arm variable only has one level. Default is "All".
+#' @param armval (`string`)\cr used as strata name when treatment arm variable only has one level. Default is `"All"`.
 #'
 #' @return A `tibble` with columns `time`, `n.risk`, `n.event`, `n.censor`, `estimate`, `std.error`, `conf.high`,
 #'   `conf.low`, `strata`, and `censor`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #'
@@ -533,7 +556,7 @@ h_data_plot <- function(fit_km,
 #' @return A vector of positions to use for x-axis ticks on a `ggplot` object.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #'
@@ -589,7 +612,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' @return A `ggplot` object.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #'
@@ -617,6 +640,7 @@ h_ggkm <- function(data,
                    censor_show,
                    xlab,
                    ylab,
+                   ylim = NULL,
                    title,
                    footnotes = NULL,
                    max_time = NULL,
@@ -629,6 +653,18 @@ h_ggkm <- function(data,
                    ggtheme = nestcolor::theme_nest()) {
   checkmate::assert_numeric(lty, null.ok = TRUE)
   checkmate::assert_character(col, null.ok = TRUE)
+
+  if (is.null(ylim)) {
+    if (!is.null(max_time)) {
+      y_lwr <- min(data[data$time < max_time, ][["estimate"]])
+      y_upr <- max(data[data$time < max_time, ][["estimate"]])
+    } else {
+      y_lwr <- min(data[["estimate"]])
+      y_upr <- max(data[["estimate"]])
+    }
+    ylim <- c(y_lwr, y_upr)
+  }
+  checkmate::assert_numeric(ylim, finite = TRUE, any.missing = FALSE, len = 2, sorted = TRUE)
 
   # change estimates of survival to estimates of failure (1 - survival)
   if (yval == "Failure") {
@@ -669,7 +705,7 @@ h_ggkm <- function(data,
   }
 
   gg <- gg +
-    ggplot2::coord_cartesian(ylim = c(0, 1)) +
+    ggplot2::coord_cartesian(ylim = ylim) +
     ggplot2::labs(x = xlab, y = ylab, title = title, caption = footnotes)
 
   if (!is.null(col)) {
@@ -718,6 +754,7 @@ h_ggkm <- function(data,
   gg + ggplot2::theme(
     legend.position = "bottom",
     legend.title = ggplot2::element_blank(),
+    legend.key.height = unit(0.02, "npc"),
     panel.grid.major.x = ggplot2::element_line(linewidth = 2)
   )
 }
@@ -739,7 +776,7 @@ h_ggkm <- function(data,
 #'   * `guide`: The legend.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
@@ -804,9 +841,10 @@ h_decompose_gg <- function(gg) {
 #'   * The right column receive the `ggplot`, the legend, the x-axis and the patient at risk table.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
+#' library(grid)
 #'
 #' fit_km <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
@@ -855,9 +893,9 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
   ht_x <- c(
     ht_x,
     1,
-    grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
-    grid::convertX(g_el$guide$heights, "pt"),
-    nlines + 1,
+    grid::convertX(with(g_el, xaxis$height + ylab$width), "pt") + grid::unit(5, "pt"),
+    grid::convertX(g_el$guide$heights, "pt") + grid::unit(2, "pt"),
+    nlines + 0.5,
     grid::convertX(with(g_el, xaxis$height + ylab$width), "pt")
   )
   ht_units <- c(
@@ -908,7 +946,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
 #' @return A named `list` of two `gTree` objects: `at_risk` and `label`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
@@ -967,6 +1005,12 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
 h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
+  y_int <- annot_tbl$time[2] - annot_tbl$time[1]
+  annot_tbl <- expand.grid(
+    time = seq(0, xlim, y_int),
+    strata = unique(annot_tbl$strata)
+  ) %>% dplyr::left_join(annot_tbl, by = c("time", "strata"))
+  annot_tbl[is.na(annot_tbl)] <- 0
   y_str_unit <- as.numeric(annot_tbl$strata)
   vp_table <- grid::plotViewport(margins = grid::unit(c(0, 0, 0, 0), "lines"))
   gb_table_left_annot <- grid::gList(
@@ -977,12 +1021,11 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
     ),
     grid::textGrob(
       label = unique(annot_tbl$strata),
-      x = .95,
+      x = 0.5,
       y = grid::unit(
-        (max(unique(y_str_unit)) - unique(y_str_unit)) + .5,
+        (max(unique(y_str_unit)) - unique(y_str_unit)) + 0.75,
         "native"
       ),
-      hjust = 1,
       gp = grid::gpar(fontface = "italic", fontsize = 10)
     )
   )
@@ -1047,7 +1090,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
 #' @return A summary table with statistics `N`, `Median`, and `XX% CI` (`XX` taken from `fit_km`).
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #'
@@ -1093,11 +1136,12 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' @param ttheme (`list`)\cr see [gridExtra::ttheme_default()].
 #' @param x (`numeric`)\cr a value between 0 and 1 specifying x-location.
 #' @param y (`numeric`)\cr a value between 0 and 1 specifying y-location.
+#' @param width (`unit`)\cr width (as a unit) to use when printing the grob.
 #'
 #' @return A `grob` of a table containing statistics `N`, `Median`, and `XX% CI` (`XX` taken from `fit_km`).
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
@@ -1116,14 +1160,49 @@ h_grob_median_surv <- function(fit_km,
                                armval = "All",
                                x = 0.9,
                                y = 0.9,
+                               width = grid::unit(0.3, "npc"),
                                ttheme = gridExtra::ttheme_default()) {
   data <- h_tbl_median_surv(fit_km, armval = armval)
-  gt <- gridExtra::tableGrob(d = data, theme = ttheme)
+
+  width <- grid::convertUnit(width, "in")
+  height <- width * (nrow(data) + 1) / 12
+
+  w <- paste(" ", c(
+    rownames(data)[which.max(nchar(rownames(data)))],
+    sapply(names(data), function(x) c(x, data[[x]])[which.max(nchar(c(x, data[[x]])))])
+  ))
+  w_unit <- grid::convertWidth(grid::stringWidth(w), "in", valueOnly = TRUE)
+
+  w_txt <- sapply(1:64, function(x) {
+    graphics::par(ps = x)
+    graphics::strwidth(w[4], units = "in")
+  })
+  f_size_w <- which.max(w_txt[w_txt < as.numeric((w_unit / sum(w_unit)) * width)[4]])
+
+  h_txt <- sapply(1:64, function(x) {
+    graphics::par(ps = x)
+    graphics::strheight(grid::stringHeight("X"), units = "in")
+  })
+  f_size_h <- which.max(h_txt[h_txt < as.numeric(grid::unit(as.numeric(height) / 4, grid::unitType(height)))])
+
+  if (ttheme$core$fg_params$fontsize == 12) {
+    ttheme$core$fg_params$fontsize <- min(f_size_w, f_size_h)
+    ttheme$colhead$fg_params$fontsize <- min(f_size_w, f_size_h)
+    ttheme$rowhead$fg_params$fontsize <- min(f_size_w, f_size_h)
+  }
+
+  gt <- gridExtra::tableGrob(
+    d = data,
+    theme = ttheme
+  )
+  gt$widths <- ((w_unit / sum(w_unit)) * width)
+  gt$heights <- rep(grid::unit(as.numeric(height) / 4, grid::unitType(height)), nrow(gt))
+
   vp <- grid::viewport(
     x = grid::unit(x, "npc") + grid::unit(1, "lines"),
     y = grid::unit(y, "npc") + grid::unit(1.5, "lines"),
-    height = sum(gt$heights),
-    width = sum(gt$widths),
+    height = height,
+    width = width,
     just = c("right", "top")
   )
 
@@ -1147,7 +1226,7 @@ h_grob_median_surv <- function(fit_km,
 #' @return a `gTree` object containing the y-axis annotation from a `ggplot`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
@@ -1187,11 +1266,11 @@ h_grob_y_annot <- function(ylab, yaxis) {
   )
 }
 
-#' Helper Function: Pairwise CoxPH table
+#' Helper Function: Pairwise `CoxPH` table
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Create a `data.frame` of pairwise stratified or unstratified CoxPH analysis results.
+#' Create a `data.frame` of pairwise stratified or unstratified `CoxPH` analysis results.
 #'
 #' @inheritParams g_km
 #'
@@ -1199,7 +1278,7 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #'   and `p-value (log-rank)`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #'
 #' adtte <- tern_ex_adtte %>%
@@ -1248,7 +1327,7 @@ h_tbl_coxph_pairwise <- function(df,
   do.call(rbind, results)
 }
 
-#' Helper Function: CoxPH Grob
+#' Helper Function: `CoxPH` Grob
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -1258,12 +1337,13 @@ h_tbl_coxph_pairwise <- function(df,
 #' @param ... arguments will be passed to [h_tbl_coxph_pairwise()].
 #' @param x (`numeric`)\cr a value between 0 and 1 specifying x-location.
 #' @param y (`numeric`)\cr a value between 0 and 1 specifying y-location.
+#' @param width (`unit`)\cr width (as a unit) to use when printing the grob.
 #'
 #' @return A `grob` of a table containing statistics `HR`, `XX% CI` (`XX` taken from `control_coxph_pw`),
 #'   and `p-value (log-rank)`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
@@ -1285,20 +1365,53 @@ h_tbl_coxph_pairwise <- function(df,
 h_grob_coxph <- function(...,
                          x = 0,
                          y = 0,
+                         width = grid::unit(0.4, "npc"),
                          ttheme = gridExtra::ttheme_default(
-                           base_size = 12,
                            padding = grid::unit(c(1, .5), "lines"),
                            core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = .5))
                          )) {
   data <- h_tbl_coxph_pairwise(...)
+
+  width <- grid::convertUnit(width, "in")
+  height <- width * (nrow(data) + 1) / 12
+
+  w <- paste("    ", c(
+    rownames(data)[which.max(nchar(rownames(data)))],
+    sapply(names(data), function(x) c(x, data[[x]])[which.max(nchar(c(x, data[[x]])))])
+  ))
+  w_unit <- grid::convertWidth(grid::stringWidth(w), "in", valueOnly = TRUE)
+
+  w_txt <- sapply(1:64, function(x) {
+    graphics::par(ps = x)
+    graphics::strwidth(w[4], units = "in")
+  })
+  f_size_w <- which.max(w_txt[w_txt < as.numeric((w_unit / sum(w_unit)) * width)[4]])
+
+  h_txt <- sapply(1:64, function(x) {
+    graphics::par(ps = x)
+    graphics::strheight(grid::stringHeight("X"), units = "in")
+  })
+  f_size_h <- which.max(h_txt[h_txt < as.numeric(grid::unit(as.numeric(height) / 4, grid::unitType(height)))])
+
+  if (ttheme$core$fg_params$fontsize == 12) {
+    ttheme$core$fg_params$fontsize <- min(f_size_w, f_size_h)
+    ttheme$colhead$fg_params$fontsize <- min(f_size_w, f_size_h)
+    ttheme$rowhead$fg_params$fontsize <- min(f_size_w, f_size_h)
+  }
+
   tryCatch(
     expr = {
-      gt <- gridExtra::tableGrob(d = data, theme = ttheme) # ERROR 'data' must be of a vector type, was 'NULL'
+      gt <- gridExtra::tableGrob(
+        d = data,
+        theme = ttheme
+      ) # ERROR 'data' must be of a vector type, was 'NULL'
+      gt$widths <- ((w_unit / sum(w_unit)) * width)
+      gt$heights <- rep(grid::unit(as.numeric(height) / 4, grid::unitType(height)), nrow(gt))
       vp <- grid::viewport(
         x = grid::unit(x, "npc") + grid::unit(1, "lines"),
         y = grid::unit(y, "npc") + grid::unit(1.5, "lines"),
-        height = sum(gt$heights),
-        width = sum(gt$widths),
+        height = height,
+        width = width,
         just = c("left", "bottom")
       )
       grid::gList(

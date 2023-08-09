@@ -21,11 +21,6 @@ NULL
 #' set.seed(1)
 #' x <- c(sample(1:10, 10), NA)
 #'
-#' # Internal function - s_count_nonmissing
-#' \dontrun{
-#' s_count_nonmissing(x)
-#' }
-#'
 #' @keywords internal
 s_count_nonmissing <- function(x) {
   list(n = n_available(x))
@@ -53,12 +48,6 @@ d_count_missed_doses <- function(thresholds) {
 #' @return
 #' * `s_count_missed_doses()` returns the statistics `n` and `count_fraction` with one element for each threshold.
 #'
-#' @examples
-#' # Internal function - s_count_missed_doses
-#' \dontrun{
-#' s_count_missed_doses(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
-#' }
-#'
 #' @keywords internal
 s_count_missed_doses <- function(x,
                                  thresholds,
@@ -83,15 +72,6 @@ s_count_missed_doses <- function(x,
 #'
 #' @return
 #' * `a_count_missed_doses()` returns the corresponding list with formatted [rtables::CellValue()].
-#'
-#' @examples
-#' # Internal function - a_count_missed_doses
-#' \dontrun{
-#' #  We need to ungroup `count_fraction` first so that the `rtables` formatting
-#' # function `format_count_fraction()` can be applied correctly.
-#' afun <- make_afun(a_count_missed_doses, .ungroup_stats = "count_fraction")
-#' afun(x = c(0, 1, 0, 2, 3, 4, 0, 2), thresholds = c(2, 5), .N_col = 10)
-#' }
 #'
 #' @keywords internal
 a_count_missed_doses <- make_afun(
@@ -132,6 +112,7 @@ count_missed_doses <- function(lyt,
                                vars,
                                var_labels = vars,
                                show_labels = "visible",
+                               nested = TRUE,
                                ...,
                                table_names = vars,
                                .stats = NULL,
@@ -153,6 +134,7 @@ count_missed_doses <- function(lyt,
     var_labels = var_labels,
     table_names = table_names,
     show_labels = show_labels,
+    nested = nested,
     extra_args = list(...)
   )
 }

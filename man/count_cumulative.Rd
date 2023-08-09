@@ -29,6 +29,7 @@ count_cumulative(
   vars,
   var_labels = vars,
   show_labels = "visible",
+  nested = TRUE,
   ...,
   table_names = vars,
   .stats = NULL,
@@ -59,6 +60,10 @@ count, default is \code{TRUE}.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
 
@@ -68,7 +73,8 @@ to avoid warnings from \code{rtables}.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 }
 \value{
 \itemize{
@@ -104,23 +110,6 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 
 }}
 \examples{
-# Internal function - s_count_cumulative
-\dontrun{
-set.seed(1, kind = "Mersenne-Twister")
-x <- c(sample(1:10, 10), NA)
-.N_col <- length(x)
-s_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
-s_count_cumulative(x, thresholds = c(0, 5, 11), include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
-}
-
-# Internal function - a_count_cumulative
-\dontrun{
-# Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
-# so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
-afun <- make_afun(a_count_cumulative, .ungroup_stats = "count_fraction")
-afun(x, thresholds = c(0, 5, 11), .N_col = .N_col)
-}
-
 basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   add_colcounts() \%>\%

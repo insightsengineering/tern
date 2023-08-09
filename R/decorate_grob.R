@@ -132,7 +132,7 @@ decorate_grob <- function(grob,
                           titles,
                           footnotes,
                           page = "",
-                          width_titles = grid::unit(1, "npc"),
+                          width_titles = grid::unit(1, "npc") - grid::stringWidth(page),
                           width_footnotes = grid::unit(1, "npc") - grid::stringWidth(page),
                           border = TRUE,
                           margins = grid::unit(c(1, 0, 1, 0), "lines"),
@@ -266,30 +266,32 @@ heightDetails.decoratedGrob <- function(x) {
 # Adapted from Paul Murell R Graphics 2nd Edition
 # https://www.stat.auckland.ac.nz/~paul/RG2e/interactgrid-splittext.R
 split_string <- function(text, width) {
-  availwidth <- grid::convertWidth(width, "in", valueOnly = TRUE)
-  textwidth <- grid::convertWidth(grid::stringWidth(text), "in", valueOnly = TRUE)
-  strings <- strsplit(text, " ")[[1]]
-
-  if (textwidth <= availwidth || length(strings) == 1) {
-    text
-  } else {
-    gapwidth <- grid::stringWidth(" ")
-    newstring <- strings[1]
-    linewidth <- grid::stringWidth(newstring)
-
-    for (i in 2:length(strings)) {
-      str_width <- grid::stringWidth(strings[i])
-      if (grid::convertWidth(linewidth + gapwidth + str_width, "in", valueOnly = TRUE) < availwidth) {
-        sep <- " "
-        linewidth <- linewidth + gapwidth + str_width
-      } else {
-        sep <- "\n"
-        linewidth <- str_width
-      }
-      newstring <- paste(newstring, strings[i], sep = sep)
+  strings <- strsplit(text, " ")
+  out_string <- NA
+  for (string_i in seq_along(strings)) {
+    newline_str <- strings[[string_i]]
+    if (length(newline_str) == 0) newline_str <- ""
+    if (is.na(out_string[string_i])) {
+      out_string[string_i] <- newline_str[[1]][[1]]
+      linewidth <- grid::stringWidth(out_string[string_i])
     }
-    newstring
+    gapwidth <- grid::stringWidth(" ")
+    availwidth <- as.numeric(width)
+    if (length(newline_str) > 1) {
+      for (i in seq(2, length(newline_str))) {
+        width_i <- grid::stringWidth(newline_str[i])
+        if (grid::convertWidth(linewidth + gapwidth + width_i, grid::unitType(width), valueOnly = TRUE) < availwidth) {
+          sep <- " "
+          linewidth <- linewidth + gapwidth + width_i
+        } else {
+          sep <- "\n"
+          linewidth <- width_i
+        }
+        out_string[string_i] <- paste(out_string[string_i], newline_str[i], sep = sep)
+      }
+    }
   }
+  paste(out_string, collapse = "\n")
 }
 
 #' Split Text According To Available Text Width
@@ -302,45 +304,7 @@ split_string <- function(text, width) {
 #'
 #' @return A text grob.
 #'
-#' @details This code is taken from R Graphics by Paul Murell, 2nd edition
-#'
-#' @examples
-#' # Internal function - split_text_grob
-#' \dontrun{
-#' sg <- split_text_grob(text = paste(
-#'   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae",
-#'   "dapibus dolor, ac mattis erat. Nunc metus lectus, imperdiet ut enim eu,",
-#'   "commodo scelerisque urna. Vestibulum facilisis metus vel nibh tempor, sed",
-#'   "elementum sem tempus. Morbi quis arcu condimentum, maximus lorem id,",
-#'   "tristique ante. Nullam a nunc dui. Fusce quis lacus nec ante dignissim",
-#'   "faucibus nec vitae tellus. Suspendisse mollis et sapien eu ornare. Vestibulum",
-#'   "placerat neque nec justo efficitur, ornare varius nulla imperdiet. Nunc justo",
-#'   "sapien, vestibulum eget efficitur eget, porttitor id ante. Nulla tempor",
-#'   "luctus massa id elementum. Praesent dictum, neque vitae vestibulum malesuada,",
-#'   "nunc nisi blandit lacus, sit amet tristique odio dui sit amet velit."
-#' ))
-#'
-#' library(grid)
-#' grobHeight(sg)
-#'
-#' grid.newpage()
-#' pushViewport(plotViewport())
-#' grid.rect()
-#' grid.draw(sg)
-#'
-#' grid.rect(
-#'   height = grobHeight(sg), width = unit(1, "cm"), gp = gpar(fill = "red")
-#' )
-#'
-#' # stack split_text_grob
-#' grid.newpage()
-#' pushViewport(plotViewport())
-#' grid.rect()
-#' grid.draw(split_text_grob(
-#'   c("Hello, this is a test", "and yet another test"),
-#'   just = c("left", "top"), x = 0, y = 1
-#' ))
-#' }
+#' @details This code is taken from `R Graphics by Paul Murell, 2nd edition`
 #'
 #' @keywords internal
 split_text_grob <- function(text,
@@ -354,15 +318,12 @@ split_text_grob <- function(text,
                             name = NULL,
                             gp = grid::gpar(),
                             vp = NULL) {
-  if (!grid::is.unit(x)) {
-    x <- grid::unit(x, default.units)
-  }
-  if (!grid::is.unit(y)) {
-    y <- grid::unit(y, default.units)
-  }
-
-  checkmate::assert_true(grid::is.unit(width))
-  checkmate::assert_vector(width, len = 1)
+  if (!grid::is.unit(x)) x <- grid::unit(x, default.units)
+  if (!grid::is.unit(y)) y <- grid::unit(y, default.units)
+  if (!grid::is.unit(width)) width <- grid::unit(width, default.units)
+  if (grid::unitType(x) %in% c("sum", "min", "max")) x <- grid::convertUnit(x, default.units)
+  if (grid::unitType(y) %in% c("sum", "min", "max")) y <- grid::convertUnit(y, default.units)
+  if (grid::unitType(width) %in% c("sum", "min", "max")) width <- grid::convertUnit(width, default.units)
 
   ## if it is a fixed unit then we do not need to recalculate when viewport resized
   if (!inherits(width, "unit.arithmetic") &&
@@ -371,10 +332,9 @@ split_text_grob <- function(text,
     attr(text, "fixed_text") <- paste(vapply(text, split_string, character(1), width = width), collapse = "\n")
   }
 
-  grid::grob(
-    text = text,
+  grid::grid.text(
+    label = split_string(text, width),
     x = x, y = y,
-    width = width,
     just = just,
     hjust = hjust,
     vjust = vjust,
@@ -383,7 +343,7 @@ split_text_grob <- function(text,
     name = name,
     gp = gp,
     vp = vp,
-    cl = "dynamicSplitText"
+    draw = FALSE
   )
 }
 
@@ -438,21 +398,6 @@ drawDetails.dynamicSplitText <- function(x, recording) {
 #' @param ... passed on to [decorate_grob()]
 #'
 #' @return Closure that increments the page number.
-#'
-#' @examples
-#' # Internal function - decorate_grob_factory
-#' \dontrun{
-#' pf <- decorate_grob_factory(
-#'   titles = "This is a test\nHello World",
-#'   footnotes = "Here belong the footnotess",
-#'   npages = 3
-#' )
-#'
-#' library(grid)
-#' draw_grob(pf(NULL))
-#' draw_grob(pf(NULL))
-#' draw_grob(pf(NULL))
-#' }
 #'
 #' @keywords internal
 decorate_grob_factory <- function(npages, ...) {

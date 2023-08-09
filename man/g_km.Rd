@@ -19,6 +19,7 @@ g_km(
   xlab = "Days",
   yval = c("Survival", "Failure"),
   ylab = paste(yval, "Probability"),
+  ylim = NULL,
   title = NULL,
   footnotes = NULL,
   draw = TRUE,
@@ -35,8 +36,9 @@ g_km(
   annot_stats = NULL,
   annot_stats_vlines = FALSE,
   control_coxph_pw = control_coxph(),
-  position_coxph = c(0, 0.05),
-  position_surv_med = c(0.9, 0.9)
+  position_coxph = c(-0.03, -0.02),
+  position_surv_med = c(0.95, 0.9),
+  width_annots = list(surv_med = grid::unit(0.3, "npc"), coxph = grid::unit(0.4, "npc"))
 )
 }
 \arguments{
@@ -54,7 +56,7 @@ g_km(
 the helper function \code{\link[=control_surv_timepoint]{control_surv_timepoint()}}. Some possible parameter options are:
 \itemize{
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for survival rate.
-\item \code{conf_type} (\code{string})\cr "plain" (default), "log", "log-log" for confidence interval type,
+\item \code{conf_type} (\code{string})\cr \code{"plain"} (default), \code{"log"}, \code{"log-log"} for confidence interval type,
 see more in \code{\link[survival:survfit]{survival::survfit()}}. Note that the option "none" is no longer supported.
 }}
 
@@ -85,6 +87,9 @@ an optimal tick position on the x axis.}
 \item{yval}{(\code{string})\cr value of y-axis. Options are \code{Survival} (default) and \code{Failure} probability.}
 
 \item{ylab}{(\code{string})\cr label of y-axis.}
+
+\item{ylim}{(\code{vector} of \code{numeric})\cr vector of length 2 containing lower and upper limits for the y-axis.
+If \code{NULL} (default), the minimum and maximum y-values displayed are used as limits.}
 
 \item{title}{(\code{string})\cr title for plot.}
 
@@ -128,9 +133,9 @@ specified by \code{annot_stats}. If \code{annot_stats} is \code{NULL} no lines w
 the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are:
 \itemize{
 \item \code{pval_method} (\code{string})\cr p-value method for testing hazard ratio = 1.
-Default method is "log-rank", can also be set to "wald" or "likelihood".
-\item \code{ties} (\code{string})\cr method for tie handling. Default is "efron",
-can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]{survival::coxph()}}
+Default method is \code{"log-rank"}, can also be set to \code{"wald"} or \code{"likelihood"}.
+\item \code{ties} (\code{string})\cr method for tie handling. Default is \code{"efron"},
+can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[survival:coxph]{survival::coxph()}}
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
 }}
 
@@ -138,6 +143,10 @@ can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]
 
 \item{position_surv_med}{(\code{numeric})\cr x and y positions for plotting annotation table estimating median survival
 time per group.}
+
+\item{width_annots}{(named \code{list} of \code{unit}s)\cr a named list of widths for annotation tables with names \code{surv_med}
+(median survival time table) and \code{coxph} (\code{\link[survival:coxph]{survival::coxph()}} model table), where each value is the width
+(in units) to implement when printing the annotation table.}
 }
 \value{
 A \code{grob} of class \code{gTree}.
@@ -150,7 +159,7 @@ including the number of patient at risk at given time and the median survival
 per group.
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(ggplot2)
 library(survival)
@@ -224,12 +233,19 @@ g_km(
   annot_coxph = TRUE
 )
 
+# Change widths/sizes of surv_med and coxph annotation tables.
+g_km(
+  df = df, variables = c(variables, list(strat = "SEX")),
+  annot_coxph = TRUE,
+  width_annots = list(surv_med = grid::unit(2, "in"), coxph = grid::unit(3, "in"))
+)
+
 g_km(
   df = df, variables = c(variables, list(strat = "SEX")),
   font_size = 15,
   annot_coxph = TRUE,
   control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
-  position_coxph = c(0.4, 0.5)
+  position_coxph = c(0.5, 0.5)
 )
 
 # Change position of the treatment group annotation table.

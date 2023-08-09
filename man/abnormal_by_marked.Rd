@@ -26,6 +26,7 @@ a_count_abnormal_by_marked(
 count_abnormal_by_marked(
   lyt,
   var,
+  nested = TRUE,
   ...,
   .stats = NULL,
   .formats = NULL,
@@ -49,6 +50,10 @@ and last or replicated.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
 \item{...}{additional arguments for the lower level functions.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
@@ -57,7 +62,8 @@ and last or replicated.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 }
 \value{
 \itemize{
@@ -144,27 +150,6 @@ spl_context <- data.frame(
   full_parent_df = I(full_parent_df),
   cur_col_subset = I(cur_col_subset)
 )
-# Internal function - s_count_abnormal_by_marked
-\dontrun{
-s_count_abnormal_by_marked(
-  df = df_crp \%>\% filter(abn_dir == "High"),
-  .spl_context = spl_context,
-  .var = "AVALCAT1",
-  variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
-)
-}
-
-# Internal function - a_count_abnormal_by_marked
-\dontrun{
-# Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
-# so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
-afun <- make_afun(a_count_abnormal_by_marked, .ungroup_stats = "count_fraction")
-afun(
-  df = df_crp \%>\% filter(abn_dir == "High"),
-  .spl_context = spl_context,
-  variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
-)
-}
 
 map <- unique(
   df[df$abn_dir \%in\% c("Low", "High") & df$AVALCAT1 != "", c("PARAMCD", "abn_dir")]

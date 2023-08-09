@@ -7,11 +7,10 @@
 #' @import rtables ggplot2
 #' @importFrom broom tidy
 #' @importFrom formatters propose_column_widths
-#' @importFrom lifecycle badge
-#' @importFrom methods new
 #' @importFrom magrittr %>%
+#' @importFrom methods new
 #' @importFrom Rdpack reprompt
-#' @importFrom rlang .data := !!
+#' @importFrom rlang .data
 #' @importFrom survival coxph strata Surv
 #' @importFrom stats pchisq
 NULL
@@ -22,7 +21,7 @@ utils::globalVariables(c(
   "x",
   "control_coxph",
   "control_incidence_rate",
-  "control_summarize_vars",
+  "control_analyze_vars",
   "control_surv_time",
   "control_surv_timepoint"
 ))

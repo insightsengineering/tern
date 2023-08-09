@@ -11,19 +11,21 @@
 #'   between columns, therefore a row-based proportion would not make sense. Proportion based on `N_col` would
 #'   be difficult since we use counts for the chi-squared test statistic, therefore missing values should be accounted
 #'   for as explicit factor levels.
+#' * If factor variables contain `NA`, these `NA` values are excluded by default. To include `NA` values
+#'   set `na.rm = FALSE` and missing values will be displayed as an `NA` level. Alternatively, an explicit
+#'   factor level can be defined for `NA` values during pre-processing via [df_explicit_na()] - the
+#'   default `na_level` (`"<Missing>"`) will also be excluded when `na.rm` is set to `TRUE`.
 #' * For character variables, automatic conversion to factor does not guarantee that the table
 #'   will be generated correctly. In particular for sparse tables this very likely can fail.
 #'   Therefore it is always better to manually convert character variables to factors during pre-processing.
 #' * For `compare_vars()`, the column split must define a reference group via `ref_group` so that the comparison
 #'   is well defined.
-#' * When factor variables contains `NA`, it is expected that `NA` values have been conveyed to `na_level`
-#'   appropriately beforehand via [df_explicit_na()].
 #'
 #' @seealso Relevant constructor function [create_afun_compare()], and [s_summary()] which is used internally
 #'   to compute a summary within `s_compare()`.
 #'
 #' @name compare_variables
-#' @include summarize_variables.R
+#' @include analyze_variables.R
 NULL
 
 #' @describeIn compare_variables S3 generic function to produce a comparison summary.
@@ -104,24 +106,25 @@ s_compare.factor <- function(x,
                              .in_ref_col,
                              denom = "n",
                              na.rm = TRUE, # nolint
-                             na_level = "<Missing>",
                              ...) {
   checkmate::assert_flag(.in_ref_col)
-  assert_valid_factor(x, any.missing = FALSE)
-  assert_valid_factor(.ref_group, any.missing = FALSE)
+  assert_valid_factor(x)
+  assert_valid_factor(.ref_group)
   denom <- match.arg(denom)
 
   y <- s_summary.factor(
     x = x,
     denom = denom,
     na.rm = na.rm,
-    na_level = na_level,
     ...
   )
 
   if (na.rm) {
-    x <- fct_discard(x, na_level)
-    .ref_group <- fct_discard(.ref_group, na_level)
+    x <- x[!is.na(x)] %>% fct_discard("<Missing>")
+    .ref_group <- .ref_group[!is.na(.ref_group)] %>% fct_discard("<Missing>")
+  } else {
+    x <- x %>% explicit_na(label = "NA")
+    .ref_group <- .ref_group %>% explicit_na(label = "NA")
   }
 
   checkmate::assert_factor(x, levels = levels(.ref_group), min.levels = 2)
@@ -171,19 +174,17 @@ s_compare.character <- function(x,
                                 .in_ref_col,
                                 denom = "n",
                                 na.rm = TRUE, # nolint
-                                na_level = "<Missing>",
                                 .var,
                                 verbose = TRUE,
                                 ...) {
-  x <- as_factor_keep_attributes(x, x_name = .var, na_level = na_level, verbose = verbose)
-  .ref_group <- as_factor_keep_attributes(.ref_group, x_name = .var, na_level = na_level, verbose = verbose)
+  x <- as_factor_keep_attributes(x, x_name = .var, verbose = verbose)
+  .ref_group <- as_factor_keep_attributes(.ref_group, x_name = .var, verbose = verbose)
   s_compare(
     x = x,
     .ref_group = .ref_group,
     .in_ref_col = .in_ref_col,
     denom = denom,
     na.rm = na.rm,
-    na_level = na_level,
     ...
   )
 }
@@ -360,6 +361,9 @@ a_compare.logical <- make_afun(
 #' Constructor function which creates a combined formatted analysis function.
 #'
 #' @inheritParams argument_convention
+#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
+#'   for that statistic's row label.
 #'
 #' @return Combined formatted analysis function for use in [compare_vars()].
 #'
@@ -473,6 +477,9 @@ create_afun_compare <- function(.stats = NULL,
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @param ... arguments passed to `s_compare()`.
+#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
+#'   for that statistic's row label.
 #'
 #' @return
 #' * `compare_vars()` returns a layout object suitable for passing to further layouting functions,
@@ -505,6 +512,7 @@ compare_vars <- function(lyt,
                          var_labels = vars,
                          nested = TRUE,
                          ...,
+                         na_level = NA_character_,
                          show_labels = "default",
                          table_names = vars,
                          .stats = c("n", "mean_sd", "count_fraction", "pval"),
@@ -520,6 +528,7 @@ compare_vars <- function(lyt,
     afun = afun,
     nested = nested,
     extra_args = list(...),
+    na_str = na_level,
     inclNAs = TRUE,
     show_labels = show_labels,
     table_names = table_names

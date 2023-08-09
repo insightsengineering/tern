@@ -14,6 +14,7 @@ a_length_proportion(x, .N_col, ...)
 estimate_multinomial_response(
   lyt,
   var,
+  nested = TRUE,
   ...,
   show_labels = "hidden",
   table_names = var,
@@ -26,8 +27,8 @@ estimate_multinomial_response(
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is passed by \code{rtables}.}
+\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+passed by \code{rtables}.}
 
 \item{...}{additional arguments for the lower level functions.}
 
@@ -35,6 +36,10 @@ estimate_multinomial_response(
 
 \item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
@@ -47,7 +52,8 @@ to avoid warnings from \code{rtables}.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 }
 \value{
 \itemize{
@@ -112,7 +118,7 @@ tbl <- build_table(lyt, dta_test)
 
 html <- as_html(tbl)
 html
-\dontrun{
+\donttest{
 Viewer(html)
 }
 

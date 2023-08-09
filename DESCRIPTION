@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.8.2
-Date: 2023-05-03
+Version: 0.8.5.9006
+Date: 2023-08-04
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = "aut"),
@@ -16,12 +16,12 @@ Authors@R: c(
   )
 Description: Table, Listings, and Graphs (TLG) library for common outputs
     used in clinical trials.
-License: Apache License 2.0 | file LICENSE
+License: Apache License 2.0
 URL: https://github.com/insightsengineering/tern
 BugReports: https://github.com/insightsengineering/tern/issues
 Depends:
     R (>= 3.6),
-    rtables (>= 0.6.1)
+    rtables (>= 0.6.2)
 Imports:
     broom,
     car,
@@ -30,7 +30,7 @@ Imports:
     dplyr,
     emmeans (>= 1.4.5),
     forcats (>= 1.0.0),
-    formatters (>= 0.5.0),
+    formatters (>= 0.5.1),
     ggplot2 (>= 3.4.0),
     grid,
     gridExtra,
@@ -54,7 +54,8 @@ Suggests:
     nestcolor (>= 0.1.1),
     rmarkdown,
     stringr,
-    testthat (>= 3.0)
+    testthat (>= 3.0),
+    vdiffr (>= 1.0.0)
 VignetteBuilder:
     knitr
 RdMacros:
@@ -76,10 +77,10 @@ Collate:
     'abnormal_by_worst_grade_worsen.R'
     'analyze_colvars_functions.R'
     'analyze_functions.R'
+    'analyze_variables.R'
     'analyze_vars_in_cols.R'
     'argument_convention.R'
     'combination_function.R'
-    'summarize_variables.R'
     'compare_variables.R'
     'control_incidence_rate.R'
     'control_logistic.R'

@@ -7,7 +7,7 @@
 h_pkparam_sort(pk_data, key_var = "PARAMCD")
 }
 \arguments{
-\item{pk_data}{(\code{data.frame})\cr Pharmacokinetics dataframe}
+\item{pk_data}{(\code{data.frame})\cr \code{Pharmacokinetics} dataframe}
 
 \item{key_var}{(\code{character})\cr key variable used to merge pk_data and metadata created by \code{d_pkparam()}}
 }

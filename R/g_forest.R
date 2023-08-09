@@ -33,7 +33,7 @@
 #' @return `gTree` object containing the forest plot and table.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(forcats)
 #' library(nestcolor)
@@ -285,7 +285,7 @@ g_forest <- function(tbl,
 #' symbol_scale <- c(1, 1.25, 1.5)
 #'
 #' # Internal function - forest_grob
-#' \dontrun{
+#' \donttest{
 #' p <- forest_grob(tbl, x, lower, upper,
 #'   vline = 1, forest_header = c("A", "B"),
 #'   x_at = c(.1, 1, 10), xlim = c(0.1, 10), logx = TRUE, symbol_size = symbol_scale,
@@ -659,7 +659,13 @@ forest_dot_line <- function(x,
 }
 
 #' Create a Viewport Tree for the Forest Plot
-#'
+#' @param tbl (`rtable`)
+#' @param width_row_names (`grid::unit`)\cr Width of row names
+#' @param width_columns (`grid::unit`)\cr Width of column spans
+#' @param width_forest (`grid::unit`)\cr Width of the forest plot
+#' @param gap_column (`grid::unit`)\cr Gap width between the columns
+#' @param gap_header (`grid::unit`)\cr Gap width between the header
+#' @param mat_form matrix print form of the table
 #' @return A viewport tree.
 #'
 #' @examples
@@ -675,15 +681,14 @@ forest_dot_line <- function(x,
 #'   rrow("row 3", 1.2, 0.8, 1.2)
 #' )
 #'
-#' # Internal function - forest_viewport
-#' \dontrun{
+#' \donttest{
 #' v <- forest_viewport(tbl)
 #'
 #' grid::grid.newpage()
 #' showViewport(v)
 #' }
 #'
-#' @keywords internal
+#' @export
 forest_viewport <- function(tbl,
                             width_row_names = NULL,
                             width_columns = NULL,

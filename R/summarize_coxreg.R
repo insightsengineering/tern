@@ -59,13 +59,13 @@ NULL
 #'   * `pval`: p-value of the treatment effect
 #'   * `pval_inter`: p-value of the interaction effect between the treatment and the covariate (univariate only)
 #' @param .which_vars (`character`)\cr which rows should statistics be returned for from the given model.
-#'   Defaults to "all". Other options include "var_main" for main effects, "inter" for interaction effects,
-#'   and "multi_lvl" for multivariate model covariate level rows. When `.which_vars` is "all" specific
+#'   Defaults to "all". Other options include "var_main" for main effects, `"inter"` for interaction effects,
+#'   and `"multi_lvl"` for multivariate model covariate level rows. When `.which_vars` is "all" specific
 #'   variables can be selected by specifying `.var_nms`.
 #' @param .var_nms (`character`)\cr the `term` value of rows in `df` for which `.stats` should be returned. Typically
 #'   this is the name of a variable. If using variable labels, `var` should be a vector of both the desired
 #'   variable name and the variable label in that order to see all `.stats` related to that variable. When `.which_vars`
-#'   is "var_main" `.var_nms` should be only the variable name.
+#'   is `"var_main"` `.var_nms` should be only the variable name.
 #'
 #' @return
 #' * `s_coxreg()` returns the selected statistic for from the Cox regression model for the selected variable(s).
@@ -149,12 +149,16 @@ s_coxreg <- function(model_df, .stats, .which_vars = "all", .var_nms = NULL) {
 #' @param na_level (`string`)\cr custom string to replace all `NA` values with. Defaults to `""`.
 #' @param cache_env (`environment`)\cr an environment object used to cache the regression model in order to
 #'   avoid repeatedly fitting the same model for every row in the table. Defaults to `NULL` (no caching).
+#' @param varlabels (`list`)\cr a named list corresponds to the names of variables found in data, passed
+#'   as a named list and corresponding to time, event, arm, strata, and covariates terms. If arm is missing
+#'   from variables, then only Cox model(s) including the covariates will be fitted and the corresponding
+#'   effect estimates will be tabulated later.
 #'
 #' @return
 #' * `a_coxreg()` returns formatted [rtables::CellValue()].
 #'
 #' @examples
-#' tern:::a_coxreg(
+#' a_coxreg(
 #'   df = dta_bladder,
 #'   labelstr = "Label 1",
 #'   variables = u1_variables,
@@ -163,7 +167,7 @@ s_coxreg <- function(model_df, .stats, .which_vars = "all", .var_nms = NULL) {
 #'   .formats = "xx"
 #' )
 #'
-#' tern:::a_coxreg(
+#' a_coxreg(
 #'   df = dta_bladder,
 #'   labelstr = "",
 #'   variables = u1_variables,
@@ -172,7 +176,7 @@ s_coxreg <- function(model_df, .stats, .which_vars = "all", .var_nms = NULL) {
 #'   .formats = "xx.xxxx"
 #' )
 #'
-#' @keywords internal
+#' @export
 a_coxreg <- function(df,
                      labelstr,
                      eff = FALSE,
@@ -184,12 +188,17 @@ a_coxreg <- function(df,
                      .spl_context,
                      .stats,
                      .formats,
+                     .indent_mods = NULL,
                      na_level = "",
                      cache_env = NULL) {
   cov_no_arm <- !multivar && !"arm" %in% names(variables) && control$interaction # special case: univar no arm
   cov <- tail(.spl_context$value, 1) # current variable/covariate
   var_lbl <- formatters::var_labels(df)[cov] # check for df labels
-  if (!is.na(var_lbl) && labelstr == cov && cov %in% variables$covariates) labelstr <- var_lbl # use df labels if none
+  if (length(labelstr) > 1) {
+    labelstr <- if (cov %in% names(labelstr)) labelstr[[cov]] else var_lbl # use df labels if none
+  } else if (!is.na(var_lbl) && labelstr == cov && cov %in% variables$covariates) {
+    labelstr <- var_lbl
+  }
   if (eff || multivar || cov_no_arm) {
     control$interaction <- FALSE
   } else {
@@ -244,7 +253,7 @@ a_coxreg <- function(df,
     names(var_vals)
   }
   in_rows(
-    .list = var_vals, .names = var_names, .labels = var_names,
+    .list = var_vals, .names = var_names, .labels = var_names, .indent_mods = .indent_mods,
     .formats = stats::setNames(rep(.formats, length(var_names)), var_names),
     .format_na_strs = stats::setNames(rep(na_level, length(var_names)), var_names)
   )
@@ -350,7 +359,7 @@ summarize_coxreg <- function(lyt,
       vars = rep(common_var, length(.stats)),
       varlabels = stat_labels,
       extra_args = list(
-        .stats = .stats, .formats = .formats, na_level = rep(na_level, length(.stats)),
+        .stats = .stats, .formats = .formats, .indent_mods = .indent_mods, na_level = rep(na_level, length(.stats)),
         cache_env = replicate(length(.stats), list(env))
       )
     )
@@ -361,19 +370,29 @@ summarize_coxreg <- function(lyt,
         common_var,
         split_label = "Treatment:",
         label_pos = "visible",
+        child_labels = "hidden",
         section_div = head(.section_div, 1)
-      ) %>%
-      summarize_row_groups(
-        cfun = a_coxreg,
-        extra_args = list(
-          variables = variables, control = control, multivar = multivar, eff = TRUE, var_main = multivar
-        )
       )
-    if (multivar) { # treatment level effects
+    if (!multivar) {
       lyt <- lyt %>%
         analyze_colvars(
           afun = a_coxreg,
-          extra_args = list(eff = TRUE, control = control, variables = variables, multivar = multivar)
+          extra_args = list(
+            variables = variables, control = control, multivar = multivar, eff = TRUE, var_main = multivar,
+            labelstr = ""
+          )
+        )
+    } else { # treatment level effects
+      lyt <- lyt %>%
+        summarize_row_groups(
+          cfun = a_coxreg,
+          extra_args = list(
+            variables = variables, control = control, multivar = multivar, eff = TRUE, var_main = multivar
+          )
+        ) %>%
+        analyze_colvars(
+          afun = a_coxreg,
+          extra_args = list(eff = TRUE, control = control, variables = variables, multivar = multivar, labelstr = "")
         )
     }
   }
@@ -385,15 +404,31 @@ summarize_coxreg <- function(lyt,
         varlabels = varlabels,
         split_label = "Covariate:",
         nested = FALSE,
+        child_labels = if (multivar || control$interaction || !"arm" %in% names(variables)) "default" else "hidden",
         section_div = tail(.section_div, 1)
-      ) %>%
-      summarize_row_groups(
-        cfun = a_coxreg,
-        extra_args = list(
-          variables = variables, at = at, control = control, multivar = multivar,
-          var_main = if (multivar) multivar else control$interaction
-        )
       )
+    if (multivar || control$interaction || !"arm" %in% names(variables)) {
+      lyt <- lyt %>%
+        summarize_row_groups(
+          cfun = a_coxreg,
+          extra_args = list(
+            variables = variables, at = at, control = control, multivar = multivar,
+            var_main = if (multivar) multivar else control$interaction
+          )
+        )
+    } else {
+      if (!is.null(varlabels)) names(varlabels) <- variables$covariates
+      lyt <- lyt %>%
+        analyze_colvars(
+          afun = a_coxreg,
+          extra_args = list(
+            variables = variables, at = at, control = control, multivar = multivar,
+            var_main = if (multivar) multivar else control$interaction,
+            labelstr = if (is.null(varlabels)) "" else varlabels
+          )
+        )
+    }
+
     if (!"arm" %in% names(variables)) control$interaction <- TRUE # special case: univar no arm
     if (multivar || control$interaction) { # covariate level effects
       lyt <- lyt %>%

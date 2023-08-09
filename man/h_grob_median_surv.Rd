@@ -9,17 +9,20 @@ h_grob_median_surv(
   armval = "All",
   x = 0.9,
   y = 0.9,
+  width = grid::unit(0.3, "npc"),
   ttheme = gridExtra::ttheme_default()
 )
 }
 \arguments{
 \item{fit_km}{(\code{survfit})\cr result of \code{\link[survival:survfit]{survival::survfit()}}.}
 
-\item{armval}{(\code{string})\cr used as strata name when treatment arm variable only has one level. Default is "All".}
+\item{armval}{(\code{string})\cr used as strata name when treatment arm variable only has one level. Default is \code{"All"}.}
 
 \item{x}{(\code{numeric})\cr a value between 0 and 1 specifying x-location.}
 
 \item{y}{(\code{numeric})\cr a value between 0 and 1 specifying y-location.}
+
+\item{width}{(\code{unit})\cr width (as a unit) to use when printing the grob.}
 
 \item{ttheme}{(\code{list})\cr see \code{\link[gridExtra:tableGrob]{gridExtra::ttheme_default()}}.}
 }
@@ -33,7 +36,7 @@ The survival fit is transformed in a grob containing a table with groups in
 rows characterized by N, median and 95\% confidence interval.
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(survival)
 library(grid)

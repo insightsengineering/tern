@@ -87,3 +87,21 @@
       ————————————————————————————————————————————————
       Total patients numbers/person time   12 (100.0%)
 
+# patients_exposure_in_cols works with totals after the row split
+
+    Code
+      res
+    Output
+      Extent of Exposure
+      
+      ——————————————————————————————————————
+                    Patients     Person time
+      Sex            (N=12)        (N=12)   
+      ——————————————————————————————————————
+      Female        6 (50.0%)        16     
+      Male          6 (50.0%)        19     
+      REAL TOTAL   12 (100.0%)       35     
+      ——————————————————————————————————————
+      
+      * Patient Time is the sum of patients and times
+

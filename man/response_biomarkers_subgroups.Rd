@@ -7,7 +7,8 @@
 \usage{
 tabulate_rsp_biomarkers(
   df,
-  vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval")
+  vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
+  .indent_mods = 0L
 )
 }
 \arguments{
@@ -24,6 +25,9 @@ tabulate_rsp_biomarkers(
 \item \code{pval}: p-value of the effect.
 Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.
 }}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 }
 \value{
 An \code{rtables} table summarizing biomarker effects on binary response by subgroup.
@@ -54,9 +58,19 @@ adrs_f <- adrs \%>\%
   filter(PARAMCD == "BESRSPI") \%>\%
   mutate(rsp = AVALC == "CR")
 formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
-\dontrun{
+
+df <- extract_rsp_biomarkers(
+  variables = list(
+    rsp = "rsp",
+    biomarkers = c("BMRKR1", "AGE"),
+    covariates = "SEX",
+    subgroups = "BMRKR2"
+  ),
+  data = adrs_f
+)
+
+\donttest{
 ## Table with default columns.
-# df <- <need_data_input_to_work>
 tabulate_rsp_biomarkers(df)
 
 ## Table with a manually chosen set of columns: leave out "pval", reorder.

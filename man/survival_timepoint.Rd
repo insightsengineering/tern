@@ -48,6 +48,7 @@ a_surv_timepoint_diff(
 surv_timepoint(
   lyt,
   vars,
+  nested = TRUE,
   ...,
   table_names_suffix = "",
   var_labels = "Time",
@@ -57,7 +58,12 @@ surv_timepoint(
     "ztest_pval"),
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL
+  .indent_mods = if (method == "both") {
+     c(rate_diff = 1L, rate_diff_ci = 2L,
+    ztest_pval = 2L)
+ } else {
+     c(rate_diff_ci = 1L, ztest_pval = 1L)
+ }
 )
 }
 \arguments{
@@ -89,6 +95,10 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "no
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
 \item{table_names_suffix}{(\code{string})\cr optional suffix for the \code{table_names} used for the \code{rtables} to
 avoid warnings from duplicate table names.}
 
@@ -105,7 +115,9 @@ avoid warnings from duplicate table names.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
+should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
+for that statistic's row label.}
 }
 \value{
 \itemize{
@@ -175,43 +187,8 @@ adtte_f <- tern_ex_adtte \%>\%
 df <- adtte_f \%>\%
   filter(ARMCD == "ARM A")
 
-# Internal function - s_surv_timepoint
-\dontrun{
-s_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
-}
-
-# Internal function - a_surv_timepoint
-\dontrun{
-a_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
-}
-
 df_ref_group <- adtte_f \%>\%
   filter(ARMCD == "ARM B")
-
-# Internal function - s_surv_timepoint_diff
-\dontrun{
-s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
-s_surv_timepoint_diff(
-  df,
-  df_ref_group,
-  .in_ref_col = FALSE,
-  .var = "AVAL",
-  time_point = 7,
-  is_event = "is_event"
-)
-}
-
-# Internal function - a_surv_timepoint_diff
-\dontrun{
-a_surv_timepoint_diff(
-  df,
-  df_ref_group,
-  .in_ref_col = FALSE,
-  .var = "AVAL",
-  time_point = 7,
-  is_event = "is_event"
-)
-}
 
 # Survival at given time points.
 basic_table() \%>\%

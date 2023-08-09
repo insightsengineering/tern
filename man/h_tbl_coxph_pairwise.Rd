@@ -2,7 +2,7 @@
 % Please edit documentation in R/kaplan_meier_plot.R
 \name{h_tbl_coxph_pairwise}
 \alias{h_tbl_coxph_pairwise}
-\title{Helper Function: Pairwise CoxPH table}
+\title{Helper Function: Pairwise \code{CoxPH} table}
 \usage{
 h_tbl_coxph_pairwise(df, variables, control_coxph_pw = control_coxph())
 }
@@ -21,9 +21,9 @@ h_tbl_coxph_pairwise(df, variables, control_coxph_pw = control_coxph())
 the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are:
 \itemize{
 \item \code{pval_method} (\code{string})\cr p-value method for testing hazard ratio = 1.
-Default method is "log-rank", can also be set to "wald" or "likelihood".
-\item \code{ties} (\code{string})\cr method for tie handling. Default is "efron",
-can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]{survival::coxph()}}
+Default method is \code{"log-rank"}, can also be set to \code{"wald"} or \code{"likelihood"}.
+\item \code{ties} (\code{string})\cr method for tie handling. Default is \code{"efron"},
+can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[survival:coxph]{survival::coxph()}}
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
 }}
 }
@@ -34,10 +34,10 @@ and \code{p-value (log-rank)}.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Create a \code{data.frame} of pairwise stratified or unstratified CoxPH analysis results.
+Create a \code{data.frame} of pairwise stratified or unstratified \code{CoxPH} analysis results.
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 
 adtte <- tern_ex_adtte \%>\%

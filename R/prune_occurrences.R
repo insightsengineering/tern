@@ -12,13 +12,13 @@
 #'   should be pruned, to conform with the [rtables::prune_table()] interface.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' tab <- basic_table() %>%
 #'   split_cols_by("ARM") %>%
 #'   split_rows_by("RACE") %>%
 #'   split_rows_by("STRATA1") %>%
 #'   summarize_row_groups() %>%
-#'   summarize_vars("COUNTRY", .stats = "count_fraction") %>%
+#'   analyze_vars("COUNTRY", .stats = "count_fraction") %>%
 #'   build_table(DM)
 #' }
 #'
@@ -38,7 +38,7 @@ NULL
 #'   to prune an `rtables` table.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # `keep_rows`
 #' is_non_empty <- !CombinationFunction(all_zero_or_na)
 #' prune_table(tab, keep_rows(is_non_empty))
@@ -70,8 +70,7 @@ keep_rows <- function(row_condition) {
 #'
 #' @examples
 #' # `keep_content_rows`
-#' # Internal function - has_count_in_cols
-#' \dontrun{
+#' \donttest{
 #' more_than_twenty <- has_count_in_cols(atleast = 20L, col_names = names(tab))
 #' prune_table(tab, keep_content_rows(more_than_twenty))
 #' }
@@ -95,7 +94,7 @@ keep_content_rows <- function(content_row_condition) {
 #' @describeIn prune_occurrences Constructor for creating condition functions on total counts in the specified columns.
 #'
 #' @param atleast (`count` or `proportion`)\cr threshold which should be met in order to keep the row.
-#' @param ... arguments for row or column access, see [rtables_access]: either `col_names` (`character`) including
+#' @param ... arguments for row or column access, see [`rtables_access`]: either `col_names` (`character`) including
 #'   the names of the columns which should be used, or alternatively `col_indices` (`integer`) giving the indices
 #'   directly instead.
 #'
@@ -103,13 +102,12 @@ keep_content_rows <- function(content_row_condition) {
 #' * `has_count_in_cols()` returns a condition function that sums the counts in the specified column.
 #'
 #' @examples
-#' # Internal function - has_count_in_cols
-#' \dontrun{
+#' \donttest{
 #' more_than_one <- has_count_in_cols(atleast = 1L, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_one))
 #' }
 #'
-#' @keywords internal
+#' @export
 has_count_in_cols <- function(atleast, ...) {
   checkmate::assert_count(atleast)
   CombinationFunction(function(table_row) {
@@ -129,7 +127,7 @@ has_count_in_cols <- function(atleast, ...) {
 #'   specified columns with the threshold.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # `has_count_in_any_col`
 #' any_more_than_one <- has_count_in_any_col(atleast = 1L, col_names = names(tab))
 #' prune_table(tab, keep_rows(any_more_than_one))
@@ -152,7 +150,7 @@ has_count_in_any_col <- function(atleast, ...) {
 #'   specified column, and computes the fraction by dividing by the total column counts.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # `has_fraction_in_cols`
 #' more_than_five_percent <- has_fraction_in_cols(atleast = 0.05, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_five_percent))
@@ -179,7 +177,7 @@ has_fraction_in_cols <- function(atleast, ...) {
 #'  in the specified columns and checks whether any of them fulfill the threshold.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # `has_fraction_in_any_col`
 #' any_atleast_five_percent <- has_fraction_in_any_col(atleast = 0.05, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_five_percent))
@@ -202,7 +200,7 @@ has_fraction_in_any_col <- function(atleast, ...) {
 #'   specified column, and computes the difference of the minimum and maximum.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # `has_fractions_difference`
 #' more_than_five_percent_diff <- has_fractions_difference(atleast = 0.05, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_five_percent_diff))
@@ -226,13 +224,12 @@ has_fractions_difference <- function(atleast, ...) {
 #'   specified column, and computes the difference of the minimum and maximum.
 #'
 #' @examples
-#' # Internal function - has_counts_difference
-#' \dontrun{
+#' \donttest{
 #' more_than_one_diff <- has_counts_difference(atleast = 1L, col_names = names(tab))
 #' prune_table(tab, keep_rows(more_than_one_diff))
 #' }
 #'
-#' @keywords internal
+#' @export
 has_counts_difference <- function(atleast, ...) {
   checkmate::assert_count(atleast)
   CombinationFunction(function(table_row) {

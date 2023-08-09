@@ -78,13 +78,14 @@
 #' @export
 summarize_logistic <- function(lyt,
                                conf_level,
-                               drop_and_remove_str = "") {
+                               drop_and_remove_str = "",
+                               .indent_mods = NULL) {
   # checks
   checkmate::assert_string(drop_and_remove_str)
 
   sum_logistic_variable_test <- logistic_summary_by_flag("is_variable_summary")
-  sum_logistic_term_estimates <- logistic_summary_by_flag("is_term_summary")
-  sum_logistic_odds_ratios <- logistic_summary_by_flag("is_reference_summary")
+  sum_logistic_term_estimates <- logistic_summary_by_flag("is_term_summary", .indent_mods = .indent_mods)
+  sum_logistic_odds_ratios <- logistic_summary_by_flag("is_reference_summary", .indent_mods = .indent_mods)
   split_fun <- drop_and_remove_levels(drop_and_remove_str)
 
   lyt <- logistic_regression_cols(lyt, conf_level = conf_level)
@@ -214,7 +215,7 @@ fit_logistic <- function(data,
 #'
 #' @inheritParams argument_convention
 #' @param at (`NULL` or `numeric`)\cr optional values for the interaction variable. Otherwise the median is used.
-#' @param fit_glm logistic regression model fitted by [stats::glm()] with "binomial" family.
+#' @param x logistic regression model fitted by [stats::glm()] with "binomial" family.
 #'
 #' @return A `data.frame` containing the tidied model.
 #'
@@ -257,25 +258,26 @@ fit_logistic <- function(data,
 #' df2 <- tidy(mod2, conf_level = 0.99)
 #'
 #' @export
-tidy.glm <- function(fit_glm, # nolint
+tidy.glm <- function(x, # nolint
                      conf_level = 0.95,
-                     at = NULL) {
-  checkmate::assert_class(fit_glm, "glm")
-  checkmate::assert_set_equal(fit_glm$family$family, "binomial")
+                     at = NULL,
+                     ...) {
+  checkmate::assert_class(x, "glm")
+  checkmate::assert_set_equal(x$family$family, "binomial")
 
-  terms_name <- attr(stats::terms(fit_glm), "term.labels")
-  xs_class <- attr(fit_glm$terms, "dataClasses")
+  terms_name <- attr(stats::terms(x), "term.labels")
+  xs_class <- attr(x$terms, "dataClasses")
   interaction <- terms_name[which(!terms_name %in% names(xs_class))]
   df <- if (length(interaction) == 0) {
     h_logistic_simple_terms(
       x = terms_name,
-      fit_glm = fit_glm,
+      fit_glm = x,
       conf_level = conf_level
     )
   } else {
     h_logistic_inter_terms(
       x = terms_name,
-      fit_glm = fit_glm,
+      fit_glm = x,
       conf_level = conf_level,
       at = at
     )
@@ -325,22 +327,23 @@ logistic_regression_cols <- function(lyt,
 #' Constructor for content functions to be used in [`summarize_logistic()`] to summarize
 #' logistic regression results. This function is a wrapper for [rtables::summarize_row_groups()].
 #'
+#' @inheritParams argument_convention
 #' @param flag_var (`string`)\cr variable name identifying which row should be used in this
 #'   content function.
 #'
 #' @return A content function.
 #'
 #' @export
-logistic_summary_by_flag <- function(flag_var) {
+logistic_summary_by_flag <- function(flag_var, .indent_mods = NULL) {
   checkmate::assert_string(flag_var)
   function(lyt) {
     cfun_list <- list(
-      df = cfun_by_flag("df", flag_var, format = "xx."),
-      estimate = cfun_by_flag("estimate", flag_var, format = "xx.xxx"),
-      std_error = cfun_by_flag("std_error", flag_var, format = "xx.xxx"),
-      odds_ratio = cfun_by_flag("odds_ratio", flag_var, format = ">999.99"),
-      ci = cfun_by_flag("ci", flag_var, format = format_extreme_values_ci(2L)),
-      pvalue = cfun_by_flag("pvalue", flag_var, format = "x.xxxx | (<0.0001)")
+      df = cfun_by_flag("df", flag_var, format = "xx.", .indent_mods = .indent_mods),
+      estimate = cfun_by_flag("estimate", flag_var, format = "xx.xxx", .indent_mods = .indent_mods),
+      std_error = cfun_by_flag("std_error", flag_var, format = "xx.xxx", .indent_mods = .indent_mods),
+      odds_ratio = cfun_by_flag("odds_ratio", flag_var, format = ">999.99", .indent_mods = .indent_mods),
+      ci = cfun_by_flag("ci", flag_var, format = format_extreme_values_ci(2L), .indent_mods = .indent_mods),
+      pvalue = cfun_by_flag("pvalue", flag_var, format = "x.xxxx | (<0.0001)", .indent_mods = .indent_mods)
     )
     summarize_row_groups(
       lyt = lyt,

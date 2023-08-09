@@ -24,6 +24,7 @@ a_count_abnormal_by_worst_grade(
 count_abnormal_by_worst_grade(
   lyt,
   var,
+  nested = TRUE,
   ...,
   .stats = NULL,
   .formats = NULL,
@@ -44,6 +45,10 @@ that is passed by \code{rtables}.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
 \item{...}{additional arguments for the lower level functions.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
@@ -52,7 +57,8 @@ that is passed by \code{rtables}.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 }
 \value{
 \itemize{
@@ -155,23 +161,6 @@ spl_context <- data.frame(
   full_parent_df = I(full_parent_df),
   cur_col_subset = I(cur_col_subset)
 )
-
-# Internal function - s_count_abnormal_by_worst_grade
-\dontrun{
-s_count_abnormal_by_worst_grade(
-  df = adlb_f_alt,
-  .spl_context = spl_context,
-  .var = "GRADE_ANL"
-)
-}
-
-# Internal function - a_count_abnormal_by_worst_grade
-\dontrun{
-# Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
-# so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
-afun <- make_afun(a_count_abnormal_by_worst_grade, .ungroup_stats = "count_fraction")
-afun(df = adlb_f_alt, .spl_context = spl_context)
-}
 
 # Map excludes records without abnormal grade since they should not be displayed
 # in the table.

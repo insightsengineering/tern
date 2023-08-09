@@ -121,3 +121,16 @@
         M                            26.00 (44.83%)   31.00 (44.93%)   33.00 (45.21%)
         p-value (chi-squared test)                        1.0000           1.0000    
 
+# compare_vars 'na_level' argument works as expected
+
+    Code
+      res
+    Output
+                                     ARM B       ARM A       ARM C  
+      ——————————————————————————————————————————————————————————————
+      n                               73          69          58    
+      A: Drug X                        0       69 (100%)       0    
+      B: Placebo                   73 (100%)       0           0    
+      C: Combination                   0           0       58 (100%)
+      p-value (chi-squared test)                   -           -    
+

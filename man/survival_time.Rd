@@ -14,13 +14,15 @@ a_surv_time(df, .var, is_event, control = control_surv_time())
 surv_time(
   lyt,
   vars,
+  nested = TRUE,
   ...,
   var_labels = "Time to Event",
   table_names = vars,
   .stats = c("median", "median_ci", "quantiles", "range_censor", "range_event"),
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL
+  .indent_mods = c(median = 0L, median_ci = 1L, quantiles = 0L, range_censor = 0L,
+    range_event = 0L, range = 0L)
 )
 }
 \arguments{
@@ -44,6 +46,10 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "no
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
 \item{...}{additional arguments for the lower level functions.}
 
 \item{var_labels}{(\code{character})\cr character for label.}
@@ -57,7 +63,9 @@ to avoid warnings from \code{rtables}.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
+should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
+for that statistic's row label.}
 }
 \value{
 \itemize{
@@ -108,16 +116,6 @@ adtte_f <- tern_ex_adtte \%>\%
     is_event = CNSR == 0
   )
 df <- adtte_f \%>\% filter(ARMCD == "ARM A")
-
-# Internal function - s_surv_time
-\dontrun{
-s_surv_time(df, .var = "AVAL", is_event = "is_event")
-}
-
-# Internal function - a_surv_time
-\dontrun{
-a_surv_time(df, .var = "AVAL", is_event = "is_event")
-}
 
 basic_table() \%>\%
   split_cols_by(var = "ARMCD") \%>\%

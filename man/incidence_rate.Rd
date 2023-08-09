@@ -26,6 +26,7 @@ a_incidence_rate(
 estimate_incidence_rate(
   lyt,
   vars,
+  nested = TRUE,
   ...,
   show_labels = "hidden",
   table_names = vars,
@@ -51,14 +52,18 @@ the helper function \code{\link[=control_incidence_rate]{control_incidence_rate(
 \item \code{conf_level} (\code{proportion})\cr confidence level for the estimated incidence rate.
 \item \code{conf_type} (\code{string})\cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
 for confidence interval type.
-\item \code{time_unit_input} (\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
+\item \code{input_time_unit} (\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
 indicating time unit for data input.
-\item \code{time_unit_output} (\code{numeric})\cr time unit for desired output (in person-years).
+\item \code{num_pt_year} (\code{numeric})\cr time unit for desired output (in person-years).
 }}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 
@@ -73,7 +78,8 @@ to avoid warnings from \code{rtables}.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 
 \item{person_years}{(\code{numeric})\cr total person-years at risk.}
 
@@ -130,29 +136,6 @@ df <- data.frame(
   mutate(is_event = CNSR == 0) \%>\%
   mutate(n_events = as.integer(is_event))
 
-# Internal function - s_incidence_rate
-\dontrun{
-s_incidence_rate(
-  df,
-  .var = "AVAL",
-  n_events = "n_events",
-  control = control_incidence_rate(
-    time_unit_input = "month",
-    time_unit_output = 100
-  )
-)
-}
-
-# Internal function - a_incidence_rate
-\dontrun{
-a_incidence_rate(
-  df,
-  .var = "AVAL",
-  n_events = "n_events",
-  control = control_incidence_rate(time_unit_input = "month", time_unit_output = 100)
-)
-}
-
 basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   add_colcounts() \%>\%
@@ -160,8 +143,8 @@ basic_table() \%>\%
     vars = "AVAL",
     n_events = "n_events",
     control = control_incidence_rate(
-      time_unit_input = "month",
-      time_unit_output = 100
+      input_time_unit = "month",
+      num_pt_year = 100
     )
   ) \%>\%
   build_table(df)

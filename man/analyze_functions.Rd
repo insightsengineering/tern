@@ -28,8 +28,14 @@ to add an analysis to a given table layout:
 \item \code{\link[=estimate_proportion]{estimate_proportion()}}
 \item \code{\link[=estimate_proportion_diff]{estimate_proportion_diff()}}
 \item \code{\link[=summarize_ancova]{summarize_ancova()}}
+\item \code{\link[=summarize_colvars]{summarize_colvars()}}: even if this function uses \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}},
+it applies the analysis methods as different rows for one or more
+variables that are split into different columns. In comparison, \link{analyze_colvars_functions}
+leverage \code{analyze_colvars} to have the context split in rows and the analysis
+methods in columns.
 \item \code{\link[=summarize_change]{summarize_change()}}
-\item \code{\link[=summarize_vars]{summarize_vars()}}
+\item \code{\link[=analyze_vars]{analyze_vars()}}: formerly known as \code{\link[=summarize_vars]{summarize_vars()}}, it was renamed to reflect
+core function \code{\link[rtables:analyze]{rtables::analyze()}}.
 \item \code{\link[=surv_time]{surv_time()}}
 \item \code{\link[=surv_timepoint]{surv_timepoint()}}
 \item \code{\link[=test_proportion_diff]{test_proportion_diff()}}

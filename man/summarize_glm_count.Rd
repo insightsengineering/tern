@@ -38,6 +38,7 @@ summarize_glm_count(
   lyt,
   vars,
   var_labels,
+  nested = TRUE,
   ...,
   show_labels = "visible",
   table_names = vars,
@@ -69,6 +70,10 @@ by a statistics function.}
 
 \item{var_labels}{(\code{character})\cr character for label.}
 
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
 \item{...}{additional arguments for the lower level functions.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
@@ -82,7 +87,8 @@ to avoid warnings from \code{rtables}.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 }
 \value{
 \itemize{
@@ -125,36 +131,6 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 
 }}
 \examples{
-# Internal function - s_change_from_baseline
-\dontrun{
-s_glm_count(
-  df = anl \%>\%
-    filter(ARMCD == "ARM B"),
-  .df_row = anl,
-  .var = "AVAL",
-  .in_ref_col = TRUE,
-  variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
-  conf_level = 0.95,
-  distribution = "quasipoisson",
-  rate_mean_method = "ppmeans"
-)
-}
-
-# Internal function - s_change_from_baseline
-\dontrun{
-a_glm_count(
-  df = anl \%>\%
-    filter(ARMCD == "ARM A"),
-  .var = "AVAL",
-  .df_row = anl,
-  variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
-  .ref_group = "ARM B", .in_ref_col = TRUE,
-  conf_level = 0.95,
-  distribution = "poisson",
-  rate_mean_method = "ppmeans"
-)
-}
-
 library(dplyr)
 anl <- tern_ex_adtte \%>\% filter(PARAMCD == "TNE")
 anl$AVAL_f <- as.factor(anl$AVAL)
@@ -162,7 +138,7 @@ anl$AVAL_f <- as.factor(anl$AVAL)
 lyt <- basic_table() \%>\%
   split_cols_by("ARM", ref_group = "B: Placebo") \%>\%
   add_colcounts() \%>\%
-  summarize_vars(
+  analyze_vars(
     "AVAL_f",
     var_labels = "Number of exacerbations per patient",
     .stats = c("count_fraction"),

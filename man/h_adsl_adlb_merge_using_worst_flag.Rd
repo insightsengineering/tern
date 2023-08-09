@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_adsl_adlb_merge_using_worst_flag.R
 \name{h_adsl_adlb_merge_using_worst_flag}
 \alias{h_adsl_adlb_merge_using_worst_flag}
-\title{Helper Function for Deriving Analysis Datasets for LBT13 and LBT14}
+\title{Helper Function for Deriving Analysis Datasets for \code{LBT13} and \code{LBT14}}
 \usage{
 h_adsl_adlb_merge_using_worst_flag(
   adsl,

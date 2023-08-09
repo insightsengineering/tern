@@ -42,16 +42,6 @@ NULL
 #' @return
 #' * `h_glm_poisson()` returns the results of a Poisson model.
 #'
-#' @examples
-#' # Internal function - h_glm_poisson
-#' \dontrun{
-#' h_glm_poisson(
-#'   .var = "AVAL",
-#'   .df_row = anl,
-#'   variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = NULL)
-#' )
-#' }
-#'
 #' @keywords internal
 h_glm_poisson <- function(.var,
                           .df_row,
@@ -98,15 +88,6 @@ h_glm_poisson <- function(.var,
 #' @return
 #' * `h_glm_quasipoisson()` returns the results of a Quasi-Poisson model.
 #'
-#' @examples
-#' # Internal function - h_glm_quasipoisson
-#' \dontrun{
-#' h_glm_quasipoisson(
-#'   .var = "AVAL",
-#'   .df_row = adtte,
-#'   variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = c("REGION1"))
-#' )
-#' }
 #'
 #' @keywords internal
 h_glm_quasipoisson <- function(.var,
@@ -167,16 +148,6 @@ h_glm_quasipoisson <- function(.var,
 #' @return
 #' * `h_glm_count()` returns the results of the selected model.
 #'
-#' @examples
-#' # Internal function - h_glm_count
-#' \dontrun{
-#' h_glm_count(
-#'   .var = "AVAL",
-#'   .df_row = anl,
-#'   variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = NULL),
-#'   distribution = "poisson"
-#' )
-#' }
 #'
 #' @keywords internal
 h_glm_count <- function(.var,
@@ -205,23 +176,6 @@ h_glm_count <- function(.var,
 #' @return
 #' * `h_ppmeans()` returns the estimated means.
 #'
-#' @examples
-#' # Internal function - h_ppmeans
-#' \dontrun{
-#' fits <- h_glm_count(
-#'   .var = "AVAL",
-#'   .df_row = anl,
-#'   variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
-#'   distribution = "quasipoisson"
-#' )
-#'
-#' h_ppmeans(
-#'   obj = fits$glm_fit,
-#'   .df_row = anl,
-#'   arm = "ARM",
-#'   conf_level = 0.95
-#' )
-#' }
 #'
 #' @keywords internal
 h_ppmeans <- function(obj, .df_row, arm, conf_level) {
@@ -274,21 +228,6 @@ h_ppmeans <- function(obj, .df_row, arm, conf_level) {
 #'   * `rate_ratio_ci`: Confidence level for the rate ratio.
 #'   * `pval`: p-value.
 #'
-#' @examples
-#' # Internal function - s_change_from_baseline
-#' \dontrun{
-#' s_glm_count(
-#'   df = anl %>%
-#'     filter(ARMCD == "ARM B"),
-#'   .df_row = anl,
-#'   .var = "AVAL",
-#'   .in_ref_col = TRUE,
-#'   variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
-#'   conf_level = 0.95,
-#'   distribution = "quasipoisson",
-#'   rate_mean_method = "ppmeans"
-#' )
-#' }
 #'
 #' @keywords internal
 s_glm_count <- function(df,
@@ -384,21 +323,6 @@ s_glm_count <- function(df,
 #' @return
 #' * `a_glm_count()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @examples
-#' # Internal function - s_change_from_baseline
-#' \dontrun{
-#' a_glm_count(
-#'   df = anl %>%
-#'     filter(ARMCD == "ARM A"),
-#'   .var = "AVAL",
-#'   .df_row = anl,
-#'   variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
-#'   .ref_group = "ARM B", .in_ref_col = TRUE,
-#'   conf_level = 0.95,
-#'   distribution = "poisson",
-#'   rate_mean_method = "ppmeans"
-#' )
-#' }
 #'
 #' @keywords internal
 a_glm_count <- make_afun(
@@ -438,7 +362,7 @@ a_glm_count <- make_afun(
 #' lyt <- basic_table() %>%
 #'   split_cols_by("ARM", ref_group = "B: Placebo") %>%
 #'   add_colcounts() %>%
-#'   summarize_vars(
+#'   analyze_vars(
 #'     "AVAL_f",
 #'     var_labels = "Number of exacerbations per patient",
 #'     .stats = c("count_fraction"),
@@ -476,6 +400,7 @@ a_glm_count <- make_afun(
 summarize_glm_count <- function(lyt,
                                 vars,
                                 var_labels,
+                                nested = TRUE,
                                 ...,
                                 show_labels = "visible",
                                 table_names = vars,
@@ -498,6 +423,7 @@ summarize_glm_count <- function(lyt,
     show_labels = show_labels,
     table_names = table_names,
     afun = afun,
+    nested = nested,
     extra_args = list(...)
   )
 }

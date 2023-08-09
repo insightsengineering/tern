@@ -14,7 +14,7 @@ testthat::test_that("g_lineplot works with custom settings and statistics table"
     strata = control_lineplot_vars(strata = NULL),
     mid = "median",
     table = c("n", "mean", "mean_ci"),
-    control = control_summarize_vars(conf_level = 0.80),
+    control = control_analyze_vars(conf_level = 0.80),
     title = "Plot of Mean and 80% Confidence Limits by Visit",
     y_lab = "Lab Test",
     subtitle = "Laboratory Test:",

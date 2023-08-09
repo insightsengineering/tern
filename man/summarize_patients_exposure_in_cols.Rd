@@ -23,6 +23,7 @@ a_count_patients_sum_exposure(
   ex_var = "AVAL",
   id = "USUBJID",
   labelstr = "",
+  add_total_level = FALSE,
   .N_col,
   .stats,
   .formats = list(n_patients = "xx (xx.x\%)", sum_exposure = "xx"),
@@ -44,9 +45,11 @@ analyze_patients_exposure_in_cols(
   var = NULL,
   ex_var = "AVAL",
   col_split = TRUE,
+  add_total_level = FALSE,
   .stats = c("n_patients", "sum_exposure"),
   .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
-  .indent_mods = 0L
+  .indent_mods = 0L,
+  ...
 )
 }
 \arguments{
@@ -57,17 +60,21 @@ analyze_patients_exposure_in_cols(
 \item{id}{(\code{string})\cr subject variable name.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
-(must be present as second argument in Content Row Functions).}
+(must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
+for more information.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
-\item{.N_col}{(\code{count})\cr row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is passed by \code{rtables}.}
+\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+passed by \code{rtables}.}
 
 \item{custom_label}{(\code{string} or \code{NULL})\cr if provided and \code{labelstr} is empty then this will be used as label.}
 
 \item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
+
+\item{add_total_level}{(\code{flag})\cr adds a "total" level after the others which includes all the levels
+that constitute the split. A custom label can be set for this level via the \code{custom_label} argument.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
 
@@ -77,7 +84,8 @@ by a statistics function.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 
 \item{col_split}{(\code{flag})\cr whether the columns should be split. Set to \code{FALSE} when the required
 column split has been done already earlier in the layout pipe.}
@@ -154,18 +162,7 @@ adsl <- data.frame(
   stringsAsFactors = TRUE
 )
 
-# Internal function - s_count_patients_sum_exposure
-\dontrun{
-s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl))
-s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl), .stats = "n_patients")
-s_count_patients_sum_exposure(
-  df = df,
-  .N_col = nrow(adsl),
-  custom_label = "some user's custom label"
-)
-}
-
-tern:::a_count_patients_sum_exposure(
+a_count_patients_sum_exposure(
   df = df,
   var = "SEX",
   .N_col = nrow(df),
@@ -203,6 +200,21 @@ lyt5 <- basic_table() \%>\%
   analyze_patients_exposure_in_cols(var = "SEX", col_split = TRUE, ex_var = "AVAL")
 result5 <- build_table(lyt5, df = df, alt_counts_df = adsl)
 result5
+
+# Adding total levels and custom label
+lyt <- basic_table(
+  show_colcounts = TRUE
+) \%>\%
+  analyze_patients_exposure_in_cols(
+    var = "ARMCD",
+    col_split = TRUE,
+    add_total_level = TRUE,
+    custom_label = "TOTAL"
+  ) \%>\%
+  append_topleft(c("", "Sex"))
+
+tbl <- build_table(lyt, df = df, alt_counts_df = adsl)
+tbl
 
 }
 \keyword{internal}

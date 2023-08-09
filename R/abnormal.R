@@ -33,7 +33,6 @@ NULL
 #'
 #' @return
 #' * `s_count_abnormal()` returns the statistic `fraction` which is a vector with `num` and `denom` counts of patients.
-#'
 #' @examples
 #' library(dplyr)
 #'
@@ -48,21 +47,6 @@ NULL
 #' # Select only post-baseline records.
 #' df <- df %>%
 #'   filter(ONTRTFL == "Y")
-#'
-#' # Internal function - s_count_abnormal
-#' \dontrun{
-#' # For abnormal level "HIGH" we get the following counts.
-#' s_count_abnormal(df, .var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW"))
-#'
-#' # Optionally exclude patients with abnormality at baseline.
-#' s_count_abnormal(
-#'   df,
-#'   .var = "ANRIND",
-#'   abnormal = list(high = "HIGH", low = "LOW"),
-#'   exclude_base_abn = TRUE
-#' )
-#' }
-#'
 #' @keywords internal
 s_count_abnormal <- function(df,
                              .var,
@@ -112,14 +96,6 @@ s_count_abnormal <- function(df,
 #' @return
 #' * `a_count_abnormal()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @examples
-#' # Internal function - a_count_abnormal
-#' \dontrun{
-#' # Use the Formatted Analysis function for `analyze()`.
-#' a_fun <- make_afun(a_count_abnormal, .ungroup_stats = "fraction")
-#' a_fun(df, .var = "ANRIND", abnormal = list(low = "LOW", high = "HIGH"))
-#' }
-#'
 #' @keywords internal
 a_count_abnormal <- make_afun(
   s_count_abnormal,
@@ -164,6 +140,7 @@ a_count_abnormal <- make_afun(
 #' @export
 count_abnormal <- function(lyt,
                            var,
+                           nested = TRUE,
                            ...,
                            table_names = var,
                            .stats = NULL,
@@ -185,6 +162,7 @@ count_abnormal <- function(lyt,
     lyt = lyt,
     vars = var,
     afun = afun,
+    nested = nested,
     table_names = table_names,
     extra_args = list(...),
     show_labels = "hidden"

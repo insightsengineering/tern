@@ -191,6 +191,7 @@ a_proportion_diff <- make_afun(
 #' @export
 estimate_proportion_diff <- function(lyt,
                                      vars,
+                                     nested = TRUE,
                                      ...,
                                      var_labels = vars,
                                      show_labels = "hidden",
@@ -212,6 +213,7 @@ estimate_proportion_diff <- function(lyt,
     vars,
     afun = afun,
     var_labels = var_labels,
+    nested = nested,
     extra_args = list(...),
     show_labels = show_labels,
     table_names = table_names
@@ -389,11 +391,11 @@ prop_diff_ha <- function(rsp,
   )
 }
 
-#' @describeIn h_prop_diff Newcombe confidence interval. It is based on
+#' @describeIn h_prop_diff `Newcombe` confidence interval. It is based on
 #'   the Wilson score confidence interval for a single binomial proportion.
 #'
 #' @examples
-#' # Newcombe confidence interval
+#' # `Newcombe` confidence interval
 #'
 #' set.seed(1)
 #' rsp <- c(
@@ -435,7 +437,7 @@ prop_diff_nc <- function(rsp,
 
 #' @describeIn h_prop_diff Calculates the weighted difference. This is defined as the difference in
 #'   response rates between the experimental treatment group and the control treatment group, adjusted
-#'   for stratification factors by applying Cochran-Mantel-Haenszel (CMH) weights. For the CMH chi-squared
+#'   for stratification factors by applying `Cochran-Mantel-Haenszel` (`CMH`) weights. For the `CMH` chi-squared
 #'   test, use [stats::mantelhaen.test()].
 #'
 #' @param strata (`factor`)\cr variable with one level per stratum and same length as `rsp`.
@@ -522,10 +524,10 @@ prop_diff_cmh <- function(rsp,
   )
 }
 
-#' @describeIn h_prop_diff Calculates the stratified Newcombe confidence interval and difference in response
+#' @describeIn h_prop_diff Calculates the stratified `Newcombe` confidence interval and difference in response
 #'   rates between the experimental treatment group and the control treatment group, adjusted for stratification
 #'   factors. This implementation follows closely the one proposed by \insertCite{Yan2010-jt;textual}{tern}.
-#'   Weights can be estimated from the heuristic proposed in [prop_strat_wilson()] or from CMH-derived weights
+#'   Weights can be estimated from the heuristic proposed in [prop_strat_wilson()] or from `CMH`-derived weights
 #'   (see [prop_diff_cmh()]).
 #'
 #' @param strata (`factor`)\cr variable with one level per stratum and same length as `rsp`.
@@ -533,10 +535,10 @@ prop_diff_cmh <- function(rsp,
 #'   and directs the way weights are estimated.
 #'
 #' @references
-#' - \insertRef{Yan2010-jt}{tern}
+#' \insertRef{Yan2010-jt}{tern}
 #'
 #' @examples
-#' # Stratified Newcombe confidence interval
+#' # Stratified `Newcombe` confidence interval
 #'
 #' set.seed(2)
 #' data_set <- data.frame(
