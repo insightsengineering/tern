@@ -655,12 +655,14 @@ h_ggkm <- function(data,
   checkmate::assert_character(col, null.ok = TRUE)
 
   if (is.null(ylim)) {
+    data_lims <- data
+    if (yval == "Failure") data_lims[["estimate"]] <- 1 - data_lims[["estimate"]]
     if (!is.null(max_time)) {
-      y_lwr <- min(data[data$time < max_time, ][["estimate"]])
-      y_upr <- max(data[data$time < max_time, ][["estimate"]])
+      y_lwr <- min(data_lims[data_lims$time < max_time, ][["estimate"]])
+      y_upr <- max(data_lims[data_lims$time < max_time, ][["estimate"]])
     } else {
-      y_lwr <- min(data[["estimate"]])
-      y_upr <- max(data[["estimate"]])
+      y_lwr <- min(data_lims[["estimate"]])
+      y_upr <- max(data_lims[["estimate"]])
     }
     ylim <- c(y_lwr, y_upr)
   }
