@@ -332,34 +332,42 @@
     Code
       res
     Output
-                                                   A: Drug X    B: Placebo   C: Combination   Risk Difference (%) (95% CI)
-                                                    (N=202)      (N=177)        (N=162)                 (N=379)           
-      ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-      Number of patients with at least one event   40 (19.8%)   40 (22.6%)     29 (17.9%)           0.0 (-8.2 - 8.2)      
-      Number of patients with at least one event   31 (15.3%)   23 (13.0%)     25 (15.4%)          4.2 (-2.8 - 11.2)      
-      Number of patients with at least one event   39 (19.3%)   36 (20.3%)     31 (19.1%)           1.6 (-6.4 - 9.6)      
-      Number of patients with at least one event   31 (15.3%)   24 (13.6%)     27 (16.7%)          3.7 (-3.4 - 10.7)      
+                                                     A: Drug X    B: Placebo   C: Combination   Risk Difference (%) (95% CI)
+                                                      (N=202)      (N=177)        (N=162)                 (N=379)           
+      ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+      cl D                                                                                                                  
+        Number of patients with at least one event   40 (19.8%)   40 (22.6%)     29 (17.9%)          -2.8 (-11.1 - 5.5)     
+      cl C                                                                                                                  
+        Number of patients with at least one event   31 (15.3%)   23 (13.0%)     25 (15.4%)           2.4 (-4.7 - 9.4)      
+      cl B                                                                                                                  
+        Number of patients with at least one event   39 (19.3%)   36 (20.3%)     31 (19.1%)          -1.0 (-9.1 - 7.0)      
+      cl A                                                                                                                  
+        Number of patients with at least one event   31 (15.3%)   24 (13.6%)     27 (16.7%)           1.8 (-5.3 - 8.9)      
 
 ---
 
     Code
       res
     Output
-                 A: Drug X    B: Placebo   C: Combination   Risk Difference (%) (95% CI)
-                  (N=202)      (N=177)        (N=162)                 (N=379)           
-      ——————————————————————————————————————————————————————————————————————————————————
-      cl D       40 (19.8%)   40 (22.6%)     29 (17.9%)           0.0 (-8.2 - 8.2)      
-      cl D           66           57             43               0.0 (-8.2 - 8.2)      
-      cl D (n)       40           40             29               0.0 (-8.2 - 8.2)      
-      cl C       31 (15.3%)   23 (13.0%)     25 (15.4%)          4.2 (-2.8 - 11.2)      
-      cl C           38           30             33              4.2 (-2.8 - 11.2)      
-      cl C (n)       31           23             25              4.2 (-2.8 - 11.2)      
-      cl B       39 (19.3%)   36 (20.3%)     31 (19.1%)           1.6 (-6.4 - 9.6)      
-      cl B           59           57             51               1.6 (-6.4 - 9.6)      
-      cl B (n)       39           36             31               1.6 (-6.4 - 9.6)      
-      cl A       31 (15.3%)   24 (13.6%)     27 (16.7%)          3.7 (-3.4 - 10.7)      
-      cl A           39           33             35              3.7 (-3.4 - 10.7)      
-      cl A (n)       31           24             27              3.7 (-3.4 - 10.7)      
+                                                     A: Drug X    B: Placebo   C: Combination   Risk Difference (%) (95% CI)
+                                                      (N=202)      (N=177)        (N=162)                 (N=379)           
+      ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+      cl D                                                                                                                  
+        Number of patients with at least one event   40 (19.8%)   40 (22.6%)     29 (17.9%)          -2.8 (-11.1 - 5.5)     
+        Number of events                                 66           57             43              -2.8 (-11.1 - 5.5)     
+        (n)                                              40           40             29              -2.8 (-11.1 - 5.5)     
+      cl C                                                                                                                  
+        Number of patients with at least one event   31 (15.3%)   23 (13.0%)     25 (15.4%)           2.4 (-4.7 - 9.4)      
+        Number of events                                 38           30             33               2.4 (-4.7 - 9.4)      
+        (n)                                              31           23             25               2.4 (-4.7 - 9.4)      
+      cl B                                                                                                                  
+        Number of patients with at least one event   39 (19.3%)   36 (20.3%)     31 (19.1%)          -1.0 (-9.1 - 7.0)      
+        Number of events                                 59           57             51              -1.0 (-9.1 - 7.0)      
+        (n)                                              39           36             31              -1.0 (-9.1 - 7.0)      
+      cl A                                                                                                                  
+        Number of patients with at least one event   31 (15.3%)   24 (13.6%)     27 (16.7%)           1.8 (-5.3 - 8.9)      
+        Number of events                                 39           33             35               1.8 (-5.3 - 8.9)      
+        (n)                                              31           24             27               1.8 (-5.3 - 8.9)      
 
 # analyze_num_patients works as expected with risk difference column
 
@@ -369,7 +377,7 @@
                 A: Drug X    B: Placebo   C: Combination   Risk Difference (%) (95% CI)
                  (N=202)      (N=177)        (N=162)                 (N=379)           
       —————————————————————————————————————————————————————————————————————————————————
-      Any SAE   59 (29.2%)   57 (32.2%)     48 (29.6%)          1.1 (-8.2 - 10.3)      
+      Any SAE   59 (29.2%)   57 (32.2%)     48 (29.6%)          -3.0 (-12.3 - 6.3)     
 
 ---
 
@@ -379,7 +387,7 @@
                 A: Drug X    B: Placebo   C: Combination   Risk Difference (%) (95% CI)
                  (N=202)      (N=177)        (N=162)                 (N=379)           
       —————————————————————————————————————————————————————————————————————————————————
-      Any SAE   59 (29.2%)   57 (32.2%)     48 (29.6%)          1.1 (-8.2 - 10.3)      
-                   202          177            162              1.1 (-8.2 - 10.3)      
-      (n)           59           57             48              1.1 (-8.2 - 10.3)      
+      Any SAE   59 (29.2%)   57 (32.2%)     48 (29.6%)          -3.0 (-12.3 - 6.3)     
+                   202          177            162              -3.0 (-12.3 - 6.3)     
+      (n)           59           57             48              -3.0 (-12.3 - 6.3)     
 

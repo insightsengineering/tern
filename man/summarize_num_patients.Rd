@@ -34,7 +34,7 @@ summarize_num_patients(
     "Number of events"),
   indent_mod = lifecycle::deprecated(),
   .indent_mods = 0L,
-  riskdiff = NULL,
+  riskdiff = FALSE,
   ...
 )
 
@@ -49,7 +49,7 @@ analyze_num_patients(
   show_labels = c("default", "visible", "hidden"),
   indent_mod = lifecycle::deprecated(),
   .indent_mods = 0L,
-  riskdiff = NULL,
+  riskdiff = FALSE,
   ...
 )
 }

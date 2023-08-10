@@ -31,7 +31,7 @@ count_occurrences(
   vars,
   var_labels = vars,
   show_labels = "hidden",
-  riskdiff = NULL,
+  riskdiff = FALSE,
   nested = TRUE,
   ...,
   table_names = vars,

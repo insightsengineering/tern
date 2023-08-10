@@ -166,7 +166,6 @@ count_patients_with_flags <- function(lyt,
                                       .indent_mods = NULL) {
   afun <- make_afun(
     a_count_patients_with_flags,
-    flag_variables = flag_variables,
     .stats = .stats,
     .formats = .formats,
     .indent_mods = .indent_mods,
