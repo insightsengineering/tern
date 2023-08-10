@@ -280,7 +280,7 @@ count_occurrences_by_grade <- function(lyt,
     list(...)
   } else {
     list(
-      afun = list("afun_count_occurrences_by_grade" = afun),
+      afun = list("s_count_occurrences_by_grade" = afun),
       .stats = .stats,
       .indent_mods = .indent_mods,
       s_args = list(...)

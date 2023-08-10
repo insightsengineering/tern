@@ -118,20 +118,12 @@ testthat::test_that("count_occurrences functions as expected with label row spec
 })
 
 testthat::test_that("count_occurrences works as expected with risk difference column", {
-  arm_x <- "A: Drug X"
-  arm_y <- "B: Placebo"
-
-  combodf <- tribble(
-    ~valname, ~label, ~levelcombo, ~exargs,
-    "riskdiff", "Risk Difference (%) (95% CI)", c(arm_x, arm_y), list()
-  )
-
   # One statistic
   result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_combo_levels(combodf)) %>%
+    split_cols_by("ARM", split_fun = add_risk_diff("A: Drug X", "B: Placebo")) %>%
     count_occurrences(
       vars = "AEDECOD",
-      riskdiff = list(arm_x = arm_x, arm_y = arm_y)
+      riskdiff = TRUE
     ) %>%
     build_table(tern_ex_adae)
 
@@ -140,10 +132,10 @@ testthat::test_that("count_occurrences works as expected with risk difference co
 
   # Multiple statistics, different id var
   result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_combo_levels(combodf)) %>%
+    split_cols_by("ARM", split_fun = add_risk_diff("A: Drug X", "B: Placebo")) %>%
     count_occurrences(
       vars = "AEDECOD",
-      riskdiff = list(arm_x = arm_x, arm_y = arm_y),
+      riskdiff = TRUE,
       .stats = c("count", "count_fraction", "fraction"),
       id = "SITEID"
     ) %>%

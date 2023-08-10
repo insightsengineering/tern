@@ -6,9 +6,11 @@
 \usage{
 afun_riskdiff(
   df,
+  labelstr = "",
   .var,
   .N_col,
   .N_row,
+  .df_row,
   .spl_context,
   .all_col_counts,
   .stats,

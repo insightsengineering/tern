@@ -162,30 +162,22 @@ summarize_num_patients <- function(lyt,
     .labels = .labels
   )
 
-  cfun_riskdiff <- function(df, labelstr, .var, .N_col, .N_row, .spl_context) { # nolint
-    checkmate::assert_names(names(riskdiff), permutation.of = c("arm_x", "arm_y"))
-    n_spl <- length(.spl_context$split)
-    n_riskdiff_col <- sum(.spl_context[[riskdiff$arm_x]][[n_spl]], .spl_context[[riskdiff$arm_y]][[n_spl]])
-    if (.spl_context$cur_col_n[n_spl] == n_riskdiff_col) {
-      N_col_x <- round(.N_col / 2) # fix value after rtables#517 # nolint
-      N_col_y <- round(.N_col / 2) # fix value after rtables#517 # nolint
-      s_x <- s_num_patients_content(df = df[df$ARM == riskdiff$arm_x, ], .var = .var, .N_col = N_col_x, ...)
-      s_y <- s_num_patients_content(df = df[df$ARM == riskdiff$arm_y, ], .var = .var, .N_col = N_col_y, ...)
-      rd_ci <- rep(
-        stat_propdiff_ci(list(s_x[c("unique")]$unique[2]), list(s_y[c("unique")]$unique[2]), N_col_x, N_col_y, .var),
-        each = length(.stats)
-      )
-      in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)")
-    } else {
-      cfun(df = df, .var = .var, .N_col = .N_col, labelstr = .spl_context$value[n_spl], ...)
-    }
+  extra_args <- if (!riskdiff) {
+    list(...)
+  } else {
+    list(
+      afun = list("s_num_patients_content" = cfun),
+      .stats = .stats,
+      .indent_mods = .indent_mods,
+      s_args = list(...)
+    )
   }
 
   summarize_row_groups(
     lyt = lyt,
     var = var,
-    cfun = ifelse(is.null(riskdiff), cfun, cfun_riskdiff),
-    extra_args = list(...),
+    cfun = ifelse(!riskdiff, cfun, afun_riskdiff),
+    extra_args = extra_args,
     indent_mod = .indent_mods
   )
 }
@@ -250,31 +242,23 @@ analyze_num_patients <- function(lyt,
     .labels = .labels
   )
 
-  afun_riskdiff <- function(df, .var, .N_col, .spl_context) { # nolint
-    checkmate::assert_names(names(riskdiff), permutation.of = c("arm_x", "arm_y"))
-    n_spl <- length(.spl_context$split)
-    n_riskdiff_col <- sum(.spl_context[[riskdiff$arm_x]][[n_spl]], .spl_context[[riskdiff$arm_y]][[n_spl]])
-    if (.spl_context$cur_col_n[n_spl] == n_riskdiff_col) {
-      N_col_x <- round(.N_col / 2) # fix value after rtables#517 # nolint
-      N_col_y <- round(.N_col / 2) # fix value after rtables#517 # nolint
-      s_x <- s_num_patients_content(df = df[df$ARM == riskdiff$arm_x, ], .var = .var, .N_col = N_col_x, ...)
-      s_y <- s_num_patients_content(df = df[df$ARM == riskdiff$arm_y, ], .var = .var, .N_col = N_col_y, ...)
-      rd_ci <- rep(
-        stat_propdiff_ci(list(s_x[c("unique")]$unique[2]), list(s_y[c("unique")]$unique[2]), N_col_x, N_col_y, vars),
-        length(.stats)
-      )
-      in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = indent_mod)
-    } else {
-      afun(df = df, .var = .var, .N_col = .N_col, ...)
-    }
+  extra_args <- if (!riskdiff) {
+    list(...)
+  } else {
+    list(
+      afun = list("s_num_patients_content" = afun),
+      .stats = .stats,
+      .indent_mods = .indent_mods,
+      s_args = list(...)
+    )
   }
 
   analyze(
-    afun = ifelse(is.null(riskdiff), afun, afun_riskdiff),
+    afun = ifelse(!riskdiff, afun, afun_riskdiff),
     lyt = lyt,
     vars = vars,
     nested = nested,
-    extra_args = list(...),
+    extra_args = extra_args,
     show_labels = show_labels,
     indent_mod = .indent_mods
   )

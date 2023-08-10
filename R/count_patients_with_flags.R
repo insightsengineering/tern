@@ -155,7 +155,6 @@ a_count_patients_with_flags <- make_afun(
 #' @export
 count_patients_with_flags <- function(lyt,
                                       var,
-                                      flag_variables,
                                       var_labels = var,
                                       show_labels = "hidden",
                                       riskdiff = FALSE,
@@ -173,14 +172,15 @@ count_patients_with_flags <- function(lyt,
     .indent_mods = .indent_mods,
     .ungroup_stats = .stats
   )
+
   extra_args <- if (!riskdiff) {
     list(...)
   } else {
     list(
-      afun = list("afun_count_patients_with_flags" = afun),
+      afun = list("s_count_patients_with_flags" = afun),
       .stats = .stats,
       .indent_mods = .indent_mods,
-      s_args = list(flag_variables = flag_variables, ...)
+      s_args = list(...)
     )
   }
 

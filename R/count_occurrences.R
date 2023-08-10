@@ -186,34 +186,25 @@ count_occurrences <- function(lyt,
     .ungroup_stats = .stats
   )
 
-  afun_riskdiff <- function(df, .var, .N_col, .spl_context) { # nolint
-    checkmate::assert_names(names(riskdiff), permutation.of = c("arm_x", "arm_y"))
-    n_spl <- length(.spl_context$split)
-    n_riskdiff_col <- sum(.spl_context[[riskdiff$arm_x]][[n_spl]], .spl_context[[riskdiff$arm_y]][[n_spl]])
-    if (.spl_context$cur_col_n[n_spl] == n_riskdiff_col) {
-      browser()
-      N_col_x <- round(.N_col / 2) # fix value after rtables#517 - should be alt_counts_df .N_col if one exists # nolint
-      N_col_y <- round(.N_col / 2) # fix value after rtables#517 # nolint
-      s_x <- s_count_occurrences(df[df$ARM == riskdiff$arm_x, ], "N_col", N_col_x, df, .var = .var, ...)
-      s_y <- s_count_occurrences(df[df$ARM == riskdiff$arm_y, ], "N_col", N_col_y, df, .var = .var, ...)
-      rd_ci <- rep(stat_propdiff_ci(
-        lapply(s_x["count_fraction"]$count_fraction, `[`, 2), lapply(s_y["count_fraction"]$count_fraction, `[`, 2),
-        N_col_x, N_col_y, names(s_x$count)
-      ), length(.stats))
-      in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
-    } else {
-      afun(df = df, .var = .var, .df_row = df, .N_col = .N_col, denom = "N_col", ...)
-    }
+  extra_args <- if (!riskdiff) {
+    list(...)
+  } else {
+    list(
+      afun = list("s_count_occurrences" = afun),
+      .stats = .stats,
+      .indent_mods = .indent_mods,
+      s_args = list(...)
+    )
   }
 
   analyze(
     lyt = lyt,
     vars = vars,
-    afun = ifelse(is.null(riskdiff), afun, afun_riskdiff),
+    afun = ifelse(!riskdiff, afun, afun_riskdiff),
     var_labels = var_labels,
     show_labels = show_labels,
     table_names = table_names,
     nested = nested,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }

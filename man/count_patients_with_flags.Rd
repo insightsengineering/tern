@@ -29,7 +29,6 @@ a_count_patients_with_flags(
 count_patients_with_flags(
   lyt,
   var,
-  flag_variables,
   var_labels = var,
   show_labels = "hidden",
   riskdiff = FALSE,
