@@ -17,8 +17,8 @@ add_risk_diff <- function(arm_x,
 afun_riskdiff <- function(df,
                           labelstr = "",
                           .var,
-                          .N_col,
-                          .N_row,
+                          .N_col, # nolint
+                          .N_row, # nolint
                           .df_row,
                           .spl_context,
                           .all_col_counts,
@@ -26,16 +26,29 @@ afun_riskdiff <- function(df,
                           .indent_mods,
                           afun,
                           s_args = list(...)) {
+  if (!any(grepl("^riskdiff", names(.spl_context)))) {
+    stop(paste(
+      "Please set up levels to use in risk difference calculations using the `add_risk_diff`",
+      "split function within `split_cols_by`. See ?add_risk_diff for details."
+    ))
+  }
   afun_args <- list(.var = .var, .df_row = .df_row, .N_row = .N_row, denom = "N_col")
   afun_args <- afun_args[intersect(names(afun_args), names(as.list(args(afun[[1]]))))]
-  if (grepl("^riskdiff", .spl_context$cur_col_split_val[[1]])) {
+  if (!grepl("^riskdiff", .spl_context$cur_col_split_val[[1]])) {
+    # Apply basic afun (no risk difference) in all other columns
+    do.call(afun[[1]], args = c(list(df = df, .N_col = .N_col), afun_args, s_args))
+  } else {
     arm_x <- strsplit(.spl_context$cur_col_split_val[[1]], "_")[[1]][2]
     arm_y <- strsplit(.spl_context$cur_col_split_val[[1]], "_")[[1]][3]
-    N_col_x <- .all_col_counts[[arm_x]]
-    N_col_y <- .all_col_counts[[arm_y]]
+    N_col_x <- .all_col_counts[[arm_x]] # nolint
+    N_col_y <- .all_col_counts[[arm_y]] # nolint
     cur_var <- .spl_context$cur_col_split[[1]]
+
+    # Apply statistics function to arm X and arm Y data
     s_x <- do.call(names(afun), args = c(list(df = df[df[[cur_var]] == arm_x, ], .N_col = N_col_x), afun_args, s_args))
     s_y <- do.call(names(afun), args = c(list(df = df[df[[cur_var]] == arm_y, ], .N_col = N_col_y), afun_args, s_args))
+
+    # Get statistic name and row names
     stat <- ifelse("count_fraction" %in% names(s_x), "count_fraction", "unique")
     if ("flag_variables" %in% names(s_args)) {
       var_nms <- s_args$flag_variables
@@ -46,12 +59,14 @@ afun_riskdiff <- function(df,
       s_x[[stat]] <- list(s_x[[stat]])
       s_y[[stat]] <- list(s_y[[stat]])
     }
+
+    # Calculate risk difference for each row, repeated if multiple statistics in table
     rd_ci <- rep(stat_propdiff_ci(
       lapply(s_x[[stat]], `[`, 2), lapply(s_y[[stat]], `[`, 2),
-      N_col_x, N_col_y, list_names = var_nms
+      N_col_x, N_col_y,
+      list_names = var_nms
     ), max(1, length(.stats)))
+
     in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
-  } else {
-    do.call(afun[[1]], args = c(list(df = df, .N_col = .N_col), afun_args, s_args))
   }
 }

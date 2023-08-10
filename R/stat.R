@@ -200,14 +200,20 @@ stat_mean_pval <- function(x,
 #' stat_propdiff_ci(frac_x = list(0.5, 0.75, 1), frac_y = list(0.25, 0.05, 0.5), N_x = 10, N_y = 20, pct = FALSE)
 #'
 #' @export
-stat_propdiff_ci <- function(frac_x, frac_y, N_x, N_y, list_names = NULL, conf_level = 0.95, pct = TRUE) {
+stat_propdiff_ci <- function(frac_x,
+                             frac_y,
+                             N_x, # nolint
+                             N_y, # nolint
+                             list_names = NULL,
+                             conf_level = 0.95,
+                             pct = TRUE) {
   checkmate::assert_list(frac_x, types = "numeric")
   checkmate::assert_list(frac_y, types = "numeric", len = length(frac_x))
   checkmate::assert_character(list_names, len = length(frac_x), null.ok = TRUE)
   rd_list <- lapply(seq_along(frac_x), function(i) {
     p_x <- frac_x[[i]]
     p_y <- frac_y[[i]]
-    rd_ci <- p_x - p_y + c(-1, 1) * qnorm((1 + conf_level)/2) * sqrt(p_x * (1 - p_x) / N_x + p_y * (1 - p_y) / N_y)
+    rd_ci <- p_x - p_y + c(-1, 1) * qnorm((1 + conf_level) / 2) * sqrt(p_x * (1 - p_x) / N_x + p_y * (1 - p_y) / N_y)
     c(p_x - p_y, rd_ci) * ifelse(pct, 100, 1)
   })
   names(rd_list) <- list_names
