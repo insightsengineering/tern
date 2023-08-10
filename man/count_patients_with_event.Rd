@@ -35,38 +35,6 @@ count_patients_with_event(
   .labels = NULL,
   .indent_mods = NULL
 )
-
-s_count_patients_with_flags(
-  df,
-  .var,
-  flag_variables,
-  .N_col,
-  .N_row,
-  denom = c("n", "N_row", "N_col")
-)
-
-a_count_patients_with_flags(
-  df,
-  .var,
-  flag_variables,
-  .N_col,
-  .N_row,
-  denom = c("n", "N_row", "N_col")
-)
-
-count_patients_with_flags(
-  lyt,
-  var,
-  flag_variables,
-  var_labels = var,
-  show_labels = "hidden",
-  riskdiff = NULL,
-  ...,
-  table_names = paste0("tbl_flags_", var),
-  .stats = "count_fraction",
-  .formats = NULL,
-  .indent_mods = NULL
-)
 }
 \arguments{
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}

@@ -32,9 +32,9 @@ summarize_num_patients(
   .formats = NULL,
   .labels = c(unique = "Number of patients with at least one event", nonunique =
     "Number of events"),
-  riskdiff = NULL,
   indent_mod = lifecycle::deprecated(),
   .indent_mods = 0L,
+  riskdiff = NULL,
   ...
 )
 

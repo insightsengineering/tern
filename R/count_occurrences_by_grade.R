@@ -276,22 +276,15 @@ count_occurrences_by_grade <- function(lyt,
     .ungroup_stats = "count_fraction"
   )
 
-  afun_riskdiff <- function(df, .var, .N_col, .spl_context) { # nolint
-    if (.spl_context$cur_col_split_val == "riskdiff") {
-      checkmate::assert_names(names(riskdiff), permutation.of = c("arm_x", "arm_y"))
-      N_col_x <- .all_col_counts[[riskdiff$arm_x]]
-      N_col_y <- .all_col_counts[[riskdiff$arm_y]]
-      cur_var <- .spl_context$cur_col_split
-      s_x <- s_count_occurrences_by_grade(df[df[[cur_var]] == riskdiff$arm_x, ], .var, N_col_x, ...)
-      s_y <- s_count_occurrences_by_grade(df[df[[cur_var]] == riskdiff$arm_y, ], .var, N_col_y, ...)
-      rd_ci <- stat_propdiff_ci(
-        lapply(s_x["count_fraction"]$count_fraction, `[`, 2), lapply(s_y["count_fraction"]$count_fraction, `[`, 2),
-        N_col_x, N_col_y, names(s_x$count_fraction)
-      )
-      in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
-    } else {
-      afun(df = df, .var = .var, .N_col = .N_col, ...)
-    }
+  extra_args <- if (!riskdiff) {
+    list(...)
+  } else {
+    list(
+      afun = list("afun_count_occurrences_by_grade" = afun),
+      .stats = .stats,
+      .indent_mods = .indent_mods,
+      s_args = list(...)
+    )
   }
 
   analyze(
@@ -302,7 +295,7 @@ count_occurrences_by_grade <- function(lyt,
     afun = ifelse(is.null(riskdiff), afun, afun_riskdiff),
     table_names = table_names,
     nested = nested,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }
 

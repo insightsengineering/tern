@@ -155,8 +155,10 @@ a_count_patients_with_flags <- make_afun(
 #' @export
 count_patients_with_flags <- function(lyt,
                                       var,
+                                      flag_variables,
                                       var_labels = var,
                                       show_labels = "hidden",
+                                      riskdiff = FALSE,
                                       nested = TRUE,
                                       ...,
                                       table_names = paste0("tbl_flags_", var),
@@ -165,21 +167,32 @@ count_patients_with_flags <- function(lyt,
                                       .indent_mods = NULL) {
   afun <- make_afun(
     a_count_patients_with_flags,
+    flag_variables = flag_variables,
     .stats = .stats,
     .formats = .formats,
     .indent_mods = .indent_mods,
     .ungroup_stats = .stats
   )
+  extra_args <- if (!riskdiff) {
+    list(...)
+  } else {
+    list(
+      afun = list("afun_count_patients_with_flags" = afun),
+      .stats = .stats,
+      .indent_mods = .indent_mods,
+      s_args = list(flag_variables = flag_variables, ...)
+    )
+  }
 
   lyt <- analyze(
     lyt = lyt,
     vars = var,
     var_labels = var_labels,
     show_labels = show_labels,
-    afun = afun,
+    afun = ifelse(!riskdiff, afun, afun_riskdiff),
     table_names = table_names,
     nested = nested,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 
   lyt
