@@ -338,18 +338,11 @@ testthat::test_that("summarize_ and count_occurrences_by_grade works with pagina
 })
 
 testthat::test_that("count_occurrences_by_grade works as expected with risk difference column", {
-  arm_x <- "A: Drug X"
-  arm_y <- "B: Placebo"
-
-  combodf <- tribble(
-    ~valname, ~label, ~levelcombo, ~exargs,
-    "riskdiff", "Risk Difference (%) (95% CI)", c(arm_x, arm_y), list()
-  )
   tern_ex_adae$AESEV <- factor(tern_ex_adae$AESEV)
 
   # Default parameters
   result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_combo_levels(combodf)) %>%
+    split_cols_by("ARM", split_fun = add_risk_diff("A: Drug X", "B: Placebo")) %>%
     count_occurrences_by_grade(
       var = "AESEV",
       riskdiff = list(arm_x = arm_x, arm_y = arm_y)
@@ -363,7 +356,7 @@ testthat::test_that("count_occurrences_by_grade works as expected with risk diff
   grade_groups <- list("-Any-" = levels(tern_ex_adae$AESEV))
 
   result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_combo_levels(combodf)) %>%
+    split_cols_by("ARM", split_fun = add_risk_diff("A: Drug X", "B: Placebo")) %>%
     count_occurrences_by_grade(
       var = "AESEV",
       riskdiff = list(arm_x = arm_x, arm_y = arm_y),

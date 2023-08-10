@@ -133,35 +133,27 @@ testthat::test_that("count_patients_with_flags works as expected with risk diffe
       SERFATAL = "SAE with fatal outcome"
     )
 
-  arm_x <- "A: Drug X"
-  arm_y <- "B: Placebo"
-
-  combodf <- tribble(
-    ~valname, ~label, ~levelcombo, ~exargs,
-    "riskdiff", "Risk Difference (%) (95% CI)", c(arm_x, arm_y), list()
-  )
-
   # One statistic
   result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_combo_levels(combodf)) %>%
+    split_cols_by("ARM", split_fun = add_risk_diff("A: Drug X", "B: Placebo")) %>%
     count_patients_with_flags(
       var = "USUBJID",
-      flag_variables = formatters::var_labels(adae[, c("SER", "SERFATAL")]),
-      riskdiff = list(arm_x = arm_x, arm_y = arm_y)
+      flag_variables = c("SER", "SERFATAL"),
+      riskdiff = TRUE
     ) %>%
-    build_table(adae)
+    build_table(adae, alt_counts_df = tern_ex_adsl)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # Multiple statistics
   result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_combo_levels(combodf)) %>%
+    split_cols_by("ARM", split_fun = add_risk_diff("A: Drug X", "B: Placebo")) %>%
     count_patients_with_flags(
       var = "USUBJID",
-      flag_variables = formatters::var_labels(adae[, c("SER", "SERFATAL")]),
+      flag_variables = c("SER", "SERFATAL"),
       .stats = c("count", "count_fraction"),
-      riskdiff = list(arm_x = arm_x, arm_y = arm_y)
+      riskdiff = TRUE
     ) %>%
     build_table(adae)
 
