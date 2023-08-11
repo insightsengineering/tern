@@ -67,7 +67,9 @@ used in the regression (poisson, quasipoisson).}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{weights}{(\code{character})\cr character vector specifying weights used in averaging predictions.}
+\item{weights}{(\code{character})\cr a character vector specifying weights used
+in averaging predictions. Number of weights must equal the number of levels included in the covariates.
+Weights option passed to \code{\link[emmeans:emmeans]{emmeans::emmeans()}}.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 

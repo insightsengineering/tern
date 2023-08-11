@@ -32,7 +32,9 @@ reference group.
 \item \code{offset} (\code{numeric})\cr a numeric vector or scalar adding an offset.
 }}
 
-\item{weights}{(\code{character})\cr character vector specifying weights used in averaging predictions.}
+\item{weights}{(\code{character})\cr a character vector specifying weights used
+in averaging predictions. Number of weights must equal the number of levels included in the covariates.
+Weights option passed to \code{\link[emmeans:emmeans]{emmeans::emmeans()}}.}
 
 \item{distribution}{(\code{character})\cr a character value specifying the distribution
 used in the regression (poisson, quasipoisson).}
@@ -40,10 +42,6 @@ used in the regression (poisson, quasipoisson).}
 \item{obj}{(\code{glm.fit})\cr fitted model object used to derive the mean rate estimates in each treatment arm.}
 
 \item{conf_level}{(\code{numeric})\cr value used to derive the confidence interval for the rate.}
-
-\item{`weights`(`character`)\cr}{a character vector specifying weights used
-in averaging predictions. Number of weights must equal the number of levels included in the covariates.
-Weights option passed to emmeans function (hyperlink) (link to emmeans documentation)}
 
 \item{`arm`}{(\code{string})\cr group variable, for which the covariate adjusted means of multiple groups will be
 summarized. Specifically, the first level of \code{arm} variable is taken as the reference group.}
