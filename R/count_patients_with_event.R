@@ -144,6 +144,7 @@ a_count_patients_with_event <- make_afun(
 #' @export
 count_patients_with_event <- function(lyt,
                                       vars,
+                                      riskdiff = FALSE,
                                       nested = TRUE,
                                       ...,
                                       table_names = vars,
@@ -159,12 +160,23 @@ count_patients_with_event <- function(lyt,
     .indent_mods = .indent_mods
   )
 
+  extra_args <- if (!riskdiff) {
+    list(...)
+  } else {
+    list(
+      afun = list("s_count_patients_with_event" = afun),
+      .stats = .stats,
+      .indent_mods = .indent_mods,
+      s_args = list(...)
+    )
+  }
+
   analyze(
     lyt,
     vars,
-    afun = afun,
+    afun = ifelse(!riskdiff, afun, afun_riskdiff),
     nested = nested,
-    extra_args = list(...),
+    extra_args = extra_args,
     show_labels = ifelse(length(vars) > 1, "visible", "hidden"),
     table_names = table_names
   )

@@ -74,3 +74,24 @@
       [1] 0
       
 
+# count_patients_with_flags works as expected with risk difference column
+
+    Code
+      res
+    Output
+                                                                 A: Drug X    B: Placebo   C: Combination   Risk Difference (%) (95% CI)
+                                                                   (N=69)       (N=73)         (N=58)                 (N=142)           
+      ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+      Total number of patients with at least one adverse event   59 (85.5%)   57 (78.1%)     48 (82.8%)          7.4 (-5.2 - 20.0)      
+
+---
+
+    Code
+      res
+    Output
+                       A: Drug X    B: Placebo   C: Combination   Risk Difference (%) (95% CI)
+                        (N=202)      (N=177)        (N=162)                 (N=379)           
+      ————————————————————————————————————————————————————————————————————————————————————————
+      count                59           57             48              -3.0 (-12.3 - 6.3)     
+      count_fraction   59 (29.2%)   57 (32.2%)     48 (29.6%)          -3.0 (-12.3 - 6.3)     
+
