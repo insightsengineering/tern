@@ -8,7 +8,7 @@
 
 See below for the list of formatting functions created in \code{tern} to work with \code{rtables}.
 
-Other available formats can be listed via \code{\link[formatters:list_valid_format_labels]{formatters::list_valid_format_labels()}}. Additional
+Other available formats can be listed via \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}}. Additional
 custom formats can be created via the \code{\link[formatters:sprintf_format]{formatters::sprintf_format()}} function.
 }
 \seealso{
