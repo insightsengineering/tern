@@ -1,5 +1,9 @@
 # tern 0.8.5.9007
 
+### Enhancements
+* Added `stat_propdiff_ci` function to calculate proportion/risk difference and CI.
+* Added risk difference column functionality via the `riskdiff` argument to `count_occurrences`, `count_occurrences_by_grade`, `count_patients_with_event`, `count_patients_with_flags`, `analyze_num_patients`, and `summarize_num_patients`.
+
 ### Miscellaneous
 * Fix swapped descriptions for the `.N_row` and `.N_col` parameters.
 * Fix bug in `analyze_vars_in_cols` when categorical data was used.
@@ -64,9 +68,6 @@
 * Added more informative error when the user selects an invalid method for unstratified analyses in `s_proportion_diff`.
 * Updated `s_summary` and `s_compare` to allow `NA` values in input variables. For factor variables with `NA`s, if `na.rm = FALSE` an explicit `NA` level will be automatically added. `na.rm = TRUE` will also consider `"<Missing>"` values and exclude them.
 * Updated purpose of `na_level` parameter in `s_summary` and `s_compare` to align with other `tern` functions. Instead of being a string to consider as `NA` when setting `na.rm = TRUE`, it now defines a string to print in place of `NA` values in the output table.
-* Added `stat_propdiff_ci` function to calculate proportion/risk difference and CI.
-* Added risk difference column functionality via the `riskdiff` argument to `count_occurrences`, `count_occurrences_by_grade`,
-  `count_patients_with_flags`, `analyze_num_patients`, and `summarize_num_patients`.
 
 ### Bug Fixes
 * Fixed missing label for `TRTEDTM` in `tern` datasets.
