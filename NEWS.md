@@ -1,4 +1,4 @@
-# tern 0.8.5.9006
+# tern 0.8.5.9007
 
 ### Miscellaneous
 * Fix swapped descriptions for the `.N_row` and `.N_col` parameters.
