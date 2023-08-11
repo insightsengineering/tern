@@ -4,7 +4,12 @@
 \alias{add_riskdiff}
 \title{Split Function to Configure Risk Difference Column}
 \usage{
-add_riskdiff(arm_x, arm_y, col_label = "Risk Difference (\%) (95\% CI)")
+add_riskdiff(
+  arm_x,
+  arm_y,
+  col_label = "Risk Difference (\%) (95\% CI)",
+  pct = TRUE
+)
 }
 \arguments{
 \item{arm_x}{(\code{character})\cr Name of reference arm to use in risk difference calculations.}
@@ -12,6 +17,8 @@ add_riskdiff(arm_x, arm_y, col_label = "Risk Difference (\%) (95\% CI)")
 \item{arm_y}{(\code{character})\cr Name of arm to compare to reference arm in risk difference calculations.}
 
 \item{col_label}{(\code{character})\cr Label to use when rendering the risk difference column within the table.}
+
+\item{pct}{(\code{logical})\cr whether output should be returned as percentages. Defaults to \code{TRUE}.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

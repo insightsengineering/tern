@@ -10,6 +10,7 @@
 #' @param arm_x (`character`)\cr Name of reference arm to use in risk difference calculations.
 #' @param arm_y (`character`)\cr Name of arm to compare to reference arm in risk difference calculations.
 #' @param col_label (`character`)\cr Label to use when rendering the risk difference column within the table.
+#' @param pct (`logical`)\cr whether output should be returned as percentages. Defaults to `TRUE`.
 #'
 #' @examples
 #' adae <- tern_ex_adae
@@ -27,13 +28,15 @@
 #'
 #' @export
 add_riskdiff <- function(arm_x,
-                          arm_y,
-                          col_label = "Risk Difference (%) (95% CI)") {
+                         arm_y,
+                         col_label = "Risk Difference (%) (95% CI)",
+                         pct = TRUE) {
   sapply(c(arm_x, arm_y, col_label), checkmate::assert_character, len = 1)
   combodf <- tribble(
     ~valname, ~label, ~levelcombo, ~exargs,
     paste("riskdiff", arm_x, arm_y, sep = "_"), col_label, c(arm_x, arm_y), list()
   )
+  if (pct) combodf$valname <- paste0(combodf$valname, "_pct")
   add_combo_levels(combodf)
 }
 
@@ -105,10 +108,12 @@ afun_riskdiff <- function(df,
     }
 
     # Calculate risk difference for each row, repeated if multiple statistics in table
+    pct <- tail(strsplit(.spl_context$cur_col_split_val[[1]], "_")[[1]], 1) == "pct"
     rd_ci <- rep(stat_propdiff_ci(
-      lapply(s_x[[stat]], `[`, 2), lapply(s_y[[stat]], `[`, 2),
+      lapply(s_x[[stat]], `[`, 1), lapply(s_y[[stat]], `[`, 1),
       N_col_x, N_col_y,
-      list_names = var_nms
+      list_names = var_nms,
+      pct = pct
     ), max(1, length(.stats)))
 
     in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)

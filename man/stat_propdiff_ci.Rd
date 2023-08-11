@@ -5,8 +5,8 @@
 \title{Proportion Difference and Confidence Interval}
 \usage{
 stat_propdiff_ci(
-  frac_x,
-  frac_y,
+  x,
+  y,
   N_x,
   N_y,
   list_names = NULL,
@@ -15,34 +15,34 @@ stat_propdiff_ci(
 )
 }
 \arguments{
-\item{frac_x}{(\code{list})\cr list of proportions in arm X (reference group).}
+\item{x}{(\code{list} of \code{integer})\cr list of number of occurrences in arm X (reference group).}
 
-\item{frac_y}{(\code{list})\cr list of proportions in arm Y. Must be of equal length to \code{frac_x}.}
+\item{y}{(\code{list} of \code{integer})\cr list of number of occurrences in arm Y. Must be of equal length to \code{x}.}
 
 \item{N_x}{(\code{numeric})\cr total number of records in arm X.}
 
 \item{N_y}{(\code{numeric})\cr total number of records in arm Y.}
 
 \item{list_names}{(\code{character})\cr names of each variable/level corresponding to pair of proportions in
-\code{frac_x} and \code{frac_y}. Must be of equal length to \code{frac_x} and \code{frac_y}.}
+\code{x} and \code{y}. Must be of equal length to \code{x} and \code{y}.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{pct}{(\code{logical})\cr should output be returned as percentage instead of a fraction. Defaults to \code{TRUE}.}
+\item{pct}{(\code{logical})\cr whether output should be returned as percentages. Defaults to \code{TRUE}.}
 }
 \value{
-list of proportion differences and CIs corresponding to each pair of proportions in \code{frac_x} and \code{frac_y}.
+list of proportion differences and CIs corresponding to each pair of number of occurrences in \code{x} and \code{y}.
 Each list element consists of 3 statistics: proportion difference, CI lower bound, and CI upper bound.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Convenient function for calculating the proportion (or risk) difference and confidence interval between arm
+Function for calculating the proportion (or risk) difference and confidence interval between arm
 X (reference group) and arm Y. Risk difference is calculated by subtracting cumulative incidence in arm Y from
 cumulative incidence in arm X.
 }
 \examples{
-stat_propdiff_ci(frac_x = list(0.375), frac_y = list(0.01), N_x = 5, N_y = 5, list_names = "x", conf_level = 0.9)
-stat_propdiff_ci(frac_x = list(0.5, 0.75, 1), frac_y = list(0.25, 0.05, 0.5), N_x = 10, N_y = 20, pct = FALSE)
+stat_propdiff_ci(x = list(0.375), y = list(0.01), N_x = 5, N_y = 5, list_names = "x", conf_level = 0.9)
+stat_propdiff_ci(x = list(0.5, 0.75, 1), y = list(0.25, 0.05, 0.5), N_x = 10, N_y = 20, pct = FALSE)
 
 }
