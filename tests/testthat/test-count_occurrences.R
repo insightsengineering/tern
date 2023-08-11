@@ -120,10 +120,10 @@ testthat::test_that("count_occurrences functions as expected with label row spec
 testthat::test_that("count_occurrences works as expected with risk difference column", {
   # One statistic
   result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_risk_diff("A: Drug X", "B: Placebo")) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
     count_occurrences(
       vars = "AEDECOD",
-      risk_diff = TRUE
+      riskdiff = TRUE
     ) %>%
     build_table(tern_ex_adae)
 
@@ -132,10 +132,10 @@ testthat::test_that("count_occurrences works as expected with risk difference co
 
   # Multiple statistics, different id var
   result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_risk_diff("A: Drug X", "B: Placebo")) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
     count_occurrences(
       vars = "AEDECOD",
-      risk_diff = TRUE,
+      riskdiff = TRUE,
       .stats = c("count", "count_fraction", "fraction"),
       id = "SITEID"
     ) %>%

@@ -4,7 +4,7 @@
 #'
 #' Wrapper function for [`rtables::add_combo_levels()`] which configures settings for the risk difference column to be
 #' added to an `rtables` object. To add a risk difference column to a table, this function should be used as
-#' `split_fun` in calls to [rtables::split_cols_by()], followed by setting argument `risk_diff` to `TRUE` in all
+#' `split_fun` in calls to [rtables::split_cols_by()], followed by setting argument `riskdiff` to `TRUE` in all
 #' following analyze function calls.
 #'
 #' @param arm_x (`character`)\cr Name of reference arm to use in risk difference calculations.
@@ -16,17 +16,17 @@
 #' adae$AESEV <- factor(adae$AESEV)
 #'
 #' lyt <- basic_table() %>%
-#'   split_cols_by("ARMCD", split_fun = add_risk_diff(arm_x = "ARM A", arm_y = "ARM B")) %>%
+#'   split_cols_by("ARMCD", split_fun = add_riskdiff(arm_x = "ARM A", arm_y = "ARM B")) %>%
 #'   count_occurrences_by_grade(
 #'     var = "AESEV",
-#'     risk_diff = TRUE
+#'     riskdiff = TRUE
 #'   )
 #'
 #' tbl <- build_table(lyt, df = adae)
 #' tbl
 #'
 #' @export
-add_risk_diff <- function(arm_x,
+add_riskdiff <- function(arm_x,
                           arm_y,
                           col_label = "Risk Difference (%) (95% CI)") {
   sapply(c(arm_x, arm_y, col_label), checkmate::assert_character, len = 1)
@@ -41,7 +41,7 @@ add_risk_diff <- function(arm_x,
 #'
 #' In the risk difference column, uses the statistics function associated with `afun` to calculates risk difference
 #' values from arm X (reference group) and arm Y. These arms are specified when configuring the risk difference
-#' column which is done using the [add_risk_diff()] split function in the previous call to [rtables::split_cols_by()].
+#' column which is done using the [add_riskdiff()] split function in the previous call to [rtables::split_cols_by()].
 #' For all other columns, applies `afun` as usual. This function utilizes the [stat_propdiff_ci()] function to
 #' perform risk difference calculations.
 #'
@@ -55,7 +55,7 @@ add_risk_diff <- function(arm_x,
 #' @return A list of formatted [rtables::CellValue()].
 #'
 #' @keywords internal
-afun_risk_diff <- function(df,
+afun_riskdiff <- function(df,
                           labelstr = "",
                           .var,
                           .N_col, # nolint
@@ -69,8 +69,8 @@ afun_risk_diff <- function(df,
                           s_args = list(...)) {
   if (!any(grepl("^riskdiff", names(.spl_context)))) {
     stop(paste(
-      "Please set up levels to use in risk difference calculations using the `add_risk_diff`",
-      "split function within `split_cols_by`. See ?add_risk_diff for details."
+      "Please set up levels to use in risk difference calculations using the `add_riskdiff`",
+      "split function within `split_cols_by`. See ?add_riskdiff for details."
     ))
   }
   checkmate::assert_list(afun, len = 1, types = "function")

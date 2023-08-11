@@ -257,12 +257,12 @@ testthat::test_that("analyze_num_patients works well for pagination", {
 testthat::test_that("summarize_num_patients works as expected with risk difference column", {
   # One statistic
   result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_risk_diff("A: Drug X", "B: Placebo")) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
     split_rows_by("AESOC", child_labels = "visible") %>%
     summarize_num_patients(
       "USUBJID",
       .stats = "unique",
-      risk_diff = TRUE
+      riskdiff = TRUE
     ) %>%
     build_table(tern_ex_adae)
 
@@ -271,11 +271,11 @@ testthat::test_that("summarize_num_patients works as expected with risk differen
 
   # Multiple statistics
   result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_risk_diff("A: Drug X", "B: Placebo")) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
     split_rows_by("AESOC", child_labels = "visible") %>%
     summarize_num_patients(
       "USUBJID",
-      risk_diff = TRUE
+      riskdiff = TRUE
     ) %>%
     build_table(tern_ex_adae)
 
@@ -286,12 +286,12 @@ testthat::test_that("summarize_num_patients works as expected with risk differen
 testthat::test_that("analyze_num_patients works as expected with risk difference column", {
   # One statistic
   result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_risk_diff("A: Drug X", "B: Placebo")) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
     analyze_num_patients(
       vars = "USUBJID",
       .stats = "unique",
       .labels = c(unique = "Any SAE"),
-      risk_diff = TRUE
+      riskdiff = TRUE
     ) %>%
     build_table(tern_ex_adae)
 
@@ -300,11 +300,11 @@ testthat::test_that("analyze_num_patients works as expected with risk difference
 
   # Multiple statistics
   result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_risk_diff("A: Drug X", "B: Placebo")) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
     analyze_num_patients(
       vars = "USUBJID",
       .labels = c(unique = "Any SAE"),
-      risk_diff = TRUE
+      riskdiff = TRUE
     ) %>%
     build_table(tern_ex_adae)
 

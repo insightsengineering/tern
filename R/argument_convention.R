@@ -46,7 +46,7 @@
 #' @param newpage (`flag`)\cr whether the plot should be drawn on a new page.
 #'   Only considered if `draw = TRUE` is used.
 #' @param prune_zero_rows (`flag`)\cr whether to prune all zero rows.
-#' @param risk_diff (`logical`)\cr whether a risk difference column is present.
+#' @param riskdiff (`logical`)\cr whether a risk difference column is present.
 #' @param rsp (`logical`)\cr whether each subject is a responder or not.
 #' @param show_labels (`string`)\cr label visibility: one of "default", "visible" and "hidden".
 #' @param section_div (`string`)\cr string which should be repeated as a section divider after each group

@@ -308,11 +308,11 @@ testthat::test_that("count_patients_with_flags works as expected with risk diffe
 
   # One statistic
   result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_risk_diff("A: Drug X", "B: Placebo")) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
     count_patients_with_flags(
       var = "USUBJID",
       flag_variables = c("SER", "SERFATAL"),
-      risk_diff = TRUE
+      riskdiff = TRUE
     ) %>%
     build_table(adae, alt_counts_df = tern_ex_adsl)
 
@@ -321,12 +321,12 @@ testthat::test_that("count_patients_with_flags works as expected with risk diffe
 
   # Multiple statistics
   result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_risk_diff("A: Drug X", "B: Placebo")) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
     count_patients_with_flags(
       var = "USUBJID",
       flag_variables = c("SER", "SERFATAL"),
       .stats = c("count", "count_fraction"),
-      risk_diff = TRUE
+      riskdiff = TRUE
     ) %>%
     build_table(adae)
 

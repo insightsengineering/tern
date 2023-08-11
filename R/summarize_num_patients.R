@@ -145,7 +145,7 @@ summarize_num_patients <- function(lyt,
                                    ),
                                    indent_mod = lifecycle::deprecated(),
                                    .indent_mods = 0L,
-                                   risk_diff = FALSE,
+                                   riskdiff = FALSE,
                                    ...) {
   if (lifecycle::is_present(indent_mod)) {
     lifecycle::deprecate_warn("0.8.2", "summarize_num_patients(indent_mod)", "summarize_num_patients(.indent_mods)")
@@ -162,7 +162,7 @@ summarize_num_patients <- function(lyt,
     .labels = .labels
   )
 
-  extra_args <- if (!risk_diff) {
+  extra_args <- if (!riskdiff) {
     list(...)
   } else {
     list(
@@ -176,7 +176,7 @@ summarize_num_patients <- function(lyt,
   summarize_row_groups(
     lyt = lyt,
     var = var,
-    cfun = ifelse(!risk_diff, cfun, afun_risk_diff),
+    cfun = ifelse(!riskdiff, cfun, afun_riskdiff),
     extra_args = extra_args,
     indent_mod = .indent_mods
   )
@@ -225,7 +225,7 @@ analyze_num_patients <- function(lyt,
                                  show_labels = c("default", "visible", "hidden"),
                                  indent_mod = lifecycle::deprecated(),
                                  .indent_mods = 0L,
-                                 risk_diff = FALSE,
+                                 riskdiff = FALSE,
                                  ...) {
   if (lifecycle::is_present(indent_mod)) {
     lifecycle::deprecate_warn("0.8.2", "analyze_num_patients(indent_mod)", "analyze_num_patients(.indent_mods)")
@@ -242,7 +242,7 @@ analyze_num_patients <- function(lyt,
     .labels = .labels
   )
 
-  extra_args <- if (!risk_diff) {
+  extra_args <- if (!riskdiff) {
     list(...)
   } else {
     list(
@@ -254,7 +254,7 @@ analyze_num_patients <- function(lyt,
   }
 
   analyze(
-    afun = ifelse(!risk_diff, afun, afun_risk_diff),
+    afun = ifelse(!riskdiff, afun, afun_riskdiff),
     lyt = lyt,
     vars = vars,
     nested = nested,

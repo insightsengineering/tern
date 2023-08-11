@@ -77,7 +77,7 @@ Only considered if \code{draw = TRUE} is used.}
 
 \item{prune_zero_rows}{(\code{flag})\cr whether to prune all zero rows.}
 
-\item{risk_diff}{(\code{logical})\cr whether a risk difference column is present.}
+\item{riskdiff}{(\code{logical})\cr whether a risk difference column is present.}
 
 \item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
 
