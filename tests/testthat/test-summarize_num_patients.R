@@ -262,7 +262,7 @@ testthat::test_that("summarize_num_patients works as expected with risk differen
     summarize_num_patients(
       "USUBJID",
       .stats = "unique",
-      riskdiff = TRUE
+      risk_diff = TRUE
     ) %>%
     build_table(tern_ex_adae)
 
@@ -275,7 +275,7 @@ testthat::test_that("summarize_num_patients works as expected with risk differen
     split_rows_by("AESOC", child_labels = "visible") %>%
     summarize_num_patients(
       "USUBJID",
-      riskdiff = TRUE
+      risk_diff = TRUE
     ) %>%
     build_table(tern_ex_adae)
 
@@ -291,7 +291,7 @@ testthat::test_that("analyze_num_patients works as expected with risk difference
       vars = "USUBJID",
       .stats = "unique",
       .labels = c(unique = "Any SAE"),
-      riskdiff = TRUE
+      risk_diff = TRUE
     ) %>%
     build_table(tern_ex_adae)
 
@@ -304,7 +304,7 @@ testthat::test_that("analyze_num_patients works as expected with risk difference
     analyze_num_patients(
       vars = "USUBJID",
       .labels = c(unique = "Any SAE"),
-      riskdiff = TRUE
+      risk_diff = TRUE
     ) %>%
     build_table(tern_ex_adae)
 

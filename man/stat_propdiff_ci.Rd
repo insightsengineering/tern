@@ -15,7 +15,7 @@ stat_propdiff_ci(
 )
 }
 \arguments{
-\item{frac_x}{(\code{list})\cr list of proportions in arm X.}
+\item{frac_x}{(\code{list})\cr list of proportions in arm X (reference group).}
 
 \item{frac_y}{(\code{list})\cr list of proportions in arm Y. Must be of equal length to \code{frac_x}.}
 
@@ -37,9 +37,9 @@ Each list element consists of 3 statistics: proportion difference, CI lower boun
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Convenient function for calculating the proportion (or risk) difference and confidence interval between arm X and
-arm Y. Risk difference is calculated by subtracting cumulative incidence in arm Y from cumulative incidence
-in arm X.
+Convenient function for calculating the proportion (or risk) difference and confidence interval between arm
+X (reference group) and arm Y. Risk difference is calculated by subtracting cumulative incidence in arm Y from
+cumulative incidence in arm X.
 }
 \examples{
 stat_propdiff_ci(frac_x = list(0.375), frac_y = list(0.01), N_x = 5, N_y = 5, list_names = "x", conf_level = 0.9)

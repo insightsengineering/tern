@@ -179,12 +179,12 @@ stat_mean_pval <- function(x,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Convenient function for calculating the proportion (or risk) difference and confidence interval between arm X and
-#' arm Y. Risk difference is calculated by subtracting cumulative incidence in arm Y from cumulative incidence
-#' in arm X.
+#' Convenient function for calculating the proportion (or risk) difference and confidence interval between arm
+#' X (reference group) and arm Y. Risk difference is calculated by subtracting cumulative incidence in arm Y from
+#' cumulative incidence in arm X.
 #'
 #' @inheritParams argument_convention
-#' @param frac_x (`list`)\cr list of proportions in arm X.
+#' @param frac_x (`list`)\cr list of proportions in arm X (reference group).
 #' @param frac_y (`list`)\cr list of proportions in arm Y. Must be of equal length to `frac_x`.
 #' @param N_x (`numeric`)\cr total number of records in arm X.
 #' @param N_y (`numeric`)\cr total number of records in arm Y.

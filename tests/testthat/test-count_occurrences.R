@@ -123,7 +123,7 @@ testthat::test_that("count_occurrences works as expected with risk difference co
     split_cols_by("ARM", split_fun = add_risk_diff("A: Drug X", "B: Placebo")) %>%
     count_occurrences(
       vars = "AEDECOD",
-      riskdiff = TRUE
+      risk_diff = TRUE
     ) %>%
     build_table(tern_ex_adae)
 
@@ -135,7 +135,7 @@ testthat::test_that("count_occurrences works as expected with risk difference co
     split_cols_by("ARM", split_fun = add_risk_diff("A: Drug X", "B: Placebo")) %>%
     count_occurrences(
       vars = "AEDECOD",
-      riskdiff = TRUE,
+      risk_diff = TRUE,
       .stats = c("count", "count_fraction", "fraction"),
       id = "SITEID"
     ) %>%

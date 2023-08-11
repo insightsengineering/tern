@@ -31,7 +31,7 @@ count_occurrences(
   vars,
   var_labels = vars,
   show_labels = "hidden",
-  riskdiff = FALSE,
+  risk_diff = FALSE,
   nested = TRUE,
   ...,
   table_names = vars,
@@ -70,6 +70,8 @@ by a statistics function.}
 \item{var_labels}{(\code{character})\cr character for label.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+
+\item{risk_diff}{(\code{logical})\cr whether a risk difference column is present.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.

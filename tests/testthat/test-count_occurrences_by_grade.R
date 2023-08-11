@@ -345,7 +345,7 @@ testthat::test_that("count_occurrences_by_grade works as expected with risk diff
     split_cols_by("ARM", split_fun = add_risk_diff("A: Drug X", "B: Placebo")) %>%
     count_occurrences_by_grade(
       var = "AESEV",
-      riskdiff = TRUE
+      risk_diff = TRUE
     ) %>%
     build_table(tern_ex_adae)
 
@@ -359,7 +359,7 @@ testthat::test_that("count_occurrences_by_grade works as expected with risk diff
     split_cols_by("ARM", split_fun = add_risk_diff("A: Drug X", "B: Placebo")) %>%
     count_occurrences_by_grade(
       var = "AESEV",
-      riskdiff = TRUE,
+      risk_diff = TRUE,
       show_labels = "hidden",
       .indent_mods = 1L,
       grade_groups = grade_groups,

@@ -54,7 +54,6 @@ reference:
           - **Analyze functions** are used in combination with `rtables`
             layout functions in the pipeline which creates the table.
     contents:
-      - afun_risk_diff
       - starts_with("analyze_", internal = TRUE)
       - compare_vars
       - starts_with("count_", internal = TRUE)

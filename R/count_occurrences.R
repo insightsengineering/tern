@@ -169,7 +169,7 @@ count_occurrences <- function(lyt,
                               vars,
                               var_labels = vars,
                               show_labels = "hidden",
-                              riskdiff = FALSE,
+                              risk_diff = FALSE,
                               nested = TRUE,
                               ...,
                               table_names = vars,
@@ -186,7 +186,7 @@ count_occurrences <- function(lyt,
     .ungroup_stats = .stats
   )
 
-  extra_args <- if (!riskdiff) {
+  extra_args <- if (!risk_diff) {
     list(...)
   } else {
     list(
@@ -200,7 +200,7 @@ count_occurrences <- function(lyt,
   analyze(
     lyt = lyt,
     vars = vars,
-    afun = ifelse(!riskdiff, afun, afun_riskdiff),
+    afun = ifelse(!risk_diff, afun, afun_risk_diff),
     var_labels = var_labels,
     show_labels = show_labels,
     table_names = table_names,
