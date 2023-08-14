@@ -35,7 +35,8 @@ grade. Defaults to \code{c("SCREENING", "BASELINE")}.}
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Helper function that merges \code{ADSL} and \code{ADLB} datasets so that missing lab test records are inserted in the
-output dataset.
+output dataset. Remember that \code{na_level} must match the needed pre-processing
+done with \code{\link[=df_explicit_na]{df_explicit_na()}} to have the desired output.
 }
 \details{
 In the result data missing records will be created for the following situations:
