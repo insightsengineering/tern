@@ -87,8 +87,6 @@ Exact expected length of \code{x}.}
 \item{include_boundaries}{(\code{logical})\cr whether to include boundaries when testing
 for proportions.}
 
-\item{(`integer`)\cr}{minimum number of factor levels. Default is \code{1}.}
-
 \item{...}{a collection of objects to test.}
 }
 \value{

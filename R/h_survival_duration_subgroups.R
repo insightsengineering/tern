@@ -388,6 +388,7 @@ h_coxph_subgroups_df <- function(variables,
 #'
 #' Split a dataframe into a non-nested list of subsets.
 #'
+#' @inheritParams argument_convention
 #' @inheritParams survival_duration_subgroups
 #' @param data (`data.frame`)\cr dataset to split.
 #' @param subgroups (`character`)\cr names of factor variables from `data` used to create subsets.

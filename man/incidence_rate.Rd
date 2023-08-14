@@ -80,10 +80,6 @@ to avoid warnings from \code{rtables}.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
-
-\item{person_years}{(\code{numeric})\cr total person-years at risk.}
-
-\item{alpha}{(\code{numeric})\cr two-sided alpha-level for confidence interval.}
 }
 \value{
 \itemize{

@@ -41,9 +41,6 @@ desctools_binomci(
 \item{x}{(\code{count})\cr number of successes}
 
 \item{n}{(\code{count})\cr number of trials}
-
-\item{grp}{(\code{factor})\cr vector assigning observations to one out of two groups
-(e.g. reference and treatment group).}
 }
 \value{
 A \code{matrix} of 3 values:

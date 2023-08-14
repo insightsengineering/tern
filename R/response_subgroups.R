@@ -5,13 +5,6 @@
 #' Tabulate statistics such as response rate and odds ratio for population subgroups.
 #'
 #' @inheritParams argument_convention
-#' @param data (`data.frame`)\cr the dataset containing the variables to summarize.
-#' @param groups_lists (named `list` of `list`)\cr optionally contains for each `subgroups` variable a
-#'   list, which specifies the new group levels via the names and the
-#'   levels that belong to it in the character vectors that are elements of the list.
-#' @param label_all (`string`)\cr label for the total population analysis.
-#' @param method (`string`)\cr specifies the test used to calculate the p-value for the difference between
-#'   two proportions. For options, see [s_test_proportion_diff()]. Default is `NULL` so no test is performed.
 #'
 #' @details These functions create a layout starting from a data frame which contains
 #'   the required statistics. Tables typically used as part of forest plot.
