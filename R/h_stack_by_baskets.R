@@ -4,7 +4,8 @@
 #'
 #' Helper Function to create a new `SMQ` variable in `ADAE` that consists of all adverse events belonging to
 #' selected Standardized/Customized queries. The new dataset will only contain records of the adverse events
-#' belonging to any of the selected baskets.
+#' belonging to any of the selected baskets. Remember that `na_level` must match the needed pre-processing
+#' done with [df_explicit_na()] to have the desired output.
 #'
 #' @inheritParams argument_convention
 #' @param baskets (`character`)\cr variable names of the selected Standardized/Customized queries.

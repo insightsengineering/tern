@@ -3,7 +3,8 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Helper function that merges `ADSL` and `ADLB` datasets so that missing lab test records are inserted in the
-#' output dataset.
+#' output dataset. Remember that `na_level` must match the needed pre-processing
+#' done with [df_explicit_na()] to have the desired output.
 #'
 #' @param adsl (`data.frame`)\cr `ADSL` dataframe.
 #' @param adlb (`data.frame`)\cr `ADLB` dataframe.
