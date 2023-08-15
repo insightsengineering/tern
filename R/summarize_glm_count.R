@@ -35,9 +35,9 @@ NULL
 #'   * `covariates` (`character`)\cr a vector that can contain single variable names (such as
 #'     `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
 #'   * `offset` (`numeric`)\cr a numeric vector or scalar adding an offset.
-#' @param `weights`(`character`)\cr a character vector specifying weights used
+#' @param weights (`character`)\cr a character vector specifying weights used
 #'   in averaging predictions. Number of weights must equal the number of levels included in the covariates.
-#'   Weights option passed to emmeans function (hyperlink) (link to emmeans documentation)
+#'   Weights option passed to [emmeans::emmeans()].
 #'
 #' @return
 #' * `h_glm_poisson()` returns the results of a Poisson model.
@@ -141,8 +141,7 @@ h_glm_quasipoisson <- function(.var,
 #'   * `covariates` (`character`)\cr a vector that can contain single variable names (such as
 #'     `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
 #'   * `offset` (`numeric`)\cr a numeric vector or scalar adding an offset.
-#' @param `weights`(`character`)\cr character vector specifying weights used in averaging predictions.
-#' @param `distribution`(`character`)\cr a character value specifying the distribution
+#' @param distribution (`character`)\cr a character value specifying the distribution
 #'   used in the regression (poisson, quasipoisson).
 #'
 #' @return

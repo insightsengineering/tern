@@ -17,9 +17,9 @@ extract_survival_biomarkers(
 
 \item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
-\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a list, which
-specifies the new group levels via the names and the levels that belong to it in the character vectors that are
-elements of the list.}
+\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
+list, which specifies the new group levels via the names and the
+levels that belong to it in the character vectors that are elements of the list.}
 
 \item{control}{(\code{list})\cr a list of parameters as returned by the helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 

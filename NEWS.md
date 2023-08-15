@@ -1,8 +1,9 @@
-# tern 0.8.5.9006
+# tern 0.8.5.9009
 
 ### Miscellaneous
 * Fix swapped descriptions for the `.N_row` and `.N_col` parameters.
 * Fix bug in `analyze_vars_in_cols` when categorical data was used.
+* Removal of internal calls to `df_explicit_na`. Changes in `NA` values should happen externally to `tern` functions, depending on users' needs.
 
 ### Enhancements
 * Refactored `a_summary` to no longer use helper function `create_afun_summary`. 

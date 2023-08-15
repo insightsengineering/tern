@@ -71,6 +71,16 @@ testthat::test_that("g_km ylim parameter works as expected", {
   )
   vdiffr::expect_doppelganger(title = "g_km_crop_ylim", fig = g_km_crop_ylim)
 
+  g_km_crop_ylim_failure <- g_km(
+    df = df,
+    variables = variables,
+    yval = "Failure",
+    annot_surv_med = FALSE,
+    annot_at_risk = FALSE,
+    max_time = 1000
+  )
+  vdiffr::expect_doppelganger(title = "g_km_crop_ylim_failure", fig = g_km_crop_ylim_failure)
+
   g_km_custom_ylim <- g_km(
     df = df,
     variables = variables,
