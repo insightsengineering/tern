@@ -683,7 +683,6 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #' build_table(l, df = dta_test)
 #'
 #' @export analyze_vars summarize_vars
-#' @aliases summarize_vars
 analyze_vars <- function(lyt,
                          vars,
                          var_labels = vars,
@@ -716,36 +715,8 @@ analyze_vars <- function(lyt,
     section_div = section_div
   )
 }
-#' @inherit analyze_vars
-summarize_vars <- function(lyt,
-                           vars,
-                           var_labels = vars,
-                           nested = TRUE,
-                           ...,
-                           na.rm = TRUE, # nolint
-                           na_level = NA_character_,
-                           show_labels = "default",
-                           table_names = vars,
-                           section_div = NA_character_,
-                           .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
-                           .formats = NULL,
-                           .labels = NULL,
-                           .indent_mods = NULL) {
-  lifecycle::deprecate_warn(when = "0.8.5.9010", "summarize_vars", "analyze_vars")
-  analyze_vars(
-    lyt,
-    vars,
-    var_labels,
-    nested,
-    ...,
-    na.rm, # nolint
-    na_level,
-    show_labels,
-    table_names,
-    section_div,
-    .stats,
-    .formats,
-    .labels,
-    .indent_mods
-  )
+#' @describeIn analyze_variables `r lifecycle::badge("deprecated")` Use `analyze_vars` instead.
+summarize_vars <- function(...) {
+  lifecycle::deprecate_warn(when = "0.8.5.9010", "summarize_vars()", "analyze_vars()")
+  analyze_vars(...)
 }

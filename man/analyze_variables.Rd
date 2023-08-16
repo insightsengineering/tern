@@ -110,6 +110,8 @@ analyze_vars(
   .labels = NULL,
   .indent_mods = NULL
 )
+
+summarize_vars(...)
 }
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
@@ -285,6 +287,8 @@ conversion to factor (with a warning) and then forwards to the method for factor
 
 \item \code{analyze_vars()}: Layout-creating function which can take statistics function arguments
 and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+
+\item \code{summarize_vars()}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{analyze_vars} instead.
 
 }}
 \note{
