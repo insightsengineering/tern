@@ -169,21 +169,81 @@ count_occurrences <- function(lyt,
                               vars,
                               var_labels = vars,
                               show_labels = "hidden",
+                              na_level = NA_character_,
                               nested = TRUE,
+                              add_total_num_patients = get_stat("summarize_num_patients")[c(1, 2)],
                               ...,
                               table_names = vars,
-                              .stats = "count_fraction",
+                              .stats = get_stat("count_occurrences")[2],
                               .formats = NULL,
                               .labels = NULL,
                               .indent_mods = NULL) {
-  afun <- make_afun(
-    a_count_occurrences,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods,
-    .ungroup_stats = .stats
-  )
+  # Checking methods
+  add_total <- NULL
+  if (is.logical(add_total_num_patients)) {
+    checkmate::assert_logical(add_total_num_patients)
+    if (add_total_num_patients) {
+      add_total <- get_stat("summarize_num_patients")
+    } else {
+      add_total <- NULL
+    }
+  } else {
+    add_total <- add_total_num_patients
+  }
+  checkmate::assert_character(add_total, null.ok = TRUE, min.len = 1)
+  checkmate::assert_subset(add_total, choices = get_stat("summarize_num_patients"), empty.ok = TRUE)
+
+  checkmate::assert_character(.stats, null.ok = TRUE, min.len = 1)
+  checkmate::assert_subset(.stats, choices = get_stat("count_occurrences"), empty.ok = FALSE)
+
+  # Checking misc.
+  checkmate::assert_flag(nested)
+  checkmate::assert_int(.indent_mods, null.ok = TRUE)
+
+  # Checking formats
+  if (is.null(.formats)) {
+    fmt <- get_format_from_stat(.stats)
+    if (!is.null(add_total)) {
+      fmt <- c(fmt, get_format_from_stat(add_total))
+    }
+  } else {
+    fmt <- .formats
+  }
+
+  # Checking labels
+  if (is.null(.labels)) {
+    lbl_stats <- get_label_from_stat(.stats)
+  } else {
+    lbl_stats <- .labels
+  }
+
+  afun <- function(x, .spl_context, .N_col, ...) {
+        browser()
+        # Main statistics
+        res <- s_count_occurrences(x, ...)[[.stats]]
+
+        # Add totals before
+        if (!is.null(add_total)) {
+          res_tot <- s_num_patients_content(x, .var = NULL, ...)[[add_total]]
+        }
+
+        # Cell creation
+        rcell(res,
+              label = lbl_stats,
+              format = fmt,
+              format_na_str = na_level,
+              indent_mod = ifelse(is.null(.indent_mods), 0L, .indent_mods)
+        )
+    }
+#
+#   afun <- make_afun(
+#     a_count_occurrences,
+#     .stats = .stats,
+#     .formats = .formats,
+#     .labels = .labels,
+#     .indent_mods = .indent_mods,
+#     .ungroup_stats = .stats
+#   )
 
   analyze(
     lyt = lyt,
@@ -196,3 +256,78 @@ count_occurrences <- function(lyt,
     extra_args = list(...)
   )
 }
+
+#' @describeIn count_occurrences Utility function to get valid statistic methods for
+#'  different method groups.
+#'
+#' @param method_group (`string`) \cr Indicates the group of statistical methods that
+#'  we need the defaults from.
+#'
+#' @export
+get_stat <- function(method_group) {
+  checkmate::assert_string(method_group)
+  switch (method_group,
+    "count_occurrences" = c("count", "count_fraction", "fraction"),
+    "summarize_num_patients" = c("unique", "nonunique", "unique_count"),
+    stop(method_group, " is a method_group that has no default statistical method.")
+  )
+}
+
+#' @describeIn count_occurrences
+#'
+#' @export
+get_format_from_stat <- function(stats) {
+  checkmate::assert_character(stats, min.len = 1)
+  # XXX this is experimental and needs #983 first
+  # it is like tern:::summary_formats() but it should be exported and more general
+  default_formats <- tern_default_formats()
+  which_fmt <- match(stats, names(default_formats))
+
+  ret <- vector("list", length = length(stats))
+  ret[which(!is.na(which_fmt))] <- default_formats[which_fmt]
+
+  setNames(ret, stats)
+}
+
+#' @describeIn count_occurrences
+#'
+#' @export
+get_label_from_stat <- function(stats) {
+  checkmate::assert_character(stats, min.len = 1)
+  default_lbl <- tern_default_labels()
+  which_lbl <- match(stats, names(default_lbl))
+
+  ret <- vector("list", length = length(stats))
+  ret[which(!is.na(which_lbl))] <- default_lbl[which_lbl]
+
+  setNames(ret, stats)
+}
+#' @describeIn count_occurrences XXX This will be very general
+#'
+#' @export
+tern_default_formats <- function() {
+  c(
+    list(
+      "count" = "xx",
+      "count_fraction" = format_count_fraction_fixed_dp,
+      "fraction" = format_fraction_fixed_dp
+    ),
+    list(
+      "unique" = format_count_fraction_fixed_dp,
+      "nonunique" = "xx",
+      "unique_count" = "xx"
+    )
+  )
+}
+#' @describeIn count_occurrences XXX This will be very general
+#'
+#' @export
+tern_default_labels <- function() {
+  c(
+    list(
+      "unique" = "Number of patients with at least one event",
+      "nonunique" = "Number of events"
+    )
+  )
+}
+

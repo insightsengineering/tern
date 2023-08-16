@@ -116,3 +116,16 @@ testthat::test_that("count_occurrences functions as expected with label row spec
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("count_occurrences can have totals", {
+  library(tern)
+  tbl <- basic_table() %>%
+    split_cols_by("ACTARM") %>%
+    split_rows_by("AEBODSYS", child_labels = "visible") %>%
+    # summarize_num_patients("USUBJID", # Q: do we need this to be a label row (i.e. content row)?
+    #                        .stats = c("unique", "nonunique"),
+    #                        .labels = c("Total number of patients with at least one adverse event", "Total number of events")) %>%
+    count_occurrences("AEDECOD", .indent_mods = -1L, add_total = TRUE) %>% # Q: do we always need this collapse?
+    build_table(ex_adae)
+  tbl[1:10,]
+})
