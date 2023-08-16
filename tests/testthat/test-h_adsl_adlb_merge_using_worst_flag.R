@@ -4,9 +4,10 @@ testthat::test_that("h_adsl_adlb_merge_using_worst_flag generates missing for pa
   adlb_f <- tern_ex_adlb %>%
     dplyr::filter(USUBJID %in% c("AB12345-CHN-3-id-128"))
 
-  result <- h_adsl_adlb_merge_using_worst_flag(adsl_f, adlb_f, worst_flag = c("WGRHIFL" = "Y"))
-
-  res <- testthat::expect_silent(result)
+  testthat::expect_silent(
+    result <- h_adsl_adlb_merge_using_worst_flag(adsl_f, adlb_f, worst_flag = c("WGRHIFL" = "Y"))
+  )
+  res <- df_explicit_na(result)
   testthat::expect_snapshot(res)
 })
 
@@ -20,7 +21,7 @@ testthat::test_that("h_adsl_adlb_merge_using_worst_flag generates missing for pa
 
   result <- h_adsl_adlb_merge_using_worst_flag(adsl_f, adlb_f, worst_flag = c("WGRHIFL" = "Y"))
 
-  res <- testthat::expect_silent(result)
+  res <- df_explicit_na(result)
   testthat::expect_snapshot(res)
 })
 
@@ -34,7 +35,7 @@ testthat::test_that("h_adsl_adlb_merge_using_worst_flag generates missing for pa
 
   result <- h_adsl_adlb_merge_using_worst_flag(adsl_f, adlb_f, worst_flag = c("WGRHIFL" = "Y"))
 
-  res <- testthat::expect_silent(result)
+  res <- df_explicit_na(result)
   testthat::expect_snapshot(res)
 })
 
@@ -50,7 +51,7 @@ testthat::test_that(
 
     result <- h_adsl_adlb_merge_using_worst_flag(adsl_f, adlb_f, worst_flag = c("WGRHIFL" = "Y"))
 
-    res <- testthat::expect_silent(result)
+    res <- df_explicit_na(result)
     testthat::expect_snapshot(res)
   }
 )
@@ -63,6 +64,6 @@ testthat::test_that("h_adsl_adlb_merge_using_worst_flag generates missing and by
 
   result <- h_adsl_adlb_merge_using_worst_flag(adsl_f, adlb_f, worst_flag = c("WGRHIVFL" = "Y"), by_visit = TRUE)
 
-  res <- testthat::expect_silent(result)
+  res <- df_explicit_na(result)
   testthat::expect_snapshot(res)
 })

@@ -37,7 +37,8 @@ records belonging to the baskets selected via the \code{baskets} argument.
 
 Helper Function to create a new \code{SMQ} variable in \code{ADAE} that consists of all adverse events belonging to
 selected Standardized/Customized queries. The new dataset will only contain records of the adverse events
-belonging to any of the selected baskets.
+belonging to any of the selected baskets. Remember that \code{na_level} must match the needed pre-processing
+done with \code{\link[=df_explicit_na]{df_explicit_na()}} to have the desired output.
 }
 \examples{
 adae <- tern_ex_adae[1:20, ] \%>\% df_explicit_na()

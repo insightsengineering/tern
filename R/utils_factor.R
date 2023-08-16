@@ -276,3 +276,46 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
   x <- forcats::fct_collapse(.f, ..., other_level = .na_level)
   do.call(forcats::fct_relevel, args = c(list(.f = x), as.list(new_lvls)))
 }
+
+#' Ungroup Non-Numeric Statistics
+#'
+#' Ungroups grouped non-numeric statistics within input vectors `.formats`, `.labels`, and `.indent_mods`.
+#'
+#' @inheritParams argument_convention
+#' @param x  (`named list` of `numeric`)\cr list of numeric statistics containing the statistics to ungroup.
+#'
+#' @return A `list` with modified elements `x`, `.formats`, `.labels`, and `.indent_mods`.
+#'
+#' @seealso [a_summary_internal()] which uses this function internally.
+#'
+#' @keywords internal
+ungroup_stats <- function(x,
+                          .formats,
+                          .labels,
+                          .indent_mods) {
+  checkmate::assert_list(x)
+  empty_pval <- "pval" %in% names(x) && length(x[["pval"]]) == 0
+  x <- unlist(x, recursive = FALSE)
+
+  # If p-value is empty it is removed by unlist and needs to be re-added
+  if (empty_pval) x[["pval"]] <- character()
+  .stats <- names(x)
+
+  # Ungroup stats
+  .formats <- lapply(.stats, function(x) {
+    .formats[[if (!grepl("\\.", x)) x else regmatches(x, regexpr("\\.", x), invert = TRUE)[[1]][1]]]
+  })
+  .indent_mods <- sapply(.stats, function(x) {
+    .indent_mods[[if (!grepl("\\.", x)) x else regmatches(x, regexpr("\\.", x), invert = TRUE)[[1]][1]]]
+  })
+  .labels <- sapply(.stats, function(x) {
+    if (!grepl("\\.", x)) .labels[[x]] else regmatches(x, regexpr("\\.", x), invert = TRUE)[[1]][2]
+  })
+
+  list(
+    x = x,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
+  )
+}

@@ -34,7 +34,7 @@ variables that are split into different columns. In comparison, \link{analyze_co
 leverage \code{analyze_colvars} to have the context split in rows and the analysis
 methods in columns.
 \item \code{\link[=summarize_change]{summarize_change()}}
-\item \code{\link[=analyze_vars]{analyze_vars()}}: formerly known as \code{\link[=summarize_vars]{summarize_vars()}}, it was renamed to reflect
+\item \code{\link[=analyze_vars]{analyze_vars()}}: formerly known as \code{summarize_vars()}, it was renamed to reflect
 core function \code{\link[rtables:analyze]{rtables::analyze()}}.
 \item \code{\link[=surv_time]{surv_time()}}
 \item \code{\link[=surv_timepoint]{surv_timepoint()}}

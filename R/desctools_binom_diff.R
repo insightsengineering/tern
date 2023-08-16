@@ -4,9 +4,6 @@
 #'
 #' Several confidence intervals for the difference between proportions.
 #'
-#' @param grp (`factor`)\cr vector assigning observations to one out of two groups
-#'   (e.g. reference and treatment group).
-#'
 #' @name desctools_binom
 NULL
 

@@ -4,7 +4,8 @@
 #'
 #' Helper Function to create a new `SMQ` variable in `ADAE` that consists of all adverse events belonging to
 #' selected Standardized/Customized queries. The new dataset will only contain records of the adverse events
-#' belonging to any of the selected baskets.
+#' belonging to any of the selected baskets. Remember that `na_level` must match the needed pre-processing
+#' done with [df_explicit_na()] to have the desired output.
 #'
 #' @inheritParams argument_convention
 #' @param baskets (`character`)\cr variable names of the selected Standardized/Customized queries.
@@ -62,9 +63,6 @@ h_stack_by_baskets <- function(df,
                                keys = c("STUDYID", "USUBJID", "ASTDTM", "AEDECOD", "AESEQ"),
                                aag_summary = NULL,
                                na_level = "<Missing>") {
-  # Use of df_explicit_na() in case the user has not previously used
-  df <- df_explicit_na(df, na_level = na_level)
-
   smq_nam <- baskets[startsWith(baskets, "SMQ")]
   # SC corresponding to NAM
   smq_sc <- gsub(pattern = "NAM", replacement = "SC", x = smq_nam, fixed = TRUE)

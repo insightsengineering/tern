@@ -67,10 +67,10 @@ reference:
   - title: Analysis Helper Functions
     desc: These functions are useful in defining an analysis.
     contents:
-      - starts_with("create_", internal = TRUE)
       - starts_with("h_")
       - starts_with("or_")
       - starts_with("prop_")
+      - summary_stats
       - -starts_with("h_col_")
       - -h_content_first_row
       - -h_data_plot
@@ -173,3 +173,8 @@ reference:
     desc: Data included in the package.
     contents:
       - starts_with("ex_")
+
+  - title: Deprecated Functions
+    desc: Functions that are currently deprecated within `tern`.
+    contents:
+      - starts_with("create_")

@@ -124,3 +124,16 @@ testthat::test_that("compare_vars 'na_level' argument works as expected", {
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+# Deprecated functions
+
+testthat::test_that("create_afun_compare returns error message", {
+  testthat::expect_error(create_afun_compare())
+})
+
+testthat::test_that("a_compare returns correct output and warning message", {
+  testthat::expect_warning(result <- a_compare(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .stats = c("n", "pval")))
+  expected <- a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .stats = c("n", "pval"), compare = TRUE)
+
+  testthat::expect_equal(result, expected)
+})

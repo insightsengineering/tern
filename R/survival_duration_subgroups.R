@@ -6,11 +6,6 @@
 #'
 #' @inheritParams argument_convention
 #' @inheritParams survival_coxph_pairwise
-#' @param data (`data.frame`)\cr the dataset containing the variables to summarize.
-#' @param groups_lists (named `list` of `list`)\cr optionally contains for each `subgroups` variable a list, which
-#'   specifies the new group levels via the names and the levels that belong to it in the character vectors that are
-#'   elements of the list.
-#' @param label_all (`string`)\cr label for the total population analysis.
 #' @param time_unit (`string`)\cr label with unit of median survival time. Default `NULL` skips displaying unit.
 #'
 #' @details These functions create a layout starting from a data frame which contains
