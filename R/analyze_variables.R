@@ -4,6 +4,9 @@
 #'
 #' We use the S3 generic function [s_summary()] to implement summaries for different `x` objects. This
 #' is used as a statistics function in combination with the analyze function [analyze_vars()].
+#' Deprecation cycle started for `summarize_vars` as it is going to renamed into
+#' `analyze_vars`. Intention is to reflect better the core underlying `rtables`
+#' functions; in this case [rtables::analyze()].
 #'
 #' @inheritParams argument_convention
 #'
@@ -624,9 +627,6 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.
 #'
-#' @note Deprecation cycle started for `summarize_vars` as it is going to renamed into
-#'   `analyze_vars`. Intention is to reflect better the core underlying `rtables`
-#'   functions; in this case [rtables::analyze()].
 #'
 #' @return
 #' * `analyze_vars()` returns a layout object suitable for passing to further layouting functions,
@@ -682,7 +682,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'
 #' build_table(l, df = dta_test)
 #'
-#' @export
+#' @export analyze_vars summarize_vars
 analyze_vars <- function(lyt,
                          vars,
                          var_labels = vars,
@@ -715,5 +715,8 @@ analyze_vars <- function(lyt,
     section_div = section_div
   )
 }
-
-summarize_vars <- analyze_vars
+#' @describeIn analyze_variables `r lifecycle::badge("deprecated")` Use `analyze_vars` instead.
+summarize_vars <- function(...) {
+  lifecycle::deprecate_warn(when = "0.8.5.9010", "summarize_vars()", "analyze_vars()")
+  analyze_vars(...)
+}
