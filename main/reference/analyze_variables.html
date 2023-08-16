@@ -14,7 +14,7 @@ is used as a statistics function in combination with the analyze function analyz
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.5.9008</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.5.9009</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,28 +39,6 @@ is used as a statistics function in combination with the analyze function analyz
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc2">v0.8.5-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc1">v0.8.5-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5">v0.8.5</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -143,49 +121,43 @@ is used as a statistics function in combination with the analyze function <code>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">a_summary</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, <span class="va">.N_row</span>, <span class="va">.N_col</span>, <span class="va">.var</span><span class="op">)</span></span>
+<span><span class="fu">a_summary</span><span class="op">(</span><span class="va">x</span>, <span class="va">.N_col</span>, <span class="va">.N_row</span>, <span class="va">.var</span>, <span class="va">.df_row</span>, <span class="va">.ref_group</span>, <span class="va">.in_ref_col</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for default</span></span>
+<span><span class="fu">a_summary</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">.N_col</span>,</span>
+<span>  <span class="va">.N_row</span>,</span>
+<span>  .var <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .df_row <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .ref_group <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  compare <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="fu"><a href="summary_stats.html">summary_custom</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"counts"</span>, include_pval <span class="op">=</span> <span class="va">compare</span><span class="op">)</span><span class="op">$</span><span class="va">stats</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="fu"><a href="summary_stats.html">summary_custom</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"counts"</span>, include_pval <span class="op">=</span> <span class="va">compare</span><span class="op">)</span><span class="op">$</span><span class="va">formats</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="fu"><a href="summary_stats.html">summary_custom</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"counts"</span>, include_pval <span class="op">=</span> <span class="va">compare</span><span class="op">)</span><span class="op">$</span><span class="va">labels</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="fu"><a href="summary_stats.html">summary_custom</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"counts"</span>, include_pval <span class="op">=</span> <span class="va">compare</span><span class="op">)</span><span class="op">$</span><span class="va">indent_mods</span>,</span>
+<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  na_level <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for numeric</span></span>
 <span><span class="fu">a_summary</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
-<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  <span class="va">denom</span>,</span>
-<span>  <span class="va">.N_row</span>,</span>
 <span>  <span class="va">.N_col</span>,</span>
-<span>  <span class="va">.var</span>,</span>
-<span>  control <span class="op">=</span> <span class="fu"><a href="control_analyze_vars.html">control_analyze_vars</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for factor</span></span>
-<span><span class="fu">a_summary</span><span class="op">(</span></span>
-<span>  <span class="va">x</span>,</span>
-<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_row"</span>, <span class="st">"N_col"</span><span class="op">)</span>,</span>
 <span>  <span class="va">.N_row</span>,</span>
-<span>  <span class="va">.N_col</span>,</span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for character</span></span>
-<span><span class="fu">a_summary</span><span class="op">(</span></span>
-<span>  <span class="va">x</span>,</span>
+<span>  .var <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .df_row <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .ref_group <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  compare <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="fu"><a href="summary_stats.html">summary_custom</a></span><span class="op">(</span>include_pval <span class="op">=</span> <span class="va">compare</span><span class="op">)</span><span class="op">$</span><span class="va">stats</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="fu"><a href="summary_stats.html">summary_custom</a></span><span class="op">(</span>include_pval <span class="op">=</span> <span class="va">compare</span><span class="op">)</span><span class="op">$</span><span class="va">formats</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="fu"><a href="summary_stats.html">summary_custom</a></span><span class="op">(</span>include_pval <span class="op">=</span> <span class="va">compare</span><span class="op">)</span><span class="op">$</span><span class="va">labels</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="fu"><a href="summary_stats.html">summary_custom</a></span><span class="op">(</span>include_pval <span class="op">=</span> <span class="va">compare</span><span class="op">)</span><span class="op">$</span><span class="va">indent_mods</span>,</span>
 <span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_row"</span>, <span class="st">"N_col"</span><span class="op">)</span>,</span>
-<span>  <span class="va">.N_row</span>,</span>
-<span>  <span class="va">.N_col</span>,</span>
-<span>  <span class="va">.var</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for logical</span></span>
-<span><span class="fu">a_summary</span><span class="op">(</span></span>
-<span>  <span class="va">x</span>,</span>
-<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_row"</span>, <span class="st">"N_col"</span><span class="op">)</span>,</span>
-<span>  <span class="va">.N_row</span>,</span>
-<span>  <span class="va">.N_col</span>,</span>
+<span>  na_level <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -195,6 +167,7 @@ is used as a statistics function in combination with the analyze function <code>
 <span>  var_labels <span class="op">=</span> <span class="va">vars</span>,</span>
 <span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span>,</span>
+<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  na_level <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
 <span>  show_labels <span class="op">=</span> <span class="st">"default"</span>,</span>
 <span>  table_names <span class="op">=</span> <span class="va">vars</span>,</span>
@@ -257,40 +230,21 @@ See more about <code>type</code> in <code><a href="https://rdrr.io/r/stats/quant
 to print out information about factor casting.</p></dd>
 
 
-<dt>lyt</dt>
-<dd><p>(<code>layout</code>)<br> input layout where analyses will be added to.</p></dd>
+<dt>.df_row</dt>
+<dd><p>(<code>data.frame</code>)<br> data frame across all of the columns for the given row split.</p></dd>
 
 
-<dt>vars</dt>
-<dd><p>(<code>character</code>)<br> variable names for the primary analysis variable to be iterated over.</p></dd>
+<dt>.ref_group</dt>
+<dd><p>(<code>data.frame</code> or <code>vector</code>)<br> the data corresponding to the reference group.</p></dd>
 
 
-<dt>var_labels</dt>
-<dd><p>(<code>character</code>)<br> character for label.</p></dd>
+<dt>.in_ref_col</dt>
+<dd><p>(<code>logical</code>)<br><code>TRUE</code> when working with the reference level, <code>FALSE</code> otherwise.</p></dd>
 
 
-<dt>nested</dt>
-<dd><p>(<code>flag</code>)<br> whether this layout instruction should be applied within the existing layout structure <em>if
-possible</em> (<code>TRUE</code>, the default) or as a new top-level element (<code>FALSE</code>). Ignored if it would nest a split.
-underneath analyses, which is not allowed.</p></dd>
-
-
-<dt>na_level</dt>
-<dd><p>(<code>string</code>)<br> string used to replace all <code>NA</code> or empty values in the output.</p></dd>
-
-
-<dt>show_labels</dt>
-<dd><p>(<code>string</code>)<br> label visibility: one of "default", "visible" and "hidden".</p></dd>
-
-
-<dt>table_names</dt>
-<dd><p>(<code>character</code>)<br> this can be customized in case that the same <code>vars</code> are analyzed multiple times,
-to avoid warnings from <code>rtables</code>.</p></dd>
-
-
-<dt>section_div</dt>
-<dd><p>(<code>string</code>)<br> string which should be repeated as a section divider after each group
-defined by this split instruction, or <code>NA_character_</code> (the default) for no section divider.</p></dd>
+<dt>compare</dt>
+<dd><p>(<code>logical</code>)<br> Whether comparison statistics should be analyzed instead of summary statistics
+(<code>compare = TRUE</code> adds <code>pval</code> statistic comparing against reference group).</p></dd>
 
 
 <dt>.stats</dt>
@@ -309,6 +263,47 @@ defined by this split instruction, or <code>NA_character_</code> (the default) f
 <dd><p>(named <code>vector</code> of <code>integer</code>)<br> indent modifiers for the labels. Each element of the vector
 should be a name-value pair with name corresponding to a statistic specified in <code>.stats</code> and value the indentation
 for that statistic's row label.</p></dd>
+
+
+<dt>na_level</dt>
+<dd><p>(<code>string</code>)<br> string used to replace all <code>NA</code> or empty values in the output.</p></dd>
+
+
+<dt>lyt</dt>
+<dd><p>(<code>layout</code>)<br> input layout where analyses will be added to.</p></dd>
+
+
+<dt>vars</dt>
+<dd><p>(<code>character</code>)<br> variable names for the primary analysis variable to be iterated over.</p></dd>
+
+
+<dt>var_labels</dt>
+<dd><p>(<code>character</code>)<br> character for label.</p></dd>
+
+
+<dt>nested</dt>
+<dd><p>(<code>flag</code>)<br> whether this layout instruction should be applied within the existing layout structure <em>if
+possible</em> (<code>TRUE</code>, the default) or as a new top-level element (<code>FALSE</code>). Ignored if it would nest a split.
+underneath analyses, which is not allowed.</p></dd>
+
+
+<dt>show_labels</dt>
+<dd><p>(<code>string</code>)<br> label visibility: one of "default", "visible" and "hidden".</p></dd>
+
+
+<dt>table_names</dt>
+<dd><p>(<code>character</code>)<br> this can be customized in case that the same <code>vars</code> are analyzed multiple times,
+to avoid warnings from <code>rtables</code>.</p></dd>
+
+
+<dt>section_div</dt>
+<dd><p>(<code>string</code>)<br> string which should be repeated as a section divider after each group
+defined by this split instruction, or <code>NA_character_</code> (the default) for no section divider.</p></dd>
+
+
+<dt>type</dt>
+<dd><p>(<code>character</code>)<br> type of statistics to calculate given <code>x</code>. If <code>x</code> is numeric <code>type</code> should be
+<code>"numeric"</code>, otherwise type should be <code>"counts"</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -365,11 +360,10 @@ the statistics from <code>s_summary()</code> to the table layout.</p></li>
 <li><p><code>s_summary(character)</code>: Method for <code>character</code> class. This makes an automatic
 conversion to factor (with a warning) and then forwards to the method for factors.</p></li>
 <li><p><code>s_summary(logical)</code>: Method for <code>logical</code> class.</p></li>
-<li><p><code>a_summary()</code>: Formatted analysis function which is used as <code>afun</code> in <code>analyze_vars()</code>.</p></li>
+<li><p><code>a_summary()</code>: Formatted analysis function which is used as <code>afun</code> in <code>analyze_vars()</code> and
+<code><a href="compare_variables.html">compare_vars()</a></code> and as <code>cfun</code> in <code><a href="summarize_colvars.html">summarize_colvars()</a></code>.</p></li>
+<li><p><code>a_summary(default)</code>: Formatted analysis function <code>default</code> method for non-numeric classes.</p></li>
 <li><p><code>a_summary(numeric)</code>: Formatted analysis function method for <code>numeric</code> class.</p></li>
-<li><p><code>a_summary(factor)</code>: Formatted analysis function method for <code>factor</code> class.</p></li>
-<li><p><code>a_summary(character)</code>: Formatted analysis function method for <code>character</code> class.</p></li>
-<li><p><code>a_summary(logical)</code>: Formatted analysis function method for <code>logical</code> class.</p></li>
 <li><p><code>analyze_vars()</code>: Layout-creating function which can take statistics function arguments
 and additional format arguments. This function is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
 </ul></div>
@@ -390,6 +384,8 @@ default <code>na_level</code> (<code>"&lt;Missing&gt;"</code>) will also be excl
 can be generated correctly. In particular for sparse tables this very likely can fail.
 It is therefore better to always pre-process the dataset such that factors are manually
 created from character variables before passing the dataset to <code><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">rtables::build_table()</a></code>.</p></li>
+</ul><ul><li><p>To use for comparison (with additional p-value statistic), parameter <code>compare</code> must be set to <code>TRUE</code>.</p></li>
+<li><p>Ensure that either all <code>NA</code> values are converted to an explicit <code>NA</code> level or all <code>NA</code> values are left as is.</p></li>
 </ul><p>Deprecation cycle started for <code>summarize_vars</code> as it is going to renamed into
 <code>analyze_vars</code>. Intention is to reflect better the core underlying <code>rtables</code>
 functions; in this case <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p>
@@ -1956,44 +1952,7 @@ functions; in this case <code><a href="https://rdrr.io/pkg/rtables/man/analyze.h
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># `a_summary.numeric`</span></span></span>
-<span class="r-in"><span><span class="fu">a_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, .N_col <span class="op">=</span> <span class="fl">10</span>, .N_row <span class="op">=</span> <span class="fl">20</span>, .var <span class="op">=</span> <span class="st">"bla"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        row_name   formatted_cell indent_mod                   row_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1             n               10          0                           n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           sum              1.5          0                         Sum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          mean              0.2          0                        Mean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4            sd              0.7          0                          SD</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5            se              0.2          0                          SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       mean_sd        0.2 (0.7)          0                   Mean (SD)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7       mean_se        0.2 (0.2)          0                   Mean (SE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8       mean_ci    (-0.34, 0.64)          0                 Mean 95% CI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9      mean_sei    (-0.07, 0.37)          0               Mean -/+ 1xSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     mean_sdi    (-0.54, 0.84)          0               Mean -/+ 1xSD</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11    mean_pval             0.51          0 Mean p-value (H0: mean = 0)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12       median              0.4          0                      Median</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13          mad              0.0          0   Median Absolute Deviation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14    median_ci    (-0.84, 0.79)          0               Median 95% CI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15    quantiles       -0.4 - 0.7          0             25% and 75%-ile</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16          iqr              1.1          0                         IQR</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17        range       -0.9 - 0.9          0                   Min - Max</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18          min             -0.9          0                     Minimum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19          max              0.9          0                     Maximum</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 median_range 0.4 (-0.9 - 0.9)          0          Median (Min - Max)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21           cv            456.9          0                      CV (%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22    geom_mean               NA          0              Geometric Mean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 geom_mean_ci               NA          0       Geometric Mean 95% CI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24      geom_cv               NA          0         CV % Geometric Mean</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># `a_summary.factor`</span></span></span>
-<span class="r-in"><span><span class="co"># We need to ungroup `count` and `count_fraction` first so that the rtables formatting</span></span></span>
-<span class="r-in"><span><span class="co"># functions can be applied correctly.</span></span></span>
-<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">make_afun</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/getS3method.html" class="external-link">getS3method</a></span><span class="op">(</span><span class="st">"a_summary"</span>, <span class="st">"factor"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  .ungroup_stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"count"</span>, <span class="st">"count_fraction"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">afun</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"a"</span><span class="op">)</span><span class="op">)</span>, .N_row <span class="op">=</span> <span class="fl">10</span>, .N_col <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">a_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"a"</span><span class="op">)</span><span class="op">)</span>, .N_row <span class="op">=</span> <span class="fl">10</span>, .N_col <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   row_name formatted_cell indent_mod row_label</span>
@@ -2005,13 +1964,34 @@ functions; in this case <code><a href="https://rdrr.io/pkg/rtables/man/analyze.h
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6        b        1 (20%)          0         b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7        c        1 (20%)          0         c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8    n_blq              0          0     n_blq</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># `a_summary.character`</span></span></span>
-<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">make_afun</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/getS3method.html" class="external-link">getS3method</a></span><span class="op">(</span><span class="st">"a_summary"</span>, <span class="st">"character"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  .ungroup_stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"count"</span>, <span class="st">"count_fraction"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">a_summary</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"a"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  .ref_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span><span class="op">)</span>, compare <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">afun</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"A"</span>, <span class="st">"C"</span><span class="op">)</span>, .var <span class="op">=</span> <span class="st">"x"</span>, .N_col <span class="op">=</span> <span class="fl">10</span>, .N_row <span class="op">=</span> <span class="fl">10</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     row_name formatted_cell indent_mod</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                          n              5          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          a              3          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                          b              1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                          c              1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                          a        3 (60%)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                          b        1 (20%)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                          c        1 (20%)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                      n_blq              0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 p-value (chi-squared test)         0.9560          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    row_label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                          n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                          b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                          c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                          a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                          b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                          c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                      n_blq</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 p-value (chi-squared test)</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">a_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"A"</span>, <span class="st">"C"</span><span class="op">)</span>, .var <span class="op">=</span> <span class="st">"x"</span>, .N_col <span class="op">=</span> <span class="fl">10</span>, .N_row <span class="op">=</span> <span class="fl">10</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   row_name formatted_cell indent_mod row_label</span>
@@ -2023,12 +2003,34 @@ functions; in this case <code><a href="https://rdrr.io/pkg/rtables/man/analyze.h
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6        B        1 (25%)          0         B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7        C        1 (25%)          0         C</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8    n_blq              0          0     n_blq</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># `a_summary.logical`</span></span></span>
-<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">make_afun</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/getS3method.html" class="external-link">getS3method</a></span><span class="op">(</span><span class="st">"a_summary"</span>, <span class="st">"logical"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">a_summary</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"A"</span>, <span class="st">"C"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  .ref_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="st">"A"</span>, <span class="st">"C"</span><span class="op">)</span>, .var <span class="op">=</span> <span class="st">"x"</span>, compare <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">afun</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>, .N_row <span class="op">=</span> <span class="fl">10</span>, .N_col <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     row_name formatted_cell indent_mod</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                          n              4          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          A              2          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                          B              1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                          C              1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                          A        2 (50%)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                          B        1 (25%)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                          C        1 (25%)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                      n_blq              0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 p-value (chi-squared test)         0.9074          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    row_label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                          n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                          B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                          C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                          A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                          B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                          C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                      n_blq</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 p-value (chi-squared test)</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">a_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>, .N_row <span class="op">=</span> <span class="fl">10</span>, .N_col <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         row_name formatted_cell indent_mod      row_label</span>
@@ -2036,6 +2038,133 @@ functions; in this case <code><a href="https://rdrr.io/pkg/rtables/man/analyze.h
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2          count              3          0          count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 count_fraction        3 (60%)          0 count_fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4          n_blq              0          0          n_blq</span>
+<span class="r-in"><span><span class="fu">a_summary</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  .ref_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span>, .in_ref_col <span class="op">=</span> <span class="cn">TRUE</span>, compare <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     row_name formatted_cell indent_mod</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                          n              5          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                      count              3          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3             count_fraction        3 (60%)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                      n_blq              0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 p-value (chi-squared test)                         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    row_label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                          n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                      count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3             count_fraction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                      n_blq</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 p-value (chi-squared test)</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">a_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, .N_col <span class="op">=</span> <span class="fl">10</span>, .N_row <span class="op">=</span> <span class="fl">20</span>, .var <span class="op">=</span> <span class="st">"bla"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       row_name   formatted_cell indent_mod</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                            n               10          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          Sum              2.5          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                         Mean              0.2          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                           SD              1.0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                           SE              0.3          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                    Mean (SD)        0.2 (1.0)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                    Mean (SE)        0.2 (0.3)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                  Mean 95% CI    (-0.49, 0.99)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                Mean -/+ 1xSE    (-0.08, 0.58)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10               Mean -/+ 1xSD    (-0.78, 1.28)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Mean p-value (H0: mean = 0)             0.46          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12                      Median              0.3          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   Median Absolute Deviation              0.0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14               Median 95% CI    (-1.12, 1.36)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15             25% and 75%-ile       -0.3 - 1.3          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16                         IQR              1.6          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17                   Min - Max       -1.5 - 1.6          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18                     Minimum             -1.5          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19                     Maximum              1.6          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20          Median (Min - Max) 0.3 (-1.5 - 1.6)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21                      CV (%)            413.9          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22              Geometric Mean               NA          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23       Geometric Mean 95% CI               NA          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24         CV % Geometric Mean               NA          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      row_label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                            n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          Sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                         Mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                           SD</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                           SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                    Mean (SD)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                    Mean (SE)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                  Mean 95% CI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                Mean -/+ 1xSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10               Mean -/+ 1xSD</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Mean p-value (H0: mean = 0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12                      Median</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   Median Absolute Deviation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14               Median 95% CI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15             25% and 75%-ile</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16                         IQR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17                   Min - Max</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18                     Minimum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19                     Maximum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20          Median (Min - Max)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21                      CV (%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22              Geometric Mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23       Geometric Mean 95% CI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24         CV % Geometric Mean</span>
+<span class="r-in"><span><span class="fu">a_summary</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span>, .ref_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">20</span>, <span class="op">-</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span>, .var <span class="op">=</span> <span class="st">"bla"</span>, compare <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       row_name  formatted_cell indent_mod</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                            n              10          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          Sum            44.9          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                         Mean             4.5          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                           SD             0.9          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                           SE             0.3          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                    Mean (SD)       4.5 (0.9)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                    Mean (SE)       4.5 (0.3)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                  Mean 95% CI    (3.83, 5.15)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                Mean -/+ 1xSE    (4.20, 4.78)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10               Mean -/+ 1xSD    (3.57, 5.42)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Mean p-value (H0: mean = 0)            0.00          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12                      Median             4.5          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   Median Absolute Deviation            -0.0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14               Median 95% CI    (3.48, 5.12)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15             25% and 75%-ile       4.2 - 5.0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16                         IQR             0.8          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17                   Min - Max       2.8 - 6.1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18                     Minimum             2.8          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19                     Maximum             6.1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20          Median (Min - Max) 4.5 (2.8 - 6.1)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21                      CV (%)            20.6          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22              Geometric Mean             4.4          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23       Geometric Mean 95% CI    (3.76, 5.14)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24         CV % Geometric Mean            22.2          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25            p-value (t-test)         &lt;0.0001          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      row_label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                            n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          Sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                         Mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                           SD</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                           SE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                    Mean (SD)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                    Mean (SE)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                  Mean 95% CI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                Mean -/+ 1xSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10               Mean -/+ 1xSD</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Mean p-value (H0: mean = 0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12                      Median</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   Median Absolute Deviation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14               Median 95% CI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15             25% and 75%-ile</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16                         IQR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17                   Min - Max</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18                     Minimum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19                     Maximum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20          Median (Min - Max)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21                      CV (%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22              Geometric Mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23       Geometric Mean 95% CI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24         CV % Geometric Mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25            p-value (t-test)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Fabricated dataset.</span></span></span>
 <span class="r-in"><span><span class="va">dta_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
@@ -2083,98 +2212,21 @@ functions; in this case <code><a href="https://rdrr.io/pkg/rtables/man/analyze.h
 <span class="r-in"><span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>n <span class="op">=</span> <span class="st">"n"</span>, mean_sd <span class="op">=</span> <span class="st">"Mean, SD"</span>, quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Q1 - Q3"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/as_html.html" class="external-link">as_html</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;div class="rtables-all-parts-block rtables-container"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;table class="table table-condensed table-hover"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;th style="white-space:pre;"&gt;&lt;/th&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;th class="text-center"&gt;A&lt;/th&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;th class="text-center"&gt;B&lt;/th&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;th class="text-center"&gt;C&lt;/th&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-left"&gt;V1&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;n&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;2&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;1&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;0&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;Mean, SD&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;7.5, 2.1&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;3.0, NA&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;NA&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;Q1 - Q3&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;6.0 - 9.0&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;3.0 - 3.0&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;NA&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-left"&gt;V2&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;n&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;2&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;1&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;0&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;Mean, SD&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;6.5, 2.1&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;2.0, NA&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;NA&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;Q1 - Q3&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;5.0 - 8.0&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;2.0 - 2.0&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;NA&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-left"&gt;V3&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;n&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;2&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;1&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;0&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;Mean, SD&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;5.5, 2.1&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;1.0, NA&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;NA&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-left" style="padding-left: 3ch"&gt;Q1 - Q3&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;4.0 - 7.0&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;1.0 - 1.0&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;td class="text-center"&gt;NA&lt;/td&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/tr&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;caption style="caption-side:top;"&gt;&lt;div class="rtables-titles-block rtables-container"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;div class="rtables-main-titles-block rtables-container"&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;p class="rtables-main-title"&gt;&lt;/p&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;div class="rtables-subtitles-block rtables-container"&gt;&lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;/caption&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;/table&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;div class="rtables-footers-block rtables-container"&gt;&lt;/div&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;/div&gt;</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  A           B       C </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> V1                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n              2           1       0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean, SD   7.5, 2.1     3.0, NA    NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Q1 - Q3    6.0 - 9.0   3.0 - 3.0   NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> V2                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n              2           1       0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean, SD   6.5, 2.1     2.0, NA    NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Q1 - Q3    5.0 - 8.0   2.0 - 2.0   NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> V3                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n              2           1       0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean, SD   5.5, 2.1     1.0, NA    NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Q1 - Q3    4.0 - 7.0   1.0 - 1.0   NA</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Use arguments interpreted by `s_summary`.</span></span></span>
 <span class="r-in"><span><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -2182,7 +2234,24 @@ functions; in this case <code><a href="https://rdrr.io/pkg/rtables/man/analyze.h
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">analyze_vars</span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   A       B    C </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> V1                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n               2       2    2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)   7.5 (2.1)   NA   NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Median         7.5      NA   NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max   6.0 - 9.0   NA   NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> V2                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n               2       2    2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)   6.5 (2.1)   NA   NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Median         6.5      NA   NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max   5.0 - 8.0   NA   NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> V3                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n               2       2    2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)   5.5 (2.1)   NA   NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Median         5.5      NA   NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max   4.0 - 7.0   NA   NA</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Handle `NA` levels first when summarizing factors.</span></span></span>
 <span class="r-in"><span><span class="va">dta_test</span><span class="op">$</span><span class="va">AVISIT</span> <span class="op">&lt;-</span> <span class="cn">NA_character_</span></span></span>
@@ -2191,10 +2260,11 @@ functions; in this case <code><a href="https://rdrr.io/pkg/rtables/man/analyze.h
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">analyze_vars</span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVISIT"</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/Viewer.html" class="external-link">Viewer</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                A          B          C    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ——————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n              6          6          6    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;Missing&gt;   6 (100%)   6 (100%)   6 (100%)</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -43,6 +43,9 @@
     <loc>https://insightsengineering.github.io/tern/pull_request_template.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/reference/a_summary_internal.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/reference/abnormal.html</loc>
   </url>
   <url>
@@ -595,10 +598,7 @@
     <loc>https://insightsengineering.github.io/tern/reference/summarize_patients_exposure_in_cols.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern/reference/summary_formats.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/reference/summary_labels.html</loc>
+    <loc>https://insightsengineering.github.io/tern/reference/summary_stats.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/survival_biomarkers_subgroups.html</loc>
@@ -635,6 +635,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/try_car_anova.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/reference/ungroup_stats.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/univariate.html</loc>
