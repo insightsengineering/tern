@@ -32,7 +32,7 @@
 #'   leverage `analyze_colvars` to have the context split in rows and the analysis
 #'   methods in columns.
 #' * [summarize_change()]
-#' * [analyze_vars()]: formerly known as [summarize_vars()], it was renamed to reflect
+#' * [analyze_vars()]: formerly known as `summarize_vars()`, it was renamed to reflect
 #'   core function [rtables::analyze()].
 #' * [surv_time()]
 #' * [surv_timepoint()]
