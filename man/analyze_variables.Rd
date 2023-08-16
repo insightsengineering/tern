@@ -11,6 +11,7 @@
 \alias{a_summary.default}
 \alias{a_summary.numeric}
 \alias{analyze_vars}
+\alias{summarize_vars}
 \title{Analyze Variables}
 \usage{
 s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)

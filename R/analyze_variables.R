@@ -682,7 +682,8 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'
 #' build_table(l, df = dta_test)
 #'
-#' @export
+#' @export analyze_vars summarize_vars
+#' @aliases summarize_vars
 analyze_vars <- function(lyt,
                          vars,
                          var_labels = vars,
