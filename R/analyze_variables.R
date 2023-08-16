@@ -732,18 +732,20 @@ summarize_vars <- function(lyt,
                            .labels = NULL,
                            .indent_mods = NULL) {
   lifecycle::deprecate_warn(when = "0.8.5.9010", "summarize_vars", "analyze_vars")
-  analyze_vars(lyt,
-               vars,
-               var_labels,
-               nested,
-               ...,
-               na.rm, # nolint
-               na_level,
-               show_labels,
-               table_names,
-               section_div,
-               .stats,
-               .formats,
-               .labels,
-               .indent_mods)
+  analyze_vars(
+    lyt,
+    vars,
+    var_labels,
+    nested,
+    ...,
+    na.rm, # nolint
+    na_level,
+    show_labels,
+    table_names,
+    section_div,
+    .stats,
+    .formats,
+    .labels,
+    .indent_mods
+  )
 }
