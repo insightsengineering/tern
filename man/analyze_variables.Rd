@@ -11,6 +11,7 @@
 \alias{a_summary.default}
 \alias{a_summary.numeric}
 \alias{analyze_vars}
+\alias{summarize_vars}
 \title{Analyze Variables}
 \usage{
 s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
@@ -109,6 +110,8 @@ analyze_vars(
   .labels = NULL,
   .indent_mods = NULL
 )
+
+summarize_vars(...)
 }
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
@@ -258,6 +261,9 @@ the statistics from \code{s_summary()} to the table layout.
 
 We use the S3 generic function \code{\link[=s_summary]{s_summary()}} to implement summaries for different \code{x} objects. This
 is used as a statistics function in combination with the analyze function \code{\link[=analyze_vars]{analyze_vars()}}.
+Deprecation cycle started for \code{summarize_vars} as it is going to renamed into
+\code{analyze_vars}. Intention is to reflect better the core underlying \code{rtables}
+functions; in this case \code{\link[rtables:analyze]{rtables::analyze()}}.
 }
 \section{Functions}{
 \itemize{
@@ -281,6 +287,8 @@ conversion to factor (with a warning) and then forwards to the method for factor
 
 \item \code{analyze_vars()}: Layout-creating function which can take statistics function arguments
 and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+
+\item \code{summarize_vars()}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{analyze_vars} instead.
 
 }}
 \note{
@@ -311,10 +319,6 @@ created from character variables before passing the dataset to \code{\link[rtabl
 \item To use for comparison (with additional p-value statistic), parameter \code{compare} must be set to \code{TRUE}.
 \item Ensure that either all \code{NA} values are converted to an explicit \code{NA} level or all \code{NA} values are left as is.
 }
-
-Deprecation cycle started for \code{summarize_vars} as it is going to renamed into
-\code{analyze_vars}. Intention is to reflect better the core underlying \code{rtables}
-functions; in this case \code{\link[rtables:analyze]{rtables::analyze()}}.
 }
 \examples{
 # `s_summary.numeric`
