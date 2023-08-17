@@ -623,13 +623,14 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
            ...,
            .var) {
     a_summary(x,
-              .stats = .stats,
-              .formats = .formats,
-              .labels = .labels,
-              .indent_mods = .indent_mods,
-              .ref_group = .ref_group,
-              .in_ref_col = .in_ref_col,
-              .var = .var, ...)
+      .stats = .stats,
+      .formats = .formats,
+      .labels = .labels,
+      .indent_mods = .indent_mods,
+      .ref_group = .ref_group,
+      .in_ref_col = .in_ref_col,
+      .var = .var, ...
+    )
   }
 }
 

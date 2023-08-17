@@ -318,14 +318,16 @@ create_afun_compare <- function(.stats = NULL,
            .in_ref_col,
            ...,
            .var) {
-    a_summary(x, compare = TRUE,
-              .stats = .stats,
-              .formats = .formats,
-              .labels = .labels,
-              .indent_mods = .indent_mods,
-              .ref_group = .ref_group,
-              .in_ref_col = .in_ref_col,
-              .var = .var, ...)
+    a_summary(x,
+      compare = TRUE,
+      .stats = .stats,
+      .formats = .formats,
+      .labels = .labels,
+      .indent_mods = .indent_mods,
+      .ref_group = .ref_group,
+      .in_ref_col = .in_ref_col,
+      .var = .var, ...
+    )
   }
 }
 
