@@ -308,11 +308,25 @@ create_afun_compare <- function(.stats = NULL,
                                 .formats = NULL,
                                 .labels = NULL,
                                 .indent_mods = NULL) {
-  lifecycle::deprecate_stop(
-    "0.8.3",
+  lifecycle::deprecate_warn(
+    "0.8.5.9010",
     "create_afun_compare()",
     details = "Please use a_summary(compare = TRUE) directly instead."
   )
+  function(x,
+           .ref_group,
+           .in_ref_col,
+           ...,
+           .var) {
+    a_summary(x, compare = TRUE,
+              .stats = .stats,
+              .formats = .formats,
+              .labels = .labels,
+              .indent_mods = .indent_mods,
+              .ref_group = .ref_group,
+              .in_ref_col = .in_ref_col,
+              .var = .var, ...)
+  }
 }
 
 #' @describeIn compare_variables Layout-creating function which can take statistics function arguments
