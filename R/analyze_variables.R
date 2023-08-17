@@ -612,11 +612,25 @@ a_summary.numeric <- function(x,
 #'
 #' @export
 create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
-  lifecycle::deprecate_stop(
-    "0.8.3",
+  lifecycle::deprecate_warn(
+    "0.8.5.9010",
     "create_afun_summary()",
     details = "Please use a_summary() directly instead."
   )
+  function(x,
+           .ref_group,
+           .in_ref_col,
+           ...,
+           .var) {
+    a_summary(x,
+              .stats = .stats,
+              .formats = .formats,
+              .labels = .labels,
+              .indent_mods = .indent_mods,
+              .ref_group = .ref_group,
+              .in_ref_col = .in_ref_col,
+              .var = .var, ...)
+  }
 }
 
 #' @describeIn analyze_variables Layout-creating function which can take statistics function arguments
