@@ -150,4 +150,3 @@ testthat::test_that("count_patients_with_flags works as expected with risk diffe
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
-
