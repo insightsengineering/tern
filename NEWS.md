@@ -1,5 +1,9 @@
 # tern 0.8.5.9013
 
+### Enhancements
+* Added `stat_propdiff_ci` function to calculate proportion/risk difference and CI.
+* Added risk difference column functionality via the `riskdiff` argument to `count_occurrences`, `count_occurrences_by_grade`, `count_patients_with_event`, `count_patients_with_flags`, `analyze_num_patients`, and `summarize_num_patients`.
+
 ### Miscellaneous
 * Fix swapped descriptions for the `.N_row` and `.N_col` parameters.
 * Fix bug in `analyze_vars_in_cols` when categorical data was used.

@@ -260,6 +260,7 @@ count_occurrences_by_grade <- function(lyt,
                                        var,
                                        var_labels = var,
                                        show_labels = "default",
+                                       riskdiff = FALSE,
                                        nested = TRUE,
                                        ...,
                                        table_names = var,
@@ -275,15 +276,26 @@ count_occurrences_by_grade <- function(lyt,
     .ungroup_stats = "count_fraction"
   )
 
+  extra_args <- if (!riskdiff) {
+    list(...)
+  } else {
+    list(
+      afun = list("s_count_occurrences_by_grade" = afun),
+      .stats = .stats,
+      .indent_mods = .indent_mods,
+      s_args = list(...)
+    )
+  }
+
   analyze(
     lyt = lyt,
     vars = var,
     var_labels = var_labels,
     show_labels = show_labels,
-    afun = afun,
+    afun = ifelse(!riskdiff, afun, afun_riskdiff),
     table_names = table_names,
     nested = nested,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }
 
