@@ -1,4 +1,4 @@
-# tern 0.8.5.9011
+# tern 0.8.5.9013
 
 ### Enhancements
 * Added `stat_propdiff_ci` function to calculate proportion/risk difference and CI.
