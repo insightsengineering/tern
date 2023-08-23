@@ -48,21 +48,29 @@ taken from \code{alt_counts_df} if specified (see \code{\link[rtables:build_tabl
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
 
-\item{afun}{(\verb{named list})\cr A named list containing one name-value pair where the name corresponds to the
-name of the statistics function that should be used in calculations and the value is the corresponding analysis
-function.}
+\item{afun}{(named \code{list})\cr A named list containing one name-value pair where the name corresponds to
+the name of the statistics function that should be used in calculations and the value is the corresponding
+analysis function.}
 
-\item{s_args}{(\verb{named list})\cr Additional arguments to be passed to the statistics function and analysis function
-supplied in \code{afun}.}
+\item{s_args}{(named \code{list})\cr Additional arguments to be passed to the statistics function and analysis
+function supplied in \code{afun}.}
 }
 \value{
 A list of formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 \description{
-In the risk difference column, uses the statistics function associated with \code{afun} to calculates risk difference
-values from arm X (reference group) and arm Y. These arms are specified when configuring the risk difference
-column which is done using the \code{\link[=add_riskdiff]{add_riskdiff()}} split function in the previous call to \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}}.
-For all other columns, applies \code{afun} as usual. This function utilizes the \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} function to
-perform risk difference calculations.
+In the risk difference column, this function uses the statistics function associated with \code{afun} to
+calculates risk difference values from arm X (reference group) and arm Y. These arms are specified
+when configuring the risk difference column which is done using the \code{\link[=add_riskdiff]{add_riskdiff()}} split function in
+the previous call to \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}}. For all other columns, applies \code{afun} as usual. This
+function utilizes the \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} function to perform risk difference calculations.
+}
+\seealso{
+\itemize{
+\item \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} for details on risk difference calculation.
+\item Split function \code{\link[=add_riskdiff]{add_riskdiff()}} which, when used as \code{split_fun} within \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}} with
+\code{riskdiff} argument set to \code{TRUE} in subsequent analyze functions calls, adds a risk difference column
+to a table layout.
+}
 }
 \keyword{internal}

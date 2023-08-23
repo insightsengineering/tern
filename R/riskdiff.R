@@ -2,15 +2,20 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Wrapper function for [`rtables::add_combo_levels()`] which configures settings for the risk difference column to be
-#' added to an `rtables` object. To add a risk difference column to a table, this function should be used as
-#' `split_fun` in calls to [rtables::split_cols_by()], followed by setting argument `riskdiff` to `TRUE` in all
-#' following analyze function calls.
+#' Wrapper function for [rtables::add_combo_levels()] which configures settings for the risk difference
+#' column to be added to an `rtables` object. To add a risk difference column to a table, this function
+#' should be used as `split_fun` in calls to [rtables::split_cols_by()], followed by setting argument
+#' `riskdiff` to `TRUE` in all following analyze function calls.
 #'
 #' @param arm_x (`character`)\cr Name of reference arm to use in risk difference calculations.
 #' @param arm_y (`character`)\cr Name of arm to compare to reference arm in risk difference calculations.
 #' @param col_label (`character`)\cr Label to use when rendering the risk difference column within the table.
-#' @param pct (`logical`)\cr whether output should be returned as percentages. Defaults to `TRUE`.
+#' @param pct (`flag`)\cr whether output should be returned as percentages. Defaults to `TRUE`.
+#'
+#' @return A closure suitable for use as a split function (`split_fun`) within [rtables::split_cols_by()]
+#'   when creating a table layout.
+#'
+#' @seealso [stat_propdiff_ci()] for details on risk difference calculation.
 #'
 #' @examples
 #' adae <- tern_ex_adae
@@ -42,20 +47,26 @@ add_riskdiff <- function(arm_x,
 
 #' Analysis Function to Calculate Risk Difference Column Values
 #'
-#' In the risk difference column, uses the statistics function associated with `afun` to calculates risk difference
-#' values from arm X (reference group) and arm Y. These arms are specified when configuring the risk difference
-#' column which is done using the [add_riskdiff()] split function in the previous call to [rtables::split_cols_by()].
-#' For all other columns, applies `afun` as usual. This function utilizes the [stat_propdiff_ci()] function to
-#' perform risk difference calculations.
+#' In the risk difference column, this function uses the statistics function associated with `afun` to
+#' calculates risk difference values from arm X (reference group) and arm Y. These arms are specified
+#' when configuring the risk difference column which is done using the [add_riskdiff()] split function in
+#' the previous call to [rtables::split_cols_by()]. For all other columns, applies `afun` as usual. This
+#' function utilizes the [stat_propdiff_ci()] function to perform risk difference calculations.
 #'
 #' @inheritParams argument_convention
-#' @param afun (`named list`)\cr A named list containing one name-value pair where the name corresponds to the
-#'   name of the statistics function that should be used in calculations and the value is the corresponding analysis
-#'   function.
-#' @param s_args (`named list`)\cr Additional arguments to be passed to the statistics function and analysis function
-#'   supplied in `afun`.
+#' @param afun (named `list`)\cr A named list containing one name-value pair where the name corresponds to
+#'   the name of the statistics function that should be used in calculations and the value is the corresponding
+#'   analysis function.
+#' @param s_args (named `list`)\cr Additional arguments to be passed to the statistics function and analysis
+#'   function supplied in `afun`.
 #'
 #' @return A list of formatted [rtables::CellValue()].
+#'
+#' @seealso
+#' * [stat_propdiff_ci()] for details on risk difference calculation.
+#' * Split function [add_riskdiff()] which, when used as `split_fun` within [rtables::split_cols_by()] with
+#'   `riskdiff` argument set to `TRUE` in subsequent analyze functions calls, adds a risk difference column
+#'   to a table layout.
 #'
 #' @keywords internal
 afun_riskdiff <- function(df,
@@ -71,10 +82,10 @@ afun_riskdiff <- function(df,
                           afun,
                           s_args = list()) {
   if (!any(grepl("^riskdiff", names(.spl_context)))) {
-    stop(paste(
-      "Please set up levels to use in risk difference calculations using the `add_riskdiff`",
+    stop(
+      "Please set up levels to use in risk difference calculations using the `add_riskdiff` ",
       "split function within `split_cols_by`. See ?add_riskdiff for details."
-    ))
+    )
   }
   checkmate::assert_list(afun, len = 1, types = "function")
   checkmate::assert_named(afun)

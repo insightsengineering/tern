@@ -164,6 +164,8 @@ count_patients_with_flags <- function(lyt,
                                       .stats = "count_fraction",
                                       .formats = NULL,
                                       .indent_mods = NULL) {
+  checkmate::assert_flag(riskdiff)
+
   afun <- make_afun(
     a_count_patients_with_flags,
     .stats = .stats,
@@ -172,7 +174,7 @@ count_patients_with_flags <- function(lyt,
     .ungroup_stats = .stats
   )
 
-  extra_args <- if (!riskdiff) {
+  extra_args <- if (isFALSE(riskdiff)) {
     list(...)
   } else {
     list(
@@ -188,7 +190,7 @@ count_patients_with_flags <- function(lyt,
     vars = var,
     var_labels = var_labels,
     show_labels = show_labels,
-    afun = ifelse(!riskdiff, afun, afun_riskdiff),
+    afun = ifelse(isFALSE(riskdiff), afun, afun_riskdiff),
     table_names = table_names,
     nested = nested,
     extra_args = extra_args

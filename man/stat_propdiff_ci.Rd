@@ -28,10 +28,10 @@ stat_propdiff_ci(
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{pct}{(\code{logical})\cr whether output should be returned as percentages. Defaults to \code{TRUE}.}
+\item{pct}{(\code{flag})\cr whether output should be returned as percentages. Defaults to \code{TRUE}.}
 }
 \value{
-list of proportion differences and CIs corresponding to each pair of number of occurrences in \code{x} and
+List of proportion differences and CIs corresponding to each pair of number of occurrences in \code{x} and
 \code{y}. Each list element consists of 3 statistics: proportion difference, CI lower bound, and CI upper bound.
 }
 \description{
@@ -50,4 +50,9 @@ stat_propdiff_ci(
   x = list(0.5, 0.75, 1), y = list(0.25, 0.05, 0.5), N_x = 10, N_y = 20, pct = FALSE
 )
 
+}
+\seealso{
+Split function \code{\link[=add_riskdiff]{add_riskdiff()}} which, when used as \code{split_fun} within \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}}
+with \code{riskdiff} argument is set to \code{TRUE} in subsequent analyze functions, adds a column containing
+proportion (risk) difference to an \code{rtables} layout.
 }

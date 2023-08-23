@@ -18,15 +18,19 @@ add_riskdiff(
 
 \item{col_label}{(\code{character})\cr Label to use when rendering the risk difference column within the table.}
 
-\item{pct}{(\code{logical})\cr whether output should be returned as percentages. Defaults to \code{TRUE}.}
+\item{pct}{(\code{flag})\cr whether output should be returned as percentages. Defaults to \code{TRUE}.}
+}
+\value{
+A closure suitable for use as a split function (\code{split_fun}) within \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}}
+when creating a table layout.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Wrapper function for \code{\link[rtables:add_combo_levels]{rtables::add_combo_levels()}} which configures settings for the risk difference column to be
-added to an \code{rtables} object. To add a risk difference column to a table, this function should be used as
-\code{split_fun} in calls to \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}}, followed by setting argument \code{riskdiff} to \code{TRUE} in all
-following analyze function calls.
+Wrapper function for \code{\link[rtables:add_combo_levels]{rtables::add_combo_levels()}} which configures settings for the risk difference
+column to be added to an \code{rtables} object. To add a risk difference column to a table, this function
+should be used as \code{split_fun} in calls to \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}}, followed by setting argument
+\code{riskdiff} to \code{TRUE} in all following analyze function calls.
 }
 \examples{
 adae <- tern_ex_adae
@@ -42,4 +46,7 @@ lyt <- basic_table() \%>\%
 tbl <- build_table(lyt, df = adae)
 tbl
 
+}
+\seealso{
+\code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} for details on risk difference calculation.
 }

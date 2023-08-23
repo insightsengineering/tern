@@ -152,6 +152,8 @@ count_patients_with_event <- function(lyt,
                                       .formats = NULL,
                                       .labels = NULL,
                                       .indent_mods = NULL) {
+  checkmate::assert_flag(riskdiff)
+
   afun <- make_afun(
     a_count_patients_with_event,
     .stats = .stats,
@@ -160,7 +162,7 @@ count_patients_with_event <- function(lyt,
     .indent_mods = .indent_mods
   )
 
-  extra_args <- if (!riskdiff) {
+  extra_args <- if (isFALSE(riskdiff)) {
     list(...)
   } else {
     list(
@@ -174,7 +176,7 @@ count_patients_with_event <- function(lyt,
   analyze(
     lyt,
     vars,
-    afun = ifelse(!riskdiff, afun, afun_riskdiff),
+    afun = ifelse(isFALSE(riskdiff), afun, afun_riskdiff),
     nested = nested,
     extra_args = extra_args,
     show_labels = ifelse(length(vars) > 1, "visible", "hidden"),

@@ -177,6 +177,8 @@ count_occurrences <- function(lyt,
                               .formats = NULL,
                               .labels = NULL,
                               .indent_mods = NULL) {
+  checkmate::assert_flag(riskdiff)
+
   afun <- make_afun(
     a_count_occurrences,
     .stats = .stats,
@@ -186,7 +188,7 @@ count_occurrences <- function(lyt,
     .ungroup_stats = .stats
   )
 
-  extra_args <- if (!riskdiff) {
+  extra_args <- if (isFALSE(riskdiff)) {
     list(...)
   } else {
     list(
@@ -200,7 +202,7 @@ count_occurrences <- function(lyt,
   analyze(
     lyt = lyt,
     vars = vars,
-    afun = ifelse(!riskdiff, afun, afun_riskdiff),
+    afun = ifelse(isFALSE(riskdiff), afun, afun_riskdiff),
     var_labels = var_labels,
     show_labels = show_labels,
     table_names = table_names,

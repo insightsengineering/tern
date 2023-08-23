@@ -190,10 +190,14 @@ stat_mean_pval <- function(x,
 #' @param N_y (`numeric`)\cr total number of records in arm Y.
 #' @param list_names (`character`)\cr names of each variable/level corresponding to pair of proportions in
 #'   `x` and `y`. Must be of equal length to `x` and `y`.
-#' @param pct (`logical`)\cr whether output should be returned as percentages. Defaults to `TRUE`.
+#' @param pct (`flag`)\cr whether output should be returned as percentages. Defaults to `TRUE`.
 #'
-#' @return list of proportion differences and CIs corresponding to each pair of number of occurrences in `x` and
+#' @return List of proportion differences and CIs corresponding to each pair of number of occurrences in `x` and
 #'   `y`. Each list element consists of 3 statistics: proportion difference, CI lower bound, and CI upper bound.
+#'
+#' @seealso Split function [add_riskdiff()] which, when used as `split_fun` within [rtables::split_cols_by()]
+#'   with `riskdiff` argument is set to `TRUE` in subsequent analyze functions, adds a column containing
+#'   proportion (risk) difference to an `rtables` layout.
 #'
 #' @examples
 #' stat_propdiff_ci(

@@ -268,6 +268,8 @@ count_occurrences_by_grade <- function(lyt,
                                        .formats = NULL,
                                        .indent_mods = NULL,
                                        .labels = NULL) {
+  checkmate::assert_flag(riskdiff)
+
   afun <- make_afun(
     a_count_occurrences_by_grade,
     .stats = .stats,
@@ -276,7 +278,7 @@ count_occurrences_by_grade <- function(lyt,
     .ungroup_stats = "count_fraction"
   )
 
-  extra_args <- if (!riskdiff) {
+  extra_args <- if (isFALSE(riskdiff)) {
     list(...)
   } else {
     list(
@@ -292,7 +294,7 @@ count_occurrences_by_grade <- function(lyt,
     vars = var,
     var_labels = var_labels,
     show_labels = show_labels,
-    afun = ifelse(!riskdiff, afun, afun_riskdiff),
+    afun = ifelse(isFALSE(riskdiff), afun, afun_riskdiff),
     table_names = table_names,
     nested = nested,
     extra_args = extra_args
