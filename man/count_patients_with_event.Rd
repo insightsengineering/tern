@@ -27,6 +27,7 @@ a_count_patients_with_event(
 count_patients_with_event(
   lyt,
   vars,
+  riskdiff = FALSE,
   nested = TRUE,
   ...,
   table_names = vars,
@@ -63,6 +64,8 @@ passed by \code{rtables}.}
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{riskdiff}{(\code{logical})\cr whether a risk difference column is present.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
