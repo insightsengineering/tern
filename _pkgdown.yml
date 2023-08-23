@@ -101,6 +101,7 @@ reference:
     desc: These functions help to work with the `rtables` package and may be
           moved there later.
     contents:
+      - add_riskdiff
       - add_rowcounts
       - append_varlabels
       - starts_with("as.rtable")
