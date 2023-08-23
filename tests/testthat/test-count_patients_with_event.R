@@ -131,7 +131,7 @@ testthat::test_that("count_patients_with_flags works as expected with risk diffe
       .labels = c(count_fraction = "Total number of patients with at least one adverse event"),
       riskdiff = TRUE
     ) %>%
-    build_table(adae, alt_counts_df = tern_ex_adsl)
+    build_table(tern_ex_adae, alt_counts_df = tern_ex_adsl)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -145,7 +145,7 @@ testthat::test_that("count_patients_with_flags works as expected with risk diffe
       .stats = c("count", "count_fraction"),
       riskdiff = TRUE
     ) %>%
-    build_table(adae)
+    build_table(tern_ex_adae)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
