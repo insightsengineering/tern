@@ -168,8 +168,8 @@ s_count_occurrences_by_grade <- function(df,
     grade <- df[[.var]]
 
     if (!is.ordered(grade)) {
-      lvls <- levels(grade)
       grade_lbl <- obj_label(grade)
+      lvls <- levels(grade)
       if (sum(grepl("^\\d+$", lvls)) %in% c(0, length(lvls))) {
         lvl_ord <- lvls
       } else {
