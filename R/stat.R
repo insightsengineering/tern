@@ -218,7 +218,8 @@ stat_propdiff_ci <- function(x,
   rd_list <- lapply(seq_along(x), function(i) {
     p_x <- x[[i]] / N_x
     p_y <- y[[i]] / N_y
-    rd_ci <- p_x - p_y + c(-1, 1) * stats::qnorm((1 + conf_level) / 2) * sqrt(p_x * (1 - p_x) / N_x + p_y * (1 - p_y) / N_y)
+    rd_ci <- p_x - p_y + c(-1, 1) * stats::qnorm((1 + conf_level) / 2) *
+      sqrt(p_x * (1 - p_x) / N_x + p_y * (1 - p_y) / N_y)
     c(p_x - p_y, rd_ci) * ifelse(pct, 100, 1)
   })
   names(rd_list) <- list_names
