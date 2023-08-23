@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.952675335749307" branch-rate="0" lines-covered="8938" lines-valid="9382" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-08-23 01:26:59.458618">
+<coverage line-rate="0.952680379409571" branch-rate="0" lines-covered="8939" lines-valid="9383" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-08-23 01:38:34.301089">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
   <packages>
-    <package name="tern" line-rate="0.952675335749307" branch-rate="0" complexity="0">
+    <package name="tern" line-rate="0.952680379409571" branch-rate="0" complexity="0">
       <classes>
         <class name="abnormal_by_baseline.R" filename="R/abnormal_by_baseline.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
@@ -16637,7 +16637,7 @@
             <line number="266" hits="4" branch="false"/>
           </lines>
         </class>
-        <class name="stat.R" filename="R/stat.R" line-rate="0.948275862068966" branch-rate="0" complexity="0">
+        <class name="stat.R" filename="R/stat.R" line-rate="0.949152542372881" branch-rate="0" complexity="0">
           <methods>
             <method name="stat_mean_ci" signature="" line-rate="0.9" branch-rate="0" complexity="0">
               <lines>
@@ -16711,6 +16711,7 @@
                 <line number="223" hits="11" branch="false"/>
                 <line number="224" hits="11" branch="false"/>
                 <line number="225" hits="11" branch="false"/>
+                <line number="226" hits="11" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -16773,6 +16774,7 @@
             <line number="223" hits="11" branch="false"/>
             <line number="224" hits="11" branch="false"/>
             <line number="225" hits="11" branch="false"/>
+            <line number="226" hits="11" branch="false"/>
           </lines>
         </class>
         <class name="summarize_ancova.R" filename="R/summarize_ancova.R" line-rate="0.989583333333333" branch-rate="0" complexity="0">
