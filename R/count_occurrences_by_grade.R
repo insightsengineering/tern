@@ -166,23 +166,28 @@ s_count_occurrences_by_grade <- function(df,
 
     id <- df[[id]]
     grade <- df[[.var]]
+    lvls <- levels(grade)
+    missing_lvl <- grepl("missing", tolower(lvls))
 
     if (!is.ordered(grade)) {
       grade_lbl <- obj_label(grade)
-      lvls <- levels(grade)
       if (sum(grepl("^\\d+$", lvls)) %in% c(0, length(lvls))) {
         lvl_ord <- lvls
       } else {
         lvls[!grepl("^\\d+$", lvls)] <- min(as.numeric(lvls[grepl("^\\d+$", lvls)])) - 1
         lvl_ord <- levels(grade)[order(as.numeric(lvls))]
       }
+      if (any(missing_lvl)) lvl_ord <- c(lvl_ord[!missing_lvl], lvl_ord[missing_lvl])
+      browser()
       grade <- formatters::with_label(factor(grade, levels = lvl_ord, ordered = TRUE), grade_lbl)
+    } else if (any(missing_lvl)) {
+      browser()
+      levels(grade) <- c(lvls[!missing_lvl], lvls[missing_lvl])
     }
 
     df_max <- stats::aggregate(grade ~ id, FUN = max, drop = FALSE)
     l_count <- as.list(table(df_max$grade))
   }
-
   if (length(grade_groups) > 0) {
     l_count <- h_append_grade_groups(grade_groups, l_count, remove_single)
   }
