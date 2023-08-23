@@ -32,7 +32,7 @@ add_riskdiff <- function(arm_x,
                          col_label = "Risk Difference (%) (95% CI)",
                          pct = TRUE) {
   sapply(c(arm_x, arm_y, col_label), checkmate::assert_character, len = 1)
-  combodf <- tribble(
+  combodf <- tibble::tribble(
     ~valname, ~label, ~levelcombo, ~exargs,
     paste("riskdiff", arm_x, arm_y, sep = "_"), col_label, c(arm_x, arm_y), list()
   )
