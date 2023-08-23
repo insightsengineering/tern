@@ -16,7 +16,7 @@ afun_riskdiff(
   .stats,
   .indent_mods,
   afun,
-  s_args = list(...)
+  s_args = list()
 )
 }
 \arguments{

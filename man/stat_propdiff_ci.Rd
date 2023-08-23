@@ -31,18 +31,23 @@ stat_propdiff_ci(
 \item{pct}{(\code{logical})\cr whether output should be returned as percentages. Defaults to \code{TRUE}.}
 }
 \value{
-list of proportion differences and CIs corresponding to each pair of number of occurrences in \code{x} and \code{y}.
-Each list element consists of 3 statistics: proportion difference, CI lower bound, and CI upper bound.
+list of proportion differences and CIs corresponding to each pair of number of occurrences in \code{x} and
+\code{y}. Each list element consists of 3 statistics: proportion difference, CI lower bound, and CI upper bound.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Function for calculating the proportion (or risk) difference and confidence interval between arm
-X (reference group) and arm Y. Risk difference is calculated by subtracting cumulative incidence in arm Y from
-cumulative incidence in arm X.
+X (reference group) and arm Y. Risk difference is calculated by subtracting cumulative incidence
+in arm Y from cumulative incidence in arm X.
 }
 \examples{
-stat_propdiff_ci(x = list(0.375), y = list(0.01), N_x = 5, N_y = 5, list_names = "x", conf_level = 0.9)
-stat_propdiff_ci(x = list(0.5, 0.75, 1), y = list(0.25, 0.05, 0.5), N_x = 10, N_y = 20, pct = FALSE)
+stat_propdiff_ci(
+  x = list(0.375), y = list(0.01), N_x = 5, N_y = 5, list_names = "x", conf_level = 0.9
+)
+
+stat_propdiff_ci(
+  x = list(0.5, 0.75, 1), y = list(0.25, 0.05, 0.5), N_x = 10, N_y = 20, pct = FALSE
+)
 
 }

@@ -180,8 +180,8 @@ stat_mean_pval <- function(x,
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Function for calculating the proportion (or risk) difference and confidence interval between arm
-#' X (reference group) and arm Y. Risk difference is calculated by subtracting cumulative incidence in arm Y from
-#' cumulative incidence in arm X.
+#' X (reference group) and arm Y. Risk difference is calculated by subtracting cumulative incidence
+#' in arm Y from cumulative incidence in arm X.
 #'
 #' @inheritParams argument_convention
 #' @param x (`list` of `integer`)\cr list of number of occurrences in arm X (reference group).
@@ -192,12 +192,17 @@ stat_mean_pval <- function(x,
 #'   `x` and `y`. Must be of equal length to `x` and `y`.
 #' @param pct (`logical`)\cr whether output should be returned as percentages. Defaults to `TRUE`.
 #'
-#' @return list of proportion differences and CIs corresponding to each pair of number of occurrences in `x` and `y`.
-#'   Each list element consists of 3 statistics: proportion difference, CI lower bound, and CI upper bound.
+#' @return list of proportion differences and CIs corresponding to each pair of number of occurrences in `x` and
+#'   `y`. Each list element consists of 3 statistics: proportion difference, CI lower bound, and CI upper bound.
 #'
 #' @examples
-#' stat_propdiff_ci(x = list(0.375), y = list(0.01), N_x = 5, N_y = 5, list_names = "x", conf_level = 0.9)
-#' stat_propdiff_ci(x = list(0.5, 0.75, 1), y = list(0.25, 0.05, 0.5), N_x = 10, N_y = 20, pct = FALSE)
+#' stat_propdiff_ci(
+#'   x = list(0.375), y = list(0.01), N_x = 5, N_y = 5, list_names = "x", conf_level = 0.9
+#' )
+#'
+#' stat_propdiff_ci(
+#'   x = list(0.5, 0.75, 1), y = list(0.25, 0.05, 0.5), N_x = 10, N_y = 20, pct = FALSE
+#' )
 #'
 #' @export
 stat_propdiff_ci <- function(x,
@@ -213,7 +218,7 @@ stat_propdiff_ci <- function(x,
   rd_list <- lapply(seq_along(x), function(i) {
     p_x <- x[[i]] / N_x
     p_y <- y[[i]] / N_y
-    rd_ci <- p_x - p_y + c(-1, 1) * qnorm((1 + conf_level) / 2) * sqrt(p_x * (1 - p_x) / N_x + p_y * (1 - p_y) / N_y)
+    rd_ci <- p_x - p_y + c(-1, 1) * stats::qnorm((1 + conf_level) / 2) * sqrt(p_x * (1 - p_x) / N_x + p_y * (1 - p_y) / N_y)
     c(p_x - p_y, rd_ci) * ifelse(pct, 100, 1)
   })
   names(rd_list) <- list_names

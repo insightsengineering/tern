@@ -69,7 +69,7 @@ afun_riskdiff <- function(df,
                           .stats,
                           .indent_mods,
                           afun,
-                          s_args = list(...)) {
+                          s_args = list()) {
   if (!any(grepl("^riskdiff", names(.spl_context)))) {
     stop(paste(
       "Please set up levels to use in risk difference calculations using the `add_riskdiff`",
