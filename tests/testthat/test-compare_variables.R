@@ -128,7 +128,7 @@ testthat::test_that("compare_vars 'na_level' argument works as expected", {
 # Deprecated functions
 
 testthat::test_that("create_afun_compare returns error message", {
-  testthat::expect_error(create_afun_compare())
+  testthat::expect_warning(create_afun_compare()) # before It was not covered directly
 })
 
 testthat::test_that("a_compare returns correct output and warning message", {
