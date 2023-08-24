@@ -5,9 +5,12 @@
 * Refactored `summarize_vars` and `compare_vars` to use refactored `a_summary`.
 * Created new internal helper functions `ungroup_stats` to ungroup statistics calculated for factor variables, and `a_summary_internal` to perform calculations for `a_summary`.
 
+### Bug Fixes
+* Fixed bug in `s_count_occurrences_by_grade` so that "missing" grade always appears as the final level.
+* Fix bug in `analyze_vars_in_cols` when categorical data was used.
+
 ### Miscellaneous
 * Fix swapped descriptions for the `.N_row` and `.N_col` parameters.
-* Fix bug in `analyze_vars_in_cols` when categorical data was used.
 * Removal of internal calls to `df_explicit_na`. Changes in `NA` values should happen externally to `tern` functions, depending on users' needs.
 * Reinstated correct soft deprecation for `create_afun_summary` and `create_afun_compare`.
 

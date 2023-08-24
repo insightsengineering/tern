@@ -101,6 +101,32 @@
       
       
 
+# s_count_occurrences_by_grade sorts grade levels so that 'missing' level appears last
+
+    Code
+      res
+    Output
+      $count_fraction
+      $count_fraction$`1`
+      [1] 0 0
+      
+      $count_fraction$`2`
+      [1] 2.0 0.2
+      
+      $count_fraction$`3`
+      [1] 2.0 0.2
+      
+      $count_fraction$`4`
+      [1] 2.0 0.2
+      
+      $count_fraction$`5`
+      [1] 0 0
+      
+      $count_fraction$Missing
+      [1] 0 0
+      
+      
+
 # s_count_occurrences_by_grade works with valid input for grade grouping
 
     Code
