@@ -277,8 +277,8 @@ testthat::test_that("stat_median_ci works for named numeric values when name is 
 })
 
 testthat::test_that("stat_propdiff_ci works with names and multiple values in x and y)", {
-  x <- list(0.5, 0.75, 1)
-  y <- list(0.25, 0.05, 0.5)
+  x <- list(5, 7.5, 10)
+  y <- list(5, 1, 10)
   list_names <- c("A", "B", "C")
 
   result <- stat_propdiff_ci(x = x, y = y, N_x = 10, N_y = 20, list_names = list_names)
@@ -291,7 +291,7 @@ testthat::test_that("stat_propdiff_ci works with custom arguments)", {
   x <- integer(0)
   attr(x, "names") <- character(0)
 
-  result <- stat_propdiff_ci(x = list(0.39), y = list(0.01), N_x = 5, N_y = 5, conf_level = 0.9, pct = FALSE)
+  result <- stat_propdiff_ci(x = list(1.95), y = list(0.05), N_x = 5, N_y = 5, conf_level = 0.9, pct = FALSE)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)

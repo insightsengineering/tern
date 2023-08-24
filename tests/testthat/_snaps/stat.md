@@ -328,7 +328,7 @@
       attr(,"conf_level")
       [1] NA
 
-# stat_propdiff_ci works with names and multiple values in frac_x and frac_y)
+# stat_propdiff_ci works with names and multiple values in x and y)
 
     Code
       res
