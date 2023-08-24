@@ -81,7 +81,7 @@ afun_riskdiff <- function(df,
                           .indent_mods,
                           afun,
                           s_args = list()) {
-  if (!any(grepl("^riskdiff", names(.spl_context)))) {
+  if (!any(grepl("riskdiff", names(.spl_context)))) {
     stop(
       "Please set up levels to use in risk difference calculations using the `add_riskdiff` ",
       "split function within `split_cols_by`. See ?add_riskdiff for details."
@@ -90,17 +90,27 @@ afun_riskdiff <- function(df,
   checkmate::assert_list(afun, len = 1, types = "function")
   checkmate::assert_named(afun)
 
-  afun_args <- list(.var = .var, .df_row = .df_row, .N_row = .N_row, denom = "N_col")
+  afun_args <- list(.var = .var, .df_row = .df_row, .N_row = .N_row, denom = "N_col", labelstr = labelstr)
   afun_args <- afun_args[intersect(names(afun_args), names(as.list(args(afun[[1]]))))]
-  if (!grepl("^riskdiff", .spl_context$cur_col_split_val[[1]])) {
+  if ("denom" %in% names(s_args)) afun_args[["denom"]] <- NULL
+
+  cur_split <- tail(.spl_context$cur_col_split_val[[1]], 1)
+  if (!grepl("^riskdiff", cur_split)) {
     # Apply basic afun (no risk difference) in all other columns
     do.call(afun[[1]], args = c(list(df = df, .N_col = .N_col), afun_args, s_args))
   } else {
-    arm_x <- strsplit(.spl_context$cur_col_split_val[[1]], "_")[[1]][2]
-    arm_y <- strsplit(.spl_context$cur_col_split_val[[1]], "_")[[1]][3]
-    N_col_x <- .all_col_counts[[arm_x]] # nolint
-    N_col_y <- .all_col_counts[[arm_y]] # nolint
-    cur_var <- .spl_context$cur_col_split[[1]]
+    arm_x <- strsplit(cur_split, "_")[[1]][2]
+    arm_y <- strsplit(cur_split, "_")[[1]][3]
+    if (length(.spl_context$cur_col_split[[1]]) > 1) { # Different split name for nested column splits
+      arm_spl_x <- gsub("riskdiff", "", paste0(strsplit(.spl_context$cur_col_id[1], "_")[[1]][c(1, 2)], collapse = ""))
+      arm_spl_y <- gsub("riskdiff", "", paste0(strsplit(.spl_context$cur_col_id[1], "_")[[1]][c(1, 3)], collapse = ""))
+    } else {
+      arm_spl_x <- arm_x
+      arm_spl_y <- arm_y
+    }
+    N_col_x <- .all_col_counts[[arm_spl_x]] # nolint
+    N_col_y <- .all_col_counts[[arm_spl_y]] # nolint
+    cur_var <- tail(.spl_context$cur_col_split[[1]], 1)
 
     # Apply statistics function to arm X and arm Y data
     s_x <- do.call(names(afun), args = c(list(df = df[df[[cur_var]] == arm_x, ], .N_col = N_col_x), afun_args, s_args))
@@ -119,7 +129,7 @@ afun_riskdiff <- function(df,
     }
 
     # Calculate risk difference for each row, repeated if multiple statistics in table
-    pct <- tail(strsplit(.spl_context$cur_col_split_val[[1]], "_")[[1]], 1) == "pct"
+    pct <- tail(strsplit(cur_split, "_")[[1]], 1) == "pct"
     rd_ci <- rep(stat_propdiff_ci(
       lapply(s_x[[stat]], `[`, 1), lapply(s_y[[stat]], `[`, 1),
       N_col_x, N_col_y,
