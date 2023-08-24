@@ -57,6 +57,16 @@ testthat::test_that("s_count_occurrences_by_grade works with valid input and def
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("s_count_occurrences_by_grade sorts grade levels so that 'missing' level appears last", {
+  df <- raw_data
+  df$AETOXGR <- factor(c("Missing", 2, 3, 1, 1, 2, 3), levels = c("Missing", 1:5))
+
+  result <- s_count_occurrences_by_grade(df = df, .var = "AETOXGR", .N_col = 10)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("s_count_occurrences_by_grade works with valid input for grade grouping", {
   df <- raw_data
   result <- s_count_occurrences_by_grade(
