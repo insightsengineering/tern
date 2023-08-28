@@ -161,3 +161,4 @@
         10                                       0 (0.00%)     0 (0.00%)      1 (1.72%)   
       Unadjusted exacerbation rate (per year)                                             
         Rate                                      9.1554        8.2061          7.8551    
+
