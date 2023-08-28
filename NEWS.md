@@ -8,6 +8,7 @@
 ### Bug Fixes
 * Fixed bug in `s_count_occurrences_by_grade` so that "missing" grade always appears as the final level.
 * Fix bug in `analyze_vars_in_cols` when categorical data was used.
+* Fixed bug in `s_count_occurrences_by_grade` so that levels are not relabelled when reordering to account for "missing" grades.
 
 ### Miscellaneous
 * Fix swapped descriptions for the `.N_row` and `.N_col` parameters.
