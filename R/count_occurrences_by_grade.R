@@ -181,7 +181,11 @@ s_count_occurrences_by_grade <- function(df,
 
     missing_lvl <- grepl("missing", tolower(levels(grade)))
     if (any(missing_lvl)) {
-      levels(grade) <- c(levels(grade)[!missing_lvl], levels(grade)[missing_lvl])
+      grade <- factor(
+        grade,
+        levels = c(levels(grade)[!missing_lvl], levels(grade)[missing_lvl]),
+        ordered = is.ordered(grade)
+      )
     }
     df_max <- stats::aggregate(grade ~ id, FUN = max, drop = FALSE)
     l_count <- as.list(table(df_max$grade))

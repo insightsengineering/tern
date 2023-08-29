@@ -1,4 +1,4 @@
-# tern 0.8.5.9016
+# tern 0.8.5.9017
 
 ### Enhancements
 * Refactored `a_summary` to no longer use helper function `create_afun_summary`. 
@@ -9,11 +9,12 @@
 
 ### Bug Fixes
 * Fixed bug in `s_count_occurrences_by_grade` so that "missing" grade always appears as the final level.
-* Fix bug in `analyze_vars_in_cols` when categorical data was used.
+* Fixed bug in `analyze_vars_in_cols` when categorical data was used.
+* Fixed bug in `s_count_occurrences_by_grade` so that levels are not relabeled when reordering to account for "missing" grades.
 
 ### Miscellaneous
-* Fix swapped descriptions for the `.N_row` and `.N_col` parameters.
-* Removal of internal calls to `df_explicit_na`. Changes in `NA` values should happen externally to `tern` functions, depending on users' needs.
+* Fixed swapped descriptions for the `.N_row` and `.N_col` parameters.
+* Removed internal calls to `df_explicit_na`. Changes in `NA` values should happen externally to `tern` functions, depending on users' needs.
 * Reinstated correct soft deprecation for `create_afun_summary` and `create_afun_compare`.
 
 # tern 0.8.5
