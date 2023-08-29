@@ -20,46 +20,6 @@
                  geom_mean         geom_mean_ci              geom_cv 
                     "xx.x"     "(xx.xx, xx.xx)"               "xx.x" 
 
----
-
-    Code
-      res
-    Output
-      $n
-      [1] "xx."
-      
-      $count
-      [1] "xx."
-      
-      $count_fraction
-      function(x, ...) {
-        attr(x, "label") <- NULL
-      
-        if (any(is.na(x))) {
-          return("NA")
-        }
-      
-        checkmate::assert_vector(x)
-        checkmate::assert_integerish(x[1])
-        assert_proportion_value(x[2], include_boundaries = TRUE)
-      
-        result <- if (x[1] == 0) {
-          "0"
-        } else {
-          paste0(x[1], " (", round(x[2] * 100, 1), "%)")
-        }
-      
-        return(result)
-      }
-      <environment: namespace:tern>
-      
-      $n_blq
-      [1] "xx."
-      
-      $pval
-      [1] "x.xxxx | (<0.0001)"
-      
-
 # summary_labels works as expected
 
     Code

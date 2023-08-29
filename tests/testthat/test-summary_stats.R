@@ -4,8 +4,9 @@ testthat::test_that("summary_formats works as expected", {
   testthat::expect_snapshot(res)
 
   result <- summary_formats(type = "counts", include_pval = TRUE)
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+  expect_true(all(result[c("n", "count", "n_blq")] == "xx."))
+  expect_identical(result[["pval"]], "x.xxxx | (<0.0001)")
+  expect_identical(result[["count_fraction"]], format_count_fraction)
 })
 
 testthat::test_that("summary_labels works as expected", {
