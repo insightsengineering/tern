@@ -1,4 +1,4 @@
-# tern 0.8.5.9017
+# tern 0.8.5.9018
 
 ### Enhancements
 * Refactored `a_summary` to no longer use helper function `create_afun_summary`. 
