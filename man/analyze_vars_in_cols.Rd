@@ -61,6 +61,9 @@ underneath analyses, which is not allowed.}
 \item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+
+\item{.aligns}{(\code{character})\cr alignment for table contents (not including labels). When \code{NULL}, \code{"center"}
+is applied. See \code{\link[formatters:list_formats]{formatters::list_valid_aligns()}} for a list of all currently supported alignments.}
 }
 \value{
 A layout object suitable for passing to further layouting functions, or to \code{\link[rtables:build_table]{rtables::build_table()}}.

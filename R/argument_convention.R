@@ -4,6 +4,8 @@
 #' that are used repeatedly to express an analysis.
 #'
 #' @param ... additional arguments for the lower level functions.
+#' @param .aligns (`character`)\cr alignment for table contents (not including labels). When `NULL`, `"center"`
+#'   is applied. See [formatters::list_valid_aligns()] for a list of all currently supported alignments.
 #' @param .df_row (`data.frame`)\cr data frame across all of the columns for the given row split.
 #' @param .in_ref_col (`logical`)\cr `TRUE` when working with the reference level, `FALSE` otherwise.
 #' @param .N_col (`integer`)\cr column-wise N (column count) for the full column being analyzed that is typically

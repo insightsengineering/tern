@@ -6,6 +6,9 @@
 \arguments{
 \item{...}{additional arguments for the lower level functions.}
 
+\item{.aligns}{(\code{character})\cr alignment for table contents (not including labels). When \code{NULL}, \code{"center"}
+is applied. See \code{\link[formatters:list_formats]{formatters::list_valid_aligns()}} for a list of all currently supported alignments.}
+
 \item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}

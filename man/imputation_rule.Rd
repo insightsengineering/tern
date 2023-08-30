@@ -4,8 +4,40 @@
 \alias{imputation_rule}
 \title{Apply 1/3 or 1/2 Imputation Rule to Data}
 \usage{
-imputation_rule(df, x_stats, stat, imp, post = FALSE)
+imputation_rule(df, x_stats, stat, imp_rule, post = FALSE)
+}
+\arguments{
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
+
+\item{imp_rule}{(\code{character})\cr imputation rule setting. Set to \code{"1/3"} to implement 1/3 imputation
+rule or \code{"1/2"} to implement 1/2 imputation rule.}
+
+\item{post}{(\code{flag})\cr whether the data corresponds to a post-dose timepoint (defaults to \code{FALSE}).
+This parameter is only used when \code{imp_rule} is set to \code{"1/3"}.}
+}
+\value{
+A \code{list} containing statistic value (\code{val}) and NA level (\code{na_level}) that should be displayed
+according to the specified imputation rule.
 }
 \description{
-Apply 1/3 or 1/2 Imputation Rule to Data
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\note{
+\code{AVALCAT1} must be present in \code{df}.
+}
+\examples{
+set.seed(1)
+df <- data.frame(
+  AVAL = runif(50, 0, 1),
+  AVALCAT1 = sample(c(1, "BLQ"), 50, replace = TRUE, prob = c(0.5, 0.5))
+)
+x_stats <- s_summary(df$AVAL)
+imputation_rule(df, x_stats, "max", "1/3")
+imputation_rule(df, x_stats, "geom_mean", "1/3")
+imputation_rule(df, x_stats, "mean", "1/2")
+
+}
+\seealso{
+\code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}} where this function can be implemented by setting the \code{imp_rule}
+argument.
 }
