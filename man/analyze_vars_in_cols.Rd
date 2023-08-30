@@ -14,10 +14,12 @@ analyze_vars_in_cols(
   row_labels = NULL,
   do_summarize_row_groups = FALSE,
   split_col_vars = TRUE,
+  imp_rule = NULL,
   .indent_mods = NULL,
   nested = TRUE,
   na_level = NULL,
-  .formats = NULL
+  .formats = NULL,
+  .aligns = NULL
 )
 }
 \arguments{
@@ -43,6 +45,11 @@ to define row labels. This behavior is not supported as we never need to overloa
 \item{split_col_vars}{(\code{flag})\cr defaults to \code{TRUE} and puts the analysis results onto the columns.
 This option allows you to add multiple instances of this functions, also in a nested fashion,
 without adding more splits. This split must happen only one time on a single layout.}
+
+\item{imp_rule}{(\code{character})\cr imputation rule setting. Defaults to \code{NULL} for no imputation rule. Can
+also be \code{"1/3"} to implement 1/3 imputation rule or \code{"1/2"} to implement 1/2 imputation rule. In order
+to use an imputation rule, the \code{AVALCAT1} variable must be present in the data. See \code{\link[=imputation_rule]{imputation_rule()}}
+for more details on imputation.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
