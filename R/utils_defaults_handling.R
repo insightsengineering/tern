@@ -6,6 +6,7 @@
 #'  we need the defaults from.
 #'
 #' @export
+#' @name default_stats_and_formats
 get_stat <- function(method_group) {
   checkmate::assert_string(method_group)
   switch (method_group,
@@ -15,7 +16,7 @@ get_stat <- function(method_group) {
   )
 }
 
-#' @describeIn count_occurrences
+#' @describeIn default_stats_and_formats
 #'
 #' @export
 get_format_from_stat <- function(stats) {
@@ -31,7 +32,7 @@ get_format_from_stat <- function(stats) {
   setNames(ret, stats)
 }
 
-#' @describeIn count_occurrences
+#' @describeIn default_stats_and_formats
 #'
 #' @export
 get_label_from_stat <- function(stats) {
@@ -44,7 +45,7 @@ get_label_from_stat <- function(stats) {
 
   setNames(ret, stats)
 }
-#' @describeIn count_occurrences XXX This will be very general
+#' @describeIn default_stats_and_formats XXX This will be very general
 #'
 #' @export
 tern_default_formats <- function() {
@@ -61,7 +62,7 @@ tern_default_formats <- function() {
     )
   )
 }
-#' @describeIn count_occurrences XXX This will be very general
+#' @describeIn default_stats_and_formats XXX This will be very general
 #'
 #' @export
 tern_default_labels <- function() {
