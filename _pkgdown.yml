@@ -68,6 +68,7 @@ reference:
     desc: These functions are useful in defining an analysis.
     contents:
       - starts_with("h_")
+      - imputation_rule
       - starts_with("or_")
       - starts_with("prop_")
       - summary_stats

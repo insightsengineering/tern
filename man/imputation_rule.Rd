@@ -12,7 +12,7 @@ imputation_rule(df, x_stats, stat, imp_rule, post = FALSE)
 \item{imp_rule}{(\code{character})\cr imputation rule setting. Set to \code{"1/3"} to implement 1/3 imputation
 rule or \code{"1/2"} to implement 1/2 imputation rule.}
 
-\item{post}{(\code{flag})\cr whether the data corresponds to a post-dose timepoint (defaults to \code{FALSE}).
+\item{post}{(\code{flag})\cr whether the data corresponds to a post-dose time-point (defaults to \code{FALSE}).
 This parameter is only used when \code{imp_rule} is set to \code{"1/3"}.}
 }
 \value{
@@ -29,7 +29,7 @@ according to the specified imputation rule.
 set.seed(1)
 df <- data.frame(
   AVAL = runif(50, 0, 1),
-  AVALCAT1 = sample(c(1, "BLQ"), 50, replace = TRUE, prob = c(0.5, 0.5))
+  AVALCAT1 = sample(c(1, "BLQ"), 50, replace = TRUE)
 )
 x_stats <- s_summary(df$AVAL)
 imputation_rule(df, x_stats, "max", "1/3")

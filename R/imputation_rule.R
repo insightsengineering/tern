@@ -5,7 +5,7 @@
 #' @inheritParams argument_convention
 #' @param imp_rule (`character`)\cr imputation rule setting. Set to `"1/3"` to implement 1/3 imputation
 #'   rule or `"1/2"` to implement 1/2 imputation rule.
-#' @param post (`flag`)\cr whether the data corresponds to a post-dose timepoint (defaults to `FALSE`).
+#' @param post (`flag`)\cr whether the data corresponds to a post-dose time-point (defaults to `FALSE`).
 #'   This parameter is only used when `imp_rule` is set to `"1/3"`.
 #'
 #' @note `AVALCAT1` must be present in `df`.
