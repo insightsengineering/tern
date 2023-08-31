@@ -4,6 +4,7 @@
 * Refactored `a_summary` to no longer use helper function `create_afun_summary`. 
 * Refactored `summarize_vars` and `compare_vars` to use refactored `a_summary`.
 * Created new internal helper functions `ungroup_stats` to ungroup statistics calculated for factor variables, and `a_summary_internal` to perform calculations for `a_summary`.
+* Grouping of valid methods names and their relative defaut formats and labels into new source file `utils_defaults_handling.R`.
 
 ### Bug Fixes
 * Fixed bug in `s_count_occurrences_by_grade` so that "missing" grade always appears as the final level.

@@ -1,6 +1,8 @@
-
-#' @describeIn count_occurrences Utility function to get valid statistic methods for
-#'  different method groups.
+#' Defaults for stats methods names and their relative formats/labels
+#'
+#' @description
+#' Utility functions to get valid statistic methods for different method groups
+#' (`.stats`) and their relative formats (`.formats`) and labels ``
 #'
 #' @param method_group (`string`) \cr Indicates the group of statistical methods that
 #'  we need the defaults from.
