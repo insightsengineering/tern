@@ -186,7 +186,7 @@ s_summary.numeric <- function(x,
   # Convert negative values to NA for log calculation.
   x_no_negative_vals <- x
   x_no_negative_vals[x_no_negative_vals <= 0] <- NA
-  y$geom_mean <- if (all(x == 0) && length(x) > 0) {
+  y$geom_mean <- if (all(!is.na(x)) && all(x == 0) && length(x) > 0) {
     c("geom_mean" = 0)
   } else {
     c("geom_mean" = exp(mean(log(x_no_negative_vals), na.rm = FALSE)))

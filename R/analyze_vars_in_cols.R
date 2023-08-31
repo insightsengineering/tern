@@ -232,7 +232,7 @@ analyze_vars_in_cols <- function(lyt,
           } else {
             res_imp <- imputation_rule(
               .df_row, x_stats, stat,
-              imp = imp_rule, post = as.numeric(tail(.spl_context$value, 1)) > 0
+              imp_rule = imp_rule, post = as.numeric(tail(.spl_context$value, 1)) > 0
             )
             res <- res_imp[["val"]]
             na_level <- res_imp[["na_level"]]
@@ -294,7 +294,7 @@ analyze_vars_in_cols <- function(lyt,
           } else {
             res_imp <- imputation_rule(
               .df_row, x_stats, stat,
-              imp = imp_rule, post = as.numeric(tail(.spl_context$value, 1)) > 0
+              imp_rule = imp_rule, post = as.numeric(tail(.spl_context$value, 1)) > 0
             )
             res <- res_imp[["val"]]
             na_level <- res_imp[["na_level"]]

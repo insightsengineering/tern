@@ -9,6 +9,11 @@ imputation_rule(df, x_stats, stat, imp_rule, post = FALSE)
 \arguments{
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
+\item{x_stats}{(\verb{named list})\cr a named list of statistics, typically the results of \code{\link[=s_summary]{s_summary()}}.}
+
+\item{stat}{(\code{character})\cr statistic to return the value/NA level of according to the imputation
+rule applied.}
+
 \item{imp_rule}{(\code{character})\cr imputation rule setting. Set to \code{"1/3"} to implement 1/3 imputation
 rule or \code{"1/2"} to implement 1/2 imputation rule.}
 

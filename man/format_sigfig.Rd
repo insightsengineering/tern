@@ -8,10 +8,6 @@ format_sigfig(sigfig)
 }
 \arguments{
 \item{sigfig}{(\code{integer})\cr number of significant figures to display.}
-
-\item{x}{(\code{numeric})\cr value.}
-
-\item{...}{required for \code{rtables} interface.}
 }
 \value{
 An \code{rtables} formatting function.

@@ -214,8 +214,6 @@ format_xx <- function(str) {
 #' Format numeric values to print with a specified number of significant figures.
 #'
 #' @param sigfig (`integer`)\cr number of significant figures to display.
-#' @param x (`numeric`)\cr value.
-#' @param ... required for `rtables` interface.
 #'
 #' @return An `rtables` formatting function.
 #'
