@@ -341,4 +341,3 @@ testthat::test_that("analyze_vars_in_cols works with imputation rule", {
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
-

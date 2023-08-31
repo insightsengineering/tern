@@ -36,7 +36,7 @@ imputation_rule <- function(df, x_stats, stat, imp_rule, post = FALSE) {
 
   # defaults
   val <- x_stats[[stat]]
-  na_level = "NE"
+  na_level <- "NE"
 
   if (imp_rule == "1/3") {
     if (!post && stat == "geom_mean") val <- NA # 1/3_pre_LT, 1/3_pre_GT
