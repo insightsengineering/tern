@@ -181,16 +181,13 @@ analyze_vars_in_cols <- function(lyt,
   }
 
   if (split_col_vars) {
-    env <- new.env() # create caching environment
-
     # Checking there is not a previous identical column split
     clyt <- tail(clayout(lyt), 1)[[1]]
 
     dummy_lyt <- split_cols_by_multivar(
       lyt = basic_table(),
       vars = vars,
-      varlabels = .labels[.stats],
-      extra_args = list(cache_env = replicate(length(.stats), list(env)))
+      varlabels = .labels[.stats]
     )
 
     if (any(sapply(clyt, identical, y = get_last_col_split(dummy_lyt)))) {
@@ -206,10 +203,11 @@ analyze_vars_in_cols <- function(lyt,
     lyt <- split_cols_by_multivar(
       lyt = lyt,
       vars = vars,
-      varlabels = .labels[.stats],
-      extra_args = list(cache_env = replicate(length(.stats), list(env)))
+      varlabels = .labels[.stats]
     )
   }
+
+  env <- new.env() # create caching environment
 
   if (do_summarize_row_groups) {
     if (length(unique(vars)) > 1) {
@@ -218,8 +216,8 @@ analyze_vars_in_cols <- function(lyt,
 
     # Function list for do_summarize_row_groups. Slightly different handling of labels
     cfun_list <- Map(
-      function(stat) {
-        function(u, .spl_context, labelstr, .df_row, cache_env = NULL, ...) {
+      function(stat, cache_env) {
+        function(u, .spl_context, labelstr, .df_row, ...) {
           # Statistic
           var_row_val <- paste(
             gsub("\\._\\[\\[[0-9]+\\]\\]_\\.", "", paste(tail(.spl_context$cur_col_split_val, 1)[[1]], collapse = "_")),
@@ -266,7 +264,8 @@ analyze_vars_in_cols <- function(lyt,
           )
         }
       },
-      stat = .stats
+      stat = .stats,
+      cache_env = replicate(length(.stats), env)
     )
 
     # Main call to rtables
@@ -279,8 +278,8 @@ analyze_vars_in_cols <- function(lyt,
   } else {
     # Function list for analyze_colvars
     afun_list <- Map(
-      function(stat) {
-        function(u, .spl_context, .df_row, cache_env = NULL, ...) {
+      function(stat, cache_env) {
+        function(u, .spl_context, .df_row, ...) {
           # Main statistics
           var_row_val <- paste(
             gsub("\\._\\[\\[[0-9]+\\]\\]_\\.", "", paste(tail(.spl_context$cur_col_split_val, 1)[[1]], collapse = "_")),
@@ -342,7 +341,8 @@ analyze_vars_in_cols <- function(lyt,
           )
         }
       },
-      stat = .stats
+      stat = .stats,
+      cache_env = replicate(length(.stats), env)
     )
 
     # Main call to rtables
