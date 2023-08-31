@@ -270,3 +270,75 @@ testthat::test_that("analyze_vars_in_cols works well with categorical data", {
     append_topleft("  SEX") %>%
     build_table(adpp))
 })
+
+testthat::test_that("analyze_vars_in_cols works with imputation rule", {
+  set.seed(1)
+  df <- data.frame(
+    ARM = with_label(rep("A: Drug X", 162), "Arm"),
+    AVAL = runif(162, 0, 100),
+    AVALCAT1 = as.factor(sample(c(1, "BLQ"), 162, replace = TRUE)),
+    VISIT = with_label(as.factor(rep(c(rep("Day 1", 5), rep("Day 2", 4)), 18)), "Visit"),
+    NFRLT = with_label(as.factor(rep(c(0, seq(0, 42, 6)), 18)), "Nominal Time")
+  )
+
+  # 1/3 imputation rule
+  lyt <- basic_table() %>%
+    split_rows_by(
+      var = "ARM",
+      split_fun = drop_split_levels
+    ) %>%
+    split_rows_by(
+      var = "VISIT",
+      split_fun = drop_split_levels
+    ) %>%
+    split_rows_by(
+      var = "NFRLT",
+      split_fun = drop_split_levels,
+      child_labels = "hidden"
+    ) %>%
+    analyze_vars_in_cols(
+      vars = c("AVAL", "AVALCAT1", rep("AVAL", 5)),
+      .stats = c("n", "n_blq", "mean", "sd", "geom_mean", "min", "max"),
+      .labels = c(
+        n = "n", n_blq = "Number of BLQs", mean = "Mean", sd = "SD",
+        geom_mean = "Geometric Mean", min = "Minimum", max = "Maximum"
+      ),
+      imp_rule = "1/3"
+    )
+
+  result <- build_table(lyt = lyt, df = df)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # 1/2 imputation rule
+  lyt <- basic_table() %>%
+    split_rows_by(
+      var = "ARM",
+      split_fun = drop_split_levels
+    ) %>%
+    split_rows_by(
+      var = "VISIT",
+      split_fun = drop_split_levels
+    ) %>%
+    split_rows_by(
+      var = "NFRLT",
+      split_fun = drop_split_levels,
+      child_labels = "hidden"
+    ) %>%
+    analyze_vars_in_cols(
+      vars = c("AVAL", "AVALCAT1", rep("AVAL", 5)),
+      .stats = c("n", "n_blq", "mean", "sd", "geom_mean", "min", "max"),
+      .labels = c(
+        n = "n", n_blq = "Number of BLQs", mean = "Mean", sd = "SD",
+        geom_mean = "Geometric Mean", min = "Minimum", max = "Maximum"
+      ),
+      imp_rule = "1/2"
+    )
+
+  result <- build_table(lyt = lyt, df = df)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+

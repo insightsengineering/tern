@@ -20,7 +20,7 @@
 #' set.seed(1)
 #' df <- data.frame(
 #'   AVAL = runif(50, 0, 1),
-#'   AVALCAT1 = sample(c(1, "BLQ"), 50, replace = TRUE, prob = c(0.5, 0.5))
+#'   AVALCAT1 = sample(c(1, "BLQ"), 50, replace = TRUE)
 #' )
 #' x_stats <- s_summary(df$AVAL)
 #' imputation_rule(df, x_stats, "max", "1/3")

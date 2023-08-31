@@ -219,9 +219,13 @@ analyze_vars_in_cols <- function(lyt,
     # Function list for do_summarize_row_groups. Slightly different handling of labels
     cfun_list <- Map(
       function(stat) {
-        function(u, .spl_context, labelstr, .df_row, .var, cache_env = NULL, ...) {
+        function(u, .spl_context, labelstr, .df_row, cache_env = NULL, ...) {
           # Statistic
-          var_row_val <- paste(.var, tail(.spl_context$value, 1), sep = "_")
+          var_row_val <- paste(
+            gsub("\\._\\[\\[[0-9]+\\]\\]_\\.", "", paste(tail(.spl_context$cur_col_split_val, 1)[[1]], collapse = "_")),
+            paste(.spl_context$value, collapse = "_"),
+            sep = "_"
+          )
           if (is.null(cache_env[[var_row_val]])) cache_env[[var_row_val]] <- s_summary(u, ...)
           x_stats <- cache_env[[var_row_val]]
 
@@ -275,9 +279,13 @@ analyze_vars_in_cols <- function(lyt,
     # Function list for analyze_colvars
     afun_list <- Map(
       function(stat) {
-        function(u, .spl_context, .df_row, .var, cache_env = NULL, ...) {
+        function(u, .spl_context, .df_row, cache_env = NULL, ...) {
           # Main statistics
-          var_row_val <- paste(.var, tail(.spl_context$value, 1), sep = "_")
+          var_row_val <- paste(
+            gsub("\\._\\[\\[[0-9]+\\]\\]_\\.", "", paste(tail(.spl_context$cur_col_split_val, 1)[[1]], collapse = "_")),
+            paste(.spl_context$value, collapse = "_"),
+            sep = "_"
+          )
           if (is.null(cache_env[[var_row_val]])) cache_env[[var_row_val]] <- s_summary(u, ...)
           x_stats <- cache_env[[var_row_val]]
 
