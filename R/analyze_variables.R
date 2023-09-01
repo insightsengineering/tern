@@ -460,8 +460,8 @@ a_summary_internal <- function(x,
   # Fill in with formatting defaults if needed
   custom_summary <- summary_custom(
     type = type,
-    # include_pval = compare,
-    stats_custom = ifelse(isFALSE(compare), .stats, unique(c(.stats, "pval"))),
+    include_pval = compare,
+    stats_custom = .stats,
     formats_custom = .formats,
     labels_custom = .labels,
     indent_mods_custom = .indent_mods
