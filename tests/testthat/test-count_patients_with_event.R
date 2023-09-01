@@ -120,3 +120,33 @@ testthat::test_that("s_count_patients_with_event works with factor filters", {
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("count_patients_with_flags works as expected with risk difference column", {
+  # One statistic
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+    count_patients_with_event(
+      vars = "USUBJID",
+      filters = c("TRTEMFL" = "Y"),
+      .labels = c(count_fraction = "Total number of patients with at least one adverse event"),
+      riskdiff = TRUE
+    ) %>%
+    build_table(tern_ex_adae, alt_counts_df = tern_ex_adsl)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # Multiple statistics
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+    count_patients_with_event(
+      vars = "USUBJID",
+      filters = c("TRTEMFL" = "Y"),
+      .stats = c("count", "count_fraction"),
+      riskdiff = TRUE
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})

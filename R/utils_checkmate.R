@@ -11,7 +11,6 @@
 #' @param na_level (`character`)\cr the string you have been using to represent NA or
 #'   missing data. For `NA` values please consider using directly [is.na()] or
 #'   similar approaches.
-#' @param ... a collection of objects to test.
 #'
 #' @return Nothing if assertion passes, otherwise prints the error message.
 #'
