@@ -1,11 +1,12 @@
-# tern 0.8.5.9020
+# tern 0.9.0
+### New Features
+* Added `stat_propdiff_ci` function to calculate proportion/risk difference and CI.
+* Added risk difference column functionality via the `riskdiff` argument to functions `count_occurrences`, `count_occurrences_by_grade`, `count_patients_with_event`, `count_patients_with_flags`, `analyze_num_patients`, and `summarize_num_patients`.
 
 ### Enhancements
-* Refactored `a_summary` to no longer use helper function `create_afun_summary`. 
-* Refactored `summarize_vars` and `compare_vars` to use refactored `a_summary`.
+* Refactored the function `a_summary` to no longer use the helper function `create_afun_summary`.
+* Refactored functions `summarize_vars` and `compare_vars` to use the refactored `a_summary` function.
 * Created new internal helper functions `ungroup_stats` to ungroup statistics calculated for factor variables, and `a_summary_internal` to perform calculations for `a_summary`.
-* Added `stat_propdiff_ci` function to calculate proportion/risk difference and CI.
-* Added risk difference column functionality via the `riskdiff` argument to `count_occurrences`, `count_occurrences_by_grade`, `count_patients_with_event`, `count_patients_with_flags`, `analyze_num_patients`, and `summarize_num_patients`.
 
 ### Bug Fixes
 * Fixed bug in `s_count_occurrences_by_grade` so that "missing" grade always appears as the final level.

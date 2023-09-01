@@ -169,7 +169,7 @@ h_glm_count <- function(.var,
 #' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called in `.var` and `variables`.
 #' @param conf_level (`numeric`)\cr value used to derive the confidence interval for the rate.
 #' @param obj (`glm.fit`)\cr fitted model object used to derive the mean rate estimates in each treatment arm.
-#' @param `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple groups will be
+#' @param arm (`string`)\cr group variable, for which the covariate adjusted means of multiple groups will be
 #'   summarized. Specifically, the first level of `arm` variable is taken as the reference group.
 #'
 #' @return

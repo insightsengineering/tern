@@ -212,8 +212,7 @@ prop_cmh <- function(ary) {
 
 #' @describeIn h_prop_diff_test performs the Chi-Squared test with Schouten correction.
 #'
-#' @seealso For information on the Schouten correction (Schouten, 1980),
-#'   visit \url{https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.4710220305}.
+#' @seealso Schouten correction is based upon \insertCite{Schouten1980-kd;textual}{tern}.
 #'
 #'
 #' @keywords internal
