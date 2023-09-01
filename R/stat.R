@@ -174,3 +174,58 @@ stat_mean_pval <- function(x,
 
   return(pv)
 }
+
+#' Proportion Difference and Confidence Interval
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Function for calculating the proportion (or risk) difference and confidence interval between arm
+#' X (reference group) and arm Y. Risk difference is calculated by subtracting cumulative incidence
+#' in arm Y from cumulative incidence in arm X.
+#'
+#' @inheritParams argument_convention
+#' @param x (`list` of `integer`)\cr list of number of occurrences in arm X (reference group).
+#' @param y (`list` of `integer`)\cr list of number of occurrences in arm Y. Must be of equal length to `x`.
+#' @param N_x (`numeric`)\cr total number of records in arm X.
+#' @param N_y (`numeric`)\cr total number of records in arm Y.
+#' @param list_names (`character`)\cr names of each variable/level corresponding to pair of proportions in
+#'   `x` and `y`. Must be of equal length to `x` and `y`.
+#' @param pct (`flag`)\cr whether output should be returned as percentages. Defaults to `TRUE`.
+#'
+#' @return List of proportion differences and CIs corresponding to each pair of number of occurrences in `x` and
+#'   `y`. Each list element consists of 3 statistics: proportion difference, CI lower bound, and CI upper bound.
+#'
+#' @seealso Split function [add_riskdiff()] which, when used as `split_fun` within [rtables::split_cols_by()]
+#'   with `riskdiff` argument is set to `TRUE` in subsequent analyze functions, adds a column containing
+#'   proportion (risk) difference to an `rtables` layout.
+#'
+#' @examples
+#' stat_propdiff_ci(
+#'   x = list(0.375), y = list(0.01), N_x = 5, N_y = 5, list_names = "x", conf_level = 0.9
+#' )
+#'
+#' stat_propdiff_ci(
+#'   x = list(0.5, 0.75, 1), y = list(0.25, 0.05, 0.5), N_x = 10, N_y = 20, pct = FALSE
+#' )
+#'
+#' @export
+stat_propdiff_ci <- function(x,
+                             y,
+                             N_x, # nolint
+                             N_y, # nolint
+                             list_names = NULL,
+                             conf_level = 0.95,
+                             pct = TRUE) {
+  checkmate::assert_list(x, types = "numeric")
+  checkmate::assert_list(y, types = "numeric", len = length(x))
+  checkmate::assert_character(list_names, len = length(x), null.ok = TRUE)
+  rd_list <- lapply(seq_along(x), function(i) {
+    p_x <- x[[i]] / N_x
+    p_y <- y[[i]] / N_y
+    rd_ci <- p_x - p_y + c(-1, 1) * stats::qnorm((1 + conf_level) / 2) *
+      sqrt(p_x * (1 - p_x) / N_x + p_y * (1 - p_y) / N_y)
+    c(p_x - p_y, rd_ci) * ifelse(pct, 100, 1)
+  })
+  names(rd_list) <- list_names
+  rd_list
+}

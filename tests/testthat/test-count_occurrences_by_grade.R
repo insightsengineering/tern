@@ -346,3 +346,37 @@ testthat::test_that("summarize_ and count_occurrences_by_grade works with pagina
   )
   testthat::expect_identical(to_string_matrix(pag_result[[2]])[3, 1], "A")
 })
+
+testthat::test_that("count_occurrences_by_grade works as expected with risk difference column", {
+  tern_ex_adae$AESEV <- factor(tern_ex_adae$AESEV)
+
+  # Default parameters
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+    count_occurrences_by_grade(
+      var = "AESEV",
+      riskdiff = TRUE
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # Grade groups, custom id var
+  grade_groups <- list("-Any-" = levels(tern_ex_adae$AESEV))
+
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+    count_occurrences_by_grade(
+      var = "AESEV",
+      riskdiff = TRUE,
+      show_labels = "hidden",
+      .indent_mods = 1L,
+      grade_groups = grade_groups,
+      id = "SITEID"
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})

@@ -34,6 +34,7 @@ summarize_num_patients(
     "Number of events"),
   indent_mod = lifecycle::deprecated(),
   .indent_mods = 0L,
+  riskdiff = FALSE,
   ...
 )
 
@@ -48,6 +49,7 @@ analyze_num_patients(
   show_labels = c("default", "visible", "hidden"),
   indent_mod = lifecycle::deprecated(),
   .indent_mods = 0L,
+  riskdiff = FALSE,
   ...
 )
 }
@@ -86,6 +88,10 @@ by a statistics function.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
+
+\item{riskdiff}{(\code{flag})\cr whether a risk difference column is present. When set to \code{TRUE}, \code{\link[=add_riskdiff]{add_riskdiff()}} must be
+used as \code{split_fun} in the prior column split of the table layout, specifying which columns should be compared.
+See \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} for details on risk difference calculation.}
 
 \item{...}{additional arguments for the lower level functions.}
 
