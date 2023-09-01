@@ -45,7 +45,7 @@ get_format_from_stats <- function(stats) {
   which_fmt <- match(stats, names(default_formats))
 
   ret <- vector("list", length = length(stats))
-  ret[!is.na(which_fmt)] <- default_formats[which_fmt]
+  ret[!is.na(which_fmt)] <- default_formats[which_fmt[!is.na(which_fmt)]]
 
   setNames(ret, stats)
 }
@@ -63,7 +63,7 @@ get_label_from_stats <- function(stats) {
   which_lbl <- match(stats, names(default_lbl))
 
   ret <- vector("list", length = length(stats))
-  ret[!is.na(which_lbl)] <- default_lbl[which_lbl]
+  ret[!is.na(which_lbl)] <- default_lbl[which_lbl[!is.na(which_lbl)]]
 
   setNames(ret, stats)
 }
@@ -91,7 +91,7 @@ tern_default_formats <- function() {
       # n = "xx.", # Duplication in summary_formats
       count = "xx.",
       count_fraction = format_count_fraction,
-      n_blq = "xx.",
+      n_blq = "xx."
       # pval = "x.xxxx | (<0.0001)" # Duplication in summary_formats
     ),
     list(

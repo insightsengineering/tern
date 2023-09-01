@@ -12,7 +12,7 @@ testthat::test_that("get_format_from_stats works as expected", {
   res <- testthat::expect_silent(get_format_from_stats(sts))
   testthat::expect_snapshot(res)
 
-  testthat::expect_error(get_stats("dont_exist"), regexp = "dont_exist is a method*")
+  testthat::expect_null(get_format_from_stats(c("nothing", "n"))[["nothing"]])
 })
 
 testthat::test_that("get_label_from_stats works as expected", {
@@ -20,5 +20,6 @@ testthat::test_that("get_label_from_stats works as expected", {
   res <- testthat::expect_silent(get_label_from_stats(sts))
   testthat::expect_snapshot(res)
 
-  # testthat::expect_error(get_label_from_stats("Maas"), regexp = "dont_exist is a method*")
+  testthat::expect_identical(get_label_from_stats(c("nothing", "unique"))[["unique"]],
+                             tern_default_labels()[["unique"]])
 })
