@@ -41,10 +41,10 @@ used in the regression (poisson, quasipoisson).}
 
 \item{obj}{(\code{glm.fit})\cr fitted model object used to derive the mean rate estimates in each treatment arm.}
 
-\item{conf_level}{(\code{numeric})\cr value used to derive the confidence interval for the rate.}
-
-\item{`arm`}{(\code{string})\cr group variable, for which the covariate adjusted means of multiple groups will be
+\item{arm}{(\code{string})\cr group variable, for which the covariate adjusted means of multiple groups will be
 summarized. Specifically, the first level of \code{arm} variable is taken as the reference group.}
+
+\item{conf_level}{(\code{numeric})\cr value used to derive the confidence interval for the rate.}
 }
 \value{
 \itemize{

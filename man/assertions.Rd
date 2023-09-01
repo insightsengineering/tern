@@ -86,8 +86,6 @@ Exact expected length of \code{x}.}
 
 \item{include_boundaries}{(\code{logical})\cr whether to include boundaries when testing
 for proportions.}
-
-\item{...}{a collection of objects to test.}
 }
 \value{
 Nothing if assertion passes, otherwise prints the error message.
