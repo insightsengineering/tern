@@ -1,3 +1,40 @@
+#' Control Function for Descriptive Statistics
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Sets a list of parameters for summaries of descriptive statistics. Typically used internally to specify
+#' details for [s_summary()]. This function family is mainly used by [analyze_vars()].
+#'
+#' @inheritParams argument_convention
+#' @param quantiles (`numeric`)\cr of length two to specify the quantiles to calculate.
+#' @param quantile_type (`numeric`)\cr between 1 and 9 selecting quantile algorithms to be used.
+#'   Default is set to 2 as this matches the default quantile algorithm in SAS `proc univariate` set by `QNTLDEF=5`.
+#'   This differs from R's default. See more about `type` in [stats::quantile()].
+#' @param test_mean (`numeric`)\cr to test against the mean under the null hypothesis when calculating p-value.
+#'
+#' @note Deprecation cycle started for `control_summarize_vars` as it is going to renamed into
+#'   `control_analyze_vars`. Intention is to reflect better the core underlying `rtables`
+#'   functions; in this case [analyze_vars()] wraps [rtables::analyze()].
+#'
+#' @return A list of components with the same names as the arguments.
+#'
+#' @export control_analyze_vars control_summarize_vars
+#' @aliases control_summarize_vars
+control_analyze_vars <- function(conf_level = 0.95,
+                                 quantiles = c(0.25, 0.75),
+                                 quantile_type = 2,
+                                 test_mean = 0) {
+  checkmate::assert_vector(quantiles, len = 2)
+  checkmate::assert_int(quantile_type, lower = 1, upper = 9)
+  checkmate::assert_numeric(test_mean)
+  lapply(quantiles, assert_proportion_value)
+  assert_proportion_value(conf_level)
+  list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type, test_mean = test_mean)
+}
+
+control_summarize_vars <- control_analyze_vars
+
+
 #' Analyze Variables
 #'
 #' @description `r lifecycle::badge("stable")`
