@@ -9,21 +9,28 @@
 \alias{tern_default_labels}
 \title{Defaults for stats methods names and their relative formats/labels}
 \usage{
-get_stats(method_group)
+get_stats(method_group, type = NULL, stats_in = NULL, add_pval = FALSE)
 
-get_format_from_stats(stats)
+get_format_from_stats(stats, type = NULL, formats_in = NULL)
 
-get_label_from_stats(stats)
+get_label_from_stats(stats, type = NULL, labels_in = NULL)
 
-tern_default_formats()
+tern_default_formats(type = NULL)
 
-tern_default_labels()
+tern_default_labels(type)
 }
 \arguments{
-\item{method_group}{(\code{string}) \cr Indicates the group of statistical methods that
+\item{method_group}{(\code{string}) \cr indicates the group of statistical methods that
 we need the defaults from.}
 
+\item{type}{(\code{string}) \cr type of data and result desired. Some stats defaults (and their formats and labels),
+differ if you need to analyze different type of values. See Details for available options.}
+
+\item{stats_in}{(\code{character}) \cr desired stats to be picked out from the selected method group.}
+
 \item{stats}{(\code{character}) \cr statistical methods to get defaults formats for.}
+
+\item{formats_in}{(named \code{vector}) \cr inserted formats to replace defaults.}
 }
 \value{
 \itemize{
@@ -55,6 +62,10 @@ Utility functions to get valid statistic methods for different method groups
 (\code{.stats}) and their relative formats (\code{.formats}) and labels (\code{.labels}). This utility
 is used across \code{tern}, but some of its working principles can be seen in \code{\link[=analyze_vars]{analyze_vars()}}.
 }
+\details{
+Current choices for \code{type} are \code{counts} and \code{numeric} for \code{\link[=analyze_vars]{analyze_vars()}} and affect \code{get_stats()} and
+\code{get_label_from_stats()}. Another option, \code{count_fraction_fixed_dp} affects only formats for count fractions.
+}
 \section{Functions}{
 \itemize{
 \item \code{get_stats()}: Get defaults statistical methods for different
@@ -72,6 +83,10 @@ of default formats for \code{tern}.
 of default labels for \code{tern}.
 
 }}
+\note{
+Formats in \code{tern} and \code{rtables} can be functions that take in the table cell value and
+return a string. This is well documented in \code{vignette("custom_appearance", package = "rtables")}.
+}
 \seealso{
 \link{formatting_functions}
 }
