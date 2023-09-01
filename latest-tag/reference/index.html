@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,6 +50,7 @@
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.0">v0.9.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5">v0.8.5</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
@@ -198,7 +199,7 @@
         <dd>Analyze Functions</dd>
       </dl><dl><dt>
           
-          <code><a href="analyze_variables.html">s_summary()</a></code> <code><a href="analyze_variables.html">a_summary()</a></code> <code><a href="analyze_variables.html">analyze_vars()</a></code> 
+          <code><a href="analyze_variables.html">s_summary()</a></code> <code><a href="analyze_variables.html">a_summary()</a></code> <code><a href="analyze_variables.html">analyze_vars()</a></code> <code><a href="analyze_variables.html">summarize_vars()</a></code> 
         </dt>
         <dd>Analyze Variables</dd>
       </dl><dl><dt>
@@ -394,16 +395,6 @@
 
       <dl><dt>
           
-          <code><a href="create_afun_compare.html">create_afun_compare()</a></code> 
-        </dt>
-        <dd>Constructor Function for <code><a href="../reference/compare_variables.html">compare_vars()</a></code></dd>
-      </dl><dl><dt>
-          
-          <code><a href="create_afun_summary.html">create_afun_summary()</a></code> 
-        </dt>
-        <dd>Constructor Function for <code><a href="../reference/analyze_variables.html">analyze_vars()</a></code> and <code><a href="../reference/summarize_colvars.html">summarize_colvars()</a></code></dd>
-      </dl><dl><dt>
-          
           <code><a href="cox_regression_inter.html">h_coxreg_inter_effect()</a></code> <code><a href="cox_regression_inter.html">h_coxreg_extract_interaction()</a></code> <code><a href="cox_regression_inter.html">h_coxreg_inter_estimations()</a></code> 
         </dt>
         <dd>Cox Regression Helper: Interactions</dd>
@@ -552,6 +543,11 @@
           <code><a href="h_worsen_counter.html">h_worsen_counter()</a></code> 
         </dt>
         <dd>Helper Function to Analyze Patients for <code><a href="../reference/abnormal_by_worst_grade_worsen.html">s_count_abnormal_lab_worsen_by_baseline()</a></code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="summary_stats.html">summary_formats()</a></code> <code><a href="summary_stats.html">summary_labels()</a></code> <code><a href="summary_stats.html">summary_custom()</a></code> 
+        </dt>
+        <dd>Summary Statistic Settings Functions</dd>
       </dl></div><div class="section level2">
       <h2 id="model-specific-functions">Model-Specific Functions<a class="anchor" aria-label="anchor" href="#model-specific-functions"></a></h2>
       
@@ -696,6 +692,11 @@
       
 
       <dl><dt>
+          
+          <code><a href="add_riskdiff.html">add_riskdiff()</a></code> 
+        </dt>
+        <dd>Split Function to Configure Risk Difference Column</dd>
+      </dl><dl><dt>
           
           <code><a href="add_rowcounts.html">add_rowcounts()</a></code> 
         </dt>
@@ -1077,6 +1078,11 @@
         <dd>Confidence Interval for Median</dd>
       </dl><dl><dt>
           
+          <code><a href="stat_propdiff_ci.html">stat_propdiff_ci()</a></code> 
+        </dt>
+        <dd>Proportion Difference and Confidence Interval</dd>
+      </dl><dl><dt>
+          
           <code><a href="strata_normal_quantile.html">strata_normal_quantile()</a></code> 
         </dt>
         <dd>Helper Function for the Estimation of Stratified Quantiles</dd>
@@ -1122,6 +1128,32 @@
           <code><a href="ex_data.html">tern_ex_adsl</a></code> <code><a href="ex_data.html">tern_ex_adae</a></code> <code><a href="ex_data.html">tern_ex_adlb</a></code> <code><a href="ex_data.html">tern_ex_adpp</a></code> <code><a href="ex_data.html">tern_ex_adrs</a></code> <code><a href="ex_data.html">tern_ex_adtte</a></code> 
         </dt>
         <dd>Simulated <code>CDISC</code> Data for Examples</dd>
+      </dl></div><div class="section level2">
+      <h2 id="deprecated-functions">Deprecated Functions<a class="anchor" aria-label="anchor" href="#deprecated-functions"></a></h2>
+      
+      <p class="section-desc"></p><p>Functions that are currently deprecated within <code>tern</code>.</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="create_afun_compare.html">create_afun_compare()</a></code> 
+        </dt>
+        <dd>Constructor Function for <code><a href="../reference/compare_variables.html">compare_vars()</a></code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="create_afun_summary.html">create_afun_summary()</a></code> 
+        </dt>
+        <dd>Constructor Function for <code><a href="../reference/analyze_variables.html">analyze_vars()</a></code> and <code><a href="../reference/summarize_colvars.html">summarize_colvars()</a></code></dd>
+      </dl><dl><dt>
+          
+          <code><a href="analyze_variables.html">s_summary()</a></code> <code><a href="analyze_variables.html">a_summary()</a></code> <code><a href="analyze_variables.html">analyze_vars()</a></code> <code><a href="analyze_variables.html">summarize_vars()</a></code> 
+        </dt>
+        <dd>Analyze Variables</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

@@ -12,7 +12,7 @@ Helper functions that can be used to return the results of various Poisson model
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,6 +52,7 @@ Helper functions that can be used to return the results of various Poisson model
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.0">v0.9.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5">v0.8.5</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
@@ -125,26 +126,28 @@ reference group.</p></li>
 </ul></dd>
 
 
+<dt>weights</dt>
+<dd><p>(<code>character</code>)<br> a character vector specifying weights used
+in averaging predictions. Number of weights must equal the number of levels included in the covariates.
+Weights option passed to <code><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans::emmeans()</a></code>.</p></dd>
+
+
+<dt>distribution</dt>
+<dd><p>(<code>character</code>)<br> a character value specifying the distribution
+used in the regression (poisson, quasipoisson).</p></dd>
+
+
 <dt>obj</dt>
 <dd><p>(<code>glm.fit</code>)<br> fitted model object used to derive the mean rate estimates in each treatment arm.</p></dd>
 
 
-<dt>conf_level</dt>
-<dd><p>(<code>numeric</code>)<br> value used to derive the confidence interval for the rate.</p></dd>
-
-
-<dt>`weights`(`character`)<br></dt>
-<dd><p>character vector specifying weights used in averaging predictions.</p></dd>
-
-
-<dt>`distribution`(`character`)<br></dt>
-<dd><p>a character value specifying the distribution
-used in the regression (poisson, quasipoisson).</p></dd>
-
-
-<dt>`arm`</dt>
+<dt>arm</dt>
 <dd><p>(<code>string</code>)<br> group variable, for which the covariate adjusted means of multiple groups will be
 summarized. Specifically, the first level of <code>arm</code> variable is taken as the reference group.</p></dd>
+
+
+<dt>conf_level</dt>
+<dd><p>(<code>numeric</code>)<br> value used to derive the confidence interval for the rate.</p></dd>
 
 </dl></div>
     <div class="section level2">
