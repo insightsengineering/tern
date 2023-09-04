@@ -2,7 +2,10 @@
 #' @keywords internal
 assert_allowed_types <- function(type) {
   checkmate::assert_string(type, null.ok = TRUE)
-  checkmate::assert_choice(type, c("counts", "numeric", "count_fraction_fixed_dp"))
+  checkmate::assert_choice(type,
+    choices = c("counts", "numeric", "count_fraction_fixed_dp"),
+    null.ok = TRUE
+  )
 }
 
 #' Defaults for stats methods names and their relative formats/labels
@@ -35,19 +38,17 @@ NULL
 #' * `get_stats()` returns a character vector with all default statistical methods.
 #'
 #' @export
-get_stats <- function(method_group, type = NULL, stats_in = NULL, add_pval = FALSE) {
+get_stats <- function(method_group, type = "numeric", stats_in = NULL, add_pval = FALSE) {
   checkmate::assert_string(method_group)
   assert_allowed_types(type)
   checkmate::assert_character(stats_in, null.ok = TRUE)
   checkmate::assert_flag(add_pval)
 
-  if (!is.null(type)) {
-    # For the moment the type changes the defaults only in "analyze_vars"
-    if (method_group %in% c("analyze_vars")) {
-      method_group <- paste0(method_group, "_", type)
-    }
-    # No error here because of "count_fraction_fixed_dp", exception only in formats
+  # For the moment the type changes the defaults only in "analyze_vars"
+  if (method_group %in% c("analyze_vars")) {
+    method_group <- paste0(method_group, "_", type)
   }
+  # No error here because of "count_fraction_fixed_dp", exception only in formats
 
   out <- switch (method_group,
           "count_occurrences" = c("count", "count_fraction", "fraction"),
@@ -72,6 +73,12 @@ get_stats <- function(method_group, type = NULL, stats_in = NULL, add_pval = FAL
     out <- unique(c(out, "pval"))
   }
 
+  # If intersect did not find matches (and no pval?) -> error
+  if (length(out) == 0) {
+    stop("The selected method_group (", method_group, ") does not have the required ",
+         "default statistical methods:\n", stats_in)
+  }
+
   out
 }
 
@@ -94,17 +101,31 @@ get_stats <- function(method_group, type = NULL, stats_in = NULL, add_pval = FAL
 get_format_from_stats <- function(stats, type = NULL, formats_in = NULL) {
   checkmate::assert_character(stats, min.len = 1)
   assert_allowed_types(type)
-  checkmate::assert_character(formats_in, null.ok = TRUE)
+  # It may be a list if there is a function in the formats
+  if (checkmate::test_list(formats_in, null.ok = TRUE)){
+    checkmate::assert_list(formats_in, null.ok = TRUE)
+  # Or it may be a vector of characters
+  } else if(checkmate::test_character(formats_in, null.ok = TRUE)){
+    checkmate::assert_character(formats_in, null.ok = TRUE)
+  }
 
+  # Extract global defaults
   default_formats <- tern_default_formats(type)
   which_fmt <- match(stats, names(default_formats))
 
+  # Select only needed formats from stats
   ret <- vector("list", length = length(stats))
   ret[!is.na(which_fmt)] <- default_formats[which_fmt[!is.na(which_fmt)]]
 
   out <- setNames(ret, stats)
 
+  # Modify some with custom formats
   if (!is.null(formats_in)) {
+    fmt_not_aval <- !(names(formats_in) %in% names(out))
+    if (any(fmt_not_aval)) {
+      stop("The following inserted formats do not have corresponding statitistic:\n",
+           names(formats_in[fmt_not_aval]))
+    }
     out[names(formats_in)] <- formats_in
   }
 
@@ -123,7 +144,7 @@ get_format_from_stats <- function(stats, type = NULL, formats_in = NULL) {
 get_label_from_stats <- function(stats, type = NULL, labels_in = NULL) {
   checkmate::assert_character(stats, min.len = 1)
   assert_allowed_types(type)
-  checkmate::assert_character(labels_in, null.ok = TRUE)
+  checkmate::assert_list(labels_in, null.ok = TRUE)
 
   default_lbl <- tern_default_labels(type)
   which_lbl <- match(stats, names(default_lbl))
