@@ -1,11 +1,12 @@
 testthat::test_that("summary_formats works as expected", {
-  result <- summary_formats()
+  result <- summary_formats() %>%
+    unlist() # More compact fruition
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   result <- summary_formats(type = "counts", include_pval = TRUE)
-  expect_true(all(result[c("n", "count", "n_blq")] == "xx."))
-  expect_identical(result[["pval"]], "x.xxxx | (<0.0001)")
+  testthat::expect_true(all(result[c("n", "count", "n_blq")] == "xx."))
+  testthat::expect_identical(result[["pval_counts"]], "x.xxxx | (<0.0001)")
   expect_identical(result[["count_fraction"]], format_count_fraction)
 })
 
@@ -28,10 +29,6 @@ testthat::test_that("summary_custom works as expected", {
 
   testthat::expect_warning(res <- summary_custom())
   testthat::expect_snapshot(res)
-
-  # It is identical to the following:
-  res$stats
-
 })
 
 testthat::test_that("control_analyze_vars works with customized parameters", {

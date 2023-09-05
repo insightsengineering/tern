@@ -15,10 +15,6 @@ testthat::test_that("get_stats works as expected for defaults", {
   res <- testthat::expect_silent(get_stats("analyze_vars", type = "numeric"))
   testthat::expect_snapshot(res)
 
-  # pval is added correctly
-  testthat::expect_contains(get_stats("analyze_vars", type = "numeric", add_pval = TRUE), "pval")
-  testthat::expect_contains(get_stats("analyze_vars", type = "counts", add_pval = TRUE), "pval_counts")
-
   testthat::expect_error(
     get_stats("dont_exist"),
     regexp = "The inserted method_group \\(dont_exist\\) and type \\(numeric\\) has no default statistical method."
@@ -45,6 +41,11 @@ testthat::test_that("get_stats works as expected for defaults", {
       get_stats("analyze_vars", type = "counts")
     ))
   )
+})
+testthat::test_that("get_stats works well with pval", {
+  # pval is added correctly
+  testthat::expect_contains(get_stats("analyze_vars", type = "numeric", add_pval = TRUE), "pval")
+  testthat::expect_contains(get_stats("analyze_vars", type = "counts", add_pval = TRUE), "pval_counts")
 })
 
 testthat::test_that("get_stats works as expected for selection of stats", {
@@ -77,22 +78,23 @@ testthat::test_that("get_format_from_stats works as expected", {
     stats_to_do
   )
 
-  testthat::expect_error(
+  # Works also if we had a not present format
+  testthat::expect_identical(
     get_format_from_stats(names(stats_to_do),
       formats_in = c(stats_to_do, "catch_me" = "xx")
     ),
-    regexp = "*catch_me"
+    stats_to_do
   )
 
-  # character vector
+  # character vector is the same
   stats_to_do <- c("not_a_stat" = "xx", "mean" = "xx")
-  testthat::expect_error(
+  testthat::expect_identical(
     get_format_from_stats(names(stats_to_do),
       formats_in = c(stats_to_do,
         "catch_me" = "xx"
       )
     ),
-    regexp = "*catch_me"
+    stats_to_do
   )
 })
 
@@ -101,11 +103,11 @@ testthat::test_that("get_label_from_stats works as expected", {
   res <- testthat::expect_silent(get_label_from_stats(sts))
   testthat::expect_snapshot(res)
 
-  testthat::expect_null(get_label_from_stats(c("nothing", "n"))[["nothing"]])
+  testthat::expect_identical(get_label_from_stats(c("nothing", "n"))[["nothing"]], "")
 
   testthat::expect_identical(
     get_label_from_stats(c("nothing", "unique"))[["unique"]],
-    tern_default_labels()[["unique"]]
+    tern_default_labels[["unique"]]
   )
 
   # list check
@@ -115,21 +117,21 @@ testthat::test_that("get_label_from_stats works as expected", {
     stats_to_do
   )
 
-  testthat::expect_error(
+  testthat::expect_identical(
     get_label_from_stats(names(stats_to_do),
       labels_in = c(stats_to_do, "catch_me" = "xx")
     ),
-    regexp = "*catch_me"
+    stats_to_do
   )
 
   # character vector
   stats_to_do <- c("not_a_stat" = "xx", "mean" = "xx")
-  testthat::expect_error(
+  testthat::expect_identical(
     get_label_from_stats(names(stats_to_do),
       labels_in = c(stats_to_do,
         "catch_me" = "xx"
       )
     ),
-    regexp = "*catch_me"
+    stats_to_do
   )
 })

@@ -108,11 +108,6 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
     }
   }
 
-  # Filtering for stats_in (character vector)
-  if (!is.null(stats_in)) {
-    out <- intersect(stats_in, out)
-  }
-
   # Mainly used in "analyze_vars" but it could be necessary elsewhere
   if (isTRUE(add_pval)) {
     if ("counts" %in% type) {
@@ -120,6 +115,11 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
     }else{
       out <- unique(c(out, "pval"))
     }
+  }
+
+  # Filtering for stats_in (character vector)
+  if (!is.null(stats_in)) {
+    out <- intersect(stats_in, out) # It orders them too
   }
 
   # If intersect did not find matches (and no pval?) -> error
@@ -242,7 +242,7 @@ get_label_from_stats <- function(stats, labels_in = NULL) {
 #' @describeIn default_stats_and_formats Named list of default formats for `tern`.
 #'
 #' @export
-tern_default_formats <- list(
+tern_default_formats <- c(
   fraction = format_fraction_fixed_dp,
   unique = format_count_fraction_fixed_dp,
   nonunique = "xx",
