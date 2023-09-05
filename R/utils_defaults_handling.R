@@ -74,19 +74,21 @@ get_stats <- function(method_group, type = NULL, stats_in = NULL, add_pval = FAL
     # No error here because of "count_fraction_fixed_dp", exception only in formats
   }
 
-  out <- switch (m_group_internal,
-          "count_occurrences" = c("count", "count_fraction_fixed_dp", "fraction"),
-          "summarize_num_patients" = c("unique", "nonunique", "unique_count"),
-          "analyze_vars_counts" = c("n", "count", "count_fraction", "n_blq"),
-          "analyze_vars_numeric" = c(
-            "n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci", "mean_sei",
-            "mean_sdi", "mean_pval", "median", "mad", "median_ci", "quantiles", "iqr",
-            "range", "min", "max", "median_range", "cv", "geom_mean", "geom_mean_ci",
-            "geom_cv"
-          ),
-          stop("The inserted method_group (", m_group_internal, ")",
-               ifelse(is.null(type), "", paste0(" and type (", typ, ")")),
-               " has no default statistical method.")
+  out <- switch(m_group_internal,
+    "count_occurrences" = c("count", "count_fraction_fixed_dp", "fraction"),
+    "summarize_num_patients" = c("unique", "nonunique", "unique_count"),
+    "analyze_vars_counts" = c("n", "count", "count_fraction", "n_blq"),
+    "analyze_vars_numeric" = c(
+      "n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci", "mean_sei",
+      "mean_sdi", "mean_pval", "median", "mad", "median_ci", "quantiles", "iqr",
+      "range", "min", "max", "median_range", "cv", "geom_mean", "geom_mean_ci",
+      "geom_cv"
+    ),
+    stop(
+      "The inserted method_group (", m_group_internal, ")",
+      ifelse(is.null(type), "", paste0(" and type (", typ, ")")),
+      " has no default statistical method."
+    )
   )
 
   # Filtering for stats_in (character vector)
@@ -106,9 +108,11 @@ get_stats <- function(method_group, type = NULL, stats_in = NULL, add_pval = FAL
 
   # If intersect did not find matches (and no pval?) -> error
   if (length(out) == 0) {
-    stop("The selected method_group (", m_group_internal, ")",
-         ifelse(is.null(type), "", paste0(" and type (", typ, ")")),
-         " does not have the required default statistical methods:\n", stats_in)
+    stop(
+      "The selected method_group (", m_group_internal, ")",
+      ifelse(is.null(type), "", paste0(" and type (", typ, ")")),
+      " does not have the required default statistical methods:\n", stats_in
+    )
   }
 
   out
@@ -144,9 +148,9 @@ get_stats <- function(method_group, type = NULL, stats_in = NULL, add_pval = FAL
 get_format_from_stats <- function(stats, formats_in = NULL) {
   checkmate::assert_character(stats, min.len = 1)
   # It may be a list if there is a function in the formats
-  if (checkmate::test_list(formats_in, null.ok = TRUE)){
+  if (checkmate::test_list(formats_in, null.ok = TRUE)) {
     checkmate::assert_list(formats_in, null.ok = TRUE)
-  # Or it may be a vector of characters
+    # Or it may be a vector of characters
   } else {
     checkmate::assert_character(formats_in, null.ok = TRUE)
   }
@@ -165,8 +169,10 @@ get_format_from_stats <- function(stats, formats_in = NULL) {
   if (!is.null(formats_in)) {
     fmt_not_aval <- !(names(formats_in) %in% names(out))
     if (any(fmt_not_aval)) {
-      stop("The following inserted formats do not have corresponding statitistic:\n",
-           names(formats_in[fmt_not_aval]))
+      stop(
+        "The following inserted formats do not have corresponding statitistic:\n",
+        names(formats_in[fmt_not_aval])
+      )
     }
     out[names(formats_in)] <- formats_in
   }
@@ -197,7 +203,7 @@ get_format_from_stats <- function(stats, formats_in = NULL) {
 get_label_from_stats <- function(stats, labels_in = NULL) {
   checkmate::assert_character(stats, min.len = 1)
   # It may be a list
-  if (checkmate::test_list(labels_in, null.ok = TRUE)){
+  if (checkmate::test_list(labels_in, null.ok = TRUE)) {
     checkmate::assert_list(labels_in, null.ok = TRUE)
     # Or it may be a vector of characters
   } else {
@@ -216,8 +222,10 @@ get_label_from_stats <- function(stats, labels_in = NULL) {
   if (!is.null(labels_in)) {
     lbl_not_aval <- !(names(labels_in) %in% names(out))
     if (any(lbl_not_aval)) {
-      stop("The following inserted labels do not have corresponding statitistic:\n",
-           names(labels_in[lbl_not_aval]))
+      stop(
+        "The following inserted labels do not have corresponding statitistic:\n",
+        names(labels_in[lbl_not_aval])
+      )
     }
     out[names(labels_in)] <- labels_in
   }
