@@ -295,10 +295,12 @@ ungroup_stats <- function(x,
                           .indent_mods) {
   checkmate::assert_list(x)
   empty_pval <- "pval" %in% names(x) && length(x[["pval"]]) == 0
+  empty_pval_counts <- "pval_counts" %in% names(x) && length(x[["pval_counts"]]) == 0
   x <- unlist(x, recursive = FALSE)
 
   # If p-value is empty it is removed by unlist and needs to be re-added
   if (empty_pval) x[["pval"]] <- character()
+  if (empty_pval_counts) x[["pval_counts"]] <- character()
   .stats <- names(x)
 
   # Ungroup stats
@@ -319,3 +321,4 @@ ungroup_stats <- function(x,
     .indent_mods = .indent_mods
   )
 }
+

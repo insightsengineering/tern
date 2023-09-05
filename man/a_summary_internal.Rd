@@ -15,9 +15,9 @@ a_summary_internal(
   compare,
   type,
   .stats,
-  .formats,
-  .labels,
-  .indent_mods,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL,
   na.rm,
   na_level,
   ...

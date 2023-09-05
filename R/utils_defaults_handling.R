@@ -105,21 +105,21 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
 
       out <- unique(c(out, out_tmp))
 
-      # Mainly used in "analyze_vars" but it could be necessary elsewhere
-      if (isTRUE(add_pval)) {
-        pval_spec <- if (typ == "counts") {
-          "pval_counts"
-        } else {
-          "pval"
-        }
-        out <- unique(c(out, pval_spec))
-      }
     }
   }
 
   # Filtering for stats_in (character vector)
   if (!is.null(stats_in)) {
     out <- intersect(stats_in, out)
+  }
+
+  # Mainly used in "analyze_vars" but it could be necessary elsewhere
+  if (isTRUE(add_pval)) {
+    if ("counts" %in% type) {
+      out <- unique(c(out, "pval_counts"))
+    }else{
+      out <- unique(c(out, "pval"))
+    }
   }
 
   # If intersect did not find matches (and no pval?) -> error

@@ -1,4 +1,14 @@
 # tern 0.9.0.9000
+### New Features
+* Added vectors of default formats and labels in `tern_default_formats` and `tern_default_labels`, respectively.
+* Added getter for statistical method groups with `get_stats`.
+* Added getters for formats `get_format_from_stats()` and labels `get_labels_from_formats()`.
+
+### Enhancements
+* Grouping of valid methods names and their relative default formats and labels into new source file `utils_defaults_handling.R`.
+
+### Miscellaneous
+* Started deprecation of `summary_custom()` and `a_summary()` as a `S3` method.
 
 # tern 0.9.0
 ### New Features
@@ -9,7 +19,6 @@
 * Refactored the function `a_summary` to no longer use the helper function `create_afun_summary`.
 * Refactored functions `summarize_vars` and `compare_vars` to use the refactored `a_summary` function.
 * Created new internal helper functions `ungroup_stats` to ungroup statistics calculated for factor variables, and `a_summary_internal` to perform calculations for `a_summary`.
-* Grouping of valid methods names and their relative defaut formats and labels into new source file `utils_defaults_handling.R`.
 
 ### Bug Fixes
 * Fixed bug in `s_count_occurrences_by_grade` so that "missing" grade always appears as the final level.
