@@ -8,6 +8,7 @@ testthat::test_that("get_stats works as expected for defaults", {
   res <- testthat::expect_silent(get_stats("summarize_num_patients"))
   testthat::expect_snapshot(res)
 
+  # Change depending on type
   res <- testthat::expect_silent(get_stats("analyze_vars", type = "counts"))
   testthat::expect_snapshot(res)
 
@@ -16,8 +17,12 @@ testthat::test_that("get_stats works as expected for defaults", {
 
   # pval is added correctly
   testthat::expect_contains(get_stats("analyze_vars", type = "numeric", add_pval = TRUE), "pval")
+  testthat::expect_contains(get_stats("analyze_vars", type = "counts", add_pval = TRUE), "pval_counts")
 
-  testthat::expect_error(get_stats("dont_exist"), regexp = "dont_exist is a method*")
+  testthat::expect_error(
+    get_stats("dont_exist"),
+    regexp = "The inserted method_group \\(dont_exist\\) and type \\(numeric\\) has no default statistical method."
+  )
 
   # Type affects only counts and numeric for analyze_vars
   testthat::expect_identical(get_stats("count_occurrences", type = "counts"),
@@ -35,6 +40,10 @@ testthat::test_that("get_stats works as expected for selection of stats", {
 
   # False insertion
   testthat::expect_error(get_stats("analyze_vars", stats_in = "unique"),
+                         regexp = "*unique")
+
+  # False insertion
+  testthat::expect_error(get_stats("count_occurrences", stats_in = "unique"),
                          regexp = "*unique")
 })
 
@@ -67,6 +76,24 @@ testthat::test_that("get_label_from_stats works as expected", {
   res <- testthat::expect_silent(get_label_from_stats(sts))
   testthat::expect_snapshot(res)
 
+  testthat::expect_null(get_label_from_stats(c("nothing", "n"))[["nothing"]])
+
   testthat::expect_identical(get_label_from_stats(c("nothing", "unique"))[["unique"]],
                              tern_default_labels()[["unique"]])
+
+  # list check
+  stats_to_do <- c("not_a_stat" = function(x) as.character(x), "mean" = "xx.")
+  testthat::expect_equal(get_label_from_stats(names(stats_to_do), labels_in = stats_to_do),
+                         stats_to_do)
+
+  testthat::expect_error(get_label_from_stats(names(stats_to_do),
+                                              labels_in = c(stats_to_do, "catch_me" = "xx")),
+                         regexp = "*catch_me")
+
+  # character vector
+  stats_to_do <- c("not_a_stat" = "xx", "mean" = "xx")
+  testthat::expect_error(get_label_from_stats(names(stats_to_do),
+                                              labels_in = c(stats_to_do,
+                                                              "catch_me" = "xx")),
+                         regexp = "*catch_me")
 })

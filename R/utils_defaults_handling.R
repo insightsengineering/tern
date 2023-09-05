@@ -10,11 +10,12 @@ assert_allowed_types <- function(type) {
 
 #' Defaults for stats methods names and their relative formats/labels
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("experimental")`
 #'
 #' Utility functions to get valid statistic methods for different method groups
 #' (`.stats`) and their relative formats (`.formats`) and labels (`.labels`). This utility
 #' is used across `tern`, but some of its working principles can be seen in [analyze_vars()].
+#' See notes to understand why this is experimental.
 #'
 #' @param stats (`character`) \cr statistical methods to get defaults formats for.
 #' @param type (`string`) \cr type of data and result desired. Some stats defaults (and their formats and labels),
@@ -22,7 +23,12 @@ assert_allowed_types <- function(type) {
 #'
 #' @details
 #' Current choices for `type` are `counts` and `numeric` for [analyze_vars()] and affect `get_stats()` and
-#' `get_label_from_stats()`. Another option, `count_fraction_fixed_dp` affects only formats for count fractions.
+#' `get_label_from_stats()`. Another option, `count_fraction_fixed_dp` affects only formats for count fractions for
+#' special statistical function [count_occurrences()].
+#'
+#' @note
+#' These defaults are experimental because we use the names of functions to retrieve the default statistics. This
+#' should be generalized in groups of methods according to more reasonable groupings.
 #'
 #' @name default_stats_and_formats
 NULL
@@ -37,21 +43,39 @@ NULL
 #' @return
 #' * `get_stats()` returns a character vector with all default statistical methods.
 #'
+#' @examples
+#' # Default is numeric
+#' num_stats <- get_stats("analyze_vars")
+#'
+#' # Other type
+#' cnt_stats <- get_stats("analyze_vars", type = "counts")
+#'
+#' # Weirdly taking the pval from count_occurrences
+#' only_pval <- get_stats("count_occurrences", add_pval = TRUE, stats_in = "pval")
+#'
+#' # All count_occurrences
+#' all_cnt_occ <- get_stats("count_occurrences")
+#'
 #' @export
-get_stats <- function(method_group, type = "numeric", stats_in = NULL, add_pval = FALSE) {
+get_stats <- function(method_group, type = NULL, stats_in = NULL, add_pval = FALSE) {
   checkmate::assert_string(method_group)
   assert_allowed_types(type)
   checkmate::assert_character(stats_in, null.ok = TRUE)
   checkmate::assert_flag(add_pval)
 
   # For the moment the type changes the defaults only in "analyze_vars"
+  m_group_internal <- method_group
+  typ <- "numeric"
   if (method_group %in% c("analyze_vars")) {
-    method_group <- paste0(method_group, "_", type)
+    if (!is.null(type)) {
+      typ <- type
+    }
+    m_group_internal <- paste0(method_group, "_", typ)
+    # No error here because of "count_fraction_fixed_dp", exception only in formats
   }
-  # No error here because of "count_fraction_fixed_dp", exception only in formats
 
-  out <- switch (method_group,
-          "count_occurrences" = c("count", "count_fraction", "fraction"),
+  out <- switch (m_group_internal,
+          "count_occurrences" = c("count", "count_fraction_fixed_dp", "fraction"),
           "summarize_num_patients" = c("unique", "nonunique", "unique_count"),
           "analyze_vars_counts" = c("n", "count", "count_fraction", "n_blq"),
           "analyze_vars_numeric" = c(
@@ -60,7 +84,9 @@ get_stats <- function(method_group, type = "numeric", stats_in = NULL, add_pval 
             "range", "min", "max", "median_range", "cv", "geom_mean", "geom_mean_ci",
             "geom_cv"
           ),
-          stop(method_group, " is a method_group that has no default statistical method.")
+          stop("The inserted method_group (", m_group_internal, ")",
+               ifelse(is.null(type), "", paste0(" and type (", typ, ")")),
+               " has no default statistical method.")
   )
 
   # Filtering for stats_in (character vector)
@@ -70,13 +96,19 @@ get_stats <- function(method_group, type = "numeric", stats_in = NULL, add_pval 
 
   # Mainly used in "analyze_vars" but it could be necessary elsewhere
   if (isTRUE(add_pval)) {
-    out <- unique(c(out, "pval"))
+    pval_spec <- if (typ == "counts") {
+      "pval_counts"
+    } else {
+      "pval"
+    }
+    out <- unique(c(out, pval_spec))
   }
 
   # If intersect did not find matches (and no pval?) -> error
   if (length(out) == 0) {
-    stop("The selected method_group (", method_group, ") does not have the required ",
-         "default statistical methods:\n", stats_in)
+    stop("The selected method_group (", m_group_internal, ")",
+         ifelse(is.null(type), "", paste0(" and type (", typ, ")")),
+         " does not have the required default statistical methods:\n", stats_in)
   }
 
   out
@@ -95,26 +127,36 @@ get_stats <- function(method_group, type = "numeric", stats_in = NULL, add_pval 
 #' @note Formats in `tern` and `rtables` can be functions that take in the table cell value and
 #'   return a string. This is well documented in `vignette("custom_appearance", package = "rtables")`.
 #'
+#' @examples
+#' # Defaults formats
+#' get_format_from_stats(num_stats)
+#' get_format_from_stats(cnt_stats)
+#' get_format_from_stats(only_pval)
+#' get_format_from_stats(all_cnt_occ)
+#'
+#' # Addition of customs
+#' get_format_from_stats(all_cnt_occ, formats_in = c("fraction" = c("xx")))
+#' get_format_from_stats(all_cnt_occ, formats_in = list("fraction" = c("xx.xx", "xx")))
+#'
 #' @seealso [formatting_functions]
 #'
 #' @export
-get_format_from_stats <- function(stats, type = NULL, formats_in = NULL) {
+get_format_from_stats <- function(stats, formats_in = NULL) {
   checkmate::assert_character(stats, min.len = 1)
-  assert_allowed_types(type)
   # It may be a list if there is a function in the formats
   if (checkmate::test_list(formats_in, null.ok = TRUE)){
     checkmate::assert_list(formats_in, null.ok = TRUE)
   # Or it may be a vector of characters
-  } else if(checkmate::test_character(formats_in, null.ok = TRUE)){
+  } else {
     checkmate::assert_character(formats_in, null.ok = TRUE)
   }
 
   # Extract global defaults
-  default_formats <- tern_default_formats(type)
+  default_formats <- tern_default_formats()
   which_fmt <- match(stats, names(default_formats))
 
   # Select only needed formats from stats
-  ret <- vector("list", length = length(stats))
+  ret <- vector("list", length = length(stats)) # Returning a list is simpler
   ret[!is.na(which_fmt)] <- default_formats[which_fmt[!is.na(which_fmt)]]
 
   out <- setNames(ret, stats)
@@ -140,13 +182,29 @@ get_format_from_stats <- function(stats, type = NULL, formats_in = NULL) {
 #' * `get_label_from_stats()` returns a named list of default labels (if present
 #'   otherwise `NULL`).
 #'
+#' @examples
+#' # Defaults labels
+#' get_label_from_stats(num_stats)
+#' get_label_from_stats(cnt_stats)
+#' get_label_from_stats(only_pval)
+#' get_label_from_stats(all_cnt_occ)
+#'
+#' # Addition of customs
+#' get_label_from_stats(all_cnt_occ, labels_in = c("fraction" = "Fraction"))
+#' get_label_from_stats(all_cnt_occ, labels_in = list("fraction" = c("Some more fractions")))
+#'
 #' @export
-get_label_from_stats <- function(stats, type = NULL, labels_in = NULL) {
+get_label_from_stats <- function(stats, labels_in = NULL) {
   checkmate::assert_character(stats, min.len = 1)
-  assert_allowed_types(type)
-  checkmate::assert_list(labels_in, null.ok = TRUE)
+  # It may be a list
+  if (checkmate::test_list(labels_in, null.ok = TRUE)){
+    checkmate::assert_list(labels_in, null.ok = TRUE)
+    # Or it may be a vector of characters
+  } else {
+    checkmate::assert_character(labels_in, null.ok = TRUE)
+  }
 
-  default_lbl <- tern_default_labels(type)
+  default_lbl <- tern_default_labels()
   which_lbl <- match(stats, names(default_lbl))
 
   ret <- vector("list", length = length(stats))
@@ -154,7 +212,13 @@ get_label_from_stats <- function(stats, type = NULL, labels_in = NULL) {
 
   out <- setNames(ret, stats)
 
+  # Modify some with custom labels
   if (!is.null(labels_in)) {
+    lbl_not_aval <- !(names(labels_in) %in% names(out))
+    if (any(lbl_not_aval)) {
+      stop("The following inserted labels do not have corresponding statitistic:\n",
+           names(labels_in[lbl_not_aval]))
+    }
     out[names(labels_in)] <- labels_in
   }
 
@@ -168,8 +232,7 @@ get_label_from_stats <- function(stats, type = NULL, labels_in = NULL) {
 #' * `tern_default_formats()` returns a complete named list of default formats for `tern`.
 #'
 #' @export
-tern_default_formats <- function(type = NULL) {
-  assert_allowed_types(type)
+tern_default_formats <- function() {
   out <- list(
     fraction = format_fraction_fixed_dp,
     unique = format_count_fraction_fixed_dp,
@@ -178,6 +241,7 @@ tern_default_formats <- function(type = NULL) {
     n = "xx.",
     count = "xx.",
     count_fraction = format_count_fraction,
+    count_fraction_fixed_dp = format_count_fraction_fixed_dp,
     n_blq = "xx.",
     sum = "xx.x",
     mean = "xx.x",
@@ -204,9 +268,9 @@ tern_default_formats <- function(type = NULL) {
     geom_cv = "xx.x",
     pval = "x.xxxx | (<0.0001)"
   )
-  if (!is.null(type) && type == "count_fraction_fixed_dp") {
-    out[["count_fraction"]] <- format_count_fraction_fixed_dp
-  }
+
+  # Format is same but label
+  out["pval_counts"] <- out$pval
 
   out
 }
@@ -218,11 +282,9 @@ tern_default_formats <- function(type = NULL) {
 #' * `tern_default_labels()` returns a complete named list of default labels for `tern`.
 #'
 #' @export
-tern_default_labels <- function(type) {
-  assert_allowed_types(type)
-
+tern_default_labels <- function() {
   # list of labels -> sorted? xxx it should be not relevant due to match
-  out <- list(
+  list(
     unique = "Number of patients with at least one event",
     nonunique = "Number of events",
     n = "n",
@@ -252,13 +314,7 @@ tern_default_labels <- function(type) {
     geom_mean = "Geometric Mean",
     geom_mean_ci = "Geometric Mean 95% CI",
     geom_cv = "CV % Geometric Mean",
-    pval = "p-value (t-test)" # Default for numeric
+    pval = "p-value (t-test)", # Default for numeric
+    pval_counts = "p-value (chi-squared test)" # Default for counts
   )
-
-  # type exceptions to be handled
-  if (!is.null(type) && type == "counts") {
-    out[["pval"]] <- "p-value (chi-squared test)"
-  }
-
-  out
 }
