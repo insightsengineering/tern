@@ -9,7 +9,7 @@
 \alias{tern_default_labels}
 \title{Defaults for stats methods names and their relative formats/labels}
 \usage{
-get_stats(method_group, type = NULL, stats_in = NULL, add_pval = FALSE)
+get_stats(method_groups, type = NULL, stats_in = NULL, add_pval = FALSE)
 
 get_format_from_stats(stats, formats_in = NULL)
 
@@ -20,10 +20,11 @@ tern_default_formats()
 tern_default_labels()
 }
 \arguments{
-\item{method_group}{(\code{string}) \cr indicates the group of statistical methods that
-we need the defaults from.}
+\item{method_groups}{(\code{character}) \cr indicates the group of statistical methods that
+we need the defaults from. A character vector can be used to collect more than one group of statistical
+methods.}
 
-\item{type}{(\code{string}) \cr type of data and result desired. Some stats defaults (and their formats and labels),
+\item{type}{(\code{character}) \cr type of data and result desired. Some stats defaults (and their formats and labels),
 differ if you need to analyze different type of values. See Details for available options.}
 
 \item{stats_in}{(\code{character}) \cr desired stats to be picked out from the selected method group.}
@@ -64,9 +65,7 @@ is used across \code{tern}, but some of its working principles can be seen in \c
 See notes to understand why this is experimental.
 }
 \details{
-Current choices for \code{type} are \code{counts} and \code{numeric} for \code{\link[=analyze_vars]{analyze_vars()}} and affect \code{get_stats()} and
-\code{get_label_from_stats()}. Another option, \code{count_fraction_fixed_dp} affects only formats for count fractions for
-special statistical function \code{\link[=count_occurrences]{count_occurrences()}}.
+Current choices for \code{type} are \code{counts} and \code{numeric} for \code{\link[=analyze_vars]{analyze_vars()}} and affect \code{get_stats()}.
 }
 \section{Functions}{
 \itemize{
@@ -104,6 +103,10 @@ only_pval <- get_stats("count_occurrences", add_pval = TRUE, stats_in = "pval")
 
 # All count_occurrences
 all_cnt_occ <- get_stats("count_occurrences")
+
+# Multiple
+get_stats(c("count_occurrences", "analyze_vars"))
+get_stats(c("count_occurrences", "analyze_vars"), type = c("numeric", "counts"))
 
 # Defaults formats
 get_format_from_stats(num_stats)
