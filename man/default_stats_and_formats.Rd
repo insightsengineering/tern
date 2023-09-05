@@ -11,13 +11,13 @@
 \usage{
 get_stats(method_group, type = NULL, stats_in = NULL, add_pval = FALSE)
 
-get_format_from_stats(stats, type = NULL, formats_in = NULL)
+get_format_from_stats(stats, formats_in = NULL)
 
-get_label_from_stats(stats, type = NULL, labels_in = NULL)
+get_label_from_stats(stats, labels_in = NULL)
 
-tern_default_formats(type = NULL)
+tern_default_formats()
 
-tern_default_labels(type)
+tern_default_labels()
 }
 \arguments{
 \item{method_group}{(\code{string}) \cr indicates the group of statistical methods that
@@ -56,15 +56,17 @@ otherwise \code{NULL}).
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Utility functions to get valid statistic methods for different method groups
 (\code{.stats}) and their relative formats (\code{.formats}) and labels (\code{.labels}). This utility
 is used across \code{tern}, but some of its working principles can be seen in \code{\link[=analyze_vars]{analyze_vars()}}.
+See notes to understand why this is experimental.
 }
 \details{
 Current choices for \code{type} are \code{counts} and \code{numeric} for \code{\link[=analyze_vars]{analyze_vars()}} and affect \code{get_stats()} and
-\code{get_label_from_stats()}. Another option, \code{count_fraction_fixed_dp} affects only formats for count fractions.
+\code{get_label_from_stats()}. Another option, \code{count_fraction_fixed_dp} affects only formats for count fractions for
+special statistical function \code{\link[=count_occurrences]{count_occurrences()}}.
 }
 \section{Functions}{
 \itemize{
@@ -84,8 +86,45 @@ of default labels for \code{tern}.
 
 }}
 \note{
+These defaults are experimental because we use the names of functions to retrieve the default statistics. This
+should be generalized in groups of methods according to more reasonable groupings.
+
 Formats in \code{tern} and \code{rtables} can be functions that take in the table cell value and
 return a string. This is well documented in \code{vignette("custom_appearance", package = "rtables")}.
+}
+\examples{
+# Default is numeric
+num_stats <- get_stats("analyze_vars")
+
+# Other type
+cnt_stats <- get_stats("analyze_vars", type = "counts")
+
+# Weirdly taking the pval from count_occurrences
+only_pval <- get_stats("count_occurrences", add_pval = TRUE, stats_in = "pval")
+
+# All count_occurrences
+all_cnt_occ <- get_stats("count_occurrences")
+
+# Defaults formats
+get_format_from_stats(num_stats)
+get_format_from_stats(cnt_stats)
+get_format_from_stats(only_pval)
+get_format_from_stats(all_cnt_occ)
+
+# Addition of customs
+get_format_from_stats(all_cnt_occ, formats_in = c("fraction" = c("xx")))
+get_format_from_stats(all_cnt_occ, formats_in = list("fraction" = c("xx.xx", "xx")))
+
+# Defaults labels
+get_label_from_stats(num_stats)
+get_label_from_stats(cnt_stats)
+get_label_from_stats(only_pval)
+get_label_from_stats(all_cnt_occ)
+
+# Addition of customs
+get_label_from_stats(all_cnt_occ, labels_in = c("fraction" = "Fraction"))
+get_label_from_stats(all_cnt_occ, labels_in = list("fraction" = c("Some more fractions")))
+
 }
 \seealso{
 \link{formatting_functions}
