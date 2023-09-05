@@ -35,6 +35,16 @@ testthat::test_that("get_stats works as expected for defaults", {
     get_stats("analyze_vars", type = "counts"),
     get_stats("analyze_vars", type = "numeric")
   ), "n")
+
+  # Test multiples
+  testthat::expect_identical(
+    get_stats(c("count_occurrences", "analyze_vars"), type = c("numeric", "counts")),
+    unique(c(
+      get_stats("count_occurrences"),
+      get_stats("analyze_vars", type = "numeric"),
+      get_stats("analyze_vars", type = "counts")
+    ))
+  )
 })
 
 testthat::test_that("get_stats works as expected for selection of stats", {

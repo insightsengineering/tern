@@ -1,11 +1,13 @@
 # Helper function so to modify only in one place for checks
 #' @keywords internal
 assert_allowed_types <- function(type) {
-  checkmate::assert_string(type, null.ok = TRUE)
-  checkmate::assert_choice(type,
-    choices = c("counts", "numeric", "count_fraction_fixed_dp"),
-    null.ok = TRUE
+  default_type <- c("counts", "numeric")
+  checkmate::assert_character(type, null.ok = TRUE)
+  checkmate::assert_subset(type,
+    choices = default_type,
+    empty.ok = TRUE
   )
+  invisible(default_type)
 }
 
 #' Defaults for stats methods names and their relative formats/labels
@@ -18,13 +20,11 @@ assert_allowed_types <- function(type) {
 #' See notes to understand why this is experimental.
 #'
 #' @param stats (`character`) \cr statistical methods to get defaults formats for.
-#' @param type (`string`) \cr type of data and result desired. Some stats defaults (and their formats and labels),
+#' @param type (`character`) \cr type of data and result desired. Some stats defaults (and their formats and labels),
 #'   differ if you need to analyze different type of values. See Details for available options.
 #'
 #' @details
-#' Current choices for `type` are `counts` and `numeric` for [analyze_vars()] and affect `get_stats()` and
-#' `get_label_from_stats()`. Another option, `count_fraction_fixed_dp` affects only formats for count fractions for
-#' special statistical function [count_occurrences()].
+#' Current choices for `type` are `counts` and `numeric` for [analyze_vars()] and affect `get_stats()`.
 #'
 #' @note
 #' These defaults are experimental because we use the names of functions to retrieve the default statistics. This
@@ -36,8 +36,9 @@ NULL
 #' @describeIn default_stats_and_formats Get defaults statistical methods for different
 #'   groups of methods.
 #'
-#' @param method_group (`string`) \cr indicates the group of statistical methods that
-#'   we need the defaults from.
+#' @param method_groups (`character`) \cr indicates the group of statistical methods that
+#'   we need the defaults from. A character vector can be used to collect more than one group of statistical
+#'   methods.
 #' @param stats_in (`character`) \cr desired stats to be picked out from the selected method group.
 #'
 #' @return
@@ -56,40 +57,55 @@ NULL
 #' # All count_occurrences
 #' all_cnt_occ <- get_stats("count_occurrences")
 #'
+#' # Multiple
+#' get_stats(c("count_occurrences", "analyze_vars"))
+#' get_stats(c("count_occurrences", "analyze_vars"), type = c("numeric", "counts"))
+#'
 #' @export
-get_stats <- function(method_group, type = NULL, stats_in = NULL, add_pval = FALSE) {
-  checkmate::assert_string(method_group)
+get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FALSE) {
+  checkmate::assert_character(method_groups)
   assert_allowed_types(type)
   checkmate::assert_character(stats_in, null.ok = TRUE)
   checkmate::assert_flag(add_pval)
 
-  # For the moment the type changes the defaults only in "analyze_vars"
-  m_group_internal <- method_group
-  typ <- "numeric"
-  if (method_group %in% c("analyze_vars")) {
-    if (!is.null(type)) {
-      typ <- type
-    }
-    m_group_internal <- paste0(method_group, "_", typ)
-    # No error here because of "count_fraction_fixed_dp", exception only in formats
+  # Defaults for loop
+  out <- NULL
+  type_loop <- if (is.null(type)) {
+    "numeric"
+  } else {
+    type
   }
 
-  out <- switch(m_group_internal,
-    "count_occurrences" = c("count", "count_fraction_fixed_dp", "fraction"),
-    "summarize_num_patients" = c("unique", "nonunique", "unique_count"),
-    "analyze_vars_counts" = c("n", "count", "count_fraction", "n_blq"),
-    "analyze_vars_numeric" = c(
-      "n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci", "mean_sei",
-      "mean_sdi", "mean_pval", "median", "mad", "median_ci", "quantiles", "iqr",
-      "range", "min", "max", "median_range", "cv", "geom_mean", "geom_mean_ci",
-      "geom_cv"
-    ),
-    stop(
-      "The inserted method_group (", m_group_internal, ")",
-      ifelse(is.null(type), "", paste0(" and type (", typ, ")")),
-      " has no default statistical method."
-    )
-  )
+  # Loop for multiple method groups
+  for (mgi in method_groups) {
+    # Loop if you have more than one type
+    for (typ in type_loop) {
+      add_typ_to_err <- FALSE
+      mgi_fin <- mgi
+      if (mgi %in% c("analyze_vars")) {
+        mgi_fin <- paste0(mgi, "_", typ)
+        add_typ_to_err <- TRUE
+      }
+      out_tmp <- switch(mgi_fin,
+        "count_occurrences" = c("count", "count_fraction_fixed_dp", "fraction"),
+        "summarize_num_patients" = c("unique", "nonunique", "unique_count"),
+        "analyze_vars_counts" = c("n", "count", "count_fraction", "n_blq"),
+        "analyze_vars_numeric" = c(
+          "n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci", "mean_sei",
+          "mean_sdi", "mean_pval", "median", "mad", "median_ci", "quantiles", "iqr",
+          "range", "min", "max", "median_range", "cv", "geom_mean", "geom_mean_ci",
+          "geom_cv"
+        ),
+        stop(
+          "The inserted method_group (", mgi, ")",
+          ifelse(add_typ_to_err, "", paste0(" and type (", typ, ")")),
+          " has no default statistical method."
+        )
+      )
+
+      out <- unique(c(out, out_tmp))
+    }
+  }
 
   # Filtering for stats_in (character vector)
   if (!is.null(stats_in)) {
@@ -109,8 +125,8 @@ get_stats <- function(method_group, type = NULL, stats_in = NULL, add_pval = FAL
   # If intersect did not find matches (and no pval?) -> error
   if (length(out) == 0) {
     stop(
-      "The selected method_group (", m_group_internal, ")",
-      ifelse(is.null(type), "", paste0(" and type (", typ, ")")),
+      "The selected method_groups (", method_groups, ")",
+      ifelse(is.null(type), "", paste0(" and types (", typ, ")")),
       " does not have the required default statistical methods:\n", stats_in
     )
   }
