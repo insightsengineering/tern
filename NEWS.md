@@ -41,7 +41,7 @@
 
 ## Miscellaneous
 
-* Specify minimal version of dependent packages.
+* Specified minimal version of package dependencies.
 
 # tern 0.9.0
 
