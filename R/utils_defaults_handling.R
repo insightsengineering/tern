@@ -257,7 +257,7 @@ get_label_from_stats <- function(stats, labels_in = NULL) {
 #'
 #' @export
 tern_default_formats <- function() {
-  out <- list(
+  out <- c(
     fraction = format_fraction_fixed_dp,
     unique = format_count_fraction_fixed_dp,
     nonunique = "xx",
@@ -294,7 +294,7 @@ tern_default_formats <- function() {
   )
 
   # Format is same but label
-  out["pval_counts"] <- out$pval
+  out["pval_counts"] <- out["pval"]
 
   out
 }
@@ -308,7 +308,7 @@ tern_default_formats <- function() {
 #' @export
 tern_default_labels <- function() {
   # list of labels -> sorted? xxx it should be not relevant due to match
-  list(
+  c(
     unique = "Number of patients with at least one event",
     nonunique = "Number of events",
     n = "n",
