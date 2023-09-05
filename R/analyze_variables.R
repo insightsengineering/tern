@@ -458,8 +458,6 @@ a_summary_internal <- function(x,
   }
 
   # Fill in with formatting defaults if needed
-  if (any(c("pval", "pval_counts") %in% .stats)) compare <- TRUE
-
   .stats <- get_stats("analyze_vars", type, stats_in = .stats, add_pval = compare)
   .formats <- get_format_from_stats(.stats, .formats)
   .labels <- get_label_from_stats(.stats, .labels)

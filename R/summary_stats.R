@@ -81,7 +81,6 @@ summary_custom <- function(type = "numeric",
     "summary_custom()",
     details = "Please use get_stats and get_* directly instead."
   )
-  if (any(c("pval", "pval_counts") %in% stats_custom)) include_pval <- TRUE
 
   .stats <- get_stats("analyze_vars", type, stats_custom, add_pval = include_pval)
   .formats <- get_format_from_stats(.stats, formats_custom)
