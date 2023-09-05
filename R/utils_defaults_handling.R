@@ -111,8 +111,8 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
   }
 
   # If you added pval to the stats_in you certainly want it
-  if (!is.null(stats_in) && any(grepl("pval", stats_in))) {
-    stats_in_pval_value <- stats_in[grepl("pval", stats_in)]
+  if (!is.null(stats_in) && any(grepl("^pval", stats_in))) {
+    stats_in_pval_value <- stats_in[grepl("^pval", stats_in)]
 
     # Must be only one value between choices
     checkmate::assert_choice(stats_in_pval_value, c("pval", "pval_counts"))
