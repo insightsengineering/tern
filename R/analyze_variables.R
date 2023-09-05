@@ -458,24 +458,30 @@ a_summary_internal <- function(x,
   }
 
   # Fill in with formatting defaults if needed
-  custom_summary <- summary_custom(
-    type = type,
-    include_pval = compare,
-    stats_custom = .stats,
-    formats_custom = .formats,
-    labels_custom = .labels,
-    indent_mods_custom = .indent_mods
-  )
-  .stats <- custom_summary$stats
-  .formats <- custom_summary$formats
-  .labels <- custom_summary$labels
-  .indent_mods <- custom_summary$indent_mods
+  if (any(c("pval", "pval_counts") %in% .stats)) include_pval <- TRUE
+
+  .stats <- get_stats("analyze_vars", type, stats_in = .stats, add_pval = include_pval)
+  .formats <- get_format_from_stats(.stats, .formats)
+  .labels <- get_label_from_stats(.stats, .labels)
+
+  indent_mods_custom <- .indent_mods
+  .indent_mods <- stats::setNames(rep(0L, length(.stats)), .stats)
+  if (!is.null(indent_mods_custom)) {
+    if (is.null(names(indent_mods_custom)) && length(indent_mods_custom) == 1) {
+      .indent_mods[names(.indent_mods)] <- indent_mods_custom
+    } else {
+      .indent_mods[names(indent_mods_custom)] <- indent_mods_custom
+    }
+  }
+
   x_stats <- x_stats[.stats]
 
   # Check for custom labels from control_analyze_vars
   if (is.numeric(x)) {
+    default_labels <- get_stats("analyze_vars", type, add_pval = include_pval) %>%
+      get_label_from_stats()
     for (i in intersect(.stats, c("mean_ci", "mean_pval", "median_ci", "quantiles"))) {
-      if (!i %in% names(.labels) || .labels[[i]] == summary_custom()$labels[[i]]) {
+      if (!i %in% names(.labels) || .labels[[i]] == default_labels) {
         .labels[[i]] <- attr(x_stats[[i]], "label")
       }
     }
@@ -515,22 +521,6 @@ a_summary_internal <- function(x,
 #' * To use for comparison (with additional p-value statistic), parameter `compare` must be set to `TRUE`.
 #' * Ensure that either all `NA` values are converted to an explicit `NA` level or all `NA` values are left as is.
 #'
-#' @export
-a_summary <- function(x,
-                      .N_col, # nolint
-                      .N_row, # nolint
-                      .var,
-                      .df_row,
-                      .ref_group,
-                      .in_ref_col,
-                      ...) {
-  UseMethod("a_summary", x)
-}
-
-#' @describeIn analyze_variables Formatted analysis function `default` method for non-numeric classes.
-#'
-#' @method a_summary default
-#'
 #' @examples
 #' a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
 #' a_summary(
@@ -550,66 +540,30 @@ a_summary <- function(x,
 #'   .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare = TRUE
 #' )
 #'
-#' @export
-a_summary.default <- function(x,
-                              .N_col, # nolint
-                              .N_row, # nolint
-                              .var = NULL,
-                              .df_row = NULL,
-                              .ref_group = NULL,
-                              .in_ref_col = FALSE,
-                              compare = FALSE,
-                              .stats = summary_custom(type = "counts", include_pval = compare)$stats,
-                              .formats = summary_custom(type = "counts", include_pval = compare)$formats,
-                              .labels = summary_custom(type = "counts", include_pval = compare)$labels,
-                              .indent_mods = summary_custom(type = "counts", include_pval = compare)$indent_mods,
-                              na.rm = TRUE, # nolint
-                              na_level = NA_character_,
-                              ...) {
-  a_summary_internal(
-    x = x,
-    .N_col = .N_col,
-    .N_row = .N_row,
-    .var = .var,
-    .df_row = .df_row,
-    .ref_group = .ref_group,
-    .in_ref_col = .in_ref_col,
-    compare = compare,
-    type = "counts",
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods,
-    na.rm = na.rm,
-    na_level = na_level,
-    ...
-  )
-}
-
-#' @describeIn analyze_variables Formatted analysis function method for `numeric` class.
-#'
-#' @method a_summary numeric
-#'
-#' @examples
 #' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
 #' a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
 #'
 #' @export
-a_summary.numeric <- function(x,
-                              .N_col, # nolint
-                              .N_row, # nolint
-                              .var = NULL,
-                              .df_row = NULL,
-                              .ref_group = NULL,
-                              .in_ref_col = FALSE,
-                              compare = FALSE,
-                              .stats = summary_custom(include_pval = compare)$stats,
-                              .formats = summary_custom(include_pval = compare)$formats,
-                              .labels = summary_custom(include_pval = compare)$labels,
-                              .indent_mods = summary_custom(include_pval = compare)$indent_mods,
-                              na.rm = TRUE, # nolint
-                              na_level = NA_character_,
-                              ...) {
+a_summary <- function(x,
+                      .N_col, # nolint
+                      .N_row, # nolint
+                      .var = NULL,
+                      .df_row = NULL,
+                      .ref_group = NULL,
+                      .in_ref_col = FALSE,
+                      compare = FALSE,
+                      .stats = NULL,
+                      .formats = NULL,
+                      .labels = NULL,
+                      .indent_mods = NULL,
+                      na.rm = TRUE, # nolint
+                      na_level = NA_character_,
+                      ...) {
+  type <- if (is.numeric(x)) {
+    "numeric"
+  } else {
+    "count"
+  }
   a_summary_internal(
     x = x,
     .N_col = .N_col,
@@ -619,7 +573,7 @@ a_summary.numeric <- function(x,
     .ref_group = .ref_group,
     .in_ref_col = .in_ref_col,
     compare = compare,
-    type = "numeric",
+    type = type,
     .stats = .stats,
     .formats = .formats,
     .labels = .labels,

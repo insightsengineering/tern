@@ -98,12 +98,22 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
         ),
         stop(
           "The inserted method_group (", mgi, ")",
-          ifelse(add_typ_to_err, "", paste0(" and type (", typ, ")")),
+          ifelse(add_typ_to_err, "", paste0(" and type (", paste0(typ, collapse = " "), ")")),
           " has no default statistical method."
         )
       )
 
       out <- unique(c(out, out_tmp))
+
+      # Mainly used in "analyze_vars" but it could be necessary elsewhere
+      if (isTRUE(add_pval)) {
+        pval_spec <- if (typ == "counts") {
+          "pval_counts"
+        } else {
+          "pval"
+        }
+        out <- unique(c(out, pval_spec))
+      }
     }
   }
 
@@ -112,22 +122,14 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
     out <- intersect(stats_in, out)
   }
 
-  # Mainly used in "analyze_vars" but it could be necessary elsewhere
-  if (isTRUE(add_pval)) {
-    pval_spec <- if (typ == "counts") {
-      "pval_counts"
-    } else {
-      "pval"
-    }
-    out <- unique(c(out, pval_spec))
-  }
-
   # If intersect did not find matches (and no pval?) -> error
   if (length(out) == 0) {
     stop(
-      "The selected method_groups (", method_groups, ")",
-      ifelse(is.null(type), "", paste0(" and types (", typ, ")")),
-      " does not have the required default statistical methods:\n", stats_in
+      "The selected method_groups (", paste0(method_groups, collapse = " "), ")",
+      ifelse(is.null(type), "", paste0(" and types (",
+                                       paste0(type, collapse = " "), ")")),
+      " does not have the required default statistical methods:\n",
+      paste0(stats_in, collapse = " ")
     )
   }
 
@@ -172,25 +174,19 @@ get_format_from_stats <- function(stats, formats_in = NULL) {
   }
 
   # Extract global defaults
-  default_formats <- tern_default_formats()
-  which_fmt <- match(stats, names(default_formats))
+  which_fmt <- match(stats, names(tern_default_formats))
 
   # Select only needed formats from stats
   ret <- vector("list", length = length(stats)) # Returning a list is simpler
-  ret[!is.na(which_fmt)] <- default_formats[which_fmt[!is.na(which_fmt)]]
+  ret[!is.na(which_fmt)] <- tern_default_formats[which_fmt[!is.na(which_fmt)]]
 
   out <- setNames(ret, stats)
 
   # Modify some with custom formats
   if (!is.null(formats_in)) {
-    fmt_not_aval <- !(names(formats_in) %in% names(out))
-    if (any(fmt_not_aval)) {
-      stop(
-        "The following inserted formats do not have corresponding statitistic:\n",
-        names(formats_in[fmt_not_aval])
-      )
-    }
-    out[names(formats_in)] <- formats_in
+    # Stats is the main
+    common_names <- intersect(names(out) %in% names(formats_in))
+    out[common_names] <- formats_in[common_names]
   }
 
   out
@@ -201,7 +197,7 @@ get_format_from_stats <- function(stats, formats_in = NULL) {
 #' @param formats_in (named `vector`) \cr inserted formats to replace defaults.
 #'
 #' @return
-#' * `get_label_from_stats()` returns a named list of default labels (if present
+#' * `get_label_from_stats()` returns a named character vector of default labels (if present
 #'   otherwise `NULL`).
 #'
 #' @examples
@@ -226,119 +222,98 @@ get_label_from_stats <- function(stats, labels_in = NULL) {
     checkmate::assert_character(labels_in, null.ok = TRUE)
   }
 
-  default_lbl <- tern_default_labels()
-  which_lbl <- match(stats, names(default_lbl))
+  which_lbl <- match(stats, names(tern_default_labels))
 
-  ret <- vector("list", length = length(stats))
-  ret[!is.na(which_lbl)] <- default_lbl[which_lbl[!is.na(which_lbl)]]
+  ret <- vector("character", length = length(stats)) # it needs to be a character vector
+  ret[!is.na(which_lbl)] <- tern_default_labels[which_lbl[!is.na(which_lbl)]]
 
   out <- setNames(ret, stats)
 
   # Modify some with custom labels
   if (!is.null(labels_in)) {
-    lbl_not_aval <- !(names(labels_in) %in% names(out))
-    if (any(lbl_not_aval)) {
-      stop(
-        "The following inserted labels do not have corresponding statitistic:\n",
-        names(labels_in[lbl_not_aval])
-      )
-    }
-    out[names(labels_in)] <- labels_in
+    # Stats is the main
+    common_names <- intersect(names(out) %in% names(labels_in))
+    out[common_names] <- labels_in[common_names]
   }
 
   out
 }
 
-#' @describeIn default_stats_and_formats Function that produce the complete named list
-#'   of default formats for `tern`.
-#'
-#' @return
-#' * `tern_default_formats()` returns a complete named list of default formats for `tern`.
+#' @describeIn default_stats_and_formats Named list of default formats for `tern`.
 #'
 #' @export
-tern_default_formats <- function() {
-  out <- c(
-    fraction = format_fraction_fixed_dp,
-    unique = format_count_fraction_fixed_dp,
-    nonunique = "xx",
-    unique_count = "xx",
-    n = "xx.",
-    count = "xx.",
-    count_fraction = format_count_fraction,
-    count_fraction_fixed_dp = format_count_fraction_fixed_dp,
-    n_blq = "xx.",
-    sum = "xx.x",
-    mean = "xx.x",
-    sd = "xx.x",
-    se = "xx.x",
-    mean_sd = "xx.x (xx.x)",
-    mean_se = "xx.x (xx.x)",
-    mean_ci = "(xx.xx, xx.xx)",
-    mean_sei = "(xx.xx, xx.xx)",
-    mean_sdi = "(xx.xx, xx.xx)",
-    mean_pval = "xx.xx",
-    median = "xx.x",
-    mad = "xx.x",
-    median_ci = "(xx.xx, xx.xx)",
-    quantiles = "xx.x - xx.x",
-    iqr = "xx.x",
-    range = "xx.x - xx.x",
-    min = "xx.x",
-    max = "xx.x",
-    median_range = "xx.x (xx.x - xx.x)",
-    cv = "xx.x",
-    geom_mean = "xx.x",
-    geom_mean_ci = "(xx.xx, xx.xx)",
-    geom_cv = "xx.x",
-    pval = "x.xxxx | (<0.0001)"
-  )
+tern_default_formats <- list(
+  fraction = format_fraction_fixed_dp,
+  unique = format_count_fraction_fixed_dp,
+  nonunique = "xx",
+  unique_count = "xx",
+  n = "xx.",
+  count = "xx.",
+  count_fraction = format_count_fraction,
+  count_fraction_fixed_dp = format_count_fraction_fixed_dp,
+  n_blq = "xx.",
+  sum = "xx.x",
+  mean = "xx.x",
+  sd = "xx.x",
+  se = "xx.x",
+  mean_sd = "xx.x (xx.x)",
+  mean_se = "xx.x (xx.x)",
+  mean_ci = "(xx.xx, xx.xx)",
+  mean_sei = "(xx.xx, xx.xx)",
+  mean_sdi = "(xx.xx, xx.xx)",
+  mean_pval = "xx.xx",
+  median = "xx.x",
+  mad = "xx.x",
+  median_ci = "(xx.xx, xx.xx)",
+  quantiles = "xx.x - xx.x",
+  iqr = "xx.x",
+  range = "xx.x - xx.x",
+  min = "xx.x",
+  max = "xx.x",
+  median_range = "xx.x (xx.x - xx.x)",
+  cv = "xx.x",
+  geom_mean = "xx.x",
+  geom_mean_ci = "(xx.xx, xx.xx)",
+  geom_cv = "xx.x",
+  pval = "x.xxxx | (<0.0001)",
+  pval_counts = "x.xxxx | (<0.0001)"
+)
 
-  # Format is same but label
-  out["pval_counts"] <- out["pval"]
-
-  out
-}
-
-#' @describeIn default_stats_and_formats Function that produce the complete named list
-#'   of default labels for `tern`.
-#'
-#' @return
-#' * `tern_default_labels()` returns a complete named list of default labels for `tern`.
+#' @describeIn default_stats_and_formats `character` vector that contains default labels
+#'   for `tern`.
 #'
 #' @export
-tern_default_labels <- function() {
+tern_default_labels <- c(
   # list of labels -> sorted? xxx it should be not relevant due to match
-  c(
-    unique = "Number of patients with at least one event",
-    nonunique = "Number of events",
-    n = "n",
-    count = "count",
-    count_fraction = "count_fraction",
-    n_blq = "n_blq",
-    sum = "Sum",
-    mean = "Mean",
-    sd = "SD",
-    se = "SE",
-    mean_sd = "Mean (SD)",
-    mean_se = "Mean (SE)",
-    mean_ci = "Mean 95% CI",
-    mean_sei = "Mean -/+ 1xSE",
-    mean_sdi = "Mean -/+ 1xSD",
-    mean_pval = "Mean p-value (H0: mean = 0)",
-    median = "Median",
-    mad = "Median Absolute Deviation",
-    median_ci = "Median 95% CI",
-    quantiles = "25% and 75%-ile",
-    iqr = "IQR",
-    range = "Min - Max",
-    min = "Minimum",
-    max = "Maximum",
-    median_range = "Median (Min - Max)",
-    cv = "CV (%)",
-    geom_mean = "Geometric Mean",
-    geom_mean_ci = "Geometric Mean 95% CI",
-    geom_cv = "CV % Geometric Mean",
-    pval = "p-value (t-test)", # Default for numeric
-    pval_counts = "p-value (chi-squared test)" # Default for counts
-  )
-}
+  unique = "Number of patients with at least one event",
+  nonunique = "Number of events",
+  n = "n",
+  count = "count",
+  count_fraction = "count_fraction",
+  n_blq = "n_blq",
+  sum = "Sum",
+  mean = "Mean",
+  sd = "SD",
+  se = "SE",
+  mean_sd = "Mean (SD)",
+  mean_se = "Mean (SE)",
+  mean_ci = "Mean 95% CI",
+  mean_sei = "Mean -/+ 1xSE",
+  mean_sdi = "Mean -/+ 1xSD",
+  mean_pval = "Mean p-value (H0: mean = 0)",
+  median = "Median",
+  mad = "Median Absolute Deviation",
+  median_ci = "Median 95% CI",
+  quantiles = "25% and 75%-ile",
+  iqr = "IQR",
+  range = "Min - Max",
+  min = "Minimum",
+  max = "Maximum",
+  median_range = "Median (Min - Max)",
+  cv = "CV (%)",
+  geom_mean = "Geometric Mean",
+  geom_mean_ci = "Geometric Mean 95% CI",
+  geom_cv = "CV % Geometric Mean",
+  pval = "p-value (t-test)", # Default for numeric
+  pval_counts = "p-value (chi-squared test)" # Default for counts
+)
