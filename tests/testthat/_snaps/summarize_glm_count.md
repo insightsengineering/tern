@@ -68,10 +68,10 @@
     Code
       res
     Output
-                         rate asymp.LCL asymp.UCL            ARM
-      A: Drug X      9.029759  6.295928  12.95068      A: Drug X
-      B: Placebo     9.029759  6.295928  12.95068     B: Placebo
-      C: Combination 9.029759  6.295928  12.95068 C: Combination
+                     rate asymp.LCL asymp.UCL            ARM
+      A: Drug X      3.07  2.202774  4.278651      A: Drug X
+      B: Placebo     3.07  2.202774  4.278651     B: Placebo
+      C: Combination 3.07  2.202774  4.278651 C: Combination
 
 # s_glm_count works with healthy input
 
@@ -82,12 +82,12 @@
       [1] 73
       
       $rate
-      [1] 10.20612
+      [1] 3.486005
       attr(,"label")
       [1] "Adjusted Rate"
       
       $rate_ci
-      [1]  5.627535 18.509855
+      [1] 1.983340 6.127155
       attr(,"label")
       [1] "95% CI"
       
@@ -116,12 +116,12 @@
       [1] 73
       
       $rate
-      [1] 10.20612
+      [1] 3.486005
       attr(,"label")
       [1] "Adjusted Rate"
       
       $rate_ci
-      [1]  5.627535 18.509855
+      [1] 1.983340 6.127155
       attr(,"label")
       [1] "95% CI"
       
