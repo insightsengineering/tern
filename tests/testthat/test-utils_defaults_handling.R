@@ -1,5 +1,3 @@
-testthat::context("Utilities for list of defaults stats/formats/labels")
-
 testthat::test_that("get_stats works as expected for defaults", {
   # Defaults are not changing
   res <- testthat::expect_silent(get_stats("count_occurrences"))
@@ -17,7 +15,7 @@ testthat::test_that("get_stats works as expected for defaults", {
 
   testthat::expect_error(
     get_stats("dont_exist"),
-    regexp = "The inserted method_group \\(dont_exist\\) and type \\(numeric\\) has no default statistical method."
+    regexp = "The inserted method_group \\(dont_exist\\) has no default statistical method."
   )
 
   # Type affects only counts and numeric for analyze_vars
@@ -46,6 +44,22 @@ testthat::test_that("get_stats works well with pval", {
   # pval is added correctly
   testthat::expect_contains(get_stats("analyze_vars", type = "numeric", add_pval = TRUE), "pval")
   testthat::expect_contains(get_stats("analyze_vars", type = "counts", add_pval = TRUE), "pval_counts")
+  testthat::expect_identical(get_stats("count_occurrences", type = "numeric", add_pval = TRUE),
+                             get_stats("count_occurrences", type = NULL, add_pval = TRUE))
+  testthat::expect_contains(get_stats("count_occurrences", type = NULL, add_pval = TRUE), "pval")
+  testthat::expect_contains(get_stats("count_occurrences", type = "counts", add_pval = TRUE), "pval_counts")
+
+  # Errors
+  testthat::expect_error(get_stats("analyze_vars", type = "counts", stats_in = c("pval", "pval_counts")))
+  testthat::expect_error(get_stats("analyze_vars", type = c("counts", "numeric"), stats_in = c("pval")),
+                         "Only one type*")
+  testthat::expect_error(get_stats("analyze_vars", type = "counts", stats_in = c("n", "pval")),
+                         "Inserted p-value \\(pval\\) is not valid for type counts*")
+  testthat::expect_error(get_stats("analyze_vars", type = "numeric", stats_in = c("n", "pval_counts")),
+                         "Inserted p-value \\(pval_counts\\) is not valid for type numeric*")
+
+  testthat::expect_error(get_stats("analyze_vars", type = c("counts", "numeric"), add_pval = TRUE),
+                         "Only one type is allowed when add_pval = TRUE.")
 })
 
 testthat::test_that("get_stats works as expected for selection of stats", {
@@ -86,7 +100,7 @@ testthat::test_that("get_format_from_stats works as expected", {
     stats_to_do
   )
 
-  # character vector is the same
+  # character vector is the same -> default have functions, so it is casted to list
   stats_to_do <- c("not_a_stat" = "xx", "mean" = "xx")
   testthat::expect_identical(
     get_format_from_stats(names(stats_to_do),
@@ -94,7 +108,7 @@ testthat::test_that("get_format_from_stats works as expected", {
         "catch_me" = "xx"
       )
     ),
-    stats_to_do
+    as.list(stats_to_do)
   )
 })
 

@@ -82,10 +82,14 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
     for (typ in type_loop) {
       add_typ_to_err <- FALSE
       mgi_fin <- mgi
+
+      # different types
       if (mgi %in% c("analyze_vars")) {
         mgi_fin <- paste0(mgi, "_", typ)
         add_typ_to_err <- TRUE
       }
+
+      # Main switcher
       out_tmp <- switch(mgi_fin,
         "count_occurrences" = c("count", "count_fraction_fixed_dp", "fraction"),
         "summarize_num_patients" = c("unique", "nonunique", "unique_count"),
@@ -98,22 +102,46 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
         ),
         stop(
           "The inserted method_group (", mgi, ")",
-          ifelse(add_typ_to_err, "", paste0(" and type (", paste0(typ, collapse = " "), ")")),
+          ifelse(add_typ_to_err, paste0(" and type (", paste0(typ, collapse = " "), ")"), ""),
           " has no default statistical method."
         )
       )
-
       out <- unique(c(out, out_tmp))
-
     }
+  }
+
+  # If you added pval to the stats_in you certainly want it
+  if (!is.null(stats_in) && any(grepl("pval", stats_in))) {
+    stats_in_pval_value <- stats_in[grepl("pval", stats_in)]
+
+    # Must be only one value between choices
+    checkmate::assert_choice(stats_in_pval_value, c("pval", "pval_counts"))
+
+    if (length(type) > 1) {
+      stop("Only one type is allowed when inserting pval in stats_in.")
+    }
+
+    # Mismatch with counts and numeric
+    if ("counts" %in% type && stats_in_pval_value != "pval_counts" ||
+        "numeric" %in% type && stats_in_pval_value != "pval") {
+      stop("Inserted p-value (", stats_in_pval_value, ") is not valid for type ",
+           type, ". Use the other from pval pval_counts.")
+    }
+
+    # Lets add it even if present (thanks to unique)
+    add_pval <- TRUE
   }
 
   # Mainly used in "analyze_vars" but it could be necessary elsewhere
   if (isTRUE(add_pval)) {
-    if ("counts" %in% type) {
-      out <- unique(c(out, "pval_counts"))
-    }else{
-      out <- unique(c(out, "pval"))
+    if (length(type) > 1) {
+      stop("Only one type is allowed when add_pval = TRUE.")
+    }
+
+    if (!is.null(type) && "counts" %in% type) {
+        out <- unique(c(out, "pval_counts"))
+    } else {
+        out <- unique(c(out, "pval"))
     }
   }
 
