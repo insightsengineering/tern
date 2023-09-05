@@ -76,7 +76,6 @@ summary_custom <- function(type = "numeric",
                            formats_custom = NULL,
                            labels_custom = NULL,
                            indent_mods_custom = NULL) {
-
   .stats <- get_stats("analyze_vars", type, stats_custom, include_pval)
   .formats <- get_format_from_stats(.stats, type, formats_custom)
   .labels <- get_label_from_stats(.stats, type, labels_custom)
