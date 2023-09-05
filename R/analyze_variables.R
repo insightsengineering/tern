@@ -440,9 +440,9 @@ a_summary_internal <- function(x,
                                compare,
                                type,
                                .stats,
-                               .formats,
-                               .labels,
-                               .indent_mods,
+                               .formats = NULL,
+                               .labels = NULL,
+                               .indent_mods = NULL,
                                na.rm, # nolint
                                na_level,
                                ...) {
@@ -458,9 +458,9 @@ a_summary_internal <- function(x,
   }
 
   # Fill in with formatting defaults if needed
-  if (any(c("pval", "pval_counts") %in% .stats)) include_pval <- TRUE
+  if (any(c("pval", "pval_counts") %in% .stats)) compare <- TRUE
 
-  .stats <- get_stats("analyze_vars", type, stats_in = .stats, add_pval = include_pval)
+  .stats <- get_stats("analyze_vars", type, stats_in = .stats, add_pval = compare)
   .formats <- get_format_from_stats(.stats, .formats)
   .labels <- get_label_from_stats(.stats, .labels)
 
@@ -478,10 +478,10 @@ a_summary_internal <- function(x,
 
   # Check for custom labels from control_analyze_vars
   if (is.numeric(x)) {
-    default_labels <- get_stats("analyze_vars", type, add_pval = include_pval) %>%
+    default_labels <- get_stats("analyze_vars", type, add_pval = compare) %>%
       get_label_from_stats()
     for (i in intersect(.stats, c("mean_ci", "mean_pval", "median_ci", "quantiles"))) {
-      if (!i %in% names(.labels) || .labels[[i]] == default_labels) {
+      if (!i %in% names(.labels) || .labels[[i]] == default_labels[[i]]) {
         .labels[[i]] <- attr(x_stats[[i]], "label")
       }
     }
@@ -562,7 +562,7 @@ a_summary <- function(x,
   type <- if (is.numeric(x)) {
     "numeric"
   } else {
-    "count"
+    "counts"
   }
   a_summary_internal(
     x = x,

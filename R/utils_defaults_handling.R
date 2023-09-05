@@ -185,7 +185,7 @@ get_format_from_stats <- function(stats, formats_in = NULL) {
   # Modify some with custom formats
   if (!is.null(formats_in)) {
     # Stats is the main
-    common_names <- intersect(names(out) %in% names(formats_in))
+    common_names <- intersect(names(out), names(formats_in))
     out[common_names] <- formats_in[common_names]
   }
 
@@ -232,7 +232,7 @@ get_label_from_stats <- function(stats, labels_in = NULL) {
   # Modify some with custom labels
   if (!is.null(labels_in)) {
     # Stats is the main
-    common_names <- intersect(names(out) %in% names(labels_in))
+    common_names <- intersect(names(out), names(labels_in))
     out[common_names] <- labels_in[common_names]
   }
 
