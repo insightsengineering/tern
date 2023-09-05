@@ -9,6 +9,7 @@
 
 ### Miscellaneous
 * Started deprecation of `summary_custom()` and `a_summary()` as a `S3` method.
+* Statistical method for finding `p-value` in the discrete case is now termed `pval_counts`.
 
 # tern 0.9.0
 ### New Features
