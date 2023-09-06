@@ -18,7 +18,7 @@ NULL
 #'
 #' @examples
 #' summary_formats()
-#' summary_formats(type = "count", include_pval = TRUE)
+#' summary_formats(type = "counts", include_pval = TRUE)
 #'
 #' @export
 summary_formats <- function(type = "numeric", include_pval = FALSE) {
@@ -33,7 +33,7 @@ summary_formats <- function(type = "numeric", include_pval = FALSE) {
 #'
 #' @examples
 #' summary_labels()
-#' summary_labels(type = "count", include_pval = TRUE)
+#' summary_labels(type = "counts", include_pval = TRUE)
 #'
 #' @export
 summary_labels <- function(type = "numeric", include_pval = FALSE) {
