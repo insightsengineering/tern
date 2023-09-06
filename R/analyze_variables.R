@@ -446,6 +446,18 @@ a_summary_internal <- function(x,
                                na.rm, # nolint
                                na_level,
                                ...) {
+  if (is.numeric(x)) {
+    type <- "numeric"
+    if (!is.null(.stats) && any(grepl("^pval", .stats))) {
+      .stats[grepl("^pval", .stats)] <- "pval" # tmp fix xxx
+    }
+  } else {
+    type <- "counts"
+    if (!is.null(.stats) && any(grepl("^pval", .stats))) {
+      .stats[grepl("^pval", .stats)] <- "pval_counts" # tmp fix xxx
+    }
+  }
+
   # If one col has NA vals, must add NA row to other cols (using placeholder lvl `fill-na-level`)
   if (any(is.na(.df_row[[.var]])) && !any(is.na(x)) && !na.rm) levels(x) <- c(levels(x), "fill-na-level")
 
@@ -557,11 +569,6 @@ a_summary <- function(x,
                       na.rm = TRUE, # nolint
                       na_level = NA_character_,
                       ...) {
-  type <- if (is.numeric(x)) {
-    "numeric"
-  } else {
-    "counts"
-  }
   a_summary_internal(
     x = x,
     .N_col = .N_col,

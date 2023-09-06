@@ -379,7 +379,7 @@ compare_vars <- function(lyt,
                          .formats = NULL,
                          .labels = NULL,
                          .indent_mods = NULL) {
-  .stats <- .stats[!grepl("pval", .stats)] # tmp fix xxx
+
   extra_args <- list(.stats = .stats, na.rm = na.rm, na_level = na_level, compare = TRUE, ...)
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
