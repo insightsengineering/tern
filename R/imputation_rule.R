@@ -10,8 +10,9 @@
 #'   rule or `"1/2"` to implement 1/2 imputation rule.
 #' @param post (`flag`)\cr whether the data corresponds to a post-dose time-point (defaults to `FALSE`).
 #'   This parameter is only used when `imp_rule` is set to `"1/3"`.
-#'
-#' @note `AVALCAT1` must be present in `df`.
+#' @param avalcat_var (`character`)\cr name of variable that indicates whether a row in `df` corresponds
+#'   to an analysis value in category `"BLQ"`, `"LTR"`, `"<PCLLOQ"`, or none of the above
+#'   (defaults to `"AVALCAT1"`). Variable `avalcat_var` must be present in `df`.
 #'
 #' @return A `list` containing statistic value (`val`) and NA level (`na_level`) that should be displayed
 #'   according to the specified imputation rule.
@@ -31,10 +32,10 @@
 #' imputation_rule(df, x_stats, "mean", "1/2")
 #'
 #' @export
-imputation_rule <- function(df, x_stats, stat, imp_rule, post = FALSE) {
-  checkmate::assert_choice("AVALCAT1", names(df))
+imputation_rule <- function(df, x_stats, stat, imp_rule, post = FALSE, avalcat_var = "AVALCAT1") {
+  checkmate::assert_choice(avalcat_var, names(df))
   checkmate::assert_choice(imp_rule, c("1/3", "1/2"))
-  n_blq <- sum(df$AVALCAT1 %in% c("BLQ", "LTR", "<PCLLOQ"))
+  n_blq <- sum(df[[avalcat_var]] %in% c("BLQ", "LTR", "<PCLLOQ"))
   ltr_blq_ratio <- n_blq / max(1, nrow(df))
 
   # defaults

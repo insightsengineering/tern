@@ -4,7 +4,14 @@
 \alias{imputation_rule}
 \title{Apply 1/3 or 1/2 Imputation Rule to Data}
 \usage{
-imputation_rule(df, x_stats, stat, imp_rule, post = FALSE)
+imputation_rule(
+  df,
+  x_stats,
+  stat,
+  imp_rule,
+  post = FALSE,
+  avalcat_var = "AVALCAT1"
+)
 }
 \arguments{
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
@@ -19,6 +26,10 @@ rule or \code{"1/2"} to implement 1/2 imputation rule.}
 
 \item{post}{(\code{flag})\cr whether the data corresponds to a post-dose time-point (defaults to \code{FALSE}).
 This parameter is only used when \code{imp_rule} is set to \code{"1/3"}.}
+
+\item{avalcat_var}{(\code{character})\cr name of variable that indicates whether a row in \code{df} corresponds
+to an analysis value in category \code{"BLQ"}, \code{"LTR"}, \code{"<PCLLOQ"}, or none of the above
+(defaults to \code{"AVALCAT1"}). Variable \code{avalcat_var} must be present in \code{df}.}
 }
 \value{
 A \code{list} containing statistic value (\code{val}) and NA level (\code{na_level}) that should be displayed
@@ -26,9 +37,6 @@ according to the specified imputation rule.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\note{
-\code{AVALCAT1} must be present in \code{df}.
 }
 \examples{
 set.seed(1)
