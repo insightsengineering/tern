@@ -1,8 +1,8 @@
 # tern 0.9.0.9000
 ### New Features
 * Added vectors of default formats and labels in `tern_default_formats` and `tern_default_labels`, respectively.
-* Added getter for statistical method groups with `get_stats`.
-* Added getters for formats `get_format_from_stats()` and labels `get_labels_from_stats()`.
+* Added utility to get methods from statistical method groups with `get_stats`.
+* Added utility to get formats `get_format_from_stats()` and labels `get_labels_from_stats()`.
 
 ### Enhancements
 * Grouping of valid methods names and their relative default formats and labels into new source file `utils_defaults_handling.R`.
