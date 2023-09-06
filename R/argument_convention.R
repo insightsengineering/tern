@@ -6,6 +6,8 @@
 #' @param ... additional arguments for the lower level functions.
 #' @param .aligns (`character`)\cr alignment for table contents (not including labels). When `NULL`, `"center"`
 #'   is applied. See [formatters::list_valid_aligns()] for a list of all currently supported alignments.
+#' @param .all_col_counts (`vector` of `integer`)\cr each value represents a global count for a column. Values are
+#'   taken from `alt_counts_df` if specified (see [rtables::build_table()]).
 #' @param .df_row (`data.frame`)\cr data frame across all of the columns for the given row split.
 #' @param .in_ref_col (`logical`)\cr `TRUE` when working with the reference level, `FALSE` otherwise.
 #' @param .N_col (`integer`)\cr column-wise N (column count) for the full column being analyzed that is typically
@@ -52,6 +54,9 @@
 #' @param newpage (`flag`)\cr whether the plot should be drawn on a new page.
 #'   Only considered if `draw = TRUE` is used.
 #' @param prune_zero_rows (`flag`)\cr whether to prune all zero rows.
+#' @param riskdiff (`flag`)\cr whether a risk difference column is present. When set to `TRUE`, [add_riskdiff()] must be
+#'   used as `split_fun` in the prior column split of the table layout, specifying which columns should be compared.
+#'   See [stat_propdiff_ci()] for details on risk difference calculation.
 #' @param rsp (`logical`)\cr whether each subject is a responder or not.
 #' @param show_labels (`string`)\cr label visibility: one of "default", "visible" and "hidden".
 #' @param section_div (`string`)\cr string which should be repeated as a section divider after each group

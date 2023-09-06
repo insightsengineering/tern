@@ -145,7 +145,10 @@ summarize_num_patients <- function(lyt,
                                    ),
                                    indent_mod = lifecycle::deprecated(),
                                    .indent_mods = 0L,
+                                   riskdiff = FALSE,
                                    ...) {
+  checkmate::assert_flag(riskdiff)
+
   if (lifecycle::is_present(indent_mod)) {
     lifecycle::deprecate_warn("0.8.2", "summarize_num_patients(indent_mod)", "summarize_num_patients(.indent_mods)")
     .indent_mods <- indent_mod
@@ -161,11 +164,22 @@ summarize_num_patients <- function(lyt,
     .labels = .labels
   )
 
+  extra_args <- if (isFALSE(riskdiff)) {
+    list(...)
+  } else {
+    list(
+      afun = list("s_num_patients_content" = cfun),
+      .stats = .stats,
+      .indent_mods = .indent_mods,
+      s_args = list(...)
+    )
+  }
+
   summarize_row_groups(
     lyt = lyt,
     var = var,
-    cfun = cfun,
-    extra_args = list(...),
+    cfun = ifelse(isFALSE(riskdiff), cfun, afun_riskdiff),
+    extra_args = extra_args,
     indent_mod = .indent_mods
   )
 }
@@ -213,7 +227,10 @@ analyze_num_patients <- function(lyt,
                                  show_labels = c("default", "visible", "hidden"),
                                  indent_mod = lifecycle::deprecated(),
                                  .indent_mods = 0L,
+                                 riskdiff = FALSE,
                                  ...) {
+  checkmate::assert_flag(riskdiff)
+
   if (lifecycle::is_present(indent_mod)) {
     lifecycle::deprecate_warn("0.8.2", "analyze_num_patients(indent_mod)", "analyze_num_patients(.indent_mods)")
     .indent_mods <- indent_mod
@@ -229,12 +246,23 @@ analyze_num_patients <- function(lyt,
     .labels = .labels
   )
 
+  extra_args <- if (isFALSE(riskdiff)) {
+    list(...)
+  } else {
+    list(
+      afun = list("s_num_patients_content" = afun),
+      .stats = .stats,
+      .indent_mods = .indent_mods,
+      s_args = list(...)
+    )
+  }
+
   analyze(
-    afun = afun,
+    afun = ifelse(isFALSE(riskdiff), afun, afun_riskdiff),
     lyt = lyt,
     vars = vars,
     nested = nested,
-    extra_args = list(...),
+    extra_args = extra_args,
     show_labels = show_labels,
     indent_mod = .indent_mods
   )

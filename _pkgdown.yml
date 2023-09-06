@@ -12,10 +12,10 @@ navbar:
     reports:
       text: Reports
       menu:
-      - text: Coverage report
-        href: coverage-report/
-      - text: Unit test report
-        href: unit-test-report/
+        - text: Coverage report
+          href: coverage-report/
+        - text: Unit test report
+          href: unit-test-report/
     github:
       icon: fa-github
       href: https://github.com/insightsengineering/tern
@@ -102,6 +102,7 @@ reference:
     desc: These functions help to work with the `rtables` package and may be
           moved there later.
     contents:
+      - add_riskdiff
       - add_rowcounts
       - append_varlabels
       - starts_with("as.rtable")

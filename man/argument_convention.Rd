@@ -9,6 +9,9 @@
 \item{.aligns}{(\code{character})\cr alignment for table contents (not including labels). When \code{NULL}, \code{"center"}
 is applied. See \code{\link[formatters:list_formats]{formatters::list_valid_aligns()}} for a list of all currently supported alignments.}
 
+\item{.all_col_counts}{(\code{vector} of \code{integer})\cr each value represents a global count for a column. Values are
+taken from \code{alt_counts_df} if specified (see \code{\link[rtables:build_table]{rtables::build_table()}}).}
+
 \item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
@@ -85,6 +88,10 @@ underneath analyses, which is not allowed.}
 Only considered if \code{draw = TRUE} is used.}
 
 \item{prune_zero_rows}{(\code{flag})\cr whether to prune all zero rows.}
+
+\item{riskdiff}{(\code{flag})\cr whether a risk difference column is present. When set to \code{TRUE}, \code{\link[=add_riskdiff]{add_riskdiff()}} must be
+used as \code{split_fun} in the prior column split of the table layout, specifying which columns should be compared.
+See \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} for details on risk difference calculation.}
 
 \item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
 

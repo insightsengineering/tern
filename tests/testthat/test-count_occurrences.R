@@ -116,3 +116,44 @@ testthat::test_that("count_occurrences functions as expected with label row spec
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("count_occurrences works as expected with risk difference column", {
+  # One statistic
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+    count_occurrences(
+      vars = "AEDECOD",
+      riskdiff = TRUE
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # Multiple statistics, different id var
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+    count_occurrences(
+      vars = "AEDECOD",
+      riskdiff = TRUE,
+      .stats = c("count", "count_fraction", "fraction"),
+      id = "SITEID"
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # Nested column splits
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("SEX") %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+    count_occurrences(
+      vars = "AEDECOD",
+      riskdiff = TRUE
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
