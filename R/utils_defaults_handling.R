@@ -132,6 +132,11 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
     add_pval <- TRUE
   }
 
+  # Filtering for stats_in (character vector)
+  if (!is.null(stats_in)) {
+    out <- intersect(stats_in, out) # It orders them too
+  }
+
   # Mainly used in "analyze_vars" but it could be necessary elsewhere
   if (isTRUE(add_pval)) {
     if (length(type) > 1) {
@@ -139,15 +144,10 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
     }
 
     if (!is.null(type) && "counts" %in% type) {
-        out <- unique(c(out, "pval_counts"))
+      out <- unique(c(out, "pval_counts"))
     } else {
-        out <- unique(c(out, "pval"))
+      out <- unique(c(out, "pval"))
     }
-  }
-
-  # Filtering for stats_in (character vector)
-  if (!is.null(stats_in)) {
-    out <- intersect(stats_in, out) # It orders them too
   }
 
   # If intersect did not find matches (and no pval?) -> error
