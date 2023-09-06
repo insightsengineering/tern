@@ -8,8 +8,6 @@
 \alias{s_summary.character}
 \alias{s_summary.logical}
 \alias{a_summary}
-\alias{a_summary.default}
-\alias{a_summary.numeric}
 \alias{analyze_vars}
 \alias{summarize_vars}
 \title{Analyze Variables}
@@ -56,9 +54,7 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
   ...
 )
 
-a_summary(x, .N_col, .N_row, .var, .df_row, .ref_group, .in_ref_col, ...)
-
-\method{a_summary}{default}(
+a_summary(
   x,
   .N_col,
   .N_row,
@@ -67,28 +63,10 @@ a_summary(x, .N_col, .N_row, .var, .df_row, .ref_group, .in_ref_col, ...)
   .ref_group = NULL,
   .in_ref_col = FALSE,
   compare = FALSE,
-  .stats = summary_custom(type = "counts", include_pval = compare)$stats,
-  .formats = summary_custom(type = "counts", include_pval = compare)$formats,
-  .labels = summary_custom(type = "counts", include_pval = compare)$labels,
-  .indent_mods = summary_custom(type = "counts", include_pval = compare)$indent_mods,
-  na.rm = TRUE,
-  na_level = NA_character_,
-  ...
-)
-
-\method{a_summary}{numeric}(
-  x,
-  .N_col,
-  .N_row,
-  .var = NULL,
-  .df_row = NULL,
-  .ref_group = NULL,
-  .in_ref_col = FALSE,
-  compare = FALSE,
-  .stats = summary_custom(include_pval = compare)$stats,
-  .formats = summary_custom(include_pval = compare)$formats,
-  .labels = summary_custom(include_pval = compare)$labels,
-  .indent_mods = summary_custom(include_pval = compare)$indent_mods,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL,
   na.rm = TRUE,
   na_level = NA_character_,
   ...
@@ -280,10 +258,6 @@ conversion to factor (with a warning) and then forwards to the method for factor
 
 \item \code{a_summary()}: Formatted analysis function which is used as \code{afun} in \code{analyze_vars()} and
 \code{compare_vars()} and as \code{cfun} in \code{summarize_colvars()}.
-
-\item \code{a_summary(default)}: Formatted analysis function \code{default} method for non-numeric classes.
-
-\item \code{a_summary(numeric)}: Formatted analysis function method for \code{numeric} class.
 
 \item \code{analyze_vars()}: Layout-creating function which can take statistics function arguments
 and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.

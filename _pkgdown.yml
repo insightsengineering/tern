@@ -67,10 +67,10 @@ reference:
   - title: Analysis Helper Functions
     desc: These functions are useful in defining an analysis.
     contents:
+      - default_stats_and_formats
       - starts_with("h_")
       - starts_with("or_")
       - starts_with("prop_")
-      - summary_stats
       - -starts_with("h_col_")
       - -h_content_first_row
       - -h_data_plot
@@ -180,3 +180,4 @@ reference:
     contents:
       - starts_with("create_")
       - summarize_vars
+      - summary_stats

@@ -22,7 +22,7 @@
       res
     Output
       [1] "n"              "count"          "count_fraction" "n_blq"         
-      [5] "pval"          
+      [5] "pval_counts"   
 
 ---
 
@@ -78,7 +78,7 @@
       $n_blq
       [1] 0
       
-      $pval
+      $pval_counts
       [1] 0.7659283
       
 

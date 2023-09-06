@@ -155,6 +155,7 @@ Collate:
     'survival_timepoint.R'
     'utils.R'
     'utils_checkmate.R'
+    'utils_defaults_handling.R'
     'utils_factor.R'
     'utils_grid.R'
     'utils_rtables.R'
