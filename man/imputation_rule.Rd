@@ -10,7 +10,7 @@ imputation_rule(
   stat,
   imp_rule,
   post = FALSE,
-  avalcat_var = "AVALCAT1"
+  avalcat_flagvar = "FLAGSUM"
 )
 }
 \arguments{
@@ -27,9 +27,9 @@ rule or \code{"1/2"} to implement 1/2 imputation rule.}
 \item{post}{(\code{flag})\cr whether the data corresponds to a post-dose time-point (defaults to \code{FALSE}).
 This parameter is only used when \code{imp_rule} is set to \code{"1/3"}.}
 
-\item{avalcat_var}{(\code{character})\cr name of variable that indicates whether a row in \code{df} corresponds
-to an analysis value in category \code{"BLQ"}, \code{"LTR"}, \code{"<PCLLOQ"}, or none of the above
-(defaults to \code{"AVALCAT1"}). Variable \code{avalcat_var} must be present in \code{df}.}
+\item{avalcat_flagvar}{(\code{character})\cr name of variable that indicates whether or not a row in \code{df} is
+flagged as \code{"BLQ"}, \code{"LTR"}, \code{"<PCLLOQ"}, or similar (defaults to \code{"FLAGSUM"}). Variable
+\code{avalcat_flagvar} must be present in \code{df}.}
 }
 \value{
 A \code{list} containing statistic value (\code{val}) and NA level (\code{na_level}) that should be displayed
@@ -44,6 +44,7 @@ df <- data.frame(
   AVAL = runif(50, 0, 1),
   AVALCAT1 = sample(c(1, "BLQ"), 50, replace = TRUE)
 )
+df$FLAGSUM <- df$AVALCAT1 == "BLQ"
 x_stats <- s_summary(df$AVAL)
 imputation_rule(df, x_stats, "max", "1/3")
 imputation_rule(df, x_stats, "geom_mean", "1/3")

@@ -280,6 +280,7 @@ testthat::test_that("analyze_vars_in_cols works with imputation rule", {
     VISIT = with_label(as.factor(rep(c(rep("Day 1", 5), rep("Day 2", 4)), 18)), "Visit"),
     NFRLT = with_label(as.factor(rep(c(0, seq(0, 42, 6)), 18)), "Nominal Time")
   )
+  df$FLAGSUM <- df$AVALCAT1 == "BLQ"
 
   # 1/3 imputation rule
   lyt <- basic_table() %>%

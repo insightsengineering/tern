@@ -10,9 +10,9 @@
 #'   rule or `"1/2"` to implement 1/2 imputation rule.
 #' @param post (`flag`)\cr whether the data corresponds to a post-dose time-point (defaults to `FALSE`).
 #'   This parameter is only used when `imp_rule` is set to `"1/3"`.
-#' @param avalcat_var (`character`)\cr name of variable that indicates whether a row in `df` corresponds
-#'   to an analysis value in category `"BLQ"`, `"LTR"`, `"<PCLLOQ"`, or none of the above
-#'   (defaults to `"AVALCAT1"`). Variable `avalcat_var` must be present in `df`.
+#' @param avalcat_flagvar (`character`)\cr name of variable that indicates whether or not a row in `df` is
+#'   flagged as `"BLQ"`, `"LTR"`, `"<PCLLOQ"`, or similar (defaults to `"FLAGSUM"`). Variable
+#'   `avalcat_flagvar` must be present in `df`.
 #'
 #' @return A `list` containing statistic value (`val`) and NA level (`na_level`) that should be displayed
 #'   according to the specified imputation rule.
@@ -26,17 +26,18 @@
 #'   AVAL = runif(50, 0, 1),
 #'   AVALCAT1 = sample(c(1, "BLQ"), 50, replace = TRUE)
 #' )
+#' df$FLAGSUM <- df$AVALCAT1 == "BLQ"
 #' x_stats <- s_summary(df$AVAL)
 #' imputation_rule(df, x_stats, "max", "1/3")
 #' imputation_rule(df, x_stats, "geom_mean", "1/3")
 #' imputation_rule(df, x_stats, "mean", "1/2")
 #'
 #' @export
-imputation_rule <- function(df, x_stats, stat, imp_rule, post = FALSE, avalcat_var = "AVALCAT1") {
-  checkmate::assert_choice(avalcat_var, names(df))
+imputation_rule <- function(df, x_stats, stat, imp_rule, post = FALSE, avalcat_flagvar = "FLAGSUM") {
+  checkmate::assert_choice(avalcat_flagvar, names(df))
   checkmate::assert_choice(imp_rule, c("1/3", "1/2"))
-  n_blq <- sum(df[[avalcat_var]] %in% c("BLQ", "LTR", "<PCLLOQ"))
-  ltr_blq_ratio <- n_blq / max(1, nrow(df))
+  flagsum <- sum(df[[avalcat_flagvar]])
+  flagsum_ratio <- flagsum / max(1, nrow(df))
 
   # defaults
   val <- x_stats[[stat]]
@@ -44,13 +45,13 @@ imputation_rule <- function(df, x_stats, stat, imp_rule, post = FALSE, avalcat_v
 
   if (imp_rule == "1/3") {
     if (!post && stat == "geom_mean") val <- NA # 1/3_pre_LT, 1/3_pre_GT
-    if (ltr_blq_ratio > 1 / 3) {
+    if (flagsum_ratio > 1 / 3) {
       if (stat != "geom_mean") na_level <- "ND" # 1/3_pre_GT, 1/3_post_GT
       if (!post && !stat %in% c("median", "max")) val <- NA # 1/3_pre_GT
       if (post && !stat %in% c("median", "max", "geom_mean")) val <- NA # 1/3_post_GT
     }
   } else if (imp_rule == "1/2") {
-    if (ltr_blq_ratio > 1 / 2 && !stat == "max") {
+    if (flagsum_ratio > 1 / 2 && !stat == "max") {
       val <- NA # 1/2_GT
       na_level <- "ND" # 1/2_GT
     }
