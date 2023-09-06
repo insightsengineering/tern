@@ -123,9 +123,11 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
 
     # Mismatch with counts and numeric
     if ("counts" %in% type && stats_in_pval_value != "pval_counts" ||
-        "numeric" %in% type && stats_in_pval_value != "pval") {
-      stop("Inserted p-value (", stats_in_pval_value, ") is not valid for type ",
-           type, ". Use the other from pval pval_counts.")
+      "numeric" %in% type && stats_in_pval_value != "pval") {
+      stop(
+        "Inserted p-value (", stats_in_pval_value, ") is not valid for type ",
+        type, ". Use the other from pval pval_counts."
+      )
     }
 
     # Lets add it even if present (thanks to unique)
@@ -154,8 +156,10 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
   if (length(out) == 0) {
     stop(
       "The selected method_groups (", paste0(method_groups, collapse = " "), ")",
-      ifelse(is.null(type), "", paste0(" and types (",
-                                       paste0(type, collapse = " "), ")")),
+      ifelse(is.null(type), "", paste0(
+        " and types (",
+        paste0(type, collapse = " "), ")"
+      )),
       " does not have the required default statistical methods:\n",
       paste0(stats_in, collapse = " ")
     )
