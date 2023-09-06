@@ -44,22 +44,32 @@ testthat::test_that("get_stats works well with pval", {
   # pval is added correctly
   testthat::expect_contains(get_stats("analyze_vars", type = "numeric", add_pval = TRUE), "pval")
   testthat::expect_contains(get_stats("analyze_vars", type = "counts", add_pval = TRUE), "pval_counts")
-  testthat::expect_identical(get_stats("count_occurrences", type = "numeric", add_pval = TRUE),
-                             get_stats("count_occurrences", type = NULL, add_pval = TRUE))
+  testthat::expect_identical(
+    get_stats("count_occurrences", type = "numeric", add_pval = TRUE),
+    get_stats("count_occurrences", type = NULL, add_pval = TRUE)
+  )
   testthat::expect_contains(get_stats("count_occurrences", type = NULL, add_pval = TRUE), "pval")
   testthat::expect_contains(get_stats("count_occurrences", type = "counts", add_pval = TRUE), "pval_counts")
 
   # Errors
   testthat::expect_error(get_stats("analyze_vars", type = "counts", stats_in = c("pval", "pval_counts")))
-  testthat::expect_error(get_stats("analyze_vars", type = c("counts", "numeric"), stats_in = c("pval")),
-                         "Only one type*")
-  testthat::expect_error(get_stats("analyze_vars", type = "counts", stats_in = c("n", "pval")),
-                         "Inserted p-value \\(pval\\) is not valid for type counts*")
-  testthat::expect_error(get_stats("analyze_vars", type = "numeric", stats_in = c("n", "pval_counts")),
-                         "Inserted p-value \\(pval_counts\\) is not valid for type numeric*")
+  testthat::expect_error(
+    get_stats("analyze_vars", type = c("counts", "numeric"), stats_in = c("pval")),
+    "Only one type*"
+  )
+  testthat::expect_error(
+    get_stats("analyze_vars", type = "counts", stats_in = c("n", "pval")),
+    "Inserted p-value \\(pval\\) is not valid for type counts*"
+  )
+  testthat::expect_error(
+    get_stats("analyze_vars", type = "numeric", stats_in = c("n", "pval_counts")),
+    "Inserted p-value \\(pval_counts\\) is not valid for type numeric*"
+  )
 
-  testthat::expect_error(get_stats("analyze_vars", type = c("counts", "numeric"), add_pval = TRUE),
-                         "Only one type is allowed when add_pval = TRUE.")
+  testthat::expect_error(
+    get_stats("analyze_vars", type = c("counts", "numeric"), add_pval = TRUE),
+    "Only one type is allowed when add_pval = TRUE."
+  )
 })
 
 testthat::test_that("get_stats works as expected for selection of stats", {

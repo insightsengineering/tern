@@ -321,4 +321,3 @@ ungroup_stats <- function(x,
     .indent_mods = .indent_mods
   )
 }
-
