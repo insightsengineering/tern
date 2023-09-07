@@ -145,7 +145,7 @@ testthat::test_that("add_rowcounts works with pruning", {
 })
 
 testthat::test_that("add_rowcounts works with alt_counts = TRUE", {
-  DM_alt <- DM[1:100, ]
+  DM_alt <- DM[1:100, ] # nolint
 
   result <- basic_table() %>%
     split_cols_by("ARM") %>%
