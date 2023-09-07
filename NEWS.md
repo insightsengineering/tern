@@ -1,15 +1,13 @@
 # tern 0.9.0.9000
 ### New Features
-* Added vectors of default formats and labels in `tern_default_formats` and `tern_default_labels`, respectively.
-* Added utility to get methods from statistical method groups with `get_stats`.
-* Added utility to get formats `get_format_from_stats()` and labels `get_labels_from_stats()`.
-
-### Enhancements
-* Grouping of valid methods names and their relative default formats and labels into new source file `utils_defaults_handling.R`.
+* Added vectors containing default statistic formats and labels as `tern_default_formats` and `tern_default_labels`, respectively.
+* Added function `get_stats` to return methods from given statistical method groups.
+* Added function `get_format_from_stats` to return formats and `get_labels_from_stats` to return labels for a given set of statistics.
 
 ### Miscellaneous
+* Grouped functions relating to valid method names and their default formats and labels into new source file `utils_defaults_handling.R`.
 * Started deprecation of `summary_custom()` and `a_summary()` as a `S3` method.
-* Statistical method for finding `p-value` in the discrete case is now termed `pval_counts`.
+* Renamed statistical method for `p-value` in the discrete case to `pval_counts`.
 
 # tern 0.9.0
 ### New Features
