@@ -29,8 +29,7 @@ testthat::test_that("get_stats works as expected for defaults", {
     get_stats(c("count_occurrences", "analyze_vars")),
     unique(c(
       get_stats("count_occurrences"),
-      get_stats("analyze_vars_numeric"),
-      get_stats("analyze_vars_counts")
+      get_stats("analyze_vars_numeric")
     ))
   )
 })

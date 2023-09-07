@@ -66,7 +66,6 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
 
   # Loop for multiple method groups
   for (mgi in method_groups) {
-
     # Main switcher
     out_tmp <- switch(mgi,
       "count_occurrences" = c("count", "count_fraction_fixed_dp", "fraction"),

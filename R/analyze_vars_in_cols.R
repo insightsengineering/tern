@@ -155,7 +155,8 @@ analyze_vars_in_cols <- function(lyt,
   checkmate::assert_flag(do_summarize_row_groups)
 
   # Filtering
-  .stats <- get_stats("analyze_vars_numeric", stats_in = .stats) # from the std seems so
+  met_grps <- paste0("analyze_vars", c("_numeric", "_counts"))
+  .stats <- get_stats(met_grps, stats_in = .stats)
   formats_v <- get_formats_from_stats(stats = .stats, formats_in = .formats)
   labels_v <- get_labels_from_stats(stats = .stats, labels_in = .labels)
 
