@@ -529,7 +529,7 @@ a_summary <- function(x,
   }
 
   # auto formats handling
-  fmt_is_auto <- vapply(.formats, function(ii) ii == "auto", logical(1))
+  fmt_is_auto <- vapply(.formats, function(ii) is.character(ii) && ii == "auto", logical(1))
   if (any(fmt_is_auto)) {
     res_l_auto <- x_stats[fmt_is_auto]
     tmp_dt_var <- .df_row[[.var]] # xxx this can be extended for the WHOLE data or single facets

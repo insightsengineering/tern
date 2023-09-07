@@ -485,8 +485,22 @@ testthat::test_that("analyze_vars 'na_level' argument works as expected", {
   testthat::expect_snapshot(res)
 })
 
-# Deprecated functions
+testthat::test_that("control_analyze_vars works with customized parameters", {
+  result <- control_analyze_vars(
+    conf_level = 0.9,
+    quantiles = c(0.1, 0.9)
+  )
 
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("control_analyze_vars fails wrong inputs", {
+  testthat::expect_error(control_analyze_vars(quantiles = c(25, 75)))
+  testthat::expect_error(control_analyze_vars(conf_level = 95))
+})
+
+# Deprecated functions ------
 testthat::test_that("create_afun_summary creates an `afun` that works and throws a warning", {
   testthat::expect_warning(afun <- create_afun_summary(
     .stats = c("n", "count_fraction", "median", "range", "mean_ci"),
@@ -512,7 +526,6 @@ testthat::test_that("create_afun_summary creates an `afun` that works and throws
   testthat::expect_silent(result <- build_table(l, df = dta_test))
 })
 
-
 testthat::test_that("analyze_vars works correctly with auto formats", {
   dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4))
   res <- basic_table() %>%
@@ -526,3 +539,4 @@ testthat::test_that("analyze_vars works correctly with auto formats", {
   result <- testthat::expect_silent(res)
   testthat::expect_snapshot(res)
 })
+
