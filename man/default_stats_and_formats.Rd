@@ -8,7 +8,7 @@
 \alias{get_label_from_stats}
 \alias{tern_default_formats}
 \alias{tern_default_labels}
-\title{Defaults for stats methods names and their relative formats/labels}
+\title{Defaults for statistical method names and their associated formats & labels}
 \format{
 An object of class \code{list} of length 34.
 
@@ -30,12 +30,12 @@ tern_default_labels
 we need the defaults from. A character vector can be used to collect more than one group of statistical
 methods.}
 
-\item{type}{(\code{character}) \cr type of data and result desired. Some stats defaults (and their formats and labels),
+\item{type}{(\code{character})\cr type of data and result desired. Some stats defaults (and their formats and labels),
 differ if you need to analyze different type of values. See Details for available options.}
 
 \item{stats_in}{(\code{character}) \cr desired stats to be picked out from the selected method group.}
 
-\item{stats}{(\code{character}) \cr statistical methods to get defaults formats for.}
+\item{stats}{(\code{character})\cr statistical methods to get defaults formats for.}
 
 \item{formats_in}{(named \code{vector}) \cr inserted formats to replace defaults.}
 }
@@ -58,7 +58,7 @@ otherwise \code{NULL}).
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Utility functions to get valid statistic methods for different method groups
-(\code{.stats}) and their relative formats (\code{.formats}) and labels (\code{.labels}). This utility
+(\code{.stats}) and their associated formats (\code{.formats}) and labels (\code{.labels}). This utility
 is used across \code{tern}, but some of its working principles can be seen in \code{\link[=analyze_vars]{analyze_vars()}}.
 See notes to understand why this is experimental.
 }
