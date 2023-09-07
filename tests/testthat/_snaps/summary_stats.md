@@ -59,7 +59,7 @@
                                "n"                      "count" 
                     count_fraction                        n_blq 
                   "count_fraction"                      "n_blq" 
-                              pval 
+                       pval_counts 
       "p-value (chi-squared test)" 
 
 # summary_custom works as expected

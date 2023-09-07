@@ -154,15 +154,10 @@ analyze_vars_in_cols <- function(lyt,
   checkmate::assert_flag(split_col_vars)
   checkmate::assert_flag(do_summarize_row_groups)
 
-  # Automatic assignment of formats
-  if (is.null(.formats)) {
-    # General values
-    sf_numeric <- summary_formats("numeric")
-    sf_counts <- summary_formats("counts")[-1]
-    formats_v <- c(sf_numeric, sf_counts)
-  } else {
-    formats_v <- .formats
-  }
+  # Filtering
+  .stats <- get_stats("analyze_vars", type = c("numeric", "counts"), stats_in = .stats)
+  formats_v <- get_formats_from_stats(stats = .stats, formats_in = .formats)
+  labels_v <- get_labels_from_stats(stats = .stats, labels_in = .labels)
 
   # Check for vars in the case that one or more are used
   if (length(vars) == 1) {
@@ -181,7 +176,7 @@ analyze_vars_in_cols <- function(lyt,
     dummy_lyt <- split_cols_by_multivar(
       lyt = basic_table(),
       vars = vars,
-      varlabels = .labels[.stats]
+      varlabels = labels_v
     )
 
     if (any(sapply(clyt, identical, y = get_last_col_split(dummy_lyt)))) {
@@ -197,7 +192,7 @@ analyze_vars_in_cols <- function(lyt,
     lyt <- split_cols_by_multivar(
       lyt = lyt,
       vars = vars,
-      varlabels = .labels[.stats]
+      varlabels = labels_v
     )
   }
 

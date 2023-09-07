@@ -131,7 +131,7 @@ s_compare.factor <- function(x,
   if ("NA" %in% levels(x)) levels(.ref_group) <- c(levels(.ref_group), "NA")
   checkmate::assert_factor(x, levels = levels(.ref_group), min.levels = 2)
 
-  y$pval <- if (!.in_ref_col && length(x) > 0 && length(.ref_group) > 0) {
+  y$pval_counts <- if (!.in_ref_col && length(x) > 0 && length(.ref_group) > 0) {
     tab <- rbind(table(x), table(.ref_group))
     res <- suppressWarnings(stats::chisq.test(tab))
     res$p.value
@@ -234,7 +234,7 @@ s_compare.logical <- function(x,
     .ref_group[is.na(.ref_group)] <- FALSE
   }
 
-  y$pval <- if (!.in_ref_col && length(x) > 0 && length(.ref_group) > 0) {
+  y$pval_counts <- if (!.in_ref_col && length(x) > 0 && length(.ref_group) > 0) {
     x <- factor(x, levels = c(TRUE, FALSE))
     .ref_group <- factor(.ref_group, levels = c(TRUE, FALSE))
     tbl <- rbind(table(x), table(.ref_group))
