@@ -495,7 +495,7 @@ a_summary <- function(x,
   # Fill in with formatting defaults if needed
   .stats <- get_stats("analyze_vars", type, stats_in = .stats, add_pval = compare)
   .formats <- get_formats_from_stats(.stats, .formats)
-  .labels <- get_label_from_stats(.stats, .labels)
+  .labels <- get_labels_from_stats(.stats, .labels)
 
   indent_mods_custom <- .indent_mods
   .indent_mods <- stats::setNames(rep(0L, length(.stats)), .stats)
@@ -511,8 +511,7 @@ a_summary <- function(x,
 
   # Check for custom labels from control_analyze_vars
   if (is.numeric(x)) {
-    default_labels <- .stats %>%
-      get_label_from_stats()
+    default_labels <- get_labels_from_stats(.stats)
     for (i in intersect(.stats, c("mean_ci", "mean_pval", "median_ci", "quantiles"))) {
       if (!i %in% names(.labels) || .labels[[i]] == default_labels[[i]]) {
         .labels[[i]] <- attr(x_stats[[i]], "label")

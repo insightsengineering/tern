@@ -37,7 +37,7 @@ summary_formats <- function(type = "numeric", include_pval = FALSE) {
 #'
 #' @export
 summary_labels <- function(type = "numeric", include_pval = FALSE) {
-  get_label_from_stats(get_stats("analyze_vars", type, add_pval = include_pval))
+  get_labels_from_stats(get_stats("analyze_vars", type, add_pval = include_pval))
 }
 
 #' @describeIn summary_stats Function to configure settings for default or custom summary statistics for a given data
@@ -79,12 +79,12 @@ summary_custom <- function(type = "numeric",
   lifecycle::deprecate_warn(
     "0.9.0.9001",
     "summary_custom()",
-    details = "Please use `get_stats`, `get_formats_from_stats`, and `get_label_from_stats` directly instead."
+    details = "Please use `get_stats`, `get_formats_from_stats`, and `get_labels_from_stats` directly instead."
   )
 
   .stats <- get_stats("analyze_vars", type, stats_custom, add_pval = include_pval)
   .formats <- get_formats_from_stats(.stats, formats_custom)
-  .labels <- get_label_from_stats(.stats, labels_custom)
+  .labels <- get_labels_from_stats(.stats, labels_custom)
   .indent_mods <- stats::setNames(rep(0L, length(.stats)), .stats)
 
   if (!is.null(indent_mods_custom)) {

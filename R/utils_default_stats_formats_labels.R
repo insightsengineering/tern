@@ -221,22 +221,22 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 #' @param labels_in (named `vector`) \cr inserted labels to replace defaults.
 #'
 #' @return
-#' * `get_label_from_stats()` returns a named character vector of default labels (if present
+#' * `get_labels_from_stats()` returns a named character vector of default labels (if present
 #'   otherwise `NULL`).
 #'
 #' @examples
 #' # Defaults labels
-#' get_label_from_stats(num_stats)
-#' get_label_from_stats(cnt_stats)
-#' get_label_from_stats(only_pval)
-#' get_label_from_stats(all_cnt_occ)
+#' get_labels_from_stats(num_stats)
+#' get_labels_from_stats(cnt_stats)
+#' get_labels_from_stats(only_pval)
+#' get_labels_from_stats(all_cnt_occ)
 #'
 #' # Addition of customs
-#' get_label_from_stats(all_cnt_occ, labels_in = c("fraction" = "Fraction"))
-#' get_label_from_stats(all_cnt_occ, labels_in = list("fraction" = c("Some more fractions")))
+#' get_labels_from_stats(all_cnt_occ, labels_in = c("fraction" = "Fraction"))
+#' get_labels_from_stats(all_cnt_occ, labels_in = list("fraction" = c("Some more fractions")))
 #'
 #' @export
-get_label_from_stats <- function(stats, labels_in = NULL) {
+get_labels_from_stats <- function(stats, labels_in = NULL) {
   checkmate::assert_character(stats, min.len = 1)
   # It may be a list
   if (checkmate::test_list(labels_in, null.ok = TRUE)) {

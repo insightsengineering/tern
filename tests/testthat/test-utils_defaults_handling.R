@@ -122,27 +122,27 @@ testthat::test_that("get_formats_from_stats works as expected", {
   )
 })
 
-testthat::test_that("get_label_from_stats works as expected", {
+testthat::test_that("get_labels_from_stats works as expected", {
   sts <- get_stats("count_occurrences")
-  res <- testthat::expect_silent(get_label_from_stats(sts))
+  res <- testthat::expect_silent(get_labels_from_stats(sts))
   testthat::expect_snapshot(res)
 
-  testthat::expect_identical(get_label_from_stats(c("nothing", "n"))[["nothing"]], "")
+  testthat::expect_identical(get_labels_from_stats(c("nothing", "n"))[["nothing"]], "")
 
   testthat::expect_identical(
-    get_label_from_stats(c("nothing", "unique"))[["unique"]],
+    get_labels_from_stats(c("nothing", "unique"))[["unique"]],
     tern_default_labels[["unique"]]
   )
 
   # list check
   stats_to_do <- c("not_a_stat" = function(x) as.character(x), "mean" = "xx.")
   testthat::expect_equal(
-    get_label_from_stats(names(stats_to_do), labels_in = stats_to_do),
+    get_labels_from_stats(names(stats_to_do), labels_in = stats_to_do),
     stats_to_do
   )
 
   testthat::expect_identical(
-    get_label_from_stats(names(stats_to_do),
+    get_labels_from_stats(names(stats_to_do),
       labels_in = c(stats_to_do, "catch_me" = "xx")
     ),
     stats_to_do
@@ -151,7 +151,7 @@ testthat::test_that("get_label_from_stats works as expected", {
   # character vector
   stats_to_do <- c("not_a_stat" = "xx", "mean" = "xx")
   testthat::expect_identical(
-    get_label_from_stats(names(stats_to_do),
+    get_labels_from_stats(names(stats_to_do),
       labels_in = c(stats_to_do,
         "catch_me" = "xx"
       )
