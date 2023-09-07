@@ -142,22 +142,22 @@ testthat::test_that("format_extreme_values_ci works with easy inputs", {
 })
 
 testthat::test_that("format_extreme_values_ci works with easy inputs", {
-  x_todo <- c(0.001, 0.2, 0.0001000, 3, 4)
+  x_todo <- c(0.001, 0.2, 0.0011000, 3, 4)
   res <- c(mean(x_todo[1:3]), sd(x_todo[1:3])) # It can be less
-  result <- format_auto(res = res, x = x_todo, x_stat = "mean_sd")
+  result <- format_auto(dt_var = x_todo, x_stat = "mean_sd")(x = res)
   testthat::expect_identical(result, "0.06737 (0.11486)")
 
-  result <- format_auto(range(x_todo), x_todo, "range")
-  testthat::expect_identical(result, "0.0010 - 4.0000")
+  result <- format_auto(x_todo, "range")(x = range(x_todo))
+  testthat::expect_identical(result, "0.0010 - 4.0000") # Keeps trailing 0s
 
   # No scientific notation
   no_sc_x <- c(0.0000001, 1)
-  testthat::expect_identical(format_auto(no_sc_x, no_sc_x, "range"),
+  testthat::expect_identical(format_auto(no_sc_x, "range")(x = no_sc_x),
                              "0.0000001 - 1.0000000")
 
   # More results than formats values and viceversa
-  testthat::expect_error(format_auto(c(1, 2, 3), x_todo, "range"),
+  testthat::expect_error(format_auto(x_todo, "range")(x = c(1, 2, 3)),
                          "Number of inserted values as result \\(3\\)*")
-  testthat::expect_error(format_auto(1.234, x_todo, "range"),
+  testthat::expect_error(format_auto(x_todo, "range")(x = 1.234),
                          "Number of inserted values as result \\(1\\)*")
 })

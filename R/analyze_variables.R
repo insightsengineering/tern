@@ -415,7 +415,8 @@ s_summary.logical <- function(x,
   y
 }
 
-#' Helper Function to Create Output Rows for [a_summary()]
+#' @describeIn analyze_variables Formatted analysis function which is used as `afun` in `analyze_vars()` and
+#'   `compare_vars()` and as `cfun` in `summarize_colvars()`.
 #'
 #' @param compare (`logical`)\cr Whether comparison statistics should be analyzed instead of summary statistics
 #'   (`compare = TRUE` adds `pval` statistic comparing against reference group).
@@ -423,29 +424,51 @@ s_summary.logical <- function(x,
 #'   `"numeric"`, otherwise type should be `"counts"`.
 #'
 #' @return
-#' * `a_summary_internal()` returns a corresponding list with formatted [rtables::CellValue()] used within `a_summary`.
+#' * `a_summary()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @note
 #' * To use for comparison (with additional p-value statistic), parameter `compare` must be set to `TRUE`.
 #' * Ensure that either all `NA` values are converted to an explicit `NA` level or all `NA` values are left as is.
 #'
-#' @keywords internal
-a_summary_internal <- function(x,
-                               .N_col, # nolint
-                               .N_row, # nolint
-                               .var,
-                               .df_row,
-                               .ref_group,
-                               .in_ref_col,
-                               compare,
-                               type,
-                               .stats,
-                               .formats = NULL,
-                               .labels = NULL,
-                               .indent_mods = NULL,
-                               na.rm, # nolint
-                               na_level,
-                               ...) {
+#' @examples
+#' a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
+#' a_summary(
+#'   factor(c("a", "a", "b", "c", "a")),
+#'   .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
+#' )
+#'
+#' a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
+#' a_summary(
+#'   c("A", "B", "A", "C"),
+#'   .ref_group = c("B", "A", "C"), .var = "x", compare = TRUE, verbose = FALSE
+#' )
+#'
+#' a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
+#' a_summary(
+#'   c(TRUE, FALSE, FALSE, TRUE, TRUE),
+#'   .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare = TRUE
+#' )
+#'
+#' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
+#' a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
+#'
+
+#' @export
+a_summary <- function(x,
+                      .N_col, # nolint
+                      .N_row, # nolint
+                      .var = NULL,
+                      .df_row = NULL,
+                      .ref_group = NULL,
+                      .in_ref_col = FALSE,
+                      compare = FALSE,
+                      .stats = NULL,
+                      .formats = NULL,
+                      .labels = NULL,
+                      .indent_mods = NULL,
+                      na.rm = TRUE, # nolint
+                      na_level = NA_character_,
+                      ...) {
   if (is.numeric(x)) {
     type <- "numeric"
     if (!is.null(.stats) && any(grepl("^pval", .stats))) {
@@ -506,6 +529,16 @@ a_summary_internal <- function(x,
     .indent_mods <- x_ungrp[[".indent_mods"]]
   }
 
+  # auto formats handling
+  fmt_is_auto <- vapply(.formats, function(ii) ii == "auto", logical(1))
+  if (any(fmt_is_auto)) {
+    res_l_auto <- x_stats[fmt_is_auto]
+    tmp_dt_var <- .df_row[[.var]] # xxx this can be extended for the WHOLE data or single facets
+    .formats[fmt_is_auto] <- lapply(seq_along(res_l_auto), function(rla) {
+      format_auto(tmp_dt_var, names(res_l_auto)[rla])
+    })
+  }
+
   in_rows(
     .list = x_stats,
     .formats = .formats,
@@ -513,79 +546,6 @@ a_summary_internal <- function(x,
     .labels = .labels,
     .indent_mods = .indent_mods,
     .format_na_strs = na_level
-  )
-}
-
-#' @describeIn analyze_variables Formatted analysis function which is used as `afun` in `analyze_vars()` and
-#'   `compare_vars()` and as `cfun` in `summarize_colvars()`.
-#'
-#' @param compare (`logical`)\cr Whether comparison statistics should be analyzed instead of summary statistics
-#'   (`compare = TRUE` adds `pval` statistic comparing against reference group).
-#' @param type (`character`)\cr type of statistics to calculate given `x`. If `x` is numeric `type` should be
-#'   `"numeric"`, otherwise type should be `"counts"`.
-#'
-#' @return
-#' * `a_summary()` returns the corresponding list with formatted [rtables::CellValue()].
-#'
-#' @note
-#' * To use for comparison (with additional p-value statistic), parameter `compare` must be set to `TRUE`.
-#' * Ensure that either all `NA` values are converted to an explicit `NA` level or all `NA` values are left as is.
-#'
-#' @examples
-#' a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
-#' a_summary(
-#'   factor(c("a", "a", "b", "c", "a")),
-#'   .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
-#' )
-#'
-#' a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
-#' a_summary(
-#'   c("A", "B", "A", "C"),
-#'   .ref_group = c("B", "A", "C"), .var = "x", compare = TRUE, verbose = FALSE
-#' )
-#'
-#' a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
-#' a_summary(
-#'   c(TRUE, FALSE, FALSE, TRUE, TRUE),
-#'   .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare = TRUE
-#' )
-#'
-#' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
-#' a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
-#'
-#' @export
-a_summary <- function(x,
-                      .N_col, # nolint
-                      .N_row, # nolint
-                      .var = NULL,
-                      .df_row = NULL,
-                      .ref_group = NULL,
-                      .in_ref_col = FALSE,
-                      compare = FALSE,
-                      .stats = NULL,
-                      .formats = NULL,
-                      .labels = NULL,
-                      .indent_mods = NULL,
-                      na.rm = TRUE, # nolint
-                      na_level = NA_character_,
-                      ...) {
-  a_summary_internal(
-    x = x,
-    .N_col = .N_col,
-    .N_row = .N_row,
-    .var = .var,
-    .df_row = .df_row,
-    .ref_group = .ref_group,
-    .in_ref_col = .in_ref_col,
-    compare = compare,
-    type = type,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods,
-    na.rm = na.rm,
-    na_level = na_level,
-    ...
   )
 }
 
@@ -638,6 +598,10 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.
 #'
+#' @details
+#' It is possible to use `"auto"` for `analyze_vars` on a subset of methods. This uses [format_auto()] to
+#' determine automatically the number of digits from the analyzed variable (`.vars`), but only for the
+#' current row data, and not for the whole data (before row splits).
 #'
 #' @return
 #' * `analyze_vars()` returns a layout object suitable for passing to further layouting functions,
@@ -692,6 +656,16 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'   analyze_vars(vars = "AVISIT", na.rm = FALSE)
 #'
 #' build_table(l, df = dta_test)
+#'
+#' # auto format
+#' dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4))
+#' basic_table() %>%
+#'   analyze_vars(
+#'     vars = "VAR",
+#'     .stats = c("n", "mean", "mean_sd", "range"),
+#'     .formats = c("mean_sd" = "auto", "range" = "auto")
+#'   ) %>%
+#'   build_table(dt)
 #'
 #' @export analyze_vars summarize_vars
 analyze_vars <- function(lyt,

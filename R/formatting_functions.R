@@ -393,7 +393,7 @@ format_extreme_values_ci <- function(digits = 2L) {
 #'
 #' @param res (`numeric`) \cr results from statistical evaluation. It can be more than one
 #'   element (e.g. for `.stats = "mean_sd"`).
-#' @param x (`numeric`) \cr all the data the statistics was created upon. Used only to find
+#' @param dt_var (`numeric`) \cr all the data the statistics was created upon. Used only to find
 #'   significant digits.
 #' @param x_stat (`string`) \cr string indicating the current statistical method used.
 #' @param ... `rtables` standard for all format functions
@@ -403,54 +403,58 @@ format_extreme_values_ci <- function(digits = 2L) {
 #' @examples
 #' x_todo <- c(0.001, 0.2, 0.0011000, 3, 4)
 #' res <- c(mean(x_todo[1:3]), sd(x_todo[1:3]))
-#' format_auto(res = res, x = x_todo, x_stat = "mean_sd")
-#' format_auto(range(x_todo), x_todo, "range")
+#'
+#' # x is the result coming into the formatting function -> res!!
+#' format_auto(dt_var = x_todo, x_stat = "mean_sd")(x = res)
+#' format_auto(x_todo, "range")(x = range(x_todo))
 #' no_sc_x <- c(0.0000001, 1)
-#' format_auto(no_sc_x, no_sc_x, "range")
+#' format_auto(no_sc_x, "range")(x = no_sc_x)
 #'
 #' @family formatting functions
 #' @keywords internal
-format_auto <- function(res, x, x_stat, ...) {
-  checkmate::assert_numeric(res, min.len = 1)
-  checkmate::assert_numeric(x, min.len = 1)
-  # Defaults - they may be a param in the future
-  der_stats <- c("mean", "sd", "se", "median", "geom_mean", "quantiles", "iqr",
-                 "mean_sd", "mean_se", "mean_se", "mean_ci", "mean_sei", "mean_sdi")
-  nonder_stats <- c("n", "range", "min", "max")
+format_auto <- function(dt_var, x_stat) {
+  function(x = "", ...) {
+    checkmate::assert_numeric(x, min.len = 1)
+    checkmate::assert_numeric(dt_var, min.len = 1)
+    # Defaults - they may be a param in the future
+    der_stats <- c("mean", "sd", "se", "median", "geom_mean", "quantiles", "iqr",
+                   "mean_sd", "mean_se", "mean_se", "mean_ci", "mean_sei", "mean_sdi")
+    nonder_stats <- c("n", "range", "min", "max")
 
-  # Safenet for miss-modifications
-  stopifnot(length(intersect(der_stats, nonder_stats)) == 0) # nolint
-  checkmate::assert_choice(x_stat, c(der_stats, nonder_stats))
+    # Safenet for miss-modifications
+    stopifnot(length(intersect(der_stats, nonder_stats)) == 0) # nolint
+    checkmate::assert_choice(x_stat, c(der_stats, nonder_stats))
 
-  # Finds the max number of digits in data
-  detect_dig <- vapply(x, decimalplaces, FUN.VALUE = numeric(1)) %>%
-    max()
+    # Finds the max number of digits in data
+    detect_dig <- vapply(dt_var, decimalplaces, FUN.VALUE = numeric(1)) %>%
+      max()
 
-  if (x_stat %in% der_stats) {
-    detect_dig <- detect_dig + 1
+    if (x_stat %in% der_stats) {
+      detect_dig <- detect_dig + 1
+    }
+
+    # Render input
+    str_vals <- formatC(x, digits = detect_dig, format = "f")
+    def_fmt <- get_format_from_stats(x_stat)[[x_stat]]
+    str_fmt <- str_extract(def_fmt, invert = FALSE)[[1]]
+    if (length(str_fmt) != length(str_vals)) {
+      stop("Number of inserted values as result (", length(str_vals),
+           ") is not the same as there should be in the default tern formats for ",
+           x_stat, " (-> ", def_fmt, " needs ", length(str_fmt), " values). ",
+           "See tern_default_formats to check all of them.")
+    }
+
+    # Squashing them together
+    inv_str_fmt <- str_extract(def_fmt, invert = TRUE)[[1]]
+    stopifnot(length(inv_str_fmt) == length(str_vals) + 1) # nolint
+
+    out <- vector("character", length = length(inv_str_fmt) + length(str_vals))
+    is_even <- seq_along(out) %% 2 == 0
+    out[is_even] <- str_vals
+    out[!is_even] <- inv_str_fmt
+
+    return(paste0(out, collapse = ""))
   }
-
-  # Render input
-  str_vals <- formatC(res, digits = detect_dig, format = "f")
-  def_fmt <- get_format_from_stats(x_stat)[[x_stat]]
-  str_fmt <- str_extract(def_fmt, invert = FALSE)[[1]]
-  if (length(str_fmt) != length(str_vals)) {
-    stop("Number of inserted values as result (", length(str_vals),
-         ") is not the same as there should be in the default tern formats for ",
-         x_stat, " (-> ", def_fmt, " needs ", length(str_fmt), " values). ",
-         "See tern_default_formats to check all of them.")
-  }
-
-  # Squashing them together
-  inv_str_fmt <- str_extract(def_fmt, invert = TRUE)[[1]]
-  stopifnot(length(inv_str_fmt) == length(str_vals) + 1) # nolint
-
-  out <- vector("character", length = length(inv_str_fmt) + length(str_vals))
-  is_even <- seq_along(out) %% 2 == 0
-  out[is_even] <- str_vals
-  out[!is_even] <- inv_str_fmt
-
-  return(paste0(out, collapse = ""))
 }
 
 # Utility function that could be useful in general

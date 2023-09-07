@@ -511,3 +511,18 @@ testthat::test_that("create_afun_summary creates an `afun` that works and throws
   # From visual inspection it works as before, same output
   testthat::expect_silent(result <- build_table(l, df = dta_test))
 })
+
+
+testthat::test_that("analyze_vars works correctly with auto formats", {
+  dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4))
+  res <- basic_table() %>%
+    analyze_vars(
+      vars = "VAR",
+      .stats = c("n", "mean", "mean_sd", "range"),
+      .formats = c("mean_sd" = "auto", "range" = "auto")
+    ) %>%
+    build_table(dt)
+
+  result <- testthat::expect_silent(res)
+  testthat::expect_snapshot(res)
+})
