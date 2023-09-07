@@ -436,7 +436,7 @@ g_lineplot <- function(df,
 h_format_row <- function(x, format, labels = NULL) {
   # cell: one row, one column data.frame
   format_cell <- function(x, format, label = NULL) {
-    fc <- format_rcell(x = x, format = format)
+    fc <- format_rcell(x = x, format = unlist(format))
     if (is.na(fc)) {
       fc <- "NA"
     }

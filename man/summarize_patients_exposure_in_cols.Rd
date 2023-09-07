@@ -76,7 +76,8 @@ by a statistics function.}
 \item{add_total_level}{(\code{flag})\cr adds a "total" level after the others which includes all the levels
 that constitute the split. A custom label can be set for this level via the \code{custom_label} argument.}
 
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for the
+\code{"auto"} setting.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 

@@ -153,8 +153,7 @@ testthat::test_that("a_summary_internal and a_summary work with healthy input.",
   x <- rnorm(10)
   result <- a_summary_internal(
     x = x, .N_col = 10, .N_row = 20, .var = "bla", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
-    compare = FALSE, type = "numeric", .stats = summary_custom()$stats, .formats = summary_custom()$formats,
-    .labels = summary_custom()$labels, .indent_mods = summary_custom()$indents, na.rm = TRUE, na_level = NA_character_
+    compare = FALSE, type = "numeric", .stats = get_stats("analyze_vars"), na.rm = TRUE, na_level = NA_character_
   )
   res_out <- testthat::expect_silent(result)
 
@@ -168,9 +167,8 @@ testthat::test_that("a_summary_internal and a_summary work with healthy input.",
   x <- factor(c("a", "a", "b", "c", "a"))
   result <- a_summary_internal(
     x = x, .N_col = 10, .N_row = 10, .var = "bla", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
-    compare = FALSE, type = "counts", .stats = summary_custom(type = "counts")$stats,
-    .formats = summary_custom(type = "counts")$formats, .labels = summary_custom(type = "counts")$labels,
-    .indent_mods = summary_custom(type = "counts")$indents, na.rm = TRUE, na_level = NA_character_
+    compare = FALSE, type = "counts", .stats = get_stats("analyze_vars", type = "counts"),
+    na.rm = TRUE, na_level = NA_character_
   )
   res_out <- testthat::expect_silent(result)
 
@@ -184,9 +182,8 @@ testthat::test_that("a_summary_internal and a_summary work with healthy input.",
   x <- c("A", "B", "A", "C")
   result <- a_summary_internal(
     x = x, .N_col = 10, .N_row = 10, .var = "x", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
-    compare = FALSE, type = "counts", .stats = summary_custom(type = "counts")$stats,
-    .formats = summary_custom(type = "counts")$formats, .labels = summary_custom(type = "counts")$labels,
-    .indent_mods = summary_custom(type = "counts")$indents, na.rm = TRUE, na_level = NA_character_,
+    compare = FALSE, type = "counts", .stats = get_stats("analyze_vars", type = "counts"),
+    na.rm = TRUE, na_level = NA_character_,
     verbose = FALSE
   )
   res_out <- testthat::expect_silent(result)
@@ -201,9 +198,8 @@ testthat::test_that("a_summary_internal and a_summary work with healthy input.",
   x <- c(TRUE, FALSE, FALSE, TRUE, TRUE)
   result <- a_summary_internal(
     x = x, .N_col = 10, .N_row = 10, .var = NULL, .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
-    compare = FALSE, type = "counts", .stats = summary_custom(type = "counts")$stats,
-    .formats = summary_custom(type = "counts")$formats, .labels = summary_custom(type = "counts")$labels,
-    .indent_mods = summary_custom(type = "counts")$indents, na.rm = TRUE, na_level = NA_character_
+    compare = FALSE, type = "counts", .stats = get_stats("analyze_vars", type = "counts"),
+    na.rm = TRUE, na_level = NA_character_
   )
   res_out <- testthat::expect_silent(result)
 
@@ -514,4 +510,19 @@ testthat::test_that("create_afun_summary creates an `afun` that works and throws
 
   # From visual inspection it works as before, same output
   testthat::expect_silent(result <- build_table(l, df = dta_test))
+})
+
+
+testthat::test_that("analyze_vars works correctly with auto formats", {
+  dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4))
+  res <- basic_table() %>%
+    analyze_vars(
+      vars = "VAR",
+      .stats = c("n", "mean", "mean_sd", "range"),
+      .formats = c("mean_sd" = "auto", "range" = "auto")
+    ) %>%
+    build_table(dt)
+
+  result <- testthat::expect_silent(res)
+  testthat::expect_snapshot(res)
 })

@@ -75,10 +75,10 @@ indent modifiers for any of these statistics.
 }}
 \examples{
 summary_formats()
-summary_formats(type = "count", include_pval = TRUE)
+summary_formats(type = "counts", include_pval = TRUE)
 
 summary_labels()
-summary_labels(type = "count", include_pval = TRUE)
+summary_labels(type = "counts", include_pval = TRUE)
 
 summary_custom()
 summary_custom(type = "counts", include_pval = TRUE)
