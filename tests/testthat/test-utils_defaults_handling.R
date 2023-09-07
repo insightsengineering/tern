@@ -88,23 +88,23 @@ testthat::test_that("get_stats works as expected for selection of stats", {
   )
 })
 
-testthat::test_that("get_format_from_stats works as expected", {
+testthat::test_that("get_formats_from_stats works as expected", {
   sts <- get_stats("count_occurrences")
-  res <- testthat::expect_silent(get_format_from_stats(sts))
+  res <- testthat::expect_silent(get_formats_from_stats(sts))
   testthat::expect_snapshot(res)
 
-  testthat::expect_null(get_format_from_stats(c("nothing", "n"))[["nothing"]])
+  testthat::expect_null(get_formats_from_stats(c("nothing", "n"))[["nothing"]])
 
   # list check
   stats_to_do <- c("not_a_stat" = function(x) as.character(x), "mean" = "xx.")
   testthat::expect_equal(
-    get_format_from_stats(names(stats_to_do), formats_in = stats_to_do),
+    get_formats_from_stats(names(stats_to_do), formats_in = stats_to_do),
     stats_to_do
   )
 
   # Works also if we had a not present format
   testthat::expect_identical(
-    get_format_from_stats(names(stats_to_do),
+    get_formats_from_stats(names(stats_to_do),
       formats_in = c(stats_to_do, "catch_me" = "xx")
     ),
     stats_to_do
@@ -113,7 +113,7 @@ testthat::test_that("get_format_from_stats works as expected", {
   # character vector is the same -> default have functions, so it is casted to list
   stats_to_do <- c("not_a_stat" = "xx", "mean" = "xx")
   testthat::expect_identical(
-    get_format_from_stats(names(stats_to_do),
+    get_formats_from_stats(names(stats_to_do),
       formats_in = c(stats_to_do,
         "catch_me" = "xx"
       )

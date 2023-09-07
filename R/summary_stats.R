@@ -22,7 +22,7 @@ NULL
 #'
 #' @export
 summary_formats <- function(type = "numeric", include_pval = FALSE) {
-  get_format_from_stats(get_stats("analyze_vars", type, add_pval = include_pval))
+  get_formats_from_stats(get_stats("analyze_vars", type, add_pval = include_pval))
 }
 
 #' @describeIn summary_stats Function to retrieve default labels for summary statistics. Returns labels of descriptive
@@ -79,11 +79,11 @@ summary_custom <- function(type = "numeric",
   lifecycle::deprecate_warn(
     "0.9.0.9001",
     "summary_custom()",
-    details = "Please use `get_stats`, `get_format_from_stats`, and `get_label_from_stats` directly instead."
+    details = "Please use `get_stats`, `get_formats_from_stats`, and `get_label_from_stats` directly instead."
   )
 
   .stats <- get_stats("analyze_vars", type, stats_custom, add_pval = include_pval)
-  .formats <- get_format_from_stats(.stats, formats_custom)
+  .formats <- get_formats_from_stats(.stats, formats_custom)
   .labels <- get_label_from_stats(.stats, labels_custom)
   .indent_mods <- stats::setNames(rep(0L, length(.stats)), .stats)
 

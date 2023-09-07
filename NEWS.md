@@ -2,7 +2,7 @@
 ### New Features
 * Added vectors containing default statistic formats and labels as `tern_default_formats` and `tern_default_labels`, respectively.
 * Added function `get_stats` to return methods from given statistical method groups.
-* Added function `get_format_from_stats` to return formats and `get_labels_from_stats` to return labels for a given set of statistics.
+* Added function `get_formats_from_stats` to return formats and `get_labels_from_stats` to return labels for a given set of statistics.
 * Added `"auto"` option for `.formats`. It uses `format_auto` to determine automatically the number of digits.
 
 ### Miscellaneous

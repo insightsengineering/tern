@@ -494,7 +494,7 @@ a_summary <- function(x,
 
   # Fill in with formatting defaults if needed
   .stats <- get_stats("analyze_vars", type, stats_in = .stats, add_pval = compare)
-  .formats <- get_format_from_stats(.stats, .formats)
+  .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- get_label_from_stats(.stats, .labels)
 
   indent_mods_custom <- .indent_mods

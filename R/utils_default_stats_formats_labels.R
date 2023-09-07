@@ -167,7 +167,7 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
 #'   character vector from [formatters::list_valid_format_labels()] or a custom format function.
 #'
 #' @return
-#' * `get_format_from_stats()` returns a named list of formats, they being a value from
+#' * `get_formats_from_stats()` returns a named list of formats, they being a value from
 #'   [formatters::list_valid_format_labels()] or a custom function (e.g. [formatting_functions]).
 #'
 #' @note Formats in `tern` and `rtables` can be functions that take in the table cell value and
@@ -175,19 +175,19 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
 #'
 #' @examples
 #' # Defaults formats
-#' get_format_from_stats(num_stats)
-#' get_format_from_stats(cnt_stats)
-#' get_format_from_stats(only_pval)
-#' get_format_from_stats(all_cnt_occ)
+#' get_formats_from_stats(num_stats)
+#' get_formats_from_stats(cnt_stats)
+#' get_formats_from_stats(only_pval)
+#' get_formats_from_stats(all_cnt_occ)
 #'
 #' # Addition of customs
-#' get_format_from_stats(all_cnt_occ, formats_in = c("fraction" = c("xx")))
-#' get_format_from_stats(all_cnt_occ, formats_in = list("fraction" = c("xx.xx", "xx")))
+#' get_formats_from_stats(all_cnt_occ, formats_in = c("fraction" = c("xx")))
+#' get_formats_from_stats(all_cnt_occ, formats_in = list("fraction" = c("xx.xx", "xx")))
 #'
 #' @seealso [formatting_functions]
 #'
 #' @export
-get_format_from_stats <- function(stats, formats_in = NULL) {
+get_formats_from_stats <- function(stats, formats_in = NULL) {
   checkmate::assert_character(stats, min.len = 1)
   # It may be a list if there is a function in the formats
   if (checkmate::test_list(formats_in, null.ok = TRUE)) {

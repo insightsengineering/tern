@@ -439,7 +439,7 @@ format_auto <- function(dt_var, x_stat) {
 
     # Render input
     str_vals <- formatC(x, digits = detect_dig, format = "f")
-    def_fmt <- get_format_from_stats(x_stat)[[x_stat]]
+    def_fmt <- get_formats_from_stats(x_stat)[[x_stat]]
     str_fmt <- str_extract(def_fmt, invert = FALSE)[[1]]
     if (length(str_fmt) != length(str_vals)) {
       stop("Number of inserted values as result (", length(str_vals),

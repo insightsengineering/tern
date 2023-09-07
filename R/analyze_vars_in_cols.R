@@ -156,7 +156,7 @@ analyze_vars_in_cols <- function(lyt,
 
   # Filtering
   .stats <- get_stats("analyze_vars", type = c("numeric", "counts"), stats_in = .stats)
-  formats_v <- get_format_from_stats(stats = .stats, formats_in = .formats)
+  formats_v <- get_formats_from_stats(stats = .stats, formats_in = .formats)
   labels_v <- get_label_from_stats(stats = .stats, labels_in = .labels)
 
   # Check for vars in the case that one or more are used
