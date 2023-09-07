@@ -286,7 +286,7 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
 #'
 #' @return A `list` with modified elements `x`, `.formats`, `.labels`, and `.indent_mods`.
 #'
-#' @seealso [a_summary_internal()] which uses this function internally.
+#' @seealso [a_summary()] which uses this function as internal `afun` for [analyze_vars()].
 #'
 #' @keywords internal
 ungroup_stats <- function(x,

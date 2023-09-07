@@ -145,13 +145,13 @@ testthat::test_that("s_summary works with logical vectors and by if requested do
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("a_summary_internal and a_summary work with healthy input.", {
+testthat::test_that("a_summary work with healthy input.", {
   options("width" = 100)
 
-  # numeric input - a_summary_internal
+  # numeric input - a_summary
   set.seed(1)
   x <- rnorm(10)
-  result <- a_summary_internal(
+  result <- a_summary(
     x = x, .N_col = 10, .N_row = 20, .var = "bla", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
     compare = FALSE, type = "numeric", .stats = get_stats("analyze_vars"), na.rm = TRUE, na_level = NA_character_
   )
@@ -163,9 +163,9 @@ testthat::test_that("a_summary_internal and a_summary work with healthy input.",
   testthat::expect_identical(res_out, res)
   testthat::expect_snapshot(res)
 
-  # factor input - a_summary_internal
+  # factor input - a_summary
   x <- factor(c("a", "a", "b", "c", "a"))
-  result <- a_summary_internal(
+  result <- a_summary(
     x = x, .N_col = 10, .N_row = 10, .var = "bla", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
     compare = FALSE, type = "counts", .stats = get_stats("analyze_vars", type = "counts"),
     na.rm = TRUE, na_level = NA_character_
@@ -178,9 +178,9 @@ testthat::test_that("a_summary_internal and a_summary work with healthy input.",
   testthat::expect_identical(res_out, res)
   testthat::expect_snapshot(res)
 
-  # character input - a_summary_internal
+  # character input - a_summary
   x <- c("A", "B", "A", "C")
-  result <- a_summary_internal(
+  result <- a_summary(
     x = x, .N_col = 10, .N_row = 10, .var = "x", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
     compare = FALSE, type = "counts", .stats = get_stats("analyze_vars", type = "counts"),
     na.rm = TRUE, na_level = NA_character_,
@@ -194,9 +194,9 @@ testthat::test_that("a_summary_internal and a_summary work with healthy input.",
   testthat::expect_identical(res_out, res)
   testthat::expect_snapshot(res)
 
-  # logical input - a_summary_internal
+  # logical input - a_summary
   x <- c(TRUE, FALSE, FALSE, TRUE, TRUE)
-  result <- a_summary_internal(
+  result <- a_summary(
     x = x, .N_col = 10, .N_row = 10, .var = NULL, .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
     compare = FALSE, type = "counts", .stats = get_stats("analyze_vars", type = "counts"),
     na.rm = TRUE, na_level = NA_character_

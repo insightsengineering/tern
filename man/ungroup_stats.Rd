@@ -24,6 +24,6 @@ A \code{list} with modified elements \code{x}, \code{.formats}, \code{.labels}, 
 Ungroups grouped non-numeric statistics within input vectors \code{.formats}, \code{.labels}, and \code{.indent_mods}.
 }
 \seealso{
-\code{\link[=a_summary_internal]{a_summary_internal()}} which uses this function internally.
+\code{\link[=a_summary]{a_summary()}} which uses this function as internal \code{afun} for \code{\link[=analyze_vars]{analyze_vars()}}.
 }
 \keyword{internal}

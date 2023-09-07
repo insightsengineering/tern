@@ -902,7 +902,7 @@
       [1] 0
       
 
-# a_summary_internal and a_summary work with healthy input.
+# a_summary work with healthy input.
 
     Code
       res
@@ -1392,4 +1392,34 @@
         Mean (SD)   5.5 (2.1)    1.0 (-)    -
         Median         5.5         1.0      -
         Min - Max   4.0 - 7.0   1.0 - 1.0   -
+
+# control_analyze_vars works with customized parameters
+
+    Code
+      res
+    Output
+      $conf_level
+      [1] 0.9
+      
+      $quantiles
+      [1] 0.1 0.9
+      
+      $quantile_type
+      [1] 2
+      
+      $test_mean
+      [1] 0
+      
+
+# analyze_vars works correctly with auto formats
+
+    Code
+      res
+    Output
+                       all obs     
+      —————————————————————————————
+      n                   5        
+      Mean               1.4       
+      Mean (SD)   1.44042 (1.91481)
+      Min - Max    0.0010 - 4.0000 
 

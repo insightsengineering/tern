@@ -15,7 +15,7 @@ testthat::test_that("get_stats works as expected for defaults", {
 
   testthat::expect_error(
     get_stats("dont_exist"),
-    regexp = "The inserted method_group \\(dont_exist\\) has no default statistical method."
+    regexp = "The selected method group \\(dont_exist\\) has no default statistical method."
   )
 
   # Type affects only counts and numeric for analyze_vars
