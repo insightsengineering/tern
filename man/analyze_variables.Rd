@@ -247,7 +247,8 @@ functions; in this case \code{\link[rtables:analyze]{rtables::analyze()}}.
 \details{
 It is possible to use \code{"auto"} for \code{analyze_vars} on a subset of methods. This uses \code{\link[=format_auto]{format_auto()}} to
 determine automatically the number of digits from the analyzed variable (\code{.vars}), but only for the
-current row data, and not for the whole data (before row splits).
+current row data (\code{.df_row[[.var]]}, see \code{?rtables::additional_fun_params}), and not for the whole
+data. Also no column split is considered.
 }
 \section{Functions}{
 \itemize{

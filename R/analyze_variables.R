@@ -601,7 +601,8 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #' @details
 #' It is possible to use `"auto"` for `analyze_vars` on a subset of methods. This uses [format_auto()] to
 #' determine automatically the number of digits from the analyzed variable (`.vars`), but only for the
-#' current row data, and not for the whole data (before row splits).
+#' current row data (`.df_row[[.var]]`, see `?rtables::additional_fun_params`), and not for the whole
+#' data. Also no column split is considered.
 #'
 #' @return
 #' * `analyze_vars()` returns a layout object suitable for passing to further layouting functions,

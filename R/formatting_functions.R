@@ -389,16 +389,20 @@ format_extreme_values_ci <- function(digits = 2L) {
 #' For non-derived values, the significant digits of data is used (e.g. range), while derived
 #' values have one more digits (measure of location and dispersion like mean, standard deviation).
 #' This function can be called internally with "auto" like, for example,
-#' `.formats = c("mean" = "auto")`.
+#' `.formats = c("mean" = "auto")`. See details to see how this works with the inner function.
 #'
-#' @param res (`numeric`) \cr results from statistical evaluation. It can be more than one
-#'   element (e.g. for `.stats = "mean_sd"`).
 #' @param dt_var (`numeric`) \cr all the data the statistics was created upon. Used only to find
-#'   significant digits.
+#'   significant digits. In `analyze_vars` this comes from `.df_row` (see
+#'   `?rtables::additional_fun_params`), and it is the row data after the above row splits. No
+#'   column split is considered.
 #' @param x_stat (`string`) \cr string indicating the current statistical method used.
-#' @param ... `rtables` standard for all format functions
 #'
 #' @return A string that `rtables` prints in a table cell.
+#'
+#' @details
+#' The internal function is needed to work with `rtables` default structure for
+#' format functions, i.e. `function(x, ...)`, where is x are results from statistical evaluation.
+#' It can be more than one element (e.g. for `.stats = "mean_sd"`).
 #'
 #' @examples
 #' x_todo <- c(0.001, 0.2, 0.0011000, 3, 4)

@@ -8,14 +8,11 @@ format_auto(dt_var, x_stat)
 }
 \arguments{
 \item{dt_var}{(\code{numeric}) \cr all the data the statistics was created upon. Used only to find
-significant digits.}
+significant digits. In \code{analyze_vars} this comes from \code{.df_row} (see
+\code{?rtables::additional_fun_params}), and it is the row data after the above row splits. No
+column split is considered.}
 
 \item{x_stat}{(\code{string}) \cr string indicating the current statistical method used.}
-
-\item{res}{(\code{numeric}) \cr results from statistical evaluation. It can be more than one
-element (e.g. for \code{.stats = "mean_sd"}).}
-
-\item{...}{\code{rtables} standard for all format functions}
 }
 \value{
 A string that \code{rtables} prints in a table cell.
@@ -27,7 +24,12 @@ Formatting function for the majority of default methods used in \code{\link[=ana
 For non-derived values, the significant digits of data is used (e.g. range), while derived
 values have one more digits (measure of location and dispersion like mean, standard deviation).
 This function can be called internally with "auto" like, for example,
-\code{.formats = c("mean" = "auto")}.
+\code{.formats = c("mean" = "auto")}. See details to see how this works with the inner function.
+}
+\details{
+The internal function is needed to work with \code{rtables} default structure for
+format functions, i.e. \verb{function(x, ...)}, where is x are results from statistical evaluation.
+It can be more than one element (e.g. for \code{.stats = "mean_sd"}).
 }
 \examples{
 x_todo <- c(0.001, 0.2, 0.0011000, 3, 4)

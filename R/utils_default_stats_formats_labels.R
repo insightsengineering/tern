@@ -19,9 +19,7 @@ assert_allowed_types <- function(type) {
 #' is used across `tern`, but some of its working principles can be seen in [analyze_vars()].
 #' See notes to understand why this is experimental.
 #'
-#' @param stats (`character`)\cr statistical methods to get defaults formats for.
-#' @param type (`character`)\cr type of data and result desired. Some stats defaults (and their formats and labels),
-#'   differ if you need to analyze different type of values. See Details for available options.
+#' @param stats (`character`)\cr statistical methods to get defaults formats or labels for.
 #'
 #' @details
 #' Current choices for `type` are `counts` and `numeric` for [analyze_vars()] and affect `get_stats()`.
@@ -36,10 +34,14 @@ NULL
 #' @describeIn default_stats_formats_labels Get defaults statistical methods for different
 #'   groups of methods.
 #'
-#' @param method_groups (`character`) \cr indicates the group of statistical methods that
+#' @param method_groups (`character`)\cr indicates the group of statistical methods that
 #'   we need the defaults from. A character vector can be used to collect more than one group of statistical
 #'   methods.
-#' @param stats_in (`character`) \cr desired stats to be picked out from the selected method group.
+#' @param type (`character`)\cr type of data and result desired. Some stats defaults (and their formats
+#'   and labels), differ if you need to analyze different type of values. See Details for available options.
+#' @param stats_in (`character`)\cr desired stats to be picked out from the selected method group.
+#' @param add_pval (`flag`)\cr should `"pval"` or `"pval_counts"` (for type `"counts"`) be added
+#'   to the statistical methods?
 #'
 #' @return
 #' * `get_stats()` returns a character vector with all default statistical methods.
@@ -226,7 +228,7 @@ get_format_from_stats <- function(stats, formats_in = NULL) {
 
 #' @describeIn default_stats_formats_labels Get labels from vector of statistical methods.
 #'
-#' @param formats_in (named `vector`) \cr inserted formats to replace defaults.
+#' @param labels_in (named `vector`) \cr inserted labels to replace defaults.
 #'
 #' @return
 #' * `get_label_from_stats()` returns a named character vector of default labels (if present

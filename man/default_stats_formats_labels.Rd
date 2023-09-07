@@ -26,18 +26,24 @@ tern_default_formats
 tern_default_labels
 }
 \arguments{
-\item{method_groups}{(\code{character}) \cr indicates the group of statistical methods that
+\item{method_groups}{(\code{character})\cr indicates the group of statistical methods that
 we need the defaults from. A character vector can be used to collect more than one group of statistical
 methods.}
 
-\item{type}{(\code{character})\cr type of data and result desired. Some stats defaults (and their formats and labels),
-differ if you need to analyze different type of values. See Details for available options.}
+\item{type}{(\code{character})\cr type of data and result desired. Some stats defaults (and their formats
+and labels), differ if you need to analyze different type of values. See Details for available options.}
 
-\item{stats_in}{(\code{character}) \cr desired stats to be picked out from the selected method group.}
+\item{stats_in}{(\code{character})\cr desired stats to be picked out from the selected method group.}
 
-\item{stats}{(\code{character})\cr statistical methods to get defaults formats for.}
+\item{add_pval}{(\code{flag})\cr should \code{"pval"} or \code{"pval_counts"} (for type \code{"counts"}) be added
+to the statistical methods?}
 
-\item{formats_in}{(named \code{vector}) \cr inserted formats to replace defaults.}
+\item{stats}{(\code{character})\cr statistical methods to get defaults formats or labels for.}
+
+\item{formats_in}{(named \code{vector}) \cr inserted formats to replace defaults. It can be a
+character vector from \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or a custom format function.}
+
+\item{labels_in}{(named \code{vector}) \cr inserted labels to replace defaults.}
 }
 \value{
 \itemize{
