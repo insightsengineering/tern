@@ -420,8 +420,6 @@ s_summary.logical <- function(x,
 #'
 #' @param compare (`logical`)\cr Whether comparison statistics should be analyzed instead of summary statistics
 #'   (`compare = TRUE` adds `pval` statistic comparing against reference group).
-#' @param type (`character`)\cr type of statistics to calculate given `x`. If `x` is numeric `type` should be
-#'   `"numeric"`, otherwise type should be `"counts"`.
 #'
 #' @return
 #' * `a_summary()` returns the corresponding list with formatted [rtables::CellValue()].

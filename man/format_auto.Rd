@@ -56,4 +56,3 @@ Other formatting functions:
 \code{\link{formatting_functions}}
 }
 \concept{formatting functions}
-\keyword{internal}

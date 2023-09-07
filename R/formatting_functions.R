@@ -415,7 +415,7 @@ format_extreme_values_ci <- function(digits = 2L) {
 #' format_auto(no_sc_x, "range")(x = no_sc_x)
 #'
 #' @family formatting functions
-#' @keywords internal
+#' @export
 format_auto <- function(dt_var, x_stat) {
   function(x = "", ...) {
     checkmate::assert_numeric(x, min.len = 1)

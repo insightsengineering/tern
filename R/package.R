@@ -12,7 +12,7 @@
 #' @importFrom Rdpack reprompt
 #' @importFrom rlang .data
 #' @importFrom survival coxph strata Surv
-#' @importFrom stats pchisq
+#' @importFrom stats pchisq setNames
 NULL
 
 # Resolve missing global definitions:

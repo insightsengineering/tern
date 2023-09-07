@@ -166,9 +166,6 @@ to avoid warnings from \code{rtables}.}
 
 \item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
 defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
-
-\item{type}{(\code{character})\cr type of statistics to calculate given \code{x}. If \code{x} is numeric \code{type} should be
-\code{"numeric"}, otherwise type should be \code{"counts"}.}
 }
 \value{
 \itemize{
