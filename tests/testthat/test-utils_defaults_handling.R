@@ -195,4 +195,3 @@ testthat::test_that("summary_custom works as expected", {
 
   testthat::expect_snapshot(res)
 })
-

@@ -539,4 +539,3 @@ testthat::test_that("analyze_vars works correctly with auto formats", {
   result <- testthat::expect_silent(res)
   testthat::expect_snapshot(res)
 })
-
