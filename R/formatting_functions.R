@@ -232,7 +232,7 @@ format_sigfig <- function(sigfig) {
   checkmate::assert_integerish(sigfig)
   function(x, ...) {
     if (!is.numeric(x)) stop("`format_sigfig` cannot be used for non-numeric values. Please choose another format.")
-    formatC(x, digits = sigfig, format = "f")
+    formatC(signif(x, digits = sigfig), digits = sigfig, format = "fg", flag = "#")
   }
 }
 

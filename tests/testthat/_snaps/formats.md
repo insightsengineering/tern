@@ -80,7 +80,7 @@
     Code
       res
     Output
-      [1] "1.66"    "0.576"   "0.1"     "78.6"    "0.00123"
+      [1] "1.66"    "0.576"   "0.100"   "78.6"    "0.00123"
 
 # format_fraction_threshold works with easy inputs
 
