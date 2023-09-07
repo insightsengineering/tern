@@ -138,7 +138,8 @@ to print out information about factor casting.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for the
+\code{"auto"} setting.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
@@ -242,6 +243,11 @@ is used as a statistics function in combination with the analyze function \code{
 Deprecation cycle started for \code{summarize_vars} as it is going to renamed into
 \code{analyze_vars}. Intention is to reflect better the core underlying \code{rtables}
 functions; in this case \code{\link[rtables:analyze]{rtables::analyze()}}.
+}
+\details{
+It is possible to use \code{"auto"} for \code{analyze_vars} on a subset of methods. This uses \code{\link[=format_auto]{format_auto()}} to
+determine automatically the number of digits from the analyzed variable (\code{.vars}), but only for the
+current row data, and not for the whole data (before row splits).
 }
 \section{Functions}{
 \itemize{
@@ -434,5 +440,15 @@ l <- basic_table() \%>\%
   analyze_vars(vars = "AVISIT", na.rm = FALSE)
 
 build_table(l, df = dta_test)
+
+# auto format
+dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4))
+basic_table() \%>\%
+  analyze_vars(
+    vars = "VAR",
+    .stats = c("n", "mean", "mean_sd", "range"),
+    .formats = c("mean_sd" = "auto", "range" = "auto")
+  ) \%>\%
+  build_table(dt)
 
 }

@@ -4,16 +4,16 @@
 \alias{format_auto}
 \title{Automatic formats from data significant digits}
 \usage{
-format_auto(res, x, x_stat, ...)
+format_auto(dt_var, x_stat)
 }
 \arguments{
-\item{res}{(\code{numeric}) \cr results from statistical evaluation. It can be more than one
-element (e.g. for \code{.stats = "mean_sd"}).}
-
-\item{x}{(\code{numeric}) \cr all the data the statistics was created upon. Used only to find
+\item{dt_var}{(\code{numeric}) \cr all the data the statistics was created upon. Used only to find
 significant digits.}
 
 \item{x_stat}{(\code{string}) \cr string indicating the current statistical method used.}
+
+\item{res}{(\code{numeric}) \cr results from statistical evaluation. It can be more than one
+element (e.g. for \code{.stats = "mean_sd"}).}
 
 \item{...}{\code{rtables} standard for all format functions}
 }
@@ -32,10 +32,12 @@ This function can be called internally with "auto" like, for example,
 \examples{
 x_todo <- c(0.001, 0.2, 0.0011000, 3, 4)
 res <- c(mean(x_todo[1:3]), sd(x_todo[1:3]))
-format_auto(res = res, x = x_todo, x_stat = "mean_sd")
-format_auto(range(x_todo), x_todo, "range")
+
+# x is the result coming into the formatting function -> res!!
+format_auto(dt_var = x_todo, x_stat = "mean_sd")(x = res)
+format_auto(x_todo, "range")(x = range(x_todo))
 no_sc_x <- c(0.0000001, 1)
-format_auto(no_sc_x, no_sc_x, "range")
+format_auto(no_sc_x, "range")(x = no_sc_x)
 
 }
 \seealso{
