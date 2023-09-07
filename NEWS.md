@@ -1,4 +1,6 @@
 # tern 0.9.0.9000
+### Enhancements
+* Refactored `tabulate_rsp_subgroups` to pass sanitation checks by preventing creation of degenerate subtables.
 
 # tern 0.9.0
 ### New Features
