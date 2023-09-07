@@ -25,21 +25,19 @@ NULL
 #' @param method_groups (`character`)\cr indicates the group of statistical methods that
 #'   we need the defaults from. A character vector can be used to collect more than one group of statistical
 #'   methods.
-#' @param type (`character`)\cr type of data and result desired. Some stats defaults (and their formats
-#'   and labels), differ if you need to analyze different type of values. See Details for available options.
 #' @param stats_in (`character`)\cr desired stats to be picked out from the selected method group.
-#' @param add_pval (`flag`)\cr should `"pval"` or `"pval_counts"` (for type `"counts"`) be added
-#'   to the statistical methods?
+#' @param add_pval (`flag`)\cr should `"pval"` or `"pval_counts"` (if `method_groups` contains
+#'   `"analyze_vars_counts"`) be added to the statistical methods?
 #'
 #' @return
 #' * `get_stats()` returns a character vector with all default statistical methods.
 #'
 #' @examples
-#' # Default is numeric
-#' num_stats <- get_stats("analyze_vars")
+#' # analyze_vars is numeric
+#' num_stats <- get_stats("analyze_vars_numeric") # also the default
 #'
 #' # Other type
-#' cnt_stats <- get_stats("analyze_vars", type = "counts")
+#' cnt_stats <- get_stats("analyze_vars_counts")
 #'
 #' # Weirdly taking the pval from count_occurrences
 #' only_pval <- get_stats("count_occurrences", add_pval = TRUE, stats_in = "pval")
@@ -48,58 +46,43 @@ NULL
 #' all_cnt_occ <- get_stats("count_occurrences")
 #'
 #' # Multiple
-#' get_stats(c("count_occurrences", "analyze_vars"))
-#' get_stats(c("count_occurrences", "analyze_vars"), type = c("numeric", "counts"))
+#' get_stats(c("count_occurrences", "analyze_vars_counts"))
 #'
 #' @export
-get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FALSE) {
+get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, add_pval = FALSE) {
   checkmate::assert_character(method_groups)
-  default_type <- c("counts", "numeric")
-  checkmate::assert_character(type, null.ok = TRUE)
-  checkmate::assert_subset(type, choices = default_type, empty.ok = TRUE)
   checkmate::assert_character(stats_in, null.ok = TRUE)
   checkmate::assert_flag(add_pval)
 
+  # Default is still numeric
+  if (any(method_groups == "analyze_vars")) {
+    method_groups[method_groups == "analyze_vars"] <- "analyze_vars_numeric"
+  }
+
+  type_tmp <- ifelse(any(grepl("counts", method_groups)), "counts", "numeric") # for pval checks
+
   # Defaults for loop
   out <- NULL
-  type_loop <- if (is.null(type)) {
-    "numeric"
-  } else {
-    type
-  }
 
   # Loop for multiple method groups
   for (mgi in method_groups) {
-    # Loop if you have more than one type
-    for (typ in type_loop) {
-      add_typ_to_err <- FALSE
-      mgi_fin <- mgi
 
-      # different types
-      if (mgi %in% c("analyze_vars")) {
-        mgi_fin <- paste0(mgi, "_", typ)
-        add_typ_to_err <- TRUE
-      }
-
-      # Main switcher
-      out_tmp <- switch(mgi_fin,
-        "count_occurrences" = c("count", "count_fraction_fixed_dp", "fraction"),
-        "summarize_num_patients" = c("unique", "nonunique", "unique_count"),
-        "analyze_vars_counts" = c("n", "count", "count_fraction", "n_blq"),
-        "analyze_vars_numeric" = c(
-          "n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci", "mean_sei",
-          "mean_sdi", "mean_pval", "median", "mad", "median_ci", "quantiles", "iqr",
-          "range", "min", "max", "median_range", "cv", "geom_mean", "geom_mean_ci",
-          "geom_cv"
-        ),
-        stop(
-          "The selected method group (", mgi, ")",
-          ifelse(add_typ_to_err, paste0(" with type(s) ", paste0(typ, collapse = ", ")), ""),
-          " has no default statistical method."
-        )
+    # Main switcher
+    out_tmp <- switch(mgi,
+      "count_occurrences" = c("count", "count_fraction_fixed_dp", "fraction"),
+      "summarize_num_patients" = c("unique", "nonunique", "unique_count"),
+      "analyze_vars_counts" = c("n", "count", "count_fraction", "n_blq"),
+      "analyze_vars_numeric" = c(
+        "n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci", "mean_sei",
+        "mean_sdi", "mean_pval", "median", "mad", "median_ci", "quantiles", "iqr",
+        "range", "min", "max", "median_range", "cv", "geom_mean", "geom_mean_ci",
+        "geom_cv"
+      ),
+      stop(
+        "The selected method group (", mgi, ") has no default statistical method."
       )
-      out <- unique(c(out, out_tmp))
-    }
+    )
+    out <- unique(c(out, out_tmp))
   }
 
   # If you added pval to the stats_in you certainly want it
@@ -109,16 +92,13 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
     # Must be only one value between choices
     checkmate::assert_choice(stats_in_pval_value, c("pval", "pval_counts"))
 
-    if (length(type) > 1) {
-      stop("Only one type is allowed when inserting pval in stats_in.")
-    }
-
     # Mismatch with counts and numeric
-    if ("counts" %in% type && stats_in_pval_value != "pval_counts" ||
-      "numeric" %in% type && stats_in_pval_value != "pval") {
+    if (any(grepl("counts", method_groups)) && stats_in_pval_value != "pval_counts" ||
+      any(grepl("numeric", method_groups)) && stats_in_pval_value != "pval") {
       stop(
         "Inserted p-value (", stats_in_pval_value, ") is not valid for type ",
-        type, ". Use ", paste(ifelse(stats_in_pval_value == "pval", "pval_counts", "pval")), " instead."
+        type_tmp, ". Use ", paste(ifelse(stats_in_pval_value == "pval", "pval_counts", "pval")),
+        " instead."
       )
     }
 
@@ -128,11 +108,7 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
 
   # Mainly used in "analyze_vars" but it could be necessary elsewhere
   if (isTRUE(add_pval)) {
-    if (length(type) > 1) {
-      stop("Only one type is allowed when add_pval = TRUE.")
-    }
-
-    if (!is.null(type) && "counts" %in% type) {
+    if (any(grepl("counts", method_groups))) {
       out <- unique(c(out, "pval_counts"))
     } else {
       out <- unique(c(out, "pval"))
@@ -148,10 +124,6 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
   if (length(out) == 0) {
     stop(
       "The selected method group(s) (", paste0(method_groups, collapse = ", "), ")",
-      ifelse(is.null(type), "", paste0(
-        " with type(s) ",
-        paste0(type, collapse = ", ")
-      )),
       " do not have the required default statistical methods:\n",
       paste0(stats_in, collapse = " ")
     )
@@ -356,7 +328,8 @@ tern_default_labels <- c(
 #'
 #' @export
 summary_formats <- function(type = "numeric", include_pval = FALSE) {
-  get_formats_from_stats(get_stats("analyze_vars", type, add_pval = include_pval))
+  met_grp <- paste0(c("analyze_vars", type), collapse = "_")
+  get_formats_from_stats(get_stats(met_grp, add_pval = include_pval))
 }
 
 #' @describeIn default_stats_formats_labels Quick function to retrieve default labels for summary statistics.
@@ -372,7 +345,8 @@ summary_formats <- function(type = "numeric", include_pval = FALSE) {
 #'
 #' @export
 summary_labels <- function(type = "numeric", include_pval = FALSE) {
-  get_labels_from_stats(get_stats("analyze_vars", type, add_pval = include_pval))
+  met_grp <- paste0(c("analyze_vars", type), collapse = "_")
+  get_labels_from_stats(get_stats(met_grp, add_pval = include_pval))
 }
 
 #' @describeIn default_stats_formats_labels `r lifecycle::badge("deprecated")` Function to configure settings for default or custom summary statistics for a given data
@@ -416,8 +390,8 @@ summary_custom <- function(type = "numeric",
     "summary_custom()",
     details = "Please use `get_stats`, `get_formats_from_stats`, and `get_labels_from_stats` directly instead."
   )
-
-  .stats <- get_stats("analyze_vars", type, stats_custom, add_pval = include_pval)
+  met_grp <- paste0(c("analyze_vars", type), collapse = "_")
+  .stats <- get_stats(met_grp, stats_custom, add_pval = include_pval)
   .formats <- get_formats_from_stats(.stats, formats_custom)
   .labels <- get_labels_from_stats(.stats, labels_custom)
   .indent_mods <- stats::setNames(rep(0L, length(.stats)), .stats)

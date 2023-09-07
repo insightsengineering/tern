@@ -153,7 +153,7 @@ testthat::test_that("a_summary work with healthy input.", {
   x <- rnorm(10)
   result <- a_summary(
     x = x, .N_col = 10, .N_row = 20, .var = "bla", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
-    compare = FALSE, type = "numeric", .stats = get_stats("analyze_vars"), na.rm = TRUE, na_level = NA_character_
+    compare = FALSE, .stats = get_stats("analyze_vars_numeric"), na.rm = TRUE, na_level = NA_character_
   )
   res_out <- testthat::expect_silent(result)
 
@@ -167,7 +167,7 @@ testthat::test_that("a_summary work with healthy input.", {
   x <- factor(c("a", "a", "b", "c", "a"))
   result <- a_summary(
     x = x, .N_col = 10, .N_row = 10, .var = "bla", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
-    compare = FALSE, type = "counts", .stats = get_stats("analyze_vars", type = "counts"),
+    compare = FALSE, .stats = get_stats("analyze_vars_counts"),
     na.rm = TRUE, na_level = NA_character_
   )
   res_out <- testthat::expect_silent(result)
@@ -182,7 +182,7 @@ testthat::test_that("a_summary work with healthy input.", {
   x <- c("A", "B", "A", "C")
   result <- a_summary(
     x = x, .N_col = 10, .N_row = 10, .var = "x", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
-    compare = FALSE, type = "counts", .stats = get_stats("analyze_vars", type = "counts"),
+    compare = FALSE, .stats = get_stats("analyze_vars_counts"),
     na.rm = TRUE, na_level = NA_character_,
     verbose = FALSE
   )
@@ -198,7 +198,7 @@ testthat::test_that("a_summary work with healthy input.", {
   x <- c(TRUE, FALSE, FALSE, TRUE, TRUE)
   result <- a_summary(
     x = x, .N_col = 10, .N_row = 10, .var = NULL, .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
-    compare = FALSE, type = "counts", .stats = get_stats("analyze_vars", type = "counts"),
+    compare = FALSE, .stats = get_stats("analyze_vars_counts"),
     na.rm = TRUE, na_level = NA_character_
   )
   res_out <- testthat::expect_silent(result)

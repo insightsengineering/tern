@@ -491,7 +491,8 @@ a_summary <- function(x,
   }
 
   # Fill in with formatting defaults if needed
-  .stats <- get_stats("analyze_vars", type, stats_in = .stats, add_pval = compare)
+  met_grp <- paste0(c("analyze_vars", type), collapse = "_")
+  .stats <- get_stats(met_grp, stats_in = .stats, add_pval = compare)
   .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- get_labels_from_stats(.stats, .labels)
 

@@ -18,7 +18,11 @@ An object of class \code{list} of length 34.
 An object of class \code{character} of length 31.
 }
 \usage{
-get_stats(method_groups, type = NULL, stats_in = NULL, add_pval = FALSE)
+get_stats(
+  method_groups = "analyze_vars_numeric",
+  stats_in = NULL,
+  add_pval = FALSE
+)
 
 get_formats_from_stats(stats, formats_in = NULL)
 
@@ -46,13 +50,10 @@ summary_custom(
 we need the defaults from. A character vector can be used to collect more than one group of statistical
 methods.}
 
-\item{type}{(\code{character})\cr type of data and result desired. Some stats defaults (and their formats
-and labels), differ if you need to analyze different type of values. See Details for available options.}
-
 \item{stats_in}{(\code{character})\cr desired stats to be picked out from the selected method group.}
 
-\item{add_pval}{(\code{flag})\cr should \code{"pval"} or \code{"pval_counts"} (for type \code{"counts"}) be added
-to the statistical methods?}
+\item{add_pval}{(\code{flag})\cr should \code{"pval"} or \code{"pval_counts"} (if \code{method_groups} contains
+\code{"analyze_vars_counts"}) be added to the statistical methods?}
 
 \item{stats}{(\code{character})\cr statistical methods to get defaults formats or labels for.}
 
@@ -152,11 +153,11 @@ Formats in \code{tern} and \code{rtables} can be functions that take in the tabl
 return a string. This is well documented in \code{vignette("custom_appearance", package = "rtables")}.
 }
 \examples{
-# Default is numeric
-num_stats <- get_stats("analyze_vars")
+# analyze_vars is numeric
+num_stats <- get_stats("analyze_vars_numeric") # also the default
 
 # Other type
-cnt_stats <- get_stats("analyze_vars", type = "counts")
+cnt_stats <- get_stats("analyze_vars_counts")
 
 # Weirdly taking the pval from count_occurrences
 only_pval <- get_stats("count_occurrences", add_pval = TRUE, stats_in = "pval")
@@ -165,8 +166,7 @@ only_pval <- get_stats("count_occurrences", add_pval = TRUE, stats_in = "pval")
 all_cnt_occ <- get_stats("count_occurrences")
 
 # Multiple
-get_stats(c("count_occurrences", "analyze_vars"))
-get_stats(c("count_occurrences", "analyze_vars"), type = c("numeric", "counts"))
+get_stats(c("count_occurrences", "analyze_vars_counts"))
 
 # Defaults formats
 get_formats_from_stats(num_stats)

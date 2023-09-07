@@ -7,10 +7,10 @@ testthat::test_that("get_stats works as expected for defaults", {
   testthat::expect_snapshot(res)
 
   # Change depending on type
-  res <- testthat::expect_silent(get_stats("analyze_vars", type = "counts"))
+  res <- testthat::expect_silent(get_stats("analyze_vars_counts"))
   testthat::expect_snapshot(res)
 
-  res <- testthat::expect_silent(get_stats("analyze_vars", type = "numeric"))
+  res <- testthat::expect_silent(get_stats("analyze_vars_numeric"))
   testthat::expect_snapshot(res)
 
   testthat::expect_error(
@@ -18,57 +18,37 @@ testthat::test_that("get_stats works as expected for defaults", {
     regexp = "The selected method group \\(dont_exist\\) has no default statistical method."
   )
 
-  # Type affects only counts and numeric for analyze_vars
-  testthat::expect_identical(
-    get_stats("count_occurrences", type = "counts"),
-    get_stats("count_occurrences", type = "numeric")
-  )
-
   # Here they are different, and overlap only for n
   testthat::expect_identical(intersect(
-    get_stats("analyze_vars", type = "counts"),
-    get_stats("analyze_vars", type = "numeric")
+    get_stats("analyze_vars_counts"),
+    get_stats("analyze_vars_numeric")
   ), "n")
 
   # Test multiples
   testthat::expect_identical(
-    get_stats(c("count_occurrences", "analyze_vars"), type = c("numeric", "counts")),
+    get_stats(c("count_occurrences", "analyze_vars")),
     unique(c(
       get_stats("count_occurrences"),
-      get_stats("analyze_vars", type = "numeric"),
-      get_stats("analyze_vars", type = "counts")
+      get_stats("analyze_vars_numeric"),
+      get_stats("analyze_vars_counts")
     ))
   )
 })
 testthat::test_that("get_stats works well with pval", {
   # pval is added correctly
-  testthat::expect_contains(get_stats("analyze_vars", type = "numeric", add_pval = TRUE), "pval")
-  testthat::expect_contains(get_stats("analyze_vars", type = "counts", add_pval = TRUE), "pval_counts")
-  testthat::expect_identical(
-    get_stats("count_occurrences", type = "numeric", add_pval = TRUE),
-    get_stats("count_occurrences", type = NULL, add_pval = TRUE)
-  )
-  testthat::expect_contains(get_stats("count_occurrences", type = NULL, add_pval = TRUE), "pval")
-  testthat::expect_contains(get_stats("count_occurrences", type = "counts", add_pval = TRUE), "pval_counts")
+  testthat::expect_contains(get_stats("analyze_vars_numeric", add_pval = TRUE), "pval")
+  testthat::expect_contains(get_stats("analyze_vars_counts", add_pval = TRUE), "pval_counts")
+  testthat::expect_contains(get_stats("count_occurrences", add_pval = TRUE), "pval")
 
   # Errors
-  testthat::expect_error(get_stats("analyze_vars", type = "counts", stats_in = c("pval", "pval_counts")))
+  testthat::expect_error(get_stats("analyze_vars_counts", stats_in = c("pval", "pval_counts")))
   testthat::expect_error(
-    get_stats("analyze_vars", type = c("counts", "numeric"), stats_in = c("pval")),
-    "Only one type*"
-  )
-  testthat::expect_error(
-    get_stats("analyze_vars", type = "counts", stats_in = c("n", "pval")),
+    get_stats("analyze_vars_counts", stats_in = c("n", "pval")),
     "Inserted p-value \\(pval\\) is not valid for type counts*"
   )
   testthat::expect_error(
-    get_stats("analyze_vars", type = "numeric", stats_in = c("n", "pval_counts")),
+    get_stats("analyze_vars_numeric", stats_in = c("n", "pval_counts")),
     "Inserted p-value \\(pval_counts\\) is not valid for type numeric*"
-  )
-
-  testthat::expect_error(
-    get_stats("analyze_vars", type = c("counts", "numeric"), add_pval = TRUE),
-    "Only one type is allowed when add_pval = TRUE."
   )
 })
 
