@@ -174,11 +174,20 @@
     Code
       res
     Output
-      $row_count
-      [1] 4 4
-      attr(,"label")
-      [1] "female (N=4)"
-      
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+         row_name formatted_cell indent_mod    row_label
+      1 row_count                         0 female (N=4)
+
+# c_label_n_alt works as expected
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+         row_name formatted_cell indent_mod     row_label
+      1 row_count                         0 female (N=10)
 
 # add_rowcounts works with one row split
 
@@ -271,6 +280,22 @@
         ASIAN                          44           37             40      
         BLACK OR AFRICAN AMERICAN      18           12             13      
         WHITE                           8           7              8       
+
+# add_rowcounts works with alt_counts = TRUE
+
+    Code
+      res
+    Output
+                                    A: Drug X   B: Placebo   C: Combination
+      —————————————————————————————————————————————————————————————————————
+      F (N=52)                                                             
+        ASIAN                          44           37             40      
+        BLACK OR AFRICAN AMERICAN      18           12             13      
+        WHITE                           8           7              8       
+      M (N=48)                                                             
+        ASIAN                          35           31             44      
+        BLACK OR AFRICAN AMERICAN      10           12             14      
+        WHITE                           6           7              10      
 
 # h_col_indices works as expected
 
