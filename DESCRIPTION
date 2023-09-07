@@ -147,7 +147,6 @@ Collate:
     'summarize_glm_count.R'
     'summarize_num_patients.R'
     'summarize_patients_exposure_in_cols.R'
-    'summary_stats.R'
     'survival_biomarkers_subgroups.R'
     'survival_coxph_pairwise.R'
     'survival_duration_subgroups.R'
