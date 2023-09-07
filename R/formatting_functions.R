@@ -421,8 +421,10 @@ format_auto <- function(dt_var, x_stat) {
     checkmate::assert_numeric(x, min.len = 1)
     checkmate::assert_numeric(dt_var, min.len = 1)
     # Defaults - they may be a param in the future
-    der_stats <- c("mean", "sd", "se", "median", "geom_mean", "quantiles", "iqr",
-                   "mean_sd", "mean_se", "mean_se", "mean_ci", "mean_sei", "mean_sdi")
+    der_stats <- c(
+      "mean", "sd", "se", "median", "geom_mean", "quantiles", "iqr",
+      "mean_sd", "mean_se", "mean_se", "mean_ci", "mean_sei", "mean_sdi"
+    )
     nonder_stats <- c("n", "range", "min", "max")
 
     # Safenet for miss-modifications
@@ -442,10 +444,12 @@ format_auto <- function(dt_var, x_stat) {
     def_fmt <- get_format_from_stats(x_stat)[[x_stat]]
     str_fmt <- str_extract(def_fmt, invert = FALSE)[[1]]
     if (length(str_fmt) != length(str_vals)) {
-      stop("Number of inserted values as result (", length(str_vals),
-           ") is not the same as there should be in the default tern formats for ",
-           x_stat, " (-> ", def_fmt, " needs ", length(str_fmt), " values). ",
-           "See tern_default_formats to check all of them.")
+      stop(
+        "Number of inserted values as result (", length(str_vals),
+        ") is not the same as there should be in the default tern formats for ",
+        x_stat, " (-> ", def_fmt, " needs ", length(str_fmt), " values). ",
+        "See tern_default_formats to check all of them."
+      )
     }
 
     # Squashing them together

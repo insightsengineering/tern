@@ -152,12 +152,18 @@ testthat::test_that("format_extreme_values_ci works with easy inputs", {
 
   # No scientific notation
   no_sc_x <- c(0.0000001, 1)
-  testthat::expect_identical(format_auto(no_sc_x, "range")(x = no_sc_x),
-                             "0.0000001 - 1.0000000")
+  testthat::expect_identical(
+    format_auto(no_sc_x, "range")(x = no_sc_x),
+    "0.0000001 - 1.0000000"
+  )
 
   # More results than formats values and viceversa
-  testthat::expect_error(format_auto(x_todo, "range")(x = c(1, 2, 3)),
-                         "Number of inserted values as result \\(3\\)*")
-  testthat::expect_error(format_auto(x_todo, "range")(x = 1.234),
-                         "Number of inserted values as result \\(1\\)*")
+  testthat::expect_error(
+    format_auto(x_todo, "range")(x = c(1, 2, 3)),
+    "Number of inserted values as result \\(3\\)*"
+  )
+  testthat::expect_error(
+    format_auto(x_todo, "range")(x = 1.234),
+    "Number of inserted values as result \\(1\\)*"
+  )
 })
