@@ -140,3 +140,24 @@ testthat::test_that("format_extreme_values_ci works with easy inputs", {
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("format_extreme_values_ci works with easy inputs", {
+  x_todo <- c(0.001, 0.2, 0.0001000, 3, 4)
+  res <- c(mean(x_todo[1:3]), sd(x_todo[1:3])) # It can be less
+  result <- format_auto(res = res, x = x_todo, x_stat = "mean_sd")
+  testthat::expect_identical(result, "0.06737 (0.11486)")
+
+  result <- format_auto(range(x_todo), x_todo, "range")
+  testthat::expect_identical(result, "0.0010 - 4.0000")
+
+  # No scientific notation
+  no_sc_x <- c(0.0000001, 1)
+  testthat::expect_identical(format_auto(no_sc_x, no_sc_x, "range"),
+                             "0.0000001 - 1.0000000")
+
+  # More results than formats values and viceversa
+  testthat::expect_error(format_auto(c(1, 2, 3), x_todo, "range"),
+                         "Number of inserted values as result \\(3\\)*")
+  testthat::expect_error(format_auto(1.234, x_todo, "range"),
+                         "Number of inserted values as result \\(1\\)*")
+})

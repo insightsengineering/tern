@@ -14,6 +14,7 @@ custom formats can be created via the \code{\link[formatters:sprintf_format]{for
 \seealso{
 Other formatting functions: 
 \code{\link{extreme_format}},
+\code{\link{format_auto}()},
 \code{\link{format_count_fraction_fixed_dp}()},
 \code{\link{format_count_fraction}()},
 \code{\link{format_extreme_values_ci}()},
