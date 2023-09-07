@@ -62,6 +62,8 @@ character vector from \code{\link[formatters:list_formats]{formatters::list_vali
 
 \item{labels_in}{(named \code{vector}) \cr inserted labels to replace defaults.}
 
+\item{type}{(\code{flag})\cr is it going to be \code{"numeric"} or \code{"counts"}?}
+
 \item{include_pval}{(\code{flag})\cr deprecated parameter. Same as \code{add_pval}.}
 
 \item{stats_custom}{(\verb{named vector} of \code{character})\cr vector of statistics to include if not the defaults. This

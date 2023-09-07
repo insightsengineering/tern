@@ -318,6 +318,8 @@ tern_default_labels <- c(
 #' @describeIn default_stats_formats_labels Quick function to retrieve default formats for summary statistics:
 #'   [analyze_vars()] and [analyze_vars_in_cols()] principally.
 #'
+#' @param type (`flag`)\cr is it going to be `"numeric"` or `"counts"`?
+#'
 #' @return
 #' * `summary_formats()` returns a named `vector` of default statistic formats for the given data type.
 #'
