@@ -30,10 +30,10 @@ assert_allowed_types <- function(type) {
 #' These defaults are experimental because we use the names of functions to retrieve the default statistics. This
 #' should be generalized in groups of methods according to more reasonable groupings.
 #'
-#' @name default_stats_and_formats
+#' @name default_stats_formats_labels
 NULL
 
-#' @describeIn default_stats_and_formats Get defaults statistical methods for different
+#' @describeIn default_stats_formats_labels Get defaults statistical methods for different
 #'   groups of methods.
 #'
 #' @param method_groups (`character`) \cr indicates the group of statistical methods that
@@ -168,7 +168,7 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
   out
 }
 
-#' @describeIn default_stats_and_formats Get formats from vector of statistical methods. If not
+#' @describeIn default_stats_formats_labels Get formats from vector of statistical methods. If not
 #'   present `NULL` is returned.
 #'
 #' @param formats_in (named `vector`) \cr inserted formats to replace defaults. It can be a
@@ -224,7 +224,7 @@ get_format_from_stats <- function(stats, formats_in = NULL) {
   out
 }
 
-#' @describeIn default_stats_and_formats Get labels from vector of statistical methods.
+#' @describeIn default_stats_formats_labels Get labels from vector of statistical methods.
 #'
 #' @param formats_in (named `vector`) \cr inserted formats to replace defaults.
 #'
@@ -271,7 +271,7 @@ get_label_from_stats <- function(stats, labels_in = NULL) {
   out
 }
 
-#' @describeIn default_stats_and_formats Named list of default formats for `tern`.
+#' @describeIn default_stats_formats_labels Named list of default formats for `tern`.
 #'
 #' @export
 tern_default_formats <- c(
@@ -311,7 +311,7 @@ tern_default_formats <- c(
   pval_counts = "x.xxxx | (<0.0001)"
 )
 
-#' @describeIn default_stats_and_formats `character` vector that contains default labels
+#' @describeIn default_stats_formats_labels `character` vector that contains default labels
 #'   for `tern`.
 #'
 #' @export

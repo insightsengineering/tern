@@ -67,7 +67,7 @@ reference:
   - title: Analysis Helper Functions
     desc: These functions are useful in defining an analysis.
     contents:
-      - default_stats_and_formats
+      - default_stats_formats_labels
       - starts_with("h_")
       - starts_with("or_")
       - starts_with("prop_")
