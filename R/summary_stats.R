@@ -79,7 +79,7 @@ summary_custom <- function(type = "numeric",
   lifecycle::deprecate_warn(
     "0.9.0.9001",
     "summary_custom()",
-    details = "Please use get_stats and get_* directly instead."
+    details = "Please use `get_stats`, `get_format_from_stats`, and `get_label_from_stats` directly instead."
   )
 
   .stats <- get_stats("analyze_vars", type, stats_custom, add_pval = include_pval)

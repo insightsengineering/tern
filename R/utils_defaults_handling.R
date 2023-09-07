@@ -10,17 +10,17 @@ assert_allowed_types <- function(type) {
   invisible(default_type)
 }
 
-#' Defaults for stats methods names and their relative formats/labels
+#' Defaults for statistical method names and their associated formats & labels
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
 #' Utility functions to get valid statistic methods for different method groups
-#' (`.stats`) and their relative formats (`.formats`) and labels (`.labels`). This utility
+#' (`.stats`) and their associated formats (`.formats`) and labels (`.labels`). This utility
 #' is used across `tern`, but some of its working principles can be seen in [analyze_vars()].
 #' See notes to understand why this is experimental.
 #'
-#' @param stats (`character`) \cr statistical methods to get defaults formats for.
-#' @param type (`character`) \cr type of data and result desired. Some stats defaults (and their formats and labels),
+#' @param stats (`character`)\cr statistical methods to get defaults formats for.
+#' @param type (`character`)\cr type of data and result desired. Some stats defaults (and their formats and labels),
 #'   differ if you need to analyze different type of values. See Details for available options.
 #'
 #' @details
@@ -101,8 +101,8 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
           "geom_cv"
         ),
         stop(
-          "The inserted method_group (", mgi, ")",
-          ifelse(add_typ_to_err, paste0(" and type (", paste0(typ, collapse = " "), ")"), ""),
+          "The selected method group (", mgi, ")",
+          ifelse(add_typ_to_err, paste0(" with type(s) ", paste0(typ, collapse = ", ")), ""),
           " has no default statistical method."
         )
       )
@@ -126,7 +126,7 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
       "numeric" %in% type && stats_in_pval_value != "pval") {
       stop(
         "Inserted p-value (", stats_in_pval_value, ") is not valid for type ",
-        type, ". Use the other from pval pval_counts."
+        type, ". Use ", paste(ifelse(stats_in_pval_value == "pval", "pval_counts", "pval")), " instead."
       )
     }
 
@@ -155,12 +155,12 @@ get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FA
   # If intersect did not find matches (and no pval?) -> error
   if (length(out) == 0) {
     stop(
-      "The selected method_groups (", paste0(method_groups, collapse = " "), ")",
+      "The selected method group(s) (", paste0(method_groups, collapse = ", "), ")",
       ifelse(is.null(type), "", paste0(
-        " and types (",
-        paste0(type, collapse = " "), ")"
+        " with type(s) ",
+        paste0(type, collapse = ", ")
       )),
-      " does not have the required default statistical methods:\n",
+      " do not have the required default statistical methods:\n",
       paste0(stats_in, collapse = " ")
     )
   }

@@ -488,7 +488,7 @@ a_summary_internal <- function(x,
 
   # Check for custom labels from control_analyze_vars
   if (is.numeric(x)) {
-    default_labels <- get_stats("analyze_vars", type, add_pval = compare) %>%
+    default_labels <- .stats %>%
       get_label_from_stats()
     for (i in intersect(.stats, c("mean_ci", "mean_pval", "median_ci", "quantiles"))) {
       if (!i %in% names(.labels) || .labels[[i]] == default_labels[[i]]) {
