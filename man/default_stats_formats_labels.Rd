@@ -4,8 +4,8 @@
 \name{default_stats_formats_labels}
 \alias{default_stats_formats_labels}
 \alias{get_stats}
-\alias{get_format_from_stats}
-\alias{get_label_from_stats}
+\alias{get_formats_from_stats}
+\alias{get_labels_from_stats}
 \alias{tern_default_formats}
 \alias{tern_default_labels}
 \title{Defaults for statistical method names and their associated formats & labels}
@@ -17,9 +17,9 @@ An object of class \code{character} of length 31.
 \usage{
 get_stats(method_groups, type = NULL, stats_in = NULL, add_pval = FALSE)
 
-get_format_from_stats(stats, formats_in = NULL)
+get_formats_from_stats(stats, formats_in = NULL)
 
-get_label_from_stats(stats, labels_in = NULL)
+get_labels_from_stats(stats, labels_in = NULL)
 
 tern_default_formats
 
@@ -51,12 +51,12 @@ character vector from \code{\link[formatters:list_formats]{formatters::list_vali
 }
 
 \itemize{
-\item \code{get_format_from_stats()} returns a named list of formats, they being a value from
+\item \code{get_formats_from_stats()} returns a named list of formats, they being a value from
 \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or a custom function (e.g. \link{formatting_functions}).
 }
 
 \itemize{
-\item \code{get_label_from_stats()} returns a named character vector of default labels (if present
+\item \code{get_labels_from_stats()} returns a named character vector of default labels (if present
 otherwise \code{NULL}).
 }
 }
@@ -76,10 +76,10 @@ Current choices for \code{type} are \code{counts} and \code{numeric} for \code{\
 \item \code{get_stats()}: Get defaults statistical methods for different
 groups of methods.
 
-\item \code{get_format_from_stats()}: Get formats from vector of statistical methods. If not
+\item \code{get_formats_from_stats()}: Get formats from vector of statistical methods. If not
 present \code{NULL} is returned.
 
-\item \code{get_label_from_stats()}: Get labels from vector of statistical methods.
+\item \code{get_labels_from_stats()}: Get labels from vector of statistical methods.
 
 \item \code{tern_default_formats}: Named list of default formats for \code{tern}.
 
@@ -112,24 +112,24 @@ get_stats(c("count_occurrences", "analyze_vars"))
 get_stats(c("count_occurrences", "analyze_vars"), type = c("numeric", "counts"))
 
 # Defaults formats
-get_format_from_stats(num_stats)
-get_format_from_stats(cnt_stats)
-get_format_from_stats(only_pval)
-get_format_from_stats(all_cnt_occ)
+get_formats_from_stats(num_stats)
+get_formats_from_stats(cnt_stats)
+get_formats_from_stats(only_pval)
+get_formats_from_stats(all_cnt_occ)
 
 # Addition of customs
-get_format_from_stats(all_cnt_occ, formats_in = c("fraction" = c("xx")))
-get_format_from_stats(all_cnt_occ, formats_in = list("fraction" = c("xx.xx", "xx")))
+get_formats_from_stats(all_cnt_occ, formats_in = c("fraction" = c("xx")))
+get_formats_from_stats(all_cnt_occ, formats_in = list("fraction" = c("xx.xx", "xx")))
 
 # Defaults labels
-get_label_from_stats(num_stats)
-get_label_from_stats(cnt_stats)
-get_label_from_stats(only_pval)
-get_label_from_stats(all_cnt_occ)
+get_labels_from_stats(num_stats)
+get_labels_from_stats(cnt_stats)
+get_labels_from_stats(only_pval)
+get_labels_from_stats(all_cnt_occ)
 
 # Addition of customs
-get_label_from_stats(all_cnt_occ, labels_in = c("fraction" = "Fraction"))
-get_label_from_stats(all_cnt_occ, labels_in = list("fraction" = c("Some more fractions")))
+get_labels_from_stats(all_cnt_occ, labels_in = c("fraction" = "Fraction"))
+get_labels_from_stats(all_cnt_occ, labels_in = list("fraction" = c("Some more fractions")))
 
 }
 \seealso{
