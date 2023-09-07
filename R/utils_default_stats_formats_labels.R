@@ -1,15 +1,3 @@
-# Helper function so to modify only in one place for checks
-#' @keywords internal
-assert_allowed_types <- function(type) {
-  default_type <- c("counts", "numeric")
-  checkmate::assert_character(type, null.ok = TRUE)
-  checkmate::assert_subset(type,
-    choices = default_type,
-    empty.ok = TRUE
-  )
-  invisible(default_type)
-}
-
 #' Defaults for statistical method names and their associated formats & labels
 #'
 #' @description `r lifecycle::badge("experimental")`
@@ -66,7 +54,9 @@ NULL
 #' @export
 get_stats <- function(method_groups, type = NULL, stats_in = NULL, add_pval = FALSE) {
   checkmate::assert_character(method_groups)
-  assert_allowed_types(type)
+  default_type <- c("counts", "numeric")
+  checkmate::assert_character(type, null.ok = TRUE)
+  checkmate::assert_subset(type, choices = default_type, empty.ok = TRUE)
   checkmate::assert_character(stats_in, null.ok = TRUE)
   checkmate::assert_flag(add_pval)
 
