@@ -1,4 +1,12 @@
 # tern 0.9.0.9000
+### New Features
+* Added `imputation_rule` function to apply imputation rule to data.
+* Added new format function `format_sigfig` to allow for numeric value formatting by a specified number of significant figures.
+
+### Enhancements
+* Updated `analyze_vars_in_cols` to use caching, allow implementation of imputation rule via the `imp_rule` argument, and allow user to specify cell alignment via the `.aligns` argument.
+* Updated `s_summary` calculation of `geom_mean` statistic to return 0 instead of `NA` in cases of all-zero data.
+* Updated `add_rowcounts` to allow addition of row counts from `alt_counts_df` using the `alt_counts` argument.
 
 # tern 0.9.0
 ### New Features
@@ -9,15 +17,11 @@
 * Refactored the function `a_summary` to no longer use the helper function `create_afun_summary`.
 * Refactored functions `summarize_vars` and `compare_vars` to use the refactored `a_summary` function.
 * Created new internal helper functions `ungroup_stats` to ungroup statistics calculated for factor variables, and `a_summary_internal` to perform calculations for `a_summary`.
-* Added `imputation_rule` function to apply imputation rule to data.
-* Updated `analyze_vars_in_cols` to use caching, allow implementation of imputation rule via the `imp_rule` argument, and allow user to specify cell alignment via the `.aligns` argument.
-* Added new format function `format_sigfig` to allow for numeric value formatting by a specified number of significant figures.
 
 ### Bug Fixes
 * Fixed bug in `s_count_occurrences_by_grade` so that "missing" grade always appears as the final level.
 * Fixed bug in `analyze_vars_in_cols` when categorical data was used.
 * Fixed bug in `s_count_occurrences_by_grade` so that levels are not relabeled when reordering to account for "missing" grades.
-* Updated `s_summary` calculation of `geom_mean` statistic to return 0 instead of `NA` in cases of all-zero data.
 
 ### Miscellaneous
 * Fixed swapped descriptions for the `.N_row` and `.N_col` parameters.
