@@ -9,8 +9,8 @@ ungroup_stats(x, .formats, .labels, .indent_mods)
 \arguments{
 \item{x}{(\verb{named list} of \code{numeric})\cr list of numeric statistics containing the statistics to ungroup.}
 
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for the
-\code{"auto"} setting.}
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
@@ -24,6 +24,6 @@ A \code{list} with modified elements \code{x}, \code{.formats}, \code{.labels}, 
 Ungroups grouped non-numeric statistics within input vectors \code{.formats}, \code{.labels}, and \code{.indent_mods}.
 }
 \seealso{
-\code{\link[=a_summary]{a_summary()}} which uses this function as internal \code{afun} for \code{\link[=analyze_vars]{analyze_vars()}}.
+\code{\link[=a_summary]{a_summary()}} which uses this function internally.
 }
 \keyword{internal}
