@@ -112,6 +112,9 @@
     <loc>https://insightsengineering.github.io/tern/reference/c_label_n.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/reference/c_label_n_alt.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/reference/cfun_by_flag.html</loc>
   </url>
   <url>
@@ -343,6 +346,9 @@
     <loc>https://insightsengineering.github.io/tern/reference/format_fraction_threshold.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/reference/format_sigfig.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/reference/format_xx.html</loc>
   </url>
   <url>
@@ -488,6 +494,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/h_xticks.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/reference/imputation_rule.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/incidence_rate.html</loc>
