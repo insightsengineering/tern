@@ -350,26 +350,29 @@ summary_labels <- function(type = "numeric", include_pval = FALSE) {
   get_labels_from_stats(get_stats(met_grp, add_pval = include_pval))
 }
 
-#' @describeIn default_stats_formats_labels `r lifecycle::badge("deprecated")` Function to configure settings for default
-#'   or custom summary statistics for a given data type. In addition to selecting a custom subset of statistics,
-#'   the user can also set custom formats, labels, and indent modifiers for any of these statistics.
+#' @describeIn default_stats_formats_labels `r lifecycle::badge("deprecated")` Function to
+#'   configure settings for default or custom summary statistics for a given data type. In
+#'   addition to selecting a custom subset of statistics, the user can also set custom
+#'   formats, labels, and indent modifiers for any of these statistics.
 #'
-#' @param stats_custom (`named vector` of `character`)\cr vector of statistics to include if not the defaults. This
-#'   argument overrides `include_pval` and other custom value arguments such that only settings for these statistics
-#'   will be returned.
-#' @param formats_custom (`named vector` of `character`)\cr vector of custom statistics formats to use in place of the
-#'   defaults defined in [`summary_formats()`]. Names should be a subset of the statistics defined in `stats_custom` (or
-#'   default statistics if this is `NULL`).
-#' @param labels_custom (`named vector` of `character`)\cr vector of custom statistics labels to use in place of the
-#'   defaults defined in [`summary_labels()`]. Names should be a subset of the statistics defined in `stats_custom` (or
-#'   default statistics if this is `NULL`).
-#' @param indent_mods_custom (`integer` or `named vector` of `integer`)\cr vector of custom indentation modifiers for
-#'   statistics to use instead of the default of `0L` for all statistics. Names should be a subset of the statistics
-#'   defined in `stats_custom` (or default statistics if this is `NULL`). Alternatively, the same indentation modifier
-#'   can be applied to all statistics by setting `indent_mods_custom` to a single integer value.
+#' @param stats_custom (`named vector` of `character`)\cr vector of statistics to include if
+#'   not the defaults. This argument overrides `include_pval` and other custom value arguments
+#'   such that only settings for these statistics will be returned.
+#' @param formats_custom (`named vector` of `character`)\cr vector of custom statistics formats
+#'   to use in place of the defaults defined in [`summary_formats()`]. Names should be a subset
+#'   of the statistics defined in `stats_custom` (or default statistics if this is `NULL`).
+#' @param labels_custom (`named vector` of `character`)\cr vector of custom statistics labels
+#'   to use in place of the defaults defined in [`summary_labels()`]. Names should be a subset
+#'   of the statistics defined in `stats_custom` (or default statistics if this is `NULL`).
+#' @param indent_mods_custom (`integer` or `named vector` of `integer`)\cr vector of custom
+#'   indentation modifiers for statistics to use instead of the default of `0L` for all statistics.
+#'   Names should be a subset of the statistics defined in `stats_custom` (or default statistics
+#'   if this is `NULL`). Alternatively, the same indentation modifier can be applied to all
+#'   statistics by setting `indent_mods_custom` to a single integer value.
 #'
 #' @return
-#' * `summary_custom` returns a `list` of 4 named elements: `stats`, `formats`, `labels`, and `indent_mods`.
+#' * `summary_custom` returns a `list` of 4 named elements: `stats`, `formats`, `labels`,
+#'   and `indent_mods`.
 #'
 #' @examples
 #' summary_custom()

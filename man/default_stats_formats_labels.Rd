@@ -66,22 +66,23 @@ character vector from \code{\link[formatters:list_formats]{formatters::list_vali
 
 \item{include_pval}{(\code{flag})\cr deprecated parameter. Same as \code{add_pval}.}
 
-\item{stats_custom}{(\verb{named vector} of \code{character})\cr vector of statistics to include if not the defaults. This
-argument overrides \code{include_pval} and other custom value arguments such that only settings for these statistics
-will be returned.}
+\item{stats_custom}{(\verb{named vector} of \code{character})\cr vector of statistics to include if
+not the defaults. This argument overrides \code{include_pval} and other custom value arguments
+such that only settings for these statistics will be returned.}
 
-\item{formats_custom}{(\verb{named vector} of \code{character})\cr vector of custom statistics formats to use in place of the
-defaults defined in \code{\link[=summary_formats]{summary_formats()}}. Names should be a subset of the statistics defined in \code{stats_custom} (or
-default statistics if this is \code{NULL}).}
+\item{formats_custom}{(\verb{named vector} of \code{character})\cr vector of custom statistics formats
+to use in place of the defaults defined in \code{\link[=summary_formats]{summary_formats()}}. Names should be a subset
+of the statistics defined in \code{stats_custom} (or default statistics if this is \code{NULL}).}
 
-\item{labels_custom}{(\verb{named vector} of \code{character})\cr vector of custom statistics labels to use in place of the
-defaults defined in \code{\link[=summary_labels]{summary_labels()}}. Names should be a subset of the statistics defined in \code{stats_custom} (or
-default statistics if this is \code{NULL}).}
+\item{labels_custom}{(\verb{named vector} of \code{character})\cr vector of custom statistics labels
+to use in place of the defaults defined in \code{\link[=summary_labels]{summary_labels()}}. Names should be a subset
+of the statistics defined in \code{stats_custom} (or default statistics if this is \code{NULL}).}
 
-\item{indent_mods_custom}{(\code{integer} or \verb{named vector} of \code{integer})\cr vector of custom indentation modifiers for
-statistics to use instead of the default of \code{0L} for all statistics. Names should be a subset of the statistics
-defined in \code{stats_custom} (or default statistics if this is \code{NULL}). Alternatively, the same indentation modifier
-can be applied to all statistics by setting \code{indent_mods_custom} to a single integer value.}
+\item{indent_mods_custom}{(\code{integer} or \verb{named vector} of \code{integer})\cr vector of custom
+indentation modifiers for statistics to use instead of the default of \code{0L} for all statistics.
+Names should be a subset of the statistics defined in \code{stats_custom} (or default statistics
+if this is \code{NULL}). Alternatively, the same indentation modifier can be applied to all
+statistics by setting \code{indent_mods_custom} to a single integer value.}
 }
 \value{
 \itemize{
@@ -107,7 +108,8 @@ otherwise \code{NULL}).
 }
 
 \itemize{
-\item \code{summary_custom} returns a \code{list} of 4 named elements: \code{stats}, \code{formats}, \code{labels}, and \code{indent_mods}.
+\item \code{summary_custom} returns a \code{list} of 4 named elements: \code{stats}, \code{formats}, \code{labels},
+and \code{indent_mods}.
 }
 }
 \description{
@@ -142,9 +144,10 @@ for \code{tern}.
 \item \code{summary_labels()}: Quick function to retrieve default labels for summary statistics.
 Returns labels of descriptive statistics which are understood by \code{rtables}. Similar to \code{summary_formats}
 
-\item \code{summary_custom()}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Function to configure settings for default
-or custom summary statistics for a given data type. In addition to selecting a custom subset of statistics,
-the user can also set custom formats, labels, and indent modifiers for any of these statistics.
+\item \code{summary_custom()}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Function to
+configure settings for default or custom summary statistics for a given data type. In
+addition to selecting a custom subset of statistics, the user can also set custom
+formats, labels, and indent modifiers for any of these statistics.
 
 }}
 \note{
