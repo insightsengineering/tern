@@ -1,6 +1,12 @@
 # tern 0.9.0.9001
+### New Features
+* Added `imputation_rule` function to apply imputation rule to data.
+* Added new format function `format_sigfig` to allow for numeric value formatting by a specified number of significant figures.
+
 ### Enhancements
 * Refactored `tabulate_rsp_subgroups` to pass sanitation checks by preventing creation of degenerate subtables.
+* Updated `analyze_vars_in_cols` to use caching, allow implementation of imputation rule via the `imp_rule` argument, and allow user to specify cell alignment via the `.aligns` argument.
+* Updated `add_rowcounts` to allow addition of row counts from `alt_counts_df` using the `alt_counts` argument.
 
 # tern 0.9.0
 ### New Features

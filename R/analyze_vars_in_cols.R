@@ -8,6 +8,17 @@
 #'
 #' @inheritParams argument_convention
 #' @inheritParams rtables::analyze_colvars
+#' @param imp_rule (`character`)\cr imputation rule setting. Defaults to `NULL` for no imputation rule. Can
+#'   also be `"1/3"` to implement 1/3 imputation rule or `"1/2"` to implement 1/2 imputation rule. In order
+#'   to use an imputation rule, the `avalcat_var` argument must be specified. See [imputation_rule()]
+#'   for more details on imputation.
+#' @param avalcat_var (`character`)\cr if `imp_rule` is not `NULL`, name of variable that indicates whether a
+#'   row in the data corresponds to an analysis value in category `"BLQ"`, `"LTR"`, `"<PCLLOQ"`, or none of
+#'   the above (defaults to `"AVALCAT1"`). Variable must be present in the data and should match the variable
+#'   used to calculate the `n_blq` statistic (if included in `.stats`).
+#' @param cache (`flag`)\cr whether to store computed values in a temporary caching environment. This will
+#'   speed up calculations in large tables, but should be set to `FALSE` if the same `rtable` layout is
+#'   used for multiple tables with different data. Defaults to `FALSE`.
 #' @param row_labels (`character`)\cr as this function works in columns space, usual `.labels`
 #'   character vector applies on the column space. You can change the row labels by defining this
 #'   parameter to a named character vector with names corresponding to the split values. It defaults
@@ -143,10 +154,14 @@ analyze_vars_in_cols <- function(lyt,
                                  row_labels = NULL,
                                  do_summarize_row_groups = FALSE,
                                  split_col_vars = TRUE,
+                                 imp_rule = NULL,
+                                 avalcat_var = "AVALCAT1",
+                                 cache = FALSE,
                                  .indent_mods = NULL,
                                  nested = TRUE,
                                  na_level = NULL,
-                                 .formats = NULL) {
+                                 .formats = NULL,
+                                 .aligns = NULL) {
   checkmate::assert_string(na_level, null.ok = TRUE)
   checkmate::assert_character(row_labels, null.ok = TRUE)
   checkmate::assert_int(.indent_mods, null.ok = TRUE)
@@ -201,6 +216,8 @@ analyze_vars_in_cols <- function(lyt,
     )
   }
 
+  env <- new.env() # create caching environment
+
   if (do_summarize_row_groups) {
     if (length(unique(vars)) > 1) {
       stop("When using do_summarize_row_groups only one label level var should be inserted.")
@@ -208,10 +225,31 @@ analyze_vars_in_cols <- function(lyt,
 
     # Function list for do_summarize_row_groups. Slightly different handling of labels
     cfun_list <- Map(
-      function(stat) {
-        function(u, .spl_context, labelstr, ...) {
+      function(stat, use_cache, cache_env) {
+        function(u, .spl_context, labelstr, .df_row, ...) {
           # Statistic
-          res <- s_summary(u, ...)[[stat]]
+          var_row_val <- paste(
+            gsub("\\._\\[\\[[0-9]+\\]\\]_\\.", "", paste(tail(.spl_context$cur_col_split_val, 1)[[1]], collapse = "_")),
+            paste(.spl_context$value, collapse = "_"),
+            sep = "_"
+          )
+          if (use_cache) {
+            if (is.null(cache_env[[var_row_val]])) cache_env[[var_row_val]] <- s_summary(u, ...)
+            x_stats <- cache_env[[var_row_val]]
+          } else {
+            x_stats <- s_summary(u, ...)
+          }
+
+          if (is.null(imp_rule) || !stat %in% c("mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max")) {
+            res <- x_stats[[stat]]
+          } else {
+            res_imp <- imputation_rule(
+              .df_row, x_stats, stat,
+              imp_rule = imp_rule, post = as.numeric(tail(.spl_context$value, 1)) > 0, avalcat_var = avalcat_var
+            )
+            res <- res_imp[["val"]]
+            na_level <- res_imp[["na_level"]]
+          }
 
           # Label check and replacement
           if (length(row_labels) > 1) {
@@ -234,11 +272,14 @@ analyze_vars_in_cols <- function(lyt,
             label = lbl,
             format = formats_v[names(formats_v) == stat][[1]],
             format_na_str = na_level,
-            indent_mod = ifelse(is.null(.indent_mods), 0L, .indent_mods)
+            indent_mod = ifelse(is.null(.indent_mods), 0L, .indent_mods),
+            align = .aligns
           )
         }
       },
-      stat = .stats
+      stat = .stats,
+      use_cache = cache,
+      cache_env = replicate(length(.stats), env)
     )
 
     # Main call to rtables
@@ -251,10 +292,31 @@ analyze_vars_in_cols <- function(lyt,
   } else {
     # Function list for analyze_colvars
     afun_list <- Map(
-      function(stat) {
-        function(u, .spl_context, ...) {
+      function(stat, use_cache, cache_env) {
+        function(u, .spl_context, .df_row, ...) {
           # Main statistics
-          res <- s_summary(u, ...)[[stat]]
+          var_row_val <- paste(
+            gsub("\\._\\[\\[[0-9]+\\]\\]_\\.", "", paste(tail(.spl_context$cur_col_split_val, 1)[[1]], collapse = "_")),
+            paste(.spl_context$value, collapse = "_"),
+            sep = "_"
+          )
+          if (use_cache) {
+            if (is.null(cache_env[[var_row_val]])) cache_env[[var_row_val]] <- s_summary(u, ...)
+            x_stats <- cache_env[[var_row_val]]
+          } else {
+            x_stats <- s_summary(u, ...)
+          }
+
+          if (is.null(imp_rule) || !stat %in% c("mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max")) {
+            res <- x_stats[[stat]]
+          } else {
+            res_imp <- imputation_rule(
+              .df_row, x_stats, stat,
+              imp_rule = imp_rule, post = as.numeric(tail(.spl_context$value, 1)) > 0, avalcat_var = avalcat_var
+            )
+            res <- res_imp[["val"]]
+            na_level <- res_imp[["na_level"]]
+          }
 
           if (is.list(res)) {
             if (length(res) > 1) {
@@ -292,11 +354,14 @@ analyze_vars_in_cols <- function(lyt,
             label = lbl,
             format = formats_v[names(formats_v) == stat][[1]],
             format_na_str = na_level,
-            indent_mod = ifelse(is.null(.indent_mods), 0L, .indent_mods)
+            indent_mod = ifelse(is.null(.indent_mods), 0L, .indent_mods),
+            align = .aligns
           )
         }
       },
-      stat = .stats
+      stat = .stats,
+      use_cache = cache,
+      cache_env = replicate(length(.stats), env)
     )
 
     # Main call to rtables

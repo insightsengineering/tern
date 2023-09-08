@@ -92,6 +92,15 @@ testthat::test_that("format_xx works with easy inputs", {
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("format_sigfig works with easy inputs", {
+  test <- list(1.658, 0.5761, 1e-1, 78.6, 1234e-6)
+  z <- format_sigfig(3)
+  result <- sapply(test, z)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("format_fraction_threshold works with easy inputs", {
   test <- list(c(100, 0.1), c(10, 0.01), c(0, 0))
   format_fun <- format_fraction_threshold(0.02)

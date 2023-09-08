@@ -4,10 +4,13 @@
 \alias{add_rowcounts}
 \title{Layout Creating Function to Add Row Total Counts}
 \usage{
-add_rowcounts(lyt)
+add_rowcounts(lyt, alt_counts = FALSE)
 }
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{alt_counts}{(\code{flag})\cr whether row counts should be taken from \code{alt_counts_df} (\code{TRUE})
+or from \code{df} (\code{FALSE}). Defaults to \code{FALSE}.}
 }
 \value{
 A modified layout where the latest row split labels now have the row-wise

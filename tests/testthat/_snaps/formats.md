@@ -75,6 +75,13 @@
     Output
       [1] "2 (0.6)"    "10 (785.6)"
 
+# format_sigfig works with easy inputs
+
+    Code
+      res
+    Output
+      [1] "1.66"    "0.576"   "0.100"   "78.6"    "0.00123"
+
 # format_fraction_threshold works with easy inputs
 
     Code

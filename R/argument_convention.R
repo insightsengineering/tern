@@ -4,6 +4,8 @@
 #' that are used repeatedly to express an analysis.
 #'
 #' @param ... additional arguments for the lower level functions.
+#' @param .aligns (`character`)\cr alignment for table contents (not including labels). When `NULL`, `"center"`
+#'   is applied. See [formatters::list_valid_aligns()] for a list of all currently supported alignments.
 #' @param .all_col_counts (`vector` of `integer`)\cr each value represents a global count for a column. Values are
 #'   taken from `alt_counts_df` if specified (see [rtables::build_table()]).
 #' @param .df_row (`data.frame`)\cr data frame across all of the columns for the given row split.

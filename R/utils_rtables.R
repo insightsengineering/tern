@@ -89,21 +89,54 @@ cfun_by_flag <- function(analysis_var,
 
 #' Content Row Function to Add Row Total to Labels
 #'
-#' This takes the label of the latest row split level and adds the row total in parentheses.
+#' This takes the label of the latest row split level and adds the row total from `df` in parentheses.
+#' This function differs from [c_label_n_alt()] by taking row counts from `df` rather than
+#' `alt_counts_df`, and is used by [add_rowcounts()] when `alt_counts` is set to `FALSE`.
 #'
 #' @inheritParams argument_convention
 #'
-#' @return A `list` containing "row_count" with the row count value and the correct label.
+#' @return A list with formatted [rtables::CellValue()] with the row count value and the correct label.
 #'
 #' @note It is important here to not use `df` but rather `.N_row` in the implementation, because
 #'   the former is already split by columns and will refer to the first column of the data only.
+#'
+#' @seealso [c_label_n_alt()] which performs the same function but retrieves row counts from
+#'   `alt_counts_df` instead of `df`.
 #'
 #' @keywords internal
 c_label_n <- function(df,
                       labelstr,
                       .N_row) { # nolint
   label <- paste0(labelstr, " (N=", .N_row, ")")
-  list(row_count = formatters::with_label(c(.N_row, .N_row), label))
+  in_rows(
+    .list = list(row_count = formatters::with_label(c(.N_row, .N_row), label)),
+    .formats = c(row_count = function(x, ...) "")
+  )
+}
+
+#' Content Row Function to Add `alt_counts_df` Row Total to Labels
+#'
+#' This takes the label of the latest row split level and adds the row total from `alt_counts_df`
+#' in parentheses. This function differs from [c_label_n()] by taking row counts from `alt_counts_df`
+#' rather than `df`, and is used by [add_rowcounts()] when `alt_counts` is set to `TRUE`.
+#'
+#' @inheritParams argument_convention
+#'
+#' @return A list with formatted [rtables::CellValue()] with the row count value and the correct label.
+#'
+#' @seealso [c_label_n()] which performs the same function but retrieves row counts from `df` instead
+#'   of `alt_counts_df`.
+#'
+#' @keywords internal
+c_label_n_alt <- function(df,
+                          labelstr,
+                          .alt_df_row) {
+  N_row_alt <- nrow(.alt_df_row) # nolint
+  label <- paste0(labelstr, " (N=", N_row_alt, ")")
+  in_rows(
+    .list = list(row_count = formatters::with_label(c(N_row_alt, N_row_alt), label)),
+    .formats = c(row_count = function(x, ...) "")
+  )
 }
 
 #' Layout Creating Function to Add Row Total Counts
@@ -114,6 +147,8 @@ c_label_n <- function(df,
 #'  is a wrapper for [rtables::summarize_row_groups()].
 #'
 #' @inheritParams argument_convention
+#' @param alt_counts (`flag`)\cr whether row counts should be taken from `alt_counts_df` (`TRUE`)
+#'   or from `df` (`FALSE`). Defaults to `FALSE`.
 #'
 #' @return A modified layout where the latest row split labels now have the row-wise
 #'   total counts (i.e. without column-based subsetting) attached in parentheses.
@@ -131,15 +166,10 @@ c_label_n <- function(df,
 #'   build_table(DM)
 #'
 #' @export
-add_rowcounts <- function(lyt) {
-  c_lbl_n_fun <- make_afun(
-    c_label_n,
-    .stats = c("row_count"),
-    .formats = c(row_count = function(x, ...) "")
-  )
+add_rowcounts <- function(lyt, alt_counts = FALSE) {
   summarize_row_groups(
     lyt,
-    cfun = c_lbl_n_fun
+    cfun = if (alt_counts) c_label_n_alt else c_label_n
   )
 }
 

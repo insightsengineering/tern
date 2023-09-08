@@ -17,13 +17,19 @@ for more information.}
 (i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
 }
 \value{
-A \code{list} containing "row_count" with the row count value and the correct label.
+A list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}} with the row count value and the correct label.
 }
 \description{
-This takes the label of the latest row split level and adds the row total in parentheses.
+This takes the label of the latest row split level and adds the row total from \code{df} in parentheses.
+This function differs from \code{\link[=c_label_n_alt]{c_label_n_alt()}} by taking row counts from \code{df} rather than
+\code{alt_counts_df}, and is used by \code{\link[=add_rowcounts]{add_rowcounts()}} when \code{alt_counts} is set to \code{FALSE}.
 }
 \note{
 It is important here to not use \code{df} but rather \code{.N_row} in the implementation, because
 the former is already split by columns and will refer to the first column of the data only.
+}
+\seealso{
+\code{\link[=c_label_n_alt]{c_label_n_alt()}} which performs the same function but retrieves row counts from
+\code{alt_counts_df} instead of \code{df}.
 }
 \keyword{internal}
