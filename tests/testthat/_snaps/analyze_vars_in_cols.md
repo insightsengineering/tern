@@ -188,6 +188,25 @@
     Code
       res
     Output
+                  n    Number of BLQs   Mean   SD   Geometric Mean   Minimum   Maximum
+      ————————————————————————————————————————————————————————————————————————————————
+      A: Drug X                                                                       
+        Day 1                                                                         
+          0       36         30          ND    ND         NE           ND       92.4  
+          6       18         14          ND    ND        40.2          ND       97.6  
+          12      18         12          ND    ND        60.8          ND       99.2  
+          18      18         16          ND    ND        44.6          ND       99.3  
+        Day 2                                                                         
+          24      18         9           ND    ND        42.0          ND       89.8  
+          30      18         11          ND    ND        35.6          ND       94.5  
+          36      18         12          ND    ND        36.1          ND       96.1  
+          42      18         13          ND    ND        41.8          ND       99.2  
+
+---
+
+    Code
+      res
+    Output
                   n    Number of BLQs   Mean    SD    Geometric Mean   Minimum   Maximum
       ——————————————————————————————————————————————————————————————————————————————————
       A: Drug X                                                                         

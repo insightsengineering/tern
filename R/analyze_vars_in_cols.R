@@ -12,6 +12,10 @@
 #'   also be `"1/3"` to implement 1/3 imputation rule or `"1/2"` to implement 1/2 imputation rule. In order
 #'   to use an imputation rule, the `AVALCAT1` variable must be present in the data. See [imputation_rule()]
 #'   for more details on imputation.
+#' @param avalcat_var (`character`)\cr if `imp_rule` is not `NULL`, name of variable that indicates whether a
+#'   row in the data corresponds to an analysis value in category `"BLQ"`, `"LTR"`, `"<PCLLOQ"`, or none of
+#'   the above (defaults to `"AVALCAT1"`). Variable must be present in the data and should match the variable
+#'   used to calculate the `n_blq` statistic (if included in `.stats`).
 #' @param cache (`flag`)\cr whether to store computed values in a temporary caching environment. This will
 #'   speed up calculations in large tables, but should be set to `FALSE` if the same `rtable` layout is
 #'   used for multiple tables with different data. Defaults to `FALSE`.
@@ -151,6 +155,7 @@ analyze_vars_in_cols <- function(lyt,
                                  do_summarize_row_groups = FALSE,
                                  split_col_vars = TRUE,
                                  imp_rule = NULL,
+                                 avalcat_var = "AVALCAT1",
                                  cache = FALSE,
                                  .indent_mods = NULL,
                                  nested = TRUE,
@@ -240,7 +245,7 @@ analyze_vars_in_cols <- function(lyt,
           } else {
             res_imp <- imputation_rule(
               .df_row, x_stats, stat,
-              imp_rule = imp_rule, post = as.numeric(tail(.spl_context$value, 1)) > 0
+              imp_rule = imp_rule, post = as.numeric(tail(.spl_context$value, 1)) > 0, avalcat_var = avalcat_var
             )
             res <- res_imp[["val"]]
             na_level <- res_imp[["na_level"]]
@@ -307,7 +312,7 @@ analyze_vars_in_cols <- function(lyt,
           } else {
             res_imp <- imputation_rule(
               .df_row, x_stats, stat,
-              imp_rule = imp_rule, post = as.numeric(tail(.spl_context$value, 1)) > 0
+              imp_rule = imp_rule, post = as.numeric(tail(.spl_context$value, 1)) > 0, avalcat_var = avalcat_var
             )
             res <- res_imp[["val"]]
             na_level <- res_imp[["na_level"]]

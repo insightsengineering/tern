@@ -15,6 +15,7 @@ analyze_vars_in_cols(
   do_summarize_row_groups = FALSE,
   split_col_vars = TRUE,
   imp_rule = NULL,
+  avalcat_var = "AVALCAT1",
   cache = FALSE,
   .indent_mods = NULL,
   nested = TRUE,
@@ -51,6 +52,10 @@ without adding more splits. This split must happen only one time on a single lay
 also be \code{"1/3"} to implement 1/3 imputation rule or \code{"1/2"} to implement 1/2 imputation rule. In order
 to use an imputation rule, the \code{AVALCAT1} variable must be present in the data. See \code{\link[=imputation_rule]{imputation_rule()}}
 for more details on imputation.}
+
+\item{avalcat_var}{(\code{character})\cr if \code{imp_rule} is not \code{NULL}, name of variable that indicates whether a
+row in the data corresponds to an analysis value in category \code{"BLQ"}, \code{"LTR"}, \code{"<PCLLOQ"}, or none of
+the above (defaults to \code{"AVALCAT1"}). Variable must be present in the data.}
 
 \item{cache}{(\code{flag})\cr whether to store computed values in a temporary caching environment. This will
 speed up calculations in large tables, but should be set to \code{FALSE} if the same \code{rtable} layout is
