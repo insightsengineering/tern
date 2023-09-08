@@ -55,7 +55,8 @@ for more details on imputation.}
 
 \item{avalcat_var}{(\code{character})\cr if \code{imp_rule} is not \code{NULL}, name of variable that indicates whether a
 row in the data corresponds to an analysis value in category \code{"BLQ"}, \code{"LTR"}, \code{"<PCLLOQ"}, or none of
-the above (defaults to \code{"AVALCAT1"}). Variable must be present in the data.}
+the above (defaults to \code{"AVALCAT1"}). Variable must be present in the data and should match the variable
+used to calculate the \code{n_blq} statistic (if included in \code{.stats}).}
 
 \item{cache}{(\code{flag})\cr whether to store computed values in a temporary caching environment. This will
 speed up calculations in large tables, but should be set to \code{FALSE} if the same \code{rtable} layout is
