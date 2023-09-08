@@ -13,8 +13,8 @@
 #' Current choices for `type` are `counts` and `numeric` for [analyze_vars()] and affect `get_stats()`.
 #'
 #' @note
-#' These defaults are experimental because we use the names of functions to retrieve the default statistics. This
-#' should be generalized in groups of methods according to more reasonable groupings.
+#' These defaults are experimental because we use the names of functions to retrieve the default
+#' statistics. This should be generalized in groups of methods according to more reasonable groupings.
 #'
 #' @name default_stats_formats_labels
 NULL
@@ -350,9 +350,9 @@ summary_labels <- function(type = "numeric", include_pval = FALSE) {
   get_labels_from_stats(get_stats(met_grp, add_pval = include_pval))
 }
 
-#' @describeIn default_stats_formats_labels `r lifecycle::badge("deprecated")` Function to configure settings for default or custom summary statistics for a given data
-#'   type. In addition to selecting a custom subset of statistics, the user can also set custom formats, labels, and
-#'   indent modifiers for any of these statistics.
+#' @describeIn default_stats_formats_labels `r lifecycle::badge("deprecated")` Function to configure settings for default
+#'   or custom summary statistics for a given data type. In addition to selecting a custom subset of statistics,
+#'   the user can also set custom formats, labels, and indent modifiers for any of these statistics.
 #'
 #' @param stats_custom (`named vector` of `character`)\cr vector of statistics to include if not the defaults. This
 #'   argument overrides `include_pval` and other custom value arguments such that only settings for these statistics

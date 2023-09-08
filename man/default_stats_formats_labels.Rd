@@ -142,14 +142,14 @@ for \code{tern}.
 \item \code{summary_labels()}: Quick function to retrieve default labels for summary statistics.
 Returns labels of descriptive statistics which are understood by \code{rtables}. Similar to \code{summary_formats}
 
-\item \code{summary_custom()}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Function to configure settings for default or custom summary statistics for a given data
-type. In addition to selecting a custom subset of statistics, the user can also set custom formats, labels, and
-indent modifiers for any of these statistics.
+\item \code{summary_custom()}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Function to configure settings for default
+or custom summary statistics for a given data type. In addition to selecting a custom subset of statistics,
+the user can also set custom formats, labels, and indent modifiers for any of these statistics.
 
 }}
 \note{
-These defaults are experimental because we use the names of functions to retrieve the default statistics. This
-should be generalized in groups of methods according to more reasonable groupings.
+These defaults are experimental because we use the names of functions to retrieve the default
+statistics. This should be generalized in groups of methods according to more reasonable groupings.
 
 Formats in \code{tern} and \code{rtables} can be functions that take in the table cell value and
 return a string. This is well documented in \code{vignette("custom_appearance", package = "rtables")}.
