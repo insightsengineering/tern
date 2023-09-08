@@ -16,8 +16,8 @@
 #' @param .stats (`character`)\cr statistics to select for the table.
 #' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 #'   unmodified default behavior. Can be negative.
-#' @param .formats (named `character` or `list`)\cr formats for the statistics. See Details in `analyze_vars` for the
-#'   `"auto"` setting.
+#' @param .formats (named `character` or `list`)\cr formats for the statistics. See Details in `analyze_vars` for more
+#'   information on the `"auto"` setting.
 #' @param .labels (named `character`)\cr labels for the statistics (without indent).
 #' @param .var (`string`)\cr single variable name that is passed by `rtables` when requested
 #'   by a statistics function.
