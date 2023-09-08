@@ -271,7 +271,7 @@ s_summary.factor <- function(x,
     }
   )
 
-  y$n_blq <- sum(grepl("BLQ|LTR|<[1-9]", x))
+  y$n_blq <- sum(grepl("BLQ|LTR|<[1-9]|<PCLLOQ", x))
 
   y
 }

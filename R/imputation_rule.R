@@ -35,7 +35,7 @@
 imputation_rule <- function(df, x_stats, stat, imp_rule, post = FALSE, avalcat_var = "AVALCAT1") {
   checkmate::assert_choice(avalcat_var, names(df))
   checkmate::assert_choice(imp_rule, c("1/3", "1/2"))
-  n_blq <- sum(df[[avalcat_var]] %in% c("BLQ", "LTR", "<PCLLOQ"))
+  n_blq <- sum(grepl("BLQ|LTR|<[1-9]|<PCLLOQ", df[[avalcat_var]]))
   ltr_blq_ratio <- n_blq / max(1, nrow(df))
 
   # defaults
