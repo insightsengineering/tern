@@ -15,6 +15,7 @@ analyze_vars_in_cols(
   do_summarize_row_groups = FALSE,
   split_col_vars = TRUE,
   imp_rule = NULL,
+  cache = FALSE,
   .indent_mods = NULL,
   nested = TRUE,
   na_level = NULL,
@@ -50,6 +51,10 @@ without adding more splits. This split must happen only one time on a single lay
 also be \code{"1/3"} to implement 1/3 imputation rule or \code{"1/2"} to implement 1/2 imputation rule. In order
 to use an imputation rule, the \code{AVALCAT1} variable must be present in the data. See \code{\link[=imputation_rule]{imputation_rule()}}
 for more details on imputation.}
+
+\item{cache}{(\code{flag})\cr whether to store computed values in a temporary caching environment. This will
+speed up calculations in large tables, but should be set to \code{FALSE} if the same \code{rtable} layout is
+used for multiple tables with different data. Defaults to \code{FALSE}.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}

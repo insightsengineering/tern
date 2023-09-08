@@ -12,6 +12,9 @@
 #'   also be `"1/3"` to implement 1/3 imputation rule or `"1/2"` to implement 1/2 imputation rule. In order
 #'   to use an imputation rule, the `AVALCAT1` variable must be present in the data. See [imputation_rule()]
 #'   for more details on imputation.
+#' @param cache (`flag`)\cr whether to store computed values in a temporary caching environment. This will
+#'   speed up calculations in large tables, but should be set to `FALSE` if the same `rtable` layout is
+#'   used for multiple tables with different data. Defaults to `FALSE`.
 #' @param row_labels (`character`)\cr as this function works in columns space, usual `.labels`
 #'   character vector applies on the column space. You can change the row labels by defining this
 #'   parameter to a named character vector with names corresponding to the split values. It defaults
@@ -148,6 +151,7 @@ analyze_vars_in_cols <- function(lyt,
                                  do_summarize_row_groups = FALSE,
                                  split_col_vars = TRUE,
                                  imp_rule = NULL,
+                                 cache = FALSE,
                                  .indent_mods = NULL,
                                  nested = TRUE,
                                  na_level = NULL,
@@ -216,7 +220,7 @@ analyze_vars_in_cols <- function(lyt,
 
     # Function list for do_summarize_row_groups. Slightly different handling of labels
     cfun_list <- Map(
-      function(stat, cache_env) {
+      function(stat, use_cache, cache_env) {
         function(u, .spl_context, labelstr, .df_row, ...) {
           # Statistic
           var_row_val <- paste(
@@ -224,8 +228,12 @@ analyze_vars_in_cols <- function(lyt,
             paste(.spl_context$value, collapse = "_"),
             sep = "_"
           )
-          if (is.null(cache_env[[var_row_val]])) cache_env[[var_row_val]] <- s_summary(u, ...)
-          x_stats <- cache_env[[var_row_val]]
+          if (use_cache) {
+            if (is.null(cache_env[[var_row_val]])) cache_env[[var_row_val]] <- s_summary(u, ...)
+            x_stats <- cache_env[[var_row_val]]
+          } else {
+            x_stats <- s_summary(u, ...)
+          }
 
           if (is.null(imp_rule) || !stat %in% c("mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max")) {
             res <- x_stats[[stat]]
@@ -265,6 +273,7 @@ analyze_vars_in_cols <- function(lyt,
         }
       },
       stat = .stats,
+      use_cache = cache,
       cache_env = replicate(length(.stats), env)
     )
 
@@ -278,7 +287,7 @@ analyze_vars_in_cols <- function(lyt,
   } else {
     # Function list for analyze_colvars
     afun_list <- Map(
-      function(stat, cache_env) {
+      function(stat, use_cache, cache_env) {
         function(u, .spl_context, .df_row, ...) {
           # Main statistics
           var_row_val <- paste(
@@ -286,8 +295,12 @@ analyze_vars_in_cols <- function(lyt,
             paste(.spl_context$value, collapse = "_"),
             sep = "_"
           )
-          if (is.null(cache_env[[var_row_val]])) cache_env[[var_row_val]] <- s_summary(u, ...)
-          x_stats <- cache_env[[var_row_val]]
+          if (use_cache) {
+            if (is.null(cache_env[[var_row_val]])) cache_env[[var_row_val]] <- s_summary(u, ...)
+            x_stats <- cache_env[[var_row_val]]
+          } else {
+            x_stats <- s_summary(u, ...)
+          }
 
           if (is.null(imp_rule) || !stat %in% c("mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max")) {
             res <- x_stats[[stat]]
@@ -342,6 +355,7 @@ analyze_vars_in_cols <- function(lyt,
         }
       },
       stat = .stats,
+      use_cache = cache,
       cache_env = replicate(length(.stats), env)
     )
 
