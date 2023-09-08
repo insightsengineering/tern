@@ -50,7 +50,7 @@ without adding more splits. This split must happen only one time on a single lay
 
 \item{imp_rule}{(\code{character})\cr imputation rule setting. Defaults to \code{NULL} for no imputation rule. Can
 also be \code{"1/3"} to implement 1/3 imputation rule or \code{"1/2"} to implement 1/2 imputation rule. In order
-to use an imputation rule, the \code{AVALCAT1} variable must be present in the data. See \code{\link[=imputation_rule]{imputation_rule()}}
+to use an imputation rule, the \code{avalcat_var} argument must be specified. See \code{\link[=imputation_rule]{imputation_rule()}}
 for more details on imputation.}
 
 \item{avalcat_var}{(\code{character})\cr if \code{imp_rule} is not \code{NULL}, name of variable that indicates whether a
