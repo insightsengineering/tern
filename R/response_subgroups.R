@@ -228,21 +228,23 @@ tabulate_rsp_subgroups <- function(lyt,
   # Columns from table_prop are optional.
   if (length(colvars_prop$vars) > 0) {
     lyt_prop <- split_cols_by(lyt = lyt, var = "arm")
-    lyt_prop <- split_rows_by(
-      lyt = lyt_prop,
-      var = "row_type",
-      split_fun = keep_split_levels("content"),
-      nested = FALSE
-    )
-    lyt_prop <- summarize_row_groups(
-      lyt = lyt_prop,
-      var = "var_label",
-      cfun = afun_lst[names(colvars_prop$labels)]
-    )
     lyt_prop <- split_cols_by_multivar(
       lyt = lyt_prop,
       vars = colvars_prop$vars,
       varlabels = colvars_prop$labels
+    )
+
+    # "All Patients" row
+    lyt_prop <- split_rows_by(
+      lyt = lyt_prop,
+      var = "row_type",
+      split_fun = keep_split_levels("content"),
+      nested = FALSE,
+      child_labels = "hidden"
+    )
+    lyt_prop <- analyze_colvars(
+      lyt = lyt_prop,
+      afun = afun_lst[names(colvars_prop$labels)]
     )
 
     if ("analysis" %in% df$prop$row_type) {
@@ -268,21 +270,23 @@ tabulate_rsp_subgroups <- function(lyt,
 
   # Columns "n_tot", "or", "ci" in table_or are required.
   lyt_or <- split_cols_by(lyt = lyt, var = "arm")
-  lyt_or <- split_rows_by(
-    lyt = lyt_or,
-    var = "row_type",
-    split_fun = keep_split_levels("content"),
-    nested = FALSE
-  )
   lyt_or <- split_cols_by_multivar(
     lyt = lyt_or,
     vars = colvars_or$vars,
     varlabels = colvars_or$labels
   )
-  lyt_or <- summarize_row_groups(
+
+  # "All Patients" row
+  lyt_or <- split_rows_by(
     lyt = lyt_or,
-    var = "var_label",
-    cfun = afun_lst[names(colvars_or$labels)]
+    var = "row_type",
+    split_fun = keep_split_levels("content"),
+    nested = FALSE,
+    child_labels = "hidden"
+  )
+  lyt_or <- analyze_colvars(
+    lyt = lyt_or,
+    afun = afun_lst[names(colvars_or$labels)]
   ) %>%
     append_topleft("Baseline Risk Factors")
 
