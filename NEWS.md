@@ -10,6 +10,7 @@
 * Started deprecation of `summary_custom()` and `a_summary()` as a `S3` method.
 * Renamed statistical method for `p-value` in the discrete case to `pval_counts`.
 * Removed `a_summary_internal()` in favor of only one main `a_summary()`.
+* Refactored `tabulate_rsp_subgroups` to pass sanitation checks by preventing creation of degenerate subtables.
 
 # tern 0.9.0
 ### New Features
