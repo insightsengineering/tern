@@ -20,8 +20,8 @@ tabulate_survival_subgroups(
 )
 }
 \arguments{
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for the
-\code{"auto"} setting.}
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
