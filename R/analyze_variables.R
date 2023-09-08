@@ -186,11 +186,7 @@ s_summary.numeric <- function(x,
   # Convert negative values to NA for log calculation.
   x_no_negative_vals <- x
   x_no_negative_vals[x_no_negative_vals <= 0] <- NA
-  y$geom_mean <- if (all(!is.na(x)) && all(x == 0) && length(x) > 0) {
-    c("geom_mean" = 0)
-  } else {
-    c("geom_mean" = exp(mean(log(x_no_negative_vals), na.rm = FALSE)))
-  }
+  y$geom_mean <- c("geom_mean" = exp(mean(log(x_no_negative_vals), na.rm = FALSE)))
   geom_mean_ci <- stat_mean_ci(x, conf_level = control$conf_level, na.rm = FALSE, gg_helper = FALSE, geom_mean = TRUE)
   y$geom_mean_ci <- formatters::with_label(geom_mean_ci, paste("Geometric Mean", f_conf_level(control$conf_level)))
 

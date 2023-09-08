@@ -5,7 +5,6 @@
 
 ### Enhancements
 * Updated `analyze_vars_in_cols` to use caching, allow implementation of imputation rule via the `imp_rule` argument, and allow user to specify cell alignment via the `.aligns` argument.
-* Updated `s_summary` calculation of `geom_mean` statistic to return 0 instead of `NA` in cases of all-zero data.
 * Updated `add_rowcounts` to allow addition of row counts from `alt_counts_df` using the `alt_counts` argument.
 
 # tern 0.9.0
