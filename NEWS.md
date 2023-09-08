@@ -1,4 +1,4 @@
-# tern 0.9.0.9001
+# tern 0.9.0.9002
 ### New Features
 * Added `imputation_rule` function to apply imputation rule to data.
 * Added new format function `format_sigfig` to allow for numeric value formatting by a specified number of significant figures.
