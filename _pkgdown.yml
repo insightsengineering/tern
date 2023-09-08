@@ -180,4 +180,4 @@ reference:
     contents:
       - starts_with("create_")
       - summarize_vars
-      - summary_stats
+      - summary_custom
