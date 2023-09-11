@@ -5,6 +5,7 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
+#' @inheritParams grid::gTree
 #' @inheritParams argument_convention
 #' @param tbl (`rtable`)
 #' @param col_x (`integer`)\cr column index with estimator. By default tries to get this from
@@ -158,6 +159,7 @@ g_forest <- function(tbl,
                      width_forest = grid::unit(1, "null"),
                      col_symbol_size = attr(tbl, "col_symbol_size"),
                      col = getOption("ggplot2.discrete.colour")[1],
+                     gp = NULL,
                      draw = TRUE,
                      newpage = TRUE) {
   checkmate::assert_class(tbl, "VTableTree")
@@ -241,6 +243,7 @@ g_forest <- function(tbl,
     width_forest,
     symbol_size = symbol_size,
     col = col,
+    gp = gp,
     vp = grid::plotViewport(margins = rep(1, 4))
   )
 
