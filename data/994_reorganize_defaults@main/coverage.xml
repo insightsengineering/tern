@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.950745641671918" branch-rate="0" lines-covered="9053" lines-valid="9522" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-09-11 16:34:13.806561">
+<coverage line-rate="0.950745641671918" branch-rate="0" lines-covered="9053" lines-valid="9522" branches-covered="0" branches-valid="0" complexity="0" version="3.6.2" timestamp="2023-09-11 18:45:59.020493">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
@@ -7656,7 +7656,7 @@
                 <line number="497" hits="20" branch="false"/>
               </lines>
             </method>
-            <method name="decimalplaces" signature="" line-rate="1" branch-rate="0" complexity="0">
+            <method name="count_decimalplaces" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="502" hits="52" branch="false"/>
                 <line number="503" hits="31" branch="false"/>
@@ -19792,38 +19792,38 @@
             </method>
             <method name="summary_formats" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="332" hits="2" branch="false"/>
-                <line number="333" hits="2" branch="false"/>
+                <line number="336" hits="2" branch="false"/>
+                <line number="337" hits="2" branch="false"/>
               </lines>
             </method>
             <method name="summary_labels" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="349" hits="2" branch="false"/>
-                <line number="350" hits="2" branch="false"/>
+                <line number="353" hits="2" branch="false"/>
+                <line number="354" hits="2" branch="false"/>
               </lines>
             </method>
             <method name="summary_custom" signature="" line-rate="0.85" branch-rate="0" complexity="0">
               <lines>
-                <line number="392" hits="1" branch="false"/>
-                <line number="393" hits="1" branch="false"/>
-                <line number="394" hits="1" branch="false"/>
-                <line number="395" hits="1" branch="false"/>
                 <line number="396" hits="1" branch="false"/>
                 <line number="397" hits="1" branch="false"/>
                 <line number="398" hits="1" branch="false"/>
                 <line number="399" hits="1" branch="false"/>
                 <line number="400" hits="1" branch="false"/>
                 <line number="401" hits="1" branch="false"/>
+                <line number="402" hits="1" branch="false"/>
                 <line number="403" hits="1" branch="false"/>
-                <line number="404" hits="0" branch="false"/>
-                <line number="405" hits="0" branch="false"/>
-                <line number="407" hits="0" branch="false"/>
-                <line number="411" hits="1" branch="false"/>
-                <line number="412" hits="1" branch="false"/>
-                <line number="413" hits="1" branch="false"/>
-                <line number="414" hits="1" branch="false"/>
+                <line number="404" hits="1" branch="false"/>
+                <line number="405" hits="1" branch="false"/>
+                <line number="407" hits="1" branch="false"/>
+                <line number="408" hits="0" branch="false"/>
+                <line number="409" hits="0" branch="false"/>
+                <line number="411" hits="0" branch="false"/>
                 <line number="415" hits="1" branch="false"/>
                 <line number="416" hits="1" branch="false"/>
+                <line number="417" hits="1" branch="false"/>
+                <line number="418" hits="1" branch="false"/>
+                <line number="419" hits="1" branch="false"/>
+                <line number="420" hits="1" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -19899,30 +19899,30 @@
             <line number="230" hits="51" branch="false"/>
             <line number="231" hits="51" branch="false"/>
             <line number="234" hits="375" branch="false"/>
-            <line number="332" hits="2" branch="false"/>
-            <line number="333" hits="2" branch="false"/>
-            <line number="349" hits="2" branch="false"/>
-            <line number="350" hits="2" branch="false"/>
-            <line number="392" hits="1" branch="false"/>
-            <line number="393" hits="1" branch="false"/>
-            <line number="394" hits="1" branch="false"/>
-            <line number="395" hits="1" branch="false"/>
+            <line number="336" hits="2" branch="false"/>
+            <line number="337" hits="2" branch="false"/>
+            <line number="353" hits="2" branch="false"/>
+            <line number="354" hits="2" branch="false"/>
             <line number="396" hits="1" branch="false"/>
             <line number="397" hits="1" branch="false"/>
             <line number="398" hits="1" branch="false"/>
             <line number="399" hits="1" branch="false"/>
             <line number="400" hits="1" branch="false"/>
             <line number="401" hits="1" branch="false"/>
+            <line number="402" hits="1" branch="false"/>
             <line number="403" hits="1" branch="false"/>
-            <line number="404" hits="0" branch="false"/>
-            <line number="405" hits="0" branch="false"/>
-            <line number="407" hits="0" branch="false"/>
-            <line number="411" hits="1" branch="false"/>
-            <line number="412" hits="1" branch="false"/>
-            <line number="413" hits="1" branch="false"/>
-            <line number="414" hits="1" branch="false"/>
+            <line number="404" hits="1" branch="false"/>
+            <line number="405" hits="1" branch="false"/>
+            <line number="407" hits="1" branch="false"/>
+            <line number="408" hits="0" branch="false"/>
+            <line number="409" hits="0" branch="false"/>
+            <line number="411" hits="0" branch="false"/>
             <line number="415" hits="1" branch="false"/>
             <line number="416" hits="1" branch="false"/>
+            <line number="417" hits="1" branch="false"/>
+            <line number="418" hits="1" branch="false"/>
+            <line number="419" hits="1" branch="false"/>
+            <line number="420" hits="1" branch="false"/>
           </lines>
         </class>
         <class name="utils_factor.R" filename="R/utils_factor.R" line-rate="0.981651376146789" branch-rate="0" complexity="0">
