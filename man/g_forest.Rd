@@ -107,7 +107,7 @@ df <- extract_rsp_subgroups(
 
 tbl <- basic_table() \%>\%
   tabulate_rsp_subgroups(df)
-p <- g_forest(tbl)
+p <- g_forest(tbl, gp = gpar(fontsize = 10))
 
 draw_grob(p)
 
