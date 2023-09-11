@@ -145,16 +145,15 @@ testthat::test_that("s_summary works with logical vectors and by if requested do
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("a_summary_internal and a_summary work with healthy input.", {
+testthat::test_that("a_summary work with healthy input.", {
   options("width" = 100)
 
-  # numeric input - a_summary_internal
+  # numeric input - a_summary
   set.seed(1)
   x <- rnorm(10)
-  result <- a_summary_internal(
+  result <- a_summary(
     x = x, .N_col = 10, .N_row = 20, .var = "bla", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
-    compare = FALSE, type = "numeric", .stats = summary_custom()$stats, .formats = summary_custom()$formats,
-    .labels = summary_custom()$labels, .indent_mods = summary_custom()$indents, na.rm = TRUE, na_level = NA_character_
+    compare = FALSE, .stats = get_stats("analyze_vars_numeric"), na.rm = TRUE, na_level = NA_character_
   )
   res_out <- testthat::expect_silent(result)
 
@@ -164,13 +163,12 @@ testthat::test_that("a_summary_internal and a_summary work with healthy input.",
   testthat::expect_identical(res_out, res)
   testthat::expect_snapshot(res)
 
-  # factor input - a_summary_internal
+  # factor input - a_summary
   x <- factor(c("a", "a", "b", "c", "a"))
-  result <- a_summary_internal(
+  result <- a_summary(
     x = x, .N_col = 10, .N_row = 10, .var = "bla", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
-    compare = FALSE, type = "counts", .stats = summary_custom(type = "counts")$stats,
-    .formats = summary_custom(type = "counts")$formats, .labels = summary_custom(type = "counts")$labels,
-    .indent_mods = summary_custom(type = "counts")$indents, na.rm = TRUE, na_level = NA_character_
+    compare = FALSE, .stats = get_stats("analyze_vars_counts"),
+    na.rm = TRUE, na_level = NA_character_
   )
   res_out <- testthat::expect_silent(result)
 
@@ -180,13 +178,12 @@ testthat::test_that("a_summary_internal and a_summary work with healthy input.",
   testthat::expect_identical(res_out, res)
   testthat::expect_snapshot(res)
 
-  # character input - a_summary_internal
+  # character input - a_summary
   x <- c("A", "B", "A", "C")
-  result <- a_summary_internal(
+  result <- a_summary(
     x = x, .N_col = 10, .N_row = 10, .var = "x", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
-    compare = FALSE, type = "counts", .stats = summary_custom(type = "counts")$stats,
-    .formats = summary_custom(type = "counts")$formats, .labels = summary_custom(type = "counts")$labels,
-    .indent_mods = summary_custom(type = "counts")$indents, na.rm = TRUE, na_level = NA_character_,
+    compare = FALSE, .stats = get_stats("analyze_vars_counts"),
+    na.rm = TRUE, na_level = NA_character_,
     verbose = FALSE
   )
   res_out <- testthat::expect_silent(result)
@@ -197,13 +194,12 @@ testthat::test_that("a_summary_internal and a_summary work with healthy input.",
   testthat::expect_identical(res_out, res)
   testthat::expect_snapshot(res)
 
-  # logical input - a_summary_internal
+  # logical input - a_summary
   x <- c(TRUE, FALSE, FALSE, TRUE, TRUE)
-  result <- a_summary_internal(
+  result <- a_summary(
     x = x, .N_col = 10, .N_row = 10, .var = NULL, .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
-    compare = FALSE, type = "counts", .stats = summary_custom(type = "counts")$stats,
-    .formats = summary_custom(type = "counts")$formats, .labels = summary_custom(type = "counts")$labels,
-    .indent_mods = summary_custom(type = "counts")$indents, na.rm = TRUE, na_level = NA_character_
+    compare = FALSE, .stats = get_stats("analyze_vars_counts"),
+    na.rm = TRUE, na_level = NA_character_
   )
   res_out <- testthat::expect_silent(result)
 
@@ -489,8 +485,22 @@ testthat::test_that("analyze_vars 'na_level' argument works as expected", {
   testthat::expect_snapshot(res)
 })
 
-# Deprecated functions
+testthat::test_that("control_analyze_vars works with customized parameters", {
+  result <- control_analyze_vars(
+    conf_level = 0.9,
+    quantiles = c(0.1, 0.9)
+  )
 
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("control_analyze_vars fails wrong inputs", {
+  testthat::expect_error(control_analyze_vars(quantiles = c(25, 75)))
+  testthat::expect_error(control_analyze_vars(conf_level = 95))
+})
+
+# Deprecated functions ------
 testthat::test_that("create_afun_summary creates an `afun` that works and throws a warning", {
   testthat::expect_warning(afun <- create_afun_summary(
     .stats = c("n", "count_fraction", "median", "range", "mean_ci"),
@@ -514,4 +524,18 @@ testthat::test_that("create_afun_summary creates an `afun` that works and throws
 
   # From visual inspection it works as before, same output
   testthat::expect_silent(result <- build_table(l, df = dta_test))
+})
+
+testthat::test_that("analyze_vars works correctly with auto formats", {
+  dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4))
+  res <- basic_table() %>%
+    analyze_vars(
+      vars = "VAR",
+      .stats = c("n", "mean", "mean_sd", "range"),
+      .formats = c("mean_sd" = "auto", "range" = "auto")
+    ) %>%
+    build_table(dt)
+
+  result <- testthat::expect_silent(res)
+  testthat::expect_snapshot(res)
 })

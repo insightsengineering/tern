@@ -28,6 +28,7 @@ fmt_5sf(0.000025645)
 \seealso{
 Other formatting functions: 
 \code{\link{extreme_format}},
+\code{\link{format_auto}()},
 \code{\link{format_count_fraction_fixed_dp}()},
 \code{\link{format_count_fraction}()},
 \code{\link{format_extreme_values_ci}()},

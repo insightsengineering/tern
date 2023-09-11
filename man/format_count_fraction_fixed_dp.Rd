@@ -28,6 +28,7 @@ format_count_fraction_fixed_dp(x = c(0, 0))
 \seealso{
 Other formatting functions: 
 \code{\link{extreme_format}},
+\code{\link{format_auto}()},
 \code{\link{format_count_fraction}()},
 \code{\link{format_extreme_values_ci}()},
 \code{\link{format_extreme_values}()},

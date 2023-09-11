@@ -8,8 +8,6 @@
 \alias{s_summary.character}
 \alias{s_summary.logical}
 \alias{a_summary}
-\alias{a_summary.default}
-\alias{a_summary.numeric}
 \alias{analyze_vars}
 \alias{summarize_vars}
 \title{Analyze Variables}
@@ -56,9 +54,7 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
   ...
 )
 
-a_summary(x, .N_col, .N_row, .var, .df_row, .ref_group, .in_ref_col, ...)
-
-\method{a_summary}{default}(
+a_summary(
   x,
   .N_col,
   .N_row,
@@ -67,28 +63,10 @@ a_summary(x, .N_col, .N_row, .var, .df_row, .ref_group, .in_ref_col, ...)
   .ref_group = NULL,
   .in_ref_col = FALSE,
   compare = FALSE,
-  .stats = summary_custom(type = "counts", include_pval = compare)$stats,
-  .formats = summary_custom(type = "counts", include_pval = compare)$formats,
-  .labels = summary_custom(type = "counts", include_pval = compare)$labels,
-  .indent_mods = summary_custom(type = "counts", include_pval = compare)$indent_mods,
-  na.rm = TRUE,
-  na_level = NA_character_,
-  ...
-)
-
-\method{a_summary}{numeric}(
-  x,
-  .N_col,
-  .N_row,
-  .var = NULL,
-  .df_row = NULL,
-  .ref_group = NULL,
-  .in_ref_col = FALSE,
-  compare = FALSE,
-  .stats = summary_custom(include_pval = compare)$stats,
-  .formats = summary_custom(include_pval = compare)$formats,
-  .labels = summary_custom(include_pval = compare)$labels,
-  .indent_mods = summary_custom(include_pval = compare)$indent_mods,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL,
   na.rm = TRUE,
   na_level = NA_character_,
   ...
@@ -160,7 +138,8 @@ to print out information about factor casting.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
@@ -187,9 +166,6 @@ to avoid warnings from \code{rtables}.}
 
 \item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
 defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
-
-\item{type}{(\code{character})\cr type of statistics to calculate given \code{x}. If \code{x} is numeric \code{type} should be
-\code{"numeric"}, otherwise type should be \code{"counts"}.}
 }
 \value{
 \itemize{
@@ -265,6 +241,12 @@ Deprecation cycle started for \code{summarize_vars} as it is going to renamed in
 \code{analyze_vars}. Intention is to reflect better the core underlying \code{rtables}
 functions; in this case \code{\link[rtables:analyze]{rtables::analyze()}}.
 }
+\details{
+It is possible to use \code{"auto"} for \code{analyze_vars} on a subset of methods. This uses \code{\link[=format_auto]{format_auto()}} to
+determine automatically the number of digits from the analyzed variable (\code{.vars}), but only for the
+current row data (\code{.df_row[[.var]]}, see \code{?rtables::additional_fun_params}), and not for the whole
+data. Also no column split is considered.
+}
 \section{Functions}{
 \itemize{
 \item \code{s_summary()}: S3 generic function to produces a variable summary.
@@ -280,10 +262,6 @@ conversion to factor (with a warning) and then forwards to the method for factor
 
 \item \code{a_summary()}: Formatted analysis function which is used as \code{afun} in \code{analyze_vars()} and
 \code{compare_vars()} and as \code{cfun} in \code{summarize_colvars()}.
-
-\item \code{a_summary(default)}: Formatted analysis function \code{default} method for non-numeric classes.
-
-\item \code{a_summary(numeric)}: Formatted analysis function method for \code{numeric} class.
 
 \item \code{analyze_vars()}: Layout-creating function which can take statistics function arguments
 and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
@@ -460,5 +438,15 @@ l <- basic_table() \%>\%
   analyze_vars(vars = "AVISIT", na.rm = FALSE)
 
 build_table(l, df = dta_test)
+
+# auto format
+dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4))
+basic_table() \%>\%
+  analyze_vars(
+    vars = "VAR",
+    .stats = c("n", "mean", "mean_sd", "range"),
+    .formats = c("mean_sd" = "auto", "range" = "auto")
+  ) \%>\%
+  build_table(dt)
 
 }

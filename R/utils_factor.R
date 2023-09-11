@@ -286,7 +286,7 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
 #'
 #' @return A `list` with modified elements `x`, `.formats`, `.labels`, and `.indent_mods`.
 #'
-#' @seealso [a_summary_internal()] which uses this function internally.
+#' @seealso [a_summary()] which uses this function internally.
 #'
 #' @keywords internal
 ungroup_stats <- function(x,
@@ -295,10 +295,12 @@ ungroup_stats <- function(x,
                           .indent_mods) {
   checkmate::assert_list(x)
   empty_pval <- "pval" %in% names(x) && length(x[["pval"]]) == 0
+  empty_pval_counts <- "pval_counts" %in% names(x) && length(x[["pval_counts"]]) == 0
   x <- unlist(x, recursive = FALSE)
 
   # If p-value is empty it is removed by unlist and needs to be re-added
   if (empty_pval) x[["pval"]] <- character()
+  if (empty_pval_counts) x[["pval_counts"]] <- character()
   .stats <- names(x)
 
   # Ungroup stats
