@@ -61,7 +61,7 @@
 #'
 #' tbl <- basic_table() %>%
 #'   tabulate_rsp_subgroups(df)
-#' p <- g_forest(tbl, gp = gpar(fontsize = 10))
+#' p <- g_forest(tbl, gp = grid::gpar(fontsize = 10))
 #'
 #' draw_grob(p)
 #'
