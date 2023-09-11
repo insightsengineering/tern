@@ -43,9 +43,6 @@
     <loc>https://insightsengineering.github.io/tern/pull_request_template.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern/reference/a_summary_internal.html</loc>
-  </url>
-  <url>
     <loc>https://insightsengineering.github.io/tern/reference/abnormal.html</loc>
   </url>
   <url>
@@ -250,6 +247,9 @@
     <loc>https://insightsengineering.github.io/tern/reference/decorate_grob_set.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/reference/default_stats_formats_labels.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/reference/desctools_binom.html</loc>
   </url>
   <url>
@@ -323,6 +323,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/forest_viewport.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/reference/format_auto.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/format_count_fraction.html</loc>
@@ -614,9 +617,6 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/summarize_patients_exposure_in_cols.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/reference/summary_stats.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/survival_biomarkers_subgroups.html</loc>
