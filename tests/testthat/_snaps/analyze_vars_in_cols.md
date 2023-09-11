@@ -164,3 +164,79 @@
         F           0           0          117 (22%)   
         M           0           0           72 (14%)   
 
+# analyze_vars_in_cols works with imputation rule
+
+    Code
+      res
+    Output
+                  n    Number of BLQs   Mean    SD    Geometric Mean   Minimum   Maximum
+      ——————————————————————————————————————————————————————————————————————————————————
+      A: Drug X                                                                         
+        Day 1                                                                           
+          0       36         17          ND     ND          NE           ND       92.4  
+          6       18         8           ND     ND         40.2          ND       97.6  
+          12      18         4          65.6   23.3        60.8         21.2      99.2  
+          18      18         12          ND     ND         44.6          ND       99.3  
+        Day 2                                                                           
+          24      18         7           ND     ND         42.0          ND       89.8  
+          30      18         11          ND     ND         35.6          ND       94.5  
+          36      18         11          ND     ND         36.1          ND       96.1  
+          42      18         9           ND     ND         41.8          ND       99.2  
+
+---
+
+    Code
+      res
+    Output
+                  n    Number of BLQs   Mean   SD   Geometric Mean   Minimum   Maximum
+      ————————————————————————————————————————————————————————————————————————————————
+      A: Drug X                                                                       
+        Day 1                                                                         
+          0       36         30          ND    ND         NE           ND       92.4  
+          6       18         14          ND    ND        40.2          ND       97.6  
+          12      18         12          ND    ND        60.8          ND       99.2  
+          18      18         16          ND    ND        44.6          ND       99.3  
+        Day 2                                                                         
+          24      18         9           ND    ND        42.0          ND       89.8  
+          30      18         11          ND    ND        35.6          ND       94.5  
+          36      18         12          ND    ND        36.1          ND       96.1  
+          42      18         13          ND    ND        41.8          ND       99.2  
+
+---
+
+    Code
+      res
+    Output
+                  n    Number of BLQs   Mean    SD    Geometric Mean   Minimum   Maximum
+      ——————————————————————————————————————————————————————————————————————————————————
+      A: Drug X                                                                         
+        Day 1                                                                           
+          0       36         17         43.4   25.6        32.8          2.3      92.4  
+          6       18         8          46.2   24.8        40.2         17.5      97.6  
+          12      18         4          65.6   23.3        60.8         21.2      99.2  
+          18      18         12          ND     ND          ND           ND       99.3  
+        Day 2                                                                           
+          24      18         7          51.4   25.8        42.0          7.7      89.8  
+          30      18         11          ND     ND          ND           ND       94.5  
+          36      18         11          ND     ND          ND           ND       96.1  
+          42      18         9          54.6   28.4        41.8          1.3      99.2  
+
+# analyze_vars_in_cols works with caching
+
+    Code
+      res
+    Output
+                  n    Number of BLQs   Mean    SD    Geometric Mean   Minimum   Maximum
+      ——————————————————————————————————————————————————————————————————————————————————
+      A: Drug X                                                                         
+        Day 1                                                                           
+          0       36         17         43.4   25.6        32.8          2.3      92.4  
+          6       18         8          46.2   24.8        40.2         17.5      97.6  
+          12      18         4          65.6   23.3        60.8         21.2      99.2  
+          18      18         12         54.1   27.1        44.6          7.5      99.3  
+        Day 2                                                                           
+          24      18         7          51.4   25.8        42.0          7.7      89.8  
+          30      18         11         48.2   31.8        35.6          3.6      94.5  
+          36      18         11         47.0   25.6        36.1          1.3      96.1  
+          42      18         9          54.6   28.4        41.8          1.3      99.2  
+

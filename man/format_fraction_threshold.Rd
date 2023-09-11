@@ -38,6 +38,7 @@ Other formatting functions:
 \code{\link{format_extreme_values}()},
 \code{\link{format_fraction_fixed_dp}()},
 \code{\link{format_fraction}()},
+\code{\link{format_sigfig}()},
 \code{\link{format_xx}()},
 \code{\link{formatting_functions}}
 }

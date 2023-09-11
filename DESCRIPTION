@@ -1,6 +1,6 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.9.0.9001
+Version: 0.9.0.9002
 Date: 2023-09-08
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
@@ -122,6 +122,7 @@ Collate:
     'h_step.R'
     'h_survival_biomarkers_subgroups.R'
     'h_survival_duration_subgroups.R'
+    'imputation_rule.R'
     'incidence_rate.R'
     'individual_patient_plot.R'
     'kaplan_meier_plot.R'

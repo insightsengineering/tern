@@ -1,5 +1,7 @@
-# tern 0.9.0.9001
+# tern 0.9.0.9002
 ### New Features
+* Added `imputation_rule` function to apply imputation rule to data.
+* Added new format function `format_sigfig` to allow for numeric value formatting by a specified number of significant figures.
 * Added vectors containing default statistic formats and labels as `tern_default_formats` and `tern_default_labels`, respectively.
 * Added function `get_stats` to return methods from given statistical method groups.
 * Added function `get_formats_from_stats` to return formats and `get_labels_from_stats` to return labels for a given set of statistics.
@@ -7,6 +9,8 @@
 
 ### Enhancements
 * Refactored `tabulate_rsp_subgroups` to pass sanitation checks by preventing creation of degenerate subtables.
+* Updated `analyze_vars_in_cols` to use caching, allow implementation of imputation rule via the `imp_rule` argument, and allow user to specify cell alignment via the `.aligns` argument.
+* Updated `add_rowcounts` to allow addition of row counts from `alt_counts_df` using the `alt_counts` argument.
 
 ### Miscellaneous
 * Grouped functions relating to valid method names and their default formats and labels into new source file `utils_defaults_handling.R`.

@@ -69,6 +69,7 @@ reference:
     contents:
       - default_stats_formats_labels
       - starts_with("h_")
+      - imputation_rule
       - starts_with("or_")
       - starts_with("prop_")
       - -starts_with("h_col_")

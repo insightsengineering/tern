@@ -209,6 +209,33 @@ format_xx <- function(str) {
   return(rtable_format)
 }
 
+#' Formatting Numeric Values By Significant Figures
+#'
+#' Format numeric values to print with a specified number of significant figures.
+#'
+#' @param sigfig (`integer`)\cr number of significant figures to display.
+#'
+#' @return An `rtables` formatting function.
+#'
+#' @examples
+#' fmt_3sf <- format_sigfig(3)
+#' fmt_3sf(1.658)
+#' fmt_3sf(1e1)
+#'
+#' fmt_5sf <- format_sigfig(5)
+#' fmt_5sf(0.57)
+#' fmt_5sf(0.000025645)
+#'
+#' @family formatting functions
+#' @export
+format_sigfig <- function(sigfig) {
+  checkmate::assert_integerish(sigfig)
+  function(x, ...) {
+    if (!is.numeric(x)) stop("`format_sigfig` cannot be used for non-numeric values. Please choose another format.")
+    formatC(signif(x, digits = sigfig), digits = sigfig, format = "fg", flag = "#")
+  }
+}
+
 #' Formatting Fraction with Lower Threshold
 #'
 #' @description `r lifecycle::badge("stable")`
