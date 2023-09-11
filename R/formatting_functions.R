@@ -419,8 +419,8 @@ format_extreme_values_ci <- function(digits = 2L) {
 #' `.formats = c("mean" = "auto")`. See details to see how this works with the inner function.
 #'
 #' @param dt_var (`numeric`) \cr all the data the statistics was created upon. Used only to find
-#'   significant digits. In `analyze_vars` this comes from `.df_row` (see
-#'   `?rtables::additional_fun_params`), and it is the row data after the above row splits. No
+#'   significant digits. In [analyze_vars] this comes from `.df_row` (see
+#'   [rtables::additional_fun_params]), and it is the row data after the above row splits. No
 #'   column split is considered.
 #' @param x_stat (`string`) \cr string indicating the current statistical method used.
 #'
@@ -459,7 +459,7 @@ format_auto <- function(dt_var, x_stat) {
     checkmate::assert_choice(x_stat, c(der_stats, nonder_stats))
 
     # Finds the max number of digits in data
-    detect_dig <- vapply(dt_var, decimalplaces, FUN.VALUE = numeric(1)) %>%
+    detect_dig <- vapply(dt_var, count_decimalplaces, FUN.VALUE = numeric(1)) %>%
       max()
 
     if (x_stat %in% der_stats) {
@@ -498,7 +498,7 @@ str_extract <- function(string, pattern = "xx|xx\\.|xx\\.x+", invert = FALSE) {
 }
 
 # Helper function
-decimalplaces <- function(dec) {
+count_decimalplaces <- function(dec) {
   if (abs(dec - round(dec)) > .Machine$double.eps^0.5) { # For precision
     nchar(strsplit(format(dec, scientific = FALSE, trim = FALSE), ".", fixed = TRUE)[[1]][[2]])
   } else {

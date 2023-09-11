@@ -235,7 +235,9 @@ get_labels_from_stats <- function(stats, labels_in = NULL) {
 }
 
 #' @describeIn default_stats_formats_labels Named list of default formats for `tern`.
-#'
+#' @format
+#' * `tern_default_formats` is a list of available formats, named after their relevant
+#'   statistic.
 #' @export
 tern_default_formats <- c(
   fraction = format_fraction_fixed_dp,
@@ -276,7 +278,9 @@ tern_default_formats <- c(
 
 #' @describeIn default_stats_formats_labels `character` vector that contains default labels
 #'   for `tern`.
-#'
+#' @format
+#' * `tern_default_labels` is a character vector of available labels, named after their relevant
+#'   statistic.
 #' @export
 tern_default_labels <- c(
   # list of labels -> sorted? xxx it should be not relevant due to match

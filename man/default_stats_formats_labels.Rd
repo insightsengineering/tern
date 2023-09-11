@@ -13,9 +13,15 @@
 \alias{summary_custom}
 \title{Defaults for statistical method names and their associated formats & labels}
 \format{
-An object of class \code{list} of length 34.
+\itemize{
+\item \code{tern_default_formats} is a list of available formats, named after their relevant
+statistic.
+}
 
-An object of class \code{character} of length 31.
+\itemize{
+\item \code{tern_default_labels} is a character vector of available labels, named after their relevant
+statistic.
+}
 }
 \usage{
 get_stats(
