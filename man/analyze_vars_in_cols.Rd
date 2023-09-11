@@ -74,7 +74,7 @@ underneath analyses, which is not allowed.}
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
 
- \item{.aligns}{(\code{character})\cr alignment for table contents (not including labels). When \code{NULL}, \code{"center"}
+\item{.aligns}{(\code{character})\cr alignment for table contents (not including labels). When \code{NULL}, \code{"center"}
 is applied. See \code{\link[formatters:list_formats]{formatters::list_valid_aligns()}} for a list of all currently supported alignments.}
 }
 \value{
