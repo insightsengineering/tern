@@ -18,6 +18,7 @@ g_forest(
   width_forest = grid::unit(1, "null"),
   col_symbol_size = attr(tbl, "col_symbol_size"),
   col = getOption("ggplot2.discrete.colour")[1],
+  gp = NULL,
   draw = TRUE,
   newpage = TRUE
 )
@@ -58,6 +59,10 @@ to the sample size used to calculate the estimator. If \code{NULL}, the same sym
 By default tries to get this from \code{tbl} attribute \code{col_symbol_size}, otherwise needs to be manually specified.}
 
 \item{col}{(\code{character})\cr color(s).}
+
+\item{gp}{A \code{"gpar"} object, typically the output
+    from a call to the function \code{\link[grid]{gpar}}.  This is basically
+    a list of graphical parameter settings.}
 
 \item{draw}{(\code{flag})\cr whether the plot should be drawn.}
 
@@ -102,7 +107,7 @@ df <- extract_rsp_subgroups(
 
 tbl <- basic_table() \%>\%
   tabulate_rsp_subgroups(df)
-p <- g_forest(tbl)
+p <- g_forest(tbl, gp = grid::gpar(fontsize = 10))
 
 draw_grob(p)
 

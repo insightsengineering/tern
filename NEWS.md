@@ -11,6 +11,7 @@
 * Refactored `tabulate_rsp_subgroups` to pass sanitation checks by preventing creation of degenerate subtables.
 * Updated `analyze_vars_in_cols` to use caching, allow implementation of imputation rule via the `imp_rule` argument, and allow user to specify cell alignment via the `.aligns` argument.
 * Updated `add_rowcounts` to allow addition of row counts from `alt_counts_df` using the `alt_counts` argument.
+* Added `gp` argument to `g_forest` to control graphical parameters such as font size.
 
 ### Miscellaneous
 * Grouped functions relating to valid method names and their default formats and labels into new source file `utils_defaults_handling.R`.
