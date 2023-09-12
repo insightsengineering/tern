@@ -172,8 +172,20 @@ testthat::test_that("h_ppmeans works with healthy input", {
     .var = "AVAL",
     .df_row = anl,
     variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
+    distribution = "poisson"
+  )
+
+  testthat::expect_snapshot(fits)
+
+  fits2 <- h_glm_count(
+    .var = "AVAL",
+    .df_row = anl,
+    variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
     distribution = "quasipoisson"
   )
+
+  testthat::expect_snapshot(fits2)
+
   result <- h_ppmeans(
     obj = fits$glm_fit,
     .df_row = anl,
@@ -182,7 +194,7 @@ testthat::test_that("h_ppmeans works with healthy input", {
   )
 
   res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+  testthat::expect_snapshot(res) # diff
 })
 
 testthat::test_that("s_glm_count works with healthy input", {
@@ -198,12 +210,12 @@ testthat::test_that("s_glm_count works with healthy input", {
     .in_ref_col = TRUE,
     variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
     conf_level = 0.95,
-    distribution = "quasipoisson",
+    distribution = "poisson",
     rate_mean_method = "ppmeans"
   )
 
   res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+  testthat::expect_snapshot(res) # diff
 })
 
 testthat::test_that("s_glm_count works with no reference group selected.", {
@@ -221,12 +233,12 @@ testthat::test_that("s_glm_count works with no reference group selected.", {
       filter(ARMCD == "ARM B"),
     variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
     conf_level = 0.95,
-    distribution = "quasipoisson",
+    distribution = "poisson",
     rate_mean_method = "ppmeans"
   )
 
   res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+  testthat::expect_snapshot(res) # diff
 })
 
 testthat::test_that("s_glm_count fails wrong inputs", {
