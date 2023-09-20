@@ -45,6 +45,8 @@
 #' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to control outlook of the Kaplan-Meier curve.
 #' @param annot_at_risk (`flag`)\cr compute and add the annotation table reporting the number of patient at risk
 #'   matching the main grid of the Kaplan-Meier curve.
+#' @param annot_at_risk_title (`flag`)\cr whether the "Patients at Risk" title should be added above the `annot_at_risk`
+#'   table. Has no effect if `annot_at_risk` is `FALSE`. Defaults to `FALSE`.
 #' @param annot_surv_med (`flag`)\cr compute and add the annotation table on the Kaplan-Meier curve estimating the
 #'   median survival time per group.
 #' @param annot_coxph (`flag`)\cr add the annotation table from a [survival::coxph()] model.
@@ -89,7 +91,8 @@
 #'   df = df,
 #'   variables = variables,
 #'   control_surv = control_surv_timepoint(conf_level = 0.9),
-#'   col = c("grey25", "grey50", "grey75")
+#'   col = c("grey25", "grey50", "grey75"),
+#'   annot_at_risk_title = TRUE
 #' )
 #' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal())
 #' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal(), lty = 1:3)
@@ -949,8 +952,9 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, anno
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Two graphical objects are obtained, one corresponding to row labeling and
-#' the second to the number of patient at risk.
+#' Two graphical objects are obtained, one corresponding to row labeling and the second to the table of
+#' numbers of patients at risk. If `title = TRUE`, a third object corresponding to the table title is
+#' also obtained.
 #'
 #' @inheritParams g_km
 #' @inheritParams h_ggkm
@@ -958,8 +962,11 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, anno
 #'   includes the number of patients at risk at given time points.
 #' @param xlim (`numeric`)\cr the maximum value on the x-axis (used to
 #'   ensure the at risk table aligns with the KM graph).
+#' @param title (`flag`)\cr whether the "Patients at Risk" title should be added above the `annot_at_risk`
+#'   table. Has no effect if `annot_at_risk` is `FALSE`. Defaults to `FALSE`.
 #'
-#' @return A named `list` of two `gTree` objects: `at_risk` and `label`.
+#' @return A named `list` of two `gTree` objects if `title = FALSE`: `at_risk` and `label`, or three
+#'   `gTree` objects if `title = TRUE`: `at_risk`, `label`, and `title`.
 #'
 #' @examples
 #' \donttest{
@@ -1008,11 +1015,11 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, anno
 #' grid::grid.newpage()
 #' pushViewport(viewport(layout = lyt, height = .95, width = .95))
 #' grid.rect(gp = grid::gpar(lty = 1, col = "purple", fill = "gray85", lwd = 1))
-#' pushViewport(viewport(layout.pos.row = 4, layout.pos.col = 2))
+#' pushViewport(viewport(layout.pos.row = 3:4, layout.pos.col = 2))
 #' grid.rect(gp = grid::gpar(lty = 1, col = "orange", fill = "gray85", lwd = 1))
 #' grid::grid.draw(tbl$at_risk)
 #' popViewport()
-#' pushViewport(viewport(layout.pos.row = 4, layout.pos.col = 1))
+#' pushViewport(viewport(layout.pos.row = 3:4, layout.pos.col = 1))
 #' grid.rect(gp = grid::gpar(lty = 1, col = "green3", fill = "gray85", lwd = 1))
 #' grid::grid.draw(tbl$label)
 #' }
