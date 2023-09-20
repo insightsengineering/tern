@@ -926,11 +926,13 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, anno
     ht_x <- c(ht_x, 1)
     ht_units <- c(ht_units, "lines")
   }
-
-  no_at_risk_tbl <- if (annot_at_risk) {
-    rep(TRUE, 5 + as.numeric(annot_at_risk_title) + ttl_row + foot_row)
+  if (annot_at_risk) {
+    no_at_risk_tbl <- rep(TRUE, 6 + ttl_row + foot_row)
+    if (!annot_at_risk_title) {
+      no_at_risk_tbl[length(no_at_risk_tbl) - 2 - foot_row] <- FALSE
+    }
   } else {
-    no_tbl_ind
+    no_at_risk_tbl <- no_tbl_ind
   }
 
   grid::grid.layout(
