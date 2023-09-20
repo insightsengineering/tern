@@ -195,6 +195,7 @@ g_km <- function(df,
                  ci_ribbon = FALSE,
                  ggtheme = nestcolor::theme_nest(),
                  annot_at_risk = TRUE,
+                 annot_at_risk_title = FALSE,
                  annot_surv_med = TRUE,
                  annot_coxph = FALSE,
                  annot_stats = NULL,
@@ -328,14 +329,17 @@ g_km <- function(df,
     grobs_patient <- h_grob_tbl_at_risk(
       data = data_plot,
       annot_tbl = annot_tbl,
-      xlim = max(max_time, data_plot$time, xticks)
+      xlim = max(max_time, data_plot$time, xticks),
+      title = annot_at_risk_title
     )
   }
 
   if (annot_at_risk || annot_surv_med || annot_coxph) {
     lyt <- h_km_layout(
-      data = data_plot, g_el = g_el, title = title, footnotes = footnotes, annot_at_risk = annot_at_risk
+      data = data_plot, g_el = g_el, title = title, footnotes = footnotes,
+      annot_at_risk = annot_at_risk, annot_at_risk_title = annot_at_risk_title
     )
+    at_risk_ttl <- as.numeric(annot_at_risk_title)
     ttl_row <- as.numeric(!is.null(title))
     foot_row <- as.numeric(!is.null(footnotes))
     km_grob <- grid::gTree(
@@ -407,22 +411,28 @@ g_km <- function(df,
         ),
 
         # Add the table with patient-at-risk numbers.
+        if (annot_at_risk && annot_at_risk_title) {
+          grid::gTree(
+            vp = grid::viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 1),
+            children = grobs_patient$title
+          )
+        },
         if (annot_at_risk) {
           grid::gTree(
-            vp = grid::viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 2),
+            vp = grid::viewport(layout.pos.row = 4 + at_risk_ttl + ttl_row, layout.pos.col = 2),
             children = grobs_patient$at_risk
           )
         },
         if (annot_at_risk) {
           grid::gTree(
-            vp = grid::viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 1),
+            vp = grid::viewport(layout.pos.row = 4 + at_risk_ttl + ttl_row, layout.pos.col = 1),
             children = grobs_patient$label
           )
         },
         if (annot_at_risk) {
           # Add the x-axis for the table.
           grid::gTree(
-            vp = grid::viewport(layout.pos.row = 5 + ttl_row, layout.pos.col = 2),
+            vp = grid::viewport(layout.pos.row = 5 + at_risk_ttl + ttl_row, layout.pos.col = 2),
             children = grid::gList(rbind(g_el$xaxis, g_el$xlab))
           )
         },
@@ -431,7 +441,7 @@ g_km <- function(df,
         if (foot_row == 1) {
           grid::gTree(
             vp = grid::viewport(
-              layout.pos.row = ifelse(annot_at_risk, 6 + ttl_row, 4 + ttl_row),
+              layout.pos.row = ifelse(annot_at_risk, 6 + at_risk_ttl + ttl_row, 4 + ttl_row),
               layout.pos.col = 2
             ),
             children = grid::gList(grid::textGrob(label = footnotes, x = grid::unit(0, "npc"), hjust = 0))
@@ -865,7 +875,7 @@ h_decompose_gg <- function(gg) {
 #' }
 #'
 #' @export
-h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
+h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, annot_at_risk_title = FALSE) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
   col_annot_width <- max(
@@ -897,6 +907,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
     1,
     grid::convertX(with(g_el, xaxis$height + ylab$width), "pt") + grid::unit(5, "pt"),
     grid::convertX(g_el$guide$heights, "pt") + grid::unit(2, "pt"),
+    1,
     nlines + 0.5,
     grid::convertX(with(g_el, xaxis$height + ylab$width), "pt")
   )
@@ -905,6 +916,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
     "null",
     "pt",
     "pt",
+    "lines",
     "lines",
     "pt"
   )
@@ -916,7 +928,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
   }
 
   no_at_risk_tbl <- if (annot_at_risk) {
-    rep(TRUE, 5 + ttl_row + foot_row)
+    rep(TRUE, 5 + as.numeric(annot_at_risk_title) + ttl_row + foot_row)
   } else {
     no_tbl_ind
   }
@@ -1004,7 +1016,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
 #' }
 #'
 #' @export
-h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
+h_grob_tbl_at_risk <- function(data, annot_tbl, xlim, title = FALSE) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
   y_int <- annot_tbl$time[2] - annot_tbl$time[1]
@@ -1015,6 +1027,16 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
   annot_tbl[is.na(annot_tbl)] <- 0
   y_str_unit <- as.numeric(annot_tbl$strata)
   vp_table <- grid::plotViewport(margins = grid::unit(c(0, 0, 0, 0), "lines"))
+  if (title) {
+    gb_table_title <- grid::gList(
+      grid::textGrob(
+        label = "Patients at Risk:",
+        x = 1,
+        y = grid::unit(0.2, "native"),
+        gp = grid::gpar(fontface = "bold", fontsize = 10)
+      )
+    )
+  }
   gb_table_left_annot <- grid::gList(
     grid::rectGrob(
       x = 0, y = grid::unit(c(1:nlines) - 1, "lines"),
@@ -1047,7 +1069,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
     )
   )
 
-  list(
+  ret <- list(
     at_risk = grid::gList(
       grid::gTree(
         vp = vp_table,
@@ -1079,6 +1101,26 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
       )
     )
   )
+
+  if (title) {
+    ret[["title"]] <- grid::gList(
+      grid::gTree(
+        vp = grid::viewport(width = max(grid::stringWidth(txtlines))),
+        children = grid::gList(
+          grid::gTree(
+            vp = grid::dataViewport(
+              xscale = 0:1,
+              yscale = c(0, 1),
+              extension = c(0, 0)
+            ),
+            children = grid::gList(gb_table_title)
+          )
+        )
+      )
+    )
+  }
+
+  ret
 }
 
 #' Helper Function: Survival Estimations
