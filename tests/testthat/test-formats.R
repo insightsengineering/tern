@@ -93,7 +93,7 @@ testthat::test_that("format_xx works with easy inputs", {
 })
 
 testthat::test_that("format_sigfig works with easy inputs", {
-  test <- list(1.658, 0.5761, 1e-1, 78.6, 1234e-6)
+  test <- list(1.658, 0.5761, 1e-1, 78.6, 1234e-6, 200.00)
   z <- format_sigfig(3)
   result <- sapply(test, z)
 
