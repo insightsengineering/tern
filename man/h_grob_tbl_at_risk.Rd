@@ -4,7 +4,7 @@
 \alias{h_grob_tbl_at_risk}
 \title{Helper: Patient-at-Risk Grobs}
 \usage{
-h_grob_tbl_at_risk(data, annot_tbl, xlim, title = FALSE)
+h_grob_tbl_at_risk(data, annot_tbl, xlim, title = TRUE)
 }
 \arguments{
 \item{data}{(\code{data.frame})\cr survival data as pre-processed by \code{h_data_plot}.}
@@ -16,7 +16,7 @@ includes the number of patients at risk at given time points.}
 ensure the at risk table aligns with the KM graph).}
 
 \item{title}{(\code{flag})\cr whether the "Patients at Risk" title should be added above the \code{annot_at_risk}
-table. Has no effect if \code{annot_at_risk} is \code{FALSE}. Defaults to \code{FALSE}.}
+table. Has no effect if \code{annot_at_risk} is \code{FALSE}. Defaults to \code{TRUE}.}
 }
 \value{
 A named \code{list} of two \code{gTree} objects if \code{title = FALSE}: \code{at_risk} and \code{label}, or three

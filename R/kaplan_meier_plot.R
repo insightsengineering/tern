@@ -46,7 +46,7 @@
 #' @param annot_at_risk (`flag`)\cr compute and add the annotation table reporting the number of patient at risk
 #'   matching the main grid of the Kaplan-Meier curve.
 #' @param annot_at_risk_title (`flag`)\cr whether the "Patients at Risk" title should be added above the `annot_at_risk`
-#'   table. Has no effect if `annot_at_risk` is `FALSE`. Defaults to `FALSE`.
+#'   table. Has no effect if `annot_at_risk` is `FALSE`. Defaults to `TRUE`.
 #' @param annot_surv_med (`flag`)\cr compute and add the annotation table on the Kaplan-Meier curve estimating the
 #'   median survival time per group.
 #' @param annot_coxph (`flag`)\cr add the annotation table from a [survival::coxph()] model.
@@ -92,7 +92,7 @@
 #'   variables = variables,
 #'   control_surv = control_surv_timepoint(conf_level = 0.9),
 #'   col = c("grey25", "grey50", "grey75"),
-#'   annot_at_risk_title = TRUE
+#'   annot_at_risk_title = FALSE
 #' )
 #' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal())
 #' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal(), lty = 1:3)
@@ -198,7 +198,7 @@ g_km <- function(df,
                  ci_ribbon = FALSE,
                  ggtheme = nestcolor::theme_nest(),
                  annot_at_risk = TRUE,
-                 annot_at_risk_title = FALSE,
+                 annot_at_risk_title = TRUE,
                  annot_surv_med = TRUE,
                  annot_coxph = FALSE,
                  annot_stats = NULL,
@@ -878,7 +878,7 @@ h_decompose_gg <- function(gg) {
 #' }
 #'
 #' @export
-h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, annot_at_risk_title = FALSE) {
+h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, annot_at_risk_title = TRUE) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
   col_annot_width <- max(
@@ -963,7 +963,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, anno
 #' @param xlim (`numeric`)\cr the maximum value on the x-axis (used to
 #'   ensure the at risk table aligns with the KM graph).
 #' @param title (`flag`)\cr whether the "Patients at Risk" title should be added above the `annot_at_risk`
-#'   table. Has no effect if `annot_at_risk` is `FALSE`. Defaults to `FALSE`.
+#'   table. Has no effect if `annot_at_risk` is `FALSE`. Defaults to `TRUE`.
 #'
 #' @return A named `list` of two `gTree` objects if `title = FALSE`: `at_risk` and `label`, or three
 #'   `gTree` objects if `title = TRUE`: `at_risk`, `label`, and `title`.
@@ -1025,7 +1025,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, anno
 #' }
 #'
 #' @export
-h_grob_tbl_at_risk <- function(data, annot_tbl, xlim, title = FALSE) {
+h_grob_tbl_at_risk <- function(data, annot_tbl, xlim, title = TRUE) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
   y_int <- annot_tbl$time[2] - annot_tbl$time[1]

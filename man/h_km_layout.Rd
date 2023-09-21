@@ -10,7 +10,7 @@ h_km_layout(
   title,
   footnotes,
   annot_at_risk = TRUE,
-  annot_at_risk_title = FALSE
+  annot_at_risk_title = TRUE
 )
 }
 \arguments{
@@ -26,7 +26,7 @@ h_km_layout(
 patient at risk matching the main grid of the Kaplan-Meier curve.}
 
 \item{annot_at_risk_title}{(\code{flag})\cr whether the "Patients at Risk" title should be added above the \code{annot_at_risk}
-table. Has no effect if \code{annot_at_risk} is \code{FALSE}. Defaults to \code{FALSE}.}
+table. Has no effect if \code{annot_at_risk} is \code{FALSE}. Defaults to \code{TRUE}.}
 }
 \value{
 A grid layout.

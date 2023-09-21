@@ -31,7 +31,7 @@ g_km(
   ci_ribbon = FALSE,
   ggtheme = nestcolor::theme_nest(),
   annot_at_risk = TRUE,
-  annot_at_risk_title = FALSE,
+  annot_at_risk_title = TRUE,
   annot_surv_med = TRUE,
   annot_coxph = FALSE,
   annot_stats = NULL,
@@ -120,7 +120,7 @@ Only considered if \code{draw = TRUE} is used.}
 matching the main grid of the Kaplan-Meier curve.}
 
 \item{annot_at_risk_title}{(\code{flag})\cr whether the "Patients at Risk" title should be added above the \code{annot_at_risk}
-table. Has no effect if \code{annot_at_risk} is \code{FALSE}. Defaults to \code{FALSE}.}
+table. Has no effect if \code{annot_at_risk} is \code{FALSE}. Defaults to \code{TRUE}.}
 
 \item{annot_surv_med}{(\code{flag})\cr compute and add the annotation table on the Kaplan-Meier curve estimating the
 median survival time per group.}
@@ -184,7 +184,7 @@ res <- g_km(
   variables = variables,
   control_surv = control_surv_timepoint(conf_level = 0.9),
   col = c("grey25", "grey50", "grey75"),
-  annot_at_risk_title = TRUE
+  annot_at_risk_title = FALSE
 )
 res <- g_km(df = df, variables = variables, ggtheme = theme_minimal())
 res <- g_km(df = df, variables = variables, ggtheme = theme_minimal(), lty = 1:3)
