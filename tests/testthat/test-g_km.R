@@ -90,3 +90,20 @@ testthat::test_that("g_km ylim parameter works as expected", {
   )
   vdiffr::expect_doppelganger(title = "g_km_custom_ylim", fig = g_km_custom_ylim)
 })
+
+testthat::test_that("annot_at_risk_title parameter works as expected", {
+  set.seed(123)
+
+  df <- tern_ex_adtte %>%
+    dplyr::filter(PARAMCD == "OS") %>%
+    dplyr::mutate(is_event = CNSR == 0)
+
+  variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
+
+  g_km_at_risk_title <- g_km(
+    df = df,
+    variables = variables,
+    annot_at_risk_title = TRUE
+  )
+  vdiffr::expect_doppelganger(title = "g_km_at_risk_title", fig = g_km_at_risk_title)
+})

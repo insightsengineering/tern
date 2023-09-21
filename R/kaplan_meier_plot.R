@@ -45,6 +45,8 @@
 #' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to control outlook of the Kaplan-Meier curve.
 #' @param annot_at_risk (`flag`)\cr compute and add the annotation table reporting the number of patient at risk
 #'   matching the main grid of the Kaplan-Meier curve.
+#' @param annot_at_risk_title (`flag`)\cr whether the "Patients at Risk" title should be added above the `annot_at_risk`
+#'   table. Has no effect if `annot_at_risk` is `FALSE`. Defaults to `TRUE`.
 #' @param annot_surv_med (`flag`)\cr compute and add the annotation table on the Kaplan-Meier curve estimating the
 #'   median survival time per group.
 #' @param annot_coxph (`flag`)\cr add the annotation table from a [survival::coxph()] model.
@@ -89,7 +91,8 @@
 #'   df = df,
 #'   variables = variables,
 #'   control_surv = control_surv_timepoint(conf_level = 0.9),
-#'   col = c("grey25", "grey50", "grey75")
+#'   col = c("grey25", "grey50", "grey75"),
+#'   annot_at_risk_title = FALSE
 #' )
 #' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal())
 #' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal(), lty = 1:3)
@@ -195,6 +198,7 @@ g_km <- function(df,
                  ci_ribbon = FALSE,
                  ggtheme = nestcolor::theme_nest(),
                  annot_at_risk = TRUE,
+                 annot_at_risk_title = TRUE,
                  annot_surv_med = TRUE,
                  annot_coxph = FALSE,
                  annot_stats = NULL,
@@ -328,14 +332,17 @@ g_km <- function(df,
     grobs_patient <- h_grob_tbl_at_risk(
       data = data_plot,
       annot_tbl = annot_tbl,
-      xlim = max(max_time, data_plot$time, xticks)
+      xlim = max(max_time, data_plot$time, xticks),
+      title = annot_at_risk_title
     )
   }
 
   if (annot_at_risk || annot_surv_med || annot_coxph) {
     lyt <- h_km_layout(
-      data = data_plot, g_el = g_el, title = title, footnotes = footnotes, annot_at_risk = annot_at_risk
+      data = data_plot, g_el = g_el, title = title, footnotes = footnotes,
+      annot_at_risk = annot_at_risk, annot_at_risk_title = annot_at_risk_title
     )
+    at_risk_ttl <- as.numeric(annot_at_risk_title)
     ttl_row <- as.numeric(!is.null(title))
     foot_row <- as.numeric(!is.null(footnotes))
     km_grob <- grid::gTree(
@@ -407,22 +414,28 @@ g_km <- function(df,
         ),
 
         # Add the table with patient-at-risk numbers.
+        if (annot_at_risk && annot_at_risk_title) {
+          grid::gTree(
+            vp = grid::viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 1),
+            children = grobs_patient$title
+          )
+        },
         if (annot_at_risk) {
           grid::gTree(
-            vp = grid::viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 2),
+            vp = grid::viewport(layout.pos.row = 4 + at_risk_ttl + ttl_row, layout.pos.col = 2),
             children = grobs_patient$at_risk
           )
         },
         if (annot_at_risk) {
           grid::gTree(
-            vp = grid::viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 1),
+            vp = grid::viewport(layout.pos.row = 4 + at_risk_ttl + ttl_row, layout.pos.col = 1),
             children = grobs_patient$label
           )
         },
         if (annot_at_risk) {
           # Add the x-axis for the table.
           grid::gTree(
-            vp = grid::viewport(layout.pos.row = 5 + ttl_row, layout.pos.col = 2),
+            vp = grid::viewport(layout.pos.row = 5 + at_risk_ttl + ttl_row, layout.pos.col = 2),
             children = grid::gList(rbind(g_el$xaxis, g_el$xlab))
           )
         },
@@ -431,7 +444,7 @@ g_km <- function(df,
         if (foot_row == 1) {
           grid::gTree(
             vp = grid::viewport(
-              layout.pos.row = ifelse(annot_at_risk, 6 + ttl_row, 4 + ttl_row),
+              layout.pos.row = ifelse(annot_at_risk, 6 + at_risk_ttl + ttl_row, 4 + ttl_row),
               layout.pos.col = 2
             ),
             children = grid::gList(grid::textGrob(label = footnotes, x = grid::unit(0, "npc"), hjust = 0))
@@ -865,7 +878,7 @@ h_decompose_gg <- function(gg) {
 #' }
 #'
 #' @export
-h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
+h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, annot_at_risk_title = TRUE) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
   col_annot_width <- max(
@@ -897,6 +910,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
     1,
     grid::convertX(with(g_el, xaxis$height + ylab$width), "pt") + grid::unit(5, "pt"),
     grid::convertX(g_el$guide$heights, "pt") + grid::unit(2, "pt"),
+    1,
     nlines + 0.5,
     grid::convertX(with(g_el, xaxis$height + ylab$width), "pt")
   )
@@ -906,6 +920,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
     "pt",
     "pt",
     "lines",
+    "lines",
     "pt"
   )
 
@@ -914,11 +929,13 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
     ht_x <- c(ht_x, 1)
     ht_units <- c(ht_units, "lines")
   }
-
-  no_at_risk_tbl <- if (annot_at_risk) {
-    rep(TRUE, 5 + ttl_row + foot_row)
+  if (annot_at_risk) {
+    no_at_risk_tbl <- rep(TRUE, 6 + ttl_row + foot_row)
+    if (!annot_at_risk_title) {
+      no_at_risk_tbl[length(no_at_risk_tbl) - 2 - foot_row] <- FALSE
+    }
   } else {
-    no_tbl_ind
+    no_at_risk_tbl <- no_tbl_ind
   }
 
   grid::grid.layout(
@@ -935,8 +952,9 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Two graphical objects are obtained, one corresponding to row labeling and
-#' the second to the number of patient at risk.
+#' Two graphical objects are obtained, one corresponding to row labeling and the second to the table of
+#' numbers of patients at risk. If `title = TRUE`, a third object corresponding to the table title is
+#' also obtained.
 #'
 #' @inheritParams g_km
 #' @inheritParams h_ggkm
@@ -944,8 +962,11 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
 #'   includes the number of patients at risk at given time points.
 #' @param xlim (`numeric`)\cr the maximum value on the x-axis (used to
 #'   ensure the at risk table aligns with the KM graph).
+#' @param title (`flag`)\cr whether the "Patients at Risk" title should be added above the `annot_at_risk`
+#'   table. Has no effect if `annot_at_risk` is `FALSE`. Defaults to `TRUE`.
 #'
-#' @return A named `list` of two `gTree` objects: `at_risk` and `label`.
+#' @return A named `list` of two `gTree` objects if `title = FALSE`: `at_risk` and `label`, or three
+#'   `gTree` objects if `title = TRUE`: `at_risk`, `label`, and `title`.
 #'
 #' @examples
 #' \donttest{
@@ -994,17 +1015,17 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
 #' grid::grid.newpage()
 #' pushViewport(viewport(layout = lyt, height = .95, width = .95))
 #' grid.rect(gp = grid::gpar(lty = 1, col = "purple", fill = "gray85", lwd = 1))
-#' pushViewport(viewport(layout.pos.row = 4, layout.pos.col = 2))
+#' pushViewport(viewport(layout.pos.row = 3:4, layout.pos.col = 2))
 #' grid.rect(gp = grid::gpar(lty = 1, col = "orange", fill = "gray85", lwd = 1))
 #' grid::grid.draw(tbl$at_risk)
 #' popViewport()
-#' pushViewport(viewport(layout.pos.row = 4, layout.pos.col = 1))
+#' pushViewport(viewport(layout.pos.row = 3:4, layout.pos.col = 1))
 #' grid.rect(gp = grid::gpar(lty = 1, col = "green3", fill = "gray85", lwd = 1))
 #' grid::grid.draw(tbl$label)
 #' }
 #'
 #' @export
-h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
+h_grob_tbl_at_risk <- function(data, annot_tbl, xlim, title = TRUE) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
   y_int <- annot_tbl$time[2] - annot_tbl$time[1]
@@ -1015,6 +1036,16 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
   annot_tbl[is.na(annot_tbl)] <- 0
   y_str_unit <- as.numeric(annot_tbl$strata)
   vp_table <- grid::plotViewport(margins = grid::unit(c(0, 0, 0, 0), "lines"))
+  if (title) {
+    gb_table_title <- grid::gList(
+      grid::textGrob(
+        label = "Patients at Risk:",
+        x = 1,
+        y = grid::unit(0.2, "native"),
+        gp = grid::gpar(fontface = "bold", fontsize = 10)
+      )
+    )
+  }
   gb_table_left_annot <- grid::gList(
     grid::rectGrob(
       x = 0, y = grid::unit(c(1:nlines) - 1, "lines"),
@@ -1047,7 +1078,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
     )
   )
 
-  list(
+  ret <- list(
     at_risk = grid::gList(
       grid::gTree(
         vp = vp_table,
@@ -1079,6 +1110,26 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
       )
     )
   )
+
+  if (title) {
+    ret[["title"]] <- grid::gList(
+      grid::gTree(
+        vp = grid::viewport(width = max(grid::stringWidth(txtlines))),
+        children = grid::gList(
+          grid::gTree(
+            vp = grid::dataViewport(
+              xscale = 0:1,
+              yscale = c(0, 1),
+              extension = c(0, 0)
+            ),
+            children = grid::gList(gb_table_title)
+          )
+        )
+      )
+    )
+  }
+
+  ret
 }
 
 #' Helper Function: Survival Estimations
