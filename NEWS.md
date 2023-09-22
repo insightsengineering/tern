@@ -14,9 +14,6 @@
 * Updated `add_rowcounts` to allow addition of row counts from `alt_counts_df` using the `alt_counts` argument.
 * Added `gp` argument to `g_forest` to control graphical parameters such as font size.
 
-### Bug Fixes
-* Fixed bug in `format_sigfig` causing some numbers to be printed with trailing "." character.
-
 ### Miscellaneous
 * Grouped functions relating to valid method names and their default formats and labels into new source file `utils_defaults_handling.R`.
 * Started deprecation of `summary_custom()` and `a_summary()` as a `S3` method.
