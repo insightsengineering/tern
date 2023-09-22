@@ -4,10 +4,14 @@
 \alias{format_sigfig}
 \title{Formatting Numeric Values By Significant Figures}
 \usage{
-format_sigfig(sigfig)
+format_sigfig(sigfig, type = c("value", "value_paren", "range"))
 }
 \arguments{
 \item{sigfig}{(\code{integer})\cr number of significant figures to display.}
+
+\item{type}{(\code{character})\cr type of format to apply. Available options are currently
+\code{"value"} for single values, \code{"value_paren"} for two values, with the second value
+printed in parentheses, and \code{"range"} for two values separated by a dash.}
 }
 \value{
 An \code{rtables} formatting function.

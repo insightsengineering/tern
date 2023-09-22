@@ -214,6 +214,9 @@ format_xx <- function(str) {
 #' Format numeric values to print with a specified number of significant figures.
 #'
 #' @param sigfig (`integer`)\cr number of significant figures to display.
+#' @param type (`character`)\cr type of format to apply. Available options are currently
+#'   `"value"` for single values, `"value_paren"` for two values, with the second value
+#'   printed in parentheses, and `"range"` for two values separated by a dash.
 #'
 #' @return An `rtables` formatting function.
 #'
@@ -228,12 +231,21 @@ format_xx <- function(str) {
 #'
 #' @family formatting functions
 #' @export
-format_sigfig <- function(sigfig) {
+format_sigfig <- function(sigfig, type = c("value", "value_paren", "range")) {
   checkmate::assert_integerish(sigfig)
+  type <- match.arg(type)
   function(x, ...) {
     if (!is.numeric(x)) stop("`format_sigfig` cannot be used for non-numeric values. Please choose another format.")
     num <- formatC(signif(x, digits = sigfig), digits = sigfig, format = "fg", flag = "#")
-    gsub("\\.$", "", num) # remove trailing "."
+    num <- gsub("\\.$", "", num) # remove trailing "."
+    if (type == "value_paren") {
+      num <- paste0(num[1], " (", num[2], ")")
+    } else if (type == "range") {
+      num <- paste(num[1], "-", num[2])
+    } else {
+      num <- paste(num, collapse = " ")
+    }
+    num
   }
 }
 

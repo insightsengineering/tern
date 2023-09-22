@@ -101,6 +101,29 @@ testthat::test_that("format_sigfig works with easy inputs", {
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("format_sigfig works with different format types", {
+  test <- list(c(1.658, 0.5761), c(1e-1, 78.6), c(1234e-6, 200.00))
+  z <- format_sigfig(3, "value")
+  result <- sapply(test, z)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  test <- list(c(1.658, 0.5761), c(1e-1, 78.6), c(1234e-6, 200.00))
+  z <- format_sigfig(3, "value_paren")
+  result <- sapply(test, z)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  test <- list(c(1.658, 0.5761), c(1e-1, 78.6), c(1234e-6, 200.00))
+  z <- format_sigfig(3, "range")
+  result <- sapply(test, z)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("format_fraction_threshold works with easy inputs", {
   test <- list(c(100, 0.1), c(10, 0.01), c(0, 0))
   format_fun <- format_fraction_threshold(0.02)
