@@ -10,9 +10,8 @@ format_sigfig(sigfig, format = "xx", num_fmt = "fg")
 \item{sigfig}{(\code{integer})\cr number of significant figures to display.}
 
 \item{format}{(\code{character})\cr the format label (string) to apply when printing the value. Decimal
-places in string are ignored in favor of formatting by significant figures. See
-\code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} for a list of valid formats (only those with no decimal
-points can be applied).}
+places in string are ignored in favor of formatting by significant figures. Formats options are:
+\code{"xx"}, \code{"xx / xx"}, \code{"(xx, xx)"}, \code{"xx - xx"}, and \code{"xx (xx)"}.}
 
 \item{num_fmt}{(\code{character})\cr numeric format modifiers to apply to the value. Defaults to \code{"fg"} for
 standard significant figures formatting - fixed (non-scientific notation) format (\code{"f"})

@@ -215,9 +215,8 @@ format_xx <- function(str) {
 #'
 #' @param sigfig (`integer`)\cr number of significant figures to display.
 #' @param format (`character`)\cr the format label (string) to apply when printing the value. Decimal
-#'   places in string are ignored in favor of formatting by significant figures. See
-#'   [formatters::list_valid_format_labels()] for a list of valid formats (only those with no decimal
-#'   points can be applied).
+#'   places in string are ignored in favor of formatting by significant figures. Formats options are:
+#'   `"xx"`, `"xx / xx"`, `"(xx, xx)"`, `"xx - xx"`, and `"xx (xx)"`.
 #' @param num_fmt (`character`)\cr numeric format modifiers to apply to the value. Defaults to `"fg"` for
 #'   standard significant figures formatting - fixed (non-scientific notation) format (`"f"`)
 #'   and `sigfig` equal to number of significant figures instead of decimal places (`"g"`). See the
@@ -238,6 +237,7 @@ format_xx <- function(str) {
 #' @export
 format_sigfig <- function(sigfig, format = "xx", num_fmt = "fg") {
   checkmate::assert_integerish(sigfig)
+  checkmate::assert_choice(format, c("xx", "xx / xx", "(xx, xx)", "xx - xx", "xx (xx)"))
   function(x, ...) {
     if (!is.numeric(x)) stop("`format_sigfig` cannot be used for non-numeric values. Please choose another format.")
     num <- formatC(signif(x, digits = sigfig), digits = sigfig, format = num_fmt, flag = "#")
