@@ -4,14 +4,20 @@
 \alias{format_sigfig}
 \title{Formatting Numeric Values By Significant Figures}
 \usage{
-format_sigfig(sigfig, type = c("value", "value_paren", "range"))
+format_sigfig(sigfig, format = "xx", num_fmt = "fg")
 }
 \arguments{
 \item{sigfig}{(\code{integer})\cr number of significant figures to display.}
 
-\item{type}{(\code{character})\cr type of format to apply. Available options are currently
-\code{"value"} for single values, \code{"value_paren"} for two values, with the second value
-printed in parentheses, and \code{"range"} for two values separated by a dash.}
+\item{format}{(\code{character})\cr the format label (string) to apply when printing the value. Decimal
+places in string are ignored in favor of formatting by significant figures. See
+\code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} for a list of valid formats (only those with no decimal
+points can be applied).}
+
+\item{num_fmt}{(\code{character})\cr numeric format modifiers to apply to the value. Defaults to \code{"fg"} for
+standard significant figures formatting - fixed (non-scientific notation) format (\code{"f"})
+and \code{sigfig} equal to number of significant figures instead of decimal places (\code{"g"}). See the
+\code{\link[=formatC]{formatC()}} \code{format} argument for more options.}
 }
 \value{
 An \code{rtables} formatting function.

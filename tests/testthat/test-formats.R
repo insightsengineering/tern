@@ -103,21 +103,14 @@ testthat::test_that("format_sigfig works with easy inputs", {
 
 testthat::test_that("format_sigfig works with different format types", {
   test <- list(c(1.658, 0.5761), c(1e-1, 78.6), c(1234e-6, 200.00))
-  z <- format_sigfig(3, "value")
+  z <- format_sigfig(3, "xx (xx)")
   result <- sapply(test, z)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   test <- list(c(1.658, 0.5761), c(1e-1, 78.6), c(1234e-6, 200.00))
-  z <- format_sigfig(3, "value_paren")
-  result <- sapply(test, z)
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-
-  test <- list(c(1.658, 0.5761), c(1e-1, 78.6), c(1234e-6, 200.00))
-  z <- format_sigfig(3, "range")
+  z <- format_sigfig(3, "xx - xx")
   result <- sapply(test, z)
 
   res <- testthat::expect_silent(result)
