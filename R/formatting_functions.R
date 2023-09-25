@@ -237,14 +237,14 @@ format_xx <- function(str) {
 #' @export
 format_sigfig <- function(sigfig, format = "xx", num_fmt = "fg") {
   checkmate::assert_integerish(sigfig)
+  format <- gsub("xx\\.|xx\\.x+", "xx", format)
   checkmate::assert_choice(format, c("xx", "xx / xx", "(xx, xx)", "xx - xx", "xx (xx)"))
   function(x, ...) {
     if (!is.numeric(x)) stop("`format_sigfig` cannot be used for non-numeric values. Please choose another format.")
     num <- formatC(signif(x, digits = sigfig), digits = sigfig, format = num_fmt, flag = "#")
     num <- gsub("\\.$", "", num) # remove trailing "."
-    fmt <- gsub("xx\\.|xx\\.x+", "xx", format)
 
-    format_value(num, fmt)
+    format_value(num, format)
   }
 }
 
