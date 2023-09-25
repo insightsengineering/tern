@@ -4,10 +4,19 @@
 \alias{format_sigfig}
 \title{Formatting Numeric Values By Significant Figures}
 \usage{
-format_sigfig(sigfig)
+format_sigfig(sigfig, format = "xx", num_fmt = "fg")
 }
 \arguments{
 \item{sigfig}{(\code{integer})\cr number of significant figures to display.}
+
+\item{format}{(\code{character})\cr the format label (string) to apply when printing the value. Decimal
+places in string are ignored in favor of formatting by significant figures. Formats options are:
+\code{"xx"}, \code{"xx / xx"}, \code{"(xx, xx)"}, \code{"xx - xx"}, and \code{"xx (xx)"}.}
+
+\item{num_fmt}{(\code{character})\cr numeric format modifiers to apply to the value. Defaults to \code{"fg"} for
+standard significant figures formatting - fixed (non-scientific notation) format (\code{"f"})
+and \code{sigfig} equal to number of significant figures instead of decimal places (\code{"g"}). See the
+\code{\link[=formatC]{formatC()}} \code{format} argument for more options.}
 }
 \value{
 An \code{rtables} formatting function.

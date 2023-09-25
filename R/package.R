@@ -6,7 +6,7 @@
 
 #' @import rtables ggplot2
 #' @importFrom broom tidy
-#' @importFrom formatters propose_column_widths
+#' @importFrom formatters format_value propose_column_widths
 #' @importFrom magrittr %>%
 #' @importFrom methods new
 #' @importFrom Rdpack reprompt
