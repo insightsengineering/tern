@@ -23,12 +23,12 @@ Depends:
     R (>= 3.6),
     rtables (>= 0.6.5)
 Imports:
-    broom (>= 0.7.4),
+    broom (>= 0.5.4),
     car (>= 3.0-13),
     checkmate (>= 2.1.0),
     cowplot (>= 0.7.0),
     dplyr (>= 1.0.0),
-    emmeans (>= 1.4.5),
+    emmeans (>= 1.8.0),
     forcats (>= 1.0.0),
     formatters (>= 0.5.4),
     ggplot2 (>= 3.4.0),
