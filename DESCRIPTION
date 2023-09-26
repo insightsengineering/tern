@@ -53,7 +53,7 @@ Suggests:
     lubridate (>= 1.7.9),
     nestcolor (>= 0.1.1),
     stringr (>= 1.4.1),
-    testthat (>= 3.1.5),
+    testthat (>= 3.1.9),
     vdiffr (>= 1.0.0)
 VignetteBuilder:
     knitr
