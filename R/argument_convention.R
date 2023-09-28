@@ -11,9 +11,9 @@
 #' @param .df_row (`data.frame`)\cr data frame across all of the columns for the given row split.
 #' @param .formats (named `character` or `list`)\cr formats for the statistics. See Details in `analyze_vars` for more
 #'   information on the `"auto"` setting.
+#' @param .in_ref_col (`logical`)\cr `TRUE` when working with the reference level, `FALSE` otherwise.
 #' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 #'   unmodified default behavior. Can be negative.
-#' @param .in_ref_col (`logical`)\cr `TRUE` when working with the reference level, `FALSE` otherwise.
 #' @param .labels (named `character`)\cr labels for the statistics (without indent).
 #' @param .N_col (`integer`)\cr column-wise N (column count) for the full column being analyzed that is typically
 #'   passed by `rtables`.
