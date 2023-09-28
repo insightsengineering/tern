@@ -153,7 +153,7 @@ testthat::test_that("a_summary work with healthy input.", {
   x <- rnorm(10)
   result <- a_summary(
     x = x, .N_col = 10, .N_row = 20, .var = "bla", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
-    compare = FALSE, .stats = get_stats("analyze_vars_numeric"), na.rm = TRUE, na_level = NA_character_
+    compare = FALSE, .stats = get_stats("analyze_vars_numeric"), na.rm = TRUE, na_str = "NA"
   )
   res_out <- testthat::expect_silent(result)
 
@@ -168,7 +168,7 @@ testthat::test_that("a_summary work with healthy input.", {
   result <- a_summary(
     x = x, .N_col = 10, .N_row = 10, .var = "bla", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
     compare = FALSE, .stats = get_stats("analyze_vars_counts"),
-    na.rm = TRUE, na_level = NA_character_
+    na.rm = TRUE, na_str = "NA"
   )
   res_out <- testthat::expect_silent(result)
 
@@ -183,7 +183,7 @@ testthat::test_that("a_summary work with healthy input.", {
   result <- a_summary(
     x = x, .N_col = 10, .N_row = 10, .var = "x", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
     compare = FALSE, .stats = get_stats("analyze_vars_counts"),
-    na.rm = TRUE, na_level = NA_character_,
+    na.rm = TRUE, na_str = "NA",
     verbose = FALSE
   )
   res_out <- testthat::expect_silent(result)
@@ -199,7 +199,7 @@ testthat::test_that("a_summary work with healthy input.", {
   result <- a_summary(
     x = x, .N_col = 10, .N_row = 10, .var = NULL, .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
     compare = FALSE, .stats = get_stats("analyze_vars_counts"),
-    na.rm = TRUE, na_level = NA_character_
+    na.rm = TRUE, na_str = "NA"
   )
   res_out <- testthat::expect_silent(result)
 
@@ -467,7 +467,7 @@ testthat::test_that("`analyze_vars` works with empty named numeric variables", {
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("analyze_vars 'na_level' argument works as expected", {
+testthat::test_that("analyze_vars 'na_str' argument works as expected", {
   dta <- data.frame(
     USUBJID = rep(1:6, each = 3),
     AVISIT  = rep(paste0("V", 1:3), 6),
@@ -478,7 +478,7 @@ testthat::test_that("analyze_vars 'na_level' argument works as expected", {
   result <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     split_rows_by(var = "AVISIT") %>%
-    analyze_vars(vars = "AVAL", na_level = "-") %>%
+    analyze_vars(vars = "AVAL", na_str = "-") %>%
     build_table(dta)
 
   res <- testthat::expect_silent(result)

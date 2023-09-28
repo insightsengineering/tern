@@ -26,7 +26,7 @@
 #'   variables = list(anl = "ANRIND", split_rows = c("LBCAT", "PARAM")),
 #'   abnormal = list(low = c("LOW"), high = c("HIGH")),
 #'   method = "default",
-#'   na_level = "<Missing>"
+#'   na_str = "<Missing>"
 #' )
 #'
 #' df <- data.frame(
@@ -58,7 +58,7 @@
 #'   ),
 #'   abnormal = list(low = c("LOW"), high = c("HIGH")),
 #'   method = "range",
-#'   na_level = "<Missing>"
+#'   na_str = "<Missing>"
 #' )
 #'
 #' @export
@@ -77,7 +77,7 @@ h_map_for_count_abnormal <- function(df,
   checkmate::assert_false(anyNA(df[variables$split_rows]))
   assert_df_with_variables(df,
     variables = list(anl = variables$anl, split_rows = variables$split_rows),
-    na_level = na_level
+    na_level = na_str
   )
   assert_df_with_factors(df, list(val = variables$anl))
   assert_valid_factor(df[[variables$anl]], any.missing = FALSE)
@@ -125,7 +125,7 @@ h_map_for_count_abnormal <- function(df,
     map_low <- cbind(map_low, low_levels_df)
 
     # Define high direction of map
-    df_high <- subset(df, df[[variables$range_high]] != na_level | !is.na(df[[variables$range_high]]))
+    df_high <- subset(df, df[[variables$range_high]] != na_str | !is.na(df[[variables$range_high]]))
     map_high <- unique(df_high[variables$split_rows])
     high_levels <- unname(unlist(abnormal[toupper(names(abnormal)) == "HIGH"]))
     high_levels_df <- as.data.frame(high_levels)

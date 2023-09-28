@@ -57,7 +57,7 @@ d_count_abnormal_by_baseline <- function(abnormal) {
 
 #' @describeIn abnormal_by_baseline Statistics function for a single `abnormal` level.
 #'
-#' @param na_level (`string`)\cr the explicit `na_level` argument you used in the pre-processing steps (maybe with
+#' @param na_str (`string`)\cr the explicit `na_level` argument you used in the pre-processing steps (maybe with
 #'   [df_explicit_na()]). The default is `"<Missing>"`.
 #'
 #' @return
@@ -73,7 +73,7 @@ s_count_abnormal_by_baseline <- function(df,
                                          variables = list(id = "USUBJID", baseline = "BNRIND")) {
   checkmate::assert_string(.var)
   checkmate::assert_string(abnormal)
-  checkmate::assert_string(na_level)
+  checkmate::assert_string(na_str)
   assert_df_with_variables(df, c(range = .var, variables))
   checkmate::assert_subset(names(variables), c("id", "baseline"))
   checkmate::assert_multi_class(df[[variables$id]], classes = c("factor", "character"))
@@ -81,14 +81,14 @@ s_count_abnormal_by_baseline <- function(df,
   checkmate::assert_multi_class(df[[.var]], classes = c("factor", "character"))
 
   # If input is passed as character, changed to factor
-  df[[.var]] <- as_factor_keep_attributes(df[[.var]], na_level = na_level)
-  df[[variables$baseline]] <- as_factor_keep_attributes(df[[variables$baseline]], na_level = na_level)
+  df[[.var]] <- as_factor_keep_attributes(df[[.var]], na_level = na_str)
+  df[[variables$baseline]] <- as_factor_keep_attributes(df[[variables$baseline]], na_level = na_str)
 
   assert_valid_factor(df[[.var]], any.missing = FALSE)
   assert_valid_factor(df[[variables$baseline]], any.missing = FALSE)
 
   # Keep only records with valid analysis value.
-  df <- df[df[[.var]] != na_level, ]
+  df <- df[df[[.var]] != na_str, ]
 
   anl <- data.frame(
     id = df[[variables$id]],
@@ -104,7 +104,7 @@ s_count_abnormal_by_baseline <- function(df,
   total_num <- length(unique(anl$id[anl$var == abnormal]))
 
   # Baseline NA records are counted only in total rows.
-  anl <- anl[anl$baseline != na_level, ]
+  anl <- anl[anl$baseline != na_str, ]
 
   # Abnormal:
   #   - Patients in denominator: have abnormality at baseline.
@@ -183,6 +183,7 @@ a_count_abnormal_by_baseline <- make_afun(
 count_abnormal_by_baseline <- function(lyt,
                                        var,
                                        abnormal,
+                                       na_str = "NA",
                                        nested = TRUE,
                                        ...,
                                        table_names = abnormal,
@@ -207,6 +208,7 @@ count_abnormal_by_baseline <- function(lyt,
       vars = var,
       var_labels = names(abn),
       afun = afun,
+      na_str = na_str,
       nested = nested,
       table_names = table_names[i],
       extra_args = c(list(abnormal = abn), list(...)),

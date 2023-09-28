@@ -146,6 +146,7 @@ a_length_proportion <- make_afun(
 #' @export
 estimate_multinomial_response <- function(lyt,
                                           var,
+                                          na_str = "NA",
                                           nested = TRUE,
                                           ...,
                                           show_labels = "hidden",
@@ -162,7 +163,7 @@ estimate_multinomial_response <- function(lyt,
     .indent_mods = .indent_mods
   )
   lyt <- split_rows_by(lyt, var = var)
-  lyt <- summarize_row_groups(lyt)
+  lyt <- summarize_row_groups(lyt, na_str = na_str)
 
   analyze(
     lyt,
@@ -170,6 +171,7 @@ estimate_multinomial_response <- function(lyt,
     afun = afun,
     show_labels = show_labels,
     table_names = table_names,
+    na_str = na_str,
     nested = nested,
     extra_args = list(...)
   )

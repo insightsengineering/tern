@@ -14,7 +14,7 @@
 #'   to an analysis value in category `"BLQ"`, `"LTR"`, `"<PCLLOQ"`, or none of the above
 #'   (defaults to `"AVALCAT1"`). Variable `avalcat_var` must be present in `df`.
 #'
-#' @return A `list` containing statistic value (`val`) and NA level (`na_level`) that should be displayed
+#' @return A `list` containing statistic value (`val`) and NA level (`na_str`) that should be displayed
 #'   according to the specified imputation rule.
 #'
 #' @seealso [analyze_vars_in_cols()] where this function can be implemented by setting the `imp_rule`

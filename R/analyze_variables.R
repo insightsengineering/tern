@@ -543,7 +543,7 @@ a_summary <- function(x,
     .names = .labels,
     .labels = .labels,
     .indent_mods = .indent_mods,
-    .format_na_strs = na_level
+    .format_na_strs = na_str
   )
 }
 
@@ -681,7 +681,7 @@ analyze_vars <- function(lyt,
                          .formats = NULL,
                          .labels = NULL,
                          .indent_mods = NULL) {
-  extra_args <- list(.stats = .stats, na.rm = na.rm, na_level = na_level, ...)
+  extra_args <- list(.stats = .stats, na.rm = na.rm, na_str = na_str, ...)
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
@@ -691,6 +691,7 @@ analyze_vars <- function(lyt,
     vars = vars,
     var_labels = var_labels,
     afun = a_summary,
+    na_str = na_str,
     nested = nested,
     extra_args = extra_args,
     inclNAs = TRUE,

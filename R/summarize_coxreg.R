@@ -146,7 +146,7 @@ s_coxreg <- function(model_df, .stats, .which_vars = "all", .var_nms = NULL) {
 #'
 #' @param eff (`flag`)\cr whether treatment effect should be calculated. Defaults to `FALSE`.
 #' @param var_main (`flag`)\cr whether main effects should be calculated. Defaults to `FALSE`.
-#' @param na_level (`string`)\cr custom string to replace all `NA` values with. Defaults to `""`.
+#' @param na_str (`string`)\cr custom string to replace all `NA` values with. Defaults to `""`.
 #' @param cache_env (`environment`)\cr an environment object used to cache the regression model in order to
 #'   avoid repeatedly fitting the same model for every row in the table. Defaults to `NULL` (no caching).
 #' @param varlabels (`list`)\cr a named list corresponds to the names of variables found in data, passed
@@ -255,7 +255,7 @@ a_coxreg <- function(df,
   in_rows(
     .list = var_vals, .names = var_names, .labels = var_names, .indent_mods = .indent_mods,
     .formats = stats::setNames(rep(.formats, length(var_names)), var_names),
-    .format_na_strs = stats::setNames(rep(na_level, length(var_names)), var_names)
+    .format_na_strs = stats::setNames(rep(na_str, length(var_names)), var_names)
   )
 }
 
@@ -359,7 +359,7 @@ summarize_coxreg <- function(lyt,
       vars = rep(common_var, length(.stats)),
       varlabels = stat_labels,
       extra_args = list(
-        .stats = .stats, .formats = .formats, .indent_mods = .indent_mods, na_level = rep(na_level, length(.stats)),
+        .stats = .stats, .formats = .formats, .indent_mods = .indent_mods, na_str = rep(na_str, length(.stats)),
         cache_env = replicate(length(.stats), list(env))
       )
     )
@@ -386,6 +386,7 @@ summarize_coxreg <- function(lyt,
       lyt <- lyt %>%
         summarize_row_groups(
           cfun = a_coxreg,
+          na_str = na_str,
           extra_args = list(
             variables = variables, control = control, multivar = multivar, eff = TRUE, var_main = multivar
           )
@@ -411,6 +412,7 @@ summarize_coxreg <- function(lyt,
       lyt <- lyt %>%
         summarize_row_groups(
           cfun = a_coxreg,
+          na_str = na_str,
           extra_args = list(
             variables = variables, at = at, control = control, multivar = multivar,
             var_main = if (multivar) multivar else control$interaction

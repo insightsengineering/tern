@@ -160,12 +160,12 @@ testthat::test_that("summarize_coxreg 'at' argument works in univariate case", {
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("summarize_coxreg na_level argument works", {
+testthat::test_that("summarize_coxreg na_str argument works", {
   result <- basic_table() %>%
     summarize_coxreg(
       variables = variables,
       control = control_coxreg(interaction = TRUE),
-      na_level = "---"
+      na_str = "---"
     ) %>%
     build_table(df = dta_bladder)
 

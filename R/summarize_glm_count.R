@@ -399,6 +399,7 @@ a_glm_count <- make_afun(
 summarize_glm_count <- function(lyt,
                                 vars,
                                 var_labels,
+                                na_str = "NA",
                                 nested = TRUE,
                                 ...,
                                 show_labels = "visible",
@@ -422,6 +423,7 @@ summarize_glm_count <- function(lyt,
     show_labels = show_labels,
     table_names = table_names,
     afun = afun,
+    na_str = na_str,
     nested = nested,
     extra_args = list(...)
   )
