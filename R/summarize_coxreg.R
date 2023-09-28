@@ -189,7 +189,7 @@ a_coxreg <- function(df,
                      .stats,
                      .formats,
                      .indent_mods = NULL,
-                     na_level = "",
+                     na_str = "",
                      cache_env = NULL) {
   cov_no_arm <- !multivar && !"arm" %in% names(variables) && control$interaction # special case: univar no arm
   cov <- tail(.spl_context$value, 1) # current variable/covariate
@@ -327,7 +327,7 @@ summarize_coxreg <- function(lyt,
                              ),
                              varlabels = NULL,
                              .indent_mods = NULL,
-                             na_level = "",
+                             na_str = "",
                              .section_div = NA_character_) {
   if (multivar && control$interaction) {
     warning(paste(

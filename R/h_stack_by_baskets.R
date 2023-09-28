@@ -62,7 +62,7 @@ h_stack_by_baskets <- function(df,
                                smq_varlabel = "Standardized MedDRA Query",
                                keys = c("STUDYID", "USUBJID", "ASTDTM", "AEDECOD", "AESEQ"),
                                aag_summary = NULL,
-                               na_level = "<Missing>") {
+                               na_str = "<Missing>") {
   smq_nam <- baskets[startsWith(baskets, "SMQ")]
   # SC corresponding to NAM
   smq_sc <- gsub(pattern = "NAM", replacement = "SC", x = smq_nam, fixed = TRUE)

@@ -158,8 +158,8 @@ analyze_vars_in_cols <- function(lyt,
                                  avalcat_var = "AVALCAT1",
                                  cache = FALSE,
                                  .indent_mods = NULL,
+                                 na_str = "NA",
                                  nested = TRUE,
-                                 na_level = NULL,
                                  .formats = NULL,
                                  .aligns = NULL) {
   checkmate::assert_string(na_str, null.ok = TRUE)

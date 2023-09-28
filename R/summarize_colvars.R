@@ -62,7 +62,7 @@
 #' @export
 summarize_colvars <- function(lyt,
                               ...,
-                              na_level = NA_character_,
+                              na_str = "NA",
                               .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
                               .formats = NULL,
                               .labels = NULL,

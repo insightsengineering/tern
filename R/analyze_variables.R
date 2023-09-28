@@ -465,7 +465,7 @@ a_summary <- function(x,
                       .labels = NULL,
                       .indent_mods = NULL,
                       na.rm = TRUE, # nolint
-                      na_level = NA_character_,
+                      na_str = "NA",
                       ...) {
   if (is.numeric(x)) {
     type <- "numeric"
@@ -670,10 +670,10 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 analyze_vars <- function(lyt,
                          vars,
                          var_labels = vars,
+                         na_str = "NA",
                          nested = TRUE,
                          ...,
                          na.rm = TRUE, # nolint
-                         na_level = NA_character_,
                          show_labels = "default",
                          table_names = vars,
                          section_div = NA_character_,

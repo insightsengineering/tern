@@ -69,7 +69,7 @@ d_count_abnormal_by_baseline <- function(abnormal) {
 s_count_abnormal_by_baseline <- function(df,
                                          .var,
                                          abnormal,
-                                         na_level = "<Missing>",
+                                         na_str = "<Missing>",
                                          variables = list(id = "USUBJID", baseline = "BNRIND")) {
   checkmate::assert_string(.var)
   checkmate::assert_string(abnormal)
