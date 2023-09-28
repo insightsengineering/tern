@@ -465,8 +465,14 @@ a_summary <- function(x,
                       .labels = NULL,
                       .indent_mods = NULL,
                       na.rm = TRUE, # nolint
-                      na_level = NA_character_,
+                      na_level = lifecycle::deprecated(),
+                      na_str = "NA",
                       ...) {
+  if (lifecycle::is_present(na_level)) {
+    lifecycle::deprecate_warn("0.9.1", "a_summary(na_level)", "a_summary(na_str)")
+    na_str <- na_level
+  }
+
   if (is.numeric(x)) {
     type <- "numeric"
     if (!is.null(.stats) && any(grepl("^pval", .stats))) {
@@ -543,7 +549,7 @@ a_summary <- function(x,
     .names = .labels,
     .labels = .labels,
     .indent_mods = .indent_mods,
-    .format_na_strs = na_level
+    .format_na_strs = na_str
   )
 }
 
@@ -670,10 +676,11 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 analyze_vars <- function(lyt,
                          vars,
                          var_labels = vars,
+                         na_level = lifecycle::deprecated(),
+                         na_str = "NA",
                          nested = TRUE,
                          ...,
                          na.rm = TRUE, # nolint
-                         na_level = NA_character_,
                          show_labels = "default",
                          table_names = vars,
                          section_div = NA_character_,
@@ -681,7 +688,12 @@ analyze_vars <- function(lyt,
                          .formats = NULL,
                          .labels = NULL,
                          .indent_mods = NULL) {
-  extra_args <- list(.stats = .stats, na.rm = na.rm, na_level = na_level, ...)
+  if (lifecycle::is_present(na_level)) {
+    lifecycle::deprecate_warn("0.9.1", "analyze_vars(na_level)", "analyze_vars(na_str)")
+    na_str <- na_level
+  }
+
+  extra_args <- list(.stats = .stats, na.rm = na.rm, na_str = na_str, ...)
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
@@ -691,6 +703,7 @@ analyze_vars <- function(lyt,
     vars = vars,
     var_labels = var_labels,
     afun = a_summary,
+    na_str = na_str,
     nested = nested,
     extra_args = extra_args,
     inclNAs = TRUE,

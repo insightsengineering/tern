@@ -4,7 +4,7 @@
 \alias{h_tab_one_biomarker}
 \title{Helper Function for Tabulation of a Single Biomarker Result}
 \usage{
-h_tab_one_biomarker(df, afuns, colvars, .indent_mods = 0L)
+h_tab_one_biomarker(df, afuns, colvars, na_str = "NA", .indent_mods = 0L)
 }
 \arguments{
 \item{df}{(\code{data.frame})\cr results for a single biomarker.}
@@ -12,6 +12,8 @@ h_tab_one_biomarker(df, afuns, colvars, .indent_mods = 0L)
 \item{afuns}{(named \code{list} of \code{function})\cr analysis functions.}
 
 \item{colvars}{(\code{list} with \code{vars} and \code{labels})\cr variables to tabulate and their labels.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}

@@ -28,6 +28,7 @@ s_num_patients_content(
 summarize_num_patients(
   lyt,
   var,
+  na_str = "NA",
   .stats = NULL,
   .formats = NULL,
   .labels = c(unique = "Number of patients with at least one event", nonunique =
@@ -41,6 +42,7 @@ summarize_num_patients(
 analyze_num_patients(
   lyt,
   vars,
+  na_str = "NA",
   nested = TRUE,
   .stats = NULL,
   .formats = NULL,
@@ -77,6 +79,8 @@ by a statistics function.}
 \item{required}{(\code{character} or \code{NULL})\cr optional name of a variable that is required to be non-missing.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 

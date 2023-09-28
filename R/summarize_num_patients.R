@@ -137,6 +137,7 @@ c_num_patients <- make_afun(
 #' @export
 summarize_num_patients <- function(lyt,
                                    var,
+                                   na_str = "NA",
                                    .stats = NULL,
                                    .formats = NULL,
                                    .labels = c(
@@ -179,6 +180,7 @@ summarize_num_patients <- function(lyt,
     lyt = lyt,
     var = var,
     cfun = ifelse(isFALSE(riskdiff), cfun, afun_riskdiff),
+    na_str = na_str,
     extra_args = extra_args,
     indent_mod = .indent_mods
   )
@@ -217,6 +219,7 @@ summarize_num_patients <- function(lyt,
 #' @export
 analyze_num_patients <- function(lyt,
                                  vars,
+                                 na_str = "NA",
                                  nested = TRUE,
                                  .stats = NULL,
                                  .formats = NULL,
@@ -261,6 +264,7 @@ analyze_num_patients <- function(lyt,
     afun = ifelse(isFALSE(riskdiff), afun, afun_riskdiff),
     lyt = lyt,
     vars = vars,
+    na_str = na_str,
     nested = nested,
     extra_args = extra_args,
     show_labels = show_labels,

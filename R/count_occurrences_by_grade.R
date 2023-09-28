@@ -269,6 +269,7 @@ count_occurrences_by_grade <- function(lyt,
                                        var_labels = var,
                                        show_labels = "default",
                                        riskdiff = FALSE,
+                                       na_str = "NA",
                                        nested = TRUE,
                                        ...,
                                        table_names = var,
@@ -304,6 +305,7 @@ count_occurrences_by_grade <- function(lyt,
     show_labels = show_labels,
     afun = ifelse(isFALSE(riskdiff), afun, afun_riskdiff),
     table_names = table_names,
+    na_str = na_str,
     nested = nested,
     extra_args = extra_args
   )
@@ -340,6 +342,7 @@ count_occurrences_by_grade <- function(lyt,
 #' @export
 summarize_occurrences_by_grade <- function(lyt,
                                            var,
+                                           na_str = "NA",
                                            ...,
                                            .stats = NULL,
                                            .formats = NULL,
@@ -358,6 +361,7 @@ summarize_occurrences_by_grade <- function(lyt,
     lyt = lyt,
     var = var,
     cfun = cfun,
+    na_str = na_str,
     extra_args = list(...)
   )
 }

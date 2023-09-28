@@ -33,6 +33,7 @@ a_count_patients_sum_exposure(
 summarize_patients_exposure_in_cols(
   lyt,
   var,
+  na_str = "NA",
   ...,
   .stats = c("n_patients", "sum_exposure"),
   .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
@@ -80,6 +81,8 @@ that constitute the split. A custom label can be set for this level via the \cod
 information on the \code{"auto"} setting.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{...}{additional arguments for the lower level functions.}
 
