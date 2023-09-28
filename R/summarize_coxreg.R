@@ -251,8 +251,8 @@ a_coxreg <- function(df,
   var_names <- if (all(grepl("\\(reference = ", names(var_vals))) && labelstr != tail(.spl_context$value, 1)) {
     paste(c(labelstr, tail(strsplit(names(var_vals), " ")[[1]], 3)), collapse = " ") # "reference" main effect labels
   } else if (
-             (!multivar && !eff && !(!var_main && control$interaction) && nchar(labelstr) > 0) ||
-               (multivar && var_main && is.numeric(df[[cov]]))) {
+    (!multivar && !eff && !(!var_main && control$interaction) && nchar(labelstr) > 0) ||
+      (multivar && var_main && is.numeric(df[[cov]]))) {
     labelstr # other main effect labels
   } else if (multivar && !eff && !var_main && is.numeric(df[[cov]])) {
     "All" # multivar numeric covariate

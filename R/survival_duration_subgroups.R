@@ -164,15 +164,15 @@ extract_survival_subgroups <- function(variables,
 #'
 #' @keywords internal
 a_survival_subgroups <- function(.formats = list(
-  n = "xx",
-  n_events = "xx",
-  n_tot_events = "xx",
-  median = "xx.x",
-  n_tot = "xx",
-  hr = list(format_extreme_values(2L)),
-  ci = list(format_extreme_values_ci(2L)),
-  pval = "x.xxxx | (<0.0001)"
-)) {
+                                   n = "xx",
+                                   n_events = "xx",
+                                   n_tot_events = "xx",
+                                   median = "xx.x",
+                                   n_tot = "xx",
+                                   hr = list(format_extreme_values(2L)),
+                                   ci = list(format_extreme_values_ci(2L)),
+                                   pval = "x.xxxx | (<0.0001)"
+                                 )) {
   checkmate::assert_list(.formats)
   checkmate::assert_subset(
     names(.formats),
