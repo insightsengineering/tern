@@ -158,11 +158,17 @@ analyze_vars_in_cols <- function(lyt,
                                  avalcat_var = "AVALCAT1",
                                  cache = FALSE,
                                  .indent_mods = NULL,
+                                 na_level = lifecycle::deprecated(),
+                                 na_str = "NA",
                                  nested = TRUE,
-                                 na_level = NULL,
                                  .formats = NULL,
                                  .aligns = NULL) {
-  checkmate::assert_string(na_level, null.ok = TRUE)
+  if (lifecycle::is_present(na_level)) {
+    lifecycle::deprecate_warn("0.9.1", "analyze_vars_in_cols(na_level)", "analyze_vars_in_cols(na_str)")
+    na_str <- na_level
+  }
+
+  checkmate::assert_string(na_str, null.ok = TRUE)
   checkmate::assert_character(row_labels, null.ok = TRUE)
   checkmate::assert_int(.indent_mods, null.ok = TRUE)
   checkmate::assert_flag(nested)
@@ -244,7 +250,7 @@ analyze_vars_in_cols <- function(lyt,
               imp_rule = imp_rule, post = as.numeric(tail(.spl_context$value, 1)) > 0, avalcat_var = avalcat_var
             )
             res <- res_imp[["val"]]
-            na_level <- res_imp[["na_level"]]
+            na_str <- res_imp[["na_str"]]
           }
 
           # Label check and replacement
@@ -267,7 +273,7 @@ analyze_vars_in_cols <- function(lyt,
           rcell(res,
             label = lbl,
             format = formats_v[names(formats_v) == stat][[1]],
-            format_na_str = na_level,
+            format_na_str = na_str,
             indent_mod = ifelse(is.null(.indent_mods), 0L, .indent_mods),
             align = .aligns
           )
@@ -283,6 +289,7 @@ analyze_vars_in_cols <- function(lyt,
       lyt = lyt,
       var = unique(vars),
       cfun = cfun_list,
+      na_str = na_str,
       extra_args = list(...)
     )
   } else {
@@ -311,7 +318,7 @@ analyze_vars_in_cols <- function(lyt,
               imp_rule = imp_rule, post = as.numeric(tail(.spl_context$value, 1)) > 0, avalcat_var = avalcat_var
             )
             res <- res_imp[["val"]]
-            na_level <- res_imp[["na_level"]]
+            na_str <- res_imp[["na_str"]]
           }
 
           if (is.list(res)) {
@@ -349,7 +356,7 @@ analyze_vars_in_cols <- function(lyt,
           rcell(res,
             label = lbl,
             format = formats_v[names(formats_v) == stat][[1]],
-            format_na_str = na_level,
+            format_na_str = na_str,
             indent_mod = ifelse(is.null(.indent_mods), 0L, .indent_mods),
             align = .aligns
           )

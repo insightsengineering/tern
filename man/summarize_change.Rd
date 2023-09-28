@@ -13,6 +13,7 @@ a_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
 summarize_change(
   lyt,
   vars,
+  na_str = "NA",
   nested = TRUE,
   ...,
   table_names = vars,
@@ -37,6 +38,8 @@ by a statistics function.}
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.

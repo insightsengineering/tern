@@ -22,7 +22,8 @@ a_coxreg(
   .stats,
   .formats,
   .indent_mods = NULL,
-  na_level = "",
+  na_level = lifecycle::deprecated(),
+  na_str = "",
   cache_env = NULL
 )
 
@@ -38,7 +39,8 @@ summarize_coxreg(
     "x.xxxx | (<0.0001)", pval_inter = "x.xxxx | (<0.0001)"),
   varlabels = NULL,
   .indent_mods = NULL,
-  na_level = "",
+  na_level = lifecycle::deprecated(),
+  na_str = "",
   .section_div = NA_character_
 )
 }
@@ -94,7 +96,9 @@ information on the \code{"auto"} setting.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
 
-\item{na_level}{(\code{string})\cr custom string to replace all \code{NA} values with. Defaults to \code{""}.}
+\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
+
+\item{na_str}{(\code{string})\cr custom string to replace all \code{NA} values with. Defaults to \code{""}.}
 
 \item{cache_env}{(\code{environment})\cr an environment object used to cache the regression model in order to
 avoid repeatedly fitting the same model for every row in the table. Defaults to \code{NULL} (no caching).}

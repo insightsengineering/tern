@@ -45,10 +45,11 @@ compare_vars(
   lyt,
   vars,
   var_labels = vars,
+  na_level = lifecycle::deprecated(),
+  na_str = "NA",
   nested = TRUE,
   ...,
   na.rm = TRUE,
-  na_level = NA_character_,
   show_labels = "default",
   table_names = vars,
   section_div = NA_character_,
@@ -92,11 +93,13 @@ passed by \code{rtables}.}
 
 \item{var_labels}{(\code{character})\cr character for label.}
 
+\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
-
-\item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 

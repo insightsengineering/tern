@@ -164,6 +164,7 @@ a_count_abnormal_by_worst_grade <- make_afun( # nolint
 #' @export
 count_abnormal_by_worst_grade <- function(lyt,
                                           var,
+                                          na_str = "NA",
                                           nested = TRUE,
                                           ...,
                                           .stats = NULL,
@@ -182,6 +183,7 @@ count_abnormal_by_worst_grade <- function(lyt,
     lyt = lyt,
     vars = var,
     afun = afun,
+    na_str = na_str,
     nested = nested,
     extra_args = list(...),
     show_labels = "hidden"

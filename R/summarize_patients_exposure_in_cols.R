@@ -176,6 +176,7 @@ a_count_patients_sum_exposure <- function(df,
 #' @export
 summarize_patients_exposure_in_cols <- function(lyt, # nolint
                                                 var,
+                                                na_str = "NA",
                                                 ...,
                                                 .stats = c("n_patients", "sum_exposure"),
                                                 .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
@@ -193,6 +194,7 @@ summarize_patients_exposure_in_cols <- function(lyt, # nolint
     lyt = lyt,
     var = var,
     cfun = a_count_patients_sum_exposure,
+    na_str = na_str,
     extra_args = list(...)
   )
 }

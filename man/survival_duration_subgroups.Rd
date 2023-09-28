@@ -16,7 +16,8 @@ tabulate_survival_subgroups(
   lyt,
   df,
   vars = c("n_tot_events", "n_events", "median", "hr", "ci"),
-  time_unit = NULL
+  time_unit = NULL,
+  na_str = "NA"
 )
 }
 \arguments{
@@ -43,6 +44,8 @@ are required.
 }}
 
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 }
 \value{
 \itemize{
