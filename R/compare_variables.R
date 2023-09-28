@@ -368,6 +368,7 @@ create_afun_compare <- function(.stats = NULL,
 compare_vars <- function(lyt,
                          vars,
                          var_labels = vars,
+                         na_level = lifecycle::deprecated(),
                          na_str = "NA",
                          nested = TRUE,
                          ...,
@@ -379,6 +380,11 @@ compare_vars <- function(lyt,
                          .formats = NULL,
                          .labels = NULL,
                          .indent_mods = NULL) {
+  if (lifecycle::is_present(na_level)) {
+    lifecycle::deprecate_warn("0.9.1", "compare_vars(na_level)", "compare_vars(na_str)")
+    na_str <- na_level
+  }
+
   extra_args <- list(.stats = .stats, na.rm = na.rm, na_str = na_str, compare = TRUE, ...)
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
