@@ -175,7 +175,7 @@
           F                          0.67       (0.36, 1.22)                                
           M                          0.60       (0.36, 0.99)                                
 
-# summarize_coxreg na_str argument works
+# summarize_coxreg `na_str` argument works
 
     Code
       res
