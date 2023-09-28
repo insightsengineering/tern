@@ -19,6 +19,7 @@ summarize_patients_events_in_cols(
   lyt,
   id = "USUBJID",
   filters_list = list(),
+  na_str = "NA",
   ...,
   .stats = c("unique", "all", names(filters_list)),
   .labels = c(unique = "Patients (All)", all = "Events (All)",
@@ -46,6 +47,8 @@ for more information.}
 be used as label.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{...}{additional arguments for the lower level functions.}
 

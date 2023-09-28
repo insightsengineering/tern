@@ -189,7 +189,7 @@ a_count_abnormal_by_baseline <- make_afun(
 count_abnormal_by_baseline <- function(lyt,
                                        var,
                                        abnormal,
-                                       na_str = "NA",
+                                       na_str = "<Missing>",
                                        nested = TRUE,
                                        ...,
                                        table_names = abnormal,

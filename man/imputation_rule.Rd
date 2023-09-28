@@ -32,7 +32,7 @@ to an analysis value in category \code{"BLQ"}, \code{"LTR"}, \code{"<PCLLOQ"}, o
 (defaults to \code{"AVALCAT1"}). Variable \code{avalcat_var} must be present in \code{df}.}
 }
 \value{
-A \code{list} containing statistic value (\code{val}) and NA level (\code{na_level}) that should be displayed
+A \code{list} containing statistic value (\code{val}) and NA level (\code{na_str}) that should be displayed
 according to the specified imputation rule.
 }
 \description{

@@ -18,6 +18,7 @@ count_missed_doses(
   vars,
   var_labels = vars,
   show_labels = "visible",
+  na_str = "NA",
   nested = TRUE,
   ...,
   table_names = vars,
@@ -42,6 +43,8 @@ passed by \code{rtables}.}
 \item{var_labels}{(\code{character})\cr character for label.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
