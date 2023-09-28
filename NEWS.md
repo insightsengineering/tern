@@ -6,6 +6,7 @@
 * Added function `get_stats` to return methods from given statistical method groups.
 * Added function `get_formats_from_stats` to return formats and `get_labels_from_stats` to return labels for a given set of statistics.
 * Added `"auto"` option for `.formats`. It uses `format_auto` to determine automatically the number of digits.
+* Added `title` argument to `h_grob_tbl_at_risk` and `annot_at_risk_title` argument to `g_km` and `h_km_layout` which allows user to add "Patients at Risk" title to Kaplan-Meier at risk annotation table.
 * Added the `na_str` argument to `analyze` & `summarize_row_groups` wrapper functions `count_abnormal`, `count_abnormal_by_baseline`, `count_abnormal_by_marked`, `count_abnormal_by_worst_grade`, `count_abnormal_lab_worsen_by_baseline`, `count_cumulative`, `count_missed_doses`, `count_occurrences`, `count_occurrences_by_grade`, `summarize_occurrences_by_grade`, `summarize_patients_events_in_cols`, `count_patients_with_event`, `count_patients_with_flags`, `count_values`, `estimate_multinomial_response`, `estimate_proportion`, `h_tab_one_biomarker`, `estimate_incidence_rate`, `logistic_summary_by_flag`, `estimate_odds_ratio`, `estimate_proportion_diff`, `test_proportion_diff`, `summarize_ancova`, `summarize_change`, `summarize_glm_count`, `summarize_num_patients`, `analyze_num_patients`, `summarize_patients_exposure_in_cols`, `coxph_pairwise`, `tabulate_survival_subgroups`, `surv_time`, and `surv_timepoint`.
 
 ### Enhancements
