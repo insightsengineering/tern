@@ -217,7 +217,7 @@ count_abnormal_by_baseline <- function(lyt,
       na_str = na_str,
       nested = nested,
       table_names = table_names[i],
-      extra_args = c(list(abnormal = abn), list(...)),
+      extra_args = c(list(abnormal = abn, na_str = na_str), list(...)),
       show_labels = "visible"
     )
   }
