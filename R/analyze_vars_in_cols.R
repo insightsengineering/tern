@@ -159,7 +159,7 @@ analyze_vars_in_cols <- function(lyt,
                                  cache = FALSE,
                                  .indent_mods = NULL,
                                  na_level = lifecycle::deprecated(),
-                                 na_str = "NA",
+                                 na_str = NA_character_,
                                  nested = TRUE,
                                  .formats = NULL,
                                  .aligns = NULL) {
@@ -168,7 +168,7 @@ analyze_vars_in_cols <- function(lyt,
     na_str <- na_level
   }
 
-  checkmate::assert_string(na_str, null.ok = TRUE)
+  checkmate::assert_string(na_str, na.ok = TRUE, null.ok = TRUE)
   checkmate::assert_character(row_labels, null.ok = TRUE)
   checkmate::assert_int(.indent_mods, null.ok = TRUE)
   checkmate::assert_flag(nested)

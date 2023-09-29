@@ -32,7 +32,7 @@ count_occurrences(
   var_labels = vars,
   show_labels = "hidden",
   riskdiff = FALSE,
-  na_str = "NA",
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   table_names = vars,

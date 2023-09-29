@@ -232,7 +232,7 @@ a_surv_timepoint_diff <- make_afun(
 #' @export
 surv_timepoint <- function(lyt,
                            vars,
-                           na_str = "NA",
+                           na_str = NA_character_,
                            nested = TRUE,
                            ...,
                            table_names_suffix = "",

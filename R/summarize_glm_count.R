@@ -399,7 +399,7 @@ a_glm_count <- make_afun(
 summarize_glm_count <- function(lyt,
                                 vars,
                                 var_labels,
-                                na_str = "NA",
+                                na_str = NA_character_,
                                 nested = TRUE,
                                 ...,
                                 show_labels = "visible",

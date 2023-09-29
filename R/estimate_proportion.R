@@ -162,7 +162,7 @@ a_proportion <- make_afun(
 #' @export
 estimate_proportion <- function(lyt,
                                 vars,
-                                na_str = "NA",
+                                na_str = NA_character_,
                                 nested = TRUE,
                                 ...,
                                 show_labels = "hidden",

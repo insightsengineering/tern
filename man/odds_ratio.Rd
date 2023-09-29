@@ -32,7 +32,7 @@ a_odds_ratio(
 estimate_odds_ratio(
   lyt,
   vars,
-  na_str = "NA",
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   show_labels = "hidden",

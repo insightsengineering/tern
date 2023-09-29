@@ -28,7 +28,7 @@ count_patients_with_event(
   lyt,
   vars,
   riskdiff = FALSE,
-  na_str = "NA",
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   table_names = vars,

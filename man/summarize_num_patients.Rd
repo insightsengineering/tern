@@ -28,7 +28,7 @@ s_num_patients_content(
 summarize_num_patients(
   lyt,
   var,
-  na_str = "NA",
+  na_str = NA_character_,
   .stats = NULL,
   .formats = NULL,
   .labels = c(unique = "Number of patients with at least one event", nonunique =
@@ -42,7 +42,7 @@ summarize_num_patients(
 analyze_num_patients(
   lyt,
   vars,
-  na_str = "NA",
+  na_str = NA_character_,
   nested = TRUE,
   .stats = NULL,
   .formats = NULL,

@@ -196,7 +196,7 @@ a_count_abnormal_by_marked <- make_afun(
 #' @export
 count_abnormal_by_marked <- function(lyt,
                                      var,
-                                     na_str = "NA",
+                                     na_str = NA_character_,
                                      nested = TRUE,
                                      ...,
                                      .stats = NULL,

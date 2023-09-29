@@ -165,7 +165,7 @@ a_coxph_pairwise <- make_afun(
 #' @export
 coxph_pairwise <- function(lyt,
                            vars,
-                           na_str = "NA",
+                           na_str = NA_character_,
                            nested = TRUE,
                            ...,
                            var_labels = "CoxPH",

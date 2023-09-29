@@ -34,7 +34,7 @@ summarize_ancova(
   lyt,
   vars,
   var_labels,
-  na_str = "NA",
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   show_labels = "visible",

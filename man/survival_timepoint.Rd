@@ -48,7 +48,7 @@ a_surv_timepoint_diff(
 surv_timepoint(
   lyt,
   vars,
-  na_str = "NA",
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   table_names_suffix = "",

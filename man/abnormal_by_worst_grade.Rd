@@ -24,7 +24,7 @@ a_count_abnormal_by_worst_grade(
 count_abnormal_by_worst_grade(
   lyt,
   var,
-  na_str = "NA",
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   .stats = NULL,

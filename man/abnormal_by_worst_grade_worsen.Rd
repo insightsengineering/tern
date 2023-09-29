@@ -22,7 +22,7 @@ a_count_abnormal_lab_worsen_by_baseline(
 count_abnormal_lab_worsen_by_baseline(
   lyt,
   var,
-  na_str = "NA",
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   table_names = NULL,

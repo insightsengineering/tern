@@ -13,7 +13,7 @@ a_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
 summarize_change(
   lyt,
   vars,
-  na_str = "NA",
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   table_names = vars,

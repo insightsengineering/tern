@@ -33,7 +33,7 @@ count_occurrences_by_grade(
   var_labels = var,
   show_labels = "default",
   riskdiff = FALSE,
-  na_str = "NA",
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   table_names = var,
@@ -46,7 +46,7 @@ count_occurrences_by_grade(
 summarize_occurrences_by_grade(
   lyt,
   var,
-  na_str = "NA",
+  na_str = NA_character_,
   ...,
   .stats = NULL,
   .formats = NULL,

@@ -34,7 +34,7 @@ a_proportion(
 estimate_proportion(
   lyt,
   vars,
-  na_str = "NA",
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   show_labels = "hidden",

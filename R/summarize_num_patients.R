@@ -137,7 +137,7 @@ c_num_patients <- make_afun(
 #' @export
 summarize_num_patients <- function(lyt,
                                    var,
-                                   na_str = "NA",
+                                   na_str = NA_character_,
                                    .stats = NULL,
                                    .formats = NULL,
                                    .labels = c(
@@ -219,7 +219,7 @@ summarize_num_patients <- function(lyt,
 #' @export
 analyze_num_patients <- function(lyt,
                                  vars,
-                                 na_str = "NA",
+                                 na_str = NA_character_,
                                  nested = TRUE,
                                  .stats = NULL,
                                  .formats = NULL,

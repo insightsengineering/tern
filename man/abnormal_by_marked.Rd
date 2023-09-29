@@ -26,7 +26,7 @@ a_count_abnormal_by_marked(
 count_abnormal_by_marked(
   lyt,
   var,
-  na_str = "NA",
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   .stats = NULL,

@@ -140,7 +140,7 @@ a_count_abnormal <- make_afun(
 #' @export
 count_abnormal <- function(lyt,
                            var,
-                           na_str = "NA",
+                           na_str = NA_character_,
                            nested = TRUE,
                            ...,
                            table_names = var,

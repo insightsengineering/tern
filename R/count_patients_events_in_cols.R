@@ -122,7 +122,7 @@ s_count_patients_and_multiple_events <- function(df, # nolint
 summarize_patients_events_in_cols <- function(lyt, # nolint
                                               id = "USUBJID",
                                               filters_list = list(),
-                                              na_str = "NA",
+                                              na_str = NA_character_,
                                               ...,
                                               .stats = c(
                                                 "unique",

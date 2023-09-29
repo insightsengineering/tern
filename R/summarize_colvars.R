@@ -63,7 +63,7 @@
 summarize_colvars <- function(lyt,
                               ...,
                               na_level = lifecycle::deprecated(),
-                              na_str = "NA",
+                              na_str = NA_character_,
                               .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
                               .formats = NULL,
                               .labels = NULL,

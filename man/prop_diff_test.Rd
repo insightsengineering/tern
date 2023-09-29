@@ -28,7 +28,7 @@ a_test_proportion_diff(
 test_proportion_diff(
   lyt,
   vars,
-  na_str = "NA",
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   var_labels = vars,

@@ -38,7 +38,7 @@ count_values(
   lyt,
   vars,
   values,
-  na_str = "NA",
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   table_names = vars,

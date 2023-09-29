@@ -188,7 +188,7 @@ a_odds_ratio <- make_afun(
 #' @export
 estimate_odds_ratio <- function(lyt,
                                 vars,
-                                na_str = "NA",
+                                na_str = NA_character_,
                                 nested = TRUE,
                                 ...,
                                 show_labels = "hidden",

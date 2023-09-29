@@ -26,7 +26,7 @@ a_incidence_rate(
 estimate_incidence_rate(
   lyt,
   vars,
-  na_str = "NA",
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   show_labels = "hidden",

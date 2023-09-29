@@ -46,7 +46,7 @@ compare_vars(
   vars,
   var_labels = vars,
   na_level = lifecycle::deprecated(),
-  na_str = "NA",
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   na.rm = TRUE,

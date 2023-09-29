@@ -17,7 +17,7 @@ tabulate_survival_subgroups(
   df,
   vars = c("n_tot_events", "n_events", "median", "hr", "ci"),
   time_unit = NULL,
-  na_str = "NA"
+  na_str = NA_character_
 )
 }
 \arguments{

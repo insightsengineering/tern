@@ -145,7 +145,7 @@ a_count_patients_with_event <- make_afun(
 count_patients_with_event <- function(lyt,
                                       vars,
                                       riskdiff = FALSE,
-                                      na_str = "NA",
+                                      na_str = NA_character_,
                                       nested = TRUE,
                                       ...,
                                       table_names = vars,

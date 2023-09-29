@@ -14,7 +14,7 @@ a_length_proportion(x, .N_col, ...)
 estimate_multinomial_response(
   lyt,
   var,
-  na_str = "NA",
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   show_labels = "hidden",

@@ -466,7 +466,7 @@ a_summary <- function(x,
                       .indent_mods = NULL,
                       na.rm = TRUE, # nolint
                       na_level = lifecycle::deprecated(),
-                      na_str = "NA",
+                      na_str = NA_character_,
                       ...) {
   if (lifecycle::is_present(na_level)) {
     lifecycle::deprecate_warn("0.9.1", "a_summary(na_level)", "a_summary(na_str)")
@@ -677,7 +677,7 @@ analyze_vars <- function(lyt,
                          vars,
                          var_labels = vars,
                          na_level = lifecycle::deprecated(),
-                         na_str = "NA",
+                         na_str = NA_character_,
                          nested = TRUE,
                          ...,
                          na.rm = TRUE, # nolint

@@ -191,7 +191,7 @@ a_proportion_diff <- make_afun(
 #' @export
 estimate_proportion_diff <- function(lyt,
                                      vars,
-                                     na_str = "NA",
+                                     na_str = NA_character_,
                                      nested = TRUE,
                                      ...,
                                      var_labels = vars,

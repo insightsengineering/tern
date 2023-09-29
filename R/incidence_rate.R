@@ -133,7 +133,7 @@ a_incidence_rate <- make_afun(
 #' @export
 estimate_incidence_rate <- function(lyt,
                                     vars,
-                                    na_str = "NA",
+                                    na_str = NA_character_,
                                     nested = TRUE,
                                     ...,
                                     show_labels = "hidden",

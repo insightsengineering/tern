@@ -19,7 +19,7 @@ summarize_patients_events_in_cols(
   lyt,
   id = "USUBJID",
   filters_list = list(),
-  na_str = "NA",
+  na_str = NA_character_,
   ...,
   .stats = c("unique", "all", names(filters_list)),
   .labels = c(unique = "Patients (All)", all = "Events (All)",

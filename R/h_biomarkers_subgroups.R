@@ -16,7 +16,7 @@
 h_tab_one_biomarker <- function(df,
                                 afuns,
                                 colvars,
-                                na_str = "NA",
+                                na_str = NA_character_,
                                 .indent_mods = 0L) {
   lyt <- basic_table()
 

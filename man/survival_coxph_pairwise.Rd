@@ -30,7 +30,7 @@ a_coxph_pairwise(
 coxph_pairwise(
   lyt,
   vars,
-  na_str = "NA",
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   var_labels = "CoxPH",
