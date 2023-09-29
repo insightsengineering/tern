@@ -163,7 +163,7 @@ extract_survival_subgroups <- function(variables,
 #' * `a_survival_subgroups()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @keywords internal
-a_survival_subgroups <- function(.formats = list(
+a_survival_subgroups <- function(.formats = list( # nolint start
                                    n = "xx",
                                    n_events = "xx",
                                    n_tot_events = "xx",
@@ -172,7 +172,7 @@ a_survival_subgroups <- function(.formats = list(
                                    hr = list(format_extreme_values(2L)),
                                    ci = list(format_extreme_values_ci(2L)),
                                    pval = "x.xxxx | (<0.0001)"
-                                 )) {
+                                 )) { # nolint end
   checkmate::assert_list(.formats)
   checkmate::assert_subset(
     names(.formats),
