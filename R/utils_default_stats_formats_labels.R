@@ -189,7 +189,10 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 
 #' @describeIn default_stats_formats_labels Get labels from vector of statistical methods.
 #'
-#' @param labels_in (named `vector`) \cr inserted labels to replace defaults.
+#' @param labels_in (named `vector`)\cr inserted labels to replace defaults.
+#' @param var_lvls (`character`)\cr levels of a `factor` or `character` variable, each of which
+#'   the statistics in `.stats` will be calculated for. If this parameter is set, these variable
+#'   levels will be used as default labels. Defaults to `NULL`.
 #'
 #' @return
 #' * `get_labels_from_stats()` returns a named character vector of default labels (if present

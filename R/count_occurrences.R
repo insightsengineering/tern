@@ -113,7 +113,6 @@ s_count_occurrences <- function(df,
 #' @examples
 #' #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 #' # function `format_count_fraction()` can be applied correctly.
-#' afun <- make_afun(a_count_occurrences, .ungroup_stats = c("count", "count_fraction", "fraction"))
 #' afun(
 #'   df,
 #'   .N_col = N_per_col,
@@ -123,10 +122,6 @@ s_count_occurrences <- function(df,
 #' )
 #'
 #' @export
-# a_count_occurrences <- make_afun(
-#   s_count_occurrences,
-#   .formats = c(count = "xx", count_fraction = format_count_fraction_fixed_dp, fraction = format_fraction_fixed_dp)
-# )
 a_count_occurrences <- function(df,
                                 id = "USUBJID",
                                 denom = c("N_col", "n"),
@@ -239,6 +234,7 @@ count_occurrences <- function(lyt,
                               var_labels = vars,
                               show_labels = "hidden",
                               riskdiff = FALSE,
+                              na_str = NA_character_,
                               nested = TRUE,
                               ...,
                               table_names = vars,

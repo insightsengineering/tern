@@ -18,12 +18,17 @@ s_count_occurrences(
 
 a_count_occurrences(
   df,
+  id = "USUBJID",
   denom = c("N_col", "n"),
-  .N_col,
-  .df_row,
   drop = TRUE,
-  .var = "MHDECOD",
-  id = "USUBJID"
+  .N_col,
+  .var = NULL,
+  .df_row = NULL,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL,
+  na_str = NA_character_
 )
 
 count_occurrences(
@@ -32,10 +37,11 @@ count_occurrences(
   var_labels = vars,
   show_labels = "hidden",
   riskdiff = FALSE,
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   table_names = vars,
-  .stats = "count_fraction",
+  .stats = "count_fraction_fixed_dp",
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL
@@ -63,6 +69,18 @@ by a statistics function.}
 
 \item{id}{(\code{string})\cr subject variable name.}
 
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
@@ -83,16 +101,6 @@ underneath analyses, which is not allowed.}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
-
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
-information on the \code{"auto"} setting.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
-
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
-unmodified default behavior. Can be negative.}
 }
 \value{
 \itemize{
@@ -159,7 +167,6 @@ s_count_occurrences(
 
 #  We need to ungroup `count_fraction` first so that the `rtables` formatting
 # function `format_count_fraction()` can be applied correctly.
-afun <- make_afun(a_count_occurrences, .ungroup_stats = c("count", "count_fraction", "fraction"))
 afun(
   df,
   .N_col = N_per_col,

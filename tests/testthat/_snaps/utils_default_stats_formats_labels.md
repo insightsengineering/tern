@@ -3,8 +3,8 @@
     Code
       res
     Output
-      [1] "count"                   "count_fraction_fixed_dp"
-      [3] "fraction"               
+      [1] "count"                   "count_fraction"         
+      [3] "count_fraction_fixed_dp" "fraction"               
 
 ---
 
@@ -38,6 +38,28 @@
     Output
       $count
       [1] "xx."
+      
+      $count_fraction
+      function(x, ...) {
+        attr(x, "label") <- NULL
+      
+        if (any(is.na(x))) {
+          return("NA")
+        }
+      
+        checkmate::assert_vector(x)
+        checkmate::assert_integerish(x[1])
+        assert_proportion_value(x[2], include_boundaries = TRUE)
+      
+        result <- if (x[1] == 0) {
+          "0"
+        } else {
+          paste0(x[1], " (", round(x[2] * 100, 1), "%)")
+        }
+      
+        return(result)
+      }
+      <environment: namespace:tern>
       
       $count_fraction_fixed_dp
       function(x, ...) {
@@ -88,8 +110,10 @@
     Code
       res
     Output
-                        count count_fraction_fixed_dp                fraction 
-                      "count"                      ""                      "" 
+                        count          count_fraction count_fraction_fixed_dp 
+                      "count"        "count_fraction"        "count_fraction" 
+                     fraction 
+                   "fraction" 
 
 # summary_formats works as expected
 

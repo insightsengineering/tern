@@ -32,7 +32,7 @@ get_stats(
 
 get_formats_from_stats(stats, formats_in = NULL)
 
-get_labels_from_stats(stats, labels_in = NULL)
+get_labels_from_stats(stats, labels_in = NULL, var_lvls = NULL)
 
 tern_default_formats
 
@@ -66,7 +66,11 @@ methods.}
 \item{formats_in}{(named \code{vector}) \cr inserted formats to replace defaults. It can be a
 character vector from \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or a custom format function.}
 
-\item{labels_in}{(named \code{vector}) \cr inserted labels to replace defaults.}
+\item{labels_in}{(named \code{vector})\cr inserted labels to replace defaults.}
+
+\item{var_lvls}{(\code{character})\cr levels of a \code{factor} or \code{character} variable, each of which
+the statistics in \code{.stats} will be calculated for. If this parameter is set, these variable
+levels will be used as default labels. Defaults to \code{NULL}.}
 
 \item{type}{(\code{flag})\cr is it going to be \code{"numeric"} or \code{"counts"}?}
 
