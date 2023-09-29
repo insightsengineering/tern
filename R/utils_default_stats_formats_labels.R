@@ -68,7 +68,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
   for (mgi in method_groups) {
     # Main switcher
     out_tmp <- switch(mgi,
-      "count_occurrences" = c("count", "count_fraction_fixed_dp", "fraction"),
+      "count_occurrences" = c("count", "count_fraction", "count_fraction_fixed_dp", "fraction"),
       "summarize_num_patients" = c("unique", "nonunique", "unique_count"),
       "analyze_vars_counts" = c("n", "count", "count_fraction", "n_blq"),
       "analyze_vars_numeric" = c(
@@ -207,8 +207,9 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 #' get_labels_from_stats(all_cnt_occ, labels_in = list("fraction" = c("Some more fractions")))
 #'
 #' @export
-get_labels_from_stats <- function(stats, labels_in = NULL) {
+get_labels_from_stats <- function(stats, labels_in = NULL, var_lvls = NULL) {
   checkmate::assert_character(stats, min.len = 1)
+  checkmate::assert_character(var_lvls, null.ok = TRUE)
   # It may be a list
   if (checkmate::test_list(labels_in, null.ok = TRUE)) {
     checkmate::assert_list(labels_in, null.ok = TRUE)
@@ -217,12 +218,17 @@ get_labels_from_stats <- function(stats, labels_in = NULL) {
     checkmate::assert_character(labels_in, null.ok = TRUE)
   }
 
-  which_lbl <- match(stats, names(tern_default_labels))
+  if (is.null(var_lvls)) {
+    which_lbl <- match(stats, names(tern_default_labels))
 
-  ret <- vector("character", length = length(stats)) # it needs to be a character vector
-  ret[!is.na(which_lbl)] <- tern_default_labels[which_lbl[!is.na(which_lbl)]]
+    ret <- vector("character", length = length(stats)) # it needs to be a character vector
+    ret[!is.na(which_lbl)] <- tern_default_labels[which_lbl[!is.na(which_lbl)]]
 
-  out <- setNames(ret, stats)
+    out <- setNames(ret, stats)
+  } else {
+    ret <- rep(var_lvls, length(stats))
+    out <- setNames(ret, paste(rep(stats, each = length(var_lvls)), ret, sep = "."))
+  }
 
   # Modify some with custom labels
   if (!is.null(labels_in)) {
@@ -284,11 +290,13 @@ tern_default_formats <- c(
 #' @export
 tern_default_labels <- c(
   # list of labels -> sorted? xxx it should be not relevant due to match
+  fraction = "fraction",
   unique = "Number of patients with at least one event",
   nonunique = "Number of events",
   n = "n",
   count = "count",
   count_fraction = "count_fraction",
+  count_fraction_fixed_dp = "count_fraction",
   n_blq = "n_blq",
   sum = "Sum",
   mean = "Mean",

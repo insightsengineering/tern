@@ -123,10 +123,79 @@ s_count_occurrences <- function(df,
 #' )
 #'
 #' @export
-a_count_occurrences <- make_afun(
-  s_count_occurrences,
-  .formats = c(count = "xx", count_fraction = format_count_fraction_fixed_dp, fraction = format_fraction_fixed_dp)
-)
+# a_count_occurrences <- make_afun(
+#   s_count_occurrences,
+#   .formats = c(count = "xx", count_fraction = format_count_fraction_fixed_dp, fraction = format_fraction_fixed_dp)
+# )
+a_count_occurrences <- function(df,
+                                id = "USUBJID",
+                                denom = c("N_col", "n"),
+                                drop = TRUE,
+                                .N_col, # nolint
+                                .var = NULL,
+                                .df_row = NULL,
+                                .stats = NULL,
+                                .formats = NULL,
+                                .labels = NULL,
+                                .indent_mods = NULL,
+                                na_str = NA_character_) {
+  denom = match.arg(denom)
+  x_stats <- s_count_occurrences(
+    df = df, denom = denom, .N_col = .N_col, .df_row = .df_row, drop = drop, .var = .var, id = id
+  )
+  x_lvls <- names(x_stats[[1]])
+
+  # Fill in with formatting defaults if needed
+  .stats <- get_stats("count_occurrences", stats_in = .stats)
+  .formats <- get_formats_from_stats(.stats, .formats)
+  .labels <- get_labels_from_stats(.stats, .labels, var_lvls = x_lvls)
+  if ("count_fraction_fixed_dp" %in% .stats) x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
+
+  x_stats <- x_stats[.stats]
+  stat_names <- names(unlist(x_stats, recursive = FALSE))
+
+  indent_mods_custom <- .indent_mods
+  .indent_mods <- stats::setNames(rep(0L, length(stat_names)), stat_names)
+  if (!is.null(indent_mods_custom)) {
+    if (is.null(names(indent_mods_custom)) && length(indent_mods_custom) == 1) {
+      .indent_mods[names(.indent_mods)] <- indent_mods_custom
+    } else {
+      # Allow indent to be specified by .var level
+      indent_mods_custom <- unlist(lapply(names(indent_mods_custom), function(x) {
+        if (x %in% x_lvls) {
+          stats::setNames(rep(indent_mods_custom[[x]], length(.stats)), paste(.stats, x, sep = "."))
+        } else {
+          stats::setNames(indent_mods_custom[x], x)
+        }
+      }))
+      .indent_mods[names(indent_mods_custom)] <- indent_mods_custom
+    }
+  }
+
+  # Ungroup statistics with values for each level of x
+  x_ungrp <- ungroup_stats(x_stats, .formats, list(), list())
+  x_stats <- x_ungrp[["x"]]
+  .formats <- x_ungrp[[".formats"]]
+
+  # Auto format handling
+  fmt_is_auto <- vapply(.formats, function(ii) is.character(ii) && ii == "auto", logical(1))
+  if (any(fmt_is_auto)) {
+    res_l_auto <- x_stats[fmt_is_auto]
+    tmp_dt_var <- .df_row[[.var]] # xxx this can be extended for the WHOLE data or single facets
+    .formats[fmt_is_auto] <- lapply(seq_along(res_l_auto), function(rla) {
+      format_auto(tmp_dt_var, names(res_l_auto)[rla])
+    })
+  }
+
+  in_rows(
+    .list = x_stats,
+    .formats = .formats,
+    .names = .labels,
+    .labels = .labels,
+    .indent_mods = .indent_mods,
+    .format_na_strs = na_str
+  )
+}
 
 #' @describeIn count_occurrences Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
@@ -173,36 +242,32 @@ count_occurrences <- function(lyt,
                               nested = TRUE,
                               ...,
                               table_names = vars,
-                              .stats = "count_fraction",
+                              .stats = "count_fraction_fixed_dp",
                               .formats = NULL,
                               .labels = NULL,
                               .indent_mods = NULL) {
   checkmate::assert_flag(riskdiff)
 
-  afun <- make_afun(
-    a_count_occurrences,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods,
-    .ungroup_stats = .stats
+  extra_args <- list(
+    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
   )
 
-  extra_args <- if (isFALSE(riskdiff)) {
-    list(...)
+  if (isFALSE(riskdiff)) {
+    extra_args <- c(extra_args, list(...))
   } else {
-    list(
-      afun = list("s_count_occurrences" = afun),
-      .stats = .stats,
-      .indent_mods = .indent_mods,
-      s_args = list(...)
+    extra_args <- c(
+      extra_args,
+      list(
+        afun = list("s_count_occurrences" = a_count_occurrences),
+        s_args = list(...)
+      )
     )
   }
 
   analyze(
     lyt = lyt,
     vars = vars,
-    afun = ifelse(isFALSE(riskdiff), afun, afun_riskdiff),
+    afun = ifelse(isFALSE(riskdiff), a_count_occurrences, afun_riskdiff),
     var_labels = var_labels,
     show_labels = show_labels,
     table_names = table_names,

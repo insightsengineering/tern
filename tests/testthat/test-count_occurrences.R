@@ -84,7 +84,7 @@ testthat::test_that("count_occurrences functions as expected with valid input an
     add_colcounts() %>%
     count_occurrences(vars = "MHDECOD")
 
-  result <- rtable_object <- lyt %>%
+  result <- lyt %>%
     build_table(df, alt_counts_df = df_adsl)
 
   res <- testthat::expect_silent(result)
@@ -110,7 +110,7 @@ testthat::test_that("count_occurrences functions as expected with label row spec
       show_labels = "visible"
     )
 
-  result <- rtable_object <- lyt %>%
+  result <- lyt %>%
     build_table(df, alt_counts_df = df_adsl)
 
   res <- testthat::expect_silent(result)
@@ -136,7 +136,7 @@ testthat::test_that("count_occurrences works as expected with risk difference co
     count_occurrences(
       vars = "AEDECOD",
       riskdiff = TRUE,
-      .stats = c("count", "count_fraction", "fraction"),
+      .stats = c("count", "count_fraction_fixed_dp", "fraction"),
       id = "SITEID"
     ) %>%
     build_table(tern_ex_adae)
