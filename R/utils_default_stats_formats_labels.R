@@ -190,9 +190,6 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 #' @describeIn default_stats_formats_labels Get labels from vector of statistical methods.
 #'
 #' @param labels_in (named `vector`)\cr inserted labels to replace defaults.
-#' @param var_lvls (`character`)\cr levels of a `factor` or `character` variable, each of which
-#'   the statistics in `.stats` will be calculated for. If this parameter is set, these variable
-#'   levels will be used as default labels. Defaults to `NULL`.
 #'
 #' @return
 #' * `get_labels_from_stats()` returns a named character vector of default labels (if present
@@ -210,9 +207,8 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 #' get_labels_from_stats(all_cnt_occ, labels_in = list("fraction" = c("Some more fractions")))
 #'
 #' @export
-get_labels_from_stats <- function(stats, labels_in = NULL, var_lvls = NULL) {
+get_labels_from_stats <- function(stats, labels_in = NULL) {
   checkmate::assert_character(stats, min.len = 1)
-  checkmate::assert_character(var_lvls, null.ok = TRUE)
   # It may be a list
   if (checkmate::test_list(labels_in, null.ok = TRUE)) {
     checkmate::assert_list(labels_in, null.ok = TRUE)
@@ -221,17 +217,12 @@ get_labels_from_stats <- function(stats, labels_in = NULL, var_lvls = NULL) {
     checkmate::assert_character(labels_in, null.ok = TRUE)
   }
 
-  if (is.null(var_lvls)) {
-    which_lbl <- match(stats, names(tern_default_labels))
+  which_lbl <- match(stats, names(tern_default_labels))
 
-    ret <- vector("character", length = length(stats)) # it needs to be a character vector
-    ret[!is.na(which_lbl)] <- tern_default_labels[which_lbl[!is.na(which_lbl)]]
+  ret <- vector("character", length = length(stats)) # it needs to be a character vector
+  ret[!is.na(which_lbl)] <- tern_default_labels[which_lbl[!is.na(which_lbl)]]
 
-    out <- setNames(ret, stats)
-  } else {
-    ret <- rep(var_lvls, length(stats))
-    out <- setNames(ret, paste(rep(stats, each = length(var_lvls)), ret, sep = "."))
-  }
+  out <- setNames(ret, stats)
 
   # Modify some with custom labels
   if (!is.null(labels_in)) {

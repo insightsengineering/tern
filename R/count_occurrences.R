@@ -144,7 +144,7 @@ a_count_occurrences <- function(df,
   # Fill in with formatting defaults if needed
   .stats <- get_stats("count_occurrences", stats_in = .stats)
   .formats <- get_formats_from_stats(.stats, .formats)
-  .labels <- get_labels_from_stats(.stats, .labels, var_lvls = x_lvls)
+  .labels <- rep(x_lvls, length(.stats))
   if ("count_fraction_fixed_dp" %in% .stats) x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
 
   x_stats <- x_stats[.stats]
