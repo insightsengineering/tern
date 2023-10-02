@@ -35,9 +35,9 @@ testthat::test_that("get_stats works as expected for defaults", {
 })
 testthat::test_that("get_stats works well with pval", {
   # pval is added correctly
-  testthat::expect_contains(get_stats("analyze_vars_numeric", add_pval = TRUE), "pval")
-  testthat::expect_contains(get_stats("analyze_vars_counts", add_pval = TRUE), "pval_counts")
-  testthat::expect_contains(get_stats("count_occurrences", add_pval = TRUE), "pval")
+  testthat::expect_true("pval" %in% get_stats("analyze_vars_numeric", add_pval = TRUE))
+  testthat::expect_true("pval_counts" %in% get_stats("analyze_vars_counts", add_pval = TRUE))
+  testthat::expect_true("pval" %in% get_stats("count_occurrences", add_pval = TRUE))
 
   # Errors
   testthat::expect_error(get_stats("analyze_vars_counts", stats_in = c("pval", "pval_counts")))
