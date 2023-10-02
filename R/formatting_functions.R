@@ -160,6 +160,43 @@ format_count_fraction_fixed_dp <- function(x, ...) {
   return(result)
 }
 
+#' Formatting Count and Fraction
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Formats a count together with fraction with special consideration when count is less than 10.
+#'
+#' @inheritParams format_count_fraction
+#'
+#' @return A string in the format `count (fraction %)`. If `count` is less than 10, only `count` is printed.
+#'
+#' @examples
+#' format_count_fraction_lt10(x = c(275, 0.9673))
+#' format_count_fraction_lt10(x = c(2, 0.6667))
+#' format_count_fraction_lt10(x = c(9, 1))
+#'
+#' @family formatting functions
+#' @export
+format_count_fraction_lt10 <- function(x, ...) {
+  attr(x, "label") <- NULL
+
+  if (any(is.na(x))) {
+    return("NA")
+  }
+
+  checkmate::assert_vector(x)
+  checkmate::assert_integerish(x[1])
+  assert_proportion_value(x[2], include_boundaries = TRUE)
+
+  result <- if (x[1] < 10) {
+    paste0(x[1])
+  } else {
+    paste0(x[1], " (", round(x[2] * 100, 1), "%)")
+  }
+
+  return(result)
+}
+
 #' Formatting: XX as Formatting Function
 #'
 #' Translate a string where x and dots are interpreted as number place
