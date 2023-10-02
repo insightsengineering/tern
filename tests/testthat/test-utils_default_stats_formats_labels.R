@@ -35,9 +35,9 @@ testthat::test_that("get_stats works as expected for defaults", {
 })
 testthat::test_that("get_stats works well with pval", {
   # pval is added correctly
-  testthat::expect_contains(get_stats("analyze_vars_numeric", add_pval = TRUE), "pval")
-  testthat::expect_contains(get_stats("analyze_vars_counts", add_pval = TRUE), "pval_counts")
-  testthat::expect_contains(get_stats("count_occurrences", add_pval = TRUE), "pval")
+  testthat::expect_true("pval" %in% get_stats("analyze_vars_numeric", add_pval = TRUE))
+  testthat::expect_true("pval_counts" %in% get_stats("analyze_vars_counts", add_pval = TRUE))
+  testthat::expect_true("pval" %in% get_stats("count_occurrences", add_pval = TRUE))
 
   # Errors
   testthat::expect_error(get_stats("analyze_vars_counts", stats_in = c("pval", "pval_counts")))
@@ -70,7 +70,10 @@ testthat::test_that("get_stats works as expected for selection of stats", {
 testthat::test_that("get_formats_from_stats works as expected", {
   sts <- get_stats("count_occurrences")
   res <- testthat::expect_silent(get_formats_from_stats(sts))
-  testthat::expect_snapshot(res)
+  testthat::expect_equal(names(res), sts)
+  testthat::expect_equal(res[[1]], "xx.")
+  testthat::expect_equal(res[[2]], format_count_fraction_fixed_dp)
+  testthat::expect_equal(res[[3]], format_fraction_fixed_dp)
 
   testthat::expect_null(get_formats_from_stats(c("nothing", "n"))[["nothing"]])
 
