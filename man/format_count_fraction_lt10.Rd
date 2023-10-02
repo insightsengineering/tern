@@ -2,7 +2,7 @@
 % Please edit documentation in R/formatting_functions.R
 \name{format_count_fraction_lt10}
 \alias{format_count_fraction_lt10}
-\title{Formatting Count and Fraction}
+\title{Formatting Count and Fraction with Special Case for Count < 10}
 \usage{
 format_count_fraction_lt10(x, ...)
 }

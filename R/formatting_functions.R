@@ -160,7 +160,7 @@ format_count_fraction_fixed_dp <- function(x, ...) {
   return(result)
 }
 
-#' Formatting Count and Fraction
+#' Formatting Count and Fraction with Special Case for Count < 10
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
