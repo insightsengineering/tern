@@ -12,7 +12,7 @@ that are used repeatedly to express an analysis."><!-- mathjax --><script src="h
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.1</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,7 @@ that are used repeatedly to express an analysis."><!-- mathjax --><script src="h
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1-rc3">v0.9.1-rc3</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc2">v0.8.5-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc1">v0.8.5-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
@@ -100,6 +101,16 @@ that are used repeatedly to express an analysis.</p>
 <dd><p>additional arguments for the lower level functions.</p></dd>
 
 
+<dt>.aligns</dt>
+<dd><p>(<code>character</code>)<br> alignment for table contents (not including labels). When <code>NULL</code>, <code>"center"</code>
+is applied. See <code><a href="https://rdrr.io/pkg/formatters/man/list_formats.html" class="external-link">formatters::list_valid_aligns()</a></code> for a list of all currently supported alignments.</p></dd>
+
+
+<dt>.all_col_counts</dt>
+<dd><p>(<code>vector</code> of <code>integer</code>)<br> each value represents a global count for a column. Values are
+taken from <code>alt_counts_df</code> if specified (see <code><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">rtables::build_table()</a></code>).</p></dd>
+
+
 <dt>.df_row</dt>
 <dd><p>(<code>data.frame</code>)<br> data frame across all of the columns for the given row split.</p></dd>
 
@@ -109,12 +120,13 @@ that are used repeatedly to express an analysis.</p>
 
 
 <dt>.N_col</dt>
-<dd><p>(<code>count</code>)<br> row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is passed by <code>rtables</code>.</p></dd>
+<dd><p>(<code>integer</code>)<br> column-wise N (column count) for the full column being analyzed that is typically
+passed by <code>rtables</code>.</p></dd>
 
 
 <dt>.N_row</dt>
-<dd><p>(<code>count</code>)<br> column-wise N (column count) for the full column that is passed by <code>rtables</code>.</p></dd>
+<dd><p>(<code>integer</code>)<br> row-wise N (row group count) for the group of observations being analyzed
+(i.e. with no column-based subsetting) that is typically passed by <code>rtables</code>.</p></dd>
 
 
 <dt>.ref_group</dt>
@@ -131,7 +143,8 @@ unmodified default behavior. Can be negative.</p></dd>
 
 
 <dt>.formats</dt>
-<dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics.</p></dd>
+<dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics. See Details in <code>analyze_vars</code> for more
+information on the <code>"auto"</code> setting.</p></dd>
 
 
 <dt>.labels</dt>
@@ -178,6 +191,12 @@ that constitute the split. A custom label can be set for this level via the <cod
 Note that in that case the remaining occurrence levels in the table are sorted alphabetically.</p></dd>
 
 
+<dt>groups_lists</dt>
+<dd><p>(named <code>list</code> of <code>list</code>)<br> optionally contains for each <code>subgroups</code> variable a
+list, which specifies the new group levels via the names and the
+levels that belong to it in the character vectors that are elements of the list.</p></dd>
+
+
 <dt>id</dt>
 <dd><p>(<code>string</code>)<br> subject variable name.</p></dd>
 
@@ -190,6 +209,10 @@ Note that in that case the remaining occurrence levels in the table are sorted a
 <dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> Please use the <code>.indent_mods</code> argument instead.</p></dd>
 
 
+<dt>label_all</dt>
+<dd><p>(<code>string</code>)<br> label for the total population analysis.</p></dd>
+
+
 <dt>labelstr</dt>
 <dd><p>(<code>character</code>)<br> label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See <code><a href="https://rdrr.io/pkg/rtables/man/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>
@@ -198,6 +221,11 @@ for more information.</p></dd>
 
 <dt>lyt</dt>
 <dd><p>(<code>layout</code>)<br> input layout where analyses will be added to.</p></dd>
+
+
+<dt>method</dt>
+<dd><p>(<code>string</code>)<br> specifies the test used to calculate the p-value for the difference between
+two proportions. For options, see <code><a href="prop_diff_test.html">s_test_proportion_diff()</a></code>. Default is <code>NULL</code> so no test is performed.</p></dd>
 
 
 <dt>na.rm</dt>
@@ -209,8 +237,8 @@ for more information.</p></dd>
 
 
 <dt>nested</dt>
-<dd><p>(<code>flag</code>)<br> whether this layout instruction be applied within the existing layout structure <em>if
-possible</em> (<code>TRUE</code>, the default) or as a new top-level element (<code>FALSE</code>). Ignored if it would nest a split
+<dd><p>(<code>flag</code>)<br> whether this layout instruction should be applied within the existing layout structure <em>if
+possible</em> (<code>TRUE</code>, the default) or as a new top-level element (<code>FALSE</code>). Ignored if it would nest a split.
 underneath analyses, which is not allowed.</p></dd>
 
 
@@ -221,6 +249,12 @@ Only considered if <code>draw = TRUE</code> is used.</p></dd>
 
 <dt>prune_zero_rows</dt>
 <dd><p>(<code>flag</code>)<br> whether to prune all zero rows.</p></dd>
+
+
+<dt>riskdiff</dt>
+<dd><p>(<code>flag</code>)<br> whether a risk difference column is present. When set to <code>TRUE</code>, <code><a href="add_riskdiff.html">add_riskdiff()</a></code> must be
+used as <code>split_fun</code> in the prior column split of the table layout, specifying which columns should be compared.
+See <code><a href="stat_propdiff_ci.html">stat_propdiff_ci()</a></code> for details on risk difference calculation.</p></dd>
 
 
 <dt>rsp</dt>

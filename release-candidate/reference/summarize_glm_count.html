@@ -14,7 +14,7 @@ This can be used to analyze count and/or frequency data using a linear model."><
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.1</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,6 +46,7 @@ This can be used to analyze count and/or frequency data using a linear model."><
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1-rc3">v0.9.1-rc3</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc2">v0.8.5-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc1">v0.8.5-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
@@ -130,6 +131,7 @@ This can be used to analyze count and/or frequency data using a linear model.</p
 <span>  <span class="va">lyt</span>,</span>
 <span>  <span class="va">vars</span>,</span>
 <span>  <span class="va">var_labels</span>,</span>
+<span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  show_labels <span class="op">=</span> <span class="st">"visible"</span>,</span>
 <span>  table_names <span class="op">=</span> <span class="va">vars</span>,</span>
@@ -167,8 +169,19 @@ by a statistics function.</p></dd>
 <dd><p>(<code>logical</code>)<br><code>TRUE</code> when working with the reference level, <code>FALSE</code> otherwise.</p></dd>
 
 
+<dt>distribution</dt>
+<dd><p>(<code>character</code>)<br> a character value specifying the distribution
+used in the regression (poisson, quasipoisson).</p></dd>
+
+
 <dt>conf_level</dt>
 <dd><p>(<code>proportion</code>)<br> confidence level of the interval.</p></dd>
+
+
+<dt>weights</dt>
+<dd><p>(<code>character</code>)<br> a character vector specifying weights used
+in averaging predictions. Number of weights must equal the number of levels included in the covariates.
+Weights option passed to <code><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans::emmeans()</a></code>.</p></dd>
 
 
 <dt>lyt</dt>
@@ -181,6 +194,12 @@ by a statistics function.</p></dd>
 
 <dt>var_labels</dt>
 <dd><p>(<code>character</code>)<br> character for label.</p></dd>
+
+
+<dt>nested</dt>
+<dd><p>(<code>flag</code>)<br> whether this layout instruction should be applied within the existing layout structure <em>if
+possible</em> (<code>TRUE</code>, the default) or as a new top-level element (<code>FALSE</code>). Ignored if it would nest a split.
+underneath analyses, which is not allowed.</p></dd>
 
 
 <dt>...</dt>
@@ -201,7 +220,8 @@ to avoid warnings from <code>rtables</code>.</p></dd>
 
 
 <dt>.formats</dt>
-<dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics.</p></dd>
+<dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics. See Details in <code>analyze_vars</code> for more
+information on the <code>"auto"</code> setting.</p></dd>
 
 
 <dt>.labels</dt>

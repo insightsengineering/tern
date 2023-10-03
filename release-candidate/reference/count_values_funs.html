@@ -12,7 +12,7 @@ We can count the occurrence of specific values in a variable of interest."><!-- 
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.1</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,7 @@ We can count the occurrence of specific values in a variable of interest."><!-- 
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1-rc3">v0.9.1-rc3</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc2">v0.8.5-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc1">v0.8.5-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
@@ -126,6 +127,7 @@ We can count the occurrence of specific values in a variable of interest."><!-- 
 <span>  <span class="va">lyt</span>,</span>
 <span>  <span class="va">vars</span>,</span>
 <span>  <span class="va">values</span>,</span>
+<span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  table_names <span class="op">=</span> <span class="va">vars</span>,</span>
 <span>  .stats <span class="op">=</span> <span class="st">"count_fraction"</span>,</span>
@@ -150,12 +152,13 @@ We can count the occurrence of specific values in a variable of interest."><!-- 
 
 
 <dt>.N_col</dt>
-<dd><p>(<code>count</code>)<br> row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is passed by <code>rtables</code>.</p></dd>
+<dd><p>(<code>integer</code>)<br> column-wise N (column count) for the full column being analyzed that is typically
+passed by <code>rtables</code>.</p></dd>
 
 
 <dt>.N_row</dt>
-<dd><p>(<code>count</code>)<br> column-wise N (column count) for the full column that is passed by <code>rtables</code>.</p></dd>
+<dd><p>(<code>integer</code>)<br> row-wise N (row group count) for the group of observations being analyzed
+(i.e. with no column-based subsetting) that is typically passed by <code>rtables</code>.</p></dd>
 
 
 <dt>denom</dt>
@@ -177,6 +180,12 @@ We can count the occurrence of specific values in a variable of interest."><!-- 
 <dd><p>(<code>character</code>)<br> variable names for the primary analysis variable to be iterated over.</p></dd>
 
 
+<dt>nested</dt>
+<dd><p>(<code>flag</code>)<br> whether this layout instruction should be applied within the existing layout structure <em>if
+possible</em> (<code>TRUE</code>, the default) or as a new top-level element (<code>FALSE</code>). Ignored if it would nest a split.
+underneath analyses, which is not allowed.</p></dd>
+
+
 <dt>table_names</dt>
 <dd><p>(<code>character</code>)<br> this can be customized in case that the same <code>vars</code> are analyzed multiple times,
 to avoid warnings from <code>rtables</code>.</p></dd>
@@ -187,7 +196,8 @@ to avoid warnings from <code>rtables</code>.</p></dd>
 
 
 <dt>.formats</dt>
-<dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics.</p></dd>
+<dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics. See Details in <code>analyze_vars</code> for more
+information on the <code>"auto"</code> setting.</p></dd>
 
 
 <dt>.labels</dt>

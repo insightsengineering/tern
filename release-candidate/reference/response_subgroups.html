@@ -12,7 +12,7 @@ Tabulate statistics such as response rate and odds ratio for population subgroup
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.1</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,7 @@ Tabulate statistics such as response rate and odds ratio for population subgroup
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1-rc3">v0.9.1-rc3</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc2">v0.8.5-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc1">v0.8.5-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
@@ -107,7 +108,8 @@ Tabulate statistics such as response rate and odds ratio for population subgroup
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>.formats</dt>
-<dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics.</p></dd>
+<dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics. See Details in <code>analyze_vars</code> for more
+information on the <code>"auto"</code> setting.</p></dd>
 
 
 <dt>lyt</dt>
@@ -129,25 +131,6 @@ created using <code><a href="extract_rsp_subgroups.html">extract_rsp_subgroups()
 <li><p><code>pval</code>: p-value of the effect.
 Note, the statistics <code>n_tot</code>, <code>or</code> and <code>ci</code> are required.</p></li>
 </ul></dd>
-
-
-<dt>data</dt>
-<dd><p>(<code>data.frame</code>)<br> the dataset containing the variables to summarize.</p></dd>
-
-
-<dt>groups_lists</dt>
-<dd><p>(named <code>list</code> of <code>list</code>)<br> optionally contains for each <code>subgroups</code> variable a
-list, which specifies the new group levels via the names and the
-levels that belong to it in the character vectors that are elements of the list.</p></dd>
-
-
-<dt>label_all</dt>
-<dd><p>(<code>string</code>)<br> label for the total population analysis.</p></dd>
-
-
-<dt>method</dt>
-<dd><p>(<code>string</code>)<br> specifies the test used to calculate the p-value for the difference between
-two proportions. For options, see <code><a href="prop_diff_test.html">s_test_proportion_diff()</a></code>. Default is <code>NULL</code> so no test is performed.</p></dd>
 
 </dl></div>
     <div class="section level2">

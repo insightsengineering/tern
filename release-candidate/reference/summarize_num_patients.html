@@ -12,7 +12,7 @@ Count the number of unique and non-unique patients in a column (variable)."><!--
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.1</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,7 @@ Count the number of unique and non-unique patients in a column (variable)."><!--
           id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1-rc3">v0.9.1-rc3</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc2">v0.8.5-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc1">v0.8.5-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
@@ -122,12 +123,14 @@ Count the number of unique and non-unique patients in a column (variable)."><!--
 <span>    <span class="st">"Number of events"</span><span class="op">)</span>,</span>
 <span>  indent_mod <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  .indent_mods <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  riskdiff <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">analyze_num_patients</span><span class="op">(</span></span>
 <span>  <span class="va">lyt</span>,</span>
 <span>  <span class="va">vars</span>,</span>
+<span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>unique <span class="op">=</span> <span class="st">"Number of patients with at least one event"</span>, nonunique <span class="op">=</span></span>
@@ -135,6 +138,7 @@ Count the number of unique and non-unique patients in a column (variable)."><!--
 <span>  show_labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"default"</span>, <span class="st">"visible"</span>, <span class="st">"hidden"</span><span class="op">)</span>,</span>
 <span>  indent_mod <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  .indent_mods <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  riskdiff <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -152,8 +156,8 @@ for more information.</p></dd>
 
 
 <dt>.N_col</dt>
-<dd><p>(<code>count</code>)<br> row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is passed by <code>rtables</code>.</p></dd>
+<dd><p>(<code>integer</code>)<br> column-wise N (column count) for the full column being analyzed that is typically
+passed by <code>rtables</code>.</p></dd>
 
 
 <dt>count_by</dt>
@@ -188,7 +192,8 @@ by a statistics function.</p></dd>
 
 
 <dt>.formats</dt>
-<dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics.</p></dd>
+<dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics. See Details in <code>analyze_vars</code> for more
+information on the <code>"auto"</code> setting.</p></dd>
 
 
 <dt>.labels</dt>
@@ -204,12 +209,24 @@ by a statistics function.</p></dd>
 unmodified default behavior. Can be negative.</p></dd>
 
 
+<dt>riskdiff</dt>
+<dd><p>(<code>flag</code>)<br> whether a risk difference column is present. When set to <code>TRUE</code>, <code><a href="add_riskdiff.html">add_riskdiff()</a></code> must be
+used as <code>split_fun</code> in the prior column split of the table layout, specifying which columns should be compared.
+See <code><a href="stat_propdiff_ci.html">stat_propdiff_ci()</a></code> for details on risk difference calculation.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>additional arguments for the lower level functions.</p></dd>
 
 
 <dt>vars</dt>
 <dd><p>(<code>character</code>)<br> variable names for the primary analysis variable to be iterated over.</p></dd>
+
+
+<dt>nested</dt>
+<dd><p>(<code>flag</code>)<br> whether this layout instruction should be applied within the existing layout structure <em>if
+possible</em> (<code>TRUE</code>, the default) or as a new top-level element (<code>FALSE</code>). Ignored if it would nest a split.
+underneath analyses, which is not allowed.</p></dd>
 
 
 <dt>show_labels</dt>

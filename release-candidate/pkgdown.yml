@@ -6,8 +6,8 @@ articles:
   tables: tables.html
   tern: tern.html
   tern_formats: tern_formats.html
-last_built: 2023-07-21T06:18Z
+last_built: 2023-10-03T19:23Z
 urls:
-  reference: https://insightsengineering.github.io/tern/v0.8.5-rc2/reference
-  article: https://insightsengineering.github.io/tern/v0.8.5-rc2/articles
+  reference: https://insightsengineering.github.io/tern/reference
+  article: https://insightsengineering.github.io/tern/articles
 
