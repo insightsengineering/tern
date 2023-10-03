@@ -111,9 +111,7 @@ s_count_occurrences <- function(df,
 #' * `a_count_occurrences()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
-#' #  We need to ungroup `count_fraction` first so that the `rtables` formatting
-#' # function `format_count_fraction()` can be applied correctly.
-#' afun(
+#' a_count_occurrences(
 #'   df,
 #'   .N_col = N_per_col,
 #'   .df_row = df,
