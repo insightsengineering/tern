@@ -65,6 +65,50 @@ testthat::test_that("s_count_occurrences functions as expected when requesting d
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("a_count_occurrences works with healthy input.", {
+  options("width" = 100)
+
+  # factor input
+  df <- data.frame(
+    id = factor(1:5),
+    x = factor(c("a", "a", "b", "c", "a"))
+  )
+  result <- a_count_occurrences(
+    df = df, .N_col = 10, .stats = get_stats("count_occurrences"), .var = "x", id = "id", .df_row = df
+  )
+  res_out <- testthat::expect_silent(result)
+
+  # character input
+  df <- data.frame(
+    id = factor(1:5),
+    x = c("a", "a", "b", "c", "a")
+  )
+  result <- a_count_occurrences(
+    df = df, .N_col = 10, .stats = get_stats("count_occurrences"), .var = "x", id = "id", .df_row = df
+  )
+  res_out <- testthat::expect_silent(result)
+})
+
+testthat::test_that("a_count_occurrences works with custom input.", {
+  options("width" = 100)
+
+  df <- data.frame(
+    id = factor(1:5),
+    x = factor(c("a", "a", "b", "c", "a"), levels = c("a", "b", "c", "d"))
+  )
+
+  result <- a_count_occurrences(
+    df = df, .df_row = df, .var = "x", id = "id", .N_col = 5,
+    .stats = c("count", "count_fraction"), drop = FALSE,
+    .formats = c(count_fraction = "xx (xx%)"),
+    .labels = c(a = "Level: a", b = "LVL B", count.c = "Count of c", d = "Missing D"),
+    .indent_mods = list(a = 1L, b = 2L, count.d = 3L)
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("count_occurrences functions as expected with valid input and default arguments", {
   df <- data.frame(
     USUBJID = as.character(c(1, 1, 2, 4, 4, 4, 6, 6, 6, 7, 7, 8)),

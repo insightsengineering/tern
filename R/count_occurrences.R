@@ -144,29 +144,11 @@ a_count_occurrences <- function(df,
   # Fill in with formatting defaults if needed
   .stats <- get_stats("count_occurrences", stats_in = .stats)
   .formats <- get_formats_from_stats(.stats, .formats)
-  .labels <- rep(x_lvls, length(.stats))
+  .labels <- get_labels_from_stats(.stats, .labels, row_nms = x_lvls)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, row_nms = x_lvls)
+
   if ("count_fraction_fixed_dp" %in% .stats) x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
-
   x_stats <- x_stats[.stats]
-  stat_names <- names(unlist(x_stats, recursive = FALSE))
-
-  indent_mods_custom <- .indent_mods
-  .indent_mods <- stats::setNames(rep(0L, length(stat_names)), stat_names)
-  if (!is.null(indent_mods_custom)) {
-    if (is.null(names(indent_mods_custom)) && length(indent_mods_custom) == 1) {
-      .indent_mods[names(.indent_mods)] <- indent_mods_custom
-    } else {
-      # Allow indent to be specified by .var level
-      indent_mods_custom <- unlist(lapply(names(indent_mods_custom), function(x) {
-        if (x %in% x_lvls) {
-          stats::setNames(rep(indent_mods_custom[[x]], length(.stats)), paste(.stats, x, sep = "."))
-        } else {
-          stats::setNames(indent_mods_custom[x], x)
-        }
-      }))
-      .indent_mods[names(indent_mods_custom)] <- indent_mods_custom
-    }
-  }
 
   # Ungroup statistics with values for each level of x
   x_ungrp <- ungroup_stats(x_stats, .formats, list(), list())

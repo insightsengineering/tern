@@ -31,80 +31,6 @@
       [16] "iqr"          "range"        "min"          "max"          "median_range"
       [21] "cv"           "geom_mean"    "geom_mean_ci" "geom_cv"     
 
-# get_formats_from_stats works as expected
-
-    Code
-      res
-    Output
-      $count
-      [1] "xx."
-      
-      $count_fraction
-      function(x, ...) {
-        attr(x, "label") <- NULL
-      
-        if (any(is.na(x))) {
-          return("NA")
-        }
-      
-        checkmate::assert_vector(x)
-        checkmate::assert_integerish(x[1])
-        assert_proportion_value(x[2], include_boundaries = TRUE)
-      
-        result <- if (x[1] == 0) {
-          "0"
-        } else {
-          paste0(x[1], " (", round(x[2] * 100, 1), "%)")
-        }
-      
-        return(result)
-      }
-      <environment: namespace:tern>
-      
-      $count_fraction_fixed_dp
-      function(x, ...) {
-        attr(x, "label") <- NULL
-      
-        if (any(is.na(x))) {
-          return("NA")
-        }
-      
-        checkmate::assert_vector(x)
-        checkmate::assert_integerish(x[1])
-        assert_proportion_value(x[2], include_boundaries = TRUE)
-      
-        result <- if (x[1] == 0) {
-          "0"
-        } else if (x[2] == 1) {
-          sprintf("%d (100%%)", x[1])
-        } else {
-          sprintf("%d (%.1f%%)", x[1], x[2] * 100)
-        }
-      
-        return(result)
-      }
-      <environment: namespace:tern>
-      
-      $fraction
-      function(x, ...) {
-        attr(x, "label") <- NULL
-        checkmate::assert_vector(x)
-        checkmate::assert_count(x["num"])
-        checkmate::assert_count(x["denom"])
-      
-        result <- if (x["num"] == 0) {
-          paste0(x["num"], "/", x["denom"])
-        } else {
-          paste0(
-            x["num"], "/", x["denom"],
-            " (", sprintf("%.1f", round(x["num"] / x["denom"] * 100, 1)), "%)"
-          )
-        }
-        return(result)
-      }
-      <environment: namespace:tern>
-      
-
 # get_labels_from_stats works as expected
 
     Code
@@ -114,6 +40,16 @@
                       "count"        "count_fraction"        "count_fraction" 
                      fraction 
                    "fraction" 
+
+# get_indents_from_stats works as expected
+
+    Code
+      res
+    Output
+                        count          count_fraction count_fraction_fixed_dp 
+                            0                       0                       0 
+                     fraction 
+                            0 
 
 # summary_formats works as expected
 

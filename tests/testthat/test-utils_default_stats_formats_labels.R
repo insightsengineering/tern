@@ -72,8 +72,9 @@ testthat::test_that("get_formats_from_stats works as expected", {
   res <- testthat::expect_silent(get_formats_from_stats(sts))
   testthat::expect_equal(names(res), sts)
   testthat::expect_equal(res[[1]], "xx.")
-  testthat::expect_equal(res[[2]], format_count_fraction_fixed_dp)
-  testthat::expect_equal(res[[3]], format_fraction_fixed_dp)
+  testthat::expect_equal(res[[2]], format_count_fraction)
+  testthat::expect_equal(res[[3]], format_count_fraction_fixed_dp)
+  testthat::expect_equal(res[[4]], format_fraction_fixed_dp)
 
   testthat::expect_null(get_formats_from_stats(c("nothing", "n"))[["nothing"]])
 
@@ -139,6 +140,46 @@ testthat::test_that("get_labels_from_stats works as expected", {
       )
     ),
     stats_to_do
+  )
+
+  # with row_nms
+  testthat::expect_identical(
+    get_labels_from_stats(
+      stats = c("count", "count_fraction"),
+      labels_in = c("c" = "Lvl c:", "count_fraction.a" = "CF: A", "count.b" = "Count of b"),
+      row_nms = c("a", "b", "c")
+    ),
+    c(count.a = "a", count.b = "Count of b", count.c = "Lvl c:",
+      count_fraction.a = "CF: A", count_fraction.b = "b", count_fraction.c = "Lvl c:")
+  )
+})
+
+testthat::test_that("get_indents_from_stats works as expected", {
+  sts <- get_stats("count_occurrences")
+  res <- testthat::expect_silent(get_indents_from_stats(sts))
+  testthat::expect_snapshot(res)
+
+  testthat::expect_identical(get_indents_from_stats("count", NULL)[["count"]], 0L)
+  testthat::expect_identical(get_indents_from_stats(c("count"), 3L), 3L)
+
+  # integer vector
+  stats_to_do <- c("count" = 3L, "mean" = 6L)
+  testthat::expect_identical(
+    get_indents_from_stats(c(names(stats_to_do), "n"),
+      indents_in = stats_to_do
+    ),
+    c(stats_to_do, n = 0L)
+  )
+
+  # with row_nms
+  testthat::expect_identical(
+    get_indents_from_stats(
+      stats = c("count", "count_fraction"),
+      indents_in = c("c" = 3L, "count_fraction.a" = 1L, "count.b" = 2L),
+      row_nms = c("a", "b", "c")
+    ),
+    c(count.a = 0L, count.b = 2L, count.c = 3L,
+      count_fraction.a = 1L, count_fraction.b = 0L, count_fraction.c = 3L)
   )
 })
 
