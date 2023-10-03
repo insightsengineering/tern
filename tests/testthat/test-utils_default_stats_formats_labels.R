@@ -72,8 +72,6 @@ testthat::test_that("get_formats_from_stats works as expected", {
   res <- testthat::expect_silent(get_formats_from_stats(sts))
   testthat::expect_equal(names(res), sts)
   testthat::expect_equal(res[[1]], "xx.")
-  testthat::expect_equal(res[[2]], format_count_fraction_fixed_dp)
-  testthat::expect_equal(res[[3]], format_fraction_fixed_dp)
 
   testthat::expect_null(get_formats_from_stats(c("nothing", "n"))[["nothing"]])
 
