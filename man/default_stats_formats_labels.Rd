@@ -77,6 +77,8 @@ variable levels will be used as the defaults, and the names of the given custom 
 correspond to levels (or have format \code{statistic.level}) instead of statistics. Can also be
 variable names if rows correspond to different variables instead of levels. Defaults to \code{NULL}.}
 
+\item{indents_in}{(named \code{vector})\cr inserted indent modifiers to replace defaults (default is \code{0L}).}
+
 \item{type}{(\code{flag})\cr is it going to be \code{"numeric"} or \code{"counts"}?}
 
 \item{include_pval}{(\code{flag})\cr deprecated parameter. Same as \code{add_pval}.}

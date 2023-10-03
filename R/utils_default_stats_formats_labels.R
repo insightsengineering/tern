@@ -252,7 +252,7 @@ get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL) {
 
 #' @describeIn default_stats_formats_labels Format indent modifiers for a given vector/list of statistics.
 #'
-#' @inheritParams get_labels_from_stats
+#' @param indents_in (named `vector`)\cr inserted indent modifiers to replace defaults (default is `0L`).
 #'
 #' @return
 #' * `get_indents_from_stats()` returns a single indent modifier value to apply to all rows
