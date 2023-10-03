@@ -93,7 +93,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
 
     # Mismatch with counts and numeric
     if (any(grepl("counts", method_groups)) && stats_in_pval_value != "pval_counts" ||
-      any(grepl("numeric", method_groups)) && stats_in_pval_value != "pval") {
+      any(grepl("numeric", method_groups)) && stats_in_pval_value != "pval") { # nolint
       stop(
         "Inserted p-value (", stats_in_pval_value, ") is not valid for type ",
         type_tmp, ". Use ", paste(ifelse(stats_in_pval_value == "pval", "pval_counts", "pval")),
@@ -262,7 +262,8 @@ get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL) {
 #' get_indents_from_stats(all_cnt_occ, indents_in = 3L)
 #' get_indents_from_stats(all_cnt_occ, indents_in = list(count = 2L, count_fraction = 5L))
 #' get_indents_from_stats(
-#'   all_cnt_occ, indents_in = list(a = 2L, count.a = 1L, count.b = 5L), row_nms = c("a", "b")
+#'   all_cnt_occ,
+#'   indents_in = list(a = 2L, count.a = 1L, count.b = 5L), row_nms = c("a", "b")
 #' )
 #'
 #' @export
@@ -277,7 +278,9 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
     checkmate::assert_integerish(indents_in, null.ok = TRUE)
   }
 
-  if (is.null(names(indents_in)) && length(indents_in) == 1) return(indents_in)
+  if (is.null(names(indents_in)) && length(indents_in) == 1) {
+    return(indents_in)
+  }
 
   if (!is.null(row_nms)) {
     ret <- rep(0L, length(stats) * length(row_nms))

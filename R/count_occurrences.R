@@ -132,11 +132,13 @@ a_count_occurrences <- function(df,
                                 .labels = NULL,
                                 .indent_mods = NULL,
                                 na_str = NA_character_) {
-  denom = match.arg(denom)
+  denom <- match.arg(denom)
   x_stats <- s_count_occurrences(
     df = df, denom = denom, .N_col = .N_col, .df_row = .df_row, drop = drop, .var = .var, id = id
   )
-  if (is.null(unlist(x_stats))) return(NULL)
+  if (is.null(unlist(x_stats))) {
+    return(NULL)
+  }
   x_lvls <- names(x_stats[[1]])
 
   # Fill in with formatting defaults if needed

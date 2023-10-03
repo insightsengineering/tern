@@ -149,8 +149,10 @@ testthat::test_that("get_labels_from_stats works as expected", {
       labels_in = c("c" = "Lvl c:", "count_fraction.a" = "CF: A", "count.b" = "Count of b"),
       row_nms = c("a", "b", "c")
     ),
-    c(count.a = "a", count.b = "Count of b", count.c = "Lvl c:",
-      count_fraction.a = "CF: A", count_fraction.b = "b", count_fraction.c = "Lvl c:")
+    c(
+      count.a = "a", count.b = "Count of b", count.c = "Lvl c:",
+      count_fraction.a = "CF: A", count_fraction.b = "b", count_fraction.c = "Lvl c:"
+    )
   )
 })
 
@@ -178,8 +180,10 @@ testthat::test_that("get_indents_from_stats works as expected", {
       indents_in = c("c" = 3L, "count_fraction.a" = 1L, "count.b" = 2L),
       row_nms = c("a", "b", "c")
     ),
-    c(count.a = 0L, count.b = 2L, count.c = 3L,
-      count_fraction.a = 1L, count_fraction.b = 0L, count_fraction.c = 3L)
+    c(
+      count.a = 0L, count.b = 2L, count.c = 3L,
+      count_fraction.a = 1L, count_fraction.b = 0L, count_fraction.c = 3L
+    )
   )
 })
 
