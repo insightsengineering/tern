@@ -218,7 +218,8 @@ get_labels_from_stats(all_cnt_occ, labels_in = list("fraction" = c("Some more fr
 get_indents_from_stats(all_cnt_occ, indents_in = 3L)
 get_indents_from_stats(all_cnt_occ, indents_in = list(count = 2L, count_fraction = 5L))
 get_indents_from_stats(
-  all_cnt_occ, indents_in = list(a = 2L, count.a = 1L, count.b = 5L), row_nms = c("a", "b")
+  all_cnt_occ,
+  indents_in = list(a = 2L, count.a = 1L, count.b = 5L), row_nms = c("a", "b")
 )
 
 summary_formats()
