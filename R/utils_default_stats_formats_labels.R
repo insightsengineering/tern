@@ -279,7 +279,8 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
   }
 
   if (is.null(names(indents_in)) && length(indents_in) == 1) {
-    return(indents_in)
+    out <- rep(indents_in, length(stats) * if (!is.null(row_nms)) length(row_nms) else 1)
+    return(out)
   }
 
   if (!is.null(row_nms)) {
