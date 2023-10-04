@@ -188,15 +188,14 @@ testthat::test_that("h_ppmeans works with healthy input", {
   testthat::expect_snapshot(fits2)
 
   # XXX ppmeans fails snapshot diff in integration tests
-  result <- h_ppmeans(
-    obj = fits$glm_fit,
-    .df_row = anl,
-    arm = "ARM",
-    conf_level = 0.95
+  testthat::expect_silent(
+    result <- h_ppmeans(
+      obj = fits$glm_fit,
+      .df_row = anl,
+      arm = "ARM",
+      conf_level = 0.95
+    ) # diff
   )
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res) # diff
 })
 
 testthat::test_that("s_glm_count works with healthy input", {

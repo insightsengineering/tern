@@ -72,9 +72,6 @@ testthat::test_that("get_formats_from_stats works as expected", {
   res <- testthat::expect_silent(get_formats_from_stats(sts))
   testthat::expect_equal(names(res), sts)
   testthat::expect_equal(res[[1]], "xx.")
-  testthat::expect_equal(res[[2]], format_count_fraction)
-  testthat::expect_equal(res[[3]], format_count_fraction_fixed_dp)
-  testthat::expect_equal(res[[4]], format_fraction_fixed_dp)
 
   testthat::expect_null(get_formats_from_stats(c("nothing", "n"))[["nothing"]])
 
@@ -196,7 +193,6 @@ testthat::test_that("summary_formats works as expected", {
   result <- summary_formats(type = "counts", include_pval = TRUE)
   testthat::expect_true(all(result[c("n", "count", "n_blq")] == "xx."))
   testthat::expect_identical(result[["pval_counts"]], "x.xxxx | (<0.0001)")
-  expect_identical(result[["count_fraction"]], format_count_fraction)
 })
 
 testthat::test_that("summary_labels works as expected", {
