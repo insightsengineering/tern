@@ -8,6 +8,7 @@
 * Added `"auto"` option for `.formats`. It uses `format_auto` to determine automatically the number of digits.
 * Added `title` argument to `h_grob_tbl_at_risk` and `annot_at_risk_title` argument to `g_km` and `h_km_layout` which allows user to add "Patients at Risk" title to Kaplan-Meier at risk annotation table. 
 * Added function `get_indents_from_stats` to format and return indent modifiers for a given set of statistics.
+* Added summarize function version of `count_occurrences` analyze function, `summarize_occurrences`.
 
 ### Enhancements
 * Refactored `tabulate_rsp_subgroups` to pass sanitation checks by preventing creation of degenerate subtables.

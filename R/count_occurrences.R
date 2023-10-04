@@ -121,6 +121,7 @@ s_count_occurrences <- function(df,
 #'
 #' @export
 a_count_occurrences <- function(df,
+                                labelstr = "",
                                 id = "USUBJID",
                                 denom = c("N_col", "n"),
                                 drop = TRUE,
@@ -194,7 +195,8 @@ a_count_occurrences <- function(df,
 #'     "MH1", "MH2", "MH1", "MH1", "MH1", "MH3",
 #'     "MH2", "MH2", "MH3", "MH1", "MH2", "MH4"
 #'   ),
-#'   ARM = rep(c("A", "B"), each = 6)
+#'   ARM = rep(c("A", "B"), each = 6),
+#'   SEX = c("F", "F", "M", "M", "M", "M", "F", "F", "F", "M", "M", "F")
 #' )
 #' df_adsl <- df %>%
 #'   select(USUBJID, ARM) %>%
@@ -251,6 +253,62 @@ count_occurrences <- function(lyt,
     show_labels = show_labels,
     table_names = table_names,
     nested = nested,
+    extra_args = extra_args
+  )
+}
+
+#' @describeIn count_occurrences Layout-creating function which can take content function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::summarize_row_groups()].
+#'
+#' @return
+#' * `summarize_occurrences()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted content rows
+#'   containing the statistics from `s_count_occurrences()` to the table layout.
+#'
+#' @examples
+#' # Layout creating function with custom format.
+#' basic_table() %>%
+#'   add_colcounts() %>%
+#'   split_rows_by("SEX", child_labels = "visible") %>%
+#'   summarize_occurrences(
+#'     var = "MHDECOD",
+#'     .formats = c("count_fraction" = "xx.xx (xx.xx%)")
+#'   ) %>%
+#'   build_table(df, alt_counts_df = df_adsl)
+#'
+#' @export
+summarize_occurrences <- function(lyt,
+                                  var,
+                                  riskdiff = FALSE,
+                                  na_str = NA_character_,
+                                  ...,
+                                  .stats = "count_fraction_fixed_dp",
+                                  .formats = NULL,
+                                  .indent_mods = NULL,
+                                  .labels = NULL) {
+  checkmate::assert_flag(riskdiff)
+
+  extra_args <- list(
+    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
+  )
+
+  if (isFALSE(riskdiff)) {
+    extra_args <- c(extra_args, list(...))
+  } else {
+    extra_args <- c(
+      extra_args,
+      list(
+        afun = list("s_count_occurrences" = a_count_occurrences),
+        s_args = list(...)
+      )
+    )
+  }
+
+  summarize_row_groups(
+    lyt = lyt,
+    var = var,
+    cfun = ifelse(isFALSE(riskdiff), a_count_occurrences, afun_riskdiff),
+    na_str = na_str,
     extra_args = extra_args
   )
 }

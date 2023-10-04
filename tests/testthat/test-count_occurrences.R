@@ -201,3 +201,75 @@ testthat::test_that("count_occurrences works as expected with risk difference co
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("summarize_occurrences functions as expected with valid input and default arguments", {
+  df <- data.frame(
+    USUBJID = as.character(c(1, 1, 2, 4, 4, 4, 6, 6, 6, 7, 7, 8)),
+    MHDECOD = factor(
+      c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3", "MH2", "MH2", "MH3", "MH1", "MH2", "MH4"),
+      levels = c("MH1", "MH2", "MH3", "MH4", "MHX")
+    ),
+    ARM = rep(c("A", "B"), each = 6),
+    SEX = c("F", "F", "M", "M", "M", "M", "F", "F", "F", "M", "M", "F")
+  )
+  df_adsl <- data.frame(
+    USUBJID = 1:9,
+    ARM = rep(c("A", "B"), c(5, 4))
+  )
+
+  lyt <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    split_rows_by("SEX", child_labels = "visible") %>%
+    add_colcounts() %>%
+    summarize_occurrences(var = "MHDECOD")
+
+  result <- lyt %>%
+    build_table(df, alt_counts_df = df_adsl)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("summarize_occurrences works as expected with risk difference column", {
+  # One statistic
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+    split_rows_by("SEX", child_labels = "visible") %>%
+    summarize_occurrences(
+      var = "BMRKR2",
+      riskdiff = TRUE
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # Multiple statistics, different id var
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+    split_rows_by("SEX", child_labels = "visible") %>%
+    summarize_occurrences(
+      var = "BMRKR2",
+      riskdiff = TRUE,
+      .stats = c("count", "count_fraction_fixed_dp", "fraction"),
+      id = "SITEID"
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # Nested column splits
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("STRATA1") %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+    split_rows_by("SEX", child_labels = "visible") %>%
+    summarize_occurrences(
+      var = "BMRKR2",
+      riskdiff = TRUE
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
