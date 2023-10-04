@@ -16,7 +16,7 @@ rtables::analyze_colvars(). It was designed principally for PK tables."><!-- mat
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.1</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,6 +57,7 @@ rtables::analyze_colvars(). It was designed principally for PK tables."><!-- mat
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1">v0.9.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.0">v0.9.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5">v0.8.5</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
@@ -112,10 +113,14 @@ This function sets the analysis methods as column labels and is a wrapper for
 <span>  row_labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  do_summarize_row_groups <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  split_col_vars <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  imp_rule <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  avalcat_var <span class="op">=</span> <span class="st">"AVALCAT1"</span>,</span>
+<span>  cache <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  na_level <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .formats <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .aligns <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -160,6 +165,26 @@ This option allows you to add multiple instances of this functions, also in a ne
 without adding more splits. This split must happen only one time on a single layout.</p></dd>
 
 
+<dt>imp_rule</dt>
+<dd><p>(<code>character</code>)<br> imputation rule setting. Defaults to <code>NULL</code> for no imputation rule. Can
+also be <code>"1/3"</code> to implement 1/3 imputation rule or <code>"1/2"</code> to implement 1/2 imputation rule. In order
+to use an imputation rule, the <code>avalcat_var</code> argument must be specified. See <code><a href="imputation_rule.html">imputation_rule()</a></code>
+for more details on imputation.</p></dd>
+
+
+<dt>avalcat_var</dt>
+<dd><p>(<code>character</code>)<br> if <code>imp_rule</code> is not <code>NULL</code>, name of variable that indicates whether a
+row in the data corresponds to an analysis value in category <code>"BLQ"</code>, <code>"LTR"</code>, <code>"&lt;PCLLOQ"</code>, or none of
+the above (defaults to <code>"AVALCAT1"</code>). Variable must be present in the data and should match the variable
+used to calculate the <code>n_blq</code> statistic (if included in <code>.stats</code>).</p></dd>
+
+
+<dt>cache</dt>
+<dd><p>(<code>flag</code>)<br> whether to store computed values in a temporary caching environment. This will
+speed up calculations in large tables, but should be set to <code>FALSE</code> if the same <code>rtable</code> layout is
+used for multiple tables with different data. Defaults to <code>FALSE</code>.</p></dd>
+
+
 <dt>.indent_mods</dt>
 <dd><p>(named <code>integer</code>)<br> indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.</p></dd>
@@ -176,7 +201,13 @@ underneath analyses, which is not allowed.</p></dd>
 
 
 <dt>.formats</dt>
-<dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics.</p></dd>
+<dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics. See Details in <code>analyze_vars</code> for more
+information on the <code>"auto"</code> setting.</p></dd>
+
+
+<dt>.aligns</dt>
+<dd><p>(<code>character</code>)<br> alignment for table contents (not including labels). When <code>NULL</code>, <code>"center"</code>
+is applied. See <code><a href="https://rdrr.io/pkg/formatters/man/list_formats.html" class="external-link">formatters::list_valid_aligns()</a></code> for a list of all currently supported alignments.</p></dd>
 
 </dl></div>
     <div class="section level2">

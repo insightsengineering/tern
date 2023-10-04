@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.1</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,6 +51,7 @@
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1">v0.9.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.0">v0.9.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5">v0.8.5</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
@@ -86,6 +87,33 @@
       <small>Source: <a href="https://github.com/insightsengineering/tern/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.9.1" id="tern-091">tern 0.9.1<a class="anchor" aria-label="anchor" href="#tern-091"></a></h2>
+<div class="section level4">
+<h4 id="new-features-0-9-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-9-1"></a></h4>
+<ul><li>Added <code>imputation_rule</code> function to apply imputation rule to data.</li>
+<li>Added new format function <code>format_sigfig</code> to allow for numeric value formatting by a specified number of significant figures.</li>
+<li>Added vectors containing default statistic formats and labels as <code>tern_default_formats</code> and <code>tern_default_labels</code>, respectively.</li>
+<li>Added function <code>get_stats</code> to return methods from given statistical method groups.</li>
+<li>Added function <code>get_formats_from_stats</code> to return formats and <code>get_labels_from_stats</code> to return labels for a given set of statistics.</li>
+<li>Added <code>"auto"</code> option for <code>.formats</code>. It uses <code>format_auto</code> to determine automatically the number of digits.</li>
+<li>Added <code>title</code> argument to <code>h_grob_tbl_at_risk</code> and <code>annot_at_risk_title</code> argument to <code>g_km</code> and <code>h_km_layout</code> which allows user to add “Patients at Risk” title to Kaplan-Meier at risk annotation table.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="enhancements-0-9-1">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-9-1"></a></h4>
+<ul><li>Refactored <code>tabulate_rsp_subgroups</code> to pass sanitation checks by preventing creation of degenerate subtables.</li>
+<li>Updated <code>analyze_vars_in_cols</code> to use caching, allow implementation of imputation rule via the <code>imp_rule</code> argument, and allow user to specify cell alignment via the <code>.aligns</code> argument.</li>
+<li>Updated <code>add_rowcounts</code> to allow addition of row counts from <code>alt_counts_df</code> using the <code>alt_counts</code> argument.</li>
+<li>Added <code>gp</code> argument to <code>g_forest</code> to control graphical parameters such as font size.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="miscellaneous-0-9-1">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-9-1"></a></h4>
+<ul><li>Grouped functions relating to valid method names and their default formats and labels into new source file <code>utils_defaults_handling.R</code>.</li>
+<li>Started deprecation of <code><a href="../reference/default_stats_formats_labels.html">summary_custom()</a></code> and <code><a href="../reference/analyze_variables.html">a_summary()</a></code> as a <code>S3</code> method.</li>
+<li>Renamed statistical method for <code>p-value</code> in the discrete case to <code>pval_counts</code>.</li>
+<li>Removed <code>a_summary_internal()</code> in favor of only one main <code><a href="../reference/analyze_variables.html">a_summary()</a></code>.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.9.0" id="tern-090">tern 0.9.0<a class="anchor" aria-label="anchor" href="#tern-090"></a></h2><p class="text-muted">CRAN release: 2023-09-01</p>
 <div class="section level4">
