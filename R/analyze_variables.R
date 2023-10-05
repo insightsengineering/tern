@@ -261,7 +261,8 @@ s_summary.numeric <- function(x,
 #'
 #' ## Basic usage:
 #' s_summary(factor(c("a", "a", "b", "c", "a")))
-#' # Empty factor returns NA-filled items.
+#'
+#' # Empty factor returns zero-filled items.
 #' s_summary(factor(levels = c("a", "b", "c")))
 #'
 #' ## Management of NA values.
@@ -382,6 +383,9 @@ s_summary.character <- function(x,
 #' ## Basic usage:
 #' s_summary(c(TRUE, FALSE, TRUE, TRUE))
 #'
+#' # Empty factor returns zero-filled items.
+#' s_summary(as.logical(c()))
+#'
 #' ## Management of NA values.
 #' x <- c(NA, TRUE, FALSE)
 #' s_summary(x, na.rm = TRUE)
@@ -410,7 +414,7 @@ s_summary.logical <- function(x,
     N_col = .N_col
   )
   y$count <- count
-  y$count_fraction <- c(count, ifelse(dn > 0, count / dn, NA))
+  y$count_fraction <- c(count, ifelse(dn > 0, count / dn, 0))
   y$n_blq <- 0L
   y
 }

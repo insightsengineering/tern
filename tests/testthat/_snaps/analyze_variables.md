@@ -866,6 +866,24 @@
       [1] 0
       
 
+# s_summary works with length 0 logical vectors
+
+    Code
+      res
+    Output
+      $n
+      [1] 0
+      
+      $count
+      [1] 0
+      
+      $count_fraction
+      [1] 0 0
+      
+      $n_blq
+      [1] 0
+      
+
 # s_summary works with logical vectors and by default removes NA
 
     Code

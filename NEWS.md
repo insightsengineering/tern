@@ -3,6 +3,9 @@
 ### Enhancements
 * Added formatting function `format_count_fraction_lt10` for formatting `count_fraction` with special consideration when count is less than 10.
 
+### Bug Fixes
+* Fixed bug in `s_summary.logical` causing `count_fraction` values to display as `NA` instead of `0` in tables when denominator is zero.
+
 # tern 0.9.1
 
 ### New Features
