@@ -10,6 +10,7 @@
 #'   * `x` (`character`)\cr name of x-axis variable.
 #'   * `y` (`character`)\cr name of y-axis variable.
 #'   * `strata` (`character`)\cr name of grouping variable, i.e. treatment arm. Can be `NA` to indicate lack of groups.
+#'   * `cohort_id` (`character`)\cr name of the variable that identifies group belonging. Only applies if `strata` is not NULL.
 #'   * `paramcd` (`character`)\cr name of the variable for parameter's code. Used for y-axis label and plot's subtitle.
 #'     Can be `NA` if `paramcd` is not to be added to the y-axis label or subtitle.
 #'   * `y_unit` (`character`)\cr name of variable with units of `y`. Used for y-axis label and plot's subtitle.
@@ -173,6 +174,7 @@ g_lineplot <- function(df,
     strata <- NULL # NULL if strata == NA or it is not in variables
   } else {
     strata <- variables[["strata"]]
+    cohort_id <- variables[["cohort_id"]]
   }
   checkmate::assert_flag(y_lab_add_paramcd, null.ok = TRUE)
   checkmate::assert_flag(subtitle_add_paramcd, null.ok = TRUE)
@@ -216,7 +218,7 @@ g_lineplot <- function(df,
   if (!is.null(strata) && !is.null(alt_counts_df)) {
     strata_N <- paste0(strata, "_N") # nolint
 
-    df_N <- as.data.frame(table(alt_counts_df[[strata]], exclude = c(NA, NaN, Inf))) # nolint
+    df_N <- stats::aggregate(USUBJID ~ eval(parse(text = strata)), data = alt_counts_df, FUN = function(x) length(unique(x))) # nolint
     colnames(df_N) <- c(strata, "N") # nolint
     df_N[[strata_N]] <- paste0(df_N[[strata]], " (N = ", df_N$N, ")") # nolint
 
@@ -471,6 +473,7 @@ h_format_row <- function(x, format, labels = NULL) {
 #' @param x (`character`)\cr x variable name.
 #' @param y (`character`)\cr y variable name.
 #' @param strata (`character` or `NA`)\cr strata variable name.
+#' @param cohort_id (`character` or `NA`)\cr variable to identify subjects in cohorts.
 #' @param paramcd (`character` or `NA`)\cr `paramcd` variable name.
 #' @param y_unit (`character` or `NA`)\cr `y_unit` variable name.
 #'
@@ -481,13 +484,14 @@ h_format_row <- function(x, format, labels = NULL) {
 #' control_lineplot_vars(strata = NA)
 #'
 #' @export
-control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", strata = "ARM", paramcd = "PARAMCD", y_unit = "AVALU") {
+control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", strata = "ARM", paramcd = "PARAMCD", y_unit = "AVALU", cohort_id = "USUBJID") {
   checkmate::assert_string(x)
   checkmate::assert_string(y)
   checkmate::assert_string(strata, na.ok = TRUE)
+  checkmate::assert_string(cohort_id, na.ok = TRUE)
   checkmate::assert_string(paramcd, na.ok = TRUE)
   checkmate::assert_string(y_unit, na.ok = TRUE)
 
-  variables <- c(x = x, y = y, strata = strata, paramcd = paramcd, y_unit = y_unit)
+  variables <- c(x = x, y = y, strata = strata, paramcd = paramcd, y_unit = y_unit, cohort_id = cohort_id)
   return(variables)
 }
