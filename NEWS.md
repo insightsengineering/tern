@@ -1,6 +1,10 @@
 # tern 0.9.1.9000
 
+### Enhancements
+* Added formatting function `format_count_fraction_lt10` for formatting `count_fraction` with special consideration when count is less than 10.
+
 # tern 0.9.1
+
 ### New Features
 * Added `imputation_rule` function to apply imputation rule to data.
 * Added new format function `format_sigfig` to allow for numeric value formatting by a specified number of significant figures.
@@ -15,7 +19,6 @@
 * Updated `analyze_vars_in_cols` to use caching, allow implementation of imputation rule via the `imp_rule` argument, and allow user to specify cell alignment via the `.aligns` argument.
 * Updated `add_rowcounts` to allow addition of row counts from `alt_counts_df` using the `alt_counts` argument.
 * Added `gp` argument to `g_forest` to control graphical parameters such as font size.
-* Added formatting function `format_count_fraction_lt10` for formatting `count_fraction` with special consideration when count is less than 10. 
 
 ### Miscellaneous
 * Grouped functions relating to valid method names and their default formats and labels into new source file `utils_defaults_handling.R`.
@@ -24,6 +27,7 @@
 * Removed `a_summary_internal()` in favor of only one main `a_summary()`.
 
 # tern 0.9.0
+
 ### New Features
 * Added `stat_propdiff_ci` function to calculate proportion/risk difference and CI.
 * Added risk difference column functionality via the `riskdiff` argument to functions `count_occurrences`, `count_occurrences_by_grade`, `count_patients_with_event`, `count_patients_with_flags`, `analyze_num_patients`, and `summarize_num_patients`.
