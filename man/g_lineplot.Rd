@@ -45,7 +45,8 @@ g_lineplot(
 \item \code{x} (\code{character})\cr name of x-axis variable.
 \item \code{y} (\code{character})\cr name of y-axis variable.
 \item \code{strata} (\code{character})\cr name of grouping variable, i.e. treatment arm. Can be \code{NA} to indicate lack of groups.
-\item \code{cohort_id} (\code{character})\cr name of the variable that identifies group belonging. Only applies if \code{strata} is not NULL.
+\item \code{cohort_id} (\code{character})\cr name of the variable that identifies group belonging. Only applies if \code{strata} is
+not NULL.
 \item \code{paramcd} (\code{character})\cr name of the variable for parameter's code. Used for y-axis label and plot's subtitle.
 Can be \code{NA} if \code{paramcd} is not to be added to the y-axis label or subtitle.
 \item \code{y_unit} (\code{character})\cr name of variable with units of \code{y}. Used for y-axis label and plot's subtitle.

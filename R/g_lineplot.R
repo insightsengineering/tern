@@ -10,7 +10,8 @@
 #'   * `x` (`character`)\cr name of x-axis variable.
 #'   * `y` (`character`)\cr name of y-axis variable.
 #'   * `strata` (`character`)\cr name of grouping variable, i.e. treatment arm. Can be `NA` to indicate lack of groups.
-#'   * `cohort_id` (`character`)\cr name of the variable that identifies group belonging. Only applies if `strata` is not NULL.
+#'   * `cohort_id` (`character`)\cr name of the variable that identifies group belonging. Only applies if `strata` is
+#'      not NULL.
 #'   * `paramcd` (`character`)\cr name of the variable for parameter's code. Used for y-axis label and plot's subtitle.
 #'     Can be `NA` if `paramcd` is not to be added to the y-axis label or subtitle.
 #'   * `y_unit` (`character`)\cr name of variable with units of `y`. Used for y-axis label and plot's subtitle.
@@ -484,7 +485,8 @@ h_format_row <- function(x, format, labels = NULL) {
 #' control_lineplot_vars(strata = NA)
 #'
 #' @export
-control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", strata = "ARM", paramcd = "PARAMCD", y_unit = "AVALU", cohort_id = "USUBJID") {
+control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", strata = "ARM", paramcd = "PARAMCD", y_unit = "AVALU",
+                                  cohort_id = "USUBJID") {
   checkmate::assert_string(x)
   checkmate::assert_string(y)
   checkmate::assert_string(strata, na.ok = TRUE)
