@@ -129,16 +129,6 @@
       Intervals are back-transformed from the log scale 
       
 
----
-
-    Code
-      res
-    Output
-                     rate asymp.LCL asymp.UCL            ARM
-      A: Drug X      3.07  2.836527   3.32269      A: Drug X
-      B: Placebo     3.07  2.836527   3.32269     B: Placebo
-      C: Combination 3.07  2.836527   3.32269 C: Combination
-
 # s_glm_count works with healthy input
 
     Code
@@ -148,12 +138,12 @@
       [1] 73
       
       $rate
-      [1] 3.486005
+      [1] 14.11838
       attr(,"label")
       [1] "Adjusted Rate"
       
       $rate_ci
-      [1] 3.047667 3.987387
+      [1] 11.81189 16.87525
       attr(,"label")
       [1] "95% CI"
       
@@ -182,12 +172,12 @@
       [1] 73
       
       $rate
-      [1] 3.486005
+      [1] 14.11838
       attr(,"label")
       [1] "Adjusted Rate"
       
       $rate_ci
-      [1] 3.047667 3.987387
+      [1] 11.81189 16.87525
       attr(,"label")
       [1] "95% CI"
       
