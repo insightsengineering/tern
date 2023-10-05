@@ -57,6 +57,7 @@ h_format_threshold(1000)
 Other formatting functions: 
 \code{\link{format_auto}()},
 \code{\link{format_count_fraction_fixed_dp}()},
+\code{\link{format_count_fraction_lt10}()},
 \code{\link{format_count_fraction}()},
 \code{\link{format_extreme_values_ci}()},
 \code{\link{format_extreme_values}()},
