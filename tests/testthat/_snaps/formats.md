@@ -68,6 +68,20 @@
     Output
       [1] "0"
 
+# format_count_fraction_lt10 works with healthy inputs
+
+    Code
+      res
+    Output
+      [1] "10 (100%)"  "19 (51.8%)" "76 (99.6%)"
+
+# format_count_fraction_lt10 works with count less than 10
+
+    Code
+      res
+    Output
+      [1] "9" "1" "7"
+
 # format_xx works with easy inputs
 
     Code
