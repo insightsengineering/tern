@@ -1,6 +1,10 @@
 # tern 0.9.1.9000
 
+### Enhancements
+* Added formatting function `format_count_fraction_lt10` for formatting `count_fraction` with special consideration when count is less than 10.
+
 # tern 0.9.1
+
 ### New Features
 * Added `imputation_rule` function to apply imputation rule to data.
 * Added new format function `format_sigfig` to allow for numeric value formatting by a specified number of significant figures.
@@ -23,6 +27,7 @@
 * Removed `a_summary_internal()` in favor of only one main `a_summary()`.
 
 # tern 0.9.0
+
 ### New Features
 * Added `stat_propdiff_ci` function to calculate proportion/risk difference and CI.
 * Added risk difference column functionality via the `riskdiff` argument to functions `count_occurrences`, `count_occurrences_by_grade`, `count_patients_with_event`, `count_patients_with_flags`, `analyze_num_patients`, and `summarize_num_patients`.
