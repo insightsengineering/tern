@@ -120,6 +120,7 @@ a_change_from_baseline <- make_afun(
 #' @export
 summarize_change <- function(lyt,
                              vars,
+                             na_str = NA_character_,
                              nested = TRUE,
                              ...,
                              table_names = vars,
@@ -139,6 +140,7 @@ summarize_change <- function(lyt,
     lyt,
     vars,
     afun = afun,
+    na_str = na_str,
     nested = nested,
     extra_args = list(...),
     table_names = table_names

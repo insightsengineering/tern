@@ -11,7 +11,8 @@ s_count_abnormal_by_baseline(
   df,
   .var,
   abnormal,
-  na_level = "<Missing>",
+  na_level = lifecycle::deprecated(),
+  na_str = "<Missing>",
   variables = list(id = "USUBJID", baseline = "BNRIND")
 )
 
@@ -19,7 +20,8 @@ a_count_abnormal_by_baseline(
   df,
   .var,
   abnormal,
-  na_level = "<Missing>",
+  na_level = lifecycle::deprecated(),
+  na_str = "<Missing>",
   variables = list(id = "USUBJID", baseline = "BNRIND")
 )
 
@@ -27,6 +29,7 @@ count_abnormal_by_baseline(
   lyt,
   var,
   abnormal,
+  na_str = "<Missing>",
   nested = TRUE,
   ...,
   table_names = abnormal,
@@ -44,7 +47,9 @@ by a statistics function.}
 
 \item{abnormal}{(\code{character})\cr identifying the abnormal range level(s) in \code{.var}.}
 
-\item{na_level}{(\code{string})\cr the explicit \code{na_level} argument you used in the pre-processing steps (maybe with
+\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
+
+\item{na_str}{(\code{string})\cr the explicit \code{na_level} argument you used in the pre-processing steps (maybe with
 \code{\link[=df_explicit_na]{df_explicit_na()}}). The default is \code{"<Missing>"}.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}

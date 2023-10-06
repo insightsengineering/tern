@@ -32,6 +32,7 @@ count_patients_with_flags(
   var_labels = var,
   show_labels = "hidden",
   riskdiff = FALSE,
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   table_names = paste0("tbl_flags_", var),
@@ -75,6 +76,8 @@ by a statistics function.}
 \item{riskdiff}{(\code{flag})\cr whether a risk difference column is present. When set to \code{TRUE}, \code{\link[=add_riskdiff]{add_riskdiff()}} must be
 used as \code{split_fun} in the prior column split of the table layout, specifying which columns should be compared.
 See \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} for details on risk difference calculation.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.

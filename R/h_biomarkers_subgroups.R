@@ -16,6 +16,7 @@
 h_tab_one_biomarker <- function(df,
                                 afuns,
                                 colvars,
+                                na_str = NA_character_,
                                 .indent_mods = 0L) {
   lyt <- basic_table()
 
@@ -32,6 +33,7 @@ h_tab_one_biomarker <- function(df,
     lyt = lyt,
     var = "var_label",
     cfun = afuns,
+    na_str = na_str,
     indent_mod = .indent_mods
   )
 
@@ -67,7 +69,8 @@ h_tab_one_biomarker <- function(df,
     lyt <- summarize_row_groups(
       lyt = lyt,
       cfun = afuns,
-      var = "subgroup"
+      var = "subgroup",
+      na_str = na_str
     )
   }
   build_table(lyt, df = df)
