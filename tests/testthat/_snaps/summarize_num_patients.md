@@ -16,7 +16,7 @@
       $unique_count
       [1] 3
       attr(,"label")
-      [1] " (n)"
+      [1] "(n)"
       
 
 # s_num_patients works as expected with empty input
@@ -37,7 +37,7 @@
       $unique_count
       [1] 0
       attr(,"label")
-      [1] " (n)"
+      [1] "(n)"
       
 
 # s_num_patients works as expected with unique_count_suffix = FALSE
@@ -79,7 +79,7 @@
       $unique_count
       [1] 3
       attr(,"label")
-      [1] " (n)"
+      [1] "(n)"
       
 
 # summarize_num_patients works as expected with healthy input
@@ -119,10 +119,10 @@
     Code
       res
     Output
-               A       B  
-             (N=5)   (N=4)
-      ————————————————————
-      (n)      3       3  
+              A       B  
+            (N=5)   (N=4)
+      ———————————————————
+      (n)     3       3  
 
 # s_num_patients count_by works as expected with healthy input
 
@@ -142,7 +142,7 @@
       $unique_count
       [1] 3
       attr(,"label")
-      [1] " (n)"
+      [1] "(n)"
       
 
 # s_num_patients count_by with missing works as expected with healthy input
@@ -163,7 +163,7 @@
       $unique_count
       [1] 3
       attr(,"label")
-      [1] " (n)"
+      [1] "(n)"
       
 
 # s_num_patients count_by with missing case 2 works as expected with healthy input
@@ -184,7 +184,7 @@
       $unique_count
       [1] 3
       attr(,"label")
-      [1] " (n)"
+      [1] "(n)"
       
 
 # s_num_patients_content with count_by works as expected with healthy input
@@ -205,7 +205,7 @@
       $unique_count
       [1] 3
       attr(,"label")
-      [1] " (n)"
+      [1] "(n)"
       
 
 # s_num_patients_content with count_by case 2 works as expected with healthy input
@@ -226,7 +226,7 @@
       $unique_count
       [1] 3
       attr(,"label")
-      [1] " (n)"
+      [1] "(n)"
       
 
 # s_num_patients_content with count_by trivial cases, identical to without count_by
@@ -247,7 +247,7 @@
       $unique_count
       [1] 4
       attr(,"label")
-      [1] " (n)"
+      [1] "(n)"
       
 
 # summarize_num_patients with count_by works as expected with healthy input
@@ -287,10 +287,10 @@
     Code
       res
     Output
-               A       B  
-             (N=5)   (N=4)
-      ————————————————————
-      (n)      3       3  
+              A       B  
+            (N=5)   (N=4)
+      ———————————————————
+      (n)     3       3  
 
 # summarize_num_patients with count_by different combinations works as expected with healthy input
 

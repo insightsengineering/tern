@@ -448,7 +448,8 @@ summarize_coxreg <- function(lyt,
       lyt <- lyt %>%
         analyze_colvars(
           afun = a_coxreg,
-          extra_args = list(variables = variables, at = at, control = control, multivar = multivar, labelstr = "")
+          extra_args = list(variables = variables, at = at, control = control, multivar = multivar, labelstr = ""),
+          indent_mod = if (!"arm" %in% names(variables) || multivar) 0L else -1L
         )
     }
   }
