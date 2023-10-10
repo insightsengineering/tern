@@ -1388,7 +1388,7 @@
       Median      NA      3.5         5.5   
       Min - Max   NA   3.0 - 4.0   5.0 - 6.0
 
-# analyze_vars 'na_level' argument works as expected
+# analyze_vars 'na_str' argument works as expected
 
     Code
       res

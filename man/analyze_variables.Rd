@@ -68,7 +68,8 @@ a_summary(
   .labels = NULL,
   .indent_mods = NULL,
   na.rm = TRUE,
-  na_level = NA_character_,
+  na_level = lifecycle::deprecated(),
+  na_str = NA_character_,
   ...
 )
 
@@ -76,10 +77,11 @@ analyze_vars(
   lyt,
   vars,
   var_labels = vars,
+  na_level = lifecycle::deprecated(),
+  na_str = NA_character_,
   nested = TRUE,
   ...,
   na.rm = TRUE,
-  na_level = NA_character_,
   show_labels = "default",
   table_names = vars,
   section_div = NA_character_,
@@ -147,7 +149,9 @@ information on the \code{"auto"} setting.}
 should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
 for that statistic's row label.}
 
-\item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 

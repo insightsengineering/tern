@@ -356,6 +356,7 @@ a_count_abnormal_lab_worsen_by_baseline <- make_afun( # nolint
 #' @export
 count_abnormal_lab_worsen_by_baseline <- function(lyt, # nolint
                                                   var,
+                                                  na_str = NA_character_,
                                                   nested = TRUE,
                                                   ...,
                                                   table_names = NULL,
@@ -377,6 +378,7 @@ count_abnormal_lab_worsen_by_baseline <- function(lyt, # nolint
     lyt = lyt,
     vars = var,
     afun = afun,
+    na_str = na_str,
     nested = nested,
     extra_args = list(...),
     show_labels = "hidden"
