@@ -1,10 +1,11 @@
-# tern 0.9.1.9002
+# tern 0.9.1.9003
 
 ### New Features
 * Added the `na_str` argument to `analyze` & `summarize_row_groups` wrapper functions `count_abnormal`, `count_abnormal_by_baseline`, `count_abnormal_by_marked`, `count_abnormal_by_worst_grade`, `count_abnormal_lab_worsen_by_baseline`, `count_cumulative`, `count_missed_doses`, `count_occurrences`, `count_occurrences_by_grade`, `summarize_occurrences_by_grade`, `summarize_patients_events_in_cols`, `count_patients_with_event`, `count_patients_with_flags`, `count_values`, `estimate_multinomial_response`, `estimate_proportion`, `h_tab_one_biomarker`, `estimate_incidence_rate`, `logistic_summary_by_flag`, `estimate_odds_ratio`, `estimate_proportion_diff`, `test_proportion_diff`, `summarize_ancova`, `summarize_change`, `summarize_glm_count`, `summarize_num_patients`, `analyze_num_patients`, `summarize_patients_exposure_in_cols`, `coxph_pairwise`, `tabulate_survival_subgroups`, `surv_time`, and `surv_timepoint`.
 
 ### Enhancements
 * Added formatting function `format_count_fraction_lt10` for formatting `count_fraction` with special consideration when count is less than 10.
+* Updated `s_summary.logical` output for `count_fraction` when denominator is zero to display as `NA` instead of `0` in tables.
 
 ### Miscellaneous
 * Began deprecation of `na_level` argument in `s_count_abnormal_by_baseline`, `a_summary`, `analyze_vars`, `analyze_vars_in_cols`, `compare_vars`, `h_map_for_count_abnormal`, `h_stack_by_baskets`, `summarize_colvars`, `a_coxreg`, and `summarize_coxreg` and replaced it with the `na_str` argument.

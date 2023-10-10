@@ -127,6 +127,13 @@ testthat::test_that("s_summary works with logical vectors", {
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("s_summary works with length 0 logical vectors", {
+  result <- s_summary(as.logical(c()))
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("s_summary works with logical vectors and by default removes NA", {
   x <- c(TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, NA, NA)
 

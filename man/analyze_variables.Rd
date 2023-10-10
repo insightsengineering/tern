@@ -339,7 +339,8 @@ lapply(X, function(x) s_summary(x$x))
 
 ## Basic usage:
 s_summary(factor(c("a", "a", "b", "c", "a")))
-# Empty factor returns NA-filled items.
+
+# Empty factor returns zero-filled items.
 s_summary(factor(levels = c("a", "b", "c")))
 
 ## Management of NA values.
@@ -363,6 +364,9 @@ s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE, verbose = F
 
 ## Basic usage:
 s_summary(c(TRUE, FALSE, TRUE, TRUE))
+
+# Empty factor returns zero-filled items.
+s_summary(as.logical(c()))
 
 ## Management of NA values.
 x <- c(NA, TRUE, FALSE)
