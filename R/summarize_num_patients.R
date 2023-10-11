@@ -54,7 +54,9 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_su
   out <- list(
     unique = formatters::with_label(c(count1, ifelse(count1 == 0 && .N_col == 0, 0, count1 / .N_col)), labelstr),
     nonunique = formatters::with_label(count2, labelstr),
-    unique_count = formatters::with_label(count1, ifelse(unique_count_suffix, paste(labelstr, "(n)"), labelstr))
+    unique_count = formatters::with_label(
+      count1, ifelse(unique_count_suffix, paste0(labelstr, if (nzchar(labelstr)) " ", "(n)"), labelstr)
+    )
   )
 
   out
