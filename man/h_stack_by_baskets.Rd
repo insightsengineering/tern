@@ -10,7 +10,8 @@ h_stack_by_baskets(
   smq_varlabel = "Standardized MedDRA Query",
   keys = c("STUDYID", "USUBJID", "ASTDTM", "AEDECOD", "AESEQ"),
   aag_summary = NULL,
-  na_level = "<Missing>"
+  na_level = lifecycle::deprecated(),
+  na_str = "<Missing>"
 )
 }
 \arguments{
@@ -26,7 +27,9 @@ h_stack_by_baskets(
 variable. This is useful when there are some levels of interest that are not observed in the \code{df} dataset.
 The two columns of this dataset should be named \code{basket} and \code{basket_name}.}
 
-\item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 }
 \value{
 \code{data.frame} with variables in \code{keys} taken from \code{df} and new variable \code{SMQ} containing
@@ -37,7 +40,7 @@ records belonging to the baskets selected via the \code{baskets} argument.
 
 Helper Function to create a new \code{SMQ} variable in \code{ADAE} that consists of all adverse events belonging to
 selected Standardized/Customized queries. The new dataset will only contain records of the adverse events
-belonging to any of the selected baskets. Remember that \code{na_level} must match the needed pre-processing
+belonging to any of the selected baskets. Remember that \code{na_str} must match the needed pre-processing
 done with \code{\link[=df_explicit_na]{df_explicit_na()}} to have the desired output.
 }
 \examples{

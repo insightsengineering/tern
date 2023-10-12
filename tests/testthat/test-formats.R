@@ -73,6 +73,30 @@ testthat::test_that("format_count_fraction_fixed_dp works with count of 0", {
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("format_count_fraction_lt10 works with healthy inputs", {
+  x <- list(c(10, 1), c(19, 0.5183), c(76, 0.996))
+
+  result <- sapply(x, format_count_fraction_lt10)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("format_count_fraction_lt10 works with count less than 10", {
+  x <- list(c(9, 1), c(1, 0.5), c(7, 0.99))
+
+  result <- sapply(x, format_count_fraction_lt10)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("format_count_fraction_lt10 works with NA input", {
+  result <- format_count_fraction_lt10(NA)
+  testthat::expect_identical(result, "NA")
+})
+
+
 testthat::test_that("format_fraction fails with bad inputs", {
   x <- list(
     c(num = c(1L, 2L, 3L), denom = 5L),

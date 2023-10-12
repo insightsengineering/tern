@@ -121,7 +121,7 @@
         M                            26.00 (44.83%)   31.00 (44.93%)   33.00 (45.21%)
         p-value (chi-squared test)                        1.0000           1.0000    
 
-# compare_vars 'na_level' argument works as expected
+# compare_vars 'na_str' argument works as expected
 
     Code
       res

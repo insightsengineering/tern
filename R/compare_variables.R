@@ -368,10 +368,11 @@ create_afun_compare <- function(.stats = NULL,
 compare_vars <- function(lyt,
                          vars,
                          var_labels = vars,
+                         na_level = lifecycle::deprecated(),
+                         na_str = NA_character_,
                          nested = TRUE,
                          ...,
                          na.rm = TRUE, # nolint
-                         na_level = NA_character_,
                          show_labels = "default",
                          table_names = vars,
                          section_div = NA_character_,
@@ -379,7 +380,12 @@ compare_vars <- function(lyt,
                          .formats = NULL,
                          .labels = NULL,
                          .indent_mods = NULL) {
-  extra_args <- list(.stats = .stats, na.rm = na.rm, na_level = na_level, compare = TRUE, ...)
+  if (lifecycle::is_present(na_level)) {
+    lifecycle::deprecate_warn("0.9.1", "compare_vars(na_level)", "compare_vars(na_str)")
+    na_str <- na_level
+  }
+
+  extra_args <- list(.stats = .stats, na.rm = na.rm, na_str = na_str, compare = TRUE, ...)
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
@@ -389,6 +395,7 @@ compare_vars <- function(lyt,
     vars = vars,
     var_labels = var_labels,
     afun = a_summary,
+    na_str = na_str,
     nested = nested,
     extra_args = extra_args,
     inclNAs = TRUE,

@@ -7,7 +7,8 @@
 summarize_colvars(
   lyt,
   ...,
-  na_level = NA_character_,
+  na_level = lifecycle::deprecated(),
+  na_str = NA_character_,
   .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
   .formats = NULL,
   .labels = NULL,
@@ -19,7 +20,9 @@ summarize_colvars(
 
 \item{...}{arguments passed to \code{s_summary()}.}
 
-\item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
