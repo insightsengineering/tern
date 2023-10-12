@@ -21,3 +21,18 @@ testthat::test_that("g_lineplot works with custom settings and statistics table"
     caption = "caption"
   ))
 })
+
+testthat::test_that("g_lineplot works with cohort_id specified", {
+  testthat::expect_silent(g_lineplot(
+    adlb,
+    adsl,
+    strata = control_lineplot_vars(strata = "ARM", cohort_id = "USUBJID"),
+    mid = "median",
+    table = c("n", "mean", "mean_ci"),
+    control = control_analyze_vars(conf_level = 0.80),
+    title = "Plot of Mean and 80% Confidence Limits by Visit",
+    y_lab = "Lab Test",
+    subtitle = "Laboratory Test:",
+    caption = "caption"
+  ))
+})
