@@ -1217,7 +1217,7 @@ h_grob_median_surv <- function(fit_km,
                                ttheme = gridExtra::ttheme_default()) {
   data <- h_tbl_median_surv(fit_km, armval = armval)
 
-  width <- grid::convertUnit(width, "in")
+  width <- grid::convertUnit(grid::unit(as.numeric(width), grid::unitType(width)), "in")
   height <- width * (nrow(data) + 1) / 12
 
   w <- paste(" ", c(
@@ -1425,7 +1425,7 @@ h_grob_coxph <- function(...,
                          )) {
   data <- h_tbl_coxph_pairwise(...)
 
-  width <- grid::convertUnit(width, "in")
+  width <- grid::convertUnit(grid::unit(as.numeric(width), grid::unitType(width)), "in")
   height <- width * (nrow(data) + 1) / 12
 
   w <- paste("    ", c(
