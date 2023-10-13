@@ -23,7 +23,7 @@ testthat::test_that("g_lineplot works with custom settings and statistics table"
 })
 
 testthat::test_that("g_lineplot works with cohort_id specified", {
-  testthat::expect_silent(g_lineplot(
+  g_lineplot_cohorts <- g_lineplot(
     adlb,
     adsl,
     strata = control_lineplot_vars(strata = "ARM", cohort_id = "USUBJID"),
@@ -34,5 +34,6 @@ testthat::test_that("g_lineplot works with cohort_id specified", {
     y_lab = "Lab Test",
     subtitle = "Laboratory Test:",
     caption = "caption"
-  ))
+  )
+  vdiffr::expect_doppelganger(title = "g_lineplot_cohorts", fig = g_lineplot_cohorts)
 })
