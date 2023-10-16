@@ -7,7 +7,6 @@ testthat::test_that("g_lineplot works with default settings", {
   g_lineplot <- g_lineplot(adlb, adsl)
 
   vdiffr::expect_doppelganger(title = "g_lineplot", fig = g_lineplot)
-
 })
 
 testthat::test_that("g_lineplot works with custom settings and statistics table", {
@@ -25,5 +24,4 @@ testthat::test_that("g_lineplot works with custom settings and statistics table"
   )
 
   vdiffr::expect_doppelganger(title = "g_lineplot_w_stats", fig = g_lineplot_w_stats)
-
 })
