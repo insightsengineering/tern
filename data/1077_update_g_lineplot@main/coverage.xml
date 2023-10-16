@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.946637654129106" branch-rate="0" lines-covered="9136" lines-valid="9651" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-10-13 19:59:16.263621">
+<coverage line-rate="0.946844886540255" branch-rate="0" lines-covered="9138" lines-valid="9651" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-10-16 19:14:45.357642">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
   <packages>
-    <package name="tern" line-rate="0.946637654129106" branch-rate="0" complexity="0">
+    <package name="tern" line-rate="0.946844886540255" branch-rate="0" complexity="0">
       <classes>
         <class name="abnormal_by_baseline.R" filename="R/abnormal_by_baseline.R" line-rate="0.970149253731343" branch-rate="0" complexity="0">
           <methods>
@@ -7929,9 +7929,9 @@
             <line number="554" hits="21" branch="false"/>
           </lines>
         </class>
-        <class name="g_forest.R" filename="R/g_forest.R" line-rate="0.947488584474886" branch-rate="0" complexity="0">
+        <class name="g_forest.R" filename="R/g_forest.R" line-rate="0.952054794520548" branch-rate="0" complexity="0">
           <methods>
-            <method name="g_forest" signature="" line-rate="0.957746478873239" branch-rate="0" complexity="0">
+            <method name="g_forest" signature="" line-rate="0.985915492957746" branch-rate="0" complexity="0">
               <lines>
                 <line number="165" hits="2" branch="false"/>
                 <line number="167" hits="2" branch="false"/>
@@ -8001,8 +8001,8 @@
                 <line number="247" hits="2" branch="false"/>
                 <line number="248" hits="2" branch="false"/>
                 <line number="250" hits="2" branch="false"/>
-                <line number="251" hits="0" branch="false"/>
-                <line number="252" hits="0" branch="false"/>
+                <line number="251" hits="2" branch="false"/>
+                <line number="252" hits="2" branch="false"/>
                 <line number="255" hits="2" branch="false"/>
               </lines>
             </method>
@@ -8467,8 +8467,8 @@
             <line number="247" hits="2" branch="false"/>
             <line number="248" hits="2" branch="false"/>
             <line number="250" hits="2" branch="false"/>
-            <line number="251" hits="0" branch="false"/>
-            <line number="252" hits="0" branch="false"/>
+            <line number="251" hits="2" branch="false"/>
+            <line number="252" hits="2" branch="false"/>
             <line number="255" hits="2" branch="false"/>
             <line number="317" hits="2" branch="false"/>
             <line number="318" hits="2" branch="false"/>
@@ -13603,8 +13603,8 @@
                 <line number="466" hits="2" branch="false"/>
                 <line number="467" hits="2" branch="false"/>
                 <line number="468" hits="2" branch="false"/>
-                <line number="471" hits="5" branch="false"/>
-                <line number="472" hits="5" branch="false"/>
+                <line number="471" hits="8" branch="false"/>
+                <line number="472" hits="8" branch="false"/>
                 <line number="473" hits="8" branch="false"/>
               </lines>
             </method>
@@ -14334,8 +14334,8 @@
             <line number="466" hits="2" branch="false"/>
             <line number="467" hits="2" branch="false"/>
             <line number="468" hits="2" branch="false"/>
-            <line number="471" hits="5" branch="false"/>
-            <line number="472" hits="5" branch="false"/>
+            <line number="471" hits="8" branch="false"/>
+            <line number="472" hits="8" branch="false"/>
             <line number="473" hits="8" branch="false"/>
             <line number="519" hits="15" branch="false"/>
             <line number="521" hits="15" branch="false"/>
