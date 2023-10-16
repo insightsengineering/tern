@@ -45,4 +45,3 @@ testthat::test_that("g_forest works with custom arguments", {
 
   vdiffr::expect_doppelganger(title = "g_forest_custom", fig = g_forest_custom)
 })
-
