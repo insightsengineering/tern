@@ -151,3 +151,19 @@ testthat::test_that("summarize_ancova works as expected with ref_group_last spli
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("level_order works for integerish and characters", {
+  tbl_int <- basic_table() %>%
+    split_cols_by("Species", split_fun = level_order(c(1, 3, 2))) %>%
+    analyze("Sepal.Length") %>%
+    build_table(iris)
+
+  # character vector
+  new_order <- level_order(levels(iris$Species)[c(1, 3, 2)])
+  tbl_chr <- basic_table() %>%
+    split_cols_by("Species", ref_group = "virginica", split_fun = new_order) %>%
+    analyze("Sepal.Length") %>%
+    build_table(iris)
+
+  testthat::expect_identical(toString(tbl_int), toString(tbl_chr))
+})

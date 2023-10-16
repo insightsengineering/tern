@@ -1,6 +1,7 @@
 #' Custom Split Functions
 #'
-#' @description
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Collection of useful functions that are expanding on the core list of functions
 #' provided by `rtables`. See `?rtables::custom_split_funs` and [rtables::make_split_fun()]
 #' for more information on how to make a custom split function. All these functions
@@ -98,7 +99,6 @@ ref_group_last <- make_split_fun(
 keep_level_order <- make_split_fun(
   post = list(
     function(splret, spl, fulldf, ...) {
-      # browser() if you enter here the order of splret seems already correct
       ord <- order(names(splret$values))
       make_split_result(splret$values[ord],
                         splret$datasplit[ord],
@@ -106,3 +106,47 @@ keep_level_order <- make_split_fun(
     }
   )
 )
+#' @describeIn utils_split_funs split function to change level order based on a integerish
+#'   vector or a character vector that represent the split variable's factor levels.
+#'
+#' @param order (`character` or `integer`)\cr vector of ordering indexes for the split facets.
+#'
+#' @return
+#' * `keep_level_order` returns an utility function that changes the original levels' order,
+#'   depending on input `order` and split levels.
+#'
+#' @examples
+#' # level_order --------
+#' # Even if default would bring ref_group first, the original order puts it last
+#' basic_table() %>%
+#'   split_cols_by("Species", split_fun = level_order(c(1, 3, 2))) %>%
+#'   analyze("Sepal.Length") %>%
+#'   build_table(iris)
+#'
+#' # character vector
+#' new_order <- level_order(levels(iris$Species)[c(1, 3, 2)])
+#' basic_table() %>%
+#'   split_cols_by("Species", ref_group = "virginica", split_fun = new_order) %>%
+#'   analyze("Sepal.Length") %>%
+#'   build_table(iris)
+#'
+#' @export
+level_order <- function(order) {
+  make_split_fun(
+    post = list(
+      function(splret, spl, fulldf, ...) {
+        if (checkmate::test_integerish(order)) {
+          checkmate::assert_integerish(order, lower = 1, upper = length(splret$values))
+          ord <- order
+        } else {
+          checkmate::assert_character(order, len = length(splret$values))
+          checkmate::assert_set_equal(order, names(splret$values), ordered = FALSE)
+          ord <- match(order, names(splret$values))
+        }
+        make_split_result(splret$values[ord],
+                          splret$datasplit[ord],
+                          splret$labels[ord])
+      }
+    )
+  )
+}

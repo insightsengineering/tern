@@ -4,6 +4,7 @@
 \alias{utils_split_funs}
 \alias{ref_group_last}
 \alias{keep_level_order}
+\alias{level_order}
 \title{Custom Split Functions}
 \usage{
 ref_group_last(df, spl, vals = NULL, labels = NULL, trim = FALSE, .spl_context)
@@ -16,6 +17,11 @@ keep_level_order(
   trim = FALSE,
   .spl_context
 )
+
+level_order(order)
+}
+\arguments{
+\item{order}{(\code{character} or \code{integer})\cr vector of ordering indexes for the split facets.}
 }
 \value{
 \itemize{
@@ -27,8 +33,15 @@ as last and needs to be assigned to \code{split_fun}.
 \item \code{keep_level_order} returns an utility function that keeps the original levels'.
 It needs to be assigned to \code{split_fun}.
 }
+
+\itemize{
+\item \code{keep_level_order} returns an utility function that changes the original levels' order,
+depending on input \code{order} and split levels.
+}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Collection of useful functions that are expanding on the core list of functions
 provided by \code{rtables}. See \code{?rtables::custom_split_funs} and \code{\link[rtables:make_split_fun]{rtables::make_split_fun()}}
 for more information on how to make a custom split function. All these functions
@@ -42,6 +55,9 @@ during post-processing stage.
 
 \item \code{keep_level_order()}: split function to keep original order of factor
 levels in the split.
+
+\item \code{level_order()}: split function to change level order based on a integerish
+vector or a character vector that represent the split variable's factor levels.
 
 }}
 \examples{
@@ -77,7 +93,26 @@ basic_table() \%>\%
   ) \%>\%
   build_table(df = adtte_f)
 
-# keep_level_order
+# keep_level_order --------
+# Even if default would bring ref_group first, the original order puts it last
+basic_table() \%>\%
+  split_cols_by("Species", ref_group = "virginica", split_fun = keep_level_order) \%>\%
+  analyze("Sepal.Length") \%>\%
+  build_table(iris)
+
+# level_order --------
+# Even if default would bring ref_group first, the original order puts it last
+basic_table() \%>\%
+  split_cols_by("Species", split_fun = level_order(c(1, 3, 2))) \%>\%
+  analyze("Sepal.Length") \%>\%
+  build_table(iris)
+
+# character vector
+new_order <- level_order(levels(iris$Species)[c(1, 3, 2)])
+basic_table() \%>\%
+  split_cols_by("Species", ref_group = "virginica", split_fun = new_order) \%>\%
+  analyze("Sepal.Length") \%>\%
+  build_table(iris)
 
 }
 \seealso{
