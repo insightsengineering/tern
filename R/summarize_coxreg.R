@@ -146,7 +146,7 @@ s_coxreg <- function(model_df, .stats, .which_vars = "all", .var_nms = NULL) {
 #'
 #' @param eff (`flag`)\cr whether treatment effect should be calculated. Defaults to `FALSE`.
 #' @param var_main (`flag`)\cr whether main effects should be calculated. Defaults to `FALSE`.
-#' @param na_level (`string`)\cr custom string to replace all `NA` values with. Defaults to `""`.
+#' @param na_str (`string`)\cr custom string to replace all `NA` values with. Defaults to `""`.
 #' @param cache_env (`environment`)\cr an environment object used to cache the regression model in order to
 #'   avoid repeatedly fitting the same model for every row in the table. Defaults to `NULL` (no caching).
 #' @param varlabels (`list`)\cr a named list corresponds to the names of variables found in data, passed
@@ -189,8 +189,14 @@ a_coxreg <- function(df,
                      .stats,
                      .formats,
                      .indent_mods = NULL,
-                     na_level = "",
+                     na_level = lifecycle::deprecated(),
+                     na_str = "",
                      cache_env = NULL) {
+  if (lifecycle::is_present(na_level)) {
+    lifecycle::deprecate_warn("0.9.1", "a_coxreg(na_level)", "a_coxreg(na_str)")
+    na_str <- na_level
+  }
+
   cov_no_arm <- !multivar && !"arm" %in% names(variables) && control$interaction # special case: univar no arm
   cov <- tail(.spl_context$value, 1) # current variable/covariate
   var_lbl <- formatters::var_labels(df)[cov] # check for df labels
@@ -245,7 +251,7 @@ a_coxreg <- function(df,
   var_names <- if (all(grepl("\\(reference = ", names(var_vals))) && labelstr != tail(.spl_context$value, 1)) {
     paste(c(labelstr, tail(strsplit(names(var_vals), " ")[[1]], 3)), collapse = " ") # "reference" main effect labels
   } else if ((!multivar && !eff && !(!var_main && control$interaction) && nchar(labelstr) > 0) ||
-    (multivar && var_main && is.numeric(df[[cov]]))) {
+    (multivar && var_main && is.numeric(df[[cov]]))) { # nolint
     labelstr # other main effect labels
   } else if (multivar && !eff && !var_main && is.numeric(df[[cov]])) {
     "All" # multivar numeric covariate
@@ -255,7 +261,7 @@ a_coxreg <- function(df,
   in_rows(
     .list = var_vals, .names = var_names, .labels = var_names, .indent_mods = .indent_mods,
     .formats = stats::setNames(rep(.formats, length(var_names)), var_names),
-    .format_na_strs = stats::setNames(rep(na_level, length(var_names)), var_names)
+    .format_na_strs = stats::setNames(rep(na_str, length(var_names)), var_names)
   )
 }
 
@@ -327,8 +333,14 @@ summarize_coxreg <- function(lyt,
                              ),
                              varlabels = NULL,
                              .indent_mods = NULL,
-                             na_level = "",
+                             na_level = lifecycle::deprecated(),
+                             na_str = "",
                              .section_div = NA_character_) {
+  if (lifecycle::is_present(na_level)) {
+    lifecycle::deprecate_warn("0.9.1", "summarize_coxreg(na_level)", "summarize_coxreg(na_str)")
+    na_str <- na_level
+  }
+
   if (multivar && control$interaction) {
     warning(paste(
       "Interactions are not available for multivariate cox regression using summarize_coxreg.",
@@ -359,7 +371,7 @@ summarize_coxreg <- function(lyt,
       vars = rep(common_var, length(.stats)),
       varlabels = stat_labels,
       extra_args = list(
-        .stats = .stats, .formats = .formats, .indent_mods = .indent_mods, na_level = rep(na_level, length(.stats)),
+        .stats = .stats, .formats = .formats, .indent_mods = .indent_mods, na_str = rep(na_str, length(.stats)),
         cache_env = replicate(length(.stats), list(env))
       )
     )
@@ -386,6 +398,7 @@ summarize_coxreg <- function(lyt,
       lyt <- lyt %>%
         summarize_row_groups(
           cfun = a_coxreg,
+          na_str = na_str,
           extra_args = list(
             variables = variables, control = control, multivar = multivar, eff = TRUE, var_main = multivar
           )
@@ -411,6 +424,7 @@ summarize_coxreg <- function(lyt,
       lyt <- lyt %>%
         summarize_row_groups(
           cfun = a_coxreg,
+          na_str = na_str,
           extra_args = list(
             variables = variables, at = at, control = control, multivar = multivar,
             var_main = if (multivar) multivar else control$interaction
@@ -434,7 +448,8 @@ summarize_coxreg <- function(lyt,
       lyt <- lyt %>%
         analyze_colvars(
           afun = a_coxreg,
-          extra_args = list(variables = variables, at = at, control = control, multivar = multivar, labelstr = "")
+          extra_args = list(variables = variables, at = at, control = control, multivar = multivar, labelstr = ""),
+          indent_mod = if (!"arm" %in% names(variables) || multivar) 0L else -1L
         )
     }
   }

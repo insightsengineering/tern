@@ -9,22 +9,22 @@
 #' @param .all_col_counts (`vector` of `integer`)\cr each value represents a global count for a column. Values are
 #'   taken from `alt_counts_df` if specified (see [rtables::build_table()]).
 #' @param .df_row (`data.frame`)\cr data frame across all of the columns for the given row split.
+#' @param .formats (named `character` or `list`)\cr formats for the statistics. See Details in `analyze_vars` for more
+#'   information on the `"auto"` setting.
 #' @param .in_ref_col (`logical`)\cr `TRUE` when working with the reference level, `FALSE` otherwise.
+#' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+#'   unmodified default behavior. Can be negative.
+#' @param .labels (named `character`)\cr labels for the statistics (without indent).
 #' @param .N_col (`integer`)\cr column-wise N (column count) for the full column being analyzed that is typically
 #'   passed by `rtables`.
 #' @param .N_row (`integer`)\cr row-wise N (row group count) for the group of observations being analyzed
 #'   (i.e. with no column-based subsetting) that is typically passed by `rtables`.
 #' @param .ref_group (`data.frame` or `vector`)\cr the data corresponding to the reference group.
-#' @param .stats (`character`)\cr statistics to select for the table.
-#' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
-#'   unmodified default behavior. Can be negative.
-#' @param .formats (named `character` or `list`)\cr formats for the statistics. See Details in `analyze_vars` for more
-#'   information on the `"auto"` setting.
-#' @param .labels (named `character`)\cr labels for the statistics (without indent).
-#' @param .var (`string`)\cr single variable name that is passed by `rtables` when requested
-#'   by a statistics function.
 #' @param .spl_context (`data.frame`)\cr gives information about ancestor split states
 #'   that is passed by `rtables`.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#' @param .var (`string`)\cr single variable name that is passed by `rtables` when requested
+#'   by a statistics function.
 #' @param add_total_level (`flag`)\cr adds a "total" level after the others which includes all the levels
 #'   that constitute the split. A custom label can be set for this level via the `custom_label` argument.
 #' @param col_by (`factor`)\cr defining column groups.
@@ -48,7 +48,7 @@
 #' @param method (`string`)\cr specifies the test used to calculate the p-value for the difference between
 #'   two proportions. For options, see [s_test_proportion_diff()]. Default is `NULL` so no test is performed.
 #' @param na.rm (`flag`)\cr whether `NA` values should be removed from `x` prior to analysis.
-#' @param na_level (`string`)\cr string used to replace all `NA` or empty values in the output.
+#' @param na_level `r lifecycle::badge("deprecated")` Please use the `na_str` argument instead.
 #' @param na_str (`string`)\cr string used to replace all `NA` or empty values in the output.
 #' @param nested (`flag`)\cr whether this layout instruction should be applied within the existing layout structure _if
 #'   possible_ (`TRUE`, the default) or as a new top-level element (`FALSE`). Ignored if it would nest a split.

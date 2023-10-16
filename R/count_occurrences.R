@@ -252,6 +252,7 @@ count_occurrences <- function(lyt,
     var_labels = var_labels,
     show_labels = show_labels,
     table_names = table_names,
+    na_str = na_str,
     nested = nested,
     extra_args = extra_args
   )

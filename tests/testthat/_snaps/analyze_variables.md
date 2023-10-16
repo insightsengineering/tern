@@ -866,6 +866,24 @@
       [1] 0
       
 
+# s_summary works with length 0 logical vectors
+
+    Code
+      res
+    Output
+      $n
+      [1] 0
+      
+      $count
+      [1] 0
+      
+      $count_fraction
+      [1] 0 0
+      
+      $n_blq
+      [1] 0
+      
+
 # s_summary works with logical vectors and by default removes NA
 
     Code
@@ -1370,7 +1388,7 @@
       Median      NA      3.5         5.5   
       Min - Max   NA   3.0 - 4.0   5.0 - 6.0
 
-# analyze_vars 'na_level' argument works as expected
+# analyze_vars 'na_str' argument works as expected
 
     Code
       res

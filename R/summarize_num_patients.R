@@ -54,7 +54,9 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_su
   out <- list(
     unique = formatters::with_label(c(count1, ifelse(count1 == 0 && .N_col == 0, 0, count1 / .N_col)), labelstr),
     nonunique = formatters::with_label(count2, labelstr),
-    unique_count = formatters::with_label(count1, ifelse(unique_count_suffix, paste(labelstr, "(n)"), labelstr))
+    unique_count = formatters::with_label(
+      count1, ifelse(unique_count_suffix, paste0(labelstr, if (nzchar(labelstr)) " ", "(n)"), labelstr)
+    )
   )
 
   out
@@ -137,6 +139,7 @@ c_num_patients <- make_afun(
 #' @export
 summarize_num_patients <- function(lyt,
                                    var,
+                                   na_str = NA_character_,
                                    .stats = NULL,
                                    .formats = NULL,
                                    .labels = c(
@@ -179,6 +182,7 @@ summarize_num_patients <- function(lyt,
     lyt = lyt,
     var = var,
     cfun = ifelse(isFALSE(riskdiff), cfun, afun_riskdiff),
+    na_str = na_str,
     extra_args = extra_args,
     indent_mod = .indent_mods
   )
@@ -217,6 +221,7 @@ summarize_num_patients <- function(lyt,
 #' @export
 analyze_num_patients <- function(lyt,
                                  vars,
+                                 na_str = NA_character_,
                                  nested = TRUE,
                                  .stats = NULL,
                                  .formats = NULL,
@@ -261,6 +266,7 @@ analyze_num_patients <- function(lyt,
     afun = ifelse(isFALSE(riskdiff), afun, afun_riskdiff),
     lyt = lyt,
     vars = vars,
+    na_str = na_str,
     nested = nested,
     extra_args = extra_args,
     show_labels = show_labels,

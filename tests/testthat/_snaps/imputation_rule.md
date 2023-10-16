@@ -7,7 +7,7 @@
            max 
       92.40745 
       
-      $na_level
+      $na_str
       [1] "ND"
       
 
@@ -19,7 +19,7 @@
       $val
       [1] NA
       
-      $na_level
+      $na_str
       [1] "ND"
       
 
@@ -32,7 +32,7 @@
       geom_mean 
        40.22144 
       
-      $na_level
+      $na_str
       [1] "NE"
       
 
@@ -45,7 +45,7 @@
            max 
       99.26841 
       
-      $na_level
+      $na_str
       [1] "ND"
       
 
@@ -58,7 +58,7 @@
            max 
       92.40745 
       
-      $na_level
+      $na_str
       [1] "NE"
       
 
@@ -71,7 +71,7 @@
           mean 
       43.38858 
       
-      $na_level
+      $na_str
       [1] "NE"
       
 
@@ -84,7 +84,7 @@
       geom_mean 
        40.22144 
       
-      $na_level
+      $na_str
       [1] "NE"
       
 
@@ -97,7 +97,7 @@
            max 
       99.26841 
       
-      $na_level
+      $na_str
       [1] "NE"
       
 

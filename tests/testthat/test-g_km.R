@@ -8,11 +8,10 @@ testthat::test_that("g_km default plot works", {
   grob_tmp <- g_km(
     df = df,
     variables = variables,
-    ci_ribbon = FALSE,
-    draw = FALSE
+    ci_ribbon = FALSE
   )
 
-  testthat::expect_true(grid::is.grob(grob_tmp))
+  vdiffr::expect_doppelganger(title = "grob_tmp", fig = grob_tmp)
 })
 
 testthat::test_that("g_km default plot witch ci_ribbon = TRUE works", {
@@ -22,14 +21,13 @@ testthat::test_that("g_km default plot witch ci_ribbon = TRUE works", {
 
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 
-  grob_tmp <- g_km(
+  grob_tmp_ci <- g_km(
     df = df,
     variables = variables,
-    ci_ribbon = TRUE,
-    draw = FALSE
+    ci_ribbon = TRUE
   )
 
-  testthat::expect_true(grid::is.grob(grob_tmp))
+  vdiffr::expect_doppelganger(title = "grob_tmp_ci", fig = grob_tmp_ci)
 })
 
 testthat::test_that("g_km plot with < = > in group labels works", {
@@ -43,14 +41,13 @@ testthat::test_that("g_km plot with < = > in group labels works", {
 
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "group")
 
-  grob_tmp <- g_km(
+  grob_tmp_char <- g_km(
     df = df,
     variables = variables,
-    annot_surv_med = FALSE,
-    draw = FALSE
+    annot_surv_med = FALSE
   )
 
-  testthat::expect_true(grid::is.grob(grob_tmp))
+  vdiffr::expect_doppelganger(title = "grob_tmp_char", fig = grob_tmp_char)
 })
 
 testthat::test_that("g_km ylim parameter works as expected", {
