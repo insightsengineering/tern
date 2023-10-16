@@ -43,18 +43,17 @@
 #'     var_labels = "Survival Time (Months)",
 #'     is_event = "is_event",
 #'   ) %>%
-#' build_table(df = adtte_f)
+#'   build_table(df = adtte_f)
 #'
-ref_group_last <- function(splret, spl, fulldf){
-
-  if(!"ref_group_value" %in% slotNames(spl)) {
+ref_group_last <- function(splret, spl, fulldf) {
+  if (!"ref_group_value" %in% slotNames(spl)) {
     stop("Reference group is undefined.")
   }
 
   spl_var <- spl@payload
   init_lvls <- levels(fulldf[[spl_var]])
 
-  if(!all(names(splret$values) %in% init_lvls)) {
+  if (!all(names(splret$values) %in% init_lvls)) {
     stop("This split function does not work with combination facets.")
   }
 
@@ -62,7 +61,9 @@ ref_group_last <- function(splret, spl, fulldf){
   reord_lvls <- c(init_lvls[-ref_group_pos], init_lvls[ref_group_pos])
   ord <- match(reord_lvls, names(splret$values))
 
-  make_split_result(splret$values[ord],
-                    splret$datasplit[ord],
-                    splret$labels[ord])
+  make_split_result(
+    splret$values[ord],
+    splret$datasplit[ord],
+    splret$labels[ord]
+  )
 }
