@@ -100,9 +100,11 @@ keep_level_order <- make_split_fun(
     function(splret, spl, fulldf, ...) {
       # browser() if you enter here the order of splret seems already correct
       ord <- order(names(splret$values))
-      make_split_result(splret$values[ord],
-                        splret$datasplit[ord],
-                        splret$labels[ord])
+      make_split_result(
+        splret$values[ord],
+        splret$datasplit[ord],
+        splret$labels[ord]
+      )
     }
   )
 )
