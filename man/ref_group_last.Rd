@@ -49,7 +49,7 @@ basic_table() \%>\%
     var_labels = "Survival Time (Months)",
     is_event = "is_event",
   ) \%>\%
-build_table(df = adtte_f)
+  build_table(df = adtte_f)
 
 }
 \seealso{
