@@ -159,3 +159,4 @@ Collate:
     'utils_factor.R'
     'utils_grid.R'
     'utils_rtables.R'
+    'utils_split_funs.R'
