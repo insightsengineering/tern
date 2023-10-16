@@ -19,6 +19,7 @@ testthat::test_that("g_waterfall plot with labels and colors works", {
       height = adrs_f$pchg,
       id = paste("asdfdsfdsfsd", adrs_f$USUBJID),
       col_var = adrs_f$SEX,
+      col = "blue",
       xlab = "ID",
       ylab = "Percentage Change",
       title = "Waterfall plot"

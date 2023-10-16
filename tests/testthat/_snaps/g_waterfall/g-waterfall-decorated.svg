@@ -39,11 +39,11 @@
 <polyline points='375.12,369.47 375.12,22.78 ' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt;' />
 <polyline points='505.66,369.47 505.66,22.78 ' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt;' />
 <polyline points='636.20,369.47 636.20,22.78 ' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt;' />
-<rect x='55.30' y='38.54' width='117.48' height='214.17' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #F8766D;' />
-<rect x='185.84' y='95.67' width='117.48' height='157.04' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #F8766D;' />
-<rect x='316.38' y='109.96' width='117.48' height='142.75' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #F8766D;' />
-<rect x='446.92' y='252.72' width='117.48' height='85.65' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #F8766D;' />
-<rect x='577.46' y='252.72' width='117.48' height='100.99' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #F8766D;' />
+<rect x='55.30' y='38.54' width='117.48' height='214.17' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #0000FF;' />
+<rect x='185.84' y='95.67' width='117.48' height='157.04' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #0000FF;' />
+<rect x='316.38' y='109.96' width='117.48' height='142.75' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #0000FF;' />
+<rect x='446.92' y='252.72' width='117.48' height='85.65' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #0000FF;' />
+<rect x='577.46' y='252.72' width='117.48' height='100.99' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #0000FF;' />
 <text x='114.05' y='34.74' text-anchor='middle' style='font-size: 11.04px; font-family: sans;' textLength='15.35px' lengthAdjust='spacingAndGlyphs'> 45</text>
 <text x='244.58' y='91.87' text-anchor='middle' style='font-size: 11.04px; font-family: sans;' textLength='15.35px' lengthAdjust='spacingAndGlyphs'> 33</text>
 <text x='375.12' y='106.17' text-anchor='middle' style='font-size: 11.04px; font-family: sans;' textLength='15.35px' lengthAdjust='spacingAndGlyphs'> 30</text>
@@ -74,7 +74,7 @@
 <rect x='323.48' y='542.28' width='103.29' height='28.24' style='stroke-width: 0.75; fill: #FFFFFF;' />
 <text x='328.96' y='560.19' style='font-size: 11.00px; font-weight: bold; font-family: sans;' textLength='58.71px' lengthAdjust='spacingAndGlyphs'>adrs_f$SEX</text>
 <rect x='393.15' y='547.76' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #F2F2F2;' />
-<rect x='393.86' y='548.47' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #F8766D;' />
+<rect x='393.86' y='548.47' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #0000FF;' />
 <text x='415.91' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='5.38px' lengthAdjust='spacingAndGlyphs'>F</text>
 <text x='35.72' y='14.56' style='font-size: 13.20px; font-weight: bold; font-family: sans;' textLength='77.02px' lengthAdjust='spacingAndGlyphs'>Waterfall plot</text>
 </g>
