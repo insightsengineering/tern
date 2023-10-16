@@ -100,9 +100,11 @@ keep_level_order <- make_split_fun(
   post = list(
     function(splret, spl, fulldf, ...) {
       ord <- order(names(splret$values))
-      make_split_result(splret$values[ord],
-                        splret$datasplit[ord],
-                        splret$labels[ord])
+      make_split_result(
+        splret$values[ord],
+        splret$datasplit[ord],
+        splret$labels[ord]
+      )
     }
   )
 )

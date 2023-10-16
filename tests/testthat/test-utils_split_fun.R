@@ -1,4 +1,3 @@
-
 testthat::test_that("ref_group_last split fun gives error when ref group is undefined", {
   lyt <- basic_table() %>%
     split_cols_by(var = "ARMCD", split_fun = ref_group_last) %>%

@@ -4,11 +4,13 @@ adlb$AVISIT <- droplevels(adlb$AVISIT)
 adlb <- dplyr::mutate(adlb, AVISIT = forcats::fct_reorder(AVISIT, AVISITN, min))
 
 testthat::test_that("g_lineplot works with default settings", {
-  testthat::expect_silent(g_lineplot(adlb, adsl))
+  g_lineplot <- g_lineplot(adlb, adsl)
+
+  vdiffr::expect_doppelganger(title = "g_lineplot", fig = g_lineplot)
 })
 
 testthat::test_that("g_lineplot works with custom settings and statistics table", {
-  testthat::expect_silent(g_lineplot(
+  g_lineplot_w_stats <- g_lineplot(
     adlb,
     adsl,
     strata = control_lineplot_vars(strata = NULL),
@@ -19,5 +21,7 @@ testthat::test_that("g_lineplot works with custom settings and statistics table"
     y_lab = "Lab Test",
     subtitle = "Laboratory Test:",
     caption = "caption"
-  ))
+  )
+
+  vdiffr::expect_doppelganger(title = "g_lineplot_w_stats", fig = g_lineplot_w_stats)
 })
