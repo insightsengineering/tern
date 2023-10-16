@@ -133,6 +133,7 @@ Collate:
     'prop_diff.R'
     'prop_diff_test.R'
     'prune_occurrences.R'
+    'reflast.R'
     'response_biomarkers_subgroups.R'
     'response_subgroups.R'
     'riskdiff.R'

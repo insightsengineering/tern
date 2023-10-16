@@ -1,9 +1,9 @@
 #' Split Function to Place Reference Group Facet Last
 #'
-#' Place reference group facet last during post-processing stage in a custom split fun.
+#' Place reference group facet last during post-processing stage in a custom split function.
 #'
-#' @inheritParams rtables::custom_split_funs
 #' @param splret result of the core split
+#' @param spl split object
 #' @param fulldf data.frame of incoming data to be split
 #'
 #' @export
@@ -13,6 +13,9 @@
 #' @examples
 #' library(dplyr)
 #'
+#' # Define custom split function
+#' ref_last <- make_split_fun(post = list(ref_group_last))
+#'
 #' dat <- data.frame(
 #'   x = factor(letters[1:5], levels = letters[5:1]),
 #'   y = 1:5
@@ -20,7 +23,7 @@
 #'
 #' # With rtables layout functions
 #' basic_table() %>%
-#'   split_cols_by("x", ref_group = "c", split_fun = make_split_fun(post = list(ref_group_last))) %>%
+#'   split_cols_by("x", ref_group = "c", split_fun = ref_last) %>%
 #'   analyze("y") %>%
 #'   build_table(dat)
 #'
@@ -33,7 +36,7 @@
 #'   )
 #'
 #' basic_table() %>%
-#'   split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = make_split_fun(post = list(ref_group_last))) %>%
+#'   split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_last) %>%
 #'   add_colcounts() %>%
 #'   surv_time(
 #'     vars = "AVAL",
