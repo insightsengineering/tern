@@ -49,6 +49,7 @@ Imports:
     utils
 Suggests:
     knitr (>= 1.42),
+    rmarkdown (>= 2.19),
     lattice (>= 0.18-4),
     lubridate (>= 1.7.9),
     nestcolor (>= 0.1.1),
