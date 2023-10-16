@@ -1,9 +1,9 @@
 testthat::test_that("g_waterfall default plot works", {
-  g_waterfall <-  g_waterfall(
-      height = c(3, 5, -1),
-      id = letters[1:3],
-      col = NULL
-    )
+  g_waterfall <- g_waterfall(
+    height = c(3, 5, -1),
+    id = letters[1:3],
+    col = NULL
+  )
   vdiffr::expect_doppelganger(title = "g_waterfall", fig = g_waterfall)
 })
 
