@@ -133,7 +133,7 @@ testthat::test_that("summarize_ancova works as expected with ref_group_last spli
   anl <- tern_ex_adtte %>% filter(PARAMCD == "TNE")
 
   result <- basic_table() %>%
-    split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = split_fun) %>%
+    split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_last) %>%
     add_colcounts() %>%
     summarize_glm_count(
       vars = "AVAL",
