@@ -145,9 +145,11 @@ level_order <- function(order) {
           checkmate::assert_set_equal(order, names(splret$values), ordered = FALSE)
           ord <- match(order, names(splret$values))
         }
-        make_split_result(splret$values[ord],
-                          splret$datasplit[ord],
-                          splret$labels[ord])
+        make_split_result(
+          splret$values[ord],
+          splret$datasplit[ord],
+          splret$labels[ord]
+        )
       }
     )
   )
