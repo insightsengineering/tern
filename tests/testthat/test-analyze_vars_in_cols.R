@@ -312,6 +312,8 @@ testthat::test_that("analyze_vars_in_cols works with imputation rule", {
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
+  df$NFRLT <- as.character(df$NFRLT)
+
   # 1/3 imputation rule, custom avalcat_var
   lyt <- basic_table() %>%
     split_rows_by(
