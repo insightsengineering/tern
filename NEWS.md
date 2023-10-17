@@ -6,7 +6,7 @@
 ### Enhancements
 * Added formatting function `format_count_fraction_lt10` for formatting `count_fraction` with special consideration when count is less than 10.
 * Updated `s_summary.logical` output for `count_fraction` when denominator is zero to display as `NA` instead of `0` in tables.
-* Updated `analyze_vars_in_cols` to allow character input to indicate whether nominal timepoint is post-dose or pre-dose when applying the 1/3 imputation rule.
+* Updated `analyze_vars_in_cols` to allow character input to indicate whether nominal time point is post-dose or pre-dose when applying the 1/3 imputation rule.
 
 ### Bug Fixes
 * Fixed bug in `g_km` causing an error when converting certain annotation width units.

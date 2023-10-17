@@ -11,18 +11,22 @@ testthat::test_that("analyze_vars_in_cols works correctly", {
   testthat::expect_snapshot(res)
 
   # It fails if called multiple times with identical col split
-  testthat::expect_error(basic_table() %>%
-    split_rows_by(var = "ARM", label_pos = "topleft") %>%
-    split_rows_by(var = "SEX", label_pos = "topleft") %>%
-    analyze_vars_in_cols(vars = "AGE", .stats = c("n", "mean", "se")) %>%
-    analyze_vars_in_cols(vars = "AGE", .stats = c("n", "mean", "se")))
+  testthat::expect_error(
+    basic_table() %>%
+      split_rows_by(var = "ARM", label_pos = "topleft") %>%
+      split_rows_by(var = "SEX", label_pos = "topleft") %>%
+      analyze_vars_in_cols(vars = "AGE", .stats = c("n", "mean", "se")) %>%
+      analyze_vars_in_cols(vars = "AGE", .stats = c("n", "mean", "se"))
+  )
 
   # It fails if called multiple times with identical col split on different lines
-  testthat::expect_error(basic_table() %>%
-    split_rows_by(var = "ARM", label_pos = "topleft") %>%
-    analyze_vars_in_cols(vars = "AGE", .stats = c("n", "mean", "se")) %>%
-    split_rows_by(var = "SEX", label_pos = "topleft") %>%
-    analyze_vars_in_cols(vars = "AGE", .stats = c("n", "mean", "se")))
+  testthat::expect_error(
+    basic_table() %>%
+      split_rows_by(var = "ARM", label_pos = "topleft") %>%
+      analyze_vars_in_cols(vars = "AGE", .stats = c("n", "mean", "se")) %>%
+      split_rows_by(var = "SEX", label_pos = "topleft") %>%
+      analyze_vars_in_cols(vars = "AGE", .stats = c("n", "mean", "se"))
+  )
 })
 
 testthat::test_that("analyze_vars_in_cols throws error when vars and .stats lengths differ in len", {
@@ -263,12 +267,14 @@ testthat::test_that("analyze_vars_in_cols works well with categorical data", {
     in_rows(.list = ret_list, .formats = aform)
   }
 
-  testthat::expect_snapshot(basic_table(show_colcounts = TRUE) %>%
-    split_rows_by(var = "STRATA1", label_pos = "topleft") %>%
-    split_cols_by("ARM") %>%
-    analyze(vars = "SEX", afun = count_fraction) %>%
-    append_topleft("  SEX") %>%
-    build_table(adpp))
+  testthat::expect_snapshot(
+    basic_table(show_colcounts = TRUE) %>%
+      split_rows_by(var = "STRATA1", label_pos = "topleft") %>%
+      split_cols_by("ARM") %>%
+      analyze(vars = "SEX", afun = count_fraction) %>%
+      append_topleft("  SEX") %>%
+      build_table(adpp)
+  )
 })
 
 testthat::test_that("analyze_vars_in_cols works with imputation rule", {
