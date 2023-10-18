@@ -219,7 +219,7 @@ g_lineplot <- function(df,
   if (!is.null(strata) && !is.null(alt_counts_df)) {
     strata_N <- paste0(strata, "_N") # nolint
 
-    df_N <- stats::aggregate(USUBJID ~ eval(parse(text = strata)), data = alt_counts_df, FUN = function(x) length(unique(x))) # nolint
+    df_N <- stats::aggregate(eval(parse(text = cohort_id)) ~ eval(parse(text = strata)), data = alt_counts_df, FUN = function(x) length(unique(x))) # nolint
     colnames(df_N) <- c(strata, "N") # nolint
     df_N[[strata_N]] <- paste0(df_N[[strata]], " (N = ", df_N$N, ")") # nolint
 
@@ -289,9 +289,8 @@ g_lineplot <- function(df,
 
     # lines
     # further conditions in if are to ensure that not all of the groups consist of only one observation
-    if (grepl("l", mid_type, fixed = TRUE) &&
-      !is.null(strata) &&
-      !all(dplyr::summarise(df_grp, count_n = dplyr::n())[["count_n"]] == 1L)) {
+    if (grepl("l", mid_type, fixed = TRUE) && !is.null(strata) &&
+      !all(dplyr::summarise(df_grp, count_n = dplyr::n())[["count_n"]] == 1L)) { # nolint
       p <- p + ggplot2::geom_line(position = position, na.rm = TRUE)
     }
   }

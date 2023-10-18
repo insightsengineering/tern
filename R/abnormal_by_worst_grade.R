@@ -113,7 +113,7 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
     } else {
       df_lvl <- df[df[[.var]] != 0, ]
     }
-    num <- length(unique(df_lvl[["USUBJID"]]))
+    num <- length(unique(df_lvl[[variables[["id"]]]]))
     fraction <- ifelse(denom == 0, 0, num / denom)
     result[[lvl]] <- formatters::with_label(c(count = num, fraction = fraction), lvl)
   }
