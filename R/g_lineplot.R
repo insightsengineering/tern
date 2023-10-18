@@ -219,7 +219,7 @@ g_lineplot <- function(df,
   if (!is.null(strata) && !is.null(alt_counts_df)) {
     strata_N <- paste0(strata, "_N") # nolint
 
-    df_N <- stats::aggregate(USUBJID ~ eval(parse(text = strata)), data = alt_counts_df, FUN = function(x) length(unique(x))) # nolint
+    df_N <- stats::aggregate(eval(parse(text = cohort_id)) ~ eval(parse(text = strata)), data = alt_counts_df, FUN = function(x) length(unique(x))) # nolint
     colnames(df_N) <- c(strata, "N") # nolint
     df_N[[strata_N]] <- paste0(df_N[[strata]], " (N = ", df_N$N, ")") # nolint
 
