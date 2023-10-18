@@ -95,8 +95,8 @@
     Code
       res
     Output
-      Baseline Risk Factors                               B: Placebo               A: Drug X                                     
-                                     Total Events   Events   Median (DAYS)   Events   Median (DAYS)   Hazard Ratio   95% Wald CI 
+                                                          B: Placebo               A: Drug X                                     
+      Baseline Risk Factors          Total Events   Events   Median (DAYS)   Events   Median (DAYS)   Hazard Ratio   95% Wald CI 
       ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
       All Patients                       101          57         727.8         44         974.6           0.71       (0.48, 1.06)
       Sex                                                                                                                        
@@ -112,8 +112,8 @@
     Code
       res
     Output
-      Baseline Risk Factors                        B: Placebo               A: Drug X                                     
-                              Total Events   Events   Median (DAYS)   Events   Median (DAYS)   Hazard Ratio   95% Wald CI 
+                                                   B: Placebo               A: Drug X                                     
+      Baseline Risk Factors   Total Events   Events   Median (DAYS)   Events   Median (DAYS)   Hazard Ratio   95% Wald CI 
       ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
       All Patients                101          57         727.8         44         974.6           0.71       (0.48, 1.06)
 
@@ -122,8 +122,8 @@
     Code
       res
     Output
-      Baseline Risk Factors                        B: Placebo               A: Drug X                                     
-                              Total Events   Events   Median (DAYS)   Events   Median (DAYS)   Hazard Ratio   95% Wald CI 
+                                                   B: Placebo               A: Drug X                                     
+      Baseline Risk Factors   Total Events   Events   Median (DAYS)   Events   Median (DAYS)   Hazard Ratio   95% Wald CI 
       ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
       All Patients                 18          10         859.0         8          954.2           0.60       (0.23, 1.59)
       Geographic Region 1                                                                                                 
@@ -136,8 +136,8 @@
     Code
       res
     Output
-      Baseline Risk Factors                                                B: Placebo                     A: Drug X                                                               
-                                                    Total Events   n    Events   Median (DAYS)   n    Events   Median (DAYS)   Hazard Ratio     95% Wald CI     p-value (log-rank)
+                                                                           B: Placebo                     A: Drug X                                                               
+      Baseline Risk Factors                         Total Events   n    Events   Median (DAYS)   n    Events   Median (DAYS)   Hazard Ratio     95% Wald CI     p-value (log-rank)
       ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
       All Patients                                      101        73     57         727.8       69     44         974.6           0.71        (0.48, 1.06)           0.0905      
       Race                                                                                                                                                                        
@@ -183,10 +183,10 @@
     Code
       res
     Output
-       [1] ""                   "Total Events"       "Total n"           
-       [4] "Median (DAYS)"      "Events"             "n"                 
-       [7] "Median (DAYS)"      "Events"             "n"                 
-      [10] "Hazard Ratio"       "95% Wald CI"        "p-value (log-rank)"
+       [1] "Baseline Risk Factors" "Total Events"          "Total n"              
+       [4] "Median (DAYS)"         "Events"                "n"                    
+       [7] "Median (DAYS)"         "Events"                "n"                    
+      [10] "Hazard Ratio"          "95% Wald CI"           "p-value (log-rank)"   
 
 # d_survival_subgroups_colvars functions as expected with valid input
 
