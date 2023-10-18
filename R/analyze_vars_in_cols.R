@@ -245,9 +245,12 @@ analyze_vars_in_cols <- function(lyt,
           if (is.null(imp_rule) || !stat %in% c("mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max")) {
             res <- x_stats[[stat]]
           } else {
+            timept <- as.numeric(gsub(".*?([0-9\\.]+).*", "\\1", tail(.spl_context$value, 1)))
             res_imp <- imputation_rule(
               .df_row, x_stats, stat,
-              imp_rule = imp_rule, post = as.numeric(tail(.spl_context$value, 1)) > 0, avalcat_var = avalcat_var
+              imp_rule = imp_rule,
+              post = grepl("Predose", tail(.spl_context$value, 1)) || timept > 0,
+              avalcat_var = avalcat_var
             )
             res <- res_imp[["val"]]
             na_str <- res_imp[["na_str"]]
@@ -313,9 +316,12 @@ analyze_vars_in_cols <- function(lyt,
           if (is.null(imp_rule) || !stat %in% c("mean", "sd", "cv", "geom_mean", "geom_cv", "median", "min", "max")) {
             res <- x_stats[[stat]]
           } else {
+            timept <- as.numeric(gsub(".*?([0-9\\.]+).*", "\\1", tail(.spl_context$value, 1)))
             res_imp <- imputation_rule(
               .df_row, x_stats, stat,
-              imp_rule = imp_rule, post = as.numeric(tail(.spl_context$value, 1)) > 0, avalcat_var = avalcat_var
+              imp_rule = imp_rule,
+              post = grepl("Predose", tail(.spl_context$value, 1)) || timept > 0,
+              avalcat_var = avalcat_var
             )
             res <- res_imp[["val"]]
             na_str <- res_imp[["na_str"]]
