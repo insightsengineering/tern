@@ -15,6 +15,7 @@
 
 ### Miscellaneous
 * Began deprecation of `na_level` argument in `s_count_abnormal_by_baseline`, `a_summary`, `analyze_vars`, `analyze_vars_in_cols`, `compare_vars`, `h_map_for_count_abnormal`, `h_stack_by_baskets`, `summarize_colvars`, `a_coxreg`, and `summarize_coxreg` and replaced it with the `na_str` argument.
+* Specified minimal version of package dependencies.
 
 # tern 0.9.1
 
@@ -38,7 +39,6 @@
 * Started deprecation of `summary_custom()` and `a_summary()` as a `S3` method.
 * Renamed statistical method for `p-value` in the discrete case to `pval_counts`.
 * Removed `a_summary_internal()` in favor of only one main `a_summary()`.
-* Specified minimal version of package dependencies.
 
 # tern 0.9.0
 
