@@ -326,9 +326,8 @@ split_text_grob <- function(text,
   if (grid::unitType(width) %in% c("sum", "min", "max")) width <- grid::convertUnit(width, default.units)
 
   ## if it is a fixed unit then we do not need to recalculate when viewport resized
-  if (!inherits(width, "unit.arithmetic") &&
-    !is.null(attr(width, "unit")) &&
-    attr(width, "unit") %in% c("cm", "inches", "mm", "points", "picas", "bigpts", "dida", "cicero", "scaledpts")) {
+  if (!inherits(width, "unit.arithmetic") && !is.null(attr(width, "unit")) &&
+    attr(width, "unit") %in% c("cm", "inches", "mm", "points", "picas", "bigpts", "dida", "cicero", "scaledpts")) { # nolint
     attr(text, "fixed_text") <- paste(vapply(text, split_string, character(1), width = width), collapse = "\n")
   }
 

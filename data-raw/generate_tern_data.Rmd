@@ -151,8 +151,10 @@ generate_adsl <- function(N = 200) { # nolint
       )) %>% with_label("Geographic Region 1"),
       SAFFL = factor("Y") %>% with_label("Safety Population Flag")
     ) %>%
-    dplyr::mutate(USUBJID = paste(.data$STUDYID, .data$SITEID, .data$SUBJID, sep = "-") %>%
-      with_label("Unique Subject Identifier"))
+    dplyr::mutate(
+      USUBJID = paste(.data$STUDYID, .data$SITEID, .data$SUBJID, sep = "-") %>%
+        with_label("Unique Subject Identifier")
+    )
 
   save(tern_ex_adsl, file = "data/tern_ex_adsl.rda", compress = "xz")
 }
