@@ -5,11 +5,13 @@
 #' Line plot with the optional table.
 #'
 #' @param df (`data.frame`)\cr data set containing all analysis variables.
-#' @param alt_counts_df (`data.frame` or `NULL`)\cr data set that will be used (only) to counts objects in groups for stratification. #nolint
+#' @param alt_counts_df (`data.frame` or `NULL`)\cr data set that will be used (only)
+#'   to counts objects in groups for stratification.
 #' @param variables (named `character` vector) of variable names in `df` data set. Details are:
 #'   * `x` (`character`)\cr name of x-axis variable.
 #'   * `y` (`character`)\cr name of y-axis variable.
-#'   * `group_var` (`character`)\cr name of grouping variable, i.e. treatment arm. Can be `NA` to indicate lack of groups.
+#'   * `group_var` (`character`)\cr name of grouping variable, i.e. treatment arm.
+#'     Can be `NA` to indicate lack of groups.
 #'   * `subject_var` (`character`)\cr name of subject variable. Only applies if `group_var` is
 #'      not NULL.
 #'   * `paramcd` (`character`)\cr name of the variable for parameter's code. Used for y-axis label and plot's subtitle.
