@@ -139,13 +139,13 @@ extract_rsp_subgroups <- function(variables,
 #'
 #' @keywords internal
 a_response_subgroups <- function(.formats = list(
-                                   n = "xx",
+                                   n = "xx", # nolint start
                                    n_rsp = "xx",
                                    prop = "xx.x%",
                                    n_tot = "xx",
                                    or = list(format_extreme_values(2L)),
                                    ci = list(format_extreme_values_ci(2L)),
-                                   pval = "x.xxxx | (<0.0001)"
+                                   pval = "x.xxxx | (<0.0001)" # nolint end
                                  )) {
   checkmate::assert_list(.formats)
   checkmate::assert_subset(

@@ -135,8 +135,7 @@ testthat::test_that("s_count_abnormal_by_marked works as expected", {
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("s_count_abnormal_by_marked returns an error when `abn_dir` contains
-          two direction values", {
+testthat::test_that("s_count_abnormal_by_marked returns an error when `abn_dir` contains two direction values", {
   avalcat1 <- c("LAST", "REPLICATED", "SINGLE")
 
   set.seed(1, kind = "Mersenne-Twister")
@@ -180,12 +179,14 @@ testthat::test_that("s_count_abnormal_by_marked returns an error when `abn_dir` 
     cur_col_subset = I(cur_col_subset)
   )
 
-  testthat::expect_error(s_count_abnormal_by_marked(
-    df = adlb_crp,
-    .spl_context = spl_context,
-    .var = "AVALCAT1",
-    variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
-  ))
+  testthat::expect_error(
+    s_count_abnormal_by_marked(
+      df = adlb_crp,
+      .spl_context = spl_context,
+      .var = "AVALCAT1",
+      variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
+    )
+  )
 })
 
 testthat::test_that("count_abnormal_by_marked works as expected", {
