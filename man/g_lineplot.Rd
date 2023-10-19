@@ -38,14 +38,14 @@ g_lineplot(
 \arguments{
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{alt_counts_df}{(\code{data.frame} or \code{NULL})\cr data set that will be used (only) to counts objects in strata.}
+\item{alt_counts_df}{(\code{data.frame} or \code{NULL})\cr data set that will be used (only) to counts objects in groups for stratification. #nolint}
 
 \item{variables}{(named \code{character} vector) of variable names in \code{df} data set. Details are:
 \itemize{
 \item \code{x} (\code{character})\cr name of x-axis variable.
 \item \code{y} (\code{character})\cr name of y-axis variable.
-\item \code{strata} (\code{character})\cr name of grouping variable, i.e. treatment arm. Can be \code{NA} to indicate lack of groups.
-\item \code{cohort_id} (\code{character})\cr name of the variable that identifies group belonging. Only applies if \code{strata} is
+\item \code{group_var} (\code{character})\cr name of grouping variable, i.e. treatment arm. Can be \code{NA} to indicate lack of groups.
+\item \code{subject_var} (\code{character})\cr name of subject variable. Only applies if \code{group_var} is
 not NULL.
 \item \code{paramcd} (\code{character})\cr name of the variable for parameter's code. Used for y-axis label and plot's subtitle.
 Can be \code{NA} if \code{paramcd} is not to be added to the y-axis label or subtitle.
@@ -141,10 +141,10 @@ adlb <- dplyr::mutate(adlb, AVISIT = forcats::fct_reorder(AVISIT, AVISITN, min))
 # Mean with CI
 g_lineplot(adlb, adsl, subtitle = "Laboratory Test:")
 
-# Mean with CI, no stratification
-g_lineplot(adlb, variables = control_lineplot_vars(strata = NA))
+# Mean with CI, no stratification with group_var
+g_lineplot(adlb, variables = control_lineplot_vars(group_var = NA))
 
-# Mean, upper whisker of CI, no strata counts N
+# Mean, upper whisker of CI, no group_var(strata) counts N
 g_lineplot(
   adlb,
   whiskers = "mean_ci_upr",

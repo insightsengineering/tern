@@ -13,6 +13,7 @@
 
 ### Miscellaneous
 * Began deprecation of `na_level` argument in `s_count_abnormal_by_baseline`, `a_summary`, `analyze_vars`, `analyze_vars_in_cols`, `compare_vars`, `h_map_for_count_abnormal`, `h_stack_by_baskets`, `summarize_colvars`, `a_coxreg`, and `summarize_coxreg` and replaced it with the `na_str` argument.
+* `strata` and `cohort_id` parameters renamed to `group_var` and `subject_var` respectively in `g_lineplot` and `control_lineplot_vars`  .
 
 # tern 0.9.1
 
