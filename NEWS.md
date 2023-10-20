@@ -1,5 +1,8 @@
 # tern 0.9.2.9000
 
+### Miscellaneous
+* Specified minimal version of package dependencies.
+
 # tern 0.9.2
 
 ### New Features
@@ -15,7 +18,6 @@
 
 ### Miscellaneous
 * Began deprecation of `na_level` argument in `s_count_abnormal_by_baseline`, `a_summary`, `analyze_vars`, `analyze_vars_in_cols`, `compare_vars`, `h_map_for_count_abnormal`, `h_stack_by_baskets`, `summarize_colvars`, `a_coxreg`, and `summarize_coxreg` and replaced it with the `na_str` argument.
-* Specified minimal version of package dependencies.
 
 # tern 0.9.1
 
