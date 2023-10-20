@@ -14,7 +14,7 @@ time range of censored/event patients."><!-- mathjax --><script src="https://cdn
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,6 +56,7 @@ time range of censored/event patients."><!-- mathjax --><script src="https://cdn
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2">v0.9.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1">v0.9.1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.0">v0.9.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5">v0.8.5</a>
@@ -108,6 +109,7 @@ time range of censored/event patients.</p>
 <span><span class="fu">surv_time</span><span class="op">(</span></span>
 <span>  <span class="va">lyt</span>,</span>
 <span>  <span class="va">vars</span>,</span>
+<span>  na_str <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
 <span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  var_labels <span class="op">=</span> <span class="st">"Time to Event"</span>,</span>
@@ -150,6 +152,10 @@ see more in <code><a href="https://rdrr.io/pkg/survival/man/survfit.html" class=
 
 <dt>vars</dt>
 <dd><p>(<code>character</code>)<br> variable names for the primary analysis variable to be iterated over.</p></dd>
+
+
+<dt>na_str</dt>
+<dd><p>(<code>string</code>)<br> string used to replace all <code>NA</code> or empty values in the output.</p></dd>
 
 
 <dt>nested</dt>
