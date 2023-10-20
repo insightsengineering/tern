@@ -84,6 +84,7 @@ Config/Needs/verdepcheck:
     deepayan/lattice,
     tidyverse/lubridate,
     insightsengineering/nestcolor,
+    rstudio/rmarkdown,
     tidyverse/stringr,
     r-lib/testthat,
     r-lib/vdiffr
