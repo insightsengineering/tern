@@ -9,7 +9,8 @@ control_lineplot_vars(
   y = "AVAL",
   strata = "ARM",
   paramcd = "PARAMCD",
-  y_unit = "AVALU"
+  y_unit = "AVALU",
+  cohort_id = "USUBJID"
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ control_lineplot_vars(
 \item{paramcd}{(\code{character} or \code{NA})\cr \code{paramcd} variable name.}
 
 \item{y_unit}{(\code{character} or \code{NA})\cr \code{y_unit} variable name.}
+
+\item{cohort_id}{(\code{character} or \code{NA})\cr variable to identify subjects in cohorts.}
 }
 \value{
 A named character vector of variable names.
