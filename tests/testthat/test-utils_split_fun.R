@@ -17,7 +17,6 @@ testthat::test_that("analyze_vars works as expected with ref_group_position last
   res <- testthat::expect_silent(result)
   testthat::expect_identical(names(res), c("ARM C", "ARM A", "ARM B"))
 
-  # ref_group_position("last")
   result <- basic_table() %>%
     split_cols_by(var = "ARMCD", ref_group = "ARM C", split_fun = ref_group_position("last")) %>%
     add_colcounts() %>%
