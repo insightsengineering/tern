@@ -23,15 +23,28 @@ level_order(order)
 \arguments{
 \item{position}{(\code{string} or \code{integer})\cr should it be \code{"first"} or \code{"last"} or in a specific position?}
 
+\item{df}{dataset (\code{data.frame} or \code{tibble})}
+
+\item{spl}{A Split object defining a partitioning or analysis/tabulation of
+the data.}
+
+\item{vals}{ANY. For internal use only.}
+
+\item{labels}{character. Labels to use for the remaining levels instead of
+the existing ones.}
+
 \item{trim}{logical(1). Should splits corresponding with 0 observations be
 kept when tabulating.}
+
+\item{.spl_context}{(\code{data.frame}) \cr detailed description of the current split (or subsetting).
+Please consider consulting \link[rtables:spl_context]{rtables::spl_context} for more information.}
 
 \item{order}{(\code{character} or \code{integer})\cr vector of ordering indexes for the split facets.}
 }
 \value{
 \itemize{
-\item \code{ref_group_last} returns an utility function that puts the reference group
-as last and needs to be assigned to \code{split_fun}.
+\item \code{ref_group_position} returns an utility function that puts the reference group
+as first, last or at a certain position and needs to be assigned to \code{split_fun}.
 }
 
 \itemize{
@@ -48,14 +61,14 @@ depending on input \code{order} and split levels.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Collection of useful functions that are expanding on the core list of functions
-provided by \code{rtables}. See \code{?rtables::custom_split_funs} and \code{\link[rtables:make_split_fun]{rtables::make_split_fun()}}
+provided by \code{rtables}. See \link[rtables:custom_split_funs]{rtables::custom_split_funs} and \code{\link[rtables:make_split_fun]{rtables::make_split_fun()}}
 for more information on how to make a custom split function. All these functions
 work with \code{\link[=split_rows_by]{split_rows_by()}} argument \code{split_fun} to modify the way the split
-happens.
+happens. For other split functions, consider consulting \link[rtables:split_funcs]{rtables::split_funcs}.
 }
 \section{Functions}{
 \itemize{
-\item \code{ref_group_position()}: split function to place reference group facet last
+\item \code{ref_group_position()}: split function to place reference group facet at a specific position
 during post-processing stage.
 
 \item \code{keep_level_order()}: split function to keep original order of factor
@@ -72,11 +85,10 @@ dat <- data.frame(
   x = factor(letters[1:5], levels = letters[5:1]),
   y = 1:5
 )
-# ref_group_last
 
 # With rtables layout functions
 basic_table() \%>\%
-  split_cols_by("x", ref_group = "c", split_fun = ref_group_last) \%>\%
+  split_cols_by("x", ref_group = "c", split_fun = ref_group_position("last")) \%>\%
   analyze("y") \%>\%
   build_table(dat)
 
@@ -89,7 +101,17 @@ adtte_f <- tern_ex_adtte \%>\%
   )
 
 basic_table() \%>\%
-  split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_last) \%>\%
+  split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_position("first")) \%>\%
+  add_colcounts() \%>\%
+  surv_time(
+    vars = "AVAL",
+    var_labels = "Survival Time (Months)",
+    is_event = "is_event",
+  ) \%>\%
+  build_table(df = adtte_f)
+
+basic_table() \%>\%
+  split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_position(2)) \%>\%
   add_colcounts() \%>\%
   surv_time(
     vars = "AVAL",

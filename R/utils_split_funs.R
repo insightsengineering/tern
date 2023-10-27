@@ -3,25 +3,28 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Collection of useful functions that are expanding on the core list of functions
-#' provided by `rtables`. See `?rtables::custom_split_funs` and [rtables::make_split_fun()]
+#' provided by `rtables`. See [rtables::custom_split_funs] and [rtables::make_split_fun()]
 #' for more information on how to make a custom split function. All these functions
 #' work with [split_rows_by()] argument `split_fun` to modify the way the split
-#' happens.
+#' happens. For other split functions, consider consulting [rtables::split_funcs].
 #'
-#' @inheritParams rtables::sf_args
+#' @inheritParams rtables::split_funcs
+#' @param .spl_context (`data.frame`) \cr detailed description of the current split (or subsetting).
+#'   Please consider consulting [rtables::spl_context] for more information.
 #'
 #' @seealso [rtables::make_split_fun()]
 #'
 #' @name utils_split_funs
 NULL
 
-#' @describeIn utils_split_funs split function to place reference group facet last
+#' @describeIn utils_split_funs split function to place reference group facet at a specific position
 #'  during post-processing stage.
+#'
 #' @param position (`string` or `integer`)\cr should it be `"first"` or `"last"` or in a specific position?
 #'
 #' @return
-#' * `ref_group_last` returns an utility function that puts the reference group
-#'  as last and needs to be assigned to `split_fun`.
+#' * `ref_group_position` returns an utility function that puts the reference group
+#'  as first, last or at a certain position and needs to be assigned to `split_fun`.
 #'
 #' @examples
 #' library(dplyr)
@@ -30,7 +33,6 @@ NULL
 #'   x = factor(letters[1:5], levels = letters[5:1]),
 #'   y = 1:5
 #' )
-#' # ref_group_last
 #'
 #' # With rtables layout functions
 #' basic_table() %>%
