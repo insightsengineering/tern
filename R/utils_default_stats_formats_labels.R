@@ -93,7 +93,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
 
     # Mismatch with counts and numeric
     if (any(grepl("counts", method_groups)) && stats_in_pval_value != "pval_counts" ||
-      any(grepl("numeric", method_groups)) && stats_in_pval_value != "pval") {
+      any(grepl("numeric", method_groups)) && stats_in_pval_value != "pval") { # nolint
       stop(
         "Inserted p-value (", stats_in_pval_value, ") is not valid for type ",
         type_tmp, ". Use ", paste(ifelse(stats_in_pval_value == "pval", "pval_counts", "pval")),
