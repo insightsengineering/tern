@@ -1,4 +1,4 @@
-# analyze_vars works as expected with ref_group_last split fun
+# analyze_vars works as expected with ref_group_position last split fun
 
     Code
       res[3:4, ]
@@ -9,40 +9,29 @@
       Mean (SD)   34.1 (6.8)   35.8 (7.1)   36.1 (7.4)
       Median         32.8         35.4         36.2   
 
-# compare_vars works as expected with ref_group_last split fun
+# compare_vars works as expected with ref_group first split fun
 
     Code
       res[1:2, ]
     Output
-                    ARM A        ARM C        ARM B   
-                    (N=69)       (N=58)       (N=73)  
+                    ARM B        ARM A        ARM C   
+                    (N=73)       (N=69)       (N=58)  
       ————————————————————————————————————————————————
-      n               69           58           73    
-      Mean (SD)   34.1 (6.8)   36.1 (7.4)   35.8 (7.1)
+      n               73           69           58    
+      Mean (SD)   35.8 (7.1)   34.1 (6.8)   36.1 (7.4)
 
-# summarize_ancova works as expected with ref_group_last split fun
+# summarize_ancova works as expected with ref_group position split fun
 
     Code
       res[1:2, ]
     Output
-                              ARM A    ARM C    ARM B 
-                              (N=69)   (N=58)   (N=73)
+                              ARM A    ARM B    ARM C 
+                              (N=69)   (N=73)   (N=58)
       ————————————————————————————————————————————————
       Unadjusted comparison                           
-        n                       69       58       73  
+        n                       69       73       58  
 
----
-
-    Code
-      res
-    Output
-                                   ARM A    ARM C    ARM B 
-                                   (N=69)   (N=58)   (N=73)
-      —————————————————————————————————————————————————————
-      Unadjusted rate (per year)                           
-        Rate                       8.2061   7.8551   9.1554
-
-# binary endpoint layouts work as expected with ref_group_last split fun
+# binary endpoint layouts work as expected with ref_group_position last split fun
 
     Code
       res
@@ -55,7 +44,7 @@
         95% CI (Wald, with correction)      (3.6, 37.3)          (1.2, 36.8)                 
         p-value (Chi-Squared Test)             0.0113               0.0263                   
 
-# time to event layouts works as expected with ref_group_last split fun
+# time to event layouts works as expected with ref_group_position last split fun
 
     Code
       res
@@ -74,4 +63,15 @@
         Difference in Event Free Rate       13.74             0.31                       
           95% CI                        (-0.10, 27.57)   (-15.47, 16.10)                 
           p-value (Z-test)                  0.0517           0.9688                      
+
+# summarize_ancova works as expected with ref_group_position last split fun
+
+    Code
+      res
+    Output
+                                   ARM A    ARM C    ARM B 
+                                   (N=69)   (N=58)   (N=73)
+      —————————————————————————————————————————————————————
+      Unadjusted rate (per year)                           
+        Rate                       8.2061   7.8551   9.1554
 

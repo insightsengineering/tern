@@ -2,12 +2,12 @@
 % Please edit documentation in R/utils_split_funs.R
 \name{utils_split_funs}
 \alias{utils_split_funs}
-\alias{ref_group_last}
+\alias{ref_group_position}
 \alias{keep_level_order}
 \alias{level_order}
 \title{Custom Split Functions}
 \usage{
-ref_group_last(df, spl, vals = NULL, labels = NULL, trim = FALSE, .spl_context)
+ref_group_position(position = "first")
 
 keep_level_order(
   df,
@@ -21,6 +21,11 @@ keep_level_order(
 level_order(order)
 }
 \arguments{
+\item{position}{(\code{string} or \code{integer})\cr should it be \code{"first"} or \code{"last"} or in a specific position?}
+
+\item{trim}{logical(1). Should splits corresponding with 0 observations be
+kept when tabulating.}
+
 \item{order}{(\code{character} or \code{integer})\cr vector of ordering indexes for the split facets.}
 }
 \value{
@@ -50,7 +55,7 @@ happens.
 }
 \section{Functions}{
 \itemize{
-\item \code{ref_group_last()}: split function to place reference group facet last
+\item \code{ref_group_position()}: split function to place reference group facet last
 during post-processing stage.
 
 \item \code{keep_level_order()}: split function to keep original order of factor

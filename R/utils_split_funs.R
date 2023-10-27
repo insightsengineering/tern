@@ -8,6 +8,8 @@
 #' work with [split_rows_by()] argument `split_fun` to modify the way the split
 #' happens.
 #'
+#' @inheritParams rtables::sf_args
+#'
 #' @seealso [rtables::make_split_fun()]
 #'
 #' @name utils_split_funs
@@ -15,6 +17,7 @@ NULL
 
 #' @describeIn utils_split_funs split function to place reference group facet last
 #'  during post-processing stage.
+#' @param position (`string` or `integer`)\cr should it be `"first"` or `"last"` or in a specific position?
 #'
 #' @return
 #' * `ref_group_last` returns an utility function that puts the reference group
@@ -31,7 +34,7 @@ NULL
 #'
 #' # With rtables layout functions
 #' basic_table() %>%
-#'   split_cols_by("x", ref_group = "c", split_fun = ref_group_last) %>%
+#'   split_cols_by("x", ref_group = "c", split_fun = ref_group_position("last")) %>%
 #'   analyze("y") %>%
 #'   build_table(dat)
 #'
@@ -44,7 +47,17 @@ NULL
 #'   )
 #'
 #' basic_table() %>%
-#'   split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_last) %>%
+#'   split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_position("first")) %>%
+#'   add_colcounts() %>%
+#'   surv_time(
+#'     vars = "AVAL",
+#'     var_labels = "Survival Time (Months)",
+#'     is_event = "is_event",
+#'   ) %>%
+#'   build_table(df = adtte_f)
+#'
+#' basic_table() %>%
+#'   split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_position(2)) %>%
 #'   add_colcounts() %>%
 #'   surv_time(
 #'     vars = "AVAL",
@@ -54,32 +67,46 @@ NULL
 #'   build_table(df = adtte_f)
 #'
 #' @export
-ref_group_last <- make_split_fun(
-  post = list(
-    function(splret, spl, fulldf) {
-      if (!"ref_group_value" %in% slotNames(spl)) {
-        stop("Reference group is undefined.")
+ref_group_position <- function(position = "first") {
+  make_split_fun(
+    post = list(
+      function(splret, spl, fulldf) {
+        if (!"ref_group_value" %in% slotNames(spl)) {
+          stop("Reference group is undefined.")
+        }
+
+        spl_var <- rtables:::spl_payload(spl)
+        fulldf[[spl_var]] <- factor(fulldf[[spl_var]])
+        init_lvls <- levels(fulldf[[spl_var]])
+
+        if (!all(names(splret$values) %in% init_lvls)) {
+          stop("This split function does not work with combination facets.")
+        }
+
+        ref_group_pos <- which(init_lvls == rtables:::spl_ref_group(spl))
+        pos_choices <- c("first", "last")
+        if (checkmate::test_choice(position, pos_choices) && position == "first") {
+          pos <- 0
+        } else if (checkmate::test_choice(position, pos_choices) && position == "last") {
+          pos <- length(init_lvls)
+        } else if (checkmate::test_int(position, lower = 1, upper = length(init_lvls))) {
+          pos <- position - 1
+        } else {
+          stop("Wrong input for ref group position. It must be 'first', 'last', or a integer.")
+        }
+
+        reord_lvls <- append(init_lvls[-ref_group_pos], init_lvls[ref_group_pos], after = pos)
+        ord <- match(reord_lvls, names(splret$values))
+
+        make_split_result(
+          splret$values[ord],
+          splret$datasplit[ord],
+          splret$labels[ord]
+        )
       }
-
-      spl_var <- spl@payload # can be substituted by splret$labels
-      init_lvls <- levels(fulldf[[spl_var]])
-
-      if (!all(names(splret$values) %in% init_lvls)) {
-        stop("This split function does not work with combination facets.")
-      }
-
-      ref_group_pos <- which(init_lvls == spl@ref_group_value)
-      reord_lvls <- c(init_lvls[-ref_group_pos], init_lvls[ref_group_pos])
-      ord <- match(reord_lvls, names(splret$values))
-
-      make_split_result(
-        splret$values[ord],
-        splret$datasplit[ord],
-        splret$labels[ord]
-      )
-    }
+    )
   )
-)
+}
 #' @describeIn utils_split_funs split function to keep original order of factor
 #'  levels in the split.
 #'

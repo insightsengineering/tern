@@ -1,27 +1,12 @@
-testthat::test_that("ref_group_last split fun gives error when ref group is undefined", {
+testthat::test_that("ref_group_position last split fun gives error when ref group is undefined", {
   lyt <- basic_table() %>%
-    split_cols_by(var = "ARMCD", split_fun = ref_group_last) %>%
+    split_cols_by(var = "ARMCD", split_fun = ref_group_position("last")) %>%
     analyze("AGE")
 
   testthat::expect_error(build_table(lyt, df = tern_ex_adsl))
 })
 
-# testthat::test_that("ref_group_last split fun gives error when used with combo facets", {
-#   custom_splitfun <- make_split_fun(
-#     post = list(
-#       add_combo_facet("A_C", "Arms A+C", c("A: Drug X", "C: Combination")),
-#       ref_group_last
-#     )
-#   )
-#
-#   lyt <- basic_table() %>%
-#     split_cols_by("ARM", ref_group = "B: Placebo", split_fun = custom_splitfun) %>%
-#     analyze("AGE")
-#
-#   testthat::expect_error(build_table(lyt, df = tern_ex_adsl))
-# })
-
-testthat::test_that("analyze_vars works as expected with ref_group_last split fun", {
+testthat::test_that("analyze_vars works as expected with ref_group_position last split fun", {
   # Default behavior
   result <- basic_table() %>%
     split_cols_by(var = "ARMCD", ref_group = "ARM C") %>%
@@ -32,9 +17,9 @@ testthat::test_that("analyze_vars works as expected with ref_group_last split fu
   res <- testthat::expect_silent(result)
   testthat::expect_identical(names(res), c("ARM C", "ARM A", "ARM B"))
 
-  # ref_group_last
+  # ref_group_position("last")
   result <- basic_table() %>%
-    split_cols_by(var = "ARMCD", ref_group = "ARM C", split_fun = ref_group_last) %>%
+    split_cols_by(var = "ARMCD", ref_group = "ARM C", split_fun = ref_group_position("last")) %>%
     add_colcounts() %>%
     analyze_vars(c("AGE", "STRATA2")) %>%
     build_table(df = tern_ex_adsl)
@@ -54,21 +39,21 @@ testthat::test_that("analyze_vars works as expected with ref_group_last split fu
   testthat::expect_identical(toString(res), toString(res_ordered))
 })
 
-testthat::test_that("compare_vars works as expected with ref_group_last split fun", {
+testthat::test_that("compare_vars works as expected with ref_group first split fun", {
   result <- basic_table() %>%
-    split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_last) %>%
+    split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_position("first")) %>%
     add_colcounts() %>%
     compare_vars("AGE") %>%
     build_table(df = tern_ex_adsl)
 
   res <- testthat::expect_silent(result)
-  testthat::expect_identical(names(res), c("ARM A", "ARM C", "ARM B"))
+  testthat::expect_identical(names(res), c("ARM B", "ARM A", "ARM C"))
   testthat::expect_snapshot(res[1:2, ])
 })
 
-testthat::test_that("summarize_ancova works as expected with ref_group_last split fun", {
+testthat::test_that("summarize_ancova works as expected with ref_group position split fun", {
   result <- basic_table() %>%
-    split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_last) %>%
+    split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_position(2)) %>%
     add_colcounts() %>%
     summarize_ancova(
       vars = "BMRKR1",
@@ -79,17 +64,17 @@ testthat::test_that("summarize_ancova works as expected with ref_group_last spli
     build_table(tern_ex_adsl)
 
   res <- testthat::expect_silent(result)
-  testthat::expect_identical(names(res), c("ARM A", "ARM C", "ARM B"))
+  testthat::expect_identical(names(res), c("ARM A", "ARM B", "ARM C"))
   testthat::expect_snapshot(res[1:2, ])
 })
 
-testthat::test_that("binary endpoint layouts work as expected with ref_group_last split fun", {
+testthat::test_that("binary endpoint layouts work as expected with ref_group_position last split fun", {
   adrs_f <- tern_ex_adrs %>%
     dplyr::filter(PARAMCD == "INVET") %>%
     dplyr::mutate(is_rsp = AVALC %in% c("CR", "PR"))
 
   result <- basic_table() %>%
-    split_cols_by(var = "ARM", ref_group = "B: Placebo", split_fun = ref_group_last) %>%
+    split_cols_by(var = "ARM", ref_group = "B: Placebo", split_fun = ref_group_position("last")) %>%
     add_colcounts() %>%
     estimate_odds_ratio(vars = "is_rsp") %>%
     estimate_proportion_diff(vars = "is_rsp", table_names = "prop_diff") %>%
@@ -101,7 +86,7 @@ testthat::test_that("binary endpoint layouts work as expected with ref_group_las
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("time to event layouts works as expected with ref_group_last split fun", {
+testthat::test_that("time to event layouts works as expected with ref_group_position last split fun", {
   adtte_f <- tern_ex_adtte %>%
     dplyr::filter(PARAMCD == "PFS") %>%
     dplyr::mutate(
@@ -110,7 +95,7 @@ testthat::test_that("time to event layouts works as expected with ref_group_last
     )
 
   result <- basic_table() %>%
-    split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_last) %>%
+    split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_position("last")) %>%
     add_colcounts() %>%
     coxph_pairwise(
       vars = "AVAL",
@@ -129,11 +114,11 @@ testthat::test_that("time to event layouts works as expected with ref_group_last
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("summarize_ancova works as expected with ref_group_last split fun", {
+testthat::test_that("summarize_ancova works as expected with ref_group_position last split fun", {
   anl <- tern_ex_adtte %>% filter(PARAMCD == "TNE")
 
   result <- basic_table() %>%
-    split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_last) %>%
+    split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = ref_group_position("last")) %>%
     add_colcounts() %>%
     summarize_glm_count(
       vars = "AVAL",
