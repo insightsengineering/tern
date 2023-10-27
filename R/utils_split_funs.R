@@ -127,7 +127,7 @@ ref_group_position <- function(position = "first") {
 #' @export
 keep_level_order <- make_split_fun(
   post = list(
-    function(splret, spl, fulldf, ...) {
+    function(splret, spl, fulldf) {
       ord <- order(names(splret$values))
       make_split_result(
         splret$values[ord],
@@ -165,7 +165,7 @@ keep_level_order <- make_split_fun(
 level_order <- function(order) {
   make_split_fun(
     post = list(
-      function(splret, spl, fulldf, ...) {
+      function(splret, spl, fulldf) {
         if (checkmate::test_integerish(order)) {
           checkmate::assert_integerish(order, lower = 1, upper = length(splret$values))
           ord <- order
