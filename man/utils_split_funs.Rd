@@ -64,7 +64,7 @@ Collection of useful functions that are expanding on the core list of functions
 provided by \code{rtables}. See \link[rtables:custom_split_funs]{rtables::custom_split_funs} and \code{\link[rtables:make_split_fun]{rtables::make_split_fun()}}
 for more information on how to make a custom split function. All these functions
 work with \code{\link[=split_rows_by]{split_rows_by()}} argument \code{split_fun} to modify the way the split
-happens. For other split functions, consider consulting \link[rtables:split_funcs]{rtables::split_funcs}.
+happens. For other split functions, consider consulting \code{\link[rtables:split_funcs]{rtables::split_funcs}}.
 }
 \section{Functions}{
 \itemize{
@@ -74,8 +74,8 @@ during post-processing stage.
 \item \code{keep_level_order()}: split function to keep original order of factor
 levels in the split.
 
-\item \code{level_order()}: split function to change level order based on a integerish
-vector or a character vector that represent the split variable's factor levels.
+\item \code{level_order()}: split function to change level order based on a \code{integer}
+vector or a \code{character} vector that represent the split variable's factor levels.
 
 }}
 \examples{

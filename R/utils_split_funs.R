@@ -6,7 +6,7 @@
 #' provided by `rtables`. See [rtables::custom_split_funs] and [rtables::make_split_fun()]
 #' for more information on how to make a custom split function. All these functions
 #' work with [split_rows_by()] argument `split_fun` to modify the way the split
-#' happens. For other split functions, consider consulting [rtables::split_funcs].
+#' happens. For other split functions, consider consulting [`rtables::split_funcs`].
 #'
 #' @inheritParams rtables::split_funcs
 #' @param .spl_context (`data.frame`) \cr detailed description of the current split (or subsetting).
@@ -137,8 +137,8 @@ keep_level_order <- make_split_fun(
     }
   )
 )
-#' @describeIn utils_split_funs split function to change level order based on a integerish
-#'   vector or a character vector that represent the split variable's factor levels.
+#' @describeIn utils_split_funs split function to change level order based on a `integer`
+#'   vector or a `character` vector that represent the split variable's factor levels.
 #'
 #' @param order (`character` or `integer`)\cr vector of ordering indexes for the split facets.
 #'
