@@ -1,4 +1,4 @@
-# tern 0.9.2.9001
+# tern 0.9.2.9002
 
 ### Miscellaneous
 * Specified minimal version of package dependencies.
