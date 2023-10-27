@@ -73,7 +73,7 @@ ref_group_position <- function(position = "first") {
   make_split_fun(
     post = list(
       function(splret, spl, fulldf) {
-        if (!"ref_group_value" %in% slotNames(spl)) {
+        if (!"ref_group_value" %in% methods::slotNames(spl)) {
           stop("Reference group is undefined.")
         }
 
