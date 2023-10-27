@@ -18,13 +18,13 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
-<text x='14.40' y='215.81' style='font-size: 12.00px; font-family: sans;' textLength='116.06px' lengthAdjust='spacingAndGlyphs'>Baseline Risk Factors</text>
 <text x='195.13' y='215.81' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='3.33px' lengthAdjust='spacingAndGlyphs'> </text>
 <text x='279.78' y='215.81' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='52.03px' lengthAdjust='spacingAndGlyphs'>A: Drug X</text>
 <polyline points='226.22,220.32 333.33,220.32 ' style='stroke-width: 0.75;' />
 <text x='389.64' y='215.81' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='58.05px' lengthAdjust='spacingAndGlyphs'>B: Placebo</text>
 <polyline points='339.09,220.32 440.19,220.32 ' style='stroke-width: 0.75;' />
 <text x='532.53' y='215.81' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='3.33px' lengthAdjust='spacingAndGlyphs'> </text>
+<text x='14.40' y='233.09' style='font-size: 12.00px; font-family: sans;' textLength='116.06px' lengthAdjust='spacingAndGlyphs'>Baseline Risk Factors</text>
 <text x='195.13' y='233.09' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='36.68px' lengthAdjust='spacingAndGlyphs'>Total n</text>
 <text x='236.55' y='233.09' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='6.67px' lengthAdjust='spacingAndGlyphs'>n</text>
 <text x='292.98' y='233.09' text-anchor='middle' style='font-size: 12.00px; font-family: sans;' textLength='76.05px' lengthAdjust='spacingAndGlyphs'>Response (%)</text>
