@@ -23,10 +23,12 @@
 #'   and be of a `double` or `numeric` type vector of length one.
 #' @param interval (`character` or `NULL`)\cr names of the statistics that will be plotted as intervals.
 #'   All the statistics indicated in `interval` variable must be present in the object returned by `sfun`,
-#'   and be of a `double` or `numeric` type vector of length two.
-#' @param whiskers (`character`)\cr names of the interval whiskers that will be plotted. Must match the `names`
-#'   attribute of the `interval` element in the list returned by `sfun`. It is possible to specify one whisker only,
-#'   lower or upper.
+#'   and be of a `double` or `numeric` type vector of length two. Set `interval = NULL` if intervals should not be
+#'   added to the plot.
+#' @param whiskers (`character`)\cr names of the interval whiskers that will be plotted. Names must match names
+#'   of the list element `interval` that will be returned by `sfun` (e.g. `mean_ci_lwr` element of
+#'   `sfun(x)[["mean_ci"]]`). It is possible to specify one whisker only, or to suppress all whiskers by setting
+#'   `interval = NULL`.
 #' @param table (`character` or `NULL`)\cr names of the statistics that will be displayed in the table below the plot.
 #'   All the statistics indicated in `table` variable must be present in the object returned by `sfun`.
 #' @param sfun (`closure`)\cr the function to compute the values of required statistics. It must return a named `list`
