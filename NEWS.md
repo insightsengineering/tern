@@ -1,5 +1,10 @@
 # tern 0.9.2.9003
 
+### New Features
+* Added `ref_group_position` function to place the reference group facet last, first or at a certain position.
+* Added `keep_level_order` split function to retain original order of levels in a split.
+* Added `level_order` split function to reorder manually the levels.
+
 ### Miscellaneous
 * Specified minimal version of package dependencies.
 
