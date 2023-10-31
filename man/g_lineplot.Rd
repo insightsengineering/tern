@@ -59,11 +59,13 @@ and be of a \code{double} or \code{numeric} type vector of length one.}
 
 \item{interval}{(\code{character} or \code{NULL})\cr names of the statistics that will be plotted as intervals.
 All the statistics indicated in \code{interval} variable must be present in the object returned by \code{sfun},
-and be of a \code{double} or \code{numeric} type vector of length two.}
+and be of a \code{double} or \code{numeric} type vector of length two. Set \code{interval = NULL} if intervals should not be
+added to the plot.}
 
-\item{whiskers}{(\code{character})\cr names of the interval whiskers that will be plotted. Must match the \code{names}
-attribute of the \code{interval} element in the list returned by \code{sfun}. It is possible to specify one whisker only,
-lower or upper.}
+\item{whiskers}{(\code{character})\cr names of the interval whiskers that will be plotted. Names must match names
+of the list element \code{interval} that will be returned by \code{sfun} (e.g. \code{mean_ci_lwr} element of
+\code{sfun(x)[["mean_ci"]]}). It is possible to specify one whisker only, or to suppress all whiskers by setting
+\code{interval = NULL}.}
 
 \item{table}{(\code{character} or \code{NULL})\cr names of the statistics that will be displayed in the table below the plot.
 All the statistics indicated in \code{table} variable must be present in the object returned by \code{sfun}.}
