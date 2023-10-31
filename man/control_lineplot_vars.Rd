@@ -27,6 +27,10 @@ control_lineplot_vars(
 \item{y_unit}{(\code{character} or \code{NA})\cr \code{y_unit} variable name.}
 
 \item{subject_var}{(\code{character} or \code{NA})\cr subject variable name.}
+
+\item{strata}{(\code{character} or \code{NA})\cr deprecated, group variable name.}
+
+\item{cohort_id}{(\code{character} or \code{NA})\cr deprecated, subject variable name.}
 }
 \value{
 A named character vector of variable names.
