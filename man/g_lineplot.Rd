@@ -45,7 +45,7 @@ to counts objects in groups for stratification.}
 \itemize{
 \item \code{x} (\code{character})\cr name of x-axis variable.
 \item \code{y} (\code{character})\cr name of y-axis variable.
-\item \code{group_var} (\code{character})\cr name of grouping variable, i.e. treatment arm.
+\item \code{group_var} (\code{character})\cr name of grouping variable (or strata), i.e. treatment arm.
 Can be \code{NA} to indicate lack of groups.
 \item \code{subject_var} (\code{character})\cr name of subject variable. Only applies if \code{group_var} is
 not NULL.

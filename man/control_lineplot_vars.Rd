@@ -10,7 +10,9 @@ control_lineplot_vars(
   group_var = "ARM",
   paramcd = "PARAMCD",
   y_unit = "AVALU",
-  subject_var = "USUBJID"
+  subject_var = "USUBJID",
+  strata = lifecycle::deprecated(),
+  cohort_id = lifecycle::deprecated()
 )
 }
 \arguments{

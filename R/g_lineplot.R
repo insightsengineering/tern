@@ -10,7 +10,7 @@
 #' @param variables (named `character` vector) of variable names in `df` data set. Details are:
 #'   * `x` (`character`)\cr name of x-axis variable.
 #'   * `y` (`character`)\cr name of y-axis variable.
-#'   * `group_var` (`character`)\cr name of grouping variable, i.e. treatment arm.
+#'   * `group_var` (`character`)\cr name of grouping variable (or strata), i.e. treatment arm.
 #'     Can be `NA` to indicate lack of groups.
 #'   * `subject_var` (`character`)\cr name of subject variable. Only applies if `group_var` is
 #'      not NULL.
@@ -487,13 +487,23 @@ h_format_row <- function(x, format, labels = NULL) {
 #'
 #' @export
 control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", group_var = "ARM", paramcd = "PARAMCD", y_unit = "AVALU",
-                                  subject_var = "USUBJID") {
+                                  subject_var = "USUBJID", strata = lifecycle::deprecated(), cohort_id = lifecycle::deprecated()) {
   checkmate::assert_string(x)
   checkmate::assert_string(y)
   checkmate::assert_string(group_var, na.ok = TRUE)
   checkmate::assert_string(subject_var, na.ok = TRUE)
   checkmate::assert_string(paramcd, na.ok = TRUE)
   checkmate::assert_string(y_unit, na.ok = TRUE)
+
+  if (lifecycle::is_present(strata)) {
+    lifecycle::deprecate_warn("0.9.2", "control_lineplot_vars(strata)", "analyze_vars(group_var)")
+    group_var <- strata
+  }
+
+  if (lifecycle::is_present(cohort_id)) {
+    lifecycle::deprecate_warn("0.9.2", "control_lineplot_vars(cohort_id)", "analyze_vars(subject_id)")
+    subject_id <- cohort_id
+  }
 
   variables <- c(x = x, y = y, group_var = group_var, paramcd = paramcd, y_unit = y_unit, subject_var = subject_var)
   return(variables)
