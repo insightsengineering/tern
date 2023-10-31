@@ -503,12 +503,12 @@ control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", group_var = "ARM", p
   checkmate::assert_string(y_unit, na.ok = TRUE)
 
   if (lifecycle::is_present(strata)) {
-    lifecycle::deprecate_warn("0.9.2", "control_lineplot_vars(strata)", "analyze_vars(group_var)")
+    lifecycle::deprecate_warn("0.9.2", "control_lineplot_vars(strata)", "control_lineplot_vars(group_var)")
     group_var <- strata
   }
 
   if (lifecycle::is_present(cohort_id)) {
-    lifecycle::deprecate_warn("0.9.2", "control_lineplot_vars(cohort_id)", "analyze_vars(subject_id)")
+    lifecycle::deprecate_warn("0.9.2", "control_lineplot_vars(cohort_id)", "control_lineplot_vars(subject_id)")
     subject_id <- cohort_id
   }
 
