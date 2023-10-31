@@ -30,9 +30,9 @@ get_stats(
   add_pval = FALSE
 )
 
-get_formats_from_stats(stats, formats_in = NULL)
+get_formats_from_stats(stats, formats_in = NULL, method = NULL)
 
-get_labels_from_stats(stats, labels_in = NULL)
+get_labels_from_stats(stats, labels_in = NULL, row_nms = NULL, control = NULL)
 
 tern_default_formats
 

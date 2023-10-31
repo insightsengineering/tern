@@ -184,8 +184,6 @@ get_formats_from_stats <- function(stats, formats_in = NULL, method = NULL) {
     out[!is.na(which_mthd_fmt)] <- tern_default_formats[[method]][which_mthd_fmt[!is.na(which_mthd_fmt)]]
   }
 
-
-
   # Modify some with custom formats
   if (!is.null(formats_in)) {
     # Stats is the main
@@ -228,28 +226,23 @@ get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL, contr
 
   which_lbl <- match(stats, names(tern_default_labels))
 
-  ret <- vector("character", length = length(stats)) # it needs to be a character vector
-  ret[!is.na(which_lbl)] <- tern_default_labels[which_lbl[!is.na(which_lbl)]]
+  out <- setNames(vector("character", length = length(stats)), stats) # it needs to be a character vector
+  out[!is.na(which_lbl)] <- tern_default_labels[which_lbl[!is.na(which_lbl)]]
 
-  out <- setNames(ret, stats)
-
-    # Change defaults for labels with control specs
-    if (!is.null(control)) {
-      if ("conf_level" %in% names(control)) {
-        ret <- gsub("[0-9]+% CI", f_conf_level(control[["conf_level"]]), ret)
-      }
-      if ("quantiles" %in% names(control)) {
-        ret <- gsub(
-          "[0-9]+% and [0-9]+", paste0(control[["quantiles"]][1] * 100, "% and ", control[["quantiles"]][2] * 100, ""),
-          ret
-        )
-      }
-      if ("mean_pval" %in% names(control)) {
-        ret <- gsub("p-value \\(H0: mean = [0-9\\.]+\\)", f_pval(control[["conf_level"]]), ret)
-      }
+  # Change defaults for labels with control specs
+  if (!is.null(control)) {
+    if ("conf_level" %in% names(control)) {
+      out <- gsub("[0-9]+% CI", f_conf_level(control[["conf_level"]]), out)
     }
-
-    out <- setNames(ret, stats)
+    if ("quantiles" %in% names(control)) {
+      out <- gsub(
+        "[0-9]+% and [0-9]+", paste0(control[["quantiles"]][1] * 100, "% and ", control[["quantiles"]][2] * 100, ""),
+        out
+      )
+    }
+    if ("mean_pval" %in% names(control)) {
+      out <- gsub("p-value \\(H0: mean = [0-9\\.]+\\)", f_pval(control[["conf_level"]]), out)
+    }
   }
 
   # Modify some with custom labels

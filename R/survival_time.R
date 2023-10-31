@@ -167,7 +167,7 @@ surv_time <- function(lyt,
                       var_labels = "Time to Event",
                       show_labels = "visible",
                       table_names = vars,
-                      .stats = c("median", "median_ci", "quantiles", "range_censor", "range_event"),
+                      .stats = c("median", "median_ci", "quantiles", "range"),
                       .formats = NULL,
                       .labels = NULL,
                       .indent_mods = c("median_ci" = 1L)) {
