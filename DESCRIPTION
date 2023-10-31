@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.9.2.9002
-Date: 2023-10-27
+Version: 0.9.2.9004
+Date: 2023-10-31
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = "aut"),
@@ -167,3 +167,4 @@ Collate:
     'utils_factor.R'
     'utils_grid.R'
     'utils_rtables.R'
+    'utils_split_funs.R'

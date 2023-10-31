@@ -3,8 +3,8 @@
     Code
       res
     Output
-      [1] "count"                   "count_fraction_fixed_dp"
-      [3] "fraction"               
+      [1] "count"                   "count_fraction"         
+      [3] "count_fraction_fixed_dp" "fraction"               
 
 ---
 
@@ -36,8 +36,20 @@
     Code
       res
     Output
-                        count count_fraction_fixed_dp                fraction 
-                      "count"                      ""                      "" 
+                        count          count_fraction count_fraction_fixed_dp 
+                      "count"        "count_fraction"        "count_fraction" 
+                     fraction 
+                   "fraction" 
+
+# get_indents_from_stats works as expected
+
+    Code
+      res
+    Output
+                        count          count_fraction count_fraction_fixed_dp 
+                            0                       0                       0 
+                     fraction 
+                            0 
 
 # summary_formats works as expected
 
