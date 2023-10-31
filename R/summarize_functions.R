@@ -10,6 +10,7 @@
 #' * [h_tab_one_biomarker()] (probably to deprecate)
 #' * [logistic_summary_by_flag()]
 #' * [summarize_num_patients()]
+#' * [summarize_occurrences()]
 #' * [summarize_occurrences_by_grade()]
 #' * [summarize_patients_events_in_cols()]
 #' * [summarize_patients_exposure_in_cols()]
