@@ -4,6 +4,7 @@
 \alias{count_occurrences}
 \alias{s_count_occurrences}
 \alias{a_count_occurrences}
+\alias{summarize_occurrences}
 \title{Occurrence Counts}
 \usage{
 s_count_occurrences(
@@ -18,12 +19,18 @@ s_count_occurrences(
 
 a_count_occurrences(
   df,
+  labelstr = "",
+  id = "USUBJID",
   denom = c("N_col", "n"),
-  .N_col,
-  .df_row,
   drop = TRUE,
-  .var = "MHDECOD",
-  id = "USUBJID"
+  .N_col,
+  .var = NULL,
+  .df_row = NULL,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL,
+  na_str = NA_character_
 )
 
 count_occurrences(
@@ -36,10 +43,22 @@ count_occurrences(
   nested = TRUE,
   ...,
   table_names = vars,
-  .stats = "count_fraction",
+  .stats = "count_fraction_fixed_dp",
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL
+)
+
+summarize_occurrences(
+  lyt,
+  var,
+  riskdiff = FALSE,
+  na_str = NA_character_,
+  ...,
+  .stats = "count_fraction_fixed_dp",
+  .formats = NULL,
+  .indent_mods = NULL,
+  .labels = NULL
 )
 }
 \arguments{
@@ -59,10 +78,26 @@ passed by \code{rtables}.}
 \item{drop}{(\code{flag})\cr should non appearing occurrence levels be dropped from the resulting table.
 Note that in that case the remaining occurrence levels in the table are sorted alphabetically.}
 
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
 \item{id}{(\code{string})\cr subject variable name.}
+
+\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+(must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
+for more information.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
@@ -76,8 +111,6 @@ by a statistics function.}
 used as \code{split_fun} in the prior column split of the table layout, specifying which columns should be compared.
 See \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} for details on risk difference calculation.}
 
-\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
-
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
@@ -86,16 +119,6 @@ underneath analyses, which is not allowed.}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
-
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
-information on the \code{"auto"} setting.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
-
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
-unmodified default behavior. Can be negative.}
 }
 \value{
 \itemize{
@@ -116,6 +139,12 @@ unmodified default behavior. Can be negative.}
 or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
 the statistics from \code{s_count_occurrences()} to the table layout.
 }
+
+\itemize{
+\item \code{summarize_occurrences()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted content rows
+containing the statistics from \code{s_count_occurrences()} to the table layout.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -135,6 +164,9 @@ in \code{count_occurrences()}.
 
 \item \code{count_occurrences()}: Layout-creating function which can take statistics function arguments
 and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+
+\item \code{summarize_occurrences()}: Layout-creating function which can take content function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 
 }}
 \note{
@@ -160,10 +192,7 @@ s_count_occurrences(
   id = "USUBJID"
 )
 
-#  We need to ungroup `count_fraction` first so that the `rtables` formatting
-# function `format_count_fraction()` can be applied correctly.
-afun <- make_afun(a_count_occurrences, .ungroup_stats = c("count", "count_fraction", "fraction"))
-afun(
+a_count_occurrences(
   df,
   .N_col = N_per_col,
   .df_row = df,
@@ -181,7 +210,8 @@ df <- data.frame(
     "MH1", "MH2", "MH1", "MH1", "MH1", "MH3",
     "MH2", "MH2", "MH3", "MH1", "MH2", "MH4"
   ),
-  ARM = rep(c("A", "B"), each = 6)
+  ARM = rep(c("A", "B"), each = 6),
+  SEX = c("F", "F", "M", "M", "M", "M", "F", "F", "F", "M", "M", "F")
 )
 df_adsl <- df \%>\%
   select(USUBJID, ARM) \%>\%
@@ -197,5 +227,15 @@ lyt <- basic_table() \%>\%
 lyt \%>\%
   build_table(df, alt_counts_df = df_adsl) \%>\%
   prune_table()
+
+# Layout creating function with custom format.
+basic_table() \%>\%
+  add_colcounts() \%>\%
+  split_rows_by("SEX", child_labels = "visible") \%>\%
+  summarize_occurrences(
+    var = "MHDECOD",
+    .formats = c("count_fraction" = "xx.xx (xx.xx\%)")
+  ) \%>\%
+  build_table(df, alt_counts_df = df_adsl)
 
 }

@@ -68,7 +68,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
   for (mgi in method_groups) {
     # Main switcher
     out_tmp <- switch(mgi,
-      "count_occurrences" = c("count", "count_fraction_fixed_dp", "fraction"),
+      "count_occurrences" = c("count", "count_fraction", "count_fraction_fixed_dp", "fraction"),
       "summarize_num_patients" = c("unique", "nonunique", "unique_count"),
       "analyze_vars_counts" = c("n", "count", "count_fraction", "n_blq"),
       "analyze_vars_numeric" = c(
@@ -196,7 +196,12 @@ get_formats_from_stats <- function(stats, formats_in = NULL, method = NULL) {
 
 #' @describeIn default_stats_formats_labels Get labels from vector of statistical methods.
 #'
-#' @param labels_in (named `vector`) \cr inserted labels to replace defaults.
+#' @param labels_in (named `vector`)\cr inserted labels to replace defaults.
+#' @param row_nms (`character`)\cr row names. Levels of a `factor` or `character` variable, each
+#'   of which the statistics in `.stats` will be calculated for. If this parameter is set, these
+#'   variable levels will be used as the defaults, and the names of the given custom values should
+#'   correspond to levels (or have format `statistic.level`) instead of statistics. Can also be
+#'   variable names if rows correspond to different variables instead of levels. Defaults to `NULL`.
 #'
 #' @return
 #' * `get_labels_from_stats()` returns a named character vector of default labels (if present
@@ -216,6 +221,7 @@ get_formats_from_stats <- function(stats, formats_in = NULL, method = NULL) {
 #' @export
 get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL, control = NULL) {
   checkmate::assert_character(stats, min.len = 1)
+  checkmate::assert_character(row_nms, null.ok = TRUE)
   # It may be a list
   if (checkmate::test_list(labels_in, null.ok = TRUE)) {
     checkmate::assert_list(labels_in, null.ok = TRUE)
@@ -224,7 +230,9 @@ get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL, contr
     checkmate::assert_character(labels_in, null.ok = TRUE)
   }
 
-  which_lbl <- match(stats, names(tern_default_labels))
+  if (!is.null(row_nms)) {
+    ret <- rep(row_nms, length(stats))
+    out <- setNames(ret, paste(rep(stats, each = length(row_nms)), ret, sep = "."))
 
   out <- setNames(vector("character", length = length(stats)), stats) # it needs to be a character vector
   out[!is.na(which_lbl)] <- tern_default_labels[which_lbl[!is.na(which_lbl)]]
@@ -245,11 +253,70 @@ get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL, contr
     }
   }
 
+    out <- setNames(ret, stats)
+  }
+
   # Modify some with custom labels
   if (!is.null(labels_in)) {
     # Stats is the main
     common_names <- intersect(names(out), names(labels_in))
     out[common_names] <- labels_in[common_names]
+  }
+
+  out
+}
+
+#' @describeIn default_stats_formats_labels Format indent modifiers for a given vector/list of statistics.
+#'
+#' @param indents_in (named `vector`)\cr inserted indent modifiers to replace defaults (default is `0L`).
+#'
+#' @return
+#' * `get_indents_from_stats()` returns a single indent modifier value to apply to all rows
+#'   or a named numeric vector of indent modifiers (if present, otherwise `NULL`).
+#'
+#' @examples
+#' get_indents_from_stats(all_cnt_occ, indents_in = 3L)
+#' get_indents_from_stats(all_cnt_occ, indents_in = list(count = 2L, count_fraction = 5L))
+#' get_indents_from_stats(
+#'   all_cnt_occ,
+#'   indents_in = list(a = 2L, count.a = 1L, count.b = 5L), row_nms = c("a", "b")
+#' )
+#'
+#' @export
+get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
+  checkmate::assert_character(stats, min.len = 1)
+  checkmate::assert_character(row_nms, null.ok = TRUE)
+  # It may be a list
+  if (checkmate::test_list(indents_in, null.ok = TRUE)) {
+    checkmate::assert_list(indents_in, null.ok = TRUE)
+    # Or it may be a vector of integers
+  } else {
+    checkmate::assert_integerish(indents_in, null.ok = TRUE)
+  }
+
+  if (is.null(names(indents_in)) && length(indents_in) == 1) {
+    out <- rep(indents_in, length(stats) * if (!is.null(row_nms)) length(row_nms) else 1)
+    return(out)
+  }
+
+  if (!is.null(row_nms)) {
+    ret <- rep(0L, length(stats) * length(row_nms))
+    out <- setNames(ret, paste(rep(stats, each = length(row_nms)), rep(row_nms, length(stats)), sep = "."))
+
+    if (!is.null(indents_in)) {
+      lvl_lbls <- intersect(names(indents_in), row_nms)
+      for (i in lvl_lbls) out[paste(stats, i, sep = ".")] <- indents_in[[i]]
+    }
+  } else {
+    ret <- rep(0L, length(stats))
+    out <- setNames(ret, stats)
+  }
+
+  # Modify some with custom labels
+  if (!is.null(indents_in)) {
+    # Stats is the main
+    common_names <- intersect(names(out), names(indents_in))
+    out[common_names] <- indents_in[common_names]
   }
 
   out
@@ -312,11 +379,13 @@ tern_default_formats <- list(
 #' @export
 tern_default_labels <- c(
   # list of labels -> sorted? xxx it should be not relevant due to match
+  fraction = "fraction",
   unique = "Number of patients with at least one event",
   nonunique = "Number of events",
   n = "n",
   count = "count",
   count_fraction = "count_fraction",
+  count_fraction_fixed_dp = "count_fraction",
   n_blq = "n_blq",
   sum = "Sum",
   mean = "Mean",

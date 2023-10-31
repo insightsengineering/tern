@@ -6,6 +6,7 @@
 \alias{get_stats}
 \alias{get_formats_from_stats}
 \alias{get_labels_from_stats}
+\alias{get_indents_from_stats}
 \alias{tern_default_formats}
 \alias{tern_default_labels}
 \alias{summary_formats}
@@ -33,6 +34,8 @@ get_stats(
 get_formats_from_stats(stats, formats_in = NULL, method = NULL)
 
 get_labels_from_stats(stats, labels_in = NULL, row_nms = NULL, control = NULL)
+
+get_indents_from_stats(stats, indents_in = NULL, row_nms = NULL)
 
 tern_default_formats
 
@@ -66,7 +69,15 @@ methods.}
 \item{formats_in}{(named \code{vector}) \cr inserted formats to replace defaults. It can be a
 character vector from \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or a custom format function.}
 
-\item{labels_in}{(named \code{vector}) \cr inserted labels to replace defaults.}
+\item{labels_in}{(named \code{vector})\cr inserted labels to replace defaults.}
+
+\item{row_nms}{(\code{character})\cr row names. Levels of a \code{factor} or \code{character} variable, each
+of which the statistics in \code{.stats} will be calculated for. If this parameter is set, these
+variable levels will be used as the defaults, and the names of the given custom values should
+correspond to levels (or have format \code{statistic.level}) instead of statistics. Can also be
+variable names if rows correspond to different variables instead of levels. Defaults to \code{NULL}.}
+
+\item{indents_in}{(named \code{vector})\cr inserted indent modifiers to replace defaults (default is \code{0L}).}
 
 \item{type}{(\code{flag})\cr is it going to be \code{"numeric"} or \code{"counts"}?}
 
@@ -106,6 +117,11 @@ otherwise \code{NULL}).
 }
 
 \itemize{
+\item \code{get_indents_from_stats()} returns a single indent modifier value to apply to all rows
+or a named numeric vector of indent modifiers (if present, otherwise \code{NULL}).
+}
+
+\itemize{
 \item \code{summary_formats()} returns a named \code{vector} of default statistic formats for the given data type.
 }
 
@@ -138,6 +154,8 @@ groups of methods.
 present \code{NULL} is returned.
 
 \item \code{get_labels_from_stats()}: Get labels from vector of statistical methods.
+
+\item \code{get_indents_from_stats()}: Format indent modifiers for a given vector/list of statistics.
 
 \item \code{tern_default_formats}: Named list of default formats for \code{tern}.
 
@@ -198,6 +216,13 @@ get_labels_from_stats(all_cnt_occ)
 # Addition of customs
 get_labels_from_stats(all_cnt_occ, labels_in = c("fraction" = "Fraction"))
 get_labels_from_stats(all_cnt_occ, labels_in = list("fraction" = c("Some more fractions")))
+
+get_indents_from_stats(all_cnt_occ, indents_in = 3L)
+get_indents_from_stats(all_cnt_occ, indents_in = list(count = 2L, count_fraction = 5L))
+get_indents_from_stats(
+  all_cnt_occ,
+  indents_in = list(a = 2L, count.a = 1L, count.b = 5L), row_nms = c("a", "b")
+)
 
 summary_formats()
 summary_formats(type = "counts", include_pval = TRUE)
