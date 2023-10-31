@@ -8,10 +8,6 @@
 #' work with [split_rows_by()] argument `split_fun` to modify the way the split
 #' happens. For other split functions, consider consulting [`rtables::split_funcs`].
 #'
-#' @inheritParams rtables::split_funcs
-#' @param .spl_context (`data.frame`) \cr detailed description of the current split (or subsetting).
-#'   Please consider consulting [rtables::spl_context] for more information.
-#'
 #' @seealso [rtables::make_split_fun()]
 #'
 #' @name utils_split_funs
@@ -109,41 +105,14 @@ ref_group_position <- function(position = "first") {
     )
   )
 }
-#' @describeIn utils_split_funs split function to keep original order of factor
-#'  levels in the split.
-#'
-#' @return
-#' * `keep_level_order` returns an utility function that keeps the original levels'.
-#'  It needs to be assigned to `split_fun`.
-#'
-#' @examples
-#' # keep_level_order --------
-#' # Even if default would bring ref_group first, the original order puts it last
-#' basic_table() %>%
-#'   split_cols_by("Species", ref_group = "virginica", split_fun = keep_level_order) %>%
-#'   analyze("Sepal.Length") %>%
-#'   build_table(iris)
-#'
-#' @export
-keep_level_order <- make_split_fun(
-  post = list(
-    function(splret, spl, fulldf) {
-      ord <- order(names(splret$values))
-      make_split_result(
-        splret$values[ord],
-        splret$datasplit[ord],
-        splret$labels[ord]
-      )
-    }
-  )
-)
+
 #' @describeIn utils_split_funs split function to change level order based on a `integer`
 #'   vector or a `character` vector that represent the split variable's factor levels.
 #'
 #' @param order (`character` or `integer`)\cr vector of ordering indexes for the split facets.
 #'
 #' @return
-#' * `keep_level_order` returns an utility function that changes the original levels' order,
+#' * `level_order` returns an utility function that changes the original levels' order,
 #'   depending on input `order` and split levels.
 #'
 #' @examples

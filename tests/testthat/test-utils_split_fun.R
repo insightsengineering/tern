@@ -25,17 +25,6 @@ testthat::test_that("analyze_vars works as expected with ref_group_position last
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res[3:4, ])
-
-  # keep_level_order
-  result_ordered <- basic_table() %>%
-    split_cols_by(var = "ARMCD", ref_group = "ARM B", split_fun = keep_level_order) %>%
-    add_colcounts() %>%
-    analyze_vars(c("AGE", "STRATA2")) %>%
-    build_table(df = tern_ex_adsl)
-
-  res_ordered <- testthat::expect_silent(result_ordered)
-
-  testthat::expect_identical(toString(res), toString(res_ordered))
 })
 
 testthat::test_that("compare_vars works as expected with ref_group first split fun", {

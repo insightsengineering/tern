@@ -3,41 +3,15 @@
 \name{utils_split_funs}
 \alias{utils_split_funs}
 \alias{ref_group_position}
-\alias{keep_level_order}
 \alias{level_order}
 \title{Custom Split Functions}
 \usage{
 ref_group_position(position = "first")
 
-keep_level_order(
-  df,
-  spl,
-  vals = NULL,
-  labels = NULL,
-  trim = FALSE,
-  .spl_context
-)
-
 level_order(order)
 }
 \arguments{
 \item{position}{(\code{string} or \code{integer})\cr should it be \code{"first"} or \code{"last"} or in a specific position?}
-
-\item{df}{dataset (\code{data.frame} or \code{tibble})}
-
-\item{spl}{A Split object defining a partitioning or analysis/tabulation of
-the data.}
-
-\item{vals}{ANY. For internal use only.}
-
-\item{labels}{character. Labels to use for the remaining levels instead of
-the existing ones.}
-
-\item{trim}{logical(1). Should splits corresponding with 0 observations be
-kept when tabulating.}
-
-\item{.spl_context}{(\code{data.frame}) \cr detailed description of the current split (or subsetting).
-Please consider consulting \link[rtables:spl_context]{rtables::spl_context} for more information.}
 
 \item{order}{(\code{character} or \code{integer})\cr vector of ordering indexes for the split facets.}
 }
@@ -48,12 +22,7 @@ as first, last or at a certain position and needs to be assigned to \code{split_
 }
 
 \itemize{
-\item \code{keep_level_order} returns an utility function that keeps the original levels'.
-It needs to be assigned to \code{split_fun}.
-}
-
-\itemize{
-\item \code{keep_level_order} returns an utility function that changes the original levels' order,
+\item \code{level_order} returns an utility function that changes the original levels' order,
 depending on input \code{order} and split levels.
 }
 }
@@ -70,9 +39,6 @@ happens. For other split functions, consider consulting \code{\link[rtables:spli
 \itemize{
 \item \code{ref_group_position()}: split function to place reference group facet at a specific position
 during post-processing stage.
-
-\item \code{keep_level_order()}: split function to keep original order of factor
-levels in the split.
 
 \item \code{level_order()}: split function to change level order based on a \code{integer}
 vector or a \code{character} vector that represent the split variable's factor levels.
@@ -119,13 +85,6 @@ basic_table() \%>\%
     is_event = "is_event",
   ) \%>\%
   build_table(df = adtte_f)
-
-# keep_level_order --------
-# Even if default would bring ref_group first, the original order puts it last
-basic_table() \%>\%
-  split_cols_by("Species", ref_group = "virginica", split_fun = keep_level_order) \%>\%
-  analyze("Sepal.Length") \%>\%
-  build_table(iris)
 
 # level_order --------
 # Even if default would bring ref_group first, the original order puts it last
