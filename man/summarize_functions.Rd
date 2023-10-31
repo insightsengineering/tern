@@ -12,6 +12,7 @@ to add summary rows to a given table layout:
 \item \code{\link[=h_tab_one_biomarker]{h_tab_one_biomarker()}} (probably to deprecate)
 \item \code{\link[=logistic_summary_by_flag]{logistic_summary_by_flag()}}
 \item \code{\link[=summarize_num_patients]{summarize_num_patients()}}
+\item \code{\link[=summarize_occurrences]{summarize_occurrences()}}
 \item \code{\link[=summarize_occurrences_by_grade]{summarize_occurrences_by_grade()}}
 \item \code{\link[=summarize_patients_events_in_cols]{summarize_patients_events_in_cols()}}
 \item \code{\link[=summarize_patients_exposure_in_cols]{summarize_patients_exposure_in_cols()}}

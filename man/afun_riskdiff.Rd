@@ -14,7 +14,10 @@ afun_riskdiff(
   .spl_context,
   .all_col_counts,
   .stats,
-  .indent_mods,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL,
+  na_str = NA_character_,
   afun,
   s_args = list()
 )
@@ -45,8 +48,15 @@ taken from \code{alt_counts_df} if specified (see \code{\link[rtables:build_tabl
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{afun}{(named \code{list})\cr A named list containing one name-value pair where the name corresponds to
 the name of the statistics function that should be used in calculations and the value is the corresponding
