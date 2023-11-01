@@ -111,7 +111,7 @@ testthat::test_that("split_cols_by_groups equivalent to split_cols_by with ref_c
     }
   }
   result <- basic_table() %>%
-    split_cols_by_groups("ARM", ref_group = "B: Placebo") %>%
+    split_cols_by_groups("ARM", ref_group = "B: Placebo", split_fun = ref_group_position("first")) %>%
     add_colcounts() %>%
     analyze("AGE", afun = afun) %>%
     build_table(DM)

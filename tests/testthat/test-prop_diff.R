@@ -257,7 +257,7 @@ testthat::test_that("`estimate_proportion_diff` and cmh is compatible with `rtab
     stringsAsFactors = TRUE
   )
   l <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B") %>%
+    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
     estimate_proportion_diff(
       vars = "rsp",
       variables = list(strata = c("f1", "f2")),

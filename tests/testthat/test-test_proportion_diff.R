@@ -122,7 +122,7 @@ testthat::test_that("test_proportion_diff returns right result", {
   )
 
   result <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B") %>%
+    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
     test_proportion_diff(
       vars = "rsp",
       method = "cmh", variables = list(strata = "strat")
@@ -140,7 +140,7 @@ testthat::test_that("test_proportion_diff edge case: all responder by chisq", {
   )
 
   result <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B") %>%
+    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
     test_proportion_diff(
       vars = "rsp",
       method = c("chisq", "schouten", "fisher", "cmh")[1]
@@ -158,7 +158,7 @@ testthat::test_that("test_proportion_diff edge case: all responder by schouten",
   )
 
   result <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B") %>%
+    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
     test_proportion_diff(
       vars = "rsp",
       method = c("chisq", "schouten", "fisher", "cmh")[2]
@@ -176,7 +176,7 @@ testthat::test_that("test_proportion_diff edge case: all responder by fisher", {
   )
 
   result <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B") %>%
+    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
     test_proportion_diff(
       vars = "rsp",
       var_labels = "Variable Label",
@@ -197,7 +197,7 @@ testthat::test_that("test_proportion_diff edge case: all responder by CMH", {
   )
 
   result <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B") %>%
+    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
     test_proportion_diff(
       vars = "rsp",
       var_labels = "Variable Label",
