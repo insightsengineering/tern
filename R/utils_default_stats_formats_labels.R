@@ -219,7 +219,7 @@ get_formats_from_stats <- function(stats, formats_in = NULL, method = NULL) {
 #' get_labels_from_stats(all_cnt_occ, labels_in = list("fraction" = c("Some more fractions")))
 #'
 #' @export
-get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL, control = NULL) {
+get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL, method = NULL, control = NULL) {
   checkmate::assert_character(stats, min.len = 1)
   checkmate::assert_character(row_nms, null.ok = TRUE)
   # It may be a list
@@ -241,6 +241,13 @@ get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL, contr
 
     # Select only needed formats from stats
     out[!is.na(which_lbl)] <- tern_default_labels[which_lbl[!is.na(which_lbl)]]
+
+    # Extract any method-specific labels
+    if (!is.null(method) && method %in% names(tern_default_labels)) {
+      which_mthd_lbl <- match(stats, names(tern_default_labels[[method]]))
+      # Select only needed formats from stats
+      out[!is.na(which_mthd_lbl)] <- tern_default_labels[[method]][which_mthd_lbl[!is.na(which_mthd_lbl)]]
+    }
   }
 
   # Change defaults for labels with control specs
@@ -380,7 +387,7 @@ tern_default_formats <- list(
 #' * `tern_default_labels` is a character vector of available labels, named after their relevant
 #'   statistic.
 #' @export
-tern_default_labels <- c(
+tern_default_labels <- list(
   # list of labels -> sorted? xxx it should be not relevant due to match
   fraction = "fraction",
   unique = "Number of patients with at least one event",
@@ -415,8 +422,12 @@ tern_default_labels <- c(
   geom_cv = "CV % Geometric Mean",
   pval = "p-value (t-test)", # Default for numeric
   pval_counts = "p-value (chi-squared test)", # Default for counts
-  range_censor = "Range (censored)",
-  range_event = "Range (event)"
+  surv_time = list(
+    median_ci = "95% CI",
+    range = "Range",
+    range_censor = "Range (censored)",
+    range_event = "Range (event)"
+  )
 )
 
 # To deprecate ---------
