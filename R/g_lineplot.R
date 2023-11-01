@@ -477,9 +477,7 @@ h_format_row <- function(x, format, labels = NULL) {
 #' @param x (`character`)\cr x variable name.
 #' @param y (`character`)\cr y variable name.
 #' @param group_var (`character` or `NA`)\cr group variable name.
-#' @param strata (`character` or `NA`)\cr deprecated, group variable name.
 #' @param subject_var (`character` or `NA`)\cr subject variable name.
-#' @param cohort_id (`character` or `NA`)\cr deprecated, subject variable name.
 #' @param paramcd (`character` or `NA`)\cr `paramcd` variable name.
 #' @param y_unit (`character` or `NA`)\cr `y_unit` variable name.
 #'
@@ -493,15 +491,6 @@ h_format_row <- function(x, format, labels = NULL) {
 control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", group_var = "ARM", paramcd = "PARAMCD", y_unit = "AVALU",
                                   subject_var = "USUBJID", strata = lifecycle::deprecated(),
                                   cohort_id = lifecycle::deprecated()) {
-  checkmate::assert_string(x)
-  checkmate::assert_string(y)
-  checkmate::assert_string(group_var, na.ok = TRUE)
-  checkmate::assert_string(strata, na.ok = TRUE)
-  checkmate::assert_string(subject_var, na.ok = TRUE)
-  checkmate::assert_string(cohort_id, na.ok = TRUE)
-  checkmate::assert_string(paramcd, na.ok = TRUE)
-  checkmate::assert_string(y_unit, na.ok = TRUE)
-
   if (lifecycle::is_present(strata)) {
     lifecycle::deprecate_warn("0.9.2", "control_lineplot_vars(strata)", "control_lineplot_vars(group_var)")
     group_var <- strata
@@ -511,6 +500,13 @@ control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", group_var = "ARM", p
     lifecycle::deprecate_warn("0.9.2", "control_lineplot_vars(cohort_id)", "control_lineplot_vars(subject_id)")
     subject_id <- cohort_id
   }
+
+  checkmate::assert_string(x)
+  checkmate::assert_string(y)
+  checkmate::assert_string(group_var, na.ok = TRUE)
+  checkmate::assert_string(subject_var, na.ok = TRUE)
+  checkmate::assert_string(paramcd, na.ok = TRUE)
+  checkmate::assert_string(y_unit, na.ok = TRUE)
 
   variables <- c(x = x, y = y, group_var = group_var, paramcd = paramcd, y_unit = y_unit, subject_var = subject_var)
   return(variables)
