@@ -179,7 +179,7 @@ surv_time <- function(lyt,
                       .stats = c("median", "median_ci", "quantiles", "range"),
                       .formats = NULL,
                       .labels = NULL,
-                      .indent_mods = c("median_ci" = 1L)) {
+                      .indent_mods = c(median_ci = 1L)) {
   extra_args <- list(
     .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
   )

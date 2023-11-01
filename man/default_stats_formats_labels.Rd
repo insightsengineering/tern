@@ -33,7 +33,13 @@ get_stats(
 
 get_formats_from_stats(stats, formats_in = NULL, method = NULL)
 
-get_labels_from_stats(stats, labels_in = NULL, row_nms = NULL, control = NULL)
+get_labels_from_stats(
+  stats,
+  labels_in = NULL,
+  row_nms = NULL,
+  method = NULL,
+  control = NULL
+)
 
 get_indents_from_stats(stats, indents_in = NULL, row_nms = NULL)
 

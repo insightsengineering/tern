@@ -233,6 +233,11 @@ get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL, metho
   if (!is.null(row_nms)) {
     ret <- rep(row_nms, length(stats))
     out <- setNames(ret, paste(rep(stats, each = length(row_nms)), ret, sep = "."))
+
+    if (!is.null(labels_in)) {
+      lvl_lbls <- intersect(names(labels_in), row_nms)
+      for (i in lvl_lbls) out[paste(stats, i, sep = ".")] <- labels_in[[i]]
+    }
   } else {
     out <- setNames(vector("character", length = length(stats)), stats) # it needs to be a character vector
 
@@ -253,16 +258,18 @@ get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL, metho
   # Change defaults for labels with control specs
   if (!is.null(control)) {
     if ("conf_level" %in% names(control)) {
-      out <- gsub("[0-9]+% CI", f_conf_level(control[["conf_level"]]), out)
+      out <- lapply(out, gsub, pattern = "[0-9]+% CI", replacement = f_conf_level(control[["conf_level"]]))
     }
     if ("quantiles" %in% names(control)) {
-      out <- gsub(
+      out[["quantiles"]] <- gsub(
         "[0-9]+% and [0-9]+", paste0(control[["quantiles"]][1] * 100, "% and ", control[["quantiles"]][2] * 100, ""),
-        out
+        out[["quantiles"]]
       )
     }
     if ("mean_pval" %in% names(control)) {
-      out <- gsub("p-value \\(H0: mean = [0-9\\.]+\\)", f_pval(control[["conf_level"]]), out)
+      out[["mean_pval"]] <- gsub(
+        "p-value \\(H0: mean = [0-9\\.]+\\)", f_pval(control[["conf_level"]]), out[["mean_pval"]]
+      )
     }
   }
 
@@ -273,7 +280,7 @@ get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL, metho
     out[common_names] <- labels_in[common_names]
   }
 
-  out
+  unlist(out)
 }
 
 #' @describeIn default_stats_formats_labels Format indent modifiers for a given vector/list of statistics.
