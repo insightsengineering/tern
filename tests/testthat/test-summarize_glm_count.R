@@ -277,7 +277,7 @@ testthat::test_that("summarize_glm_count works with healthy inputs", {
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
   result <- basic_table() %>%
-    split_cols_by("ARM", ref_group = "B: Placebo") %>%
+    split_cols_by("ARM", ref_group = "B: Placebo", split_fun = ref_group_position("first")) %>%
     add_colcounts() %>%
     analyze_vars(
       "AVAL_f",
