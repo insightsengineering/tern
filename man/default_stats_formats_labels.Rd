@@ -31,9 +31,15 @@ get_stats(
   add_pval = FALSE
 )
 
-get_formats_from_stats(stats, formats_in = NULL)
+get_formats_from_stats(stats, formats_in = NULL, method = NULL)
 
-get_labels_from_stats(stats, labels_in = NULL, row_nms = NULL)
+get_labels_from_stats(
+  stats,
+  labels_in = NULL,
+  row_nms = NULL,
+  method = NULL,
+  control = NULL
+)
 
 get_indents_from_stats(stats, indents_in = NULL, row_nms = NULL)
 
@@ -69,6 +75,10 @@ methods.}
 \item{formats_in}{(named \code{vector}) \cr inserted formats to replace defaults. It can be a
 character vector from \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or a custom format function.}
 
+\item{method}{(\code{character}) name of statistical method group from which to draw alternative
+default formats from. E.g. For \code{method = "surv_time"}, the default label for \code{range} is
+\code{"Range"} instead of the tern default, \code{"Min - Max"}.}
+
 \item{labels_in}{(named \code{vector})\cr inserted labels to replace defaults.}
 
 \item{row_nms}{(\code{character})\cr row names. Levels of a \code{factor} or \code{character} variable, each
@@ -76,6 +86,10 @@ of which the statistics in \code{.stats} will be calculated for. If this paramet
 variable levels will be used as the defaults, and the names of the given custom values should
 correspond to levels (or have format \code{statistic.level}) instead of statistics. Can also be
 variable names if rows correspond to different variables instead of levels. Defaults to \code{NULL}.}
+
+\item{control}{(named \code{list}) list of control parameters to apply to automatically adjust
+default labels. E.g. If control has element \code{conf_level} set to \code{0.9}, the default label for
+statistic \code{mean_ci} will become \code{"Mean 90\% CI"}.}
 
 \item{indents_in}{(named \code{vector})\cr inserted indent modifiers to replace defaults (default is \code{0L}).}
 

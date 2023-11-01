@@ -81,8 +81,7 @@
         Median                     32.0           23.9           20.8    
           95% CI               (22.5, 49.3)   (18.3, 32.9)   (12.9, 26.0)
         25% and 75%-ile         17.4, 65.3     9.8, 42.0      7.3, 37.1  
-        Range (censored)       0.8 to 63.5    6.2 to 78.9    3.4 to 52.4 
-        Range (event)          0.3 to 155.5   0.1 to 154.1   0.6 to 80.7 
+        Range                  0.3 to 155.5   0.1 to 154.1   0.6 to 80.7 
 
 # surv_time works with customized arguments
 
@@ -97,4 +96,26 @@
         40% and 60%-ile         25.6, 46.5     18.3, 29.2     13.0, 25.7 
         Range (censored)       0.8 to 63.5    6.2 to 78.9    3.4 to 52.4 
         Range (event)          0.3 to 155.5   0.1 to 154.1   0.6 to 80.7 
+        Range                  0.3 to 155.5   0.1 to 154.1   0.6 to 80.7 
+
+# surv_time works with referential footnotes
+
+    Code
+      res
+    Output
+                               ARM A              ARM B              ARM C              All       
+      ————————————————————————————————————————————————————————————————————————————————————————————
+      Time to Event                                                                               
+        Median                  32.0               23.9              20.8               24.9      
+          95% CI            (22.6, 53.4)       (18.3, 32.9)      (12.9, 26.0)       (21.5, 31.7)  
+        25% and 75%-ile      17.4, 65.3         9.8, 42.7          7.3, 37.1         11.5, 49.3   
+        Range             0.3 to 155.5 {1}   0.1 to 154.1 {2}   0.6 to 80.7 {3}   0.1 to 155.5 {4}
+      ————————————————————————————————————————————————————————————————————————————————————————————
+      
+      {1} - Censored observation: range minimum
+      {2} - Censored observations: range minimum & maximum
+      {3} - Censored observation: range maximum
+      {4} - Censored observation: range minimum
+      ————————————————————————————————————————————————————————————————————————————————————————————
+      
 
