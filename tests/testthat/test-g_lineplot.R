@@ -13,7 +13,7 @@ testthat::test_that("g_lineplot works with custom settings and statistics table"
   g_lineplot_w_stats <- g_lineplot(
     adlb,
     adsl,
-    strata = control_lineplot_vars(strata = NULL),
+    group_var = control_lineplot_vars(group_var = NULL),
     mid = "median",
     table = c("n", "mean", "mean_ci"),
     control = control_analyze_vars(conf_level = 0.80),
@@ -30,7 +30,7 @@ testthat::test_that("g_lineplot works with cohort_id specified", {
   g_lineplot_cohorts <- g_lineplot(
     adlb,
     adsl,
-    strata = control_lineplot_vars(strata = "ARM", cohort_id = "USUBJID"),
+    group_var = control_lineplot_vars(group_var = "ARM", subject_var = "USUBJID"),
     mid = "median",
     table = c("n", "mean", "mean_ci"),
     control = control_analyze_vars(conf_level = 0.80),

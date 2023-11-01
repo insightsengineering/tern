@@ -7,10 +7,12 @@
 control_lineplot_vars(
   x = "AVISIT",
   y = "AVAL",
-  strata = "ARM",
+  group_var = "ARM",
   paramcd = "PARAMCD",
   y_unit = "AVALU",
-  cohort_id = "USUBJID"
+  subject_var = "USUBJID",
+  strata = lifecycle::deprecated(),
+  cohort_id = lifecycle::deprecated()
 )
 }
 \arguments{
@@ -18,13 +20,17 @@ control_lineplot_vars(
 
 \item{y}{(\code{character})\cr y variable name.}
 
-\item{strata}{(\code{character} or \code{NA})\cr strata variable name.}
+\item{group_var}{(\code{character} or \code{NA})\cr group variable name.}
 
 \item{paramcd}{(\code{character} or \code{NA})\cr \code{paramcd} variable name.}
 
 \item{y_unit}{(\code{character} or \code{NA})\cr \code{y_unit} variable name.}
 
-\item{cohort_id}{(\code{character} or \code{NA})\cr variable to identify subjects in cohorts.}
+\item{subject_var}{(\code{character} or \code{NA})\cr subject variable name.}
+
+\item{strata}{(\code{character} or \code{NA})\cr deprecated - group variable name.}
+
+\item{cohort_id}{(\code{character} or \code{NA})\cr deprecated - subject variable name.}
 }
 \value{
 A named character vector of variable names.
@@ -37,6 +43,6 @@ A variable's default value can be overwritten for any variable.
 }
 \examples{
 control_lineplot_vars()
-control_lineplot_vars(strata = NA)
+control_lineplot_vars(group_var = NA)
 
 }

@@ -5,12 +5,14 @@
 #' Line plot with the optional table.
 #'
 #' @param df (`data.frame`)\cr data set containing all analysis variables.
-#' @param alt_counts_df (`data.frame` or `NULL`)\cr data set that will be used (only) to counts objects in strata.
+#' @param alt_counts_df (`data.frame` or `NULL`)\cr data set that will be used (only)
+#'   to counts objects in groups for stratification.
 #' @param variables (named `character` vector) of variable names in `df` data set. Details are:
 #'   * `x` (`character`)\cr name of x-axis variable.
 #'   * `y` (`character`)\cr name of y-axis variable.
-#'   * `strata` (`character`)\cr name of grouping variable, i.e. treatment arm. Can be `NA` to indicate lack of groups.
-#'   * `cohort_id` (`character`)\cr name of the variable that identifies group belonging. Only applies if `strata` is
+#'   * `group_var` (`character`)\cr name of grouping variable (or strata), i.e. treatment arm.
+#'     Can be `NA` to indicate lack of groups.
+#'   * `subject_var` (`character`)\cr name of subject variable. Only applies if `group_var` is
 #'      not NULL.
 #'   * `paramcd` (`character`)\cr name of the variable for parameter's code. Used for y-axis label and plot's subtitle.
 #'     Can be `NA` if `paramcd` is not to be added to the y-axis label or subtitle.
@@ -76,10 +78,10 @@
 #' # Mean with CI
 #' g_lineplot(adlb, adsl, subtitle = "Laboratory Test:")
 #'
-#' # Mean with CI, no stratification
-#' g_lineplot(adlb, variables = control_lineplot_vars(strata = NA))
+#' # Mean with CI, no stratification with group_var
+#' g_lineplot(adlb, variables = control_lineplot_vars(group_var = NA))
 #'
-#' # Mean, upper whisker of CI, no strata counts N
+#' # Mean, upper whisker of CI, no group_var(strata) counts N
 #' g_lineplot(
 #'   adlb,
 #'   whiskers = "mean_ci_upr",
@@ -173,11 +175,11 @@ g_lineplot <- function(df,
   y <- variables[["y"]]
   paramcd <- variables["paramcd"] # NA if paramcd == NA or it is not in variables
   y_unit <- variables["y_unit"] # NA if y_unit == NA or it is not in variables
-  if (is.na(variables["strata"])) {
-    strata <- NULL # NULL if strata == NA or it is not in variables
+  if (is.na(variables["group_var"])) {
+    group_var <- NULL # NULL if group_var == NA or it is not in variables
   } else {
-    strata <- variables[["strata"]]
-    cohort_id <- variables[["cohort_id"]]
+    group_var <- variables[["group_var"]]
+    subject_var <- variables[["subject_var"]]
   }
   checkmate::assert_flag(y_lab_add_paramcd, null.ok = TRUE)
   checkmate::assert_flag(subtitle_add_paramcd, null.ok = TRUE)
@@ -193,21 +195,21 @@ g_lineplot <- function(df,
     checkmate::assert_scalar(unique(df[[y_unit]]))
   }
 
-  if (!is.null(strata) && !is.null(alt_counts_df)) {
-    checkmate::assert_set_equal(unique(alt_counts_df[[strata]]), unique(df[[strata]]))
+  if (!is.null(group_var) && !is.null(alt_counts_df)) {
+    checkmate::assert_set_equal(unique(alt_counts_df[[group_var]]), unique(df[[group_var]]))
   }
 
   ####################################### |
   # ---- Compute required statistics ----
   ####################################### |
-  if (!is.null(strata)) {
-    df_grp <- tidyr::expand(df, .data[[strata]], .data[[x]]) # expand based on levels of factors
+  if (!is.null(group_var)) {
+    df_grp <- tidyr::expand(df, .data[[group_var]], .data[[x]]) # expand based on levels of factors
   } else {
     df_grp <- tidyr::expand(df, NULL, .data[[x]])
   }
   df_grp <- df_grp %>%
-    dplyr::full_join(y = df[, c(strata, x, y)], by = c(strata, x), multiple = "all") %>%
-    dplyr::group_by_at(c(strata, x))
+    dplyr::full_join(y = df[, c(group_var, x, y)], by = c(group_var, x), multiple = "all") %>%
+    dplyr::group_by_at(c(group_var, x))
 
   df_stats <- df_grp %>%
     dplyr::summarise(
@@ -217,20 +219,20 @@ g_lineplot <- function(df,
 
   df_stats <- df_stats[!is.na(df_stats[[mid]]), ]
 
-  # add number of objects N in strata
-  if (!is.null(strata) && !is.null(alt_counts_df)) {
-    strata_N <- paste0(strata, "_N") # nolint
+  # add number of objects N in group_var (strata)
+  if (!is.null(group_var) && !is.null(alt_counts_df)) {
+    strata_N <- paste0(group_var, "_N") # nolint
 
-    df_N <- stats::aggregate(eval(parse(text = cohort_id)) ~ eval(parse(text = strata)), data = alt_counts_df, FUN = function(x) length(unique(x))) # nolint
-    colnames(df_N) <- c(strata, "N") # nolint
-    df_N[[strata_N]] <- paste0(df_N[[strata]], " (N = ", df_N$N, ")") # nolint
+    df_N <- stats::aggregate(eval(parse(text = subject_var)) ~ eval(parse(text = group_var)), data = alt_counts_df, FUN = function(x) length(unique(x))) # nolint
+    colnames(df_N) <- c(group_var, "N") # nolint
+    df_N[[strata_N]] <- paste0(df_N[[group_var]], " (N = ", df_N$N, ")") # nolint
 
     # strata_N should not be in clonames(df_stats)
     checkmate::assert_disjunct(strata_N, colnames(df_stats))
 
-    df_stats <- merge(x = df_stats, y = df_N[, c(strata, strata_N)], by = strata)
-  } else if (!is.null(strata)) {
-    strata_N <- strata # nolint
+    df_stats <- merge(x = df_stats, y = df_N[, c(group_var, strata_N)], by = group_var)
+  } else if (!is.null(group_var)) {
+    strata_N <- group_var # nolint
   } else {
     strata_N <- NULL # nolint
   }
@@ -239,8 +241,8 @@ g_lineplot <- function(df,
   # ---- Prepare certain plot's properties. ----
   ############################################### |
   # legend title
-  if (is.null(legend_title) && !is.null(strata) && legend_position != "none") {
-    legend_title <- attr(df[[strata]], "label")
+  if (is.null(legend_title) && !is.null(group_var) && legend_position != "none") {
+    legend_title <- attr(df[[group_var]], "label")
   }
 
   # y label
@@ -291,7 +293,7 @@ g_lineplot <- function(df,
 
     # lines
     # further conditions in if are to ensure that not all of the groups consist of only one observation
-    if (grepl("l", mid_type, fixed = TRUE) && !is.null(strata) &&
+    if (grepl("l", mid_type, fixed = TRUE) && !is.null(group_var) &&
       !all(dplyr::summarise(df_grp, count_n = dplyr::n())[["count_n"]] == 1L)) { # nolint
       p <- p + ggplot2::geom_line(position = position, na.rm = TRUE)
     }
@@ -367,11 +369,11 @@ g_lineplot <- function(df,
         .groups = "drop"
       )
 
-    stats_lev <- rev(setdiff(colnames(df_stats_table), c(strata, x)))
+    stats_lev <- rev(setdiff(colnames(df_stats_table), c(group_var, x)))
 
     df_stats_table <- df_stats_table %>%
       tidyr::pivot_longer(
-        cols = -dplyr::all_of(c(strata, x)),
+        cols = -dplyr::all_of(c(group_var, x)),
         names_to = "stat",
         values_to = "value",
         names_ptypes = list(stat = factor(levels = stats_lev))
@@ -397,8 +399,8 @@ g_lineplot <- function(df,
         legend.position = "none"
       )
 
-    if (!is.null(strata)) {
-      tbl <- tbl + ggplot2::facet_wrap(facets = strata, ncol = 1)
+    if (!is.null(group_var)) {
+      tbl <- tbl + ggplot2::facet_wrap(facets = group_var, ncol = 1)
     }
 
     # align plot and table
@@ -474,8 +476,10 @@ h_format_row <- function(x, format, labels = NULL) {
 #'
 #' @param x (`character`)\cr x variable name.
 #' @param y (`character`)\cr y variable name.
-#' @param strata (`character` or `NA`)\cr strata variable name.
-#' @param cohort_id (`character` or `NA`)\cr variable to identify subjects in cohorts.
+#' @param group_var (`character` or `NA`)\cr group variable name.
+#' @param strata (`character` or `NA`)\cr deprecated - group variable name.
+#' @param subject_var (`character` or `NA`)\cr subject variable name.
+#' @param cohort_id (`character` or `NA`)\cr deprecated - subject variable name.
 #' @param paramcd (`character` or `NA`)\cr `paramcd` variable name.
 #' @param y_unit (`character` or `NA`)\cr `y_unit` variable name.
 #'
@@ -483,18 +487,29 @@ h_format_row <- function(x, format, labels = NULL) {
 #'
 #' @examples
 #' control_lineplot_vars()
-#' control_lineplot_vars(strata = NA)
+#' control_lineplot_vars(group_var = NA)
 #'
 #' @export
-control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", strata = "ARM", paramcd = "PARAMCD", y_unit = "AVALU",
-                                  cohort_id = "USUBJID") {
+control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", group_var = "ARM", paramcd = "PARAMCD", y_unit = "AVALU",
+                                  subject_var = "USUBJID", strata = lifecycle::deprecated(),
+                                  cohort_id = lifecycle::deprecated()) {
+  if (lifecycle::is_present(strata)) {
+    lifecycle::deprecate_warn("0.9.2", "control_lineplot_vars(strata)", "control_lineplot_vars(group_var)")
+    group_var <- strata
+  }
+
+  if (lifecycle::is_present(cohort_id)) {
+    lifecycle::deprecate_warn("0.9.2", "control_lineplot_vars(cohort_id)", "control_lineplot_vars(subject_id)")
+    subject_id <- cohort_id
+  }
+
   checkmate::assert_string(x)
   checkmate::assert_string(y)
-  checkmate::assert_string(strata, na.ok = TRUE)
-  checkmate::assert_string(cohort_id, na.ok = TRUE)
+  checkmate::assert_string(group_var, na.ok = TRUE)
+  checkmate::assert_string(subject_var, na.ok = TRUE)
   checkmate::assert_string(paramcd, na.ok = TRUE)
   checkmate::assert_string(y_unit, na.ok = TRUE)
 
-  variables <- c(x = x, y = y, strata = strata, paramcd = paramcd, y_unit = y_unit, cohort_id = cohort_id)
+  variables <- c(x = x, y = y, group_var = group_var, paramcd = paramcd, y_unit = y_unit, subject_var = subject_var)
   return(variables)
 }
