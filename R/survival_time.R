@@ -97,7 +97,9 @@ a_surv_time <- function(df,
   x_stats <- s_surv_time(
     df = df, .var = .var, is_event = is_event, control = control
   )
-  if (is.null(unlist(x_stats))) return(NULL)
+  if (is.null(unlist(x_stats))) {
+    return(NULL)
+  }
   rng_censor_upr <- x_stats[["range_censor"]][2]
 
   # Fill in with formatting defaults if needed
@@ -120,7 +122,7 @@ a_surv_time <- function(df,
 
   cell_fns <- setNames(vector("list", length = length(x_stats)), .labels)
   if ("range" %in% names(x_stats) && x_stats[["range"]][2] == rng_censor_upr) {
-      cell_fns[[.labels[["range"]]]] <- "censored observation"
+    cell_fns[[.labels[["range"]]]] <- "Censored observation"
   }
 
   in_rows(
