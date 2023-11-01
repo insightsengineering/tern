@@ -100,6 +100,7 @@ a_surv_time <- function(df,
   if (is.null(unlist(x_stats))) {
     return(NULL)
   }
+  rng_censor_lwr <- x_stats[["range_censor"]][1]
   rng_censor_upr <- x_stats[["range_censor"]][2]
 
   # Fill in with formatting defaults if needed
@@ -121,8 +122,14 @@ a_surv_time <- function(df,
   }
 
   cell_fns <- setNames(vector("list", length = length(x_stats)), .labels)
-  if ("range" %in% names(x_stats) && x_stats[["range"]][2] == rng_censor_upr) {
-    cell_fns[[.labels[["range"]]]] <- "Censored observation"
+  if ("range" %in% names(x_stats)) {
+    if (x_stats[["range"]][1] == rng_censor_lwr && x_stats[["range"]][2] == rng_censor_upr) {
+      cell_fns[[.labels[["range"]]]] <- "Censored observations: range minimum & maximum"
+    } else if (x_stats[["range"]][1] == rng_censor_lwr) {
+      cell_fns[[.labels[["range"]]]] <- "Censored observation: range minimum"
+    } else if (x_stats[["range"]][2] == rng_censor_upr) {
+      cell_fns[[.labels[["range"]]]] <- "Censored observation: range maximum"
+    }
   }
 
   in_rows(
