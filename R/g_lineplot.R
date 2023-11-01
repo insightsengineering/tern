@@ -477,7 +477,9 @@ h_format_row <- function(x, format, labels = NULL) {
 #' @param x (`character`)\cr x variable name.
 #' @param y (`character`)\cr y variable name.
 #' @param group_var (`character` or `NA`)\cr group variable name.
+#' @param strata (`character` or `NA`)\cr deprecated - group variable name.
 #' @param subject_var (`character` or `NA`)\cr subject variable name.
+#' @param cohort_id (`character` or `NA`)\cr deprecated - subject variable name.
 #' @param paramcd (`character` or `NA`)\cr `paramcd` variable name.
 #' @param y_unit (`character` or `NA`)\cr `y_unit` variable name.
 #'
