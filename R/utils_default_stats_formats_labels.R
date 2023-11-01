@@ -137,6 +137,9 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
 #'
 #' @param formats_in (named `vector`) \cr inserted formats to replace defaults. It can be a
 #'   character vector from [formatters::list_valid_format_labels()] or a custom format function.
+#' @param method (`character`) name of statistical method group from which to draw alternative
+#'   default formats from. E.g. For `method = "surv_time"`, the default format for `range` is
+#'   `"xx.x to xx.x"` instead of the tern default, `"xx.x - xx.x"`.
 #'
 #' @return
 #' * `get_formats_from_stats()` returns a named list of formats, they being a value from
@@ -202,6 +205,12 @@ get_formats_from_stats <- function(stats, formats_in = NULL, method = NULL) {
 #'   variable levels will be used as the defaults, and the names of the given custom values should
 #'   correspond to levels (or have format `statistic.level`) instead of statistics. Can also be
 #'   variable names if rows correspond to different variables instead of levels. Defaults to `NULL`.
+#' @param method (`character`) name of statistical method group from which to draw alternative
+#'   default formats from. E.g. For `method = "surv_time"`, the default label for `range` is
+#'   `"Range"` instead of the tern default, `"Min - Max"`.
+#' @param control (named `list`) list of control parameters to apply to automatically adjust
+#'   default labels. E.g. If control has element `conf_level` set to `0.9`, the default label for
+#'   statistic `mean_ci` will become `"Mean 90% CI"`.
 #'
 #' @return
 #' * `get_labels_from_stats()` returns a named character vector of default labels (if present

@@ -4,6 +4,13 @@
 * Added `ref_group_position` function to place the reference group facet last, first or at a certain position.
 * Added `keep_level_order` split function to retain original order of levels in a split.
 * Added `level_order` split function to reorder manually the levels.
+* Added function `get_indents_from_stats` to format and return indent modifiers for a given set of statistics.
+* Added summarize function version of `count_occurrences` analyze function, `summarize_occurrences`.
+* Added referential footnotes to `surv_time` for censored range observations.
+
+### Enhancements
+* Updated `get_formats_from_stats` and `get_labels_from_stats` with added `method` parameter to retrieve method-specific defaults.
+* Updated `get_labels_from_stats` with added `control` parameter to auto-adjust default labels based on statistic control parameters.
 
 ### Miscellaneous
 * Specified minimal version of package dependencies.
@@ -12,8 +19,6 @@
 
 ### New Features
 * Added the `na_str` argument to `analyze` & `summarize_row_groups` wrapper functions `count_abnormal`, `count_abnormal_by_baseline`, `count_abnormal_by_marked`, `count_abnormal_by_worst_grade`, `count_abnormal_lab_worsen_by_baseline`, `count_cumulative`, `count_missed_doses`, `count_occurrences`, `count_occurrences_by_grade`, `summarize_occurrences_by_grade`, `summarize_patients_events_in_cols`, `count_patients_with_event`, `count_patients_with_flags`, `count_values`, `estimate_multinomial_response`, `estimate_proportion`, `h_tab_one_biomarker`, `estimate_incidence_rate`, `logistic_summary_by_flag`, `estimate_odds_ratio`, `estimate_proportion_diff`, `test_proportion_diff`, `summarize_ancova`, `summarize_change`, `summarize_glm_count`, `summarize_num_patients`, `analyze_num_patients`, `summarize_patients_exposure_in_cols`, `coxph_pairwise`, `tabulate_survival_subgroups`, `surv_time`, and `surv_timepoint`.
-* Added function `get_indents_from_stats` to format and return indent modifiers for a given set of statistics.
-* Added summarize function version of `count_occurrences` analyze function, `summarize_occurrences`.
 
 ### Enhancements
 * Added formatting function `format_count_fraction_lt10` for formatting `count_fraction` with special consideration when count is less than 10.
