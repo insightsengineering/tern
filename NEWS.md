@@ -5,6 +5,9 @@
 * Added `keep_level_order` split function to retain original order of levels in a split.
 * Added `level_order` split function to reorder manually the levels.
 
+### Enhancements
+* Added `ref_group_coxph` parameter to `g_km` to specify the reference group used for pairwise Cox-PH calculations when `annot_coxph = TRUE`. 
+
 ### Miscellaneous
 * Specified minimal version of package dependencies.
 
