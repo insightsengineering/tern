@@ -4,6 +4,7 @@
 * Added `ref_group_position` function to place the reference group facet last, first or at a certain position.
 * Added `keep_level_order` split function to retain original order of levels in a split.
 * Added `level_order` split function to reorder manually the levels.
+* Added list containing default statistics for each method group, `tern_default_stats`.
 
 ### Enhancements
 * Added `ref_group_coxph` parameter to `g_km` to specify the reference group used for pairwise Cox-PH calculations when `annot_coxph = TRUE`.
