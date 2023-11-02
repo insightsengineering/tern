@@ -117,7 +117,8 @@ testthat::test_that("ref_group_coxph parameter works as expected", {
     df = df,
     variables = variables,
     annot_coxph = TRUE,
-    ref_group_coxph = "ARM B"
+    ref_group_coxph = "ARM B",
+    annot_coxph_ref_lbls = TRUE
   )
   vdiffr::expect_doppelganger(title = "g_km_ref_group_coxph", fig = g_km_ref_group_coxph)
 })

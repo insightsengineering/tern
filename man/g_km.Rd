@@ -38,6 +38,7 @@ g_km(
   annot_stats_vlines = FALSE,
   control_coxph_pw = control_coxph(),
   ref_group_coxph = NULL,
+  annot_coxph_ref_lbls = FALSE,
   position_coxph = c(-0.03, -0.02),
   position_surv_med = c(0.95, 0.9),
   width_annots = list(surv_med = grid::unit(0.3, "npc"), coxph = grid::unit(0.4, "npc"))
@@ -146,6 +147,9 @@ can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[s
 
 \item{ref_group_coxph}{(\code{character})\cr level of arm variable to use as reference group in calculations for
 \code{annot_coxph} table. If \code{NULL} (default), uses the first level of the arm variable.}
+
+\item{annot_coxph_ref_lbls}{(\code{flag})\cr whether the reference group should be explicitly printed in labels for the
+\code{annot_coxph} table. If \code{FALSE} (default), only comparison groups will be printed in \code{annot_coxph} table labels.}
 
 \item{position_coxph}{(\code{numeric})\cr x and y positions for plotting \code{\link[survival:coxph]{survival::coxph()}} model.}
 

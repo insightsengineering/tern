@@ -8,7 +8,8 @@ h_tbl_coxph_pairwise(
   df,
   variables,
   ref_group_coxph = NULL,
-  control_coxph_pw = control_coxph()
+  control_coxph_pw = control_coxph(),
+  annot_coxph_ref_lbls = FALSE
 )
 }
 \arguments{
@@ -34,6 +35,9 @@ Default method is \code{"log-rank"}, can also be set to \code{"wald"} or \code{"
 can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[survival:coxph]{survival::coxph()}}
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
 }}
+
+\item{annot_coxph_ref_lbls}{(\code{flag})\cr whether the reference group should be explicitly printed in labels for the
+\code{annot_coxph} table. If \code{FALSE} (default), only comparison groups will be printed in \code{annot_coxph} table labels.}
 }
 \value{
 A \code{data.frame} containing statistics \code{HR}, \verb{XX\% CI} (\code{XX} taken from \code{control_coxph_pw}),
