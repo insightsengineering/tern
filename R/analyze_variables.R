@@ -508,7 +508,7 @@ a_summary <- function(x,
   lbls <- get_labels_from_stats(.stats, .labels)
   # Check for custom labels from control_analyze_vars
   .labels <- if ("control" %in% names(list(...))) {
-    lbls %>% labels_use_control(control, .labels)
+    lbls %>% labels_use_control(list(...)[["control"]], .labels)
   } else {
     lbls
   }
