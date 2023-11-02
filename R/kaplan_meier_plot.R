@@ -61,8 +61,8 @@
 #'   * `ties` (`string`)\cr method for tie handling. Default is `"efron"`,
 #'     can also be set to `"breslow"` or `"exact"`. See more in [survival::coxph()]
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
-#' @param ref_group_coxph (`character`)\cr level of arm variable to use as reference group in pairwise coxph
-#'   calculations. If `NULL` (default), uses the first level of the arm variable.
+#' @param ref_group_coxph (`character`)\cr level of arm variable to use as reference group in calculations for
+#'   `annot_coxph` table. If `NULL` (default), uses the first level of the arm variable.
 #' @param position_coxph (`numeric`)\cr x and y positions for plotting [survival::coxph()] model.
 #' @param position_surv_med (`numeric`)\cr x and y positions for plotting annotation table estimating median survival
 #'   time per group.

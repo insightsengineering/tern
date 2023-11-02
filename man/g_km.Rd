@@ -144,8 +144,8 @@ can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[s
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
 }}
 
-\item{ref_group_coxph}{(\code{character})\cr level of arm variable to use as reference group in pairwise coxph
-calculations. If \code{NULL} (default), uses the first level of the arm variable.}
+\item{ref_group_coxph}{(\code{character})\cr level of arm variable to use as reference group in calculations for
+\code{annot_coxph} table. If \code{NULL} (default), uses the first level of the arm variable.}
 
 \item{position_coxph}{(\code{numeric})\cr x and y positions for plotting \code{\link[survival:coxph]{survival::coxph()}} model.}
 
