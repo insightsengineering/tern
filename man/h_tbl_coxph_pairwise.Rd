@@ -7,7 +7,7 @@
 h_tbl_coxph_pairwise(
   df,
   variables,
-  ref_group_coxph,
+  ref_group_coxph = NULL,
   control_coxph_pw = control_coxph()
 )
 }
