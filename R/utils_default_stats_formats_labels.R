@@ -329,6 +329,7 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
 #' get_labels_from_stats(c("mean_ci", "quantiles", "mean_pval")) %>%
 #'   labels_use_control(control = control)
 #'
+#' @export
 labels_use_control <- function(labels_default, control, labels_custom = NULL) {
   if ("conf_level" %in% names(control)) {
     labels_default <- sapply(
