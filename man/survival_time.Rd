@@ -13,6 +13,7 @@ a_surv_time(
   df,
   labelstr = "",
   .var = NULL,
+  .df_row = NULL,
   is_event,
   control = control_surv_time(),
   .stats = NULL,
@@ -57,6 +58,8 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "no
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
+
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
