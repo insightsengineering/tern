@@ -72,6 +72,8 @@ method group.}
 \item{add_pval}{(\code{flag})\cr should \code{"pval"} (or \code{"pval_counts"} if \code{method_groups} contains
 \code{"analyze_vars_counts"}) be added to the statistical methods?}
 
+\item{stats}{(\code{character})\cr statistical methods to get defaults for.}
+
 \item{formats_in}{(named \code{vector}) \cr inserted formats to replace defaults. It can be a
 character vector from \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or a custom format function.}
 

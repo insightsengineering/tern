@@ -7,6 +7,8 @@
 #' (`.indent_mods`). This utility is used across `tern`, but some of its working principles can be
 #' seen in [analyze_vars()]. See notes to understand why this is experimental.
 #'
+#' @param stats (`character`)\cr statistical methods to get defaults for.
+#'
 #' @details
 #' Current choices for `type` are `counts` and `numeric` for [analyze_vars()] and affect `get_stats()`.
 #'
