@@ -499,7 +499,8 @@ format_auto <- function(dt_var, x_stat) {
     # Defaults - they may be a param in the future
     der_stats <- c(
       "mean", "sd", "se", "median", "geom_mean", "quantiles", "iqr",
-      "mean_sd", "mean_se", "mean_se", "mean_ci", "mean_sei", "mean_sdi"
+      "mean_sd", "mean_se", "mean_se", "mean_ci", "mean_sei", "mean_sdi",
+      "median_ci"
     )
     nonder_stats <- c("n", "range", "min", "max")
 
@@ -553,4 +554,24 @@ count_decimalplaces <- function(dec) {
   } else {
     return(0)
   }
+}
+
+#' Apply Auto Formatting
+#'
+#' Checks if any of the listed formats in `.formats` are `"auto"`, and replaces `"auto"` with
+#' the correct implementation of `format_auto` for the given statistics, data, and variable.
+#'
+#' @inheritParams argument_convention
+#' @param x_stats (named `list`)\cr a named list of statistics where each element corresponds
+#'   to an element in `.formats`, with matching names.
+#'
+#' @keywords internal
+apply_auto_formatting <- function(.formats, x_stats, .df_row, .var) {
+  is_auto_fmt <- vapply(.formats, function(ii) is.character(ii) && ii == "auto", logical(1))
+  if (any(is_auto_fmt)) {
+    auto_stats <- x_stats[is_auto_fmt]
+    var_df <- .df_row[[.var]] # xxx this can be extended for the WHOLE data or single facets
+    .formats[is_auto_fmt] <- lapply(names(auto_stats), format_auto, dt_var = var_df)
+  }
+  .formats
 }

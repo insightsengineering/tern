@@ -77,6 +77,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
         "range", "min", "max", "median_range", "cv", "geom_mean", "geom_mean_ci",
         "geom_cv"
       ),
+      "surv_time" = c("median", "median_ci", "quantiles", "range_censor", "range_event", "range"),
       stop(
         "The selected method group (", mgi, ") has no default statistical method."
       )
@@ -136,6 +137,9 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
 #'
 #' @param formats_in (named `vector`) \cr inserted formats to replace defaults. It can be a
 #'   character vector from [formatters::list_valid_format_labels()] or a custom format function.
+#' @param method (`character`) name of statistical method group from which to draw alternative
+#'   default formats from. E.g. For `method = "surv_time"`, the default format for `range` is
+#'   `"xx.x to xx.x"` instead of the tern default, `"xx.x - xx.x"`.
 #'
 #' @return
 #' * `get_formats_from_stats()` returns a named list of formats, they being a value from
@@ -306,10 +310,66 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
   out
 }
 
-#' @describeIn default_stats_formats_labels Named list of default formats for `tern`.
+#' Update Labels According to Control Specifications
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Given a list of statistic labels and and a list of control parameters, updates labels with a relevant
+#' control specification. For example, if control has element `conf_level` set to `0.9`, the default
+#' label for statistic `mean_ci` will be updated to `"Mean 90% CI"`. Any labels that are supplied
+#' via `labels_custom` will not be updated regardless of `control`.
+#'
+#' @param labels_default (named `vector` of `character`)\cr a named vector of statistic labels to modify
+#'   according to the control specifications. Labels that are explicitly defined in `labels_custom` will
+#'   not be affected.
+#' @param labels_custom (named `vector` of `character`)\cr named vector of labels that are customized by
+#'   the user and should not be affected by `control`.
+#' @param control (named `list`)\cr list of control parameters to apply to adjust default labels.
+#'
+#' @return A named character vector of labels with control specifications applied to relevant labels.
+#'
+#' @examples
+#' control <- list(conf_level = 0.80, quantiles = c(0.1, 0.83), test_mean = 0.57)
+#' get_labels_from_stats(c("mean_ci", "quantiles", "mean_pval")) %>%
+#'   labels_use_control(control = control)
+#'
+#' @export
+labels_use_control <- function(labels_default, control, labels_custom = NULL) {
+  if ("conf_level" %in% names(control)) {
+    labels_default <- sapply(
+      names(labels_default),
+      function(x) {
+        if (!x %in% names(labels_custom)) {
+          gsub(labels_default[[x]], pattern = "[0-9]+% CI", replacement = f_conf_level(control[["conf_level"]]))
+        } else {
+          labels_default[[x]]
+        }
+      }
+    )
+  }
+  if ("quantiles" %in% names(control) && "quantiles" %in% names(labels_default) &&
+      !"quantiles" %in% names(labels_custom)) { # nolint
+    labels_default["quantiles"] <- gsub(
+      "[0-9]+% and [0-9]+", paste0(control[["quantiles"]][1] * 100, "% and ", control[["quantiles"]][2] * 100, ""),
+      labels_default["quantiles"]
+    )
+  }
+  if ("test_mean" %in% names(control) && "mean_pval" %in% names(labels_default) &&
+      !"mean_pval" %in% names(labels_custom)) { # nolint
+    labels_default["mean_pval"] <- gsub(
+      "p-value \\(H0: mean = [0-9\\.]+\\)", f_pval(control[["test_mean"]]), labels_default["mean_pval"]
+    )
+  }
+
+  labels_default
+}
+
+#' @describeIn default_stats_formats_labels Named vector of default formats for `tern`.
+#'
 #' @format
-#' * `tern_default_formats` is a list of available formats, named after their relevant
-#'   statistic.
+#' * `tern_default_formats` is a named vector of available default formats, with each element
+#'   named for their corresponding statistic.
+#'
 #' @export
 tern_default_formats <- c(
   fraction = format_fraction_fixed_dp,
@@ -345,17 +405,19 @@ tern_default_formats <- c(
   geom_mean_ci = "(xx.xx, xx.xx)",
   geom_cv = "xx.x",
   pval = "x.xxxx | (<0.0001)",
-  pval_counts = "x.xxxx | (<0.0001)"
+  pval_counts = "x.xxxx | (<0.0001)",
+  range_censor = "xx.x to xx.x",
+  range_event = "xx.x to xx.x"
 )
 
-#' @describeIn default_stats_formats_labels `character` vector that contains default labels
-#'   for `tern`.
+#' @describeIn default_stats_formats_labels Named `character` vector of default labels for `tern`.
+#'
 #' @format
-#' * `tern_default_labels` is a character vector of available labels, named after their relevant
-#'   statistic.
+#' * `tern_default_labels` is a named `character` vector of available default labels, with each element
+#'   named for their corresponding statistic.
+#'
 #' @export
 tern_default_labels <- c(
-  # list of labels -> sorted? xxx it should be not relevant due to match
   fraction = "fraction",
   unique = "Number of patients with at least one event",
   nonunique = "Number of events",

@@ -83,18 +83,71 @@ s_surv_time <- function(df,
 #' @return
 #' * `a_surv_time()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @keywords internal
-a_surv_time <- make_afun(
-  s_surv_time,
-  .formats = c(
-    "median" = "xx.x",
-    "median_ci" = "(xx.x, xx.x)",
-    "quantiles" = "xx.x, xx.x",
-    "range_censor" = "xx.x to xx.x",
-    "range_event" = "xx.x to xx.x",
-    "range" = "xx.x to xx.x"
+#' @examples
+#' a_surv_time(
+#'   df,
+#'   .df_row = df,
+#'   .var = "AVAL",
+#'   is_event = "is_event"
+#' )
+#'
+#' @export
+a_surv_time <- function(df,
+                        labelstr = "",
+                        .var = NULL,
+                        .df_row = NULL,
+                        is_event,
+                        control = control_surv_time(),
+                        .stats = NULL,
+                        .formats = NULL,
+                        .labels = NULL,
+                        .indent_mods = NULL,
+                        na_str = NA_character_) {
+  x_stats <- s_surv_time(
+    df = df, .var = .var, is_event = is_event, control = control
   )
-)
+  rng_censor_lwr <- x_stats[["range_censor"]][1]
+  rng_censor_upr <- x_stats[["range_censor"]][2]
+
+  # Use method-specific defaults
+  fmts <- c(median_ci = "(xx.x, xx.x)", quantiles = "xx.x, xx.x", range = "xx.x to xx.x")
+  lbls <- c(median_ci = "95% CI", range = "Range", range_censor = "Range (censored)", range_event = "Range (event)")
+  lbls_custom <- .labels
+  .formats <- c(.formats, fmts[setdiff(names(fmts), names(.formats))])
+  .labels <- c(.labels, lbls[setdiff(names(lbls), names(lbls_custom))])
+
+  # Fill in with formatting defaults if needed
+  .stats <- get_stats("surv_time", stats_in = .stats)
+  .formats <- get_formats_from_stats(.stats, .formats)
+  .labels <- get_labels_from_stats(.stats, .labels) %>% labels_use_control(control, lbls_custom)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
+
+  x_stats <- x_stats[.stats]
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
+
+  cell_fns <- setNames(vector("list", length = length(x_stats)), .labels)
+  if ("range" %in% names(x_stats)) {
+    if (x_stats[["range"]][1] == rng_censor_lwr && x_stats[["range"]][2] == rng_censor_upr) {
+      cell_fns[[.labels[["range"]]]] <- "Censored observations: range minimum & maximum"
+    } else if (x_stats[["range"]][1] == rng_censor_lwr) {
+      cell_fns[[.labels[["range"]]]] <- "Censored observation: range minimum"
+    } else if (x_stats[["range"]][2] == rng_censor_upr) {
+      cell_fns[[.labels[["range"]]]] <- "Censored observation: range maximum"
+    }
+  }
+
+  in_rows(
+    .list = x_stats,
+    .formats = .formats,
+    .names = .labels,
+    .labels = .labels,
+    .indent_mods = .indent_mods,
+    .format_na_strs = na_str,
+    .cell_footnotes = cell_fns
+  )
+}
 
 #' @describeIn survival_time Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
@@ -127,30 +180,25 @@ surv_time <- function(lyt,
                       nested = TRUE,
                       ...,
                       var_labels = "Time to Event",
+                      show_labels = "visible",
                       table_names = vars,
-                      .stats = c("median", "median_ci", "quantiles", "range_censor", "range_event"),
+                      .stats = c("median", "median_ci", "quantiles", "range"),
                       .formats = NULL,
                       .labels = NULL,
-                      .indent_mods = c(
-                        "median" = 0L, "median_ci" = 1L, "quantiles" = 0L,
-                        "range_censor" = 0L, "range_event" = 0L, "range" = 0L
-                      )) {
-  afun <- make_afun(
-    a_surv_time,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = extract_by_name(.indent_mods, .stats)
+                      .indent_mods = c(median_ci = 1L)) {
+  extra_args <- list(
+    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
   )
+
   analyze(
-    lyt,
-    vars,
+    lyt = lyt,
+    vars = vars,
+    afun = a_surv_time,
+    var_labels = var_labels,
+    show_labels = show_labels,
+    table_names = table_names,
     na_str = na_str,
     nested = nested,
-    var_labels = var_labels,
-    show_labels = "visible",
-    table_names = table_names,
-    afun = afun,
-    extra_args = list(...)
+    extra_args = c(extra_args, list(...))
   )
 }

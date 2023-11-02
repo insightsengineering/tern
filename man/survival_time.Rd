@@ -9,7 +9,19 @@
 \usage{
 s_surv_time(df, .var, is_event, control = control_surv_time())
 
-a_surv_time(df, .var, is_event, control = control_surv_time())
+a_surv_time(
+  df,
+  labelstr = "",
+  .var = NULL,
+  .df_row = NULL,
+  is_event,
+  control = control_surv_time(),
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL,
+  na_str = NA_character_
+)
 
 surv_time(
   lyt,
@@ -18,12 +30,12 @@ surv_time(
   nested = TRUE,
   ...,
   var_labels = "Time to Event",
+  show_labels = "visible",
   table_names = vars,
-  .stats = c("median", "median_ci", "quantiles", "range_censor", "range_event"),
+  .stats = c("median", "median_ci", "quantiles", "range"),
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = c(median = 0L, median_ci = 1L, quantiles = 0L, range_censor = 0L,
-    range_event = 0L, range = 0L)
+  .indent_mods = c(median_ci = 1L)
 )
 }
 \arguments{
@@ -43,22 +55,11 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "no
 \item \code{quantiles} (\code{numeric})\cr vector of length two to specify the quantiles of survival time.
 }}
 
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+(must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
+for more information.}
 
-\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
-
-\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
-
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
-underneath analyses, which is not allowed.}
-
-\item{...}{additional arguments for the lower level functions.}
-
-\item{var_labels}{(\code{character})\cr character for label.}
-
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
@@ -70,6 +71,25 @@ information on the \code{"auto"} setting.}
 \item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
 should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
 for that statistic's row label.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
+\item{...}{additional arguments for the lower level functions.}
+
+\item{var_labels}{(\code{character})\cr character for label.}
+
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
 }
 \value{
 \itemize{
@@ -120,6 +140,13 @@ adtte_f <- tern_ex_adtte \%>\%
     is_event = CNSR == 0
   )
 df <- adtte_f \%>\% filter(ARMCD == "ARM A")
+
+a_surv_time(
+  df,
+  .df_row = df,
+  .var = "AVAL",
+  is_event = "is_event"
+)
 
 basic_table() \%>\%
   split_cols_by(var = "ARMCD") \%>\%

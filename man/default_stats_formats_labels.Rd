@@ -15,13 +15,13 @@
 \title{Defaults for statistical method names and their associated formats & labels}
 \format{
 \itemize{
-\item \code{tern_default_formats} is a list of available formats, named after their relevant
-statistic.
+\item \code{tern_default_formats} is a named vector of available default formats, with each element
+named for their corresponding statistic.
 }
 
 \itemize{
-\item \code{tern_default_labels} is a character vector of available labels, named after their relevant
-statistic.
+\item \code{tern_default_labels} is a named \code{character} vector of available default labels, with each element
+named for their corresponding statistic.
 }
 }
 \usage{
@@ -100,6 +100,10 @@ indentation modifiers for statistics to use instead of the default of \code{0L} 
 Names should be a subset of the statistics defined in \code{stats_custom} (or default statistics
 if this is \code{NULL}). Alternatively, the same indentation modifier can be applied to all
 statistics by setting \code{indent_mods_custom} to a single integer value.}
+
+\item{method}{(\code{character}) name of statistical method group from which to draw alternative
+default formats from. E.g. For \code{method = "surv_time"}, the default format for \code{range} is
+\code{"xx.x to xx.x"} instead of the tern default, \code{"xx.x - xx.x"}.}
 }
 \value{
 \itemize{
@@ -157,10 +161,9 @@ present \code{NULL} is returned.
 
 \item \code{get_indents_from_stats()}: Format indent modifiers for a given vector/list of statistics.
 
-\item \code{tern_default_formats}: Named list of default formats for \code{tern}.
+\item \code{tern_default_formats}: Named vector of default formats for \code{tern}.
 
-\item \code{tern_default_labels}: \code{character} vector that contains default labels
-for \code{tern}.
+\item \code{tern_default_labels}: Named \code{character} vector of default labels for \code{tern}.
 
 \item \code{summary_formats()}: Quick function to retrieve default formats for summary statistics:
 \code{\link[=analyze_vars]{analyze_vars()}} and \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}} principally.
