@@ -454,7 +454,6 @@ s_summary.logical <- function(x,
 #' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
 #' a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
 #'
-
 #' @export
 a_summary <- function(x,
                       .N_col, # nolint
@@ -504,29 +503,17 @@ a_summary <- function(x,
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
   .stats <- get_stats(met_grp, stats_in = .stats, add_pval = compare)
   .formats <- get_formats_from_stats(.stats, .formats)
-  .labels <- get_labels_from_stats(.stats, .labels)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
-  indent_mods_custom <- .indent_mods
-  .indent_mods <- stats::setNames(rep(0L, length(.stats)), .stats)
-  if (!is.null(indent_mods_custom)) {
-    if (is.null(names(indent_mods_custom)) && length(indent_mods_custom) == 1) {
-      .indent_mods[names(.indent_mods)] <- indent_mods_custom
-    } else {
-      .indent_mods[names(indent_mods_custom)] <- indent_mods_custom
-    }
+  lbls <- get_labels_from_stats(.stats, .labels)
+  # Check for custom labels from control_analyze_vars
+  .labels <- if ("control" %in% names(list(...))) {
+    lbls %>% labels_apply_control(control, .labels)
+  } else {
+    lbls
   }
 
   x_stats <- x_stats[.stats]
-
-  # Check for custom labels from control_analyze_vars
-  if (is.numeric(x)) {
-    default_labels <- get_labels_from_stats(.stats)
-    for (i in intersect(.stats, c("mean_ci", "mean_pval", "median_ci", "quantiles"))) {
-      if (!i %in% names(.labels) || .labels[[i]] == default_labels[[i]]) {
-        .labels[[i]] <- attr(x_stats[[i]], "label")
-      }
-    }
-  }
 
   if (is.factor(x) || is.character(x)) {
     # Ungroup statistics with values for each level of x
@@ -537,15 +524,8 @@ a_summary <- function(x,
     .indent_mods <- x_ungrp[[".indent_mods"]]
   }
 
-  # auto formats handling
-  fmt_is_auto <- vapply(.formats, function(ii) is.character(ii) && ii == "auto", logical(1))
-  if (any(fmt_is_auto)) {
-    res_l_auto <- x_stats[fmt_is_auto]
-    tmp_dt_var <- .df_row[[.var]] # xxx this can be extended for the WHOLE data or single facets
-    .formats[fmt_is_auto] <- lapply(seq_along(res_l_auto), function(rla) {
-      format_auto(tmp_dt_var, names(res_l_auto)[rla])
-    })
-  }
+  # Auto format handling
+  .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
 
   in_rows(
     .list = x_stats,
