@@ -8,10 +8,6 @@
 * Added summarize function version of `count_occurrences` analyze function, `summarize_occurrences`.
 * Added referential footnotes to `surv_time` for censored range observations.
 
-### Enhancements
-* Updated `get_formats_from_stats` and `get_labels_from_stats` with added `method` parameter to retrieve method-specific defaults.
-* Updated `get_labels_from_stats` with added `control` parameter to auto-adjust default labels based on statistic control parameters.
-
 ### Miscellaneous
 * Specified minimal version of package dependencies.
 

@@ -98,9 +98,6 @@ a_surv_time <- function(df,
   x_stats <- s_surv_time(
     df = df, .var = .var, is_event = is_event, control = control
   )
-  if (is.null(unlist(x_stats))) {
-    return(NULL)
-  }
   rng_censor_lwr <- x_stats[["range_censor"]][1]
   rng_censor_upr <- x_stats[["range_censor"]][2]
 
@@ -113,7 +110,7 @@ a_surv_time <- function(df,
   # Fill in with formatting defaults if needed
   .stats <- get_stats("surv_time", stats_in = .stats)
   .formats <- get_formats_from_stats(.stats, .formats)
-  .labels <- get_labels_from_stats(.stats, .labels) %>% labels_apply_control(control, .labels)
+  .labels <- get_labels_from_stats(.stats, .labels) %>% labels_use_control(control, .labels)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
   x_stats <- x_stats[.stats]
