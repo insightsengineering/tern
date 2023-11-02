@@ -1352,14 +1352,14 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #' @export
 h_tbl_coxph_pairwise <- function(df,
                                  variables,
-                                 ref_group_coxph,
+                                 ref_group_coxph = NULL,
                                  control_coxph_pw = control_coxph()) {
   assert_df_with_variables(df, variables)
   arm <- variables$arm
   df[[arm]] <- factor(df[[arm]])
 
-  checkmate::assert_choice(ref_group_coxph, levels(df[[arm]]), null.ok = TRUE)
-  ref_group <- if (!is.null(ref_group_coxph)) ref_group_coxph else levels(df[[arm]])[1]
+  checkmate::assert_choice(ref_group_coxph, levels(df[[variables$arm]]), null.ok = TRUE)
+  ref_group <- if (!is.null(ref_group_coxph)) ref_group_coxph else levels(df[[variables$arm]])[1]
   comp_group <- setdiff(levels(df[[arm]]), ref_group)
 
   results <- Map(function(comp) {
@@ -1385,6 +1385,8 @@ h_tbl_coxph_pairwise <- function(df,
     row.names(res_df) <- comp
     res_df
   }, comp_group)
+  names(results) <- paste(comp_group, "vs.", ref_group)
+
   do.call(rbind, results)
 }
 

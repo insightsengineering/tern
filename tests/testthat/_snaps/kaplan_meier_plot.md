@@ -81,16 +81,16 @@
     Code
       res
     Output
-              HR       95% CI p-value (log-rank)
-      ARM B 1.41 (0.95, 2.09)             0.0905
-      ARM C 1.81 (1.16, 2.84)             0.0086
+                        HR       95% CI p-value (log-rank)
+      ARM B vs. ARM A 1.41 (0.95, 2.09)             0.0905
+      ARM C vs. ARM A 1.81 (1.16, 2.84)             0.0086
 
 ---
 
     Code
       res
     Output
-              HR       99% CI p-value (wald)
-      ARM B 1.44 (0.85, 2.44)         0.0784
-      ARM C 1.89 (1.03, 3.44)         0.0066
+                        HR       99% CI p-value (wald)
+      ARM B vs. ARM A 1.44 (0.85, 2.44)         0.0784
+      ARM C vs. ARM A 1.89 (1.03, 3.44)         0.0066
 
