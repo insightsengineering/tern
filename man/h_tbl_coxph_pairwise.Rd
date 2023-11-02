@@ -4,7 +4,12 @@
 \alias{h_tbl_coxph_pairwise}
 \title{Helper Function: Pairwise \code{CoxPH} table}
 \usage{
-h_tbl_coxph_pairwise(df, variables, control_coxph_pw = control_coxph())
+h_tbl_coxph_pairwise(
+  df,
+  variables,
+  ref_group_coxph,
+  control_coxph_pw = control_coxph()
+)
 }
 \arguments{
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
@@ -16,6 +21,9 @@ h_tbl_coxph_pairwise(df, variables, control_coxph_pw = control_coxph())
 \item \code{arm} (\code{factor})\cr the treatment group variable.
 \item \code{strat} (\code{character} or \code{NULL})\cr variable names indicating stratification factors.
 }}
+
+\item{ref_group_coxph}{(\code{character})\cr level of arm variable to use as reference group in pairwise coxph
+calculations. If \code{NULL} (default), uses the first level of the arm variable.}
 
 \item{control_coxph_pw}{(\code{list})\cr parameters for comparison details, specified by using
 the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are:
