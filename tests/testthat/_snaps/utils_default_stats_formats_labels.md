@@ -51,6 +51,30 @@
                      fraction 
                             0 
 
+# labels_use_control works as expected
+
+    Code
+      res
+    Output
+                               mean_ci                        mean_pval 
+                         "Mean 34% CI" "Mean p-value (H0: mean = 0.47)" 
+                             median_ci                        quantiles 
+                       "Median 34% CI"                "24% and 86%-ile" 
+                          geom_mean_ci 
+               "Geometric Mean 34% CI" 
+
+---
+
+    Code
+      res
+    Output
+                               mean_ci                        mean_pval 
+                             "mean ci" "Mean p-value (H0: mean = 0.47)" 
+                             median_ci                        quantiles 
+                       "Median 34% CI"                   "my quantiles" 
+                          geom_mean_ci 
+               "Geometric Mean 34% CI" 
+
 # summary_formats works as expected
 
     Code
