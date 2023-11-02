@@ -104,13 +104,14 @@ a_surv_time <- function(df,
   # Use method-specific defaults
   fmts <- c(median_ci = "(xx.x, xx.x)", quantiles = "xx.x, xx.x", range = "xx.x to xx.x")
   lbls <- c(median_ci = "95% CI", range = "Range", range_censor = "Range (censored)", range_event = "Range (event)")
+  lbls_custom <- .labels
   .formats <- c(.formats, fmts[setdiff(names(fmts), names(.formats))])
-  .labels <- c(.labels, lbls[setdiff(names(lbls), names(.labels))])
+  .labels <- c(.labels, lbls[setdiff(names(lbls), names(lbls_custom))])
 
   # Fill in with formatting defaults if needed
   .stats <- get_stats("surv_time", stats_in = .stats)
   .formats <- get_formats_from_stats(.stats, .formats)
-  .labels <- get_labels_from_stats(.stats, .labels) %>% labels_use_control(control, .labels)
+  .labels <- get_labels_from_stats(.stats, .labels) %>% labels_use_control(control, lbls_custom)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
   x_stats <- x_stats[.stats]
