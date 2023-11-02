@@ -113,7 +113,7 @@ a_surv_time <- function(df,
   # Fill in with formatting defaults if needed
   .stats <- get_stats("surv_time", stats_in = .stats)
   .formats <- get_formats_from_stats(.stats, .formats)
-  .labels <- get_labels_from_stats(.stats, .labels) %>% labels_apply_control(.labels, control)
+  .labels <- get_labels_from_stats(.stats, .labels) %>% labels_apply_control(control, .labels)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
   x_stats <- x_stats[.stats]
