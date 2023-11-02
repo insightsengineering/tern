@@ -104,23 +104,22 @@ a_surv_time <- function(df,
   rng_censor_lwr <- x_stats[["range_censor"]][1]
   rng_censor_upr <- x_stats[["range_censor"]][2]
 
+  # Use method-specific defaults
+  fmts <- c(median_ci = "(xx.x, xx.x)", quantiles = "xx.x, xx.x", range = "xx.x to xx.x")
+  lbls <- c(median_ci = "95% CI", range = "Range", range_censor = "Range (censored)", range_event = "Range (event)")
+  .formats <- c(.formats, fmts[setdiff(names(fmts), names(.formats))])
+  .labels <- c(.labels, lbls[setdiff(names(lbls), names(.labels))])
+
   # Fill in with formatting defaults if needed
   .stats <- get_stats("surv_time", stats_in = .stats)
-  .formats <- get_formats_from_stats(.stats, .formats, method = "surv_time")
-  .labels <- get_labels_from_stats(.stats, .labels, method = "surv_time", control = control)
+  .formats <- get_formats_from_stats(.stats, .formats)
+  .labels <- get_labels_from_stats(.stats, .labels) %>% labels_apply_control(.labels, control)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
   x_stats <- x_stats[.stats]
 
   # Auto format handling
-  fmt_is_auto <- vapply(.formats, function(ii) is.character(ii) && ii == "auto", logical(1))
-  if (any(fmt_is_auto)) {
-    res_l_auto <- x_stats[fmt_is_auto]
-    tmp_dt_var <- .df_row[[.var]] # xxx this can be extended for the WHOLE data or single facets
-    .formats[fmt_is_auto] <- lapply(seq_along(res_l_auto), function(rla) {
-      format_auto(tmp_dt_var, names(res_l_auto)[rla])
-    })
-  }
+  .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
 
   cell_fns <- setNames(vector("list", length = length(x_stats)), .labels)
   if ("range" %in% names(x_stats)) {
