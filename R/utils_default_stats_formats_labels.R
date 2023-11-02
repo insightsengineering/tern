@@ -64,12 +64,11 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
 
   # Loop for multiple method groups
   for (mgi in method_groups) {
-    # Main switcher
-    out_tmp <- switch(
-      mgi,
-      tern_default_stats,
+    out_tmp <- if (mgi %in% names(tern_default_stats)) {
+      tern_default_stats[[mgi]]
+    } else {
       stop("The selected method group (", mgi, ") has no default statistical method.")
-    )
+    }
     out <- unique(c(out, out_tmp))
   }
 
