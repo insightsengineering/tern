@@ -4,7 +4,13 @@
 \alias{h_tbl_coxph_pairwise}
 \title{Helper Function: Pairwise \code{CoxPH} table}
 \usage{
-h_tbl_coxph_pairwise(df, variables, control_coxph_pw = control_coxph())
+h_tbl_coxph_pairwise(
+  df,
+  variables,
+  ref_group_coxph = NULL,
+  control_coxph_pw = control_coxph(),
+  annot_coxph_ref_lbls = FALSE
+)
 }
 \arguments{
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
@@ -17,6 +23,9 @@ h_tbl_coxph_pairwise(df, variables, control_coxph_pw = control_coxph())
 \item \code{strat} (\code{character} or \code{NULL})\cr variable names indicating stratification factors.
 }}
 
+\item{ref_group_coxph}{(\code{character})\cr level of arm variable to use as reference group in calculations for
+\code{annot_coxph} table. If \code{NULL} (default), uses the first level of the arm variable.}
+
 \item{control_coxph_pw}{(\code{list})\cr parameters for comparison details, specified by using
 the helper function \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are:
 \itemize{
@@ -26,6 +35,9 @@ Default method is \code{"log-rank"}, can also be set to \code{"wald"} or \code{"
 can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[survival:coxph]{survival::coxph()}}
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
 }}
+
+\item{annot_coxph_ref_lbls}{(\code{flag})\cr whether the reference group should be explicitly printed in labels for the
+\code{annot_coxph} table. If \code{FALSE} (default), only comparison groups will be printed in \code{annot_coxph} table labels.}
 }
 \value{
 A \code{data.frame} containing statistics \code{HR}, \verb{XX\% CI} (\code{XX} taken from \code{control_coxph_pw}),

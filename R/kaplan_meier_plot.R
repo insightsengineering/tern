@@ -61,6 +61,10 @@
 #'   * `ties` (`string`)\cr method for tie handling. Default is `"efron"`,
 #'     can also be set to `"breslow"` or `"exact"`. See more in [survival::coxph()]
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
+#' @param ref_group_coxph (`character`)\cr level of arm variable to use as reference group in calculations for
+#'   `annot_coxph` table. If `NULL` (default), uses the first level of the arm variable.
+#' @param annot_coxph_ref_lbls (`flag`)\cr whether the reference group should be explicitly printed in labels for the
+#'   `annot_coxph` table. If `FALSE` (default), only comparison groups will be printed in `annot_coxph` table labels.
 #' @param position_coxph (`numeric`)\cr x and y positions for plotting [survival::coxph()] model.
 #' @param position_surv_med (`numeric`)\cr x and y positions for plotting annotation table estimating median survival
 #'   time per group.
@@ -204,6 +208,8 @@ g_km <- function(df,
                  annot_stats = NULL,
                  annot_stats_vlines = FALSE,
                  control_coxph_pw = control_coxph(),
+                 ref_group_coxph = NULL,
+                 annot_coxph_ref_lbls = FALSE,
                  position_coxph = c(-0.03, -0.02),
                  position_surv_med = c(0.95, 0.9),
                  width_annots = list(surv_med = grid::unit(0.3, "npc"), coxph = grid::unit(0.4, "npc"))) {
@@ -383,6 +389,8 @@ g_km <- function(df,
               df = df,
               variables = variables,
               control_coxph_pw = control_coxph_pw,
+              ref_group_coxph = ref_group_coxph,
+              annot_coxph_ref_lbls = annot_coxph_ref_lbls,
               x = position_coxph[1],
               y = position_coxph[2],
               width = if (!is.null(width_annots[["coxph"]])) width_annots[["coxph"]] else grid::unit(0.4, "npc"),
@@ -1348,12 +1356,19 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #' @export
 h_tbl_coxph_pairwise <- function(df,
                                  variables,
-                                 control_coxph_pw = control_coxph()) {
+                                 ref_group_coxph = NULL,
+                                 control_coxph_pw = control_coxph(),
+                                 annot_coxph_ref_lbls = FALSE) {
   assert_df_with_variables(df, variables)
+  checkmate::assert_choice(ref_group_coxph, levels(df[[variables$arm]]), null.ok = TRUE)
+  checkmate::assert_flag(annot_coxph_ref_lbls)
+
   arm <- variables$arm
   df[[arm]] <- factor(df[[arm]])
-  ref_group <- levels(df[[arm]])[1]
-  comp_group <- levels(df[[arm]])[-1]
+
+  ref_group <- if (!is.null(ref_group_coxph)) ref_group_coxph else levels(df[[variables$arm]])[1]
+  comp_group <- setdiff(levels(df[[arm]]), ref_group)
+
   results <- Map(function(comp) {
     res <- s_coxph_pairwise(
       df = df[df[[arm]] == comp, , drop = FALSE],
@@ -1377,6 +1392,8 @@ h_tbl_coxph_pairwise <- function(df,
     row.names(res_df) <- comp
     res_df
   }, comp_group)
+  if (annot_coxph_ref_lbls) names(results) <- paste(comp_group, "vs.", ref_group)
+
   do.call(rbind, results)
 }
 
