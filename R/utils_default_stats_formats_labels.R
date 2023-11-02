@@ -360,8 +360,9 @@ labels_apply_control <- function(labels_default, control, labels_custom = NULL) 
 #' @describeIn default_stats_formats_labels Named vector of default formats for `tern`.
 #'
 #' @format
-#' * `tern_default_formats` is a list of available formats, named after their relevant
-#'   statistic.
+#' * `tern_default_formats` is a named vector of available default formats, with each element
+#'   named for their corresponding statistic.
+#'
 #' @export
 tern_default_formats <- c(
   fraction = format_fraction_fixed_dp,
@@ -400,14 +401,14 @@ tern_default_formats <- c(
   pval_counts = "x.xxxx | (<0.0001)"
 )
 
-#' @describeIn default_stats_formats_labels `character` vector that contains default labels
-#'   for `tern`.
+#' @describeIn default_stats_formats_labels Named `character` vector of default labels for `tern`.
+#'
 #' @format
-#' * `tern_default_labels` is a character vector of available labels, named after their relevant
-#'   statistic.
+#' * `tern_default_labels` is a named `character` vector of available default labels, with each element
+#'   named for their corresponding statistic.
+#'
 #' @export
 tern_default_labels <- c(
-  # list of labels -> sorted? xxx it should be not relevant due to match
   fraction = "fraction",
   unique = "Number of patients with at least one event",
   nonunique = "Number of events",
