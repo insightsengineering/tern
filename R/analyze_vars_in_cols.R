@@ -180,7 +180,7 @@ analyze_vars_in_cols <- function(lyt,
   .stats <- get_stats(met_grps, stats_in = .stats)
   formats_v <- get_formats_from_stats(stats = .stats, formats_in = .formats)
   labels_v <- get_labels_from_stats(stats = .stats, labels_in = .labels)
-  if ("control" %in% names(list(...))) labels_v <- labels_v %>% labels_apply_control(control, .labels)
+  if ("control" %in% names(list(...))) labels_v <- labels_v %>% labels_use_control(control, .labels)
 
   # Check for vars in the case that one or more are used
   if (length(vars) == 1) {

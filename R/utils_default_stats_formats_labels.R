@@ -327,9 +327,9 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
 #' @examples
 #' control <- list(conf_level = 0.80, quantiles = c(0.1, 0.83), test_mean = 0.57)
 #' get_labels_from_stats(c("mean_ci", "quantiles", "mean_pval")) %>%
-#'   labels_apply_control(control = control)
+#'   labels_use_control(control = control)
 #'
-labels_apply_control <- function(labels_default, control, labels_custom = NULL) {
+labels_use_control <- function(labels_default, control, labels_custom = NULL) {
   if ("conf_level" %in% names(control)) {
     labels_default <- sapply(
       names(labels_default),
