@@ -295,57 +295,6 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
   out
 }
 
-#' Update Labels According to Control Specifications
-#'
-#' @description `r lifecycle::badge("stable")`
-#'
-#' Given a list of statistic labels and and a list of control parameters, updates labels with a relevant
-#' control specification. For example, if control has element `conf_level` set to `0.9`, the default
-#' label for statistic `mean_ci` will be updated to `"Mean 90% CI"`. Any labels that are supplied
-#' via `labels_custom` will not be updated regardless of `control`.
-#'
-#' @param labels_default (named `vector` of `character`)\cr a named vector of statistic labels to modify
-#'   according to the control specifications. Labels that are explicitly defined in `labels_custom` will
-#'   not be affected.
-#' @param labels_custom (named `vector` of `character`)\cr named vector of labels that are customized by
-#'   the user and should not be affected by `control`.
-#' @param control (named `list`)\cr list of control parameters to apply to adjust default labels.
-#'
-#' @return A named character vector of labels with control specifications applied to relevant labels.
-#'
-#' @examples
-#' control <- list(conf_level = 0.80, quantiles = c(0.1, 0.83), test_mean = 0.57)
-#' get_labels_from_stats(c("mean_ci", "quantiles", "mean_pval")) %>%
-#'   labels_apply_control(control = control)
-#'
-labels_apply_control <- function(labels_default, control, labels_custom = NULL) {
-  if ("conf_level" %in% names(control)) {
-    labels_default <- sapply(
-      names(labels_default),
-      function(x) {
-        if (!x %in% names(labels_custom)) {
-          gsub(labels_default[[x]], pattern = "[0-9]+% CI", replacement = f_conf_level(control[["conf_level"]]))
-        } else {
-          labels_default[[x]]
-        }
-      }
-    )
-  }
-  if ("quantiles" %in% names(control) && !"quantiles" %in% names(labels_custom)) {
-    labels_default["quantiles"] <- gsub(
-      "[0-9]+% and [0-9]+", paste0(control[["quantiles"]][1] * 100, "% and ", control[["quantiles"]][2] * 100, ""),
-      labels_default["quantiles"]
-    )
-  }
-  if ("test_mean" %in% names(control) && !"mean_pval" %in% names(labels_custom)) {
-    labels_default["mean_pval"] <- gsub(
-      "p-value \\(H0: mean = [0-9\\.]+\\)", f_pval(control[["test_mean"]]), labels_default["mean_pval"]
-    )
-  }
-
-  labels_default
-}
-
 #' @describeIn default_stats_formats_labels Named list of available statistics by method group for `tern`.
 #'
 #' @format
