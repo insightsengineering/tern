@@ -70,6 +70,33 @@
       [1] "Range"
       
 
+# a_surv_time works with default arguments
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+                row_name formatted_cell indent_mod        row_label
+      1           Median           24.8          0           Median
+      2           95% CI   (21.1, 31.3)          0           95% CI
+      3  25% and 75%-ile     10.8, 47.6          0  25% and 75%-ile
+      4 Range (censored)    0.8 to 78.9          0 Range (censored)
+      5    Range (event)   0.1 to 155.5          0    Range (event)
+      6            Range   0.1 to 155.5          0            Range
+
+# a_surv_time works with customized arguments
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+               row_name               formatted_cell indent_mod       row_label
+      1 median conf int (13.591239860, 37.970548966)          3 median conf int
+      2 20% and 80%-ile                 6.65 / 51.09          0 20% and 80%-ile
+      3           Range                 0.1 to 154.1          0           Range
+
 # surv_time works with default arguments
 
     Code

@@ -499,7 +499,8 @@ format_auto <- function(dt_var, x_stat) {
     # Defaults - they may be a param in the future
     der_stats <- c(
       "mean", "sd", "se", "median", "geom_mean", "quantiles", "iqr",
-      "mean_sd", "mean_se", "mean_se", "mean_ci", "mean_sei", "mean_sdi"
+      "mean_sd", "mean_se", "mean_se", "mean_ci", "mean_sei", "mean_sdi",
+      "median_ci"
     )
     nonder_stats <- c("n", "range", "min", "max")
 

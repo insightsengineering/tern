@@ -141,6 +141,13 @@ adtte_f <- tern_ex_adtte \%>\%
   )
 df <- adtte_f \%>\% filter(ARMCD == "ARM A")
 
+a_surv_time(
+  df,
+  .df_row = df,
+  .var = "AVAL",
+  is_event = "is_event"
+)
+
 basic_table() \%>\%
   split_cols_by(var = "ARMCD") \%>\%
   add_colcounts() \%>\%

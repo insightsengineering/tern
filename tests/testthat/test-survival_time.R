@@ -37,6 +37,52 @@ testthat::test_that("s_surv_time works with customized arguments", {
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("a_surv_time works with default arguments", {
+  adtte_f <- tern_ex_adtte %>%
+    dplyr::filter(PARAMCD == "OS") %>%
+    dplyr::mutate(
+      AVAL = day2month(AVAL),
+      is_event = CNSR == 0
+    )
+
+  result <- a_surv_time(
+    adtte_f,
+    .df_row = df,
+    .var = "AVAL",
+    is_event = "is_event"
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("a_surv_time works with customized arguments", {
+  adtte_f <- tern_ex_adtte %>%
+    dplyr::filter(PARAMCD == "OS") %>%
+    dplyr::mutate(
+      AVAL = day2month(AVAL),
+      is_event = CNSR == 0
+    ) %>%
+    dplyr::filter(ARMCD == "ARM B")
+
+  result <- a_surv_time(
+    adtte_f,
+    .var = "AVAL",
+    is_event = "is_event",
+    control = control_surv_time(
+      conf_level = 0.99, conf_type = "log-log", quantiles = c(0.2, 0.8)
+    ),
+    .df_row = adtte_f,
+    .stats = c("median_ci", "quantiles", "range"),
+    .formats = c(median_ci = "auto", quantiles = "xx.xx / xx.xx"),
+    .labels = c(median_ci = "median conf int"),
+    .indent_mods = c(median_ci = 3L)
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("surv_time works with default arguments", {
   adtte_f <- tern_ex_adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%

@@ -83,7 +83,15 @@ s_surv_time <- function(df,
 #' @return
 #' * `a_surv_time()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#' @keywords internal
+#' @examples
+#' a_surv_time(
+#'   df,
+#'   .df_row = df,
+#'   .var = "AVAL",
+#'   is_event = "is_event"
+#' )
+#'
+#' @export
 a_surv_time <- function(df,
                         labelstr = "",
                         .var = NULL,
