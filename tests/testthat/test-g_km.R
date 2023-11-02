@@ -103,3 +103,21 @@ testthat::test_that("annot_at_risk_title parameter works as expected", {
   )
   vdiffr::expect_doppelganger(title = "g_km_at_risk_title", fig = g_km_at_risk_title)
 })
+
+testthat::test_that("ref_group_coxph parameter works as expected", {
+  set.seed(123)
+
+  df <- tern_ex_adtte %>%
+    dplyr::filter(PARAMCD == "OS") %>%
+    dplyr::mutate(is_event = CNSR == 0)
+
+  variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
+
+  g_km_ref_group_coxph <- g_km(
+    df = df,
+    variables = variables,
+    annot_coxph = TRUE,
+    ref_group_coxph = "ARM B"
+  )
+  vdiffr::expect_doppelganger(title = "g_km_ref_group_coxph", fig = g_km_ref_group_coxph)
+})
