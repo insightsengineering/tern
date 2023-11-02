@@ -7,6 +7,7 @@
 \alias{get_formats_from_stats}
 \alias{get_labels_from_stats}
 \alias{get_indents_from_stats}
+\alias{labels_apply_control}
 \alias{tern_default_formats}
 \alias{tern_default_labels}
 \alias{summary_formats}
@@ -31,17 +32,13 @@ get_stats(
   add_pval = FALSE
 )
 
-get_formats_from_stats(stats, formats_in = NULL, method = NULL)
+get_formats_from_stats(stats, formats_in = NULL)
 
-get_labels_from_stats(
-  stats,
-  labels_in = NULL,
-  row_nms = NULL,
-  method = NULL,
-  control = NULL
-)
+get_labels_from_stats(stats, labels_in = NULL, row_nms = NULL)
 
 get_indents_from_stats(stats, indents_in = NULL, row_nms = NULL)
+
+labels_apply_control(labels_default, labels_in = NULL, control)
 
 tern_default_formats
 
@@ -75,10 +72,6 @@ methods.}
 \item{formats_in}{(named \code{vector}) \cr inserted formats to replace defaults. It can be a
 character vector from \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or a custom format function.}
 
-\item{method}{(\code{character}) name of statistical method group from which to draw alternative
-default formats from. E.g. For \code{method = "surv_time"}, the default label for \code{range} is
-\code{"Range"} instead of the tern default, \code{"Min - Max"}.}
-
 \item{labels_in}{(named \code{vector})\cr inserted labels to replace defaults.}
 
 \item{row_nms}{(\code{character})\cr row names. Levels of a \code{factor} or \code{character} variable, each
@@ -87,11 +80,15 @@ variable levels will be used as the defaults, and the names of the given custom 
 correspond to levels (or have format \code{statistic.level}) instead of statistics. Can also be
 variable names if rows correspond to different variables instead of levels. Defaults to \code{NULL}.}
 
-\item{control}{(named \code{list}) list of control parameters to apply to automatically adjust
-default labels. E.g. If control has element \code{conf_level} set to \code{0.9}, the default label for
-statistic \code{mean_ci} will become \code{"Mean 90\% CI"}.}
-
 \item{indents_in}{(named \code{vector})\cr inserted indent modifiers to replace defaults (default is \code{0L}).}
+
+\item{labels_default}{(named \code{vector} of \code{character})\cr a named vector of statistic labels to modify
+according to the control specifications. Labels that are are explicitly defined in \code{labels_in} will
+not be affected.}
+
+\item{control}{(named \code{list})\cr list of control parameters to apply to adjust default labels.
+E.g. If control has element \code{conf_level} set to \code{0.9}, the default label for
+statistic \code{mean_ci} will become \code{"Mean 90\% CI"}.}
 
 \item{type}{(\code{flag})\cr is it going to be \code{"numeric"} or \code{"counts"}?}
 
@@ -114,6 +111,10 @@ indentation modifiers for statistics to use instead of the default of \code{0L} 
 Names should be a subset of the statistics defined in \code{stats_custom} (or default statistics
 if this is \code{NULL}). Alternatively, the same indentation modifier can be applied to all
 statistics by setting \code{indent_mods_custom} to a single integer value.}
+
+\item{method}{(\code{character}) name of statistical method group from which to draw alternative
+default formats from. E.g. For \code{method = "surv_time"}, the default format for \code{range} is
+\code{"xx.x to xx.x"} instead of the tern default, \code{"xx.x - xx.x"}.}
 }
 \value{
 \itemize{
@@ -133,6 +134,11 @@ otherwise \code{NULL}).
 \itemize{
 \item \code{get_indents_from_stats()} returns a single indent modifier value to apply to all rows
 or a named numeric vector of indent modifiers (if present, otherwise \code{NULL}).
+}
+
+\itemize{
+\item \code{labels_apply_control()} returns a named character vector of labels with control specifications
+applied to relevant labels.
 }
 
 \itemize{
@@ -170,6 +176,8 @@ present \code{NULL} is returned.
 \item \code{get_labels_from_stats()}: Get labels from vector of statistical methods.
 
 \item \code{get_indents_from_stats()}: Format indent modifiers for a given vector/list of statistics.
+
+\item \code{labels_apply_control()}: Update default labels according to control specifications.
 
 \item \code{tern_default_formats}: Named list of default formats for \code{tern}.
 
@@ -237,6 +245,9 @@ get_indents_from_stats(
   all_cnt_occ,
   indents_in = list(a = 2L, count.a = 1L, count.b = 5L), row_nms = c("a", "b")
 )
+
+control <- list(conf_level = 0.80, quantiles = c(0.1, 0.83), test_mean = 0.57)
+get_labels_from_stats(c("mean_ci", "quantiles", "mean_pval")) \%>\% labels_apply_control(control = control)
 
 summary_formats()
 summary_formats(type = "counts", include_pval = TRUE)
