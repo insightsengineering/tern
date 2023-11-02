@@ -137,9 +137,6 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
 #'
 #' @param formats_in (named `vector`) \cr inserted formats to replace defaults. It can be a
 #'   character vector from [formatters::list_valid_format_labels()] or a custom format function.
-#' @param method (`character`) name of statistical method group from which to draw alternative
-#'   default formats from. E.g. For `method = "surv_time"`, the default format for `range` is
-#'   `"xx.x to xx.x"` instead of the tern default, `"xx.x - xx.x"`.
 #'
 #' @return
 #' * `get_formats_from_stats()` returns a named list of formats, they being a value from

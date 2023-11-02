@@ -100,10 +100,6 @@ indentation modifiers for statistics to use instead of the default of \code{0L} 
 Names should be a subset of the statistics defined in \code{stats_custom} (or default statistics
 if this is \code{NULL}). Alternatively, the same indentation modifier can be applied to all
 statistics by setting \code{indent_mods_custom} to a single integer value.}
-
-\item{method}{(\code{character}) name of statistical method group from which to draw alternative
-default formats from. E.g. For \code{method = "surv_time"}, the default format for \code{range} is
-\code{"xx.x to xx.x"} instead of the tern default, \code{"xx.x - xx.x"}.}
 }
 \value{
 \itemize{
