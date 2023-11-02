@@ -6,7 +6,8 @@
 * Added `level_order` split function to reorder manually the levels.
 
 ### Enhancements
-* Added `ref_group_coxph` parameter to `g_km` to specify the reference group used for pairwise Cox-PH calculations when `annot_coxph = TRUE`. 
+* Added `ref_group_coxph` parameter to `g_km` to specify the reference group used for pairwise Cox-PH calculations when `annot_coxph = TRUE`.
+* Added `annot_coxph_ref_lbls` parameter to `g_km` to enable printing the reference group in table labels when `annot_coxph = TRUE`.
 
 ### Miscellaneous
 * Specified minimal version of package dependencies.
