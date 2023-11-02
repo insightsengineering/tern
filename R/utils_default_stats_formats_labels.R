@@ -331,9 +331,10 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
 #' @examples
 #' control <- list(conf_level = 0.80, quantiles = c(0.1, 0.83), test_mean = 0.57)
 #' get_labels_from_stats(c("mean_ci", "quantiles", "mean_pval")) %>%
-#'   labels_apply_control(control = control)
+#'   labels_use_control(control = control)
 #'
-labels_apply_control <- function(labels_default, control, labels_custom = NULL) {
+#' @export
+labels_use_control <- function(labels_default, control, labels_custom = NULL) {
   if ("conf_level" %in% names(control)) {
     labels_default <- sapply(
       names(labels_default),
@@ -346,13 +347,15 @@ labels_apply_control <- function(labels_default, control, labels_custom = NULL) 
       }
     )
   }
-  if ("quantiles" %in% names(control) && !"quantiles" %in% names(labels_custom)) {
+  if ("quantiles" %in% names(control) && "quantiles" %in% names(labels_default) &&
+      !"quantiles" %in% names(labels_custom)) { # nolint
     labels_default["quantiles"] <- gsub(
       "[0-9]+% and [0-9]+", paste0(control[["quantiles"]][1] * 100, "% and ", control[["quantiles"]][2] * 100, ""),
       labels_default["quantiles"]
     )
   }
-  if ("test_mean" %in% names(control) && !"mean_pval" %in% names(labels_custom)) {
+  if ("test_mean" %in% names(control) && "mean_pval" %in% names(labels_default) &&
+      !"mean_pval" %in% names(labels_custom)) { # nolint
     labels_default["mean_pval"] <- gsub(
       "p-value \\(H0: mean = [0-9\\.]+\\)", f_pval(control[["test_mean"]]), labels_default["mean_pval"]
     )
