@@ -1,13 +1,11 @@
-#' Defaults for statistical method names and their associated formats & labels
+#' Get default statistical methods and their associated formats, labels, and indent modifiers
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
 #' Utility functions to get valid statistic methods for different method groups
-#' (`.stats`) and their associated formats (`.formats`) and labels (`.labels`). This utility
-#' is used across `tern`, but some of its working principles can be seen in [analyze_vars()].
-#' See notes to understand why this is experimental.
-#'
-#' @param stats (`character`)\cr statistical methods to get defaults formats or labels for.
+#' (`.stats`) and their associated formats (`.formats`), labels (`.labels`), and indent modifiers
+#' (`.indent_mods`). This utility is used across `tern`, but some of its working principles can be
+#' seen in [analyze_vars()]. See notes to understand why this is experimental.
 #'
 #' @details
 #' Current choices for `type` are `counts` and `numeric` for [analyze_vars()] and affect `get_stats()`.
@@ -19,18 +17,18 @@
 #' @name default_stats_formats_labels
 NULL
 
-#' @describeIn default_stats_formats_labels Get defaults statistical methods for different
-#'   groups of methods.
+#' @describeIn default_stats_formats_labels Get statistics available for a given method
+#'   group (analyze function).
 #'
-#' @param method_groups (`character`)\cr indicates the group of statistical methods that
-#'   we need the defaults from. A character vector can be used to collect more than one group of statistical
-#'   methods.
-#' @param stats_in (`character`)\cr desired stats to be picked out from the selected method group.
-#' @param add_pval (`flag`)\cr should `"pval"` or `"pval_counts"` (if `method_groups` contains
+#' @param method_groups (`character`)\cr indicates the statistical method group (`tern` analyze function)
+#'   to retrieve default statistics for. A character vector can be used to specify more than one statistical
+#'   method group.
+#' @param stats_in (`character`)\cr statistics to retrieve for the selected method group.
+#' @param add_pval (`flag`)\cr should `"pval"` (or `"pval_counts"` if `method_groups` contains
 #'   `"analyze_vars_counts"`) be added to the statistical methods?
 #'
 #' @return
-#' * `get_stats()` returns a character vector with all default statistical methods.
+#' * `get_stats()` returns a `character` vector of statistical methods.
 #'
 #' @examples
 #' # analyze_vars is numeric
@@ -67,19 +65,10 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
   # Loop for multiple method groups
   for (mgi in method_groups) {
     # Main switcher
-    out_tmp <- switch(mgi,
-      "count_occurrences" = c("count", "count_fraction", "count_fraction_fixed_dp", "fraction"),
-      "summarize_num_patients" = c("unique", "nonunique", "unique_count"),
-      "analyze_vars_counts" = c("n", "count", "count_fraction", "n_blq"),
-      "analyze_vars_numeric" = c(
-        "n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci", "mean_sei",
-        "mean_sdi", "mean_pval", "median", "mad", "median_ci", "quantiles", "iqr",
-        "range", "min", "max", "median_range", "cv", "geom_mean", "geom_mean_ci",
-        "geom_cv"
-      ),
-      stop(
-        "The selected method group (", mgi, ") has no default statistical method."
-      )
+    out_tmp <- switch(
+      mgi,
+      tern_default_stats,
+      stop("The selected method group (", mgi, ") has no default statistical method.")
     )
     out <- unique(c(out, out_tmp))
   }
@@ -131,14 +120,14 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
   out
 }
 
-#' @describeIn default_stats_formats_labels Get formats from vector of statistical methods. If not
-#'   present `NULL` is returned.
+#' @describeIn default_stats_formats_labels Get formats corresponding to a list of statistics.
 #'
 #' @param formats_in (named `vector`) \cr inserted formats to replace defaults. It can be a
 #'   character vector from [formatters::list_valid_format_labels()] or a custom format function.
 #'
 #' @return
-#' * `get_formats_from_stats()` returns a named list of formats, they being a value from
+#' * `get_formats_from_stats()` returns a named vector of formats (if present in either
+#'   `tern_default_formats` or `formats_in`, otherwise `NULL`). Values can be taken from
 #'   [formatters::list_valid_format_labels()] or a custom function (e.g. [formatting_functions]).
 #'
 #' @note Formats in `tern` and `rtables` can be functions that take in the table cell value and
@@ -187,9 +176,9 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
   out
 }
 
-#' @describeIn default_stats_formats_labels Get labels from vector of statistical methods.
+#' @describeIn default_stats_formats_labels Get labels corresponding to a list of statistics.
 #'
-#' @param labels_in (named `vector`)\cr inserted labels to replace defaults.
+#' @param labels_in (named `vector` of `character`)\cr inserted labels to replace defaults.
 #' @param row_nms (`character`)\cr row names. Levels of a `factor` or `character` variable, each
 #'   of which the statistics in `.stats` will be calculated for. If this parameter is set, these
 #'   variable levels will be used as the defaults, and the names of the given custom values should
@@ -197,8 +186,8 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 #'   variable names if rows correspond to different variables instead of levels. Defaults to `NULL`.
 #'
 #' @return
-#' * `get_labels_from_stats()` returns a named character vector of default labels (if present
-#'   otherwise `NULL`).
+#' * `get_labels_from_stats()` returns a named `character` vector of labels (if present in either
+#'   `tern_default_labels` or `labels_in`, otherwise `NULL`).
 #'
 #' @examples
 #' # Defaults labels
@@ -306,7 +295,102 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
   out
 }
 
-#' @describeIn default_stats_formats_labels Named list of default formats for `tern`.
+#' Update Labels According to Control Specifications
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Given a list of statistic labels and and a list of control parameters, updates labels with a relevant
+#' control specification. For example, if control has element `conf_level` set to `0.9`, the default
+#' label for statistic `mean_ci` will be updated to `"Mean 90% CI"`. Any labels that are supplied
+#' via `labels_custom` will not be updated regardless of `control`.
+#'
+#' @param labels_default (named `vector` of `character`)\cr a named vector of statistic labels to modify
+#'   according to the control specifications. Labels that are explicitly defined in `labels_custom` will
+#'   not be affected.
+#' @param labels_custom (named `vector` of `character`)\cr named vector of labels that are customized by
+#'   the user and should not be affected by `control`.
+#' @param control (named `list`)\cr list of control parameters to apply to adjust default labels.
+#'
+#' @return A named character vector of labels with control specifications applied to relevant labels.
+#'
+#' @examples
+#' control <- list(conf_level = 0.80, quantiles = c(0.1, 0.83), test_mean = 0.57)
+#' get_labels_from_stats(c("mean_ci", "quantiles", "mean_pval")) %>%
+#'   labels_apply_control(control = control)
+#'
+labels_apply_control <- function(labels_default, control, labels_custom = NULL) {
+  if ("conf_level" %in% names(control)) {
+    labels_default <- sapply(
+      names(labels_default),
+      function(x) {
+        if (!x %in% names(labels_custom)) {
+          gsub(labels_default[[x]], pattern = "[0-9]+% CI", replacement = f_conf_level(control[["conf_level"]]))
+        } else {
+          labels_default[[x]]
+        }
+      }
+    )
+  }
+  if ("quantiles" %in% names(control) && !"quantiles" %in% names(labels_custom)) {
+    labels_default["quantiles"] <- gsub(
+      "[0-9]+% and [0-9]+", paste0(control[["quantiles"]][1] * 100, "% and ", control[["quantiles"]][2] * 100, ""),
+      labels_default["quantiles"]
+    )
+  }
+  if ("test_mean" %in% names(control) && !"mean_pval" %in% names(labels_custom)) {
+    labels_default["mean_pval"] <- gsub(
+      "p-value \\(H0: mean = [0-9\\.]+\\)", f_pval(control[["test_mean"]]), labels_default["mean_pval"]
+    )
+  }
+
+  labels_default
+}
+
+#' @describeIn default_stats_formats_labels Named list of available statistics by method group for `tern`.
+#'
+#' @format
+#' * `tern_default_stats` is a named list of available statistics, with each element
+#'   named for their corresponding statistical method group.
+#'
+#' @export
+tern_default_stats <- list(
+  abnormal = c("fraction"),
+  abnormal_by_baseline = c("fraction"),
+  abnormal_by_marked = c("count_fraction"),
+  abnormal_by_worst_grade = c("count_fraction"),
+  abnormal_by_worst_grade_worsen = c("fraction"),
+  analyze_patients_exposure_in_cols = c("n_patients", "sum_exposure"),
+  analyze_vars_counts = c("n", "count", "count_fraction", "n_blq"),
+  analyze_vars_numeric = c(
+    "n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci", "mean_sei", "mean_sdi", "mean_pval",
+    "median", "mad", "median_ci", "quantiles", "iqr", "range", "min", "max", "median_range", "cv",
+    "geom_mean", "geom_mean_ci", "geom_cv"
+  ),
+  count_cumulative = c("count_fraction"),
+  count_missed_doses = c("n", "count_fraction"),
+  count_occurrences = c("count", "count_fraction", "count_fraction_fixed_dp", "fraction"),
+  count_occurrences_by_grade = c("count_fraction"),
+  count_patients_with_event = c("n", "count", "count_fraction", "n_blq"),
+  count_patients_with_flags = c("n", "count", "count_fraction", "n_blq"),
+  count_values = c("n", "count", "count_fraction", "n_blq"),
+  coxph_pairwise = c("pvalue", "hr", "hr_ci", "n_tot", "n_tot_events"),
+  estimate_incidence_rate = c("person_years", "n_events", "rate", "rate_ci"),
+  estimate_multinomial_response = c("n_prop", "prop_ci"),
+  estimate_odds_ratio = c("or_ci", "n_tot"),
+  estimate_proportion = c("n_prop", "prop_ci"),
+  estimate_proportion_diff = c("diff", "diff_ci"),
+  summarize_ancova = c("n", "lsmean", "lsmean_diff", "lsmean_diff_ci", "pval"),
+  summarize_coxreg = c("n", "hr", "ci", "pval", "pval_inter"),
+  summarize_glm_count = c("n", "rate", "rate_ci", "rate_ratio", "rate_ratio_ci", "pval"),
+  summarize_num_patients = c("unique", "nonunique", "unique_count"),
+  summarize_patients_events_in_cols = c("unique", "all"),
+  surv_time = c("median", "median_ci", "quantiles", "range_censor", "range_event", "range"),
+  surv_timepoint = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci", "rate_diff", "rate_diff_ci", "ztest_pval"),
+  test_proportion_diff = c("pval")
+)
+
+#' @describeIn default_stats_formats_labels Named vector of default formats for `tern`.
+#'
 #' @format
 #' * `tern_default_formats` is a list of available formats, named after their relevant
 #'   statistic.
