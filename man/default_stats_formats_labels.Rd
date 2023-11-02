@@ -21,8 +21,8 @@ named for their corresponding statistical method group.
 }
 
 \itemize{
-\item \code{tern_default_formats} is a named vector of available default formats, with each element
-named for their corresponding statistic.
+\item \code{tern_default_formats} is a list of available formats, named after their relevant
+statistic.
 }
 
 \itemize{
