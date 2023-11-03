@@ -268,7 +268,7 @@ heightDetails.decoratedGrob <- function(x) {
 
 # Adapted from Paul Murell R Graphics 2nd Edition
 # https://www.stat.auckland.ac.nz/~paul/RG2e/interactgrid-splittext.R
-split_string <- function(text, width, gp) {
+split_string <- function(text, width) {
   strings <- strsplit(text, " ")
   out_string <- NA
   for (string_i in seq_along(strings)) {
@@ -327,8 +327,8 @@ split_text_grob <- function(text,
   if (grid::unitType(x) %in% c("sum", "min", "max")) x <- grid::convertUnit(x, default.units)
   if (grid::unitType(y) %in% c("sum", "min", "max")) y <- grid::convertUnit(y, default.units)
   if (grid::unitType(width) %in% c("sum", "min", "max")) width <- grid::convertUnit(width, default.units)
-  # browser()
-  if (!is.null(gp$fontsize) && !gp$fontsize == 12) {
+
+  if (length(gp) > 0) { # account for effect of gp on text width
     width <- width * convertWidth(grobWidth(textGrob(text)), "npc", valueOnly = TRUE) /
       convertWidth(grobWidth(textGrob(text, gp = gp)), "npc", valueOnly = TRUE)
   }
@@ -340,7 +340,7 @@ split_text_grob <- function(text,
   }
 
   grid::grid.text(
-    label = split_string(text, width, gp),
+    label = split_string(text, width),
     x = x, y = y,
     just = just,
     hjust = hjust,
