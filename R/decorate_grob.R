@@ -329,8 +329,8 @@ split_text_grob <- function(text,
   if (grid::unitType(width) %in% c("sum", "min", "max")) width <- grid::convertUnit(width, default.units)
 
   if (length(gp) > 0) { # account for effect of gp on text width
-    width <- width * convertWidth(grobWidth(textGrob(text)), "npc", valueOnly = TRUE) /
-      convertWidth(grobWidth(textGrob(text, gp = gp)), "npc", valueOnly = TRUE)
+    width <- width * grid::convertWidth(grid::grobWidth(grid::textGrob(text)), "npc", valueOnly = TRUE) /
+      grid::convertWidth(grid::grobWidth(grid::textGrob(text, gp = gp)), "npc", valueOnly = TRUE)
   }
 
   ## if it is a fixed unit then we do not need to recalculate when viewport resized
