@@ -7,7 +7,8 @@
 \usage{
 tabulate_rsp_biomarkers(
   df,
-  vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
+  vars = lifecycle::deprecated(),
+  .stats = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
   .indent_mods = 0L
 )
 }
@@ -15,7 +16,9 @@ tabulate_rsp_biomarkers(
 \item{df}{(\code{data.frame})\cr containing all analysis variables, as returned by
 \code{\link[=extract_rsp_biomarkers]{extract_rsp_biomarkers()}}.}
 
-\item{vars}{(\code{character})\cr the names of statistics to be reported among:
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{.stats}{(\code{character})\cr the names of statistics to be reported among:
 \itemize{
 \item \code{n_tot}: Total number of patients per group.
 \item \code{n_rsp}: Total number of responses per group.

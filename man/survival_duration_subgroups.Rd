@@ -15,8 +15,9 @@ a_survival_subgroups(
 tabulate_survival_subgroups(
   lyt,
   df,
-  vars = c("n_tot_events", "n_events", "median", "hr", "ci"),
+  vars = lifecycle::deprecated(),
   time_unit = NULL,
+  .stats = c("n_tot_events", "n_events", "median", "hr", "ci"),
   na_str = NA_character_
 )
 }
@@ -29,7 +30,11 @@ information on the \code{"auto"} setting.}
 \item{df}{(\code{list})\cr of data frames containing all analysis variables. List should be
 created using \code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}}.}
 
-\item{vars}{(\code{character})\cr the name of statistics to be reported among:
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
+
+\item{.stats}{(\code{character})\cr the name of statistics to be reported among:
 \itemize{
 \item \code{n_tot_events}: Total number of events per group.
 \item \code{n_events}: Number of events per group.
@@ -42,8 +47,6 @@ created using \code{\link[=extract_survival_subgroups]{extract_survival_subgroup
 Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as both \code{hr} and \code{ci}
 are required.
 }}
-
-\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 }

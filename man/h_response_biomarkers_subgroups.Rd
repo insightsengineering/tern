@@ -28,16 +28,7 @@ returned by \code{\link[=extract_rsp_biomarkers]{extract_rsp_biomarkers()}} (it 
 added by that high-level function relative to what is returned by \code{\link[=h_logistic_mult_cont_df]{h_logistic_mult_cont_df()}},
 see the example).}
 
-\item{vars}{(\code{character})\cr the names of statistics to be reported among:
-\itemize{
-\item \code{n_tot}: Total number of patients per group.
-\item \code{n_rsp}: Total number of responses per group.
-\item \code{prop}: Total response proportion per group.
-\item \code{or}: Odds ratio.
-\item \code{ci}: Confidence interval of odds ratio.
-\item \code{pval}: p-value of the effect.
-Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.
-}}
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}

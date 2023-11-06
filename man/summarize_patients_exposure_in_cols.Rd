@@ -64,7 +64,8 @@ analyze_patients_exposure_in_cols(
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
+\item{.stats}{(\code{character})\cr statistics to select for the table. Run
+\code{get_stats("analyze_patients_exposure_in_cols")} to see available statistics for this function.}
 
 \item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
