@@ -7,9 +7,8 @@
 \usage{
 tabulate_survival_biomarkers(
   df,
-  vars = lifecycle::deprecated(),
+  vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
   time_unit = NULL,
-  .stats = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
   .indent_mods = 0L
 )
 }
@@ -17,11 +16,7 @@ tabulate_survival_biomarkers(
 \item{df}{(\code{data.frame})\cr containing all analysis variables, as returned by
 \code{\link[=extract_survival_biomarkers]{extract_survival_biomarkers()}}.}
 
-\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
-
-\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
-
-\item{.stats}{(\code{character})\cr the names of statistics to be reported among:
+\item{vars}{(\code{character})\cr the names of statistics to be reported among:
 \itemize{
 \item \code{n_tot_events}: Total number of events per group.
 \item \code{n_tot}: Total number of observations per group.
@@ -31,6 +26,8 @@ tabulate_survival_biomarkers(
 \item \code{pval}: p-value of the effect.
 Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as both \code{hr} and \code{ci} are required.
 }}
+
+\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}

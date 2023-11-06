@@ -12,12 +12,7 @@ a_response_subgroups(
     "x.xxxx | (<0.0001)")
 )
 
-tabulate_rsp_subgroups(
-  lyt,
-  df,
-  vars = lifecycle::deprecated(),
-  .stats = c("n_tot", "n", "prop", "or", "ci")
-)
+tabulate_rsp_subgroups(lyt, df, vars = c("n_tot", "n", "prop", "or", "ci"))
 }
 \arguments{
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
@@ -28,9 +23,7 @@ information on the \code{"auto"} setting.}
 \item{df}{(\code{list})\cr of data frames containing all analysis variables. List should be
 created using \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.}
 
-\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
-
-\item{.stats}{(\code{character})\cr the names of statistics to be reported among:
+\item{vars}{(\code{character})\cr the names of statistics to be reported among:
 \itemize{
 \item \code{n}: Total number of observations per group.
 \item \code{n_rsp}: Number of responders per group.
