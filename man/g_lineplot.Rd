@@ -20,6 +20,7 @@ g_lineplot(
   legend_title = NULL,
   legend_position = "bottom",
   ggtheme = nestcolor::theme_nest(),
+  x_lab = obj_label(df[[variables[["x"]]]]),
   y_lab = NULL,
   y_lab_add_paramcd = TRUE,
   y_lab_add_unit = TRUE,
@@ -92,6 +93,8 @@ a call to a position adjustment function.}
 or two-element numeric vector).}
 
 \item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to control styling of the plot.}
+
+\item{x_lab}{(\code{character})\cr x-axis label. If equal to \code{NULL}, then no label will be added.}
 
 \item{y_lab}{(\code{character})\cr y-axis label. If equal to \code{NULL}, then no label will be added.}
 
