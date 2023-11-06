@@ -178,7 +178,7 @@ a_response_subgroups <- function(.formats = list(
 #'
 #' @param df (`list`)\cr of data frames containing all analysis variables. List should be
 #'   created using [extract_rsp_subgroups()].
-#' @param vars (`character`)\cr the names of statistics to be reported among:
+#' @param .stats (`character`)\cr the names of statistics to be reported among:
 #'   * `n`: Total number of observations per group.
 #'   * `n_rsp`: Number of responders per group.
 #'   * `prop`: Proportion of responders.
@@ -205,7 +205,13 @@ a_response_subgroups <- function(.formats = list(
 #' @export
 tabulate_rsp_subgroups <- function(lyt,
                                    df,
-                                   vars = c("n_tot", "n", "prop", "or", "ci")) {
+                                   vars = lifecycle::deprecated(),
+                                   .stats = c("n_tot", "n", "prop", "or", "ci")) {
+  if (lifecycle::is_present(vars)) {
+    lifecycle::deprecate_warn("0.9.3", "tabulate_rsp_subgroups(vars)", "tabulate_rsp_subgroups(.stats)")
+    .stats <- vars
+  }
+
   conf_level <- df$or$conf_level[1]
   method <- if ("pval_label" %in% names(df$or)) {
     df$or$pval_label[1]
