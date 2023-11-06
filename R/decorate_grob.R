@@ -132,8 +132,8 @@ decorate_grob <- function(grob,
                           titles,
                           footnotes,
                           page = "",
-                          width_titles = grid::unit(1, "npc") - grid::stringWidth(page),
-                          width_footnotes = grid::unit(1, "npc") - grid::stringWidth(page),
+                          width_titles = grid::unit(1, "npc") - grid::unit(1.5, "cm"),
+                          width_footnotes = grid::unit(1, "npc") - grid::unit(1.5, "cm"),
                           border = TRUE,
                           margins = grid::unit(c(1, 0, 1, 0), "lines"),
                           padding = grid::unit(rep(1, 4), "lines"),
@@ -158,6 +158,14 @@ decorate_grob <- function(grob,
     just = c("left", "top"),
     width = width_footnotes,
     vp = grid::viewport(layout.pos.row = 3, layout.pos.col = 1),
+    gp = gp_footnotes
+  )
+
+  pg_footnote <- grid::textGrob(
+    paste("\n", page),
+    x = 1, y = 0,
+    just = c("right", "bottom"),
+    vp = grid::viewport(layout.pos.row = 4, layout.pos.col = 1),
     gp = gp_footnotes
   )
 
@@ -194,13 +202,7 @@ decorate_grob <- function(grob,
             )
           ),
           st_footnotes,
-          grid::textGrob(
-            page,
-            x = 1, y = 0,
-            just = c("right", "bottom"),
-            vp = grid::viewport(layout.pos.row = 3, layout.pos.col = 1),
-            gp = gp_footnotes
-          )
+          pg_footnote
         ),
         childrenvp = NULL,
         name = "titles_grob_footnotes",
@@ -208,11 +210,12 @@ decorate_grob <- function(grob,
           grid::plotViewport(margins = outer_margins),
           grid::viewport(
             layout = grid::grid.layout(
-              nrow = 3, ncol = 1,
+              nrow = 4, ncol = 1,
               heights = grid::unit.c(
                 grid::grobHeight(st_titles),
                 grid::unit(1, "null"),
-                grid::grobHeight(st_footnotes)
+                grid::grobHeight(st_footnotes),
+                grid::grobHeight(pg_footnote)
               )
             )
           )
@@ -324,6 +327,11 @@ split_text_grob <- function(text,
   if (grid::unitType(x) %in% c("sum", "min", "max")) x <- grid::convertUnit(x, default.units)
   if (grid::unitType(y) %in% c("sum", "min", "max")) y <- grid::convertUnit(y, default.units)
   if (grid::unitType(width) %in% c("sum", "min", "max")) width <- grid::convertUnit(width, default.units)
+
+  if (length(gp) > 0) { # account for effect of gp on text width
+    width <- width * grid::convertWidth(grid::grobWidth(grid::textGrob(text)), "npc", valueOnly = TRUE) /
+      grid::convertWidth(grid::grobWidth(grid::textGrob(text, gp = gp)), "npc", valueOnly = TRUE)
+  }
 
   ## if it is a fixed unit then we do not need to recalculate when viewport resized
   if (!inherits(width, "unit.arithmetic") && !is.null(attr(width, "unit")) &&
