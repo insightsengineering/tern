@@ -163,6 +163,7 @@ analyze_vars_in_cols <- function(lyt,
                                  nested = TRUE,
                                  .formats = NULL,
                                  .aligns = NULL) {
+  extra_args <- list(...)
   if (lifecycle::is_present(na_level)) {
     lifecycle::deprecate_warn("0.9.1", "analyze_vars_in_cols(na_level)", "analyze_vars_in_cols(na_str)")
     na_str <- na_level
@@ -180,6 +181,7 @@ analyze_vars_in_cols <- function(lyt,
   .stats <- get_stats(met_grps, stats_in = .stats)
   formats_v <- get_formats_from_stats(stats = .stats, formats_in = .formats)
   labels_v <- get_labels_from_stats(stats = .stats, labels_in = .labels)
+  if ("control" %in% names(extra_args)) labels_v <- labels_v %>% labels_use_control(extra_args[["control"]], .labels)
 
   # Check for vars in the case that one or more are used
   if (length(vars) == 1) {
@@ -293,7 +295,7 @@ analyze_vars_in_cols <- function(lyt,
       var = unique(vars),
       cfun = cfun_list,
       na_str = na_str,
-      extra_args = list(...)
+      extra_args = extra_args
     )
   } else {
     # Function list for analyze_colvars
@@ -377,7 +379,7 @@ analyze_vars_in_cols <- function(lyt,
     analyze_colvars(lyt,
       afun = afun_list,
       nested = nested,
-      extra_args = list(...)
+      extra_args = extra_args
     )
   }
 }

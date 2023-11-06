@@ -184,6 +184,20 @@ testthat::test_that("get_indents_from_stats works as expected", {
   )
 })
 
+testthat::test_that("labels_use_control works as expected", {
+  stats <- get_stats(stats_in = c("mean_ci", "mean_pval", "median_ci", "quantiles", "geom_mean_ci"))
+  control <- list("conf_level" = 0.34, quantiles = c(0.24, 0.86), test_mean = 0.47)
+  custom_labels <- c(mean_ci = "mean ci", quantiles = "my quantiles")
+
+  lbls <- get_labels_from_stats(stats)
+  res <- lbls %>% labels_use_control(control)
+  testthat::expect_snapshot(res)
+
+  lbls <- get_labels_from_stats(stats, labels_in = custom_labels)
+  res <- lbls %>% labels_use_control(control, custom_labels)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("summary_formats works as expected", {
   result <- summary_formats() %>%
     unlist() # More compact fruition

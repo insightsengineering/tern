@@ -4,6 +4,9 @@
 * Added `ref_group_position` function to place the reference group facet last, first or at a certain position.
 * Added `keep_level_order` split function to retain original order of levels in a split.
 * Added `level_order` split function to reorder manually the levels.
+* Added internal utility function `apply_auto_formatting` to check for `"auto"` formats and replace them with 
+  implementation of `format_auto` in analyze functions.
+* Added utility function `labels_use_control` to modify labels with control specifications.
 
 ### Enhancements
 * Added `ref_group_coxph` parameter to `g_km` to specify the reference group used for pairwise Cox-PH calculations when `annot_coxph = TRUE`.
