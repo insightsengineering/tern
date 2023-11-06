@@ -6,6 +6,9 @@
 #' when a column table layout is required.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run
+#'   `get_stats("summarize_patients_events_in_cols")` to see available statistics for this function, in addition to any
+#'   added using `filters_list`.
 #'
 #' @name count_patients_events_in_cols
 NULL

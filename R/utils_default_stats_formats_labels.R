@@ -336,6 +336,10 @@ tern_default_stats <- list(
   summarize_patients_events_in_cols = c("unique", "all"),
   surv_time = c("median", "median_ci", "quantiles", "range_censor", "range_event", "range"),
   surv_timepoint = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci", "rate_diff", "rate_diff_ci", "ztest_pval"),
+  tabulate_rsp_biomarkers = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
+  tabulate_rsp_subgroups = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval"),
+  tabulate_survival_biomarkers = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
+  tabulate_survival_subgroups = c("n_tot_events", "n_events", "n_tot", "n", "median", "hr", "ci", "pval"),
   test_proportion_diff = c("pval")
 )
 

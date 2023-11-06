@@ -8,6 +8,8 @@
 #' or the change from baseline values (post-baseline) are then summarized.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("analyze_vars_numeric)`
+#'   to see available statistics for this function.
 #'
 #' @name summarize_change
 NULL

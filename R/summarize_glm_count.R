@@ -6,6 +6,8 @@
 #' This can be used to analyze count and/or frequency data using a linear model.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("summarize_glm_count")`
+#'   to see available statistics for this function.
 #'
 #' @name summarize_glm_count
 NULL

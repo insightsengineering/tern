@@ -6,6 +6,8 @@
 #' when a column table layout is required.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run
+#' `get_stats("analyze_patients_exposure_in_cols")` to see available statistics for this function.
 #'
 #' @name summarize_patients_exposure_in_cols
 NULL

@@ -46,6 +46,9 @@ control_summarize_vars <- control_analyze_vars
 #' functions; in this case [rtables::analyze()].
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("analyze_vars_numeric")` to see
+#'   statistics available for numeric variables, and `get_stats("analyze_vars_counts")` for statistics available
+#'   for non-numeric variables.
 #'
 #' @name analyze_variables
 NULL
@@ -454,7 +457,6 @@ s_summary.logical <- function(x,
 #' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
 #' a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
 #'
-
 #' @export
 a_summary <- function(x,
                       .N_col, # nolint
