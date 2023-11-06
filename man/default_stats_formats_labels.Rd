@@ -21,8 +21,8 @@ named for their corresponding statistical method group.
 }
 
 \itemize{
-\item \code{tern_default_formats} is a list of available formats, named after their relevant
-statistic.
+\item \code{tern_default_formats} is a named vector of available default formats, with each element
+named for their corresponding statistic.
 }
 
 \itemize{
@@ -169,8 +169,7 @@ group (analyze function).
 
 \item \code{tern_default_formats}: Named vector of default formats for \code{tern}.
 
-\item \code{tern_default_labels}: \code{character} vector that contains default labels
-for \code{tern}.
+\item \code{tern_default_labels}: Named \code{character} vector of default labels for \code{tern}.
 
 \item \code{summary_formats()}: Quick function to retrieve default formats for summary statistics:
 \code{\link[=analyze_vars]{analyze_vars()}} and \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}} principally.
