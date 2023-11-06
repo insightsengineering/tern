@@ -159,14 +159,7 @@ a_count_occurrences <- function(df,
   .formats <- x_ungrp[[".formats"]]
 
   # Auto format handling
-  fmt_is_auto <- vapply(.formats, function(ii) is.character(ii) && ii == "auto", logical(1))
-  if (any(fmt_is_auto)) {
-    res_l_auto <- x_stats[fmt_is_auto]
-    tmp_dt_var <- .df_row[[.var]] # xxx this can be extended for the WHOLE data or single facets
-    .formats[fmt_is_auto] <- lapply(seq_along(res_l_auto), function(rla) {
-      format_auto(tmp_dt_var, names(res_l_auto)[rla])
-    })
-  }
+  .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
 
   in_rows(
     .list = x_stats,

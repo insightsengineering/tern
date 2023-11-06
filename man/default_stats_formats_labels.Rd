@@ -26,8 +26,8 @@ statistic.
 }
 
 \itemize{
-\item \code{tern_default_labels} is a character vector of available labels, named after their relevant
-statistic.
+\item \code{tern_default_labels} is a named \code{character} vector of available default labels, with each element
+named for their corresponding statistic.
 }
 }
 \usage{
