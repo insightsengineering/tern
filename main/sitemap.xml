@@ -88,6 +88,9 @@
     <loc>https://insightsengineering.github.io/tern/reference/append_varlabels.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/reference/apply_auto_formatting.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/reference/argument_convention.html</loc>
   </url>
   <url>
@@ -515,6 +518,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/labels_or_names.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/reference/labels_use_control.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/logistic_regression_cols.html</loc>
