@@ -8,7 +8,7 @@
 #' @inheritParams argument_convention
 #' @param df (`data.frame`)\cr containing all analysis variables, as returned by
 #'   [extract_rsp_biomarkers()].
-#' @param .stats (`character`)\cr the names of statistics to be reported among:
+#' @param vars (`character`)\cr the names of statistics to be reported among:
 #'   * `n_tot`: Total number of patients per group.
 #'   * `n_rsp`: Total number of responses per group.
 #'   * `prop`: Total response proportion per group.
@@ -67,14 +67,8 @@
 #' @export
 #' @name response_biomarkers_subgroups
 tabulate_rsp_biomarkers <- function(df,
-                                    vars = lifecycle::deprecated(),
-                                    .stats = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
+                                    vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
                                     .indent_mods = 0L) {
-  if (lifecycle::is_present(vars)) {
-    lifecycle::deprecate_warn("0.9.3", "tabulate_rsp_biomarkers(vars)", "tabulate_rsp_biomarkers(.stats)")
-    .stats <- vars
-  }
-
   checkmate::assert_data_frame(df)
   checkmate::assert_character(df$biomarker)
   checkmate::assert_character(df$biomarker_label)

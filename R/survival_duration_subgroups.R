@@ -212,7 +212,7 @@ a_survival_subgroups <- function(.formats = list( # nolint start
 #'
 #' @param df (`list`)\cr of data frames containing all analysis variables. List should be
 #'   created using [extract_survival_subgroups()].
-#' @param .stats (`character`)\cr the name of statistics to be reported among:
+#' @param vars (`character`)\cr the name of statistics to be reported among:
 #'   * `n_tot_events`: Total number of events per group.
 #'   * `n_events`: Number of events per group.
 #'   * `n_tot`: Total number of observations per group.
@@ -242,15 +242,9 @@ a_survival_subgroups <- function(.formats = list( # nolint start
 #' @export
 tabulate_survival_subgroups <- function(lyt,
                                         df,
-                                        vars = lifecycle::deprecated(),
+                                        vars = c("n_tot_events", "n_events", "median", "hr", "ci"),
                                         time_unit = NULL,
-                                        .stats = c("n_tot_events", "n_events", "median", "hr", "ci"),
                                         na_str = NA_character_) {
-  if (lifecycle::is_present(vars)) {
-    lifecycle::deprecate_warn("0.9.3", "tabulate_survival_subgroups(vars)", "tabulate_survival_subgroups(.stats)")
-    .stats <- vars
-  }
-
   conf_level <- df$hr$conf_level[1]
   method <- df$hr$pval_label[1]
 

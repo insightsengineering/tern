@@ -172,7 +172,7 @@ extract_survival_biomarkers <- function(variables,
 #'
 #' @param df (`data.frame`)\cr containing all analysis variables, as returned by
 #'   [extract_survival_biomarkers()].
-#' @param .stats (`character`)\cr the names of statistics to be reported among:
+#' @param vars (`character`)\cr the names of statistics to be reported among:
 #'   * `n_tot_events`: Total number of events per group.
 #'   * `n_tot`: Total number of observations per group.
 #'   * `median`: Median survival time.
@@ -207,15 +207,9 @@ extract_survival_biomarkers <- function(variables,
 #'
 #' @export
 tabulate_survival_biomarkers <- function(df,
-                                         vars = lifecycle::deprecated(),
+                                         vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
                                          time_unit = NULL,
-                                         .stats = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
                                          .indent_mods = 0L) {
-  if (lifecycle::is_present(vars)) {
-    lifecycle::deprecate_warn("0.9.3", "tabulate_survival_biomarkers(vars)", "tabulate_survival_biomarkers(.stats)")
-    .stats <- vars
-  }
-
   checkmate::assert_data_frame(df)
   checkmate::assert_character(df$biomarker)
   checkmate::assert_character(df$biomarker_label)

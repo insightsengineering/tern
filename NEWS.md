@@ -19,7 +19,6 @@
 
 ### Miscellaneous
 * Specified minimal version of package dependencies.
-* Began deprecation of `vars` argument in `tabulate_rsp_biomarkers`, `tabulate_rsp_subgroups`, `tabulate_survival_biomarkers`, and `tabulate_survival_subgroups` and replaced it with the `.stats` argument.
 
 # tern 0.9.2
 
