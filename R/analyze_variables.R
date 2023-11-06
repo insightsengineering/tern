@@ -471,6 +471,7 @@ a_summary <- function(x,
                       na_level = lifecycle::deprecated(),
                       na_str = NA_character_,
                       ...) {
+  extra_args <- list(...)
   if (lifecycle::is_present(na_level)) {
     lifecycle::deprecate_warn("0.9.1", "a_summary(na_level)", "a_summary(na_str)")
     na_str <- na_level
@@ -507,8 +508,8 @@ a_summary <- function(x,
 
   lbls <- get_labels_from_stats(.stats, .labels)
   # Check for custom labels from control_analyze_vars
-  .labels <- if ("control" %in% names(list(...))) {
-    lbls %>% labels_use_control(list(...)[["control"]], .labels)
+  .labels <- if ("control" %in% names(extra_args)) {
+    lbls %>% labels_use_control(extra_args[["control"]], .labels)
   } else {
     lbls
   }
