@@ -44,6 +44,7 @@
 #' @param legend_position (`character`)\cr the position of the plot legend (`none`, `left`, `right`, `bottom`, `top`,
 #'   or two-element numeric vector).
 #' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to control styling of the plot.
+#' @param x_lab (`character`)\cr x-axis label. If equal to `NULL`, then no label will be added.
 #' @param y_lab (`character`)\cr y-axis label. If equal to `NULL`, then no label will be added.
 #' @param y_lab_add_paramcd (`logical`)\cr should `paramcd`, i.e. `unique(df[[variables["paramcd"]]])` be added to the
 #'   y-axis label `y_lab`?
@@ -137,6 +138,7 @@ g_lineplot <- function(df,
                        legend_title = NULL,
                        legend_position = "bottom",
                        ggtheme = nestcolor::theme_nest(),
+                       x_lab = obj_label(df[[variables[["x"]]]]),
                        y_lab = NULL,
                        y_lab_add_paramcd = TRUE,
                        y_lab_add_unit = TRUE,
@@ -330,7 +332,7 @@ g_lineplot <- function(df,
       color = legend_title,
       lty = legend_title,
       shape = legend_title,
-      x = attr(df[[x]], "label"),
+      x = x_lab,
       y = y_lab
     )
 
