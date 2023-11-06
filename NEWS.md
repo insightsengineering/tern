@@ -10,6 +10,9 @@
 * Added `annot_coxph_ref_lbls` parameter to `g_km` to enable printing the reference group in table labels when `annot_coxph = TRUE`.
 * Added `x_lab` parameter to `g_lineplot` to customize x-axis label.
 
+### Bug Fixes
+* Fixed bug in `decorate_grob` preventing text wrapping from accounting for font size.
+
 ### Miscellaneous
 * Specified minimal version of package dependencies.
 
