@@ -13,6 +13,8 @@
 #' @param abnormal (named `list`)\cr list identifying the abnormal range level(s) in `var`. Defaults to
 #'   `list(Low = "LOW", High = "HIGH")` but you can also group different levels into the named list,
 #'   for example, `abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))`.
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("abnormal")`
+#'   to see available statistics for this function.
 #'
 #' @note
 #' * `count_abnormal()` only works with a single variable containing multiple abnormal levels.

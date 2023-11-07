@@ -6,6 +6,8 @@
 #' regarding the level of a factor.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_multinomial_response")`
+#'   to see available statistics for this function.
 #'
 #' @seealso Relevant description function [d_onco_rsp_label()].
 #'

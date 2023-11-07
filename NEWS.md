@@ -1,4 +1,4 @@
-# tern 0.9.2.9010
+# tern 0.9.2.9012
 
 ### New Features
 * Added `ref_group_position` function to place the reference group facet last, first or at a certain position.
@@ -8,6 +8,7 @@
 * Added internal utility function `apply_auto_formatting` to check for `"auto"` formats and replace them with 
   implementation of `format_auto` in analyze functions.
 * Added utility function `labels_use_control` to modify labels with control specifications.
+* Added list containing default statistics for each method group, `tern_default_stats`.
 * Added summarize function version of `count_occurrences` analyze function, `summarize_occurrences`.
 * Added referential footnotes to `surv_time` for censored range observations.
 
@@ -15,6 +16,7 @@
 * Added `ref_group_coxph` parameter to `g_km` to specify the reference group used for pairwise Cox-PH calculations when `annot_coxph = TRUE`.
 * Added `annot_coxph_ref_lbls` parameter to `g_km` to enable printing the reference group in table labels when `annot_coxph = TRUE`.
 * Added `x_lab` parameter to `g_lineplot` to customize x-axis label.
+* Remove 25% padding of y-axis in `g_lineplot`.
 
 ### Bug Fixes
 * Fixed bug in `decorate_grob` preventing text wrapping from accounting for font size.

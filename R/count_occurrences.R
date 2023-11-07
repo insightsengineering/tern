@@ -8,6 +8,8 @@
 #' counted only once.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_occurrences")`
+#'   to see available statistics for this function.
 #'
 #' @note By default, occurrences which don't appear in a given row split are dropped from the table and
 #'   the occurrences in the table are sorted alphabetically per row split. Therefore, the corresponding layout

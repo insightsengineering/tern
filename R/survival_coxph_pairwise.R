@@ -14,6 +14,8 @@
 #'   * `ties` (`string`)\cr specifying the method for tie handling. Default is `"efron"`,
 #'     can also be set to `"breslow"` or `"exact"`. See more in [survival::coxph()]
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("coxph_pairwise")`
+#'   to see available statistics for this function.
 #'
 #' @name survival_coxph_pairwise
 NULL

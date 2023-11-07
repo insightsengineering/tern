@@ -112,7 +112,8 @@ avoid warnings from duplicate table names.}
 \item{method}{(\code{string})\cr either \code{surv} (survival estimations),
 \code{surv_diff} (difference in survival with the control) or \code{both}.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
+\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("surv_timepoint")}
+to see available statistics for this function.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}

@@ -5,6 +5,8 @@
 #' Estimate the proportion of responders within a studied population.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_proportion")`
+#'   to see available statistics for this function.
 #'
 #' @seealso [h_proportions]
 #'

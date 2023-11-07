@@ -7,6 +7,8 @@
 #'
 #' @inheritParams h_count_cumulative
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_cumulative")`
+#'   to see available statistics for this function.
 #'
 #' @seealso Relevant helper function [h_count_cumulative()], and descriptive function [d_count_cumulative()].
 #'

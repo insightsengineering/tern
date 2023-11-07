@@ -14,6 +14,8 @@
 #' @inheritParams argument_convention
 #' @param category (`list`)\cr with different marked category names for single
 #'   and last or replicated.
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("abnormal_by_marked")`
+#'   to see available statistics for this function.
 #'
 #' @note `Single, not last` and `Last or replicated` levels are mutually exclusive. If a patient has
 #'   abnormalities that meet both the `Single, not last` and `Last or replicated` criteria, then the

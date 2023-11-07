@@ -10,6 +10,8 @@
 #' @param grade_groups (named `list` of `character`)\cr containing groupings of grades.
 #' @param remove_single (`logical`)\cr `TRUE` to not include the elements of one-element grade groups
 #'   in the the output list; in this case only the grade groups names will be included in the output.
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_occurrences_by_grade")`
+#'   to see available statistics for this function.
 #'
 #' @seealso Relevant helper function [h_append_grade_groups()].
 #'

@@ -109,7 +109,9 @@ to avoid warnings from \code{rtables}.}
 \item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
 defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
+\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("analyze_vars_numeric")} to see
+statistics available for numeric variables, and \code{get_stats("analyze_vars_counts")} for statistics available
+for non-numeric variables.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}

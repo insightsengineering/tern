@@ -5,6 +5,8 @@
 #' We can count the occurrence of specific values in a variable of interest.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_values")`
+#'   to see available statistics for this function.
 #'
 #' @note
 #' * For `factor` variables, `s_count_values` checks whether `values` are all included in the levels of `x`

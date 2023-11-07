@@ -7,13 +7,19 @@
 \alias{get_formats_from_stats}
 \alias{get_labels_from_stats}
 \alias{get_indents_from_stats}
+\alias{tern_default_stats}
 \alias{tern_default_formats}
 \alias{tern_default_labels}
 \alias{summary_formats}
 \alias{summary_labels}
 \alias{summary_custom}
-\title{Defaults for statistical method names and their associated formats & labels}
+\title{Get default statistical methods and their associated formats, labels, and indent modifiers}
 \format{
+\itemize{
+\item \code{tern_default_stats} is a named list of available statistics, with each element
+named for their corresponding statistical method group.
+}
+
 \itemize{
 \item \code{tern_default_formats} is a named vector of available default formats, with each element
 named for their corresponding statistic.
@@ -37,6 +43,8 @@ get_labels_from_stats(stats, labels_in = NULL, row_nms = NULL)
 
 get_indents_from_stats(stats, indents_in = NULL, row_nms = NULL)
 
+tern_default_stats
+
 tern_default_formats
 
 tern_default_labels
@@ -55,21 +63,21 @@ summary_custom(
 )
 }
 \arguments{
-\item{method_groups}{(\code{character})\cr indicates the group of statistical methods that
-we need the defaults from. A character vector can be used to collect more than one group of statistical
-methods.}
+\item{method_groups}{(\code{character})\cr indicates the statistical method group (\code{tern} analyze function)
+to retrieve default statistics for. A character vector can be used to specify more than one statistical
+method group.}
 
-\item{stats_in}{(\code{character})\cr desired stats to be picked out from the selected method group.}
+\item{stats_in}{(\code{character})\cr statistics to retrieve for the selected method group.}
 
-\item{add_pval}{(\code{flag})\cr should \code{"pval"} or \code{"pval_counts"} (if \code{method_groups} contains
+\item{add_pval}{(\code{flag})\cr should \code{"pval"} (or \code{"pval_counts"} if \code{method_groups} contains
 \code{"analyze_vars_counts"}) be added to the statistical methods?}
 
-\item{stats}{(\code{character})\cr statistical methods to get defaults formats or labels for.}
+\item{stats}{(\code{character})\cr statistical methods to get defaults for.}
 
 \item{formats_in}{(named \code{vector}) \cr inserted formats to replace defaults. It can be a
 character vector from \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or a custom format function.}
 
-\item{labels_in}{(named \code{vector})\cr inserted labels to replace defaults.}
+\item{labels_in}{(named \code{vector} of \code{character})\cr inserted labels to replace defaults.}
 
 \item{row_nms}{(\code{character})\cr row names. Levels of a \code{factor} or \code{character} variable, each
 of which the statistics in \code{.stats} will be calculated for. If this parameter is set, these
@@ -103,17 +111,18 @@ statistics by setting \code{indent_mods_custom} to a single integer value.}
 }
 \value{
 \itemize{
-\item \code{get_stats()} returns a character vector with all default statistical methods.
+\item \code{get_stats()} returns a \code{character} vector of statistical methods.
 }
 
 \itemize{
-\item \code{get_formats_from_stats()} returns a named list of formats, they being a value from
+\item \code{get_formats_from_stats()} returns a named vector of formats (if present in either
+\code{tern_default_formats} or \code{formats_in}, otherwise \code{NULL}). Values can be taken from
 \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or a custom function (e.g. \link{formatting_functions}).
 }
 
 \itemize{
-\item \code{get_labels_from_stats()} returns a named character vector of default labels (if present
-otherwise \code{NULL}).
+\item \code{get_labels_from_stats()} returns a named \code{character} vector of labels (if present in either
+\code{tern_default_labels} or \code{labels_in}, otherwise \code{NULL}).
 }
 
 \itemize{
@@ -138,24 +147,25 @@ and \code{indent_mods}.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Utility functions to get valid statistic methods for different method groups
-(\code{.stats}) and their associated formats (\code{.formats}) and labels (\code{.labels}). This utility
-is used across \code{tern}, but some of its working principles can be seen in \code{\link[=analyze_vars]{analyze_vars()}}.
-See notes to understand why this is experimental.
+(\code{.stats}) and their associated formats (\code{.formats}), labels (\code{.labels}), and indent modifiers
+(\code{.indent_mods}). This utility is used across \code{tern}, but some of its working principles can be
+seen in \code{\link[=analyze_vars]{analyze_vars()}}. See notes to understand why this is experimental.
 }
 \details{
 Current choices for \code{type} are \code{counts} and \code{numeric} for \code{\link[=analyze_vars]{analyze_vars()}} and affect \code{get_stats()}.
 }
 \section{Functions}{
 \itemize{
-\item \code{get_stats()}: Get defaults statistical methods for different
-groups of methods.
+\item \code{get_stats()}: Get statistics available for a given method
+group (analyze function).
 
-\item \code{get_formats_from_stats()}: Get formats from vector of statistical methods. If not
-present \code{NULL} is returned.
+\item \code{get_formats_from_stats()}: Get formats corresponding to a list of statistics.
 
-\item \code{get_labels_from_stats()}: Get labels from vector of statistical methods.
+\item \code{get_labels_from_stats()}: Get labels corresponding to a list of statistics.
 
 \item \code{get_indents_from_stats()}: Format indent modifiers for a given vector/list of statistics.
+
+\item \code{tern_default_stats}: Named list of available statistics by method group for \code{tern}.
 
 \item \code{tern_default_formats}: Named vector of default formats for \code{tern}.
 
