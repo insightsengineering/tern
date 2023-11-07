@@ -960,15 +960,18 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-        row_name formatted_cell indent_mod row_label
-      1        n              5          0         n
-      2        a              3          0         a
-      3        b              1          0         b
-      4        c              1          0         c
-      5        a        3 (60%)          0         a
-      6        b        1 (20%)          0         b
-      7        c        1 (20%)          0         c
-      8    n_blq              0          0     n_blq
+         row_name formatted_cell indent_mod row_label
+      1         n              5          0         n
+      2         a              3          0         a
+      3         b              1          0         b
+      4         c              1          0         c
+      5         a        3 (60%)          0         a
+      6         b        1 (20%)          0         b
+      7         c        1 (20%)          0         c
+      8         a      3 (60.0%)          0         a
+      9         b      1 (20.0%)          0         b
+      10        c      1 (20.0%)          0         c
+      11    n_blq              0          0     n_blq
 
 ---
 
@@ -977,15 +980,18 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-        row_name formatted_cell indent_mod row_label
-      1        n              4          0         n
-      2        A              2          0         A
-      3        B              1          0         B
-      4        C              1          0         C
-      5        A        2 (50%)          0         A
-      6        B        1 (25%)          0         B
-      7        C        1 (25%)          0         C
-      8    n_blq              0          0     n_blq
+         row_name formatted_cell indent_mod row_label
+      1         n              4          0         n
+      2         A              2          0         A
+      3         B              1          0         B
+      4         C              1          0         C
+      5         A        2 (50%)          0         A
+      6         B        1 (25%)          0         B
+      7         C        1 (25%)          0         C
+      8         A      2 (50.0%)          0         A
+      9         B      1 (25.0%)          0         B
+      10        C      1 (25.0%)          0         C
+      11    n_blq              0          0     n_blq
 
 ---
 
@@ -998,7 +1004,8 @@
       1              n              5          0              n
       2          count              3          0          count
       3 count_fraction        3 (60%)          0 count_fraction
-      4          n_blq              0          0          n_blq
+      4 count_fraction      3 (60.0%)          0 count_fraction
+      5          n_blq              0          0          n_blq
 
 # a_summary works with custom input.
 
@@ -1028,7 +1035,11 @@
       7                  b        1 (20%)          0                 b
       8                  c        1 (20%)          0                 c
       9                 NA        1 (20%)          0                NA
-      10             n_blq              0          0             n_blq
+      10                 a      2 (40.0%)          0                 a
+      11                 b      1 (20.0%)          0                 b
+      12                 c      1 (20.0%)          0                 c
+      13                NA      1 (20.0%)          0                NA
+      14             n_blq              0          0             n_blq
 
 # a_summary works with healthy input when compare = TRUE.
 
@@ -1071,16 +1082,19 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-                          row_name formatted_cell indent_mod                  row_label
-      1                          n              5          0                          n
-      2                          a              3          0                          a
-      3                          b              1          0                          b
-      4                          c              1          0                          c
-      5                          a        3 (60%)          0                          a
-      6                          b        1 (20%)          0                          b
-      7                          c        1 (20%)          0                          c
-      8                      n_blq              0          0                      n_blq
-      9 p-value (chi-squared test)         0.9560          0 p-value (chi-squared test)
+                           row_name formatted_cell indent_mod                  row_label
+      1                           n              5          0                          n
+      2                           a              3          0                          a
+      3                           b              1          0                          b
+      4                           c              1          0                          c
+      5                           a        3 (60%)          0                          a
+      6                           b        1 (20%)          0                          b
+      7                           c        1 (20%)          0                          c
+      8                           a      3 (60.0%)          0                          a
+      9                           b      1 (20.0%)          0                          b
+      10                          c      1 (20.0%)          0                          c
+      11                      n_blq              0          0                      n_blq
+      12 p-value (chi-squared test)         0.9560          0 p-value (chi-squared test)
 
 ---
 
@@ -1089,16 +1103,19 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-                          row_name formatted_cell indent_mod                  row_label
-      1                          n              4          0                          n
-      2                          A              2          0                          A
-      3                          B              1          0                          B
-      4                          C              1          0                          C
-      5                          A        2 (50%)          0                          A
-      6                          B        1 (25%)          0                          B
-      7                          C        1 (25%)          0                          C
-      8                      n_blq              0          0                      n_blq
-      9 p-value (chi-squared test)         0.9074          0 p-value (chi-squared test)
+                           row_name formatted_cell indent_mod                  row_label
+      1                           n              4          0                          n
+      2                           A              2          0                          A
+      3                           B              1          0                          B
+      4                           C              1          0                          C
+      5                           A        2 (50%)          0                          A
+      6                           B        1 (25%)          0                          B
+      7                           C        1 (25%)          0                          C
+      8                           A      2 (50.0%)          0                          A
+      9                           B      1 (25.0%)          0                          B
+      10                          C      1 (25.0%)          0                          C
+      11                      n_blq              0          0                      n_blq
+      12 p-value (chi-squared test)         0.9074          0 p-value (chi-squared test)
 
 ---
 
@@ -1111,8 +1128,9 @@
       1                          n              5          0                          n
       2                      count              3          0                      count
       3             count_fraction        3 (60%)          0             count_fraction
-      4                      n_blq              0          0                      n_blq
-      5 p-value (chi-squared test)         0.8091          0 p-value (chi-squared test)
+      4             count_fraction      3 (60.0%)          0             count_fraction
+      5                      n_blq              0          0                      n_blq
+      6 p-value (chi-squared test)         0.8091          0 p-value (chi-squared test)
 
 # a_summary works with custom input when compare = TRUE.
 
@@ -1142,8 +1160,12 @@
       7                           b        1 (20%)          0                          b
       8                           c        1 (20%)          0                          c
       9                          NA        1 (20%)          0                         NA
-      10                      n_blq              0          0                      n_blq
-      11 p-value (chi-squared test)         0.8254          0 p-value (chi-squared test)
+      10                          a      2 (40.0%)          0                          a
+      11                          b      1 (20.0%)          0                          b
+      12                          c      1 (20.0%)          0                          c
+      13                         NA      1 (20.0%)          0                         NA
+      14                      n_blq              0          0                      n_blq
+      15 p-value (chi-squared test)         0.8254          0 p-value (chi-squared test)
 
 # `analyze_vars` works with healthy input, default `na.rm = TRUE`.
 

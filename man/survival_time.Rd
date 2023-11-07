@@ -16,6 +16,7 @@ a_surv_time(
   .df_row = NULL,
   is_event,
   control = control_surv_time(),
+  ref_fn_censor = TRUE,
   .stats = NULL,
   .formats = NULL,
   .labels = NULL,
@@ -26,6 +27,7 @@ a_surv_time(
 surv_time(
   lyt,
   vars,
+  ref_fn_censor = TRUE,
   na_str = NA_character_,
   nested = TRUE,
   ...,
@@ -60,6 +62,9 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "no
 for more information.}
 
 \item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
+
+\item{ref_fn_censor}{(\code{flag})\cr whether referential footnotes indicating censored observations should be printed
+when the \code{range} statistic is included.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("surv_time")}
 to see available statistics for this function.}

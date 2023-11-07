@@ -100,6 +100,7 @@ a_surv_time <- function(df,
                         .df_row = NULL,
                         is_event,
                         control = control_surv_time(),
+                        ref_fn_censor = TRUE,
                         .stats = NULL,
                         .formats = NULL,
                         .labels = NULL,
@@ -130,7 +131,7 @@ a_surv_time <- function(df,
   .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
 
   cell_fns <- setNames(vector("list", length = length(x_stats)), .labels)
-  if ("range" %in% names(x_stats)) {
+  if ("range" %in% names(x_stats) && ref_fn_censor) {
     if (x_stats[["range"]][1] == rng_censor_lwr && x_stats[["range"]][2] == rng_censor_upr) {
       cell_fns[[.labels[["range"]]]] <- "Censored observations: range minimum & maximum"
     } else if (x_stats[["range"]][1] == rng_censor_lwr) {
@@ -157,6 +158,8 @@ a_surv_time <- function(df,
 #' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.
+#' @param ref_fn_censor (`flag`)\cr whether referential footnotes indicating censored observations should be printed
+#'   when the `range` statistic is included.
 #'
 #' @return
 #' * `surv_time()` returns a layout object suitable for passing to further layouting functions,
@@ -178,6 +181,7 @@ a_surv_time <- function(df,
 #' @export
 surv_time <- function(lyt,
                       vars,
+                      ref_fn_censor = TRUE,
                       na_str = NA_character_,
                       nested = TRUE,
                       ...,
@@ -189,7 +193,8 @@ surv_time <- function(lyt,
                       .labels = NULL,
                       .indent_mods = c(median_ci = 1L)) {
   extra_args <- list(
-    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
+    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods,
+    na_str = na_str, ref_fn_censor = ref_fn_censor
   )
 
   analyze(

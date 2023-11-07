@@ -10,7 +10,7 @@
 * Added utility function `labels_use_control` to modify labels with control specifications.
 * Added list containing default statistics for each method group, `tern_default_stats`.
 * Added summarize function version of `count_occurrences` analyze function, `summarize_occurrences`.
-* Added referential footnotes to `surv_time` for censored range observations.
+* Added referential footnotes to `surv_time` for censored range observations, controlled via the `ref_fn_censor` parameter.
 
 ### Enhancements
 * Added `ref_group_coxph` parameter to `g_km` to specify the reference group used for pairwise Cox-PH calculations when `annot_coxph = TRUE`.
