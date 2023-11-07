@@ -324,7 +324,7 @@ g_lineplot <- function(df,
   }
 
   p <- p +
-    ggplot2::scale_y_continuous(labels = scales::comma, expand = ggplot2::expansion(c(0.25, .25))) +
+    ggplot2::scale_y_continuous(labels = scales::comma) +
     ggplot2::labs(
       title = title,
       subtitle = subtitle,
