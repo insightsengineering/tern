@@ -46,6 +46,9 @@ control_summarize_vars <- control_analyze_vars
 #' functions; in this case [rtables::analyze()].
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("analyze_vars_numeric")` to see
+#'   statistics available for numeric variables, and `get_stats("analyze_vars_counts")` for statistics available
+#'   for non-numeric variables.
 #'
 #' @name analyze_variables
 NULL

@@ -6,6 +6,8 @@
 #' multiple timepoints within the same response variable `.var`.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("summarize_ancova")`
+#'   to see available statistics for this function.
 #'
 #' @name summarize_ancova
 NULL

@@ -10,6 +10,8 @@
 #'   `nonunique` records.
 #' @param unique_count_suffix (`logical`)\cr should `"(n)"` suffix be added to `unique_count` labels.
 #'   Defaults to `TRUE`.
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("summarize_num_patients")`
+#'   to see available statistics for this function.
 #'
 #' @name summarize_num_patients
 NULL

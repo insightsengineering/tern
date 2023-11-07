@@ -5,6 +5,8 @@
 #' Various tests were implemented to test the difference between two proportions.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("test_proportion_diff")`
+#'   to see available statistics for this function.
 #'
 #' @seealso [h_prop_diff_test]
 #'

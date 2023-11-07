@@ -3,6 +3,8 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_proportion_diff")`
+#'   to see available statistics for this function.
 #'
 #' @seealso [d_proportion_diff()]
 #'

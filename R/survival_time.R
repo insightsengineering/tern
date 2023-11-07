@@ -12,6 +12,8 @@
 #'   * `conf_type` (`string`)\cr confidence interval type. Options are "plain" (default), "log", or "log-log",
 #'     see more in [survival::survfit()]. Note option "none" is not supported.
 #'   * `quantiles` (`numeric`)\cr vector of length two to specify the quantiles of survival time.
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("surv_time")`
+#'   to see available statistics for this function.
 #'
 #' @name survival_time
 NULL

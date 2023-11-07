@@ -213,7 +213,7 @@ tabulate_survival_biomarkers <- function(df,
   checkmate::assert_data_frame(df)
   checkmate::assert_character(df$biomarker)
   checkmate::assert_character(df$biomarker_label)
-  checkmate::assert_subset(vars, c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"))
+  checkmate::assert_subset(vars, get_stats("tabulate_survival_biomarkers"))
 
   df_subs <- split(df, f = df$biomarker)
   tabs <- lapply(df_subs, FUN = function(df_sub) {

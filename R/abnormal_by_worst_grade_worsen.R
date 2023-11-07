@@ -5,6 +5,8 @@
 #' Patient count and fraction for laboratory events (worsen from baseline) shift table.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("abnormal_by_worst_grade_worsen")`
+#'   to see all available statistics.
 #'
 #' @seealso Relevant helper functions [h_adlb_worsen()] and [h_worsen_counter()]
 #'

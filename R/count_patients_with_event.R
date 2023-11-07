@@ -5,6 +5,8 @@
 #' The primary analysis variable `.var` denotes the unique patient identifier.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_patients_with_event")`
+#'   to see available statistics for this function.
 #'
 #' @seealso [count_patients_with_flags]
 #'

@@ -5,6 +5,8 @@
 #' Fits a Cox regression model and estimates hazard ratio to describe the effect size in a survival analysis.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("summarize_coxreg")`
+#'   to see available statistics for this function.
 #'
 #' @details Cox models are the most commonly used methods to estimate the magnitude of
 #'   the effect in survival analysis. It assumes proportional hazards: the ratio

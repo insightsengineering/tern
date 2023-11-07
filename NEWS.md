@@ -7,6 +7,7 @@
 * Added internal utility function `apply_auto_formatting` to check for `"auto"` formats and replace them with 
   implementation of `format_auto` in analyze functions.
 * Added utility function `labels_use_control` to modify labels with control specifications.
+* Added list containing default statistics for each method group, `tern_default_stats`.
 
 ### Enhancements
 * Added `ref_group_coxph` parameter to `g_km` to specify the reference group used for pairwise Cox-PH calculations when `annot_coxph = TRUE`.

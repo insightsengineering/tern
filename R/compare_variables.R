@@ -5,6 +5,9 @@
 #' Comparison with a reference group for different `x` objects.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("analyze_vars_numeric")` to see
+#'   statistics available for numeric variables, and `get_stats("analyze_vars_counts")` for statistics available
+#'   for non-numeric variables.
 #'
 #' @note
 #' * For factor variables, `denom` for factor proportions can only be `n` since the purpose is to compare proportions

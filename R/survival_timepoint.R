@@ -13,6 +13,8 @@
 #'   * `conf_type` (`string`)\cr confidence interval type. Options are "plain" (default), "log", "log-log",
 #'     see more in [survival::survfit()]. Note option "none" is no longer supported.
 #'   * `time_point` (`number`)\cr survival time point of interest.
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("surv_timepoint")`
+#'   to see available statistics for this function.
 #'
 #' @name survival_timepoint
 NULL

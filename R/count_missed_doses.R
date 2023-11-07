@@ -6,6 +6,8 @@
 #' mainly the special labels.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_missed_doses")`
+#'   to see available statistics for this function.
 #'
 #' @seealso Relevant description function [d_count_missed_doses()].
 #'

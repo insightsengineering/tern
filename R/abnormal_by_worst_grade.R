@@ -12,6 +12,8 @@
 #'   * `Any`: Numerator is number of patients with at least one abnormality, which means grade is different from 0.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("abnormal_by_worst_grade")`
+#'   to see available statistics for this function.
 #'
 #' @details The pre-processing steps are crucial when using this function. From the standard lab grade variable
 #'   `ATOXGR`, derive the following two variables:

@@ -6,6 +6,8 @@
 #' along with a confidence interval.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_odds_ratio")`
+#'   to see available statistics for this function.
 #'
 #' @details This function uses either logistic regression for unstratified
 #'   analyses, or conditional logistic regression for stratified analyses.
