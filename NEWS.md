@@ -12,6 +12,7 @@
 * Added `ref_group_coxph` parameter to `g_km` to specify the reference group used for pairwise Cox-PH calculations when `annot_coxph = TRUE`.
 * Added `annot_coxph_ref_lbls` parameter to `g_km` to enable printing the reference group in table labels when `annot_coxph = TRUE`.
 * Added `x_lab` parameter to `g_lineplot` to customize x-axis label.
+* Remove 25% padding of y-axis in `g_lineplot`.
 
 ### Bug Fixes
 * Fixed bug in `decorate_grob` preventing text wrapping from accounting for font size.
