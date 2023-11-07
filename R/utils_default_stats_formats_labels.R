@@ -438,7 +438,9 @@ tern_default_formats <- c(
   geom_mean_ci = "(xx.xx, xx.xx)",
   geom_cv = "xx.x",
   pval = "x.xxxx | (<0.0001)",
-  pval_counts = "x.xxxx | (<0.0001)"
+  pval_counts = "x.xxxx | (<0.0001)",
+  range_censor = "xx.x to xx.x",
+  range_event = "xx.x to xx.x"
 )
 
 #' @describeIn default_stats_formats_labels Named `character` vector of default labels for `tern`.

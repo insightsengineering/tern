@@ -517,6 +517,7 @@ a_summary <- function(x,
     lbls
   }
 
+  if ("count_fraction_fixed_dp" %in% .stats) x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
   x_stats <- x_stats[.stats]
 
   if (is.factor(x) || is.character(x)) {
