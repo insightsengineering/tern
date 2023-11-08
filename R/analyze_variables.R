@@ -39,11 +39,21 @@ control_summarize_vars <- control_analyze_vars
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' We use the S3 generic function [s_summary()] to implement summaries for different `x` objects. This
-#' is used as a statistics function in combination with the analyze function [analyze_vars()].
-#' Deprecation cycle started for `summarize_vars` as it is going to renamed into
-#' `analyze_vars`. Intention is to reflect better the core underlying `rtables`
-#' functions; in this case [rtables::analyze()].
+#' The analyze function [analyze_vars()] generates a summary of one or more variables, using the S3 generic function
+#' [s_summary()] to calculate a list of summary statistics. A list of all available statistics for numeric
+#' variables can be viewed by running `get_stats("analyze_vars_numeric")` and for non-numeric variables by running
+#' `get_stats("analyze_vars_counts")`. Use the `.stats` parameter to specify the statistics to include in your output
+#' summary table.
+#'
+#' @details
+#' **Automatic digit formatting:** The number of digits to display can be automatically determined from the analyzed
+#' variable(s) (`vars`) for certain statistics by setting the statistic format to `"auto"` in `.formats`.
+#' This utilizes the [format_auto()] formatting function. Note that only data for the current row & variable (for all
+#' columns) will be considered (`.df_row[[.var]]`, see [`rtables::additional_fun_params`]) and not the whole dataset.
+#'
+#' @note
+#' * Deprecation cycle started for `summarize_vars` which has been renamed to `analyze_vars`. This renaming is intended
+#'   to better reflect its core underlying `rtables` functions - in this case [rtables::analyze()].
 #'
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("analyze_vars_numeric")` to see
@@ -591,12 +601,6 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.
 #'
-#' @details
-#' It is possible to use `"auto"` for `analyze_vars` on a subset of methods. This uses [format_auto()] to
-#' determine automatically the number of digits from the analyzed variable (`.vars`), but only for the
-#' current row data (`.df_row[[.var]]`, see `?rtables::additional_fun_params`), and not for the whole
-#' data. Also no column split is considered.
-#'
 #' @return
 #' * `analyze_vars()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
@@ -662,6 +666,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'   build_table(dt)
 #'
 #' @export analyze_vars summarize_vars
+#' @order 1
 analyze_vars <- function(lyt,
                          vars,
                          var_labels = vars,
