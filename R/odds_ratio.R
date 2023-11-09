@@ -188,6 +188,7 @@ a_odds_ratio <- make_afun(
 #' build_table(l, df = dta)
 #'
 #' @export
+#' @order 1
 estimate_odds_ratio <- function(lyt,
                                 vars,
                                 na_str = NA_character_,

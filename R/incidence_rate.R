@@ -133,6 +133,7 @@ a_incidence_rate <- make_afun(
 #'   build_table(df)
 #'
 #' @export
+#' @order 1
 estimate_incidence_rate <- function(lyt,
                                     vars,
                                     na_str = NA_character_,

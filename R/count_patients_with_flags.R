@@ -155,6 +155,7 @@ a_count_patients_with_flags <- make_afun(
 #' build_table(lyt2, adae, alt_counts_df = tern_ex_adsl)
 #'
 #' @export
+#' @order 1
 count_patients_with_flags <- function(lyt,
                                       var,
                                       var_labels = var,

@@ -149,6 +149,7 @@ a_count_cumulative <- make_afun(
 #'   build_table(tern_ex_adsl)
 #'
 #' @export
+#' @order 1
 count_cumulative <- function(lyt,
                              vars,
                              var_labels = vars,

@@ -203,6 +203,7 @@ a_response_subgroups <- function(.formats = list(
 #'   )
 #'
 #' @export
+#' @order 1
 tabulate_rsp_subgroups <- function(lyt,
                                    df,
                                    vars = c("n_tot", "n", "prop", "or", "ci")) {

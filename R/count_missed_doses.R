@@ -110,6 +110,7 @@ a_count_missed_doses <- make_afun(
 #'   build_table(anl, alt_counts_df = tern_ex_adsl)
 #'
 #' @export
+#' @order 1
 count_missed_doses <- function(lyt,
                                vars,
                                var_labels = vars,

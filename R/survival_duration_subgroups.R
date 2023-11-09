@@ -240,6 +240,7 @@ a_survival_subgroups <- function(.formats = list( # nolint start
 #'   )
 #'
 #' @export
+#' @order 1
 tabulate_survival_subgroups <- function(lyt,
                                         df,
                                         vars = c("n_tot_events", "n_events", "median", "hr", "ci"),

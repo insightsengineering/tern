@@ -176,6 +176,7 @@ a_count_patients_sum_exposure <- function(df,
 #' result2
 #'
 #' @export
+#' @order 2
 summarize_patients_exposure_in_cols <- function(lyt, # nolint
                                                 var,
                                                 na_str = NA_character_,
@@ -257,6 +258,7 @@ summarize_patients_exposure_in_cols <- function(lyt, # nolint
 #' tbl
 #'
 #' @export
+#' @order 1
 analyze_patients_exposure_in_cols <- function(lyt, # nolint
                                               var = NULL,
                                               ex_var = "AVAL",

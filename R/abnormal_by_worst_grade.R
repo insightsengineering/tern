@@ -164,6 +164,7 @@ a_count_abnormal_by_worst_grade <- make_afun( # nolint
 #'   build_table(df = adlb_f)
 #'
 #' @export
+#' @order 1
 count_abnormal_by_worst_grade <- function(lyt,
                                           var,
                                           na_str = NA_character_,

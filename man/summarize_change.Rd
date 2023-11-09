@@ -6,10 +6,6 @@
 \alias{a_change_from_baseline}
 \title{Summarize the Change from Baseline or Absolute Baseline Values}
 \usage{
-s_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
-
-a_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
-
 summarize_change(
   lyt,
   vars,
@@ -22,19 +18,12 @@ summarize_change(
   .labels = NULL,
   .indent_mods = NULL
 )
+
+s_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
+
+a_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
 }
 \arguments{
-\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
-
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
-
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
-
-\item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
-
-\item{...}{additional arguments for the lower level functions.}
-
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
@@ -44,6 +33,8 @@ by a statistics function.}
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
+
+\item{...}{additional arguments for the lower level functions.}
 
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
@@ -58,20 +49,29 @@ information on the \code{"auto"} setting.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
+
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
+
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
+
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
+
+\item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 }
 \value{
+\itemize{
+\item \code{summarize_change()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_change_from_baseline()} to the table layout.
+}
+
 \itemize{
 \item \code{s_change_from_baseline()} returns the same values returned by \code{\link[=s_summary.numeric]{s_summary.numeric()}}.
 }
 
 \itemize{
 \item \code{a_change_from_baseline()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
-}
-
-\itemize{
-\item \code{summarize_change()} returns a layout object suitable for passing to further layouting functions,
-or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
-the statistics from \code{s_change_from_baseline()} to the table layout.
 }
 }
 \description{
@@ -84,28 +84,22 @@ or the change from baseline values (post-baseline) are then summarized.
 }
 \section{Functions}{
 \itemize{
+\item \code{summarize_change()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{s_change_from_baseline()}: Statistics function that summarizes baseline or post-baseline visits.
 
 \item \code{a_change_from_baseline()}: Formatted analysis function which is used as \code{afun} in \code{summarize_change()}.
 
-\item \code{summarize_change()}: Layout-creating function which can take statistics function arguments
-and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
-
 }}
 \note{
-The data in \code{df} must be either all be from baseline or post-baseline visits. Otherwise
-an error will be thrown.
-
 To be used after a split on visits in the layout, such that each data subset only contains
 either baseline or post-baseline data.
+
+The data in \code{df} must be either all be from baseline or post-baseline visits. Otherwise
+an error will be thrown.
 }
 \examples{
-df <- data.frame(
-  chg = c(1, 2, 3),
-  is_bl = c(TRUE, TRUE, TRUE),
-  val = c(4, 5, 6)
-)
-
 # `summarize_change()`
 
 ## Fabricated dataset.
@@ -133,6 +127,12 @@ results <- basic_table() \%>\%
 \donttest{
 Viewer(results)
 }
+
+df <- data.frame(
+  chg = c(1, 2, 3),
+  is_bl = c(TRUE, TRUE, TRUE),
+  val = c(4, 5, 6)
+)
 
 }
 \keyword{internal}

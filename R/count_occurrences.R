@@ -209,6 +209,7 @@ a_count_occurrences <- function(df,
 #'   prune_table()
 #'
 #' @export
+#' @order 1
 count_occurrences <- function(lyt,
                               vars,
                               var_labels = vars,
@@ -273,6 +274,7 @@ count_occurrences <- function(lyt,
 #'   build_table(df, alt_counts_df = df_adsl)
 #'
 #' @export
+#' @order 2
 summarize_occurrences <- function(lyt,
                                   var,
                                   riskdiff = FALSE,

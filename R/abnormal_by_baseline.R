@@ -188,6 +188,7 @@ a_count_abnormal_by_baseline <- make_afun(
 #'   build_table(df2)
 #'
 #' @export
+#' @order 1
 count_abnormal_by_baseline <- function(lyt,
                                        var,
                                        abnormal,

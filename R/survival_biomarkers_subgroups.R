@@ -206,6 +206,7 @@ extract_survival_biomarkers <- function(variables,
 #' }
 #'
 #' @export
+#' @order 1
 tabulate_survival_biomarkers <- function(df,
                                          vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
                                          time_unit = NULL,

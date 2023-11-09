@@ -162,6 +162,7 @@ a_proportion <- make_afun(
 #'   build_table(df = dta_test)
 #'
 #' @export
+#' @order 1
 estimate_proportion <- function(lyt,
                                 vars,
                                 na_str = NA_character_,

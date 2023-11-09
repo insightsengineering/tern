@@ -356,6 +356,7 @@ a_count_abnormal_lab_worsen_by_baseline <- make_afun( # nolint
 #'   build_table(df = df, alt_counts_df = tern_ex_adsl)
 #'
 #' @export
+#' @order 1
 count_abnormal_lab_worsen_by_baseline <- function(lyt, # nolint
                                                   var,
                                                   na_str = NA_character_,

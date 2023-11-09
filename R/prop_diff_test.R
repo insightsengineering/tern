@@ -135,6 +135,7 @@ a_test_proportion_diff <- make_afun(
 #' build_table(l, df = dta)
 #'
 #' @export
+#' @order 1
 test_proportion_diff <- function(lyt,
                                  vars,
                                  na_str = NA_character_,

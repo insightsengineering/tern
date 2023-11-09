@@ -122,6 +122,7 @@ s_count_patients_and_multiple_events <- function(df, # nolint
 #'   build_table(df)
 #'
 #' @export
+#' @order 1
 summarize_patients_events_in_cols <- function(lyt, # nolint
                                               id = "USUBJID",
                                               filters_list = list(),

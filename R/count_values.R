@@ -121,6 +121,7 @@ a_count_values <- make_afun(
 #'   build_table(iris)
 #'
 #' @export
+#' @order 1
 count_values <- function(lyt,
                          vars,
                          values,

@@ -120,6 +120,7 @@ a_change_from_baseline <- make_afun(
 #' }
 #'
 #' @export
+#' @order 1
 summarize_change <- function(lyt,
                              vars,
                              na_str = NA_character_,

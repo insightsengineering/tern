@@ -144,6 +144,7 @@ a_count_patients_with_event <- make_afun(
 #' build_table(lyt, tern_ex_adae, alt_counts_df = tern_ex_adsl)
 #'
 #' @export
+#' @order 1
 count_patients_with_event <- function(lyt,
                                       vars,
                                       riskdiff = FALSE,

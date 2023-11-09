@@ -368,6 +368,7 @@ create_afun_compare <- function(.stats = NULL,
 #' build_table(lyt, df = tern_ex_adsl)
 #'
 #' @export
+#' @order 1
 compare_vars <- function(lyt,
                          vars,
                          var_labels = vars,

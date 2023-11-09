@@ -398,6 +398,7 @@ a_glm_count <- make_afun(
 #' build_table(lyt = lyt, df = anl)
 #'
 #' @export
+#' @order 1
 summarize_glm_count <- function(lyt,
                                 vars,
                                 var_labels,

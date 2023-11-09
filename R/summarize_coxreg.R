@@ -322,6 +322,7 @@ a_coxreg <- function(df,
 #' result_multivar_covs
 #'
 #' @export
+#' @order 1
 summarize_coxreg <- function(lyt,
                              variables,
                              control = control_coxreg(),

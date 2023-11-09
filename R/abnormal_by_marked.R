@@ -196,6 +196,7 @@ a_count_abnormal_by_marked <- make_afun(
 #'   build_table(df = df)
 #'
 #' @export
+#' @order 1
 count_abnormal_by_marked <- function(lyt,
                                      var,
                                      na_str = NA_character_,

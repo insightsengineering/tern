@@ -266,6 +266,7 @@ a_count_occurrences_by_grade <- make_afun(
 #'   build_table(df, alt_counts_df = df_adsl)
 #'
 #' @export
+#' @order 1
 count_occurrences_by_grade <- function(lyt,
                                        var,
                                        var_labels = var,
@@ -342,6 +343,7 @@ count_occurrences_by_grade <- function(lyt,
 #'   build_table(df, alt_counts_df = df_adsl)
 #'
 #' @export
+#' @order 2
 summarize_occurrences_by_grade <- function(lyt,
                                            var,
                                            na_str = NA_character_,

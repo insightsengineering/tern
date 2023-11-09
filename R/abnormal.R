@@ -140,6 +140,7 @@ a_count_abnormal <- make_afun(
 #'   build_table(df2)
 #'
 #' @export
+#' @order 1
 count_abnormal <- function(lyt,
                            var,
                            na_str = NA_character_,

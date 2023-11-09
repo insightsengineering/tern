@@ -165,6 +165,7 @@ a_coxph_pairwise <- make_afun(
 #'   build_table(df = adtte_f)
 #'
 #' @export
+#' @order 1
 coxph_pairwise <- function(lyt,
                            vars,
                            na_str = NA_character_,

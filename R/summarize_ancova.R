@@ -243,6 +243,7 @@ a_ancova <- make_afun(
 #'   build_table(iris)
 #'
 #' @export
+#' @order 1
 summarize_ancova <- function(lyt,
                              vars,
                              var_labels,

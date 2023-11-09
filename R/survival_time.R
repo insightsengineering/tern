@@ -179,6 +179,7 @@ a_surv_time <- function(df,
 #'   build_table(df = adtte_f)
 #'
 #' @export
+#' @order 1
 surv_time <- function(lyt,
                       vars,
                       ref_fn_censor = TRUE,
