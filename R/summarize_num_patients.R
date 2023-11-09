@@ -14,6 +14,7 @@
 #'   to see available statistics for this function.
 #'
 #' @name summarize_num_patients
+#' @order 1
 NULL
 
 #' @describeIn summarize_num_patients Statistics function which counts the number of
@@ -139,7 +140,7 @@ c_num_patients <- make_afun(
 #'   the statistics from `s_num_patients_content()` to the table layout.
 #'
 #' @export
-#' @order 2
+#' @order 3
 summarize_num_patients <- function(lyt,
                                    var,
                                    na_str = NA_character_,
@@ -222,7 +223,7 @@ summarize_num_patients <- function(lyt,
 #' tbl
 #'
 #' @export
-#' @order 1
+#' @order 2
 analyze_num_patients <- function(lyt,
                                  vars,
                                  na_str = NA_character_,

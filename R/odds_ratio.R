@@ -22,6 +22,7 @@
 #' @seealso Relevant helper function [h_odds_ratio()].
 #'
 #' @name odds_ratio
+#' @order 1
 NULL
 
 #' @describeIn odds_ratio Statistics function which estimates the odds ratio
@@ -188,7 +189,7 @@ a_odds_ratio <- make_afun(
 #' build_table(l, df = dta)
 #'
 #' @export
-#' @order 1
+#' @order 2
 estimate_odds_ratio <- function(lyt,
                                 vars,
                                 na_str = NA_character_,

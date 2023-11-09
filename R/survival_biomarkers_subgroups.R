@@ -43,6 +43,7 @@
 #' df
 #'
 #' @name survival_biomarkers_subgroups
+#' @order 1
 NULL
 
 #' Prepares Survival Data Estimates for Multiple Biomarkers in a Single Data Frame
@@ -206,7 +207,7 @@ extract_survival_biomarkers <- function(variables,
 #' }
 #'
 #' @export
-#' @order 1
+#' @order 2
 tabulate_survival_biomarkers <- function(df,
                                          vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
                                          time_unit = NULL,

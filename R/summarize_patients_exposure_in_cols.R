@@ -10,6 +10,7 @@
 #' `get_stats("analyze_patients_exposure_in_cols")` to see available statistics for this function.
 #'
 #' @name summarize_patients_exposure_in_cols
+#' @order 1
 NULL
 
 #' @describeIn summarize_patients_exposure_in_cols Statistics function which counts numbers
@@ -176,7 +177,7 @@ a_count_patients_sum_exposure <- function(df,
 #' result2
 #'
 #' @export
-#' @order 2
+#' @order 3
 summarize_patients_exposure_in_cols <- function(lyt, # nolint
                                                 var,
                                                 na_str = NA_character_,
@@ -258,7 +259,7 @@ summarize_patients_exposure_in_cols <- function(lyt, # nolint
 #' tbl
 #'
 #' @export
-#' @order 1
+#' @order 2
 analyze_patients_exposure_in_cols <- function(lyt, # nolint
                                               var = NULL,
                                               ex_var = "AVAL",

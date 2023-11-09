@@ -22,6 +22,7 @@
 #'   patient will be counted only under the `Last or replicated` category.
 #'
 #' @name abnormal_by_marked
+#' @order 1
 NULL
 
 #' @describeIn abnormal_by_marked Statistics function for patients with marked lab abnormalities.
@@ -196,7 +197,7 @@ a_count_abnormal_by_marked <- make_afun(
 #'   build_table(df = df)
 #'
 #' @export
-#' @order 1
+#' @order 2
 count_abnormal_by_marked <- function(lyt,
                                      var,
                                      na_str = NA_character_,

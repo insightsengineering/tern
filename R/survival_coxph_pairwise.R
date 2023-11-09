@@ -18,6 +18,7 @@
 #'   to see available statistics for this function.
 #'
 #' @name survival_coxph_pairwise
+#' @order 1
 NULL
 
 #' @describeIn survival_coxph_pairwise Statistics function which analyzes HR, CIs of HR and p-value of a `coxph` model.
@@ -165,7 +166,7 @@ a_coxph_pairwise <- make_afun(
 #'   build_table(df = adtte_f)
 #'
 #' @export
-#' @order 1
+#' @order 2
 coxph_pairwise <- function(lyt,
                            vars,
                            na_str = NA_character_,

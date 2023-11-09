@@ -11,6 +11,7 @@
 #' @seealso [count_patients_with_event]
 #'
 #' @name count_patients_with_flags
+#' @order 1
 NULL
 
 #' @describeIn count_patients_with_flags Statistics function which counts the number of patients for which
@@ -155,7 +156,7 @@ a_count_patients_with_flags <- make_afun(
 #' build_table(lyt2, adae, alt_counts_df = tern_ex_adsl)
 #'
 #' @export
-#' @order 1
+#' @order 2
 count_patients_with_flags <- function(lyt,
                                       var,
                                       var_labels = var,

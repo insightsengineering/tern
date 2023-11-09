@@ -25,6 +25,7 @@
 #' @note Prior to tabulation, `df` must be filtered to include only post-baseline records with worst grade flags.
 #'
 #' @name abnormal_by_worst_grade
+#' @order 1
 NULL
 
 #' @describeIn abnormal_by_worst_grade Statistics function which counts patients by worst grade.
@@ -164,7 +165,7 @@ a_count_abnormal_by_worst_grade <- make_afun( # nolint
 #'   build_table(df = adlb_f)
 #'
 #' @export
-#' @order 1
+#' @order 2
 count_abnormal_by_worst_grade <- function(lyt,
                                           var,
                                           na_str = NA_character_,

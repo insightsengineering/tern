@@ -30,6 +30,7 @@
 #'
 #' @name compare_variables
 #' @include analyze_variables.R
+#' @order 1
 NULL
 
 #' @describeIn compare_variables S3 generic function to produce a comparison summary.
@@ -368,7 +369,7 @@ create_afun_compare <- function(.stats = NULL,
 #' build_table(lyt, df = tern_ex_adsl)
 #'
 #' @export
-#' @order 1
+#' @order 2
 compare_vars <- function(lyt,
                          vars,
                          var_labels = vars,

@@ -54,6 +54,7 @@
 #' df
 #'
 #' @name survival_duration_subgroups
+#' @order 1
 NULL
 
 #' Prepares Survival Data for Population Subgroups in Data Frames
@@ -240,7 +241,7 @@ a_survival_subgroups <- function(.formats = list( # nolint start
 #'   )
 #'
 #' @export
-#' @order 1
+#' @order 2
 tabulate_survival_subgroups <- function(lyt,
                                         df,
                                         vars = c("n_tot_events", "n_events", "median", "hr", "ci"),

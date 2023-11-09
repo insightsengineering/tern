@@ -17,6 +17,7 @@
 #'   like to show all occurrences.
 #'
 #' @name count_occurrences
+#' @order 1
 NULL
 
 #' @describeIn count_occurrences Statistics function which counts number of patients that report an
@@ -209,7 +210,7 @@ a_count_occurrences <- function(df,
 #'   prune_table()
 #'
 #' @export
-#' @order 1
+#' @order 2
 count_occurrences <- function(lyt,
                               vars,
                               var_labels = vars,
@@ -274,7 +275,7 @@ count_occurrences <- function(lyt,
 #'   build_table(df, alt_counts_df = df_adsl)
 #'
 #' @export
-#' @order 2
+#' @order 3
 summarize_occurrences <- function(lyt,
                                   var,
                                   riskdiff = FALSE,

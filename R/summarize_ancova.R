@@ -10,6 +10,7 @@
 #'   to see available statistics for this function.
 #'
 #' @name summarize_ancova
+#' @order 1
 NULL
 
 #' Helper Function to Return Results of a Linear Model
@@ -243,7 +244,7 @@ a_ancova <- make_afun(
 #'   build_table(iris)
 #'
 #' @export
-#' @order 1
+#' @order 2
 summarize_ancova <- function(lyt,
                              vars,
                              var_labels,

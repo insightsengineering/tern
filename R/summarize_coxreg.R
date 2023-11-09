@@ -47,6 +47,7 @@
 #' )
 #'
 #' @name cox_regression
+#' @order 1
 NULL
 
 #' @describeIn cox_regression Statistics function that transforms results tabulated
@@ -322,7 +323,7 @@ a_coxreg <- function(df,
 #' result_multivar_covs
 #'
 #' @export
-#' @order 1
+#' @order 2
 summarize_coxreg <- function(lyt,
                              variables,
                              control = control_coxreg(),

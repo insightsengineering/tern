@@ -79,7 +79,8 @@ unmodified default behavior. Can be negative.}
 \item{include_eq}{(\code{logical})\cr whether to include value equal to the \code{threshold} in
 count, default is \code{TRUE}.}
 
-\item{.N_col}{(\code{count})\cr denominator for fraction calculation.}
+\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+passed by \code{rtables}.}
 }
 \value{
 \itemize{

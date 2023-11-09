@@ -21,6 +21,7 @@
 #' @seealso [control_incidence_rate()] and helper functions [h_incidence_rate].
 #'
 #' @name incidence_rate
+#' @order 1
 NULL
 
 #' @describeIn incidence_rate Statistics function which estimates the incidence rate and the
@@ -133,7 +134,7 @@ a_incidence_rate <- make_afun(
 #'   build_table(df)
 #'
 #' @export
-#' @order 1
+#' @order 2
 estimate_incidence_rate <- function(lyt,
                                     vars,
                                     na_str = NA_character_,

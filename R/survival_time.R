@@ -16,6 +16,7 @@
 #'   to see available statistics for this function.
 #'
 #' @name survival_time
+#' @order 1
 NULL
 
 #' @describeIn survival_time Statistics function which analyzes survival times.
@@ -179,7 +180,7 @@ a_surv_time <- function(df,
 #'   build_table(df = adtte_f)
 #'
 #' @export
-#' @order 1
+#' @order 2
 surv_time <- function(lyt,
                       vars,
                       ref_fn_censor = TRUE,

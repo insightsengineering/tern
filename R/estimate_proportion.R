@@ -11,6 +11,7 @@
 #' @seealso [h_proportions]
 #'
 #' @name estimate_proportions
+#' @order 1
 NULL
 
 #' @describeIn estimate_proportions Statistics function estimating a
@@ -162,7 +163,7 @@ a_proportion <- make_afun(
 #'   build_table(df = dta_test)
 #'
 #' @export
-#' @order 1
+#' @order 2
 estimate_proportion <- function(lyt,
                                 vars,
                                 na_str = NA_character_,

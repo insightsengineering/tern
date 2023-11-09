@@ -12,6 +12,7 @@
 #'   to see available statistics for this function.
 #'
 #' @name summarize_change
+#' @order 1
 NULL
 
 #' @describeIn summarize_change Statistics function that summarizes baseline or post-baseline visits.
@@ -120,7 +121,7 @@ a_change_from_baseline <- make_afun(
 #' }
 #'
 #' @export
-#' @order 1
+#' @order 2
 summarize_change <- function(lyt,
                              vars,
                              na_str = NA_character_,

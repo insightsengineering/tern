@@ -13,6 +13,7 @@
 #' @seealso Relevant helper function [h_count_cumulative()], and descriptive function [d_count_cumulative()].
 #'
 #' @name count_cumulative
+#' @order 1
 NULL
 
 #' Helper Function for [s_count_cumulative()]
@@ -26,7 +27,6 @@ NULL
 #' @param lower_tail (`logical`)\cr whether to count lower tail, default is `TRUE`.
 #' @param include_eq (`logical`)\cr whether to include value equal to the `threshold` in
 #'   count, default is `TRUE`.
-#' @param .N_col (`count`)\cr denominator for fraction calculation.
 #'
 #' @return A named vector with items:
 #'   * `count`: the count of values less than, less or equal to, greater than, or greater or equal to a threshold
@@ -149,7 +149,7 @@ a_count_cumulative <- make_afun(
 #'   build_table(tern_ex_adsl)
 #'
 #' @export
-#' @order 1
+#' @order 2
 count_cumulative <- function(lyt,
                              vars,
                              var_labels = vars,

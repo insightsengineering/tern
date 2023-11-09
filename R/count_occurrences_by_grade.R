@@ -16,6 +16,7 @@
 #' @seealso Relevant helper function [h_append_grade_groups()].
 #'
 #' @name count_occurrences_by_grade
+#' @order 1
 NULL
 
 #' Helper function for [s_count_occurrences_by_grade()]
@@ -266,7 +267,7 @@ a_count_occurrences_by_grade <- make_afun(
 #'   build_table(df, alt_counts_df = df_adsl)
 #'
 #' @export
-#' @order 1
+#' @order 2
 count_occurrences_by_grade <- function(lyt,
                                        var,
                                        var_labels = var,
@@ -343,7 +344,7 @@ count_occurrences_by_grade <- function(lyt,
 #'   build_table(df, alt_counts_df = df_adsl)
 #'
 #' @export
-#' @order 2
+#' @order 3
 summarize_occurrences_by_grade <- function(lyt,
                                            var,
                                            na_str = NA_character_,

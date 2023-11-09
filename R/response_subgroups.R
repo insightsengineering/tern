@@ -37,6 +37,7 @@
 #' df
 #'
 #' @name response_subgroups
+#' @order 1
 NULL
 
 #' Prepares Response Data for Population Subgroups in Data Frames
@@ -203,7 +204,7 @@ a_response_subgroups <- function(.formats = list(
 #'   )
 #'
 #' @export
-#' @order 1
+#' @order 2
 tabulate_rsp_subgroups <- function(lyt,
                                    df,
                                    vars = c("n_tot", "n", "prop", "or", "ci")) {

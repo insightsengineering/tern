@@ -9,6 +9,7 @@
 #' @seealso [d_proportion_diff()]
 #'
 #' @name prop_diff
+#' @order 1
 NULL
 
 #' @describeIn prop_diff Statistics function estimating the difference
@@ -191,7 +192,7 @@ a_proportion_diff <- make_afun(
 #' build_table(l, df = dta)
 #'
 #' @export
-#' @order 1
+#' @order 2
 estimate_proportion_diff <- function(lyt,
                                      vars,
                                      na_str = NA_character_,

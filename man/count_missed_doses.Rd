@@ -63,7 +63,8 @@ unmodified default behavior. Can be negative.}
 
 \item{thresholds}{(vector of \code{count})\cr number of missed doses the patients at least had.}
 
-\item{.N_col}{(\code{count})\cr denominator for fraction calculation.}
+\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+passed by \code{rtables}.}
 }
 \value{
 \itemize{

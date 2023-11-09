@@ -11,6 +11,7 @@
 #' @seealso Relevant helper functions [h_adlb_worsen()] and [h_worsen_counter()]
 #'
 #' @name abnormal_by_worst_grade_worsen
+#' @order 1
 NULL
 
 #' Helper Function to Prepare `ADLB` with Worst Labs
@@ -356,7 +357,7 @@ a_count_abnormal_lab_worsen_by_baseline <- make_afun( # nolint
 #'   build_table(df = df, alt_counts_df = tern_ex_adsl)
 #'
 #' @export
-#' @order 1
+#' @order 2
 count_abnormal_lab_worsen_by_baseline <- function(lyt, # nolint
                                                   var,
                                                   na_str = NA_character_,

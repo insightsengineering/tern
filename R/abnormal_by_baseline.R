@@ -29,6 +29,7 @@
 #' @seealso Relevant description function [d_count_abnormal_by_baseline()].
 #'
 #' @name abnormal_by_baseline
+#' @order 1
 NULL
 
 #' Description Function for [s_count_abnormal_by_baseline()]
@@ -188,7 +189,7 @@ a_count_abnormal_by_baseline <- make_afun(
 #'   build_table(df2)
 #'
 #' @export
-#' @order 1
+#' @order 2
 count_abnormal_by_baseline <- function(lyt,
                                        var,
                                        abnormal,

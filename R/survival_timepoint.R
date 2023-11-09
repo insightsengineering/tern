@@ -17,6 +17,7 @@
 #'   to see available statistics for this function.
 #'
 #' @name survival_timepoint
+#' @order 1
 NULL
 
 #' @describeIn survival_timepoint Statistics function which analyzes survival rate.
@@ -232,7 +233,7 @@ a_surv_timepoint_diff <- make_afun(
 #'   build_table(df = adtte_f)
 #'
 #' @export
-#' @order 1
+#' @order 2
 surv_timepoint <- function(lyt,
                            vars,
                            na_str = NA_character_,

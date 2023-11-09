@@ -12,6 +12,7 @@
 #' @seealso Relevant description function [d_count_missed_doses()].
 #'
 #' @name count_missed_doses
+#' @order 1
 NULL
 
 #' @describeIn count_missed_doses Statistics function to count non-missing values.
@@ -110,7 +111,7 @@ a_count_missed_doses <- make_afun(
 #'   build_table(anl, alt_counts_df = tern_ex_adsl)
 #'
 #' @export
-#' @order 1
+#' @order 2
 count_missed_doses <- function(lyt,
                                vars,
                                var_labels = vars,

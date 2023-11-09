@@ -11,6 +11,7 @@
 #' @seealso [h_prop_diff_test]
 #'
 #' @name prop_diff_test
+#' @order 1
 NULL
 
 #' @describeIn prop_diff_test Statistics function which tests the difference between two proportions.
@@ -135,7 +136,7 @@ a_test_proportion_diff <- make_afun(
 #' build_table(l, df = dta)
 #'
 #' @export
-#' @order 1
+#' @order 2
 test_proportion_diff <- function(lyt,
                                  vars,
                                  na_str = NA_character_,

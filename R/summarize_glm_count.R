@@ -10,6 +10,7 @@
 #'   to see available statistics for this function.
 #'
 #' @name summarize_glm_count
+#' @order 1
 NULL
 
 #' Helper Functions for Poisson Models.
@@ -398,7 +399,7 @@ a_glm_count <- make_afun(
 #' build_table(lyt = lyt, df = anl)
 #'
 #' @export
-#' @order 1
+#' @order 2
 summarize_glm_count <- function(lyt,
                                 vars,
                                 var_labels,
