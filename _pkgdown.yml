@@ -41,6 +41,9 @@ reference:
           Analyze functions with their corresponding statistics functions and
           formatted analysis functions.
 
+          - **Analyze functions** are used in combination with `rtables`
+            layout functions in the pipeline which creates the table.
+
           - **Statistics functions** (denoted by `s_` prefix) compute the
             numbers that are tabulated later. In order to separate computation
             from formatting, they do not take care of `rcell` type formatting
@@ -51,8 +54,6 @@ reference:
             be further customized by calling `rtables::make_afun()` on them.
             They are used as `afun` in `rtables::analyze()`.
 
-          - **Analyze functions** are used in combination with `rtables`
-            layout functions in the pipeline which creates the table.
     contents:
       - starts_with("analyze_", internal = TRUE)
       - compare_vars
