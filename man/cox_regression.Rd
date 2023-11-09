@@ -179,12 +179,13 @@ dta_bladder <- with(
 dta_bladder$AGE <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 dta_bladder$STUDYID <- factor("X")
 
-plot(
-  survfit(Surv(TIME, STATUS) ~ ARM + COVAR1, data = dta_bladder),
-  lty = 2:4,
-  xlab = "Months",
-  col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
-)
+u1_variables <- list(time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2"))
+
+u2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
+
+m1_variables <- list(time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2"))
+
+m2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 
 # summarize_coxreg
 
@@ -193,6 +194,13 @@ result_univar <- basic_table() \%>\%
   build_table(dta_bladder)
 result_univar
 
+result_univar_covs <- basic_table() \%>\%
+  summarize_coxreg(
+    variables = u2_variables,
+  ) \%>\%
+  build_table(dta_bladder)
+result_univar_covs
+
 result_multivar <- basic_table() \%>\%
   summarize_coxreg(
     variables = m1_variables,
@@ -200,13 +208,6 @@ result_multivar <- basic_table() \%>\%
   ) \%>\%
   build_table(dta_bladder)
 result_multivar
-
-result_univar_covs <- basic_table() \%>\%
-  summarize_coxreg(
-    variables = u2_variables,
-  ) \%>\%
-  build_table(dta_bladder)
-result_univar_covs
 
 result_multivar_covs <- basic_table() \%>\%
   summarize_coxreg(
@@ -220,11 +221,9 @@ result_multivar_covs
 # s_coxreg
 
 # Univariate
-u1_variables <- list(
-  time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2")
-)
 univar_model <- fit_coxreg_univar(variables = u1_variables, data = dta_bladder)
 df1 <- broom::tidy(univar_model)
+
 s_coxreg(model_df = df1, .stats = "hr")
 
 # Univariate with interactions
@@ -232,20 +231,19 @@ univar_model_inter <- fit_coxreg_univar(
   variables = u1_variables, control = control_coxreg(interaction = TRUE), data = dta_bladder
 )
 df1_inter <- broom::tidy(univar_model_inter)
+
 s_coxreg(model_df = df1_inter, .stats = "hr", .which_vars = "inter", .var_nms = "COVAR1")
 
 # Univariate without treatment arm - only "COVAR2" covariate effects
-u2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 univar_covs_model <- fit_coxreg_univar(variables = u2_variables, data = dta_bladder)
 df1_covs <- broom::tidy(univar_covs_model)
+
 s_coxreg(model_df = df1_covs, .stats = "hr", .var_nms = c("COVAR2", "Sex (F/M)"))
 
 # Multivariate.
-m1_variables <- list(
-  time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2")
-)
 multivar_model <- fit_coxreg_multivar(variables = m1_variables, data = dta_bladder)
 df2 <- broom::tidy(multivar_model)
+
 s_coxreg(model_df = df2, .stats = "pval", .which_vars = "var_main", .var_nms = "COVAR1")
 s_coxreg(
   model_df = df2, .stats = "pval", .which_vars = "multi_lvl",
@@ -253,9 +251,9 @@ s_coxreg(
 )
 
 # Multivariate without treatment arm - only "COVAR1" main effect
-m2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 multivar_covs_model <- fit_coxreg_multivar(variables = m2_variables, data = dta_bladder)
 df2_covs <- broom::tidy(multivar_covs_model)
+
 s_coxreg(model_df = df2_covs, .stats = "hr")
 
 a_coxreg(

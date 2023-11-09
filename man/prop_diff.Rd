@@ -129,18 +129,6 @@ When performing an unstratified analysis, methods \code{"cmh"}, \code{"strat_new
 not permitted.
 }
 \examples{
-l <- basic_table() \%>\%
-  split_cols_by(var = "grp", ref_group = "B") \%>\%
-  estimate_proportion_diff(
-    vars = "rsp",
-    conf_level = 0.90,
-    method = "ha"
-  )
-
-build_table(l, df = dta)
-
-# Summary
-
 ## "Mid" case: 4/4 respond in group A, 1/2 respond in group B.
 nex <- 100 # Number of example rows
 dta <- data.frame(
@@ -150,6 +138,16 @@ dta <- data.frame(
   "f2" = sample(c("x", "y", "z"), nex, TRUE),
   stringsAsFactors = TRUE
 )
+
+l <- basic_table() \%>\%
+  split_cols_by(var = "grp", ref_group = "B") \%>\%
+  estimate_proportion_diff(
+    vars = "rsp",
+    conf_level = 0.90,
+    method = "ha"
+  )
+
+build_table(l, df = dta)
 
 s_proportion_diff(
   df = subset(dta, grp == "A"),

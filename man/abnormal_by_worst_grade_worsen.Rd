@@ -105,22 +105,6 @@ in \code{count_abnormal_lab_worsen_by_baseline()}.
 
 }}
 \examples{
-basic_table() \%>\%
-  split_cols_by("ARMCD") \%>\%
-  add_colcounts() \%>\%
-  split_rows_by("PARAMCD") \%>\%
-  split_rows_by("GRADDR") \%>\%
-  count_abnormal_lab_worsen_by_baseline(
-    var = "ATOXGR",
-    variables = list(
-      id = "USUBJID",
-      baseline_var = "BTOXGR",
-      direction_var = "GRADDR"
-    )
-  ) \%>\%
-  append_topleft("Direction of Abnormality") \%>\%
-  build_table(df = df, alt_counts_df = tern_ex_adsl)
-
 library(dplyr)
 
 # The direction variable, GRADDR, is based on metadata
@@ -140,6 +124,22 @@ df <- h_adlb_worsen(
   worst_flag_high = c("WGRHIFL" = "Y"),
   direction_var = "GRADDR"
 )
+
+basic_table() \%>\%
+  split_cols_by("ARMCD") \%>\%
+  add_colcounts() \%>\%
+  split_rows_by("PARAMCD") \%>\%
+  split_rows_by("GRADDR") \%>\%
+  count_abnormal_lab_worsen_by_baseline(
+    var = "ATOXGR",
+    variables = list(
+      id = "USUBJID",
+      baseline_var = "BTOXGR",
+      direction_var = "GRADDR"
+    )
+  ) \%>\%
+  append_topleft("Direction of Abnormality") \%>\%
+  build_table(df = df, alt_counts_df = tern_ex_adsl)
 
 }
 \seealso{

@@ -25,18 +25,6 @@ NULL
 #'   not permitted.
 #'
 #' @examples
-#' # Summary
-#'
-#' ## "Mid" case: 4/4 respond in group A, 1/2 respond in group B.
-#' nex <- 100 # Number of example rows
-#' dta <- data.frame(
-#'   "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
-#'   "grp" = sample(c("A", "B"), nex, TRUE),
-#'   "f1" = sample(c("a1", "a2"), nex, TRUE),
-#'   "f2" = sample(c("x", "y", "z"), nex, TRUE),
-#'   stringsAsFactors = TRUE
-#' )
-#'
 #' s_proportion_diff(
 #'   df = subset(dta, grp == "A"),
 #'   .var = "rsp",
@@ -181,6 +169,16 @@ a_proportion_diff <- make_afun(
 #'   the statistics from `s_proportion_diff()` to the table layout.
 #'
 #' @examples
+#' ## "Mid" case: 4/4 respond in group A, 1/2 respond in group B.
+#' nex <- 100 # Number of example rows
+#' dta <- data.frame(
+#'   "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
+#'   "grp" = sample(c("A", "B"), nex, TRUE),
+#'   "f1" = sample(c("a1", "a2"), nex, TRUE),
+#'   "f2" = sample(c("x", "y", "z"), nex, TRUE),
+#'   stringsAsFactors = TRUE
+#' )
+#'
 #' l <- basic_table() %>%
 #'   split_cols_by(var = "grp", ref_group = "B") %>%
 #'   estimate_proportion_diff(
@@ -326,6 +324,7 @@ NULL
 #' set.seed(2)
 #' rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 #' grp <- factor(c(rep("A", 10), rep("B", 10)))
+#'
 #' prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.95, correct = FALSE)
 #'
 #' @export
@@ -369,11 +368,13 @@ prop_diff_wald <- function(rsp,
 #' ## "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
 #' rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
 #' grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
+#'
 #' prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.90)
 #'
 #' ## Edge case: Same proportion of response in A and B.
 #' rsp <- c(TRUE, FALSE, TRUE, FALSE)
 #' grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
+#'
 #' prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.6)
 #'
 #' @export
@@ -410,6 +411,7 @@ prop_diff_ha <- function(rsp,
 #' )
 #' grp <- factor(rep(c("A", "B"), each = 40), levels = c("B", "A"))
 #' table(rsp, grp)
+#'
 #' prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.9)
 #'
 #' @export

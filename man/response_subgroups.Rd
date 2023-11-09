@@ -85,6 +85,27 @@ df <- extract_rsp_subgroups(
 )
 df
 
+# Stratified analysis.
+df_strat <- extract_rsp_subgroups(
+  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2"), strat = "STRATA1"),
+  data = adrs_f
+)
+df_strat
+
+# Grouping of the BMRKR2 levels.
+df_grouped <- extract_rsp_subgroups(
+  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
+  data = adrs_f,
+  groups_lists = list(
+    BMRKR2 = list(
+      "low" = "LOW",
+      "low/medium" = c("LOW", "MEDIUM"),
+      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+    )
+  )
+)
+df_grouped
+
 ## Table with default columns.
 basic_table() \%>\%
   tabulate_rsp_subgroups(df)

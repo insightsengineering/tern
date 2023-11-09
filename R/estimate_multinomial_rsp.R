@@ -140,11 +140,7 @@ a_length_proportion <- make_afun(
 #'
 #' tbl <- build_table(lyt, dta_test)
 #'
-#' html <- as_html(tbl)
-#' html
-#' \donttest{
-#' Viewer(html)
-#' }
+#' tbl
 #'
 #' @export
 #' @order 2

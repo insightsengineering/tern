@@ -67,7 +67,6 @@ d_count_abnormal_by_baseline <- function(abnormal) {
 #' * `s_count_abnormal_by_baseline()` returns statistic `fraction` which is a named list with 3 labeled elements:
 #'   `not_abnormal`, `abnormal`, and `total`. Each element contains a vector with `num` and `denom` patient counts.
 #'
-#'
 #' @keywords internal
 s_count_abnormal_by_baseline <- function(df,
                                          .var,
@@ -142,7 +141,6 @@ s_count_abnormal_by_baseline <- function(df,
 #'
 #' @return
 #' * `a_count_abnormal_by_baseline()` returns the corresponding list with formatted [rtables::CellValue()].
-#'
 #'
 #' @keywords internal
 a_count_abnormal_by_baseline <- make_afun(

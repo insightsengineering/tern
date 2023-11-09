@@ -78,17 +78,20 @@ Weights can be estimated from the heuristic proposed in \code{\link[=prop_strat_
 set.seed(2)
 rsp <- sample(c(TRUE, FALSE), replace = TRUE, size = 20)
 grp <- factor(c(rep("A", 10), rep("B", 10)))
+
 prop_diff_wald(rsp = rsp, grp = grp, conf_level = 0.95, correct = FALSE)
 
 # Anderson-Hauck confidence interval
 ## "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
 rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
 grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
+
 prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.90)
 
 ## Edge case: Same proportion of response in A and B.
 rsp <- c(TRUE, FALSE, TRUE, FALSE)
 grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
+
 prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.6)
 
 # `Newcombe` confidence interval
@@ -100,6 +103,7 @@ rsp <- c(
 )
 grp <- factor(rep(c("A", "B"), each = 40), levels = c("B", "A"))
 table(rsp, grp)
+
 prop_diff_nc(rsp = rsp, grp = grp, conf_level = 0.9)
 
 # Cochran-Mantel-Haenszel confidence interval

@@ -34,54 +34,6 @@ NULL
 #' * `s_count_abnormal_by_worst_grade()` returns the single statistic `count_fraction` with grades 1 to 4 and
 #'   "Any" results.
 #'
-#' @examples
-#' library(dplyr)
-#' library(forcats)
-#' adlb <- tern_ex_adlb
-#'
-#' # Data is modified in order to have some parameters with grades only in one direction
-#' # and simulate the real data.
-#' adlb$ATOXGR[adlb$PARAMCD == "ALT" & adlb$ATOXGR %in% c("1", "2", "3", "4")] <- "-1"
-#' adlb$ANRIND[adlb$PARAMCD == "ALT" & adlb$ANRIND == "HIGH"] <- "LOW"
-#' adlb$WGRHIFL[adlb$PARAMCD == "ALT"] <- ""
-#'
-#' adlb$ATOXGR[adlb$PARAMCD == "IGA" & adlb$ATOXGR %in% c("-1", "-2", "-3", "-4")] <- "1"
-#' adlb$ANRIND[adlb$PARAMCD == "IGA" & adlb$ANRIND == "LOW"] <- "HIGH"
-#' adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
-#'
-#' # Here starts the real pre-processing.
-#' adlb_f <- adlb %>%
-#'   filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
-#'   mutate(
-#'     GRADE_DIR = factor(
-#'       case_when(
-#'         ATOXGR %in% c("-1", "-2", "-3", "-4") ~ "LOW",
-#'         ATOXGR == "0" ~ "ZERO",
-#'         ATOXGR %in% c("1", "2", "3", "4") ~ "HIGH"
-#'       ),
-#'       levels = c("LOW", "ZERO", "HIGH")
-#'     ),
-#'     GRADE_ANL = fct_relevel(
-#'       fct_recode(ATOXGR, `1` = "-1", `2` = "-2", `3` = "-3", `4` = "-4"),
-#'       c("0", "1", "2", "3", "4")
-#'     )
-#'   ) %>%
-#'   filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
-#'   droplevels()
-#'
-#' adlb_f_alt <- adlb_f %>%
-#'   filter(PARAMCD == "ALT") %>%
-#'   droplevels()
-#' full_parent_df <- list(adlb_f_alt, "not_needed")
-#' cur_col_subset <- list(rep(TRUE, nrow(adlb_f_alt)), "not_needed")
-#'
-#' # This mimics a split structure on PARAM and GRADE_DIR for a total column
-#' spl_context <- data.frame(
-#'   split = c("PARAM", "GRADE_DIR"),
-#'   full_parent_df = I(full_parent_df),
-#'   cur_col_subset = I(cur_col_subset)
-#' )
-#'
 #' @keywords internal
 s_count_abnormal_by_worst_grade <- function(df, # nolint
                                             .var = "GRADE_ANL",
@@ -131,7 +83,6 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
 #' @return
 #' * `a_count_abnormal_by_worst_grade()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#'
 #' @keywords internal
 a_count_abnormal_by_worst_grade <- make_afun( # nolint
   s_count_abnormal_by_worst_grade,
@@ -147,6 +98,53 @@ a_count_abnormal_by_worst_grade <- make_afun( # nolint
 #'   the statistics from `s_count_abnormal_by_worst_grade()` to the table layout.
 #'
 #' @examples
+#' library(dplyr)
+#' library(forcats)
+#' adlb <- tern_ex_adlb
+#'
+#' # Data is modified in order to have some parameters with grades only in one direction
+#' # and simulate the real data.
+#' adlb$ATOXGR[adlb$PARAMCD == "ALT" & adlb$ATOXGR %in% c("1", "2", "3", "4")] <- "-1"
+#' adlb$ANRIND[adlb$PARAMCD == "ALT" & adlb$ANRIND == "HIGH"] <- "LOW"
+#' adlb$WGRHIFL[adlb$PARAMCD == "ALT"] <- ""
+#'
+#' adlb$ATOXGR[adlb$PARAMCD == "IGA" & adlb$ATOXGR %in% c("-1", "-2", "-3", "-4")] <- "1"
+#' adlb$ANRIND[adlb$PARAMCD == "IGA" & adlb$ANRIND == "LOW"] <- "HIGH"
+#' adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
+#'
+#' # Here starts the real pre-processing.
+#' adlb_f <- adlb %>%
+#'   filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
+#'   mutate(
+#'     GRADE_DIR = factor(
+#'       case_when(
+#'         ATOXGR %in% c("-1", "-2", "-3", "-4") ~ "LOW",
+#'         ATOXGR == "0" ~ "ZERO",
+#'         ATOXGR %in% c("1", "2", "3", "4") ~ "HIGH"
+#'       ),
+#'       levels = c("LOW", "ZERO", "HIGH")
+#'     ),
+#'     GRADE_ANL = fct_relevel(
+#'       fct_recode(ATOXGR, `1` = "-1", `2` = "-2", `3` = "-3", `4` = "-4"),
+#'       c("0", "1", "2", "3", "4")
+#'     )
+#'   ) %>%
+#'   filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
+#'   droplevels()
+#'
+#' adlb_f_alt <- adlb_f %>%
+#'   filter(PARAMCD == "ALT") %>%
+#'   droplevels()
+#' full_parent_df <- list(adlb_f_alt, "not_needed")
+#' cur_col_subset <- list(rep(TRUE, nrow(adlb_f_alt)), "not_needed")
+#'
+#' # This mimics a split structure on PARAM and GRADE_DIR for a total column
+#' spl_context <- data.frame(
+#'   split = c("PARAM", "GRADE_DIR"),
+#'   full_parent_df = I(full_parent_df),
+#'   cur_col_subset = I(cur_col_subset)
+#' )
+#'
 #' # Map excludes records without abnormal grade since they should not be displayed
 #' # in the table.
 #' map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) %>%

@@ -100,11 +100,9 @@ The data in \code{df} must be either all be from baseline or post-baseline visit
 an error will be thrown.
 }
 \examples{
-# `summarize_change()`
-
-## Fabricated dataset.
 library(dplyr)
 
+## Fabricate dataset
 dta_test <- data.frame(
   USUBJID = rep(1:6, each = 3),
   AVISIT = rep(paste0("V", 1:3), 6),
@@ -124,15 +122,8 @@ results <- basic_table() \%>\%
   split_rows_by("AVISIT") \%>\%
   summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL")) \%>\%
   build_table(dta_test)
-\donttest{
-Viewer(results)
-}
 
-df <- data.frame(
-  chg = c(1, 2, 3),
-  is_bl = c(TRUE, TRUE, TRUE),
-  val = c(4, 5, 6)
-)
+results
 
 }
 \keyword{internal}

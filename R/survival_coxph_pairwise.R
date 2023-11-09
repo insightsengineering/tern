@@ -31,17 +31,6 @@ NULL
 #'   * `n_tot`: Total number of observations.
 #'   * `n_tot_events`: Total number of events.
 #'
-#' @examples
-#' library(dplyr)
-#'
-#' adtte_f <- tern_ex_adtte %>%
-#'   filter(PARAMCD == "OS") %>%
-#'   mutate(is_event = CNSR == 0)
-#' df <- adtte_f %>%
-#'   filter(ARMCD == "ARM A")
-#' df_ref_group <- adtte_f %>%
-#'   filter(ARMCD == "ARM B")
-#'
 #' @keywords internal
 s_coxph_pairwise <- function(df,
                              .ref_group,
@@ -143,6 +132,15 @@ a_coxph_pairwise <- make_afun(
 #'   the statistics from `s_coxph_pairwise()` to the table layout.
 #'
 #' @examples
+#' library(dplyr)
+#'
+#' adtte_f <- tern_ex_adtte %>%
+#'   filter(PARAMCD == "OS") %>%
+#'   mutate(is_event = CNSR == 0)
+#'
+#' df <- adtte_f %>% filter(ARMCD == "ARM A")
+#' df_ref_group <- adtte_f %>% filter(ARMCD == "ARM B")
+#'
 #' basic_table() %>%
 #'   split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
 #'   add_colcounts() %>%

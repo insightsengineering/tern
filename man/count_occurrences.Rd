@@ -201,9 +201,11 @@ lyt <- basic_table() \%>\%
   count_occurrences(vars = "MHDECOD", .stats = c("count_fraction"))
 
 # Apply table layout to data and produce `rtable` object
-lyt \%>\%
+tbl <- lyt \%>\%
   build_table(df, alt_counts_df = df_adsl) \%>\%
   prune_table()
+
+tbl
 
 # Layout creating function with custom format.
 basic_table() \%>\%
@@ -215,17 +217,10 @@ basic_table() \%>\%
   ) \%>\%
   build_table(df, alt_counts_df = df_adsl)
 
-df <- data.frame(
-  USUBJID = as.character(c(1, 1, 2, 4, 4, 4)),
-  MHDECOD = c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3")
-)
-
-N_per_col <- 4L
-
 # Count unique occurrences per subject.
 s_count_occurrences(
   df,
-  .N_col = N_per_col,
+  .N_col = 4L,
   .df_row = df,
   .var = "MHDECOD",
   id = "USUBJID"
@@ -233,7 +228,7 @@ s_count_occurrences(
 
 a_count_occurrences(
   df,
-  .N_col = N_per_col,
+  .N_col = 4L,
   .df_row = df,
   .var = "MHDECOD",
   id = "USUBJID"

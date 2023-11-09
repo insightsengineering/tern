@@ -169,16 +169,18 @@ patients, and the number of non-unique patients in the column.
 As opposed to \code{\link[=summarize_num_patients]{summarize_num_patients()}}, this function does not repeat the produced rows.
 }
 \examples{
-df_tmp <- data.frame(
+df <- data.frame(
   USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
   ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
   AGE = c(10, 15, 10, 17, 8, 11, 11, 19, 17)
 )
+
 tbl <- basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   add_colcounts() \%>\%
   analyze_num_patients("USUBJID", .stats = c("unique")) \%>\%
-  build_table(df_tmp)
+  build_table(df)
+
 tbl
 
 # Use the statistics function to count number of unique and nonunique patients.
@@ -191,6 +193,7 @@ s_num_patients(
 )
 
 # Count number of unique and non-unique patients.
+
 df <- data.frame(
   USUBJID = as.character(c(1, 2, 1, 4, NA)),
   EVENT = as.character(c(10, 15, 10, 17, 8))
@@ -201,7 +204,6 @@ df_by_event <- data.frame(
   USUBJID = as.character(c(1, 2, 1, 4, NA)),
   EVENT = as.character(c(10, 15, 10, 17, 8))
 )
-s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID")
 s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
 
 }

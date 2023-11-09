@@ -120,23 +120,6 @@ in \code{count_abnormal_by_worst_grade()}.
 Prior to tabulation, \code{df} must be filtered to include only post-baseline records with worst grade flags.
 }
 \examples{
-# Map excludes records without abnormal grade since they should not be displayed
-# in the table.
-map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) \%>\%
-  lapply(as.character) \%>\%
-  as.data.frame() \%>\%
-  arrange(PARAM, desc(GRADE_DIR), GRADE_ANL)
-
-basic_table() \%>\%
-  split_cols_by("ARMCD") \%>\%
-  split_rows_by("PARAM") \%>\%
-  split_rows_by("GRADE_DIR", split_fun = trim_levels_to_map(map)) \%>\%
-  count_abnormal_by_worst_grade(
-    var = "GRADE_ANL",
-    variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
-  ) \%>\%
-  build_table(df = adlb_f)
-
 library(dplyr)
 library(forcats)
 adlb <- tern_ex_adlb
@@ -183,6 +166,23 @@ spl_context <- data.frame(
   full_parent_df = I(full_parent_df),
   cur_col_subset = I(cur_col_subset)
 )
+
+# Map excludes records without abnormal grade since they should not be displayed
+# in the table.
+map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) \%>\%
+  lapply(as.character) \%>\%
+  as.data.frame() \%>\%
+  arrange(PARAM, desc(GRADE_DIR), GRADE_ANL)
+
+basic_table() \%>\%
+  split_cols_by("ARMCD") \%>\%
+  split_rows_by("PARAM") \%>\%
+  split_rows_by("GRADE_DIR", split_fun = trim_levels_to_map(map)) \%>\%
+  count_abnormal_by_worst_grade(
+    var = "GRADE_ANL",
+    variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
+  ) \%>\%
+  build_table(df = adlb_f)
 
 }
 \keyword{internal}

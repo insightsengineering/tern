@@ -276,27 +276,6 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 #'   post-baseline lab grades are worse than their baseline grades, for post-baseline worst grades
 #'   "1", "2", "3", "4" and "Any".
 #'
-#' @examples
-#' library(dplyr)
-#'
-#' # The direction variable, GRADDR, is based on metadata
-#' adlb <- tern_ex_adlb %>%
-#'   mutate(
-#'     GRADDR = case_when(
-#'       PARAMCD == "ALT" ~ "B",
-#'       PARAMCD == "CRP" ~ "L",
-#'       PARAMCD == "IGA" ~ "H"
-#'     )
-#'   ) %>%
-#'   filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
-#'
-#' df <- h_adlb_worsen(
-#'   adlb,
-#'   worst_flag_low = c("WGRLOFL" = "Y"),
-#'   worst_flag_high = c("WGRHIFL" = "Y"),
-#'   direction_var = "GRADDR"
-#' )
-#'
 #' @keywords internal
 s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
                                                     .var = "ATOXGR",
@@ -340,6 +319,26 @@ a_count_abnormal_lab_worsen_by_baseline <- make_afun( # nolint
 #'   rows containing the statistics from `s_count_abnormal_lab_worsen_by_baseline()` to the table layout.
 #'
 #' @examples
+#' library(dplyr)
+#'
+#' # The direction variable, GRADDR, is based on metadata
+#' adlb <- tern_ex_adlb %>%
+#'   mutate(
+#'     GRADDR = case_when(
+#'       PARAMCD == "ALT" ~ "B",
+#'       PARAMCD == "CRP" ~ "L",
+#'       PARAMCD == "IGA" ~ "H"
+#'     )
+#'   ) %>%
+#'   filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+#'
+#' df <- h_adlb_worsen(
+#'   adlb,
+#'   worst_flag_low = c("WGRLOFL" = "Y"),
+#'   worst_flag_high = c("WGRHIFL" = "Y"),
+#'   direction_var = "GRADDR"
+#' )
+#'
 #' basic_table() %>%
 #'   split_cols_by("ARMCD") %>%
 #'   add_colcounts() %>%

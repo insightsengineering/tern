@@ -94,6 +94,16 @@ events defined by filters. Used as analysis function \code{afun} in \code{summar
 
 }}
 \examples{
+df <- data.frame(
+  USUBJID = rep(c("id1", "id2", "id3", "id4"), c(2, 3, 1, 1)),
+  ARM = c("A", "A", "B", "B", "B", "B", "A"),
+  AESER = rep("Y", 7),
+  AESDTH = c("Y", "Y", "N", "Y", "Y", "N", "N"),
+  AEREL = c("Y", "Y", "N", "Y", "Y", "N", "Y"),
+  AEDECOD = c("A", "A", "A", "B", "B", "C", "D"),
+  AEBODSYS = rep(c("SOC1", "SOC2", "SOC3"), c(3, 3, 1))
+)
+
 # `summarize_patients_events_in_cols()`
 basic_table() \%>\%
   summarize_patients_events_in_cols(
@@ -105,17 +115,6 @@ basic_table() \%>\%
     custom_label = "\%s Total number of patients and events"
   ) \%>\%
   build_table(df)
-
-# `s_count_patients_and_multiple_events()`
-df <- data.frame(
-  USUBJID = rep(c("id1", "id2", "id3", "id4"), c(2, 3, 1, 1)),
-  ARM = c("A", "A", "B", "B", "B", "B", "A"),
-  AESER = rep("Y", 7),
-  AESDTH = c("Y", "Y", "N", "Y", "Y", "N", "N"),
-  AEREL = c("Y", "Y", "N", "Y", "Y", "N", "Y"),
-  AEDECOD = c("A", "A", "A", "B", "B", "C", "D"),
-  AEBODSYS = rep(c("SOC1", "SOC2", "SOC3"), c(3, 3, 1))
-)
 
 }
 \keyword{internal}

@@ -189,16 +189,6 @@ lyt <- basic_table(
 tbl <- build_table(lyt, df = df, alt_counts_df = adsl)
 tbl
 
-lyt <- basic_table() \%>\%
-  summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE)
-result <- build_table(lyt, df = df, alt_counts_df = adsl)
-result
-
-lyt2 <- basic_table() \%>\%
-  summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
-result2 <- build_table(lyt2, df = df, alt_counts_df = adsl)
-result2
-
 set.seed(1)
 df <- data.frame(
   USUBJID = c(paste("id", seq(1, 12), sep = "")),
@@ -213,6 +203,18 @@ adsl <- data.frame(
   SEX = c(rep("Female", 2), rep("Male", 2)),
   stringsAsFactors = TRUE
 )
+
+lyt <- basic_table() \%>\%
+  summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE)
+
+result <- build_table(lyt, df = df, alt_counts_df = adsl)
+result
+
+lyt2 <- basic_table() \%>\%
+  summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
+
+result2 <- build_table(lyt2, df = df, alt_counts_df = adsl)
+result2
 
 a_count_patients_sum_exposure(
   df = df,

@@ -137,9 +137,11 @@ yet available as an option. Besides, when \code{rsp} contains only responders or
 then the result values will be \code{NA}, because no odds ratio estimation is possible.
 }
 \examples{
+set.seed(12)
 dta <- data.frame(
   rsp = sample(c(TRUE, FALSE), 100, TRUE),
-  grp = factor(rep(c("A", "B"), each = 50))
+  grp = factor(rep(c("A", "B"), each = 50), levels = c(, "A", "B")),
+  strata = factor(sample(c("C", "D"), 100, TRUE))
 )
 
 l <- basic_table() \%>\%
@@ -147,13 +149,6 @@ l <- basic_table() \%>\%
   estimate_odds_ratio(vars = "rsp")
 
 build_table(l, df = dta)
-
-set.seed(12)
-dta <- data.frame(
-  rsp = sample(c(TRUE, FALSE), 100, TRUE),
-  grp = factor(rep(c("A", "B"), each = 50), levels = c("B", "A")),
-  strata = factor(sample(c("C", "D"), 100, TRUE))
-)
 
 # Unstratified analysis.
 s_odds_ratio(

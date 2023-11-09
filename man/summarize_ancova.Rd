@@ -159,14 +159,5 @@ basic_table() \%>\%
   ) \%>\%
   build_table(iris)
 
-library(dplyr)
-
-df <- iris \%>\% filter(Species == "virginica")
-.df_row <- iris
-.var <- "Petal.Length"
-variables <- list(arm = "Species", covariates = "Sepal.Length * Sepal.Width")
-.ref_group <- iris \%>\% filter(Species == "setosa")
-conf_level <- 0.95
-
 }
 \keyword{internal}

@@ -73,6 +73,11 @@ adtte_f <- adtte \%>\%
 labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
 formatters::var_labels(adtte_f)[names(labels)] <- labels
 
+# Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,
+# in multiple regression models containing one covariate `RACE`,
+# as well as one stratification variable `STRATA1`. The subgroups
+# are defined by the levels of `BMRKR2`.
+
 df <- extract_survival_biomarkers(
   variables = list(
     tte = "AVAL",
@@ -85,6 +90,27 @@ df <- extract_survival_biomarkers(
   data = adtte_f
 )
 df
+
+# Here we group the levels of `BMRKR2` manually.
+df_grouped <- extract_survival_biomarkers(
+  variables = list(
+    tte = "AVAL",
+    is_event = "is_event",
+    biomarkers = c("BMRKR1", "AGE"),
+    strata = "STRATA1",
+    covariates = "SEX",
+    subgroups = "BMRKR2"
+  ),
+  data = adtte_f,
+  groups_lists = list(
+    BMRKR2 = list(
+      "low" = "LOW",
+      "low/medium" = c("LOW", "MEDIUM"),
+      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+    )
+  )
+)
+df_grouped
 
 ## Table with default columns.
 tabulate_survival_biomarkers(df)

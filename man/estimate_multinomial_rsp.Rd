@@ -115,11 +115,7 @@ lyt <- basic_table() \%>\%
 
 tbl <- build_table(lyt, dta_test)
 
-html <- as_html(tbl)
-html
-\donttest{
-Viewer(html)
-}
+tbl
 
 s_length_proportion(rep("CR", 10), .N_col = 100)
 s_length_proportion(factor(character(0)), .N_col = 100)

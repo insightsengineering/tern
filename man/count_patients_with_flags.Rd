@@ -137,6 +137,18 @@ labeled, variable names will be used instead. Alternatively, a named \code{vecto
 the label to use for this variable.
 }
 \examples{
+library(dplyr)
+
+# Add labelled flag variables to analysis dataset.
+adae <- tern_ex_adae \%>\%
+  mutate(
+    fl1 = TRUE \%>\% with_label("Total AEs"),
+    fl2 = (TRTEMFL == "Y") \%>\% with_label("Total number of patients with at least one adverse event"),
+    fl3 = (TRTEMFL == "Y" & AEOUT == "FATAL") \%>\% with_label("Total number of patients with fatal AEs"),
+    fl4 = (TRTEMFL == "Y" & AEOUT == "FATAL" & AEREL == "Y") \%>\%
+      with_label("Total number of patients with related fatal AEs")
+  )
+
 # `count_patients_with_flags()`
 
 lyt2 <- basic_table() \%>\%
@@ -147,27 +159,10 @@ lyt2 <- basic_table() \%>\%
     flag_variables = c("fl1", "fl2", "fl3", "fl4"),
     denom = "N_col"
   )
+
 build_table(lyt2, adae, alt_counts_df = tern_ex_adsl)
 
-library(dplyr)
-
 # `s_count_patients_with_flags()`
-
-# Add labelled flag variables to analysis dataset.
-adae <- tern_ex_adae \%>\%
-  mutate(
-    fl1 = TRUE,
-    fl2 = TRTEMFL == "Y",
-    fl3 = TRTEMFL == "Y" & AEOUT == "FATAL",
-    fl4 = TRTEMFL == "Y" & AEOUT == "FATAL" & AEREL == "Y"
-  )
-labels <- c(
-  "fl1" = "Total AEs",
-  "fl2" = "Total number of patients with at least one adverse event",
-  "fl3" = "Total number of patients with fatal AEs",
-  "fl4" = "Total number of patients with related fatal AEs"
-)
-formatters::var_labels(adae)[names(labels)] <- labels
 
 s_count_patients_with_flags(
   adae,

@@ -113,6 +113,23 @@ df <- extract_survival_subgroups(
 )
 df
 
+df_grouped <- extract_survival_subgroups(
+  variables = list(
+    tte = "AVAL",
+    is_event = "is_event",
+    arm = "ARM", subgroups = c("SEX", "BMRKR2")
+  ),
+  data = adtte_f,
+  groups_lists = list(
+    BMRKR2 = list(
+      "low" = "LOW",
+      "low/medium" = c("LOW", "MEDIUM"),
+      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+    )
+  )
+)
+df_grouped
+
 ## Table with default columns.
 basic_table() \%>\%
   tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])

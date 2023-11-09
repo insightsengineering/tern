@@ -181,6 +181,15 @@ when \code{method = "surv_diff"}.
 
 }}
 \examples{
+library(dplyr)
+
+adtte_f <- tern_ex_adtte \%>\%
+  filter(PARAMCD == "OS") \%>\%
+  mutate(
+    AVAL = day2month(AVAL),
+    is_event = CNSR == 0
+  )
+
 # Survival at given time points.
 basic_table() \%>\%
   split_cols_by(var = "ARMCD", ref_group = "ARM A") \%>\%
@@ -219,20 +228,6 @@ basic_table() \%>\%
     method = "both"
   ) \%>\%
   build_table(df = adtte_f)
-
-library(dplyr)
-
-adtte_f <- tern_ex_adtte \%>\%
-  filter(PARAMCD == "OS") \%>\%
-  mutate(
-    AVAL = day2month(AVAL),
-    is_event = CNSR == 0
-  )
-df <- adtte_f \%>\%
-  filter(ARMCD == "ARM A")
-
-df_ref_group <- adtte_f \%>\%
-  filter(ARMCD == "ARM B")
 
 }
 \keyword{internal}

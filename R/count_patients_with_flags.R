@@ -33,25 +33,7 @@ NULL
 #'   flag as a list of statistics `n`, `count`, `count_fraction`, and `n_blq`, with one element per flag.
 #'
 #' @examples
-#' library(dplyr)
-#'
 #' # `s_count_patients_with_flags()`
-#'
-#' # Add labelled flag variables to analysis dataset.
-#' adae <- tern_ex_adae %>%
-#'   mutate(
-#'     fl1 = TRUE,
-#'     fl2 = TRTEMFL == "Y",
-#'     fl3 = TRTEMFL == "Y" & AEOUT == "FATAL",
-#'     fl4 = TRTEMFL == "Y" & AEOUT == "FATAL" & AEREL == "Y"
-#'   )
-#' labels <- c(
-#'   "fl1" = "Total AEs",
-#'   "fl2" = "Total number of patients with at least one adverse event",
-#'   "fl3" = "Total number of patients with fatal AEs",
-#'   "fl4" = "Total number of patients with related fatal AEs"
-#' )
-#' formatters::var_labels(adae)[names(labels)] <- labels
 #'
 #' s_count_patients_with_flags(
 #'   adae,
@@ -143,6 +125,18 @@ a_count_patients_with_flags <- make_afun(
 #'   the statistics from `s_count_patients_with_flags()` to the table layout.
 #'
 #' @examples
+#' library(dplyr)
+#'
+#' # Add labelled flag variables to analysis dataset.
+#' adae <- tern_ex_adae %>%
+#'   mutate(
+#'     fl1 = TRUE %>% with_label("Total AEs"),
+#'     fl2 = (TRTEMFL == "Y") %>% with_label("Total number of patients with at least one adverse event"),
+#'     fl3 = (TRTEMFL == "Y" & AEOUT == "FATAL") %>% with_label("Total number of patients with fatal AEs"),
+#'     fl4 = (TRTEMFL == "Y" & AEOUT == "FATAL" & AEREL == "Y") %>%
+#'       with_label("Total number of patients with related fatal AEs")
+#'   )
+#'
 #' # `count_patients_with_flags()`
 #'
 #' lyt2 <- basic_table() %>%
@@ -153,6 +147,7 @@ a_count_patients_with_flags <- make_afun(
 #'     flag_variables = c("fl1", "fl2", "fl3", "fl4"),
 #'     denom = "N_col"
 #'   )
+#'
 #' build_table(lyt2, adae, alt_counts_df = tern_ex_adsl)
 #'
 #' @export

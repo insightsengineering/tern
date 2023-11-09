@@ -137,6 +137,16 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 
 }}
 \examples{
+library(dplyr)
+
+adtte_f <- tern_ex_adtte \%>\%
+  filter(PARAMCD == "OS") \%>\%
+  mutate(
+    AVAL = day2month(AVAL),
+    is_event = CNSR == 0
+  )
+df <- adtte_f \%>\% filter(ARMCD == "ARM A")
+
 basic_table() \%>\%
   split_cols_by(var = "ARMCD") \%>\%
   add_colcounts() \%>\%
@@ -147,16 +157,6 @@ basic_table() \%>\%
     control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
   ) \%>\%
   build_table(df = adtte_f)
-
-library(dplyr)
-
-adtte_f <- tern_ex_adtte \%>\%
-  filter(PARAMCD == "OS") \%>\%
-  mutate(
-    AVAL = day2month(AVAL),
-    is_event = CNSR == 0
-  )
-df <- adtte_f \%>\% filter(ARMCD == "ARM A")
 
 a_surv_time(
   df,

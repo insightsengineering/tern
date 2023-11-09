@@ -99,16 +99,6 @@ h_ancova <- function(.var,
 #'     to the reference group.
 #'   * `pval`: p-value (not adjusted for multiple comparisons).
 #'
-#' @examples
-#' library(dplyr)
-#'
-#' df <- iris %>% filter(Species == "virginica")
-#' .df_row <- iris
-#' .var <- "Petal.Length"
-#' variables <- list(arm = "Species", covariates = "Sepal.Length * Sepal.Width")
-#' .ref_group <- iris %>% filter(Species == "setosa")
-#' conf_level <- 0.95
-#'
 #' @keywords internal
 s_ancova <- function(df,
                      .var,
@@ -200,7 +190,6 @@ s_ancova <- function(df,
 #'
 #' @return
 #' * `a_ancova()` returns the corresponding list with formatted [rtables::CellValue()].
-#'
 #'
 #' @keywords internal
 a_ancova <- make_afun(

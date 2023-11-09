@@ -151,6 +151,23 @@ in \code{count_occurrences_by_grade()}.
 
 }}
 \examples{
+library(dplyr)
+
+df <- data.frame(
+  USUBJID = as.character(c(1:6, 1)),
+  ARM = factor(c("A", "A", "A", "B", "B", "B", "A"), levels = c("A", "B")),
+  AETOXGR = factor(c(1, 2, 3, 4, 1, 2, 3), levels = c(1:5)),
+  AESEV = factor(
+    x = c("MILD", "MODERATE", "SEVERE", "MILD", "MILD", "MODERATE", "SEVERE"),
+    levels = c("MILD", "MODERATE", "SEVERE")
+  ),
+  stringsAsFactors = FALSE
+)
+
+df_adsl <- df \%>\%
+  select(USUBJID, ARM) \%>\%
+  unique()
+
 # Layout creating function with custom format.
 basic_table() \%>\%
   split_cols_by("ARM") \%>\%
@@ -195,21 +212,6 @@ basic_table() \%>\%
     grade_groups = grade_groups
   ) \%>\%
   build_table(df, alt_counts_df = df_adsl)
-
-library(dplyr)
-df <- data.frame(
-  USUBJID = as.character(c(1:6, 1)),
-  ARM = factor(c("A", "A", "A", "B", "B", "B", "A"), levels = c("A", "B")),
-  AETOXGR = factor(c(1, 2, 3, 4, 1, 2, 3), levels = c(1:5)),
-  AESEV = factor(
-    x = c("MILD", "MODERATE", "SEVERE", "MILD", "MILD", "MODERATE", "SEVERE"),
-    levels = c("MILD", "MODERATE", "SEVERE")
-  ),
-  stringsAsFactors = FALSE
-)
-df_adsl <- df \%>\%
-  select(USUBJID, ARM) \%>\%
-  unique()
 
 s_count_occurrences_by_grade(
   df,

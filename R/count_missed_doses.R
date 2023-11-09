@@ -20,10 +20,6 @@ NULL
 #' @return
 #' * `s_count_nonmissing()` returns the statistic `n` which is the count of non-missing values in `x`.
 #'
-#' @examples
-#' set.seed(1)
-#' x <- c(sample(1:10, 10), NA)
-#'
 #' @keywords internal
 s_count_nonmissing <- function(x) {
   list(n = n_available(x))

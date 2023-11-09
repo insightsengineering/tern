@@ -24,22 +24,6 @@ NULL
 #'   * `n_patients`: Number of unique patients in `df`.
 #'   * `sum_exposure`: Sum of `ex_var` across all patients in `df`.
 #'
-#' @examples
-#' set.seed(1)
-#' df <- data.frame(
-#'   USUBJID = c(paste("id", seq(1, 12), sep = "")),
-#'   ARMCD = c(rep("ARM A", 6), rep("ARM B", 6)),
-#'   SEX = c(rep("Female", 6), rep("Male", 6)),
-#'   AVAL = as.numeric(sample(seq(1, 20), 12)),
-#'   stringsAsFactors = TRUE
-#' )
-#' adsl <- data.frame(
-#'   USUBJID = c(paste("id", seq(1, 12), sep = "")),
-#'   ARMCD = c(rep("ARM A", 2), rep("ARM B", 2)),
-#'   SEX = c(rep("Female", 2), rep("Male", 2)),
-#'   stringsAsFactors = TRUE
-#' )
-#'
 #' @keywords internal
 s_count_patients_sum_exposure <- function(df,
                                           ex_var = "AVAL",
@@ -166,13 +150,30 @@ a_count_patients_sum_exposure <- function(df,
 #'   columns, to the table layout.
 #'
 #' @examples
+#' set.seed(1)
+#' df <- data.frame(
+#'   USUBJID = c(paste("id", seq(1, 12), sep = "")),
+#'   ARMCD = c(rep("ARM A", 6), rep("ARM B", 6)),
+#'   SEX = c(rep("Female", 6), rep("Male", 6)),
+#'   AVAL = as.numeric(sample(seq(1, 20), 12)),
+#'   stringsAsFactors = TRUE
+#' )
+#' adsl <- data.frame(
+#'   USUBJID = c(paste("id", seq(1, 12), sep = "")),
+#'   ARMCD = c(rep("ARM A", 2), rep("ARM B", 2)),
+#'   SEX = c(rep("Female", 2), rep("Male", 2)),
+#'   stringsAsFactors = TRUE
+#' )
+#'
 #' lyt <- basic_table() %>%
 #'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE)
+#'
 #' result <- build_table(lyt, df = df, alt_counts_df = adsl)
 #' result
 #'
 #' lyt2 <- basic_table() %>%
 #'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
+#'
 #' result2 <- build_table(lyt2, df = df, alt_counts_df = adsl)
 #' result2
 #'
