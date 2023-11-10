@@ -179,11 +179,15 @@ dta_bladder <- with(
 dta_bladder$AGE <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 dta_bladder$STUDYID <- factor("X")
 
-u1_variables <- list(time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2"))
+u1_variables <- list(
+  time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2")
+)
 
 u2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 
-m1_variables <- list(time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2"))
+m1_variables <- list(
+  time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2")
+)
 
 m2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 

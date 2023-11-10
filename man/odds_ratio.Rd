@@ -140,7 +140,7 @@ then the result values will be \code{NA}, because no odds ratio estimation is po
 set.seed(12)
 dta <- data.frame(
   rsp = sample(c(TRUE, FALSE), 100, TRUE),
-  grp = factor(rep(c("A", "B"), each = 50), levels = c(, "A", "B")),
+  grp = factor(rep(c("A", "B"), each = 50), levels = c("A", "B")),
   strata = factor(sample(c("C", "D"), 100, TRUE))
 )
 

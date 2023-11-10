@@ -143,8 +143,10 @@ library(dplyr)
 adae <- tern_ex_adae \%>\%
   mutate(
     fl1 = TRUE \%>\% with_label("Total AEs"),
-    fl2 = (TRTEMFL == "Y") \%>\% with_label("Total number of patients with at least one adverse event"),
-    fl3 = (TRTEMFL == "Y" & AEOUT == "FATAL") \%>\% with_label("Total number of patients with fatal AEs"),
+    fl2 = (TRTEMFL == "Y") \%>\%
+      with_label("Total number of patients with at least one adverse event"),
+    fl3 = (TRTEMFL == "Y" & AEOUT == "FATAL") \%>\%
+      with_label("Total number of patients with fatal AEs"),
     fl4 = (TRTEMFL == "Y" & AEOUT == "FATAL" & AEREL == "Y") \%>\%
       with_label("Total number of patients with related fatal AEs")
   )
