@@ -152,43 +152,6 @@ As opposed to \code{\link[=summarize_patients_exposure_in_cols]{summarize_patien
 pages when pagination is used.
 }
 \examples{
-lyt3 <- basic_table() \%>\%
-  split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) \%>\%
-  summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) \%>\%
-  analyze_patients_exposure_in_cols(var = "SEX", col_split = FALSE)
-result3 <- build_table(lyt3, df = df, alt_counts_df = adsl)
-result3
-
-lyt4 <- basic_table() \%>\%
-  split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) \%>\%
-  summarize_patients_exposure_in_cols(
-    var = "AVAL", col_split = TRUE,
-    .stats = "n_patients", custom_label = "some custom label"
-  ) \%>\%
-  analyze_patients_exposure_in_cols(var = "SEX", col_split = FALSE, ex_var = "AVAL")
-result4 <- build_table(lyt4, df = df, alt_counts_df = adsl)
-result4
-
-lyt5 <- basic_table() \%>\%
-  analyze_patients_exposure_in_cols(var = "SEX", col_split = TRUE, ex_var = "AVAL")
-result5 <- build_table(lyt5, df = df, alt_counts_df = adsl)
-result5
-
-# Adding total levels and custom label
-lyt <- basic_table(
-  show_colcounts = TRUE
-) \%>\%
-  analyze_patients_exposure_in_cols(
-    var = "ARMCD",
-    col_split = TRUE,
-    add_total_level = TRUE,
-    custom_label = "TOTAL"
-  ) \%>\%
-  append_topleft(c("", "Sex"))
-
-tbl <- build_table(lyt, df = df, alt_counts_df = adsl)
-tbl
-
 set.seed(1)
 df <- data.frame(
   USUBJID = c(paste("id", seq(1, 12), sep = "")),
@@ -205,16 +168,53 @@ adsl <- data.frame(
 )
 
 lyt <- basic_table() \%>\%
-  summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE)
-
+  split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) \%>\%
+  summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) \%>\%
+  analyze_patients_exposure_in_cols(var = "SEX", col_split = FALSE)
 result <- build_table(lyt, df = df, alt_counts_df = adsl)
 result
 
 lyt2 <- basic_table() \%>\%
-  summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
-
+  split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) \%>\%
+  summarize_patients_exposure_in_cols(
+    var = "AVAL", col_split = TRUE,
+    .stats = "n_patients", custom_label = "some custom label"
+  ) \%>\%
+  analyze_patients_exposure_in_cols(var = "SEX", col_split = FALSE, ex_var = "AVAL")
 result2 <- build_table(lyt2, df = df, alt_counts_df = adsl)
 result2
+
+lyt3 <- basic_table() \%>\%
+  analyze_patients_exposure_in_cols(var = "SEX", col_split = TRUE, ex_var = "AVAL")
+result3 <- build_table(lyt3, df = df, alt_counts_df = adsl)
+result3
+
+# Adding total levels and custom label
+lyt4 <- basic_table(
+  show_colcounts = TRUE
+) \%>\%
+  analyze_patients_exposure_in_cols(
+    var = "ARMCD",
+    col_split = TRUE,
+    add_total_level = TRUE,
+    custom_label = "TOTAL"
+  ) \%>\%
+  append_topleft(c("", "Sex"))
+
+result4 <- build_table(lyt4, df = df, alt_counts_df = adsl)
+result4
+
+lyt5 <- basic_table() \%>\%
+  summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE)
+
+result5 <- build_table(lyt5, df = df, alt_counts_df = adsl)
+result5
+
+lyt6 <- basic_table() \%>\%
+  summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
+
+result6 <- build_table(lyt6, df = df, alt_counts_df = adsl)
+result6
 
 a_count_patients_sum_exposure(
   df = df,
