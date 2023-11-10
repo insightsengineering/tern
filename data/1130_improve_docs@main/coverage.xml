@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.946605410923941" branch-rate="0" lines-covered="9272" lines-valid="9795" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-11-10 00:31:34.843741">
+<coverage line-rate="0.946605410923941" branch-rate="0" lines-covered="9272" lines-valid="9795" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-11-10 01:07:03.902939">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
@@ -18679,20 +18679,20 @@
             </method>
             <method name="summarize_patients_exposure_in_cols" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="190" hits="3" branch="false"/>
-                <line number="191" hits="3" branch="false"/>
-                <line number="192" hits="3" branch="false"/>
-                <line number="193" hits="3" branch="false"/>
-                <line number="194" hits="3" branch="false"/>
-                <line number="195" hits="3" branch="false"/>
-                <line number="196" hits="3" branch="false"/>
-                <line number="198" hits="3" branch="false"/>
-                <line number="199" hits="3" branch="false"/>
-                <line number="200" hits="3" branch="false"/>
-                <line number="201" hits="3" branch="false"/>
-                <line number="202" hits="3" branch="false"/>
-                <line number="203" hits="3" branch="false"/>
-                <line number="204" hits="3" branch="false"/>
+                <line number="175" hits="3" branch="false"/>
+                <line number="176" hits="3" branch="false"/>
+                <line number="177" hits="3" branch="false"/>
+                <line number="178" hits="3" branch="false"/>
+                <line number="179" hits="3" branch="false"/>
+                <line number="180" hits="3" branch="false"/>
+                <line number="181" hits="3" branch="false"/>
+                <line number="183" hits="3" branch="false"/>
+                <line number="184" hits="3" branch="false"/>
+                <line number="185" hits="3" branch="false"/>
+                <line number="186" hits="3" branch="false"/>
+                <line number="187" hits="3" branch="false"/>
+                <line number="188" hits="3" branch="false"/>
+                <line number="189" hits="3" branch="false"/>
               </lines>
             </method>
             <method name="analyze_patients_exposure_in_cols" signature="" line-rate="1" branch-rate="0" complexity="0">
@@ -18785,20 +18785,20 @@
             <line number="134" hits="2" branch="false"/>
             <line number="135" hits="2" branch="false"/>
             <line number="139" hits="32" branch="false"/>
-            <line number="190" hits="3" branch="false"/>
-            <line number="191" hits="3" branch="false"/>
-            <line number="192" hits="3" branch="false"/>
-            <line number="193" hits="3" branch="false"/>
-            <line number="194" hits="3" branch="false"/>
-            <line number="195" hits="3" branch="false"/>
-            <line number="196" hits="3" branch="false"/>
-            <line number="198" hits="3" branch="false"/>
-            <line number="199" hits="3" branch="false"/>
-            <line number="200" hits="3" branch="false"/>
-            <line number="201" hits="3" branch="false"/>
-            <line number="202" hits="3" branch="false"/>
-            <line number="203" hits="3" branch="false"/>
-            <line number="204" hits="3" branch="false"/>
+            <line number="175" hits="3" branch="false"/>
+            <line number="176" hits="3" branch="false"/>
+            <line number="177" hits="3" branch="false"/>
+            <line number="178" hits="3" branch="false"/>
+            <line number="179" hits="3" branch="false"/>
+            <line number="180" hits="3" branch="false"/>
+            <line number="181" hits="3" branch="false"/>
+            <line number="183" hits="3" branch="false"/>
+            <line number="184" hits="3" branch="false"/>
+            <line number="185" hits="3" branch="false"/>
+            <line number="186" hits="3" branch="false"/>
+            <line number="187" hits="3" branch="false"/>
+            <line number="188" hits="3" branch="false"/>
+            <line number="189" hits="3" branch="false"/>
             <line number="273" hits="6" branch="false"/>
             <line number="274" hits="4" branch="false"/>
             <line number="275" hits="4" branch="false"/>
