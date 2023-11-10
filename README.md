@@ -72,9 +72,9 @@ See package vignettes `browseVignettes(package = "tern")` for usage of this pack
 
 ## Related
 
--   [`rtables`](https://insightsengineering.github.io/rtables/main/) - table engine used
--   [`tlg-catalog`](https://insightsengineering.github.io/tlg-catalog/stable/) - website showcasing many examples of clinical trial tables, listings, and graphs
--   [`teal.modules.clinical`](https://insightsengineering.github.io/teal.modules.clinical/main/) - `teal` modules for interactive data analysis
+- [`rtables`](https://insightsengineering.github.io/rtables/main/) - table engine used
+- [`tlg-catalog`](https://insightsengineering.github.io/tlg-catalog/stable/) - website showcasing many examples of clinical trial tables, listings, and graphs
+- [`teal.modules.clinical`](https://insightsengineering.github.io/teal.modules.clinical/main/) - `teal` modules for interactive data analysis
 
 ## Acknowledgment
 
