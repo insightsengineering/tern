@@ -63,7 +63,10 @@ reference:
       - starts_with("surv_", internal = TRUE)
       - starts_with("tabulate_", internal = TRUE)
       - test_proportion_diff
+      - -analyze_colvars_functions
+      - -analyze_functions
       - -estimate_coef
+      - -summarize_functions
 
   - title: Analysis Helper Functions
     desc: These functions are useful in defining an analysis.
