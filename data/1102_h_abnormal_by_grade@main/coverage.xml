@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.946714212939379" branch-rate="0" lines-covered="9292" lines-valid="9815" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-11-11 00:47:27.403524">
+<coverage line-rate="0.946714212939379" branch-rate="0" lines-covered="9292" lines-valid="9815" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-11-11 01:00:12.777809">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
