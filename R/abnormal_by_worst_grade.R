@@ -204,13 +204,13 @@ h_adlb_abnormal_by_worst_grade <- function(adlb,
                                            worst_flag_low = "WGRLOFL",
                                            worst_flag_high = "WGRHIFL") {
   adlb %>%
-    filter(
+    dplyr::filter(
       !.data[[avisit]] %in% c("SCREENING", "BASELINE"),
       .data[[worst_flag_low]] == "Y" | .data[[worst_flag_high]] == "Y"
     ) %>%
-    mutate(
+    dplyr::mutate(
       GRADE_DIR = factor(
-        case_when(
+        dplyr::case_when(
           .data[[atoxgr]] %in% c("-1", "-2", "-3", "-4") ~ "LOW",
           .data[[atoxgr]] == "0" ~ "ZERO",
           .data[[atoxgr]] %in% c("1", "2", "3", "4") ~ "HIGH"
