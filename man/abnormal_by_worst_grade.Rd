@@ -94,16 +94,10 @@ and patients in the numerator as follows:
 \item \code{1} to \code{4}: Numerator is number of patients with worst grades 1-4 respectively;
 \item \code{Any}: Numerator is number of patients with at least one abnormality, which means grade is different from 0.
 }
-}
-\details{
-The pre-processing steps are crucial when using this function. From the standard lab grade variable
-\code{ATOXGR}, derive the following two variables:
-\itemize{
-\item A grade direction variable (e.g. \code{GRADE_DIR}) is required in order to obtain
-the correct denominators when building the layout as it is used to define row splitting.
-\item A toxicity grade variable (e.g. \code{GRADE_ANL}) where all negative values from
-\code{ATOXGR} are replaced by their absolute values.
-}
+
+Pre-processing is crucial when using this function and can be done automatically using the
+\code{\link[=h_adlb_abnormal_by_worst_grade]{h_adlb_abnormal_by_worst_grade()}} helper function. See the description of this function for details on the
+necessary pre-processing steps.
 }
 \section{Functions}{
 \itemize{
@@ -116,9 +110,6 @@ in \code{count_abnormal_by_worst_grade()}.
 and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
-\note{
-Prior to tabulation, \code{df} must be filtered to include only post-baseline records with worst grade flags.
-}
 \examples{
 library(dplyr)
 library(forcats)
@@ -184,5 +175,9 @@ basic_table() \%>\%
   ) \%>\%
   build_table(df = adlb_f)
 
+}
+\seealso{
+\code{\link[=h_adlb_abnormal_by_worst_grade]{h_adlb_abnormal_by_worst_grade()}} which pre-processes \code{ADLB} data frames to be used in
+\code{\link[=count_abnormal_by_worst_grade]{count_abnormal_by_worst_grade()}}.
 }
 \keyword{internal}
