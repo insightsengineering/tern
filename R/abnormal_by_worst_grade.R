@@ -47,37 +47,7 @@ NULL
 #' adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
 #'
 #' # Here starts the real pre-processing.
-#' adlb_f <- adlb %>%
-#'   filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
-#'   mutate(
-#'     GRADE_DIR = factor(
-#'       case_when(
-#'         ATOXGR %in% c("-1", "-2", "-3", "-4") ~ "LOW",
-#'         ATOXGR == "0" ~ "ZERO",
-#'         ATOXGR %in% c("1", "2", "3", "4") ~ "HIGH"
-#'       ),
-#'       levels = c("LOW", "ZERO", "HIGH")
-#'     ),
-#'     GRADE_ANL = fct_relevel(
-#'       fct_recode(ATOXGR, `1` = "-1", `2` = "-2", `3` = "-3", `4` = "-4"),
-#'       c("0", "1", "2", "3", "4")
-#'     )
-#'   ) %>%
-#'   filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
-#'   droplevels()
-#'
-#' adlb_f_alt <- adlb_f %>%
-#'   filter(PARAMCD == "ALT") %>%
-#'   droplevels()
-#' full_parent_df <- list(adlb_f_alt, "not_needed")
-#' cur_col_subset <- list(rep(TRUE, nrow(adlb_f_alt)), "not_needed")
-#'
-#' # This mimics a split structure on PARAM and GRADE_DIR for a total column
-#' spl_context <- data.frame(
-#'   split = c("PARAM", "GRADE_DIR"),
-#'   full_parent_df = I(full_parent_df),
-#'   cur_col_subset = I(cur_col_subset)
-#' )
+#' adlb_f <- h_adlb_abnormal_by_worst_grade(adlb)
 #'
 #' @keywords internal
 s_count_abnormal_by_worst_grade <- function(df, # nolint
@@ -224,7 +194,7 @@ count_abnormal_by_worst_grade <- function(lyt,
 #'
 #' @examples
 #' h_adlb_abnormal_by_worst_grade(tern_ex_adlb) %>%
-#'   select(ATOXGR, GRADE_DIR, GRADE_ANL) %>%
+#'   dplyr::select(ATOXGR, GRADE_DIR, GRADE_ANL) %>%
 #'   head(10)
 #'
 #' @export
