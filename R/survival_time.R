@@ -15,6 +15,17 @@
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("surv_time")`
 #'   to see available statistics for this function.
 #'
+#' @examples
+#' library(dplyr)
+#'
+#' adtte_f <- tern_ex_adtte %>%
+#'   filter(PARAMCD == "OS") %>%
+#'   mutate(
+#'     AVAL = day2month(AVAL),
+#'     is_event = CNSR == 0
+#'   )
+#' df <- adtte_f %>% filter(ARMCD == "ARM A")
+#'
 #' @name survival_time
 #' @order 1
 NULL
@@ -157,16 +168,6 @@ a_surv_time <- function(df,
 #'   the statistics from `s_surv_time()` to the table layout.
 #'
 #' @examples
-#' library(dplyr)
-#'
-#' adtte_f <- tern_ex_adtte %>%
-#'   filter(PARAMCD == "OS") %>%
-#'   mutate(
-#'     AVAL = day2month(AVAL),
-#'     is_event = CNSR == 0
-#'   )
-#' df <- adtte_f %>% filter(ARMCD == "ARM A")
-#'
 #' basic_table() %>%
 #'   split_cols_by(var = "ARMCD") %>%
 #'   add_colcounts() %>%
