@@ -27,29 +27,29 @@ The package provides a large range of functionality, such as:
 
 Data visualizations:
 
--   Line plots ([`g_lineplot`](https://insightsengineering.github.io/tern/main/reference/g_lineplot.html))
--   Kaplan-Meier plots ([`g_km`](https://insightsengineering.github.io/tern/main/reference/g_km.html))
--   Forest plots ([`g_forest`](https://insightsengineering.github.io/tern/main/reference/g_forest.html))
--   STEP graphs ([`g_step`](https://insightsengineering.github.io/tern/main/reference/g_step.html))
--   Individual patient plots ([`g_ipp`](https://insightsengineering.github.io/tern/main/reference/individual_patient_plot.html))
--   Waterfall plots ([`g_waterfall`](https://insightsengineering.github.io/tern/main/reference/g_waterfall.html))
+-   Line plots ([`g_lineplot`](https://insightsengineering.github.io/tern/reference/g_lineplot.html))
+-   Kaplan-Meier plots ([`g_km`](https://insightsengineering.github.io/tern/reference/g_km.html))
+-   Forest plots ([`g_forest`](https://insightsengineering.github.io/tern/reference/g_forest.html))
+-   STEP graphs ([`g_step`](https://insightsengineering.github.io/tern/reference/g_step.html))
+-   Individual patient plots ([`g_ipp`](https://insightsengineering.github.io/tern/reference/individual_patient_plot.html))
+-   Waterfall plots ([`g_waterfall`](https://insightsengineering.github.io/tern/reference/g_waterfall.html))
 
 Statistical model fit summaries:
 
--   Logistic regression ([`summarize_logistic`](https://insightsengineering.github.io/tern/main/reference/summarize_logistic.html))
--   Cox regression ([`summarize_coxreg`](https://insightsengineering.github.io/tern/main/reference/cox_regression.html))
+-   Logistic regression ([`summarize_logistic`](https://insightsengineering.github.io/tern/reference/summarize_logistic.html))
+-   Cox regression ([`summarize_coxreg`](https://insightsengineering.github.io/tern/reference/cox_regression.html))
 
 Analysis tables:
 
--   See a list of all available analyze functions [here](https://insightsengineering.github.io/tern/main/reference/analyze_functions.html)
--   See a list of all available summarize functions [here](https://insightsengineering.github.io/tern/main/reference/summarize_functions.html)
--   See a list of all available column-wise analysis functions [here](https://insightsengineering.github.io/tern/main/reference/analyze_colvars_functions.html)
+-   See a list of all available analyze functions [here](https://insightsengineering.github.io/tern/reference/analyze_functions.html)
+-   See a list of all available summarize functions [here](https://insightsengineering.github.io/tern/reference/summarize_functions.html)
+-   See a list of all available column-wise analysis functions [here](https://insightsengineering.github.io/tern/reference/analyze_colvars_functions.html)
 
 <!-- markdownlint-enable MD007 MD030 -->
 
-Many of these outputs are available to be added into [`teal`](https://insightsengineering.github.io/teal/main/) shiny applications for interactive exploration of data. These `teal` modules are available in the [`teal.modules.clinical`](https://insightsengineering.github.io/teal.modules.clinical/main/) package.
+Many of these outputs are available to be added into [`teal`](https://insightsengineering.github.io/teal/) shiny applications for interactive exploration of data. These `teal` modules are available in the [`teal.modules.clinical`](https://insightsengineering.github.io/teal.modules.clinical/) package.
 
-See the [TLG Catalog](https://insightsengineering.github.io/tlg-catalog/stable/) for an extensive catalog of example clinical trial tables, listings, and graphs created using `tern` functionality.
+See the [TLG Catalog](https://insightsengineering.github.io/tlg-catalog/) for an extensive catalog of example clinical trial tables, listings, and graphs created using `tern` functionality.
 
 ## Installation
 
@@ -72,9 +72,9 @@ See package vignettes `browseVignettes(package = "tern")` for usage of this pack
 
 ## Related
 
-- [`rtables`](https://insightsengineering.github.io/rtables/main/) - table engine used
-- [`tlg-catalog`](https://insightsengineering.github.io/tlg-catalog/stable/) - website showcasing many examples of clinical trial tables, listings, and graphs
-- [`teal.modules.clinical`](https://insightsengineering.github.io/teal.modules.clinical/main/) - `teal` modules for interactive data analysis
+- [`rtables`](https://insightsengineering.github.io/rtables/) - table engine used
+- [`tlg-catalog`](https://insightsengineering.github.io/tlg-catalog/) - website showcasing many examples of clinical trial tables, listings, and graphs
+- [`teal.modules.clinical`](https://insightsengineering.github.io/teal.modules.clinical/) - `teal` modules for interactive data analysis
 
 ## Acknowledgment
 
