@@ -128,19 +128,6 @@ adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
 # Pre-processing
 adlb_f <- adlb \%>\% h_adlb_abnormal_by_worst_grade()
 
-adlb_f_alt <- adlb_f \%>\%
-  filter(PARAMCD == "ALT") \%>\%
-  droplevels()
-full_parent_df <- list(adlb_f_alt, "not_needed")
-cur_col_subset <- list(rep(TRUE, nrow(adlb_f_alt)), "not_needed")
-
-# This mimics a split structure on PARAM and GRADE_DIR for a total column
-spl_context <- data.frame(
-  split = c("PARAM", "GRADE_DIR"),
-  full_parent_df = I(full_parent_df),
-  cur_col_subset = I(cur_col_subset)
-)
-
 # Map excludes records without abnormal grade since they should not be displayed
 # in the table.
 map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) \%>\%
