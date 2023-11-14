@@ -1,15 +1,30 @@
-#' Count Patients with Marked Laboratory Abnormalities
+#' Count patients with marked laboratory abnormalities
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Primary analysis variable `.var` indicates whether single, replicated or last marked laboratory
-#' abnormality was observed (`factor`). Additional analysis variables are `id` (`character` or `factor`)
-#' and `direction` (`factor`) indicating the direction of the abnormality. Denominator is number of
-#' patients with at least one valid measurement during the analysis.
-#'   * For `Single, not last` and `Last or replicated`: Numerator is number of patients
-#'     with `Single, not last` and `Last or replicated` levels, respectively.
-#'   * For `Any`: Numerator is the number of patients with either single or
-#'     replicated marked abnormalities.
+#' The analyze function [count_abnormal_by_marked()] creates a layout element to generate a table of counts
+#' of patients with marked laboratory abnormalities for each direction of abnormality, categorized by
+#' parameter value.
+#'
+#' This function analyzes primary analysis variable `var` which indicates whether a single, replicated,
+#' or last marked laboratory abnormality was observed. Levels of `var` to include for each marked lab
+#' abnormality (`single` and `last_replicated`) can be supplied via the `category` parameter. Additional
+#' analysis variables that can be supplied as a list via the `variables` parameter are `id` (defaults
+#' to `USUBJID`), a variable to indicate unique subject identifiers, `param` (defaults to `PARAM`), a
+#' variable to indicate parameter values, and `direction` (defaults to `abn_dir`), a variable to indicate
+#' abnormality directions.
+#'
+#' For each combination of `param` and `direction` levels, marked lab abnormality counts are calculated
+#' as follows:
+#'   * `Single, not last` & `Last or replicated`: The number of patients with `Single, not last`
+#'     and `Last or replicated` values, respectively.
+#'   * `Any`: The number of patients with either single or replicated marked abnormalities.
+#'
+#' Fractions are calculated by dividing the above counts by the number of patients with at least one
+#' valid measurement recorded during the analysis.
+#'
+#' Prior to using this function in your table layout you must use [rtables::split_rows_by()] to create two
+#' row splits, one on variable `param` and one on variable `direction`.
 #'
 #' @inheritParams argument_convention
 #' @param category (`list`)\cr with different marked category names for single

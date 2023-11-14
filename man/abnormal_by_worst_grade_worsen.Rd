@@ -5,7 +5,7 @@
 \alias{s_count_abnormal_lab_worsen_by_baseline}
 \alias{a_count_abnormal_lab_worsen_by_baseline}
 \alias{count_abnormal_lab_worsen_by_baseline}
-\title{Patient Counts for Laboratory Events (Worsen From Baseline) by Highest Grade Post-Baseline}
+\title{Count patients with toxicity grades that have worsened from baseline by highest grade post-baseline}
 \usage{
 s_count_abnormal_lab_worsen_by_baseline(
   df,
@@ -90,7 +90,29 @@ rows containing the statistics from \code{s_count_abnormal_lab_worsen_by_baselin
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Patient count and fraction for laboratory events (worsen from baseline) shift table.
+The analyze function \code{\link[=count_abnormal_lab_worsen_by_baseline]{count_abnormal_lab_worsen_by_baseline()}} creates a layout element to generate a table of
+counts of patients with analysis toxicity grades which have worsened from baseline, categorized by highest
+(worst) grade post-baseline.
+
+This function analyzes primary analysis variable \code{var} which indicates analysis toxicity grades. Additional
+analysis variables that can be supplied as a list via the \code{variables} parameter are \code{id} (defaults to \code{USUBJID}),
+a variable to indicate unique subject identifiers, \code{baseline_var} (defaults to \code{BTOXGR}), a variable to indicate
+baseline toxicity grades, and \code{direction_var} (defaults to \code{GRADDIR}), a variable to indicate toxicity grade
+directions of interest to include (e.g. \code{"H"} (high), \code{"L"} (low), or \code{"B"} (both)).
+
+For the direction(s) specified in \code{direction_var}, patient counts by worst grade for patients who have
+worsened from baseline are calculated as follows:
+\itemize{
+\item \code{1} to \code{4}: The number of patients who have worsened from their baseline grades with worst
+grades 1-4, respectively.
+\item \code{Any}: The total number of patients who have worsened from their baseline grades.
+}
+
+Fractions are calculated by dividing the above counts by the number of patients who's analysis toxicity grades
+have worsened from baseline toxicity grades during treatment.
+
+Prior to using this function in your table layout you must use \code{\link[rtables:split_rows_by]{rtables::split_rows_by()}} to create a row
+split on variable \code{direction_var}.
 }
 \section{Functions}{
 \itemize{
@@ -143,6 +165,7 @@ basic_table() \%>\%
 
 }
 \seealso{
-Relevant helper functions \code{\link[=h_adlb_worsen]{h_adlb_worsen()}} and \code{\link[=h_worsen_counter]{h_worsen_counter()}}
+Relevant helper functions \code{\link[=h_adlb_worsen]{h_adlb_worsen()}} and \code{\link[=h_worsen_counter]{h_worsen_counter()}} which are used within
+\code{\link[=s_count_abnormal_lab_worsen_by_baseline]{s_count_abnormal_lab_worsen_by_baseline()}} to process input data.
 }
 \keyword{internal}

@@ -5,7 +5,7 @@
 \alias{s_count_abnormal_by_marked}
 \alias{a_count_abnormal_by_marked}
 \alias{count_abnormal_by_marked}
-\title{Count Patients with Marked Laboratory Abnormalities}
+\title{Count patients with marked laboratory abnormalities}
 \usage{
 s_count_abnormal_by_marked(
   df,
@@ -89,16 +89,31 @@ the statistics from \code{s_count_abnormal_by_marked()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Primary analysis variable \code{.var} indicates whether single, replicated or last marked laboratory
-abnormality was observed (\code{factor}). Additional analysis variables are \code{id} (\code{character} or \code{factor})
-and \code{direction} (\code{factor}) indicating the direction of the abnormality. Denominator is number of
-patients with at least one valid measurement during the analysis.
+The analyze function \code{\link[=count_abnormal_by_marked]{count_abnormal_by_marked()}} creates a layout element to generate a table of counts
+of patients with marked laboratory abnormalities for each direction of abnormality, categorized by
+parameter value.
+
+This function analyzes primary analysis variable \code{var} which indicates whether a single, replicated,
+or last marked laboratory abnormality was observed. Levels of \code{var} to include for each marked lab
+abnormality (\code{single} and \code{last_replicated}) can be supplied via the \code{category} parameter. Additional
+analysis variables that can be supplied as a list via the \code{variables} parameter are \code{id} (defaults
+to \code{USUBJID}), a variable to indicate unique subject identifiers, \code{param} (defaults to \code{PARAM}), a
+variable to indicate parameter values, and \code{direction} (defaults to \code{abn_dir}), a variable to indicate
+abnormality directions.
+
+For each combination of \code{param} and \code{direction} levels, marked lab abnormality counts are calculated
+as follows:
 \itemize{
-\item For \verb{Single, not last} and \verb{Last or replicated}: Numerator is number of patients
-with \verb{Single, not last} and \verb{Last or replicated} levels, respectively.
-\item For \code{Any}: Numerator is the number of patients with either single or
-replicated marked abnormalities.
+\item \verb{Single, not last} & \verb{Last or replicated}: The number of patients with \verb{Single, not last}
+and \verb{Last or replicated} values, respectively.
+\item \code{Any}: The number of patients with either single or replicated marked abnormalities.
 }
+
+Fractions are calculated by dividing the above counts by the number of patients with at least one
+valid measurement recorded during the analysis.
+
+Prior to using this function in your table layout you must use \code{\link[rtables:split_rows_by]{rtables::split_rows_by()}} to create two
+row splits, one on variable \code{param} and one on variable \code{direction}.
 }
 \section{Functions}{
 \itemize{

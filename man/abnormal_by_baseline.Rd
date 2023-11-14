@@ -5,7 +5,7 @@
 \alias{s_count_abnormal_by_baseline}
 \alias{a_count_abnormal_by_baseline}
 \alias{count_abnormal_by_baseline}
-\title{Patient Counts with Abnormal Range Values by Baseline Status}
+\title{Count patients with abnormal analysis range values by baseline status}
 \usage{
 s_count_abnormal_by_baseline(
   df,
@@ -95,27 +95,38 @@ the statistics from \code{s_count_abnormal_by_baseline()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Primary analysis variable \code{.var} indicates the abnormal range result (\code{character} or \code{factor}), and additional
-analysis variables are \code{id} (\code{character} or \code{factor}) and \code{baseline} (\code{character} or \code{factor}). For each
-direction specified in \code{abnormal} (e.g. high or low) we condition on baseline range result and count
-patients in the numerator and denominator as follows:
+The analyze function \code{\link[=count_abnormal_by_baseline]{count_abnormal_by_baseline()}} creates a layout element to generate a table of counts
+of patients with abnormal analysis range values, categorized by baseline status.
+
+This function analyzes primary analysis variable \code{var} which indicates abnormal range results. Additional
+analysis variables that can be supplied as a list via the \code{variables} parameter are \code{id} (defaults to
+\code{USUBJID}), a variable to indicate unique subject identifiers, and \code{baseline} (defaults to \code{BNRIND}), a
+variable to indicate baseline reference ranges.
+
+For each direction specified via the \code{abnormal} parameter (e.g. High or Low), we condition on baseline
+range result and count patients in the numerator and denominator as follows for each of the following
+categories:
 \itemize{
-\item \verb{Not <Abnormal>}
+\item \verb{Not <abnormality>}
 \itemize{
-\item \code{denom}: the number of patients without abnormality at baseline (excluding those with missing baseline)
-\item \code{num}:  the number of patients in \code{denom} who also have at least one abnormality post-baseline
+\item \code{num}:  The number of patients without abnormality at baseline (excluding those with missing baseline)
+and with at least one abnormality post-baseline.
+\item \code{denom}: The number of patients without abnormality at baseline (excluding those with missing baseline).
 }
-\item \verb{<Abnormal>}
+\item \verb{<Abnormality>}
 \itemize{
-\item \code{denom}: the number of patients with abnormality at baseline
-\item \code{num}: the number of patients in \code{denom} who also have at least one abnormality post-baseline
+\item \code{num}: The number of patients with abnormality as baseline and at least one abnormality post-baseline.
+\item \code{denom}: The number of patients with abnormality at baseline.
 }
 \item \code{Total}
 \itemize{
-\item \code{denom}: the number of patients with at least one valid measurement post-baseline
-\item \code{num}: the number of patients in \code{denom} who also have at least one abnormality post-baseline
+\item \code{num}: The number of patients with at least one post-baseline record and at least one abnormality
+post-baseline.
+\item \code{denom}: The number of patients with at least one post-baseline record.
 }
 }
+
+This function assumes that \code{df} has been filtered to only include post-baseline records.
 }
 \section{Functions}{
 \itemize{
@@ -131,8 +142,8 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 \note{
 \itemize{
 \item \code{df} should be filtered to include only post-baseline records.
-\item If the baseline variable or analysis variable contains \code{NA}, it is expected that \code{NA} has been
-conveyed to \code{na_level} appropriately beforehand with \code{\link[=df_explicit_na]{df_explicit_na()}} or \code{\link[=explicit_na]{explicit_na()}}.
+\item If the baseline variable or analysis variable contains \code{NA} records, it is expected that \code{df} has been
+pre-processed using \code{\link[=df_explicit_na]{df_explicit_na()}} or \code{\link[=explicit_na]{explicit_na()}}.
 }
 }
 \examples{

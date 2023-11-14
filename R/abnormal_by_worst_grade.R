@@ -1,19 +1,31 @@
-#' Patient Counts with the Most Extreme Post-baseline Toxicity Grade per Direction of Abnormality
+#' Count patients by most extreme post-baseline toxicity grade per direction of abnormality
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Primary analysis variable `.var` indicates the toxicity grade (`factor`), and additional
-#' analysis variables are `id` (`character` or `factor`), `param` (`factor`) and `grade_dir` (`factor`).
-#' The pre-processing steps are crucial when using this function.
-#' For a certain direction (e.g. high or low) this function counts
-#' patients in the denominator as number of patients with at least one valid measurement during treatment,
-#' and patients in the numerator as follows:
-#'   * `1` to `4`: Numerator is number of patients with worst grades 1-4 respectively;
-#'   * `Any`: Numerator is number of patients with at least one abnormality, which means grade is different from 0.
+#' The analyze function [count_abnormal_by_worst_grade()] creates a layout element to generate a table of
+#' counts of patients by highest (worst) analysis toxicity grade post-baseline for each direction, categorized
+#' by parameter value.
+#'
+#' This function analyzes primary analysis variable `var` which indicates toxicity grades. Additional
+#' analysis variables that can be supplied as a list via the `variables` parameter are `id` (defaults to
+#' `USUBJID`), a variable to indicate unique subject identifiers, `param` (defaults to `PARAM`), a variable
+#' to indicate parameter values, and `grade_dir` (defaults to `GRADE_DIR`), a variable to indicate directions
+#' (e.g. High or Low) for each toxicity grade supplied in `var`.
+#'
+#' For each combination of `param` and `grade_dir` levels, patient counts by worst
+#' grade are calculated as follows:
+#'   * `1` to `4`: The number of patients with worst grades 1-4, respectively.
+#'   * `Any`: The number of patients with at least one abnormality (i.e. grade is not 0).
+#'
+#' Fractions are calculated by dividing the above counts by the number of patients with at least one
+#' valid measurement recorded during treatment.
 #'
 #' Pre-processing is crucial when using this function and can be done automatically using the
 #' [h_adlb_abnormal_by_worst_grade()] helper function. See the description of this function for details on the
 #' necessary pre-processing steps.
+#'
+#' Prior to using this function in your table layout you must use [rtables::split_rows_by()] to create two row
+#' splits, one on variable `param` and one on variable `grade_dir`.
 #'
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("abnormal_by_worst_grade")`

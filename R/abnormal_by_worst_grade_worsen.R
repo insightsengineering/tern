@@ -1,14 +1,35 @@
-#' Patient Counts for Laboratory Events (Worsen From Baseline) by Highest Grade Post-Baseline
+#' Count patients with toxicity grades that have worsened from baseline by highest grade post-baseline
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Patient count and fraction for laboratory events (worsen from baseline) shift table.
+#' The analyze function [count_abnormal_lab_worsen_by_baseline()] creates a layout element to generate a table of
+#' counts of patients with analysis toxicity grades which have worsened from baseline, categorized by highest
+#' (worst) grade post-baseline.
+#'
+#' This function analyzes primary analysis variable `var` which indicates analysis toxicity grades. Additional
+#' analysis variables that can be supplied as a list via the `variables` parameter are `id` (defaults to `USUBJID`),
+#' a variable to indicate unique subject identifiers, `baseline_var` (defaults to `BTOXGR`), a variable to indicate
+#' baseline toxicity grades, and `direction_var` (defaults to `GRADDIR`), a variable to indicate toxicity grade
+#' directions of interest to include (e.g. `"H"` (high), `"L"` (low), or `"B"` (both)).
+#'
+#' For the direction(s) specified in `direction_var`, patient counts by worst grade for patients who have
+#' worsened from baseline are calculated as follows:
+#'   * `1` to `4`: The number of patients who have worsened from their baseline grades with worst
+#'     grades 1-4, respectively.
+#'   * `Any`: The total number of patients who have worsened from their baseline grades.
+#'
+#' Fractions are calculated by dividing the above counts by the number of patients who's analysis toxicity grades
+#' have worsened from baseline toxicity grades during treatment.
+#'
+#' Prior to using this function in your table layout you must use [rtables::split_rows_by()] to create a row
+#' split on variable `direction_var`.
 #'
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("abnormal_by_worst_grade_worsen")`
 #'   to see all available statistics.
 #'
-#' @seealso Relevant helper functions [h_adlb_worsen()] and [h_worsen_counter()]
+#' @seealso Relevant helper functions [h_adlb_worsen()] and [h_worsen_counter()] which are used within
+#' [s_count_abnormal_lab_worsen_by_baseline()] to process input data.
 #'
 #' @name abnormal_by_worst_grade_worsen
 NULL

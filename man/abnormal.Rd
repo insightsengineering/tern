@@ -5,7 +5,7 @@
 \alias{s_count_abnormal}
 \alias{a_count_abnormal}
 \alias{count_abnormal}
-\title{Patient Counts with Abnormal Range Values}
+\title{Count patients with abnormal range values}
 \usage{
 s_count_abnormal(
   df,
@@ -93,14 +93,22 @@ the statistics from \code{s_count_abnormal()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Primary analysis variable \code{.var} indicates the abnormal range result (\code{character} or \code{factor})
-and additional analysis variables are \code{id} (\code{character} or \code{factor}) and \code{baseline} (\code{character} or
-\code{factor}). For each direction specified in \code{abnormal} (e.g. high or low) count patients in the
-numerator and denominator as follows:
+The analyze function \code{\link[=count_abnormal]{count_abnormal()}} creates a layout element to generate a table of counts
+of patients with abnormal analysis range values in each direction.
+
+This function analyzes primary analysis variable \code{var} which indicates abnormal range results.
+Additional analysis variables that can be supplied as a list via the \code{variables} parameter are
+\code{id} (defaults to \code{USUBJID}), a variable to indicate unique subject identifiers, and \code{baseline}
+(defaults to \code{BNRIND}), a variable to indicate baseline reference ranges.
+
+For each direction specified via the \code{abnormal} parameter (e.g. High or Low), a fraction of
+patient counts is returned, with numerator and denominator calculated as follows:
 \itemize{
-\item \code{num} : The number of patients with this abnormality recorded while on treatment.
-\item \code{denom}: The number of patients with at least one post-baseline assessment.
+\item \code{num}: The number of patients with this abnormality recorded while on treatment.
+\item \code{denom}: The total number of patients with at least one post-baseline assessment.
 }
+
+This function assumes that \code{df} has been filtered to only include post-baseline records.
 }
 \section{Functions}{
 \itemize{
@@ -115,11 +123,12 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 }}
 \note{
 \itemize{
-\item \code{count_abnormal()} only works with a single variable containing multiple abnormal levels.
-\item \code{df} should be filtered to include only post-baseline records.
-\item the denominator includes patients that might have other abnormal levels at baseline,
-and patients with missing baseline. Patients with these abnormalities at
-baseline can be optionally excluded from numerator and denominator.
+\item \code{count_abnormal()} only considers a single variable that contains multiple abnormal levels.
+\item \code{df} should be filtered to only include post-baseline records.
+\item The denominator includes patients that may have other abnormal levels at baseline,
+and patients missing baseline records. Patients with these abnormalities at
+baseline can be optionally excluded from numerator and denominator via the
+\code{exclude_base_abn} parameter.
 }
 }
 \examples{
