@@ -1,4 +1,4 @@
-# tern 0.9.2.9014
+# tern 0.9.2.9015
 
 ### New Features
 * Added `ref_group_position` function to place the reference group facet last, first or at a certain position.
@@ -11,6 +11,7 @@
 * Added list containing default statistics for each method group, `tern_default_stats`.
 * Added summarize function version of `count_occurrences` analyze function, `summarize_occurrences`.
 * Added referential footnotes to `surv_time` for censored range observations, controlled via the `ref_fn_censor` parameter.
+* Added helper function `h_adlb_abnormal_by_worst_grade` to prepare `ADLB` data to use as input in `count_abnormal_by_worst_grade`.
 
 ### Enhancements
 * Added `ref_group_coxph` parameter to `g_km` to specify the reference group used for pairwise Cox-PH calculations when `annot_coxph = TRUE`.

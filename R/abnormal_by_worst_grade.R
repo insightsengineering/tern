@@ -11,18 +11,16 @@
 #'   * `1` to `4`: Numerator is number of patients with worst grades 1-4 respectively;
 #'   * `Any`: Numerator is number of patients with at least one abnormality, which means grade is different from 0.
 #'
+#' Pre-processing is crucial when using this function and can be done automatically using the
+#' [h_adlb_abnormal_by_worst_grade()] helper function. See the description of this function for details on the
+#' necessary pre-processing steps.
+#'
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("abnormal_by_worst_grade")`
 #'   to see available statistics for this function.
 #'
-#' @details The pre-processing steps are crucial when using this function. From the standard lab grade variable
-#'   `ATOXGR`, derive the following two variables:
-#'   * A grade direction variable (e.g. `GRADE_DIR`) is required in order to obtain
-#'     the correct denominators when building the layout as it is used to define row splitting.
-#'   * A toxicity grade variable (e.g. `GRADE_ANL`) where all negative values from
-#'     `ATOXGR` are replaced by their absolute values.
-#'
-#' @note Prior to tabulation, `df` must be filtered to include only post-baseline records with worst grade flags.
+#' @seealso [h_adlb_abnormal_by_worst_grade()] which pre-processes `ADLB` data frames to be used in
+#'   [count_abnormal_by_worst_grade()].
 #'
 #' @name abnormal_by_worst_grade
 NULL
@@ -49,37 +47,7 @@ NULL
 #' adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
 #'
 #' # Here starts the real pre-processing.
-#' adlb_f <- adlb %>%
-#'   filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
-#'   mutate(
-#'     GRADE_DIR = factor(
-#'       case_when(
-#'         ATOXGR %in% c("-1", "-2", "-3", "-4") ~ "LOW",
-#'         ATOXGR == "0" ~ "ZERO",
-#'         ATOXGR %in% c("1", "2", "3", "4") ~ "HIGH"
-#'       ),
-#'       levels = c("LOW", "ZERO", "HIGH")
-#'     ),
-#'     GRADE_ANL = fct_relevel(
-#'       fct_recode(ATOXGR, `1` = "-1", `2` = "-2", `3` = "-3", `4` = "-4"),
-#'       c("0", "1", "2", "3", "4")
-#'     )
-#'   ) %>%
-#'   filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
-#'   droplevels()
-#'
-#' adlb_f_alt <- adlb_f %>%
-#'   filter(PARAMCD == "ALT") %>%
-#'   droplevels()
-#' full_parent_df <- list(adlb_f_alt, "not_needed")
-#' cur_col_subset <- list(rep(TRUE, nrow(adlb_f_alt)), "not_needed")
-#'
-#' # This mimics a split structure on PARAM and GRADE_DIR for a total column
-#' spl_context <- data.frame(
-#'   split = c("PARAM", "GRADE_DIR"),
-#'   full_parent_df = I(full_parent_df),
-#'   cur_col_subset = I(cur_col_subset)
-#' )
+#' adlb_f <- h_adlb_abnormal_by_worst_grade(adlb)
 #'
 #' @keywords internal
 s_count_abnormal_by_worst_grade <- function(df, # nolint
@@ -190,4 +158,69 @@ count_abnormal_by_worst_grade <- function(lyt,
     extra_args = list(...),
     show_labels = "hidden"
   )
+}
+
+#' Helper function to prepare `ADLB` for [count_abnormal_by_worst_grade()]
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Helper function to prepare an `ADLB` data frame to be used as input in
+#' [count_abnormal_by_worst_grade()]. The following pre-processing steps are applied:
+#'
+#' 1. `adlb` is filtered on variable `avisit` to only include post-baseline visits.
+#' 2. `adlb` is filtered on variables `worst_flag_low` and `worst_flag_high` so that only
+#'    worst grades (in either direction) are included.
+#' 3. From the standard lab grade variable `atoxgr`, the following two variables are derived
+#'    and added to `adlb`:
+#'   * A grade direction variable (e.g. `GRADE_DIR`). The variable takes value `"HIGH"` when
+#'     `atoxgr > 0`, `"LOW"` when `atoxgr < 0`, and `"ZERO"` otherwise.
+#'   * A toxicity grade variable (e.g. `GRADE_ANL`) where all negative values from `atoxgr` are
+#'     replaced by their absolute values.
+#' 4. Unused factor levels are dropped from `adlb` via [droplevels()].
+#'
+#' @param adlb (`data.frame`)\cr `ADLB` dataframe.
+#' @param atoxgr (`character`)\cr Analysis toxicity grade variable. This must be a `factor`
+#'   variable.
+#' @param avisit (`character`)\cr Analysis visit variable.
+#' @param worst_flag_low (`character`)\cr Worst low lab grade flag variable. This variable is
+#'   set to `"Y"` when indicating records of worst low lab grades.
+#' @param worst_flag_high (`character`)\cr Worst high lab grade flag variable. This variable is
+#'   set to `"Y"` when indicating records of worst high lab grades.
+#'
+#' @return `h_adlb_abnormal_by_worst_grade()` returns the `adlb` data frame with two new
+#'   variables: `GRADE_DIR` and `GRADE_ANL`.
+#'
+#' @seealso [abnormal_by_worst_grade]
+#'
+#' @examples
+#' h_adlb_abnormal_by_worst_grade(tern_ex_adlb) %>%
+#'   dplyr::select(ATOXGR, GRADE_DIR, GRADE_ANL) %>%
+#'   head(10)
+#'
+#' @export
+h_adlb_abnormal_by_worst_grade <- function(adlb,
+                                           atoxgr = "ATOXGR",
+                                           avisit = "AVISIT",
+                                           worst_flag_low = "WGRLOFL",
+                                           worst_flag_high = "WGRHIFL") {
+  adlb %>%
+    dplyr::filter(
+      !.data[[avisit]] %in% c("SCREENING", "BASELINE"),
+      .data[[worst_flag_low]] == "Y" | .data[[worst_flag_high]] == "Y"
+    ) %>%
+    dplyr::mutate(
+      GRADE_DIR = factor(
+        dplyr::case_when(
+          .data[[atoxgr]] %in% c("-1", "-2", "-3", "-4") ~ "LOW",
+          .data[[atoxgr]] == "0" ~ "ZERO",
+          .data[[atoxgr]] %in% c("1", "2", "3", "4") ~ "HIGH"
+        ),
+        levels = c("LOW", "ZERO", "HIGH")
+      ),
+      GRADE_ANL = forcats::fct_relevel(
+        forcats::fct_recode(.data[[atoxgr]], `1` = "-1", `2` = "-2", `3` = "-3", `4` = "-4"),
+        c("0", "1", "2", "3", "4")
+      )
+    ) %>%
+    droplevels()
 }

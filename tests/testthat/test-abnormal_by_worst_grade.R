@@ -12,31 +12,8 @@ adlb_local <- local({
   adlb_tmp$ANRIND[adlb_tmp$PARAMCD == "IGA" & adlb_tmp$ANRIND == "LOW"] <- "HIGH"
   adlb_tmp$WGRLOFL[adlb_tmp$PARAMCD == "IGA"] <- ""
 
-  # Here starts the real preprocessing.
-  adlb_tmp %>%
-    dplyr::filter(!AVISIT %in% c("SCREENING", "BASELINE")) %>%
-    dplyr::mutate(
-      GRADE_DIR = factor(
-        dplyr::case_when(
-          ATOXGR %in% c("-1", "-2", "-3", "-4") ~ "LOW",
-          ATOXGR == "0" ~ "ZERO",
-          ATOXGR %in% c("1", "2", "3", "4") ~ "HIGH"
-        ),
-        levels = c("LOW", "ZERO", "HIGH")
-      ),
-      GRADE_ANL = forcats::fct_relevel(
-        forcats::fct_recode(
-          ATOXGR,
-          `1` = "-1",
-          `2` = "-2",
-          `3` = "-3",
-          `4` = "-4"
-        ),
-        c("0", "1", "2", "3", "4")
-      )
-    ) %>%
-    dplyr::filter(WGRLOFL == "Y" | WGRHIFL == "Y") %>%
-    droplevels()
+  # Pre-processing
+  adlb_tmp %>% h_adlb_abnormal_by_worst_grade()
 })
 
 testthat::test_that("s_count_abnormal_by_worst_grade works as expected", {
