@@ -1,10 +1,16 @@
-#' Occurrence Counts by Grade
+#' Count occurrences by grade
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Functions for analyzing frequencies and fractions of occurrences by grade for patients
-#' with occurrence data. Multiple occurrences within one individual are counted once at the
-#' greatest intensity/highest grade level.
+#' The analyze function [count_occurrences_by_grade()] creates a layout element to generate a table of
+#' occurrence counts by grade.
+#'
+#' This function analyzes primary analysis variable `var` which indicates toxicity grades. The `id` variable
+#' is used to indicate unique subject identifiers (defaults to `USUBJID`). The user can also supply a list of
+#' custom groups of grades to analyze via the `grade_groups` parameter. The `remove_single`  argument will
+#' remove single grades from the analysis so that *only* grade groups are analyzed.
+#'
+#' If there are multiple grades recorded for one patient only the highest grade level is counted.
 #'
 #' @inheritParams argument_convention
 #' @param grade_groups (named `list` of `character`)\cr containing groupings of grades.

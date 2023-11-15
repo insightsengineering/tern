@@ -1,8 +1,15 @@
-#' Count the Number of Patients with a Particular Event
+#' Count the number of patients with a particular event
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The primary analysis variable `.var` denotes the unique patient identifier.
+#' The analyze function [count_patients_with_event()] creates a layout element to generate a table of patient
+#' counts for a user-specified set of events.
+#'
+#' This function analyzes primary analysis variable `vars` which indicates unique subject identifiers. Events
+#' are defined by the user as a named vector via the `filters` argument, where each name corresponds to a
+#' variable and each value is the value(s) that that variable takes for the event.
+#'
+#' If there are multiple records with the same event recorded for a patient, only one occurrence is counted.
 #'
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_patients_with_event")`

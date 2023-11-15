@@ -4,7 +4,7 @@
 \alias{count_patients_events_in_cols}
 \alias{s_count_patients_and_multiple_events}
 \alias{summarize_patients_events_in_cols}
-\title{Counting Patients and Events in Columns}
+\title{Count patient events in columns}
 \usage{
 s_count_patients_and_multiple_events(
   df,
@@ -81,8 +81,14 @@ containing the statistics from \code{s_count_patients_and_multiple_events()} to 
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Counting the number of unique patients and the total number of all and specific events
-when a column table layout is required.
+The summarize function \code{\link[=summarize_patients_events_in_cols]{summarize_patients_events_in_cols()}} creates a layout element to summarize patient
+event counts in columns.
+
+This function analyzes the elements (events) supplied via the \code{filters_list} parameter and returns a row
+with counts of number of patients for each event as well as the total numbers of patients and events.
+The \code{id} variable is used to indicate unique subject identifiers (defaults to \code{USUBJID}).
+
+If there are multiple occurrences of the same event recorded for a patient, the event is only counted once.
 }
 \section{Functions}{
 \itemize{

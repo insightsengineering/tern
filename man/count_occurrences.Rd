@@ -5,7 +5,7 @@
 \alias{s_count_occurrences}
 \alias{a_count_occurrences}
 \alias{summarize_occurrences}
-\title{Occurrence Counts}
+\title{Count occurrences}
 \usage{
 s_count_occurrences(
   df,
@@ -150,10 +150,14 @@ containing the statistics from \code{s_count_occurrences()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Functions for analyzing frequencies and fractions of occurrences for patients with occurrence
-data. Primary analysis variables are the dictionary terms. All occurrences are counted for total
-counts. Multiple occurrences within patient at the lowest term level displayed in the table are
-counted only once.
+The analyze function \code{\link[=count_occurrences]{count_occurrences()}} creates a layout element to generate a table of
+occurrence counts for patients.
+
+This function analyzes the variable(s) supplied to \code{vars} and returns a table of occurrence counts for
+each unique value (or level) of the variable(s). This variable (or variables) must be
+non-numeric. The \code{id} variable is used to indicate unique subject identifiers (defaults to \code{USUBJID}).
+
+If there are multiple occurrences of the same value recorded for a patient, the value is only counted once.
 }
 \section{Functions}{
 \itemize{

@@ -1,8 +1,13 @@
-#' Counting Specific Values
+#' Count specific values
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' We can count the occurrence of specific values in a variable of interest.
+#' The analyze function [count_values()] creates a layout element to generate a table of counts of a
+#' specific value within a variable of interest.
+#'
+#' This function analyzes one or more variables of interest supplied as a vector to `vars`. Values to
+#' count for variable(s) in `vars` can be given as a vector via the `values` argument. One row of
+#' counts will be generated for each variable.
 #'
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_values")`

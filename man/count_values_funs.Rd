@@ -8,7 +8,7 @@
 \alias{s_count_values.logical}
 \alias{a_count_values}
 \alias{count_values}
-\title{Counting Specific Values}
+\title{Count specific values}
 \usage{
 s_count_values(
   x,
@@ -112,7 +112,12 @@ the statistics from \code{s_count_values()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-We can count the occurrence of specific values in a variable of interest.
+The analyze function \code{\link[=count_values]{count_values()}} creates a layout element to generate a table of counts of a
+specific value within a variable of interest.
+
+This function analyzes one or more variables of interest supplied as a vector to \code{vars}. Values to
+count for variable(s) in \code{vars} can be given as a vector via the \code{values} argument. One row of
+counts will be generated for each variable.
 }
 \section{Functions}{
 \itemize{

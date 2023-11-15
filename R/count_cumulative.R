@@ -1,9 +1,15 @@
-#' Cumulative Counts with Thresholds
+#' Cumulative counts of numeric variable by thresholds
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Summarize cumulative counts of a (`numeric`) vector that is less than, less or equal to,
-#' greater than, or greater or equal to user-specific thresholds.
+#' The analyze function [count_cumulative()] creates a layout element to generate a table of cumulative
+#' counts of values in a numeric variable that are less than, less or equal to, greater than, or greater or
+#' equal to user-specified threshold values.
+#'
+#' This function analyzes numeric variable `vars` against the threshold values supplied to the `thresholds`
+#' argument as a numeric vector. Whether counts should include the threshold values, and whether to count
+#' values lower or higher than the threshold values can be set via the `include_eq` and `lower_tail`
+#' parameters, respectively.
 #'
 #' @inheritParams h_count_cumulative
 #' @inheritParams argument_convention

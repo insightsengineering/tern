@@ -1,15 +1,22 @@
-#' Counting Missed Doses
+#' Count number of patients with missed doses by thresholds
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' These are specific functions to count patients with missed doses. The difference to [count_cumulative()] is
-#' mainly the special labels.
+#' The analyze function creates a layout element to generate a table of cumulative
+#' counts of patients with number of missed doses at least equal to user-specified threshold values.
+#'
+#' This function analyzes numeric variable `vars`, a variable with numbers of missed doses,
+#' against the threshold values supplied to the `thresholds` argument as a numeric vector. This function
+#' assumes that every row of the given data frame corresponds to a unique patient.
 #'
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_missed_doses")`
 #'   to see available statistics for this function.
 #'
-#' @seealso Relevant description function [d_count_missed_doses()].
+#' @seealso
+#' * Relevant description function [d_count_missed_doses()] which generates labels for [count_missed_doses()].
+#' * Similar analyze function [count_cumulative()] which more generally counts cumulative values and has more
+#'   options for threshold handling, but uses different labels.
 #'
 #' @name count_missed_doses
 NULL

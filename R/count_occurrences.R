@@ -1,11 +1,15 @@
-#' Occurrence Counts
+#' Count occurrences
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Functions for analyzing frequencies and fractions of occurrences for patients with occurrence
-#' data. Primary analysis variables are the dictionary terms. All occurrences are counted for total
-#' counts. Multiple occurrences within patient at the lowest term level displayed in the table are
-#' counted only once.
+#' The analyze function [count_occurrences()] creates a layout element to generate a table of
+#' occurrence counts for patients.
+#'
+#' This function analyzes the variable(s) supplied to `vars` and returns a table of occurrence counts for
+#' each unique value (or level) of the variable(s). This variable (or variables) must be
+#' non-numeric. The `id` variable is used to indicate unique subject identifiers (defaults to `USUBJID`).
+#'
+#' If there are multiple occurrences of the same value recorded for a patient, the value is only counted once.
 #'
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_occurrences")`

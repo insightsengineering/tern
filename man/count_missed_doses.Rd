@@ -5,7 +5,7 @@
 \alias{s_count_nonmissing}
 \alias{s_count_missed_doses}
 \alias{a_count_missed_doses}
-\title{Counting Missed Doses}
+\title{Count number of patients with missed doses by thresholds}
 \usage{
 s_count_nonmissing(x)
 
@@ -88,8 +88,12 @@ the statistics from \code{s_count_missed_doses()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-These are specific functions to count patients with missed doses. The difference to \code{\link[=count_cumulative]{count_cumulative()}} is
-mainly the special labels.
+The analyze function creates a layout element to generate a table of cumulative
+counts of patients with number of missed doses at least equal to user-specified threshold values.
+
+This function analyzes numeric variable \code{vars}, a variable with numbers of missed doses,
+against the threshold values supplied to the \code{thresholds} argument as a numeric vector. This function
+assumes that every row of the given data frame corresponds to a unique patient.
 }
 \section{Functions}{
 \itemize{
@@ -127,6 +131,10 @@ basic_table() \%>\%
 
 }
 \seealso{
-Relevant description function \code{\link[=d_count_missed_doses]{d_count_missed_doses()}}.
+\itemize{
+\item Relevant description function \code{\link[=d_count_missed_doses]{d_count_missed_doses()}} which generates labels for \code{\link[=count_missed_doses]{count_missed_doses()}}.
+\item Similar analyze function \code{\link[=count_cumulative]{count_cumulative()}} which more generally counts cumulative values and has more
+options for threshold handling, but uses different labels.
+}
 }
 \keyword{internal}
