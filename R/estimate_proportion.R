@@ -4,9 +4,14 @@
 #'
 #' Estimate the proportion of responders within a studied population.
 #'
+#' @inheritParams prop_strat_wilson
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_proportion")`
 #'   to see available statistics for this function.
+#' @param method (`string`)\cr the method used to construct the confidence interval
+#'   for proportion of successful outcomes; one of `waldcc`, `wald`, `clopper-pearson`,
+#'   `wilson`, `wilsonc`, `strat_wilson`, `strat_wilsonc`, `agresti-coull` or `jeffreys`.
+#' @param long (`flag`)\cr a long description is required.
 #'
 #' @seealso [h_proportions]
 #'
@@ -17,17 +22,12 @@ NULL
 #' @describeIn estimate_proportions Statistics function estimating a
 #'   proportion along with its confidence interval.
 #'
-#' @inheritParams prop_strat_wilson
 #' @param df (`logical` or `data.frame`)\cr if only a logical vector is used,
 #'   it indicates whether each subject is a responder or not. `TRUE` represents
 #'   a successful outcome. If a `data.frame` is provided, also the `strata` variable
 #'   names must be provided in `variables` as a list element with the strata strings.
 #'   In the case of `data.frame`, the logical vector of responses must be indicated as a
 #'   variable name in `.var`.
-#' @param method (`string`)\cr the method used to construct the confidence interval
-#'   for proportion of successful outcomes; one of `waldcc`, `wald`, `clopper-pearson`,
-#'   `wilson`, `wilsonc`, `strat_wilson`, `strat_wilsonc`, `agresti-coull` or `jeffreys`.
-#' @param long (`flag`)\cr a long description is required.
 #'
 #' @return
 #' * `s_proportion()` returns statistics `n_prop` (`n` and proportion) and `prop_ci` (proportion CI) for a
@@ -142,8 +142,6 @@ a_proportion <- make_afun(
 
 #' @describeIn estimate_proportions Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
-#'
-#' @param ... other arguments are ultimately conveyed to [s_proportion()].
 #'
 #' @return
 #' * `estimate_proportion()` returns a layout object suitable for passing to further layouting functions,

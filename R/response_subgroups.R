@@ -4,6 +4,7 @@
 #'
 #' Tabulate statistics such as response rate and odds ratio for population subgroups.
 #'
+#' @inheritParams extract_rsp_subgroups
 #' @inheritParams argument_convention
 #'
 #' @details These functions create a layout starting from a data frame which contains

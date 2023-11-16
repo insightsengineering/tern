@@ -16,14 +16,14 @@ surv_timepoint(
   is_event,
   control = control_surv_timepoint(),
   method = c("surv", "surv_diff", "both"),
-  .stats = c("pt_at_risk", "event_free_rate", "rate_ci", "rate_diff", "rate_diff_ci",
-    "ztest_pval"),
   na_str = NA_character_,
   nested = TRUE,
   ...,
   table_names_suffix = "",
   var_labels = "Time",
   show_labels = "visible",
+  .stats = c("pt_at_risk", "event_free_rate", "rate_ci", "rate_diff", "rate_diff_ci",
+    "ztest_pval"),
   .formats = NULL,
   .labels = NULL,
   .indent_mods = if (method == "both") {
@@ -91,9 +91,6 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "no
 \item{method}{(\code{string})\cr either \code{surv} (survival estimations),
 \code{surv_diff} (difference in survival with the control) or \code{both}.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("surv_timepoint")}
-to see available statistics for this function.}
-
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
@@ -108,6 +105,9 @@ avoid warnings from duplicate table names.}
 \item{var_labels}{(\code{character})\cr character for label.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("surv_timepoint")}
+to see available statistics for this function.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}

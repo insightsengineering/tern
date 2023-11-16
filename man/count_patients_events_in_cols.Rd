@@ -45,8 +45,8 @@ that corresponding table cells will stay blank.}
 \item{...}{additional arguments for the lower level functions.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run
-\code{get_stats("summarize_patients_events_in_cols")} to see available statistics for this function, in addition to any
-added using \code{filters_list}.}
+\code{get_stats("summarize_patients_events_in_cols")} to see available statistics for this function, in addition
+to any added using \code{filters_list}.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 

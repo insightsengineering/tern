@@ -13,8 +13,15 @@
 #'   * `conf_type` (`string`)\cr confidence interval type. Options are "plain" (default), "log", "log-log",
 #'     see more in [survival::survfit()]. Note option "none" is no longer supported.
 #'   * `time_point` (`number`)\cr survival time point of interest.
+#' @param method (`string`)\cr either `surv` (survival estimations),
+#'   `surv_diff` (difference in survival with the control) or `both`.
+#' @param table_names_suffix (`string`)\cr optional suffix for the `table_names` used for the `rtables` to
+#'   avoid warnings from duplicate table names.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("surv_timepoint")`
 #'   to see available statistics for this function.
+#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
+#'   for that statistic's row label.
 #'
 #' @name survival_timepoint
 #' @order 1
@@ -162,14 +169,6 @@ a_surv_timepoint_diff <- make_afun(
 #' @describeIn survival_timepoint Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @param method (`string`)\cr either `surv` (survival estimations),
-#'   `surv_diff` (difference in survival with the control) or `both`.
-#' @param table_names_suffix (`string`)\cr optional suffix for the `table_names` used for the `rtables` to
-#'   avoid warnings from duplicate table names.
-#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
-#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
-#'   for that statistic's row label.
-#'
 #' @return
 #' * `surv_timepoint()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
@@ -233,16 +232,16 @@ surv_timepoint <- function(lyt,
                            is_event,
                            control = control_surv_timepoint(),
                            method = c("surv", "surv_diff", "both"),
-                           .stats = c(
-                             "pt_at_risk", "event_free_rate", "rate_ci",
-                             "rate_diff", "rate_diff_ci", "ztest_pval"
-                           ),
                            na_str = NA_character_,
                            nested = TRUE,
                            ...,
                            table_names_suffix = "",
                            var_labels = "Time",
                            show_labels = "visible",
+                           .stats = c(
+                             "pt_at_risk", "event_free_rate", "rate_ci",
+                             "rate_diff", "rate_diff_ci", "ztest_pval"
+                           ),
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = if (method == "both") {

@@ -58,7 +58,7 @@ to calculate the p-value.}
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
-\item{...}{other arguments are passed to \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}.}
+\item{...}{additional arguments for the lower level functions.}
 
 \item{var_labels}{(\code{character})\cr character for label.}
 

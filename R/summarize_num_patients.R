@@ -5,7 +5,6 @@
 #' Count the number of unique and non-unique patients in a column (variable).
 #'
 #' @inheritParams argument_convention
-#' @param x (`character` or `factor`)\cr vector of patient IDs.
 #' @param count_by (`character` or `factor`)\cr optional vector to be combined with `x` when counting
 #'   `nonunique` records.
 #' @param unique_count_suffix (`logical`)\cr should `"(n)"` suffix be added to `unique_count` labels.
@@ -20,6 +19,8 @@ NULL
 #' @describeIn summarize_num_patients Statistics function which counts the number of
 #'   unique patients, the corresponding percentage taken with respect to the
 #'   total number of patients, and the number of non-unique patients.
+#'
+#' @param x (`character` or `factor`)\cr vector of patient IDs.
 #'
 #' @return
 #' * `s_num_patients()` returns a named `list` of 3 statistics:

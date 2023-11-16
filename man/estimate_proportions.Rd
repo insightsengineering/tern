@@ -80,7 +80,7 @@ to find estimates of optimal weights.}
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
-\item{...}{other arguments are ultimately conveyed to \code{\link[=s_proportion]{s_proportion()}}.}
+\item{...}{additional arguments for the lower level functions.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 

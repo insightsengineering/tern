@@ -12,8 +12,13 @@
 #'   * `conf_type` (`string`)\cr confidence interval type. Options are "plain" (default), "log", or "log-log",
 #'     see more in [survival::survfit()]. Note option "none" is not supported.
 #'   * `quantiles` (`numeric`)\cr vector of length two to specify the quantiles of survival time.
+#' @param ref_fn_censor (`flag`)\cr whether referential footnotes indicating censored observations should be printed
+#'   when the `range` statistic is included.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("surv_time")`
 #'   to see available statistics for this function.
+#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
+#'   for that statistic's row label.
 #'
 #' @examples
 #' library(dplyr)
@@ -155,12 +160,6 @@ a_surv_time <- function(df,
 
 #' @describeIn survival_time Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
-#'
-#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
-#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
-#'   for that statistic's row label.
-#' @param ref_fn_censor (`flag`)\cr whether referential footnotes indicating censored observations should be printed
-#'   when the `range` statistic is included.
 #'
 #' @return
 #' * `surv_time()` returns a layout object suitable for passing to further layouting functions,

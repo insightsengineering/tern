@@ -5,9 +5,19 @@
 #' Tabulate the estimated effects of multiple continuous biomarker variables
 #' across population subgroups.
 #'
-#' @inheritParams argument_convention
 #' @inheritParams fit_coxreg_multivar
 #' @inheritParams survival_duration_subgroups
+#' @inheritParams argument_convention
+#' @param df (`data.frame`)\cr containing all analysis variables, as returned by
+#'   [extract_survival_biomarkers()].
+#' @param vars (`character`)\cr the names of statistics to be reported among:
+#'   * `n_tot_events`: Total number of events per group.
+#'   * `n_tot`: Total number of observations per group.
+#'   * `median`: Median survival time.
+#'   * `hr`: Hazard ratio.
+#'   * `ci`: Confidence interval of hazard ratio.
+#'   * `pval`: p-value of the effect.
+#'   Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci` are required.
 #'
 #' @details These functions create a layout starting from a data frame which contains
 #'   the required statistics. The tables are then typically used as input for forest plots.
@@ -142,17 +152,6 @@ extract_survival_biomarkers <- function(variables,
 
 #' @describeIn survival_biomarkers_subgroups Table-creating function which creates a table
 #'   summarizing biomarker effects on survival by subgroup.
-#'
-#' @param df (`data.frame`)\cr containing all analysis variables, as returned by
-#'   [extract_survival_biomarkers()].
-#' @param vars (`character`)\cr the names of statistics to be reported among:
-#'   * `n_tot_events`: Total number of events per group.
-#'   * `n_tot`: Total number of observations per group.
-#'   * `median`: Median survival time.
-#'   * `hr`: Hazard ratio.
-#'   * `ci`: Confidence interval of hazard ratio.
-#'   * `pval`: p-value of the effect.
-#'   Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci` are required.
 #'
 #' @return An `rtables` table summarizing biomarker effects on survival by subgroup.
 #'

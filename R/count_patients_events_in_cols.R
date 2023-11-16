@@ -6,17 +6,6 @@
 #' when a column table layout is required.
 #'
 #' @inheritParams argument_convention
-#' @param .stats (`character`)\cr statistics to select for the table. Run
-#'   `get_stats("summarize_patients_events_in_cols")` to see available statistics for this function, in addition to any
-#'   added using `filters_list`.
-#'
-#' @name count_patients_events_in_cols
-#' @order 1
-NULL
-
-#' @describeIn count_patients_events_in_cols Statistics function which counts numbers of patients and multiple
-#'   events defined by filters. Used as analysis function `afun` in `summarize_patients_events_in_cols()`.
-#'
 #' @param filters_list (named `list` of `character`)\cr each element in this list describes one
 #'   type of event describe by filters, in the same format as [s_count_patients_with_event()].
 #'   If it has a label, then this will be used for the column title.
@@ -24,6 +13,16 @@ NULL
 #'   that corresponding table cells will stay blank.
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
 #'   be used as label.
+#' @param .stats (`character`)\cr statistics to select for the table. Run
+#'   `get_stats("summarize_patients_events_in_cols")` to see available statistics for this function, in addition
+#'   to any added using `filters_list`.
+#'
+#' @name count_patients_events_in_cols
+#' @order 1
+NULL
+
+#' @describeIn count_patients_events_in_cols Statistics function which counts numbers of patients and multiple
+#'   events defined by filters. Used as analysis function `afun` in `summarize_patients_events_in_cols()`.
 #'
 #' @return
 #' * `s_count_patients_and_multiple_events()` returns a list with the statistics:

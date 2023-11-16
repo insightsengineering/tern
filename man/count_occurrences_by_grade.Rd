@@ -70,7 +70,7 @@ a_count_occurrences_by_grade(
 \item{remove_single}{(\code{logical})\cr \code{TRUE} to not include the elements of one-element grade groups
 in the the output list; in this case only the grade groups names will be included in the output.}
 
-\item{var_labels}{(\code{character})\cr labels to show in the result table.}
+\item{var_labels}{(\code{character})\cr character for label.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 

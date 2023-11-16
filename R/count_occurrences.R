@@ -8,6 +8,8 @@
 #' counted only once.
 #'
 #' @inheritParams argument_convention
+#' @param drop (`flag`)\cr should non appearing occurrence levels be dropped from the resulting table.
+#'   Note that in that case the remaining occurrence levels in the table are sorted alphabetically.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_occurrences")`
 #'   to see available statistics for this function.
 #'

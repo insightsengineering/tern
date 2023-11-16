@@ -13,6 +13,8 @@
 #' @param abnormal (named `list`)\cr list identifying the abnormal range level(s) in `var`. Defaults to
 #'   `list(Low = "LOW", High = "HIGH")` but you can also group different levels into the named list,
 #'   for example, `abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))`.
+#' @param exclude_base_abn (`flag`)\cr whether to exclude subjects with baseline abnormality
+#'   from numerator and denominator.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("abnormal")`
 #'   to see available statistics for this function.
 #'
@@ -30,9 +32,6 @@ NULL
 
 #' @describeIn abnormal Statistics function which counts patients with abnormal range values
 #'   for a single `abnormal` level.
-#'
-#' @param exclude_base_abn (`flag`)\cr whether to exclude subjects with baseline abnormality
-#'   from numerator and denominator.
 #'
 #' @return
 #' * `s_count_abnormal()` returns the statistic `fraction` which is a vector with `num` and `denom` counts of patients.

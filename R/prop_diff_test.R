@@ -5,6 +5,8 @@
 #' Various tests were implemented to test the difference between two proportions.
 #'
 #' @inheritParams argument_convention
+#' @param method (`string`)\cr one of `chisq`, `cmh`, `fisher`, or `schouten`; specifies the test used
+#'   to calculate the p-value.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("test_proportion_diff")`
 #'   to see available statistics for this function.
 #'
@@ -15,9 +17,6 @@
 NULL
 
 #' @describeIn prop_diff_test Statistics function which tests the difference between two proportions.
-#'
-#' @param method (`string`)\cr one of `chisq`, `cmh`, `fisher`, or `schouten`; specifies the test used
-#'   to calculate the p-value.
 #'
 #' @return
 #' * `s_test_proportion_diff()` returns a named `list` with a single item `pval` with an attribute `label`
@@ -108,8 +107,6 @@ a_test_proportion_diff <- make_afun(
 
 #' @describeIn prop_diff_test Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
-#'
-#' @param ... other arguments are passed to [s_test_proportion_diff()].
 #'
 #' @return
 #' * `test_proportion_diff()` returns a layout object suitable for passing to further layouting functions,

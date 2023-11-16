@@ -5,6 +5,10 @@
 #' Patient count and fraction for laboratory events (worsen from baseline) shift table.
 #'
 #' @inheritParams argument_convention
+#' @param variables (named `list` of `string`)\cr list of additional analysis variables including:
+#'   * `id` (`string`)\cr subject variable name.
+#'   * `baseline_var` (`string`)\cr name of the data column containing baseline toxicity variable.
+#'   * `direction_var` (`string`)\cr see `direction_var` for more details.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("abnormal_by_worst_grade_worsen")`
 #'   to see all available statistics.
 #'
@@ -265,11 +269,6 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 
 #' @describeIn abnormal_by_worst_grade_worsen Statistics function for patients whose worst post-baseline
 #'   lab grades are worse than their baseline grades.
-#'
-#' @param variables (named `list` of `string`)\cr list of additional analysis variables including:
-#'   * `id` (`string`)\cr subject variable name.
-#'   * `baseline_var` (`string`)\cr name of the data column containing baseline toxicity variable.
-#'   * `direction_var` (`string`)\cr see `direction_var` for more details.
 #'
 #' @return
 #' * `s_count_abnormal_lab_worsen_by_baseline()` returns the counts and fraction of patients whose worst

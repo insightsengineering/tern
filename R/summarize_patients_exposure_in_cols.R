@@ -6,6 +6,8 @@
 #' when a column table layout is required.
 #'
 #' @inheritParams argument_convention
+#' @param ex_var (`character`)\cr name of the variable within `df` containing exposure values.
+#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will be used as label.
 #' @param .stats (`character`)\cr statistics to select for the table. Run
 #' `get_stats("analyze_patients_exposure_in_cols")` to see available statistics for this function.
 #'
@@ -15,9 +17,6 @@ NULL
 
 #' @describeIn summarize_patients_exposure_in_cols Statistics function which counts numbers
 #'   of patients and the sum of exposure across all patients.
-#'
-#' @param ex_var (`character`)\cr name of the variable within `df` containing exposure values.
-#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will be used as label.
 #'
 #' @return
 #' * `s_count_patients_sum_exposure()` returns a named `list` with the statistics:

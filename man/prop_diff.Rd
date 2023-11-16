@@ -71,7 +71,7 @@ and directs the way weights are estimated.}
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
-\item{...}{arguments passed to \code{s_proportion_diff()}.}
+\item{...}{additional arguments for the lower level functions.}
 
 \item{var_labels}{(\code{character})\cr character for label.}
 

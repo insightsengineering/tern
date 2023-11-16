@@ -217,8 +217,6 @@ a_count_occurrences_by_grade <- make_afun(
 #' @describeIn count_occurrences_by_grade Layout-creating function which can take statistics function
 #'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @param var_labels (`character`)\cr labels to show in the result table.
-#'
 #' @return
 #' * `count_occurrences_by_grade()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing

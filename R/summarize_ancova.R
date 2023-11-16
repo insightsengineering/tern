@@ -5,7 +5,10 @@
 #' Summarize results of `ANCOVA`. This can be used to analyze multiple endpoints and/or
 #' multiple timepoints within the same response variable `.var`.
 #'
+#' @inheritParams h_ancova
 #' @inheritParams argument_convention
+#' @param interaction_y (`character`)\cr a selected item inside of the interaction_item column which will be used
+#'   to select the specific `ANCOVA` results. if the interaction is not needed, the default option is `FALSE`.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("summarize_ancova")`
 #'   to see available statistics for this function.
 #'
@@ -84,10 +87,6 @@ h_ancova <- function(.var,
 
 #' @describeIn summarize_ancova Statistics function that produces a named list of results
 #'   of the investigated linear model.
-#'
-#' @inheritParams h_ancova
-#' @param interaction_y (`character`)\cr a selected item inside of the interaction_item column which will be used
-#'   to select the specific `ANCOVA` results. if the interaction is not needed, the default option is `FALSE`.
 #'
 #' @return
 #' * `s_ancova()` returns a named list of 5 statistics:

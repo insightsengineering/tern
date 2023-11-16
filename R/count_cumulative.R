@@ -7,6 +7,7 @@
 #'
 #' @inheritParams h_count_cumulative
 #' @inheritParams argument_convention
+#' @param thresholds (`numeric`)\cr vector of cutoff value for the counts.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_cumulative")`
 #'   to see available statistics for this function.
 #'
@@ -93,8 +94,6 @@ d_count_cumulative <- function(threshold, lower_tail, include_eq) {
 }
 
 #' @describeIn count_cumulative Statistics function that produces a named list given a numeric vector of thresholds.
-#'
-#' @param thresholds (`numeric`)\cr vector of cutoff value for the counts.
 #'
 #' @return
 #' * `s_count_cumulative()` returns a named list of `count_fraction`s: a list with each `thresholds` value as a

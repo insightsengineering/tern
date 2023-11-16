@@ -6,6 +6,19 @@
 #'
 #' @inheritParams argument_convention
 #' @inheritParams survival_coxph_pairwise
+#' @param df (`list`)\cr of data frames containing all analysis variables. List should be
+#'   created using [extract_survival_subgroups()].
+#' @param vars (`character`)\cr the name of statistics to be reported among:
+#'   * `n_tot_events`: Total number of events per group.
+#'   * `n_events`: Number of events per group.
+#'   * `n_tot`: Total number of observations per group.
+#'   * `n`: Number of observations per group.
+#'   * `median`: Median survival time.
+#'   * `hr`: Hazard ratio.
+#'   * `ci`: Confidence interval of hazard ratio.
+#'   * `pval`: p-value of the effect.
+#'   Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci`
+#'   are required.
 #' @param time_unit (`string`)\cr label with unit of median survival time. Default `NULL` skips displaying unit.
 #'
 #' @details These functions create a layout starting from a data frame which contains
@@ -172,20 +185,6 @@ a_survival_subgroups <- function(.formats = list( # nolint start
 #' @describeIn survival_duration_subgroups Table-creating function which creates a table
 #'   summarizing survival by subgroup. This function is a wrapper for [rtables::analyze_colvars()]
 #'   and [rtables::summarize_row_groups()].
-#'
-#' @param df (`list`)\cr of data frames containing all analysis variables. List should be
-#'   created using [extract_survival_subgroups()].
-#' @param vars (`character`)\cr the name of statistics to be reported among:
-#'   * `n_tot_events`: Total number of events per group.
-#'   * `n_events`: Number of events per group.
-#'   * `n_tot`: Total number of observations per group.
-#'   * `n`: Number of observations per group.
-#'   * `median`: Median survival time.
-#'   * `hr`: Hazard ratio.
-#'   * `ci`: Confidence interval of hazard ratio.
-#'   * `pval`: p-value of the effect.
-#'   Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci`
-#'   are required.
 #'
 #' @return An `rtables` table summarizing survival by subgroup.
 #'

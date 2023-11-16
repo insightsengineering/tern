@@ -2,7 +2,9 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
+#' @inheritParams prop_diff_strat_nc
 #' @inheritParams argument_convention
+#' @param method (`string`)\cr the method used for the confidence interval estimation.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_proportion_diff")`
 #'   to see available statistics for this function.
 #'
@@ -14,9 +16,6 @@ NULL
 
 #' @describeIn prop_diff Statistics function estimating the difference
 #'   in terms of responder proportion.
-#'
-#' @inheritParams prop_diff_strat_nc
-#' @param method (`string`)\cr the method used for the confidence interval estimation.
 #'
 #' @return
 #' * `s_proportion_diff()` returns a named list of elements `diff` and `diff_ci`.
@@ -160,8 +159,6 @@ a_proportion_diff <- make_afun(
 
 #' @describeIn prop_diff Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
-#'
-#' @param ... arguments passed to `s_proportion_diff()`.
 #'
 #' @return
 #' * `estimate_proportion_diff()` returns a layout object suitable for passing to further layouting functions,

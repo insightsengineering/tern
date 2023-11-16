@@ -60,12 +60,21 @@ a_glm_count(
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
+\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables, with
+expected elements:
+\itemize{
+\item \code{arm} (\code{string})\cr group variable, for which the covariate adjusted means of multiple
+groups will be summarized. Specifically, the first level of \code{arm} variable is taken as the
+reference group.
+\item \code{covariates} (\code{character})\cr a vector that can contain single variable names (such as
+\code{"X1"}), and/or interaction terms indicated by \code{"X1 * X2"}.
+\item \code{offset} (\code{numeric})\cr a numeric vector or scalar adding an offset.
+}}
 
 \item{distribution}{(\code{character})\cr a character value specifying the distribution
 used in the regression (poisson, quasipoisson).}
 
-\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+\item{conf_level}{(\code{numeric})\cr value used to derive the confidence interval for the rate.}
 
 \item{weights}{(\code{character})\cr a character vector specifying weights used
 in averaging predictions. Number of weights must equal the number of levels included in the covariates.
@@ -102,7 +111,7 @@ unmodified default behavior. Can be negative.}
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
+\item{.df_row}{(\code{data.frame})\cr data set that includes all the variables that are called in \code{.var} and \code{variables}.}
 
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 

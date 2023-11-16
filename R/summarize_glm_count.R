@@ -5,6 +5,7 @@
 #' Summarize results of a Poisson Negative Binomial Regression.
 #' This can be used to analyze count and/or frequency data using a linear model.
 #'
+#' @inheritParams h_glm_count
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("summarize_glm_count")`
 #'   to see available statistics for this function.
@@ -215,8 +216,6 @@ h_ppmeans <- function(obj, .df_row, arm, conf_level) {
 
 #' @describeIn summarize_glm_count Statistics function that produces a named list of results
 #'   of the investigated Poisson model.
-#'
-#' @inheritParams h_glm_count
 #'
 #' @return
 #' * `s_glm_count()` returns a named `list` of 5 statistics:

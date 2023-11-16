@@ -5,7 +5,9 @@
 #' These are specific functions to count patients with missed doses. The difference to [count_cumulative()] is
 #' mainly the special labels.
 #'
+#' @inheritParams s_count_cumulative
 #' @inheritParams argument_convention
+#' @param thresholds (vector of `count`)\cr number of missed doses the patients at least had.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_missed_doses")`
 #'   to see available statistics for this function.
 #'
@@ -41,8 +43,6 @@ d_count_missed_doses <- function(thresholds) {
 }
 
 #' @describeIn count_missed_doses Statistics function to count patients with missed doses.
-#'
-#' @param thresholds (vector of `count`)\cr number of missed doses the patients at least had.
 #'
 #' @return
 #' * `s_count_missed_doses()` returns the statistics `n` and `count_fraction` with one element for each threshold.
@@ -80,8 +80,6 @@ a_count_missed_doses <- make_afun(
 
 #' @describeIn count_missed_doses Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
-#'
-#' @inheritParams s_count_cumulative
 #'
 #' @return
 #' * `count_missed_doses()` returns a layout object suitable for passing to further layouting functions,

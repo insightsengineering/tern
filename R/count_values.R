@@ -5,6 +5,7 @@
 #' We can count the occurrence of specific values in a variable of interest.
 #'
 #' @inheritParams argument_convention
+#' @param values (`character`)\cr specific values that should be counted.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_values")`
 #'   to see available statistics for this function.
 #'
@@ -21,7 +22,6 @@ NULL
 #' @describeIn count_values_funs S3 generic function to count values.
 #'
 #' @inheritParams s_summary.logical
-#' @param values (`character`)\cr specific values that should be counted.
 #'
 #' @return
 #' * `s_count_values()` returns output of [s_summary()] for specified values of a non-numeric variable.
