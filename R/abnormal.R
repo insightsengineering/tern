@@ -25,6 +25,7 @@
 #'
 #' @name abnormal
 #' @include formatting_functions.R
+#' @order 1
 NULL
 
 #' @describeIn abnormal Statistics function which counts patients with abnormal range values
@@ -35,20 +36,7 @@ NULL
 #'
 #' @return
 #' * `s_count_abnormal()` returns the statistic `fraction` which is a vector with `num` and `denom` counts of patients.
-#' @examples
-#' library(dplyr)
 #'
-#' df <- data.frame(
-#'   USUBJID = as.character(c(1, 1, 2, 2)),
-#'   ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
-#'   BNRIND = factor(c("NORMAL", "NORMAL", "HIGH", "HIGH")),
-#'   ONTRTFL = c("", "Y", "", "Y"),
-#'   stringsAsFactors = FALSE
-#' )
-#'
-#' # Select only post-baseline records.
-#' df <- df %>%
-#'   filter(ONTRTFL == "Y")
 #' @keywords internal
 s_count_abnormal <- function(df,
                              .var,
@@ -113,6 +101,20 @@ a_count_abnormal <- make_afun(
 #'   the statistics from `s_count_abnormal()` to the table layout.
 #'
 #' @examples
+#' library(dplyr)
+#'
+#' df <- data.frame(
+#'   USUBJID = as.character(c(1, 1, 2, 2)),
+#'   ANRIND = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
+#'   BNRIND = factor(c("NORMAL", "NORMAL", "HIGH", "HIGH")),
+#'   ONTRTFL = c("", "Y", "", "Y"),
+#'   stringsAsFactors = FALSE
+#' )
+#'
+#' # Select only post-baseline records.
+#' df <- df %>%
+#'   filter(ONTRTFL == "Y")
+#'
 #' # Layout creating function.
 #' basic_table() %>%
 #'   count_abnormal(var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW")) %>%
@@ -140,6 +142,7 @@ a_count_abnormal <- make_afun(
 #'   build_table(df2)
 #'
 #' @export
+#' @order 2
 count_abnormal <- function(lyt,
                            var,
                            na_str = NA_character_,

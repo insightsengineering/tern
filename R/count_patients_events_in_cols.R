@@ -11,6 +11,7 @@
 #'   added using `filters_list`.
 #'
 #' @name count_patients_events_in_cols
+#' @order 1
 NULL
 
 #' @describeIn count_patients_events_in_cols Statistics function which counts numbers of patients and multiple
@@ -30,18 +31,6 @@ NULL
 #'   - `all`: number of rows in `df`.
 #'   - one element with the same name as in `filters_list`: number of rows in `df`,
 #'     i.e. events, fulfilling the filter condition.
-#'
-#' @examples
-#' # `s_count_patients_and_multiple_events()`
-#' df <- data.frame(
-#'   USUBJID = rep(c("id1", "id2", "id3", "id4"), c(2, 3, 1, 1)),
-#'   ARM = c("A", "A", "B", "B", "B", "B", "A"),
-#'   AESER = rep("Y", 7),
-#'   AESDTH = c("Y", "Y", "N", "Y", "Y", "N", "N"),
-#'   AEREL = c("Y", "Y", "N", "Y", "Y", "N", "Y"),
-#'   AEDECOD = c("A", "A", "A", "B", "B", "C", "D"),
-#'   AEBODSYS = rep(c("SOC1", "SOC2", "SOC3"), c(3, 3, 1))
-#' )
 #'
 #' @keywords internal
 s_count_patients_and_multiple_events <- function(df, # nolint
@@ -108,7 +97,18 @@ s_count_patients_and_multiple_events <- function(df, # nolint
 #' * `summarize_patients_events_in_cols()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted content rows
 #'   containing the statistics from `s_count_patients_and_multiple_events()` to the table layout.
+#'
 #' @examples
+#' df <- data.frame(
+#'   USUBJID = rep(c("id1", "id2", "id3", "id4"), c(2, 3, 1, 1)),
+#'   ARM = c("A", "A", "B", "B", "B", "B", "A"),
+#'   AESER = rep("Y", 7),
+#'   AESDTH = c("Y", "Y", "N", "Y", "Y", "N", "N"),
+#'   AEREL = c("Y", "Y", "N", "Y", "Y", "N", "Y"),
+#'   AEDECOD = c("A", "A", "A", "B", "B", "C", "D"),
+#'   AEBODSYS = rep(c("SOC1", "SOC2", "SOC3"), c(3, 3, 1))
+#' )
+#'
 #' # `summarize_patients_events_in_cols()`
 #' basic_table() %>%
 #'   summarize_patients_events_in_cols(
@@ -122,6 +122,7 @@ s_count_patients_and_multiple_events <- function(df, # nolint
 #'   build_table(df)
 #'
 #' @export
+#' @order 2
 summarize_patients_events_in_cols <- function(lyt, # nolint
                                               id = "USUBJID",
                                               filters_list = list(),

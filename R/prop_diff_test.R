@@ -11,6 +11,7 @@
 #' @seealso [h_prop_diff_test]
 #'
 #' @name prop_diff_test
+#' @order 1
 NULL
 
 #' @describeIn prop_diff_test Statistics function which tests the difference between two proportions.
@@ -21,7 +22,6 @@ NULL
 #' @return
 #' * `s_test_proportion_diff()` returns a named `list` with a single item `pval` with an attribute `label`
 #'   describing the method used. The p-value tests the null hypothesis that proportions in two groups are the same.
-#'
 #'
 #' @keywords internal
 s_test_proportion_diff <- function(df,
@@ -99,7 +99,6 @@ d_test_proportion_diff <- function(method) {
 #' @return
 #' * `a_test_proportion_diff()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#'
 #' @keywords internal
 a_test_proportion_diff <- make_afun(
   s_test_proportion_diff,
@@ -135,6 +134,7 @@ a_test_proportion_diff <- make_afun(
 #' build_table(l, df = dta)
 #'
 #' @export
+#' @order 2
 test_proportion_diff <- function(lyt,
                                  vars,
                                  na_str = NA_character_,
@@ -182,7 +182,6 @@ NULL
 
 #' @describeIn h_prop_diff_test performs Chi-Squared test. Internally calls [stats::prop.test()].
 #'
-#'
 #' @keywords internal
 prop_chisq <- function(tbl) {
   checkmate::assert_integer(c(ncol(tbl), nrow(tbl)), lower = 2, upper = 2)
@@ -198,7 +197,6 @@ prop_chisq <- function(tbl) {
 #'
 #' @param ary (`array`, 3 dimensions)\cr array with two groups in rows, the binary response
 #'   (`TRUE`/`FALSE`) in columns, and the strata in the third dimension.
-#'
 #'
 #' @keywords internal
 prop_cmh <- function(ary) {
@@ -217,7 +215,6 @@ prop_cmh <- function(ary) {
 #' @describeIn h_prop_diff_test performs the Chi-Squared test with Schouten correction.
 #'
 #' @seealso Schouten correction is based upon \insertCite{Schouten1980-kd;textual}{tern}.
-#'
 #'
 #' @keywords internal
 prop_schouten <- function(tbl) {
@@ -244,7 +241,6 @@ prop_schouten <- function(tbl) {
 }
 
 #' @describeIn h_prop_diff_test performs the Fisher's exact test. Internally calls [stats::fisher.test()].
-#'
 #'
 #' @keywords internal
 prop_fisher <- function(tbl) {

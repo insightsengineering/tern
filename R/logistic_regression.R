@@ -76,6 +76,7 @@
 #' result2
 #'
 #' @export
+#' @order 1
 summarize_logistic <- function(lyt,
                                conf_level,
                                drop_and_remove_str = "",

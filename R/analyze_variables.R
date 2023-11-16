@@ -61,6 +61,7 @@ control_summarize_vars <- control_analyze_vars
 #'   for non-numeric variables.
 #'
 #' @name analyze_variables
+#' @order 1
 NULL
 
 #' @describeIn analyze_variables S3 generic function to produces a variable summary.
@@ -349,7 +350,6 @@ s_summary.factor <- function(x,
 #' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE, verbose = FALSE)
 #'
 #' @export
-
 s_summary.character <- function(x,
                                 na.rm = TRUE, # nolint
                                 denom = c("n", "N_row", "N_col"),
@@ -666,7 +666,7 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'   build_table(dt)
 #'
 #' @export analyze_vars summarize_vars
-#' @order 1
+#' @order 2
 analyze_vars <- function(lyt,
                          vars,
                          var_labels = vars,

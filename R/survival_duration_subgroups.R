@@ -53,7 +53,25 @@
 #' )
 #' df
 #'
+#' df_grouped <- extract_survival_subgroups(
+#'   variables = list(
+#'     tte = "AVAL",
+#'     is_event = "is_event",
+#'     arm = "ARM", subgroups = c("SEX", "BMRKR2")
+#'   ),
+#'   data = adtte_f,
+#'   groups_lists = list(
+#'     BMRKR2 = list(
+#'       "low" = "LOW",
+#'       "low/medium" = c("LOW", "MEDIUM"),
+#'       "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+#'     )
+#'   )
+#' )
+#' df_grouped
+#'
 #' @name survival_duration_subgroups
+#' @order 1
 NULL
 
 #' Prepares Survival Data for Population Subgroups in Data Frames
@@ -77,61 +95,6 @@ NULL
 #'     `pval`, `pval_label`, `subgroup`, `var`, `var_label`, and `row_type`.
 #'
 #' @seealso [survival_duration_subgroups]
-#'
-#' @examples
-#' library(dplyr)
-#' library(forcats)
-#'
-#' adtte <- tern_ex_adtte
-#' adtte_labels <- formatters::var_labels(adtte)
-#'
-#' adtte_f <- adtte %>%
-#'   filter(
-#'     PARAMCD == "OS",
-#'     ARM %in% c("B: Placebo", "A: Drug X"),
-#'     SEX %in% c("M", "F")
-#'   ) %>%
-#'   mutate(
-#'     # Reorder levels of ARM to display reference arm before treatment arm.
-#'     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
-#'     SEX = droplevels(SEX),
-#'     AVALU = as.character(AVALU),
-#'     is_event = CNSR == 0
-#'   )
-#' labels <- c(
-#'   "ARM" = adtte_labels[["ARM"]],
-#'   "SEX" = adtte_labels[["SEX"]],
-#'   "AVALU" = adtte_labels[["AVALU"]],
-#'   "is_event" = "Event Flag"
-#' )
-#' formatters::var_labels(adtte_f)[names(labels)] <- labels
-#'
-#' df <- extract_survival_subgroups(
-#'   variables = list(
-#'     tte = "AVAL",
-#'     is_event = "is_event",
-#'     arm = "ARM", subgroups = c("SEX", "BMRKR2")
-#'   ),
-#'   data = adtte_f
-#' )
-#' df
-#'
-#' df_grouped <- extract_survival_subgroups(
-#'   variables = list(
-#'     tte = "AVAL",
-#'     is_event = "is_event",
-#'     arm = "ARM", subgroups = c("SEX", "BMRKR2")
-#'   ),
-#'   data = adtte_f,
-#'   groups_lists = list(
-#'     BMRKR2 = list(
-#'       "low" = "LOW",
-#'       "low/medium" = c("LOW", "MEDIUM"),
-#'       "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
-#'     )
-#'   )
-#' )
-#' df_grouped
 #'
 #' @export
 extract_survival_subgroups <- function(variables,
@@ -240,6 +203,7 @@ a_survival_subgroups <- function(.formats = list( # nolint start
 #'   )
 #'
 #' @export
+#' @order 2
 tabulate_survival_subgroups <- function(lyt,
                                         df,
                                         vars = c("n_tot_events", "n_events", "median", "hr", "ci"),

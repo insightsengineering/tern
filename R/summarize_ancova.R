@@ -10,6 +10,7 @@
 #'   to see available statistics for this function.
 #'
 #' @name summarize_ancova
+#' @order 1
 NULL
 
 #' Helper Function to Return Results of a Linear Model
@@ -97,16 +98,6 @@ h_ancova <- function(.var,
 #'   * `lsmean_diff_ci`: Confidence level for difference in estimated marginal means in comparison
 #'     to the reference group.
 #'   * `pval`: p-value (not adjusted for multiple comparisons).
-#'
-#' @examples
-#' library(dplyr)
-#'
-#' df <- iris %>% filter(Species == "virginica")
-#' .df_row <- iris
-#' .var <- "Petal.Length"
-#' variables <- list(arm = "Species", covariates = "Sepal.Length * Sepal.Width")
-#' .ref_group <- iris %>% filter(Species == "setosa")
-#' conf_level <- 0.95
 #'
 #' @keywords internal
 s_ancova <- function(df,
@@ -200,7 +191,6 @@ s_ancova <- function(df,
 #' @return
 #' * `a_ancova()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#'
 #' @keywords internal
 a_ancova <- make_afun(
   s_ancova,
@@ -243,6 +233,7 @@ a_ancova <- make_afun(
 #'   build_table(iris)
 #'
 #' @export
+#' @order 2
 summarize_ancova <- function(lyt,
                              vars,
                              var_labels,

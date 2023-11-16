@@ -2,11 +2,28 @@
 % Please edit documentation in R/summarize_coxreg.R
 \name{cox_regression}
 \alias{cox_regression}
+\alias{summarize_coxreg}
 \alias{s_coxreg}
 \alias{a_coxreg}
-\alias{summarize_coxreg}
 \title{Cox Proportional Hazards Regression}
 \usage{
+summarize_coxreg(
+  lyt,
+  variables,
+  control = control_coxreg(),
+  at = list(),
+  multivar = FALSE,
+  common_var = "STUDYID",
+  .stats = c("n", "hr", "ci", "pval", "pval_inter"),
+  .formats = c(n = "xx", hr = "xx.xx", ci = "(xx.xx, xx.xx)", pval =
+    "x.xxxx | (<0.0001)", pval_inter = "x.xxxx | (<0.0001)"),
+  varlabels = NULL,
+  .indent_mods = NULL,
+  na_level = lifecycle::deprecated(),
+  na_str = "",
+  .section_div = NA_character_
+)
+
 s_coxreg(model_df, .stats, .which_vars = "all", .var_nms = NULL)
 
 a_coxreg(
@@ -26,27 +43,22 @@ a_coxreg(
   na_str = "",
   cache_env = NULL
 )
-
-summarize_coxreg(
-  lyt,
-  variables,
-  control = control_coxreg(),
-  at = list(),
-  multivar = FALSE,
-  common_var = "STUDYID",
-  .stats = c("n", "hr", "ci", "pval", "pval_inter"),
-  .formats = c(n = "xx", hr = "xx.xx", ci = "(xx.xx, xx.xx)", pval =
-    "x.xxxx | (<0.0001)", pval_inter = "x.xxxx | (<0.0001)"),
-  varlabels = NULL,
-  .indent_mods = NULL,
-  na_level = lifecycle::deprecated(),
-  na_str = "",
-  .section_div = NA_character_
-)
 }
 \arguments{
-\item{model_df}{(\code{data.frame})\cr contains the resulting model fit from a \link{fit_coxreg}
-function with tidying applied via \code{\link[broom:reexports]{broom::tidy()}}.}
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
+
+\item{control}{(\code{list})\cr a list of parameters as returned by the helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
+
+\item{at}{(\code{list} of \code{numeric})\cr when the candidate covariate is a \code{numeric}, use \code{at} to specify
+the value of the covariate at which the effect should be estimated.}
+
+\item{multivar}{(\code{flag})\cr Defaults to \code{FALSE}. If \code{TRUE} multivariate Cox regression will run, otherwise
+univariate Cox regression will run.}
+
+\item{common_var}{(\code{character})\cr the name of a factor variable in the dataset which takes the same value
+for all rows. This should be created during pre-processing if no such variable currently exists.}
 
 \item{.stats}{(\code{character})\cr the name of statistics to be reported among:
 \itemize{
@@ -56,6 +68,28 @@ function with tidying applied via \code{\link[broom:reexports]{broom::tidy()}}.}
 \item \code{pval}: p-value of the treatment effect
 \item \code{pval_inter}: p-value of the interaction effect between the treatment and the covariate (univariate only)
 }}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
+
+\item{varlabels}{(\code{list})\cr a named list corresponds to the names of variables found in data, passed
+as a named list and corresponding to time, event, arm, strata, and covariates terms. If arm is missing
+from variables, then only Cox model(s) including the covariates will be fitted and the corresponding
+effect estimates will be tabulated later.}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
+
+\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
+
+\item{na_str}{(\code{string})\cr custom string to replace all \code{NA} values with. Defaults to \code{""}.}
+
+\item{.section_div}{(\code{character})\cr string which should be repeated as a section divider between sections.
+Defaults to \code{NA} for no section divider. If a vector of two strings are given, the first will be used between
+treatment and covariate sections and the second between different covariates.}
+
+\item{model_df}{(\code{data.frame})\cr contains the resulting model fit from a \link{fit_coxreg}
+function with tidying applied via \code{\link[broom:reexports]{broom::tidy()}}.}
 
 \item{.which_vars}{(\code{character})\cr which rows should statistics be returned for from the given model.
 Defaults to "all". Other options include "var_main" for main effects, \code{"inter"} for interaction effects,
@@ -77,59 +111,25 @@ for more information.}
 
 \item{var_main}{(\code{flag})\cr whether main effects should be calculated. Defaults to \code{FALSE}.}
 
-\item{multivar}{(\code{flag})\cr Defaults to \code{FALSE}. If \code{TRUE} multivariate Cox regression will run, otherwise
-univariate Cox regression will run.}
-
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
-
-\item{at}{(\code{list} of \code{numeric})\cr when the candidate covariate is a \code{numeric}, use \code{at} to specify
-the value of the covariate at which the effect should be estimated.}
-
-\item{control}{(\code{list})\cr a list of parameters as returned by the helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
-
 \item{.spl_context}{(\code{data.frame})\cr gives information about ancestor split states
 that is passed by \code{rtables}.}
 
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
-information on the \code{"auto"} setting.}
-
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
-unmodified default behavior. Can be negative.}
-
-\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
-
-\item{na_str}{(\code{string})\cr custom string to replace all \code{NA} values with. Defaults to \code{""}.}
-
 \item{cache_env}{(\code{environment})\cr an environment object used to cache the regression model in order to
 avoid repeatedly fitting the same model for every row in the table. Defaults to \code{NULL} (no caching).}
-
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
-
-\item{common_var}{(\code{character})\cr the name of a factor variable in the dataset which takes the same value
-for all rows. This should be created during pre-processing if no such variable currently exists.}
-
-\item{varlabels}{(\code{list})\cr a named list corresponds to the names of variables found in data, passed
-as a named list and corresponding to time, event, arm, strata, and covariates terms. If arm is missing
-from variables, then only Cox model(s) including the covariates will be fitted and the corresponding
-effect estimates will be tabulated later.}
-
-\item{.section_div}{(\code{character})\cr string which should be repeated as a section divider between sections.
-Defaults to \code{NA} for no section divider. If a vector of two strings are given, the first will be used between
-treatment and covariate sections and the second between different covariates.}
 }
 \value{
+\itemize{
+\item \code{summarize_coxreg()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add a Cox regression table
+containing the chosen statistics to the table layout.
+}
+
 \itemize{
 \item \code{s_coxreg()} returns the selected statistic for from the Cox regression model for the selected variable(s).
 }
 
 \itemize{
 \item \code{a_coxreg()} returns formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
-}
-
-\itemize{
-\item \code{summarize_coxreg()} returns a layout object suitable for passing to further layouting functions,
-or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add a Cox regression table
-containing the chosen statistics to the table layout.
 }
 }
 \description{
@@ -147,15 +147,15 @@ analysis (NEST Team, 2020).
 }
 \section{Functions}{
 \itemize{
+\item \code{summarize_coxreg()}: Layout-creating function which creates a Cox regression summary table
+layout. This function is a wrapper for several \code{rtables} layouting functions. This function
+is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}} and \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
+
 \item \code{s_coxreg()}: Statistics function that transforms results tabulated
 from \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} or \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} into a list.
 
 \item \code{a_coxreg()}: Analysis function which is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}
 and \code{cfun} in \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}} within \code{summarize_coxreg()}.
-
-\item \code{summarize_coxreg()}: Layout-creating function which creates a Cox regression summary table
-layout. This function is a wrapper for several \code{rtables} layouting functions. This function
-is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}} and \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 
 }}
 \examples{
@@ -179,21 +179,55 @@ dta_bladder <- with(
 dta_bladder$AGE <- sample(20:60, size = nrow(dta_bladder), replace = TRUE)
 dta_bladder$STUDYID <- factor("X")
 
-plot(
-  survfit(Surv(TIME, STATUS) ~ ARM + COVAR1, data = dta_bladder),
-  lty = 2:4,
-  xlab = "Months",
-  col = c("blue1", "blue2", "blue3", "blue4", "red1", "red2", "red3", "red4")
+u1_variables <- list(
+  time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2")
 )
+
+u2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
+
+m1_variables <- list(
+  time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2")
+)
+
+m2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
+
+# summarize_coxreg
+
+result_univar <- basic_table() \%>\%
+  summarize_coxreg(variables = u1_variables) \%>\%
+  build_table(dta_bladder)
+result_univar
+
+result_univar_covs <- basic_table() \%>\%
+  summarize_coxreg(
+    variables = u2_variables,
+  ) \%>\%
+  build_table(dta_bladder)
+result_univar_covs
+
+result_multivar <- basic_table() \%>\%
+  summarize_coxreg(
+    variables = m1_variables,
+    multivar = TRUE,
+  ) \%>\%
+  build_table(dta_bladder)
+result_multivar
+
+result_multivar_covs <- basic_table() \%>\%
+  summarize_coxreg(
+    variables = m2_variables,
+    multivar = TRUE,
+    varlabels = c("Covariate 1", "Covariate 2") # custom labels
+  ) \%>\%
+  build_table(dta_bladder)
+result_multivar_covs
 
 # s_coxreg
 
 # Univariate
-u1_variables <- list(
-  time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2")
-)
 univar_model <- fit_coxreg_univar(variables = u1_variables, data = dta_bladder)
 df1 <- broom::tidy(univar_model)
+
 s_coxreg(model_df = df1, .stats = "hr")
 
 # Univariate with interactions
@@ -201,20 +235,19 @@ univar_model_inter <- fit_coxreg_univar(
   variables = u1_variables, control = control_coxreg(interaction = TRUE), data = dta_bladder
 )
 df1_inter <- broom::tidy(univar_model_inter)
+
 s_coxreg(model_df = df1_inter, .stats = "hr", .which_vars = "inter", .var_nms = "COVAR1")
 
 # Univariate without treatment arm - only "COVAR2" covariate effects
-u2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 univar_covs_model <- fit_coxreg_univar(variables = u2_variables, data = dta_bladder)
 df1_covs <- broom::tidy(univar_covs_model)
+
 s_coxreg(model_df = df1_covs, .stats = "hr", .var_nms = c("COVAR2", "Sex (F/M)"))
 
 # Multivariate.
-m1_variables <- list(
-  time = "TIME", event = "STATUS", arm = "ARM", covariates = c("COVAR1", "COVAR2")
-)
 multivar_model <- fit_coxreg_multivar(variables = m1_variables, data = dta_bladder)
 df2 <- broom::tidy(multivar_model)
+
 s_coxreg(model_df = df2, .stats = "pval", .which_vars = "var_main", .var_nms = "COVAR1")
 s_coxreg(
   model_df = df2, .stats = "pval", .which_vars = "multi_lvl",
@@ -222,9 +255,9 @@ s_coxreg(
 )
 
 # Multivariate without treatment arm - only "COVAR1" main effect
-m2_variables <- list(time = "TIME", event = "STATUS", covariates = c("COVAR1", "COVAR2"))
 multivar_covs_model <- fit_coxreg_multivar(variables = m2_variables, data = dta_bladder)
 df2_covs <- broom::tidy(multivar_covs_model)
+
 s_coxreg(model_df = df2_covs, .stats = "hr")
 
 a_coxreg(
@@ -244,37 +277,6 @@ a_coxreg(
   .stats = "pval",
   .formats = "xx.xxxx"
 )
-
-# summarize_coxreg
-
-result_univar <- basic_table() \%>\%
-  summarize_coxreg(variables = u1_variables) \%>\%
-  build_table(dta_bladder)
-result_univar
-
-result_multivar <- basic_table() \%>\%
-  summarize_coxreg(
-    variables = m1_variables,
-    multivar = TRUE,
-  ) \%>\%
-  build_table(dta_bladder)
-result_multivar
-
-result_univar_covs <- basic_table() \%>\%
-  summarize_coxreg(
-    variables = u2_variables,
-  ) \%>\%
-  build_table(dta_bladder)
-result_univar_covs
-
-result_multivar_covs <- basic_table() \%>\%
-  summarize_coxreg(
-    variables = m2_variables,
-    multivar = TRUE,
-    varlabels = c("Covariate 1", "Covariate 2") # custom labels
-  ) \%>\%
-  build_table(dta_bladder)
-result_multivar_covs
 
 }
 \seealso{

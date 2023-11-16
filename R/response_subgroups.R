@@ -36,7 +36,29 @@
 #' )
 #' df
 #'
+#' # Stratified analysis.
+#' df_strat <- extract_rsp_subgroups(
+#'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2"), strat = "STRATA1"),
+#'   data = adrs_f
+#' )
+#' df_strat
+#'
+#' # Grouping of the BMRKR2 levels.
+#' df_grouped <- extract_rsp_subgroups(
+#'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
+#'   data = adrs_f,
+#'   groups_lists = list(
+#'     BMRKR2 = list(
+#'       "low" = "LOW",
+#'       "low/medium" = c("LOW", "MEDIUM"),
+#'       "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+#'     )
+#'   )
+#' )
+#' df_grouped
+#'
 #' @name response_subgroups
+#' @order 1
 NULL
 
 #' Prepares Response Data for Population Subgroups in Data Frames
@@ -60,52 +82,6 @@ NULL
 #'     `subgroup`, `var`, `var_label`, and `row_type`.
 #'
 #' @seealso [response_subgroups]
-#'
-#' @examples
-#' library(dplyr)
-#' library(forcats)
-#'
-#' adrs <- tern_ex_adrs
-#' adrs_labels <- formatters::var_labels(adrs)
-#'
-#' adrs_f <- adrs %>%
-#'   filter(PARAMCD == "BESRSPI") %>%
-#'   filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
-#'   droplevels() %>%
-#'   mutate(
-#'     # Reorder levels of factor to make the placebo group the reference arm.
-#'     ARM = fct_relevel(ARM, "B: Placebo"),
-#'     rsp = AVALC == "CR"
-#'   )
-#' formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
-#'
-#' # Unstratified analysis.
-#' df <- extract_rsp_subgroups(
-#'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
-#'   data = adrs_f
-#' )
-#' df
-#'
-#' # Stratified analysis.
-#' df_strat <- extract_rsp_subgroups(
-#'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2"), strat = "STRATA1"),
-#'   data = adrs_f
-#' )
-#' df_strat
-#'
-#' # Grouping of the BMRKR2 levels.
-#' df_grouped <- extract_rsp_subgroups(
-#'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
-#'   data = adrs_f,
-#'   groups_lists = list(
-#'     BMRKR2 = list(
-#'       "low" = "LOW",
-#'       "low/medium" = c("LOW", "MEDIUM"),
-#'       "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
-#'     )
-#'   )
-#' )
-#' df_grouped
 #'
 #' @export
 extract_rsp_subgroups <- function(variables,
@@ -203,6 +179,7 @@ a_response_subgroups <- function(.formats = list(
 #'   )
 #'
 #' @export
+#' @order 2
 tabulate_rsp_subgroups <- function(lyt,
                                    df,
                                    vars = c("n_tot", "n", "prop", "or", "ci")) {

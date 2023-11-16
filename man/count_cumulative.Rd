@@ -6,6 +6,21 @@
 \alias{a_count_cumulative}
 \title{Cumulative Counts with Thresholds}
 \usage{
+count_cumulative(
+  lyt,
+  vars,
+  var_labels = vars,
+  show_labels = "visible",
+  na_str = NA_character_,
+  nested = TRUE,
+  ...,
+  table_names = vars,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
+
 s_count_cumulative(
   x,
   thresholds,
@@ -23,36 +38,8 @@ a_count_cumulative(
   .N_col,
   ...
 )
-
-count_cumulative(
-  lyt,
-  vars,
-  var_labels = vars,
-  show_labels = "visible",
-  na_str = NA_character_,
-  nested = TRUE,
-  ...,
-  table_names = vars,
-  .stats = NULL,
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = NULL
-)
 }
 \arguments{
-\item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
-
-\item{thresholds}{(\code{numeric})\cr vector of cutoff value for the counts.}
-
-\item{lower_tail}{(\code{logical})\cr whether to count lower tail, default is \code{TRUE}.}
-
-\item{include_eq}{(\code{logical})\cr whether to include value equal to the \code{threshold} in
-count, default is \code{TRUE}.}
-
-\item{.N_col}{(\code{count})\cr denominator for fraction calculation.}
-
-\item{...}{additional arguments for the lower level functions.}
-
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
@@ -67,6 +54,8 @@ count, default is \code{TRUE}.}
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
+\item{...}{additional arguments for the lower level functions.}
+
 \item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
 to avoid warnings from \code{rtables}.}
 
@@ -80,8 +69,26 @@ information on the \code{"auto"} setting.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
+
+\item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
+
+\item{thresholds}{(\code{numeric})\cr vector of cutoff value for the counts.}
+
+\item{lower_tail}{(\code{logical})\cr whether to count lower tail, default is \code{TRUE}.}
+
+\item{include_eq}{(\code{logical})\cr whether to include value equal to the \code{threshold} in
+count, default is \code{TRUE}.}
+
+\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+passed by \code{rtables}.}
 }
 \value{
+\itemize{
+\item \code{count_cumulative()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_cumulative()} to the table layout.
+}
+
 \itemize{
 \item \code{s_count_cumulative()} returns a named list of \code{count_fraction}s: a list with each \code{thresholds} value as a
 component, each component containing a vector for the count and fraction.
@@ -89,12 +96,6 @@ component, each component containing a vector for the count and fraction.
 
 \itemize{
 \item \code{a_count_cumulative()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
-}
-
-\itemize{
-\item \code{count_cumulative()} returns a layout object suitable for passing to further layouting functions,
-or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
-the statistics from \code{s_count_cumulative()} to the table layout.
 }
 }
 \description{
@@ -105,13 +106,13 @@ greater than, or greater or equal to user-specific thresholds.
 }
 \section{Functions}{
 \itemize{
+\item \code{count_cumulative()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{s_count_cumulative()}: Statistics function that produces a named list given a numeric vector of thresholds.
 
 \item \code{a_count_cumulative()}: Formatted analysis function which is used as \code{afun}
 in \code{count_cumulative()}.
-
-\item \code{count_cumulative()}: Layout-creating function which can take statistics function arguments
-and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{

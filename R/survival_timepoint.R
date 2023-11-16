@@ -17,6 +17,7 @@
 #'   to see available statistics for this function.
 #'
 #' @name survival_timepoint
+#' @order 1
 NULL
 
 #' @describeIn survival_timepoint Statistics function which analyzes survival rate.
@@ -27,18 +28,6 @@ NULL
 #'   * `event_free_rate`: Event-free rate (%).
 #'   * `rate_se`: Standard error of event free rate.
 #'   * `rate_ci`: Confidence interval for event free rate.
-#'
-#' @examples
-#' library(dplyr)
-#'
-#' adtte_f <- tern_ex_adtte %>%
-#'   filter(PARAMCD == "OS") %>%
-#'   mutate(
-#'     AVAL = day2month(AVAL),
-#'     is_event = CNSR == 0
-#'   )
-#' df <- adtte_f %>%
-#'   filter(ARMCD == "ARM A")
 #'
 #' @keywords internal
 s_surv_timepoint <- function(df,
@@ -111,10 +100,6 @@ a_surv_timepoint <- make_afun(
 #'   * `rate_diff`: Event-free rate difference between two groups.
 #'   * `rate_diff_ci`: Confidence interval for the difference.
 #'   * `ztest_pval`: p-value to test the difference is 0.
-#'
-#' @examples
-#' df_ref_group <- adtte_f %>%
-#'   filter(ARMCD == "ARM B")
 #'
 #' @keywords internal
 s_surv_timepoint_diff <- function(df,
@@ -192,6 +177,15 @@ a_surv_timepoint_diff <- make_afun(
 #'   the value of `method`.
 #'
 #' @examples
+#' library(dplyr)
+#'
+#' adtte_f <- tern_ex_adtte %>%
+#'   filter(PARAMCD == "OS") %>%
+#'   mutate(
+#'     AVAL = day2month(AVAL),
+#'     is_event = CNSR == 0
+#'   )
+#'
 #' # Survival at given time points.
 #' basic_table() %>%
 #'   split_cols_by(var = "ARMCD", ref_group = "ARM A") %>%
@@ -232,6 +226,7 @@ a_surv_timepoint_diff <- make_afun(
 #'   build_table(df = adtte_f)
 #'
 #' @export
+#' @order 2
 surv_timepoint <- function(lyt,
                            vars,
                            na_str = NA_character_,

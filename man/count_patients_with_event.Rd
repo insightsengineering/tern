@@ -6,6 +6,20 @@
 \alias{a_count_patients_with_event}
 \title{Count the Number of Patients with a Particular Event}
 \usage{
+count_patients_with_event(
+  lyt,
+  vars,
+  riskdiff = FALSE,
+  na_str = NA_character_,
+  nested = TRUE,
+  ...,
+  table_names = vars,
+  .stats = "count_fraction",
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
+
 s_count_patients_with_event(
   df,
   .var,
@@ -23,45 +37,8 @@ a_count_patients_with_event(
   .N_row,
   denom = c("n", "N_row", "N_col")
 )
-
-count_patients_with_event(
-  lyt,
-  vars,
-  riskdiff = FALSE,
-  na_str = NA_character_,
-  nested = TRUE,
-  ...,
-  table_names = vars,
-  .stats = "count_fraction",
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = NULL
-)
 }
 \arguments{
-\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
-
-\item{.var}{(\code{character})\cr name of the column that contains the unique identifier.}
-
-\item{filters}{(\code{character})\cr a character vector specifying the column names and flag variables
-to be used for counting the number of unique identifiers satisfying such conditions.
-Multiple column names and flags are accepted in this format
-\code{c("column_name1" = "flag1", "column_name2" = "flag2")}.
-Note that only equality is being accepted as condition.}
-
-\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
-passed by \code{rtables}.}
-
-\item{.N_row}{(\code{integer})\cr row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
-
-\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
-\itemize{
-\item \code{n}: number of values in this row and column intersection.
-\item \code{N_row}: total number of values in this row across columns.
-\item \code{N_col}: total number of values in this column across rows.
-}}
-
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
@@ -91,20 +68,43 @@ information on the \code{"auto"} setting.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
+
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
+
+\item{.var}{(\code{character})\cr name of the column that contains the unique identifier.}
+
+\item{filters}{(\code{character})\cr a character vector specifying the column names and flag variables
+to be used for counting the number of unique identifiers satisfying such conditions.
+Multiple column names and flags are accepted in this format
+\code{c("column_name1" = "flag1", "column_name2" = "flag2")}.
+Note that only equality is being accepted as condition.}
+
+\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+passed by \code{rtables}.}
+
+\item{.N_row}{(\code{integer})\cr row-wise N (row group count) for the group of observations being analyzed
+(i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
+
+\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
+\itemize{
+\item \code{n}: number of values in this row and column intersection.
+\item \code{N_row}: total number of values in this row across columns.
+\item \code{N_col}: total number of values in this column across rows.
+}}
 }
 \value{
+\itemize{
+\item \code{count_patients_with_event()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_patients_with_event()} to the table layout.
+}
+
 \itemize{
 \item \code{s_count_patients_with_event()} returns the count and fraction of unique identifiers with the defined event.
 }
 
 \itemize{
 \item \code{a_count_patients_with_event()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
-}
-
-\itemize{
-\item \code{count_patients_with_event()} returns a layout object suitable for passing to further layouting functions,
-or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
-the statistics from \code{s_count_patients_with_event()} to the table layout.
 }
 }
 \description{
@@ -114,49 +114,17 @@ The primary analysis variable \code{.var} denotes the unique patient identifier.
 }
 \section{Functions}{
 \itemize{
+\item \code{count_patients_with_event()}: Layout-creating function which can take statistics function
+arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{s_count_patients_with_event()}: Statistics function which counts the number of patients for which
 the defined event has occurred.
 
 \item \code{a_count_patients_with_event()}: Formatted analysis function which is used as \code{afun}
 in \code{count_patients_with_event()}.
 
-\item \code{count_patients_with_event()}: Layout-creating function which can take statistics function
-arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
-
 }}
 \examples{
-library(dplyr)
-
-# `s_count_patients_with_event()`
-
-s_count_patients_with_event(
-  tern_ex_adae,
-  .var = "SUBJID",
-  filters = c("TRTEMFL" = "Y")
-)
-s_count_patients_with_event(
-  tern_ex_adae,
-  .var = "SUBJID",
-  filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL")
-)
-s_count_patients_with_event(
-  tern_ex_adae,
-  .var = "SUBJID",
-  filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL"),
-  denom = "N_col",
-  .N_col = 456
-)
-
-# `a_count_patients_with_event()`
-
-a_count_patients_with_event(
-  tern_ex_adae,
-  .var = "SUBJID",
-  filters = c("TRTEMFL" = "Y"),
-  .N_col = 100,
-  .N_row = 100
-)
-
 # `count_patients_with_event()`
 
 lyt <- basic_table() \%>\%
@@ -187,7 +155,40 @@ lyt <- basic_table() \%>\%
     .indent_mods = c(count_fraction = 2L),
     table_names = "tbl_rel_fatal"
   )
+
 build_table(lyt, tern_ex_adae, alt_counts_df = tern_ex_adsl)
+
+# `s_count_patients_with_event()`
+
+s_count_patients_with_event(
+  tern_ex_adae,
+  .var = "SUBJID",
+  filters = c("TRTEMFL" = "Y")
+)
+
+s_count_patients_with_event(
+  tern_ex_adae,
+  .var = "SUBJID",
+  filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL")
+)
+
+s_count_patients_with_event(
+  tern_ex_adae,
+  .var = "SUBJID",
+  filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL"),
+  denom = "N_col",
+  .N_col = 456
+)
+
+# `a_count_patients_with_event()`
+
+a_count_patients_with_event(
+  tern_ex_adae,
+  .var = "SUBJID",
+  filters = c("TRTEMFL" = "Y"),
+  .N_col = 100,
+  .N_row = 100
+)
 
 }
 \seealso{

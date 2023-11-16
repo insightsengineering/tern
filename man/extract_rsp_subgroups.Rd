@@ -47,53 +47,6 @@ for \code{\link[=h_odds_ratio_subgroups_df]{h_odds_ratio_subgroups_df()}} and \c
 passed as a named \code{list} and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups} and \code{strat}.
 \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
 }
-\examples{
-library(dplyr)
-library(forcats)
-
-adrs <- tern_ex_adrs
-adrs_labels <- formatters::var_labels(adrs)
-
-adrs_f <- adrs \%>\%
-  filter(PARAMCD == "BESRSPI") \%>\%
-  filter(ARM \%in\% c("A: Drug X", "B: Placebo")) \%>\%
-  droplevels() \%>\%
-  mutate(
-    # Reorder levels of factor to make the placebo group the reference arm.
-    ARM = fct_relevel(ARM, "B: Placebo"),
-    rsp = AVALC == "CR"
-  )
-formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
-
-# Unstratified analysis.
-df <- extract_rsp_subgroups(
-  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
-  data = adrs_f
-)
-df
-
-# Stratified analysis.
-df_strat <- extract_rsp_subgroups(
-  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2"), strat = "STRATA1"),
-  data = adrs_f
-)
-df_strat
-
-# Grouping of the BMRKR2 levels.
-df_grouped <- extract_rsp_subgroups(
-  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
-  data = adrs_f,
-  groups_lists = list(
-    BMRKR2 = list(
-      "low" = "LOW",
-      "low/medium" = c("LOW", "MEDIUM"),
-      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
-    )
-  )
-)
-df_grouped
-
-}
 \seealso{
 \link{response_subgroups}
 }

@@ -2,11 +2,25 @@
 % Please edit documentation in R/abnormal_by_baseline.R
 \name{abnormal_by_baseline}
 \alias{abnormal_by_baseline}
+\alias{count_abnormal_by_baseline}
 \alias{s_count_abnormal_by_baseline}
 \alias{a_count_abnormal_by_baseline}
-\alias{count_abnormal_by_baseline}
 \title{Patient Counts with Abnormal Range Values by Baseline Status}
 \usage{
+count_abnormal_by_baseline(
+  lyt,
+  var,
+  abnormal,
+  na_str = "<Missing>",
+  nested = TRUE,
+  ...,
+  table_names = abnormal,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
+
 s_count_abnormal_by_baseline(
   df,
   .var,
@@ -24,37 +38,14 @@ a_count_abnormal_by_baseline(
   na_str = "<Missing>",
   variables = list(id = "USUBJID", baseline = "BNRIND")
 )
-
-count_abnormal_by_baseline(
-  lyt,
-  var,
-  abnormal,
-  na_str = "<Missing>",
-  nested = TRUE,
-  ...,
-  table_names = abnormal,
-  .stats = NULL,
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = NULL
-)
 }
 \arguments{
-\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
-
-\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{abnormal}{(\code{character})\cr identifying the abnormal range level(s) in \code{.var}.}
 
-\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
-
 \item{na_str}{(\code{string})\cr the explicit \code{na_level} argument you used in the pre-processing steps (maybe with
 \code{\link[=df_explicit_na]{df_explicit_na()}}). The default is \code{"<Missing>"}.}
-
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
-
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
@@ -75,8 +66,23 @@ information on the \code{"auto"} setting.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
+
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
+
+\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
+
+\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
+
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 }
 \value{
+\itemize{
+\item \code{count_abnormal_by_baseline()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_abnormal_by_baseline()} to the table layout.
+}
+
 \itemize{
 \item \code{s_count_abnormal_by_baseline()} returns statistic \code{fraction} which is a named list with 3 labeled elements:
 \code{not_abnormal}, \code{abnormal}, and \code{total}. Each element contains a vector with \code{num} and \code{denom} patient counts.
@@ -84,12 +90,6 @@ unmodified default behavior. Can be negative.}
 
 \itemize{
 \item \code{a_count_abnormal_by_baseline()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
-}
-
-\itemize{
-\item \code{count_abnormal_by_baseline()} returns a layout object suitable for passing to further layouting functions,
-or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
-the statistics from \code{s_count_abnormal_by_baseline()} to the table layout.
 }
 }
 \description{
@@ -119,13 +119,13 @@ patients in the numerator and denominator as follows:
 }
 \section{Functions}{
 \itemize{
+\item \code{count_abnormal_by_baseline()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{s_count_abnormal_by_baseline()}: Statistics function for a single \code{abnormal} level.
 
 \item \code{a_count_abnormal_by_baseline()}: Formatted analysis function which is used as \code{afun}
 in \code{count_abnormal_by_baseline()}.
-
-\item \code{count_abnormal_by_baseline()}: Layout-creating function which can take statistics function arguments
-and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \note{

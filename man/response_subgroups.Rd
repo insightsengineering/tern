@@ -2,22 +2,19 @@
 % Please edit documentation in R/response_subgroups.R
 \name{response_subgroups}
 \alias{response_subgroups}
-\alias{a_response_subgroups}
 \alias{tabulate_rsp_subgroups}
+\alias{a_response_subgroups}
 \title{Tabulate Binary Response by Subgroup}
 \usage{
+tabulate_rsp_subgroups(lyt, df, vars = c("n_tot", "n", "prop", "or", "ci"))
+
 a_response_subgroups(
   .formats = list(n = "xx", n_rsp = "xx", prop = "xx.x\%", n_tot = "xx", or =
     list(format_extreme_values(2L)), ci = list(format_extreme_values_ci(2L)), pval =
     "x.xxxx | (<0.0001)")
 )
-
-tabulate_rsp_subgroups(lyt, df, vars = c("n_tot", "n", "prop", "or", "ci"))
 }
 \arguments{
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
-information on the \code{"auto"} setting.}
-
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{df}{(\code{list})\cr of data frames containing all analysis variables. List should be
@@ -34,13 +31,16 @@ created using \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.}
 \item \code{pval}: p-value of the effect.
 Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.
 }}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
 }
 \value{
+An \code{rtables} table summarizing binary response by subgroup.
+
 \itemize{
 \item \code{a_response_subgroups()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
-
-An \code{rtables} table summarizing binary response by subgroup.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -53,11 +53,11 @@ the required statistics. Tables typically used as part of forest plot.
 }
 \section{Functions}{
 \itemize{
-\item \code{a_response_subgroups()}: Formatted analysis function which is used as \code{afun} in \code{tabulate_rsp_subgroups()}.
-
 \item \code{tabulate_rsp_subgroups()}: Table-creating function which creates a table
 summarizing binary response by subgroup. This function is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}
 and \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
+
+\item \code{a_response_subgroups()}: Formatted analysis function which is used as \code{afun} in \code{tabulate_rsp_subgroups()}.
 
 }}
 \examples{
@@ -84,6 +84,27 @@ df <- extract_rsp_subgroups(
   data = adrs_f
 )
 df
+
+# Stratified analysis.
+df_strat <- extract_rsp_subgroups(
+  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2"), strat = "STRATA1"),
+  data = adrs_f
+)
+df_strat
+
+# Grouping of the BMRKR2 levels.
+df_grouped <- extract_rsp_subgroups(
+  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
+  data = adrs_f,
+  groups_lists = list(
+    BMRKR2 = list(
+      "low" = "LOW",
+      "low/medium" = c("LOW", "MEDIUM"),
+      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+    )
+  )
+)
+df_grouped
 
 ## Table with default columns.
 basic_table() \%>\%

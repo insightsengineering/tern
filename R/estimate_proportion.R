@@ -11,6 +11,7 @@
 #' @seealso [h_proportions]
 #'
 #' @name estimate_proportions
+#' @order 1
 NULL
 
 #' @describeIn estimate_proportions Statistics function estimating a
@@ -162,6 +163,7 @@ a_proportion <- make_afun(
 #'   build_table(df = dta_test)
 #'
 #' @export
+#' @order 2
 estimate_proportion <- function(lyt,
                                 vars,
                                 na_str = NA_character_,
@@ -507,6 +509,7 @@ d_proportion <- function(conf_level,
 #' ests <- strata_data["TRUE", ] / ns
 #' vars <- ests * (1 - ests) / ns
 #' weights <- rep(1 / length(ns), length(ns))
+#'
 #' strata_normal_quantile(vars, weights, 0.95)
 #'
 #' @export

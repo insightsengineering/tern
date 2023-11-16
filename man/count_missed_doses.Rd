@@ -7,12 +7,6 @@
 \alias{a_count_missed_doses}
 \title{Counting Missed Doses}
 \usage{
-s_count_nonmissing(x)
-
-s_count_missed_doses(x, thresholds, .N_col)
-
-a_count_missed_doses(x, thresholds, .N_col)
-
 count_missed_doses(
   lyt,
   vars,
@@ -27,15 +21,14 @@ count_missed_doses(
   .labels = NULL,
   .indent_mods = NULL
 )
+
+s_count_nonmissing(x)
+
+s_count_missed_doses(x, thresholds, .N_col)
+
+a_count_missed_doses(x, thresholds, .N_col)
 }
 \arguments{
-\item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
-
-\item{thresholds}{(vector of \code{count})\cr number of missed doses the patients at least had.}
-
-\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
-passed by \code{rtables}.}
-
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
@@ -65,8 +58,21 @@ information on the \code{"auto"} setting.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
+
+\item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
+
+\item{thresholds}{(vector of \code{count})\cr number of missed doses the patients at least had.}
+
+\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+passed by \code{rtables}.}
 }
 \value{
+\itemize{
+\item \code{count_missed_doses()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_missed_doses()} to the table layout.
+}
+
 \itemize{
 \item \code{s_count_nonmissing()} returns the statistic \code{n} which is the count of non-missing values in \code{x}.
 }
@@ -78,12 +84,6 @@ unmodified default behavior. Can be negative.}
 \itemize{
 \item \code{a_count_missed_doses()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
-
-\itemize{
-\item \code{count_missed_doses()} returns a layout object suitable for passing to further layouting functions,
-or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
-the statistics from \code{s_count_missed_doses()} to the table layout.
-}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -93,6 +93,9 @@ mainly the special labels.
 }
 \section{Functions}{
 \itemize{
+\item \code{count_missed_doses()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{s_count_nonmissing()}: Statistics function to count non-missing values.
 
 \item \code{s_count_missed_doses()}: Statistics function to count patients with missed doses.
@@ -100,14 +103,8 @@ mainly the special labels.
 \item \code{a_count_missed_doses()}: Formatted analysis function which is used as \code{afun}
 in \code{count_missed_doses()}.
 
-\item \code{count_missed_doses()}: Layout-creating function which can take statistics function arguments
-and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
-
 }}
 \examples{
-set.seed(1)
-x <- c(sample(1:10, 10), NA)
-
 library(dplyr)
 
 anl <- tern_ex_adsl \%>\%
