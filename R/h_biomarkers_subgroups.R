@@ -18,7 +18,9 @@ h_tab_one_biomarker <- function(df,
                                 colvars,
                                 na_str = NA_character_,
                                 .indent_mods = 0L,
-                                extra_args = list()) {
+                                ...) {
+  extra_args <- list(...)
+
   lyt <- basic_table()
 
   # Row split by row type - only keep the content rows here.
@@ -35,7 +37,8 @@ h_tab_one_biomarker <- function(df,
     var = "var_label",
     cfun = afuns,
     na_str = na_str,
-    indent_mod = .indent_mods
+    indent_mod = .indent_mods,
+    extra_args = extra_args
   )
 
   # Split cols by the multiple variables to populate into columns.

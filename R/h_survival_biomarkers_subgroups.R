@@ -198,7 +198,7 @@ h_tab_surv_one_biomarker <- function(df,
                                      vars,
                                      time_unit,
                                      .indent_mods = 0L,
-                                     extra_args = NULL) {
+                                     ...) {
   afuns <- a_survival_subgroups()[vars]
   colvars <- d_survival_subgroups_colvars(
     vars,
@@ -211,6 +211,6 @@ h_tab_surv_one_biomarker <- function(df,
     afuns = afuns,
     colvars = colvars,
     .indent_mods = .indent_mods,
-    extra_args = extra_args
+    ...
   )
 }
