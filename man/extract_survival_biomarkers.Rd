@@ -39,61 +39,6 @@ confidence intervals and p-values, for multiple biomarkers across population sub
 \code{tte}, \code{is_event}, \code{biomarkers} (vector of continuous biomarker variables), and optionally \code{subgroups} and \code{strat}.
 \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
 }
-\examples{
-# Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,
-# in multiple regression models containing one covariate `RACE`,
-# as well as one stratification variable `STRATA1`. The subgroups
-# are defined by the levels of `BMRKR2`.
-
-library(dplyr)
-
-adtte <- tern_ex_adtte
-adtte_labels <- formatters::var_labels(adtte)
-
-adtte_f <- adtte \%>\%
-  filter(PARAMCD == "OS") \%>\%
-  mutate(
-    AVALU = as.character(AVALU),
-    is_event = CNSR == 0
-  )
-labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
-formatters::var_labels(adtte_f)[names(labels)] <- labels
-
-df <- extract_survival_biomarkers(
-  variables = list(
-    tte = "AVAL",
-    is_event = "is_event",
-    biomarkers = c("BMRKR1", "AGE"),
-    strata = "STRATA1",
-    covariates = "SEX",
-    subgroups = "BMRKR2"
-  ),
-  data = adtte_f
-)
-df
-
-# Here we group the levels of `BMRKR2` manually.
-df_grouped <- extract_survival_biomarkers(
-  variables = list(
-    tte = "AVAL",
-    is_event = "is_event",
-    biomarkers = c("BMRKR1", "AGE"),
-    strata = "STRATA1",
-    covariates = "SEX",
-    subgroups = "BMRKR2"
-  ),
-  data = adtte_f,
-  groups_lists = list(
-    BMRKR2 = list(
-      "low" = "LOW",
-      "low/medium" = c("LOW", "MEDIUM"),
-      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
-    )
-  )
-)
-df_grouped
-
-}
 \seealso{
 \code{\link[=h_coxreg_mult_cont_df]{h_coxreg_mult_cont_df()}} which is used internally, \code{\link[=tabulate_survival_biomarkers]{tabulate_survival_biomarkers()}}.
 }

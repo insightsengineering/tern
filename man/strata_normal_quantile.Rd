@@ -35,6 +35,7 @@ ns <- colSums(strata_data)
 ests <- strata_data["TRUE", ] / ns
 vars <- ests * (1 - ests) / ns
 weights <- rep(1 / length(ns), length(ns))
+
 strata_normal_quantile(vars, weights, 0.95)
 
 }

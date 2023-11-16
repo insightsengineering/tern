@@ -2,11 +2,26 @@
 % Please edit documentation in R/survival_coxph_pairwise.R
 \name{survival_coxph_pairwise}
 \alias{survival_coxph_pairwise}
+\alias{coxph_pairwise}
 \alias{s_coxph_pairwise}
 \alias{a_coxph_pairwise}
-\alias{coxph_pairwise}
 \title{Pairwise \code{CoxPH} model}
 \usage{
+coxph_pairwise(
+  lyt,
+  vars,
+  na_str = NA_character_,
+  nested = TRUE,
+  ...,
+  var_labels = "CoxPH",
+  show_labels = "visible",
+  table_names = vars,
+  .stats = c("pvalue", "hr", "hr_ci"),
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
+
 s_coxph_pairwise(
   df,
   .ref_group,
@@ -26,46 +41,8 @@ a_coxph_pairwise(
   strat = NULL,
   control = control_coxph()
 )
-
-coxph_pairwise(
-  lyt,
-  vars,
-  na_str = NA_character_,
-  nested = TRUE,
-  ...,
-  var_labels = "CoxPH",
-  show_labels = "visible",
-  table_names = vars,
-  .stats = c("pvalue", "hr", "hr_ci"),
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = NULL
-)
 }
 \arguments{
-\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
-
-\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
-
-\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
-
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
-
-\item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
-
-\item{strat}{(\code{character} or \code{NULL})\cr variable names indicating stratification factors.}
-
-\item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
-\code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are:
-\itemize{
-\item \code{pval_method} (\code{string})\cr p-value method for testing hazard ratio = 1. Default method is \code{"log-rank"} which
-comes from \code{\link[survival:survdiff]{survival::survdiff()}}, can also be set to \code{"wald"} or \code{"likelihood"} (from \code{\link[survival:coxph]{survival::coxph()}}).
-\item \code{ties} (\code{string})\cr specifying the method for tie handling. Default is \code{"efron"},
-can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[survival:coxph]{survival::coxph()}}
-\item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
-}}
-
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
@@ -95,8 +72,37 @@ information on the \code{"auto"} setting.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
+
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
+
+\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
+
+\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
+
+\item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
+
+\item{strat}{(\code{character} or \code{NULL})\cr variable names indicating stratification factors.}
+
+\item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
+\code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are:
+\itemize{
+\item \code{pval_method} (\code{string})\cr p-value method for testing hazard ratio = 1. Default method is \code{"log-rank"} which
+comes from \code{\link[survival:survdiff]{survival::survdiff()}}, can also be set to \code{"wald"} or \code{"likelihood"} (from \code{\link[survival:coxph]{survival::coxph()}}).
+\item \code{ties} (\code{string})\cr specifying the method for tie handling. Default is \code{"efron"},
+can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[survival:coxph]{survival::coxph()}}
+\item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
+}}
 }
 \value{
+\itemize{
+\item \code{coxph_pairwise()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_coxph_pairwise()} to the table layout.
+}
+
 \itemize{
 \item \code{s_coxph_pairwise()} returns the statistics:
 \itemize{
@@ -111,12 +117,6 @@ unmodified default behavior. Can be negative.}
 \itemize{
 \item \code{a_coxph_pairwise()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
-
-\itemize{
-\item \code{coxph_pairwise()} returns a layout object suitable for passing to further layouting functions,
-or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
-the statistics from \code{s_coxph_pairwise()} to the table layout.
-}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -125,12 +125,12 @@ Summarize p-value, HR and CIs from stratified or unstratified \code{CoxPH} model
 }
 \section{Functions}{
 \itemize{
+\item \code{coxph_pairwise()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{s_coxph_pairwise()}: Statistics function which analyzes HR, CIs of HR and p-value of a \code{coxph} model.
 
 \item \code{a_coxph_pairwise()}: Formatted analysis function which is used as \code{afun} in \code{coxph_pairwise()}.
-
-\item \code{coxph_pairwise()}: Layout-creating function which can take statistics function arguments
-and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{
@@ -139,10 +139,9 @@ library(dplyr)
 adtte_f <- tern_ex_adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
   mutate(is_event = CNSR == 0)
-df <- adtte_f \%>\%
-  filter(ARMCD == "ARM A")
-df_ref_group <- adtte_f \%>\%
-  filter(ARMCD == "ARM B")
+
+df <- adtte_f \%>\% filter(ARMCD == "ARM A")
+df_ref_group <- adtte_f \%>\% filter(ARMCD == "ARM B")
 
 basic_table() \%>\%
   split_cols_by(var = "ARMCD", ref_group = "ARM A") \%>\%

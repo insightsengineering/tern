@@ -35,6 +35,7 @@
 #'   [count_abnormal_by_worst_grade()].
 #'
 #' @name abnormal_by_worst_grade
+#' @order 1
 NULL
 
 #' @describeIn abnormal_by_worst_grade Statistics function which counts patients by worst grade.
@@ -42,24 +43,6 @@ NULL
 #' @return
 #' * `s_count_abnormal_by_worst_grade()` returns the single statistic `count_fraction` with grades 1 to 4 and
 #'   "Any" results.
-#'
-#' @examples
-#' library(dplyr)
-#' library(forcats)
-#' adlb <- tern_ex_adlb
-#'
-#' # Data is modified in order to have some parameters with grades only in one direction
-#' # and simulate the real data.
-#' adlb$ATOXGR[adlb$PARAMCD == "ALT" & adlb$ATOXGR %in% c("1", "2", "3", "4")] <- "-1"
-#' adlb$ANRIND[adlb$PARAMCD == "ALT" & adlb$ANRIND == "HIGH"] <- "LOW"
-#' adlb$WGRHIFL[adlb$PARAMCD == "ALT"] <- ""
-#'
-#' adlb$ATOXGR[adlb$PARAMCD == "IGA" & adlb$ATOXGR %in% c("-1", "-2", "-3", "-4")] <- "1"
-#' adlb$ANRIND[adlb$PARAMCD == "IGA" & adlb$ANRIND == "LOW"] <- "HIGH"
-#' adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
-#'
-#' # Here starts the real pre-processing.
-#' adlb_f <- h_adlb_abnormal_by_worst_grade(adlb)
 #'
 #' @keywords internal
 s_count_abnormal_by_worst_grade <- function(df, # nolint
@@ -110,7 +93,6 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
 #' @return
 #' * `a_count_abnormal_by_worst_grade()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#'
 #' @keywords internal
 a_count_abnormal_by_worst_grade <- make_afun( # nolint
   s_count_abnormal_by_worst_grade,
@@ -126,6 +108,23 @@ a_count_abnormal_by_worst_grade <- make_afun( # nolint
 #'   the statistics from `s_count_abnormal_by_worst_grade()` to the table layout.
 #'
 #' @examples
+#' library(dplyr)
+#' library(forcats)
+#' adlb <- tern_ex_adlb
+#'
+#' # Data is modified in order to have some parameters with grades only in one direction
+#' # and simulate the real data.
+#' adlb$ATOXGR[adlb$PARAMCD == "ALT" & adlb$ATOXGR %in% c("1", "2", "3", "4")] <- "-1"
+#' adlb$ANRIND[adlb$PARAMCD == "ALT" & adlb$ANRIND == "HIGH"] <- "LOW"
+#' adlb$WGRHIFL[adlb$PARAMCD == "ALT"] <- ""
+#'
+#' adlb$ATOXGR[adlb$PARAMCD == "IGA" & adlb$ATOXGR %in% c("-1", "-2", "-3", "-4")] <- "1"
+#' adlb$ANRIND[adlb$PARAMCD == "IGA" & adlb$ANRIND == "LOW"] <- "HIGH"
+#' adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
+#'
+#' # Pre-processing
+#' adlb_f <- adlb %>% h_adlb_abnormal_by_worst_grade()
+#'
 #' # Map excludes records without abnormal grade since they should not be displayed
 #' # in the table.
 #' map <- unique(adlb_f[adlb_f$GRADE_DIR != "ZERO", c("PARAM", "GRADE_DIR", "GRADE_ANL")]) %>%
@@ -144,6 +143,7 @@ a_count_abnormal_by_worst_grade <- make_afun( # nolint
 #'   build_table(df = adlb_f)
 #'
 #' @export
+#' @order 2
 count_abnormal_by_worst_grade <- function(lyt,
                                           var,
                                           na_str = NA_character_,

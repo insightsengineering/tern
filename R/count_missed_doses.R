@@ -19,16 +19,13 @@
 #'   options for threshold handling, but uses different labels.
 #'
 #' @name count_missed_doses
+#' @order 1
 NULL
 
 #' @describeIn count_missed_doses Statistics function to count non-missing values.
 #'
 #' @return
 #' * `s_count_nonmissing()` returns the statistic `n` which is the count of non-missing values in `x`.
-#'
-#' @examples
-#' set.seed(1)
-#' x <- c(sample(1:10, 10), NA)
 #'
 #' @keywords internal
 s_count_nonmissing <- function(x) {
@@ -117,6 +114,7 @@ a_count_missed_doses <- make_afun(
 #'   build_table(anl, alt_counts_df = tern_ex_adsl)
 #'
 #' @export
+#' @order 2
 count_missed_doses <- function(lyt,
                                vars,
                                var_labels = vars,

@@ -6,6 +6,21 @@
 \alias{a_count_patients_with_flags}
 \title{Count the number of patients with particular flags}
 \usage{
+count_patients_with_flags(
+  lyt,
+  var,
+  var_labels = var,
+  show_labels = "hidden",
+  riskdiff = FALSE,
+  na_str = NA_character_,
+  nested = TRUE,
+  ...,
+  table_names = paste0("tbl_flags_", var),
+  .stats = "count_fraction",
+  .formats = NULL,
+  .indent_mods = NULL
+)
+
 s_count_patients_with_flags(
   df,
   .var,
@@ -25,45 +40,8 @@ a_count_patients_with_flags(
   .N_row,
   denom = c("n", "N_row", "N_col")
 )
-
-count_patients_with_flags(
-  lyt,
-  var,
-  var_labels = var,
-  show_labels = "hidden",
-  riskdiff = FALSE,
-  na_str = NA_character_,
-  nested = TRUE,
-  ...,
-  table_names = paste0("tbl_flags_", var),
-  .stats = "count_fraction",
-  .formats = NULL,
-  .indent_mods = NULL
-)
 }
 \arguments{
-\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
-
-\item{.var}{(\code{character})\cr name of the column that contains the unique identifier.}
-
-\item{flag_variables}{(\code{character})\cr a character vector specifying the names of \code{logical}
-variables from analysis dataset used for counting the number of unique identifiers.}
-
-\item{flag_labels}{(\code{character})\cr vector of labels to use for flag variables.}
-
-\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
-passed by \code{rtables}.}
-
-\item{.N_row}{(\code{integer})\cr row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
-
-\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
-\itemize{
-\item \code{n}: number of values in this row and column intersection.
-\item \code{N_row}: total number of values in this row across columns.
-\item \code{N_col}: total number of values in this column across rows.
-}}
-
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
@@ -96,8 +74,36 @@ information on the \code{"auto"} setting.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
+
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
+
+\item{.var}{(\code{character})\cr name of the column that contains the unique identifier.}
+
+\item{flag_variables}{(\code{character})\cr a character vector specifying the names of \code{logical}
+variables from analysis dataset used for counting the number of unique identifiers.}
+
+\item{flag_labels}{(\code{character})\cr vector of labels to use for flag variables.}
+
+\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+passed by \code{rtables}.}
+
+\item{.N_row}{(\code{integer})\cr row-wise N (row group count) for the group of observations being analyzed
+(i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
+
+\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
+\itemize{
+\item \code{n}: number of values in this row and column intersection.
+\item \code{N_row}: total number of values in this row across columns.
+\item \code{N_col}: total number of values in this column across rows.
+}}
 }
 \value{
+\itemize{
+\item \code{count_patients_with_flags()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_patients_with_flags()} to the table layout.
+}
+
 \itemize{
 \item \code{s_count_patients_with_flags()} returns the count and the fraction of unique identifiers with each particular
 flag as a list of statistics \code{n}, \code{count}, \code{count_fraction}, and \code{n_blq}, with one element per flag.
@@ -105,12 +111,6 @@ flag as a list of statistics \code{n}, \code{count}, \code{count_fraction}, and 
 
 \itemize{
 \item \code{a_count_patients_with_flags()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
-}
-
-\itemize{
-\item \code{count_patients_with_flags()} returns a layout object suitable for passing to further layouting functions,
-or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
-the statistics from \code{s_count_patients_with_flags()} to the table layout.
 }
 }
 \description{
@@ -127,14 +127,14 @@ If there are multiple records with the same flag present for a patient, only one
 }
 \section{Functions}{
 \itemize{
+\item \code{count_patients_with_flags()}: Layout-creating function which can take statistics function
+arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{s_count_patients_with_flags()}: Statistics function which counts the number of patients for which
 a particular flag variable is \code{TRUE}.
 
 \item \code{a_count_patients_with_flags()}: Formatted analysis function which is used as \code{afun}
 in \code{count_patients_with_flags()}.
-
-\item \code{count_patients_with_flags()}: Layout-creating function which can take statistics function
-arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \note{
@@ -146,23 +146,32 @@ the label to use for this variable.
 \examples{
 library(dplyr)
 
-# `s_count_patients_with_flags()`
-
 # Add labelled flag variables to analysis dataset.
 adae <- tern_ex_adae \%>\%
   mutate(
-    fl1 = TRUE,
-    fl2 = TRTEMFL == "Y",
-    fl3 = TRTEMFL == "Y" & AEOUT == "FATAL",
-    fl4 = TRTEMFL == "Y" & AEOUT == "FATAL" & AEREL == "Y"
+    fl1 = TRUE \%>\% with_label("Total AEs"),
+    fl2 = (TRTEMFL == "Y") \%>\%
+      with_label("Total number of patients with at least one adverse event"),
+    fl3 = (TRTEMFL == "Y" & AEOUT == "FATAL") \%>\%
+      with_label("Total number of patients with fatal AEs"),
+    fl4 = (TRTEMFL == "Y" & AEOUT == "FATAL" & AEREL == "Y") \%>\%
+      with_label("Total number of patients with related fatal AEs")
   )
-labels <- c(
-  "fl1" = "Total AEs",
-  "fl2" = "Total number of patients with at least one adverse event",
-  "fl3" = "Total number of patients with fatal AEs",
-  "fl4" = "Total number of patients with related fatal AEs"
-)
-formatters::var_labels(adae)[names(labels)] <- labels
+
+# `count_patients_with_flags()`
+
+lyt2 <- basic_table() \%>\%
+  split_cols_by("ARM") \%>\%
+  add_colcounts() \%>\%
+  count_patients_with_flags(
+    "SUBJID",
+    flag_variables = c("fl1", "fl2", "fl3", "fl4"),
+    denom = "N_col"
+  )
+
+build_table(lyt2, adae, alt_counts_df = tern_ex_adsl)
+
+# `s_count_patients_with_flags()`
 
 s_count_patients_with_flags(
   adae,
@@ -188,18 +197,6 @@ afun(
   .var = "USUBJID",
   flag_variables = c("fl1", "fl2", "fl3", "fl4")
 )
-
-# `count_patients_with_flags()`
-
-lyt2 <- basic_table() \%>\%
-  split_cols_by("ARM") \%>\%
-  add_colcounts() \%>\%
-  count_patients_with_flags(
-    "SUBJID",
-    flag_variables = c("fl1", "fl2", "fl3", "fl4"),
-    denom = "N_col"
-  )
-build_table(lyt2, adae, alt_counts_df = tern_ex_adsl)
 
 }
 \seealso{

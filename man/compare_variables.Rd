@@ -2,15 +2,33 @@
 % Please edit documentation in R/compare_variables.R
 \name{compare_variables}
 \alias{compare_variables}
+\alias{compare_vars}
 \alias{s_compare}
 \alias{s_compare.numeric}
 \alias{s_compare.factor}
 \alias{s_compare.character}
 \alias{s_compare.logical}
 \alias{a_compare}
-\alias{compare_vars}
 \title{Compare variables between groups}
 \usage{
+compare_vars(
+  lyt,
+  vars,
+  var_labels = vars,
+  na_level = lifecycle::deprecated(),
+  na_str = NA_character_,
+  nested = TRUE,
+  ...,
+  na.rm = TRUE,
+  show_labels = "default",
+  table_names = vars,
+  section_div = NA_character_,
+  .stats = c("n", "mean_sd", "count_fraction", "pval"),
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
+
 s_compare(x, .ref_group, .in_ref_col, ...)
 
 \method{s_compare}{numeric}(x, .ref_group, .in_ref_col, ...)
@@ -40,53 +58,8 @@ a_compare(
   .in_ref_col = FALSE,
   ...
 )
-
-compare_vars(
-  lyt,
-  vars,
-  var_labels = vars,
-  na_level = lifecycle::deprecated(),
-  na_str = NA_character_,
-  nested = TRUE,
-  ...,
-  na.rm = TRUE,
-  show_labels = "default",
-  table_names = vars,
-  section_div = NA_character_,
-  .stats = c("n", "mean_sd", "count_fraction", "pval"),
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = NULL
-)
 }
 \arguments{
-\item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
-
-\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
-
-\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
-
-\item{...}{arguments passed to \code{s_compare()}.}
-
-\item{denom}{(\code{string})\cr choice of denominator for factor proportions,
-can only be \code{n} (number of values in this row and column intersection).}
-
-\item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
-
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
-
-\item{verbose}{(\code{logical})\cr Whether warnings and messages should be printed. Mainly used
-to print out information about factor casting. Defaults to \code{TRUE}.}
-
-\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
-passed by \code{rtables}.}
-
-\item{.N_row}{(\code{integer})\cr row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
-
-\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
-
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
@@ -100,6 +73,10 @@ passed by \code{rtables}.}
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
+
+\item{...}{arguments passed to \code{s_compare()}.}
+
+\item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
@@ -121,20 +98,43 @@ information on the \code{"auto"} setting.}
 \item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
 should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
 for that statistic's row label.}
+
+\item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
+
+\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
+
+\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+
+\item{denom}{(\code{string})\cr choice of denominator for factor proportions,
+can only be \code{n} (number of values in this row and column intersection).}
+
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
+
+\item{verbose}{(\code{logical})\cr Whether warnings and messages should be printed. Mainly used
+to print out information about factor casting. Defaults to \code{TRUE}.}
+
+\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+passed by \code{rtables}.}
+
+\item{.N_row}{(\code{integer})\cr row-wise N (row group count) for the group of observations being analyzed
+(i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
+
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 }
 \value{
+\itemize{
+\item \code{compare_vars()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_compare()} to the table layout.
+}
+
 \itemize{
 \item \code{s_compare()} returns output of \code{\link[=s_summary]{s_summary()}} and comparisons versus the reference group in the form of p-values.
 }
 
 \itemize{
 \item \code{a_compare()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
-}
-
-\itemize{
-\item \code{compare_vars()} returns a layout object suitable for passing to further layouting functions,
-or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
-the statistics from \code{s_compare()} to the table layout.
 }
 }
 \description{
@@ -154,6 +154,9 @@ statistic.
 }
 \section{Functions}{
 \itemize{
+\item \code{compare_vars()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{s_compare()}: S3 generic function to produce a comparison summary.
 
 \item \code{s_compare(numeric)}: Method for \code{numeric} class. This uses the standard t-test
@@ -170,9 +173,6 @@ is used. If missing values are not removed, then they are counted as \code{FALSE
 
 \item \code{a_compare()}: Formatted analysis function which is used as \code{afun}
 in \code{compare_vars()}.
-
-\item \code{compare_vars()}: Layout-creating function which can take statistics function arguments
-and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \note{
@@ -195,6 +195,25 @@ is well defined.
 \code{a_compare()} has been deprecated in favor of \code{a_summary()} with argument \code{compare} set to \code{TRUE}.
 }
 \examples{
+# `compare_vars()` in `rtables` pipelines
+
+## Default output within a `rtables` pipeline.
+lyt <- basic_table() \%>\%
+  split_cols_by("ARMCD", ref_group = "ARM B") \%>\%
+  compare_vars(c("AGE", "SEX"))
+build_table(lyt, tern_ex_adsl)
+
+## Select and format statistics output.
+lyt <- basic_table() \%>\%
+  split_cols_by("ARMCD", ref_group = "ARM C") \%>\%
+  compare_vars(
+    vars = "AGE",
+    .stats = c("mean_sd", "pval"),
+    .formats = c(mean_sd = "xx.x, xx.x"),
+    .labels = c(mean_sd = "Mean, SD")
+  )
+build_table(lyt, df = tern_ex_adsl)
+
 # `s_compare.numeric`
 
 ## Usual case where both this and the reference group vector have more than 1 value.
@@ -253,25 +272,6 @@ s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
 
 # `a_compare` deprecated - use `a_summary()` instead
 a_compare(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .stats = c("n", "pval"))
-
-# `compare_vars()` in `rtables` pipelines
-
-## Default output within a `rtables` pipeline.
-lyt <- basic_table() \%>\%
-  split_cols_by("ARMCD", ref_group = "ARM B") \%>\%
-  compare_vars(c("AGE", "SEX"))
-build_table(lyt, tern_ex_adsl)
-
-## Select and format statistics output.
-lyt <- basic_table() \%>\%
-  split_cols_by("ARMCD", ref_group = "ARM C") \%>\%
-  compare_vars(
-    vars = "AGE",
-    .stats = c("mean_sd", "pval"),
-    .formats = c(mean_sd = "xx.x, xx.x"),
-    .labels = c(mean_sd = "Mean, SD")
-  )
-build_table(lyt, df = tern_ex_adsl)
 
 }
 \seealso{

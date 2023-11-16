@@ -2,37 +2,11 @@
 % Please edit documentation in R/count_occurrences.R
 \name{count_occurrences}
 \alias{count_occurrences}
+\alias{summarize_occurrences}
 \alias{s_count_occurrences}
 \alias{a_count_occurrences}
-\alias{summarize_occurrences}
 \title{Count occurrences}
 \usage{
-s_count_occurrences(
-  df,
-  denom = c("N_col", "n"),
-  .N_col,
-  .df_row,
-  drop = TRUE,
-  .var = "MHDECOD",
-  id = "USUBJID"
-)
-
-a_count_occurrences(
-  df,
-  labelstr = "",
-  id = "USUBJID",
-  denom = c("N_col", "n"),
-  drop = TRUE,
-  .N_col,
-  .var = NULL,
-  .df_row = NULL,
-  .stats = NULL,
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = NULL,
-  na_str = NA_character_
-)
-
 count_occurrences(
   lyt,
   vars,
@@ -60,8 +34,68 @@ summarize_occurrences(
   .indent_mods = NULL,
   .labels = NULL
 )
+
+s_count_occurrences(
+  df,
+  denom = c("N_col", "n"),
+  .N_col,
+  .df_row,
+  drop = TRUE,
+  .var = "MHDECOD",
+  id = "USUBJID"
+)
+
+a_count_occurrences(
+  df,
+  labelstr = "",
+  id = "USUBJID",
+  denom = c("N_col", "n"),
+  drop = TRUE,
+  .N_col,
+  .var = NULL,
+  .df_row = NULL,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL,
+  na_str = NA_character_
+)
 }
 \arguments{
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{var_labels}{(\code{character})\cr character for label.}
+
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+
+\item{riskdiff}{(\code{flag})\cr whether a risk difference column is present. When set to \code{TRUE}, \code{\link[=add_riskdiff]{add_riskdiff()}} must be
+used as \code{split_fun} in the prior column split of the table layout, specifying which columns should be compared.
+See \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} for details on risk difference calculation.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
+\item{...}{additional arguments for the lower level functions.}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("count_occurrences")}
+to see available statistics for this function.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
+
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{denom}{(\code{string})\cr choice of denominator for patient proportions. Can be:
@@ -86,42 +120,20 @@ by a statistics function.}
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
-
-\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("count_occurrences")}
-to see available statistics for this function.}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
-information on the \code{"auto"} setting.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
-
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
-unmodified default behavior. Can be negative.}
-
-\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
-
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
-
-\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
-
-\item{var_labels}{(\code{character})\cr character for label.}
-
-\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
-
-\item{riskdiff}{(\code{flag})\cr whether a risk difference column is present. When set to \code{TRUE}, \code{\link[=add_riskdiff]{add_riskdiff()}} must be
-used as \code{split_fun} in the prior column split of the table layout, specifying which columns should be compared.
-See \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} for details on risk difference calculation.}
-
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
-underneath analyses, which is not allowed.}
-
-\item{...}{additional arguments for the lower level functions.}
-
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
 }
 \value{
+\itemize{
+\item \code{count_occurrences()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_occurrences()} to the table layout.
+}
+
+\itemize{
+\item \code{summarize_occurrences()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted content rows
+containing the statistics from \code{s_count_occurrences()} to the table layout.
+}
+
 \itemize{
 \item \code{s_count_occurrences()} returns a list with:
 \itemize{
@@ -133,18 +145,6 @@ to avoid warnings from \code{rtables}.}
 
 \itemize{
 \item \code{a_count_occurrences()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
-}
-
-\itemize{
-\item \code{count_occurrences()} returns a layout object suitable for passing to further layouting functions,
-or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
-the statistics from \code{s_count_occurrences()} to the table layout.
-}
-
-\itemize{
-\item \code{summarize_occurrences()} returns a layout object suitable for passing to further layouting functions,
-or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted content rows
-containing the statistics from \code{s_count_occurrences()} to the table layout.
 }
 }
 \description{
@@ -161,17 +161,17 @@ If there are multiple occurrences of the same value recorded for a patient, the 
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_occurrences()}: Statistics function which counts number of patients that report an
-occurrence.
-
-\item \code{a_count_occurrences()}: Formatted analysis function which is used as \code{afun}
-in \code{count_occurrences()}.
-
 \item \code{count_occurrences()}: Layout-creating function which can take statistics function arguments
 and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 \item \code{summarize_occurrences()}: Layout-creating function which can take content function arguments
 and additional format arguments. This function is a wrapper for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
+
+\item \code{s_count_occurrences()}: Statistics function which counts number of patients that report an
+occurrence.
+
+\item \code{a_count_occurrences()}: Formatted analysis function which is used as \code{afun}
+in \code{count_occurrences()}.
 
 }}
 \note{
@@ -181,30 +181,6 @@ needs to use \code{split_fun = drop_split_levels} in the \code{split_rows_by} ca
 like to show all occurrences.
 }
 \examples{
-df <- data.frame(
-  USUBJID = as.character(c(1, 1, 2, 4, 4, 4)),
-  MHDECOD = c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3")
-)
-
-N_per_col <- 4L
-
-# Count unique occurrences per subject.
-s_count_occurrences(
-  df,
-  .N_col = N_per_col,
-  .df_row = df,
-  .var = "MHDECOD",
-  id = "USUBJID"
-)
-
-a_count_occurrences(
-  df,
-  .N_col = N_per_col,
-  .df_row = df,
-  .var = "MHDECOD",
-  id = "USUBJID"
-)
-
 library(dplyr)
 df <- data.frame(
   USUBJID = as.character(c(
@@ -229,9 +205,11 @@ lyt <- basic_table() \%>\%
   count_occurrences(vars = "MHDECOD", .stats = c("count_fraction"))
 
 # Apply table layout to data and produce `rtable` object
-lyt \%>\%
+tbl <- lyt \%>\%
   build_table(df, alt_counts_df = df_adsl) \%>\%
   prune_table()
+
+tbl
 
 # Layout creating function with custom format.
 basic_table() \%>\%
@@ -242,5 +220,22 @@ basic_table() \%>\%
     .formats = c("count_fraction" = "xx.xx (xx.xx\%)")
   ) \%>\%
   build_table(df, alt_counts_df = df_adsl)
+
+# Count unique occurrences per subject.
+s_count_occurrences(
+  df,
+  .N_col = 4L,
+  .df_row = df,
+  .var = "MHDECOD",
+  id = "USUBJID"
+)
+
+a_count_occurrences(
+  df,
+  .N_col = 4L,
+  .df_row = df,
+  .var = "MHDECOD",
+  id = "USUBJID"
+)
 
 }

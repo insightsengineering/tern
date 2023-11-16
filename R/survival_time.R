@@ -15,7 +15,19 @@
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("surv_time")`
 #'   to see available statistics for this function.
 #'
+#' @examples
+#' library(dplyr)
+#'
+#' adtte_f <- tern_ex_adtte %>%
+#'   filter(PARAMCD == "OS") %>%
+#'   mutate(
+#'     AVAL = day2month(AVAL),
+#'     is_event = CNSR == 0
+#'   )
+#' df <- adtte_f %>% filter(ARMCD == "ARM A")
+#'
 #' @name survival_time
+#' @order 1
 NULL
 
 #' @describeIn survival_time Statistics function which analyzes survival times.
@@ -28,17 +40,6 @@ NULL
 #'   * `range_censor`: Survival time range for censored observations.
 #'   * `range_event`: Survival time range for observations with events.
 #'   * `range`: Survival time range for all observations.
-#'
-#' @examples
-#' library(dplyr)
-#'
-#' adtte_f <- tern_ex_adtte %>%
-#'   filter(PARAMCD == "OS") %>%
-#'   mutate(
-#'     AVAL = day2month(AVAL),
-#'     is_event = CNSR == 0
-#'   )
-#' df <- adtte_f %>% filter(ARMCD == "ARM A")
 #'
 #' @keywords internal
 s_surv_time <- function(df,
@@ -179,6 +180,7 @@ a_surv_time <- function(df,
 #'   build_table(df = adtte_f)
 #'
 #' @export
+#' @order 2
 surv_time <- function(lyt,
                       vars,
                       ref_fn_censor = TRUE,

@@ -2,11 +2,25 @@
 % Please edit documentation in R/incidence_rate.R
 \name{incidence_rate}
 \alias{incidence_rate}
+\alias{estimate_incidence_rate}
 \alias{s_incidence_rate}
 \alias{a_incidence_rate}
-\alias{estimate_incidence_rate}
 \title{Incidence Rate}
 \usage{
+estimate_incidence_rate(
+  lyt,
+  vars,
+  na_str = NA_character_,
+  nested = TRUE,
+  ...,
+  show_labels = "hidden",
+  table_names = vars,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
+
 s_incidence_rate(
   df,
   .var,
@@ -22,42 +36,8 @@ a_incidence_rate(
   is_event,
   control = control_incidence_rate()
 )
-
-estimate_incidence_rate(
-  lyt,
-  vars,
-  na_str = NA_character_,
-  nested = TRUE,
-  ...,
-  show_labels = "hidden",
-  table_names = vars,
-  .stats = NULL,
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = NULL
-)
 }
 \arguments{
-\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
-
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
-
-\item{n_events}{(\code{integer})\cr number of events observed.}
-
-\item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
-
-\item{control}{(\code{list})\cr parameters for estimation details, specified by using
-the helper function \code{\link[=control_incidence_rate]{control_incidence_rate()}}. Possible parameter options are:
-\itemize{
-\item \code{conf_level} (\code{proportion})\cr confidence level for the estimated incidence rate.
-\item \code{conf_type} (\code{string})\cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
-for confidence interval type.
-\item \code{input_time_unit} (\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
-indicating time unit for data input.
-\item \code{num_pt_year} (\code{numeric})\cr time unit for desired output (in person-years).
-}}
-
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
@@ -85,8 +65,34 @@ information on the \code{"auto"} setting.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
+
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
+
+\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
+
+\item{n_events}{(\code{integer})\cr number of events observed.}
+
+\item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
+
+\item{control}{(\code{list})\cr parameters for estimation details, specified by using
+the helper function \code{\link[=control_incidence_rate]{control_incidence_rate()}}. Possible parameter options are:
+\itemize{
+\item \code{conf_level} (\code{proportion})\cr confidence level for the estimated incidence rate.
+\item \code{conf_type} (\code{string})\cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
+for confidence interval type.
+\item \code{input_time_unit} (\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
+indicating time unit for data input.
+\item \code{num_pt_year} (\code{numeric})\cr time unit for desired output (in person-years).
+}}
 }
 \value{
+\itemize{
+\item \code{estimate_incidence_rate()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_incidence_rate()} to the table layout.
+}
+
 \itemize{
 \item \code{s_incidence_rate()} returns the following statistics:
 \itemize{
@@ -100,12 +106,6 @@ unmodified default behavior. Can be negative.}
 \itemize{
 \item \code{a_incidence_rate()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
-
-\itemize{
-\item \code{estimate_incidence_rate()} returns a layout object suitable for passing to further layouting functions,
-or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
-the statistics from \code{s_incidence_rate()} to the table layout.
-}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -115,14 +115,14 @@ as incidence rate. Primary analysis variable is the person-years at risk.
 }
 \section{Functions}{
 \itemize{
+\item \code{estimate_incidence_rate()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{s_incidence_rate()}: Statistics function which estimates the incidence rate and the
 associated confidence interval.
 
 \item \code{a_incidence_rate()}: Formatted analysis function which is used as \code{afun}
 in \code{estimate_incidence_rate()}.
-
-\item \code{estimate_incidence_rate()}: Layout-creating function which can take statistics function arguments
-and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{

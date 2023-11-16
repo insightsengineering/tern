@@ -22,6 +22,7 @@
 #' @seealso Relevant helper function [h_append_grade_groups()].
 #'
 #' @name count_occurrences_by_grade
+#' @order 1
 NULL
 
 #' Helper function for [s_count_occurrences_by_grade()]
@@ -126,21 +127,6 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
 #'   grade level grouping.
 #'
 #' @examples
-#' library(dplyr)
-#' df <- data.frame(
-#'   USUBJID = as.character(c(1:6, 1)),
-#'   ARM = factor(c("A", "A", "A", "B", "B", "B", "A"), levels = c("A", "B")),
-#'   AETOXGR = factor(c(1, 2, 3, 4, 1, 2, 3), levels = c(1:5)),
-#'   AESEV = factor(
-#'     x = c("MILD", "MODERATE", "SEVERE", "MILD", "MILD", "MODERATE", "SEVERE"),
-#'     levels = c("MILD", "MODERATE", "SEVERE")
-#'   ),
-#'   stringsAsFactors = FALSE
-#' )
-#' df_adsl <- df %>%
-#'   select(USUBJID, ARM) %>%
-#'   unique()
-#'
 #' s_count_occurrences_by_grade(
 #'   df,
 #'   .N_col = 10L,
@@ -245,6 +231,23 @@ a_count_occurrences_by_grade <- make_afun(
 #'   the statistics from `s_count_occurrences_by_grade()` to the table layout.
 #'
 #' @examples
+#' library(dplyr)
+#'
+#' df <- data.frame(
+#'   USUBJID = as.character(c(1:6, 1)),
+#'   ARM = factor(c("A", "A", "A", "B", "B", "B", "A"), levels = c("A", "B")),
+#'   AETOXGR = factor(c(1, 2, 3, 4, 1, 2, 3), levels = c(1:5)),
+#'   AESEV = factor(
+#'     x = c("MILD", "MODERATE", "SEVERE", "MILD", "MILD", "MODERATE", "SEVERE"),
+#'     levels = c("MILD", "MODERATE", "SEVERE")
+#'   ),
+#'   stringsAsFactors = FALSE
+#' )
+#'
+#' df_adsl <- df %>%
+#'   select(USUBJID, ARM) %>%
+#'   unique()
+#'
 #' # Layout creating function with custom format.
 #' basic_table() %>%
 #'   split_cols_by("ARM") %>%
@@ -272,6 +275,7 @@ a_count_occurrences_by_grade <- make_afun(
 #'   build_table(df, alt_counts_df = df_adsl)
 #'
 #' @export
+#' @order 2
 count_occurrences_by_grade <- function(lyt,
                                        var,
                                        var_labels = var,
@@ -348,6 +352,7 @@ count_occurrences_by_grade <- function(lyt,
 #'   build_table(df, alt_counts_df = df_adsl)
 #'
 #' @export
+#' @order 3
 summarize_occurrences_by_grade <- function(lyt,
                                            var,
                                            na_str = NA_character_,

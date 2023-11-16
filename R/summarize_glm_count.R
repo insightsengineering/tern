@@ -10,6 +10,7 @@
 #'   to see available statistics for this function.
 #'
 #' @name summarize_glm_count
+#' @order 1
 NULL
 
 #' Helper Functions for Poisson Models.
@@ -90,7 +91,6 @@ h_glm_poisson <- function(.var,
 #' @return
 #' * `h_glm_quasipoisson()` returns the results of a Quasi-Poisson model.
 #'
-#'
 #' @keywords internal
 h_glm_quasipoisson <- function(.var,
                                .df_row,
@@ -149,7 +149,6 @@ h_glm_quasipoisson <- function(.var,
 #' @return
 #' * `h_glm_count()` returns the results of the selected model.
 #'
-#'
 #' @keywords internal
 h_glm_count <- function(.var,
                         .df_row,
@@ -176,7 +175,6 @@ h_glm_count <- function(.var,
 #'
 #' @return
 #' * `h_ppmeans()` returns the estimated means.
-#'
 #'
 #' @keywords internal
 h_ppmeans <- function(obj, .df_row, arm, conf_level) {
@@ -228,7 +226,6 @@ h_ppmeans <- function(obj, .df_row, arm, conf_level) {
 #'   * `rate_ratio`: Ratio of event rates in each treatment arm to the reference arm.
 #'   * `rate_ratio_ci`: Confidence level for the rate ratio.
 #'   * `pval`: p-value.
-#'
 #'
 #' @keywords internal
 s_glm_count <- function(df,
@@ -324,7 +321,6 @@ s_glm_count <- function(df,
 #' @return
 #' * `a_glm_count()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#'
 #' @keywords internal
 a_glm_count <- make_afun(
   s_glm_count,
@@ -357,6 +353,7 @@ a_glm_count <- make_afun(
 #'
 #' @examples
 #' library(dplyr)
+#'
 #' anl <- tern_ex_adtte %>% filter(PARAMCD == "TNE")
 #' anl$AVAL_f <- as.factor(anl$AVAL)
 #'
@@ -395,9 +392,11 @@ a_glm_count <- make_afun(
 #'       rate_ratio_ci = "Rate Ratio CI", pval = "p value"
 #'     )
 #'   )
+#'
 #' build_table(lyt = lyt, df = anl)
 #'
 #' @export
+#' @order 2
 summarize_glm_count <- function(lyt,
                                 vars,
                                 var_labels,

@@ -20,7 +20,26 @@
 #'   needs to use `split_fun = drop_split_levels` in the `split_rows_by` calls. Use `drop = FALSE` if you would
 #'   like to show all occurrences.
 #'
+#' @examples
+#' library(dplyr)
+#' df <- data.frame(
+#'   USUBJID = as.character(c(
+#'     1, 1, 2, 4, 4, 4,
+#'     6, 6, 6, 7, 7, 8
+#'   )),
+#'   MHDECOD = c(
+#'     "MH1", "MH2", "MH1", "MH1", "MH1", "MH3",
+#'     "MH2", "MH2", "MH3", "MH1", "MH2", "MH4"
+#'   ),
+#'   ARM = rep(c("A", "B"), each = 6),
+#'   SEX = c("F", "F", "M", "M", "M", "M", "F", "F", "F", "M", "M", "F")
+#' )
+#' df_adsl <- df %>%
+#'   select(USUBJID, ARM) %>%
+#'   unique()
+#'
 #' @name count_occurrences
+#' @order 1
 NULL
 
 #' @describeIn count_occurrences Statistics function which counts number of patients that report an
@@ -37,17 +56,10 @@ NULL
 #'   * `fraction`: list of numerators and denominators with one element per occurrence.
 #'
 #' @examples
-#' df <- data.frame(
-#'   USUBJID = as.character(c(1, 1, 2, 4, 4, 4)),
-#'   MHDECOD = c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3")
-#' )
-#'
-#' N_per_col <- 4L
-#'
 #' # Count unique occurrences per subject.
 #' s_count_occurrences(
 #'   df,
-#'   .N_col = N_per_col,
+#'   .N_col = 4L,
 #'   .df_row = df,
 #'   .var = "MHDECOD",
 #'   id = "USUBJID"
@@ -119,7 +131,7 @@ s_count_occurrences <- function(df,
 #' @examples
 #' a_count_occurrences(
 #'   df,
-#'   .N_col = N_per_col,
+#'   .N_col = 4L,
 #'   .df_row = df,
 #'   .var = "MHDECOD",
 #'   id = "USUBJID"
@@ -184,23 +196,6 @@ a_count_occurrences <- function(df,
 #'   the statistics from `s_count_occurrences()` to the table layout.
 #'
 #' @examples
-#' library(dplyr)
-#' df <- data.frame(
-#'   USUBJID = as.character(c(
-#'     1, 1, 2, 4, 4, 4,
-#'     6, 6, 6, 7, 7, 8
-#'   )),
-#'   MHDECOD = c(
-#'     "MH1", "MH2", "MH1", "MH1", "MH1", "MH3",
-#'     "MH2", "MH2", "MH3", "MH1", "MH2", "MH4"
-#'   ),
-#'   ARM = rep(c("A", "B"), each = 6),
-#'   SEX = c("F", "F", "M", "M", "M", "M", "F", "F", "F", "M", "M", "F")
-#' )
-#' df_adsl <- df %>%
-#'   select(USUBJID, ARM) %>%
-#'   unique()
-#'
 #' # Create table layout
 #' lyt <- basic_table() %>%
 #'   split_cols_by("ARM") %>%
@@ -208,11 +203,14 @@ a_count_occurrences <- function(df,
 #'   count_occurrences(vars = "MHDECOD", .stats = c("count_fraction"))
 #'
 #' # Apply table layout to data and produce `rtable` object
-#' lyt %>%
+#' tbl <- lyt %>%
 #'   build_table(df, alt_counts_df = df_adsl) %>%
 #'   prune_table()
 #'
+#' tbl
+#'
 #' @export
+#' @order 2
 count_occurrences <- function(lyt,
                               vars,
                               var_labels = vars,
@@ -277,6 +275,7 @@ count_occurrences <- function(lyt,
 #'   build_table(df, alt_counts_df = df_adsl)
 #'
 #' @export
+#' @order 3
 summarize_occurrences <- function(lyt,
                                   var,
                                   riskdiff = FALSE,

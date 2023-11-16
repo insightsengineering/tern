@@ -2,11 +2,23 @@
 % Please edit documentation in R/abnormal_by_worst_grade.R
 \name{abnormal_by_worst_grade}
 \alias{abnormal_by_worst_grade}
+\alias{count_abnormal_by_worst_grade}
 \alias{s_count_abnormal_by_worst_grade}
 \alias{a_count_abnormal_by_worst_grade}
-\alias{count_abnormal_by_worst_grade}
 \title{Count patients by most extreme post-baseline toxicity grade per direction of abnormality}
 \usage{
+count_abnormal_by_worst_grade(
+  lyt,
+  var,
+  na_str = NA_character_,
+  nested = TRUE,
+  ...,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
+
 s_count_abnormal_by_worst_grade(
   df,
   .var = "GRADE_ANL",
@@ -20,30 +32,8 @@ a_count_abnormal_by_worst_grade(
   .spl_context,
   variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
 )
-
-count_abnormal_by_worst_grade(
-  lyt,
-  var,
-  na_str = NA_character_,
-  nested = TRUE,
-  ...,
-  .stats = NULL,
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = NULL
-)
 }
 \arguments{
-\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
-
-\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
-
-\item{.spl_context}{(\code{data.frame})\cr gives information about ancestor split states
-that is passed by \code{rtables}.}
-
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
-
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
@@ -64,8 +54,24 @@ information on the \code{"auto"} setting.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
+
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
+
+\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
+
+\item{.spl_context}{(\code{data.frame})\cr gives information about ancestor split states
+that is passed by \code{rtables}.}
+
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 }
 \value{
+\itemize{
+\item \code{count_abnormal_by_worst_grade()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_abnormal_by_worst_grade()} to the table layout.
+}
+
 \itemize{
 \item \code{s_count_abnormal_by_worst_grade()} returns the single statistic \code{count_fraction} with grades 1 to 4 and
 "Any" results.
@@ -73,12 +79,6 @@ unmodified default behavior. Can be negative.}
 
 \itemize{
 \item \code{a_count_abnormal_by_worst_grade()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
-}
-
-\itemize{
-\item \code{count_abnormal_by_worst_grade()} returns a layout object suitable for passing to further layouting functions,
-or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
-the statistics from \code{s_count_abnormal_by_worst_grade()} to the table layout.
 }
 }
 \description{
@@ -113,13 +113,13 @@ splits, one on variable \code{param} and one on variable \code{grade_dir}.
 }
 \section{Functions}{
 \itemize{
+\item \code{count_abnormal_by_worst_grade()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{s_count_abnormal_by_worst_grade()}: Statistics function which counts patients by worst grade.
 
 \item \code{a_count_abnormal_by_worst_grade()}: Formatted analysis function which is used as \code{afun}
 in \code{count_abnormal_by_worst_grade()}.
-
-\item \code{count_abnormal_by_worst_grade()}: Layout-creating function which can take statistics function arguments
-and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
 }}
 \examples{
@@ -137,8 +137,8 @@ adlb$ATOXGR[adlb$PARAMCD == "IGA" & adlb$ATOXGR \%in\% c("-1", "-2", "-3", "-4")
 adlb$ANRIND[adlb$PARAMCD == "IGA" & adlb$ANRIND == "LOW"] <- "HIGH"
 adlb$WGRLOFL[adlb$PARAMCD == "IGA"] <- ""
 
-# Here starts the real pre-processing.
-adlb_f <- h_adlb_abnormal_by_worst_grade(adlb)
+# Pre-processing
+adlb_f <- adlb \%>\% h_adlb_abnormal_by_worst_grade()
 
 # Map excludes records without abnormal grade since they should not be displayed
 # in the table.

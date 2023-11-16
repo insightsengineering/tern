@@ -18,6 +18,7 @@
 #' @seealso [count_patients_with_flags]
 #'
 #' @name count_patients_with_event
+#' @order 1
 NULL
 
 #' @describeIn count_patients_with_event Statistics function which counts the number of patients for which
@@ -35,8 +36,6 @@ NULL
 #' * `s_count_patients_with_event()` returns the count and fraction of unique identifiers with the defined event.
 #'
 #' @examples
-#' library(dplyr)
-#'
 #' # `s_count_patients_with_event()`
 #'
 #' s_count_patients_with_event(
@@ -44,11 +43,13 @@ NULL
 #'   .var = "SUBJID",
 #'   filters = c("TRTEMFL" = "Y")
 #' )
+#'
 #' s_count_patients_with_event(
 #'   tern_ex_adae,
 #'   .var = "SUBJID",
 #'   filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL")
 #' )
+#'
 #' s_count_patients_with_event(
 #'   tern_ex_adae,
 #'   .var = "SUBJID",
@@ -148,9 +149,11 @@ a_count_patients_with_event <- make_afun(
 #'     .indent_mods = c(count_fraction = 2L),
 #'     table_names = "tbl_rel_fatal"
 #'   )
+#'
 #' build_table(lyt, tern_ex_adae, alt_counts_df = tern_ex_adsl)
 #'
 #' @export
+#' @order 2
 count_patients_with_event <- function(lyt,
                                       vars,
                                       riskdiff = FALSE,

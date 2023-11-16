@@ -22,6 +22,7 @@
 #' @seealso Relevant helper function [h_odds_ratio()].
 #'
 #' @name odds_ratio
+#' @order 1
 NULL
 
 #' @describeIn odds_ratio Statistics function which estimates the odds ratio
@@ -35,13 +36,6 @@ NULL
 #'   (containing `est`, `lcl`, and `ucl`) and `n_tot`.
 #'
 #' @examples
-#' set.seed(12)
-#' dta <- data.frame(
-#'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
-#'   grp = factor(rep(c("A", "B"), each = 50), levels = c("B", "A")),
-#'   strata = factor(sample(c("C", "D"), 100, TRUE))
-#' )
-#'
 #' # Unstratified analysis.
 #' s_odds_ratio(
 #'   df = subset(dta, grp == "A"),
@@ -176,9 +170,11 @@ a_odds_ratio <- make_afun(
 #'   the statistics from `s_odds_ratio()` to the table layout.
 #'
 #' @examples
+#' set.seed(12)
 #' dta <- data.frame(
 #'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
-#'   grp = factor(rep(c("A", "B"), each = 50))
+#'   grp = factor(rep(c("A", "B"), each = 50), levels = c("A", "B")),
+#'   strata = factor(sample(c("C", "D"), 100, TRUE))
 #' )
 #'
 #' l <- basic_table() %>%
@@ -188,6 +184,7 @@ a_odds_ratio <- make_afun(
 #' build_table(l, df = dta)
 #'
 #' @export
+#' @order 2
 estimate_odds_ratio <- function(lyt,
                                 vars,
                                 na_str = NA_character_,

@@ -20,6 +20,7 @@
 #'   otherwise they are hidden.
 #'
 #' @name count_values_funs
+#' @order 1
 NULL
 
 #' @describeIn count_values_funs S3 generic function to count values.
@@ -126,6 +127,7 @@ a_count_values <- make_afun(
 #'   build_table(iris)
 #'
 #' @export
+#' @order 2
 count_values <- function(lyt,
                          vars,
                          values,

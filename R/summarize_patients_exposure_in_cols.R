@@ -10,6 +10,7 @@
 #' `get_stats("analyze_patients_exposure_in_cols")` to see available statistics for this function.
 #'
 #' @name summarize_patients_exposure_in_cols
+#' @order 1
 NULL
 
 #' @describeIn summarize_patients_exposure_in_cols Statistics function which counts numbers
@@ -22,22 +23,6 @@ NULL
 #' * `s_count_patients_sum_exposure()` returns a named `list` with the statistics:
 #'   * `n_patients`: Number of unique patients in `df`.
 #'   * `sum_exposure`: Sum of `ex_var` across all patients in `df`.
-#'
-#' @examples
-#' set.seed(1)
-#' df <- data.frame(
-#'   USUBJID = c(paste("id", seq(1, 12), sep = "")),
-#'   ARMCD = c(rep("ARM A", 6), rep("ARM B", 6)),
-#'   SEX = c(rep("Female", 6), rep("Male", 6)),
-#'   AVAL = as.numeric(sample(seq(1, 20), 12)),
-#'   stringsAsFactors = TRUE
-#' )
-#' adsl <- data.frame(
-#'   USUBJID = c(paste("id", seq(1, 12), sep = "")),
-#'   ARMCD = c(rep("ARM A", 2), rep("ARM B", 2)),
-#'   SEX = c(rep("Female", 2), rep("Male", 2)),
-#'   stringsAsFactors = TRUE
-#' )
 #'
 #' @keywords internal
 s_count_patients_sum_exposure <- function(df,
@@ -165,17 +150,20 @@ a_count_patients_sum_exposure <- function(df,
 #'   columns, to the table layout.
 #'
 #' @examples
-#' lyt <- basic_table() %>%
+#' lyt5 <- basic_table() %>%
 #'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE)
-#' result <- build_table(lyt, df = df, alt_counts_df = adsl)
-#' result
 #'
-#' lyt2 <- basic_table() %>%
+#' result5 <- build_table(lyt5, df = df, alt_counts_df = adsl)
+#' result5
+#'
+#' lyt6 <- basic_table() %>%
 #'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE, .stats = "sum_exposure")
-#' result2 <- build_table(lyt2, df = df, alt_counts_df = adsl)
-#' result2
+#'
+#' result6 <- build_table(lyt6, df = df, alt_counts_df = adsl)
+#' result6
 #'
 #' @export
+#' @order 3
 summarize_patients_exposure_in_cols <- function(lyt, # nolint
                                                 var,
                                                 na_str = NA_character_,
@@ -219,30 +207,45 @@ summarize_patients_exposure_in_cols <- function(lyt, # nolint
 #'   pages when pagination is used.
 #'
 #' @examples
-#' lyt3 <- basic_table() %>%
+#' set.seed(1)
+#' df <- data.frame(
+#'   USUBJID = c(paste("id", seq(1, 12), sep = "")),
+#'   ARMCD = c(rep("ARM A", 6), rep("ARM B", 6)),
+#'   SEX = c(rep("Female", 6), rep("Male", 6)),
+#'   AVAL = as.numeric(sample(seq(1, 20), 12)),
+#'   stringsAsFactors = TRUE
+#' )
+#' adsl <- data.frame(
+#'   USUBJID = c(paste("id", seq(1, 12), sep = "")),
+#'   ARMCD = c(rep("ARM A", 2), rep("ARM B", 2)),
+#'   SEX = c(rep("Female", 2), rep("Male", 2)),
+#'   stringsAsFactors = TRUE
+#' )
+#'
+#' lyt <- basic_table() %>%
 #'   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
 #'   summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) %>%
 #'   analyze_patients_exposure_in_cols(var = "SEX", col_split = FALSE)
-#' result3 <- build_table(lyt3, df = df, alt_counts_df = adsl)
-#' result3
+#' result <- build_table(lyt, df = df, alt_counts_df = adsl)
+#' result
 #'
-#' lyt4 <- basic_table() %>%
+#' lyt2 <- basic_table() %>%
 #'   split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
 #'   summarize_patients_exposure_in_cols(
 #'     var = "AVAL", col_split = TRUE,
 #'     .stats = "n_patients", custom_label = "some custom label"
 #'   ) %>%
 #'   analyze_patients_exposure_in_cols(var = "SEX", col_split = FALSE, ex_var = "AVAL")
-#' result4 <- build_table(lyt4, df = df, alt_counts_df = adsl)
-#' result4
+#' result2 <- build_table(lyt2, df = df, alt_counts_df = adsl)
+#' result2
 #'
-#' lyt5 <- basic_table() %>%
+#' lyt3 <- basic_table() %>%
 #'   analyze_patients_exposure_in_cols(var = "SEX", col_split = TRUE, ex_var = "AVAL")
-#' result5 <- build_table(lyt5, df = df, alt_counts_df = adsl)
-#' result5
+#' result3 <- build_table(lyt3, df = df, alt_counts_df = adsl)
+#' result3
 #'
 #' # Adding total levels and custom label
-#' lyt <- basic_table(
+#' lyt4 <- basic_table(
 #'   show_colcounts = TRUE
 #' ) %>%
 #'   analyze_patients_exposure_in_cols(
@@ -253,10 +256,11 @@ summarize_patients_exposure_in_cols <- function(lyt, # nolint
 #'   ) %>%
 #'   append_topleft(c("", "Sex"))
 #'
-#' tbl <- build_table(lyt, df = df, alt_counts_df = adsl)
-#' tbl
+#' result4 <- build_table(lyt4, df = df, alt_counts_df = adsl)
+#' result4
 #'
 #' @export
+#' @order 2
 analyze_patients_exposure_in_cols <- function(lyt, # nolint
                                               var = NULL,
                                               ex_var = "AVAL",

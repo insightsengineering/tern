@@ -12,6 +12,7 @@
 #'   to see available statistics for this function.
 #'
 #' @name summarize_change
+#' @order 1
 NULL
 
 #' @describeIn summarize_change Statistics function that summarizes baseline or post-baseline visits.
@@ -21,13 +22,6 @@ NULL
 #'
 #' @note The data in `df` must be either all be from baseline or post-baseline visits. Otherwise
 #'   an error will be thrown.
-#'
-#' @examples
-#' df <- data.frame(
-#'   chg = c(1, 2, 3),
-#'   is_bl = c(TRUE, TRUE, TRUE),
-#'   val = c(4, 5, 6)
-#' )
 #'
 #' @keywords internal
 s_change_from_baseline <- function(df,
@@ -56,7 +50,6 @@ s_change_from_baseline <- function(df,
 #'
 #' @return
 #' * `a_change_from_baseline()` returns the corresponding list with formatted [rtables::CellValue()].
-#'
 #'
 #' @keywords internal
 a_change_from_baseline <- make_afun(
@@ -91,11 +84,9 @@ a_change_from_baseline <- make_afun(
 #'   either baseline or post-baseline data.
 #'
 #' @examples
-#' # `summarize_change()`
-#'
-#' ## Fabricated dataset.
 #' library(dplyr)
 #'
+#' ## Fabricate dataset
 #' dta_test <- data.frame(
 #'   USUBJID = rep(1:6, each = 3),
 #'   AVISIT = rep(paste0("V", 1:3), 6),
@@ -115,11 +106,11 @@ a_change_from_baseline <- make_afun(
 #'   split_rows_by("AVISIT") %>%
 #'   summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL")) %>%
 #'   build_table(dta_test)
-#' \donttest{
-#' Viewer(results)
-#' }
+#'
+#' results
 #'
 #' @export
+#' @order 2
 summarize_change <- function(lyt,
                              vars,
                              na_str = NA_character_,

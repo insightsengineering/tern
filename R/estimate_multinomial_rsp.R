@@ -12,6 +12,7 @@
 #' @seealso Relevant description function [d_onco_rsp_label()].
 #'
 #' @name estimate_multinomial_rsp
+#' @order 1
 NULL
 
 #' Description of Standard Oncology Response
@@ -139,13 +140,10 @@ a_length_proportion <- make_afun(
 #'
 #' tbl <- build_table(lyt, dta_test)
 #'
-#' html <- as_html(tbl)
-#' html
-#' \donttest{
-#' Viewer(html)
-#' }
+#' tbl
 #'
 #' @export
+#' @order 2
 estimate_multinomial_response <- function(lyt,
                                           var,
                                           na_str = NA_character_,

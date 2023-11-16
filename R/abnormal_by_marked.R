@@ -37,6 +37,7 @@
 #'   patient will be counted only under the `Last or replicated` category.
 #'
 #' @name abnormal_by_marked
+#' @order 1
 NULL
 
 #' @describeIn abnormal_by_marked Statistics function for patients with marked lab abnormalities.
@@ -44,46 +45,6 @@ NULL
 #' @return
 #' * `s_count_abnormal_by_marked()` returns statistic `count_fraction` with `Single, not last`,
 #'   `Last or replicated`, and `Any` results.
-#'
-#' @examples
-#' library(dplyr)
-#'
-#' df <- data.frame(
-#'   USUBJID = as.character(c(rep(1, 5), rep(2, 5), rep(1, 5), rep(2, 5))),
-#'   ARMCD = factor(c(rep("ARM A", 5), rep("ARM B", 5), rep("ARM A", 5), rep("ARM B", 5))),
-#'   ANRIND = factor(c(
-#'     "NORMAL", "HIGH", "HIGH", "HIGH HIGH", "HIGH",
-#'     "HIGH", "HIGH", "HIGH HIGH", "NORMAL", "HIGH HIGH", "NORMAL", "LOW", "LOW", "LOW LOW", "LOW",
-#'     "LOW", "LOW", "LOW LOW", "NORMAL", "LOW LOW"
-#'   )),
-#'   ONTRTFL = rep(c("", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y"), 2),
-#'   PARAMCD = factor(c(rep("CRP", 10), rep("ALT", 10))),
-#'   AVALCAT1 = factor(rep(c("", "", "", "SINGLE", "REPLICATED", "", "", "LAST", "", "SINGLE"), 2)),
-#'   stringsAsFactors = FALSE
-#' )
-#'
-#' df <- df %>%
-#'   mutate(abn_dir = factor(
-#'     case_when(
-#'       ANRIND == "LOW LOW" ~ "Low",
-#'       ANRIND == "HIGH HIGH" ~ "High",
-#'       TRUE ~ ""
-#'     ),
-#'     levels = c("Low", "High")
-#'   ))
-#'
-#' # Select only post-baseline records.
-#' df <- df %>% filter(ONTRTFL == "Y")
-#' df_crp <- df %>%
-#'   filter(PARAMCD == "CRP") %>%
-#'   droplevels()
-#' full_parent_df <- list(df_crp, "not_needed")
-#' cur_col_subset <- list(rep(TRUE, nrow(df_crp)), "not_needed")
-#' spl_context <- data.frame(
-#'   split = c("PARAMCD", "GRADE_DIR"),
-#'   full_parent_df = I(full_parent_df),
-#'   cur_col_subset = I(cur_col_subset)
-#' )
 #'
 #' @keywords internal
 s_count_abnormal_by_marked <- function(df,
@@ -145,7 +106,6 @@ s_count_abnormal_by_marked <- function(df,
 #' @return
 #' * `a_count_abnormal_by_marked()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#'
 #' @keywords internal
 a_count_abnormal_by_marked <- make_afun(
   s_count_abnormal_by_marked,
@@ -161,6 +121,45 @@ a_count_abnormal_by_marked <- make_afun(
 #'   the statistics from `s_count_abnormal_by_marked()` to the table layout.
 #'
 #' @examples
+#' library(dplyr)
+#'
+#' df <- data.frame(
+#'   USUBJID = as.character(c(rep(1, 5), rep(2, 5), rep(1, 5), rep(2, 5))),
+#'   ARMCD = factor(c(rep("ARM A", 5), rep("ARM B", 5), rep("ARM A", 5), rep("ARM B", 5))),
+#'   ANRIND = factor(c(
+#'     "NORMAL", "HIGH", "HIGH", "HIGH HIGH", "HIGH",
+#'     "HIGH", "HIGH", "HIGH HIGH", "NORMAL", "HIGH HIGH", "NORMAL", "LOW", "LOW", "LOW LOW", "LOW",
+#'     "LOW", "LOW", "LOW LOW", "NORMAL", "LOW LOW"
+#'   )),
+#'   ONTRTFL = rep(c("", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y"), 2),
+#'   PARAMCD = factor(c(rep("CRP", 10), rep("ALT", 10))),
+#'   AVALCAT1 = factor(rep(c("", "", "", "SINGLE", "REPLICATED", "", "", "LAST", "", "SINGLE"), 2)),
+#'   stringsAsFactors = FALSE
+#' )
+#'
+#' df <- df %>%
+#'   mutate(abn_dir = factor(
+#'     case_when(
+#'       ANRIND == "LOW LOW" ~ "Low",
+#'       ANRIND == "HIGH HIGH" ~ "High",
+#'       TRUE ~ ""
+#'     ),
+#'     levels = c("Low", "High")
+#'   ))
+#'
+#' # Select only post-baseline records.
+#' df <- df %>% filter(ONTRTFL == "Y")
+#' df_crp <- df %>%
+#'   filter(PARAMCD == "CRP") %>%
+#'   droplevels()
+#' full_parent_df <- list(df_crp, "not_needed")
+#' cur_col_subset <- list(rep(TRUE, nrow(df_crp)), "not_needed")
+#' spl_context <- data.frame(
+#'   split = c("PARAMCD", "GRADE_DIR"),
+#'   full_parent_df = I(full_parent_df),
+#'   cur_col_subset = I(cur_col_subset)
+#' )
+#'
 #' map <- unique(
 #'   df[df$abn_dir %in% c("Low", "High") & df$AVALCAT1 != "", c("PARAMCD", "abn_dir")]
 #' ) %>%
@@ -211,6 +210,7 @@ a_count_abnormal_by_marked <- make_afun(
 #'   build_table(df = df)
 #'
 #' @export
+#' @order 2
 count_abnormal_by_marked <- function(lyt,
                                      var,
                                      na_str = NA_character_,

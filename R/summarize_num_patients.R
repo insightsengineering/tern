@@ -14,6 +14,7 @@
 #'   to see available statistics for this function.
 #'
 #' @name summarize_num_patients
+#' @order 1
 NULL
 
 #' @describeIn summarize_num_patients Statistics function which counts the number of
@@ -75,6 +76,7 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_su
 #'
 #' @examples
 #' # Count number of unique and non-unique patients.
+#'
 #' df <- data.frame(
 #'   USUBJID = as.character(c(1, 2, 1, 4, NA)),
 #'   EVENT = as.character(c(10, 15, 10, 17, 8))
@@ -85,7 +87,6 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_su
 #'   USUBJID = as.character(c(1, 2, 1, 4, NA)),
 #'   EVENT = as.character(c(10, 15, 10, 17, 8))
 #' )
-#' s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID")
 #' s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
 #'
 #' @export
@@ -139,6 +140,7 @@ c_num_patients <- make_afun(
 #'   the statistics from `s_num_patients_content()` to the table layout.
 #'
 #' @export
+#' @order 3
 summarize_num_patients <- function(lyt,
                                    var,
                                    na_str = NA_character_,
@@ -208,19 +210,22 @@ summarize_num_patients <- function(lyt,
 #' @note As opposed to [summarize_num_patients()], this function does not repeat the produced rows.
 #'
 #' @examples
-#' df_tmp <- data.frame(
+#' df <- data.frame(
 #'   USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
 #'   ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
 #'   AGE = c(10, 15, 10, 17, 8, 11, 11, 19, 17)
 #' )
+#'
 #' tbl <- basic_table() %>%
 #'   split_cols_by("ARM") %>%
 #'   add_colcounts() %>%
 #'   analyze_num_patients("USUBJID", .stats = c("unique")) %>%
-#'   build_table(df_tmp)
+#'   build_table(df)
+#'
 #' tbl
 #'
 #' @export
+#' @order 2
 analyze_num_patients <- function(lyt,
                                  vars,
                                  na_str = NA_character_,
