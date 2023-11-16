@@ -11,6 +11,7 @@ count_abnormal_by_baseline(
   lyt,
   var,
   abnormal,
+  variables = list(id = "USUBJID", baseline = "BNRIND"),
   na_str = "<Missing>",
   nested = TRUE,
   ...,
@@ -44,6 +45,8 @@ a_count_abnormal_by_baseline(
 
 \item{abnormal}{(\code{character})\cr identifying the abnormal range level(s) in \code{.var}.}
 
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
+
 \item{na_str}{(\code{string})\cr the explicit \code{na_level} argument you used in the pre-processing steps (maybe with
 \code{\link[=df_explicit_na]{df_explicit_na()}}). The default is \code{"<Missing>"}.}
 
@@ -73,8 +76,6 @@ unmodified default behavior. Can be negative.}
 by a statistics function.}
 
 \item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
-
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 }
 \value{
 \itemize{

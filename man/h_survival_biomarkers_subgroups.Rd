@@ -11,7 +11,13 @@ h_surv_to_coxreg_variables(variables, biomarker)
 
 h_coxreg_mult_cont_df(variables, data, control = control_coxreg())
 
-h_tab_surv_one_biomarker(df, vars, time_unit, .indent_mods = 0L)
+h_tab_surv_one_biomarker(
+  df,
+  vars,
+  time_unit,
+  .indent_mods = 0L,
+  extra_args = NULL
+)
 }
 \arguments{
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}

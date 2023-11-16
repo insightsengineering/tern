@@ -126,6 +126,7 @@ s_count_patients_and_multiple_events <- function(df, # nolint
 summarize_patients_events_in_cols <- function(lyt, # nolint
                                               id = "USUBJID",
                                               filters_list = list(),
+                                              empty_stats = character(),
                                               na_str = NA_character_,
                                               ...,
                                               .stats = c(
@@ -139,12 +140,12 @@ summarize_patients_events_in_cols <- function(lyt, # nolint
                                                 labels_or_names(filters_list)
                                               ),
                                               col_split = TRUE) {
+  extra_args <- list(id = id, filters_list = filters_list, empty_stats = empty_stats, ...)
+
   afun_list <- Map(
     function(stat) {
       make_afun(
         s_count_patients_and_multiple_events,
-        id = id,
-        filters_list = filters_list,
         .stats = stat,
         .formats = "xx."
       )
@@ -162,6 +163,6 @@ summarize_patients_events_in_cols <- function(lyt, # nolint
     lyt = lyt,
     cfun = afun_list,
     na_str = na_str,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }

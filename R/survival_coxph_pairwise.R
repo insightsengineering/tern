@@ -177,6 +177,8 @@ coxph_pairwise <- function(lyt,
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = NULL) {
+  extra_args <- list(...)
+
   afun <- make_afun(
     a_coxph_pairwise,
     .stats = .stats,
@@ -193,6 +195,6 @@ coxph_pairwise <- function(lyt,
     afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }

@@ -134,6 +134,8 @@ count_values <- function(lyt,
                          .formats = NULL,
                          .labels = c(count_fraction = paste(values, collapse = ", ")),
                          .indent_mods = NULL) {
+  extra_args <- list(values = values, ...)
+
   afun <- make_afun(
     a_count_values,
     .stats = .stats,
@@ -147,7 +149,7 @@ count_values <- function(lyt,
     afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = c(list(values = values), list(...)),
+    extra_args = extra_args,
     show_labels = ifelse(length(vars) > 1, "visible", "hidden"),
     table_names = table_names
   )

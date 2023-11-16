@@ -6,7 +6,13 @@
 \alias{a_response_subgroups}
 \title{Tabulate Binary Response by Subgroup}
 \usage{
-tabulate_rsp_subgroups(lyt, df, vars = c("n_tot", "n", "prop", "or", "ci"))
+tabulate_rsp_subgroups(
+  lyt,
+  df,
+  vars = c("n_tot", "n", "prop", "or", "ci"),
+  groups_lists = list(),
+  label_all = "All Patients"
+)
 
 a_response_subgroups(
   .formats = list(n = "xx", n_rsp = "xx", prop = "xx.x\%", n_tot = "xx", or =
@@ -31,6 +37,12 @@ created using \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.}
 \item \code{pval}: p-value of the effect.
 Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.
 }}
+
+\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
+list, which specifies the new group levels via the names and the
+levels that belong to it in the character vectors that are elements of the list.}
+
+\item{label_all}{(\code{string})\cr label for the total population analysis.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}

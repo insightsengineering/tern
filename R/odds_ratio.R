@@ -187,6 +187,9 @@ a_odds_ratio <- make_afun(
 #' @order 2
 estimate_odds_ratio <- function(lyt,
                                 vars,
+                                variables = list(arm = NULL, strata = NULL),
+                                conf_level = 0.95,
+                                groups_list = NULL,
                                 na_str = NA_character_,
                                 nested = TRUE,
                                 ...,
@@ -196,6 +199,8 @@ estimate_odds_ratio <- function(lyt,
                                 .formats = NULL,
                                 .labels = NULL,
                                 .indent_mods = NULL) {
+  extra_args <- list(variables = variables, conf_level = conf_level, groups_list = groups_list, ...)
+
   afun <- make_afun(
     a_odds_ratio,
     .stats = .stats,
@@ -210,7 +215,7 @@ estimate_odds_ratio <- function(lyt,
     afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = list(...),
+    extra_args = extra_args,
     show_labels = show_labels,
     table_names = table_names
   )

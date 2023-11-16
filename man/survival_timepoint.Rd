@@ -12,15 +12,18 @@
 surv_timepoint(
   lyt,
   vars,
+  time_point,
+  is_event,
+  control = control_surv_timepoint(),
+  method = c("surv", "surv_diff", "both"),
+  .stats = c("pt_at_risk", "event_free_rate", "rate_ci", "rate_diff", "rate_diff_ci",
+    "ztest_pval"),
   na_str = NA_character_,
   nested = TRUE,
   ...,
   table_names_suffix = "",
   var_labels = "Time",
   show_labels = "visible",
-  method = c("surv", "surv_diff", "both"),
-  .stats = c("pt_at_risk", "event_free_rate", "rate_ci", "rate_diff", "rate_diff_ci",
-    "ztest_pval"),
   .formats = NULL,
   .labels = NULL,
   .indent_mods = if (method == "both") {
@@ -72,6 +75,25 @@ a_surv_timepoint_diff(
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{time_point}{(\code{number})\cr survival time point of interest.}
+
+\item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
+
+\item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
+\code{\link[=control_surv_timepoint]{control_surv_timepoint()}}. Some possible parameter options are:
+\itemize{
+\item \code{conf_level} (\code{proportion})\cr confidence level of the interval for survival rate.
+\item \code{conf_type} (\code{string})\cr confidence interval type. Options are "plain" (default), "log", "log-log",
+see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "none" is no longer supported.
+\item \code{time_point} (\code{number})\cr survival time point of interest.
+}}
+
+\item{method}{(\code{string})\cr either \code{surv} (survival estimations),
+\code{surv_diff} (difference in survival with the control) or \code{both}.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("surv_timepoint")}
+to see available statistics for this function.}
+
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
@@ -87,12 +109,6 @@ avoid warnings from duplicate table names.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
-\item{method}{(\code{string})\cr either \code{surv} (survival estimations),
-\code{surv_diff} (difference in survival with the control) or \code{both}.}
-
-\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("surv_timepoint")}
-to see available statistics for this function.}
-
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
 
@@ -106,19 +122,6 @@ for that statistic's row label.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
-
-\item{time_point}{(\code{number})\cr survival time point of interest.}
-
-\item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
-
-\item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
-\code{\link[=control_surv_timepoint]{control_surv_timepoint()}}. Some possible parameter options are:
-\itemize{
-\item \code{conf_level} (\code{proportion})\cr confidence level of the interval for survival rate.
-\item \code{conf_type} (\code{string})\cr confidence interval type. Options are "plain" (default), "log", "log-log",
-see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "none" is no longer supported.
-\item \code{time_point} (\code{number})\cr survival time point of interest.
-}}
 
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 

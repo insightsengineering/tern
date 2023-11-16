@@ -359,6 +359,11 @@ a_count_abnormal_lab_worsen_by_baseline <- make_afun( # nolint
 #' @order 2
 count_abnormal_lab_worsen_by_baseline <- function(lyt, # nolint
                                                   var,
+                                                  variables = list(
+                                                    id = "USUBJID",
+                                                    baseline_var = "BTOXGR",
+                                                    direction_var = "GRADDR"
+                                                  ),
                                                   na_str = NA_character_,
                                                   nested = TRUE,
                                                   ...,
@@ -368,6 +373,8 @@ count_abnormal_lab_worsen_by_baseline <- function(lyt, # nolint
                                                   .labels = NULL,
                                                   .indent_mods = NULL) {
   checkmate::assert_string(var)
+
+  extra_args <- list(variables = variables, ...)
 
   afun <- make_afun(
     a_count_abnormal_lab_worsen_by_baseline,
@@ -383,7 +390,7 @@ count_abnormal_lab_worsen_by_baseline <- function(lyt, # nolint
     afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = list(...),
+    extra_args = extra_args,
     show_labels = "hidden"
   )
 

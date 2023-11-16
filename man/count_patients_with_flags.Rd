@@ -9,6 +9,8 @@
 count_patients_with_flags(
   lyt,
   var,
+  flag_variables,
+  flag_labels = NULL,
   var_labels = var,
   show_labels = "hidden",
   riskdiff = FALSE,
@@ -47,6 +49,11 @@ a_count_patients_with_flags(
 \item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
+\item{flag_variables}{(\code{character})\cr a character vector specifying the names of \code{logical}
+variables from analysis dataset used for counting the number of unique identifiers.}
+
+\item{flag_labels}{(\code{character})\cr vector of labels to use for flag variables.}
+
 \item{var_labels}{(\code{character})\cr character for label.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
@@ -78,11 +85,6 @@ unmodified default behavior. Can be negative.}
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{character})\cr name of the column that contains the unique identifier.}
-
-\item{flag_variables}{(\code{character})\cr a character vector specifying the names of \code{logical}
-variables from analysis dataset used for counting the number of unique identifiers.}
-
-\item{flag_labels}{(\code{character})\cr vector of labels to use for flag variables.}
 
 \item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}

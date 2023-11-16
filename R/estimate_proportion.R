@@ -166,6 +166,16 @@ a_proportion <- make_afun(
 #' @order 2
 estimate_proportion <- function(lyt,
                                 vars,
+                                conf_level = 0.95,
+                                method = c(
+                                  "waldcc", "wald", "clopper-pearson",
+                                  "wilson", "wilsonc", "strat_wilson", "strat_wilsonc",
+                                  "agresti-coull", "jeffreys"
+                                ),
+                                weights = NULL,
+                                max_iterations = 50,
+                                variables = list(strata = NULL),
+                                long = FALSE,
                                 na_str = NA_character_,
                                 nested = TRUE,
                                 ...,
@@ -175,6 +185,11 @@ estimate_proportion <- function(lyt,
                                 .formats = NULL,
                                 .labels = NULL,
                                 .indent_mods = NULL) {
+  extra_args <- list(
+    conf_level = conf_level, method = method, weights = weights, max_iterations = max_iterations,
+    variables = variables, long = long, ...
+  )
+
   afun <- make_afun(
     a_proportion,
     .stats = .stats,
@@ -188,7 +203,7 @@ estimate_proportion <- function(lyt,
     afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = list(...),
+    extra_args = extra_args,
     show_labels = show_labels,
     table_names = table_names
   )

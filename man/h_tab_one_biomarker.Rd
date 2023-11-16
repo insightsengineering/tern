@@ -9,7 +9,8 @@ h_tab_one_biomarker(
   afuns,
   colvars,
   na_str = NA_character_,
-  .indent_mods = 0L
+  .indent_mods = 0L,
+  extra_args = list()
 )
 }
 \arguments{

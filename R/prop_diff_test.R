@@ -137,6 +137,8 @@ a_test_proportion_diff <- make_afun(
 #' @order 2
 test_proportion_diff <- function(lyt,
                                  vars,
+                                 variables = list(strata = NULL),
+                                 method = c("chisq", "schouten", "fisher", "cmh"),
                                  na_str = NA_character_,
                                  nested = TRUE,
                                  ...,
@@ -147,6 +149,8 @@ test_proportion_diff <- function(lyt,
                                  .formats = NULL,
                                  .labels = NULL,
                                  .indent_mods = NULL) {
+  extra_args <- list(variables = variables, method = method, ...)
+
   afun <- make_afun(
     a_test_proportion_diff,
     .stats = .stats,
@@ -161,7 +165,7 @@ test_proportion_diff <- function(lyt,
     var_labels = var_labels,
     na_str = na_str,
     nested = nested,
-    extra_args = list(...),
+    extra_args = extra_args,
     show_labels = show_labels,
     table_names = table_names
   )

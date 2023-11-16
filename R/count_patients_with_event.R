@@ -149,6 +149,7 @@ a_count_patients_with_event <- make_afun(
 #' @order 2
 count_patients_with_event <- function(lyt,
                                       vars,
+                                      filters,
                                       riskdiff = FALSE,
                                       na_str = NA_character_,
                                       nested = TRUE,
@@ -160,6 +161,8 @@ count_patients_with_event <- function(lyt,
                                       .indent_mods = NULL) {
   checkmate::assert_flag(riskdiff)
 
+  s_args <- list(filters = filters, ...)
+
   afun <- make_afun(
     a_count_patients_with_event,
     .stats = .stats,
@@ -169,13 +172,13 @@ count_patients_with_event <- function(lyt,
   )
 
   extra_args <- if (isFALSE(riskdiff)) {
-    list(...)
+    s_args
   } else {
     list(
       afun = list("s_count_patients_with_event" = afun),
       .stats = .stats,
       .indent_mods = .indent_mods,
-      s_args = list(...)
+      s_args = s_args
     )
   }
 

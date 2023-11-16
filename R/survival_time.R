@@ -183,6 +183,8 @@ a_surv_time <- function(df,
 #' @order 2
 surv_time <- function(lyt,
                       vars,
+                      is_event,
+                      control = control_surv_time(),
                       ref_fn_censor = TRUE,
                       na_str = NA_character_,
                       nested = TRUE,
@@ -195,8 +197,8 @@ surv_time <- function(lyt,
                       .labels = NULL,
                       .indent_mods = c(median_ci = 1L)) {
   extra_args <- list(
-    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods,
-    na_str = na_str, ref_fn_censor = ref_fn_censor
+    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str,
+    is_event = is_event, control = control, ref_fn_censor = ref_fn_censor, ...
   )
 
   analyze(
@@ -208,6 +210,6 @@ surv_time <- function(lyt,
     table_names = table_names,
     na_str = na_str,
     nested = nested,
-    extra_args = c(extra_args, list(...))
+    extra_args = extra_args
   )
 }

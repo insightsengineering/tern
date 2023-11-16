@@ -156,6 +156,8 @@ a_count_patients_with_flags <- make_afun(
 #' @order 2
 count_patients_with_flags <- function(lyt,
                                       var,
+                                      flag_variables,
+                                      flag_labels = NULL,
                                       var_labels = var,
                                       show_labels = "hidden",
                                       riskdiff = FALSE,
@@ -168,6 +170,8 @@ count_patients_with_flags <- function(lyt,
                                       .indent_mods = NULL) {
   checkmate::assert_flag(riskdiff)
 
+  s_args <- list(flag_variables = flag_variables, flag_labels = flag_labels, ...)
+
   afun <- make_afun(
     a_count_patients_with_flags,
     .stats = .stats,
@@ -177,13 +181,13 @@ count_patients_with_flags <- function(lyt,
   )
 
   extra_args <- if (isFALSE(riskdiff)) {
-    list(...)
+    s_args
   } else {
     list(
       afun = list("s_count_patients_with_flags" = afun),
       .stats = .stats,
       .indent_mods = .indent_mods,
-      s_args = list(...)
+      s_args = s_args
     )
   }
 

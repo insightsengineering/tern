@@ -10,6 +10,9 @@
 count_occurrences_by_grade(
   lyt,
   var,
+  id = "USUBJID",
+  grade_groups = list(),
+  remove_single = TRUE,
   var_labels = var,
   show_labels = "default",
   riskdiff = FALSE,
@@ -26,6 +29,9 @@ count_occurrences_by_grade(
 summarize_occurrences_by_grade(
   lyt,
   var,
+  id = "USUBJID",
+  grade_groups = list(),
+  remove_single = TRUE,
   na_str = NA_character_,
   ...,
   .stats = NULL,
@@ -56,6 +62,13 @@ a_count_occurrences_by_grade(
 }
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{id}{(\code{string})\cr subject variable name.}
+
+\item{grade_groups}{(named \code{list} of \code{character})\cr containing groupings of grades.}
+
+\item{remove_single}{(\code{logical})\cr \code{TRUE} to not include the elements of one-element grade groups
+in the the output list; in this case only the grade groups names will be included in the output.}
 
 \item{var_labels}{(\code{character})\cr labels to show in the result table.}
 
@@ -94,13 +107,6 @@ by a statistics function.}
 
 \item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
-
-\item{id}{(\code{string})\cr subject variable name.}
-
-\item{grade_groups}{(named \code{list} of \code{character})\cr containing groupings of grades.}
-
-\item{remove_single}{(\code{logical})\cr \code{TRUE} to not include the elements of one-element grade groups
-in the the output list; in this case only the grade groups names will be included in the output.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}

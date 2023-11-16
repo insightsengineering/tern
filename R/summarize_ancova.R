@@ -236,6 +236,10 @@ a_ancova <- make_afun(
 #' @order 2
 summarize_ancova <- function(lyt,
                              vars,
+                             variables,
+                             conf_level,
+                             interaction_y = FALSE,
+                             interaction_item = NULL,
                              var_labels,
                              na_str = NA_character_,
                              nested = TRUE,
@@ -245,9 +249,12 @@ summarize_ancova <- function(lyt,
                              .stats = NULL,
                              .formats = NULL,
                              .labels = NULL,
-                             .indent_mods = NULL,
-                             interaction_y = FALSE,
-                             interaction_item = NULL) {
+                             .indent_mods = NULL) {
+  extra_args <- list(
+    variables = variables, conf_level = conf_level, interaction_y = interaction_y,
+    interaction_item = interaction_item, ...
+  )
+
   afun <- make_afun(
     a_ancova,
     interaction_y = interaction_y,
@@ -267,6 +274,6 @@ summarize_ancova <- function(lyt,
     afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }

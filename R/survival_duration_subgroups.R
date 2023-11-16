@@ -207,10 +207,14 @@ a_survival_subgroups <- function(.formats = list( # nolint start
 tabulate_survival_subgroups <- function(lyt,
                                         df,
                                         vars = c("n_tot_events", "n_events", "median", "hr", "ci"),
+                                        groups_lists = list(),
+                                        label_all = "All Patients",
                                         time_unit = NULL,
                                         na_str = NA_character_) {
   conf_level <- df$hr$conf_level[1]
   method <- df$hr$pval_label[1]
+
+  extra_args <- list(groups_lists = groups_lists, conf_level = conf_level, method = method, label_all = label_all)
 
   afun_lst <- a_survival_subgroups()
   colvars <- d_survival_subgroups_colvars(
@@ -242,7 +246,8 @@ tabulate_survival_subgroups <- function(lyt,
       lyt = lyt_survtime,
       var = "var_label",
       cfun = afun_lst[names(colvars_survtime$labels)],
-      na_str = na_str
+      na_str = na_str,
+      extra_args = extra_args
     )
     lyt_survtime <- split_cols_by_multivar(
       lyt = lyt_survtime,
@@ -262,7 +267,8 @@ tabulate_survival_subgroups <- function(lyt,
       lyt_survtime <- analyze_colvars(
         lyt = lyt_survtime,
         afun = afun_lst[names(colvars_survtime$labels)],
-        inclNAs = TRUE
+        inclNAs = TRUE,
+        extra_args = extra_args
       )
     }
 
@@ -283,7 +289,8 @@ tabulate_survival_subgroups <- function(lyt,
     lyt = lyt_hr,
     var = "var_label",
     cfun = afun_lst[names(colvars_hr$labels)],
-    na_str = na_str
+    na_str = na_str,
+    extra_args = extra_args
   )
   lyt_hr <- split_cols_by_multivar(
     lyt = lyt_hr,
@@ -304,7 +311,8 @@ tabulate_survival_subgroups <- function(lyt,
     lyt_hr <- analyze_colvars(
       lyt = lyt_hr,
       afun = afun_lst[names(colvars_hr$labels)],
-      inclNAs = TRUE
+      inclNAs = TRUE,
+      extra_args = extra_args
     )
   }
   table_hr <- build_table(lyt_hr, df = df$hr)

@@ -17,7 +17,8 @@ h_tab_one_biomarker <- function(df,
                                 afuns,
                                 colvars,
                                 na_str = NA_character_,
-                                .indent_mods = 0L) {
+                                .indent_mods = 0L,
+                                extra_args = list()) {
   lyt <- basic_table()
 
   # Row split by row type - only keep the content rows here.
@@ -70,7 +71,8 @@ h_tab_one_biomarker <- function(df,
       lyt = lyt,
       cfun = afuns,
       var = "subgroup",
-      na_str = na_str
+      na_str = na_str,
+      extra_args = extra_args
     )
   }
   build_table(lyt, df = df)

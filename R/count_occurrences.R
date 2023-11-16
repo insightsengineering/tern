@@ -209,6 +209,8 @@ a_count_occurrences <- function(df,
 #' @order 2
 count_occurrences <- function(lyt,
                               vars,
+                              id = "USUBJID",
+                              drop = TRUE,
                               var_labels = vars,
                               show_labels = "hidden",
                               riskdiff = FALSE,
@@ -225,15 +227,16 @@ count_occurrences <- function(lyt,
   extra_args <- list(
     .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
   )
+  s_args <- list(id = id, drop = drop, ...)
 
   if (isFALSE(riskdiff)) {
-    extra_args <- c(extra_args, list(...))
+    extra_args <- c(extra_args, s_args)
   } else {
     extra_args <- c(
       extra_args,
       list(
         afun = list("s_count_occurrences" = a_count_occurrences),
-        s_args = list(...)
+        s_args = s_args
       )
     )
   }
@@ -274,6 +277,8 @@ count_occurrences <- function(lyt,
 #' @order 3
 summarize_occurrences <- function(lyt,
                                   var,
+                                  id = "USUBJID",
+                                  drop = TRUE,
                                   riskdiff = FALSE,
                                   na_str = NA_character_,
                                   ...,
@@ -286,15 +291,16 @@ summarize_occurrences <- function(lyt,
   extra_args <- list(
     .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
   )
+  s_args <- list(id = id, drop = drop, ...)
 
   if (isFALSE(riskdiff)) {
-    extra_args <- c(extra_args, list(...))
+    extra_args <- c(extra_args, s_args)
   } else {
     extra_args <- c(
       extra_args,
       list(
         afun = list("s_count_occurrences" = a_count_occurrences),
-        s_args = list(...)
+        s_args = s_args
       )
     )
   }

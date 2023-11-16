@@ -10,6 +10,11 @@
 estimate_proportion_diff(
   lyt,
   vars,
+  variables = list(strata = NULL),
+  conf_level = 0.95,
+  method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc", "strat_newcombe",
+    "strat_newcombecc"),
+  weights_method = "cmh",
   na_str = NA_character_,
   nested = TRUE,
   ...,
@@ -51,6 +56,15 @@ a_proportion_diff(
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
+
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
+\item{method}{(\code{string})\cr the method used for the confidence interval estimation.}
+
+\item{weights_method}{(\code{string})\cr weights method. Can be either \code{"cmh"} or \code{"heuristic"}
+and directs the way weights are estimated.}
+
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
@@ -85,15 +99,6 @@ by a statistics function.}
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
-
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
-
-\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
-
-\item{method}{(\code{string})\cr the method used for the confidence interval estimation.}
-
-\item{weights_method}{(\code{string})\cr weights method. Can be either \code{"cmh"} or \code{"heuristic"}
-and directs the way weights are estimated.}
 }
 \value{
 \itemize{

@@ -155,6 +155,8 @@ estimate_multinomial_response <- function(lyt,
                                           .formats = NULL,
                                           .labels = NULL,
                                           .indent_mods = NULL) {
+  extra_args <- list(...)
+
   afun <- make_afun(
     a_length_proportion,
     .stats = .stats,
@@ -173,6 +175,6 @@ estimate_multinomial_response <- function(lyt,
     table_names = table_names,
     na_str = na_str,
     nested = nested,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }

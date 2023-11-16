@@ -9,6 +9,12 @@
 summarize_glm_count(
   lyt,
   vars,
+  variables,
+  distribution,
+  conf_level,
+  rate_mean_method,
+  weights = stats::weights,
+  scale = 1,
   var_labels,
   na_str = NA_character_,
   nested = TRUE,
@@ -54,6 +60,17 @@ a_glm_count(
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
+
+\item{distribution}{(\code{character})\cr a character value specifying the distribution
+used in the regression (poisson, quasipoisson).}
+
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
+\item{weights}{(\code{character})\cr a character vector specifying weights used
+in averaging predictions. Number of weights must equal the number of levels included in the covariates.
+Weights option passed to \code{\link[emmeans:emmeans]{emmeans::emmeans()}}.}
+
 \item{var_labels}{(\code{character})\cr character for label.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
@@ -87,20 +104,9 @@ by a statistics function.}
 
 \item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
-
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
-
-\item{distribution}{(\code{character})\cr a character value specifying the distribution
-used in the regression (poisson, quasipoisson).}
-
-\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
-
-\item{weights}{(\code{character})\cr a character vector specifying weights used
-in averaging predictions. Number of weights must equal the number of levels included in the covariates.
-Weights option passed to \code{\link[emmeans:emmeans]{emmeans::emmeans()}}.}
 }
 \value{
 \itemize{

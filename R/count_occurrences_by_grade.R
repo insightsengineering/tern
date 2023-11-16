@@ -272,6 +272,9 @@ a_count_occurrences_by_grade <- make_afun(
 #' @order 2
 count_occurrences_by_grade <- function(lyt,
                                        var,
+                                       id = "USUBJID",
+                                       grade_groups = list(),
+                                       remove_single = TRUE,
                                        var_labels = var,
                                        show_labels = "default",
                                        riskdiff = FALSE,
@@ -285,6 +288,8 @@ count_occurrences_by_grade <- function(lyt,
                                        .labels = NULL) {
   checkmate::assert_flag(riskdiff)
 
+  s_args <- list(id = id, grade_groups = grade_groups, remove_single = remove_single, ...)
+
   afun <- make_afun(
     a_count_occurrences_by_grade,
     .stats = .stats,
@@ -294,13 +299,13 @@ count_occurrences_by_grade <- function(lyt,
   )
 
   extra_args <- if (isFALSE(riskdiff)) {
-    list(...)
+    s_args
   } else {
     list(
       afun = list("s_count_occurrences_by_grade" = afun),
       .stats = .stats,
       .indent_mods = .indent_mods,
-      s_args = list(...)
+      s_args = s_args
     )
   }
 
@@ -349,12 +354,17 @@ count_occurrences_by_grade <- function(lyt,
 #' @order 3
 summarize_occurrences_by_grade <- function(lyt,
                                            var,
+                                           id = "USUBJID",
+                                           grade_groups = list(),
+                                           remove_single = TRUE,
                                            na_str = NA_character_,
                                            ...,
                                            .stats = NULL,
                                            .formats = NULL,
                                            .indent_mods = NULL,
                                            .labels = NULL) {
+  extra_args <- list(id = id, grade_groups = grade_groups, remove_single = remove_single, ...)
+
   cfun <- make_afun(
     a_count_occurrences_by_grade,
     .stats = .stats,
@@ -369,6 +379,6 @@ summarize_occurrences_by_grade <- function(lyt,
     var = var,
     cfun = cfun,
     na_str = na_str,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }

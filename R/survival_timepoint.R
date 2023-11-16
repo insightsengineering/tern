@@ -229,17 +229,20 @@ a_surv_timepoint_diff <- make_afun(
 #' @order 2
 surv_timepoint <- function(lyt,
                            vars,
+                           time_point,
+                           is_event,
+                           control = control_surv_timepoint(),
+                           method = c("surv", "surv_diff", "both"),
+                           .stats = c(
+                             "pt_at_risk", "event_free_rate", "rate_ci",
+                             "rate_diff", "rate_diff_ci", "ztest_pval"
+                           ),
                            na_str = NA_character_,
                            nested = TRUE,
                            ...,
                            table_names_suffix = "",
                            var_labels = "Time",
                            show_labels = "visible",
-                           method = c("surv", "surv_diff", "both"),
-                           .stats = c(
-                             "pt_at_risk", "event_free_rate", "rate_ci",
-                             "rate_diff", "rate_diff_ci", "ztest_pval"
-                           ),
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = if (method == "both") {
@@ -249,6 +252,8 @@ surv_timepoint <- function(lyt,
                            }) {
   method <- match.arg(method)
   checkmate::assert_string(table_names_suffix)
+
+  extra_args <- list(time_point = time_point, is_event = is_event, control = control, ...)
 
   f <- list(
     surv = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci"),
@@ -275,26 +280,22 @@ surv_timepoint <- function(lyt,
     .indent_mods = .indent_mods$surv_diff
   )
 
-  time_point <- list(...)$time_point
+  time_point <- extra_args$time_point
 
   for (i in seq_along(time_point)) {
-    tpt <- time_point[i]
+    extra_args[["time_point"]] <- time_point[i]
 
     if (method %in% c("surv", "both")) {
       lyt <- analyze(
         lyt,
         vars,
-        var_labels = paste(tpt, var_labels),
-        table_names = paste0("surv_", tpt, table_names_suffix),
+        var_labels = paste(time_point[i], var_labels),
+        table_names = paste0("surv_", time_point[i], table_names_suffix),
         show_labels = show_labels,
         afun = afun_surv,
         na_str = na_str,
         nested = nested,
-        extra_args = list(
-          is_event = list(...)$is_event,
-          control = list(...)$control,
-          time_point = tpt
-        )
+        extra_args = extra_args
       )
     }
 
@@ -302,17 +303,13 @@ surv_timepoint <- function(lyt,
       lyt <- analyze(
         lyt,
         vars,
-        var_labels = paste(tpt, var_labels),
-        table_names = paste0("surv_diff_", tpt, table_names_suffix),
+        var_labels = paste(time_point[i], var_labels),
+        table_names = paste0("surv_diff_", time_point[i], table_names_suffix),
         show_labels = ifelse(method == "both", "hidden", show_labels),
         afun = afun_surv_diff,
         na_str = na_str,
         nested = nested,
-        extra_args = list(
-          is_event = list(...)$is_event,
-          control = list(...)$control,
-          time_point = tpt
-        )
+        extra_args = extra_args
       )
     }
   }

@@ -145,6 +145,9 @@ a_count_abnormal <- make_afun(
 #' @order 2
 count_abnormal <- function(lyt,
                            var,
+                           abnormal = list(Low = "LOW", High = "HIGH"),
+                           variables = list(id = "USUBJID", baseline = "BNRIND"),
+                           exclude_base_abn = FALSE,
                            na_str = NA_character_,
                            nested = TRUE,
                            ...,
@@ -153,6 +156,8 @@ count_abnormal <- function(lyt,
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = NULL) {
+  extra_args <- list(abnormal = abnormal, variables = variables, exclude_base_abn = exclude_base_abn, ...)
+
   afun <- make_afun(
     a_count_abnormal,
     .stats = .stats,
@@ -171,7 +176,7 @@ count_abnormal <- function(lyt,
     na_str = na_str,
     nested = nested,
     table_names = table_names,
-    extra_args = list(...),
+    extra_args = extra_args,
     show_labels = "hidden"
   )
 }

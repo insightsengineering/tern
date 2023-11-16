@@ -399,6 +399,12 @@ a_glm_count <- make_afun(
 #' @order 2
 summarize_glm_count <- function(lyt,
                                 vars,
+                                variables,
+                                distribution,
+                                conf_level,
+                                rate_mean_method,
+                                weights = stats::weights,
+                                scale = 1,
                                 var_labels,
                                 na_str = NA_character_,
                                 nested = TRUE,
@@ -409,6 +415,11 @@ summarize_glm_count <- function(lyt,
                                 .formats = NULL,
                                 .labels = NULL,
                                 .indent_mods = NULL) {
+  extra_args <- list(
+    variables = variables, distribution = distribution, conf_level = conf_level,
+    rate_mean_method = rate_mean_method, weights = weights, scale = scale, ...
+  )
+
   afun <- make_afun(
     a_glm_count,
     .stats = .stats,
@@ -426,6 +437,6 @@ summarize_glm_count <- function(lyt,
     afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }

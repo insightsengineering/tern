@@ -10,6 +10,7 @@
 count_abnormal_lab_worsen_by_baseline(
   lyt,
   var,
+  variables = list(id = "USUBJID", baseline_var = "BTOXGR", direction_var = "GRADDR"),
   na_str = NA_character_,
   nested = TRUE,
   ...,
@@ -34,6 +35,13 @@ a_count_abnormal_lab_worsen_by_baseline(
 }
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables including:
+\itemize{
+\item \code{id} (\code{string})\cr subject variable name.
+\item \code{baseline_var} (\code{string})\cr name of the data column containing baseline toxicity variable.
+\item \code{direction_var} (\code{string})\cr see \code{direction_var} for more details.
+}}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
@@ -61,13 +69,6 @@ unmodified default behavior. Can be negative.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
-
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables including:
-\itemize{
-\item \code{id} (\code{string})\cr subject variable name.
-\item \code{baseline_var} (\code{string})\cr name of the data column containing baseline toxicity variable.
-\item \code{direction_var} (\code{string})\cr see \code{direction_var} for more details.
-}}
 }
 \value{
 \itemize{

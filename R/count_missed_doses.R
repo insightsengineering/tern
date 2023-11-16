@@ -110,6 +110,7 @@ a_count_missed_doses <- make_afun(
 #' @order 2
 count_missed_doses <- function(lyt,
                                vars,
+                               thresholds,
                                var_labels = vars,
                                show_labels = "visible",
                                na_str = NA_character_,
@@ -120,6 +121,8 @@ count_missed_doses <- function(lyt,
                                .formats = NULL,
                                .labels = NULL,
                                .indent_mods = NULL) {
+  extra_args <- list(thresholds = thresholds, ...)
+
   afun <- make_afun(
     a_count_missed_doses,
     .stats = .stats,
@@ -137,6 +140,6 @@ count_missed_doses <- function(lyt,
     show_labels = show_labels,
     na_str = na_str,
     nested = nested,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }

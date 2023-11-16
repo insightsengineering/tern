@@ -143,6 +143,9 @@ c_num_patients <- make_afun(
 #' @order 3
 summarize_num_patients <- function(lyt,
                                    var,
+                                   required = NULL,
+                                   count_by = NULL,
+                                   unique_count_suffix = TRUE,
                                    na_str = NA_character_,
                                    .stats = NULL,
                                    .formats = NULL,
@@ -164,6 +167,8 @@ summarize_num_patients <- function(lyt,
   if (is.null(.stats)) .stats <- c("unique", "nonunique", "unique_count")
   if (length(.labels) > length(.stats)) .labels <- .labels[names(.labels) %in% .stats]
 
+  s_args <- list(required = required, count_by = count_by, unique_count_suffix = unique_count_suffix, ...)
+
   cfun <- make_afun(
     c_num_patients,
     .stats = .stats,
@@ -172,13 +177,13 @@ summarize_num_patients <- function(lyt,
   )
 
   extra_args <- if (isFALSE(riskdiff)) {
-    list(...)
+    s_args
   } else {
     list(
       afun = list("s_num_patients_content" = cfun),
       .stats = .stats,
       .indent_mods = .indent_mods,
-      s_args = list(...)
+      s_args = s_args
     )
   }
 
@@ -228,6 +233,9 @@ summarize_num_patients <- function(lyt,
 #' @order 2
 analyze_num_patients <- function(lyt,
                                  vars,
+                                 required = NULL,
+                                 count_by = NULL,
+                                 unique_count_suffix = TRUE,
                                  na_str = NA_character_,
                                  nested = TRUE,
                                  .stats = NULL,
@@ -251,6 +259,8 @@ analyze_num_patients <- function(lyt,
   if (is.null(.stats)) .stats <- c("unique", "nonunique", "unique_count")
   if (length(.labels) > length(.stats)) .labels <- .labels[names(.labels) %in% .stats]
 
+  s_args <- list(required = required, count_by = count_by, unique_count_suffix = unique_count_suffix, ...)
+
   afun <- make_afun(
     c_num_patients,
     .stats = .stats,
@@ -259,13 +269,13 @@ analyze_num_patients <- function(lyt,
   )
 
   extra_args <- if (isFALSE(riskdiff)) {
-    list(...)
+    s_args
   } else {
     list(
       afun = list("s_num_patients_content" = afun),
       .stats = .stats,
       .indent_mods = .indent_mods,
-      s_args = list(...)
+      s_args = s_args
     )
   }
 

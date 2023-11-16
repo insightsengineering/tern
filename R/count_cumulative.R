@@ -153,6 +153,9 @@ a_count_cumulative <- make_afun(
 #' @order 2
 count_cumulative <- function(lyt,
                              vars,
+                             thresholds,
+                             lower_tail = TRUE,
+                             include_eq = TRUE,
                              var_labels = vars,
                              show_labels = "visible",
                              na_str = NA_character_,
@@ -163,6 +166,8 @@ count_cumulative <- function(lyt,
                              .formats = NULL,
                              .labels = NULL,
                              .indent_mods = NULL) {
+  extra_args <- list(thresholds = thresholds, lower_tail = lower_tail, include_eq = include_eq, ...)
+
   afun <- make_afun(
     a_count_cumulative,
     .stats = .stats,
@@ -180,6 +185,6 @@ count_cumulative <- function(lyt,
     var_labels = var_labels,
     show_labels = show_labels,
     nested = nested,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }

@@ -182,6 +182,9 @@ extract_survival_biomarkers <- function(variables,
 #' @order 2
 tabulate_survival_biomarkers <- function(df,
                                          vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
+                                         groups_lists = list(),
+                                         control = control_coxreg(),
+                                         label_all = "All Patients",
                                          time_unit = NULL,
                                          .indent_mods = 0L) {
   checkmate::assert_data_frame(df)
@@ -189,13 +192,16 @@ tabulate_survival_biomarkers <- function(df,
   checkmate::assert_character(df$biomarker_label)
   checkmate::assert_subset(vars, get_stats("tabulate_survival_biomarkers"))
 
+  extra_args <- list(groups_lists = groups_lists, control = control, label_all = label_all)
+
   df_subs <- split(df, f = df$biomarker)
   tabs <- lapply(df_subs, FUN = function(df_sub) {
     tab_sub <- h_tab_surv_one_biomarker(
       df = df_sub,
       vars = vars,
       time_unit = time_unit,
-      .indent_mods = .indent_mods
+      .indent_mods = .indent_mods,
+      extra_args = extra_args
     )
     # Insert label row as first row in table.
     label_at_path(tab_sub, path = row_paths(tab_sub)[[1]][1]) <- df_sub$biomarker_label[1]
