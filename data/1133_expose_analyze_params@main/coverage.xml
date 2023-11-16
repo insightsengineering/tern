@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.946930492135972" branch-rate="0" lines-covered="9332" lines-valid="9855" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-11-16 22:35:19.790836">
+<coverage line-rate="0.946941260018261" branch-rate="0" lines-covered="9334" lines-valid="9857" branches-covered="0" branches-valid="0" complexity="0" version="3.6.3" timestamp="2023-11-16 22:50:56.774334">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
   <packages>
-    <package name="tern" line-rate="0.946930492135972" branch-rate="0" complexity="0">
+    <package name="tern" line-rate="0.946941260018261" branch-rate="0" complexity="0">
       <classes>
         <class name="abnormal_by_baseline.R" filename="R/abnormal_by_baseline.R" line-rate="0.970588235294118" branch-rate="0" complexity="0">
           <methods>
@@ -9790,95 +9790,99 @@
             <method name="h_tab_one_biomarker" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="22" hits="12" branch="false"/>
-                <line number="25" hits="12" branch="false"/>
-                <line number="26" hits="12" branch="false"/>
+                <line number="24" hits="12" branch="false"/>
                 <line number="27" hits="12" branch="false"/>
                 <line number="28" hits="12" branch="false"/>
                 <line number="29" hits="12" branch="false"/>
                 <line number="30" hits="12" branch="false"/>
-                <line number="33" hits="12" branch="false"/>
-                <line number="34" hits="12" branch="false"/>
+                <line number="31" hits="12" branch="false"/>
+                <line number="32" hits="12" branch="false"/>
                 <line number="35" hits="12" branch="false"/>
                 <line number="36" hits="12" branch="false"/>
                 <line number="37" hits="12" branch="false"/>
                 <line number="38" hits="12" branch="false"/>
                 <line number="39" hits="12" branch="false"/>
+                <line number="40" hits="12" branch="false"/>
+                <line number="41" hits="12" branch="false"/>
                 <line number="42" hits="12" branch="false"/>
-                <line number="43" hits="12" branch="false"/>
-                <line number="44" hits="12" branch="false"/>
                 <line number="45" hits="12" branch="false"/>
                 <line number="46" hits="12" branch="false"/>
+                <line number="47" hits="12" branch="false"/>
+                <line number="48" hits="12" branch="false"/>
                 <line number="49" hits="12" branch="false"/>
-                <line number="51" hits="4" branch="false"/>
-                <line number="52" hits="4" branch="false"/>
-                <line number="53" hits="4" branch="false"/>
+                <line number="52" hits="12" branch="false"/>
                 <line number="54" hits="4" branch="false"/>
                 <line number="55" hits="4" branch="false"/>
                 <line number="56" hits="4" branch="false"/>
                 <line number="57" hits="4" branch="false"/>
+                <line number="58" hits="4" branch="false"/>
+                <line number="59" hits="4" branch="false"/>
                 <line number="60" hits="4" branch="false"/>
-                <line number="61" hits="4" branch="false"/>
-                <line number="62" hits="4" branch="false"/>
                 <line number="63" hits="4" branch="false"/>
                 <line number="64" hits="4" branch="false"/>
                 <line number="65" hits="4" branch="false"/>
                 <line number="66" hits="4" branch="false"/>
                 <line number="67" hits="4" branch="false"/>
+                <line number="68" hits="4" branch="false"/>
+                <line number="69" hits="4" branch="false"/>
                 <line number="70" hits="4" branch="false"/>
-                <line number="71" hits="4" branch="false"/>
-                <line number="72" hits="4" branch="false"/>
                 <line number="73" hits="4" branch="false"/>
                 <line number="74" hits="4" branch="false"/>
                 <line number="75" hits="4" branch="false"/>
                 <line number="76" hits="4" branch="false"/>
-                <line number="78" hits="12" branch="false"/>
+                <line number="77" hits="4" branch="false"/>
+                <line number="78" hits="4" branch="false"/>
+                <line number="79" hits="4" branch="false"/>
+                <line number="81" hits="12" branch="false"/>
               </lines>
             </method>
           </methods>
           <lines>
             <line number="22" hits="12" branch="false"/>
-            <line number="25" hits="12" branch="false"/>
-            <line number="26" hits="12" branch="false"/>
+            <line number="24" hits="12" branch="false"/>
             <line number="27" hits="12" branch="false"/>
             <line number="28" hits="12" branch="false"/>
             <line number="29" hits="12" branch="false"/>
             <line number="30" hits="12" branch="false"/>
-            <line number="33" hits="12" branch="false"/>
-            <line number="34" hits="12" branch="false"/>
+            <line number="31" hits="12" branch="false"/>
+            <line number="32" hits="12" branch="false"/>
             <line number="35" hits="12" branch="false"/>
             <line number="36" hits="12" branch="false"/>
             <line number="37" hits="12" branch="false"/>
             <line number="38" hits="12" branch="false"/>
             <line number="39" hits="12" branch="false"/>
+            <line number="40" hits="12" branch="false"/>
+            <line number="41" hits="12" branch="false"/>
             <line number="42" hits="12" branch="false"/>
-            <line number="43" hits="12" branch="false"/>
-            <line number="44" hits="12" branch="false"/>
             <line number="45" hits="12" branch="false"/>
             <line number="46" hits="12" branch="false"/>
+            <line number="47" hits="12" branch="false"/>
+            <line number="48" hits="12" branch="false"/>
             <line number="49" hits="12" branch="false"/>
-            <line number="51" hits="4" branch="false"/>
-            <line number="52" hits="4" branch="false"/>
-            <line number="53" hits="4" branch="false"/>
+            <line number="52" hits="12" branch="false"/>
             <line number="54" hits="4" branch="false"/>
             <line number="55" hits="4" branch="false"/>
             <line number="56" hits="4" branch="false"/>
             <line number="57" hits="4" branch="false"/>
+            <line number="58" hits="4" branch="false"/>
+            <line number="59" hits="4" branch="false"/>
             <line number="60" hits="4" branch="false"/>
-            <line number="61" hits="4" branch="false"/>
-            <line number="62" hits="4" branch="false"/>
             <line number="63" hits="4" branch="false"/>
             <line number="64" hits="4" branch="false"/>
             <line number="65" hits="4" branch="false"/>
             <line number="66" hits="4" branch="false"/>
             <line number="67" hits="4" branch="false"/>
+            <line number="68" hits="4" branch="false"/>
+            <line number="69" hits="4" branch="false"/>
             <line number="70" hits="4" branch="false"/>
-            <line number="71" hits="4" branch="false"/>
-            <line number="72" hits="4" branch="false"/>
             <line number="73" hits="4" branch="false"/>
             <line number="74" hits="4" branch="false"/>
             <line number="75" hits="4" branch="false"/>
             <line number="76" hits="4" branch="false"/>
-            <line number="78" hits="12" branch="false"/>
+            <line number="77" hits="4" branch="false"/>
+            <line number="78" hits="4" branch="false"/>
+            <line number="79" hits="4" branch="false"/>
+            <line number="81" hits="12" branch="false"/>
           </lines>
         </class>
         <class name="h_cox_regression.R" filename="R/h_cox_regression.R" line-rate="1" branch-rate="0" complexity="0">
