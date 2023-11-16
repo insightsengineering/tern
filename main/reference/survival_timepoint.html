@@ -12,7 +12,7 @@ Summarize patients' survival rate and difference of survival rates between group
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2.9014</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2.9015</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,33 +37,6 @@ Summarize patients' survival rate and difference of survival rates between group
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2-rc1">v0.9.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1-rc3">v0.9.1-rc3</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc2">v0.8.5-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc1">v0.8.5-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2">v0.9.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1">v0.9.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.0">v0.9.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5">v0.8.5</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -99,7 +72,29 @@ Summarize patients' survival rate and difference of survival rates between group
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">s_surv_timepoint</span><span class="op">(</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">surv_timepoint</span><span class="op">(</span></span>
+<span>  <span class="va">lyt</span>,</span>
+<span>  <span class="va">vars</span>,</span>
+<span>  na_str <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
+<span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  table_names_suffix <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  var_labels <span class="op">=</span> <span class="st">"Time"</span>,</span>
+<span>  show_labels <span class="op">=</span> <span class="st">"visible"</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surv"</span>, <span class="st">"surv_diff"</span>, <span class="st">"both"</span><span class="op">)</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pt_at_risk"</span>, <span class="st">"event_free_rate"</span>, <span class="st">"rate_ci"</span>, <span class="st">"rate_diff"</span>, <span class="st">"rate_diff_ci"</span>,</span>
+<span>    <span class="st">"ztest_pval"</span><span class="op">)</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="va">method</span> <span class="op">==</span> <span class="st">"both"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>     <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>rate_diff <span class="op">=</span> <span class="fl">1L</span>, rate_diff_ci <span class="op">=</span> <span class="fl">2L</span>,</span>
+<span>    ztest_pval <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></span>
+<span> <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>     <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>rate_diff_ci <span class="op">=</span> <span class="fl">1L</span>, ztest_pval <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span>
+<span> <span class="op">}</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">s_surv_timepoint</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
 <span>  <span class="va">.var</span>,</span>
 <span>  <span class="va">time_point</span>,</span>
@@ -133,72 +128,12 @@ Summarize patients' survival rate and difference of survival rates between group
 <span>  <span class="va">time_point</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="control_surv_timepoint.html">control_surv_timepoint</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">surv_timepoint</span><span class="op">(</span></span>
-<span>  <span class="va">lyt</span>,</span>
-<span>  <span class="va">vars</span>,</span>
-<span>  na_str <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
-<span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  <span class="va">...</span>,</span>
-<span>  table_names_suffix <span class="op">=</span> <span class="st">""</span>,</span>
-<span>  var_labels <span class="op">=</span> <span class="st">"Time"</span>,</span>
-<span>  show_labels <span class="op">=</span> <span class="st">"visible"</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surv"</span>, <span class="st">"surv_diff"</span>, <span class="st">"both"</span><span class="op">)</span>,</span>
-<span>  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pt_at_risk"</span>, <span class="st">"event_free_rate"</span>, <span class="st">"rate_ci"</span>, <span class="st">"rate_diff"</span>, <span class="st">"rate_diff_ci"</span>,</span>
-<span>    <span class="st">"ztest_pval"</span><span class="op">)</span>,</span>
-<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .indent_mods <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="va">method</span> <span class="op">==</span> <span class="st">"both"</span><span class="op">)</span> <span class="op">{</span></span>
-<span>     <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>rate_diff <span class="op">=</span> <span class="fl">1L</span>, rate_diff_ci <span class="op">=</span> <span class="fl">2L</span>,</span>
-<span>    ztest_pval <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></span>
-<span> <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>     <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>rate_diff_ci <span class="op">=</span> <span class="fl">1L</span>, ztest_pval <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span>
-<span> <span class="op">}</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>df</dt>
-<dd><p>(<code>data.frame</code>)<br> data set containing all analysis variables.</p></dd>
-
-
-<dt>.var</dt>
-<dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
-by a statistics function.</p></dd>
-
-
-<dt>time_point</dt>
-<dd><p>(<code>number</code>)<br> survival time point of interest.</p></dd>
-
-
-<dt>is_event</dt>
-<dd><p>(<code>logical</code>)<br><code>TRUE</code> if event, <code>FALSE</code> if time to event is censored.</p></dd>
-
-
-<dt>control</dt>
-<dd><p>(<code>list</code>)<br> parameters for comparison details, specified by using the helper function
-<code><a href="control_surv_timepoint.html">control_surv_timepoint()</a></code>. Some possible parameter options are:</p><ul><li><p><code>conf_level</code> (<code>proportion</code>)<br> confidence level of the interval for survival rate.</p></li>
-<li><p><code>conf_type</code> (<code>string</code>)<br> confidence interval type. Options are "plain" (default), "log", "log-log",
-see more in <code><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survival::survfit()</a></code>. Note option "none" is no longer supported.</p></li>
-<li><p><code>time_point</code> (<code>number</code>)<br> survival time point of interest.</p></li>
-</ul></dd>
-
-
-<dt>.ref_group</dt>
-<dd><p>(<code>data.frame</code> or <code>vector</code>)<br> the data corresponding to the reference group.</p></dd>
-
-
-<dt>.in_ref_col</dt>
-<dd><p>(<code>logical</code>)<br><code>TRUE</code> when working with the reference level, <code>FALSE</code> otherwise.</p></dd>
-
-
-<dt>...</dt>
-<dd><p>additional arguments for the lower level functions.</p></dd>
-
-
-<dt>lyt</dt>
+    <dl><dt>lyt</dt>
 <dd><p>(<code>layout</code>)<br> input layout where analyses will be added to.</p></dd>
 
 
@@ -214,6 +149,10 @@ see more in <code><a href="https://rdrr.io/pkg/survival/man/survfit.html" class=
 <dd><p>(<code>flag</code>)<br> whether this layout instruction should be applied within the existing layout structure <em>if
 possible</em> (<code>TRUE</code>, the default) or as a new top-level element (<code>FALSE</code>). Ignored if it would nest a split.
 underneath analyses, which is not allowed.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>additional arguments for the lower level functions.</p></dd>
 
 
 <dt>table_names_suffix</dt>
@@ -253,12 +192,50 @@ information on the <code>"auto"</code> setting.</p></dd>
 should be a name-value pair with name corresponding to a statistic specified in <code>.stats</code> and value the indentation
 for that statistic's row label.</p></dd>
 
+
+<dt>df</dt>
+<dd><p>(<code>data.frame</code>)<br> data set containing all analysis variables.</p></dd>
+
+
+<dt>.var</dt>
+<dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
+by a statistics function.</p></dd>
+
+
+<dt>time_point</dt>
+<dd><p>(<code>number</code>)<br> survival time point of interest.</p></dd>
+
+
+<dt>is_event</dt>
+<dd><p>(<code>logical</code>)<br><code>TRUE</code> if event, <code>FALSE</code> if time to event is censored.</p></dd>
+
+
+<dt>control</dt>
+<dd><p>(<code>list</code>)<br> parameters for comparison details, specified by using the helper function
+<code><a href="control_surv_timepoint.html">control_surv_timepoint()</a></code>. Some possible parameter options are:</p><ul><li><p><code>conf_level</code> (<code>proportion</code>)<br> confidence level of the interval for survival rate.</p></li>
+<li><p><code>conf_type</code> (<code>string</code>)<br> confidence interval type. Options are "plain" (default), "log", "log-log",
+see more in <code><a href="https://rdrr.io/pkg/survival/man/survfit.html" class="external-link">survival::survfit()</a></code>. Note option "none" is no longer supported.</p></li>
+<li><p><code>time_point</code> (<code>number</code>)<br> survival time point of interest.</p></li>
+</ul></dd>
+
+
+<dt>.ref_group</dt>
+<dd><p>(<code>data.frame</code> or <code>vector</code>)<br> the data corresponding to the reference group.</p></dd>
+
+
+<dt>.in_ref_col</dt>
+<dd><p>(<code>logical</code>)<br><code>TRUE</code> when working with the reference level, <code>FALSE</code> otherwise.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<ul><li><p><code>s_surv_timepoint()</code> returns the statistics:</p><ul><li><p><code>pt_at_risk</code>: Patients remaining at risk.</p></li>
+<ul><li><p><code>surv_timepoint()</code> returns a layout object suitable for passing to further layouting functions,
+or to <code><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted rows containing
+the statistics from <code>s_surv_timepoint()</code> and/or <code>s_surv_timepoint_diff()</code> to the table layout depending on
+the value of <code>method</code>.</p></li>
+</ul><ul><li><p><code>s_surv_timepoint()</code> returns the statistics:</p><ul><li><p><code>pt_at_risk</code>: Patients remaining at risk.</p></li>
 <li><p><code>event_free_rate</code>: Event-free rate (%).</p></li>
 <li><p><code>rate_se</code>: Standard error of event free rate.</p></li>
 <li><p><code>rate_ci</code>: Confidence interval for event free rate.</p></li>
@@ -269,22 +246,18 @@ for that statistic's row label.</p></dd>
 <li><p><code>ztest_pval</code>: p-value to test the difference is 0.</p></li>
 </ul></li>
 </ul><ul><li><p><code>a_surv_timepoint_diff()</code> returns the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
-</ul><ul><li><p><code>surv_timepoint()</code> returns a layout object suitable for passing to further layouting functions,
-or to <code><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted rows containing
-the statistics from <code>s_surv_timepoint()</code> and/or <code>s_surv_timepoint_diff()</code> to the table layout depending on
-the value of <code>method</code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>s_surv_timepoint()</code>: Statistics function which analyzes survival rate.</p></li>
+<ul><li><p><code>surv_timepoint()</code>: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
+<li><p><code>s_surv_timepoint()</code>: Statistics function which analyzes survival rate.</p></li>
 <li><p><code>a_surv_timepoint()</code>: Formatted analysis function which is used as <code>afun</code> in <code>surv_timepoint()</code>
 when <code>method = "surv"</code>.</p></li>
 <li><p><code>s_surv_timepoint_diff()</code>: Statistics function which analyzes difference between two survival rates.</p></li>
 <li><p><code>a_surv_timepoint_diff()</code>: Formatted analysis function which is used as <code>afun</code> in <code>surv_timepoint()</code>
 when <code>method = "surv_diff"</code>.</p></li>
-<li><p><code>surv_timepoint()</code>: Layout-creating function which can take statistics function arguments
-and additional format arguments. This function is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
 </ul></div>
 
     <div class="section level2">
@@ -297,11 +270,6 @@ and additional format arguments. This function is a wrapper for <code><a href="h
 <span class="r-in"><span>    AVAL <span class="op">=</span> <span class="fu"><a href="day2month.html">day2month</a></span><span class="op">(</span><span class="va">AVAL</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    is_event <span class="op">=</span> <span class="va">CNSR</span> <span class="op">==</span> <span class="fl">0</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">adtte_f</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ARMCD</span> <span class="op">==</span> <span class="st">"ARM A"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">df_ref_group</span> <span class="op">&lt;-</span> <span class="va">adtte_f</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ARMCD</span> <span class="op">==</span> <span class="st">"ARM B"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Survival at given time points.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>

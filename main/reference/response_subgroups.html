@@ -12,7 +12,7 @@ Tabulate statistics such as response rate and odds ratio for population subgroup
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2.9014</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2.9015</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,33 +37,6 @@ Tabulate statistics such as response rate and odds ratio for population subgroup
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2-rc1">v0.9.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1-rc3">v0.9.1-rc3</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc2">v0.8.5-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc1">v0.8.5-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2">v0.9.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1">v0.9.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.0">v0.9.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5">v0.8.5</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -99,23 +72,18 @@ Tabulate statistics such as response rate and odds ratio for population subgroup
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">a_response_subgroups</span><span class="op">(</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tabulate_rsp_subgroups</span><span class="op">(</span><span class="va">lyt</span>, <span class="va">df</span>, vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_tot"</span>, <span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"or"</span>, <span class="st">"ci"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">a_response_subgroups</span><span class="op">(</span></span>
 <span>  .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>n <span class="op">=</span> <span class="st">"xx"</span>, n_rsp <span class="op">=</span> <span class="st">"xx"</span>, prop <span class="op">=</span> <span class="st">"xx.x%"</span>, n_tot <span class="op">=</span> <span class="st">"xx"</span>, or <span class="op">=</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="format_extreme_values.html">format_extreme_values</a></span><span class="op">(</span><span class="fl">2L</span><span class="op">)</span><span class="op">)</span>, ci <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="format_extreme_values_ci.html">format_extreme_values_ci</a></span><span class="op">(</span><span class="fl">2L</span><span class="op">)</span><span class="op">)</span>, pval <span class="op">=</span></span>
 <span>    <span class="st">"x.xxxx | (&lt;0.0001)"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">tabulate_rsp_subgroups</span><span class="op">(</span><span class="va">lyt</span>, <span class="va">df</span>, vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_tot"</span>, <span class="st">"n"</span>, <span class="st">"prop"</span>, <span class="st">"or"</span>, <span class="st">"ci"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>.formats</dt>
-<dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics. See Details in <code>analyze_vars</code> for more
-information on the <code>"auto"</code> setting.</p></dd>
-
-
-<dt>lyt</dt>
+    <dl><dt>lyt</dt>
 <dd><p>(<code>layout</code>)<br> input layout where analyses will be added to.</p></dd>
 
 
@@ -135,14 +103,21 @@ created using <code><a href="extract_rsp_subgroups.html">extract_rsp_subgroups()
 Note, the statistics <code>n_tot</code>, <code>or</code> and <code>ci</code> are required.</p></li>
 </ul></dd>
 
+
+<dt>.formats</dt>
+<dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics. See Details in <code>analyze_vars</code> for more
+information on the <code>"auto"</code> setting.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
+<p>An <code>rtables</code> table summarizing binary response by subgroup.</p>
+
+
 <ul><li><p><code>a_response_subgroups()</code> returns the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
-</ul><p>An <code>rtables</code> table summarizing binary response by subgroup.</p>
-    </div>
+</ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>These functions create a layout starting from a data frame which contains
@@ -151,10 +126,10 @@ the required statistics. Tables typically used as part of forest plot.</p>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>a_response_subgroups()</code>: Formatted analysis function which is used as <code>afun</code> in <code>tabulate_rsp_subgroups()</code>.</p></li>
-<li><p><code>tabulate_rsp_subgroups()</code>: Table-creating function which creates a table
+<ul><li><p><code>tabulate_rsp_subgroups()</code>: Table-creating function which creates a table
 summarizing binary response by subgroup. This function is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze_colvars.html" class="external-link">rtables::analyze_colvars()</a></code>
 and <code><a href="https://rdrr.io/pkg/rtables/man/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>.</p></li>
+<li><p><code>a_response_subgroups()</code>: Formatted analysis function which is used as <code>afun</code> in <code>tabulate_rsp_subgroups()</code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -222,6 +197,115 @@ and <code><a href="https://rdrr.io/pkg/rtables/man/summarize_row_groups.html" cl
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4        50  3.553846 1.0047370 12.570277       0.95          LOW BMRKR2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5        49  2.705882 0.5911718 12.385232       0.95       MEDIUM BMRKR2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6        43  2.250000 0.3970298 12.750933       0.95         HIGH BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      var_label row_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                          Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Stratified analysis.</span></span></span>
+<span class="r-in"><span><span class="va">df_strat</span> <span class="op">&lt;-</span> <span class="fu"><a href="extract_rsp_subgroups.html">extract_rsp_subgroups</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>rsp <span class="op">=</span> <span class="st">"rsp"</span>, arm <span class="op">=</span> <span class="st">"ARM"</span>, subgroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span>, strat <span class="op">=</span> <span class="st">"STRATA1"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs_f</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df_strat</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $prop</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           arm  n n_rsp      prop     subgroup    var</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  B: Placebo 73    50 0.6849315 All Patients    ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   A: Drug X 69    59 0.8550725 All Patients    ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  B: Placebo 40    25 0.6250000            F    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   A: Drug X 38    36 0.9473684            F    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  B: Placebo 33    25 0.7575758            M    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   A: Drug X 31    23 0.7419355            M    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  B: Placebo 24    13 0.5416667          LOW BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   A: Drug X 26    21 0.8076923          LOW BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  B: Placebo 23    17 0.7391304       MEDIUM BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  A: Drug X 26    23 0.8846154       MEDIUM BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 B: Placebo 26    20 0.7692308         HIGH BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  A: Drug X 17    15 0.8823529         HIGH BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       var_label row_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                  All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $or</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot        or       lcl       ucl conf_level     subgroup    var</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       142 2.6343899 1.1537821  6.015009       0.95 All Patients    ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        78 9.5946605 2.0379337 45.171985       0.95            F    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        64 0.8947158 0.2936803  2.725809       0.95            M    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        50 3.5976656 1.0101319 12.813374       0.95          LOW BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        49 2.6242168 0.5162572 13.339308       0.95       MEDIUM BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6        43 2.2816865 0.4116391 12.647228       0.95         HIGH BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      var_label row_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                          Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Grouping of the BMRKR2 levels.</span></span></span>
+<span class="r-in"><span><span class="va">df_grouped</span> <span class="op">&lt;-</span> <span class="fu"><a href="extract_rsp_subgroups.html">extract_rsp_subgroups</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>rsp <span class="op">=</span> <span class="st">"rsp"</span>, arm <span class="op">=</span> <span class="st">"ARM"</span>, subgroups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SEX"</span>, <span class="st">"BMRKR2"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">adrs_f</span>,</span></span>
+<span class="r-in"><span>  groups_lists <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    BMRKR2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="st">"low"</span> <span class="op">=</span> <span class="st">"LOW"</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"low/medium"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"MEDIUM"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"low/medium/high"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LOW"</span>, <span class="st">"MEDIUM"</span>, <span class="st">"HIGH"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df_grouped</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $prop</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           arm  n n_rsp      prop        subgroup    var</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  B: Placebo 73    50 0.6849315    All Patients    ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   A: Drug X 69    59 0.8550725    All Patients    ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  B: Placebo 40    25 0.6250000               F    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   A: Drug X 38    36 0.9473684               F    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  B: Placebo 33    25 0.7575758               M    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   A: Drug X 31    23 0.7419355               M    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  B: Placebo 24    13 0.5416667             low BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   A: Drug X 26    21 0.8076923             low BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  B: Placebo 47    30 0.6382979      low/medium BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  A: Drug X 52    44 0.8461538      low/medium BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 B: Placebo 73    50 0.6849315 low/medium/high BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  A: Drug X 69    59 0.8550725 low/medium/high BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       var_label row_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                  All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  All Patients  content</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                           Sex analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 Continuous Level Biomarker 2 analysis</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $or</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   arm n_tot        or      lcl       ucl conf_level        subgroup    var</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       142  2.714000 1.180449  6.239827       0.95    All Patients    ALL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        78 10.800000 2.266958 51.452218       0.95               F    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        64  0.920000 0.296647  2.853223       0.95               M    SEX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        50  3.553846 1.004737 12.570277       0.95             low BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        99  3.116667 1.193409  8.139385       0.95      low/medium BMRKR2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       142  2.714000 1.180449  6.239827       0.95 low/medium/high BMRKR2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      var_label row_type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                 All Patients  content</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2                          Sex analysis</span>

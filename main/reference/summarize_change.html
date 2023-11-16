@@ -18,7 +18,7 @@ or the change from baseline values (post-baseline) are then summarized."><!-- ma
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2.9014</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2.9015</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,33 +43,6 @@ or the change from baseline values (post-baseline) are then summarized."><!-- ma
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2-rc1">v0.9.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1-rc3">v0.9.1-rc3</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc2">v0.8.5-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc1">v0.8.5-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2">v0.9.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1">v0.9.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.0">v0.9.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5">v0.8.5</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -108,11 +81,7 @@ or the change from baseline values (post-baseline) are then summarized.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">s_change_from_baseline</span><span class="op">(</span><span class="va">df</span>, <span class="va">.var</span>, <span class="va">variables</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">a_change_from_baseline</span><span class="op">(</span><span class="va">df</span>, <span class="va">.var</span>, <span class="va">variables</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">summarize_change</span><span class="op">(</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">summarize_change</span><span class="op">(</span></span>
 <span>  <span class="va">lyt</span>,</span>
 <span>  <span class="va">vars</span>,</span>
 <span>  na_str <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
@@ -123,33 +92,16 @@ or the change from baseline values (post-baseline) are then summarized.</p>
 <span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">s_change_from_baseline</span><span class="op">(</span><span class="va">df</span>, <span class="va">.var</span>, <span class="va">variables</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">a_change_from_baseline</span><span class="op">(</span><span class="va">df</span>, <span class="va">.var</span>, <span class="va">variables</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>df</dt>
-<dd><p>(<code>data.frame</code>)<br> data set containing all analysis variables.</p></dd>
-
-
-<dt>.var</dt>
-<dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
-by a statistics function.</p></dd>
-
-
-<dt>variables</dt>
-<dd><p>(named <code>list</code> of <code>string</code>)<br> list of additional analysis variables.</p></dd>
-
-
-<dt>na.rm</dt>
-<dd><p>(<code>flag</code>)<br> whether <code>NA</code> values should be removed from <code>x</code> prior to analysis.</p></dd>
-
-
-<dt>...</dt>
-<dd><p>additional arguments for the lower level functions.</p></dd>
-
-
-<dt>lyt</dt>
+    <dl><dt>lyt</dt>
 <dd><p>(<code>layout</code>)<br> input layout where analyses will be added to.</p></dd>
 
 
@@ -165,6 +117,10 @@ by a statistics function.</p></dd>
 <dd><p>(<code>flag</code>)<br> whether this layout instruction should be applied within the existing layout structure <em>if
 possible</em> (<code>TRUE</code>, the default) or as a new top-level element (<code>FALSE</code>). Ignored if it would nest a split.
 underneath analyses, which is not allowed.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>additional arguments for the lower level functions.</p></dd>
 
 
 <dt>table_names</dt>
@@ -190,46 +146,55 @@ information on the <code>"auto"</code> setting.</p></dd>
 <dd><p>(named <code>integer</code>)<br> indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.</p></dd>
 
+
+<dt>df</dt>
+<dd><p>(<code>data.frame</code>)<br> data set containing all analysis variables.</p></dd>
+
+
+<dt>.var</dt>
+<dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
+by a statistics function.</p></dd>
+
+
+<dt>variables</dt>
+<dd><p>(named <code>list</code> of <code>string</code>)<br> list of additional analysis variables.</p></dd>
+
+
+<dt>na.rm</dt>
+<dd><p>(<code>flag</code>)<br> whether <code>NA</code> values should be removed from <code>x</code> prior to analysis.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<ul><li><p><code>s_change_from_baseline()</code> returns the same values returned by <code><a href="analyze_variables.html">s_summary.numeric()</a></code>.</p></li>
-</ul><ul><li><p><code>a_change_from_baseline()</code> returns the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
-</ul><ul><li><p><code>summarize_change()</code> returns a layout object suitable for passing to further layouting functions,
+<ul><li><p><code>summarize_change()</code> returns a layout object suitable for passing to further layouting functions,
 or to <code><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted rows containing
 the statistics from <code>s_change_from_baseline()</code> to the table layout.</p></li>
+</ul><ul><li><p><code>s_change_from_baseline()</code> returns the same values returned by <code><a href="analyze_variables.html">s_summary.numeric()</a></code>.</p></li>
+</ul><ul><li><p><code>a_change_from_baseline()</code> returns the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>s_change_from_baseline()</code>: Statistics function that summarizes baseline or post-baseline visits.</p></li>
-<li><p><code>a_change_from_baseline()</code>: Formatted analysis function which is used as <code>afun</code> in <code>summarize_change()</code>.</p></li>
-<li><p><code>summarize_change()</code>: Layout-creating function which can take statistics function arguments
+<ul><li><p><code>summarize_change()</code>: Layout-creating function which can take statistics function arguments
 and additional format arguments. This function is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
+<li><p><code>s_change_from_baseline()</code>: Statistics function that summarizes baseline or post-baseline visits.</p></li>
+<li><p><code>a_change_from_baseline()</code>: Formatted analysis function which is used as <code>afun</code> in <code>summarize_change()</code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
-    <p>The data in <code>df</code> must be either all be from baseline or post-baseline visits. Otherwise
-an error will be thrown.</p>
-<p>To be used after a split on visits in the layout, such that each data subset only contains
+    <p>To be used after a split on visits in the layout, such that each data subset only contains
 either baseline or post-baseline data.</p>
+<p>The data in <code>df</code> must be either all be from baseline or post-baseline visits. Otherwise
+an error will be thrown.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  chg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  is_bl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># `summarize_change()`</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Fabricated dataset.</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Fabricate dataset</span></span></span>
 <span class="r-in"><span><span class="va">dta_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  AVISIT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"V"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>, <span class="fl">6</span><span class="op">)</span>,</span></span>
@@ -249,9 +214,25 @@ either baseline or post-baseline data.</p>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span><span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">summarize_change</span><span class="op">(</span><span class="st">"CHG"</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>value <span class="op">=</span> <span class="st">"AVAL"</span>, baseline_flag <span class="op">=</span> <span class="st">"ABLFLL"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">dta_test</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/Viewer.html" class="external-link">Viewer</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">results</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     A               B         C </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> V1                                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n                 2               1         0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)    7.50 (2.12)      3.00 (NA)     NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Median          7.50            3.00        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max    6.00 - 9.00     3.00 - 3.00    NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> V2                                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n                 2               1         0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)   -1.00 (0.00)     -1.00 (NA)     NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Median          -1.00           -1.00       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max   -1.00 - -1.00   -1.00 - -1.00   NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> V3                                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n                 2               1         0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)   -2.00 (0.00)     -2.00 (NA)     NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Median          -2.00           -2.00       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Min - Max   -2.00 - -2.00   -2.00 - -2.00   NA</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

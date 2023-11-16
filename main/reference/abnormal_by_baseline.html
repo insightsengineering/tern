@@ -46,7 +46,7 @@ num: the number of patients in denom who also have at least one abnormality post
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2.9014</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2.9015</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,33 +71,6 @@ num: the number of patients in denom who also have at least one abnormality post
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2-rc1">v0.9.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1-rc3">v0.9.1-rc3</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc2">v0.8.5-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc1">v0.8.5-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2">v0.9.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1">v0.9.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.0">v0.9.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5">v0.8.5</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -144,7 +117,21 @@ patients in the numerator and denominator as follows:</p><ul><li><p><code>Not &l
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">s_count_abnormal_by_baseline</span><span class="op">(</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">count_abnormal_by_baseline</span><span class="op">(</span></span>
+<span>  <span class="va">lyt</span>,</span>
+<span>  <span class="va">var</span>,</span>
+<span>  <span class="va">abnormal</span>,</span>
+<span>  na_str <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span>,</span>
+<span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  table_names <span class="op">=</span> <span class="va">abnormal</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">s_count_abnormal_by_baseline</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
 <span>  <span class="va">.var</span>,</span>
 <span>  <span class="va">abnormal</span>,</span>
@@ -160,53 +147,22 @@ patients in the numerator and denominator as follows:</p><ul><li><p><code>Not &l
 <span>  na_level <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  na_str <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span>,</span>
 <span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, baseline <span class="op">=</span> <span class="st">"BNRIND"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">count_abnormal_by_baseline</span><span class="op">(</span></span>
-<span>  <span class="va">lyt</span>,</span>
-<span>  <span class="va">var</span>,</span>
-<span>  <span class="va">abnormal</span>,</span>
-<span>  na_str <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span>,</span>
-<span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  <span class="va">...</span>,</span>
-<span>  table_names <span class="op">=</span> <span class="va">abnormal</span>,</span>
-<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>df</dt>
-<dd><p>(<code>data.frame</code>)<br> data set containing all analysis variables.</p></dd>
-
-
-<dt>.var, var</dt>
-<dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
-by a statistics function.</p></dd>
+    <dl><dt>lyt</dt>
+<dd><p>(<code>layout</code>)<br> input layout where analyses will be added to.</p></dd>
 
 
 <dt>abnormal</dt>
 <dd><p>(<code>character</code>)<br> identifying the abnormal range level(s) in <code>.var</code>.</p></dd>
 
 
-<dt>na_level</dt>
-<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> Please use the <code>na_str</code> argument instead.</p></dd>
-
-
 <dt>na_str</dt>
 <dd><p>(<code>string</code>)<br> the explicit <code>na_level</code> argument you used in the pre-processing steps (maybe with
 <code><a href="df_explicit_na.html">df_explicit_na()</a></code>). The default is <code>"&lt;Missing&gt;"</code>.</p></dd>
-
-
-<dt>variables</dt>
-<dd><p>(named <code>list</code> of <code>string</code>)<br> list of additional analysis variables.</p></dd>
-
-
-<dt>lyt</dt>
-<dd><p>(<code>layout</code>)<br> input layout where analyses will be added to.</p></dd>
 
 
 <dt>nested</dt>
@@ -242,26 +198,43 @@ information on the <code>"auto"</code> setting.</p></dd>
 <dd><p>(named <code>integer</code>)<br> indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.</p></dd>
 
+
+<dt>df</dt>
+<dd><p>(<code>data.frame</code>)<br> data set containing all analysis variables.</p></dd>
+
+
+<dt>.var, var</dt>
+<dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
+by a statistics function.</p></dd>
+
+
+<dt>na_level</dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> Please use the <code>na_str</code> argument instead.</p></dd>
+
+
+<dt>variables</dt>
+<dd><p>(named <code>list</code> of <code>string</code>)<br> list of additional analysis variables.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<ul><li><p><code>s_count_abnormal_by_baseline()</code> returns statistic <code>fraction</code> which is a named list with 3 labeled elements:
-<code>not_abnormal</code>, <code>abnormal</code>, and <code>total</code>. Each element contains a vector with <code>num</code> and <code>denom</code> patient counts.</p></li>
-</ul><ul><li><p><code>a_count_abnormal_by_baseline()</code> returns the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
-</ul><ul><li><p><code>count_abnormal_by_baseline()</code> returns a layout object suitable for passing to further layouting functions,
+<ul><li><p><code>count_abnormal_by_baseline()</code> returns a layout object suitable for passing to further layouting functions,
 or to <code><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted rows containing
 the statistics from <code>s_count_abnormal_by_baseline()</code> to the table layout.</p></li>
+</ul><ul><li><p><code>s_count_abnormal_by_baseline()</code> returns statistic <code>fraction</code> which is a named list with 3 labeled elements:
+<code>not_abnormal</code>, <code>abnormal</code>, and <code>total</code>. Each element contains a vector with <code>num</code> and <code>denom</code> patient counts.</p></li>
+</ul><ul><li><p><code>a_count_abnormal_by_baseline()</code> returns the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>s_count_abnormal_by_baseline()</code>: Statistics function for a single <code>abnormal</code> level.</p></li>
+<ul><li><p><code>count_abnormal_by_baseline()</code>: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
+<li><p><code>s_count_abnormal_by_baseline()</code>: Statistics function for a single <code>abnormal</code> level.</p></li>
 <li><p><code>a_count_abnormal_by_baseline()</code>: Formatted analysis function which is used as <code>afun</code>
 in <code>count_abnormal_by_baseline()</code>.</p></li>
-<li><p><code>count_abnormal_by_baseline()</code>: Layout-creating function which can take statistics function arguments
-and additional format arguments. This function is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>

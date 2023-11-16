@@ -12,7 +12,7 @@ Comparison with a reference group for different x objects."><!-- mathjax --><scr
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2.9014</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2.9015</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,33 +37,6 @@ Comparison with a reference group for different x objects."><!-- mathjax --><scr
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2-rc1">v0.9.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1-rc3">v0.9.1-rc3</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc2">v0.8.5-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc1">v0.8.5-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2">v0.9.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1">v0.9.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.0">v0.9.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5">v0.8.5</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -99,7 +72,25 @@ Comparison with a reference group for different x objects."><!-- mathjax --><scr
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">s_compare</span><span class="op">(</span><span class="va">x</span>, <span class="va">.ref_group</span>, <span class="va">.in_ref_col</span>, <span class="va">...</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">compare_vars</span><span class="op">(</span></span>
+<span>  <span class="va">lyt</span>,</span>
+<span>  <span class="va">vars</span>,</span>
+<span>  var_labels <span class="op">=</span> <span class="va">vars</span>,</span>
+<span>  na_level <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  na_str <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
+<span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  show_labels <span class="op">=</span> <span class="st">"default"</span>,</span>
+<span>  table_names <span class="op">=</span> <span class="va">vars</span>,</span>
+<span>  section_div <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean_sd"</span>, <span class="st">"count_fraction"</span>, <span class="st">"pval"</span><span class="op">)</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">s_compare</span><span class="op">(</span><span class="va">x</span>, <span class="va">.ref_group</span>, <span class="va">.in_ref_col</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for numeric</span></span>
 <span><span class="fu">s_compare</span><span class="op">(</span><span class="va">x</span>, <span class="va">.ref_group</span>, <span class="va">.in_ref_col</span>, <span class="va">...</span><span class="op">)</span></span>
@@ -131,79 +122,12 @@ Comparison with a reference group for different x objects."><!-- mathjax --><scr
 <span>  .ref_group <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">compare_vars</span><span class="op">(</span></span>
-<span>  <span class="va">lyt</span>,</span>
-<span>  <span class="va">vars</span>,</span>
-<span>  var_labels <span class="op">=</span> <span class="va">vars</span>,</span>
-<span>  na_level <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  na_str <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
-<span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  <span class="va">...</span>,</span>
-<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  show_labels <span class="op">=</span> <span class="st">"default"</span>,</span>
-<span>  table_names <span class="op">=</span> <span class="va">vars</span>,</span>
-<span>  section_div <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
-<span>  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean_sd"</span>, <span class="st">"count_fraction"</span>, <span class="st">"pval"</span><span class="op">)</span>,</span>
-<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>x</dt>
-<dd><p>(<code>numeric</code>)<br> vector of numbers we want to analyze.</p></dd>
-
-
-<dt>.ref_group</dt>
-<dd><p>(<code>data.frame</code> or <code>vector</code>)<br> the data corresponding to the reference group.</p></dd>
-
-
-<dt>.in_ref_col</dt>
-<dd><p>(<code>logical</code>)<br><code>TRUE</code> when working with the reference level, <code>FALSE</code> otherwise.</p></dd>
-
-
-<dt>...</dt>
-<dd><p>arguments passed to <code>s_compare()</code>.</p></dd>
-
-
-<dt>denom</dt>
-<dd><p>(<code>string</code>)<br> choice of denominator for factor proportions,
-can only be <code>n</code> (number of values in this row and column intersection).</p></dd>
-
-
-<dt>na.rm</dt>
-<dd><p>(<code>flag</code>)<br> whether <code>NA</code> values should be removed from <code>x</code> prior to analysis.</p></dd>
-
-
-<dt>.var</dt>
-<dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
-by a statistics function.</p></dd>
-
-
-<dt>verbose</dt>
-<dd><p>(<code>logical</code>)<br> Whether warnings and messages should be printed. Mainly used
-to print out information about factor casting. Defaults to <code>TRUE</code>.</p></dd>
-
-
-<dt>.N_col</dt>
-<dd><p>(<code>integer</code>)<br> column-wise N (column count) for the full column being analyzed that is typically
-passed by <code>rtables</code>.</p></dd>
-
-
-<dt>.N_row</dt>
-<dd><p>(<code>integer</code>)<br> row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is typically passed by <code>rtables</code>.</p></dd>
-
-
-<dt>.df_row</dt>
-<dd><p>(<code>data.frame</code>)<br> data frame across all of the columns for the given row split.</p></dd>
-
-
-<dt>lyt</dt>
+    <dl><dt>lyt</dt>
 <dd><p>(<code>layout</code>)<br> input layout where analyses will be added to.</p></dd>
 
 
@@ -227,6 +151,14 @@ passed by <code>rtables</code>.</p></dd>
 <dd><p>(<code>flag</code>)<br> whether this layout instruction should be applied within the existing layout structure <em>if
 possible</em> (<code>TRUE</code>, the default) or as a new top-level element (<code>FALSE</code>). Ignored if it would nest a split.
 underneath analyses, which is not allowed.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>arguments passed to <code>s_compare()</code>.</p></dd>
+
+
+<dt>na.rm</dt>
+<dd><p>(<code>flag</code>)<br> whether <code>NA</code> values should be removed from <code>x</code> prior to analysis.</p></dd>
 
 
 <dt>show_labels</dt>
@@ -263,21 +195,64 @@ information on the <code>"auto"</code> setting.</p></dd>
 should be a name-value pair with name corresponding to a statistic specified in <code>.stats</code> and value the indentation
 for that statistic's row label.</p></dd>
 
+
+<dt>x</dt>
+<dd><p>(<code>numeric</code>)<br> vector of numbers we want to analyze.</p></dd>
+
+
+<dt>.ref_group</dt>
+<dd><p>(<code>data.frame</code> or <code>vector</code>)<br> the data corresponding to the reference group.</p></dd>
+
+
+<dt>.in_ref_col</dt>
+<dd><p>(<code>logical</code>)<br><code>TRUE</code> when working with the reference level, <code>FALSE</code> otherwise.</p></dd>
+
+
+<dt>denom</dt>
+<dd><p>(<code>string</code>)<br> choice of denominator for factor proportions,
+can only be <code>n</code> (number of values in this row and column intersection).</p></dd>
+
+
+<dt>.var</dt>
+<dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
+by a statistics function.</p></dd>
+
+
+<dt>verbose</dt>
+<dd><p>(<code>logical</code>)<br> Whether warnings and messages should be printed. Mainly used
+to print out information about factor casting. Defaults to <code>TRUE</code>.</p></dd>
+
+
+<dt>.N_col</dt>
+<dd><p>(<code>integer</code>)<br> column-wise N (column count) for the full column being analyzed that is typically
+passed by <code>rtables</code>.</p></dd>
+
+
+<dt>.N_row</dt>
+<dd><p>(<code>integer</code>)<br> row-wise N (row group count) for the group of observations being analyzed
+(i.e. with no column-based subsetting) that is typically passed by <code>rtables</code>.</p></dd>
+
+
+<dt>.df_row</dt>
+<dd><p>(<code>data.frame</code>)<br> data frame across all of the columns for the given row split.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<ul><li><p><code>s_compare()</code> returns output of <code><a href="analyze_variables.html">s_summary()</a></code> and comparisons versus the reference group in the form of p-values.</p></li>
-</ul><ul><li><p><code>a_compare()</code> returns the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
-</ul><ul><li><p><code>compare_vars()</code> returns a layout object suitable for passing to further layouting functions,
+<ul><li><p><code>compare_vars()</code> returns a layout object suitable for passing to further layouting functions,
 or to <code><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted rows containing
 the statistics from <code>s_compare()</code> to the table layout.</p></li>
+</ul><ul><li><p><code>s_compare()</code> returns output of <code><a href="analyze_variables.html">s_summary()</a></code> and comparisons versus the reference group in the form of p-values.</p></li>
+</ul><ul><li><p><code>a_compare()</code> returns the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>s_compare()</code>: S3 generic function to produce a comparison summary.</p></li>
+<ul><li><p><code>compare_vars()</code>: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
+<li><p><code>s_compare()</code>: S3 generic function to produce a comparison summary.</p></li>
 <li><p><code>s_compare(numeric)</code>: Method for <code>numeric</code> class. This uses the standard t-test
 to calculate the p-value.</p></li>
 <li><p><code>s_compare(factor)</code>: Method for <code>factor</code> class. This uses the chi-squared test
@@ -288,8 +263,6 @@ conversion to <code>factor</code> (with a warning) and then forwards to the meth
 is used. If missing values are not removed, then they are counted as <code>FALSE</code>.</p></li>
 <li><p><code>a_compare()</code>: Formatted analysis function which is used as <code>afun</code>
 in <code>compare_vars()</code>.</p></li>
-<li><p><code>compare_vars()</code>: Layout-creating function which can take statistics function arguments
-and additional format arguments. This function is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
@@ -318,7 +291,41 @@ function for <code>compare_vars()</code>.</p></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># `s_compare.numeric`</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># `compare_vars()` in `rtables` pipelines</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Default output within a `rtables` pipeline.</span></span></span>
+<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM B"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">compare_vars</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AGE"</span>, <span class="st">"SEX"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, <span class="va">tern_ex_adsl</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                  ARM A        ARM B        ARM C   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AGE                                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                69           73           58    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)                    34.1 (6.8)   35.8 (7.1)   36.1 (7.4)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   p-value (t-test)               0.1446                    0.8212  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SEX                                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                69           73           58    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F                            38 (55.1%)   40 (54.8%)   32 (55.2%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   M                            31 (44.9%)   33 (45.2%)   26 (44.8%)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   p-value (chi-squared test)     1.0000                    1.0000  </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Select and format statistics output.</span></span></span>
+<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM C"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">compare_vars</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    vars <span class="op">=</span> <span class="st">"AGE"</span>,</span></span>
+<span class="r-in"><span>    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean_sd"</span>, <span class="st">"pval"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>mean_sd <span class="op">=</span> <span class="st">"xx.x, xx.x"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>mean_sd <span class="op">=</span> <span class="st">"Mean, SD"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">tern_ex_adsl</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      ARM A       ARM B       ARM C  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mean, SD           34.1, 6.8   35.8, 7.1   36.1, 7.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p-value (t-test)    0.1176      0.8212              </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># `s_compare.numeric`</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Usual case where both this and the reference group vector have more than 1 value.</span></span></span>
 <span class="r-in"><span><span class="fu">s_compare</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span>, .ref_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">5</span>, <span class="op">-</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span>, .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
@@ -328,63 +335,63 @@ function for <code>compare_vars()</code>.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      sum </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51.00276 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46.23535 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     mean </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5.100276 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.623535 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sd</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        sd </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.7510319 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.6715627 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $se</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        se </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.2374971 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.2123668 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_sd</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      mean        sd </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5.1002763 0.7510319 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.6235348 0.6715627 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_se</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      mean        se </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5.1002763 0.2374971 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.6235348 0.2123668 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_ci_lwr mean_ci_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4.563020    5.637532 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4.143128    5.103942 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean 95% CI"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_sei</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_sei_lwr mean_sei_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     4.862779     5.337773 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4.411168     4.835902 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean -/+ 1xSE"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_sdi</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_sdi_lwr mean_sdi_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     4.349244     5.851308 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3.951972     5.295098 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean -/+ 1xSD"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      p_value </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4.842957e-09 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.290028e-09 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean p-value (H0: mean = 0)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $median</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   median </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5.434193 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.307348 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mad</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> mad </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          mad </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.440892e-16 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $median_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> median_ci_lwr median_ci_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      4.233258      5.850896 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4.038036      5.613600 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf_level")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9785156</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
@@ -392,52 +399,52 @@ function for <code>compare_vars()</code>.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $quantiles</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> quantile_0.25 quantile_0.75 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      4.417186      5.850027 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4.077488      4.943710 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "25% and 75%-ile"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $iqr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      iqr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.432841 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       iqr </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.8662219 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $range</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      min      max </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3.964154 5.862405 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3.964790 5.841616 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $min</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      min </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3.964154 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     min </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3.96479 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $max</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      max </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5.862405 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5.841616 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $median_range</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   median      min      max </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5.434193 3.964154 5.862405 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.307348 3.964790 5.841616 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Median (Min - Max)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       cv </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14.72532 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14.52488 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> geom_mean </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5.048359 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4.582245 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_ci_lwr mean_ci_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4.526467    5.630423 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4.147911    5.062059 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Geometric Mean 95% CI"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  geom_cv </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15.34329 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13.98863 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.536354e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.20377e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## If one group has not more than 1 value, then p-value is not calculated.</span></span></span>
@@ -448,55 +455,55 @@ function for <code>compare_vars()</code>.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      sum </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49.03353 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53.02199 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     mean </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4.903353 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5.302199 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       sd </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.191782 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        sd </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.6043739 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $se</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        se </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.3768745 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.1911198 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_sd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     mean       sd </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4.903353 1.191782 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      mean        sd </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5.3021993 0.6043739 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_se</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      mean        se </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4.9033530 0.3768745 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5.3021993 0.1911198 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_ci_lwr mean_ci_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4.050804    5.755902 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4.869856    5.734542 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean 95% CI"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_sei</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_sei_lwr mean_sei_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     4.526479     5.280227 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5.111079     5.493319 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean -/+ 1xSE"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_sdi</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_sdi_lwr mean_sdi_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     3.711571     6.095135 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4.697825     5.906573 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean -/+ 1xSD"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      p_value </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3.855969e-07 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.987252e-10 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean p-value (H0: mean = 0)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $median</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   median </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4.978456 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5.366453 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mad</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           mad </span>
@@ -504,7 +511,7 @@ function for <code>compare_vars()</code>.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $median_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> median_ci_lwr median_ci_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      3.378609      6.407727 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4.644034      6.010316 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"conf_level")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9785156</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
@@ -512,49 +519,49 @@ function for <code>compare_vars()</code>.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $quantiles</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> quantile_0.25 quantile_0.75 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      3.807202      5.708058 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4.708493      5.800491 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "25% and 75%-ile"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $iqr</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      iqr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.900857 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.091998 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $range</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      min      max </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3.178527 6.700421 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.411316 6.246047 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $min</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      min </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3.178527 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.411316 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $max</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      max </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6.700421 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6.246047 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $median_range</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   median      min      max </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4.978456 3.178527 6.700421 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5.366453 4.411316 6.246047 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Median (Min - Max)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       cv </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24.30544 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11.39855 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> geom_mean </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4.767381 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5.271074 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_ci_lwr mean_ci_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3.975248    5.717358 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4.856101    5.721509 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Geometric Mean 95% CI"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  geom_cv </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25.81658 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11.50034 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
@@ -977,40 +984,6 @@ function for <code>compare_vars()</code>.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           row_name formatted_cell indent_mod        row_label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                n             10          0                n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 p-value (t-test)        &lt;0.0001          0 p-value (t-test)</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># `compare_vars()` in `rtables` pipelines</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Default output within a `rtables` pipeline.</span></span></span>
-<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM B"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">compare_vars</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AGE"</span>, <span class="st">"SEX"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, <span class="va">tern_ex_adsl</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                  ARM A        ARM B        ARM C   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AGE                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                69           73           58    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mean (SD)                    34.1 (6.8)   35.8 (7.1)   36.1 (7.4)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   p-value (t-test)               0.1446                    0.8212  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SEX                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n                                69           73           58    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F                            38 (55.1%)   40 (54.8%)   32 (55.2%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   M                            31 (44.9%)   33 (45.2%)   26 (44.8%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   p-value (chi-squared test)     1.0000                    1.0000  </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Select and format statistics output.</span></span></span>
-<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM C"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">compare_vars</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    vars <span class="op">=</span> <span class="st">"AGE"</span>,</span></span>
-<span class="r-in"><span>    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean_sd"</span>, <span class="st">"pval"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>mean_sd <span class="op">=</span> <span class="st">"xx.x, xx.x"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>mean_sd <span class="op">=</span> <span class="st">"Mean, SD"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt</span>, df <span class="op">=</span> <span class="va">tern_ex_adsl</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      ARM A       ARM B       ARM C  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mean, SD           34.1, 6.8   35.8, 7.1   36.1, 7.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p-value (t-test)    0.1176      0.8212              </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

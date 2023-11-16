@@ -16,7 +16,7 @@ greatest intensity/highest grade level."><!-- mathjax --><script src="https://cd
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2.9014</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2.9015</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,33 +41,6 @@ greatest intensity/highest grade level."><!-- mathjax --><script src="https://cd
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2-rc1">v0.9.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1-rc3">v0.9.1-rc3</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc2">v0.8.5-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc1">v0.8.5-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2">v0.9.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1">v0.9.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.0">v0.9.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5">v0.8.5</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -105,27 +78,7 @@ greatest intensity/highest grade level.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">s_count_occurrences_by_grade</span><span class="op">(</span></span>
-<span>  <span class="va">df</span>,</span>
-<span>  <span class="va">.var</span>,</span>
-<span>  <span class="va">.N_col</span>,</span>
-<span>  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
-<span>  grade_groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  remove_single <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  labelstr <span class="op">=</span> <span class="st">""</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">a_count_occurrences_by_grade</span><span class="op">(</span></span>
-<span>  <span class="va">df</span>,</span>
-<span>  <span class="va">.var</span>,</span>
-<span>  <span class="va">.N_col</span>,</span>
-<span>  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
-<span>  grade_groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  remove_single <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  labelstr <span class="op">=</span> <span class="st">""</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">count_occurrences_by_grade</span><span class="op">(</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">count_occurrences_by_grade</span><span class="op">(</span></span>
 <span>  <span class="va">lyt</span>,</span>
 <span>  <span class="va">var</span>,</span>
 <span>  var_labels <span class="op">=</span> <span class="va">var</span>,</span>
@@ -150,45 +103,32 @@ greatest intensity/highest grade level.</p>
 <span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .labels <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">s_count_occurrences_by_grade</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  <span class="va">.var</span>,</span>
+<span>  <span class="va">.N_col</span>,</span>
+<span>  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
+<span>  grade_groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  remove_single <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  labelstr <span class="op">=</span> <span class="st">""</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">a_count_occurrences_by_grade</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  <span class="va">.var</span>,</span>
+<span>  <span class="va">.N_col</span>,</span>
+<span>  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
+<span>  grade_groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  remove_single <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  labelstr <span class="op">=</span> <span class="st">""</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>df</dt>
-<dd><p>(<code>data.frame</code>)<br> data set containing all analysis variables.</p></dd>
-
-
-<dt>.var, var</dt>
-<dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
-by a statistics function.</p></dd>
-
-
-<dt>.N_col</dt>
-<dd><p>(<code>integer</code>)<br> column-wise N (column count) for the full column being analyzed that is typically
-passed by <code>rtables</code>.</p></dd>
-
-
-<dt>id</dt>
-<dd><p>(<code>string</code>)<br> subject variable name.</p></dd>
-
-
-<dt>grade_groups</dt>
-<dd><p>(named <code>list</code> of <code>character</code>)<br> containing groupings of grades.</p></dd>
-
-
-<dt>remove_single</dt>
-<dd><p>(<code>logical</code>)<br><code>TRUE</code> to not include the elements of one-element grade groups
-in the the output list; in this case only the grade groups names will be included in the output.</p></dd>
-
-
-<dt>labelstr</dt>
-<dd><p>(<code>character</code>)<br> label of the level of the parent split currently being summarized
-(must be present as second argument in Content Row Functions). See <code><a href="https://rdrr.io/pkg/rtables/man/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>
-for more information.</p></dd>
-
-
-<dt>lyt</dt>
+    <dl><dt>lyt</dt>
 <dd><p>(<code>layout</code>)<br> input layout where analyses will be added to.</p></dd>
 
 
@@ -243,32 +183,65 @@ unmodified default behavior. Can be negative.</p></dd>
 <dt>.labels</dt>
 <dd><p>(named <code>character</code>)<br> labels for the statistics (without indent).</p></dd>
 
+
+<dt>df</dt>
+<dd><p>(<code>data.frame</code>)<br> data set containing all analysis variables.</p></dd>
+
+
+<dt>.var, var</dt>
+<dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
+by a statistics function.</p></dd>
+
+
+<dt>.N_col</dt>
+<dd><p>(<code>integer</code>)<br> column-wise N (column count) for the full column being analyzed that is typically
+passed by <code>rtables</code>.</p></dd>
+
+
+<dt>id</dt>
+<dd><p>(<code>string</code>)<br> subject variable name.</p></dd>
+
+
+<dt>grade_groups</dt>
+<dd><p>(named <code>list</code> of <code>character</code>)<br> containing groupings of grades.</p></dd>
+
+
+<dt>remove_single</dt>
+<dd><p>(<code>logical</code>)<br><code>TRUE</code> to not include the elements of one-element grade groups
+in the the output list; in this case only the grade groups names will be included in the output.</p></dd>
+
+
+<dt>labelstr</dt>
+<dd><p>(<code>character</code>)<br> label of the level of the parent split currently being summarized
+(must be present as second argument in Content Row Functions). See <code><a href="https://rdrr.io/pkg/rtables/man/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>
+for more information.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<ul><li><p><code>s_count_occurrences_by_grade()</code> returns a list of counts and fractions with one element per grade level or
-grade level grouping.</p></li>
-</ul><ul><li><p><code>a_count_occurrences_by_grade()</code> returns the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
-</ul><ul><li><p><code>count_occurrences_by_grade()</code> returns a layout object suitable for passing to further layouting functions,
+<ul><li><p><code>count_occurrences_by_grade()</code> returns a layout object suitable for passing to further layouting functions,
 or to <code><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted rows containing
 the statistics from <code>s_count_occurrences_by_grade()</code> to the table layout.</p></li>
 </ul><ul><li><p><code>summarize_occurrences_by_grade()</code> returns a layout object suitable for passing to further layouting functions,
 or to <code><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted content rows
 containing the statistics from <code>s_count_occurrences_by_grade()</code> to the table layout.</p></li>
+</ul><ul><li><p><code>s_count_occurrences_by_grade()</code> returns a list of counts and fractions with one element per grade level or
+grade level grouping.</p></li>
+</ul><ul><li><p><code>a_count_occurrences_by_grade()</code> returns the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>s_count_occurrences_by_grade()</code>: Statistics function which counts the
-number of patients by highest grade.</p></li>
-<li><p><code>a_count_occurrences_by_grade()</code>: Formatted analysis function which is used as <code>afun</code>
-in <code>count_occurrences_by_grade()</code>.</p></li>
-<li><p><code>count_occurrences_by_grade()</code>: Layout-creating function which can take statistics function
+<ul><li><p><code>count_occurrences_by_grade()</code>: Layout-creating function which can take statistics function
 arguments and additional format arguments. This function is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
 <li><p><code>summarize_occurrences_by_grade()</code>: Layout-creating function which can take content function arguments
 and additional format arguments. This function is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>.</p></li>
+<li><p><code>s_count_occurrences_by_grade()</code>: Statistics function which counts the
+number of patients by highest grade.</p></li>
+<li><p><code>a_count_occurrences_by_grade()</code>: Formatted analysis function which is used as <code>afun</code>
+in <code>count_occurrences_by_grade()</code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -278,6 +251,7 @@ and additional format arguments. This function is a wrapper for <code><a href="h
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  ARM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>, <span class="st">"A"</span><span class="op">)</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span><span class="op">)</span>,</span></span>
@@ -288,57 +262,10 @@ and additional format arguments. This function is a wrapper for <code><a href="h
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
 <span class="r-in"><span>  stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">df_adsl</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">USUBJID</span>, <span class="va">ARM</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">s_count_occurrences_by_grade</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">df</span>,</span></span>
-<span class="r-in"><span>  .N_col <span class="op">=</span> <span class="fl">10L</span>,</span></span>
-<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AETOXGR"</span>,</span></span>
-<span class="r-in"><span>  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span></span>
-<span class="r-in"><span>  grade_groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"ANY"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">AETOXGR</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$ANY</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.0 0.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`1`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0 0.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`2`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.0 0.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`3`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.0 0.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`4`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0 0.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`5`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">#  We need to ungroup `count_fraction` first so that the `rtables` formatting</span></span></span>
-<span class="r-in"><span><span class="co"># function `format_count_fraction()` can be applied correctly.</span></span></span>
-<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">make_afun</a></span><span class="op">(</span><span class="va">a_count_occurrences_by_grade</span>, .ungroup_stats <span class="op">=</span> <span class="st">"count_fraction"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">afun</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">df</span>,</span></span>
-<span class="r-in"><span>  .N_col <span class="op">=</span> <span class="fl">10L</span>,</span></span>
-<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AETOXGR"</span>,</span></span>
-<span class="r-in"><span>  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span></span>
-<span class="r-in"><span>  grade_groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"ANY"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">AETOXGR</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   row_name formatted_cell indent_mod row_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      ANY      6 (60.0%)          0       ANY</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1      1 (10.0%)          0         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        2      2 (20.0%)          0         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        3      2 (20.0%)          0         3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        4      1 (10.0%)          0         4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        5              0          0         5</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Layout creating function with custom format.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -433,6 +360,54 @@ and additional format arguments. This function is a wrapper for <code><a href="h
 <span class="r-out co"><span class="r-pr">#&gt;</span>   3               0    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   4           1 (16.7%)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   5               0    </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">s_count_occurrences_by_grade</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">df</span>,</span></span>
+<span class="r-in"><span>  .N_col <span class="op">=</span> <span class="fl">10L</span>,</span></span>
+<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AETOXGR"</span>,</span></span>
+<span class="r-in"><span>  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span></span>
+<span class="r-in"><span>  grade_groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"ANY"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">AETOXGR</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$ANY</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.0 0.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`1`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0 0.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`2`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.0 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`3`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.0 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`4`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0 0.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`5`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#  We need to ungroup `count_fraction` first so that the `rtables` formatting</span></span></span>
+<span class="r-in"><span><span class="co"># function `format_count_fraction()` can be applied correctly.</span></span></span>
+<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/make_afun.html" class="external-link">make_afun</a></span><span class="op">(</span><span class="va">a_count_occurrences_by_grade</span>, .ungroup_stats <span class="op">=</span> <span class="st">"count_fraction"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">afun</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">df</span>,</span></span>
+<span class="r-in"><span>  .N_col <span class="op">=</span> <span class="fl">10L</span>,</span></span>
+<span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AETOXGR"</span>,</span></span>
+<span class="r-in"><span>  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span></span>
+<span class="r-in"><span>  grade_groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"ANY"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">AETOXGR</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   row_name formatted_cell indent_mod row_label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      ANY      6 (60.0%)          0       ANY</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1      1 (10.0%)          0         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        2      2 (20.0%)          0         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        3      2 (20.0%)          0         3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        4      1 (10.0%)          0         4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6        5              0          0         5</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

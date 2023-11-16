@@ -12,7 +12,7 @@ Estimate the proportion of responders within a studied population."><!-- mathjax
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2.9014</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2.9015</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,33 +37,6 @@ Estimate the proportion of responders within a studied population."><!-- mathjax
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2-rc1">v0.9.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1-rc3">v0.9.1-rc3</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc2">v0.8.5-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc1">v0.8.5-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2">v0.9.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1">v0.9.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.0">v0.9.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5">v0.8.5</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -99,7 +72,21 @@ Estimate the proportion of responders within a studied population."><!-- mathjax
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">s_proportion</span><span class="op">(</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">estimate_proportion</span><span class="op">(</span></span>
+<span>  <span class="va">lyt</span>,</span>
+<span>  <span class="va">vars</span>,</span>
+<span>  na_str <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
+<span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  show_labels <span class="op">=</span> <span class="st">"hidden"</span>,</span>
+<span>  table_names <span class="op">=</span> <span class="va">vars</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">s_proportion</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
 <span>  <span class="va">.var</span>,</span>
 <span>  conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
@@ -121,70 +108,12 @@ Estimate the proportion of responders within a studied population."><!-- mathjax
 <span>  max_iterations <span class="op">=</span> <span class="fl">50</span>,</span>
 <span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>strata <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span>
 <span>  long <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">estimate_proportion</span><span class="op">(</span></span>
-<span>  <span class="va">lyt</span>,</span>
-<span>  <span class="va">vars</span>,</span>
-<span>  na_str <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
-<span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  <span class="va">...</span>,</span>
-<span>  show_labels <span class="op">=</span> <span class="st">"hidden"</span>,</span>
-<span>  table_names <span class="op">=</span> <span class="va">vars</span>,</span>
-<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>df</dt>
-<dd><p>(<code>logical</code> or <code>data.frame</code>)<br> if only a logical vector is used,
-it indicates whether each subject is a responder or not. <code>TRUE</code> represents
-a successful outcome. If a <code>data.frame</code> is provided, also the <code>strata</code> variable
-names must be provided in <code>variables</code> as a list element with the strata strings.
-In the case of <code>data.frame</code>, the logical vector of responses must be indicated as a
-variable name in <code>.var</code>.</p></dd>
-
-
-<dt>.var</dt>
-<dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
-by a statistics function.</p></dd>
-
-
-<dt>conf_level</dt>
-<dd><p>(<code>proportion</code>)<br> confidence level of the interval.</p></dd>
-
-
-<dt>method</dt>
-<dd><p>(<code>string</code>)<br> the method used to construct the confidence interval
-for proportion of successful outcomes; one of <code>waldcc</code>, <code>wald</code>, <code>clopper-pearson</code>,
-<code>wilson</code>, <code>wilsonc</code>, <code>strat_wilson</code>, <code>strat_wilsonc</code>, <code>agresti-coull</code> or <code>jeffreys</code>.</p></dd>
-
-
-<dt>weights</dt>
-<dd><p>(<code>numeric</code> or <code>NULL</code>)<br> weights for each level of the strata. If <code>NULL</code>, they are
-estimated using the iterative algorithm proposed in Yan and Su (2010)
- that
-minimizes the weighted squared length of the confidence interval.</p></dd>
-
-
-<dt>max_iterations</dt>
-<dd><p>(<code>count</code>)<br> maximum number of iterations for the iterative procedure used
-to find estimates of optimal weights.</p></dd>
-
-
-<dt>variables</dt>
-<dd><p>(named <code>list</code> of <code>string</code>)<br> list of additional analysis variables.</p></dd>
-
-
-<dt>long</dt>
-<dd><p>(<code>flag</code>)<br> a long description is required.</p></dd>
-
-
-<dt>lyt</dt>
+    <dl><dt>lyt</dt>
 <dd><p>(<code>layout</code>)<br> input layout where analyses will be added to.</p></dd>
 
 
@@ -233,27 +162,71 @@ information on the <code>"auto"</code> setting.</p></dd>
 <dd><p>(named <code>integer</code>)<br> indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.</p></dd>
 
+
+<dt>df</dt>
+<dd><p>(<code>logical</code> or <code>data.frame</code>)<br> if only a logical vector is used,
+it indicates whether each subject is a responder or not. <code>TRUE</code> represents
+a successful outcome. If a <code>data.frame</code> is provided, also the <code>strata</code> variable
+names must be provided in <code>variables</code> as a list element with the strata strings.
+In the case of <code>data.frame</code>, the logical vector of responses must be indicated as a
+variable name in <code>.var</code>.</p></dd>
+
+
+<dt>.var</dt>
+<dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
+by a statistics function.</p></dd>
+
+
+<dt>conf_level</dt>
+<dd><p>(<code>proportion</code>)<br> confidence level of the interval.</p></dd>
+
+
+<dt>method</dt>
+<dd><p>(<code>string</code>)<br> the method used to construct the confidence interval
+for proportion of successful outcomes; one of <code>waldcc</code>, <code>wald</code>, <code>clopper-pearson</code>,
+<code>wilson</code>, <code>wilsonc</code>, <code>strat_wilson</code>, <code>strat_wilsonc</code>, <code>agresti-coull</code> or <code>jeffreys</code>.</p></dd>
+
+
+<dt>weights</dt>
+<dd><p>(<code>numeric</code> or <code>NULL</code>)<br> weights for each level of the strata. If <code>NULL</code>, they are
+estimated using the iterative algorithm proposed in Yan and Su (2010)
+ that
+minimizes the weighted squared length of the confidence interval.</p></dd>
+
+
+<dt>max_iterations</dt>
+<dd><p>(<code>count</code>)<br> maximum number of iterations for the iterative procedure used
+to find estimates of optimal weights.</p></dd>
+
+
+<dt>variables</dt>
+<dd><p>(named <code>list</code> of <code>string</code>)<br> list of additional analysis variables.</p></dd>
+
+
+<dt>long</dt>
+<dd><p>(<code>flag</code>)<br> a long description is required.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<ul><li><p><code>s_proportion()</code> returns statistics <code>n_prop</code> (<code>n</code> and proportion) and <code>prop_ci</code> (proportion CI) for a
-given variable.</p></li>
-</ul><ul><li><p><code>a_proportion()</code> returns the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
-</ul><ul><li><p><code>estimate_proportion()</code> returns a layout object suitable for passing to further layouting functions,
+<ul><li><p><code>estimate_proportion()</code> returns a layout object suitable for passing to further layouting functions,
 or to <code><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted rows containing
 the statistics from <code>s_proportion()</code> to the table layout.</p></li>
+</ul><ul><li><p><code>s_proportion()</code> returns statistics <code>n_prop</code> (<code>n</code> and proportion) and <code>prop_ci</code> (proportion CI) for a
+given variable.</p></li>
+</ul><ul><li><p><code>a_proportion()</code> returns the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>s_proportion()</code>: Statistics function estimating a
+<ul><li><p><code>estimate_proportion()</code>: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
+<li><p><code>s_proportion()</code>: Statistics function estimating a
 proportion along with its confidence interval.</p></li>
 <li><p><code>a_proportion()</code>: Formatted analysis function which is used as <code>afun</code>
 in <code>estimate_proportion()</code>.</p></li>
-<li><p><code>estimate_proportion()</code>: Layout-creating function which can take statistics function arguments
-and additional format arguments. This function is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -262,7 +235,22 @@ and additional format arguments. This function is a wrapper for <code><a href="h
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Case with only logical vector.</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dta_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"S"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  ARM     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, each <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  AVAL    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, C <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">estimate_proportion</span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                        A              B              C     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Responders                        4 (100.0%)      2 (50.0%)      0 (0.0%)  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95% CI (Wald, with correction)   (87.5, 100.0)   (0.0, 100.0)   (0.0, 12.5)</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Case with only logical vector.</span></span></span>
 <span class="r-in"><span><span class="va">rsp_v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">s_proportion</span><span class="op">(</span><span class="va">rsp_v</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_prop</span>
@@ -304,21 +292,6 @@ and additional format arguments. This function is a wrapper for <code><a href="h
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "90% CI (Stratified Wilson, without correction)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">dta_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"S"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  ARM     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, each <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  AVAL    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, C <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span><span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">estimate_proportion</span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                        A              B              C     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Responders                        4 (100.0%)      2 (50.0%)      0 (0.0%)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 95% CI (Wald, with correction)   (87.5, 100.0)   (0.0, 100.0)   (0.0, 12.5)</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
