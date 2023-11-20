@@ -165,6 +165,7 @@ Collate:
     'utils_checkmate.R'
     'utils_default_stats_formats_labels.R'
     'utils_factor.R'
+    'utils_ggplot.R'
     'utils_grid.R'
     'utils_rtables.R'
     'utils_split_funs.R'
