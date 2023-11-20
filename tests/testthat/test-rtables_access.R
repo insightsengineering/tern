@@ -2,7 +2,7 @@ tbl_example <- basic_table() %>%
   split_cols_by("ARM") %>%
   split_rows_by("RACE") %>%
   split_rows_by("STRATA1") %>%
-  summarize_vars("COUNTRY", .stats = "count_fraction") %>%
+  analyze_vars("COUNTRY", .stats = "count_fraction") %>%
   build_table(DM)
 
 tbl_with_empty <- rtable(
@@ -94,7 +94,7 @@ testthat::test_that("h_col_counts works as expected", {
 testthat::test_that("is_leaf_table works as expected", {
   simple_tab <- basic_table() %>%
     split_rows_by("RACE") %>%
-    summarize_vars("COUNTRY", .stats = "count_fraction") %>%
+    analyze_vars("COUNTRY", .stats = "count_fraction") %>%
     build_table(DM)
   testthat::expect_false(is_leaf_table(simple_tab))
   sub_tab <- tree_children(simple_tab)[[1]]

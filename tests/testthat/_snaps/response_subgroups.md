@@ -139,8 +139,8 @@
     Code
       res
     Output
-      Baseline Risk Factors                  B: Placebo           A: Drug X                                                              
-                                Total n   n    Response (%)   n    Response (%)   Odds Ratio      95% CI       p-value (Chi-Squared Test)
+                                             B: Placebo           A: Drug X                                                              
+      Baseline Risk Factors     Total n   n    Response (%)   n    Response (%)   Odds Ratio      95% CI       p-value (Chi-Squared Test)
       ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
       All Patients                142     73      68.5%       69      85.5%          2.71      (1.18, 6.24)              0.0164          
       Sex                                                                                                                                
@@ -185,8 +185,8 @@
     Code
       res
     Output
-      Baseline Risk Factors                    REF                COMP                                      
-                              Total n   n    Response (%)   n    Response (%)   Odds Ratio       95% CI     
+                                               REF                COMP                                      
+      Baseline Risk Factors   Total n   n    Response (%)   n    Response (%)   Odds Ratio       95% CI     
       ——————————————————————————————————————————————————————————————————————————————————————————————————————
       All Patients              62      40      82.5%       22       9.1%          0.02       (<0.01, 0.11) 
       var1                                                                                                  
@@ -198,8 +198,8 @@
     Code
       res
     Output
-      Baseline Risk Factors                B: Placebo           A: Drug X                                                             
-                              Total n   n    Response (%)   n    Response (%)   Odds Ratio      95% CI      p-value (Chi-Squared Test)
+                                           B: Placebo           A: Drug X                                                             
+      Baseline Risk Factors   Total n   n    Response (%)   n    Response (%)   Odds Ratio      95% CI      p-value (Chi-Squared Test)
       ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
       All Patients              142     73      68.5%       69      85.5%          2.71      (1.18, 6.24)             0.0164          
 
@@ -208,8 +208,8 @@
     Code
       res
     Output
-      Baseline Risk Factors                                      B: Placebo           A: Drug X                                                                
-                                                    Total n   n    Response (%)   n    Response (%)   Odds Ratio       95% CI        p-value (Chi-Squared Test)
+                                                                 B: Placebo           A: Drug X                                                                
+      Baseline Risk Factors                         Total n   n    Response (%)   n    Response (%)   Odds Ratio       95% CI        p-value (Chi-Squared Test)
       —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
       All Patients                                    142     73      68.5%       69      85.5%          2.71       (1.18, 6.24)               0.0164          
       Race                                                                                                                                                     

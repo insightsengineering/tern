@@ -21,10 +21,13 @@ including covariates.}
 \item{conf_level}{(\code{proportion})\cr The confidence level for the hazard ratio interval estimations. Default is 0.95.}
 
 \item{pval_method}{(\code{character})\cr The method used for the estimation of p-values, should be one of
-"wald" (default) or "likelihood".}
+\code{"wald"} (default) or \code{"likelihood"}.}
 
 \item{...}{Optional parameters passed to \code{\link[survival:coxph]{survival::coxph()}}. Can include \code{ties}, a character string specifying the
 method for tie handling, one of \code{exact} (default), \code{efron}, \code{breslow}.}
+}
+\value{
+A \code{list} with elements \code{mod}, \code{msum}, \code{aov}, and \code{coef_inter}.
 }
 \description{
 Analyses based on multivariate Cox model are usually not performed for the Controlled Substance Reporting or
@@ -54,13 +57,6 @@ adtte_f <- filter(
 )
 adtte_f$SEX <- droplevels(adtte_f$SEX)
 adtte_f$RACE <- droplevels(adtte_f$RACE)
-
-# Internal function - s_cox_multivariate
-\dontrun{
-s_cox_multivariate(
-  formula = Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = adtte_f
-)
-}
 
 }
 \seealso{

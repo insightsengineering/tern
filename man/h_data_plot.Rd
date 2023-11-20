@@ -9,11 +9,14 @@ h_data_plot(fit_km, armval = "All", max_time = NULL)
 \arguments{
 \item{fit_km}{(\code{survfit})\cr result of \code{\link[survival:survfit]{survival::survfit()}}.}
 
-\item{armval}{(\code{string})\cr used as strata name when treatment arm
-variable only has one level. Default is "All".}
+\item{armval}{(\code{string})\cr used as strata name when treatment arm variable only has one level. Default is \code{"All"}.}
 
 \item{max_time}{(\code{numeric})\cr maximum value to show on X axis. Only data values less than or up to
 this threshold value will be plotted (defaults to \code{NULL}).}
+}
+\value{
+A \code{tibble} with columns \code{time}, \code{n.risk}, \code{n.event}, \code{n.censor}, \code{estimate}, \code{std.error}, \code{conf.high},
+\code{conf.low}, \code{strata}, and \code{censor}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -21,19 +24,17 @@ this threshold value will be plotted (defaults to \code{NULL}).}
 Convert the survival fit data into a data frame designed for plotting
 within \code{g_km}.
 
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 This starts from the \code{\link[broom:reexports]{broom::tidy()}} result, and then:
 \itemize{
-\item post-processes the \code{strata} column into a factor,
-\item extends each stratum by an additional first row with time 0
-and probability 1 so that downstream plot lines start at those coordinates,
-\item adds a \code{censor} column,
-\item filters the rows before \code{max_time}.
+\item Post-processes the \code{strata} column into a factor.
+\item Extends each stratum by an additional first row with time 0 and probability 1 so that
+downstream plot lines start at those coordinates.
+\item Adds a \code{censor} column.
+\item Filters the rows before \code{max_time}.
 }
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(survival)
 

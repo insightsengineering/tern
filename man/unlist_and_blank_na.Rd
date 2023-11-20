@@ -10,8 +10,8 @@ unlist_and_blank_na(x)
 \item{x}{(\code{vector})\cr input for a cell.}
 }
 \value{
-Either empty character vector if all entries in \code{x} are missing (\code{NA}), or otherwise
-the unlisted version of \code{x}
+An empty \code{character} vector if all entries in \code{x} are missing (\code{NA}), otherwise
+the unlisted version of \code{x}.
 }
 \description{
 Helper function to use in tabulating model results.

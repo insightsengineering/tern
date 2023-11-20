@@ -1,19 +1,19 @@
 #' Additional Assertions for `checkmate`
 #'
-#' @description
 #' Additional assertion functions which can be used together with the `checkmate` package.
 #'
+#' @inheritParams checkmate::assert_factor
 #' @param x (`any`)\cr object to test.
 #' @param df (`data.frame`)\cr data set to test.
 #' @param variables (named `list` of `character`)\cr list of variables to test.
 #' @param include_boundaries (`logical`)\cr whether to include boundaries when testing
 #'   for proportions.
 #' @param na_level (`character`)\cr the string you have been using to represent NA or
-#'   missing data. For `NA` values please consider using directly `base::is.na` or
+#'   missing data. For `NA` values please consider using directly [is.na()] or
 #'   similar approaches.
-#' @inheritParams checkmate::assert_factor
-#' @param (`integer`)\cr minimum number of factor levels. Default is `1`.
-#' @param ... a collection of objects to test.
+#'
+#' @return Nothing if assertion passes, otherwise prints the error message.
+#'
 #' @name assertions
 NULL
 
@@ -33,22 +33,8 @@ check_list_of_variables <- function(x) {
   }
   return(res)
 }
-#' @describeIn assertions Check whether `x` is a valid list of variable names.
-#'   `NULL` elements of the list `x` are dropped out with `Filter(Negate(is.null), x)`.
-#'
-#' @examples
-#' # Check whether `x` is a valid list of variable names.
-#'
-#' # Internal function - assert_list_of_variables
-#' \dontrun{
-#' assert_list_of_variables(list(val = "a"))
-#' assert_list_of_variables(list(val = c("a", "b")))
-#' assert_list_of_variables(list(val = c("a", "b"), val2 = NULL))
-#'
-#' # The following calls fail
-#' assert_list_of_variables(list(1, 2))
-#' assert_list_of_variables(list("bla" = 2))
-#' }
+#' @describeIn assertions Checks whether `x` is a valid list of variable names.
+#'   `NULL` elements of the list `x` are dropped with `Filter(Negate(is.null), x)`.
 #'
 #' @keywords internal
 assert_list_of_variables <- checkmate::makeAssertionFunction(check_list_of_variables)
@@ -88,43 +74,6 @@ check_df_with_variables <- function(df, variables, na_level = NULL) {
 #'   Please notice how this produces an error when not all variables are present in the
 #'   data.frame while the opposite is not required.
 #'
-#' @examples
-#' # Check whether `df` contains the analysis `variables`.
-#'
-#' # Internal function - assert_df_with_variables
-#' \dontrun{
-#' assert_df_with_variables(
-#'   df = data.frame(a = 5, b = 3),
-#'   variables = list(val = "a")
-#' )
-#' assert_df_with_variables(
-#'   df = data.frame(a = 5, b = 3),
-#'   variables = list(val = c("a", "b"))
-#' )
-#' assert_df_with_variables(
-#'   df = data.frame(a = 5, b = 3),
-#'   variables = list(val = c("a", "b"))
-#' )
-#' assert_df_with_variables(
-#'   df = data.frame(a = 5, b = 3, e = "<Missing>"),
-#'   variables = list(val = c("a", "b")), na_level = "<Missing>"
-#' )
-#'
-#' # The following calls fail
-#' assert_df_with_variables(
-#'   df = matrix(1:5, ncol = 2, nrow = 3),
-#'   variables = list(val = "a")
-#' )
-#' assert_df_with_variables(
-#'   df = data.frame(a = 5, b = 3),
-#'   variables = list(val = c("a", "b", "c"))
-#' )
-#' assert_df_with_variables(
-#'   df = data.frame(a = 5, b = 3, e = "<Missing>"),
-#'   variables = list(val = c("a", "b", "e")), na_level = "<Missing>"
-#' )
-#' }
-#'
 #' @keywords internal
 assert_df_with_variables <- checkmate::makeAssertionFunction(check_df_with_variables)
 
@@ -154,28 +103,8 @@ check_valid_factor <- function(x,
 
   return(res)
 }
-#' @describeIn assertions Check whether `x` is a valid factor (has levels and no empty
+#' @describeIn assertions Check whether `x` is a valid factor (i.e. has levels and no empty
 #'   string levels). Note that `NULL` and `NA` elements are allowed.
-#'
-#' @examples
-#' # Check whether `x` is a valid factor.
-#'
-#' # Internal function - assert_valid_factor
-#' \dontrun{
-#' assert_valid_factor(factor(c("a", NULL)))
-#' assert_valid_factor(factor(c("a", "b")))
-#' assert_valid_factor(factor(c("a", "b")), len = 2)
-#' assert_valid_factor(factor(c("a", NA)), any.missing = TRUE)
-#' assert_valid_factor(factor("A", levels = c("A", "B")))
-#'
-#' # The following calls fail
-#' assert_valid_factor(-1)
-#' assert_valid_factor(factor(c("a", "")))
-#' assert_valid_factor(factor(c("a", NA)), any.missing = FALSE)
-#' assert_valid_factor(factor(NULL))
-#' assert_valid_factor(factor(c(NULL, "")))
-#' assert_valid_factor(factor())
-#' }
 #'
 #' @keywords internal
 assert_valid_factor <- checkmate::makeAssertionFunction(check_valid_factor)
@@ -217,52 +146,10 @@ check_df_with_factors <- function(df,
 #'   are all factors. Note that the creation of `NA` by direct call of `factor()` will
 #'   trim `NA` levels out of the vector list itself.
 #'
-#' @examples
-#' # Check whether `df` contains all factor analysis `variables`.
-#' adf <- data.frame(a = factor(c("A", "B")), b = 3)
-#' bdf <- data.frame(a = factor(letters[1:3]), b = factor(c(1, 2, 3)), d = 3)
-#'
-#' # Internal function - assert_df_with_factors
-#' \dontrun{
-#' assert_df_with_factors(df = adf, variables = list(val = "a"))
-#' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
-#' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)
-#' assert_df_with_factors(
-#'   df = data.frame(a = factor(c("A", NA, "B")), b = 3),
-#'   variable = list(val = "a"),
-#'   min.levels = 2,
-#'   max.levels = 2
-#' )
-#'
-#' # The following calls fail
-#' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
-#' assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
-#' assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = ""))
-#' assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = "d"))
-#' assert_df_with_factors(
-#'   df = bdf,
-#'   variables = list(val = "a", val = "b"),
-#'   min.levels = 1,
-#'   max.levels = 1
-#' )
-#' }
-#'
 #' @keywords internal
 assert_df_with_factors <- checkmate::makeAssertionFunction(check_df_with_factors)
 
 #' @describeIn assertions Check whether `x` is a proportion: number between 0 and 1.
-#'
-#' @examples
-#' # Check whether `x` is between 0 and 1.
-#' # Internal function - assert_proportion_value
-#' \dontrun{
-#' assert_proportion_value(x = 0, include_boundaries = TRUE)
-#' assert_proportion_value(x = 0.3)
-#'
-#' # These fail
-#' assert_proportion_value(x = 1.3)
-#' assert_proportion_value(x = 1)
-#' }
 #'
 #' @keywords internal
 assert_proportion_value <- function(x, include_boundaries = FALSE) {

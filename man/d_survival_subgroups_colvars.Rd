@@ -7,32 +7,34 @@
 d_survival_subgroups_colvars(vars, conf_level, method, time_unit = NULL)
 }
 \arguments{
-\item{vars}{(\code{character})\cr the name of statistics to be reported among
-\code{n_tot_events} (total number of events per group),
-\code{n_events} (number of events per group),
-\code{n_tot} (total number of observations per group),
-\code{n} (number of observations per group),
-\code{median} (median survival time),
-\code{hr} (hazard ratio),
-\code{ci} (confidence interval of hazard ratio) and
-\code{pval} (p value of the effect).
+\item{vars}{(\code{character})\cr the name of statistics to be reported among:
+\itemize{
+\item \code{n_tot_events}: Total number of events per group.
+\item \code{n_events}: Number of events per group.
+\item \code{n_tot}: Total number of observations per group.
+\item \code{n}: Number of observations per group.
+\item \code{median}: Median survival time.
+\item \code{hr}: Hazard ratio.
+\item \code{ci}: Confidence interval of hazard ratio.
+\item \code{pval}: p-value of the effect.
 Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as both \code{hr} and \code{ci}
-are required.}
+are required.
+}}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{method}{p-value method for testing hazard ratio = 1.}
+\item{method}{(\code{character})\cr p-value method for testing hazard ratio = 1.}
 
-\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
-displaying unit.}
+\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
 }
 \value{
-\code{list} of variables to tabulate and their labels.
+A \code{list} of variables and their labels to tabulate.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Internal function to check variables included in
-\code{\link[=tabulate_survival_subgroups]{tabulate_survival_subgroups()}} and create column labels.
-Note that at least one of \code{n_tot} and \code{n_tot_events} needs to be provided in \code{vars}.
+Internal function to check variables included in \code{\link[=tabulate_survival_subgroups]{tabulate_survival_subgroups()}} and create column labels.
+}
+\note{
+At least one of \code{n_tot} and \code{n_tot_events} must be provided in \code{vars}.
 }

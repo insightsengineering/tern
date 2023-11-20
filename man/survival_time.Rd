@@ -2,28 +2,79 @@
 % Please edit documentation in R/survival_time.R
 \name{survival_time}
 \alias{survival_time}
+\alias{surv_time}
 \alias{s_surv_time}
 \alias{a_surv_time}
-\alias{surv_time}
 \title{Survival Time Analysis}
 \usage{
-s_surv_time(df, .var, is_event, control = control_surv_time())
-
-a_surv_time(df, .var, is_event, control = control_surv_time())
-
 surv_time(
   lyt,
   vars,
+  ref_fn_censor = TRUE,
+  na_str = NA_character_,
+  nested = TRUE,
   ...,
   var_labels = "Time to Event",
+  show_labels = "visible",
   table_names = vars,
-  .stats = c("median", "median_ci", "quantiles", "range_censor", "range_event"),
+  .stats = c("median", "median_ci", "quantiles", "range"),
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL
+  .indent_mods = c(median_ci = 1L)
+)
+
+s_surv_time(df, .var, is_event, control = control_surv_time())
+
+a_surv_time(
+  df,
+  labelstr = "",
+  .var = NULL,
+  .df_row = NULL,
+  is_event,
+  control = control_surv_time(),
+  ref_fn_censor = TRUE,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL,
+  na_str = NA_character_
 )
 }
 \arguments{
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{ref_fn_censor}{(\code{flag})\cr whether referential footnotes indicating censored observations should be printed
+when the \code{range} statistic is included.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
+\item{...}{additional arguments for the lower level functions.}
+
+\item{var_labels}{(\code{character})\cr character for label.}
+
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("surv_time")}
+to see available statistics for this function.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
+should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
+for that statistic's row label.}
+
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
@@ -40,34 +91,33 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "no
 \item \code{quantiles} (\code{numeric})\cr vector of length two to specify the quantiles of survival time.
 }}
 
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+(must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
+for more information.}
 
-\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
-
-\item{...}{additional arguments for the lower level functions.}
-
-\item{var_labels}{character for label.}
-
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
-
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
-
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 }
 \value{
-The statistics are:
-\describe{
-\item{median}{median survival time.}
-\item{median_ci}{confidence interval for median time.}
-\item{quantiles}{survival time for two specified quantiles.}
-\item{range_censor}{survival time range for censored observations.}
-\item{range_event}{survival time range for observations with events.}
-\item{range}{survival time range for all observations.}
+\itemize{
+\item \code{surv_time()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_surv_time()} to the table layout.
+}
+
+\itemize{
+\item \code{s_surv_time()} returns the statistics:
+\itemize{
+\item \code{median}: Median survival time.
+\item \code{median_ci}: Confidence interval for median time.
+\item \code{quantiles}: Survival time for two specified quantiles.
+\item \code{range_censor}: Survival time range for censored observations.
+\item \code{range_event}: Survival time range for observations with events.
+\item \code{range}: Survival time range for all observations.
+}
+}
+
+\itemize{
+\item \code{a_surv_time()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 }
 \description{
@@ -78,14 +128,12 @@ time range of censored/event patients.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_surv_time()}: Statistics Function which analyzes survival times.
-\code{range_censor} and \code{range_event}.
+\item \code{surv_time()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{a_surv_time()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{s_surv_time()}: Statistics function which analyzes survival times.
 
-\item \code{surv_time()}: Analyze Function which adds the survival times analysis
-to the input layout. Note that additional formatting arguments can be used here.
+\item \code{a_surv_time()}: Formatted analysis function which is used as \code{afun} in \code{surv_time()}.
 
 }}
 \examples{
@@ -99,16 +147,6 @@ adtte_f <- tern_ex_adtte \%>\%
   )
 df <- adtte_f \%>\% filter(ARMCD == "ARM A")
 
-# Internal function - s_surv_time
-\dontrun{
-s_surv_time(df, .var = "AVAL", is_event = "is_event")
-}
-
-# Internal function - a_surv_time
-\dontrun{
-a_surv_time(df, .var = "AVAL", is_event = "is_event")
-}
-
 basic_table() \%>\%
   split_cols_by(var = "ARMCD") \%>\%
   add_colcounts() \%>\%
@@ -119,5 +157,13 @@ basic_table() \%>\%
     control = control_surv_time(conf_level = 0.9, conf_type = "log-log")
   ) \%>\%
   build_table(df = adtte_f)
+
+a_surv_time(
+  df,
+  .df_row = df,
+  .var = "AVAL",
+  is_event = "is_event"
+)
+
 }
 \keyword{internal}

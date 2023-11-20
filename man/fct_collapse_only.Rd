@@ -16,14 +16,19 @@ the new level given by the respective name.}
 new factor. Note that this level must not be contained in the new levels specified in \code{...}.}
 }
 \value{
-The modified factor with collapsed levels. Values and levels which are not included
-in the given character vectors input will be set to the missing level.
+A modified \code{factor} with collapsed levels. Values and levels which are not included
+in the given \code{character} vector input will be set to the missing level \code{.na_level}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This collapses levels and only keeps those new group levels, in the order provided.
 The returned factor has levels in the order given, with the possible missing level last (this will
-only be included if there are missings). Note that any existing \code{NA} in the input vector will
-not be replaced by the missing level. If needed \code{\link[=explicit_na]{explicit_na()}} can be called separately on the result.
+only be included if there are missing values).
+}
+\note{
+Any existing \code{NA}s in the input vector will not be replaced by the missing level. If needed,
+\code{\link[=explicit_na]{explicit_na()}} can be called separately on the result.
 }
 \examples{
 fct_collapse_only(factor(c("a", "b", "c", "d")), TRT = "b", CTRL = c("c", "d"))

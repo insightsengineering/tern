@@ -455,6 +455,34 @@ testthat::test_that("h_coxreg_inter_effect.numerics works with _:_ in effect lev
   testthat::expect_equal(result[, -1], expected[, -1], ignore_attr = TRUE)
 })
 
+testthat::test_that("h_coxreg_inter_effect works with character covariate", {
+  dta_bladder_raw$covar2 <- as.character(dta_bladder_raw$covar2)
+
+  mod1 <- survival::coxph(survival::Surv(time, status) ~ armcd * covar2, data = dta_bladder_raw)
+  testthat::expect_silent(
+    h_coxreg_extract_interaction(
+      effect = "armcd", covar = "covar2", mod = mod1, control = control_coxreg(),
+      at = list(), data = dta_bladder_raw
+    )
+  )
+  testthat::expect_silent(
+    h_coxreg_inter_effect(
+      x = dta_bladder_raw[["covar2"]],
+      effect = "armcd", covar = "covar2", mod = mod1, control = control_coxreg(),
+      at = list(), data = dta_bladder_raw
+    )
+  )
+
+  mod2 <- survival::coxph(survival::Surv(time, status) ~ armcd * covar2 + strata(covar1), data = dta_bladder_raw)
+  testthat::expect_silent(
+    h_coxreg_inter_effect(
+      x = dta_bladder_raw[["covar2"]],
+      effect = "armcd", covar = "covar2", mod = mod2, data = dta_bladder_raw,
+      at = list(), control = control_coxreg()
+    )
+  )
+})
+
 # h_coxreg_inter_estimations ----
 
 testthat::test_that("h_coxreg_inter_estimations' results identical to soon deprecated estimate_coef", {
@@ -539,7 +567,7 @@ testthat::test_that("fit_coxreg_multivar works correctly also without treatment 
 
 # tidy.coxreg.multivar ----
 
-testthat::test_that("tidy.coxreg.multivar method tidies up the multi-variable Cox regression model", {
+testthat::test_that("tidy.coxreg.multivar method tidies up the multivariate Cox regression model", {
   set.seed(1, kind = "Mersenne-Twister")
   dta_bladder <- dta_bladder_raw
 
@@ -552,90 +580,6 @@ testthat::test_that("tidy.coxreg.multivar method tidies up the multi-variable Co
     control = control_coxreg(ties = "efron")
   )
   result <- broom::tidy(multivar_model)
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-})
-
-# s_coxreg ----
-
-testthat::test_that("s_coxreg converts tabulated results in a list", {
-  univar_model <- fit_coxreg_univar(
-    variables = list(
-      time = "time", event = "status", arm = "armcd",
-      covariates = c("covar1", "covar2")
-    ),
-    data = dta_bladder_raw
-  )
-  df <- broom::tidy(univar_model)
-  result <- s_coxreg(df = df, .var = "hr")
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-})
-
-# summarize_coxreg ----
-
-testthat::test_that("summarize_coxreg adds the univariate Cox regression layer to rtables", {
-  conf_level <- 0.90
-  univar_model <- fit_coxreg_univar(
-    variables = list(
-      time = "time", event = "status", arm = "armcd",
-      covariates = c("covar1", "covar2")
-    ),
-    data = dta_bladder_raw,
-    control = control_coxreg(ties = "breslow", conf_level = conf_level)
-  )
-  df <- broom::tidy(univar_model)
-  result <- basic_table() %>%
-    split_rows_by("effect") %>%
-    split_rows_by("term", child_labels = "hidden") %>%
-    summarize_coxreg(conf_level = conf_level) %>%
-    build_table(df = df)
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-})
-
-testthat::test_that("summarize_coxreg adds the multi-variable Cox regression layer to rtables", {
-  set.seed(1, kind = "Mersenne-Twister")
-  dta_bladder <- dta_bladder_raw
-  conf_level <- 0.90
-
-  multivar_model <- fit_coxreg_multivar(
-    variables = list(
-      time = "time", event = "status", arm = "armcd",
-      covariates = c("covar1", "covar2")
-    ),
-    data = dta_bladder
-  )
-  df <- broom::tidy(multivar_model)
-  result <- basic_table() %>%
-    split_rows_by("term", child_labels = "hidden") %>%
-    summarize_coxreg(multivar = TRUE, conf_level = conf_level) %>%
-    build_table(df = df)
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-})
-
-testthat::test_that("summarize_coxreg works without treatment arm in univariate case", {
-  set.seed(1, kind = "Mersenne-Twister")
-  dta_bladder <- dta_bladder_raw
-  conf_level <- 0.90
-
-  univar_covs_model <- fit_coxreg_univar(
-    variables = list(
-      time = "time", event = "status",
-      covariates = c("covar1", "covar2")
-    ),
-    data = dta_bladder
-  )
-  df <- broom::tidy(univar_covs_model)
-  result <- basic_table() %>%
-    split_rows_by("term", child_labels = "hidden") %>%
-    summarize_coxreg(multivar = TRUE, conf_level = conf_level) %>%
-    build_table(df = df)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)

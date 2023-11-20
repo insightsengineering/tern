@@ -14,15 +14,15 @@
 #' @param title (`string`)\cr title for plot.
 #' @param subtitle (`string`)\cr subtitle for plot.
 #' @param add_baseline_hline (`flag`)\cr adds horizontal line at baseline y-value on
-#' plot when TRUE.
+#'   plot when TRUE.
 #' @param yvar_baseline (`string`)\cr variable with baseline values only.
-#' Ignored when `add_baseline_hline` is FALSE.
+#'   Ignored when `add_baseline_hline` is FALSE.
 #' @param ggtheme (`theme`)\cr optional graphical theme function as provided
-#' by `ggplot2` to control outlook of plot. Use `ggplot2::theme()` to tweak the display.
+#'   by `ggplot2` to control outlook of plot. Use `ggplot2::theme()` to tweak the display.
 #' @param plotting_choices (`character`)\cr specifies options for displaying
-#' plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".
+#'   plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".
 #' @param max_obs_per_plot (`count`)\cr Number of observations to be plotted on one
-#' plot. Ignored when `plotting_choices` is not "separate_by_obs".
+#'   plot. Ignored when `plotting_choices` is not "separate_by_obs".
 #' @param caption (`character` scalar)\cr optional caption below the plot.
 #' @param col (`character`)\cr lines colors.
 #'
@@ -39,8 +39,11 @@ NULL
 #'
 #' @inheritParams argument_convention
 #' @inheritParams g_ipp
+#'
+#' @return A `ggplot` line plot.
+#'
 #' @seealso [g_ipp()] which uses this function.
-#' @export
+#'
 #' @examples
 #' library(dplyr)
 #' library(nestcolor)
@@ -60,6 +63,8 @@ NULL
 #'   add_baseline_hline = TRUE
 #' )
 #' p
+#'
+#' @export
 h_g_ipp <- function(df,
                     xvar,
                     yvar,
@@ -141,15 +146,12 @@ h_g_ipp <- function(df,
   p
 }
 
-#' Plotting Function for Individual Patient Plot
+#' @describeIn individual_patient_plot Plotting function for individual patient plots which, depending on user
+#'   preference, renders a single graphic or compiles a list of graphics that show trends in individual's parameter
+#'   values over time.
 #'
-#' @describeIn individual_patient_plot depending on user preference, renders a single
-#' graphic or compiles a list of graphics that show trends in individual's parameter
-#' values over time.
+#' @return A `ggplot` object or a list of `ggplot` objects.
 #'
-#' @return a `ggplot` object or a list of `ggplot` objects.
-#'
-#' @export
 #' @examples
 #' library(dplyr)
 #' library(nestcolor)
@@ -171,6 +173,8 @@ h_g_ipp <- function(df,
 #'   max_obs_per_plot = 5
 #' )
 #' plot_list
+#'
+#' @export
 g_ipp <- function(df,
                   xvar,
                   yvar,

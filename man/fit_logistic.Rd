@@ -20,6 +20,9 @@ fit_logistic(
 This will be used when fitting the (conditional) logistic regression model on the left hand
 side of the formula.}
 }
+\value{
+A fitted logistic regression model.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -29,13 +32,12 @@ Fit a (conditional) logistic regression model.
 
 
 The \code{variables} list needs to include the following elements:
-\describe{
-\item{arm}{treatment arm variable name.}
-\item{response}{the response arm variable name. Usually this is a 0/1 variable.}
-\item{covariates}{this is either \code{NULL} (no covariates) or a character vector of covariate variable names.}
-\item{interaction}{this is either \code{NULL} (no interaction) or a string of a single covariate variable name already
+\itemize{
+\item \code{arm}: Treatment arm variable name.
+\item \code{response}: The response arm variable name. Usually this is a 0/1 variable.
+\item \code{covariates}: This is either \code{NULL} (no covariates) or a character vector of covariate variable names.
+\item \code{interaction}: This is either \code{NULL} (no interaction) or a string of a single covariate variable name already
 included in \code{covariates}. Then the interaction with the treatment arm is included in the model.
-}
 }
 }
 

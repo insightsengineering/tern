@@ -28,7 +28,7 @@ in \code{data} to factors.}
 values inside non-\code{omit_columns} columns.}
 }
 \value{
-The data frame with the desired changes made.
+A \code{data.frame} with the chosen modifications applied.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -45,7 +45,6 @@ with the \code{char_as_factor} or \code{logical_as_factor} options, the missing 
 be set as the last level.
 }
 \examples{
-
 my_data <- data.frame(
   u = c(TRUE, FALSE, NA, TRUE),
   v = factor(c("A", NA, NA, NA), levels = c("Z", "A")),
@@ -56,12 +55,34 @@ my_data <- data.frame(
   stringsAsFactors = FALSE
 )
 
+# Example 1
 # Encode missing values in all character or factor columns.
 df_explicit_na(my_data)
 # Also convert logical columns to factor columns.
 df_explicit_na(my_data, logical_as_factor = TRUE)
 # Encode missing values in a subset of columns.
 df_explicit_na(my_data, omit_columns = c("x", "y"))
+
+# Example 2
+# Here we purposefully convert all `M` values to `NA` in the `SEX` variable.
+# After running `df_explicit_na` the `NA` values are encoded as `<Missing>` but they are not
+# included when generating `rtables`.
+adsl <- tern_ex_adsl
+adsl$SEX[adsl$SEX == "M"] <- NA
+adsl <- df_explicit_na(adsl)
+
+# If you want the `Na` values to be displayed in the table use the `na_level` argument.
+adsl <- tern_ex_adsl
+adsl$SEX[adsl$SEX == "M"] <- NA
+adsl <- df_explicit_na(adsl, na_level = "Missing Values")
+
+# Example 3
+# Numeric variables that have missing values are not altered. This means that any `NA` value in
+# a numeric variable will not be included in the summary statistics, nor will they be included
+# in the denominator value for calculating the percent values.
+adsl <- tern_ex_adsl
+adsl$AGE[adsl$AGE < 30] <- NA
+adsl <- df_explicit_na(adsl)
 
 }
 \seealso{

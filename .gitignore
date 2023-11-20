@@ -1,14 +1,19 @@
+# R-related
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
+
+# docs
+inst/doc
+docs
+
+# tests
+tests/testthat/Rplots.pdf
+
+# others
 .DS_Store
 InputVads.Rdata
 t_ae_ctc_SE.out
 t_ae_ctc_ATEZOREL_SENBX.out
-inst/doc
-docs
-
-tests/testthat/Rplots.pdf
-
 temp/

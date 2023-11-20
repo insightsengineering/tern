@@ -3,12 +3,10 @@
     Code
       res
     Output
-      # A tibble: 3 x 4
-        valname  label         levelcombo exargs    
-        <chr>    <chr>         <list>     <list>    
-      1 AnyGrade Any Grade (%) <chr [5]>  <list [0]>
-      2 Grade34  Grade 3-4 (%) <chr [2]>  <list [0]>
-      3 Grade5   Grade 5 (%)   <chr [1]>  <list [0]>
+         valname         label    levelcombo exargs
+      1 AnyGrade Any Grade (%) 1, 2, 3, 4, 5   NULL
+      2  Grade34 Grade 3-4 (%)          3, 4   NULL
+      3   Grade5   Grade 5 (%)             5   NULL
 
 # combine_groups combines character vectors
 

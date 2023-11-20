@@ -5,13 +5,16 @@
 #' Estimate the proportion of responders within a studied population.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_proportion")`
+#'   to see available statistics for this function.
+#'
 #' @seealso [h_proportions]
 #'
 #' @name estimate_proportions
-#'
+#' @order 1
 NULL
 
-#' @describeIn estimate_proportions statistics function estimating a
+#' @describeIn estimate_proportions Statistics function estimating a
 #'   proportion along with its confidence interval.
 #'
 #' @inheritParams prop_strat_wilson
@@ -25,6 +28,10 @@ NULL
 #'   for proportion of successful outcomes; one of `waldcc`, `wald`, `clopper-pearson`,
 #'   `wilson`, `wilsonc`, `strat_wilson`, `strat_wilsonc`, `agresti-coull` or `jeffreys`.
 #' @param long (`flag`)\cr a long description is required.
+#'
+#' @return
+#' * `s_proportion()` returns statistics `n_prop` (`n` and proportion) and `prop_ci` (proportion CI) for a
+#'   given variable.
 #'
 #' @examples
 #' # Case with only logical vector.
@@ -121,8 +128,11 @@ s_proportion <- function(df,
   )
 }
 
-#' @describeIn estimate_proportions Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn estimate_proportions Formatted analysis function which is used as `afun`
+#'   in `estimate_proportion()`.
+#'
+#' @return
+#' * `a_proportion()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @export
 a_proportion <- make_afun(
@@ -130,9 +140,15 @@ a_proportion <- make_afun(
   .formats = c(n_prop = "xx (xx.x%)", prop_ci = "(xx.x, xx.x)")
 )
 
-#' @describeIn estimate_proportions used in a `rtables` pipeline.
-#' @inheritParams rtables::analyze
+#' @describeIn estimate_proportions Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
 #' @param ... other arguments are ultimately conveyed to [s_proportion()].
+#'
+#' @return
+#' * `estimate_proportion()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_proportion()` to the table layout.
 #'
 #' @examples
 #' dta_test <- data.frame(
@@ -147,8 +163,11 @@ a_proportion <- make_afun(
 #'   build_table(df = dta_test)
 #'
 #' @export
+#' @order 2
 estimate_proportion <- function(lyt,
                                 vars,
+                                na_str = NA_character_,
+                                nested = TRUE,
                                 ...,
                                 show_labels = "hidden",
                                 table_names = vars,
@@ -167,6 +186,8 @@ estimate_proportion <- function(lyt,
     lyt,
     vars,
     afun = afun,
+    na_str = na_str,
+    nested = nested,
     extra_args = list(...),
     show_labels = show_labels,
     table_names = table_names
@@ -181,13 +202,16 @@ estimate_proportion <- function(lyt,
 #'
 #' @inheritParams argument_convention
 #' @inheritParams estimate_proportions
+#'
+#' @return Confidence interval of a proportion.
+#'
 #' @seealso [estimate_proportions], descriptive function [d_proportion()],
 #'  and helper functions [strata_normal_quantile()] and [update_weights_strat_wilson()].
 #'
 #' @name h_proportions
 NULL
 
-#' @describeIn h_proportions the Wilson interval calls [stats::prop.test()].
+#' @describeIn h_proportions Calculates the Wilson interval by calling [stats::prop.test()].
 #'  Also referred to as Wilson score interval.
 #'
 #' @examples
@@ -210,8 +234,7 @@ prop_wilson <- function(rsp, conf_level, correct = FALSE) {
 }
 
 #' @describeIn h_proportions Calculates the stratified Wilson confidence
-#'   interval for unequal proportions as described in
-#'   \insertCite{Yan2010-jt;textual}{tern}
+#'   interval for unequal proportions as described in \insertCite{Yan2010-jt;textual}{tern}
 #'
 #' @param strata (`factor`)\cr variable with one level per stratum and same length as `rsp`.
 #' @param weights (`numeric` or `NULL`)\cr weights for each level of the strata. If `NULL`, they are
@@ -221,6 +244,9 @@ prop_wilson <- function(rsp, conf_level, correct = FALSE) {
 #'   to find estimates of optimal weights.
 #' @param correct (`flag`)\cr include the continuity correction. For further information, see for example
 #'   [stats::prop.test()].
+#'
+#' @references
+#' \insertRef{Yan2010-jt}{tern}
 #'
 #' @examples
 #' # Stratified Wilson confidence interval with unequal probabilities
@@ -246,10 +272,6 @@ prop_wilson <- function(rsp, conf_level, correct = FALSE) {
 #'   weights = rep(1 / n_strata, n_strata),
 #'   conf_level = 0.90
 #' )
-#' @references
-#' - \insertRef{Yan2010-jt}{tern}
-#'
-#' @importFrom Rdpack reprompt
 #'
 #' @export
 prop_strat_wilson <- function(rsp,
@@ -263,7 +285,7 @@ prop_strat_wilson <- function(rsp,
   assert_proportion_value(conf_level)
 
   tbl <- table(rsp, strata)
-  n_strata <- ncol(tbl)
+  n_strata <- length(unique(strata))
 
   # Checking the weights and maximum number of iterations.
   do_iter <- FALSE
@@ -275,8 +297,9 @@ prop_strat_wilson <- function(rsp,
     if (is.null(max_iterations)) max_iterations <- 10
     checkmate::assert_int(max_iterations, na.ok = FALSE, null.ok = FALSE, lower = 1)
   }
-  checkmate::assert_numeric(weights, lower = 0, upper = 1, any.missing = FALSE, len = ncol(tbl))
-  checkmate::assert_int(sum(weights), lower = 1, upper = 1)
+  checkmate::assert_numeric(weights, lower = 0, upper = 1, any.missing = FALSE, len = n_strata)
+  sum_weights <- checkmate::assert_int(sum(weights))
+  if (as.integer(sum_weights + 0.5) != 1L) stop("Sum of weights must be 1L.")
 
 
   xs <- tbl["TRUE", ]
@@ -331,8 +354,8 @@ prop_strat_wilson <- function(rsp,
   }
 }
 
-#' @describeIn h_proportions the Clopper-Pearson interval calls
-#'   [stats::binom.test()]. Also referred to as the `exact` method.
+#' @describeIn h_proportions Calculates the Clopper-Pearson interval by calling [stats::binom.test()].
+#'   Also referred to as the `exact` method.
 #'
 #' @examples
 #' prop_clopper_pearson(rsp, conf_level = .95)
@@ -348,9 +371,8 @@ prop_clopper_pearson <- function(rsp,
   as.numeric(y$conf.int)
 }
 
-#' @describeIn h_proportions the Wald interval follows the usual
-#'   textbook definition for a single proportion confidence interval using the
-#'   normal approximation.
+#' @describeIn h_proportions Calculates the Wald interval by following the usual textbook definition
+#'   for a single proportion confidence interval using the normal approximation.
 #'
 #' @param correct (`flag`)\cr apply continuity correction.
 #'
@@ -373,10 +395,8 @@ prop_wald <- function(rsp, conf_level, correct = FALSE) {
   c(l_ci, u_ci)
 }
 
-#' @describeIn h_proportions the Agresti-Coull interval was created by
-#'   Alan Agresti and Brent Coull and can be understood (for 95% CI) as adding
-#'   two successes and two failures to the data, and then using the Wald
-#'   formula to construct a CI.
+#' @describeIn h_proportions Calculates the `Agresti-Coull` interval (created by `Alan Agresti` and `Brent Coull`) by
+#'   (for 95% CI) adding two successes and two failures to the data and then using the Wald formula to construct a CI.
 #'
 #' @examples
 #' prop_agresti_coull(rsp, conf_level = 0.95)
@@ -401,9 +421,8 @@ prop_agresti_coull <- function(rsp, conf_level) {
   c(l_ci, u_ci)
 }
 
-#' @describeIn h_proportions the Jeffreys interval is an equal-tailed
-#'   interval based on the non-informative Jeffreys prior for a binomial
-#'   proportion.
+#' @describeIn h_proportions Calculates the Jeffreys interval, an equal-tailed interval based on the
+#'   non-informative Jeffreys prior for a binomial proportion.
 #'
 #' @examples
 #' prop_jeffreys(rsp, conf_level = 0.95)
@@ -476,6 +495,8 @@ d_proportion <- function(conf_level,
 #' @inheritParams argument_convention
 #' @inheritParams prop_strat_wilson
 #'
+#' @return Stratified quantile.
+#'
 #' @seealso [prop_strat_wilson()]
 #'
 #' @examples
@@ -488,6 +509,7 @@ d_proportion <- function(conf_level,
 #' ests <- strata_data["TRUE", ] / ns
 #' vars <- ests * (1 - ests) / ns
 #' weights <- rep(1 / length(ns), length(ns))
+#'
 #' strata_normal_quantile(vars, weights, 0.95)
 #'
 #' @export
@@ -513,6 +535,8 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
 #' @param n_per_strata (`numeric`)\cr number of elements in each strata.
 #' @param max_iterations (`count`)\cr maximum number of iterations to be tried. Convergence is always checked.
 #' @param tol (`number`)\cr tolerance threshold for convergence.
+#'
+#' @return A `list` of 3 elements: `n_it`, `weights`, and `diff_v`.
 #'
 #' @seealso For references and details see [prop_strat_wilson()].
 #'

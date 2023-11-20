@@ -7,31 +7,21 @@
 #' Depending on the baseline flag, either the absolute baseline values (at baseline)
 #' or the change from baseline values (post-baseline) are then summarized.
 #'
-#' @name summarize_change
+#' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("analyze_vars_numeric)`
+#'   to see available statistics for this function.
 #'
+#' @name summarize_change
+#' @order 1
 NULL
 
-#' @inheritParams argument_convention
-#' @describeIn summarize_change Statistics Function that summarizes baseline or post-baseline visits.
-#' @return See [s_summary.numeric()] for the return values.
+#' @describeIn summarize_change Statistics function that summarizes baseline or post-baseline visits.
+#'
+#' @return
+#' * `s_change_from_baseline()` returns the same values returned by [s_summary.numeric()].
+#'
 #' @note The data in `df` must be either all be from baseline or post-baseline visits. Otherwise
 #'   an error will be thrown.
-#'
-#' @examples
-#' df <- data.frame(
-#'   chg = c(1, 2, 3),
-#'   is_bl = c(TRUE, TRUE, TRUE),
-#'   val = c(4, 5, 6)
-#' )
-#'
-#' # Internal function - s_change_from_baseline
-#' \dontrun{
-#' s_change_from_baseline(
-#'   df,
-#'   .var = "chg",
-#'   variables = list(value = "val", baseline_flag = "is_bl")
-#' )
-#' }
 #'
 #' @keywords internal
 s_change_from_baseline <- function(df,
@@ -56,18 +46,10 @@ s_change_from_baseline <- function(df,
   s_summary(combined, na.rm = na.rm, ...)
 }
 
-#' @describeIn summarize_change Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn summarize_change Formatted analysis function which is used as `afun` in `summarize_change()`.
 #'
-#' @examples
-#' # Internal function - a_change_from_baseline
-#' \dontrun{
-#' a_change_from_baseline(
-#'   df,
-#'   .var = "chg",
-#'   variables = list(value = "val", baseline_flag = "is_bl")
-#' )
-#' }
+#' @return
+#' * `a_change_from_baseline()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @keywords internal
 a_change_from_baseline <- make_afun(
@@ -90,20 +72,21 @@ a_change_from_baseline <- make_afun(
   )
 )
 
-#' @describeIn summarize_change Analyze Function for change from baseline analysis.
-#'   To be used after a split on visits in the layout, such that each data
-#'   subset only contains either baseline or post-baseline data. Allows additional
-#'   formatting options.
-#' @inheritParams argument_convention
+#' @describeIn summarize_change Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @export
+#' @return
+#' * `summarize_change()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_change_from_baseline()` to the table layout.
+#'
+#' @note To be used after a split on visits in the layout, such that each data subset only contains
+#'   either baseline or post-baseline data.
+#'
 #' @examples
-#'
-#' # `summarize_change()`
-#'
-#' ## Fabricated dataset.
 #' library(dplyr)
 #'
+#' ## Fabricate dataset
 #' dta_test <- data.frame(
 #'   USUBJID = rep(1:6, each = 3),
 #'   AVISIT = rep(paste0("V", 1:3), 6),
@@ -123,12 +106,15 @@ a_change_from_baseline <- make_afun(
 #'   split_rows_by("AVISIT") %>%
 #'   summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL")) %>%
 #'   build_table(dta_test)
-#' \dontrun{
-#' Viewer(results)
-#' }
 #'
+#' results
+#'
+#' @export
+#' @order 2
 summarize_change <- function(lyt,
                              vars,
+                             na_str = NA_character_,
+                             nested = TRUE,
                              ...,
                              table_names = vars,
                              .stats = c("n", "mean_sd", "median", "range"),
@@ -147,6 +133,8 @@ summarize_change <- function(lyt,
     lyt,
     vars,
     afun = afun,
+    na_str = na_str,
+    nested = nested,
     extra_args = list(...),
     table_names = table_names
   )

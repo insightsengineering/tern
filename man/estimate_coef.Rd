@@ -32,11 +32,11 @@ given the levels of \code{given}.}
 \value{
 A list of matrix (one per level of variable) with rows corresponding to the combinations of
 \code{variable} and \code{given}, with columns:
-\describe{
-\item{coef_hat}{Estimation of the coefficient.}
-\item{coef_se}{Standard error of the estimation.}
-\item{hr}{Hazard ratio.}
-\item{lcl, ucl}{Lower/upper confidence limit of the hazard ratio.}
+\itemize{
+\item \code{coef_hat}: Estimation of the coefficient.
+\item \code{coef_se}: Standard error of the estimation.
+\item \code{hr}: Hazard ratio.
+\item \verb{lcl, ucl}: Lower/upper confidence limit of the hazard ratio.
 }
 }
 \description{
@@ -76,14 +76,6 @@ mod <- coxph(
 
 mmat <- stats::model.matrix(mod)[1, ]
 mmat[!mmat == 0] <- 0
-
-# Internal function - estimate_coef
-\dontrun{
-estimate_coef(
-  variable = "ARMCD", given = "SEX", lvl_var = "ARM A", lvl_given = "M",
-  coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod), conf_level = .95
-)
-}
 
 }
 \seealso{

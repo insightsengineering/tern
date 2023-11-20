@@ -29,11 +29,14 @@ arrange_grobs(
 
 \item{padding_wt}{unit of length 1, horizontal space between each grob.}
 
-\item{vp}{a \code{\link{viewport}} object (or \code{NULL}).}
+\item{vp}{a \code{\link[=viewport]{viewport()}} object (or \code{NULL}).}
 
-\item{gp}{A \code{\link{gpar}} object.}
+\item{gp}{A \code{\link[=gpar]{gpar()}} object.}
 
 \item{name}{a character identifier for the grob.}
+}
+\value{
+A \code{grob}.
 }
 \description{
 Arrange grobs as a new grob with \verb{n*m (rows*cols)} layout.
@@ -41,8 +44,7 @@ Arrange grobs as a new grob with \verb{n*m (rows*cols)} layout.
 \examples{
 library(grid)
 
-# Internal function - arrange_grobs
-\dontrun{
+\donttest{
 num <- lapply(1:9, textGrob)
 grid::grid.newpage()
 grid.draw(arrange_grobs(grobs = num, ncol = 2))
@@ -67,6 +69,4 @@ grid.draw(arrange_grobs(g1, g2, g3, ncol = 2, vp = vp1))
 
 showViewport()
 }
-
 }
-\keyword{internal}

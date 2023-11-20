@@ -10,7 +10,7 @@ empty_vector_if_na(x)
 \item{x}{(\code{numeric})\cr vector.}
 }
 \value{
-An empty \code{numeric}.
+An empty \code{numeric} if all elements of \code{x} are \code{NA}, otherwise \code{x}.
 }
 \description{
 Return an empty numeric if all elements are \code{NA}.
@@ -18,9 +18,5 @@ Return an empty numeric if all elements are \code{NA}.
 \examples{
 x <- c(NA, NA, NA)
 # Internal function - empty_vector_if_na
-\dontrun{
-empty_vector_if_na(x)
-}
-
 }
 \keyword{internal}

@@ -21,74 +21,23 @@ extract_survival_biomarkers(
 list, which specifies the new group levels via the names and the
 levels that belong to it in the character vectors that are elements of the list.}
 
-\item{control}{(\code{list})\cr a list of parameters as returned by the
-helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
+\item{control}{(\code{list})\cr a list of parameters as returned by the helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
+}
+\value{
+A \code{data.frame} with columns \code{biomarker}, \code{biomarker_label}, \code{n_tot}, \code{n_tot_events},
+\code{median}, \code{hr}, \code{lcl}, \code{ucl}, \code{conf_level}, \code{pval}, \code{pval_label}, \code{subgroup}, \code{var},
+\code{var_label}, and \code{row_type}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Prepares estimates for number of events, patients and median survival
-times, as well as hazard ratio estimates, confidence intervals and p-values, for multiple biomarkers across
-population subgroups in a single data frame.
-\code{variables} corresponds to the names of variables found in \code{data}, passed as a named list and requires elements
-\code{tte}, \code{is_event}, \code{biomarkers} (vector of continuous biomarker variables) and optionally \code{subgroups} and \code{strat}.
+Prepares estimates for number of events, patients and median survival times, as well as hazard ratio estimates,
+confidence intervals and p-values, for multiple biomarkers across population subgroups in a single data frame.
+\code{variables} corresponds to the names of variables found in \code{data}, passed as a named \code{list} and requires elements
+\code{tte}, \code{is_event}, \code{biomarkers} (vector of continuous biomarker variables), and optionally \code{subgroups} and \code{strat}.
 \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
-}
-\examples{
-# Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,
-# in multiple regression models containing one covariate `RACE`,
-# as well as one stratification variable `STRATA1`. The subgroups
-# are defined by the levels of `BMRKR2`.
-
-library(dplyr)
-
-adtte <- tern_ex_adtte
-adtte_labels <- formatters::var_labels(adtte)
-
-adtte_f <- adtte \%>\%
-  filter(PARAMCD == "OS") \%>\%
-  mutate(
-    AVALU = as.character(AVALU),
-    is_event = CNSR == 0
-  )
-labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
-formatters::var_labels(adtte_f)[names(labels)] <- labels
-
-df <- extract_survival_biomarkers(
-  variables = list(
-    tte = "AVAL",
-    is_event = "is_event",
-    biomarkers = c("BMRKR1", "AGE"),
-    strata = "STRATA1",
-    covariates = "SEX",
-    subgroups = "BMRKR2"
-  ),
-  data = adtte_f
-)
-df
-
-# Here we group the levels of `BMRKR2` manually.
-df_grouped <- extract_survival_biomarkers(
-  variables = list(
-    tte = "AVAL",
-    is_event = "is_event",
-    biomarkers = c("BMRKR1", "AGE"),
-    strata = "STRATA1",
-    covariates = "SEX",
-    subgroups = "BMRKR2"
-  ),
-  data = adtte_f,
-  groups_lists = list(
-    BMRKR2 = list(
-      "low" = "LOW",
-      "low/medium" = c("LOW", "MEDIUM"),
-      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
-    )
-  )
-)
-df_grouped
 }
 \seealso{
 \code{\link[=h_coxreg_mult_cont_df]{h_coxreg_mult_cont_df()}} which is used internally, \code{\link[=tabulate_survival_biomarkers]{tabulate_survival_biomarkers()}}.

@@ -19,7 +19,7 @@ fit_survival_step(
 \item{control}{(named \code{list})\cr combined control list from \code{\link[=control_step]{control_step()}} and \code{\link[=control_coxph]{control_coxph()}}.}
 }
 \value{
-a matrix of class \code{step}. The first part of the columns describe the subgroup intervals used
+A matrix of class \code{step}. The first part of the columns describe the subgroup intervals used
 for the biomarker variable, including where the center of the intervals are and their bounds. The
 second part of the columns contain the estimates for the treatment arm comparison.
 }
@@ -35,7 +35,9 @@ The model which is fit is:
 \code{Surv(time, event) ~ arm * poly(biomarker, degree) + covariates + strata(strata)}
 
 where \code{degree} is specified by \code{control_step()}.
-Note that for the default degree 0 the \code{biomarker} variable is not included in the model.
+}
+\note{
+For the default degree 0 the \code{biomarker} variable is not included in the model.
 }
 \examples{
 # Testing dataset with just two treatment arms.
@@ -84,6 +86,7 @@ step_matrix3 <- fit_survival_step(
   data = adtte_f,
   control = c(control_coxph(), control_step(bandwidth = NULL, degree = 3, num_points = 5L))
 )
+
 }
 \seealso{
 \code{\link[=control_step]{control_step()}} and \code{\link[=control_coxph]{control_coxph()}} for the available customization options.

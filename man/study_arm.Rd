@@ -9,6 +9,9 @@ study_arm(x)
 \arguments{
 \item{x}{arm information}
 }
+\value{
+\code{x}
+}
 \description{
 We use \code{study_arm} to indicate the study arm variable in \code{tern} formulas.
 }

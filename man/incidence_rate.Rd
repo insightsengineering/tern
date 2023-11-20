@@ -2,11 +2,25 @@
 % Please edit documentation in R/incidence_rate.R
 \name{incidence_rate}
 \alias{incidence_rate}
+\alias{estimate_incidence_rate}
 \alias{s_incidence_rate}
 \alias{a_incidence_rate}
-\alias{estimate_incidence_rate}
 \title{Incidence Rate}
 \usage{
+estimate_incidence_rate(
+  lyt,
+  vars,
+  na_str = NA_character_,
+  nested = TRUE,
+  ...,
+  show_labels = "hidden",
+  table_names = vars,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
+
 s_incidence_rate(
   df,
   .var,
@@ -22,20 +36,36 @@ a_incidence_rate(
   is_event,
   control = control_incidence_rate()
 )
-
-estimate_incidence_rate(
-  lyt,
-  vars,
-  ...,
-  show_labels = "hidden",
-  table_names = vars,
-  .stats = NULL,
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = NULL
-)
 }
 \arguments{
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
+\item{...}{additional arguments for the lower level functions.}
+
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("estimate_incidence_rate")}
+to see available statistics for this function.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
+
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
@@ -51,41 +81,30 @@ the helper function \code{\link[=control_incidence_rate]{control_incidence_rate(
 \item \code{conf_level} (\code{proportion})\cr confidence level for the estimated incidence rate.
 \item \code{conf_type} (\code{string})\cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
 for confidence interval type.
-\item \code{time_unit_input} (\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
+\item \code{input_time_unit} (\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
 indicating time unit for data input.
-\item \code{time_unit_output} (\code{numeric})\cr time unit for desired output (in person-years).
+\item \code{num_pt_year} (\code{numeric})\cr time unit for desired output (in person-years).
 }}
-
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
-
-\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
-
-\item{...}{additional arguments for the lower level functions.}
-
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
-
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
-
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
-
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
-
-\item{person_years}{(\code{numeric})\cr total person-years at risk.}
-
-\item{alpha}{(\code{numeric})\cr two-sided alpha-level for confidence interval.}
 }
 \value{
-The statistics are:
-\describe{
-\item{person_years}{total person-years at risk}
-\item{n_events}{total number of events observed}
-\item{rate}{estimated incidence rate}
-\item{rate_ci}{confidence interval for the incidence rate}
+\itemize{
+\item \code{estimate_incidence_rate()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_incidence_rate()} to the table layout.
+}
+
+\itemize{
+\item \code{s_incidence_rate()} returns the following statistics:
+\itemize{
+\item \code{person_years}: Total person-years at risk.
+\item \code{n_events}: Total number of events observed.
+\item \code{rate}: Estimated incidence rate.
+\item \code{rate_ci}: Confidence interval for the incidence rate.
+}
+}
+
+\itemize{
+\item \code{a_incidence_rate()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 }
 \description{
@@ -96,14 +115,14 @@ as incidence rate. Primary analysis variable is the person-years at risk.
 }
 \section{Functions}{
 \itemize{
+\item \code{estimate_incidence_rate()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{s_incidence_rate()}: Statistics function which estimates the incidence rate and the
 associated confidence interval.
 
-\item \code{a_incidence_rate()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
-
-\item \code{estimate_incidence_rate()}: Layout creating function which adds analyze rows using the statistics
-function \code{s_incidence_rate} and desired format.
+\item \code{a_incidence_rate()}: Formatted analysis function which is used as \code{afun}
+in \code{estimate_incidence_rate()}.
 
 }}
 \examples{
@@ -118,29 +137,6 @@ df <- data.frame(
   mutate(is_event = CNSR == 0) \%>\%
   mutate(n_events = as.integer(is_event))
 
-# Internal function - s_incidence_rate
-\dontrun{
-s_incidence_rate(
-  df,
-  .var = "AVAL",
-  n_events = "n_events",
-  control = control_incidence_rate(
-    time_unit_input = "month",
-    time_unit_output = 100
-  )
-)
-}
-
-# Internal function - a_incidence_rate
-\dontrun{
-a_incidence_rate(
-  df,
-  .var = "AVAL",
-  n_events = "n_events",
-  control = control_incidence_rate(time_unit_input = "month", time_unit_output = 100)
-)
-}
-
 basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   add_colcounts() \%>\%
@@ -148,8 +144,8 @@ basic_table() \%>\%
     vars = "AVAL",
     n_events = "n_events",
     control = control_incidence_rate(
-      time_unit_input = "month",
-      time_unit_output = 100
+      input_time_unit = "month",
+      num_pt_year = 100
     )
   ) \%>\%
   build_table(df)

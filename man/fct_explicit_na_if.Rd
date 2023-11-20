@@ -14,10 +14,12 @@ fct_explicit_na_if(x, condition, na_level = "<Missing>")
 \item{na_level}{(\code{string})\cr which level to use for missings.}
 }
 \value{
-The modified factor with inserted and existing \code{NA} converted to \code{na_level}.
+A modified \code{factor} with inserted and existing \code{NA} converted to \code{na_level}.
 }
 \description{
-This inserts explicit missings in a factor based on a condition. Note that also additional
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+This inserts explicit missings in a factor based on a condition. Additionally,
 existing \code{NA} values will be explicitly converted to given \code{na_level}.
 }
 \examples{

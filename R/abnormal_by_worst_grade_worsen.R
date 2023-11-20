@@ -5,13 +5,16 @@
 #' Patient count and fraction for laboratory events (worsen from baseline) shift table.
 #'
 #' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("abnormal_by_worst_grade_worsen")`
+#'   to see all available statistics.
 #'
-#' @seealso Relevant helper functions [h_adlb_worsen()] and [h_worsen_counter()].
+#' @seealso Relevant helper functions [h_adlb_worsen()] and [h_worsen_counter()]
 #'
 #' @name abnormal_by_worst_grade_worsen
+#' @order 1
 NULL
 
-#' Helper Function to Prepare ADLB with Worst Labs
+#' Helper Function to Prepare `ADLB` with Worst Labs
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -26,13 +29,14 @@ NULL
 #'   * `H`: high direction only
 #'   * `B`: both low and high directions
 #'
-#' @return [h_adlb_worsen()] returns the `adlb` `data.frame` containing only the
+#' @return `h_adlb_worsen()` returns the `adlb` `data.frame` containing only the
 #'   worst labs specified according to `worst_flag_low` or `worst_flag_high` for the
 #'   direction specified according to `direction_var`. For instance, for a lab that is
 #'   needed for the low direction only, only records flagged by `worst_flag_low` are
 #'   selected. For a lab that is needed for both low and high directions, the worst
 #'   low records are selected for the low direction, and the worst high record are selected
 #'   for the high direction.
+#'
 #' @seealso [abnormal_by_worst_grade_worsen]
 #'
 #' @examples
@@ -157,9 +161,11 @@ h_adlb_worsen <- function(adlb,
 #' @inheritParams argument_convention
 #' @inheritParams h_adlb_worsen
 #' @param baseline_var (`string`)\cr baseline lab grade variable
-#' @return [h_worsen_counter()] returns the counts and fraction of patients
+#'
+#' @return `h_worsen_counter()` returns the counts and fraction of patients
 #'   whose worst post-baseline lab grades are worse than their baseline grades, for
 #'   post-baseline worst grades "1", "2", "3", "4" and "Any".
+#'
 #' @seealso [abnormal_by_worst_grade_worsen]
 #'
 #' @examples
@@ -257,51 +263,18 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
   list(fraction = c(by_grade, list("Any" = c(num = num, denom = denom))))
 }
 
-#' @describeIn abnormal_by_worst_grade_worsen Statistics function which calculates the
-#'   counts and fraction of patients whose worst post-baseline lab grades are worse than
-#'   their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
+#' @describeIn abnormal_by_worst_grade_worsen Statistics function for patients whose worst post-baseline
+#'   lab grades are worse than their baseline grades.
 #'
 #' @param variables (named `list` of `string`)\cr list of additional analysis variables including:
 #'   * `id` (`string`)\cr subject variable name.
 #'   * `baseline_var` (`string`)\cr name of the data column containing baseline toxicity variable.
 #'   * `direction_var` (`string`)\cr see `direction_var` for more details.
-#' @return [s_count_abnormal_lab_worsen_by_baseline()] returns the
-#'   counts and fraction of patients whose worst post-baseline lab grades are worse than
-#'   their baseline grades, for post-baseline worst grades "1", "2", "3", "4" and "Any".
 #'
-#' @examples
-#' library(dplyr)
-#'
-#' # The direction variable, GRADDR, is based on metadata
-#' adlb <- tern_ex_adlb %>%
-#'   mutate(
-#'     GRADDR = case_when(
-#'       PARAMCD == "ALT" ~ "B",
-#'       PARAMCD == "CRP" ~ "L",
-#'       PARAMCD == "IGA" ~ "H"
-#'     )
-#'   ) %>%
-#'   filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
-#'
-#' df <- h_adlb_worsen(
-#'   adlb,
-#'   worst_flag_low = c("WGRLOFL" = "Y"),
-#'   worst_flag_high = c("WGRHIFL" = "Y"),
-#'   direction_var = "GRADDR"
-#' )
-#' # Internal function - s_count_abnormal_lab_worsen_by_baseline
-#' \dontrun{
-#' # Patients with worsening lab grade for CRP in the direction of low
-#' s_count_abnormal_lab_worsen_by_baseline(
-#'   df = df %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
-#'   .var = "ATOXGR",
-#'   variables = list(
-#'     id = "USUBJID",
-#'     baseline_var = "BTOXGR",
-#'     direction_var = "GRADDR"
-#'   )
-#' )
-#' }
+#' @return
+#' * `s_count_abnormal_lab_worsen_by_baseline()` returns the counts and fraction of patients whose worst
+#'   post-baseline lab grades are worse than their baseline grades, for post-baseline worst grades
+#'   "1", "2", "3", "4" and "Any".
 #'
 #' @keywords internal
 s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
@@ -323,20 +296,12 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
 }
 
 
-#' @describeIn abnormal_by_worst_grade_worsen
+#' @describeIn abnormal_by_worst_grade_worsen Formatted analysis function which is used as `afun`
+#'   in `count_abnormal_lab_worsen_by_baseline()`.
 #'
-#' @return [a_count_abnormal_lab_worsen_by_baseline()] returns the corresponding list with
+#' @return
+#' * `a_count_abnormal_lab_worsen_by_baseline()` returns the corresponding list with
 #'   formatted [rtables::CellValue()].
-#'
-#' @examples
-#' # Internal function - a_count_abnormal_lab_worsen_by_baseline
-#' \dontrun{
-#' a_count_abnormal_lab_worsen_by_baseline(
-#'   df = df %>% filter(ARMCD == "ARM A" & PARAMCD == "CRP"),
-#'   .var = "ATOXGR",
-#'   variables = list(id = "USUBJID", baseline_var = "BTOXGR", direction_var = "GRADDR")
-#' )
-#' }
 #'
 #' @keywords internal
 a_count_abnormal_lab_worsen_by_baseline <- make_afun( # nolint
@@ -345,10 +310,35 @@ a_count_abnormal_lab_worsen_by_baseline <- make_afun( # nolint
   .ungroup_stats = "fraction"
 )
 
-#' @describeIn abnormal_by_worst_grade_worsen Layout creating function which can be used for creating tables,
-#'   which can take statistics function arguments and additional format arguments (see below).
+#' @describeIn abnormal_by_worst_grade_worsen Layout-creating function which can take statistics function
+#'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `count_abnormal_lab_worsen_by_baseline()` returns a layout object suitable for passing to further layouting
+#'   functions, or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted
+#'   rows containing the statistics from `s_count_abnormal_lab_worsen_by_baseline()` to the table layout.
 #'
 #' @examples
+#' library(dplyr)
+#'
+#' # The direction variable, GRADDR, is based on metadata
+#' adlb <- tern_ex_adlb %>%
+#'   mutate(
+#'     GRADDR = case_when(
+#'       PARAMCD == "ALT" ~ "B",
+#'       PARAMCD == "CRP" ~ "L",
+#'       PARAMCD == "IGA" ~ "H"
+#'     )
+#'   ) %>%
+#'   filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+#'
+#' df <- h_adlb_worsen(
+#'   adlb,
+#'   worst_flag_low = c("WGRLOFL" = "Y"),
+#'   worst_flag_high = c("WGRHIFL" = "Y"),
+#'   direction_var = "GRADDR"
+#' )
+#'
 #' basic_table() %>%
 #'   split_cols_by("ARMCD") %>%
 #'   add_colcounts() %>%
@@ -366,8 +356,11 @@ a_count_abnormal_lab_worsen_by_baseline <- make_afun( # nolint
 #'   build_table(df = df, alt_counts_df = tern_ex_adsl)
 #'
 #' @export
+#' @order 2
 count_abnormal_lab_worsen_by_baseline <- function(lyt, # nolint
                                                   var,
+                                                  na_str = NA_character_,
+                                                  nested = TRUE,
                                                   ...,
                                                   table_names = NULL,
                                                   .stats = NULL,
@@ -388,6 +381,8 @@ count_abnormal_lab_worsen_by_baseline <- function(lyt, # nolint
     lyt = lyt,
     vars = var,
     afun = afun,
+    na_str = na_str,
+    nested = nested,
     extra_args = list(...),
     show_labels = "hidden"
   )

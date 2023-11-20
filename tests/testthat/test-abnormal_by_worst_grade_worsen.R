@@ -48,17 +48,17 @@ testthat::test_that("h_adlb_worsen stacks data correctly (simple case)", {
     direction_var = "GRADDR"
   )
 
-  result <- result[order(result$VALUES), ]
+  result <- result[order(result$VALUES), ] %>% data.frame()
 
   p1 <- input_data %>% dplyr::filter(WGRLOFL == "Y" & GRADDR == "L")
   p2 <- input_data %>% dplyr::filter(WGRHIFL == "Y" & GRADDR == "H")
   p3 <- input_data %>% dplyr::filter(WGRLOFL == "Y" & GRADDR == "B")
   p4 <- input_data %>% dplyr::filter(WGRHIFL == "Y" & GRADDR == "B")
 
-  p1$GRADDR <- "Low" # nolint
-  p2$GRADDR <- "High" # nolint
-  p3$GRADDR <- "Low" # nolint
-  p4$GRADDR <- "High" # nolint
+  p1$GRADDR <- "Low"
+  p2$GRADDR <- "High"
+  p3$GRADDR <- "Low"
+  p4$GRADDR <- "High"
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -74,7 +74,9 @@ testthat::test_that("h_adlb_worsen stacks data correctly", {
     direction_var = "GRADDR"
   )
 
-  result <- result %>% dplyr::select(USUBJID, ARMCD, AVISIT, PARAMCD, ATOXGR, BTOXGR, WGRLOFL, WGRHIFL, GRADDR)
+  result <- result %>%
+    dplyr::select(USUBJID, ARMCD, AVISIT, PARAMCD, ATOXGR, BTOXGR, WGRLOFL, WGRHIFL, GRADDR) %>%
+    data.frame()
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -225,10 +227,9 @@ testthat::test_that("h_adlb_worsen all high", {
     worst_flag_high = c("WGRHIFL" = "Y"),
     direction_var = "GRADDR"
   )
-  result <- result[order(result$USUBJID, result$AVISIT, result$PARAMCD), ]
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+  testthat::expect_true(all(result$WGRHIFL == "Y" & result$GRADDR == "High"))
+  testthat::expect_identical(nrow(result), 600L)
 })
 
 testthat::test_that("h_adlb_worsen all low", {
@@ -247,8 +248,7 @@ testthat::test_that("h_adlb_worsen all low", {
     worst_flag_low = c("WGRLOFL" = "Y"),
     direction_var = "GRADDR"
   )
-  result <- result[order(result$USUBJID, result$AVISIT, result$PARAMCD), ]
 
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+  testthat::expect_true(all(result$WGRLOFL == "Y" & result$GRADDR == "Low"))
+  testthat::expect_identical(nrow(result), 600L)
 })

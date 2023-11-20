@@ -5,6 +5,7 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
+#' @inheritParams grid::gTree
 #' @inheritParams argument_convention
 #' @param tbl (`rtable`)
 #' @param col_x (`integer`)\cr column index with estimator. By default tries to get this from
@@ -29,11 +30,11 @@
 #'   to the sample size used to calculate the estimator. If `NULL`, the same symbol size is used for all subgroups.
 #'   By default tries to get this from `tbl` attribute `col_symbol_size`, otherwise needs to be manually specified.
 #' @param col (`character`)\cr color(s).
-#' @return `gtree` object containing the forest plot and table
-#' @export
+#'
+#' @return `gTree` object containing the forest plot and table.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(forcats)
 #' library(nestcolor)
@@ -60,7 +61,7 @@
 #'
 #' tbl <- basic_table() %>%
 #'   tabulate_rsp_subgroups(df)
-#' p <- g_forest(tbl)
+#' p <- g_forest(tbl, gp = grid::gpar(fontsize = 10))
 #'
 #' draw_grob(p)
 #'
@@ -143,7 +144,9 @@
 #'   forest_header = c("Hello", "World")
 #' )
 #' }
-g_forest <- function(tbl, # nolint
+#'
+#' @export
+g_forest <- function(tbl,
                      col_x = attr(tbl, "col_x"),
                      col_ci = attr(tbl, "col_ci"),
                      vline = 1,
@@ -156,6 +159,7 @@ g_forest <- function(tbl, # nolint
                      width_forest = grid::unit(1, "null"),
                      col_symbol_size = attr(tbl, "col_symbol_size"),
                      col = getOption("ggplot2.discrete.colour")[1],
+                     gp = NULL,
                      draw = TRUE,
                      newpage = TRUE) {
   checkmate::assert_class(tbl, "VTableTree")
@@ -239,6 +243,7 @@ g_forest <- function(tbl, # nolint
     width_forest,
     symbol_size = symbol_size,
     col = col,
+    gp = gp,
     vp = grid::plotViewport(margins = rep(1, 4))
   )
 
@@ -283,7 +288,7 @@ g_forest <- function(tbl, # nolint
 #' symbol_scale <- c(1, 1.25, 1.5)
 #'
 #' # Internal function - forest_grob
-#' \dontrun{
+#' \donttest{
 #' p <- forest_grob(tbl, x, lower, upper,
 #'   vline = 1, forest_header = c("A", "B"),
 #'   x_at = c(.1, 1, 10), xlim = c(0.1, 10), logx = TRUE, symbol_size = symbol_scale,
@@ -582,7 +587,7 @@ cell_in_rows <- function(row_name,
 #' Calculate the `grob` corresponding to the dot line within the forest plot.
 #'
 #' @noRd
-forest_dot_line <- function(x, # nolint
+forest_dot_line <- function(x,
                             lower,
                             upper,
                             row_index,
@@ -657,6 +662,14 @@ forest_dot_line <- function(x, # nolint
 }
 
 #' Create a Viewport Tree for the Forest Plot
+#' @param tbl (`rtable`)
+#' @param width_row_names (`grid::unit`)\cr Width of row names
+#' @param width_columns (`grid::unit`)\cr Width of column spans
+#' @param width_forest (`grid::unit`)\cr Width of the forest plot
+#' @param gap_column (`grid::unit`)\cr Gap width between the columns
+#' @param gap_header (`grid::unit`)\cr Gap width between the header
+#' @param mat_form matrix print form of the table
+#' @return A viewport tree.
 #'
 #' @examples
 #' library(grid)
@@ -671,15 +684,14 @@ forest_dot_line <- function(x, # nolint
 #'   rrow("row 3", 1.2, 0.8, 1.2)
 #' )
 #'
-#' # Internal function - forest_viewport
-#' \dontrun{
+#' \donttest{
 #' v <- forest_viewport(tbl)
 #'
 #' grid::grid.newpage()
 #' showViewport(v)
 #' }
 #'
-#' @keywords internal
+#' @export
 forest_viewport <- function(tbl,
                             width_row_names = NULL,
                             width_columns = NULL,
@@ -817,5 +829,5 @@ vp_forest_table_part <- function(nrow,
 #'
 #' @noRd
 grid.forest <- function(...) { # nolint
-  grid::grid.draw(forest_grob(...)) # nolint
+  grid::grid.draw(forest_grob(...))
 }

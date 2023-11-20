@@ -14,7 +14,7 @@ combine_levels(x, levels, new_level = paste(levels, collapse = "/"))
 \item{new_level}{name of new level}
 }
 \value{
-a factor
+A \code{factor} with the new levels.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -26,4 +26,5 @@ x <- factor(letters[1:5], levels = letters[5:1])
 combine_levels(x, levels = c("a", "b"))
 
 combine_levels(x, c("e", "b"))
+
 }

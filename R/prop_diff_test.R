@@ -2,48 +2,26 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Various tests were implemented to test the difference between two
-#' proportions.
+#' Various tests were implemented to test the difference between two proportions.
 #'
-#' @param tbl (`matrix`)\cr matrix with two groups in rows and the binary response
-#'   (`TRUE`/`FALSE`) in columns.
+#' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("test_proportion_diff")`
+#'   to see available statistics for this function.
+#'
 #' @seealso [h_prop_diff_test]
 #'
 #' @name prop_diff_test
-#'
+#' @order 1
 NULL
 
-#' @describeIn prop_diff_test Statistics function which tests the difference
-#'  between two proportions.
+#' @describeIn prop_diff_test Statistics function which tests the difference between two proportions.
 #'
-#' @inheritParams argument_convention
 #' @param method (`string`)\cr one of `chisq`, `cmh`, `fisher`, or `schouten`; specifies the test used
 #'   to calculate the p-value.
 #'
-#' @return Named `list` with a single item `pval` with an attribute `label`
-#'   describing the method used. The p-value tests the null hypothesis that
-#'   proportions in two groups are the same.
-#'
-#' @examples
-#'
-#' # Statistics function
-#' dta <- data.frame(
-#'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
-#'   grp = factor(rep(c("A", "B"), each = 50)),
-#'   strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
-#' )
-#'
-#' # Internal function - s_test_proportion_diff
-#' \dontrun{
-#' s_test_proportion_diff(
-#'   df = subset(dta, grp == "A"),
-#'   .var = "rsp",
-#'   .ref_group = subset(dta, grp == "B"),
-#'   .in_ref_col = FALSE,
-#'   variables = list(strata = "strat"),
-#'   method = "cmh"
-#' )
-#' }
+#' @return
+#' * `s_test_proportion_diff()` returns a named `list` with a single item `pval` with an attribute `label`
+#'   describing the method used. The p-value tests the null hypothesis that proportions in two groups are the same.
 #'
 #' @keywords internal
 s_test_proportion_diff <- function(df,
@@ -97,10 +75,10 @@ s_test_proportion_diff <- function(df,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This is an auxiliary function that describes the analysis in
-#' `s_test_proportion_diff`.
+#' This is an auxiliary function that describes the analysis in `s_test_proportion_diff`.
 #'
 #' @inheritParams s_test_proportion_diff
+#'
 #' @return `string` describing the test from which the p-value is derived.
 #'
 #' @export
@@ -116,21 +94,10 @@ d_test_proportion_diff <- function(method) {
   paste0("p-value (", meth_part, ")")
 }
 
-#' @describeIn prop_diff_test Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn prop_diff_test Formatted analysis function which is used as `afun` in `test_proportion_diff()`.
 #'
-#' @examples
-#' # Internal function - a_test_proportion_diff
-#' \dontrun{
-#' a_test_proportion_diff(
-#'   df = subset(dta, grp == "A"),
-#'   .var = "rsp",
-#'   .ref_group = subset(dta, grp == "B"),
-#'   .in_ref_col = FALSE,
-#'   variables = list(strata = "strat"),
-#'   method = "cmh"
-#' )
-#' }
+#' @return
+#' * `a_test_proportion_diff()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @keywords internal
 a_test_proportion_diff <- make_afun(
@@ -139,14 +106,23 @@ a_test_proportion_diff <- make_afun(
   .indent_mods = c(pval = 1L)
 )
 
-#' @describeIn prop_diff_test Layout creating function which can be used for
-#'   creating tables, which can take statistics function arguments and
-#'   additional format arguments.
+#' @describeIn prop_diff_test Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
 #' @param ... other arguments are passed to [s_test_proportion_diff()].
-#' @inheritParams argument_convention
-#' @export
+#'
+#' @return
+#' * `test_proportion_diff()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_test_proportion_diff()` to the table layout.
 #'
 #' @examples
+#' dta <- data.frame(
+#'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
+#'   grp = factor(rep(c("A", "B"), each = 50)),
+#'   strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+#' )
+#'
 #' # With `rtables` pipelines.
 #' l <- basic_table() %>%
 #'   split_cols_by(var = "grp", ref_group = "B") %>%
@@ -156,8 +132,13 @@ a_test_proportion_diff <- make_afun(
 #'   )
 #'
 #' build_table(l, df = dta)
+#'
+#' @export
+#' @order 2
 test_proportion_diff <- function(lyt,
                                  vars,
+                                 na_str = NA_character_,
+                                 nested = TRUE,
                                  ...,
                                  var_labels = vars,
                                  show_labels = "hidden",
@@ -178,6 +159,8 @@ test_proportion_diff <- function(lyt,
     vars,
     afun = afun,
     var_labels = var_labels,
+    na_str = na_str,
+    nested = nested,
     extra_args = list(...),
     show_labels = show_labels,
     table_names = table_names
@@ -186,39 +169,18 @@ test_proportion_diff <- function(lyt,
 
 #' Helper Functions to Test Proportion Differences
 #'
-#' Helper functions to implement various tests on the difference between two
-#' proportions.
+#' Helper functions to implement various tests on the difference between two proportions.
 #'
-#' @param tbl (`matrix`)\cr matrix with two groups in rows and the binary response
-#'   (`TRUE`/`FALSE`) in columns.
+#' @param tbl (`matrix`)\cr matrix with two groups in rows and the binary response (`TRUE`/`FALSE`) in columns.
 #'
-#' @seealso [prop_diff_test())] for implementation of these helper functions.
+#' @return A p-value.
+#'
+#' @seealso [prop_diff_test()] for implementation of these helper functions.
 #'
 #' @name h_prop_diff_test
 NULL
 
-#' @describeIn h_prop_diff_test performs Chi-Squared test.
-#'   Internally calls [stats::prop.test()].
-#'
-#' @examples
-#' # Non-stratified proportion difference test
-#'
-#' ## Data
-#' A <- 20
-#' B <- 20
-#' set.seed(1)
-#' rsp <- c(
-#'   sample(c(TRUE, FALSE), size = A, prob = c(3 / 4, 1 / 4), replace = TRUE),
-#'   sample(c(TRUE, FALSE), size = A, prob = c(1 / 2, 1 / 2), replace = TRUE)
-#' )
-#' grp <- c(rep("A", A), rep("B", B))
-#' tbl <- table(grp, rsp)
-#'
-#' ## Chi-Squared test
-#' # Internal function - prop_chisq
-#' \dontrun{
-#' prop_chisq(tbl)
-#' }
+#' @describeIn h_prop_diff_test performs Chi-Squared test. Internally calls [stats::prop.test()].
 #'
 #' @keywords internal
 prop_chisq <- function(tbl) {
@@ -230,27 +192,11 @@ prop_chisq <- function(tbl) {
   stats::prop.test(tbl, correct = FALSE)$p.value
 }
 
-#' @describeIn h_prop_diff_test performs stratified Cochran-Mantel-Haenszel test.
-#'   Internally calls [stats::mantelhaen.test()]. Note that strata with less than two observations
-#'   are automatically discarded.
+#' @describeIn h_prop_diff_test performs stratified Cochran-Mantel-Haenszel test. Internally calls
+#'   [stats::mantelhaen.test()]. Note that strata with less than two observations are automatically discarded.
 #'
 #' @param ary (`array`, 3 dimensions)\cr array with two groups in rows, the binary response
 #'   (`TRUE`/`FALSE`) in columns, and the strata in the third dimension.
-#'
-#' @examples
-#' # Stratified proportion difference test
-#'
-#' ## Data
-#' rsp <- sample(c(TRUE, FALSE), 100, TRUE)
-#' grp <- factor(rep(c("A", "B"), each = 50))
-#' strata <- factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
-#' tbl <- table(grp, rsp, strata)
-#'
-#' ## Cochran-Mantel-Haenszel test
-#' # Internal function - prop_cmh
-#' \dontrun{
-#' prop_cmh(tbl)
-#' }
 #'
 #' @keywords internal
 prop_cmh <- function(ary) {
@@ -266,18 +212,9 @@ prop_cmh <- function(ary) {
   stats::mantelhaen.test(ary, correct = FALSE)$p.value
 }
 
-#' @describeIn h_prop_diff_test performs the Chi-Squared test with Schouten
-#'   correction.
+#' @describeIn h_prop_diff_test performs the Chi-Squared test with Schouten correction.
 #'
-#' @seealso For information on the Schouten correction (Schouten, 1980),
-#'   visit https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.4710220305.
-#'
-#' @examples
-#' ## Chi-Squared test + Schouten correction.
-#' # Internal function - prop_schouten
-#' \dontrun{
-#' prop_schouten(tbl)
-#' }
+#' @seealso Schouten correction is based upon \insertCite{Schouten1980-kd;textual}{tern}.
 #'
 #' @keywords internal
 prop_schouten <- function(tbl) {
@@ -303,15 +240,7 @@ prop_schouten <- function(tbl) {
   1 - stats::pchisq(t_schouten, df = 1)
 }
 
-#' @describeIn h_prop_diff_test performs the Fisher's exact test.
-#'   Internally calls [stats::fisher.test()].
-#'
-#' @examples
-#' ## Fisher's exact test
-#' # Internal function - prop_fisher
-#' \dontrun{
-#' prop_fisher(tbl)
-#' }
+#' @describeIn h_prop_diff_test performs the Fisher's exact test. Internally calls [stats::fisher.test()].
 #'
 #' @keywords internal
 prop_fisher <- function(tbl) {

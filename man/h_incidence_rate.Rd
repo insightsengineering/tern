@@ -31,10 +31,13 @@ the helper function \code{\link[=control_incidence_rate]{control_incidence_rate(
 \item \code{conf_level}: (\code{proportion})\cr confidence level for the estimated incidence rate.
 \item \code{conf_type}: (\code{string})\cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
 for confidence interval type.
-\item \code{time_unit_input}: (\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
+\item \code{input_time_unit}: (\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
 indicating time unit for data input.
-\item \code{time_unit_output}: (\code{numeric})\cr time unit for desired output (in person-years).
+\item \code{num_pt_year}: (\code{numeric})\cr time unit for desired output (in person-years).
 }}
+}
+\value{
+Estimated incidence rate \code{rate} and associated confidence interval \code{rate_ci}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -53,7 +56,7 @@ logarithm of the incidence rate. Unit is one person-year.
 associated exact confidence interval. Unit is one person-year.
 
 \item \code{h_incidence_rate_byar()}: Helper function to estimate the incidence rate and
-associated Byar's confidence interval. Unit is one person-year.
+associated \code{Byar}'s confidence interval. Unit is one person-year.
 
 \item \code{h_incidence_rate()}: Helper function to estimate the incidence rate and
 associated confidence interval.
@@ -67,21 +70,6 @@ h_incidence_rate_normal_log(200, 2)
 h_incidence_rate_exact(200, 2)
 
 h_incidence_rate_byar(200, 2)
-
-# Internal function - h_incidence_rate
-\dontrun{
-h_incidence_rate(200, 2)
-
-h_incidence_rate(
-  200,
-  2,
-  control_incidence_rate(
-    conf_level = 0.9,
-    conf_type = "normal_log",
-    time_unit_output = 100
-  )
-)
-}
 
 }
 \seealso{

@@ -1,20 +1,23 @@
 #' Helper Function for Tabulation of a Single Biomarker Result
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
-#' This is used by [h_tab_surv_one_biomarker()] and [h_tab_rsp_one_biomarker()],
-#' please see there for examples.
+#' Please see [h_tab_surv_one_biomarker()] and [h_tab_rsp_one_biomarker()], which use this function for examples.
+#' This function is a wrapper for [rtables::summarize_row_groups()].
 #'
+#' @inheritParams argument_convention
 #' @param df (`data.frame`)\cr results for a single biomarker.
 #' @param afuns (named `list` of `function`)\cr analysis functions.
 #' @param colvars (`list` with `vars` and `labels`)\cr variables to tabulate and their labels.
 #'
-#' @return The `rtables` table object.
+#' @return An `rtables` table object with statistics in columns.
 #'
 #' @export
 h_tab_one_biomarker <- function(df,
                                 afuns,
-                                colvars) {
+                                colvars,
+                                na_str = NA_character_,
+                                .indent_mods = 0L) {
   lyt <- basic_table()
 
   # Row split by row type - only keep the content rows here.
@@ -29,7 +32,9 @@ h_tab_one_biomarker <- function(df,
   lyt <- summarize_row_groups(
     lyt = lyt,
     var = "var_label",
-    cfun = afuns
+    cfun = afuns,
+    na_str = na_str,
+    indent_mod = .indent_mods
   )
 
   # Split cols by the multiple variables to populate into columns.
@@ -56,14 +61,16 @@ h_tab_one_biomarker <- function(df,
       var = "var",
       labels_var = "var_label",
       nested = TRUE,
-      child_labels = "visible"
+      child_labels = "visible",
+      indent_mod = .indent_mods * 2
     )
 
     # Then analyze colvars for each subgroup.
     lyt <- summarize_row_groups(
       lyt = lyt,
       cfun = afuns,
-      var = "subgroup"
+      var = "subgroup",
+      na_str = na_str
     )
   }
   build_table(lyt, df = df)

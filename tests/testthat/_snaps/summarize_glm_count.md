@@ -66,12 +66,68 @@
 # h_ppmeans works with healthy input
 
     Code
-      res
+      fits
     Output
-                         rate asymp.LCL asymp.UCL            ARM
-      A: Drug X      9.029759  6.295928  12.95068      A: Drug X
-      B: Placebo     9.029759  6.295928  12.95068     B: Placebo
-      C: Combination 9.029759  6.295928  12.95068 C: Combination
+      $glm_fit
+      
+      Call:  stats::glm(formula = formula, family = stats::poisson(link = "log"), 
+          data = .df_row, offset = offset)
+      
+      Coefficients:
+               (Intercept)           REGION1Asia        REGION1Eurasia  
+                   2.01066               0.07631               0.64426  
+             REGION1Europe  REGION1North America  REGION1South America  
+                   2.13097              -0.07450               0.38102  
+                ARMCDARM B            ARMCDARM C  
+                   0.11048              -0.17694  
+      
+      Degrees of Freedom: 199 Total (i.e. Null);  192 Residual
+      Null Deviance:	    983.8 
+      Residual Deviance: 939 	AIC: 1498
+      
+      $emmeans_fit
+       ARMCD rate    SE  df asymp.LCL asymp.UCL
+       ARM A 12.6 1.238 Inf     10.43      15.3
+       ARM B 14.1 1.285 Inf     11.81      16.9
+       ARM C 10.6 0.971 Inf      8.85      12.7
+      
+      Results are averaged over the levels of: REGION1 
+      Confidence level used: 0.95 
+      Intervals are back-transformed from the log scale 
+      
+
+---
+
+    Code
+      fits2
+    Output
+      $glm_fit
+      
+      Call:  stats::glm(formula = formula, family = stats::quasipoisson(link = "log"), 
+          data = .df_row, offset = offset)
+      
+      Coefficients:
+               (Intercept)           REGION1Asia        REGION1Eurasia  
+                   2.01066               0.07631               0.64426  
+             REGION1Europe  REGION1North America  REGION1South America  
+                   2.13097              -0.07450               0.38102  
+                ARMCDARM B            ARMCDARM C  
+                   0.11048              -0.17694  
+      
+      Degrees of Freedom: 199 Total (i.e. Null);  192 Residual
+      Null Deviance:	    983.8 
+      Residual Deviance: 939 	AIC: NA
+      
+      $emmeans_fit
+       ARMCD rate   SE  df asymp.LCL asymp.UCL
+       ARM A 12.6 5.20 Inf      5.65      28.3
+       ARM B 14.1 5.39 Inf      6.68      29.8
+       ARM C 10.6 4.07 Inf      4.98      22.5
+      
+      Results are averaged over the levels of: REGION1 
+      Confidence level used: 0.95 
+      Intervals are back-transformed from the log scale 
+      
 
 # s_glm_count works with healthy input
 
@@ -82,12 +138,12 @@
       [1] 73
       
       $rate
-      [1] 10.20612
+      [1] 14.11838
       attr(,"label")
       [1] "Adjusted Rate"
       
       $rate_ci
-      [1]  5.627535 18.509855
+      [1] 11.81189 16.87525
       attr(,"label")
       [1] "95% CI"
       
@@ -116,12 +172,12 @@
       [1] 73
       
       $rate
-      [1] 10.20612
+      [1] 14.11838
       attr(,"label")
       [1] "Adjusted Rate"
       
       $rate_ci
-      [1]  5.627535 18.509855
+      [1] 11.81189 16.87525
       attr(,"label")
       [1] "95% CI"
       
@@ -131,12 +187,12 @@
       [1] "Adjusted Rate Ratio"
       
       $rate_ratio_ci
-      [1] 0.3974979 0.3067371 2.0169939 1.8347687
+      [1] 0.7378778 0.6062152 1.0865633 0.9283695
       attr(,"label")
       [1] "95% CI"
       
       $pval
-      [1] 0.7897470 0.5287652
+      [1] 0.263119218 0.008203621
       attr(,"label")
       [1] "p-value"
       

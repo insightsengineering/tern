@@ -14,14 +14,12 @@ combine_groups(fct, ref = NULL, collapse = "/")
 \item{collapse}{(\code{string})\cr a character string to separate \code{fct} and \code{ref}.}
 }
 \value{
-a \code{list} with first item \code{ref} (reference) and second item \code{trt}
-(treatment).
+A \code{list} with first item \code{ref} (reference) and second item \code{trt} (treatment).
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Facilitate the re-combination of groups divided as reference and
-treatment groups; it helps in arranging groups of
+Facilitate the re-combination of groups divided as reference and treatment groups; it helps in arranging groups of
 columns in the \code{rtables} framework and teal modules.
 }
 \examples{
@@ -33,6 +31,7 @@ groups <- combine_groups(
 basic_table() \%>\%
   split_cols_by_groups("ARM", groups) \%>\%
   add_colcounts() \%>\%
-  summarize_vars("AGE") \%>\%
+  analyze_vars("AGE") \%>\%
   build_table(DM)
+
 }

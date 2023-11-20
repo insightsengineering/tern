@@ -2,13 +2,35 @@
 % Please edit documentation in R/survival_timepoint.R
 \name{survival_timepoint}
 \alias{survival_timepoint}
+\alias{surv_timepoint}
 \alias{s_surv_timepoint}
 \alias{a_surv_timepoint}
 \alias{s_surv_timepoint_diff}
 \alias{a_surv_timepoint_diff}
-\alias{surv_timepoint}
 \title{Survival Time Point Analysis}
 \usage{
+surv_timepoint(
+  lyt,
+  vars,
+  na_str = NA_character_,
+  nested = TRUE,
+  ...,
+  table_names_suffix = "",
+  var_labels = "Time",
+  show_labels = "visible",
+  method = c("surv", "surv_diff", "both"),
+  .stats = c("pt_at_risk", "event_free_rate", "rate_ci", "rate_diff", "rate_diff_ci",
+    "ztest_pval"),
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = if (method == "both") {
+     c(rate_diff = 1L, rate_diff_ci = 2L,
+    ztest_pval = 2L)
+ } else {
+     c(rate_diff_ci = 1L, ztest_pval = 1L)
+ }
+)
+
 s_surv_timepoint(
   df,
   .var,
@@ -44,23 +66,42 @@ a_surv_timepoint_diff(
   control = control_surv_timepoint(),
   ...
 )
-
-surv_timepoint(
-  lyt,
-  vars,
-  ...,
-  table_names_suffix = "",
-  var_labels = "Time",
-  show_labels = "visible",
-  method = c("surv", "surv_diff", "both"),
-  .stats = c("pt_at_risk", "event_free_rate", "rate_ci", "rate_diff", "rate_diff_ci",
-    "ztest_pval"),
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = NULL
-)
 }
 \arguments{
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
+\item{...}{additional arguments for the lower level functions.}
+
+\item{table_names_suffix}{(\code{string})\cr optional suffix for the \code{table_names} used for the \code{rtables} to
+avoid warnings from duplicate table names.}
+
+\item{var_labels}{(\code{character})\cr character for label.}
+
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+
+\item{method}{(\code{string})\cr either \code{surv} (survival estimations),
+\code{surv_diff} (difference in survival with the control) or \code{both}.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("surv_timepoint")}
+to see available statistics for this function.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
+should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
+for that statistic's row label.}
+
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
@@ -82,45 +123,40 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "no
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
-
-\item{...}{additional arguments for the lower level functions.}
-
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
-
-\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
-
-\item{table_names_suffix}{(\code{string})\cr optional suffix for the \code{table_names} used for the \code{rtables} to
-avoid warnings from duplicate table names.}
-
-\item{var_labels}{character for label.}
-
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
-
-\item{method}{(\code{string})\cr either \code{surv} (survival estimations),
-\code{surv_diff} (difference in survival with the control) or \code{both}.}
-
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
-
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-The statistics are:
-\describe{
-\item{pt_at_risk}{patients remaining at risk.}
-\item{event_free_rate}{event free rate (\%).}
-\item{rate_se}{standard error of event free rate.}
-\item{rate_ci}{confidence interval for event free rate.}
+\itemize{
+\item \code{surv_timepoint()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_surv_timepoint()} and/or \code{s_surv_timepoint_diff()} to the table layout depending on
+the value of \code{method}.
 }
 
-The statistics are:
-\describe{
-\item{rate_diff}{event free rate difference between two groups.}
-\item{rate_diff_ci}{confidence interval for the difference.}
-\item{ztest_pval}{p-value to test the difference is 0.}
+\itemize{
+\item \code{s_surv_timepoint()} returns the statistics:
+\itemize{
+\item \code{pt_at_risk}: Patients remaining at risk.
+\item \code{event_free_rate}: Event-free rate (\%).
+\item \code{rate_se}: Standard error of event free rate.
+\item \code{rate_ci}: Confidence interval for event free rate.
+}
+}
+
+\itemize{
+\item \code{a_surv_timepoint()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
+
+\itemize{
+\item \code{s_surv_timepoint_diff()} returns the statistics:
+\itemize{
+\item \code{rate_diff}: Event-free rate difference between two groups.
+\item \code{rate_diff_ci}: Confidence interval for the difference.
+\item \code{ztest_pval}: p-value to test the difference is 0.
+}
+}
+
+\itemize{
+\item \code{a_surv_timepoint_diff()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 }
 \description{
@@ -130,18 +166,18 @@ Summarize patients' survival rate and difference of survival rates between group
 }
 \section{Functions}{
 \itemize{
-\item \code{s_surv_timepoint()}: Statistics Function which analyzes survival rate.
+\item \code{surv_timepoint()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{a_surv_timepoint()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{s_surv_timepoint()}: Statistics function which analyzes survival rate.
 
-\item \code{s_surv_timepoint_diff()}: Statistics Function which analyzes difference between two survival rates.
+\item \code{a_surv_timepoint()}: Formatted analysis function which is used as \code{afun} in \code{surv_timepoint()}
+when \code{method = "surv"}.
 
-\item \code{a_surv_timepoint_diff()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{s_surv_timepoint_diff()}: Statistics function which analyzes difference between two survival rates.
 
-\item \code{surv_timepoint()}: Analyze Function which adds the survival rate analysis to the input layout.
-Note that additional formatting arguments can be used here.
+\item \code{a_surv_timepoint_diff()}: Formatted analysis function which is used as \code{afun} in \code{surv_timepoint()}
+when \code{method = "surv_diff"}.
 
 }}
 \examples{
@@ -153,46 +189,6 @@ adtte_f <- tern_ex_adtte \%>\%
     AVAL = day2month(AVAL),
     is_event = CNSR == 0
   )
-df <- adtte_f \%>\%
-  filter(ARMCD == "ARM A")
-
-# Internal function - s_surv_timepoint
-\dontrun{
-s_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
-}
-
-# Internal function - a_surv_timepoint
-\dontrun{
-a_surv_timepoint(df, .var = "AVAL", time_point = 7, is_event = "is_event")
-}
-
-df_ref_group <- adtte_f \%>\%
-  filter(ARMCD == "ARM B")
-
-# Internal function - s_surv_timepoint_diff
-\dontrun{
-s_surv_timepoint_diff(df, df_ref_group, .in_ref_col = TRUE, .var = "AVAL", is_event = "is_event")
-s_surv_timepoint_diff(
-  df,
-  df_ref_group,
-  .in_ref_col = FALSE,
-  .var = "AVAL",
-  time_point = 7,
-  is_event = "is_event"
-)
-}
-
-# Internal function - a_surv_timepoint_diff
-\dontrun{
-a_surv_timepoint_diff(
-  df,
-  df_ref_group,
-  .in_ref_col = FALSE,
-  .var = "AVAL",
-  time_point = 7,
-  is_event = "is_event"
-)
-}
 
 # Survival at given time points.
 basic_table() \%>\%
@@ -232,5 +228,6 @@ basic_table() \%>\%
     method = "both"
   ) \%>\%
   build_table(df = adtte_f)
+
 }
 \keyword{internal}

@@ -14,7 +14,7 @@ d_proportion_diff(conf_level, method, long = FALSE)
 \item{long}{(\code{logical})\cr Whether a long or a short (default) description is required.}
 }
 \value{
-String describing the analysis.
+A \code{string} describing the analysis.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

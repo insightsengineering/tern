@@ -2,14 +2,17 @@
 % Please edit documentation in R/g_lineplot.R
 \name{control_lineplot_vars}
 \alias{control_lineplot_vars}
-\title{Control Function for g_lineplot Function}
+\title{Control Function for \code{g_lineplot} Function}
 \usage{
 control_lineplot_vars(
   x = "AVISIT",
   y = "AVAL",
-  strata = "ARM",
+  group_var = "ARM",
   paramcd = "PARAMCD",
-  y_unit = "AVALU"
+  y_unit = "AVALU",
+  subject_var = "USUBJID",
+  strata = lifecycle::deprecated(),
+  cohort_id = lifecycle::deprecated()
 )
 }
 \arguments{
@@ -17,14 +20,20 @@ control_lineplot_vars(
 
 \item{y}{(\code{character})\cr y variable name.}
 
-\item{strata}{(\code{character} or \code{NA})\cr strata variable name.}
+\item{group_var}{(\code{character} or \code{NA})\cr group variable name.}
 
-\item{paramcd}{(\code{character} or \code{NA})\cr paramcd variable name.}
+\item{paramcd}{(\code{character} or \code{NA})\cr \code{paramcd} variable name.}
 
-\item{y_unit}{(\code{character} or \code{NA})\cr y_unit variable name.}
+\item{y_unit}{(\code{character} or \code{NA})\cr \code{y_unit} variable name.}
+
+\item{subject_var}{(\code{character} or \code{NA})\cr subject variable name.}
+
+\item{strata}{(\code{character} or \code{NA})\cr deprecated - group variable name.}
+
+\item{cohort_id}{(\code{character} or \code{NA})\cr deprecated - subject variable name.}
 }
 \value{
-A named character vector with names of variables.
+A named character vector of variable names.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -34,8 +43,6 @@ A variable's default value can be overwritten for any variable.
 }
 \examples{
 control_lineplot_vars()
-control_lineplot_vars(strata = NA)
-}
-\author{
-Wojciech Wojciak wojciech.wojciak@contractors.roche.com
+control_lineplot_vars(group_var = NA)
+
 }

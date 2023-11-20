@@ -10,7 +10,8 @@ h_map_for_count_abnormal(
     range_high = "ANRHI"),
   abnormal = list(low = c("LOW", "LOW LOW"), high = c("HIGH", "HIGH HIGH")),
   method = c("default", "range"),
-  na_level = "<Missing>"
+  na_level = lifecycle::deprecated(),
+  na_str = "<Missing>"
 )
 }
 \arguments{
@@ -18,24 +19,30 @@ h_map_for_count_abnormal(
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
-\item{abnormal}{(named \code{list})\cr identifying the abnormal range level(s) in \code{df}. Based on the levels of abnormality
-of the input dataset, it can be something like \code{list(Low = "LOW LOW", High = "HIGH HIGH")} or
+\item{abnormal}{(named \code{list})\cr identifying the abnormal range level(s) in \code{df}. Based on the levels of
+abnormality of the input dataset, it can be something like \code{list(Low = "LOW LOW", High = "HIGH HIGH")} or
 \verb{abnormal = list(Low = "LOW", High = "HIGH"))}}
 
-\item{method}{(\code{string})\cr indicates how the returned map will be constructed. Can be either \code{"default"} or
-\code{"range"}.
-If method is \code{"default"}, the returned map will only have the abnormal directions that are observed in the \code{df}, and
-records with all normal values will be excluded to avoid error in creating layout.
-If method is \code{"range"}, the returned map will be based on the rule that at least one observation with low range > 0
-for low direction and at least one observation with high range is not missing for high direction.}
+\item{method}{(\code{string})\cr indicates how the returned map will be constructed. Can be \code{"default"} or \code{"range"}.}
 
-\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty values in factors with custom \code{string}.}
+\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+}
+\value{
+A map \code{data.frame}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Helper Function to create a map dataframe from the input dataset, which can be used as an argument in the
 \code{trim_levels_to_map} split function. Based on different method, the map is constructed differently.
+}
+\note{
+If method is \code{"default"}, the returned map will only have the abnormal directions that are observed in the
+\code{df}, and records with all normal values will be excluded to avoid error in creating layout. If method is
+\code{"range"}, the returned map will be based on the rule that at least one observation with low range > 0
+for low direction and at least one observation with high range is not missing for high direction.
 }
 \examples{
 adlb <- df_explicit_na(tern_ex_adlb)
@@ -45,7 +52,7 @@ h_map_for_count_abnormal(
   variables = list(anl = "ANRIND", split_rows = c("LBCAT", "PARAM")),
   abnormal = list(low = c("LOW"), high = c("HIGH")),
   method = "default",
-  na_level = "<Missing>"
+  na_str = "<Missing>"
 )
 
 df <- data.frame(
@@ -77,6 +84,7 @@ h_map_for_count_abnormal(
   ),
   abnormal = list(low = c("LOW"), high = c("HIGH")),
   method = "range",
-  na_level = "<Missing>"
+  na_str = "<Missing>"
 )
+
 }

@@ -17,12 +17,23 @@ adsl_local <- data.frame(
 testthat::test_that("s_count_patients_sum_exposure works as expected", {
   df <- anl_local
   adsl <- adsl_local
-  result <- s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl)) # nolintr
+  result <- s_count_patients_sum_exposure(df = df, .N_col = nrow(adsl), .stats = c("n_patients", "sum_exposure"))
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("a_count_patients_sum_exposure works as expected", {
+  result <- a_count_patients_sum_exposure(
+    df = anl_local,
+    var = "SEX",
+    .N_col = nrow(adsl_local),
+    .stats = "n_patients"
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
 
 testthat::test_that("summarize_patients_exposure_in_cols works well with default arguments", {
   df <- anl_local
@@ -31,8 +42,7 @@ testthat::test_that("summarize_patients_exposure_in_cols works well with default
   result <- basic_table() %>%
     split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
     summarize_patients_exposure_in_cols(var = "AVAL", col_split = TRUE) %>%
-    split_rows_by("SEX") %>%
-    summarize_patients_exposure_in_cols(var = "AVAL", col_split = FALSE) %>%
+    analyze_patients_exposure_in_cols(var = "SEX", col_split = FALSE) %>%
     build_table(df = df, alt_counts_df = adsl)
 
   res <- testthat::expect_silent(result)
@@ -51,9 +61,8 @@ testthat::test_that("summarize_patients_exposure_in_cols works well with custom 
       custom_label = "xyz",
       .stats = "sum_exposure"
     ) %>%
-    split_rows_by("SEX") %>%
-    summarize_patients_exposure_in_cols(
-      var = "AVAL",
+    analyze_patients_exposure_in_cols(
+      var = "SEX",
       col_split = FALSE,
       .stats = "sum_exposure"
     ) %>%
@@ -78,9 +87,81 @@ testthat::test_that(
       ) %>%
       build_table(df = df, alt_counts_df = adsl)
 
-    invisible(capture.output(result <- col_paths_summary(table)$label))
+    invisible(capture.output({
+      result <- col_paths_summary(table)$label
+    }))
 
     res <- testthat::expect_silent(result)
     testthat::expect_snapshot(res)
   }
 )
+
+testthat::test_that("analyze_patients_exposure_in_cols works well with default arguments", {
+  df <- anl_local
+  adsl <- adsl_local
+
+  result <- basic_table() %>%
+    split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
+    analyze_patients_exposure_in_cols(var = "SEX", col_split = TRUE) %>%
+    build_table(df = df, alt_counts_df = adsl)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("analyze_patients_exposure_in_cols works well with custom arguments", {
+  df <- anl_local
+  adsl <- adsl_local
+
+  result <- basic_table() %>%
+    split_cols_by("ARMCD", split_fun = add_overall_level("Total", first = FALSE)) %>%
+    analyze_patients_exposure_in_cols(
+      var = "SEX",
+      col_split = TRUE,
+      .stats = "sum_exposure"
+    ) %>%
+    build_table(df = df, alt_counts_df = adsl)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that(
+  "analyze_patients_exposure_in_cols works with no variable split and only one statistic",
+  code = {
+    df <- anl_local
+    adsl <- adsl_local
+
+    table <- basic_table() %>%
+      analyze_patients_exposure_in_cols(
+        ex_var = "AVAL",
+        col_split = TRUE,
+        .stats = "n_patients"
+      ) %>%
+      build_table(df = df, alt_counts_df = adsl)
+
+    res <- testthat::expect_silent(table)
+    testthat::expect_snapshot(res)
+  }
+)
+
+testthat::test_that("patients_exposure_in_cols works with totals after the row split", {
+  # Fixes adding total as last analyze level, issue #950
+  lyt <- basic_table(
+    title = "Extent of Exposure",
+    main_footer = "* Patient Time is the sum of patients and times",
+    show_colcounts = TRUE
+  ) %>%
+    analyze_patients_exposure_in_cols(
+      var = "SEX",
+      col_split = TRUE,
+      add_total_level = TRUE,
+      custom_label = "REAL TOTAL"
+    ) %>%
+    append_topleft(c("", "Sex"))
+
+  tbl <- build_table(lyt, anl_local)
+
+  res <- testthat::expect_silent(tbl)
+  testthat::expect_snapshot(res)
+})

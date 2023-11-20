@@ -9,17 +9,18 @@ h_tbl_median_surv(fit_km, armval = "All")
 \arguments{
 \item{fit_km}{(\code{survfit})\cr result of \code{\link[survival:survfit]{survival::survfit()}}.}
 
-\item{armval}{(\code{string})\cr used as strata name when treatment arm
-variable only has one level. Default is "All".}
+\item{armval}{(\code{string})\cr used as strata name when treatment arm variable only has one level. Default is \code{"All"}.}
+}
+\value{
+A summary table with statistics \code{N}, \code{Median}, and \verb{XX\% CI} (\code{XX} taken from \code{fit_km}).
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Transform a survival fit to a table with groups in rows characterized
-by N, median and confidence interval.
+Transform a survival fit to a table with groups in rows characterized by N, median and confidence interval.
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(survival)
 

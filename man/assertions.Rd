@@ -59,7 +59,7 @@ Collection to store assertion messages. See \code{\link[checkmate]{AssertCollect
 \item{variables}{(named \code{list} of \code{character})\cr list of variables to test.}
 
 \item{na_level}{(\code{character})\cr the string you have been using to represent NA or
-missing data. For \code{NA} values please consider using directly \code{base::is.na} or
+missing data. For \code{NA} values please consider using directly \code{\link[=is.na]{is.na()}} or
 similar approaches.}
 
 \item{min.levels}{[\code{integer(1)}]\cr
@@ -86,24 +86,23 @@ Exact expected length of \code{x}.}
 
 \item{include_boundaries}{(\code{logical})\cr whether to include boundaries when testing
 for proportions.}
-
-\item{(`integer`)\cr}{minimum number of factor levels. Default is \code{1}.}
-
-\item{...}{a collection of objects to test.}
+}
+\value{
+Nothing if assertion passes, otherwise prints the error message.
 }
 \description{
 Additional assertion functions which can be used together with the \code{checkmate} package.
 }
 \section{Functions}{
 \itemize{
-\item \code{assert_list_of_variables()}: Check whether \code{x} is a valid list of variable names.
-\code{NULL} elements of the list \code{x} are dropped out with \code{Filter(Negate(is.null), x)}.
+\item \code{assert_list_of_variables()}: Checks whether \code{x} is a valid list of variable names.
+\code{NULL} elements of the list \code{x} are dropped with \code{Filter(Negate(is.null), x)}.
 
 \item \code{assert_df_with_variables()}: Check whether \code{df} is a data frame with the analysis \code{variables}.
 Please notice how this produces an error when not all variables are present in the
 data.frame while the opposite is not required.
 
-\item \code{assert_valid_factor()}: Check whether \code{x} is a valid factor (has levels and no empty
+\item \code{assert_valid_factor()}: Check whether \code{x} is a valid factor (i.e. has levels and no empty
 string levels). Note that \code{NULL} and \code{NA} elements are allowed.
 
 \item \code{assert_df_with_factors()}: Check whether \code{df} is a data frame where the analysis \code{variables}
@@ -113,114 +112,4 @@ trim \code{NA} levels out of the vector list itself.
 \item \code{assert_proportion_value()}: Check whether \code{x} is a proportion: number between 0 and 1.
 
 }}
-\examples{
-# Check whether `x` is a valid list of variable names.
-
-# Internal function - assert_list_of_variables
-\dontrun{
-assert_list_of_variables(list(val = "a"))
-assert_list_of_variables(list(val = c("a", "b")))
-assert_list_of_variables(list(val = c("a", "b"), val2 = NULL))
-
-# The following calls fail
-assert_list_of_variables(list(1, 2))
-assert_list_of_variables(list("bla" = 2))
-}
-
-# Check whether `df` contains the analysis `variables`.
-
-# Internal function - assert_df_with_variables
-\dontrun{
-assert_df_with_variables(
-  df = data.frame(a = 5, b = 3),
-  variables = list(val = "a")
-)
-assert_df_with_variables(
-  df = data.frame(a = 5, b = 3),
-  variables = list(val = c("a", "b"))
-)
-assert_df_with_variables(
-  df = data.frame(a = 5, b = 3),
-  variables = list(val = c("a", "b"))
-)
-assert_df_with_variables(
-  df = data.frame(a = 5, b = 3, e = "<Missing>"),
-  variables = list(val = c("a", "b")), na_level = "<Missing>"
-)
-
-# The following calls fail
-assert_df_with_variables(
-  df = matrix(1:5, ncol = 2, nrow = 3),
-  variables = list(val = "a")
-)
-assert_df_with_variables(
-  df = data.frame(a = 5, b = 3),
-  variables = list(val = c("a", "b", "c"))
-)
-assert_df_with_variables(
-  df = data.frame(a = 5, b = 3, e = "<Missing>"),
-  variables = list(val = c("a", "b", "e")), na_level = "<Missing>"
-)
-}
-
-# Check whether `x` is a valid factor.
-
-# Internal function - assert_valid_factor
-\dontrun{
-assert_valid_factor(factor(c("a", NULL)))
-assert_valid_factor(factor(c("a", "b")))
-assert_valid_factor(factor(c("a", "b")), len = 2)
-assert_valid_factor(factor(c("a", NA)), any.missing = TRUE)
-assert_valid_factor(factor("A", levels = c("A", "B")))
-
-# The following calls fail
-assert_valid_factor(-1)
-assert_valid_factor(factor(c("a", "")))
-assert_valid_factor(factor(c("a", NA)), any.missing = FALSE)
-assert_valid_factor(factor(NULL))
-assert_valid_factor(factor(c(NULL, "")))
-assert_valid_factor(factor())
-}
-
-# Check whether `df` contains all factor analysis `variables`.
-adf <- data.frame(a = factor(c("A", "B")), b = 3)
-bdf <- data.frame(a = factor(letters[1:3]), b = factor(c(1, 2, 3)), d = 3)
-
-# Internal function - assert_df_with_factors
-\dontrun{
-assert_df_with_factors(df = adf, variables = list(val = "a"))
-assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1)
-assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 2, max.levels = 2)
-assert_df_with_factors(
-  df = data.frame(a = factor(c("A", NA, "B")), b = 3),
-  variable = list(val = "a"),
-  min.levels = 2,
-  max.levels = 2
-)
-
-# The following calls fail
-assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
-assert_df_with_factors(df = adf, variables = list(val = "a"), min.levels = 1, max.levels = 1)
-assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = ""))
-assert_df_with_factors(df = adf, variables = list(val = "a", val = "b", val = "d"))
-assert_df_with_factors(
-  df = bdf,
-  variables = list(val = "a", val = "b"),
-  min.levels = 1,
-  max.levels = 1
-)
-}
-
-# Check whether `x` is between 0 and 1.
-# Internal function - assert_proportion_value
-\dontrun{
-assert_proportion_value(x = 0, include_boundaries = TRUE)
-assert_proportion_value(x = 0.3)
-
-# These fail
-assert_proportion_value(x = 1.3)
-assert_proportion_value(x = 1)
-}
-
-}
 \keyword{internal}

@@ -2,11 +2,23 @@
 % Please edit documentation in R/abnormal_by_marked.R
 \name{abnormal_by_marked}
 \alias{abnormal_by_marked}
+\alias{count_abnormal_by_marked}
 \alias{s_count_abnormal_by_marked}
 \alias{a_count_abnormal_by_marked}
-\alias{count_abnormal_by_marked}
 \title{Count Patients with Marked Laboratory Abnormalities}
 \usage{
+count_abnormal_by_marked(
+  lyt,
+  var,
+  na_str = NA_character_,
+  nested = TRUE,
+  ...,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
+
 s_count_abnormal_by_marked(
   df,
   .var = "AVALCAT1",
@@ -22,18 +34,29 @@ a_count_abnormal_by_marked(
   category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
   variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir")
 )
-
-count_abnormal_by_marked(
-  lyt,
-  var,
-  ...,
-  .stats = NULL,
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = NULL
-)
 }
 \arguments{
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
+\item{...}{additional arguments for the lower level functions.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("abnormal_by_marked")}
+to see available statistics for this function.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
+
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
@@ -46,33 +69,30 @@ that is passed by \code{rtables}.}
 and last or replicated.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
-
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
-
-\item{...}{additional arguments for the lower level functions.}
-
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
-
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-\code{\link[=s_count_abnormal_by_marked]{s_count_abnormal_by_marked()}} the single statistic \code{count_fraction}
-with \verb{Single, not last}, \verb{Last or replicated} and \code{Any} results.
+\itemize{
+\item \code{count_abnormal_by_marked()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_count_abnormal_by_marked()} to the table layout.
+}
 
-\code{\link[=a_count_abnormal_by_marked]{a_count_abnormal_by_marked()}} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+\itemize{
+\item \code{s_count_abnormal_by_marked()} returns statistic \code{count_fraction} with \verb{Single, not last},
+\verb{Last or replicated}, and \code{Any} results.
+}
+
+\itemize{
+\item \code{a_count_abnormal_by_marked()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Primary analysis variable \code{.var} indicates whether single, replicated
-or last marked laboratory abnormality was observed (factor).
-Additional analysis variables are \code{id} (character or factor) and \code{direction} indicating
-the direction of the abnormality (factor).
-Denominator is number of patients with at least one valid measurement during
+Primary analysis variable \code{.var} indicates whether single, replicated or last marked laboratory
+abnormality was observed (\code{factor}). Additional analysis variables are \code{id} (\code{character} or \code{factor})
+and \code{direction} (\code{factor}) indicating the direction of the abnormality. Denominator is number of
+patients with at least one valid measurement during the analysis.
 \itemize{
 \item For \verb{Single, not last} and \verb{Last or replicated}: Numerator is number of patients
 with \verb{Single, not last} and \verb{Last or replicated} levels, respectively.
@@ -80,24 +100,22 @@ with \verb{Single, not last} and \verb{Last or replicated} levels, respectively.
 replicated marked abnormalities.
 }
 }
-\details{
-Note that \verb{Single, not last} and \verb{Last or replicated} levels are
-mutually exclusive. If a patient has abnormalities that meet both the \verb{Single, not last}
-and \verb{Last or replicated} criteria, then the patient will be counted only under the \verb{Last or replicated} category.
-}
 \section{Functions}{
 \itemize{
-\item \code{s_count_abnormal_by_marked()}: Statistics function which returns
-the counts and fractions of patients with \verb{Single, not last}, \verb{Last or replicated} and \code{Any}
-marked laboratory abnormalities for a single \code{abnormal} level.
+\item \code{count_abnormal_by_marked()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{a_count_abnormal_by_marked()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{s_count_abnormal_by_marked()}: Statistics function for patients with marked lab abnormalities.
 
-\item \code{count_abnormal_by_marked()}: Layout creating function which can be used for creating tables,
-which can take statistics function arguments and additional format arguments (see below).
+\item \code{a_count_abnormal_by_marked()}: Formatted analysis function which is used as \code{afun}
+in \code{count_abnormal_by_marked()}.
 
 }}
+\note{
+\verb{Single, not last} and \verb{Last or replicated} levels are mutually exclusive. If a patient has
+abnormalities that meet both the \verb{Single, not last} and \verb{Last or replicated} criteria, then the
+patient will be counted only under the \verb{Last or replicated} category.
+}
 \examples{
 library(dplyr)
 
@@ -137,27 +155,6 @@ spl_context <- data.frame(
   full_parent_df = I(full_parent_df),
   cur_col_subset = I(cur_col_subset)
 )
-# Internal function - s_count_abnormal_by_marked
-\dontrun{
-s_count_abnormal_by_marked(
-  df = df_crp \%>\% filter(abn_dir == "High"),
-  .spl_context = spl_context,
-  .var = "AVALCAT1",
-  variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
-)
-}
-
-# Internal function - a_count_abnormal_by_marked
-\dontrun{
-# Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
-# so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
-afun <- make_afun(a_count_abnormal_by_marked, .ungroup_stats = "count_fraction")
-afun(
-  df = df_crp \%>\% filter(abn_dir == "High"),
-  .spl_context = spl_context,
-  variables = list(id = "USUBJID", param = "PARAMCD", direction = "abn_dir")
-)
-}
 
 map <- unique(
   df[df$abn_dir \%in\% c("Low", "High") & df$AVALCAT1 != "", c("PARAMCD", "abn_dir")]
@@ -186,7 +183,6 @@ basic_table() \%>\%
     )
   ) \%>\%
   build_table(df = df)
-
 
 basic_table() \%>\%
   split_cols_by("ARMCD") \%>\%

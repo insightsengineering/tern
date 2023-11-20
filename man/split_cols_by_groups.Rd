@@ -17,18 +17,16 @@ levels that belong to it in the character vectors that are elements of the list.
 
 \item{ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
-\item{...}{additional arguments, see \emph{note} section.}
+\item{...}{additional arguments to \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}} in order. For instance, to
+control formats (\code{format}), add a joint column for all groups (\code{incl_all}).}
 }
 \value{
-the modified layout.
+A layout object suitable for passing to further layouting functions. Adding
+this function to an \code{rtable} layout will add a column split including the given
+groups to the table layout.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\note{
-The ellipse (\code{...}) conveys arguments to \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}}
-in order, for instance, to control formats (\code{format}), add a joint column
-for all groups (\code{incl_all}).
 }
 \examples{
 # 1 - Basic use
@@ -103,7 +101,6 @@ basic_table() \%>\%
   analyze("AGE") \%>\%
   build_table(DM)
 
-
 # Use group definition with reference column (first item of groups).
 basic_table() \%>\%
   split_cols_by_groups("ARM", groups, ref_group = names(groups)[1]) \%>\%
@@ -119,6 +116,7 @@ basic_table() \%>\%
     }
   ) \%>\%
   build_table(DM)
+
 }
 \seealso{
 \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}}

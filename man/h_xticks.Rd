@@ -16,6 +16,9 @@ an optimal tick position on the x axis.}
 \item{max_time}{(\code{numeric})\cr maximum value to show on X axis. Only data values less than or up to
 this threshold value will be plotted (defaults to \code{NULL}).}
 }
+\value{
+A vector of positions to use for x-axis ticks on a \code{ggplot} object.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -24,7 +27,7 @@ exists it is kept as is. It is based on the same function \code{ggplot2} relies 
 and is required in the graphic and the patient-at-risk annotation table.
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(survival)
 

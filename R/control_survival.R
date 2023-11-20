@@ -3,13 +3,14 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' This is an auxiliary function for controlling arguments for `CoxPH` model, typically used internally to specify
-#' details of `CoxPH` model for [s_coxph_pairwise]. `conf_level` refers to Hazard Ratio estimation.
+#' details of `CoxPH` model for [s_coxph_pairwise()]. `conf_level` refers to Hazard Ratio estimation.
 #'
-#' @param pval_method (`string`)\cr p-value method for testing hazard ratio = 1.
-#'   Default method is \code{"log-rank"}, can also be set to \code{"wald"} or \code{"likelihood"}.
-#' @param ties 	(`string`)\cr specifying the method for tie handling. Default is \code{"efron"},
-#'   can also be set to \code{"breslow"} or \code{"exact"}. see more in [survival::coxph()]
 #' @inheritParams argument_convention
+#' @param pval_method (`string`)\cr p-value method for testing hazard ratio = 1.
+#'   Default method is `"log-rank"`, can also be set to `"wald"` or `"likelihood"`.
+#' @param ties (`string`)\cr specifying the method for tie handling. Default is `"efron"`,
+#'   can also be set to `"breslow"` or `"exact"`. See more in [survival::coxph()].
+#'
 #' @return A list of components with the same names as the arguments
 #'
 #' @export
@@ -28,12 +29,13 @@ control_coxph <- function(pval_method = c("log-rank", "wald", "likelihood"),
 #' @description `r lifecycle::badge("stable")`
 #'
 #' This is an auxiliary function for controlling arguments for `survfit` model, typically used internally to specify
-#' details of `survfit` model for [s_surv_time]. `conf_level` refers to survival time estimation.
+#' details of `survfit` model for [s_surv_time()]. `conf_level` refers to survival time estimation.
 #'
 #' @inheritParams argument_convention
 #' @param conf_type (`string`)\cr confidence interval type. Options are "plain" (default), "log", "log-log",
 #'   see more in [survival::survfit()]. Note option "none" is no longer supported.
 #' @param quantiles (`numeric`)\cr of length two to specify the quantiles of survival time.
+#'
 #' @return A list of components with the same names as the arguments
 #'
 #' @export
@@ -52,10 +54,11 @@ control_surv_time <- function(conf_level = 0.95,
 #' @description `r lifecycle::badge("stable")`
 #'
 #' This is an auxiliary function for controlling arguments for `survfit` model, typically used internally to specify
-#' details of `survfit` model for [s_surv_timepoint]. `conf_level` refers to patient risk estimation at a time point.
+#' details of `survfit` model for [s_surv_timepoint()]. `conf_level` refers to patient risk estimation at a time point.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams control_surv_time
+#'
 #' @return A list of components with the same names as the arguments
 #'
 #' @export

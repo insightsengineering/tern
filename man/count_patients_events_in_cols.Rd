@@ -2,10 +2,22 @@
 % Please edit documentation in R/count_patients_events_in_cols.R
 \name{count_patients_events_in_cols}
 \alias{count_patients_events_in_cols}
-\alias{s_count_patients_and_multiple_events}
 \alias{summarize_patients_events_in_cols}
+\alias{s_count_patients_and_multiple_events}
 \title{Counting Patients and Events in Columns}
 \usage{
+summarize_patients_events_in_cols(
+  lyt,
+  id = "USUBJID",
+  filters_list = list(),
+  na_str = NA_character_,
+  ...,
+  .stats = c("unique", "all", names(filters_list)),
+  .labels = c(unique = "Patients (All)", all = "Events (All)",
+    labels_or_names(filters_list)),
+  col_split = TRUE
+)
+
 s_count_patients_and_multiple_events(
   df,
   id,
@@ -14,20 +26,9 @@ s_count_patients_and_multiple_events(
   labelstr = "",
   custom_label = NULL
 )
-
-summarize_patients_events_in_cols(
-  lyt,
-  id = "USUBJID",
-  filters_list = list(),
-  ...,
-  .stats = c("unique", "all", names(filters_list)),
-  .labels = c(unique = "Patients (All)", all = "Events (All)",
-    labels_or_names(filters_list)),
-  col_split = TRUE
-)
 }
 \arguments{
-\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{id}{(\code{string})\cr subject variable name.}
 
@@ -35,33 +36,46 @@ summarize_patients_events_in_cols(
 type of event describe by filters, in the same format as \code{\link[=s_count_patients_with_event]{s_count_patients_with_event()}}.
 If it has a label, then this will be used for the column title.}
 
-\item{empty_stats}{(\code{character})\cr optional names of the statistics that should be returned empty such
-that corresponding table cells will stay blank.}
-
-\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
-(must be present as second argument in Content Row Functions).}
-
-\item{custom_label}{(\code{string} or \code{NULL})\cr if provided and \code{labelstr} is empty then this will
-be used as label.}
-
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
+\item{.stats}{(\code{character})\cr statistics to select for the table. Run
+\code{get_stats("summarize_patients_events_in_cols")} to see available statistics for this function, in addition to any
+added using \code{filters_list}.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
 \item{col_split}{(\code{flag})\cr whether the columns should be split.
 Set to \code{FALSE} when the required column split has been done already earlier in the layout pipe.}
+
+\item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
+
+\item{empty_stats}{(\code{character})\cr optional names of the statistics that should be returned empty such
+that corresponding table cells will stay blank.}
+
+\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+(must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
+for more information.}
+
+\item{custom_label}{(\code{string} or \code{NULL})\cr if provided and \code{labelstr} is empty then this will
+be used as label.}
 }
 \value{
-\code{\link[=s_count_patients_and_multiple_events]{s_count_patients_and_multiple_events()}} returns a list with the statistics:
+\itemize{
+\item \code{summarize_patients_events_in_cols()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted content rows
+containing the statistics from \code{s_count_patients_and_multiple_events()} to the table layout.
+}
+
+\itemize{
+\item \code{s_count_patients_and_multiple_events()} returns a list with the statistics:
 \itemize{
 \item \code{unique}: number of unique patients in \code{df}.
 \item \code{all}: number of rows in \code{df}.
 \item one element with the same name as in \code{filters_list}: number of rows in \code{df},
 i.e. events, fulfilling the filter condition.
+}
 }
 }
 \description{
@@ -72,15 +86,14 @@ when a column table layout is required.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_count_patients_and_multiple_events()}: Statistics function which counts numbers of patients and multiple events
-defined by filters.
+\item \code{summarize_patients_events_in_cols()}: Layout-creating function which can take statistics function
+arguments and additional format arguments. This function is a wrapper for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 
-\item \code{summarize_patients_events_in_cols()}: Layout creating function which adds the count
-statistics of patients and events in the column layout as content rows.
+\item \code{s_count_patients_and_multiple_events()}: Statistics function which counts numbers of patients and multiple
+events defined by filters. Used as analysis function \code{afun} in \code{summarize_patients_events_in_cols()}.
 
 }}
 \examples{
-# `s_count_patients_and_multiple_events()`
 df <- data.frame(
   USUBJID = rep(c("id1", "id2", "id3", "id4"), c(2, 3, 1, 1)),
   ARM = c("A", "A", "B", "B", "B", "B", "A"),
@@ -90,19 +103,6 @@ df <- data.frame(
   AEDECOD = c("A", "A", "A", "B", "B", "C", "D"),
   AEBODSYS = rep(c("SOC1", "SOC2", "SOC3"), c(3, 3, 1))
 )
-
-# Internal function - s_count_patients_and_multiple_events
-\dontrun{
-s_count_patients_and_multiple_events(
-  df = df,
-  id = "USUBJID",
-  filters_list = list(
-    serious = c(AESER = "Y"),
-    fatal = c(AESDTH = "Y")
-  )
-)
-}
-
 
 # `summarize_patients_events_in_cols()`
 basic_table() \%>\%
@@ -115,5 +115,6 @@ basic_table() \%>\%
     custom_label = "\%s Total number of patients and events"
   ) \%>\%
   build_table(df)
+
 }
 \keyword{internal}

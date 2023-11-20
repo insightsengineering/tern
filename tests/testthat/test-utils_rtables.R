@@ -87,6 +87,13 @@ testthat::test_that("c_label_n works as expected", {
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("c_label_n_alt works as expected", {
+  result <- c_label_n_alt(data.frame(a = c(1, 2)), "female", .alt_df_row = data.frame(a = 1:10))
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("add_rowcounts works with one row split", {
   result <- basic_table() %>%
     split_rows_by("SEX", split_fun = drop_split_levels) %>%
@@ -131,6 +138,21 @@ testthat::test_that("add_rowcounts works with pruning", {
     add_rowcounts() %>%
     analyze("RACE") %>%
     build_table(dm_f) %>%
+    prune_table()
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("add_rowcounts works with alt_counts = TRUE", {
+  DM_alt <- DM[1:100, ] # nolint
+
+  result <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    split_rows_by("SEX", split_fun = drop_split_levels) %>%
+    add_rowcounts(alt_counts = TRUE) %>%
+    analyze("RACE") %>%
+    build_table(DM, alt_counts_df = DM_alt) %>%
     prune_table()
 
   res <- testthat::expect_silent(result)

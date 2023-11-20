@@ -60,7 +60,7 @@ plot. Ignored when \code{plotting_choices} is not "separate_by_obs".}
 \item{col}{(\code{character})\cr lines colors.}
 }
 \value{
-a \code{ggplot} object or a list of \code{ggplot} objects.
+A \code{ggplot} object or a list of \code{ggplot} objects.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -70,8 +70,8 @@ Patients' individual baseline values can be added to the plot(s) as reference.
 }
 \section{Functions}{
 \itemize{
-\item \code{g_ipp()}: depending on user preference, renders a single
-graphic or compiles a list of graphics that show trends in individual's parameter
+\item \code{g_ipp()}: Plotting function for individual patient plots which, depending on user
+preference, renders a single graphic or compiles a list of graphics that show trends in individual's parameter
 values over time.
 
 }}
@@ -96,6 +96,7 @@ plot_list <- g_ipp(
   max_obs_per_plot = 5
 )
 plot_list
+
 }
 \seealso{
 Relevant helper function \code{\link[=h_g_ipp]{h_g_ipp()}}.

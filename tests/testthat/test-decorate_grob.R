@@ -94,3 +94,23 @@ testthat::test_that("decorate_grob_set returns no warnings when creating a non-e
   )
   testthat::expect_silent(draw_grob(lg[[1]]))
 })
+
+testthat::test_that("text wrapping works as expected", {
+  g <- ggplot2::ggplot(iris) +
+    ggplot2::geom_point(aes(x = Sepal.Length, y = Sepal.Width))
+
+  deco_grob_text_wrap <- tern::decorate_grob(
+    grob = ggplot2::ggplotGrob(g),
+    titles = paste(
+      "this is title that is very long dasd asdas dasljdklasjdklasjlk dakldsj akldjakls jkald jaklsj dklsajklaj",
+      "skldajkl jsakldjal jsadlk dasj lasjdlkasjkl ajskld asl jalksjd lkasjlk alkj dlkadlka sjd lakjsdl a"
+    ),
+    footnotes = paste(
+      "this is footnotes that is super super supre long long asdad as dasd ad ada ad asdadkhasdalksjdlkaj kdlajskl",
+      "dsajlkd ajldja lkdjas jdklas jdkasj dlasl;jd klasjdkl aldja lkjdlkaj lkfjalksd a"
+    ),
+    page = "Page 1 of 10"
+  )
+
+  vdiffr::expect_doppelganger(title = "deco_grob_text_wrap", fig = deco_grob_text_wrap)
+})

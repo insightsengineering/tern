@@ -11,40 +11,40 @@ fit_coxreg_univar(variables, data, at = list(), control = control_coxreg())
 fit_coxreg_multivar(variables, data, control = control_coxreg())
 }
 \arguments{
-\item{variables}{(\code{list})\cr a named list corresponds to the names of variables found
-in \code{data}, passed as a named list and corresponding to \code{time}, \code{event}, \code{arm},
-\code{strata}, and \code{covariates} terms. If \code{arm} is missing from \code{variables}, then
-only Cox model(s) including the \code{covariates} will be fitted and the corresponding
-effect estimates will be tabulated later.}
+\item{variables}{(\code{list})\cr a named list corresponds to the names of variables found in \code{data}, passed as a named
+list and corresponding to \code{time}, \code{event}, \code{arm}, \code{strata}, and \code{covariates} terms. If \code{arm} is missing from
+\code{variables}, then only Cox model(s) including the \code{covariates} will be fitted and the corresponding effect
+estimates will be tabulated later.}
 
-\item{data}{(\code{data.frame})\cr the dataset containing the variables to fit the
-models.}
+\item{data}{(\code{data.frame})\cr the dataset containing the variables to fit the models.}
 
-\item{at}{(\code{list} of \code{numeric})\cr when the candidate covariate is a
-\code{numeric}, use \code{at} to specify the value of the covariate at which the
-effect should be estimated.}
+\item{at}{(\code{list} of \code{numeric})\cr when the candidate covariate is a \code{numeric}, use \code{at} to specify
+the value of the covariate at which the effect should be estimated.}
 
-\item{control}{(\code{list})\cr a list of parameters as returned by the
-helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
+\item{control}{(\code{list})\cr a list of parameters as returned by the helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 }
 \value{
-The function \code{fit_coxreg_univar} returns a \code{coxreg.univar} class object which is a named list
+\itemize{
+\item \code{fit_coxreg_univar()} returns a \code{coxreg.univar} class object which is a named \code{list}
 with 5 elements:
-\describe{
-\item{mod}{Cox regression models fitted by \code{\link[survival:coxph]{survival::coxph()}}.}
-\item{data}{The original data frame input.}
-\item{control}{The original control input.}
-\item{vars}{The variables used in the model.}
-\item{at}{Value of the covariate at which the effect should be estimated.}
+\itemize{
+\item \code{mod}: Cox regression models fitted by \code{\link[survival:coxph]{survival::coxph()}}.
+\item \code{data}: The original data frame input.
+\item \code{control}: The original control input.
+\item \code{vars}: The variables used in the model.
+\item \code{at}: Value of the covariate at which the effect should be estimated.
+}
 }
 
-The function \code{fit_coxreg_multivar} returns a \code{coxreg.multivar} class object which is a named list
+\itemize{
+\item \code{fit_coxreg_multivar()} returns a \code{coxreg.multivar} class object which is a named list
 with 4 elements:
-\describe{
-\item{mod}{Cox regression model fitted by \code{\link[survival:coxph]{survival::coxph()}}.}
-\item{data}{The original data frame input.}
-\item{control}{The original control input.}
-\item{vars}{The variables used in the model.}
+\itemize{
+\item \code{mod}: Cox regression model fitted by \code{\link[survival:coxph]{survival::coxph()}}.
+\item \code{data}: The original data frame input.
+\item \code{control}: The original control input.
+\item \code{vars}: The variables used in the model.
+}
 }
 }
 \description{
@@ -54,10 +54,9 @@ Fitting functions for univariate and multivariate Cox regression models.
 }
 \section{Functions}{
 \itemize{
-\item \code{fit_coxreg_univar()}: Fit a series of univariate Cox regression models
-given the inputs.
+\item \code{fit_coxreg_univar()}: Fit a series of univariate Cox regression models given the inputs.
 
-\item \code{fit_coxreg_multivar()}: Fit a multi-variable Cox regression model.
+\item \code{fit_coxreg_multivar()}: Fit a multivariate Cox regression model.
 
 }}
 \note{

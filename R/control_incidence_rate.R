@@ -6,29 +6,50 @@
 #' internally to specify details in `s_incidence_rate()`.
 #'
 #' @inheritParams argument_convention
-#' @param time_unit_input (`string`)\cr `day`, `month`, or `year` (default)
-#'   indicating time unit for data input.
-#' @param time_unit_output (`numeric`)\cr time unit for desired output (in person-years).
 #' @param conf_type (`string`)\cr `normal` (default), `normal_log`, `exact`, or `byar`
 #'   for confidence interval type.
-#' @return A list of components with the same name as the arguments.
-#' @export
+#' @param input_time_unit (`string`)\cr `day`, `week`, `month`, or `year` (default)
+#'   indicating time unit for data input.
+#' @param num_pt_year (`numeric`)\cr number of patient-years to use when calculating adverse event rates.
+#' @param time_unit_input `r lifecycle::badge("deprecated")` Please use the `input_time_unit` argument instead.
+#' @param time_unit_output `r lifecycle::badge("deprecated")` Please use the `num_pt_year` argument instead.
+#'
+#' @return A list of components with the same names as the arguments.
+#'
+#' @seealso [incidence_rate]
+#'
 #' @examples
 #' control_incidence_rate(0.9, "exact", "month", 100)
-#' @seealso [incidence_rate]
+#'
+#' @export
 control_incidence_rate <- function(conf_level = 0.95,
                                    conf_type = c("normal", "normal_log", "exact", "byar"),
-                                   time_unit_input = c("year", "day", "week", "month"),
-                                   time_unit_output = 1) {
+                                   input_time_unit = c("year", "day", "week", "month"),
+                                   num_pt_year = 100,
+                                   time_unit_input = lifecycle::deprecated(),
+                                   time_unit_output = lifecycle::deprecated()) {
+  if (lifecycle::is_present(time_unit_input)) {
+    lifecycle::deprecate_warn(
+      "0.8.3", "control_incidence_rate(time_unit_input)", "control_incidence_rate(input_time_unit)"
+    )
+    input_time_unit <- time_unit_input
+  }
+  if (lifecycle::is_present(time_unit_output)) {
+    lifecycle::deprecate_warn(
+      "0.8.3", "control_incidence_rate(time_unit_output)", "control_incidence_rate(num_pt_year)"
+    )
+    num_pt_year <- time_unit_output
+  }
+
   conf_type <- match.arg(conf_type)
-  time_unit_input <- match.arg(time_unit_input)
-  checkmate::assert_number(time_unit_output)
+  input_time_unit <- match.arg(input_time_unit)
+  checkmate::assert_number(num_pt_year)
   assert_proportion_value(conf_level)
 
   list(
     conf_level = conf_level,
     conf_type = conf_type,
-    time_unit_input = time_unit_input,
-    time_unit_output = time_unit_output
+    input_time_unit = input_time_unit,
+    num_pt_year = num_pt_year
   )
 }

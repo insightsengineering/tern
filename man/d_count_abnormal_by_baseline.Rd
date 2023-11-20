@@ -9,6 +9,9 @@ d_count_abnormal_by_baseline(abnormal)
 \arguments{
 \item{abnormal}{(\code{character})\cr identifying the abnormal range level(s) in \code{.var}.}
 }
+\value{
+Abnormal category labels for \code{\link[=s_count_abnormal_by_baseline]{s_count_abnormal_by_baseline()}}.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

@@ -57,6 +57,16 @@ testthat::test_that("s_count_occurrences_by_grade works with valid input and def
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("s_count_occurrences_by_grade sorts grade levels so that 'missing' level appears last", {
+  df <- raw_data
+  df$AETOXGR <- factor(c("Missing", 2, 3, 1, 1, 2, 3), levels = c("Missing", 1:5))
+
+  result <- s_count_occurrences_by_grade(df = df, .var = "AETOXGR", .N_col = 10)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("s_count_occurrences_by_grade works with valid input for grade grouping", {
   df <- raw_data
   result <- s_count_occurrences_by_grade(
@@ -335,4 +345,38 @@ testthat::test_that("summarize_ and count_occurrences_by_grade works with pagina
     c("-Any-", "Grade 1-2")
   )
   testthat::expect_identical(to_string_matrix(pag_result[[2]])[3, 1], "A")
+})
+
+testthat::test_that("count_occurrences_by_grade works as expected with risk difference column", {
+  tern_ex_adae$AESEV <- factor(tern_ex_adae$AESEV)
+
+  # Default parameters
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+    count_occurrences_by_grade(
+      var = "AESEV",
+      riskdiff = TRUE
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # Grade groups, custom id var
+  grade_groups <- list("-Any-" = levels(tern_ex_adae$AESEV))
+
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+    count_occurrences_by_grade(
+      var = "AESEV",
+      riskdiff = TRUE,
+      show_labels = "hidden",
+      .indent_mods = 1L,
+      grade_groups = grade_groups,
+      id = "SITEID"
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
