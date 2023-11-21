@@ -1,15 +1,16 @@
-#' Convert `rtable` to `ggplot` object
+#' Convert `rtable` object to `ggplot` object
 #'
 #' Given a [rtables::rtable()] object, performs basic conversion to a `ggplot` object built using
-#' functions from the `ggplot2` package.
+#' functions from the `ggplot2` package. Any table titles and/or footnotes are ignored.
 #'
 #' @param tbl (`rtable`)\cr a [rtables::rtable()] object.
 #' @param fontsize (`numeric`)\cr font size.
 #' @param colwidths (`vector` of `numeric`)\cr a vector of column widths. Each element's position in
 #'   `colwidths` corresponds to the column of `tbl` in the same position. If `NULL`, column widths
 #'   are calculated according to maximum number of characters per column.
-#' @param first_col_padding (`numeric`)\cr additional padding to use when calculating spacing between
-#'   the first (label) column and the second column of `tbl`. Defaults to 0.
+#' @param lbl_col_padding (`numeric`)\cr additional padding to use when calculating spacing between
+#'   the first (label) column and the second column of `tbl`. If `colwidths` is specified,
+#'   the width of the first column becomes `colwidths[1] + lbl_col_padding`. Defaults to 0.
 #'
 #' @return a `ggplot` object.
 #'
@@ -34,13 +35,14 @@
 #' rtable2gg(tbl, fontsize = 5, colwidths = c(2, 1, 1, 1))
 #'
 #' @export
-rtable2gg <- function(tbl, fontsize = 4, colwidths = NULL, first_col_padding = 0) {
+rtable2gg <- function(tbl, fontsize = 4, colwidths = NULL, lbl_col_padding = 0) {
   mat <- matrix_form(tbl)
   mat_strings <- mf_strings(mat)
   mat_aligns <- mf_aligns(mat)
   mat_indent <- mf_rinfo(mat)$indent
+  mat_display <- mf_display(mat)
   nlines_hdr <- mf_nlheader(mat)
-  shared_hdr_rows <- which(apply(mf_display(mat), 1, function(x) (any(!x))))
+  shared_hdr_rows <- which(apply(mat_display, 1, function(x) (any(!x))))
 
   tbl_df <- data.frame(mat_strings)
   body_rows <- seq(nlines_hdr + 1, nrow(tbl_df))
@@ -56,7 +58,7 @@ rtable2gg <- function(tbl, fontsize = 4, colwidths = NULL, first_col_padding = 0
   if (is.null(colwidths)) {
     colwidths <- apply(tbl_df, 2, function(x) max(nchar(x))) + 1
   }
-  tot_width <- sum(colwidths) + first_col_padding
+  tot_width <- sum(colwidths) + lbl_col_padding
 
   if (length(shared_hdr_rows) > 0) {
     tbl_df <- tbl_df[-shared_hdr_rows, ]
@@ -76,20 +78,26 @@ rtable2gg <- function(tbl, fontsize = 4, colwidths = NULL, first_col_padding = 0
   if (length(shared_hdr_rows) > 0) {
     mat_strings[shared_hdr_rows, ] <- trimws(mat_strings[shared_hdr_rows, ])
     for (hr in shared_hdr_rows) {
-      hdr_lbls <- unique(mat_strings[hr, ])
-      hdr_lbls <- hdr_lbls[nzchar(hdr_lbls)]
-      for (hl in hdr_lbls) {
-        which_cols <- which(mat_strings[hr, ] == hl)
+      hdr_lbls <- matrix(mat_strings[, -1][1:hr, mat_display[hr, -1]], nrow = hr)
+      for (idx_hl in seq_len(ncol(hdr_lbls))) {
+        cur_lbl <- tail(hdr_lbls[, idx_hl], 1)
+        which_cols <- if (hr == 1) {
+          which(mat_strings[hr, ] == hdr_lbls[idx_hl])
+        } else { # for >2 col splits, only print labels for each unique combo of nested columns
+          which(
+            apply(mat_strings[1:hr, ], 2, function(x) all(x == hdr_lbls[1:hr, idx_hl]))
+          )
+        }
         line_pos <- c(
-          sum(colwidths[1:(which_cols[1] - 1)]) + 1 + first_col_padding,
-          sum(colwidths[1:max(which_cols)]) - 1 + first_col_padding
+          sum(colwidths[1:(which_cols[1] - 1)]) + 1 + lbl_col_padding,
+          sum(colwidths[1:max(which_cols)]) - 1 + lbl_col_padding
         )
-        lbl_pos <- mean(line_pos)
+
         res <- res +
           geom_text(
-            x = lbl_pos,
+            x = mean(line_pos),
             y = nrow(mat_strings) + 1 - hr,
-            label = hl,
+            label = cur_lbl,
             size = fontsize
           ) +
           geom_segment(
@@ -105,7 +113,7 @@ rtable2gg <- function(tbl, fontsize = 4, colwidths = NULL, first_col_padding = 0
   # Add table columns
   for (i in seq_len(ncol(tbl_df))) {
     res <- res + geom_text(
-      x = if (i == 1) 0 else sum(colwidths[1:i]) - 0.5 * colwidths[i] + first_col_padding,
+      x = if (i == 1) 0 else sum(colwidths[1:i]) - 0.5 * colwidths[i] + lbl_col_padding,
       y = rev(seq_len(nrow(tbl_df))),
       label = tbl_df[, i],
       hjust = mat_aligns[, i],

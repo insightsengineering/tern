@@ -2,9 +2,9 @@
 % Please edit documentation in R/utils_ggplot.R
 \name{rtable2gg}
 \alias{rtable2gg}
-\title{Convert \code{rtable} to \code{ggplot} object}
+\title{Convert \code{rtable} object to \code{ggplot} object}
 \usage{
-rtable2gg(tbl, fontsize = 4, colwidths = NULL, first_col_padding = 0)
+rtable2gg(tbl, fontsize = 4, colwidths = NULL, lbl_col_padding = 0)
 }
 \arguments{
 \item{tbl}{(\code{rtable})\cr a \code{\link[rtables:rtable]{rtables::rtable()}} object.}
@@ -15,15 +15,16 @@ rtable2gg(tbl, fontsize = 4, colwidths = NULL, first_col_padding = 0)
 \code{colwidths} corresponds to the column of \code{tbl} in the same position. If \code{NULL}, column widths
 are calculated according to maximum number of characters per column.}
 
-\item{first_col_padding}{(\code{numeric})\cr additional padding to use when calculating spacing between
-the first (label) column and the second column of \code{tbl}. Defaults to 0.}
+\item{lbl_col_padding}{(\code{numeric})\cr additional padding to use when calculating spacing between
+the first (label) column and the second column of \code{tbl}. If \code{colwidths} is specified,
+the width of the first column becomes \code{colwidths[1] + lbl_col_padding}. Defaults to 0.}
 }
 \value{
 a \code{ggplot} object.
 }
 \description{
 Given a \code{\link[rtables:rtable]{rtables::rtable()}} object, performs basic conversion to a \code{ggplot} object built using
-functions from the \code{ggplot2} package.
+functions from the \code{ggplot2} package. Any table titles and/or footnotes are ignored.
 }
 \examples{
 dta <- data.frame(
