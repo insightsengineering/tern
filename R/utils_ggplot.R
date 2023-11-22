@@ -46,7 +46,7 @@ rtable2gg <- function(tbl, fontsize = 4, colwidths = NULL, lbl_col_padding = 0) 
 
   tbl_df <- data.frame(mat_strings)
   body_rows <- seq(nlines_hdr + 1, nrow(tbl_df))
-  mat_aligns <- apply(mat_aligns, 1:2, function(x) if (x == "left") 0 else if (x == "center") 0.5 else 1)
+  mat_aligns <- apply(mat_aligns, 1:2, function(x) if (x == "left") 0 else if (x == "right") 1 else 0.5)
 
   # Apply indentation in first column
   tbl_df[body_rows, 1] <- sapply(body_rows, function(i) {
