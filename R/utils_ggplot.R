@@ -35,11 +35,11 @@
 #' @export
 rtable2gg <- function(tbl, fontsize = 4, colwidths = NULL, lbl_col_padding = 0) {
   mat <- rtables::matrix_form(tbl)
-  mat_strings <- rtables::mf_strings(mat)
-  mat_aligns <- rtables::mf_aligns(mat)
-  mat_indent <- rtables::mf_rinfo(mat)$indent
-  mat_display <- rtables::mf_display(mat)
-  nlines_hdr <- rtables::mf_nlheader(mat)
+  mat_strings <- formatters::mf_strings(mat)
+  mat_aligns <- formatters::mf_aligns(mat)
+  mat_indent <- formatters::mf_rinfo(mat)$indent
+  mat_display <- formatters::mf_display(mat)
+  nlines_hdr <- formatters::mf_nlheader(mat)
   shared_hdr_rows <- which(apply(mat_display, 1, function(x) (any(!x))))
 
   tbl_df <- data.frame(mat_strings)
