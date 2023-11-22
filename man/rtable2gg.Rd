@@ -7,7 +7,7 @@
 rtable2gg(tbl, fontsize = 4, colwidths = NULL, lbl_col_padding = 0)
 }
 \arguments{
-\item{tbl}{(\code{rtable})\cr a \code{\link[rtables:rtable]{rtables::rtable()}} object.}
+\item{tbl}{(\code{rtable})\cr a \code{rtable} object.}
 
 \item{fontsize}{(\code{numeric})\cr font size.}
 
@@ -23,15 +23,13 @@ the width of the first column becomes \code{colwidths[1] + lbl_col_padding}. Def
 a \code{ggplot} object.
 }
 \description{
-Given a \code{\link[rtables:rtable]{rtables::rtable()}} object, performs basic conversion to a \code{ggplot} object built using
+Given a \code{\link[rtables:rtable]{rtables::rtable()}} object, performs basic conversion to a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object built using
 functions from the \code{ggplot2} package. Any table titles and/or footnotes are ignored.
 }
 \examples{
 dta <- data.frame(
-  USUBJID = rep(1:6, each = 3),
-  PARAMCD = rep("lab", 6 * 3),
-  AVISIT  = rep(paste0("V", 1:3), 6),
   ARM     = rep(LETTERS[1:3], rep(6, 3)),
+  AVISIT  = rep(paste0("V", 1:3), 6),
   AVAL    = c(9:1, rep(NA, 9))
 )
 

@@ -1,9 +1,9 @@
 #' Convert `rtable` object to `ggplot` object
 #'
-#' Given a [rtables::rtable()] object, performs basic conversion to a `ggplot` object built using
+#' Given a [rtables::rtable()] object, performs basic conversion to a [ggplot2::ggplot()] object built using
 #' functions from the `ggplot2` package. Any table titles and/or footnotes are ignored.
 #'
-#' @param tbl (`rtable`)\cr a [rtables::rtable()] object.
+#' @param tbl (`rtable`)\cr a `rtable` object.
 #' @param fontsize (`numeric`)\cr font size.
 #' @param colwidths (`vector` of `numeric`)\cr a vector of column widths. Each element's position in
 #'   `colwidths` corresponds to the column of `tbl` in the same position. If `NULL`, column widths
@@ -16,10 +16,8 @@
 #'
 #' @examples
 #' dta <- data.frame(
-#'   USUBJID = rep(1:6, each = 3),
-#'   PARAMCD = rep("lab", 6 * 3),
-#'   AVISIT  = rep(paste0("V", 1:3), 6),
 #'   ARM     = rep(LETTERS[1:3], rep(6, 3)),
+#'   AVISIT  = rep(paste0("V", 1:3), 6),
 #'   AVAL    = c(9:1, rep(NA, 9))
 #' )
 #'
@@ -36,12 +34,12 @@
 #'
 #' @export
 rtable2gg <- function(tbl, fontsize = 4, colwidths = NULL, lbl_col_padding = 0) {
-  mat <- matrix_form(tbl)
-  mat_strings <- mf_strings(mat)
-  mat_aligns <- mf_aligns(mat)
-  mat_indent <- mf_rinfo(mat)$indent
-  mat_display <- mf_display(mat)
-  nlines_hdr <- mf_nlheader(mat)
+  mat <- rtables::matrix_form(tbl)
+  mat_strings <- rtables::mf_strings(mat)
+  mat_aligns <- rtables::mf_aligns(mat)
+  mat_indent <- rtables::mf_rinfo(mat)$indent
+  mat_display <- rtables::mf_display(mat)
+  nlines_hdr <- rtables::mf_nlheader(mat)
   shared_hdr_rows <- which(apply(mat_display, 1, function(x) (any(!x))))
 
   tbl_df <- data.frame(mat_strings)
