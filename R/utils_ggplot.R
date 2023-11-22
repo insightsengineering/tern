@@ -78,7 +78,8 @@ rtable2gg <- function(tbl, fontsize = 4, colwidths = NULL, lbl_col_padding = 0) 
   if (length(shared_hdr_rows) > 0) {
     mat_strings[shared_hdr_rows, ] <- trimws(mat_strings[shared_hdr_rows, ])
     for (hr in shared_hdr_rows) {
-      hdr_lbls <- matrix(mat_strings[, -1][1:hr, mat_display[hr, -1]], nrow = hr)
+      hdr_lbls <- mat_strings[1:hr, mat_display[hr, -1]]
+      hdr_lbls <- matrix(hdr_lbls[nzchar(hdr_lbls)], nrow = hr)
       for (idx_hl in seq_len(ncol(hdr_lbls))) {
         cur_lbl <- tail(hdr_lbls[, idx_hl], 1)
         which_cols <- if (hr == 1) {
