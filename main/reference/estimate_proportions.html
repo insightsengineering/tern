@@ -12,7 +12,7 @@ Estimate the proportion of responders within a studied population."><!-- mathjax
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2.9015</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2.9016</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,33 +37,6 @@ Estimate the proportion of responders within a studied population."><!-- mathjax
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2-rc1">v0.9.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1-rc3">v0.9.1-rc3</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc2">v0.8.5-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc1">v0.8.5-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2">v0.9.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1">v0.9.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.0">v0.9.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5">v0.8.5</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -102,6 +75,13 @@ Estimate the proportion of responders within a studied population."><!-- mathjax
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">estimate_proportion</span><span class="op">(</span></span>
 <span>  <span class="va">lyt</span>,</span>
 <span>  <span class="va">vars</span>,</span>
+<span>  conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"waldcc"</span>, <span class="st">"wald"</span>, <span class="st">"clopper-pearson"</span>, <span class="st">"wilson"</span>, <span class="st">"wilsonc"</span>, <span class="st">"strat_wilson"</span>,</span>
+<span>    <span class="st">"strat_wilsonc"</span>, <span class="st">"agresti-coull"</span>, <span class="st">"jeffreys"</span><span class="op">)</span>,</span>
+<span>  weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  max_iterations <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>strata <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span>
+<span>  long <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  na_str <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
 <span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span>,</span>
@@ -148,6 +128,36 @@ Estimate the proportion of responders within a studied population."><!-- mathjax
 <dd><p>(<code>character</code>)<br> variable names for the primary analysis variable to be iterated over.</p></dd>
 
 
+<dt>conf_level</dt>
+<dd><p>(<code>proportion</code>)<br> confidence level of the interval.</p></dd>
+
+
+<dt>method</dt>
+<dd><p>(<code>string</code>)<br> the method used to construct the confidence interval
+for proportion of successful outcomes; one of <code>waldcc</code>, <code>wald</code>, <code>clopper-pearson</code>,
+<code>wilson</code>, <code>wilsonc</code>, <code>strat_wilson</code>, <code>strat_wilsonc</code>, <code>agresti-coull</code> or <code>jeffreys</code>.</p></dd>
+
+
+<dt>weights</dt>
+<dd><p>(<code>numeric</code> or <code>NULL</code>)<br> weights for each level of the strata. If <code>NULL</code>, they are
+estimated using the iterative algorithm proposed in Yan and Su (2010)
+ that
+minimizes the weighted squared length of the confidence interval.</p></dd>
+
+
+<dt>max_iterations</dt>
+<dd><p>(<code>count</code>)<br> maximum number of iterations for the iterative procedure used
+to find estimates of optimal weights.</p></dd>
+
+
+<dt>variables</dt>
+<dd><p>(named <code>list</code> of <code>string</code>)<br> list of additional analysis variables.</p></dd>
+
+
+<dt>long</dt>
+<dd><p>(<code>flag</code>)<br> a long description is required.</p></dd>
+
+
 <dt>na_str</dt>
 <dd><p>(<code>string</code>)<br> string used to replace all <code>NA</code> or empty values in the output.</p></dd>
 
@@ -159,7 +169,7 @@ underneath analyses, which is not allowed.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>other arguments are ultimately conveyed to <code>s_proportion()</code>.</p></dd>
+<dd><p>additional arguments for the lower level functions.</p></dd>
 
 
 <dt>show_labels</dt>
@@ -202,36 +212,6 @@ variable name in <code>.var</code>.</p></dd>
 <dt>.var</dt>
 <dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
 by a statistics function.</p></dd>
-
-
-<dt>conf_level</dt>
-<dd><p>(<code>proportion</code>)<br> confidence level of the interval.</p></dd>
-
-
-<dt>method</dt>
-<dd><p>(<code>string</code>)<br> the method used to construct the confidence interval
-for proportion of successful outcomes; one of <code>waldcc</code>, <code>wald</code>, <code>clopper-pearson</code>,
-<code>wilson</code>, <code>wilsonc</code>, <code>strat_wilson</code>, <code>strat_wilsonc</code>, <code>agresti-coull</code> or <code>jeffreys</code>.</p></dd>
-
-
-<dt>weights</dt>
-<dd><p>(<code>numeric</code> or <code>NULL</code>)<br> weights for each level of the strata. If <code>NULL</code>, they are
-estimated using the iterative algorithm proposed in Yan and Su (2010)
- that
-minimizes the weighted squared length of the confidence interval.</p></dd>
-
-
-<dt>max_iterations</dt>
-<dd><p>(<code>count</code>)<br> maximum number of iterations for the iterative procedure used
-to find estimates of optimal weights.</p></dd>
-
-
-<dt>variables</dt>
-<dd><p>(named <code>list</code> of <code>string</code>)<br> list of additional analysis variables.</p></dd>
-
-
-<dt>long</dt>
-<dd><p>(<code>flag</code>)<br> a long description is required.</p></dd>
 
 </dl></div>
     <div class="section level2">

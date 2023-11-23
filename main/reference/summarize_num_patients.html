@@ -12,7 +12,7 @@ Count the number of unique and non-unique patients in a column (variable)."><!--
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2.9015</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.2.9016</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,33 +37,6 @@ Count the number of unique and non-unique patients in a column (variable)."><!--
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2-rc1">v0.9.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1-rc3">v0.9.1-rc3</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc2">v0.8.5-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5-rc1">v0.8.5-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4-rc1">v0.8.4-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc2">v0.8.3-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.3-rc1">v0.8.3-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2">v0.9.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1">v0.9.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.0">v0.9.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.5">v0.8.5</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.4">v0.8.4</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2">v0.8.2</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.1">v0.8.1</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
-<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
-<!-- end dropdown for versions -->
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-reports">
@@ -102,6 +75,9 @@ Count the number of unique and non-unique patients in a column (variable)."><!--
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">analyze_num_patients</span><span class="op">(</span></span>
 <span>  <span class="va">lyt</span>,</span>
 <span>  <span class="va">vars</span>,</span>
+<span>  required <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  count_by <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  unique_count_suffix <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  na_str <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
 <span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -118,6 +94,9 @@ Count the number of unique and non-unique patients in a column (variable)."><!--
 <span><span class="fu">summarize_num_patients</span><span class="op">(</span></span>
 <span>  <span class="va">lyt</span>,</span>
 <span>  <span class="va">var</span>,</span>
+<span>  required <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  count_by <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  unique_count_suffix <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  na_str <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
 <span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -156,6 +135,20 @@ Count the number of unique and non-unique patients in a column (variable)."><!--
 
 <dt>vars</dt>
 <dd><p>(<code>character</code>)<br> variable names for the primary analysis variable to be iterated over.</p></dd>
+
+
+<dt>required</dt>
+<dd><p>(<code>character</code> or <code>NULL</code>)<br> optional name of a variable that is required to be non-missing.</p></dd>
+
+
+<dt>count_by</dt>
+<dd><p>(<code>character</code> or <code>factor</code>)<br> optional vector to be combined with <code>x</code> when counting
+<code>nonunique</code> records.</p></dd>
+
+
+<dt>unique_count_suffix</dt>
+<dd><p>(<code>logical</code>)<br> should <code>"(n)"</code> suffix be added to <code>unique_count</code> labels.
+Defaults to <code>TRUE</code>.</p></dd>
 
 
 <dt>na_str</dt>
@@ -220,16 +213,6 @@ for more information.</p></dd>
 passed by <code>rtables</code>.</p></dd>
 
 
-<dt>count_by</dt>
-<dd><p>(<code>character</code> or <code>factor</code>)<br> optional vector to be combined with <code>x</code> when counting
-<code>nonunique</code> records.</p></dd>
-
-
-<dt>unique_count_suffix</dt>
-<dd><p>(<code>logical</code>)<br> should <code>"(n)"</code> suffix be added to <code>unique_count</code> labels.
-Defaults to <code>TRUE</code>.</p></dd>
-
-
 <dt>df</dt>
 <dd><p>(<code>data.frame</code>)<br> data set containing all analysis variables.</p></dd>
 
@@ -237,10 +220,6 @@ Defaults to <code>TRUE</code>.</p></dd>
 <dt>.var, var</dt>
 <dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
 by a statistics function.</p></dd>
-
-
-<dt>required</dt>
-<dd><p>(<code>character</code> or <code>NULL</code>)<br> optional name of a variable that is required to be non-missing.</p></dd>
 
 </dl></div>
     <div class="section level2">
