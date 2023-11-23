@@ -109,7 +109,6 @@ s_coxph_pairwise <- function(df,
 #' @return
 #' * `a_coxph_pairwise()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
-#'
 #' @keywords internal
 a_coxph_pairwise <- make_afun(
   s_coxph_pairwise,
@@ -177,6 +176,8 @@ coxph_pairwise <- function(lyt,
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = NULL) {
+  extra_args <- list(...)
+
   afun <- make_afun(
     a_coxph_pairwise,
     .stats = .stats,
@@ -193,6 +194,6 @@ coxph_pairwise <- function(lyt,
     afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }

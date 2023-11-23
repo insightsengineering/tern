@@ -10,6 +10,7 @@ summarize_patients_events_in_cols(
   lyt,
   id = "USUBJID",
   filters_list = list(),
+  empty_stats = character(),
   na_str = NA_character_,
   ...,
   .stats = c("unique", "all", names(filters_list)),
@@ -36,13 +37,16 @@ s_count_patients_and_multiple_events(
 type of event describe by filters, in the same format as \code{\link[=s_count_patients_with_event]{s_count_patients_with_event()}}.
 If it has a label, then this will be used for the column title.}
 
+\item{empty_stats}{(\code{character})\cr optional names of the statistics that should be returned empty such
+that corresponding table cells will stay blank.}
+
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{...}{additional arguments for the lower level functions.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run
-\code{get_stats("summarize_patients_events_in_cols")} to see available statistics for this function, in addition to any
-added using \code{filters_list}.}
+\code{get_stats("summarize_patients_events_in_cols")} to see available statistics for this function, in addition
+to any added using \code{filters_list}.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
@@ -50,9 +54,6 @@ added using \code{filters_list}.}
 Set to \code{FALSE} when the required column split has been done already earlier in the layout pipe.}
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
-
-\item{empty_stats}{(\code{character})\cr optional names of the statistics that should be returned empty such
-that corresponding table cells will stay blank.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}

@@ -113,6 +113,7 @@ a_change_from_baseline <- make_afun(
 #' @order 2
 summarize_change <- function(lyt,
                              vars,
+                             variables,
                              na_str = NA_character_,
                              nested = TRUE,
                              ...,
@@ -121,6 +122,8 @@ summarize_change <- function(lyt,
                              .formats = NULL,
                              .labels = NULL,
                              .indent_mods = NULL) {
+  extra_args <- list(variables = variables, ...)
+
   afun <- make_afun(
     a_change_from_baseline,
     .stats = .stats,
@@ -135,7 +138,7 @@ summarize_change <- function(lyt,
     afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = list(...),
+    extra_args = extra_args,
     table_names = table_names
   )
 }

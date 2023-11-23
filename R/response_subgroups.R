@@ -4,6 +4,7 @@
 #'
 #' Tabulate statistics such as response rate and odds ratio for population subgroups.
 #'
+#' @inheritParams extract_rsp_subgroups
 #' @inheritParams argument_convention
 #'
 #' @details These functions create a layout starting from a data frame which contains
@@ -182,13 +183,17 @@ a_response_subgroups <- function(.formats = list(
 #' @order 2
 tabulate_rsp_subgroups <- function(lyt,
                                    df,
-                                   vars = c("n_tot", "n", "prop", "or", "ci")) {
+                                   vars = c("n_tot", "n", "prop", "or", "ci"),
+                                   groups_lists = list(),
+                                   label_all = "All Patients") {
   conf_level <- df$or$conf_level[1]
   method <- if ("pval_label" %in% names(df$or)) {
     df$or$pval_label[1]
   } else {
     NULL
   }
+
+  extra_args <- list(groups_lists = groups_lists, conf_level = conf_level, method = method, label_all = label_all)
 
   afun_lst <- a_response_subgroups()
   colvars <- d_rsp_subgroups_colvars(vars, conf_level = conf_level, method = method)
@@ -221,7 +226,8 @@ tabulate_rsp_subgroups <- function(lyt,
     )
     lyt_prop <- analyze_colvars(
       lyt = lyt_prop,
-      afun = afun_lst[names(colvars_prop$labels)]
+      afun = afun_lst[names(colvars_prop$labels)],
+      extra_args = extra_args
     )
 
     if ("analysis" %in% df$prop$row_type) {
@@ -236,7 +242,8 @@ tabulate_rsp_subgroups <- function(lyt,
       lyt_prop <- analyze_colvars(
         lyt = lyt_prop,
         afun = afun_lst[names(colvars_prop$labels)],
-        inclNAs = TRUE
+        inclNAs = TRUE,
+        extra_args = extra_args
       )
     }
 
@@ -263,7 +270,8 @@ tabulate_rsp_subgroups <- function(lyt,
   )
   lyt_or <- analyze_colvars(
     lyt = lyt_or,
-    afun = afun_lst[names(colvars_or$labels)]
+    afun = afun_lst[names(colvars_or$labels)],
+    extra_args = extra_args
   ) %>%
     append_topleft("Baseline Risk Factors")
 
@@ -279,7 +287,8 @@ tabulate_rsp_subgroups <- function(lyt,
     lyt_or <- analyze_colvars(
       lyt = lyt_or,
       afun = afun_lst[names(colvars_or$labels)],
-      inclNAs = TRUE
+      inclNAs = TRUE,
+      extra_args = extra_args
     )
   }
   table_or <- build_table(lyt_or, df = df$or)

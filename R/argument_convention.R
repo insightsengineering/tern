@@ -32,8 +32,6 @@
 #' @param data (`data.frame`)\cr the dataset containing the variables to summarize.
 #' @param df (`data.frame`)\cr data set containing all analysis variables.
 #' @param draw (`flag`)\cr whether the plot should be drawn.
-#' @param drop (`flag`)\cr should non appearing occurrence levels be dropped from the resulting table.
-#'   Note that in that case the remaining occurrence levels in the table are sorted alphabetically.
 #' @param groups_lists (named `list` of `list`)\cr optionally contains for each `subgroups` variable a
 #'   list, which specifies the new group levels via the names and the
 #'   levels that belong to it in the character vectors that are elements of the list.

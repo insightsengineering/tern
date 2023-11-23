@@ -2,7 +2,9 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
+#' @inheritParams prop_diff_strat_nc
 #' @inheritParams argument_convention
+#' @param method (`string`)\cr the method used for the confidence interval estimation.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_proportion_diff")`
 #'   to see available statistics for this function.
 #'
@@ -14,9 +16,6 @@ NULL
 
 #' @describeIn prop_diff Statistics function estimating the difference
 #'   in terms of responder proportion.
-#'
-#' @inheritParams prop_diff_strat_nc
-#' @param method (`string`)\cr the method used for the confidence interval estimation.
 #'
 #' @return
 #' * `s_proportion_diff()` returns a named list of elements `diff` and `diff_ci`.
@@ -161,8 +160,6 @@ a_proportion_diff <- make_afun(
 #' @describeIn prop_diff Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @param ... arguments passed to `s_proportion_diff()`.
-#'
 #' @return
 #' * `estimate_proportion_diff()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
@@ -193,6 +190,14 @@ a_proportion_diff <- make_afun(
 #' @order 2
 estimate_proportion_diff <- function(lyt,
                                      vars,
+                                     variables = list(strata = NULL),
+                                     conf_level = 0.95,
+                                     method = c(
+                                       "waldcc", "wald", "cmh",
+                                       "ha", "newcombe", "newcombecc",
+                                       "strat_newcombe", "strat_newcombecc"
+                                     ),
+                                     weights_method = "cmh",
                                      na_str = NA_character_,
                                      nested = TRUE,
                                      ...,
@@ -203,6 +208,10 @@ estimate_proportion_diff <- function(lyt,
                                      .formats = NULL,
                                      .labels = NULL,
                                      .indent_mods = NULL) {
+  extra_args <- list(
+    variables = variables, conf_level = conf_level, method = method, weights_method = weights_method, ...
+  )
+
   afun <- make_afun(
     a_proportion_diff,
     .stats = .stats,
@@ -218,7 +227,7 @@ estimate_proportion_diff <- function(lyt,
     var_labels = var_labels,
     na_str = na_str,
     nested = nested,
-    extra_args = list(...),
+    extra_args = extra_args,
     show_labels = show_labels,
     table_names = table_names
   )

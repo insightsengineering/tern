@@ -10,6 +10,7 @@
 count_missed_doses(
   lyt,
   vars,
+  thresholds,
   var_labels = vars,
   show_labels = "visible",
   na_str = NA_character_,
@@ -32,6 +33,8 @@ a_count_missed_doses(x, thresholds, .N_col)
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{thresholds}{(vector of \code{count})\cr number of missed doses the patients at least had.}
 
 \item{var_labels}{(\code{character})\cr character for label.}
 
@@ -60,8 +63,6 @@ information on the \code{"auto"} setting.}
 unmodified default behavior. Can be negative.}
 
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
-
-\item{thresholds}{(vector of \code{count})\cr number of missed doses the patients at least had.}
 
 \item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
