@@ -219,7 +219,7 @@ tabulate_survival_subgroups <- function(lyt,
 
   extra_args <- list(groups_lists = groups_lists, conf_level = conf_level, method = method, label_all = label_all)
 
-  afun_lst <- a_survival_subgroups()
+  afun_lst <- a_survival_subgroups(na_str = na_str)
   colvars <- d_survival_subgroups_colvars(
     vars,
     conf_level = conf_level,

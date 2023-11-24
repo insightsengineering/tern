@@ -208,7 +208,7 @@ tabulate_rsp_subgroups <- function(lyt,
 
   extra_args <- list(groups_lists = groups_lists, conf_level = conf_level, method = method, label_all = label_all)
 
-  afun_lst <- a_response_subgroups()
+  afun_lst <- a_response_subgroups(na_str = na_str)
   colvars <- d_rsp_subgroups_colvars(vars, conf_level = conf_level, method = method)
 
   colvars_prop <- list(
