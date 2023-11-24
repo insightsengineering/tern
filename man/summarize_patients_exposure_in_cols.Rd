@@ -15,6 +15,7 @@ analyze_patients_exposure_in_cols(
   add_total_level = FALSE,
   custom_label = NULL,
   col_split = TRUE,
+  na_str = NA_character_,
   .stats = c("n_patients", "sum_exposure"),
   .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
   .indent_mods = 0L,
@@ -77,6 +78,8 @@ that constitute the split. A custom label can be set for this level via the \cod
 \item{col_split}{(\code{flag})\cr whether the columns should be split. Set to \code{FALSE} when the required
 column split has been done already earlier in the layout pipe.}
 
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run
 \code{get_stats("analyze_patients_exposure_in_cols")} to see available statistics for this function.}
 
@@ -86,8 +89,6 @@ column split has been done already earlier in the layout pipe.}
 unmodified default behavior. Can be negative.}
 
 \item{...}{additional arguments for the lower level functions.}
-
-\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 

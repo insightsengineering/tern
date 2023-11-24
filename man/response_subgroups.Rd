@@ -11,7 +11,8 @@ tabulate_rsp_subgroups(
   df,
   vars = c("n_tot", "n", "prop", "or", "ci"),
   groups_lists = list(),
-  label_all = "All Patients"
+  label_all = "All Patients",
+  na_str = NA_character_
 )
 
 a_response_subgroups(
@@ -43,6 +44,8 @@ list, which specifies the new group levels via the names and the
 levels that belong to it in the character vectors that are elements of the list.}
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}

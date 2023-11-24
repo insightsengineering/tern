@@ -12,6 +12,7 @@ tabulate_survival_biomarkers(
   control = control_coxreg(),
   label_all = "All Patients",
   time_unit = NULL,
+  na_str = NA_character_,
   .indent_mods = 0L
 )
 }
@@ -39,6 +40,8 @@ levels that belong to it in the character vectors that are elements of the list.
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
 
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
