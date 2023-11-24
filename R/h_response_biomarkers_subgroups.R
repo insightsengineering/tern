@@ -185,6 +185,7 @@ h_logistic_mult_cont_df <- function(variables,
 #' @export
 h_tab_rsp_one_biomarker <- function(df,
                                     vars,
+                                    na_str = NA_character_,
                                     .indent_mods = 0L) {
   afuns <- a_response_subgroups()[vars]
   colvars <- d_rsp_subgroups_colvars(
@@ -196,6 +197,7 @@ h_tab_rsp_one_biomarker <- function(df,
     df = df,
     afuns = afuns,
     colvars = colvars,
+    na_str = na_str,
     .indent_mods = .indent_mods
   )
 }

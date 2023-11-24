@@ -378,6 +378,7 @@ analyze_vars_in_cols <- function(lyt,
     # Main call to rtables
     analyze_colvars(lyt,
       afun = afun_list,
+      na_str = na_str,
       nested = nested,
       extra_args = extra_args
     )

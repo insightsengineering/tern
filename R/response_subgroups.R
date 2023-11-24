@@ -185,7 +185,8 @@ tabulate_rsp_subgroups <- function(lyt,
                                    df,
                                    vars = c("n_tot", "n", "prop", "or", "ci"),
                                    groups_lists = list(),
-                                   label_all = "All Patients") {
+                                   label_all = "All Patients",
+                                   na_str = NA_character_) {
   conf_level <- df$or$conf_level[1]
   method <- if ("pval_label" %in% names(df$or)) {
     df$or$pval_label[1]
@@ -227,6 +228,7 @@ tabulate_rsp_subgroups <- function(lyt,
     lyt_prop <- analyze_colvars(
       lyt = lyt_prop,
       afun = afun_lst[names(colvars_prop$labels)],
+      na_str = na_str,
       extra_args = extra_args
     )
 
@@ -242,6 +244,7 @@ tabulate_rsp_subgroups <- function(lyt,
       lyt_prop <- analyze_colvars(
         lyt = lyt_prop,
         afun = afun_lst[names(colvars_prop$labels)],
+        na_str = na_str,
         inclNAs = TRUE,
         extra_args = extra_args
       )
@@ -271,6 +274,7 @@ tabulate_rsp_subgroups <- function(lyt,
   lyt_or <- analyze_colvars(
     lyt = lyt_or,
     afun = afun_lst[names(colvars_or$labels)],
+    na_str = na_str,
     extra_args = extra_args
   ) %>%
     append_topleft("Baseline Risk Factors")
@@ -287,6 +291,7 @@ tabulate_rsp_subgroups <- function(lyt,
     lyt_or <- analyze_colvars(
       lyt = lyt_or,
       afun = afun_lst[names(colvars_or$labels)],
+      na_str = na_str,
       inclNAs = TRUE,
       extra_args = extra_args
     )

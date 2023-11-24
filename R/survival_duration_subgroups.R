@@ -266,6 +266,7 @@ tabulate_survival_subgroups <- function(lyt,
       lyt_survtime <- analyze_colvars(
         lyt = lyt_survtime,
         afun = afun_lst[names(colvars_survtime$labels)],
+        na_str = na_str,
         inclNAs = TRUE,
         extra_args = extra_args
       )
@@ -310,6 +311,7 @@ tabulate_survival_subgroups <- function(lyt,
     lyt_hr <- analyze_colvars(
       lyt = lyt_hr,
       afun = afun_lst[names(colvars_hr$labels)],
+      na_str = na_str,
       inclNAs = TRUE,
       extra_args = extra_args
     )
