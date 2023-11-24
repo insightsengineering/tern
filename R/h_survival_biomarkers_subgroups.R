@@ -200,7 +200,7 @@ h_tab_surv_one_biomarker <- function(df,
                                      na_str = NA_character_,
                                      .indent_mods = 0L,
                                      ...) {
-  afuns <- a_survival_subgroups()[vars]
+  afuns <- a_survival_subgroups(na_str = na_str)[vars]
   colvars <- d_survival_subgroups_colvars(
     vars,
     conf_level = df$conf_level[1],

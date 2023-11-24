@@ -187,7 +187,7 @@ h_tab_rsp_one_biomarker <- function(df,
                                     vars,
                                     na_str = NA_character_,
                                     .indent_mods = 0L) {
-  afuns <- a_response_subgroups()[vars]
+  afuns <- a_response_subgroups(na_str = na_str)[vars]
   colvars <- d_rsp_subgroups_colvars(
     vars,
     conf_level = df$conf_level[1],

@@ -123,7 +123,8 @@ a_response_subgroups <- function(.formats = list(
                                    or = list(format_extreme_values(2L)),
                                    ci = list(format_extreme_values_ci(2L)),
                                    pval = "x.xxxx | (<0.0001)" # nolint end
-                                 )) {
+                                 ),
+                                 na_str = NA_character_) {
   checkmate::assert_list(.formats)
   checkmate::assert_subset(
     names(.formats),
@@ -131,19 +132,30 @@ a_response_subgroups <- function(.formats = list(
   )
 
   afun_lst <- Map(
-    function(stat, fmt) {
+    function(stat, fmt, na_str) {
       if (stat == "ci") {
         function(df, labelstr = "", ...) {
-          in_rows(.list = combine_vectors(df$lcl, df$ucl), .labels = as.character(df$subgroup), .formats = fmt)
+          in_rows(
+            .list = combine_vectors(df$lcl, df$ucl),
+            .labels = as.character(df$subgroup),
+            .formats = fmt,
+            .format_na_strs = na_str
+          )
         }
       } else {
         function(df, labelstr = "", ...) {
-          in_rows(.list = as.list(df[[stat]]), .labels = as.character(df$subgroup), .formats = fmt)
+          in_rows(
+            .list = as.list(df[[stat]]),
+            .labels = as.character(df$subgroup),
+            .formats = fmt,
+            .format_na_strs = na_str
+          )
         }
       }
     },
     stat = names(.formats),
-    fmt = .formats
+    fmt = .formats,
+    na_str = na_str
   )
 
   afun_lst

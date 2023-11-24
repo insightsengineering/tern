@@ -18,7 +18,8 @@ tabulate_rsp_subgroups(
 a_response_subgroups(
   .formats = list(n = "xx", n_rsp = "xx", prop = "xx.x\%", n_tot = "xx", or =
     list(format_extreme_values(2L)), ci = list(format_extreme_values_ci(2L)), pval =
-    "x.xxxx | (<0.0001)")
+    "x.xxxx | (<0.0001)"),
+  na_str = NA_character_
 )
 }
 \arguments{

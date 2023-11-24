@@ -148,7 +148,8 @@ a_survival_subgroups <- function(.formats = list( # nolint start
                                    hr = list(format_extreme_values(2L)),
                                    ci = list(format_extreme_values_ci(2L)),
                                    pval = "x.xxxx | (<0.0001)"
-                                 )) { # nolint end
+                                 ),
+                                 na_str = NA_character_) { # nolint end
   checkmate::assert_list(.formats)
   checkmate::assert_subset(
     names(.formats),
@@ -156,13 +157,14 @@ a_survival_subgroups <- function(.formats = list( # nolint start
   )
 
   afun_lst <- Map(
-    function(stat, fmt) {
+    function(stat, fmt, na_str) {
       if (stat == "ci") {
         function(df, labelstr = "", ...) {
           in_rows(
             .list = combine_vectors(df$lcl, df$ucl),
             .labels = as.character(df$subgroup),
-            .formats = fmt
+            .formats = fmt,
+            .format_na_strs = na_str
           )
         }
       } else {
@@ -170,13 +172,15 @@ a_survival_subgroups <- function(.formats = list( # nolint start
           in_rows(
             .list = as.list(df[[stat]]),
             .labels = as.character(df$subgroup),
-            .formats = fmt
+            .formats = fmt,
+            .format_na_strs = na_str
           )
         }
       }
     },
     stat = names(.formats),
-    fmt = .formats
+    fmt = .formats,
+    na_str = na_str
   )
 
   afun_lst
