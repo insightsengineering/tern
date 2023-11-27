@@ -83,7 +83,7 @@ testthat::test_that("summarize_num_patients works as expected with healthy input
 
 testthat::test_that("s_num_patients count_by works as expected with healthy input", {
   x <- as.character(c(1, 2, 1, 4, 1))
-  y <- as.character(c(6, 7, 8, 9, 6))
+  y <- c(6, 7, 8, 9, 6)
   result <- s_num_patients(x = x, labelstr = "", .N_col = 5, count_by = y)
 
   res <- testthat::expect_silent(result)
@@ -92,7 +92,7 @@ testthat::test_that("s_num_patients count_by works as expected with healthy inpu
 
 testthat::test_that("s_num_patients count_by with missing works as expected with healthy input", {
   x <- as.character(c(1, 2, 1, 4, NA))
-  y <- as.character(c(6, 7, 8, 9, 6))
+  y <- c(6, 7, 8, 9, 6)
   result <- s_num_patients(x = x, labelstr = "", .N_col = 5, count_by = y)
 
   res <- testthat::expect_silent(result)
@@ -101,7 +101,7 @@ testthat::test_that("s_num_patients count_by with missing works as expected with
 
 testthat::test_that("s_num_patients count_by with missing case 2 works as expected with healthy input", {
   x <- as.character(c(1, 2, 1, 4, 1))
-  y <- as.character(c(6, 7, NA, 9, 6))
+  y <- c(6, 7, NA, 9, 6)
   result <- s_num_patients(x = x, labelstr = "", .N_col = 5, count_by = y)
 
   res <- testthat::expect_silent(result)
@@ -111,7 +111,7 @@ testthat::test_that("s_num_patients count_by with missing case 2 works as expect
 testthat::test_that("s_num_patients_content with count_by works as expected with healthy input", {
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 1, 4, NA)),
-    AGE = as.character(c(10, 15, 10, 17, 8))
+    AGE = c(10, 15, 10, 17, 8)
   )
   result <- s_num_patients_content(df = df, .N_col = 5, .var = "USUBJID", count_by = "AGE")
 
@@ -122,7 +122,7 @@ testthat::test_that("s_num_patients_content with count_by works as expected with
 testthat::test_that("s_num_patients_content with count_by case 2 works as expected with healthy input", {
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 1, 4, NA)),
-    AGE = as.character(c(10, 15, 11, 17, 8))
+    AGE = c(10, 15, 11, 17, 8)
   )
   result <- s_num_patients_content(df = df, .N_col = 5, .var = "USUBJID", count_by = "AGE")
 
@@ -133,7 +133,7 @@ testthat::test_that("s_num_patients_content with count_by case 2 works as expect
 testthat::test_that("s_num_patients_content with count_by trivial cases, identical to without count_by", {
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 1, 4, 9)),
-    AGE = as.character(c(10, 15, 11, 17, 8))
+    AGE = c(10, 15, 11, 17, 8)
   )
   result <- s_num_patients_content(df = df, .N_col = 5, .var = "USUBJID", count_by = "USUBJID")
 
@@ -145,7 +145,7 @@ testthat::test_that("summarize_num_patients with count_by works as expected with
   df <- data.frame(
     USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
     ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
-    BY = as.character(c(10, 15, 10, 17, 8, 11, 11, 19, 17))
+    BY = c(10, 15, 10, 17, 8, 11, 11, 19, 17)
   )
 
   # Check with both output

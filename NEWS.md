@@ -18,6 +18,7 @@
 * Added `annot_coxph_ref_lbls` parameter to `g_km` to enable printing the reference group in table labels when `annot_coxph = TRUE`.
 * Added `x_lab` parameter to `g_lineplot` to customize x-axis label.
 * Remove 25% padding of y-axis in `g_lineplot`.
+* Allowed numeric vector as `count_by` input in `analyze_num_patients` and `summarize_num_patients`.
 
 ### Bug Fixes
 * Fixed bug in `decorate_grob` preventing text wrapping from accounting for font size.
