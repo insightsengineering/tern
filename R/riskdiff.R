@@ -8,8 +8,11 @@
 #' `riskdiff` to `TRUE` in all following analyze function calls.
 #'
 #' @param arm_x (`character`)\cr Name of reference arm to use in risk difference calculations.
-#' @param arm_y (`character`)\cr Name of arm to compare to reference arm in risk difference calculations.
-#' @param col_label (`character`)\cr Label to use when rendering the risk difference column within the table.
+#' @param arm_y (`character`)\cr Names of one or more arms to compare to reference arm in risk difference
+#'   calculations. A new column will be added for each value of `arm_y`.
+#' @param col_label (`character`)\cr Labels to use when rendering the risk difference column within the table.
+#'   If more than one comparison arm is specified in `arm_y`, default labels will specify which two arms are
+#'   being compared (reference arm vs. comparison arm).
 #' @param pct (`flag`)\cr whether output should be returned as percentages. Defaults to `TRUE`.
 #'
 #' @return A closure suitable for use as a split function (`split_fun`) within [rtables::split_cols_by()]
@@ -22,7 +25,7 @@
 #' adae$AESEV <- factor(adae$AESEV)
 #'
 #' lyt <- basic_table() %>%
-#'   split_cols_by("ARMCD", split_fun = add_riskdiff(arm_x = "ARM A", arm_y = "ARM B")) %>%
+#'   split_cols_by("ARMCD", split_fun = add_riskdiff(arm_x = "ARM A", arm_y = c("ARM B", "ARM C"))) %>%
 #'   count_occurrences_by_grade(
 #'     var = "AESEV",
 #'     riskdiff = TRUE
@@ -34,13 +37,24 @@
 #' @export
 add_riskdiff <- function(arm_x,
                          arm_y,
-                         col_label = "Risk Difference (%) (95% CI)",
+                         col_label = paste0(
+                           "Risk Difference (%) (95% CI)", if (length(arm_y) > 1) paste0("\n", arm_x, " vs. ", arm_y)
+                         ),
                          pct = TRUE) {
-  sapply(c(arm_x, arm_y, col_label), checkmate::assert_character, len = 1)
-  combodf <- tibble::tribble(
-    ~valname, ~label, ~levelcombo, ~exargs,
-    paste("riskdiff", arm_x, arm_y, sep = "_"), col_label, c(arm_x, arm_y), list()
-  )
+  checkmate::assert_character(arm_x, len = 1)
+  checkmate::assert_character(arm_y, min.len = 1)
+  checkmate::assert_character(col_label, len = length(arm_y))
+
+  combodf <- tibble::tribble(~valname, ~label, ~levelcombo, ~exargs)
+  for (i in seq_len(length(arm_y))) {
+    combodf <- rbind(
+      combodf,
+      tibble::tribble(
+        ~valname, ~label, ~levelcombo, ~exargs,
+        paste("riskdiff", arm_x, arm_y[i], sep = "_"), col_label[i], c(arm_x, arm_y[i]), list()
+      )
+    )
+  }
   if (pct) combodf$valname <- paste0(combodf$valname, "_pct")
   add_combo_levels(combodf)
 }
