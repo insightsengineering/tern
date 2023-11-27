@@ -19,7 +19,8 @@ tabulate_survival_subgroups(
 a_survival_subgroups(
   .formats = list(n = "xx", n_events = "xx", n_tot_events = "xx", median = "xx.x", n_tot
     = "xx", hr = list(format_extreme_values(2L)), ci =
-    list(format_extreme_values_ci(2L)), pval = "x.xxxx | (<0.0001)")
+    list(format_extreme_values_ci(2L)), pval = "x.xxxx | (<0.0001)"),
+  na_str = NA_character_
 )
 }
 \arguments{

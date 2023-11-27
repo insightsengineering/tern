@@ -122,3 +122,29 @@
       Continuous Level Biomarker 1                                                                                 
         All Patients                   400         282        680.0        0.98       (0.95, 1.01)       0.3000    
 
+# tabulate_survival_biomarkers na_str argument works as expected
+
+    Code
+      res
+    Output
+                                       Total n   Total Events   Median (DAYS)   Hazard Ratio   95% Wald CI    p-value (Wald)
+      ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+      Age                                                                                                                   
+        All Patients                     200         141            753.5           1.01       (0.99, 1.04)       0.3432    
+        Sex                                                                                                                 
+          F                              110          79            685.2        <No data>     (0.96, 1.03)       0.8808    
+          M                              90           62            888.5        <No data>     (0.99, 1.05)       0.1974    
+        Continuous Level Biomarker 2                                                                                        
+          LOW                            70           52            735.5           1.01       (0.97, 1.06)       0.5584    
+          MEDIUM                         68           42            859.0           1.03       (0.98, 1.09)       0.2532    
+          HIGH                           62           47            727.8           1.00       (0.96, 1.03)       0.8292    
+      Continuous Level Biomarker 1                                                                                          
+        All Patients                     200         141            753.5        <No data>     (0.95, 1.05)       0.9590    
+        Sex                                                                                                                 
+          F                              110          79            685.2        <No data>     (0.96, 1.07)       0.6215    
+          M                              90           62            888.5           0.98       (0.90, 1.07)       0.6939    
+        Continuous Level Biomarker 2                                                                                        
+          LOW                            70           52            735.5           1.00       (0.92, 1.08)       0.9833    
+          MEDIUM                         68           42            859.0           0.97       (0.89, 1.06)       0.5218    
+          HIGH                           62           47            727.8           1.06       (0.96, 1.17)       0.2239    
+

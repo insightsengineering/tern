@@ -207,3 +207,23 @@ testthat::test_that("d_survival_subgroups_colvars functions as expected with val
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("tabulate_survival_subgroups na_str argument works as expected", {
+  adtte <- adtte_local
+
+  df <- extract_survival_subgroups(
+    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
+    data = adtte
+  )
+  df$hr$hr[2:5] <- NA
+
+  result <- basic_table() %>%
+    tabulate_survival_subgroups(
+      df,
+      time_unit = adtte$AVALU[1],
+      na_str = "<No data>"
+    )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})

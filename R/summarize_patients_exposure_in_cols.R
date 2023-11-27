@@ -273,6 +273,7 @@ analyze_patients_exposure_in_cols <- function(lyt, # nolint
                                               add_total_level = FALSE,
                                               custom_label = NULL,
                                               col_split = TRUE,
+                                              na_str = NA_character_,
                                               .stats = c("n_patients", "sum_exposure"),
                                               .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
                                               .indent_mods = 0L,
@@ -292,6 +293,7 @@ analyze_patients_exposure_in_cols <- function(lyt, # nolint
   lyt <- lyt %>% analyze_colvars(
     afun = a_count_patients_sum_exposure,
     indent_mod = .indent_mods,
+    na_str = na_str,
     extra_args = extra_args
   )
   lyt

@@ -21,6 +21,7 @@
 
 ### Bug Fixes
 * Fixed bug in `decorate_grob` preventing text wrapping from accounting for font size.
+* Fixed implementation of `na_str` argument in all column-wise analysis and tabulation functions.
 
 ### Miscellaneous
 * Specified minimal version of package dependencies.
