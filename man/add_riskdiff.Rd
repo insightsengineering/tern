@@ -7,16 +7,20 @@
 add_riskdiff(
   arm_x,
   arm_y,
-  col_label = "Risk Difference (\%) (95\% CI)",
+  col_label = paste0("Risk Difference (\%) (95\% CI)", if (length(arm_y) > 1)
+    paste0("\\n", arm_x, " vs. ", arm_y)),
   pct = TRUE
 )
 }
 \arguments{
 \item{arm_x}{(\code{character})\cr Name of reference arm to use in risk difference calculations.}
 
-\item{arm_y}{(\code{character})\cr Name of arm to compare to reference arm in risk difference calculations.}
+\item{arm_y}{(\code{character})\cr Names of one or more arms to compare to reference arm in risk difference
+calculations. A new column will be added for each value of \code{arm_y}.}
 
-\item{col_label}{(\code{character})\cr Label to use when rendering the risk difference column within the table.}
+\item{col_label}{(\code{character})\cr Labels to use when rendering the risk difference column within the table.
+If more than one comparison arm is specified in \code{arm_y}, default labels will specify which two arms are
+being compared (reference arm vs. comparison arm).}
 
 \item{pct}{(\code{flag})\cr whether output should be returned as percentages. Defaults to \code{TRUE}.}
 }
@@ -37,7 +41,7 @@ adae <- tern_ex_adae
 adae$AESEV <- factor(adae$AESEV)
 
 lyt <- basic_table() \%>\%
-  split_cols_by("ARMCD", split_fun = add_riskdiff(arm_x = "ARM A", arm_y = "ARM B")) \%>\%
+  split_cols_by("ARMCD", split_fun = add_riskdiff(arm_x = "ARM A", arm_y = c("ARM B", "ARM C"))) \%>\%
   count_occurrences_by_grade(
     var = "AESEV",
     riskdiff = TRUE
