@@ -1,4 +1,4 @@
-# tern 0.9.2.9018
+# tern 0.9.2.9019
 
 ### New Features
 * Added `ref_group_position` function to place the reference group facet last, first or at a certain position.
@@ -18,6 +18,7 @@
 * Added `annot_coxph_ref_lbls` parameter to `g_km` to enable printing the reference group in table labels when `annot_coxph = TRUE`.
 * Added `x_lab` parameter to `g_lineplot` to customize x-axis label.
 * Remove 25% padding of y-axis in `g_lineplot`.
+* Added support for creating multiple risk difference columns, each comparing to a single comparison group. Multiple comparison groups can be specified as a vector via the `arm_y` argument.
 * Allowed numeric vector as `count_by` input in `analyze_num_patients` and `summarize_num_patients`.
 
 ### Bug Fixes
