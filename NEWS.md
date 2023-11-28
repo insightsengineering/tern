@@ -28,6 +28,7 @@
 
 ### Miscellaneous
 * Specified minimal version of package dependencies.
+* Upgraded `to_string_matrix` to take into account `widths` and other printing parameters.
 
 # tern 0.9.2
 
