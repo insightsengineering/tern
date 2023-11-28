@@ -12,7 +12,7 @@ estimate_incidence_rate(
   vars,
   n_events,
   control = control_incidence_rate(),
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   show_labels = "hidden",

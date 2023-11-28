@@ -13,7 +13,7 @@ estimate_odds_ratio(
   variables = list(arm = NULL, strata = NULL),
   conf_level = 0.95,
   groups_list = NULL,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   show_labels = "hidden",

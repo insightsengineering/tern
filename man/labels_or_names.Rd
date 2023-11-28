@@ -7,7 +7,7 @@
 labels_or_names(x)
 }
 \arguments{
-\item{x}{a list}
+\item{x}{a list.}
 }
 \value{
 A \code{character} vector with the labels or names for the list elements.

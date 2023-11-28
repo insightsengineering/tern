@@ -363,7 +363,7 @@ count_abnormal_lab_worsen_by_baseline <- function(lyt, # nolint
                                                     baseline_var = "BTOXGR",
                                                     direction_var = "GRADDR"
                                                   ),
-                                                  na_str = NA_character_,
+                                                  na_str = default_na_str(),
                                                   nested = TRUE,
                                                   ...,
                                                   table_names = NULL,

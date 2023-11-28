@@ -13,7 +13,7 @@ surv_time(
   is_event,
   control = control_surv_time(),
   ref_fn_censor = TRUE,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   var_labels = "Time to Event",
@@ -39,7 +39,7 @@ a_surv_time(
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL,
-  na_str = NA_character_
+  na_str = default_na_str()
 )
 }
 \arguments{

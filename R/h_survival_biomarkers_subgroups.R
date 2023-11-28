@@ -197,7 +197,7 @@ h_coxreg_mult_cont_df <- function(variables,
 h_tab_surv_one_biomarker <- function(df,
                                      vars,
                                      time_unit,
-                                     na_str = NA_character_,
+                                     na_str = default_na_str(),
                                      .indent_mods = 0L,
                                      ...) {
   afuns <- a_survival_subgroups(na_str = na_str)[vars]

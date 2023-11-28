@@ -124,7 +124,7 @@ a_response_subgroups <- function(.formats = list(
                                    ci = list(format_extreme_values_ci(2L)),
                                    pval = "x.xxxx | (<0.0001)" # nolint end
                                  ),
-                                 na_str = NA_character_) {
+                                 na_str = default_na_str()) {
   checkmate::assert_list(.formats)
   checkmate::assert_subset(
     names(.formats),
@@ -198,7 +198,7 @@ tabulate_rsp_subgroups <- function(lyt,
                                    vars = c("n_tot", "n", "prop", "or", "ci"),
                                    groups_lists = list(),
                                    label_all = "All Patients",
-                                   na_str = NA_character_) {
+                                   na_str = default_na_str()) {
   conf_level <- df$or$conf_level[1]
   method <- if ("pval_label" %in% names(df$or)) {
     df$or$pval_label[1]

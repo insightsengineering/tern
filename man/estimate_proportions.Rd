@@ -17,7 +17,7 @@ estimate_proportion(
   max_iterations = 50,
   variables = list(strata = NULL),
   long = FALSE,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   show_labels = "hidden",

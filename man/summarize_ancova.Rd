@@ -14,7 +14,7 @@ summarize_ancova(
   interaction_y = FALSE,
   interaction_item = NULL,
   var_labels,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   show_labels = "visible",

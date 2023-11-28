@@ -10,7 +10,7 @@
 estimate_multinomial_response(
   lyt,
   var,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   show_labels = "hidden",

@@ -8,7 +8,7 @@
 tabulate_rsp_biomarkers(
   df,
   vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
-  na_str = NA_character_,
+  na_str = default_na_str(),
   .indent_mods = 0L
 )
 }
