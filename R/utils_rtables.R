@@ -29,8 +29,8 @@
 #'
 #' @export
 to_string_matrix <- function(x, widths = NULL, max_width = NULL,
-                              hsep = formatters::default_hsep(),
-                              with_spaces = TRUE, print_txt_to_copy = TRUE) {
+                             hsep = formatters::default_hsep(),
+                             with_spaces = TRUE, print_txt_to_copy = TRUE) {
   checkmate::assert_flag(with_spaces)
   checkmate::assert_flag(print_txt_to_copy)
   checkmate::assert_int(max_width, null.ok = TRUE)
@@ -48,8 +48,10 @@ to_string_matrix <- function(x, widths = NULL, max_width = NULL,
 
   # Producing the matrix to test
   if (with_spaces) {
-    out <- strsplit(toString(tx, widths = widths, tf_wrap = tf_wrap,
-                             max_width = max_width, hsep = hsep), "\\n")[[1]]
+    out <- strsplit(toString(tx,
+      widths = widths, tf_wrap = tf_wrap,
+      max_width = max_width, hsep = hsep
+    ), "\\n")[[1]]
   } else {
     out <- tx$string
   }
