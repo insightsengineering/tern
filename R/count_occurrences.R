@@ -148,7 +148,7 @@ a_count_occurrences <- function(df,
                                 .formats = NULL,
                                 .labels = NULL,
                                 .indent_mods = NULL,
-                                na_str = NA_character_) {
+                                na_str = default_na_str()) {
   denom <- match.arg(denom)
   x_stats <- s_count_occurrences(
     df = df, denom = denom, .N_col = .N_col, .df_row = .df_row, drop = drop, .var = .var, id = id
@@ -216,7 +216,7 @@ count_occurrences <- function(lyt,
                               var_labels = vars,
                               show_labels = "hidden",
                               riskdiff = FALSE,
-                              na_str = NA_character_,
+                              na_str = default_na_str(),
                               nested = TRUE,
                               ...,
                               table_names = vars,
@@ -282,7 +282,7 @@ summarize_occurrences <- function(lyt,
                                   id = "USUBJID",
                                   drop = TRUE,
                                   riskdiff = FALSE,
-                                  na_str = NA_character_,
+                                  na_str = default_na_str(),
                                   ...,
                                   .stats = "count_fraction_fixed_dp",
                                   .formats = NULL,

@@ -68,7 +68,7 @@
 #' @name response_biomarkers_subgroups
 tabulate_rsp_biomarkers <- function(df,
                                     vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
-                                    na_str = NA_character_,
+                                    na_str = default_na_str(),
                                     .indent_mods = 0L) {
   checkmate::assert_data_frame(df)
   checkmate::assert_character(df$biomarker)

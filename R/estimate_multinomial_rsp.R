@@ -146,7 +146,7 @@ a_length_proportion <- make_afun(
 #' @order 2
 estimate_multinomial_response <- function(lyt,
                                           var,
-                                          na_str = NA_character_,
+                                          na_str = default_na_str(),
                                           nested = TRUE,
                                           ...,
                                           show_labels = "hidden",

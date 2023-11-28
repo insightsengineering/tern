@@ -1,3 +1,5 @@
+# Utility functions to cooperate with {rtables} package
+
 #' Convert Table into Matrix of Strings
 #'
 #' @description `r lifecycle::badge("stable")`
@@ -7,23 +9,49 @@
 #' `print_txt_to_copy` instead facilitate the testing development by returning a well
 #' formatted text that needs only to be copied and pasted in the expected output.
 #'
+#' @inheritParams formatters::toString
 #' @param x `rtables` table.
-#' @param with_spaces Should the tested table keep the indentation and other relevant spaces?
-#' @param print_txt_to_copy Utility to have a way to copy the input table directly
+#' @param with_spaces (`logical`)\cr should the tested table keep the indentation and other relevant spaces?
+#' @param print_txt_to_copy  (`logical`)\cr utility to have a way to copy the input table directly
 #'   into the expected variable instead of copying it too manually.
 #'
-#' @return A `matrix` of `string`s.
+#' @return A `matrix` of `string`s. If `print_txt_to_copy = TRUE` the well formatted printout of the
+#'   table will be printed to console, ready to be copied as a expected value.
+#'
+#' @examples
+#' tbl <- basic_table() %>%
+#'   split_rows_by("SEX") %>%
+#'   split_cols_by("ARM") %>%
+#'   analyze("AGE") %>%
+#'   build_table(tern_ex_adsl)
+#'
+#' to_string_matrix(tbl, widths = ceiling(propose_column_widths(tbl) / 2))
 #'
 #' @export
-to_string_matrix <- function(x, with_spaces = FALSE, print_txt_to_copy = FALSE) {
+to_string_matrix <- function(x, widths = NULL, max_width = NULL,
+                              hsep = formatters::default_hsep(),
+                              with_spaces = TRUE, print_txt_to_copy = TRUE) {
   checkmate::assert_flag(with_spaces)
   checkmate::assert_flag(print_txt_to_copy)
+  checkmate::assert_int(max_width, null.ok = TRUE)
+
+  if (inherits(x, "MatrixPrintForm")) {
+    tx <- x
+  } else {
+    tx <- matrix_form(x, TRUE)
+  }
+
+  tf_wrap <- FALSE
+  if (!is.null(max_width)) {
+    tf_wrap <- TRUE
+  }
 
   # Producing the matrix to test
   if (with_spaces) {
-    out <- strsplit(toString(matrix_form(x, TRUE)), "\\n")[[1]]
+    out <- strsplit(toString(tx, widths = widths, tf_wrap = tf_wrap,
+                             max_width = max_width, hsep = hsep), "\\n")[[1]]
   } else {
-    out <- matrix_form(x)$string
+    out <- tx$string
   }
 
   # Printing to console formatted output that needs to be copied in "expected"
@@ -197,7 +225,7 @@ h_col_indices <- function(table_tree, col_names) {
 #' Internal helper function for working with nested statistic function results which typically
 #' don't have labels but names that we can use.
 #'
-#' @param x a list
+#' @param x a list.
 #'
 #' @return A `character` vector with the labels or names for the list elements.
 #'
@@ -387,4 +415,39 @@ append_varlabels <- function(lyt, df, vars, indent = 0L) {
   lab <- paste0(space, lab)
 
   append_topleft(lyt, lab)
+}
+# Default na_str handling
+#' @title Default string replacement for `NA` values
+#'
+#' @description The default string for `NA` (`na_str`) which is displayed if it is not
+#'  modified by the user in detail, in each function, or generally with `set_default_na_str()`.
+#'
+#' @param na_str (`string`)\cr character that will be set in the R environment
+#'   options as default for replacing the `NA` values. It needs to be
+#'   single string Use `getOption("tern_default_na_str")` to get its current
+#'   value (`NULL` if not set).
+#'
+#' @return the current default value if option is set for `"tern_default_na_str"`,
+#'   or `NA_character` otherwise
+#'
+#' @examples
+#' default_na_str()
+#' set_default_na_str("<missing>")
+#' default_na_str()
+#'
+#' @name default_na_str
+#' @export
+default_na_str <- function() {
+  system_default_na_str <- getOption("tern_default_na_str")
+  if (is.null(system_default_na_str)) {
+    return(NA_character_)
+  }
+  system_default_na_str
+}
+
+#' @name default_na_str
+#' @export
+set_default_na_str <- function(na_str) {
+  checkmate::assert_character(na_str, len = 1, null.ok = TRUE)
+  options("tern_default_na_str" = na_str)
 }

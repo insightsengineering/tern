@@ -13,7 +13,7 @@ analyze_num_patients(
   required = NULL,
   count_by = NULL,
   unique_count_suffix = TRUE,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   .stats = NULL,
   .formats = NULL,
@@ -32,7 +32,7 @@ summarize_num_patients(
   required = NULL,
   count_by = NULL,
   unique_count_suffix = TRUE,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   .stats = NULL,
   .formats = NULL,
   .labels = c(unique = "Number of patients with at least one event", nonunique =

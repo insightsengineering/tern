@@ -10,7 +10,7 @@ summarize_change(
   lyt,
   vars,
   variables,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   table_names = vars,

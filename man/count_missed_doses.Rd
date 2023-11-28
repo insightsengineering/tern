@@ -13,7 +13,7 @@ count_missed_doses(
   thresholds,
   var_labels = vars,
   show_labels = "visible",
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   table_names = vars,

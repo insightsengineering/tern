@@ -185,7 +185,7 @@ tabulate_survival_biomarkers <- function(df,
                                          control = control_coxreg(),
                                          label_all = "All Patients",
                                          time_unit = NULL,
-                                         na_str = NA_character_,
+                                         na_str = default_na_str(),
                                          .indent_mods = 0L) {
   checkmate::assert_data_frame(df)
   checkmate::assert_character(df$biomarker)

@@ -16,7 +16,7 @@ summarize_glm_count(
   weights = stats::weights,
   scale = 1,
   var_labels,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   show_labels = "visible",

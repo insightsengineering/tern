@@ -149,7 +149,7 @@ a_survival_subgroups <- function(.formats = list( # nolint start
                                    ci = list(format_extreme_values_ci(2L)),
                                    pval = "x.xxxx | (<0.0001)"
                                  ),
-                                 na_str = NA_character_) { # nolint end
+                                 na_str = default_na_str()) { # nolint end
   checkmate::assert_list(.formats)
   checkmate::assert_subset(
     names(.formats),
@@ -213,7 +213,7 @@ tabulate_survival_subgroups <- function(lyt,
                                         groups_lists = list(),
                                         label_all = "All Patients",
                                         time_unit = NULL,
-                                        na_str = NA_character_) {
+                                        na_str = default_na_str()) {
   conf_level <- df$hr$conf_level[1]
   method <- df$hr$pval_label[1]
 
