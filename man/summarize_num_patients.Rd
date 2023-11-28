@@ -68,8 +68,8 @@ s_num_patients_content(
 
 \item{required}{(\code{character} or \code{NULL})\cr optional name of a variable that is required to be non-missing.}
 
-\item{count_by}{(\code{character} or \code{factor})\cr optional vector to be combined with \code{x} when counting
-\code{nonunique} records.}
+\item{count_by}{(\code{vector})\cr optional vector of any type to be combined with \code{x} when counting \code{nonunique}
+records.}
 
 \item{unique_count_suffix}{(\code{logical})\cr should \code{"(n)"} suffix be added to \code{unique_count} labels.
 Defaults to \code{TRUE}.}
@@ -195,7 +195,7 @@ s_num_patients(
   x = as.character(c(1, 1, 1, 2, 4, NA)),
   labelstr = "",
   .N_col = 6L,
-  count_by = as.character(c(1, 1, 2, 1, 1, 1))
+  count_by = c(1, 1, 2, 1, 1, 1)
 )
 
 # Count number of unique and non-unique patients.
@@ -208,7 +208,7 @@ s_num_patients_content(df, .N_col = 5, .var = "USUBJID")
 
 df_by_event <- data.frame(
   USUBJID = as.character(c(1, 2, 1, 4, NA)),
-  EVENT = as.character(c(10, 15, 10, 17, 8))
+  EVENT = c(10, 15, 10, 17, 8)
 )
 s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
 

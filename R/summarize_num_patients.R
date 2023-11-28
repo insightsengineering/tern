@@ -5,8 +5,8 @@
 #' Count the number of unique and non-unique patients in a column (variable).
 #'
 #' @inheritParams argument_convention
-#' @param count_by (`character` or `factor`)\cr optional vector to be combined with `x` when counting
-#'   `nonunique` records.
+#' @param count_by (`vector`)\cr optional vector of any type to be combined with `x` when counting `nonunique`
+#'   records.
 #' @param unique_count_suffix (`logical`)\cr should `"(n)"` suffix be added to `unique_count` labels.
 #'   Defaults to `TRUE`.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("summarize_num_patients")`
@@ -35,7 +35,7 @@ NULL
 #'   x = as.character(c(1, 1, 1, 2, 4, NA)),
 #'   labelstr = "",
 #'   .N_col = 6L,
-#'   count_by = as.character(c(1, 1, 2, 1, 1, 1))
+#'   count_by = c(1, 1, 2, 1, 1, 1)
 #' )
 #'
 #' @export
@@ -51,7 +51,6 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_su
 
   if (!is.null(count_by)) {
     checkmate::assert_vector(count_by, len = length(x))
-    checkmate::assert_multi_class(count_by, classes = c("factor", "character"))
     count2 <- n_available(unique(interaction(x, count_by)))
   }
 
@@ -86,7 +85,7 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_su
 #'
 #' df_by_event <- data.frame(
 #'   USUBJID = as.character(c(1, 2, 1, 4, NA)),
-#'   EVENT = as.character(c(10, 15, 10, 17, 8))
+#'   EVENT = c(10, 15, 10, 17, 8)
 #' )
 #' s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
 #'
@@ -112,10 +111,7 @@ s_num_patients_content <- function(df,
   }
 
   x <- df[[.var]]
-  y <- switch(as.numeric(!is.null(count_by)) + 1,
-    NULL,
-    df[[count_by]]
-  )
+  y <- if (is.null(count_by)) NULL else df[[count_by]]
 
   s_num_patients(
     x = x,
