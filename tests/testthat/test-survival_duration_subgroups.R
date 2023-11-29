@@ -189,7 +189,8 @@ testthat::test_that("tabulate_survival_subgroups works correctly with both `n_to
 
   # Check header of table.
   result_header_both_survtime <- to_string_matrix(result_both_survtime,
-                                                  with_spaces = FALSE, print_txt_to_copy = FALSE)[2, ]
+    with_spaces = FALSE, print_txt_to_copy = FALSE
+  )[2, ]
 
   res <- testthat::expect_silent(result_header_both_survtime)
   testthat::expect_snapshot(res)

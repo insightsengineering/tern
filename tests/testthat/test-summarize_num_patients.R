@@ -254,7 +254,7 @@ testthat::test_that("analyze_num_patients works well for pagination", {
   testthat::expect_identical(
     to_string_matrix(pag_result[[3]], with_spaces = FALSE, print_txt_to_copy = FALSE)[6, 1],
     "  17"
-    )
+  )
 })
 
 testthat::test_that("summarize_num_patients works as expected with risk difference column", {
