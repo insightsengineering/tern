@@ -440,11 +440,7 @@ append_varlabels <- function(lyt, df, vars, indent = 0L) {
 #' @name default_na_str
 #' @export
 default_na_str <- function() {
-  system_default_na_str <- getOption("tern_default_na_str")
-  if (is.null(system_default_na_str)) {
-    return(NA_character_)
-  }
-  system_default_na_str
+  getOption("tern_default_na_str", default = NA_character_)
 }
 
 #' @name default_na_str
