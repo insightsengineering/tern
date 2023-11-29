@@ -16,7 +16,7 @@ surv_timepoint(
   is_event,
   control = control_surv_timepoint(),
   method = c("surv", "surv_diff", "both"),
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   table_names_suffix = "",

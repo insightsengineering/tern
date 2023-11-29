@@ -126,7 +126,7 @@ summarize_patients_events_in_cols <- function(lyt, # nolint
                                               id = "USUBJID",
                                               filters_list = list(),
                                               empty_stats = character(),
-                                              na_str = NA_character_,
+                                              na_str = default_na_str(),
                                               ...,
                                               .stats = c(
                                                 "unique",

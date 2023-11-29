@@ -130,7 +130,7 @@ testthat::test_that("summarize_ancova works with interaction", {
       interaction_item = "p_group"
     ) %>%
     build_table(iris_new)
-  result_matrix <- to_string_matrix(result)
+  result_matrix <- to_string_matrix(result, with_spaces = FALSE, print_txt_to_copy = FALSE)
 
   lm_fit <- stats::lm(formula = "Petal.Length ~ Sepal.Width + p_group + Species*p_group + Species", data = iris_new)
   emmeans_fit <- emmeans::emmeans(lm_fit, specs = c("Species", "p_group"), data = iris_new)

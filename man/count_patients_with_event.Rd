@@ -11,7 +11,7 @@ count_patients_with_event(
   vars,
   filters,
   riskdiff = FALSE,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   table_names = vars,

@@ -111,7 +111,7 @@ a_surv_time <- function(df,
                         .formats = NULL,
                         .labels = NULL,
                         .indent_mods = NULL,
-                        na_str = NA_character_) {
+                        na_str = default_na_str()) {
   x_stats <- s_surv_time(
     df = df, .var = .var, is_event = is_event, control = control
   )
@@ -185,7 +185,7 @@ surv_time <- function(lyt,
                       is_event,
                       control = control_surv_time(),
                       ref_fn_censor = TRUE,
-                      na_str = NA_character_,
+                      na_str = default_na_str(),
                       nested = TRUE,
                       ...,
                       var_labels = "Time to Event",

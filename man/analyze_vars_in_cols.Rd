@@ -19,7 +19,7 @@ analyze_vars_in_cols(
   cache = FALSE,
   .indent_mods = NULL,
   na_level = lifecycle::deprecated(),
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   .formats = NULL,
   .aligns = NULL

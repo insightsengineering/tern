@@ -12,7 +12,7 @@ count_abnormal_by_marked(
   var,
   category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
   variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir"),
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   .stats = NULL,
