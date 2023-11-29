@@ -269,8 +269,10 @@ testthat::test_that("default na_str works properly", {
   tbl <- basic_table() %>%
     split_rows_by("SEX") %>%
     split_cols_by("ARM") %>%
-    analyze("AGE", afun = function(x) mean(x, na.rm = FALSE), inclNAs = TRUE,
-            format = "xx.", na_str = default_na_str()) %>%
+    analyze("AGE",
+      afun = function(x) mean(x, na.rm = FALSE), inclNAs = TRUE,
+      format = "xx.", na_str = default_na_str()
+    ) %>%
     build_table(tmp)
   testthat::expect_identical(matrix_form(tbl)$strings[5, 2], "N/A")
 
