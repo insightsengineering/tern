@@ -30,7 +30,7 @@
 #' @export
 to_string_matrix <- function(x, widths = NULL, max_width = NULL,
                              hsep = formatters::default_hsep(),
-                             with_spaces = TRUE, print_txt_to_copy = TRUE) {
+                             with_spaces = TRUE, print_txt_to_copy = FALSE) {
   checkmate::assert_flag(with_spaces)
   checkmate::assert_flag(print_txt_to_copy)
   checkmate::assert_int(max_width, null.ok = TRUE)
