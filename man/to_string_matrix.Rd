@@ -10,7 +10,7 @@ to_string_matrix(
   max_width = NULL,
   hsep = formatters::default_hsep(),
   with_spaces = TRUE,
-  print_txt_to_copy = TRUE
+  print_txt_to_copy = FALSE
 )
 }
 \arguments{
