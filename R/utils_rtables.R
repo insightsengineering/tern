@@ -418,32 +418,53 @@ append_varlabels <- function(lyt, df, vars, indent = 0L) {
 
   append_topleft(lyt, lab)
 }
-# Default na_str handling
-#' @title Default string replacement for `NA` values
+
+#' Default string replacement for `NA` values
 #'
-#' @description The default string for `NA` (`na_str`) which is displayed if it is not
-#'  modified by the user in detail, in each function, or generally with `set_default_na_str()`.
+#' @description `r lifecycle::badge("stable")`
 #'
-#' @param na_str (`string`)\cr character that will be set in the R environment
-#'   options as default for replacing the `NA` values. It needs to be
-#'   single string Use `getOption("tern_default_na_str")` to get its current
-#'   value (`NULL` if not set).
+#' The default string used to represent `NA` values. This value is used as the default
+#' value for the `na_str` argument throughout the `tern` package, and printed in place
+#' of `NA` values in output tables. If not specified for each `tern` function by the user
+#' via the `na_str` argument, or in the R environment options via [set_default_na_str()],
+#' then `NA` is used.
 #'
-#' @return the current default value if option is set for `"tern_default_na_str"`,
-#'   or `NA_character` otherwise
-#'
-#' @examples
-#' default_na_str()
-#' set_default_na_str("<missing>")
-#' default_na_str()
+#' @param na_str (`string`)\cr Single string value to set in the R environment options as
+#'   the default value to replace `NA`s. Use `getOption("tern_default_na_str")` to check the
+#'   current value set in the R environment (defaults to `NULL` if not set).
 #'
 #' @name default_na_str
+NULL
+
+#' @describeIn default_na_str Getter for default `NA` value replacement string.
+#'
+#' @return
+#' * `default_na_str` returns the current value if an R environment option has been set
+#'   for `"tern_default_na_str"`, or `NA_character_` otherwise.
+#'
+#' @examples
+#' # Default settings
+#' default_na_str()
+#' getOption("tern_default_na_str")
+#'
+#' # Set custom value
+#' set_default_na_str("<Missing>")
+#'
+#' # Settings after value has been set
+#' default_na_str()
+#' getOption("tern_default_na_str")
+#'
 #' @export
 default_na_str <- function() {
   getOption("tern_default_na_str", default = NA_character_)
 }
 
-#' @name default_na_str
+#' @describeIn default_na_str Setter for default `NA` value replacement string. Sets the
+#'   option `"tern_default_na_str"` within the R environment.
+#'
+#' @return
+#' * `set_default_na_str` has no return value.
+#'
 #' @export
 set_default_na_str <- function(na_str) {
   checkmate::assert_character(na_str, len = 1, null.ok = TRUE)

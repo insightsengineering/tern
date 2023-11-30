@@ -10,22 +10,47 @@ default_na_str()
 set_default_na_str(na_str)
 }
 \arguments{
-\item{na_str}{(\code{string})\cr character that will be set in the R environment
-options as default for replacing the \code{NA} values. It needs to be
-single string Use \code{getOption("tern_default_na_str")} to get its current
-value (\code{NULL} if not set).}
+\item{na_str}{(\code{string})\cr Single string value to set in the R environment options as
+the default value to replace \code{NA}s. Use \code{getOption("tern_default_na_str")} to check the
+current value set in the R environment (defaults to \code{NULL} if not set).}
 }
 \value{
-the current default value if option is set for \code{"tern_default_na_str"},
-or \code{NA_character} otherwise
+\itemize{
+\item \code{default_na_str} returns the current value if an R environment option has been set
+for \code{"tern_default_na_str"}, or \code{NA_character_} otherwise.
+}
+
+\itemize{
+\item \code{set_default_na_str} has no return value.
+}
 }
 \description{
-The default string for \code{NA} (\code{na_str}) which is displayed if it is not
-modified by the user in detail, in each function, or generally with \code{set_default_na_str()}.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+The default string used to represent \code{NA} values. This value is used as the default
+value for the \code{na_str} argument throughout the \code{tern} package, and printed in place
+of \code{NA} values in output tables. If not specified for each \code{tern} function by the user
+via the \code{na_str} argument, or in the R environment options via \code{\link[=set_default_na_str]{set_default_na_str()}},
+then \code{NA} is used.
 }
+\section{Functions}{
+\itemize{
+\item \code{default_na_str()}: Getter for default \code{NA} value replacement string.
+
+\item \code{set_default_na_str()}: Setter for default \code{NA} value replacement string. Sets the
+option \code{"tern_default_na_str"} within the R environment.
+
+}}
 \examples{
+# Default settings
 default_na_str()
-set_default_na_str("<missing>")
+getOption("tern_default_na_str")
+
+# Set custom value
+set_default_na_str("<Missing>")
+
+# Settings after value has been set
 default_na_str()
+getOption("tern_default_na_str")
 
 }
