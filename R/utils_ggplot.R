@@ -1,5 +1,7 @@
 #' Convert `rtable` object to `ggplot` object
 #'
+#' @description `r lifecycle::badge("experimental")`
+#'
 #' Given a [rtables::rtable()] object, performs basic conversion to a [ggplot2::ggplot()] object built using
 #' functions from the `ggplot2` package. Any table titles and/or footnotes are ignored.
 #'

@@ -23,6 +23,8 @@ the width of the first column becomes \code{colwidths[1] + lbl_col_padding}. Def
 a \code{ggplot} object.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Given a \code{\link[rtables:rtable]{rtables::rtable()}} object, performs basic conversion to a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object built using
 functions from the \code{ggplot2} package. Any table titles and/or footnotes are ignored.
 }
