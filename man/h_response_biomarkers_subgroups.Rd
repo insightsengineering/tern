@@ -11,7 +11,7 @@ h_rsp_to_logistic_variables(variables, biomarker)
 
 h_logistic_mult_cont_df(variables, data, control = control_logistic())
 
-h_tab_rsp_one_biomarker(df, vars, .indent_mods = 0L)
+h_tab_rsp_one_biomarker(df, vars, na_str = NA_character_, .indent_mods = 0L)
 }
 \arguments{
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
@@ -38,6 +38,8 @@ see the example).}
 \item \code{pval}: p-value of the effect.
 Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.
 }}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}

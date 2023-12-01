@@ -395,6 +395,7 @@ summarize_coxreg <- function(lyt,
       lyt <- lyt %>%
         analyze_colvars(
           afun = a_coxreg,
+          na_str = na_str,
           extra_args = list(
             variables = variables, control = control, multivar = multivar, eff = TRUE, var_main = multivar,
             labelstr = ""
@@ -411,6 +412,7 @@ summarize_coxreg <- function(lyt,
         ) %>%
         analyze_colvars(
           afun = a_coxreg,
+          na_str = na_str,
           extra_args = list(eff = TRUE, control = control, variables = variables, multivar = multivar, labelstr = "")
         )
     }
@@ -441,6 +443,7 @@ summarize_coxreg <- function(lyt,
       lyt <- lyt %>%
         analyze_colvars(
           afun = a_coxreg,
+          na_str = na_str,
           extra_args = list(
             variables = variables, at = at, control = control, multivar = multivar,
             var_main = if (multivar) multivar else control$interaction,
@@ -454,6 +457,7 @@ summarize_coxreg <- function(lyt,
       lyt <- lyt %>%
         analyze_colvars(
           afun = a_coxreg,
+          na_str = na_str,
           extra_args = list(variables = variables, at = at, control = control, multivar = multivar, labelstr = ""),
           indent_mod = if (!"arm" %in% names(variables) || multivar) 0L else -1L
         )

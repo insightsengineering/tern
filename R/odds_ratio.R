@@ -5,6 +5,7 @@
 #' Compares bivariate responses between two groups in terms of odds ratios
 #' along with a confidence interval.
 #'
+#' @inheritParams split_cols_by_groups
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_odds_ratio")`
 #'   to see available statistics for this function.
@@ -28,8 +29,6 @@ NULL
 #' @describeIn odds_ratio Statistics function which estimates the odds ratio
 #'   between a treatment and a control. A `variables` list with `arm` and `strata`
 #'   variable names must be passed if a stratified analysis is required.
-#'
-#' @inheritParams split_cols_by_groups
 #'
 #' @return
 #' * `s_odds_ratio()` returns a named list with the statistics `or_ci`
@@ -187,6 +186,9 @@ a_odds_ratio <- make_afun(
 #' @order 2
 estimate_odds_ratio <- function(lyt,
                                 vars,
+                                variables = list(arm = NULL, strata = NULL),
+                                conf_level = 0.95,
+                                groups_list = NULL,
                                 na_str = NA_character_,
                                 nested = TRUE,
                                 ...,
@@ -196,6 +198,8 @@ estimate_odds_ratio <- function(lyt,
                                 .formats = NULL,
                                 .labels = NULL,
                                 .indent_mods = NULL) {
+  extra_args <- list(variables = variables, conf_level = conf_level, groups_list = groups_list, ...)
+
   afun <- make_afun(
     a_odds_ratio,
     .stats = .stats,
@@ -210,7 +214,7 @@ estimate_odds_ratio <- function(lyt,
     afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = list(...),
+    extra_args = extra_args,
     show_labels = show_labels,
     table_names = table_names
   )

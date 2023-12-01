@@ -36,14 +36,14 @@ Data visualizations:
 
 Statistical model fit summaries:
 
--   Logistic regression ([`summarize_logistic`](https://insightsengineering.github.io/tern/reference/summarize_logistic.html))
+-   Logistic regression ([`summarize_logistic`](https://insightsengineering.github.io/tern/reference/logistic_regression.html))
 -   Cox regression ([`summarize_coxreg`](https://insightsengineering.github.io/tern/reference/cox_regression.html))
 
 Analysis tables:
 
--   See a list of all available analyze functions [here](https://insightsengineering.github.io/tern/reference/analyze_functions.html)
--   See a list of all available summarize functions [here](https://insightsengineering.github.io/tern/reference/summarize_functions.html)
--   See a list of all available column-wise analysis functions [here](https://insightsengineering.github.io/tern/reference/analyze_colvars_functions.html)
+-   See a list of all available analyze functions [here](https://insightsengineering.github.io/tern/latest-tag/reference/analyze_functions.html)
+-   See a list of all available summarize functions [here](https://insightsengineering.github.io/tern/latest-tag/reference/summarize_functions.html)
+-   See a list of all available column-wise analysis functions [here](https://insightsengineering.github.io/tern/latest-tag/reference/analyze_colvars_functions.html)
 
 <!-- markdownlint-enable MD007 MD030 -->
 

@@ -81,6 +81,7 @@ summarize_colvars <- function(lyt,
   analyze_colvars(
     lyt,
     afun = a_summary,
+    na_str = na_str,
     extra_args = extra_args
   )
 }

@@ -9,6 +9,9 @@
 count_cumulative(
   lyt,
   vars,
+  thresholds,
+  lower_tail = TRUE,
+  include_eq = TRUE,
   var_labels = vars,
   show_labels = "visible",
   na_str = NA_character_,
@@ -44,6 +47,13 @@ a_count_cumulative(
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{thresholds}{(\code{numeric})\cr vector of cutoff value for the counts.}
+
+\item{lower_tail}{(\code{logical})\cr whether to count lower tail, default is \code{TRUE}.}
+
+\item{include_eq}{(\code{logical})\cr whether to include value equal to the \code{threshold} in
+count, default is \code{TRUE}.}
+
 \item{var_labels}{(\code{character})\cr character for label.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
@@ -71,13 +81,6 @@ information on the \code{"auto"} setting.}
 unmodified default behavior. Can be negative.}
 
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
-
-\item{thresholds}{(\code{numeric})\cr vector of cutoff value for the counts.}
-
-\item{lower_tail}{(\code{logical})\cr whether to count lower tail, default is \code{TRUE}.}
-
-\item{include_eq}{(\code{logical})\cr whether to include value equal to the \code{threshold} in
-count, default is \code{TRUE}.}
 
 \item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}

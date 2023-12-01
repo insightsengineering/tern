@@ -10,6 +10,8 @@
 count_abnormal_by_marked(
   lyt,
   var,
+  category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
+  variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir"),
   na_str = NA_character_,
   nested = TRUE,
   ...,
@@ -38,6 +40,11 @@ a_count_abnormal_by_marked(
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
+\item{category}{(\code{list})\cr with different marked category names for single
+and last or replicated.}
+
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
+
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
@@ -64,11 +71,6 @@ by a statistics function.}
 
 \item{.spl_context}{(\code{data.frame})\cr gives information about ancestor split states
 that is passed by \code{rtables}.}
-
-\item{category}{(\code{list})\cr with different marked category names for single
-and last or replicated.}
-
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 }
 \value{
 \itemize{

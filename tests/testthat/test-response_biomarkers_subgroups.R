@@ -141,3 +141,22 @@ testthat::test_that("tabulate_rsp_biomarkers works with only a single biomarker 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("tabulate_rsp_biomarkers na_str argument works as expected", {
+  adrs_f <- adrs_local
+
+  df <- extract_rsp_biomarkers(
+    variables = list(
+      rsp = "rsp",
+      biomarkers = c("AGE", "BMRKR1"),
+      subgroups = c("SEX", "BMRKR2")
+    ),
+    data = adrs_f
+  )
+  df$or[2:5] <- NA
+
+  result <- tabulate_rsp_biomarkers(df, na_str = "<No data>")
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})

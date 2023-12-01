@@ -206,3 +206,20 @@
       "p-value (log-rank)" 
       
 
+# tabulate_survival_subgroups na_str argument works as expected
+
+    Code
+      res
+    Output
+                                                          B: Placebo               A: Drug X                                     
+      Baseline Risk Factors          Total Events   Events   Median (DAYS)   Events   Median (DAYS)   Hazard Ratio   95% Wald CI 
+      ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+      All Patients                       101          57         727.8         44         974.6           0.71       (0.48, 1.06)
+      Sex                                                                                                                        
+        F                                 55          31         599.2         24        1016.3        <No data>     (0.32, 0.96)
+        M                                 46          26         888.5         20         974.6        <No data>     (0.50, 1.65)
+      Continuous Level Biomarker 2                                                                                               
+        LOW                               36          21         735.5         15         974.6        <No data>     (0.39, 1.51)
+        MEDIUM                            31          14         731.8         17         964.2        <No data>     (0.36, 1.61)
+        HIGH                              34          22         654.8         12        1016.3           0.67       (0.33, 1.36)
+

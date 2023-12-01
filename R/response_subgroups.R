@@ -4,6 +4,7 @@
 #'
 #' Tabulate statistics such as response rate and odds ratio for population subgroups.
 #'
+#' @inheritParams extract_rsp_subgroups
 #' @inheritParams argument_convention
 #'
 #' @details These functions create a layout starting from a data frame which contains
@@ -122,7 +123,8 @@ a_response_subgroups <- function(.formats = list(
                                    or = list(format_extreme_values(2L)),
                                    ci = list(format_extreme_values_ci(2L)),
                                    pval = "x.xxxx | (<0.0001)" # nolint end
-                                 )) {
+                                 ),
+                                 na_str = NA_character_) {
   checkmate::assert_list(.formats)
   checkmate::assert_subset(
     names(.formats),
@@ -130,19 +132,30 @@ a_response_subgroups <- function(.formats = list(
   )
 
   afun_lst <- Map(
-    function(stat, fmt) {
+    function(stat, fmt, na_str) {
       if (stat == "ci") {
         function(df, labelstr = "", ...) {
-          in_rows(.list = combine_vectors(df$lcl, df$ucl), .labels = as.character(df$subgroup), .formats = fmt)
+          in_rows(
+            .list = combine_vectors(df$lcl, df$ucl),
+            .labels = as.character(df$subgroup),
+            .formats = fmt,
+            .format_na_strs = na_str
+          )
         }
       } else {
         function(df, labelstr = "", ...) {
-          in_rows(.list = as.list(df[[stat]]), .labels = as.character(df$subgroup), .formats = fmt)
+          in_rows(
+            .list = as.list(df[[stat]]),
+            .labels = as.character(df$subgroup),
+            .formats = fmt,
+            .format_na_strs = na_str
+          )
         }
       }
     },
     stat = names(.formats),
-    fmt = .formats
+    fmt = .formats,
+    na_str = na_str
   )
 
   afun_lst
@@ -182,7 +195,10 @@ a_response_subgroups <- function(.formats = list(
 #' @order 2
 tabulate_rsp_subgroups <- function(lyt,
                                    df,
-                                   vars = c("n_tot", "n", "prop", "or", "ci")) {
+                                   vars = c("n_tot", "n", "prop", "or", "ci"),
+                                   groups_lists = list(),
+                                   label_all = "All Patients",
+                                   na_str = NA_character_) {
   conf_level <- df$or$conf_level[1]
   method <- if ("pval_label" %in% names(df$or)) {
     df$or$pval_label[1]
@@ -190,7 +206,9 @@ tabulate_rsp_subgroups <- function(lyt,
     NULL
   }
 
-  afun_lst <- a_response_subgroups()
+  extra_args <- list(groups_lists = groups_lists, conf_level = conf_level, method = method, label_all = label_all)
+
+  afun_lst <- a_response_subgroups(na_str = na_str)
   colvars <- d_rsp_subgroups_colvars(vars, conf_level = conf_level, method = method)
 
   colvars_prop <- list(
@@ -221,7 +239,9 @@ tabulate_rsp_subgroups <- function(lyt,
     )
     lyt_prop <- analyze_colvars(
       lyt = lyt_prop,
-      afun = afun_lst[names(colvars_prop$labels)]
+      afun = afun_lst[names(colvars_prop$labels)],
+      na_str = na_str,
+      extra_args = extra_args
     )
 
     if ("analysis" %in% df$prop$row_type) {
@@ -236,7 +256,9 @@ tabulate_rsp_subgroups <- function(lyt,
       lyt_prop <- analyze_colvars(
         lyt = lyt_prop,
         afun = afun_lst[names(colvars_prop$labels)],
-        inclNAs = TRUE
+        na_str = na_str,
+        inclNAs = TRUE,
+        extra_args = extra_args
       )
     }
 
@@ -263,7 +285,9 @@ tabulate_rsp_subgroups <- function(lyt,
   )
   lyt_or <- analyze_colvars(
     lyt = lyt_or,
-    afun = afun_lst[names(colvars_or$labels)]
+    afun = afun_lst[names(colvars_or$labels)],
+    na_str = na_str,
+    extra_args = extra_args
   ) %>%
     append_topleft("Baseline Risk Factors")
 
@@ -279,7 +303,9 @@ tabulate_rsp_subgroups <- function(lyt,
     lyt_or <- analyze_colvars(
       lyt = lyt_or,
       afun = afun_lst[names(colvars_or$labels)],
-      inclNAs = TRUE
+      na_str = na_str,
+      inclNAs = TRUE,
+      extra_args = extra_args
     )
   }
   table_or <- build_table(lyt_or, df = df$or)
