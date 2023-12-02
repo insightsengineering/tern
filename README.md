@@ -1,4 +1,4 @@
-# tern <a href='https://github.com/insightsengineering/tern'><img src="man/figures/tern.png" align="right" height="200" width="200"/></a>
+# tern <a href='https://github.com/insightsengineering/tern'><img src="man/figures/logo.png" align="right" height="200" width="200"/></a>
 
 <!-- start badges -->
 [![Check 🛠](https://github.com/insightsengineering/tern/actions/workflows/check.yaml/badge.svg)](https://insightsengineering.github.io/tern/main/unit-test-report/)
