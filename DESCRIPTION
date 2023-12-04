@@ -54,6 +54,7 @@ Suggests:
     nestcolor (>= 0.1.1),
     rmarkdown (>= 2.19),
     stringr (>= 1.4.1),
+    svglite (>= 2.1.2),
     testthat (>= 3.1.9),
     vdiffr (>= 1.0.7)
 VignetteBuilder:
