@@ -21,6 +21,7 @@
 * Remove 25% padding of y-axis in `g_lineplot`.
 * Added support for creating multiple risk difference columns, each comparing to a single comparison group. Multiple comparison groups can be specified as a vector via the `arm_y` argument.
 * Allowed numeric vector as `count_by` input in `analyze_num_patients` and `summarize_num_patients`.
+* Aligned plot and table vertically in `g_lineplot`.
 
 ### Bug Fixes
 * Fixed bug in `decorate_grob` preventing text wrapping from accounting for font size.
