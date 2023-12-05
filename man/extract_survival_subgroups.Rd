@@ -24,79 +24,32 @@ levels that belong to it in the character vectors that are elements of the list.
 \item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
 \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are:
 \itemize{
-\item \code{pval_method} (\code{string})\cr p-value method for testing hazard ratio = 1. Default method is "log-rank" which
-comes from \code{\link[survival:survdiff]{survival::survdiff()}}, can also be set to "wald" or "likelihood" (from \code{\link[survival:coxph]{survival::coxph()}}).
-\item \code{ties} (\code{string})\cr specifying the method for tie handling. Default is "efron",
-can also be set to "breslow" or "exact". See more in \code{\link[survival:coxph]{survival::coxph()}}
+\item \code{pval_method} (\code{string})\cr p-value method for testing hazard ratio = 1. Default method is \code{"log-rank"} which
+comes from \code{\link[survival:survdiff]{survival::survdiff()}}, can also be set to \code{"wald"} or \code{"likelihood"} (from \code{\link[survival:coxph]{survival::coxph()}}).
+\item \code{ties} (\code{string})\cr specifying the method for tie handling. Default is \code{"efron"},
+can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[survival:coxph]{survival::coxph()}}
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
 }}
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
 }
+\value{
+A named \code{list} of two elements:
+\itemize{
+\item \code{survtime}: A \code{data.frame} containing columns \code{arm}, \code{n}, \code{n_events}, \code{median}, \code{subgroup}, \code{var},
+\code{var_label}, and \code{row_type}.
+\item \code{hr}: A \code{data.frame} containing columns \code{arm}, \code{n_tot}, \code{n_tot_events}, \code{hr}, \code{lcl}, \code{ucl}, \code{conf_level},
+\code{pval}, \code{pval_label}, \code{subgroup}, \code{var}, \code{var_label}, and \code{row_type}.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Prepares estimates of median survival times and treatment hazard ratios for population subgroups in
-data frames. Simple wrapper for \code{\link[=h_survtime_subgroups_df]{h_survtime_subgroups_df()}} and \code{\link[=h_coxph_subgroups_df]{h_coxph_subgroups_df()}}.
-Result is a list of two data frames: \code{survtime} and \code{hr}.
-\code{variables} corresponds to the names of variables found in \code{data}, passed as a named list and requires elements
-\code{tte}, \code{is_event}, \code{arm} and optionally \code{subgroups} and \code{strat}. \code{groups_lists} optionally specifies
-groupings for \code{subgroups} variables.
-}
-\examples{
-library(dplyr)
-library(forcats)
-
-adtte <- tern_ex_adtte
-adtte_labels <- formatters::var_labels(adtte)
-
-adtte_f <- adtte \%>\%
-  filter(
-    PARAMCD == "OS",
-    ARM \%in\% c("B: Placebo", "A: Drug X"),
-    SEX \%in\% c("M", "F")
-  ) \%>\%
-  mutate(
-    # Reorder levels of ARM to display reference arm before treatment arm.
-    ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
-    SEX = droplevels(SEX),
-    AVALU = as.character(AVALU),
-    is_event = CNSR == 0
-  )
-labels <- c(
-  "ARM" = adtte_labels[["ARM"]],
-  "SEX" = adtte_labels[["SEX"]],
-  "AVALU" = adtte_labels[["AVALU"]],
-  "is_event" = "Event Flag"
-)
-formatters::var_labels(adtte_f)[names(labels)] <- labels
-
-df <- extract_survival_subgroups(
-  variables = list(
-    tte = "AVAL",
-    is_event = "is_event",
-    arm = "ARM", subgroups = c("SEX", "BMRKR2")
-  ),
-  data = adtte_f
-)
-df
-
-df_grouped <- extract_survival_subgroups(
-  variables = list(
-    tte = "AVAL",
-    is_event = "is_event",
-    arm = "ARM", subgroups = c("SEX", "BMRKR2")
-  ),
-  data = adtte_f,
-  groups_lists = list(
-    BMRKR2 = list(
-      "low" = "LOW",
-      "low/medium" = c("LOW", "MEDIUM"),
-      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
-    )
-  )
-)
-df_grouped
+data frames. Simple wrapper for \code{\link[=h_survtime_subgroups_df]{h_survtime_subgroups_df()}} and \code{\link[=h_coxph_subgroups_df]{h_coxph_subgroups_df()}}. Result is a \code{list}
+of two \code{data.frame}s: \code{survtime} and \code{hr}. \code{variables} corresponds to the names of variables found in \code{data},
+passed as a named \code{list} and requires elements \code{tte}, \code{is_event}, \code{arm} and optionally \code{subgroups} and \code{strat}.
+\code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
 }
 \seealso{
 \link{survival_duration_subgroups}

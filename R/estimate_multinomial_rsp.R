@@ -5,10 +5,14 @@
 #' Estimate the proportion along with confidence interval of a proportion
 #' regarding the level of a factor.
 #'
+#' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_multinomial_response")`
+#'   to see available statistics for this function.
+#'
 #' @seealso Relevant description function [d_onco_rsp_label()].
 #'
 #' @name estimate_multinomial_rsp
-#'
+#' @order 1
 NULL
 
 #' Description of Standard Oncology Response
@@ -18,8 +22,10 @@ NULL
 #' Describe the oncology response in a standard way.
 #'
 #' @param x (`character`)\cr the standard oncology code to be described.
+#'
+#' @return Response labels.
+#'
 #' @seealso [estimate_multinomial_rsp()]
-#' @export
 #'
 #' @examples
 #' d_onco_rsp_label(
@@ -31,22 +37,23 @@ NULL
 #' d_onco_rsp_label(
 #'   c("CR", "PR", "hello", "hi")
 #' )
-d_onco_rsp_label <- function(x) { # nolint
-
+#'
+#' @export
+d_onco_rsp_label <- function(x) {
   x <- as.character(x)
   desc <- c(
     CR           = "Complete Response (CR)",
-    Missing      = "Missing",
+    PR           = "Partial Response (PR)",
     MR           = "Minimal/Minor Response (MR)",
     MRD          = "Minimal Residual Disease (MRD)",
-    `NA`         = "Not Applicable (NA)",
-    ND           = "Not Done (ND)",
+    SD           = "Stable Disease (SD)",
+    PD           = "Progressive Disease (PD)",
+    `NON CR/PD`  = "Non-CR or Non-PD (NON CR/PD)",
     NE           = "Not Evaluable (NE)",
     `NE/Missing` = "Missing or unevaluable",
-    `NON CR/PD`  = "Non-CR or Non-PD (NON CR/PD)",
-    PD           = "Progressive Disease (PD)",
-    PR           = "Partial Response (PR)",
-    SD           = "Stable Disease (SD)"
+    Missing      = "Missing",
+    `NA`         = "Not Applicable (NA)",
+    ND           = "Not Done (ND)"
   )
 
   values_label <- vapply(
@@ -57,23 +64,22 @@ d_onco_rsp_label <- function(x) { # nolint
     }
   )
 
-  return(factor(values_label))
+  return(factor(values_label, levels = c(intersect(desc, values_label), setdiff(values_label, desc))))
 }
 
-
-#' @describeIn estimate_multinomial_rsp Statistics function which takes the length of the input `x` and takes that
-#'   as the number of successes, and the column number `.N_col` as the total number, and feeds that into
-#'   [s_proportion()].
-#' @inheritParams argument_convention
-#' @return See [s_proportion()] for statistics and additional possible arguments.
+#' @describeIn estimate_multinomial_rsp Statistics function which feeds the length of `x` as number
+#'   of successes, and `.N_col` as total number of successes and failures into [s_proportion()].
 #'
-#' @export
+#' @return
+#' * `s_length_proportion()` returns statistics from [s_proportion()].
 #'
 #' @examples
 #' s_length_proportion(rep("CR", 10), .N_col = 100)
 #' s_length_proportion(factor(character(0)), .N_col = 100)
+#'
+#' @export
 s_length_proportion <- function(x,
-                                .N_col, # nolint snake_case
+                                .N_col, # nolint
                                 ...) {
   checkmate::assert_multi_class(x, classes = c("factor", "character"))
   checkmate::assert_vector(x, min.len = 0, max.len = .N_col)
@@ -85,13 +91,17 @@ s_length_proportion <- function(x,
   s_proportion(df = x_logical, ...)
 }
 
-#' @describeIn estimate_multinomial_rsp Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
+#' @describeIn estimate_multinomial_rsp Formatted analysis function which is used as `afun`
+#'   in `estimate_multinomial_response()`.
+#'
+#' @return
+#' * `a_length_proportion()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' a_length_proportion(rep("CR", 10), .N_col = 100)
 #' a_length_proportion(factor(character(0)), .N_col = 100)
+#'
+#' @export
 a_length_proportion <- make_afun(
   s_length_proportion,
   .formats = c(
@@ -100,12 +110,14 @@ a_length_proportion <- make_afun(
   )
 )
 
-#' @describeIn estimate_multinomial_rsp Analyze Function which adds the multinomial proportion analysis to
-#'   the input layout. Note that additional formatting arguments can be used
-#'   here.
-#' @inheritParams argument_convention
+#' @describeIn estimate_multinomial_rsp Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()] and
+#'   [rtables::summarize_row_groups()].
 #'
-#' @export
+#' @return
+#' * `estimate_multinomial_response()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_length_proportion()` to the table layout.
 #'
 #' @examples
 #' library(dplyr)
@@ -128,13 +140,14 @@ a_length_proportion <- make_afun(
 #'
 #' tbl <- build_table(lyt, dta_test)
 #'
-#' html <- as_html(tbl)
-#' html
-#' \dontrun{
-#' Viewer(html)
-#' }
+#' tbl
+#'
+#' @export
+#' @order 2
 estimate_multinomial_response <- function(lyt,
                                           var,
+                                          na_str = NA_character_,
+                                          nested = TRUE,
                                           ...,
                                           show_labels = "hidden",
                                           table_names = var,
@@ -150,7 +163,7 @@ estimate_multinomial_response <- function(lyt,
     .indent_mods = .indent_mods
   )
   lyt <- split_rows_by(lyt, var = var)
-  lyt <- summarize_row_groups(lyt)
+  lyt <- summarize_row_groups(lyt, na_str = na_str)
 
   analyze(
     lyt,
@@ -158,6 +171,8 @@ estimate_multinomial_response <- function(lyt,
     afun = afun,
     show_labels = show_labels,
     table_names = table_names,
+    na_str = na_str,
+    nested = nested,
     extra_args = list(...)
   )
 }

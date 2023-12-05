@@ -92,7 +92,7 @@ testthat::test_that("s_compare for logical handles NAs as FALSE if not removed",
 
 testthat::test_that("compare_vars works with default settings in rtables layout pipeline", {
   lyt <- basic_table() %>%
-    split_cols_by("ARMCD", ref_group = "ARM B") %>%
+    split_cols_by("ARMCD", ref_group = "ARM B", split_fun = ref_group_position("first")) %>%
     compare_vars(c("AGE", "SEX"))
   result <- build_table(lyt, tern_ex_adsl)
 
@@ -102,7 +102,7 @@ testthat::test_that("compare_vars works with default settings in rtables layout 
 
 testthat::test_that("compare_vars works with custom settings", {
   lyt <- basic_table() %>%
-    split_cols_by("ARMCD", ref_group = "ARM C") %>%
+    split_cols_by("ARMCD", ref_group = "ARM C", split_fun = ref_group_position("first")) %>%
     compare_vars(
       c("AGE", "SEX"),
       .stats = c("mean_sd", "count_fraction", "pval"),
@@ -113,4 +113,29 @@ testthat::test_that("compare_vars works with custom settings", {
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
+})
+
+testthat::test_that("compare_vars 'na_str' argument works as expected", {
+  result <- basic_table() %>%
+    split_cols_by("ARMCD", ref_group = "ARM B", split_fun = ref_group_position("first")) %>%
+    compare_vars("ARM", na_str = "-") %>%
+    build_table(tern_ex_adsl)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+# Deprecated functions
+
+testthat::test_that("create_afun_compare returns error message", {
+  testthat::expect_warning(create_afun_compare()) # before It was not covered directly
+})
+
+testthat::test_that("a_compare returns correct output and warning message", {
+  testthat::expect_warning({
+    result <- a_compare(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .stats = c("n", "pval"))
+  })
+  expected <- a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .stats = c("n", "pval"), compare = TRUE)
+
+  testthat::expect_equal(result, expected)
 })

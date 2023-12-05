@@ -1,19 +1,3 @@
-# pairwise works correctly
-
-    Code
-      res
-    Output
-      
-      Call:
-      lm(formula = SEX ~ pairwise(ARM), data = tern_ex_adsl)
-      
-      Coefficients:
-                      (Intercept)      pairwise(ARM)B: Placebo  
-                        1.4492754                    0.0027794  
-      pairwise(ARM)C: Combination  
-                       -0.0009995  
-      
-
 # univariate works correctly
 
     Code
@@ -22,6 +6,22 @@
       [1] "SEX"  "AGE"  "RACE"
       attr(,"varname")
       [1] "c(\"SEX\", \"AGE\", \"RACE\")"
+
+---
+
+    Code
+      res2
+    Output
+      
+      Call:
+      lm(formula = SEX ~ univariate(ARM), data = tern_ex_adsl)
+      
+      Coefficients:
+                        (Intercept)      univariate(ARM)B: Placebo  
+                          1.4492754                      0.0027794  
+      univariate(ARM)C: Combination  
+                         -0.0009995  
+      
 
 # rht works correctly
 

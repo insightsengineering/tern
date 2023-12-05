@@ -1,11 +1,16 @@
-#' Summary for analysis of covariance (ANCOVA).
+#' Summary for analysis of covariance (`ANCOVA`).
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Summarize results of ANCOVA. This can be used to analyze multiple endpoints and/or
+#' Summarize results of `ANCOVA`. This can be used to analyze multiple endpoints and/or
 #' multiple timepoints within the same response variable `.var`.
 #'
+#' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("summarize_ancova")`
+#'   to see available statistics for this function.
+#'
 #' @name summarize_ancova
+#' @order 1
 NULL
 
 #' Helper Function to Return Results of a Linear Model
@@ -13,17 +18,16 @@ NULL
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams argument_convention
-#' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called
-#'   in `.var` and `variables`.
-#' @param variables (named `list` of `strings`)\cr list of additional analysis variables, with
-#'   expected elements:
-#'   - `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
-#'     groups will be summarized. Specifically, the first level of `arm` variable is taken as the
-#'     reference group.
-#'   - `covariates` (`character`)\cr a vector that can contain single variable names (such as
-#'     `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
+#' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called in `.var` and `variables`.
+#' @param variables (named `list` of `strings`)\cr list of additional analysis variables, with expected elements:
+#'   * `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple groups will be
+#'     summarized. Specifically, the first level of `arm` variable is taken as the reference group.
+#'   * `covariates` (`character`)\cr a vector that can contain single variable names (such as `"X1"`), and/or
+#'     interaction terms indicated by `"X1 * X2"`.
 #' @param interaction_item (`character`)\cr name of the variable that should have interactions
-#'   with arm. if the interaction is not needed, the default option is NULL.
+#'   with arm. if the interaction is not needed, the default option is `NULL`.
+#'
+#' @return The summary of a linear model.
 #'
 #' @examples
 #' h_ancova(
@@ -81,42 +85,19 @@ h_ancova <- function(.var,
 #' @describeIn summarize_ancova Statistics function that produces a named list of results
 #'   of the investigated linear model.
 #'
-#' @inheritParams argument_convention
 #' @inheritParams h_ancova
-#' @param interaction_y (`character`)\cr a selected item inside of the interaction_item column
-#'   which will be used to select the specific ANCOVA results. if the interaction is not
-#'   needed, the default option is FALSE
-#' @return A named list of 5 statistics:
-#' \describe{
-#'   \item{n}{count of complete sample size for the group.}
-#'   \item{lsmean}{estimated marginal means in the group.}
-#'   \item{lsmean_diff}{difference in estimated marginal means in comparison to the reference group.
+#' @param interaction_y (`character`)\cr a selected item inside of the interaction_item column which will be used
+#'   to select the specific `ANCOVA` results. if the interaction is not needed, the default option is `FALSE`.
+#'
+#' @return
+#' * `s_ancova()` returns a named list of 5 statistics:
+#'   * `n`: Count of complete sample size for the group.
+#'   * `lsmean`: Estimated marginal means in the group.
+#'   * `lsmean_diff`: Difference in estimated marginal means in comparison to the reference group.
 #'     If working with the reference group, this will be empty.
-#'   }
-#'   \item{lsmean_diff_ci}{confidence level for difference in estimated marginal means in comparison to the
-#'     reference group.
-#'   }
-#'   \item{pval}{p-value (not adjusted for multiple comparisons).}
-#' }
-#'
-#' @examples
-#' library(dplyr)
-#'
-#' df <- iris %>% filter(Species == "virginica")
-#' .df_row <- iris
-#' .var <- "Petal.Length"
-#' variables <- list(arm = "Species", covariates = "Sepal.Length * Sepal.Width")
-#' .ref_group <- iris %>% filter(Species == "setosa")
-#' conf_level <- 0.95
-#'
-#' # Internal function - s_ancova
-#' \dontrun{
-#' s_ancova(
-#'   df, .var, .df_row, variables, .ref_group,
-#'   .in_ref_col = FALSE,
-#'   conf_level, interaction_y = FALSE, interaction_item = NULL
-#' )
-#' }
+#'   * `lsmean_diff_ci`: Confidence level for difference in estimated marginal means in comparison
+#'     to the reference group.
+#'   * `pval`: p-value (not adjusted for multiple comparisons).
 #'
 #' @keywords internal
 s_ancova <- function(df,
@@ -205,18 +186,10 @@ s_ancova <- function(df,
   }
 }
 
-#' @describeIn summarize_ancova Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn summarize_ancova Formatted analysis function which is used as `afun` in `summarize_ancova()`.
 #'
-#' @examples
-#' # Internal function - a_ancova
-#' \dontrun{
-#' a_ancova(
-#'   df, .var, .df_row, variables, .ref_group,
-#'   .in_ref_col = FALSE,
-#'   interaction_y = FALSE, interaction_item = NULL, conf_level
-#' )
-#' }
+#' @return
+#' * `a_ancova()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @keywords internal
 a_ancova <- make_afun(
@@ -232,10 +205,13 @@ a_ancova <- make_afun(
   .null_ref_cells = FALSE
 )
 
-#' @describeIn summarize_ancova Layout creating function which can be be used for creating
-#'   summary tables for analysis of covariance (ANCOVA).
-#' @inheritParams argument_convention
-#' @export
+#' @describeIn summarize_ancova Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `summarize_ancova()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_ancova()` to the table layout.
 #'
 #' @examples
 #' basic_table() %>%
@@ -255,9 +231,14 @@ a_ancova <- make_afun(
 #'     conf_level = 0.95, var_labels = "Adjusted comparison (covariates: Sepal.Length and Sepal.Width)"
 #'   ) %>%
 #'   build_table(iris)
+#'
+#' @export
+#' @order 2
 summarize_ancova <- function(lyt,
                              vars,
                              var_labels,
+                             na_str = NA_character_,
+                             nested = TRUE,
                              ...,
                              show_labels = "visible",
                              table_names = vars,
@@ -284,6 +265,8 @@ summarize_ancova <- function(lyt,
     show_labels = show_labels,
     table_names = table_names,
     afun = afun,
+    na_str = na_str,
+    nested = nested,
     extra_args = list(...)
   )
 }

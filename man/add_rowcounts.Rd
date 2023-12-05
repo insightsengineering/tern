@@ -4,21 +4,27 @@
 \alias{add_rowcounts}
 \title{Layout Creating Function to Add Row Total Counts}
 \usage{
-add_rowcounts(lyt)
+add_rowcounts(lyt, alt_counts = FALSE)
 }
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{alt_counts}{(\code{flag})\cr whether row counts should be taken from \code{alt_counts_df} (\code{TRUE})
+or from \code{df} (\code{FALSE}). Defaults to \code{FALSE}.}
 }
 \value{
-The modified layout where the latest row split labels now have the row-wise
-total counts (i.e. without column based subsetting) attached in parentheses. Row
-count values are contained in these row count rows but are not displayed so that
-they are not considered zero rows by default when pruning.
+A modified layout where the latest row split labels now have the row-wise
+total counts (i.e. without column-based subsetting) attached in parentheses.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This works analogously to \code{\link[rtables:add_colcounts]{rtables::add_colcounts()}} but on the rows.
+This works analogously to \code{\link[rtables:add_colcounts]{rtables::add_colcounts()}} but on the rows. This function
+is a wrapper for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
+}
+\note{
+Row count values are contained in these row count rows but are not displayed
+so that they are not considered zero rows by default when pruning.
 }
 \examples{
 basic_table() \%>\%

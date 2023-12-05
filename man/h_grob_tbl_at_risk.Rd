@@ -4,26 +4,33 @@
 \alias{h_grob_tbl_at_risk}
 \title{Helper: Patient-at-Risk Grobs}
 \usage{
-h_grob_tbl_at_risk(data, annot_tbl, xlim)
+h_grob_tbl_at_risk(data, annot_tbl, xlim, title = TRUE)
 }
 \arguments{
 \item{data}{(\code{data.frame})\cr survival data as pre-processed by \code{h_data_plot}.}
 
-\item{annot_tbl}{(\code{data.frame})\cr annotation as prepared
-by \code{\link[survival:summary.survfit]{survival::summary.survfit()}} which includes the number of
-patients at risk at given time points.}
+\item{annot_tbl}{(\code{data.frame})\cr annotation as prepared by \code{\link[survival:summary.survfit]{survival::summary.survfit()}} which
+includes the number of patients at risk at given time points.}
 
 \item{xlim}{(\code{numeric})\cr the maximum value on the x-axis (used to
 ensure the at risk table aligns with the KM graph).}
+
+\item{title}{(\code{flag})\cr whether the "Patients at Risk" title should be added above the \code{annot_at_risk}
+table. Has no effect if \code{annot_at_risk} is \code{FALSE}. Defaults to \code{TRUE}.}
+}
+\value{
+A named \code{list} of two \code{gTree} objects if \code{title = FALSE}: \code{at_risk} and \code{label}, or three
+\code{gTree} objects if \code{title = TRUE}: \code{at_risk}, \code{label}, and \code{title}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Two Graphical Objects are obtained, one corresponding to row labeling and
-the second to the number of patient at risk.
+Two graphical objects are obtained, one corresponding to row labeling and the second to the table of
+numbers of patients at risk. If \code{title = TRUE}, a third object corresponding to the table title is
+also obtained.
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(survival)
 library(grid)
@@ -69,11 +76,11 @@ lyt <- h_km_layout(data = data_plot, g_el = g_el, title = "t", footnotes = "f")
 grid::grid.newpage()
 pushViewport(viewport(layout = lyt, height = .95, width = .95))
 grid.rect(gp = grid::gpar(lty = 1, col = "purple", fill = "gray85", lwd = 1))
-pushViewport(viewport(layout.pos.row = 4, layout.pos.col = 2))
+pushViewport(viewport(layout.pos.row = 3:4, layout.pos.col = 2))
 grid.rect(gp = grid::gpar(lty = 1, col = "orange", fill = "gray85", lwd = 1))
 grid::grid.draw(tbl$at_risk)
 popViewport()
-pushViewport(viewport(layout.pos.row = 4, layout.pos.col = 1))
+pushViewport(viewport(layout.pos.row = 3:4, layout.pos.col = 1))
 grid.rect(gp = grid::gpar(lty = 1, col = "green3", fill = "gray85", lwd = 1))
 grid::grid.draw(tbl$label)
 }

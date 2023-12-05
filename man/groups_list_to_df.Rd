@@ -14,8 +14,7 @@ levels that belong to it in the character vectors that are elements of the list.
 \code{\link[tibble:tibble]{tibble::tibble()}} in the required format.
 }
 \description{
-This converts a list of group levels into a data frame format which is expected by
-\code{\link[rtables:add_combo_levels]{rtables::add_combo_levels()}}.
+This converts a list of group levels into a data frame format which is expected by \code{\link[rtables:add_combo_levels]{rtables::add_combo_levels()}}.
 }
 \examples{
 grade_groups <- list(
@@ -23,10 +22,6 @@ grade_groups <- list(
   "Grade 3-4 (\%)" = c("3", "4"),
   "Grade 5 (\%)" = "5"
 )
-# Internal function - groups_list_to_df
-\dontrun{
 groups_list_to_df(grade_groups)
-}
 
 }
-\keyword{internal}

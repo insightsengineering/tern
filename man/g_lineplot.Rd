@@ -20,6 +20,7 @@ g_lineplot(
   legend_title = NULL,
   legend_position = "bottom",
   ggtheme = nestcolor::theme_nest(),
+  x_lab = obj_label(df[[variables[["x"]]]]),
   y_lab = NULL,
   y_lab_add_paramcd = TRUE,
   y_lab_add_unit = TRUE,
@@ -38,15 +39,19 @@ g_lineplot(
 \arguments{
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{alt_counts_df}{(\code{data.frame} or \code{NULL})\cr data set that will be used (only) to counts objects in strata.}
+\item{alt_counts_df}{(\code{data.frame} or \code{NULL})\cr data set that will be used (only)
+to counts objects in groups for stratification.}
 
 \item{variables}{(named \code{character} vector) of variable names in \code{df} data set. Details are:
 \itemize{
 \item \code{x} (\code{character})\cr name of x-axis variable.
 \item \code{y} (\code{character})\cr name of y-axis variable.
-\item \code{strata} (\code{character})\cr name of grouping variable, i.e. treatment arm. Can be \code{NA} to indicate lack of groups.
+\item \code{group_var} (\code{character})\cr name of grouping variable (or strata), i.e. treatment arm.
+Can be \code{NA} to indicate lack of groups.
+\item \code{subject_var} (\code{character})\cr name of subject variable. Only applies if \code{group_var} is
+not NULL.
 \item \code{paramcd} (\code{character})\cr name of the variable for parameter's code. Used for y-axis label and plot's subtitle.
-Can be \code{NA} if paramcd is not to be added to the y-axis label or subtitle.
+Can be \code{NA} if \code{paramcd} is not to be added to the y-axis label or subtitle.
 \item \code{y_unit} (\code{character})\cr name of variable with units of \code{y}. Used for y-axis label and plot's subtitle.
 Can be \code{NA} if y unit is not to be added to the y-axis label or subtitle.
 }}
@@ -57,11 +62,13 @@ and be of a \code{double} or \code{numeric} type vector of length one.}
 
 \item{interval}{(\code{character} or \code{NULL})\cr names of the statistics that will be plotted as intervals.
 All the statistics indicated in \code{interval} variable must be present in the object returned by \code{sfun},
-and be of a \code{double} or \code{numeric} type vector of length two.}
+and be of a \code{double} or \code{numeric} type vector of length two. Set \code{interval = NULL} if intervals should not be
+added to the plot.}
 
-\item{whiskers}{(\code{character})\cr names of the interval whiskers that will be plotted. Must match the \code{names}
-attribute of the \code{interval} element in the list returned by \code{sfun}. It is possible to specify one whisker only,
-lower or upper.}
+\item{whiskers}{(\code{character})\cr names of the interval whiskers that will be plotted. Names must match names
+of the list element \code{interval} that will be returned by \code{sfun} (e.g. \code{mean_ci_lwr} element of
+\code{sfun(x)[["mean_ci"]]}). It is possible to specify one whisker only, or to suppress all whiskers by setting
+\code{interval = NULL}.}
 
 \item{table}{(\code{character} or \code{NULL})\cr names of the statistics that will be displayed in the table below the plot.
 All the statistics indicated in \code{table} variable must be present in the object returned by \code{sfun}.}
@@ -87,9 +94,11 @@ or two-element numeric vector).}
 
 \item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to control styling of the plot.}
 
+\item{x_lab}{(\code{character})\cr x-axis label. If equal to \code{NULL}, then no label will be added.}
+
 \item{y_lab}{(\code{character})\cr y-axis label. If equal to \code{NULL}, then no label will be added.}
 
-\item{y_lab_add_paramcd}{(\code{logical})\cr should paramcd, i.e. \code{unique(df[[variables["paramcd"]]])} be added to the
+\item{y_lab_add_paramcd}{(\code{logical})\cr should \code{paramcd}, i.e. \code{unique(df[[variables["paramcd"]]])} be added to the
 y-axis label \code{y_lab}?}
 
 \item{y_lab_add_unit}{(\code{logical})\cr should y unit, i.e. \code{unique(df[[variables["y_unit"]]])} be added to the y-axis
@@ -99,7 +108,7 @@ label \code{y_lab}?}
 
 \item{subtitle}{(\code{character})\cr plot subtitle.}
 
-\item{subtitle_add_paramcd}{(\code{logical})\cr should paramcd, i.e. \code{unique(df[[variables["paramcd"]]])} be added to
+\item{subtitle_add_paramcd}{(\code{logical})\cr should \code{paramcd}, i.e. \code{unique(df[[variables["paramcd"]]])} be added to
 the plot's subtitle \code{subtitle}?}
 
 \item{subtitle_add_unit}{(\code{logical})\cr should y unit, i.e. \code{unique(df[[variables["y_unit"]]])} be added to the
@@ -121,7 +130,7 @@ appended to the plot. Names of \code{table_labels} must match the names of stati
 \item{col}{(\code{character})\cr colors.}
 }
 \value{
-\code{ggplot}
+A \code{ggplot} line plot (and statistics table if applicable).
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -139,10 +148,10 @@ adlb <- dplyr::mutate(adlb, AVISIT = forcats::fct_reorder(AVISIT, AVISITN, min))
 # Mean with CI
 g_lineplot(adlb, adsl, subtitle = "Laboratory Test:")
 
-# Mean with CI, no stratification
-g_lineplot(adlb, variables = control_lineplot_vars(strata = NA))
+# Mean with CI, no stratification with group_var
+g_lineplot(adlb, variables = control_lineplot_vars(group_var = NA))
 
-# Mean, upper whisker of CI, no strata counts N
+# Mean, upper whisker of CI, no group_var(strata) counts N
 g_lineplot(
   adlb,
   whiskers = "mean_ci_upr",
@@ -174,14 +183,12 @@ g_lineplot(
   adlb,
   adsl,
   table = c("n", "mean", "mean_ci"),
-  control = control_summarize_vars(conf_level = 0.80),
+  control = control_analyze_vars(conf_level = 0.80),
   title = "Plot of Mean and 80\% Confidence Limits by Visit"
 )
 
 # Mean with CI, table, filtered data
 adlb_f <- dplyr::filter(adlb, ARMCD != "ARM A" | AVISIT == "BASELINE")
 g_lineplot(adlb_f, table = c("n", "mean"))
-}
-\author{
-Wojciech Wojciak wojciech.wojciak@contractors.roche.com
+
 }

@@ -5,16 +5,29 @@ template:
   package: nesttemplate
 
 navbar:
-  right:
-    - icon: fa-github
+  structure:
+    left: [intro, reference, articles, tutorials, news, reports]
+    right: [search, github]
+  components:
+    reports:
+      text: Reports
+      menu:
+        - text: Coverage report
+          href: coverage-report/
+        - text: Unit test report
+          href: unit-test-report/
+    github:
+      icon: fa-github
       href: https://github.com/insightsengineering/tern
 
 reference:
   - title: Overview Pages
     contents:
       - tern-package
+      - analyze_functions
+      - analyze_colvars_functions
+      - summarize_functions
       - formatting_functions
-      - kaplan_meier
 
   - title: Control Functions
     desc: These functions capture options in lists and take care of defaults
@@ -28,6 +41,9 @@ reference:
           Analyze functions with their corresponding statistics functions and
           formatted analysis functions.
 
+          - **Analyze functions** are used in combination with `rtables`
+            layout functions in the pipeline which creates the table.
+
           - **Statistics functions** (denoted by `s_` prefix) compute the
             numbers that are tabulated later. In order to separate computation
             from formatting, they do not take care of `rcell` type formatting
@@ -38,8 +54,6 @@ reference:
             be further customized by calling `rtables::make_afun()` on them.
             They are used as `afun` in `rtables::analyze()`.
 
-          - **Analyze functions** are used in combination with `rtables`
-            layout functions in the pipeline which creates the table.
     contents:
       - starts_with("analyze_", internal = TRUE)
       - compare_vars
@@ -49,13 +63,18 @@ reference:
       - starts_with("surv_", internal = TRUE)
       - starts_with("tabulate_", internal = TRUE)
       - test_proportion_diff
+      - -analyze_colvars_functions
+      - -analyze_functions
       - -estimate_coef
+      - -summarize_functions
 
   - title: Analysis Helper Functions
     desc: These functions are useful in defining an analysis.
     contents:
-      - starts_with("create_", internal = TRUE)
+      - default_stats_formats_labels
       - starts_with("h_")
+      - imputation_rule
+      - labels_use_control
       - starts_with("or_")
       - starts_with("prop_")
       - -starts_with("h_col_")
@@ -76,7 +95,6 @@ reference:
       - starts_with("fit_")
       - get_smooths
       - starts_with("logistic_")
-      - pairwise
       - starts_with("tidy.")
       - univariate
 
@@ -89,6 +107,7 @@ reference:
     desc: These functions help to work with the `rtables` package and may be
           moved there later.
     contents:
+      - add_riskdiff
       - add_rowcounts
       - append_varlabels
       - starts_with("as.rtable")
@@ -99,6 +118,8 @@ reference:
       - is_leaf_table
       - split_cols_by_groups
       - to_string_matrix
+      - groups_list_to_df
+      - utils_split_funs
 
   - title: rtables Formatting Functions
     desc: These functions provide customized formatting rules to work with the
@@ -126,6 +147,7 @@ reference:
       - h_g_ipp
       - matches(".*grob.*")
       - h_xticks
+      - forest_viewport
 
   - title: Data Helper Functions
     desc: These functions are used by other functions to derive data.
@@ -161,5 +183,8 @@ reference:
       - starts_with("ex_")
 
   - title: Deprecated Functions
+    desc: Functions that are currently deprecated within `tern`.
     contents:
-      - matches(".*footnotes.*")
+      - starts_with("create_")
+      - summarize_vars
+      - summary_custom

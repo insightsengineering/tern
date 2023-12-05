@@ -18,24 +18,35 @@ score_occurrences_cont_cols(...)
 \arguments{
 \item{table_row}{(\code{TableRow})\cr an analysis row in a occurrence table.}
 
-\item{...}{arguments for row or column access, see \code{\link{rtables_access}}: either
-\code{col_names} (\code{character}) including the names of the columns which should be used,
-or alternatively \code{col_indices} (\code{integer}) giving the indices directly instead.}
+\item{...}{arguments for row or column access, see \code{\link{rtables_access}}: either \code{col_names} (\code{character}) including
+the names of the columns which should be used, or alternatively \code{col_indices} (\code{integer}) giving the indices
+directly instead.}
 }
 \value{
-\code{\link[=score_occurrences]{score_occurrences()}} returns the sum of counts across all columns of a table row.
+\itemize{
+\item \code{score_occurrences()} returns the sum of counts across all columns of a table row.
+}
 
-\code{\link[=score_occurrences_cols]{score_occurrences_cols()}} returns a function that sums counts across all specified columns
+\itemize{
+\item \code{score_occurrences_cols()} returns a function that sums counts across all specified columns
 of a table row.
+}
 
-\code{\link[=score_occurrences_subtable]{score_occurrences_subtable()}} returns a function that sums counts in each subtable
+\itemize{
+\item \code{score_occurrences_subtable()} returns a function that sums counts in each subtable
 across all specified columns.
 }
+
+\itemize{
+\item \code{score_occurrences_cont_cols()} returns a function that sums counts in the first content row in
+specified columns.
+}
+}
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Functions to score occurrence table subtables and rows which can be used in the
 sorting of occurrence tables.
-
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \section{Functions}{
 \itemize{
@@ -98,6 +109,7 @@ tbl_sorted <- tbl \%>\%
   sort_at_path(path = c("AEBODSYS"), scorefun = score_subtable_all, decreasing = FALSE)
 
 tbl_sorted
+
 }
 \seealso{
 \code{\link[=h_row_first_values]{h_row_first_values()}}

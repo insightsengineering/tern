@@ -6,8 +6,8 @@
        [1] "n"            "sum"          "mean"         "sd"           "se"          
        [6] "mean_sd"      "mean_se"      "mean_ci"      "mean_sei"     "mean_sdi"    
       [11] "mean_pval"    "median"       "mad"          "median_ci"    "quantiles"   
-      [16] "iqr"          "range"        "min"          "max"          "cv"          
-      [21] "geom_mean"    "geom_mean_ci" "geom_cv"      "pval"        
+      [16] "iqr"          "range"        "min"          "max"          "median_range"
+      [21] "cv"           "geom_mean"    "geom_mean_ci" "geom_cv"      "pval"        
 
 # s_compare for numeric does not give p-value when not at least 2 values in each group
 
@@ -22,7 +22,7 @@
       res
     Output
       [1] "n"              "count"          "count_fraction" "n_blq"         
-      [5] "pval"          
+      [5] "pval_counts"   
 
 ---
 
@@ -78,7 +78,7 @@
       $n_blq
       [1] 0
       
-      $pval
+      $pval_counts
       [1] 0.7659283
       
 
@@ -120,4 +120,17 @@
         F                            32.00 (55.17%)   38.00 (55.07%)   40.00 (54.79%)
         M                            26.00 (44.83%)   31.00 (44.93%)   33.00 (45.21%)
         p-value (chi-squared test)                        1.0000           1.0000    
+
+# compare_vars 'na_str' argument works as expected
+
+    Code
+      res
+    Output
+                                     ARM B       ARM A       ARM C  
+      ——————————————————————————————————————————————————————————————
+      n                               73          69          58    
+      A: Drug X                        0       69 (100%)       0    
+      B: Placebo                   73 (100%)       0           0    
+      C: Combination                   0           0       58 (100%)
+      p-value (chi-squared test)                   -           -    
 

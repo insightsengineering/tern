@@ -10,7 +10,7 @@ f_conf_level(conf_level)
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 }
 \value{
-a \code{string}
+A \code{string}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

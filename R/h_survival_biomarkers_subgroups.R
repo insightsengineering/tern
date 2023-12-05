@@ -1,6 +1,6 @@
 #' Helper Functions for Tabulating Biomarker Effects on Survival by Subgroup
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Helper functions which are documented here separately to not confuse the user
 #' when reading about the user-facing functions.
@@ -8,7 +8,6 @@
 #' @inheritParams survival_biomarkers_subgroups
 #' @inheritParams argument_convention
 #' @inheritParams fit_coxreg_multivar
-#' @name h_survival_biomarkers_subgroups
 #'
 #' @examples
 #' library(dplyr)
@@ -28,12 +27,18 @@
 #' labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
 #' formatters::var_labels(adtte_f)[names(labels)] <- labels
 #'
+#' @name h_survival_biomarkers_subgroups
 NULL
 
 #' @describeIn h_survival_biomarkers_subgroups helps with converting the "survival" function variable list
 #'   to the "Cox regression" variable list. The reason is that currently there is an inconsistency between the variable
 #'   names accepted by `extract_survival_subgroups()` and `fit_coxreg_multivar()`.
+#'
 #' @param biomarker (`string`)\cr the name of the biomarker variable.
+#'
+#' @return
+#' * `h_surv_to_coxreg_variables()` returns a named `list` of elements `time`, `event`, `arm`,
+#'   `covariates`, and `strata`.
 #'
 #' @examples
 #' # This is how the variable list is converted internally.
@@ -67,6 +72,9 @@ h_surv_to_coxreg_variables <- function(variables, biomarker) {
 #'   in a given single data set.
 #'   `variables` corresponds to names of variables found in `data`, passed as a named list and requires elements
 #'   `tte`, `is_event`, `biomarkers` (vector of continuous biomarker variables) and optionally `subgroups` and `strat`.
+#'
+#' @return
+#' * `h_coxreg_mult_cont_df()` returns a `data.frame` containing estimates and statistics for the selected biomarkers.
 #'
 #' @examples
 #' # For a single population, estimate separately the effects
@@ -163,10 +171,14 @@ h_coxreg_mult_cont_df <- function(variables,
 
 #' @describeIn h_survival_biomarkers_subgroups prepares a single sub-table given a `df_sub` containing
 #'   the results for a single biomarker.
+#'
 #' @param df (`data.frame`)\cr results for a single biomarker, as part of what is
 #'   returned by [extract_survival_biomarkers()] (it needs a couple of columns which are
 #'   added by that high-level function relative to what is returned by [h_coxreg_mult_cont_df()],
 #'   see the example).
+#'
+#' @return
+#' * `h_tab_surv_one_biomarker()` returns an `rtables` table object with the given statistics arranged in columns.
 #'
 #' @examples
 #' # Starting from above `df`, zoom in on one biomarker and add required columns.
@@ -184,7 +196,8 @@ h_coxreg_mult_cont_df <- function(variables,
 #' @export
 h_tab_surv_one_biomarker <- function(df,
                                      vars,
-                                     time_unit) {
+                                     time_unit,
+                                     .indent_mods = 0L) {
   afuns <- a_survival_subgroups()[vars]
   colvars <- d_survival_subgroups_colvars(
     vars,
@@ -195,6 +208,7 @@ h_tab_surv_one_biomarker <- function(df,
   h_tab_one_biomarker(
     df = df,
     afuns = afuns,
-    colvars = colvars
+    colvars = colvars,
+    .indent_mods = .indent_mods
   )
 }

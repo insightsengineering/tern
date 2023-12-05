@@ -68,12 +68,47 @@
     Output
       [1] "0"
 
+# format_count_fraction_lt10 works with healthy inputs
+
+    Code
+      res
+    Output
+      [1] "10 (100%)"  "19 (51.8%)" "76 (99.6%)"
+
+# format_count_fraction_lt10 works with count less than 10
+
+    Code
+      res
+    Output
+      [1] "9" "1" "7"
+
 # format_xx works with easy inputs
 
     Code
       res
     Output
       [1] "2 (0.6)"    "10 (785.6)"
+
+# format_sigfig works with easy inputs
+
+    Code
+      res
+    Output
+      [1] "1.66"    "0.576"   "0.100"   "78.6"    "0.00123" "200"    
+
+# format_sigfig works with different format types
+
+    Code
+      res
+    Output
+      [1] "1.66 (0.576)"  "0.100 (78.6)"  "0.00123 (200)"
+
+---
+
+    Code
+      res
+    Output
+      [1] "1.66 - 0.576"  "0.100 - 78.6"  "0.00123 - 200"
 
 # format_fraction_threshold works with easy inputs
 

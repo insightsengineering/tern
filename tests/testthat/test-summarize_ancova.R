@@ -6,7 +6,7 @@ testthat::test_that("h_ancova works with healthy input", {
   ) %>%
     as.data.frame()
 
-  res <- testthat::expect_silent(result)
+  res <- testthat::expect_silent(broom::tidy(result))
   testthat::expect_snapshot(res)
 })
 

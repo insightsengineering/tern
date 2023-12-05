@@ -1,22 +1,3 @@
-#' Pairwise Formula Special Term
-#'
-#' @description `r lifecycle::badge("stable")`
-#'
-#' The special term `pairwise` indicate that the model should be fitted individually for
-#' every tested level in comparison to the reference level.
-#'
-#' @param x the variable for which pairwise result is expected
-#'
-#' @details Let's `ARM` being a factor with level A, B, C; let's be B the reference level,
-#'   a model calling the formula including `pairwise(ARM)` will result in two models:
-#'   * A model including only levels A and B, and effect of A estimated in reference to B.
-#'   * A model including only levels C and B, the effect of C estimated in reference to B.
-#'
-#' @export
-pairwise <- function(x) {
-  structure(x, varname = deparse(substitute(x)))
-}
-
 #' Univariate Formula Special Term
 #'
 #' @description `r lifecycle::badge("stable")`
@@ -24,7 +5,9 @@ pairwise <- function(x) {
 #' The special term `univariate` indicate that the model should be fitted individually for
 #' every variable included in univariate.
 #'
-#' @param x A vector of variable name separated by comas.
+#' @param x A vector of variable name separated by commas.
+#'
+#' @return When used within a model formula, produces univariate models for each variable provided.
 #'
 #' @details
 #' If provided alongside with pairwise specification, the model
@@ -73,13 +56,12 @@ rht <- function(x) {
 #'   as $1.96 * sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$ for a confidence level of 0.95.
 #'
 #' @return A list of matrix (one per level of variable) with rows corresponding to the combinations of
-#' `variable` and `given`, with columns:
-#' \describe{
-#'   \item{coef_hat}{Estimation of the coefficient.}
-#'   \item{coef_se}{Standard error of the estimation.}
-#'   \item{hr}{Hazard ratio.}
-#'   \item{lcl, ucl}{Lower/upper confidence limit of the hazard ratio.}
-#' }
+#'   `variable` and `given`, with columns:
+#'   * `coef_hat`: Estimation of the coefficient.
+#'   * `coef_se`: Standard error of the estimation.
+#'   * `hr`: Hazard ratio.
+#'   * `lcl, ucl`: Lower/upper confidence limit of the hazard ratio.
+#'
 #' @seealso [s_cox_multivariate()].
 #'
 #' @examples
@@ -101,14 +83,6 @@ rht <- function(x) {
 #' mmat <- stats::model.matrix(mod)[1, ]
 #' mmat[!mmat == 0] <- 0
 #'
-#' # Internal function - estimate_coef
-#' \dontrun{
-#' estimate_coef(
-#'   variable = "ARMCD", given = "SEX", lvl_var = "ARM A", lvl_given = "M",
-#'   coef = stats::coef(mod), mmat = mmat, vcov = stats::vcov(mod), conf_level = .95
-#' )
-#' }
-#'
 #' @keywords internal
 estimate_coef <- function(variable, given,
                           lvl_var, lvl_given,
@@ -124,8 +98,8 @@ estimate_coef <- function(variable, given,
   design_mat <- within(
     data = design_mat,
     expr = {
-      inter <- paste0(variable, ":", given) # nolint
-      rev_inter <- paste0(given, ":", variable) # nolint
+      inter <- paste0(variable, ":", given)
+      rev_inter <- paste0(given, ":", variable)
     }
   )
 
@@ -182,12 +156,11 @@ estimate_coef <- function(variable, given,
 #'
 #' @inheritParams car::Anova
 #'
-#' @return A list with item `aov` for the result of the model and
-#'   `error_text` for the captured warnings.
+#' @return A list with item `aov` for the result of the model and `error_text` for the captured warnings.
 #'
 #' @examples
 #' # `car::Anova` on cox regression model including strata and expected
-#' # a likelihood ratio test triggers a warning as only Wald method is
+#' # a likelihood ratio test triggers a warning as only `Wald` method is
 #' # accepted.
 #'
 #' library(survival)
@@ -196,12 +169,6 @@ estimate_coef <- function(variable, given,
 #'   formula = Surv(time = futime, event = fustat) ~ factor(rx) + strata(ecog.ps),
 #'   data = ovarian
 #' )
-#'
-#' # Internal function - try_car_anova
-#' \dontrun{
-#' with_wald <- try_car_anova(mod = mod, test.statistic = "Wald")
-#' with_lr <- try_car_anova(mod = mod, test.statistic = "LR")
-#' }
 #'
 #' @keywords internal
 try_car_anova <- function(mod,
@@ -235,17 +202,17 @@ try_car_anova <- function(mod,
   return(y)
 }
 
-#' Fit the Cox Regression Model and Anova
+#' Fit the Cox Regression Model and `Anova`
 #'
-#' The functions allows to derive from the [survival::coxph()] results
-#' the effect p.values using [car::Anova()]. This last package introduces
-#' more flexibility to get the effect p.values.
+#' The functions allows to derive from the [survival::coxph()] results the effect p.values using [car::Anova()].
+#' This last package introduces more flexibility to get the effect p.values.
 #'
 #' @inheritParams t_coxreg
-#' @noRd
 #'
-#' @return A list with items `mod` (results of [survival::coxph()]),
-#' `msum` (result of `summary`) and `aov` (result of [car::Anova]).
+#' @return A list with items `mod` (results of [survival::coxph()]), `msum` (result of `summary`) and
+#'   `aov` (result of [car::Anova()]).
+#'
+#' @noRd
 fit_n_aov <- function(formula,
                       data = data,
                       conf_level = conf_level,
@@ -339,13 +306,16 @@ check_increments <- function(increments, covariates) {
 #' @param data (`data.frame`)\cr A data frame which includes the variable in formula and covariates.
 #' @param conf_level (`proportion`)\cr The confidence level for the hazard ratio interval estimations. Default is 0.95.
 #' @param pval_method (`character`)\cr The method used for the estimation of p-values, should be one of
-#'   "wald" (default) or "likelihood".
+#'   `"wald"` (default) or `"likelihood"`.
 #' @param ... Optional parameters passed to [survival::coxph()]. Can include `ties`, a character string specifying the
 #'   method for tie handling, one of `exact` (default), `efron`, `breslow`.
+#'
+#' @return A `list` with elements `mod`, `msum`, `aov`, and `coef_inter`.
 #'
 #' @details The output is limited to single effect terms. Work in ongoing for estimation of interaction terms
 #'   but is out of scope as defined by the  Global Data Standards Repository
 #'   (**`GDS_Standard_TLG_Specs_Tables_2.doc`**).
+#'
 #' @seealso [estimate_coef()].
 #'
 #' @examples
@@ -361,13 +331,6 @@ check_increments <- function(increments, covariates) {
 #' )
 #' adtte_f$SEX <- droplevels(adtte_f$SEX)
 #' adtte_f$RACE <- droplevels(adtte_f$RACE)
-#'
-#' # Internal function - s_cox_multivariate
-#' \dontrun{
-#' s_cox_multivariate(
-#'   formula = Surv(time = AVAL, event = 1 - CNSR) ~ (ARMCD + RACE + AGE)^2, data = adtte_f
-#' )
-#' }
 #'
 #' @keywords internal
 s_cox_multivariate <- function(formula, data,

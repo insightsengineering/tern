@@ -9,12 +9,14 @@
 #' @inheritParams argument_convention
 #' @param grade_groups (named `list` of `character`)\cr containing groupings of grades.
 #' @param remove_single (`logical`)\cr `TRUE` to not include the elements of one-element grade groups
-#' in the the output list; in this case only the grade groups names will be included in the output.
+#'   in the the output list; in this case only the grade groups names will be included in the output.
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_occurrences_by_grade")`
+#'   to see available statistics for this function.
 #'
 #' @seealso Relevant helper function [h_append_grade_groups()].
 #'
 #' @name count_occurrences_by_grade
-#'
+#' @order 1
 NULL
 
 #' Helper function for [s_count_occurrences_by_grade()]
@@ -29,6 +31,8 @@ NULL
 #' @inheritParams count_occurrences_by_grade
 #' @param refs (named `list` of `numeric`)\cr where each name corresponds to a reference grade level
 #'   and each entry represents a count.
+#'
+#' @return Formatted list of grade groupings.
 #'
 #' @examples
 #' h_append_grade_groups(
@@ -109,29 +113,17 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
   result
 }
 
-#' @describeIn count_occurrences_by_grade Statistics function which given occurrence data counts the
-#'  number of patients by highest grade. Returns a list of counts and fractions with one element
-#'  per grade level or grade level grouping.
+#' @describeIn count_occurrences_by_grade Statistics function which counts the
+#'  number of patients by highest grade.
+#'
+#' @return
+#' * `s_count_occurrences_by_grade()` returns a list of counts and fractions with one element per grade level or
+#'   grade level grouping.
 #'
 #' @examples
-#' library(dplyr)
-#' df <- data.frame(
-#'   USUBJID = as.character(c(1:6, 1)),
-#'   ARM = factor(c("A", "A", "A", "B", "B", "B", "A"), levels = c("A", "B")),
-#'   AETOXGR = factor(c(1, 2, 3, 4, 1, 2, 3), levels = c(1:5)),
-#'   AESEV = factor(
-#'     x = c("MILD", "MODERATE", "SEVERE", "MILD", "MILD", "MODERATE", "SEVERE"),
-#'     levels = c("MILD", "MODERATE", "SEVERE")
-#'   ),
-#'   stringsAsFactors = FALSE
-#' )
-#' df_adsl <- df %>%
-#'   select(USUBJID, ARM) %>%
-#'   unique()
-#'
 #' s_count_occurrences_by_grade(
 #'   df,
-#'   .N_col = 10L, # nolint
+#'   .N_col = 10L,
 #'   .var = "AETOXGR",
 #'   id = "USUBJID",
 #'   grade_groups = list("ANY" = levels(df$AETOXGR))
@@ -175,6 +167,14 @@ s_count_occurrences_by_grade <- function(df,
       grade <- formatters::with_label(factor(grade, levels = lvl_ord, ordered = TRUE), grade_lbl)
     }
 
+    missing_lvl <- grepl("missing", tolower(levels(grade)))
+    if (any(missing_lvl)) {
+      grade <- factor(
+        grade,
+        levels = c(levels(grade)[!missing_lvl], levels(grade)[missing_lvl]),
+        ordered = is.ordered(grade)
+      )
+    }
     df_max <- stats::aggregate(grade ~ id, FUN = max, drop = FALSE)
     l_count <- as.list(table(df_max$grade))
   }
@@ -190,9 +190,11 @@ s_count_occurrences_by_grade <- function(df,
   )
 }
 
-#' @describeIn count_occurrences_by_grade Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
+#' @describeIn count_occurrences_by_grade Formatted analysis function which is used as `afun`
+#'   in `count_occurrences_by_grade()`.
+#'
+#' @return
+#' * `a_count_occurrences_by_grade()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' #  We need to ungroup `count_fraction` first so that the `rtables` formatting
@@ -200,22 +202,45 @@ s_count_occurrences_by_grade <- function(df,
 #' afun <- make_afun(a_count_occurrences_by_grade, .ungroup_stats = "count_fraction")
 #' afun(
 #'   df,
-#'   .N_col = 10L, # nolint
+#'   .N_col = 10L,
 #'   .var = "AETOXGR",
 #'   id = "USUBJID",
 #'   grade_groups = list("ANY" = levels(df$AETOXGR))
 #' )
+#'
+#' @export
 a_count_occurrences_by_grade <- make_afun(
   s_count_occurrences_by_grade,
   .formats = c("count_fraction" = format_count_fraction_fixed_dp)
 )
 
-
-#' @describeIn count_occurrences_by_grade Layout creating function which can be used for creating tables,
-#'   which can take statistics function arguments and additional format arguments (see below).
+#' @describeIn count_occurrences_by_grade Layout-creating function which can take statistics function
+#'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
 #' @param var_labels (`character`)\cr labels to show in the result table.
-#' @export
+#'
+#' @return
+#' * `count_occurrences_by_grade()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_occurrences_by_grade()` to the table layout.
+#'
 #' @examples
+#' library(dplyr)
+#'
+#' df <- data.frame(
+#'   USUBJID = as.character(c(1:6, 1)),
+#'   ARM = factor(c("A", "A", "A", "B", "B", "B", "A"), levels = c("A", "B")),
+#'   AETOXGR = factor(c(1, 2, 3, 4, 1, 2, 3), levels = c(1:5)),
+#'   AESEV = factor(
+#'     x = c("MILD", "MODERATE", "SEVERE", "MILD", "MILD", "MODERATE", "SEVERE"),
+#'     levels = c("MILD", "MODERATE", "SEVERE")
+#'   ),
+#'   stringsAsFactors = FALSE
+#' )
+#'
+#' df_adsl <- df %>%
+#'   select(USUBJID, ARM) %>%
+#'   unique()
 #'
 #' # Layout creating function with custom format.
 #' basic_table() %>%
@@ -242,16 +267,24 @@ a_count_occurrences_by_grade <- make_afun(
 #'     grade_groups = grade_groups
 #'   ) %>%
 #'   build_table(df, alt_counts_df = df_adsl)
+#'
+#' @export
+#' @order 2
 count_occurrences_by_grade <- function(lyt,
                                        var,
                                        var_labels = var,
                                        show_labels = "default",
+                                       riskdiff = FALSE,
+                                       na_str = NA_character_,
+                                       nested = TRUE,
                                        ...,
                                        table_names = var,
                                        .stats = NULL,
                                        .formats = NULL,
                                        .indent_mods = NULL,
                                        .labels = NULL) {
+  checkmate::assert_flag(riskdiff)
+
   afun <- make_afun(
     a_count_occurrences_by_grade,
     .stats = .stats,
@@ -260,22 +293,39 @@ count_occurrences_by_grade <- function(lyt,
     .ungroup_stats = "count_fraction"
   )
 
+  extra_args <- if (isFALSE(riskdiff)) {
+    list(...)
+  } else {
+    list(
+      afun = list("s_count_occurrences_by_grade" = afun),
+      .stats = .stats,
+      .indent_mods = .indent_mods,
+      s_args = list(...)
+    )
+  }
+
   analyze(
     lyt = lyt,
     vars = var,
     var_labels = var_labels,
     show_labels = show_labels,
-    afun = afun,
+    afun = ifelse(isFALSE(riskdiff), afun, afun_riskdiff),
     table_names = table_names,
-    extra_args = list(...)
+    na_str = na_str,
+    nested = nested,
+    extra_args = extra_args
   )
 }
 
-#' @describeIn count_occurrences_by_grade Layout creating function which adds content rows using the
-#'   statistics function and additional format arguments (see below).
-#' @export
-#' @examples
+#' @describeIn count_occurrences_by_grade Layout-creating function which can take content function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::summarize_row_groups()].
 #'
+#' @return
+#' * `summarize_occurrences_by_grade()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted content rows
+#'   containing the statistics from `s_count_occurrences_by_grade()` to the table layout.
+#'
+#' @examples
 #' # Layout creating function with custom format.
 #' basic_table() %>%
 #'   add_colcounts() %>%
@@ -294,8 +344,12 @@ count_occurrences_by_grade <- function(lyt,
 #'     grade_groups = grade_groups
 #'   ) %>%
 #'   build_table(df, alt_counts_df = df_adsl)
+#'
+#' @export
+#' @order 3
 summarize_occurrences_by_grade <- function(lyt,
                                            var,
+                                           na_str = NA_character_,
                                            ...,
                                            .stats = NULL,
                                            .formats = NULL,
@@ -314,6 +368,7 @@ summarize_occurrences_by_grade <- function(lyt,
     lyt = lyt,
     var = var,
     cfun = cfun,
+    na_str = na_str,
     extra_args = list(...)
   )
 }

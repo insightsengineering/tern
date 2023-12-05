@@ -4,19 +4,13 @@
 #'
 #' Tabulate statistics such as median survival time and hazard ratio for population subgroups.
 #'
+#' @inheritParams argument_convention
+#' @inheritParams survival_coxph_pairwise
+#' @param time_unit (`string`)\cr label with unit of median survival time. Default `NULL` skips displaying unit.
+#'
 #' @details These functions create a layout starting from a data frame which contains
 #'   the required statistics. Tables typically used as part of forest plot.
 #'
-#' @inheritParams argument_convention
-#' @inheritParams survival_coxph_pairwise
-#' @param data (`data.frame`)\cr the dataset containing the variables to summarize.
-#' @param groups_lists (named `list` of `list`)\cr optionally contains for each `subgroups` variable a
-#'   list, which specifies the new group levels via the names and the
-#'   levels that belong to it in the character vectors that are elements of the list.
-#' @param label_all (`string`)\cr label for the total population analysis.
-#' @param time_unit (`string`)\cr label with unit of median survival time. Default `NULL` skips
-#'   displaying unit.
-#' @name survival_duration_subgroups
 #' @seealso [extract_survival_subgroups()]
 #'
 #' @examples
@@ -26,61 +20,6 @@
 #' adtte <- tern_ex_adtte
 #'
 #' # Save variable labels before data processing steps.
-#' adtte_labels <- formatters::var_labels(adtte)
-#'
-#' adtte_f <- adtte %>%
-#'   filter(
-#'     PARAMCD == "OS",
-#'     ARM %in% c("B: Placebo", "A: Drug X"),
-#'     SEX %in% c("M", "F")
-#'   ) %>%
-#'   mutate(
-#'     # Reorder levels of ARM to display reference arm before treatment arm.
-#'     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
-#'     SEX = droplevels(SEX),
-#'     AVALU = as.character(AVALU),
-#'     is_event = CNSR == 0
-#'   )
-#' labels <- c(
-#'   "ARM" = adtte_labels[["ARM"]],
-#'   "SEX" = adtte_labels[["SEX"]],
-#'   "AVALU" = adtte_labels[["AVALU"]],
-#'   "is_event" = "Event Flag"
-#' )
-#' formatters::var_labels(adtte_f)[names(labels)] <- labels
-#'
-#' df <- extract_survival_subgroups(
-#'   variables = list(
-#'     tte = "AVAL",
-#'     is_event = "is_event",
-#'     arm = "ARM", subgroups = c("SEX", "BMRKR2")
-#'   ),
-#'   data = adtte_f
-#' )
-#' df
-NULL
-
-#' Prepares Survival Data for Population Subgroups in Data Frames
-#'
-#' @description `r lifecycle::badge("stable")`
-#'
-#' Prepares estimates of median survival times and treatment hazard ratios for population subgroups in
-#' data frames. Simple wrapper for [h_survtime_subgroups_df()] and [h_coxph_subgroups_df()].
-#'   Result is a list of two data frames: `survtime` and `hr`.
-#'   `variables` corresponds to the names of variables found in `data`, passed as a named list and requires elements
-#'   `tte`, `is_event`, `arm` and optionally `subgroups` and `strat`. `groups_lists` optionally specifies
-#'   groupings for `subgroups` variables.
-#' @export
-#' @seealso [survival_duration_subgroups]
-#' @inheritParams argument_convention
-#' @inheritParams survival_duration_subgroups
-#' @inheritParams survival_coxph_pairwise
-#'
-#' @examples
-#' library(dplyr)
-#' library(forcats)
-#'
-#' adtte <- tern_ex_adtte
 #' adtte_labels <- formatters::var_labels(adtte)
 #'
 #' adtte_f <- adtte %>%
@@ -130,6 +69,34 @@ NULL
 #'   )
 #' )
 #' df_grouped
+#'
+#' @name survival_duration_subgroups
+#' @order 1
+NULL
+
+#' Prepares Survival Data for Population Subgroups in Data Frames
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Prepares estimates of median survival times and treatment hazard ratios for population subgroups in
+#' data frames. Simple wrapper for [h_survtime_subgroups_df()] and [h_coxph_subgroups_df()]. Result is a `list`
+#' of two `data.frame`s: `survtime` and `hr`. `variables` corresponds to the names of variables found in `data`,
+#' passed as a named `list` and requires elements `tte`, `is_event`, `arm` and optionally `subgroups` and `strat`.
+#' `groups_lists` optionally specifies groupings for `subgroups` variables.
+#'
+#' @inheritParams argument_convention
+#' @inheritParams survival_duration_subgroups
+#' @inheritParams survival_coxph_pairwise
+#'
+#' @return A named `list` of two elements:
+#'   * `survtime`: A `data.frame` containing columns `arm`, `n`, `n_events`, `median`, `subgroup`, `var`,
+#'     `var_label`, and `row_type`.
+#'   * `hr`: A `data.frame` containing columns `arm`, `n_tot`, `n_tot_events`, `hr`, `lcl`, `ucl`, `conf_level`,
+#'     `pval`, `pval_label`, `subgroup`, `var`, `var_label`, and `row_type`.
+#'
+#' @seealso [survival_duration_subgroups]
+#'
+#' @export
 extract_survival_subgroups <- function(variables,
                                        data,
                                        groups_lists = list(),
@@ -152,17 +119,14 @@ extract_survival_subgroups <- function(variables,
   list(survtime = df_survtime, hr = df_hr)
 }
 
-#' @describeIn survival_duration_subgroups Formatted Analysis function used to format the results of
-#'   [extract_survival_subgroups()]. Returns is a list of Formatted Analysis functions with one element per statistic.
+#' @describeIn survival_duration_subgroups  Formatted analysis function which is used as
+#'   `afun` in `tabulate_survival_subgroups()`.
 #'
-#' @examples
-#' # Internal function - a_survival_subgroups
-#' \dontrun{
-#' a_survival_subgroups(.formats = list("n" = "xx", "median" = "xx.xx"))
-#' }
+#' @return
+#' * `a_survival_subgroups()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @keywords internal
-a_survival_subgroups <- function(.formats = list(
+a_survival_subgroups <- function(.formats = list( # nolint start
                                    n = "xx",
                                    n_events = "xx",
                                    n_tot_events = "xx",
@@ -171,7 +135,7 @@ a_survival_subgroups <- function(.formats = list(
                                    hr = list(format_extreme_values(2L)),
                                    ci = list(format_extreme_values_ci(2L)),
                                    pval = "x.xxxx | (<0.0001)"
-                                 )) {
+                                 )) { # nolint end
   checkmate::assert_list(.formats)
   checkmate::assert_subset(
     names(.formats),
@@ -205,23 +169,27 @@ a_survival_subgroups <- function(.formats = list(
   afun_lst
 }
 
-#' @describeIn survival_duration_subgroups table creating function.
+#' @describeIn survival_duration_subgroups Table-creating function which creates a table
+#'   summarizing survival by subgroup. This function is a wrapper for [rtables::analyze_colvars()]
+#'   and [rtables::summarize_row_groups()].
+#'
 #' @param df (`list`)\cr of data frames containing all analysis variables. List should be
 #'   created using [extract_survival_subgroups()].
-#' @param vars (`character`)\cr the name of statistics to be reported among
-#'  `n_tot_events` (total number of events per group),
-#'  `n_events` (number of events per group),
-#'  `n_tot` (total number of observations per group),
-#'  `n` (number of observations per group),
-#'  `median` (median survival time),
-#'  `hr` (hazard ratio),
-#'  `ci` (confidence interval of hazard ratio) and
-#'  `pval` (p value of the effect).
-#'  Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci`
-#'  are required.
-#' @export
-#' @examples
+#' @param vars (`character`)\cr the name of statistics to be reported among:
+#'   * `n_tot_events`: Total number of events per group.
+#'   * `n_events`: Number of events per group.
+#'   * `n_tot`: Total number of observations per group.
+#'   * `n`: Number of observations per group.
+#'   * `median`: Median survival time.
+#'   * `hr`: Hazard ratio.
+#'   * `ci`: Confidence interval of hazard ratio.
+#'   * `pval`: p-value of the effect.
+#'   Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci`
+#'   are required.
 #'
+#' @return An `rtables` table summarizing survival by subgroup.
+#'
+#' @examples
 #' ## Table with default columns.
 #' basic_table() %>%
 #'   tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])
@@ -233,10 +201,14 @@ a_survival_subgroups <- function(.formats = list(
 #'     vars = c("n_tot_events", "n_events", "median", "hr", "ci", "pval"),
 #'     time_unit = adtte_f$AVALU[1]
 #'   )
+#'
+#' @export
+#' @order 2
 tabulate_survival_subgroups <- function(lyt,
                                         df,
                                         vars = c("n_tot_events", "n_events", "median", "hr", "ci"),
-                                        time_unit = NULL) {
+                                        time_unit = NULL,
+                                        na_str = NA_character_) {
   conf_level <- df$hr$conf_level[1]
   method <- df$hr$pval_label[1]
 
@@ -269,7 +241,8 @@ tabulate_survival_subgroups <- function(lyt,
     lyt_survtime <- summarize_row_groups(
       lyt = lyt_survtime,
       var = "var_label",
-      cfun = afun_lst[names(colvars_survtime$labels)]
+      cfun = afun_lst[names(colvars_survtime$labels)],
+      na_str = na_str
     )
     lyt_survtime <- split_cols_by_multivar(
       lyt = lyt_survtime,
@@ -309,7 +282,8 @@ tabulate_survival_subgroups <- function(lyt,
   lyt_hr <- summarize_row_groups(
     lyt = lyt_hr,
     var = "var_label",
-    cfun = afun_lst[names(colvars_hr$labels)]
+    cfun = afun_lst[names(colvars_hr$labels)],
+    na_str = na_str
   )
   lyt_hr <- split_cols_by_multivar(
     lyt = lyt_hr,
@@ -364,14 +338,15 @@ tabulate_survival_subgroups <- function(lyt,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Internal function to check variables included in
-#' [tabulate_survival_subgroups()] and create column labels.
-#' Note that at least one of `n_tot` and `n_tot_events` needs to be provided in `vars`.
+#' Internal function to check variables included in [tabulate_survival_subgroups()] and create column labels.
 #'
 #' @inheritParams tabulate_survival_subgroups
 #' @inheritParams argument_convention
-#' @param method p-value method for testing hazard ratio = 1.
-#' @return `list` of variables to tabulate and their labels.
+#' @param method (`character`)\cr p-value method for testing hazard ratio = 1.
+#'
+#' @return A `list` of variables and their labels to tabulate.
+#'
+#' @note At least one of `n_tot` and `n_tot_events` must be provided in `vars`.
 #'
 #' @export
 d_survival_subgroups_colvars <- function(vars,

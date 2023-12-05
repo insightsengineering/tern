@@ -328,3 +328,27 @@
       attr(,"conf_level")
       [1] NA
 
+# stat_propdiff_ci works with names and multiple values in x and y)
+
+    Code
+      res
+    Output
+      $A
+      [1]  25.0000 -11.3387  61.3387
+      
+      $B
+      [1] 70.00000 41.51302 98.48698
+      
+      $C
+      [1] 50.00000 28.08694 71.91306
+      
+
+# stat_propdiff_ci works with custom arguments)
+
+    Code
+      res
+    Output
+      [[1]]
+      [1] 0.38000000 0.01382145 0.74617855
+      
+

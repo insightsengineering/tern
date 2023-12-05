@@ -2,32 +2,39 @@
 % Please edit documentation in R/kaplan_meier_plot.R
 \name{h_grob_coxph}
 \alias{h_grob_coxph}
-\title{Helper Function: CoxPH Grob}
+\title{Helper Function: \code{CoxPH} Grob}
 \usage{
 h_grob_coxph(
   ...,
   x = 0,
   y = 0,
-  ttheme = gridExtra::ttheme_default(base_size = 12, padding = grid::unit(c(1, 0.5),
-    "lines"), core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = 0.5)))
+  width = grid::unit(0.4, "npc"),
+  ttheme = gridExtra::ttheme_default(padding = grid::unit(c(1, 0.5), "lines"), core =
+    list(bg_params = list(fill = c("grey95", "grey90"), alpha = 0.5)))
 )
 }
 \arguments{
 \item{...}{arguments will be passed to \code{\link[=h_tbl_coxph_pairwise]{h_tbl_coxph_pairwise()}}.}
 
-\item{x}{a \code{numeric} value between 0 and 1 specifying x-location.}
+\item{x}{(\code{numeric})\cr a value between 0 and 1 specifying x-location.}
 
-\item{y}{a \code{numeric} value between 0 and 1 specifying y-location.}
+\item{y}{(\code{numeric})\cr a value between 0 and 1 specifying y-location.}
+
+\item{width}{(\code{unit})\cr width (as a unit) to use when printing the grob.}
 
 \item{ttheme}{(\code{list})\cr see \code{\link[gridExtra:tableGrob]{gridExtra::ttheme_default()}}.}
+}
+\value{
+A \code{grob} of a table containing statistics \code{HR}, \verb{XX\% CI} (\code{XX} taken from \code{control_coxph_pw}),
+and \code{p-value (log-rank)}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Grob of \code{rtable} output from \link{h_tbl_coxph_pairwise}
+Grob of \code{rtable} output from \code{\link[=h_tbl_coxph_pairwise]{h_tbl_coxph_pairwise()}}
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(survival)
 library(grid)
@@ -44,4 +51,5 @@ tbl_grob <- h_grob_coxph(
 )
 grid::grid.draw(tbl_grob)
 }
+
 }

@@ -5,9 +5,15 @@
 #' Summarize cumulative counts of a (`numeric`) vector that is less than, less or equal to,
 #' greater than, or greater or equal to user-specific thresholds.
 #'
-#' @seealso Relevant helper function [h_count_cumulative()], and descriptive function [d_count_cumulative()]
+#' @inheritParams h_count_cumulative
+#' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_cumulative")`
+#'   to see available statistics for this function.
+#'
+#' @seealso Relevant helper function [h_count_cumulative()], and descriptive function [d_count_cumulative()].
 #'
 #' @name count_cumulative
+#' @order 1
 NULL
 
 #' Helper Function for [s_count_cumulative()]
@@ -20,27 +26,26 @@ NULL
 #' @param threshold (`number`)\cr a cutoff value as threshold to count values of `x`.
 #' @param lower_tail (`logical`)\cr whether to count lower tail, default is `TRUE`.
 #' @param include_eq (`logical`)\cr whether to include value equal to the `threshold` in
-#' count, default is `TRUE`.
-#' @param .N_col (`count`)\cr denominator for fraction calculation.
-#' @return A named vector with items:
-#' \describe{
-#'   \item{count}{the count of values less than, less or equal to, greater than, or greater or equal to a threshold
-#'     of user specification.
-#'   }
-#'   \item{fraction}{the fraction of the count.}
-#' }
-#' @seealso [count_cumulative]
+#'   count, default is `TRUE`.
 #'
-#' @export
+#' @return A named vector with items:
+#'   * `count`: the count of values less than, less or equal to, greater than, or greater or equal to a threshold
+#'     of user specification.
+#'   * `fraction`: the fraction of the count.
+#'
+#' @seealso [count_cumulative]
 #'
 #' @examples
 #' set.seed(1, kind = "Mersenne-Twister")
 #' x <- c(sample(1:10, 10), NA)
 #' .N_col <- length(x)
+#'
 #' h_count_cumulative(x, 5, .N_col = .N_col)
 #' h_count_cumulative(x, 5, lower_tail = FALSE, include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
 #' h_count_cumulative(x, 0, lower_tail = FALSE, .N_col = .N_col)
 #' h_count_cumulative(x, 100, lower_tail = FALSE, .N_col = .N_col)
+#'
+#' @export
 h_count_cumulative <- function(x,
                                threshold,
                                lower_tail = TRUE,
@@ -73,11 +78,11 @@ h_count_cumulative <- function(x,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This is a helper function that describes analysis in [s_count_cumulative()].
+#' This is a helper function that describes the analysis in [s_count_cumulative()].
 #'
 #' @inheritParams h_count_cumulative
-#' @return a descriptive `string`.
-#' @seealso [s_count_cumulative()]
+#'
+#' @return Labels for [s_count_cumulative()].
 #'
 #' @export
 d_count_cumulative <- function(threshold, lower_tail, include_eq) {
@@ -87,22 +92,13 @@ d_count_cumulative <- function(threshold, lower_tail, include_eq) {
   paste0(lg, eq, " ", threshold)
 }
 
-#' @describeIn count_cumulative Statistics function that produces a named lists given a numeric vector of thresholds.
+#' @describeIn count_cumulative Statistics function that produces a named list given a numeric vector of thresholds.
 #'
-#' @inheritParams h_count_cumulative
 #' @param thresholds (`numeric`)\cr vector of cutoff value for the counts.
-#' @return A named list of `count_fraction`s: a list with each `thresholds` value as a component, each component
-#'     contains a vector for the count and fraction.
 #'
-#' @examples
-#' # Internal function - s_count_cumulative
-#' \dontrun{
-#' set.seed(1, kind = "Mersenne-Twister")
-#' x <- c(sample(1:10, 10), NA)
-#' .N_col <- length(x)
-#' s_count_cumulative(x, thresholds = c(0, 5, 11), .N_col = .N_col)
-#' s_count_cumulative(x, thresholds = c(0, 5, 11), include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
-#' }
+#' @return
+#' * `s_count_cumulative()` returns a named list of `count_fraction`s: a list with each `thresholds` value as a
+#'   component, each component containing a vector for the count and fraction.
 #'
 #' @keywords internal
 s_count_cumulative <- function(x,
@@ -123,19 +119,11 @@ s_count_cumulative <- function(x,
   list(count_fraction = count_fraction_list)
 }
 
-#' @describeIn count_cumulative Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn count_cumulative Formatted analysis function which is used as `afun`
+#'   in `count_cumulative()`.
 #'
-#' @return [a_count_cumulative()] returns the corresponding list with formatted [rtables::CellValue()].
-#'
-#' @examples
-#' # Internal function - a_count_cumulative
-#' \dontrun{
-#' # Use the Formatted Analysis function for `analyze()`. We need to ungroup `count_fraction` first
-#' # so that the `rtables` formatting function `format_count_fraction()` can be applied correctly.
-#' afun <- make_afun(a_count_cumulative, .ungroup_stats = "count_fraction")
-#' afun(x, thresholds = c(0, 5, 11), .N_col = .N_col)
-#' }
+#' @return
+#' * `a_count_cumulative()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @keywords internal
 a_count_cumulative <- make_afun(
@@ -143,13 +131,13 @@ a_count_cumulative <- make_afun(
   .formats = c(count_fraction = format_count_fraction)
 )
 
-#' @describeIn count_cumulative Layout creating function which can be be used for creating
-#'   summary tables for cumulative counts of a variable. The ellipsis (`...`) conveys
-#'   arguments to `s_count_cumulative()`, for instance `lower_tail = FALSE` if upper tail
-#'   should be accounted for.
+#' @describeIn count_cumulative Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @inheritParams argument_convention
-#' @export
+#' @return
+#' * `count_cumulative()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_cumulative()` to the table layout.
 #'
 #' @examples
 #' basic_table() %>%
@@ -160,10 +148,15 @@ a_count_cumulative <- make_afun(
 #'     thresholds = c(40, 60)
 #'   ) %>%
 #'   build_table(tern_ex_adsl)
+#'
+#' @export
+#' @order 2
 count_cumulative <- function(lyt,
                              vars,
                              var_labels = vars,
                              show_labels = "visible",
+                             na_str = NA_character_,
+                             nested = TRUE,
                              ...,
                              table_names = vars,
                              .stats = NULL,
@@ -182,9 +175,11 @@ count_cumulative <- function(lyt,
     lyt,
     vars,
     afun = afun,
+    na_str = na_str,
     table_names = table_names,
     var_labels = var_labels,
     show_labels = show_labels,
+    nested = nested,
     extra_args = list(...)
   )
 }

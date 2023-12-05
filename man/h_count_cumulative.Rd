@@ -25,15 +25,15 @@ count, default is \code{TRUE}.}
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{.N_col}{(\code{count})\cr denominator for fraction calculation.}
+\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+passed by \code{rtables}.}
 }
 \value{
 A named vector with items:
-\describe{
-\item{count}{the count of values less than, less or equal to, greater than, or greater or equal to a threshold
+\itemize{
+\item \code{count}: the count of values less than, less or equal to, greater than, or greater or equal to a threshold
 of user specification.
-}
-\item{fraction}{the fraction of the count.}
+\item \code{fraction}: the fraction of the count.
 }
 }
 \description{
@@ -45,10 +45,12 @@ Helper function to calculate count and fraction of \code{x} values in the lower 
 set.seed(1, kind = "Mersenne-Twister")
 x <- c(sample(1:10, 10), NA)
 .N_col <- length(x)
+
 h_count_cumulative(x, 5, .N_col = .N_col)
 h_count_cumulative(x, 5, lower_tail = FALSE, include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
 h_count_cumulative(x, 0, lower_tail = FALSE, .N_col = .N_col)
 h_count_cumulative(x, 100, lower_tail = FALSE, .N_col = .N_col)
+
 }
 \seealso{
 \link{count_cumulative}

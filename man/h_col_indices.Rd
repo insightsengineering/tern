@@ -12,7 +12,7 @@ h_col_indices(table_tree, col_names)
 \item{col_names}{(\code{character})\cr vector of column names.}
 }
 \value{
-the vector of column indices.
+A vector of column indices.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

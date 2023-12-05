@@ -8,8 +8,7 @@ fit_rsp_step(variables, data, control = c(control_step(), control_logistic()))
 }
 \arguments{
 \item{variables}{(named \code{list} of \code{character})\cr list of analysis variables:
-needs \code{response}, \code{arm}, \code{biomarker}, and optional \code{covariates} and
-\code{strata}.}
+needs \code{response}, \code{arm}, \code{biomarker}, and optional \code{covariates} and \code{strata}.}
 
 \item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
@@ -17,7 +16,7 @@ needs \code{response}, \code{arm}, \code{biomarker}, and optional \code{covariat
 and \code{\link[=control_logistic]{control_logistic()}}.}
 }
 \value{
-a matrix of class \code{step}. The first part of the columns describe the
+A matrix of class \code{step}. The first part of the columns describe the
 subgroup intervals used for the biomarker variable, including where the
 center of the intervals are and their bounds. The second part of the
 columns contain the estimates for the treatment arm comparison.
@@ -35,7 +34,9 @@ The (conditional) logistic regression model which is fit is:
 \code{response ~ arm * poly(biomarker, degree) + covariates + strata(strata)}
 
 where \code{degree} is specified by \code{control_step()}.
-Note that for the default degree 0 the \code{biomarker} variable is not included in the model.
+}
+\note{
+For the default degree 0 the \code{biomarker} variable is not included in the model.
 }
 \examples{
 # Testing dataset with just two treatment arms.
@@ -100,6 +101,7 @@ step_matrix4 <- fit_rsp_step(
   data = adrs_f,
   control = c(control_logistic(), control_step(bandwidth = 0.6))
 )
+
 }
 \seealso{
 \code{\link[=control_step]{control_step()}} and \code{\link[=control_logistic]{control_logistic()}} for the available

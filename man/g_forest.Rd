@@ -18,6 +18,7 @@ g_forest(
   width_forest = grid::unit(1, "null"),
   col_symbol_size = attr(tbl, "col_symbol_size"),
   col = getOption("ggplot2.discrete.colour")[1],
+  gp = NULL,
   draw = TRUE,
   newpage = TRUE
 )
@@ -59,13 +60,17 @@ By default tries to get this from \code{tbl} attribute \code{col_symbol_size}, o
 
 \item{col}{(\code{character})\cr color(s).}
 
+\item{gp}{A \code{"gpar"} object, typically the output
+    from a call to the function \code{\link[grid]{gpar}}.  This is basically
+    a list of graphical parameter settings.}
+
 \item{draw}{(\code{flag})\cr whether the plot should be drawn.}
 
 \item{newpage}{(\code{flag})\cr whether the plot should be drawn on a new page.
 Only considered if \code{draw = TRUE} is used.}
 }
 \value{
-\code{gtree} object containing the forest plot and table
+\code{gTree} object containing the forest plot and table.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -75,7 +80,7 @@ Create a forest plot from any \code{\link[rtables:rtable]{rtables::rtable()}} ob
 column with a single value and a column with 2 values.
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(forcats)
 library(nestcolor)
@@ -102,7 +107,7 @@ df <- extract_rsp_subgroups(
 
 tbl <- basic_table() \%>\%
   tabulate_rsp_subgroups(df)
-p <- g_forest(tbl)
+p <- g_forest(tbl, gp = grid::gpar(fontsize = 10))
 
 draw_grob(p)
 
@@ -185,4 +190,5 @@ g_forest(
   forest_header = c("Hello", "World")
 )
 }
+
 }

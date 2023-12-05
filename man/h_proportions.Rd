@@ -45,6 +45,9 @@ minimizes the weighted squared length of the confidence interval.}
 \item{max_iterations}{(\code{count})\cr maximum number of iterations for the iterative procedure used
 to find estimates of optimal weights.}
 }
+\value{
+Confidence interval of a proportion.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -52,28 +55,23 @@ Functions to calculate different proportion confidence intervals for use in \cod
 }
 \section{Functions}{
 \itemize{
-\item \code{prop_wilson()}: the Wilson interval calls \code{\link[stats:prop.test]{stats::prop.test()}}.
+\item \code{prop_wilson()}: Calculates the Wilson interval by calling \code{\link[stats:prop.test]{stats::prop.test()}}.
 Also referred to as Wilson score interval.
 
 \item \code{prop_strat_wilson()}: Calculates the stratified Wilson confidence
-interval for unequal proportions as described in
-\insertCite{Yan2010-jt;textual}{tern}
+interval for unequal proportions as described in \insertCite{Yan2010-jt;textual}{tern}
 
-\item \code{prop_clopper_pearson()}: the Clopper-Pearson interval calls
-\code{\link[stats:binom.test]{stats::binom.test()}}. Also referred to as the \code{exact} method.
+\item \code{prop_clopper_pearson()}: Calculates the Clopper-Pearson interval by calling \code{\link[stats:binom.test]{stats::binom.test()}}.
+Also referred to as the \code{exact} method.
 
-\item \code{prop_wald()}: the Wald interval follows the usual
-textbook definition for a single proportion confidence interval using the
-normal approximation.
+\item \code{prop_wald()}: Calculates the Wald interval by following the usual textbook definition
+for a single proportion confidence interval using the normal approximation.
 
-\item \code{prop_agresti_coull()}: the Agresti-Coull interval was created by
-Alan Agresti and Brent Coull and can be understood (for 95\% CI) as adding
-two successes and two failures to the data, and then using the Wald
-formula to construct a CI.
+\item \code{prop_agresti_coull()}: Calculates the \code{Agresti-Coull} interval (created by \verb{Alan Agresti} and \verb{Brent Coull}) by
+(for 95\% CI) adding two successes and two failures to the data and then using the Wald formula to construct a CI.
 
-\item \code{prop_jeffreys()}: the Jeffreys interval is an equal-tailed
-interval based on the non-informative Jeffreys prior for a binomial
-proportion.
+\item \code{prop_jeffreys()}: Calculates the Jeffreys interval, an equal-tailed interval based on the
+non-informative Jeffreys prior for a binomial proportion.
 
 }}
 \examples{
@@ -106,6 +104,7 @@ prop_strat_wilson(
   weights = rep(1 / n_strata, n_strata),
   conf_level = 0.90
 )
+
 prop_clopper_pearson(rsp, conf_level = .95)
 
 prop_wald(rsp, conf_level = 0.95)
@@ -117,9 +116,7 @@ prop_jeffreys(rsp, conf_level = 0.95)
 
 }
 \references{
-\itemize{
-\item \insertRef{Yan2010-jt}{tern}
-}
+\insertRef{Yan2010-jt}{tern}
 }
 \seealso{
 \link{estimate_proportions}, descriptive function \code{\link[=d_proportion]{d_proportion()}},

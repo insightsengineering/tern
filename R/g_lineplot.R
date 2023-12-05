@@ -5,13 +5,17 @@
 #' Line plot with the optional table.
 #'
 #' @param df (`data.frame`)\cr data set containing all analysis variables.
-#' @param alt_counts_df (`data.frame` or `NULL`)\cr data set that will be used (only) to counts objects in strata.
+#' @param alt_counts_df (`data.frame` or `NULL`)\cr data set that will be used (only)
+#'   to counts objects in groups for stratification.
 #' @param variables (named `character` vector) of variable names in `df` data set. Details are:
 #'   * `x` (`character`)\cr name of x-axis variable.
 #'   * `y` (`character`)\cr name of y-axis variable.
-#'   * `strata` (`character`)\cr name of grouping variable, i.e. treatment arm. Can be `NA` to indicate lack of groups.
+#'   * `group_var` (`character`)\cr name of grouping variable (or strata), i.e. treatment arm.
+#'     Can be `NA` to indicate lack of groups.
+#'   * `subject_var` (`character`)\cr name of subject variable. Only applies if `group_var` is
+#'      not NULL.
 #'   * `paramcd` (`character`)\cr name of the variable for parameter's code. Used for y-axis label and plot's subtitle.
-#'     Can be `NA` if paramcd is not to be added to the y-axis label or subtitle.
+#'     Can be `NA` if `paramcd` is not to be added to the y-axis label or subtitle.
 #'   * `y_unit` (`character`)\cr name of variable with units of `y`. Used for y-axis label and plot's subtitle.
 #'     Can be `NA` if y unit is not to be added to the y-axis label or subtitle.
 #' @param mid (`character` or `NULL`)\cr names of the statistics that will be plotted as midpoints.
@@ -19,10 +23,12 @@
 #'   and be of a `double` or `numeric` type vector of length one.
 #' @param interval (`character` or `NULL`)\cr names of the statistics that will be plotted as intervals.
 #'   All the statistics indicated in `interval` variable must be present in the object returned by `sfun`,
-#'   and be of a `double` or `numeric` type vector of length two.
-#' @param whiskers (`character`)\cr names of the interval whiskers that will be plotted. Must match the `names`
-#'   attribute of the `interval` element in the list returned by `sfun`. It is possible to specify one whisker only,
-#'   lower or upper.
+#'   and be of a `double` or `numeric` type vector of length two. Set `interval = NULL` if intervals should not be
+#'   added to the plot.
+#' @param whiskers (`character`)\cr names of the interval whiskers that will be plotted. Names must match names
+#'   of the list element `interval` that will be returned by `sfun` (e.g. `mean_ci_lwr` element of
+#'   `sfun(x)[["mean_ci"]]`). It is possible to specify one whisker only, or to suppress all whiskers by setting
+#'   `interval = NULL`.
 #' @param table (`character` or `NULL`)\cr names of the statistics that will be displayed in the table below the plot.
 #'   All the statistics indicated in `table` variable must be present in the object returned by `sfun`.
 #' @param sfun (`closure`)\cr the function to compute the values of required statistics. It must return a named `list`
@@ -38,14 +44,15 @@
 #' @param legend_position (`character`)\cr the position of the plot legend (`none`, `left`, `right`, `bottom`, `top`,
 #'   or two-element numeric vector).
 #' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to control styling of the plot.
+#' @param x_lab (`character`)\cr x-axis label. If equal to `NULL`, then no label will be added.
 #' @param y_lab (`character`)\cr y-axis label. If equal to `NULL`, then no label will be added.
-#' @param y_lab_add_paramcd (`logical`)\cr should paramcd, i.e. `unique(df[[variables["paramcd"]]])` be added to the
+#' @param y_lab_add_paramcd (`logical`)\cr should `paramcd`, i.e. `unique(df[[variables["paramcd"]]])` be added to the
 #'   y-axis label `y_lab`?
 #' @param y_lab_add_unit (`logical`)\cr should y unit, i.e. `unique(df[[variables["y_unit"]]])` be added to the y-axis
 #'   label `y_lab`?
 #' @param title (`character`)\cr plot title.
 #' @param subtitle (`character`)\cr plot subtitle.
-#' @param subtitle_add_paramcd (`logical`)\cr should paramcd, i.e. `unique(df[[variables["paramcd"]]])` be added to
+#' @param subtitle_add_paramcd (`logical`)\cr should `paramcd`, i.e. `unique(df[[variables["paramcd"]]])` be added to
 #'   the plot's subtitle `subtitle`?
 #' @param subtitle_add_unit (`logical`)\cr should y unit, i.e. `unique(df[[variables["y_unit"]]])` be added to the
 #'   plot's subtitle `subtitle`?
@@ -59,11 +66,7 @@
 #' @param newpage (`logical`)\cr should plot be drawn on new page?
 #' @param col (`character`)\cr colors.
 #'
-#' @author Wojciech Wojciak wojciech.wojciak@contractors.roche.com
-#'
-#' @return \code{ggplot}
-#'
-#' @export
+#' @return A `ggplot` line plot (and statistics table if applicable).
 #'
 #' @examples
 #' library(nestcolor)
@@ -76,10 +79,10 @@
 #' # Mean with CI
 #' g_lineplot(adlb, adsl, subtitle = "Laboratory Test:")
 #'
-#' # Mean with CI, no stratification
-#' g_lineplot(adlb, variables = control_lineplot_vars(strata = NA))
+#' # Mean with CI, no stratification with group_var
+#' g_lineplot(adlb, variables = control_lineplot_vars(group_var = NA))
 #'
-#' # Mean, upper whisker of CI, no strata counts N
+#' # Mean, upper whisker of CI, no group_var(strata) counts N
 #' g_lineplot(
 #'   adlb,
 #'   whiskers = "mean_ci_upr",
@@ -111,14 +114,16 @@
 #'   adlb,
 #'   adsl,
 #'   table = c("n", "mean", "mean_ci"),
-#'   control = control_summarize_vars(conf_level = 0.80),
+#'   control = control_analyze_vars(conf_level = 0.80),
 #'   title = "Plot of Mean and 80% Confidence Limits by Visit"
 #' )
 #'
 #' # Mean with CI, table, filtered data
 #' adlb_f <- dplyr::filter(adlb, ARMCD != "ARM A" | AVISIT == "BASELINE")
 #' g_lineplot(adlb_f, table = c("n", "mean"))
-g_lineplot <- function(df, # nolint
+#'
+#' @export
+g_lineplot <- function(df,
                        alt_counts_df = NULL,
                        variables = control_lineplot_vars(),
                        mid = "mean",
@@ -133,6 +138,7 @@ g_lineplot <- function(df, # nolint
                        legend_title = NULL,
                        legend_position = "bottom",
                        ggtheme = nestcolor::theme_nest(),
+                       x_lab = obj_label(df[[variables[["x"]]]]),
                        y_lab = NULL,
                        y_lab_add_paramcd = TRUE,
                        y_lab_add_unit = TRUE,
@@ -171,10 +177,11 @@ g_lineplot <- function(df, # nolint
   y <- variables[["y"]]
   paramcd <- variables["paramcd"] # NA if paramcd == NA or it is not in variables
   y_unit <- variables["y_unit"] # NA if y_unit == NA or it is not in variables
-  if (is.na(variables["strata"])) {
-    strata <- NULL # NULL if strata == NA or it is not in variables
+  if (is.na(variables["group_var"])) {
+    group_var <- NULL # NULL if group_var == NA or it is not in variables
   } else {
-    strata <- variables[["strata"]]
+    group_var <- variables[["group_var"]]
+    subject_var <- variables[["subject_var"]]
   }
   checkmate::assert_flag(y_lab_add_paramcd, null.ok = TRUE)
   checkmate::assert_flag(subtitle_add_paramcd, null.ok = TRUE)
@@ -190,21 +197,21 @@ g_lineplot <- function(df, # nolint
     checkmate::assert_scalar(unique(df[[y_unit]]))
   }
 
-  if (!is.null(strata) && !is.null(alt_counts_df)) {
-    checkmate::assert_set_equal(unique(alt_counts_df[[strata]]), unique(df[[strata]]))
+  if (!is.null(group_var) && !is.null(alt_counts_df)) {
+    checkmate::assert_set_equal(unique(alt_counts_df[[group_var]]), unique(df[[group_var]]))
   }
 
   ####################################### |
   # ---- Compute required statistics ----
   ####################################### |
-  if (!is.null(strata)) {
-    df_grp <- tidyr::expand(df, .data[[strata]], .data[[x]]) # expand based on levels of factors
+  if (!is.null(group_var)) {
+    df_grp <- tidyr::expand(df, .data[[group_var]], .data[[x]]) # expand based on levels of factors
   } else {
     df_grp <- tidyr::expand(df, NULL, .data[[x]])
   }
   df_grp <- df_grp %>%
-    dplyr::full_join(y = df[, c(strata, x, y)], by = c(strata, x), multiple = "all") %>%
-    dplyr::group_by_at(c(strata, x))
+    dplyr::full_join(y = df[, c(group_var, x, y)], by = c(group_var, x), multiple = "all") %>%
+    dplyr::group_by_at(c(group_var, x))
 
   df_stats <- df_grp %>%
     dplyr::summarise(
@@ -212,22 +219,22 @@ g_lineplot <- function(df, # nolint
       .groups = "drop"
     )
 
-  df_stats <- df_stats %>% dplyr::filter(!is.na(mid))
+  df_stats <- df_stats[!is.na(df_stats[[mid]]), ]
 
-  # add number of objects N in strata
-  if (!is.null(strata) && !is.null(alt_counts_df)) {
-    strata_N <- paste0(strata, "_N") # nolint
+  # add number of objects N in group_var (strata)
+  if (!is.null(group_var) && !is.null(alt_counts_df)) {
+    strata_N <- paste0(group_var, "_N") # nolint
 
-    df_N <- as.data.frame(table(alt_counts_df[[strata]], exclude = c(NA, NaN, Inf))) # nolint
-    colnames(df_N) <- c(strata, "N") # nolint
-    df_N[[strata_N]] <- paste0(df_N[[strata]], " (N = ", df_N$N, ")") # nolint
+    df_N <- stats::aggregate(eval(parse(text = subject_var)) ~ eval(parse(text = group_var)), data = alt_counts_df, FUN = function(x) length(unique(x))) # nolint
+    colnames(df_N) <- c(group_var, "N") # nolint
+    df_N[[strata_N]] <- paste0(df_N[[group_var]], " (N = ", df_N$N, ")") # nolint
 
     # strata_N should not be in clonames(df_stats)
     checkmate::assert_disjunct(strata_N, colnames(df_stats))
 
-    df_stats <- merge(x = df_stats, y = df_N[, c(strata, strata_N)], by = strata)
-  } else if (!is.null(strata)) {
-    strata_N <- strata # nolint
+    df_stats <- merge(x = df_stats, y = df_N[, c(group_var, strata_N)], by = group_var)
+  } else if (!is.null(group_var)) {
+    strata_N <- group_var # nolint
   } else {
     strata_N <- NULL # nolint
   }
@@ -236,8 +243,8 @@ g_lineplot <- function(df, # nolint
   # ---- Prepare certain plot's properties. ----
   ############################################### |
   # legend title
-  if (is.null(legend_title) && !is.null(strata) && legend_position != "none") {
-    legend_title <- attr(df[[strata]], "label")
+  if (is.null(legend_title) && !is.null(group_var) && legend_position != "none") {
+    legend_title <- attr(df[[group_var]], "label")
   }
 
   # y label
@@ -288,9 +295,8 @@ g_lineplot <- function(df, # nolint
 
     # lines
     # further conditions in if are to ensure that not all of the groups consist of only one observation
-    if (grepl("l", mid_type, fixed = TRUE) &&
-      !is.null(strata) &&
-      !all(dplyr::summarise(df_grp, count_n = dplyr::n())[["count_n"]] == 1L)) {
+    if (grepl("l", mid_type, fixed = TRUE) && !is.null(group_var) &&
+      !all(dplyr::summarise(df_grp, count_n = dplyr::n())[["count_n"]] == 1L)) { # nolint
       p <- p + ggplot2::geom_line(position = position, na.rm = TRUE)
     }
   }
@@ -318,7 +324,7 @@ g_lineplot <- function(df, # nolint
   }
 
   p <- p +
-    ggplot2::scale_y_continuous(labels = scales::comma, expand = ggplot2::expansion(c(0.25, .25))) +
+    ggplot2::scale_y_continuous(labels = scales::comma) +
     ggplot2::labs(
       title = title,
       subtitle = subtitle,
@@ -326,7 +332,7 @@ g_lineplot <- function(df, # nolint
       color = legend_title,
       lty = legend_title,
       shape = legend_title,
-      x = attr(df[[x]], "label"),
+      x = x_lab,
       y = y_lab
     )
 
@@ -365,11 +371,11 @@ g_lineplot <- function(df, # nolint
         .groups = "drop"
       )
 
-    stats_lev <- rev(setdiff(colnames(df_stats_table), c(strata, x)))
+    stats_lev <- rev(setdiff(colnames(df_stats_table), c(group_var, x)))
 
     df_stats_table <- df_stats_table %>%
       tidyr::pivot_longer(
-        cols = -dplyr::all_of(c(strata, x)),
+        cols = -dplyr::all_of(c(group_var, x)),
         names_to = "stat",
         values_to = "value",
         names_ptypes = list(stat = factor(levels = stats_lev))
@@ -395,8 +401,8 @@ g_lineplot <- function(df, # nolint
         legend.position = "none"
       )
 
-    if (!is.null(strata)) {
-      tbl <- tbl + ggplot2::facet_wrap(facets = strata, ncol = 1)
+    if (!is.null(group_var)) {
+      tbl <- tbl + ggplot2::facet_wrap(facets = group_var, ncol = 1)
     }
 
     # align plot and table
@@ -406,30 +412,24 @@ g_lineplot <- function(df, # nolint
   }
 }
 
-#' Helper function to get the right formatting in the optional table in g_lineplot.
+#' Helper function to get the right formatting in the optional table in `g_lineplot`.
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @param x (named `list`)\cr list of numerical values to be formatted and optionally labeled.
-#' Elements of `x` must be `numeric` vectors.
-#' @param format (named `character` or `NULL`)\cr
-#' format patterns for `x`. Names of the `format` must match the names of `x`.
-#' This parameter is passed directly to the `rtables::format_rcell`
-#' function through the `format` parameter.
-#' @param labels (named `character` or `NULL`)\cr
-#' optional labels for `x`. Names of the `labels` must match the names of `x`.
-#' When a label is not specified for an element of `x`,
-#' then this function tries to use `label` or `names` (in this order) attribute of that element
-#' (depending on which one exists and it is not `NULL` or `NA` or `NaN`).
-#' If none of these attributes are attached to a given element of `x`,
-#' then the label is automatically generated.
+#'   Elements of `x` must be `numeric` vectors.
+#' @param format (named `character` or `NULL`)\cr format patterns for `x`. Names of the `format` must
+#'   match the names of `x`. This parameter is passed directly to the `rtables::format_rcell`
+#'   function through the `format` parameter.
+#' @param labels (named `character` or `NULL`)\cr optional labels for `x`. Names of the `labels` must
+#'   match the names of `x`. When a label is not specified for an element of `x`,
+#'   then this function tries to use `label` or `names` (in this order) attribute of that element
+#'   (depending on which one exists and it is not `NULL` or `NA` or `NaN`). If none of these attributes
+#'   are attached to a given element of `x`, then the label is automatically generated.
 #'
-#' @author Wojciech Wojciak wojciech.wojciak@contractors.roche.com
-#'
-#' @return 1-row \code{data.frame} object
+#' @return A single row `data.frame` object.
 #'
 #' @examples
-#'
 #' mean_ci <- c(48, 51)
 #' x <- list(mean = 50, mean_ci = mean_ci)
 #' format <- c(mean = "xx.x", mean_ci = "(xx.xx, xx.xx)")
@@ -444,7 +444,7 @@ g_lineplot <- function(df, # nolint
 h_format_row <- function(x, format, labels = NULL) {
   # cell: one row, one column data.frame
   format_cell <- function(x, format, label = NULL) {
-    fc <- format_rcell(x = x, format = format)
+    fc <- format_rcell(x = x, format = unlist(format))
     if (is.na(fc)) {
       fc <- "NA"
     }
@@ -469,7 +469,7 @@ h_format_row <- function(x, format, labels = NULL) {
   row
 }
 
-#' Control Function for g_lineplot Function
+#' Control Function for `g_lineplot` Function
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -478,26 +478,40 @@ h_format_row <- function(x, format, labels = NULL) {
 #'
 #' @param x (`character`)\cr x variable name.
 #' @param y (`character`)\cr y variable name.
-#' @param strata (`character` or `NA`)\cr strata variable name.
-#' @param paramcd (`character` or `NA`)\cr paramcd variable name.
-#' @param y_unit (`character` or `NA`)\cr y_unit variable name.
+#' @param group_var (`character` or `NA`)\cr group variable name.
+#' @param strata (`character` or `NA`)\cr deprecated - group variable name.
+#' @param subject_var (`character` or `NA`)\cr subject variable name.
+#' @param cohort_id (`character` or `NA`)\cr deprecated - subject variable name.
+#' @param paramcd (`character` or `NA`)\cr `paramcd` variable name.
+#' @param y_unit (`character` or `NA`)\cr `y_unit` variable name.
 #'
-#' @return A named character vector with names of variables.
-#'
-#' @author Wojciech Wojciak wojciech.wojciak@contractors.roche.com
-#'
-#' @export
+#' @return A named character vector of variable names.
 #'
 #' @examples
 #' control_lineplot_vars()
-#' control_lineplot_vars(strata = NA)
-control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", strata = "ARM", paramcd = "PARAMCD", y_unit = "AVALU") {
+#' control_lineplot_vars(group_var = NA)
+#'
+#' @export
+control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", group_var = "ARM", paramcd = "PARAMCD", y_unit = "AVALU",
+                                  subject_var = "USUBJID", strata = lifecycle::deprecated(),
+                                  cohort_id = lifecycle::deprecated()) {
+  if (lifecycle::is_present(strata)) {
+    lifecycle::deprecate_warn("0.9.2", "control_lineplot_vars(strata)", "control_lineplot_vars(group_var)")
+    group_var <- strata
+  }
+
+  if (lifecycle::is_present(cohort_id)) {
+    lifecycle::deprecate_warn("0.9.2", "control_lineplot_vars(cohort_id)", "control_lineplot_vars(subject_id)")
+    subject_id <- cohort_id
+  }
+
   checkmate::assert_string(x)
   checkmate::assert_string(y)
-  checkmate::assert_string(strata, na.ok = TRUE)
+  checkmate::assert_string(group_var, na.ok = TRUE)
+  checkmate::assert_string(subject_var, na.ok = TRUE)
   checkmate::assert_string(paramcd, na.ok = TRUE)
   checkmate::assert_string(y_unit, na.ok = TRUE)
 
-  variables <- c(x = x, y = y, strata = strata, paramcd = paramcd, y_unit = y_unit)
+  variables <- c(x = x, y = y, group_var = group_var, paramcd = paramcd, y_unit = y_unit, subject_var = subject_var)
   return(variables)
 }

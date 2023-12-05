@@ -16,26 +16,16 @@ as_factor_keep_attributes(
 
 \item{x_name}{(\code{string})\cr name of \code{x}.}
 
-\item{na_level}{(\code{string})\cr the explicit missing level which should be used when
-converting a character vector.}
+\item{na_level}{(\code{string})\cr the explicit missing level which should be used when converting a character vector.}
 
 \item{verbose}{defaults to \code{TRUE}. It prints out warnings and messages.}
 }
 \value{
-The factor with same attributes (except class) as \code{x}. Does not do any modifications
-if \code{x} is already a factor.
+A \code{factor} with same attributes (except class) as \code{x}. Does not modify \code{x} if already a \code{factor}.
 }
 \description{
 Converts \code{x} to a factor and keeps its attributes. Warns appropriately such that the user
 can decide whether they prefer converting to factor manually (e.g. for full control of
 factor levels).
-}
-\examples{
-# Internal function - as_factor_keep_attributes
-\dontrun{
-as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"), verbose = FALSE)
-as_factor_keep_attributes(c("a", "b", ""), "id", verbose = FALSE)
-}
-
 }
 \keyword{internal}

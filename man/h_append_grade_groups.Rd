@@ -15,6 +15,9 @@ and each entry represents a count.}
 \item{remove_single}{(\code{logical})\cr \code{TRUE} to not include the elements of one-element grade groups
 in the the output list; in this case only the grade groups names will be included in the output.}
 }
+\value{
+Formatted list of grade groupings.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

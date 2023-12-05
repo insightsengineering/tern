@@ -5,6 +5,7 @@
 \alias{h_coxreg_inter_effect}
 \alias{h_coxreg_inter_effect.numeric}
 \alias{h_coxreg_inter_effect.factor}
+\alias{h_coxreg_inter_effect.character}
 \alias{h_coxreg_extract_interaction}
 \alias{h_coxreg_inter_estimations}
 \title{Cox Regression Helper: Interactions}
@@ -14,6 +15,8 @@ h_coxreg_inter_effect(x, effect, covar, mod, label, control, ...)
 \method{h_coxreg_inter_effect}{numeric}(x, effect, covar, mod, label, control, at, ...)
 
 \method{h_coxreg_inter_effect}{factor}(x, effect, covar, mod, label, control, data, ...)
+
+\method{h_coxreg_inter_effect}{character}(x, effect, covar, mod, label, control, data, ...)
 
 h_coxreg_extract_interaction(effect, covar, mod, data, at, control)
 
@@ -27,7 +30,7 @@ h_coxreg_inter_estimations(
 )
 }
 \arguments{
-\item{x}{(\code{numeric} or \code{factor})\cr the values of the effect to be tested.}
+\item{x}{(\code{numeric} or \code{factor})\cr the values of the covariate to be tested.}
 
 \item{effect}{(\code{string})\cr the name of the effect to be tested and estimated.}
 
@@ -35,11 +38,9 @@ h_coxreg_inter_estimations(
 
 \item{mod}{(\code{coxph})\cr a fitted Cox regression model (see \code{\link[survival:coxph]{survival::coxph()}}).}
 
-\item{label}{(\code{string})\cr the label to be return as \code{term_label}
-(see \code{return}).}
+\item{label}{(\code{string})\cr the label to be returned as \code{term_label}.}
 
-\item{control}{(\code{list})\cr a list of controls as returned by
-\code{\link[=control_coxreg]{control_coxreg()}}.}
+\item{control}{(\code{list})\cr a list of controls as returned by \code{\link[=control_coxreg]{control_coxreg()}}.}
 
 \item{...}{see methods.}
 
@@ -56,13 +57,25 @@ of the levels of \code{variable} given the levels of \code{given}.}
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 }
 \value{
-A list of matrix (one per level of variable) with rows corresponding to the combinations of
-\code{variable} and \code{given}, with columns:
-\describe{
-\item{coef_hat}{Estimation of the coefficient.}
-\item{coef_se}{Standard error of the estimation.}
-\item{hr}{Hazard ratio.}
-\item{lcl, ucl}{Lower/upper confidence limit of the hazard ratio.}
+\itemize{
+\item \code{h_coxreg_inter_effect()} returns a \code{data.frame} of covariate interaction effects consisting of the following
+variables: \code{effect}, \code{term}, \code{term_label}, \code{level}, \code{n}, \code{hr}, \code{lcl}, \code{ucl}, \code{pval}, and \code{pval_inter}.
+}
+
+\itemize{
+\item \code{h_coxreg_extract_interaction()} returns the result of an interaction test and the estimated values. If
+no interaction, \code{\link[=h_coxreg_univar_extract]{h_coxreg_univar_extract()}} is applied instead.
+}
+
+\itemize{
+\item \code{h_coxreg_inter_estimations()} returns a list of matrices (one per level of variable) with rows corresponding
+to the combinations of \code{variable} and \code{given}, with columns:
+\itemize{
+\item \code{coef_hat}: Estimation of the coefficient.
+\item \code{coef_se}: Standard error of the estimation.
+\item \code{hr}: Hazard ratio.
+\item \verb{lcl, ucl}: Lower/upper confidence limit of the hazard ratio.
+}
 }
 }
 \description{
@@ -89,19 +102,28 @@ is obtained as $sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_coxreg_inter_effect(numeric)}: Estimate the interaction with a numerical
-covariate
+\item \code{h_coxreg_inter_effect()}: S3 generic helper function to determine interaction effect.
 
-\item \code{h_coxreg_inter_effect(factor)}: Estimate the interaction with a factor
-covariate.
+\item \code{h_coxreg_inter_effect(numeric)}: Method for \code{numeric} class. Estimates the interaction with a \code{numeric} covariate.
 
-\item \code{h_coxreg_extract_interaction()}: a higher level function that returns
-the test of the interaction test and the estimated values. If
-no interaction, \code{\link[=h_coxreg_univar_extract]{h_coxreg_univar_extract()}} is applied.
+\item \code{h_coxreg_inter_effect(factor)}: Method for \code{factor} class. Estimate the interaction with a \code{factor} covariate.
 
-\item \code{h_coxreg_inter_estimations()}: hazard ratio estimation in interactions.
+\item \code{h_coxreg_inter_effect(character)}: Method for \code{character} class. Estimate the interaction with a \code{character} covariate.
+This makes an automatic conversion to \code{factor} and then forwards to the method for factors.
+
+\item \code{h_coxreg_extract_interaction()}: A higher level function to get
+the results of the interaction test and the estimated values.
+
+\item \code{h_coxreg_inter_estimations()}: Hazard ratio estimation in interactions.
 
 }}
+\note{
+\itemize{
+\item Automatic conversion of character to factor does not guarantee results can be generated correctly. It is
+therefore better to always pre-process the dataset such that factors are manually created from character
+variables before passing the dataset to \code{\link[rtables:build_table]{rtables::build_table()}}.
+}
+}
 \examples{
 library(survival)
 
@@ -138,6 +160,7 @@ h_coxreg_extract_interaction(
   mod = mod, effect = "armcd", covar = "covar1", data = dta_bladder,
   control = control_coxreg()
 )
+
 mod <- coxph(Surv(time, status) ~ armcd * covar1, data = dta_bladder)
 result <- h_coxreg_inter_estimations(
   variable = "armcd", given = "covar1",

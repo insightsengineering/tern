@@ -2,6 +2,12 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
+#' From a survival model, a graphic is rendered along with tabulated annotation
+#' including the number of patient at risk at given time and the median survival
+#' per group.
+#'
+#' @inheritParams grid::gTree
+#' @inheritParams argument_convention
 #' @param df (`data.frame`)\cr data set containing all analysis variables.
 #' @param variables (named `list`)\cr variable names. Details are:
 #'   * `tte` (`numeric`)\cr variable indicating time-to-event duration values.
@@ -9,11 +15,10 @@
 #'   * `arm` (`factor`)\cr the treatment group variable.
 #'   * `strat` (`character` or `NULL`)\cr variable names indicating stratification factors.
 #' @param control_surv (`list`)\cr parameters for comparison details, specified by using
-#'   the helper function [`control_surv_timepoint`]. Some possible parameter options are:
+#'   the helper function [control_surv_timepoint()]. Some possible parameter options are:
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for survival rate.
-#'   * `conf_type` (`string`)\cr "plain" (default), "log", "log-log" for confidence interval type,
+#'   * `conf_type` (`string`)\cr `"plain"` (default), `"log"`, `"log-log"` for confidence interval type,
 #'     see more in [survival::survfit()]. Note that the option "none" is no longer supported.
-#' @param data (`data.frame`)\cr survival data as pre-processed by `h_data_plot`.
 #' @param xticks (`numeric`, `number`, or `NULL`)\cr numeric vector of ticks or single number with spacing
 #'   between ticks on the x axis. If `NULL` (default), [labeling::extended()] is used to determine
 #'   an optimal tick position on the x axis.
@@ -21,6 +26,8 @@
 #' @param censor_show (`flag`)\cr whether to show censored.
 #' @param xlab (`string`)\cr label of x-axis.
 #' @param ylab (`string`)\cr label of y-axis.
+#' @param ylim (`vector` of `numeric`)\cr vector of length 2 containing lower and upper limits for the y-axis.
+#'   If `NULL` (default), the minimum and maximum y-values displayed are used as limits.
 #' @param title (`string`)\cr title for plot.
 #' @param footnotes (`string`)\cr footnotes for plot.
 #' @param col (`character`)\cr lines colors. Length of a vector should be equal
@@ -38,6 +45,8 @@
 #' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to control outlook of the Kaplan-Meier curve.
 #' @param annot_at_risk (`flag`)\cr compute and add the annotation table reporting the number of patient at risk
 #'   matching the main grid of the Kaplan-Meier curve.
+#' @param annot_at_risk_title (`flag`)\cr whether the "Patients at Risk" title should be added above the `annot_at_risk`
+#'   table. Has no effect if `annot_at_risk` is `FALSE`. Defaults to `TRUE`.
 #' @param annot_surv_med (`flag`)\cr compute and add the annotation table on the Kaplan-Meier curve estimating the
 #'   median survival time per group.
 #' @param annot_coxph (`flag`)\cr add the annotation table from a [survival::coxph()] model.
@@ -48,35 +57,25 @@
 #' @param control_coxph_pw (`list`)\cr parameters for comparison details, specified by using
 #'   the helper function [control_coxph()]. Some possible parameter options are:
 #'   * `pval_method` (`string`)\cr p-value method for testing hazard ratio = 1.
-#'     Default method is "log-rank", can also be set to "wald" or "likelihood".
-#'   * `ties` (`string`)\cr method for tie handling. Default is "efron",
-#'     can also be set to "breslow" or "exact". See more in [survival::coxph()]
+#'     Default method is `"log-rank"`, can also be set to `"wald"` or `"likelihood"`.
+#'   * `ties` (`string`)\cr method for tie handling. Default is `"efron"`,
+#'     can also be set to `"breslow"` or `"exact"`. See more in [survival::coxph()]
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
+#' @param ref_group_coxph (`character`)\cr level of arm variable to use as reference group in calculations for
+#'   `annot_coxph` table. If `NULL` (default), uses the first level of the arm variable.
+#' @param annot_coxph_ref_lbls (`flag`)\cr whether the reference group should be explicitly printed in labels for the
+#'   `annot_coxph` table. If `FALSE` (default), only comparison groups will be printed in `annot_coxph` table labels.
 #' @param position_coxph (`numeric`)\cr x and y positions for plotting [survival::coxph()] model.
 #' @param position_surv_med (`numeric`)\cr x and y positions for plotting annotation table estimating median survival
 #'   time per group.
+#' @param width_annots (named `list` of `unit`s)\cr a named list of widths for annotation tables with names `surv_med`
+#'   (median survival time table) and `coxph` ([survival::coxph()] model table), where each value is the width
+#'   (in units) to implement when printing the annotation table.
 #'
-#' @name kaplan_meier
-NULL
-
-#' Kaplan-Meier Plot
-#'
-#' @description `r lifecycle::badge("stable")`
-#'
-#' From a survival model, a graphic is rendered along with tabulated annotation
-#' including the number of patient at risk at given time and the median survival
-#' per group.
-#'
-#' @return a `grob` of class `gTree`.
-#'
-#' @inheritParams grid::gTree
-#' @inheritParams kaplan_meier
-#' @inheritParams argument_convention
-#'
-#' @export
+#' @return A `grob` of class `gTree`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(ggplot2)
 #' library(survival)
@@ -96,7 +95,8 @@ NULL
 #'   df = df,
 #'   variables = variables,
 #'   control_surv = control_surv_timepoint(conf_level = 0.9),
-#'   col = c("grey25", "grey50", "grey75")
+#'   col = c("grey25", "grey50", "grey75"),
+#'   annot_at_risk_title = FALSE
 #' )
 #' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal())
 #' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal(), lty = 1:3)
@@ -150,12 +150,19 @@ NULL
 #'   annot_coxph = TRUE
 #' )
 #'
+#' # Change widths/sizes of surv_med and coxph annotation tables.
+#' g_km(
+#'   df = df, variables = c(variables, list(strat = "SEX")),
+#'   annot_coxph = TRUE,
+#'   width_annots = list(surv_med = grid::unit(2, "in"), coxph = grid::unit(3, "in"))
+#' )
+#'
 #' g_km(
 #'   df = df, variables = c(variables, list(strat = "SEX")),
 #'   font_size = 15,
 #'   annot_coxph = TRUE,
 #'   control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
-#'   position_coxph = c(0.4, 0.5)
+#'   position_coxph = c(0.5, 0.5)
 #' )
 #'
 #' # Change position of the treatment group annotation table.
@@ -167,6 +174,8 @@ NULL
 #'   position_surv_med = c(1, 0.7)
 #' )
 #' }
+#'
+#' @export
 g_km <- function(df,
                  variables,
                  control_surv = control_surv_timepoint(),
@@ -181,6 +190,7 @@ g_km <- function(df,
                  xlab = "Days",
                  yval = c("Survival", "Failure"),
                  ylab = paste(yval, "Probability"),
+                 ylim = NULL,
                  title = NULL,
                  footnotes = NULL,
                  draw = TRUE,
@@ -192,13 +202,17 @@ g_km <- function(df,
                  ci_ribbon = FALSE,
                  ggtheme = nestcolor::theme_nest(),
                  annot_at_risk = TRUE,
+                 annot_at_risk_title = TRUE,
                  annot_surv_med = TRUE,
                  annot_coxph = FALSE,
                  annot_stats = NULL,
                  annot_stats_vlines = FALSE,
                  control_coxph_pw = control_coxph(),
-                 position_coxph = c(0, 0.05),
-                 position_surv_med = c(0.9, 0.9)) {
+                 ref_group_coxph = NULL,
+                 annot_coxph_ref_lbls = FALSE,
+                 position_coxph = c(-0.03, -0.02),
+                 position_surv_med = c(0.95, 0.9),
+                 width_annots = list(surv_med = grid::unit(0.3, "npc"), coxph = grid::unit(0.4, "npc"))) {
   checkmate::assert_list(variables)
   checkmate::assert_subset(c("tte", "arm", "is_event"), names(variables))
   checkmate::assert_string(title, null.ok = TRUE)
@@ -206,6 +220,7 @@ g_km <- function(df,
   checkmate::assert_character(col, null.ok = TRUE)
   checkmate::assert_subset(annot_stats, c("median", "min"))
   checkmate::assert_logical(annot_stats_vlines)
+  checkmate::assert_true(all(sapply(width_annots, grid::is.unit)))
 
   tte <- variables$tte
   is_event <- variables$is_event
@@ -217,7 +232,12 @@ g_km <- function(df,
   checkmate::assert_numeric(df[[tte]], min.len = 1, any.missing = FALSE)
 
   armval <- as.character(unique(df[[arm]]))
-  if (length(armval) > 1) {
+  if (annot_coxph && length(armval) < 2) {
+    stop(paste(
+      "When `annot_coxph` = TRUE, `df` must contain at least 2 levels of `variables$arm`",
+      "in order to calculate the hazard ratio."
+    ))
+  } else if (length(armval) > 1) {
     armval <- NULL
   }
   yval <- match.arg(yval)
@@ -244,6 +264,7 @@ g_km <- function(df,
     xlab = xlab,
     yval = yval,
     ylab = ylab,
+    ylim = ylim,
     title = title,
     footnotes = footnotes,
     max_time = max_time,
@@ -317,12 +338,17 @@ g_km <- function(df,
     grobs_patient <- h_grob_tbl_at_risk(
       data = data_plot,
       annot_tbl = annot_tbl,
-      xlim = max(max_time, data_plot$time, xticks)
+      xlim = max(max_time, data_plot$time, xticks),
+      title = annot_at_risk_title
     )
   }
 
   if (annot_at_risk || annot_surv_med || annot_coxph) {
-    lyt <- h_km_layout(data = data_plot, g_el = g_el, title = title, footnotes = footnotes, annot_at_risk = annot_at_risk) # nolint
+    lyt <- h_km_layout(
+      data = data_plot, g_el = g_el, title = title, footnotes = footnotes,
+      annot_at_risk = annot_at_risk, annot_at_risk_title = annot_at_risk_title
+    )
+    at_risk_ttl <- as.numeric(annot_at_risk_title)
     ttl_row <- as.numeric(!is.null(title))
     foot_row <- as.numeric(!is.null(footnotes))
     km_grob <- grid::gTree(
@@ -351,6 +377,7 @@ g_km <- function(df,
               armval = armval,
               x = position_surv_med[1],
               y = position_surv_med[2],
+              width = if (!is.null(width_annots[["surv_med"]])) width_annots[["surv_med"]] else grid::unit(0.3, "npc"),
               ttheme = gridExtra::ttheme_default(base_size = font_size)
             )
           )
@@ -362,8 +389,11 @@ g_km <- function(df,
               df = df,
               variables = variables,
               control_coxph_pw = control_coxph_pw,
+              ref_group_coxph = ref_group_coxph,
+              annot_coxph_ref_lbls = annot_coxph_ref_lbls,
               x = position_coxph[1],
               y = position_coxph[2],
+              width = if (!is.null(width_annots[["coxph"]])) width_annots[["coxph"]] else grid::unit(0.4, "npc"),
               ttheme = gridExtra::ttheme_default(
                 base_size = font_size,
                 padding = grid::unit(c(1, .5), "lines"),
@@ -392,22 +422,28 @@ g_km <- function(df,
         ),
 
         # Add the table with patient-at-risk numbers.
+        if (annot_at_risk && annot_at_risk_title) {
+          grid::gTree(
+            vp = grid::viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 1),
+            children = grobs_patient$title
+          )
+        },
         if (annot_at_risk) {
           grid::gTree(
-            vp = grid::viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 2),
+            vp = grid::viewport(layout.pos.row = 4 + at_risk_ttl + ttl_row, layout.pos.col = 2),
             children = grobs_patient$at_risk
           )
         },
         if (annot_at_risk) {
           grid::gTree(
-            vp = grid::viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 1),
+            vp = grid::viewport(layout.pos.row = 4 + at_risk_ttl + ttl_row, layout.pos.col = 1),
             children = grobs_patient$label
           )
         },
         if (annot_at_risk) {
           # Add the x-axis for the table.
           grid::gTree(
-            vp = grid::viewport(layout.pos.row = 5 + ttl_row, layout.pos.col = 2),
+            vp = grid::viewport(layout.pos.row = 5 + at_risk_ttl + ttl_row, layout.pos.col = 2),
             children = grid::gList(rbind(g_el$xaxis, g_el$xlab))
           )
         },
@@ -416,7 +452,7 @@ g_km <- function(df,
         if (foot_row == 1) {
           grid::gTree(
             vp = grid::viewport(
-              layout.pos.row = ifelse(annot_at_risk, 6 + ttl_row, 4 + ttl_row),
+              layout.pos.row = ifelse(annot_at_risk, 6 + at_risk_ttl + ttl_row, 4 + ttl_row),
               layout.pos.col = 2
             ),
             children = grid::gList(grid::textGrob(label = footnotes, x = grid::unit(0, "npc"), hjust = 0))
@@ -447,26 +483,27 @@ g_km <- function(df,
 
 #' Helper function: tidy survival fit
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Convert the survival fit data into a data frame designed for plotting
 #' within `g_km`.
 #'
-#' @description `r lifecycle::badge("stable")`
-#'
 #' This starts from the [broom::tidy()] result, and then:
-#' - post-processes the `strata` column into a factor,
-#' - extends each stratum by an additional first row with time 0
-#' and probability 1 so that downstream plot lines start at those coordinates,
-#' - adds a `censor` column,
-#' - filters the rows before `max_time`.
+#'   * Post-processes the `strata` column into a factor.
+#'   * Extends each stratum by an additional first row with time 0 and probability 1 so that
+#'     downstream plot lines start at those coordinates.
+#'   * Adds a `censor` column.
+#'   * Filters the rows before `max_time`.
 #'
-#' @inheritParams kaplan_meier
+#' @inheritParams g_km
 #' @param fit_km (`survfit`)\cr result of [survival::survfit()].
-#' @param armval (`string`)\cr used as strata name when treatment arm
-#' variable only has one level. Default is "All".
+#' @param armval (`string`)\cr used as strata name when treatment arm variable only has one level. Default is `"All"`.
+#'
+#' @return A `tibble` with columns `time`, `n.risk`, `n.event`, `n.censor`, `estimate`, `std.error`, `conf.high`,
+#'   `conf.low`, `strata`, and `censor`.
+#'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #'
@@ -507,12 +544,10 @@ h_data_plot <- function(fit_km,
     FUN = function(tbl) {
       first_row <- tbl[1L, ]
       first_row$time <- 0
-      # nolint start
       first_row$n.risk <- sum(first_row[, c("n.risk", "n.event", "n.censor")])
       first_row$n.event <- first_row$n.censor <- 0
       first_row$estimate <- first_row$conf.high <- first_row$conf.low <- 1
       first_row$std.error <- 0
-      # nolint end
       rbind(
         first_row,
         tbl
@@ -530,16 +565,19 @@ h_data_plot <- function(fit_km,
 
 #' Helper function: x tick positions
 #'
-#' @description`r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Calculate the positions of ticks on the x-axis. However, if `xticks` already
 #' exists it is kept as is. It is based on the same function `ggplot2` relies on,
 #' and is required in the graphic and the patient-at-risk annotation table.
 #'
-#' @inheritParams kaplan_meier
+#' @inheritParams g_km
+#' @inheritParams h_ggkm
+#'
+#' @return A vector of positions to use for x-axis ticks on a `ggplot` object.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #'
@@ -589,9 +627,13 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #'
 #' Draw the Kaplan-Meier plot using `ggplot2`.
 #'
-#' @inheritParams kaplan_meier
+#' @inheritParams g_km
+#' @param data (`data.frame`)\cr survival data as pre-processed by `h_data_plot`.
+#'
+#' @return A `ggplot` object.
+#'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #'
@@ -619,6 +661,7 @@ h_ggkm <- function(data,
                    censor_show,
                    xlab,
                    ylab,
+                   ylim = NULL,
                    title,
                    footnotes = NULL,
                    max_time = NULL,
@@ -631,6 +674,20 @@ h_ggkm <- function(data,
                    ggtheme = nestcolor::theme_nest()) {
   checkmate::assert_numeric(lty, null.ok = TRUE)
   checkmate::assert_character(col, null.ok = TRUE)
+
+  if (is.null(ylim)) {
+    data_lims <- data
+    if (yval == "Failure") data_lims[["estimate"]] <- 1 - data_lims[["estimate"]]
+    if (!is.null(max_time)) {
+      y_lwr <- min(data_lims[data_lims$time < max_time, ][["estimate"]])
+      y_upr <- max(data_lims[data_lims$time < max_time, ][["estimate"]])
+    } else {
+      y_lwr <- min(data_lims[["estimate"]])
+      y_upr <- max(data_lims[["estimate"]])
+    }
+    ylim <- c(y_lwr, y_upr)
+  }
+  checkmate::assert_numeric(ylim, finite = TRUE, any.missing = FALSE, len = 2, sorted = TRUE)
 
   # change estimates of survival to estimates of failure (1 - survival)
   if (yval == "Failure") {
@@ -671,7 +728,7 @@ h_ggkm <- function(data,
   }
 
   gg <- gg +
-    ggplot2::coord_cartesian(ylim = c(0, 1)) +
+    ggplot2::coord_cartesian(ylim = ylim) +
     ggplot2::labs(x = xlab, y = ylab, title = title, caption = footnotes)
 
   if (!is.null(col)) {
@@ -701,7 +758,6 @@ h_ggkm <- function(data,
       )
   }
 
-
   if (!is.null(max_time) && !is.null(xticks)) {
     gg <- gg + ggplot2::scale_x_continuous(breaks = xticks, limits = c(min(0, xticks), max(c(xticks, max_time))))
   } else if (!is.null(xticks)) {
@@ -714,7 +770,6 @@ h_ggkm <- function(data,
     gg <- gg + ggplot2::scale_x_continuous(limits = c(0, max_time))
   }
 
-
   if (!is.null(ggtheme)) {
     gg <- gg + ggtheme
   }
@@ -722,6 +777,7 @@ h_ggkm <- function(data,
   gg + ggplot2::theme(
     legend.position = "bottom",
     legend.title = ggplot2::element_blank(),
+    legend.key.height = unit(0.02, "npc"),
     panel.grid.major.x = ggplot2::element_line(linewidth = 2)
   )
 }
@@ -730,17 +786,20 @@ h_ggkm <- function(data,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The elements composing the `ggplot` are extracted and organized in a
-#' list containing:
-#' the panel (`panel`),
-#' the y-axis and its label (`yaxis`, `ylab`),
-#' idem for the x-axis (`xaxis`, `xlab`),
-#' the legend (`guide`).
+#' The elements composing the `ggplot` are extracted and organized in a `list`.
 #'
 #' @param gg (`ggplot`)\cr a graphic to decompose.
 #'
+#' @return A named `list` with elements:
+#'   * `panel`: The panel.
+#'   * `yaxis`: The y-axis.
+#'   * `xaxis`: The x-axis.
+#'   * `xlab`: The x-axis label.
+#'   * `ylab`: The y-axis label.
+#'   * `guide`: The legend.
+#'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
@@ -783,35 +842,32 @@ h_decompose_gg <- function(gg) {
   lapply(X = y, function(x) gtable::gtable_filter(g_el, x))
 }
 
-
 #' Helper: KM Layout
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Prepares a (5 rows) x (2 cols) layout for the Kaplan-Meier curve.
 #'
-#' @inheritParams kaplan_meier
+#' @inheritParams g_km
+#' @inheritParams h_ggkm
 #' @param g_el (`list` of `gtable`)\cr list as obtained by `h_decompose_gg()`.
-#' @param annot_at_risk (`flag`)\cr compute and add the annotation table
-#'   reporting the number of patient at risk matching the main grid of the
-#'   Kaplan-Meier curve.
-#' @export
+#' @param annot_at_risk (`flag`)\cr compute and add the annotation table reporting the number of
+#'   patient at risk matching the main grid of the Kaplan-Meier curve.
 #'
-#' @details
-#' The layout corresponds to a grid of two columns and five rows of unequal
-#' dimensions. Most of the dimension are fixed, only the curve is flexible and
-#' will accommodate with the remaining free space.
-#' - The left column gets the annotation of the `ggplot` (y-axis) and the
-#'   names of the strata for the patient at risk tabulation.
-#'   The main constraint is about the width of the columns which must allow the
-#'   writing of the strata name.
-#' - The right column receive the `ggplot`, the legend, the x-axis and the
-#' patient at risk table.
+#' @return A grid layout.
+#'
+#' @details The layout corresponds to a grid of two columns and five rows of unequal dimensions. Most of the
+#'   dimension are fixed, only the curve is flexible and will accommodate with the remaining free space.
+#'   * The left column gets the annotation of the `ggplot` (y-axis) and the names of the strata for the patient
+#'     at risk tabulation. The main constraint is about the width of the columns which must allow the writing of
+#'     the strata name.
+#'   * The right column receive the `ggplot`, the legend, the x-axis and the patient at risk table.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
+#' library(grid)
 #'
 #' fit_km <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
@@ -829,7 +885,8 @@ h_decompose_gg <- function(gg) {
 #' grid.show.layout(lyt)
 #' }
 #'
-h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
+#' @export
+h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, annot_at_risk_title = TRUE) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
   col_annot_width <- max(
@@ -859,9 +916,10 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
   ht_x <- c(
     ht_x,
     1,
-    grid::convertX(with(g_el, xaxis$height + ylab$width), "pt"),
-    grid::convertX(g_el$guide$heights, "pt"),
-    nlines + 1,
+    grid::convertX(with(g_el, xaxis$height + ylab$width), "pt") + grid::unit(5, "pt"),
+    grid::convertX(g_el$guide$heights, "pt") + grid::unit(2, "pt"),
+    1,
+    nlines + 0.5,
     grid::convertX(with(g_el, xaxis$height + ylab$width), "pt")
   )
   ht_units <- c(
@@ -869,6 +927,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
     "null",
     "pt",
     "pt",
+    "lines",
     "lines",
     "pt"
   )
@@ -878,11 +937,13 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
     ht_x <- c(ht_x, 1)
     ht_units <- c(ht_units, "lines")
   }
-
-  no_at_risk_tbl <- if (annot_at_risk) {
-    rep(TRUE, 5 + ttl_row + foot_row)
+  if (annot_at_risk) {
+    no_at_risk_tbl <- rep(TRUE, 6 + ttl_row + foot_row)
+    if (!annot_at_risk_title) {
+      no_at_risk_tbl[length(no_at_risk_tbl) - 2 - foot_row] <- FALSE
+    }
   } else {
-    no_tbl_ind
+    no_at_risk_tbl <- no_tbl_ind
   }
 
   grid::grid.layout(
@@ -899,18 +960,24 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Two Graphical Objects are obtained, one corresponding to row labeling and
-#' the second to the number of patient at risk.
+#' Two graphical objects are obtained, one corresponding to row labeling and the second to the table of
+#' numbers of patients at risk. If `title = TRUE`, a third object corresponding to the table title is
+#' also obtained.
 #'
-#' @inheritParams kaplan_meier
-#' @param annot_tbl (`data.frame`)\cr annotation as prepared
-#'   by [survival::summary.survfit()] which includes the number of
-#'   patients at risk at given time points.
+#' @inheritParams g_km
+#' @inheritParams h_ggkm
+#' @param annot_tbl (`data.frame`)\cr annotation as prepared by [survival::summary.survfit()] which
+#'   includes the number of patients at risk at given time points.
 #' @param xlim (`numeric`)\cr the maximum value on the x-axis (used to
 #'   ensure the at risk table aligns with the KM graph).
+#' @param title (`flag`)\cr whether the "Patients at Risk" title should be added above the `annot_at_risk`
+#'   table. Has no effect if `annot_at_risk` is `FALSE`. Defaults to `TRUE`.
+#'
+#' @return A named `list` of two `gTree` objects if `title = FALSE`: `at_risk` and `label`, or three
+#'   `gTree` objects if `title = TRUE`: `at_risk`, `label`, and `title`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
@@ -956,21 +1023,37 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE) {
 #' grid::grid.newpage()
 #' pushViewport(viewport(layout = lyt, height = .95, width = .95))
 #' grid.rect(gp = grid::gpar(lty = 1, col = "purple", fill = "gray85", lwd = 1))
-#' pushViewport(viewport(layout.pos.row = 4, layout.pos.col = 2))
+#' pushViewport(viewport(layout.pos.row = 3:4, layout.pos.col = 2))
 #' grid.rect(gp = grid::gpar(lty = 1, col = "orange", fill = "gray85", lwd = 1))
 #' grid::grid.draw(tbl$at_risk)
 #' popViewport()
-#' pushViewport(viewport(layout.pos.row = 4, layout.pos.col = 1))
+#' pushViewport(viewport(layout.pos.row = 3:4, layout.pos.col = 1))
 #' grid.rect(gp = grid::gpar(lty = 1, col = "green3", fill = "gray85", lwd = 1))
 #' grid::grid.draw(tbl$label)
 #' }
 #'
 #' @export
-h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
+h_grob_tbl_at_risk <- function(data, annot_tbl, xlim, title = TRUE) {
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
+  y_int <- annot_tbl$time[2] - annot_tbl$time[1]
+  annot_tbl <- expand.grid(
+    time = seq(0, xlim, y_int),
+    strata = unique(annot_tbl$strata)
+  ) %>% dplyr::left_join(annot_tbl, by = c("time", "strata"))
+  annot_tbl[is.na(annot_tbl)] <- 0
   y_str_unit <- as.numeric(annot_tbl$strata)
   vp_table <- grid::plotViewport(margins = grid::unit(c(0, 0, 0, 0), "lines"))
+  if (title) {
+    gb_table_title <- grid::gList(
+      grid::textGrob(
+        label = "Patients at Risk:",
+        x = 1,
+        y = grid::unit(0.2, "native"),
+        gp = grid::gpar(fontface = "bold", fontsize = 10)
+      )
+    )
+  }
   gb_table_left_annot <- grid::gList(
     grid::rectGrob(
       x = 0, y = grid::unit(c(1:nlines) - 1, "lines"),
@@ -979,12 +1062,11 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
     ),
     grid::textGrob(
       label = unique(annot_tbl$strata),
-      x = .95,
+      x = 0.5,
       y = grid::unit(
-        (max(unique(y_str_unit)) - unique(y_str_unit)) + .5,
+        (max(unique(y_str_unit)) - unique(y_str_unit)) + 0.75,
         "native"
       ),
-      hjust = 1,
       gp = grid::gpar(fontface = "italic", fontsize = 10)
     )
   )
@@ -1004,7 +1086,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
     )
   )
 
-  list(
+  ret <- list(
     at_risk = grid::gList(
       grid::gTree(
         vp = vp_table,
@@ -1036,19 +1118,40 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim) {
       )
     )
   )
+
+  if (title) {
+    ret[["title"]] <- grid::gList(
+      grid::gTree(
+        vp = grid::viewport(width = max(grid::stringWidth(txtlines))),
+        children = grid::gList(
+          grid::gTree(
+            vp = grid::dataViewport(
+              xscale = 0:1,
+              yscale = c(0, 1),
+              extension = c(0, 0)
+            ),
+            children = grid::gList(gb_table_title)
+          )
+        )
+      )
+    )
+  }
+
+  ret
 }
 
 #' Helper Function: Survival Estimations
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Transform a survival fit to a table with groups in rows characterized
-#' by N, median and confidence interval.
+#' Transform a survival fit to a table with groups in rows characterized by N, median and confidence interval.
 #'
 #' @inheritParams h_data_plot
 #'
+#' @return A summary table with statistics `N`, `Median`, and `XX% CI` (`XX` taken from `fit_km`).
+#'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #'
@@ -1082,7 +1185,6 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
   )
 }
 
-
 #' Helper Function: Survival Estimation Grob
 #'
 #' @description `r lifecycle::badge("stable")`
@@ -1090,14 +1192,17 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' The survival fit is transformed in a grob containing a table with groups in
 #' rows characterized by N, median and 95% confidence interval.
 #'
-#' @inheritParams kaplan_meier
-#' @param ttheme (`list`)\cr see [gridExtra::ttheme_default()].
-#' @param x a `numeric` value between 0 and 1 specifying x-location.
-#' @param y a `numeric` value between 0 and 1 specifying y-location.
+#' @inheritParams g_km
 #' @inheritParams h_data_plot
+#' @param ttheme (`list`)\cr see [gridExtra::ttheme_default()].
+#' @param x (`numeric`)\cr a value between 0 and 1 specifying x-location.
+#' @param y (`numeric`)\cr a value between 0 and 1 specifying y-location.
+#' @param width (`unit`)\cr width (as a unit) to use when printing the grob.
+#'
+#' @return A `grob` of a table containing statistics `N`, `Median`, and `XX% CI` (`XX` taken from `fit_km`).
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
@@ -1116,14 +1221,49 @@ h_grob_median_surv <- function(fit_km,
                                armval = "All",
                                x = 0.9,
                                y = 0.9,
+                               width = grid::unit(0.3, "npc"),
                                ttheme = gridExtra::ttheme_default()) {
   data <- h_tbl_median_surv(fit_km, armval = armval)
-  gt <- gridExtra::tableGrob(d = data, theme = ttheme)
+
+  width <- grid::convertUnit(grid::unit(as.numeric(width), grid::unitType(width)), "in")
+  height <- width * (nrow(data) + 1) / 12
+
+  w <- paste(" ", c(
+    rownames(data)[which.max(nchar(rownames(data)))],
+    sapply(names(data), function(x) c(x, data[[x]])[which.max(nchar(c(x, data[[x]])))])
+  ))
+  w_unit <- grid::convertWidth(grid::stringWidth(w), "in", valueOnly = TRUE)
+
+  w_txt <- sapply(1:64, function(x) {
+    graphics::par(ps = x)
+    graphics::strwidth(w[4], units = "in")
+  })
+  f_size_w <- which.max(w_txt[w_txt < as.numeric((w_unit / sum(w_unit)) * width)[4]])
+
+  h_txt <- sapply(1:64, function(x) {
+    graphics::par(ps = x)
+    graphics::strheight(grid::stringHeight("X"), units = "in")
+  })
+  f_size_h <- which.max(h_txt[h_txt < as.numeric(grid::unit(as.numeric(height) / 4, grid::unitType(height)))])
+
+  if (ttheme$core$fg_params$fontsize == 12) {
+    ttheme$core$fg_params$fontsize <- min(f_size_w, f_size_h)
+    ttheme$colhead$fg_params$fontsize <- min(f_size_w, f_size_h)
+    ttheme$rowhead$fg_params$fontsize <- min(f_size_w, f_size_h)
+  }
+
+  gt <- gridExtra::tableGrob(
+    d = data,
+    theme = ttheme
+  )
+  gt$widths <- ((w_unit / sum(w_unit)) * width)
+  gt$heights <- rep(grid::unit(as.numeric(height) / 4, grid::unitType(height)), nrow(gt))
+
   vp <- grid::viewport(
     x = grid::unit(x, "npc") + grid::unit(1, "lines"),
     y = grid::unit(y, "npc") + grid::unit(1.5, "lines"),
-    height = sum(gt$heights),
-    width = sum(gt$widths),
+    height = height,
+    width = width,
     just = c("right", "top")
   )
 
@@ -1141,13 +1281,13 @@ h_grob_median_surv <- function(fit_km,
 #'
 #' Build the y-axis annotation from a decomposed `ggplot`.
 #'
-#' @param ylab (`gtable`)\cr the y-lab as a graphical object derived from
-#'   a `ggplot`.
-#' @param yaxis (`gtable`)\cr the y-axis as a graphical object derived from
-#'   a `ggplot`.
+#' @param ylab (`gtable`)\cr the y-lab as a graphical object derived from a `ggplot`.
+#' @param yaxis (`gtable`)\cr the y-axis as a graphical object derived from a `ggplot`.
+#'
+#' @return a `gTree` object containing the y-axis annotation from a `ggplot`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
@@ -1187,17 +1327,19 @@ h_grob_y_annot <- function(ylab, yaxis) {
   )
 }
 
-#' Helper Function: Pairwise CoxPH table
+#' Helper Function: Pairwise `CoxPH` table
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Create an `rtable` of pairwise stratified or unstratified CoxPH analysis results.
+#' Create a `data.frame` of pairwise stratified or unstratified `CoxPH` analysis results.
 #'
 #' @inheritParams g_km
-#' @export
+#'
+#' @return A `data.frame` containing statistics `HR`, `XX% CI` (`XX` taken from `control_coxph_pw`),
+#'   and `p-value (log-rank)`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #'
 #' adtte <- tern_ex_adtte %>%
@@ -1210,14 +1352,23 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #'   control_coxph_pw = control_coxph(conf_level = 0.9)
 #' )
 #' }
+#'
+#' @export
 h_tbl_coxph_pairwise <- function(df,
                                  variables,
-                                 control_coxph_pw = control_coxph()) {
+                                 ref_group_coxph = NULL,
+                                 control_coxph_pw = control_coxph(),
+                                 annot_coxph_ref_lbls = FALSE) {
   assert_df_with_variables(df, variables)
+  checkmate::assert_choice(ref_group_coxph, levels(df[[variables$arm]]), null.ok = TRUE)
+  checkmate::assert_flag(annot_coxph_ref_lbls)
+
   arm <- variables$arm
   df[[arm]] <- factor(df[[arm]])
-  ref_group <- levels(df[[arm]])[1]
-  comp_group <- levels(df[[arm]])[-1]
+
+  ref_group <- if (!is.null(ref_group_coxph)) ref_group_coxph else levels(df[[variables$arm]])[1]
+  comp_group <- setdiff(levels(df[[arm]]), ref_group)
+
   results <- Map(function(comp) {
     res <- s_coxph_pairwise(
       df = df[df[[arm]] == comp, , drop = FALSE],
@@ -1241,23 +1392,28 @@ h_tbl_coxph_pairwise <- function(df,
     row.names(res_df) <- comp
     res_df
   }, comp_group)
+  if (annot_coxph_ref_lbls) names(results) <- paste(comp_group, "vs.", ref_group)
+
   do.call(rbind, results)
 }
 
-#' Helper Function: CoxPH Grob
+#' Helper Function: `CoxPH` Grob
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Grob of `rtable` output from [h_tbl_coxph_pairwise]
+#' Grob of `rtable` output from [h_tbl_coxph_pairwise()]
 #'
 #' @inheritParams h_grob_median_surv
 #' @param ... arguments will be passed to [h_tbl_coxph_pairwise()].
-#' @param x a `numeric` value between 0 and 1 specifying x-location.
-#' @param y a `numeric` value between 0 and 1 specifying y-location.
-#' @export
+#' @param x (`numeric`)\cr a value between 0 and 1 specifying x-location.
+#' @param y (`numeric`)\cr a value between 0 and 1 specifying y-location.
+#' @param width (`unit`)\cr width (as a unit) to use when printing the grob.
+#'
+#' @return A `grob` of a table containing statistics `HR`, `XX% CI` (`XX` taken from `control_coxph_pw`),
+#'   and `p-value (log-rank)`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #' library(grid)
@@ -1274,23 +1430,58 @@ h_tbl_coxph_pairwise <- function(df,
 #' )
 #' grid::grid.draw(tbl_grob)
 #' }
+#'
+#' @export
 h_grob_coxph <- function(...,
                          x = 0,
                          y = 0,
+                         width = grid::unit(0.4, "npc"),
                          ttheme = gridExtra::ttheme_default(
-                           base_size = 12,
                            padding = grid::unit(c(1, .5), "lines"),
                            core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = .5))
                          )) {
   data <- h_tbl_coxph_pairwise(...)
+
+  width <- grid::convertUnit(grid::unit(as.numeric(width), grid::unitType(width)), "in")
+  height <- width * (nrow(data) + 1) / 12
+
+  w <- paste("    ", c(
+    rownames(data)[which.max(nchar(rownames(data)))],
+    sapply(names(data), function(x) c(x, data[[x]])[which.max(nchar(c(x, data[[x]])))])
+  ))
+  w_unit <- grid::convertWidth(grid::stringWidth(w), "in", valueOnly = TRUE)
+
+  w_txt <- sapply(1:64, function(x) {
+    graphics::par(ps = x)
+    graphics::strwidth(w[4], units = "in")
+  })
+  f_size_w <- which.max(w_txt[w_txt < as.numeric((w_unit / sum(w_unit)) * width)[4]])
+
+  h_txt <- sapply(1:64, function(x) {
+    graphics::par(ps = x)
+    graphics::strheight(grid::stringHeight("X"), units = "in")
+  })
+  f_size_h <- which.max(h_txt[h_txt < as.numeric(grid::unit(as.numeric(height) / 4, grid::unitType(height)))])
+
+  if (ttheme$core$fg_params$fontsize == 12) {
+    ttheme$core$fg_params$fontsize <- min(f_size_w, f_size_h)
+    ttheme$colhead$fg_params$fontsize <- min(f_size_w, f_size_h)
+    ttheme$rowhead$fg_params$fontsize <- min(f_size_w, f_size_h)
+  }
+
   tryCatch(
     expr = {
-      gt <- gridExtra::tableGrob(d = data, theme = ttheme) # ERROR 'data' must be of a vector type, was 'NULL'
+      gt <- gridExtra::tableGrob(
+        d = data,
+        theme = ttheme
+      ) # ERROR 'data' must be of a vector type, was 'NULL'
+      gt$widths <- ((w_unit / sum(w_unit)) * width)
+      gt$heights <- rep(grid::unit(as.numeric(height) / 4, grid::unitType(height)), nrow(gt))
       vp <- grid::viewport(
         x = grid::unit(x, "npc") + grid::unit(1, "lines"),
         y = grid::unit(y, "npc") + grid::unit(1.5, "lines"),
-        height = sum(gt$heights),
-        width = sum(gt$widths),
+        height = height,
+        width = width,
         just = c("left", "bottom")
       )
       grid::gList(

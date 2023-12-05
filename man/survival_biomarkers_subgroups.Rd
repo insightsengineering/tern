@@ -8,7 +8,8 @@
 tabulate_survival_biomarkers(
   df,
   vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
-  time_unit = NULL
+  time_unit = NULL,
+  .indent_mods = 0L
 )
 }
 \arguments{
@@ -17,17 +18,22 @@ tabulate_survival_biomarkers(
 
 \item{vars}{(\code{character})\cr the names of statistics to be reported among:
 \itemize{
-\item \code{n_tot_events}: total number of events per group.
-\item \code{n_tot}: total number of observations per group.
-\item \code{median}: median survival time.
-\item \code{hr}: hazard ratio.
-\item \code{ci}: confidence interval of hazard ratio.
+\item \code{n_tot_events}: Total number of events per group.
+\item \code{n_tot}: Total number of observations per group.
+\item \code{median}: Median survival time.
+\item \code{hr}: Hazard ratio.
+\item \code{ci}: Confidence interval of hazard ratio.
 \item \code{pval}: p-value of the effect.
 Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as both \code{hr} and \code{ci} are required.
 }}
 
-\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips
-displaying unit.}
+\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
+}
+\value{
+An \code{rtables} table summarizing biomarker effects on survival by subgroup.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -41,7 +47,8 @@ the required statistics. The tables are then typically used as input for forest 
 }
 \section{Functions}{
 \itemize{
-\item \code{tabulate_survival_biomarkers()}: table creating function.
+\item \code{tabulate_survival_biomarkers()}: Table-creating function which creates a table
+summarizing biomarker effects on survival by subgroup.
 
 }}
 \note{
@@ -66,6 +73,11 @@ adtte_f <- adtte \%>\%
 labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
 formatters::var_labels(adtte_f)[names(labels)] <- labels
 
+# Typical analysis of two continuous biomarkers `BMRKR1` and `AGE`,
+# in multiple regression models containing one covariate `RACE`,
+# as well as one stratification variable `STRATA1`. The subgroups
+# are defined by the levels of `BMRKR2`.
+
 df <- extract_survival_biomarkers(
   variables = list(
     tte = "AVAL",
@@ -78,6 +90,28 @@ df <- extract_survival_biomarkers(
   data = adtte_f
 )
 df
+
+# Here we group the levels of `BMRKR2` manually.
+df_grouped <- extract_survival_biomarkers(
+  variables = list(
+    tte = "AVAL",
+    is_event = "is_event",
+    biomarkers = c("BMRKR1", "AGE"),
+    strata = "STRATA1",
+    covariates = "SEX",
+    subgroups = "BMRKR2"
+  ),
+  data = adtte_f,
+  groups_lists = list(
+    BMRKR2 = list(
+      "low" = "LOW",
+      "low/medium" = c("LOW", "MEDIUM"),
+      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+    )
+  )
+)
+df_grouped
+
 ## Table with default columns.
 tabulate_survival_biomarkers(df)
 
@@ -89,9 +123,10 @@ tab <- tabulate_survival_biomarkers(
 )
 
 ## Finally produce the forest plot.
-\dontrun{
+\donttest{
 g_forest(tab, xlim = c(0.8, 1.2))
 }
+
 }
 \seealso{
 \code{\link[=h_tab_surv_one_biomarker]{h_tab_surv_one_biomarker()}} which is used internally, \code{\link[=extract_survival_biomarkers]{extract_survival_biomarkers()}}.

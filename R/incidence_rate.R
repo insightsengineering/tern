@@ -11,53 +11,28 @@
 #'   * `conf_level` (`proportion`)\cr confidence level for the estimated incidence rate.
 #'   * `conf_type` (`string`)\cr `normal` (default), `normal_log`, `exact`, or `byar`
 #'     for confidence interval type.
-#'   * `time_unit_input` (`string`)\cr `day`, `week`, `month`, or `year` (default)
+#'   * `input_time_unit` (`string`)\cr `day`, `week`, `month`, or `year` (default)
 #'     indicating time unit for data input.
-#'   * `time_unit_output` (`numeric`)\cr time unit for desired output (in person-years).
-#' @param person_years (`numeric`)\cr total person-years at risk.
-#' @param alpha (`numeric`)\cr two-sided alpha-level for confidence interval.
+#'   * `num_pt_year` (`numeric`)\cr time unit for desired output (in person-years).
 #' @param n_events (`integer`)\cr number of events observed.
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_incidence_rate")`
+#'   to see available statistics for this function.
 #'
 #' @seealso [control_incidence_rate()] and helper functions [h_incidence_rate].
 #'
 #' @name incidence_rate
+#' @order 1
 NULL
 
 #' @describeIn incidence_rate Statistics function which estimates the incidence rate and the
 #'   associated confidence interval.
 #'
-#' @return The statistics are:
-#' \describe{
-#'   \item{person_years}{total person-years at risk}
-#'   \item{n_events}{total number of events observed}
-#'   \item{rate}{estimated incidence rate}
-#'   \item{rate_ci}{confidence interval for the incidence rate}
-#' }
-#'
-#' @examples
-#' library(dplyr)
-#'
-#' df <- data.frame(
-#'   USUBJID = as.character(seq(6)),
-#'   CNSR = c(0, 1, 1, 0, 0, 0),
-#'   AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
-#'   ARM = factor(c("A", "A", "A", "B", "B", "B"))
-#' ) %>%
-#'   mutate(is_event = CNSR == 0) %>%
-#'   mutate(n_events = as.integer(is_event))
-#'
-#' # Internal function - s_incidence_rate
-#' \dontrun{
-#' s_incidence_rate(
-#'   df,
-#'   .var = "AVAL",
-#'   n_events = "n_events",
-#'   control = control_incidence_rate(
-#'     time_unit_input = "month",
-#'     time_unit_output = 100
-#'   )
-#' )
-#' }
+#' @return
+#' * `s_incidence_rate()` returns the following statistics:
+#'   - `person_years`: Total person-years at risk.
+#'   - `n_events`: Total number of events observed.
+#'   - `rate`: Estimated incidence rate.
+#'   - `rate_ci`: Confidence interval for the incidence rate.
 #'
 #' @keywords internal
 s_incidence_rate <- function(df,
@@ -82,14 +57,14 @@ s_incidence_rate <- function(df,
     checkmate::assert_integer(df[[n_events]], any.missing = FALSE)
   }
 
-  time_unit_input <- control$time_unit_input
-  time_unit_output <- control$time_unit_output
+  input_time_unit <- control$input_time_unit
+  num_pt_year <- control$num_pt_year
   conf_level <- control$conf_level
   person_years <- sum(df[[.var]], na.rm = TRUE) * (
-    1 * (time_unit_input == "year") +
-      1 / 12 * (time_unit_input == "month") +
-      1 / 52.14 * (time_unit_input == "week") +
-      1 / 365.24 * (time_unit_input == "day")
+    1 * (input_time_unit == "year") +
+      1 / 12 * (input_time_unit == "month") +
+      1 / 52.14 * (input_time_unit == "week") +
+      1 / 365.24 * (input_time_unit == "day")
   )
   n_events <- sum(df[[n_events]], na.rm = TRUE)
 
@@ -101,25 +76,16 @@ s_incidence_rate <- function(df,
   list(
     person_years = formatters::with_label(person_years, "Total patient-years at risk"),
     n_events = formatters::with_label(n_events, "Number of adverse events observed"),
-    rate = formatters::with_label(result$rate, paste("AE rate per", time_unit_output, "patient-years")),
+    rate = formatters::with_label(result$rate, paste("AE rate per", num_pt_year, "patient-years")),
     rate_ci = formatters::with_label(result$rate_ci, f_conf_level(conf_level))
   )
 }
 
-
-#' @describeIn incidence_rate Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn incidence_rate Formatted analysis function which is used as `afun`
+#'   in `estimate_incidence_rate()`.
 #'
-#' @examples
-#' # Internal function - a_incidence_rate
-#' \dontrun{
-#' a_incidence_rate(
-#'   df,
-#'   .var = "AVAL",
-#'   n_events = "n_events",
-#'   control = control_incidence_rate(time_unit_input = "month", time_unit_output = 100)
-#' )
-#' }
+#' @return
+#' * `a_incidence_rate()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @keywords internal
 a_incidence_rate <- make_afun(
@@ -132,10 +98,26 @@ a_incidence_rate <- make_afun(
   )
 )
 
-#' @describeIn incidence_rate Layout creating function which adds analyze rows using the statistics
-#' function `s_incidence_rate` and desired format.
+#' @describeIn incidence_rate Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `estimate_incidence_rate()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_incidence_rate()` to the table layout.
 #'
 #' @examples
+#' library(dplyr)
+#'
+#' df <- data.frame(
+#'   USUBJID = as.character(seq(6)),
+#'   CNSR = c(0, 1, 1, 0, 0, 0),
+#'   AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
+#'   ARM = factor(c("A", "A", "A", "B", "B", "B"))
+#' ) %>%
+#'   mutate(is_event = CNSR == 0) %>%
+#'   mutate(n_events = as.integer(is_event))
+#'
 #' basic_table() %>%
 #'   split_cols_by("ARM") %>%
 #'   add_colcounts() %>%
@@ -143,15 +125,18 @@ a_incidence_rate <- make_afun(
 #'     vars = "AVAL",
 #'     n_events = "n_events",
 #'     control = control_incidence_rate(
-#'       time_unit_input = "month",
-#'       time_unit_output = 100
+#'       input_time_unit = "month",
+#'       num_pt_year = 100
 #'     )
 #'   ) %>%
 #'   build_table(df)
 #'
 #' @export
+#' @order 2
 estimate_incidence_rate <- function(lyt,
                                     vars,
+                                    na_str = NA_character_,
+                                    nested = TRUE,
                                     ...,
                                     show_labels = "hidden",
                                     table_names = vars,
@@ -173,6 +158,8 @@ estimate_incidence_rate <- function(lyt,
     show_labels = show_labels,
     table_names = table_names,
     afun = afun,
+    na_str = na_str,
+    nested = nested,
     extra_args = list(...)
   )
 }
@@ -186,13 +173,14 @@ estimate_incidence_rate <- function(lyt,
 #'   * `conf_level`: (`proportion`)\cr confidence level for the estimated incidence rate.
 #'   * `conf_type`: (`string`)\cr `normal` (default), `normal_log`, `exact`, or `byar`
 #'     for confidence interval type.
-#'   * `time_unit_input`: (`string`)\cr `day`, `week`, `month`, or `year` (default)
+#'   * `input_time_unit`: (`string`)\cr `day`, `week`, `month`, or `year` (default)
 #'     indicating time unit for data input.
-#'   * `time_unit_output`: (`numeric`)\cr time unit for desired output (in person-years).
-#'
+#'   * `num_pt_year`: (`numeric`)\cr time unit for desired output (in person-years).
 #' @param person_years (`numeric`)\cr total person-years at risk.
 #' @param alpha (`numeric`)\cr two-sided alpha-level for confidence interval.
 #' @param n_events (`integer`)\cr number of events observed.
+#'
+#' @return Estimated incidence rate `rate` and associated confidence interval `rate_ci`.
 #'
 #' @seealso [incidence_rate]
 #'
@@ -267,7 +255,7 @@ h_incidence_rate_exact <- function(person_years,
 }
 
 #' @describeIn h_incidence_rate Helper function to estimate the incidence rate and
-#'   associated Byar's confidence interval. Unit is one person-year.
+#'   associated `Byar`'s confidence interval. Unit is one person-year.
 #'
 #' @examples
 #' h_incidence_rate_byar(200, 2)
@@ -293,22 +281,6 @@ h_incidence_rate_byar <- function(person_years,
 #' @describeIn h_incidence_rate Helper function to estimate the incidence rate and
 #'   associated confidence interval.
 #'
-#' @examples
-#' # Internal function - h_incidence_rate
-#' \dontrun{
-#' h_incidence_rate(200, 2)
-#'
-#' h_incidence_rate(
-#'   200,
-#'   2,
-#'   control_incidence_rate(
-#'     conf_level = 0.9,
-#'     conf_type = "normal_log",
-#'     time_unit_output = 100
-#'   )
-#' )
-#' }
-#'
 #' @keywords internal
 h_incidence_rate <- function(person_years,
                              n_events,
@@ -321,9 +293,9 @@ h_incidence_rate <- function(person_years,
     byar = h_incidence_rate_byar(person_years, n_events, alpha)
   )
 
-  time_unit_output <- control$time_unit_output
+  num_pt_year <- control$num_pt_year
   list(
-    rate = est$rate * time_unit_output,
-    rate_ci = est$rate_ci * time_unit_output
+    rate = est$rate * num_pt_year,
+    rate_ci = est$rate_ci * num_pt_year
   )
 }

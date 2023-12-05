@@ -50,6 +50,9 @@ by \code{ggplot2} to control outlook of plot. Use \code{ggplot2::theme()} to twe
 
 \item{col}{(\code{character})\cr lines colors.}
 }
+\value{
+A \code{ggplot} line plot.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -74,6 +77,7 @@ p <- h_g_ipp(
   add_baseline_hline = TRUE
 )
 p
+
 }
 \seealso{
 \code{\link[=g_ipp]{g_ipp()}} which uses this function.

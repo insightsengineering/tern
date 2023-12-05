@@ -10,21 +10,21 @@ h_ancova(.var, .df_row, variables, interaction_item = NULL)
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.df_row}{(\code{data.frame})\cr data set that includes all the variables that are called
-in \code{.var} and \code{variables}.}
+\item{.df_row}{(\code{data.frame})\cr data set that includes all the variables that are called in \code{.var} and \code{variables}.}
 
-\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables, with
-expected elements:
+\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables, with expected elements:
 \itemize{
-\item \code{arm} (\code{string})\cr group variable, for which the covariate adjusted means of multiple
-groups will be summarized. Specifically, the first level of \code{arm} variable is taken as the
-reference group.
-\item \code{covariates} (\code{character})\cr a vector that can contain single variable names (such as
-\code{"X1"}), and/or interaction terms indicated by \code{"X1 * X2"}.
+\item \code{arm} (\code{string})\cr group variable, for which the covariate adjusted means of multiple groups will be
+summarized. Specifically, the first level of \code{arm} variable is taken as the reference group.
+\item \code{covariates} (\code{character})\cr a vector that can contain single variable names (such as \code{"X1"}), and/or
+interaction terms indicated by \code{"X1 * X2"}.
 }}
 
 \item{interaction_item}{(\code{character})\cr name of the variable that should have interactions
-with arm. if the interaction is not needed, the default option is NULL.}
+with arm. if the interaction is not needed, the default option is \code{NULL}.}
+}
+\value{
+The summary of a linear model.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/g_lineplot.R
 \name{h_format_row}
 \alias{h_format_row}
-\title{Helper function to get the right formatting in the optional table in g_lineplot.}
+\title{Helper function to get the right formatting in the optional table in \code{g_lineplot}.}
 \usage{
 h_format_row(x, format, labels = NULL)
 }
@@ -10,27 +10,23 @@ h_format_row(x, format, labels = NULL)
 \item{x}{(named \code{list})\cr list of numerical values to be formatted and optionally labeled.
 Elements of \code{x} must be \code{numeric} vectors.}
 
-\item{format}{(named \code{character} or \code{NULL})\cr
-format patterns for \code{x}. Names of the \code{format} must match the names of \code{x}.
-This parameter is passed directly to the \code{rtables::format_rcell}
+\item{format}{(named \code{character} or \code{NULL})\cr format patterns for \code{x}. Names of the \code{format} must
+match the names of \code{x}. This parameter is passed directly to the \code{rtables::format_rcell}
 function through the \code{format} parameter.}
 
-\item{labels}{(named \code{character} or \code{NULL})\cr
-optional labels for \code{x}. Names of the \code{labels} must match the names of \code{x}.
-When a label is not specified for an element of \code{x},
+\item{labels}{(named \code{character} or \code{NULL})\cr optional labels for \code{x}. Names of the \code{labels} must
+match the names of \code{x}. When a label is not specified for an element of \code{x},
 then this function tries to use \code{label} or \code{names} (in this order) attribute of that element
-(depending on which one exists and it is not \code{NULL} or \code{NA} or \code{NaN}).
-If none of these attributes are attached to a given element of \code{x},
-then the label is automatically generated.}
+(depending on which one exists and it is not \code{NULL} or \code{NA} or \code{NaN}). If none of these attributes
+are attached to a given element of \code{x}, then the label is automatically generated.}
 }
 \value{
-1-row \code{data.frame} object
+A single row \code{data.frame} object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \examples{
-
 mean_ci <- c(48, 51)
 x <- list(mean = 50, mean_ci = mean_ci)
 format <- c(mean = "xx.x", mean_ci = "(xx.xx, xx.xx)")
@@ -41,7 +37,4 @@ attr(mean_ci, "label") <- "Mean 95\% CI"
 x <- list(mean = 50, mean_ci = mean_ci)
 h_format_row(x, format, labels)
 
-}
-\author{
-Wojciech Wojciak wojciech.wojciak@contractors.roche.com
 }

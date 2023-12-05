@@ -5,7 +5,7 @@ testthat::test_that("groups_list_to_df works as expected", {
     "Grade 3-4 (%)" = c("3", "4"),
     "Grade 5 (%)" = "5"
   )
-  result <- groups_list_to_df(grade_groups)
+  result <- groups_list_to_df(grade_groups) %>% data.frame()
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -111,7 +111,7 @@ testthat::test_that("split_cols_by_groups equivalent to split_cols_by with ref_c
     }
   }
   result <- basic_table() %>%
-    split_cols_by_groups("ARM", ref_group = "B: Placebo") %>%
+    split_cols_by_groups("ARM", ref_group = "B: Placebo", split_fun = ref_group_position("first")) %>%
     add_colcounts() %>%
     analyze("AGE", afun = afun) %>%
     build_table(DM)

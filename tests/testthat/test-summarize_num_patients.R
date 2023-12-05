@@ -251,5 +251,63 @@ testthat::test_that("analyze_num_patients works well for pagination", {
       "Number of events"
     )
   )
-  testthat::expect_identical(to_string_matrix(pag_result[[2]])[3, 1], "e 1.1")
+  testthat::expect_identical(to_string_matrix(pag_result[[3]])[6, 1], "17")
+})
+
+testthat::test_that("summarize_num_patients works as expected with risk difference column", {
+  # One statistic
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+    split_rows_by("AESOC", child_labels = "visible") %>%
+    summarize_num_patients(
+      "USUBJID",
+      .stats = "unique",
+      riskdiff = TRUE
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # Multiple statistics
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+    split_rows_by("AESOC", child_labels = "visible") %>%
+    summarize_num_patients(
+      "USUBJID",
+      riskdiff = TRUE
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("analyze_num_patients works as expected with risk difference column", {
+  # One statistic
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+    analyze_num_patients(
+      vars = "USUBJID",
+      .stats = "unique",
+      .labels = c(unique = "Any SAE"),
+      riskdiff = TRUE
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # Multiple statistics
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+    analyze_num_patients(
+      vars = "USUBJID",
+      .labels = c(unique = "Any SAE"),
+      riskdiff = TRUE
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

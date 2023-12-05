@@ -2,46 +2,45 @@
 % Please edit documentation in R/response_subgroups.R
 \name{response_subgroups}
 \alias{response_subgroups}
-\alias{a_response_subgroups}
 \alias{tabulate_rsp_subgroups}
+\alias{a_response_subgroups}
 \title{Tabulate Binary Response by Subgroup}
 \usage{
+tabulate_rsp_subgroups(lyt, df, vars = c("n_tot", "n", "prop", "or", "ci"))
+
 a_response_subgroups(
   .formats = list(n = "xx", n_rsp = "xx", prop = "xx.x\%", n_tot = "xx", or =
     list(format_extreme_values(2L)), ci = list(format_extreme_values_ci(2L)), pval =
     "x.xxxx | (<0.0001)")
 )
-
-tabulate_rsp_subgroups(lyt, df, vars = c("n_tot", "n", "prop", "or", "ci"))
 }
 \arguments{
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
-
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{df}{(\code{list})\cr of data frames containing all analysis variables. List should be
 created using \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.}
 
-\item{vars}{(\code{character})\cr the name of statistics to be reported among
-\code{n} (total number of observations per group),
-\code{n_rsp} (number of responders per group),
-\code{prop} (proportion of responders),
-\code{n_tot} (total number of observations),
-\code{or} (odds ratio),
-\code{ci} (confidence interval of odds ratio) and
-\code{pval} (p value of the effect).
-Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.}
+\item{vars}{(\code{character})\cr the names of statistics to be reported among:
+\itemize{
+\item \code{n}: Total number of observations per group.
+\item \code{n_rsp}: Number of responders per group.
+\item \code{prop}: Proportion of responders.
+\item \code{n_tot}: Total number of observations.
+\item \code{or}: Odds ratio.
+\item \code{ci} : Confidence interval of odds ratio.
+\item \code{pval}: p-value of the effect.
+Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.
+}}
 
-\item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
+}
+\value{
+An \code{rtables} table summarizing binary response by subgroup.
 
-\item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
-list, which specifies the new group levels via the names and the
-levels that belong to it in the character vectors that are elements of the list.}
-
-\item{label_all}{(\code{string})\cr label for the total population analysis.}
-
-\item{method}{(\code{string})\cr specifies the test used to calculate the p-value for the difference between
-two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL} so no test is performed.}
+\itemize{
+\item \code{a_response_subgroups()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -54,10 +53,11 @@ the required statistics. Tables typically used as part of forest plot.
 }
 \section{Functions}{
 \itemize{
-\item \code{a_response_subgroups()}: Formatted Analysis function used to format the results of \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.
-Returns is a list of Formatted Analysis functions with one element per statistic.
+\item \code{tabulate_rsp_subgroups()}: Table-creating function which creates a table
+summarizing binary response by subgroup. This function is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}
+and \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 
-\item \code{tabulate_rsp_subgroups()}: table creating function.
+\item \code{a_response_subgroups()}: Formatted analysis function which is used as \code{afun} in \code{tabulate_rsp_subgroups()}.
 
 }}
 \examples{
@@ -84,10 +84,27 @@ df <- extract_rsp_subgroups(
   data = adrs_f
 )
 df
-# Internal function - a_response_subgroups
-\dontrun{
-a_response_subgroups(.formats = list("n" = "xx", "prop" = "xx.xx\%"))
-}
+
+# Stratified analysis.
+df_strat <- extract_rsp_subgroups(
+  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2"), strat = "STRATA1"),
+  data = adrs_f
+)
+df_strat
+
+# Grouping of the BMRKR2 levels.
+df_grouped <- extract_rsp_subgroups(
+  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2")),
+  data = adrs_f,
+  groups_lists = list(
+    BMRKR2 = list(
+      "low" = "LOW",
+      "low/medium" = c("LOW", "MEDIUM"),
+      "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+    )
+  )
+)
+df_grouped
 
 ## Table with default columns.
 basic_table() \%>\%
@@ -99,6 +116,7 @@ basic_table() \%>\%
     df = df,
     vars = c("n_tot", "n", "n_rsp", "prop", "or", "ci")
   )
+
 }
 \seealso{
 \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}

@@ -1,25 +1,22 @@
-#' Helper Function to create a new `SMQ` variable in `ADAE` by stacking
-#' `SMQ` and/or `CQ` records.
+#' Helper Function to create a new `SMQ` variable in `ADAE` by stacking `SMQ` and/or `CQ` records.
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Helper Function to create a new `SMQ` variable in `ADAE` that
-#' consists of all adverse events belonging to selected
-#' Standardized/Customized queries.
-#' The new dataset will only contain records of the adverse events
-#' belonging to any of the selected baskets.
+#' Helper Function to create a new `SMQ` variable in `ADAE` that consists of all adverse events belonging to
+#' selected Standardized/Customized queries. The new dataset will only contain records of the adverse events
+#' belonging to any of the selected baskets. Remember that `na_str` must match the needed pre-processing
+#' done with [df_explicit_na()] to have the desired output.
 #'
 #' @inheritParams argument_convention
 #' @param baskets (`character`)\cr variable names of the selected Standardized/Customized queries.
 #' @param smq_varlabel (`string`)\cr a label for the new variable created.
-#' @param keys (`character`)\cr names of the key variables to be returned
-#' along with the new variable created.
-#' @param aag_summary (`data.frame`)\cr containing the `SMQ` baskets
-#' and the levels of interest for the final `SMQ` variable. This is useful when
-#' there are some levels of interest that are not observed in the `df` dataset.
-#' The two columns of this dataset should be named `basket` and `basket_name`.
+#' @param keys (`character`)\cr names of the key variables to be returned along with the new variable created.
+#' @param aag_summary (`data.frame`)\cr containing the `SMQ` baskets and the levels of interest for the final `SMQ`
+#'   variable. This is useful when there are some levels of interest that are not observed in the `df` dataset.
+#'   The two columns of this dataset should be named `basket` and `basket_name`.
 #'
-#' @export
+#' @return `data.frame` with variables in `keys` taken from `df` and new variable `SMQ` containing
+#'   records belonging to the baskets selected via the `baskets` argument.
 #'
 #' @examples
 #' adae <- tern_ex_adae[1:20, ] %>% df_explicit_na()
@@ -58,14 +55,19 @@
 #'   keys = c("STUDYID", "USUBJID", "AEDECOD", "ARM"),
 #'   baskets = "SMQ01NAM"
 #' )
+#'
+#' @export
 h_stack_by_baskets <- function(df,
                                baskets = grep("^(SMQ|CQ).+NAM$", names(df), value = TRUE),
                                smq_varlabel = "Standardized MedDRA Query",
                                keys = c("STUDYID", "USUBJID", "ASTDTM", "AEDECOD", "AESEQ"),
                                aag_summary = NULL,
-                               na_level = "<Missing>") {
-  # Use of df_explicit_na() in case the user has not previously used
-  df <- df_explicit_na(df, na_level = na_level)
+                               na_level = lifecycle::deprecated(),
+                               na_str = "<Missing>") {
+  if (lifecycle::is_present(na_level)) {
+    lifecycle::deprecate_warn("0.9.1", "h_stack_by_baskets(na_level)", "h_stack_by_baskets(na_str)")
+    na_str <- na_level
+  }
 
   smq_nam <- baskets[startsWith(baskets, "SMQ")]
   # SC corresponding to NAM
@@ -80,7 +82,7 @@ h_stack_by_baskets <- function(df,
   checkmate::assert_subset(baskets, names(df))
   checkmate::assert_subset(keys, names(df))
   checkmate::assert_subset(smq_sc, names(df))
-  checkmate::assert_string(na_level)
+  checkmate::assert_string(na_str)
 
   if (!is.null(aag_summary)) {
     assert_df_with_variables(
@@ -96,8 +98,8 @@ h_stack_by_baskets <- function(df,
 
   var_labels <- c(formatters::var_labels(df[, keys]), "SMQ" = smq_varlabel)
 
-  # convert `na_level` records from baskets to NA for the later loop and from wide to long steps
-  df[, c(baskets, smq_sc)][df[, c(baskets, smq_sc)] == na_level] <- NA
+  # convert `na_str` records from baskets to NA for the later loop and from wide to long steps
+  df[, c(baskets, smq_sc)][df[, c(baskets, smq_sc)] == na_str] <- NA
 
   if (all(is.na(df[, baskets]))) { # in case there is no level for the target baskets
     df_long <- df[-seq_len(nrow(df)), keys] # we just need an empty dataframe keeping all factor levels
@@ -128,10 +130,10 @@ h_stack_by_baskets <- function(df,
     )
 
     df_long <- df_long[!is.na(df_long[, "SMQ"]), !(names(df_long) %in% c("time", "unique_id"))]
-    df_long$SMQ <- as.factor(df_long$SMQ) # nolint
+    df_long$SMQ <- as.factor(df_long$SMQ)
   }
 
-  smq_levels <- setdiff(levels(df_long[["SMQ"]]), na_level)
+  smq_levels <- setdiff(levels(df_long[["SMQ"]]), na_str)
 
   if (!is.null(aag_summary)) {
     # A warning in case there is no match between df and aag_summary records

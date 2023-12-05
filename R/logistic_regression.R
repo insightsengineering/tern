@@ -1,8 +1,8 @@
-#' Multi-Variable Logistic Regression Table
+#' Multivariate Logistic Regression Table
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Layout creating function which summarizes a logistic variable regression for binary outcome with
+#' Layout-creating function which summarizes a logistic variable regression for binary outcome with
 #' categorical/continuous covariates in model statement. For each covariate category (if categorical)
 #' or specified values (if continuous), present degrees of freedom, regression parameter estimate and
 #' standard error (SE) relative to reference group or category. Report odds ratios for each covariate
@@ -11,11 +11,15 @@
 #' that covariate has no effect on response in model containing all specified covariates.
 #' Allow option to include one two-way interaction and present similar output for
 #' each interaction degree of freedom.
-#' Note: For the formula, the variable names need to be standard dataframe column name without
-#' special characters.
 #'
 #' @inheritParams argument_convention
-#' @param drop_and_remove_str string to be dropped and removed
+#' @param drop_and_remove_str (`character`)\cr string to be dropped and removed.
+#'
+#' @return A layout object suitable for passing to further layouting functions, or to [rtables::build_table()].
+#'   Adding this function to an `rtable` layout will add a logistic regression variable summary to the table layout.
+#'
+#' @note For the formula, the variable names need to be standard `data.frame` column names without
+#'   special characters.
 #'
 #' @examples
 #' library(dplyr)
@@ -72,15 +76,17 @@
 #' result2
 #'
 #' @export
+#' @order 1
 summarize_logistic <- function(lyt,
                                conf_level,
-                               drop_and_remove_str = "") {
+                               drop_and_remove_str = "",
+                               .indent_mods = NULL) {
   # checks
   checkmate::assert_string(drop_and_remove_str)
 
   sum_logistic_variable_test <- logistic_summary_by_flag("is_variable_summary")
-  sum_logistic_term_estimates <- logistic_summary_by_flag("is_term_summary")
-  sum_logistic_odds_ratios <- logistic_summary_by_flag("is_reference_summary")
+  sum_logistic_term_estimates <- logistic_summary_by_flag("is_term_summary", .indent_mods = .indent_mods)
+  sum_logistic_odds_ratios <- logistic_summary_by_flag("is_reference_summary", .indent_mods = .indent_mods)
   split_fun <- drop_and_remove_levels(drop_and_remove_str)
 
   lyt <- logistic_regression_cols(lyt, conf_level = conf_level)
@@ -106,17 +112,16 @@ summarize_logistic <- function(lyt,
 #'   This will be used when fitting the (conditional) logistic regression model on the left hand
 #'   side of the formula.
 #'
+#' @return A fitted logistic regression model.
+#'
 #' @section Model Specification:
 #'
 #' The `variables` list needs to include the following elements:
-#' \describe{
-#'   \item{arm}{treatment arm variable name.}
-#'   \item{response}{the response arm variable name. Usually this is a 0/1 variable.}
-#'   \item{covariates}{this is either `NULL` (no covariates) or a character vector of covariate variable names.}
-#'   \item{interaction}{this is either `NULL` (no interaction) or a string of a single covariate variable name already
+#'   * `arm`: Treatment arm variable name.
+#'   * `response`: The response arm variable name. Usually this is a 0/1 variable.
+#'   * `covariates`: This is either `NULL` (no covariates) or a character vector of covariate variable names.
+#'   * `interaction`: This is either `NULL` (no interaction) or a string of a single covariate variable name already
 #'     included in `covariates`. Then the interaction with the treatment arm is included in the model.
-#'   }
-#' }
 #'
 #' @examples
 #' library(dplyr)
@@ -210,10 +215,13 @@ fit_logistic <- function(data,
 #' with `binomial` family.
 #'
 #' @inheritParams argument_convention
-#' @param at (`NULL` or `numeric`)\cr optional values for the interaction variable. Otherwise
-#'   the median is used.
-#' @param fit_glm logistic regression model fitted by [stats::glm()] with "binomial" family.
+#' @param at (`NULL` or `numeric`)\cr optional values for the interaction variable. Otherwise the median is used.
+#' @param x logistic regression model fitted by [stats::glm()] with "binomial" family.
+#'
+#' @return A `data.frame` containing the tidied model.
+#'
 #' @method tidy glm
+#'
 #' @seealso [h_logistic_regression] for relevant helper functions.
 #'
 #' @examples
@@ -251,25 +259,26 @@ fit_logistic <- function(data,
 #' df2 <- tidy(mod2, conf_level = 0.99)
 #'
 #' @export
-tidy.glm <- function(fit_glm, # nolint
+tidy.glm <- function(x, # nolint
                      conf_level = 0.95,
-                     at = NULL) {
-  checkmate::assert_class(fit_glm, "glm")
-  checkmate::assert_set_equal(fit_glm$family$family, "binomial")
+                     at = NULL,
+                     ...) {
+  checkmate::assert_class(x, "glm")
+  checkmate::assert_set_equal(x$family$family, "binomial")
 
-  terms_name <- attr(stats::terms(fit_glm), "term.labels")
-  xs_class <- attr(fit_glm$terms, "dataClasses")
+  terms_name <- attr(stats::terms(x), "term.labels")
+  xs_class <- attr(x$terms, "dataClasses")
   interaction <- terms_name[which(!terms_name %in% names(xs_class))]
   df <- if (length(interaction) == 0) {
     h_logistic_simple_terms(
       x = terms_name,
-      fit_glm = fit_glm,
+      fit_glm = x,
       conf_level = conf_level
     )
   } else {
     h_logistic_inter_terms(
       x = terms_name,
-      fit_glm = fit_glm,
+      fit_glm = x,
       conf_level = conf_level,
       at = at
     )
@@ -280,14 +289,18 @@ tidy.glm <- function(fit_glm, # nolint
   df
 }
 
-#' Logistic Regression Multi-Variable Column Layout Function
+#' Logistic Regression Multivariate Column Layout Function
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Layout creating function for a multi-variable column layout summarizing
-#' logistic regression results.
+#' Layout-creating function which creates a multivariate column layout summarizing logistic
+#' regression results. This function is a wrapper for [rtables::split_cols_by_multivar()].
 #'
 #' @inheritParams argument_convention
+#'
+#' @return A layout object suitable for passing to further layouting functions. Adding this
+#'   function to an `rtable` layout will split the table into columns corresponding to
+#'   statistics `df`, `estimate`, `std_error`, `odds_ratio`, `ci`, and `pvalue`.
 #'
 #' @export
 logistic_regression_cols <- function(lyt,
@@ -312,27 +325,31 @@ logistic_regression_cols <- function(lyt,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Constructor for content functions to be used to summarize
-#' logistic regression results.
+#' Constructor for content functions to be used in [`summarize_logistic()`] to summarize
+#' logistic regression results. This function is a wrapper for [rtables::summarize_row_groups()].
 #'
+#' @inheritParams argument_convention
 #' @param flag_var (`string`)\cr variable name identifying which row should be used in this
 #'   content function.
 #'
+#' @return A content function.
+#'
 #' @export
-logistic_summary_by_flag <- function(flag_var) {
+logistic_summary_by_flag <- function(flag_var, na_str = NA_character_, .indent_mods = NULL) {
   checkmate::assert_string(flag_var)
   function(lyt) {
     cfun_list <- list(
-      df = cfun_by_flag("df", flag_var, format = "xx."),
-      estimate = cfun_by_flag("estimate", flag_var, format = "xx.xxx"),
-      std_error = cfun_by_flag("std_error", flag_var, format = "xx.xxx"),
-      odds_ratio = cfun_by_flag("odds_ratio", flag_var, format = ">999.99"),
-      ci = cfun_by_flag("ci", flag_var, format = format_extreme_values_ci(2L)),
-      pvalue = cfun_by_flag("pvalue", flag_var, format = "x.xxxx | (<0.0001)")
+      df = cfun_by_flag("df", flag_var, format = "xx.", .indent_mods = .indent_mods),
+      estimate = cfun_by_flag("estimate", flag_var, format = "xx.xxx", .indent_mods = .indent_mods),
+      std_error = cfun_by_flag("std_error", flag_var, format = "xx.xxx", .indent_mods = .indent_mods),
+      odds_ratio = cfun_by_flag("odds_ratio", flag_var, format = ">999.99", .indent_mods = .indent_mods),
+      ci = cfun_by_flag("ci", flag_var, format = format_extreme_values_ci(2L), .indent_mods = .indent_mods),
+      pvalue = cfun_by_flag("pvalue", flag_var, format = "x.xxxx | (<0.0001)", .indent_mods = .indent_mods)
     )
     summarize_row_groups(
       lyt = lyt,
-      cfun = cfun_list
+      cfun = cfun_list,
+      na_str = na_str
     )
   }
 }

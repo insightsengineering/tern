@@ -120,7 +120,7 @@ testthat::test_that("estimate_odds_ratio estimates right OR and CI (stratified a
   )
 
   result <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "A") %>%
+    split_cols_by(var = "grp", ref_group = "A", split_fun = ref_group_position("first")) %>%
     estimate_odds_ratio(vars = "rsp", variables = list(arm = "grp", strata = "strata")) %>%
     build_table(df = data)
 

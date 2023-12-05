@@ -4,8 +4,25 @@
 \alias{summarize_ancova}
 \alias{s_ancova}
 \alias{a_ancova}
-\title{Summary for analysis of covariance (ANCOVA).}
+\title{Summary for analysis of covariance (\code{ANCOVA}).}
 \usage{
+summarize_ancova(
+  lyt,
+  vars,
+  var_labels,
+  na_str = NA_character_,
+  nested = TRUE,
+  ...,
+  show_labels = "visible",
+  table_names = vars,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL,
+  interaction_y = FALSE,
+  interaction_item = NULL
+)
+
 s_ancova(
   df,
   .var,
@@ -29,23 +46,44 @@ a_ancova(
   interaction_y = FALSE,
   interaction_item = NULL
 )
-
-summarize_ancova(
-  lyt,
-  vars,
-  var_labels,
-  ...,
-  show_labels = "visible",
-  table_names = vars,
-  .stats = NULL,
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = NULL,
-  interaction_y = FALSE,
-  interaction_item = NULL
-)
 }
 \arguments{
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{var_labels}{(\code{character})\cr character for label.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
+\item{...}{additional arguments for the lower level functions.}
+
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("summarize_ancova")}
+to see available statistics for this function.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
+
+\item{interaction_y}{(\code{character})\cr a selected item inside of the interaction_item column which will be used
+to select the specific \code{ANCOVA} results. if the interaction is not needed, the default option is \code{FALSE}.}
+
+\item{interaction_item}{(\code{character})\cr name of the variable that should have interactions
+with arm. if the interaction is not needed, the default option is \code{NULL}.}
+
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
@@ -60,95 +98,49 @@ by a statistics function.}
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
-
-\item{interaction_y}{(\code{character})\cr a selected item inside of the interaction_item column
-which will be used to select the specific ANCOVA results. if the interaction is not
-needed, the default option is FALSE}
-
-\item{interaction_item}{(\code{character})\cr name of the variable that should have interactions
-with arm. if the interaction is not needed, the default option is NULL.}
-
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
-
-\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
-
-\item{var_labels}{character for label.}
-
-\item{...}{additional arguments for the lower level functions.}
-
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
-
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
-
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
-
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-A named list of 5 statistics:
-\describe{
-\item{n}{count of complete sample size for the group.}
-\item{lsmean}{estimated marginal means in the group.}
-\item{lsmean_diff}{difference in estimated marginal means in comparison to the reference group.
+\itemize{
+\item \code{summarize_ancova()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_ancova()} to the table layout.
+}
+
+\itemize{
+\item \code{s_ancova()} returns a named list of 5 statistics:
+\itemize{
+\item \code{n}: Count of complete sample size for the group.
+\item \code{lsmean}: Estimated marginal means in the group.
+\item \code{lsmean_diff}: Difference in estimated marginal means in comparison to the reference group.
 If working with the reference group, this will be empty.
+\item \code{lsmean_diff_ci}: Confidence level for difference in estimated marginal means in comparison
+to the reference group.
+\item \code{pval}: p-value (not adjusted for multiple comparisons).
 }
-\item{lsmean_diff_ci}{confidence level for difference in estimated marginal means in comparison to the
-reference group.
 }
-\item{pval}{p-value (not adjusted for multiple comparisons).}
+
+\itemize{
+\item \code{a_ancova()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Summarize results of ANCOVA. This can be used to analyze multiple endpoints and/or
+Summarize results of \code{ANCOVA}. This can be used to analyze multiple endpoints and/or
 multiple timepoints within the same response variable \code{.var}.
 }
 \section{Functions}{
 \itemize{
+\item \code{summarize_ancova()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{s_ancova()}: Statistics function that produces a named list of results
 of the investigated linear model.
 
-\item \code{a_ancova()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
-
-\item \code{summarize_ancova()}: Layout creating function which can be be used for creating
-summary tables for analysis of covariance (ANCOVA).
+\item \code{a_ancova()}: Formatted analysis function which is used as \code{afun} in \code{summarize_ancova()}.
 
 }}
 \examples{
-library(dplyr)
-
-df <- iris \%>\% filter(Species == "virginica")
-.df_row <- iris
-.var <- "Petal.Length"
-variables <- list(arm = "Species", covariates = "Sepal.Length * Sepal.Width")
-.ref_group <- iris \%>\% filter(Species == "setosa")
-conf_level <- 0.95
-
-# Internal function - s_ancova
-\dontrun{
-s_ancova(
-  df, .var, .df_row, variables, .ref_group,
-  .in_ref_col = FALSE,
-  conf_level, interaction_y = FALSE, interaction_item = NULL
-)
-}
-
-# Internal function - a_ancova
-\dontrun{
-a_ancova(
-  df, .var, .df_row, variables, .ref_group,
-  .in_ref_col = FALSE,
-  interaction_y = FALSE, interaction_item = NULL, conf_level
-)
-}
-
 basic_table() \%>\%
   split_cols_by("Species", ref_group = "setosa") \%>\%
   add_colcounts() \%>\%
@@ -166,5 +158,6 @@ basic_table() \%>\%
     conf_level = 0.95, var_labels = "Adjusted comparison (covariates: Sepal.Length and Sepal.Width)"
   ) \%>\%
   build_table(iris)
+
 }
 \keyword{internal}

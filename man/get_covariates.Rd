@@ -11,7 +11,7 @@ get_covariates(covariates)
 \code{"X1"}), and/or interaction terms indicated by \code{"X1 * X2"}.}
 }
 \value{
-a named \code{list} of character vector.
+A named \code{list} of \code{character} vector.
 }
 \description{
 Utility function to return a named list of covariate names.

@@ -23,6 +23,9 @@
 
 \item{x}{(\code{CombinationFunction})\cr the function which should be negated.}
 }
+\value{
+Returns a logical value indicating whether the left hand side of the equation equals the right hand side.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
@@ -67,4 +70,5 @@ c1 <- higher(5)
 c2 <- lower(10)
 c3 <- higher(5) & lower(10)
 c3(7)
+
 }

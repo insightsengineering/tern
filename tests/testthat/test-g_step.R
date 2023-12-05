@@ -14,18 +14,18 @@ step_matrix <- fit_survival_step(
 step_data <- broom::tidy(step_matrix)
 
 testthat::test_that("g_step works with default settings", {
-  gg <- g_step(step_data)
-  testthat::expect_true(ggplot2::is.ggplot(gg))
+  g_step <- g_step(step_data)
+  vdiffr::expect_doppelganger(title = "g_step", fig = g_step)
 })
 
 testthat::test_that("g_step works with custom settings", {
-  gg <- g_step(
+  g_step_custom <- g_step(
     step_data,
     use_percentile = FALSE,
     est = list(col = "blue", lty = 1),
     ci_ribbon = NULL
   )
-  testthat::expect_true(ggplot2::is.ggplot(gg))
+  vdiffr::expect_doppelganger(title = "g_step_custom", fig = g_step_custom)
 })
 
 testthat::test_that("tidy.step works as expected for survival STEP results", {
@@ -75,7 +75,7 @@ testthat::test_that("tidy.step gives expected warnings when there are NAs in y v
   step_matrix <- structure(
     cbind(loghr = c(1, 2), ci_lower = c(NA, 1), ci_upper = c(3, 6)),
     class = c("step", "matrix"),
-    control = control_summarize_vars(conf_level = 0.9),
+    control = control_analyze_vars(conf_level = 0.9),
     variables = list(biomarker = "bla")
   )
   suppressWarnings(testthat::expect_warning(
@@ -92,7 +92,7 @@ testthat::test_that("tidy.step gives expected warnings when there are very large
   step_matrix <- structure(
     cbind(loghr = c(1, 2), ci_lower = c(1e100, 1), ci_upper = c(3, 6)),
     class = c("step", "matrix"),
-    control = control_summarize_vars(conf_level = 0.9),
+    control = control_analyze_vars(conf_level = 0.9),
     variables = list(biomarker = "bla")
   )
   suppressWarnings(testthat::expect_warning(

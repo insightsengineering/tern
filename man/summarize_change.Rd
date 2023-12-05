@@ -6,13 +6,11 @@
 \alias{a_change_from_baseline}
 \title{Summarize the Change from Baseline or Absolute Baseline Values}
 \usage{
-s_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
-
-a_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
-
 summarize_change(
   lyt,
   vars,
+  na_str = NA_character_,
+  nested = TRUE,
   ...,
   table_names = vars,
   .stats = c("n", "mean_sd", "median", "range"),
@@ -20,8 +18,38 @@ summarize_change(
   .labels = NULL,
   .indent_mods = NULL
 )
+
+s_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
+
+a_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
 }
 \arguments{
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
+\item{...}{additional arguments for the lower level functions.}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table. Run \verb{get_stats("analyze_vars_numeric)}
+to see available statistics for this function.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
+
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
@@ -30,26 +58,21 @@ by a statistics function.}
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
-
-\item{...}{additional arguments for the lower level functions.}
-
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
-
-\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
-
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
-
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
-
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
 }
 \value{
-See \code{\link[=s_summary.numeric]{s_summary.numeric()}} for the return values.
+\itemize{
+\item \code{summarize_change()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_change_from_baseline()} to the table layout.
+}
+
+\itemize{
+\item \code{s_change_from_baseline()} returns the same values returned by \code{\link[=s_summary.numeric]{s_summary.numeric()}}.
+}
+
+\itemize{
+\item \code{a_change_from_baseline()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -61,52 +84,25 @@ or the change from baseline values (post-baseline) are then summarized.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_change_from_baseline()}: Statistics Function that summarizes baseline or post-baseline visits.
+\item \code{summarize_change()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
 
-\item \code{a_change_from_baseline()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
+\item \code{s_change_from_baseline()}: Statistics function that summarizes baseline or post-baseline visits.
 
-\item \code{summarize_change()}: Analyze Function for change from baseline analysis.
-To be used after a split on visits in the layout, such that each data
-subset only contains either baseline or post-baseline data. Allows additional
-formatting options.
+\item \code{a_change_from_baseline()}: Formatted analysis function which is used as \code{afun} in \code{summarize_change()}.
 
 }}
 \note{
+To be used after a split on visits in the layout, such that each data subset only contains
+either baseline or post-baseline data.
+
 The data in \code{df} must be either all be from baseline or post-baseline visits. Otherwise
 an error will be thrown.
 }
 \examples{
-df <- data.frame(
-  chg = c(1, 2, 3),
-  is_bl = c(TRUE, TRUE, TRUE),
-  val = c(4, 5, 6)
-)
-
-# Internal function - s_change_from_baseline
-\dontrun{
-s_change_from_baseline(
-  df,
-  .var = "chg",
-  variables = list(value = "val", baseline_flag = "is_bl")
-)
-}
-
-# Internal function - a_change_from_baseline
-\dontrun{
-a_change_from_baseline(
-  df,
-  .var = "chg",
-  variables = list(value = "val", baseline_flag = "is_bl")
-)
-}
-
-
-# `summarize_change()`
-
-## Fabricated dataset.
 library(dplyr)
 
+## Fabricate dataset
 dta_test <- data.frame(
   USUBJID = rep(1:6, each = 3),
   AVISIT = rep(paste0("V", 1:3), 6),
@@ -126,9 +122,8 @@ results <- basic_table() \%>\%
   split_rows_by("AVISIT") \%>\%
   summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL")) \%>\%
   build_table(dta_test)
-\dontrun{
-Viewer(results)
-}
+
+results
 
 }
 \keyword{internal}

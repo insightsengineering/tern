@@ -9,10 +9,10 @@
       $conf_type
       [1] "exact"
       
-      $time_unit_input
+      $input_time_unit
       [1] "month"
       
-      $time_unit_output
+      $num_pt_year
       [1] 100
       
 

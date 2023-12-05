@@ -26,7 +26,7 @@ ribbon area, or \code{NULL} to not plot a CI ribbon.}
 \item{col}{(\code{character})\cr colors.}
 }
 \value{
-The \code{ggplot2} object.
+A \code{ggplot} STEP graph.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -93,6 +93,7 @@ step_matrix <- fit_rsp_step(
 )
 step_data <- broom::tidy(step_matrix)
 g_step(step_data)
+
 }
 \seealso{
 Custom tidy method \code{\link[=tidy.step]{tidy.step()}}.

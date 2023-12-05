@@ -8,15 +8,15 @@
 #' @param levels level names to be combined
 #' @param new_level name of new level
 #'
-#' @return a factor
-#'
-#' @export
+#' @return A `factor` with the new levels.
 #'
 #' @examples
 #' x <- factor(letters[1:5], levels = letters[5:1])
 #' combine_levels(x, levels = c("a", "b"))
 #'
 #' combine_levels(x, c("e", "b"))
+#'
+#' @export
 combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/")) {
   checkmate::assert_factor(x)
   checkmate::assert_subset(levels, levels(x))
@@ -38,19 +38,10 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #'
 #' @param x (`atomic`)\cr object to convert.
 #' @param x_name (`string`)\cr name of `x`.
-#' @param na_level (`string`)\cr the explicit missing level which should be used when
-#'   converting a character vector.
+#' @param na_level (`string`)\cr the explicit missing level which should be used when converting a character vector.
 #' @param verbose defaults to `TRUE`. It prints out warnings and messages.
 #'
-#' @return The factor with same attributes (except class) as `x`. Does not do any modifications
-#'   if `x` is already a factor.
-#'
-#' @examples
-#' # Internal function - as_factor_keep_attributes
-#' \dontrun{
-#' as_factor_keep_attributes(formatters::with_label(c(1, 1, 2, 3), "id"), verbose = FALSE)
-#' as_factor_keep_attributes(c("a", "b", ""), "id", verbose = FALSE)
-#' }
+#' @return A `factor` with same attributes (except class) as `x`. Does not modify `x` if already a `factor`.
 #'
 #' @keywords internal
 as_factor_keep_attributes <- function(x,
@@ -104,20 +95,7 @@ as_factor_keep_attributes <- function(x,
 #'   the boundaries 0 and 1 must not be included.
 #' @param digits (`integer`)\cr number of decimal places to round the percent numbers.
 #'
-#' @return Character vector with labels in the format `[0%,20%]`, `(20%,50%]`, etc.
-#'
-#' @examples
-#' # Internal function - bins_percent_labels
-#' \dontrun{
-#' # Just pass the internal probability bounds, then 0 and 100% will be added automatically.
-#' bins_percent_labels(c(0.2, 0.5))
-#'
-#' # Determine how to round.
-#' bins_percent_labels(0.35224, digits = 1)
-#'
-#' # Passing an empty vector just gives a single bin 0-100%.
-#' bins_percent_labels(c(0, 1))
-#' }
+#' @return A `character` vector with labels in the format `[0%,20%]`, `(20%,50%]`, etc.
 #'
 #' @keywords internal
 bins_percent_labels <- function(probs,
@@ -143,10 +121,7 @@ bins_percent_labels <- function(probs,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This cuts a numeric vector into sample quantile bins. Note that the intervals are closed on
-#' the right side. That is, the first bin is the interval `[-Inf, q1]` where `q1` is
-#' the first quantile, the second bin is then `(q1, q2]`, etc., and the last bin
-#' is `(qn, +Inf]` where `qn` is the last quantile.
+#' This cuts a numeric vector into sample quantile bins.
 #'
 #' @inheritParams bins_percent_labels
 #' @param x (`numeric`)\cr the continuous variable values which should be cut into
@@ -157,8 +132,11 @@ bins_percent_labels <- function(probs,
 #' @param type (`integer`)\cr type of quantiles to use, see [stats::quantile()] for details.
 #' @param ordered (`flag`)\cr should the result be an ordered factor.
 #'
-#' @return The factor variable with the appropriately labeled bins as levels.
-#' @export
+#' @return A `factor` variable with appropriately-labeled bins as levels.
+#'
+#' @note Intervals are closed on the right side. That is, the first bin is the interval
+#'   `[-Inf, q1]` where `q1` is the first quantile, the second bin is then `(q1, q2]`, etc.,
+#'   and the last bin is `(qn, +Inf]` where `qn` is the last quantile.
 #'
 #' @examples
 #' # Default is to cut into quartile bins.
@@ -175,6 +153,8 @@ bins_percent_labels <- function(probs,
 #' which(is.na(ozone_binned))
 #' # So you might want to make these explicit.
 #' explicit_na(ozone_binned)
+#'
+#' @export
 cut_quantile_bins <- function(x,
                               probs = c(0.25, 0.5, 0.75),
                               labels = NULL,
@@ -192,7 +172,6 @@ cut_quantile_bins <- function(x,
     # Early return if there are only NAs in input.
     return(factor(x, ordered = ordered, levels = labels))
   }
-
 
   quantiles <- stats::quantile(
     x,
@@ -215,16 +194,19 @@ cut_quantile_bins <- function(x,
 
 #' Discard Certain Levels from a Factor
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This discards the observations as well as the levels specified from a factor.
 #'
 #' @param x (`factor`)\cr the original factor.
 #' @param discard (`character`)\cr which levels to discard.
 #'
-#' @return The modified factor with observations as well as levels from `discard` dropped.
-#' @export
+#' @return A modified `factor` with observations as well as levels from `discard` dropped.
 #'
 #' @examples
 #' fct_discard(factor(c("a", "b", "c")), "c")
+#'
+#' @export
 fct_discard <- function(x, discard) {
   checkmate::assert_factor(x)
   checkmate::assert_character(discard, any.missing = FALSE)
@@ -235,14 +217,17 @@ fct_discard <- function(x, discard) {
 
 #' Insertion of Explicit Missings in a Factor
 #'
-#' This inserts explicit missings in a factor based on a condition. Note that also additional
+#' @description `r lifecycle::badge("stable")`
+#'
+#' This inserts explicit missings in a factor based on a condition. Additionally,
 #' existing `NA` values will be explicitly converted to given `na_level`.
 #'
 #' @param x (`factor`)\cr the original factor.
 #' @param condition (`logical`)\cr where to insert missings.
 #' @param na_level (`string`)\cr which level to use for missings.
 #'
-#' @return The modified factor with inserted and existing `NA` converted to `na_level`.
+#' @return A modified `factor` with inserted and existing `NA` converted to `na_level`.
+#'
 #' @seealso [forcats::fct_na_value_to_level()] which is used internally.
 #'
 #' @examples
@@ -259,10 +244,11 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 
 #' Collapsing of Factor Levels and Keeping Only Those New Group Levels
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This collapses levels and only keeps those new group levels, in the order provided.
 #' The returned factor has levels in the order given, with the possible missing level last (this will
-#' only be included if there are missings). Note that any existing `NA` in the input vector will
-#' not be replaced by the missing level. If needed [explicit_na()] can be called separately on the result.
+#' only be included if there are missing values).
 #'
 #' @param .f (`factor` or `character`)\cr original vector.
 #' @param ... (named `character` vectors)\cr levels in each vector provided will be collapsed into
@@ -270,8 +256,12 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 #' @param .na_level (`string`)\cr which level to use for other levels, which should be missing in the
 #'   new factor. Note that this level must not be contained in the new levels specified in `...`.
 #'
-#' @return The modified factor with collapsed levels. Values and levels which are not included
-#'   in the given character vectors input will be set to the missing level.
+#' @return A modified `factor` with collapsed levels. Values and levels which are not included
+#'   in the given `character` vector input will be set to the missing level `.na_level`.
+#'
+#' @note Any existing `NA`s in the input vector will not be replaced by the missing level. If needed,
+#'   [explicit_na()] can be called separately on the result.
+#'
 #' @seealso [forcats::fct_collapse()], [forcats::fct_relevel()] which are used internally.
 #'
 #' @examples
@@ -285,4 +275,49 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
   }
   x <- forcats::fct_collapse(.f, ..., other_level = .na_level)
   do.call(forcats::fct_relevel, args = c(list(.f = x), as.list(new_lvls)))
+}
+
+#' Ungroup Non-Numeric Statistics
+#'
+#' Ungroups grouped non-numeric statistics within input vectors `.formats`, `.labels`, and `.indent_mods`.
+#'
+#' @inheritParams argument_convention
+#' @param x  (`named list` of `numeric`)\cr list of numeric statistics containing the statistics to ungroup.
+#'
+#' @return A `list` with modified elements `x`, `.formats`, `.labels`, and `.indent_mods`.
+#'
+#' @seealso [a_summary()] which uses this function internally.
+#'
+#' @keywords internal
+ungroup_stats <- function(x,
+                          .formats,
+                          .labels,
+                          .indent_mods) {
+  checkmate::assert_list(x)
+  empty_pval <- "pval" %in% names(x) && length(x[["pval"]]) == 0
+  empty_pval_counts <- "pval_counts" %in% names(x) && length(x[["pval_counts"]]) == 0
+  x <- unlist(x, recursive = FALSE)
+
+  # If p-value is empty it is removed by unlist and needs to be re-added
+  if (empty_pval) x[["pval"]] <- character()
+  if (empty_pval_counts) x[["pval_counts"]] <- character()
+  .stats <- names(x)
+
+  # Ungroup stats
+  .formats <- lapply(.stats, function(x) {
+    .formats[[if (!grepl("\\.", x)) x else regmatches(x, regexpr("\\.", x), invert = TRUE)[[1]][1]]]
+  })
+  .indent_mods <- sapply(.stats, function(x) {
+    .indent_mods[[if (!grepl("\\.", x)) x else regmatches(x, regexpr("\\.", x), invert = TRUE)[[1]][1]]]
+  })
+  .labels <- sapply(.stats, function(x) {
+    if (!grepl("\\.", x)) .labels[[x]] else regmatches(x, regexpr("\\.", x), invert = TRUE)[[1]][2]
+  })
+
+  list(
+    x = x,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods
+  )
 }

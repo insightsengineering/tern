@@ -3,47 +3,51 @@
     Code
       res
     Output
-      # A tibble: 20 x 8
-      # Groups:   USUBJID, PARAMCD [15]
-         USUBJID PARAMCD   VALUES     MIN   MAX WGRLOFL WGRHIFL GRADDR
-         <chr>   <chr>      <dbl>   <dbl> <dbl> <chr>   <chr>   <chr> 
-       1 4       ABC       0.0478  0.0478  187. "Y"     ""      Low   
-       2 3       OPQ       0.314   0.314   144. "Y"     ""      Low   
-       3 4       OPQ       0.455   0.455   193. "Y"     ""      Low   
-       4 2       ABC       0.790   0.790   181. "Y"     ""      Low   
-       5 2       OPQ       7.49    7.49    195. "Y"     ""      Low   
-       6 5       OPQ      22.7    22.7     187. "Y"     ""      Low   
-       7 1       OPQ      23.5    23.5     196. "Y"     ""      Low   
-       8 1       ABC      26.9    26.9     187. "Y"     ""      Low   
-       9 3       ABC      37.9    37.9     197. "Y"     ""      Low   
-      10 5       ABC      46.7    46.7     193. "Y"     ""      Low   
-      11 3       OPQ     144.      0.314   144. ""      "Y"     High  
-      12 3       XYZ     155.     17.1     155. ""      "Y"     High  
-      13 2       XYZ     157.      7.79    157. ""      "Y"     High  
-      14 4       XYZ     167.      0.276   167. ""      "Y"     High  
-      15 5       OPQ     187.     22.7     187. ""      "Y"     High  
-      16 5       XYZ     189.     16.1     189. ""      "Y"     High  
-      17 4       OPQ     193.      0.455   193. ""      "Y"     High  
-      18 2       OPQ     195.      7.49    195. ""      "Y"     High  
-      19 1       OPQ     196.     23.5     196. ""      "Y"     High  
-      20 1       XYZ     198.     16.5     198. ""      "Y"     High  
+         USUBJID PARAMCD       VALUES         MIN      MAX WGRLOFL WGRHIFL GRADDR
+      1        4     ABC   0.04777932  0.04777932 186.6068       Y            Low
+      2        3     OPQ   0.31411084  0.31411084 143.8712       Y            Low
+      3        4     OPQ   0.45459322  0.45459322 192.5216       Y            Low
+      4        2     ABC   0.78966776  0.78966776 181.3203       Y            Low
+      5        2     OPQ   7.48620657  7.48620657 194.7080       Y            Low
+      6        5     OPQ  22.74372182 22.74372182 187.4772       Y            Low
+      7        1     OPQ  23.49747233 23.49747233 195.6453       Y            Low
+      8        1     ABC  26.93331945 26.93331945 187.4151       Y            Low
+      9        3     ABC  37.89478708 37.89478708 196.5634       Y            Low
+      10       5     ABC  46.70470511 46.70470511 192.5141       Y            Low
+      11       3     OPQ 143.87116753  0.31411084 143.8712               Y   High
+      12       3     XYZ 155.16467253 17.12241299 155.1647               Y   High
+      13       2     XYZ 156.93855514  7.78729822 156.9386               Y   High
+      14       4     XYZ 167.36031189  0.27616872 167.3603               Y   High
+      15       5     OPQ 187.47716993 22.74372182 187.4772               Y   High
+      16       5     XYZ 188.94406511 16.05289332 188.9441               Y   High
+      17       4     OPQ 192.52160275  0.45459322 192.5216               Y   High
+      18       2     OPQ 194.70798275  7.48620657 194.7080               Y   High
+      19       1     OPQ 195.64528568 23.49747233 195.6453               Y   High
+      20       1     XYZ 197.77834578 16.48751162 197.7783               Y   High
 
 # h_adlb_worsen stacks data correctly
 
     Code
       res
     Output
-      # A tibble: 8 x 9
-        USUBJID              ARMCD AVISIT PARAMCD ATOXGR BTOXGR WGRLOFL WGRHIFL GRADDR
-        <chr>                <fct> <fct>  <chr>   <fct>  <fct>  <chr>   <chr>   <chr> 
-      1 AB12345-CHN-1-id-53  ARM B WEEK ~ IGA     0      0      ""      "Y"     High  
-      2 AB12345-CHN-3-id-128 ARM B WEEK ~ IGA     4      0      ""      "Y"     High  
-      3 AB12345-CHN-1-id-53  ARM B WEEK ~ ALT     4      0      ""      "Y"     High  
-      4 AB12345-CHN-3-id-128 ARM B WEEK ~ ALT     1      0      ""      "Y"     High  
-      5 AB12345-CHN-1-id-53  ARM B WEEK ~ CRP     0      1      "Y"     "Y"     Low   
-      6 AB12345-CHN-3-id-128 ARM B WEEK ~ CRP     0      0      "Y"     ""      Low   
-      7 AB12345-CHN-1-id-53  ARM B WEEK ~ ALT     -4     0      "Y"     ""      Low   
-      8 AB12345-CHN-3-id-128 ARM B WEEK ~ ALT     -4     0      "Y"     ""      Low   
+                     USUBJID ARMCD        AVISIT PARAMCD ATOXGR BTOXGR WGRLOFL
+      1  AB12345-CHN-1-id-53 ARM B  WEEK 1 DAY 8     IGA      0      0        
+      2 AB12345-CHN-3-id-128 ARM B WEEK 5 DAY 36     IGA      4      0        
+      3  AB12345-CHN-1-id-53 ARM B WEEK 3 DAY 22     ALT      4      0        
+      4 AB12345-CHN-3-id-128 ARM B WEEK 4 DAY 29     ALT      1      0        
+      5  AB12345-CHN-1-id-53 ARM B WEEK 3 DAY 22     CRP      0      1       Y
+      6 AB12345-CHN-3-id-128 ARM B  WEEK 1 DAY 8     CRP      0      0       Y
+      7  AB12345-CHN-1-id-53 ARM B WEEK 5 DAY 36     ALT     -4      0       Y
+      8 AB12345-CHN-3-id-128 ARM B WEEK 5 DAY 36     ALT     -4      0       Y
+        WGRHIFL GRADDR
+      1       Y   High
+      2       Y   High
+      3       Y   High
+      4       Y   High
+      5       Y    Low
+      6            Low
+      7            Low
+      8            Low
 
 # h_worsen_counter counts data (low) correctly
 
@@ -220,56 +224,4 @@
           3      4/68 (5.9%)    9/70 (12.9%)     5/53 (9.4%) 
           4     7/69 (10.1%)     6/72 (8.3%)     4/55 (7.3%) 
           Any   30/69 (43.5%)   26/72 (36.1%)   19/55 (34.5%)
-
-# h_adlb_worsen all high
-
-    Code
-      res
-    Output
-      # A tibble: 600 x 51
-         STUDYID COUNTRY SITEID SUBJID   AGE SEX   ARMCD ARM      ACTAR~1 ACTARM RACE 
-         <chr>   <fct>   <chr>  <chr>  <dbl> <fct> <fct> <fct>    <fct>   <fct>  <fct>
-       1 AB12345 BRA     BRA-1  id-105  37.8 F     ARM A A: Drug~ ARM A   A: Dr~ ASIAN
-       2 AB12345 BRA     BRA-1  id-105  37.8 F     ARM A A: Drug~ ARM A   A: Dr~ ASIAN
-       3 AB12345 BRA     BRA-1  id-105  37.8 F     ARM A A: Drug~ ARM A   A: Dr~ ASIAN
-       4 AB12345 BRA     BRA-1  id-171  29.8 F     ARM B B: Plac~ ARM B   B: Pl~ ASIAN
-       5 AB12345 BRA     BRA-1  id-171  29.8 F     ARM B B: Plac~ ARM B   B: Pl~ ASIAN
-       6 AB12345 BRA     BRA-1  id-171  29.8 F     ARM B B: Plac~ ARM B   B: Pl~ ASIAN
-       7 AB12345 BRA     BRA-1  id-177  38.9 F     ARM B B: Plac~ ARM B   B: Pl~ ASIAN
-       8 AB12345 BRA     BRA-1  id-177  38.9 F     ARM B B: Plac~ ARM B   B: Pl~ ASIAN
-       9 AB12345 BRA     BRA-1  id-177  38.9 F     ARM B B: Plac~ ARM B   B: Pl~ ASIAN
-      10 AB12345 BRA     BRA-1  id-23   41.3 F     ARM A A: Drug~ ARM A   A: Dr~ AMER~
-      # ... with 590 more rows, 40 more variables: TRTSDTM <dttm>, TRTEDTM <dttm>,
-      #   EOSDY <dbl>, STRATA1 <fct>, STRATA2 <fct>, BMRKR1 <dbl>, BMRKR2 <fct>,
-      #   REGION1 <fct>, SAFFL <fct>, USUBJID <chr>, PARAM <fct>, AVISIT <fct>,
-      #   AVAL <dbl>, LBCAT <fct>, PARAMCD <chr>, AVALU <fct>, AVISITN <dbl>,
-      #   ABLFL2 <chr>, ABLFL <chr>, BASE <dbl>, BASETYPE <chr>, ANRIND <fct>,
-      #   ANRLO <dbl>, ANRHI <dbl>, DTYPE <lgl>, ATOXGR <fct>, BTOXGR <fct>,
-      #   ATOXDSCL <chr>, ATOXDSCH <chr>, ADTM <dttm>, ASPID <int>, LBSEQ <int>, ...
-
-# h_adlb_worsen all low
-
-    Code
-      res
-    Output
-      # A tibble: 600 x 51
-         STUDYID COUNTRY SITEID SUBJID   AGE SEX   ARMCD ARM      ACTAR~1 ACTARM RACE 
-         <chr>   <fct>   <chr>  <chr>  <dbl> <fct> <fct> <fct>    <fct>   <fct>  <fct>
-       1 AB12345 BRA     BRA-1  id-105  37.8 F     ARM A A: Drug~ ARM A   A: Dr~ ASIAN
-       2 AB12345 BRA     BRA-1  id-105  37.8 F     ARM A A: Drug~ ARM A   A: Dr~ ASIAN
-       3 AB12345 BRA     BRA-1  id-105  37.8 F     ARM A A: Drug~ ARM A   A: Dr~ ASIAN
-       4 AB12345 BRA     BRA-1  id-171  29.8 F     ARM B B: Plac~ ARM B   B: Pl~ ASIAN
-       5 AB12345 BRA     BRA-1  id-171  29.8 F     ARM B B: Plac~ ARM B   B: Pl~ ASIAN
-       6 AB12345 BRA     BRA-1  id-171  29.8 F     ARM B B: Plac~ ARM B   B: Pl~ ASIAN
-       7 AB12345 BRA     BRA-1  id-177  38.9 F     ARM B B: Plac~ ARM B   B: Pl~ ASIAN
-       8 AB12345 BRA     BRA-1  id-177  38.9 F     ARM B B: Plac~ ARM B   B: Pl~ ASIAN
-       9 AB12345 BRA     BRA-1  id-177  38.9 F     ARM B B: Plac~ ARM B   B: Pl~ ASIAN
-      10 AB12345 BRA     BRA-1  id-23   41.3 F     ARM A A: Drug~ ARM A   A: Dr~ AMER~
-      # ... with 590 more rows, 40 more variables: TRTSDTM <dttm>, TRTEDTM <dttm>,
-      #   EOSDY <dbl>, STRATA1 <fct>, STRATA2 <fct>, BMRKR1 <dbl>, BMRKR2 <fct>,
-      #   REGION1 <fct>, SAFFL <fct>, USUBJID <chr>, PARAM <fct>, AVISIT <fct>,
-      #   AVAL <dbl>, LBCAT <fct>, PARAMCD <chr>, AVALU <fct>, AVISITN <dbl>,
-      #   ABLFL2 <chr>, ABLFL <chr>, BASE <dbl>, BASETYPE <chr>, ANRIND <fct>,
-      #   ANRLO <dbl>, ANRHI <dbl>, DTYPE <lgl>, ATOXGR <fct>, BTOXGR <fct>,
-      #   ATOXDSCL <chr>, ATOXDSCH <chr>, ADTM <dttm>, ASPID <int>, LBSEQ <int>, ...
 

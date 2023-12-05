@@ -6,6 +6,21 @@
 \alias{a_glm_count}
 \title{Summary for Poisson Negative Binomial.}
 \usage{
+summarize_glm_count(
+  lyt,
+  vars,
+  var_labels,
+  na_str = NA_character_,
+  nested = TRUE,
+  ...,
+  show_labels = "visible",
+  table_names = vars,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
+
 s_glm_count(
   df,
   .var,
@@ -33,21 +48,38 @@ a_glm_count(
   weights,
   scale = 1
 )
-
-summarize_glm_count(
-  lyt,
-  vars,
-  var_labels,
-  ...,
-  show_labels = "visible",
-  table_names = vars,
-  .stats = NULL,
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = NULL
-)
 }
 \arguments{
+\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{var_labels}{(\code{character})\cr character for label.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
+possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
+\item{...}{additional arguments for the lower level functions.}
+
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+
+\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
+to avoid warnings from \code{rtables}.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("summarize_glm_count")}
+to see available statistics for this function.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
+
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
@@ -61,38 +93,36 @@ by a statistics function.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
+\item{distribution}{(\code{character})\cr a character value specifying the distribution
+used in the regression (poisson, quasipoisson).}
+
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
-
-\item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
-
-\item{var_labels}{character for label.}
-
-\item{...}{additional arguments for the lower level functions.}
-
-\item{show_labels}{label visibility: one of "default", "visible" and "hidden".}
-
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
-
-\item{.stats}{(\code{character})\cr statistics to select for the table.}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
-
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels.}
+\item{weights}{(\code{character})\cr a character vector specifying weights used
+in averaging predictions. Number of weights must equal the number of levels included in the covariates.
+Weights option passed to \code{\link[emmeans:emmeans]{emmeans::emmeans()}}.}
 }
 \value{
-A named list of 5 statistics:
-\describe{
-\item{n}{count of complete sample size for the group.}
-\item{rate}{estimated event rate per follow-up time.}
-\item{rate_ci}{confidence level for estimated rate per follow-up time.}
-\item{rate_ratio}{ratio of event rates in each treatment arm to the reference arm.}
-\item{rate_ratio_ci}{confidence level for the rate ratio.}
-\item{pval}{p-value.}
+\itemize{
+\item \code{summarize_glm_count()} returns a layout object suitable for passing to further layouting functions,
+or to \code{\link[rtables:build_table]{rtables::build_table()}}. Adding this function to an \code{rtable} layout will add formatted rows containing
+the statistics from \code{s_glm_count()} to the table layout.
+}
+
+\itemize{
+\item \code{s_glm_count()} returns a named \code{list} of 5 statistics:
+\itemize{
+\item \code{n}: Count of complete sample size for the group.
+\item \code{rate}: Estimated event rate per follow-up time.
+\item \code{rate_ci}: Confidence level for estimated rate per follow-up time.
+\item \code{rate_ratio}: Ratio of event rates in each treatment arm to the reference arm.
+\item \code{rate_ratio_ci}: Confidence level for the rate ratio.
+\item \code{pval}: p-value.
+}
+}
+
+\itemize{
+\item \code{a_glm_count()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 }
 \description{
@@ -103,56 +133,25 @@ This can be used to analyze count and/or frequency data using a linear model.
 }
 \section{Functions}{
 \itemize{
+\item \code{summarize_glm_count()}: Layout-creating function which can take statistics function arguments
+and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
+
 \item \code{s_glm_count()}: Statistics function that produces a named list of results
-of the investigated poisson model.
+of the investigated Poisson model.
 
-\item \code{a_glm_count()}: Formatted Analysis function which can be further customized by calling
-\code{\link[rtables:make_afun]{rtables::make_afun()}} on it. It is used as \code{afun} in \code{\link[rtables:analyze]{rtables::analyze()}}.
-
-\item \code{summarize_glm_count()}: Layout creating function which can be be used for creating
-summary tables for analysis of count data using generalized linear models (poisson, quasipoisson).
+\item \code{a_glm_count()}: Formatted analysis function which is used as \code{afun} in \code{summarize_glm_count()}.
 
 }}
 \examples{
-# Internal function - s_change_from_baseline
-\dontrun{
-s_glm_count(
-  df = anl \%>\%
-    filter(ARMCD == "ARM B"),
-  .df_row = anl,
-  .var = "AVAL",
-  .in_ref_col = TRUE,
-  variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
-  conf_level = 0.95,
-  distribution = "quasipoisson",
-  rate_mean_method = "ppmeans"
-)
-}
-
-
-# Internal function - s_change_from_baseline
-\dontrun{
-a_glm_count(
-  df = anl \%>\%
-    filter(ARMCD == "ARM A"),
-  .var = "AVAL",
-  .df_row = anl,
-  variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
-  .ref_group = "ARM B", .in_ref_col = TRUE,
-  conf_level = 0.95,
-  distribution = "poisson",
-  rate_mean_method = "ppmeans"
-)
-}
-
 library(dplyr)
+
 anl <- tern_ex_adtte \%>\% filter(PARAMCD == "TNE")
 anl$AVAL_f <- as.factor(anl$AVAL)
 
 lyt <- basic_table() \%>\%
   split_cols_by("ARM", ref_group = "B: Placebo") \%>\%
   add_colcounts() \%>\%
-  summarize_vars(
+  analyze_vars(
     "AVAL_f",
     var_labels = "Number of exacerbations per patient",
     .stats = c("count_fraction"),
@@ -184,6 +183,8 @@ lyt <- basic_table() \%>\%
       rate_ratio_ci = "Rate Ratio CI", pval = "p value"
     )
   )
+
 build_table(lyt = lyt, df = anl)
+
 }
 \keyword{internal}

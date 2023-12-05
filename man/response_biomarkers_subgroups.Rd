@@ -7,21 +7,30 @@
 \usage{
 tabulate_rsp_biomarkers(
   df,
-  vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval")
+  vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
+  .indent_mods = 0L
 )
 }
 \arguments{
 \item{df}{(\code{data.frame})\cr containing all analysis variables, as returned by
 \code{\link[=extract_rsp_biomarkers]{extract_rsp_biomarkers()}}.}
 
-\item{vars}{(\code{character})\cr the name of statistics to be reported among
-\code{n_tot} (total number of patients per group),
-\code{n_rsp} (total number of responses per group),
-\code{prop} (total response proportion per group),
-\code{or} (odds ratio),
-\code{ci} (confidence interval of odds ratio) and
-\code{pval} (p value of the effect).
-Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.}
+\item{vars}{(\code{character})\cr the names of statistics to be reported among:
+\itemize{
+\item \code{n_tot}: Total number of patients per group.
+\item \code{n_rsp}: Total number of responses per group.
+\item \code{prop}: Total response proportion per group.
+\item \code{or}: Odds ratio.
+\item \code{ci}: Confidence interval of odds ratio.
+\item \code{pval}: p-value of the effect.
+Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.
+}}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
+}
+\value{
+An \code{rtables} table summarizing biomarker effects on binary response by subgroup.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -49,9 +58,19 @@ adrs_f <- adrs \%>\%
   filter(PARAMCD == "BESRSPI") \%>\%
   mutate(rsp = AVALC == "CR")
 formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
-\dontrun{
+
+df <- extract_rsp_biomarkers(
+  variables = list(
+    rsp = "rsp",
+    biomarkers = c("BMRKR1", "AGE"),
+    covariates = "SEX",
+    subgroups = "BMRKR2"
+  ),
+  data = adrs_f
+)
+
+\donttest{
 ## Table with default columns.
-# df <- <need_data_input_to_work>
 tabulate_rsp_biomarkers(df)
 
 ## Table with a manually chosen set of columns: leave out "pval", reorder.
@@ -63,6 +82,7 @@ tab <- tabulate_rsp_biomarkers(
 ## Finally produce the forest plot.
 g_forest(tab, xlim = c(0.7, 1.4))
 }
+
 }
 \seealso{
 \code{\link[=h_tab_rsp_one_biomarker]{h_tab_rsp_one_biomarker()}} which is used internally, \code{\link[=extract_rsp_biomarkers]{extract_rsp_biomarkers()}}.

@@ -4,15 +4,23 @@
 \alias{logistic_summary_by_flag}
 \title{Logistic Regression Summary Table Constructor Function}
 \usage{
-logistic_summary_by_flag(flag_var)
+logistic_summary_by_flag(flag_var, na_str = NA_character_, .indent_mods = NULL)
 }
 \arguments{
 \item{flag_var}{(\code{string})\cr variable name identifying which row should be used in this
 content function.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
+}
+\value{
+A content function.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Constructor for content functions to be used to summarize
-logistic regression results.
+Constructor for content functions to be used in \code{\link[=summarize_logistic]{summarize_logistic()}} to summarize
+logistic regression results. This function is a wrapper for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 }

@@ -14,6 +14,24 @@ forest_viewport(
   mat_form = NULL
 )
 }
+\arguments{
+\item{tbl}{(\code{rtable})}
+
+\item{width_row_names}{(\code{grid::unit})\cr Width of row names}
+
+\item{width_columns}{(\code{grid::unit})\cr Width of column spans}
+
+\item{width_forest}{(\code{grid::unit})\cr Width of the forest plot}
+
+\item{gap_column}{(\code{grid::unit})\cr Gap width between the columns}
+
+\item{gap_header}{(\code{grid::unit})\cr Gap width between the header}
+
+\item{mat_form}{matrix print form of the table}
+}
+\value{
+A viewport tree.
+}
 \description{
 Create a Viewport Tree for the Forest Plot
 }
@@ -30,8 +48,7 @@ tbl <- rtable(
   rrow("row 3", 1.2, 0.8, 1.2)
 )
 
-# Internal function - forest_viewport
-\dontrun{
+\donttest{
 v <- forest_viewport(tbl)
 
 grid::grid.newpage()
@@ -39,4 +56,3 @@ showViewport(v)
 }
 
 }
-\keyword{internal}

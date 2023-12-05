@@ -12,16 +12,16 @@ combine_counts(fct, groups_list = NULL)
 \item{groups_list}{(named \code{list} of \code{character})\cr specifies the new group levels via the names and the
 levels that belong to it in the character vectors that are elements of the list.}
 }
+\value{
+A \code{vector} of column counts.
+}
 \description{
-Simplifies the estimation of column counts, especially when group combination
-is required.
+Simplifies the estimation of column counts, especially when group combination is required.
 }
 \examples{
 ref <- c("A: Drug X", "B: Placebo")
 groups <- combine_groups(fct = DM$ARM, ref = ref)
 
-# Internal function - combine_counts
-\dontrun{
 col_counts <- combine_counts(
   fct = DM$ARM,
   groups_list = groups
@@ -30,7 +30,7 @@ col_counts <- combine_counts(
 basic_table() \%>\%
   split_cols_by_groups("ARM", groups) \%>\%
   add_colcounts() \%>\%
-  summarize_vars("AGE") \%>\%
+  analyze_vars("AGE") \%>\%
   build_table(DM, col_counts = col_counts)
 
 ref <- "A: Drug X"
@@ -43,12 +43,10 @@ col_counts <- combine_counts(
 basic_table() \%>\%
   split_cols_by_groups("ARM", groups) \%>\%
   add_colcounts() \%>\%
-  summarize_vars("AGE") \%>\%
+  analyze_vars("AGE") \%>\%
   build_table(DM, col_counts = col_counts)
-}
 
 }
 \seealso{
-\link{combine_groups}
+\code{\link[=combine_groups]{combine_groups()}}
 }
-\keyword{internal}

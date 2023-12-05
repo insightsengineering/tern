@@ -1,33 +1,34 @@
 #' Count the Number of Patients with a Particular Event
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' The primary analysis variable `.var` denotes the unique patient identifier.
 #'
-#' @name count_patients_with_event
+#' @inheritParams argument_convention
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_patients_with_event")`
+#'   to see available statistics for this function.
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @seealso [count_patients_with_flags]
+#'
+#' @name count_patients_with_event
+#' @order 1
 NULL
 
-#' @describeIn count_patients_with_event Statistics Function that returns the number and the fraction
-#'   of unique identifiers with a particular type of event, e.g. the number and the fraction of patients who
-#'   had treatment-emergent adverse events. Note that the user can define a new data column containing
-#'   the event of interest.
-#' @inheritParams argument_convention
+#' @describeIn count_patients_with_event Statistics function which counts the number of patients for which
+#'   the defined event has occurred.
+#'
+#' @inheritParams analyze_variables
 #' @param .var (`character`)\cr name of the column that contains the unique identifier.
 #' @param filters (`character`)\cr a character vector specifying the column names and flag variables
 #'   to be used for counting the number of unique identifiers satisfying such conditions.
 #'   Multiple column names and flags are accepted in this format
 #'   `c("column_name1" = "flag1", "column_name2" = "flag2")`.
 #'   Note that only equality is being accepted as condition.
-#' @inheritParams summarize_variables
 #'
-#' @return [s_count_patients_with_event()] returns the count and fraction of patients with the
-#'   defined event.
-#'
-#' @export
+#' @return
+#' * `s_count_patients_with_event()` returns the count and fraction of unique identifiers with the defined event.
 #'
 #' @examples
-#' library(dplyr)
-#'
 #' # `s_count_patients_with_event()`
 #'
 #' s_count_patients_with_event(
@@ -35,11 +36,13 @@ NULL
 #'   .var = "SUBJID",
 #'   filters = c("TRTEMFL" = "Y")
 #' )
+#'
 #' s_count_patients_with_event(
 #'   tern_ex_adae,
 #'   .var = "SUBJID",
 #'   filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL")
 #' )
+#'
 #' s_count_patients_with_event(
 #'   tern_ex_adae,
 #'   .var = "SUBJID",
@@ -47,6 +50,8 @@ NULL
 #'   denom = "N_col",
 #'   .N_col = 456
 #' )
+#'
+#' @export
 s_count_patients_with_event <- function(df,
                                         .var,
                                         filters,
@@ -75,9 +80,11 @@ s_count_patients_with_event <- function(df,
   result
 }
 
-#' @describeIn count_patients_with_event Formatted Analysis function which can be further
-#'   customized by calling [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
+#' @describeIn count_patients_with_event Formatted analysis function which is used as `afun`
+#'   in `count_patients_with_event()`.
+#'
+#' @return
+#' * `a_count_patients_with_event()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
 #' # `a_count_patients_with_event()`
@@ -89,17 +96,21 @@ s_count_patients_with_event <- function(df,
 #'   .N_col = 100,
 #'   .N_row = 100
 #' )
+#'
+#' @export
 a_count_patients_with_event <- make_afun(
   s_count_patients_with_event,
   .formats = c(count_fraction = format_count_fraction_fixed_dp)
 )
 
-#' @describeIn count_patients_with_event Analyze Function which adds the count statistics
-#' to the input layout. Note that additional formatting arguments can be used here.
+#' @describeIn count_patients_with_event Layout-creating function which can take statistics function
+#'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @inheritParams argument_convention
+#' @return
+#' * `count_patients_with_event()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_patients_with_event()` to the table layout.
 #'
-#' @export
 #' @examples
 #' # `count_patients_with_event()`
 #'
@@ -131,15 +142,24 @@ a_count_patients_with_event <- make_afun(
 #'     .indent_mods = c(count_fraction = 2L),
 #'     table_names = "tbl_rel_fatal"
 #'   )
+#'
 #' build_table(lyt, tern_ex_adae, alt_counts_df = tern_ex_adsl)
+#'
+#' @export
+#' @order 2
 count_patients_with_event <- function(lyt,
                                       vars,
+                                      riskdiff = FALSE,
+                                      na_str = NA_character_,
+                                      nested = TRUE,
                                       ...,
                                       table_names = vars,
                                       .stats = "count_fraction",
                                       .formats = NULL,
                                       .labels = NULL,
                                       .indent_mods = NULL) {
+  checkmate::assert_flag(riskdiff)
+
   afun <- make_afun(
     a_count_patients_with_event,
     .stats = .stats,
@@ -148,155 +168,25 @@ count_patients_with_event <- function(lyt,
     .indent_mods = .indent_mods
   )
 
+  extra_args <- if (isFALSE(riskdiff)) {
+    list(...)
+  } else {
+    list(
+      afun = list("s_count_patients_with_event" = afun),
+      .stats = .stats,
+      .indent_mods = .indent_mods,
+      s_args = list(...)
+    )
+  }
+
   analyze(
     lyt,
     vars,
-    afun = afun,
-    extra_args = list(...),
+    afun = ifelse(isFALSE(riskdiff), afun, afun_riskdiff),
+    na_str = na_str,
+    nested = nested,
+    extra_args = extra_args,
     show_labels = ifelse(length(vars) > 1, "visible", "hidden"),
     table_names = table_names
   )
-}
-
-#' @describeIn count_patients_with_event Statistics function that returns the number and the fraction
-#'   of unique identifiers with each particular flag. Returns a list of totals, counts, counts and
-#'   fractions with one element per flag.
-#' @inheritParams argument_convention
-#' @param .var (`character`)\cr name of the column that contains the unique identifier.
-#' @param flag_variables (`character`)\cr a character vector specifying the names of `logical`
-#'   variables from analysis dataset used for counting the number of unique identifiers.
-#' @inheritParams summarize_variables
-#' @export
-#'
-#' @examples
-#' # `s_count_patients_with_flags()`
-#'
-#' # Add labelled flag variables to analysis dataset.
-#' adae <- tern_ex_adae %>%
-#'   mutate(
-#'     fl1 = TRUE,
-#'     fl2 = TRTEMFL == "Y",
-#'     fl3 = TRTEMFL == "Y" & AEOUT == "FATAL",
-#'     fl4 = TRTEMFL == "Y" & AEOUT == "FATAL" & AEREL == "Y"
-#'   )
-#' labels <- c(
-#'   "fl1" = "Total AEs",
-#'   "fl2" = "Total number of patients with at least one adverse event",
-#'   "fl3" = "Total number of patients with fatal AEs",
-#'   "fl4" = "Total number of patients with related fatal AEs"
-#' )
-#' formatters::var_labels(adae)[names(labels)] <- labels
-#'
-#' s_count_patients_with_flags(
-#'   adae,
-#'   "SUBJID",
-#'   flag_variables = c("fl1", "fl2", "fl3", "fl4"),
-#'   denom = "N_col",
-#'   .N_col = 1000
-#' )
-s_count_patients_with_flags <- function(df,
-                                        .var,
-                                        flag_variables,
-                                        .N_col, # nolint
-                                        .N_row, # nolint
-                                        denom = c("n", "N_row", "N_col")) {
-  if (is.null(names(flag_variables))) flag_variables <- stats::setNames(flag_variables, flag_variables)
-  flag_names <- unname(flag_variables)
-  flag_variables <- names(flag_variables)
-
-  checkmate::assert_subset(flag_variables, colnames(df))
-  temp <- sapply(flag_variables, function(x) {
-    tmp <- Map(function(y) which(df[[y]]), x)
-    position_satisfy_flags <- Reduce(intersect, tmp)
-    id_satisfy_flags <- as.character(unique(df[position_satisfy_flags, ][[.var]]))
-    s_count_values(
-      as.character(unique(df[[.var]])),
-      id_satisfy_flags,
-      denom = denom,
-      .N_col = .N_col,
-      .N_row = .N_row
-    )
-  })
-  colnames(temp) <- flag_names
-  temp <- data.frame(t(temp))
-  result <- temp %>% as.list()
-  if (length(flag_variables) == 1) {
-    for (i in 1:3) names(result[[i]]) <- flag_names[1]
-  }
-  result
-}
-
-#' @describeIn count_patients_with_event Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
-#' @export
-#'
-#' @examples
-#' #  We need to ungroup `count_fraction` first so that the `rtables` formatting
-#' # function `format_count_fraction()` can be applied correctly.
-#'
-#' # `a_count_patients_with_flags()`
-#'
-#' afun <- make_afun(a_count_patients_with_flags,
-#'   .stats = "count_fraction",
-#'   .ungroup_stats = "count_fraction"
-#' )
-#' afun(
-#'   adae,
-#'   .N_col = 10L, # nolint
-#'   .N_row = 10L,
-#'   .var = "USUBJID",
-#'   flag_variables = c("fl1", "fl2", "fl3", "fl4")
-#' )
-a_count_patients_with_flags <- make_afun(
-  s_count_patients_with_flags,
-  .formats = c("count_fraction" = format_count_fraction_fixed_dp)
-)
-
-#' @describeIn count_patients_with_event Analyze Function which is a modified version of [count_patients_with_event()].
-#'  Adds the count statistics to the input layout for multiple flag variables at once.
-#'
-#' @inheritParams argument_convention
-#'
-#' @export
-#'
-#' @examples
-#' # `count_patients_with_flags()`
-#'
-#' lyt2 <- basic_table() %>%
-#'   split_cols_by("ARM") %>%
-#'   add_colcounts() %>%
-#'   count_patients_with_flags(
-#'     "SUBJID",
-#'     flag_variables = formatters::var_labels(adae[, c("fl1", "fl2", "fl3", "fl4")]),
-#'     denom = "N_col"
-#'   )
-#' build_table(lyt2, adae, alt_counts_df = tern_ex_adsl)
-count_patients_with_flags <- function(lyt,
-                                      var,
-                                      var_labels = var,
-                                      show_labels = "hidden",
-                                      ...,
-                                      table_names = paste0("tbl_flags_", var),
-                                      .stats = "count_fraction",
-                                      .formats = NULL,
-                                      .indent_mods = NULL) {
-  afun <- make_afun(
-    a_count_patients_with_flags,
-    .stats = .stats,
-    .formats = .formats,
-    .indent_mods = .indent_mods,
-    .ungroup_stats = .stats
-  )
-
-  lyt <- analyze(
-    lyt = lyt,
-    vars = var,
-    var_labels = var_labels,
-    show_labels = show_labels,
-    afun = afun,
-    table_names = table_names,
-    extra_args = list(...)
-  )
-
-  lyt
 }

@@ -2,21 +2,33 @@
 % Please edit documentation in R/logistic_regression.R
 \name{summarize_logistic}
 \alias{summarize_logistic}
-\title{Multi-Variable Logistic Regression Table}
+\title{Multivariate Logistic Regression Table}
 \usage{
-summarize_logistic(lyt, conf_level, drop_and_remove_str = "")
+summarize_logistic(
+  lyt,
+  conf_level,
+  drop_and_remove_str = "",
+  .indent_mods = NULL
+)
 }
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{drop_and_remove_str}{string to be dropped and removed}
+\item{drop_and_remove_str}{(\code{character})\cr string to be dropped and removed.}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
+}
+\value{
+A layout object suitable for passing to further layouting functions, or to \code{\link[rtables:build_table]{rtables::build_table()}}.
+Adding this function to an \code{rtable} layout will add a logistic regression variable summary to the table layout.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Layout creating function which summarizes a logistic variable regression for binary outcome with
+Layout-creating function which summarizes a logistic variable regression for binary outcome with
 categorical/continuous covariates in model statement. For each covariate category (if categorical)
 or specified values (if continuous), present degrees of freedom, regression parameter estimate and
 standard error (SE) relative to reference group or category. Report odds ratios for each covariate
@@ -25,7 +37,9 @@ to specify other confidence levels. Report p-value for Wald chi-square test of t
 that covariate has no effect on response in model containing all specified covariates.
 Allow option to include one two-way interaction and present similar output for
 each interaction degree of freedom.
-Note: For the formula, the variable names need to be standard dataframe column name without
+}
+\note{
+For the formula, the variable names need to be standard \code{data.frame} column names without
 special characters.
 }
 \examples{

@@ -35,7 +35,7 @@ testthat::test_that("estimate_multinomial_response returns right result", {
     ARM = rep(LETTERS[1:3], each = 4),
     AVAL = c(A = c(1, 1, 1, 1), B = c(0, 0, 1, 1), C = c(0, 0, 0, 0))
   )
-  dta_test$AVALC <- as.factor(c( # nolint
+  dta_test$AVALC <- as.factor(c(
     "Complete Response (CR)", "Partial Response (PR)"
   )[dta_test$AVAL + 1])
 

@@ -11,7 +11,10 @@ draw_grob(grob, newpage = TRUE, vp = NULL)
 
 \item{newpage}{draw on a new page}
 
-\item{vp}{a \code{\link{viewport}} object (or \code{NULL}).}
+\item{vp}{a \code{\link[=viewport]{viewport()}} object (or \code{NULL}).}
+}
+\value{
+A \code{grob}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -22,8 +25,7 @@ Draw grob on device page.
 library(dplyr)
 library(grid)
 
-# Internal function - arrange_grob
-\dontrun{
+\donttest{
 rect <- rectGrob(width = grid::unit(0.5, "npc"), height = grid::unit(0.5, "npc"))
 rect \%>\% draw_grob(vp = grid::viewport(angle = 45))
 
@@ -33,4 +35,5 @@ num \%>\%
   draw_grob()
 showViewport()
 }
+
 }

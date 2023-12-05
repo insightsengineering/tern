@@ -29,15 +29,17 @@ probabilities in \code{probs}, then this must be \code{n + 1} long.}
 \item{ordered}{(\code{flag})\cr should the result be an ordered factor.}
 }
 \value{
-The factor variable with the appropriately labeled bins as levels.
+A \code{factor} variable with appropriately-labeled bins as levels.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This cuts a numeric vector into sample quantile bins. Note that the intervals are closed on
-the right side. That is, the first bin is the interval \verb{[-Inf, q1]} where \code{q1} is
-the first quantile, the second bin is then \verb{(q1, q2]}, etc., and the last bin
-is \verb{(qn, +Inf]} where \code{qn} is the last quantile.
+This cuts a numeric vector into sample quantile bins.
+}
+\note{
+Intervals are closed on the right side. That is, the first bin is the interval
+\verb{[-Inf, q1]} where \code{q1} is the first quantile, the second bin is then \verb{(q1, q2]}, etc.,
+and the last bin is \verb{(qn, +Inf]} where \code{qn} is the last quantile.
 }
 \examples{
 # Default is to cut into quartile bins.
@@ -54,4 +56,5 @@ ozone_binned <- cut_quantile_bins(airquality$Ozone)
 which(is.na(ozone_binned))
 # So you might want to make these explicit.
 explicit_na(ozone_binned)
+
 }

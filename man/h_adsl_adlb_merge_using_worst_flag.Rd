@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_adsl_adlb_merge_using_worst_flag.R
 \name{h_adsl_adlb_merge_using_worst_flag}
 \alias{h_adsl_adlb_merge_using_worst_flag}
-\title{Helper Function for Deriving Analysis Datasets for LBT13 and LBT14}
+\title{Helper Function for Deriving Analysis Datasets for \code{LBT13} and \code{LBT14}}
 \usage{
 h_adsl_adlb_merge_using_worst_flag(
   adsl,
@@ -27,15 +27,16 @@ If worst grade per patient per visit is specified for \code{worst_flag}, then
 grade. Defaults to \code{c("SCREENING", "BASELINE")}.}
 }
 \value{
-\code{df} containing variables shared between \code{adlb} and \code{adsl} along with variables relevant for analysis:
-\code{PARAM}, \code{PARAMCD}, \code{ATOXGR}, and \code{BTOXGR}.  Optionally \code{AVISIT}, \code{AVISITN} are included when \code{by_visit = TRUE}
-and \code{no_fillin_visits = c("SCREENING", "BASELINE")}.
+\code{df} containing variables shared between \code{adlb} and \code{adsl} along with variables \code{PARAM}, \code{PARAMCD},
+\code{ATOXGR}, and \code{BTOXGR} relevant for analysis. Optionally, \code{AVISIT} are \code{AVISITN} are included when
+\code{by_visit = TRUE} and \code{no_fillin_visits = c("SCREENING", "BASELINE")}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Helper function that merges \code{ADSL} and \code{ADLB} datasets so that missing lab test records are inserted in the
-output dataset.
+output dataset. Remember that \code{na_level} must match the needed pre-processing
+done with \code{\link[=df_explicit_na]{df_explicit_na()}} to have the desired output.
 }
 \details{
 In the result data missing records will be created for the following situations:
@@ -60,4 +61,5 @@ adlb_out_by_visit <- h_adsl_adlb_merge_using_worst_flag(
   worst_flag = c("WGRLOVFL" = "Y"),
   by_visit = TRUE
 )
+
 }

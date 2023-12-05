@@ -2,11 +2,12 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @return dataframe of PK parameters
-#' @export
+#' @return `data.frame` of PK parameters
 #'
 #' @examples
 #' pk_reference_dataset <- d_pkparam()
+#'
+#' @export
 d_pkparam <- function() {
   pk_dataset <- as.data.frame(matrix(
     c(

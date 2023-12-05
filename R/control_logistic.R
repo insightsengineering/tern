@@ -5,14 +5,15 @@
 #' This is an auxiliary function for controlling arguments for logistic regression models.
 #' `conf_level` refers to the confidence level used for the Odds Ratio CIs.
 #'
+#' @inheritParams argument_convention
 #' @param response_definition (`string`)\cr the definition of what an event is in terms of `response`.
 #'   This will be used when fitting the logistic regression model on the left hand side of the formula.
 #'   Note that the evaluated expression should result in either a logical vector or a factor with 2
 #'   levels. By default this is just `"response"` such that the original response variable is used
 #'   and not modified further.
-#' @inheritParams argument_convention
+#'
 #' @return A list of components with the same names as the arguments.
-#' @export
+#'
 #' @examples
 #' # Standard options.
 #' control_logistic()
@@ -22,6 +23,8 @@
 #'
 #' # Use a different response definition.
 #' control_logistic(response_definition = "I(response %in% c('CR', 'PR'))")
+#'
+#' @export
 control_logistic <- function(response_definition = "response",
                              conf_level = 0.95) {
   checkmate::assert_true(grepl("response", response_definition))

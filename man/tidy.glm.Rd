@@ -4,15 +4,19 @@
 \alias{tidy.glm}
 \title{Custom Tidy Method for Binomial GLM Results}
 \usage{
-\method{tidy}{glm}(fit_glm, conf_level = 0.95, at = NULL)
+\method{tidy}{glm}(x, conf_level = 0.95, at = NULL, ...)
 }
 \arguments{
-\item{fit_glm}{logistic regression model fitted by \code{\link[stats:glm]{stats::glm()}} with "binomial" family.}
+\item{x}{logistic regression model fitted by \code{\link[stats:glm]{stats::glm()}} with "binomial" family.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{at}{(\code{NULL} or \code{numeric})\cr optional values for the interaction variable. Otherwise
-the median is used.}
+\item{at}{(\code{NULL} or \code{numeric})\cr optional values for the interaction variable. Otherwise the median is used.}
+
+\item{...}{additional arguments for the lower level functions.}
+}
+\value{
+A \code{data.frame} containing the tidied model.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

@@ -1,23 +1,34 @@
-^renv$
-^renv\.lock$
-CODE_OF_CONDUCT.md
-SECURITY.md
-design/*
-^\.CI-FORCE-RELEASE-VERSION$
+# cicd
+^\.pre-commit-config\.yaml$
+
+# data
+^data-raw$
+
+# doc
+^CODE_OF_CONDUCT\.md$
+^docs$
+LICENSE
+^LICENSE\.md$
+^SECURITY\.md$
+
+# git
+^\.git$
+^\.github$
+^\.gitlab-ci\.yml$
+
+# lintr
+^\.lintr$
+
+# pkgdown
+^_pkgdown\.yml$
+
+# rstudio
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^_pkgdown\.yml$
-^docs$
-^\.github$
-^\.git$
-README.*
-man-roxygen/*
-TODO\.md
-^\.drone\.yml$
-^Jenkinsfile$
-^\.lintr$
-^\.pre-commit-config\.yaml$
+
+# staded dependencies
 ^staged_dependencies\.yaml$
-^LICENSE\.md$
-^\.gitlab-ci\.yml$
-^man-roxygen$
+
+# others
+^renv$
+^renv\.lock$

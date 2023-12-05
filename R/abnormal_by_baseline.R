@@ -2,11 +2,8 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @details
-#' Note that `df` should be filtered to include only post-baseline records.
-#'
-#' Primary analysis variable `.var` indicates the abnormal range result (character or factor), and additional
-#' analysis variables are `id` (character or factor) and `baseline` (character or factor). For each
+#' Primary analysis variable `.var` indicates the abnormal range result (`character` or `factor`), and additional
+#' analysis variables are `id` (`character` or `factor`) and `baseline` (`character` or `factor`). For each
 #' direction specified in `abnormal` (e.g. high or low) we condition on baseline range result and count
 #' patients in the numerator and denominator as follows:
 #'   * `Not <Abnormal>`
@@ -21,10 +18,18 @@
 #'
 #' @inheritParams argument_convention
 #' @param abnormal (`character`)\cr identifying the abnormal range level(s) in `.var`.
+#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("abnormal_by_baseline")`
+#'   to see available statistics for this function.
+#'
+#' @note
+#' * `df` should be filtered to include only post-baseline records.
+#' * If the baseline variable or analysis variable contains `NA`, it is expected that `NA` has been
+#'   conveyed to `na_level` appropriately beforehand with [df_explicit_na()] or [explicit_na()].
+#'
 #' @seealso Relevant description function [d_count_abnormal_by_baseline()].
 #'
 #' @name abnormal_by_baseline
-#' @include formats.R
+#' @order 1
 NULL
 
 #' Description Function for [s_count_abnormal_by_baseline()]
@@ -35,14 +40,15 @@ NULL
 #'
 #' @inheritParams abnormal_by_baseline
 #'
+#' @return Abnormal category labels for [s_count_abnormal_by_baseline()].
+#'
 #' @examples
 #' d_count_abnormal_by_baseline("LOW")
 #'
 #' @export
 d_count_abnormal_by_baseline <- function(abnormal) {
-  null_name <- paste0(toupper(substr(abnormal, 1, 1)), tolower(substring(abnormal, 2)))
-  not_abn_name <- paste("Not", tolower(abnormal), "baseline status")
-  abn_name <- paste(null_name, "baseline status")
+  not_abn_name <- paste("Not", tolower(abnormal))
+  abn_name <- paste0(toupper(substr(abnormal, 1, 1)), tolower(substring(abnormal, 2)))
   total_name <- "Total"
 
   list(
@@ -52,38 +58,30 @@ d_count_abnormal_by_baseline <- function(abnormal) {
   )
 }
 
-#' @describeIn abnormal_by_baseline For a single `abnormal` level, produce a statistic `fraction` which is
-#'   a named list with 3 elements: `not_abnormal`, `abnormal` and `total`.
-#'   Each element contains a vector with `num` and `denom` counts of patients.
-#'   Please note that if the baseline variable or analysis variable contains `NA`, it is expected that `NA` has been
-#'   conveyed to `na_level` appropriately beforehand with `df_explicit_na()` or `explicit_na()`.
+#' @describeIn abnormal_by_baseline Statistics function for a single `abnormal` level.
 #'
-#' @param na_level (`string`)\cr the explicit `na_level` argument you used in the pre-processing steps (maybe with
-#'   `df_explicit_na()`). The default is `"<Missing>"`.
+#' @param na_str (`string`)\cr the explicit `na_level` argument you used in the pre-processing steps (maybe with
+#'   [df_explicit_na()]). The default is `"<Missing>"`.
 #'
-#' @examples
-#' df <- data.frame(
-#'   USUBJID = as.character(c(1:6)),
-#'   ANRIND = factor(c(rep("LOW", 4), "NORMAL", "HIGH")),
-#'   BNRIND = factor(c("LOW", "NORMAL", "HIGH", NA, "LOW", "NORMAL"))
-#' )
-#' df <- df_explicit_na(df)
-#'
-#' # Internal function - s_count_abnormal_by_baseline
-#' \dontrun{
-#' # Just for one abnormal level.
-#' s_count_abnormal_by_baseline(df, .var = "ANRIND", abnormal = "HIGH")
-#' }
+#' @return
+#' * `s_count_abnormal_by_baseline()` returns statistic `fraction` which is a named list with 3 labeled elements:
+#'   `not_abnormal`, `abnormal`, and `total`. Each element contains a vector with `num` and `denom` patient counts.
 #'
 #' @keywords internal
 s_count_abnormal_by_baseline <- function(df,
                                          .var,
                                          abnormal,
-                                         na_level = "<Missing>",
+                                         na_level = lifecycle::deprecated(),
+                                         na_str = "<Missing>",
                                          variables = list(id = "USUBJID", baseline = "BNRIND")) {
+  if (lifecycle::is_present(na_level)) {
+    lifecycle::deprecate_warn("0.9.1", "s_count_abnormal_by_baseline(na_level)", "s_count_abnormal_by_baseline(na_str)")
+    na_str <- na_level
+  }
+
   checkmate::assert_string(.var)
   checkmate::assert_string(abnormal)
-  checkmate::assert_string(na_level)
+  checkmate::assert_string(na_str)
   assert_df_with_variables(df, c(range = .var, variables))
   checkmate::assert_subset(names(variables), c("id", "baseline"))
   checkmate::assert_multi_class(df[[variables$id]], classes = c("factor", "character"))
@@ -91,14 +89,14 @@ s_count_abnormal_by_baseline <- function(df,
   checkmate::assert_multi_class(df[[.var]], classes = c("factor", "character"))
 
   # If input is passed as character, changed to factor
-  df[[.var]] <- as_factor_keep_attributes(df[[.var]], na_level = na_level)
-  df[[variables$baseline]] <- as_factor_keep_attributes(df[[variables$baseline]], na_level = na_level)
+  df[[.var]] <- as_factor_keep_attributes(df[[.var]], na_level = na_str)
+  df[[variables$baseline]] <- as_factor_keep_attributes(df[[variables$baseline]], na_level = na_str)
 
   assert_valid_factor(df[[.var]], any.missing = FALSE)
   assert_valid_factor(df[[variables$baseline]], any.missing = FALSE)
 
   # Keep only records with valid analysis value.
-  df <- df[df[[.var]] != na_level, ]
+  df <- df[df[[.var]] != na_str, ]
 
   anl <- data.frame(
     id = df[[variables$id]],
@@ -114,7 +112,7 @@ s_count_abnormal_by_baseline <- function(df,
   total_num <- length(unique(anl$id[anl$var == abnormal]))
 
   # Baseline NA records are counted only in total rows.
-  anl <- anl[anl$baseline != na_level, ]
+  anl <- anl[anl$baseline != na_str, ]
 
   # Abnormal:
   #   - Patients in denominator: have abnormality at baseline.
@@ -138,19 +136,11 @@ s_count_abnormal_by_baseline <- function(df,
   ))
 }
 
-#' @describeIn abnormal_by_baseline Formatted Analysis function which can be further customized by calling
-#'   [rtables::make_afun()] on it. It is used as `afun` in [rtables::analyze()].
+#' @describeIn abnormal_by_baseline Formatted analysis function which is used as `afun`
+#'   in `count_abnormal_by_baseline()`.
 #'
-#' @return [a_count_abnormal_by_baseline()] returns the corresponding list with formatted [rtables::CellValue()].
-#'
-#' @examples
-#' # Internal function - a_count_abnormal_by_baseline
-#' \dontrun{
-#' # Use the Formatted Analysis function for `analyze()`. We need to ungroup `fraction` first
-#' # so that the `rtables` formatting function `format_fraction()` can be applied correctly.
-#' afun <- make_afun(a_count_abnormal_by_baseline, .ungroup_stats = "fraction")
-#' afun(df, .var = "ANRIND", abnormal = "LOW")
-#' }
+#' @return
+#' * `a_count_abnormal_by_baseline()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @keywords internal
 a_count_abnormal_by_baseline <- make_afun(
@@ -158,12 +148,22 @@ a_count_abnormal_by_baseline <- make_afun(
   .formats = c(fraction = format_fraction)
 )
 
-#' @describeIn abnormal_by_baseline Layout creating function which can be used for creating tables, which can take
-#'   statistics function arguments and additional format arguments (see below).
+#' @describeIn abnormal_by_baseline Layout-creating function which can take statistics function arguments
+#'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @inheritParams argument_convention
+#' @return
+#' * `count_abnormal_by_baseline()` returns a layout object suitable for passing to further layouting functions,
+#'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
+#'   the statistics from `s_count_abnormal_by_baseline()` to the table layout.
 #'
 #' @examples
+#' df <- data.frame(
+#'   USUBJID = as.character(c(1:6)),
+#'   ANRIND = factor(c(rep("LOW", 4), "NORMAL", "HIGH")),
+#'   BNRIND = factor(c("LOW", "NORMAL", "HIGH", NA, "LOW", "NORMAL"))
+#' )
+#' df <- df_explicit_na(df)
+#'
 #' # Layout creating function.
 #' basic_table() %>%
 #'   count_abnormal_by_baseline(var = "ANRIND", abnormal = c(High = "HIGH")) %>%
@@ -187,9 +187,12 @@ a_count_abnormal_by_baseline <- make_afun(
 #'   build_table(df2)
 #'
 #' @export
+#' @order 2
 count_abnormal_by_baseline <- function(lyt,
                                        var,
                                        abnormal,
+                                       na_str = "<Missing>",
+                                       nested = TRUE,
                                        ...,
                                        table_names = abnormal,
                                        .stats = NULL,
@@ -213,8 +216,10 @@ count_abnormal_by_baseline <- function(lyt,
       vars = var,
       var_labels = names(abn),
       afun = afun,
+      na_str = na_str,
+      nested = nested,
       table_names = table_names[i],
-      extra_args = c(list(abnormal = abn), list(...)),
+      extra_args = c(list(abnormal = abn, na_str = na_str), list(...)),
       show_labels = "visible"
     )
   }

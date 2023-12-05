@@ -54,49 +54,13 @@ split_text_grob(
 
 \item{vp}{A Grid viewport object (or NULL).}
 }
+\value{
+A text grob.
+}
 \description{
 Dynamically wrap text.
 }
 \details{
-This code is taken from R Graphics by \code{Paul Murell}, 2nd edition
-}
-\examples{
-# Internal function - split_text_grob
-\dontrun{
-sg <- split_text_grob(text = paste(
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae",
-  "dapibus dolor, ac mattis erat. Nunc metus lectus, imperdiet ut enim eu,",
-  "commodo scelerisque urna. Vestibulum facilisis metus vel nibh tempor, sed",
-  "elementum sem tempus. Morbi quis arcu condimentum, maximus lorem id,",
-  "tristique ante. Nullam a nunc dui. Fusce quis lacus nec ante dignissim",
-  "faucibus nec vitae tellus. Suspendisse mollis et sapien eu ornare. Vestibulum",
-  "placerat neque nec justo efficitur, ornare varius nulla imperdiet. Nunc justo",
-  "sapien, vestibulum eget efficitur eget, porttitor id ante. Nulla tempor",
-  "luctus massa id elementum. Praesent dictum, neque vitae vestibulum malesuada,",
-  "nunc nisi blandit lacus, sit amet tristique odio dui sit amet velit."
-))
-
-library(grid)
-grobHeight(sg)
-
-grid.newpage()
-pushViewport(plotViewport())
-grid.rect()
-grid.draw(sg)
-
-grid.rect(
-  height = grobHeight(sg), width = unit(1, "cm"), gp = gpar(fill = "red")
-)
-
-# stack split_text_grob
-grid.newpage()
-pushViewport(plotViewport())
-grid.rect()
-grid.draw(split_text_grob(
-  c("Hello, this is a test", "and yet another test"),
-  just = c("left", "top"), x = 0, y = 1
-))
-}
-
+This code is taken from \verb{R Graphics by Paul Murell, 2nd edition}
 }
 \keyword{internal}

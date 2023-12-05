@@ -1,8 +1,9 @@
 # Local data pre-processing
 adae_local <- tern_ex_adae[1:20, ] %>% df_explicit_na()
+adae_local[1, ] <- NA
 
 testthat::test_that("h_stack_by_baskets returns the correct dataframe", {
-  result <- h_stack_by_baskets(df = adae_local)
+  result <- h_stack_by_baskets(df = adae_local) %>% data.frame()
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)

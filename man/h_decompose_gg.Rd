@@ -9,18 +9,24 @@ h_decompose_gg(gg)
 \arguments{
 \item{gg}{(\code{ggplot})\cr a graphic to decompose.}
 }
+\value{
+A named \code{list} with elements:
+\itemize{
+\item \code{panel}: The panel.
+\item \code{yaxis}: The y-axis.
+\item \code{xaxis}: The x-axis.
+\item \code{xlab}: The x-axis label.
+\item \code{ylab}: The y-axis label.
+\item \code{guide}: The legend.
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-The elements composing the \code{ggplot} are extracted and organized in a
-list containing:
-the panel (\code{panel}),
-the y-axis and its label (\code{yaxis}, \code{ylab}),
-idem for the x-axis (\code{xaxis}, \code{xlab}),
-the legend (\code{guide}).
+The elements composing the \code{ggplot} are extracted and organized in a \code{list}.
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(survival)
 library(grid)
