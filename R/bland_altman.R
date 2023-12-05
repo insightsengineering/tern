@@ -1,26 +1,12 @@
-
 #' Bland Altman analysis
 #'
-#' @description 'r lifecycle::badge("stable")'
+#' @description 'r lifecycle::badge("experimental")'
+#' This function uses bland altman method to assess the agreement between two numerical vectors.
 #'
 #' @inheritParams argument_convention
-#' @param y ('numeric')\cr vector of numbers we want to analyze.
+#' @param y ('numeric')\cr vector of numbers we want to analyze, which we want to compare with x.
 #'
 #' @name s_bland_altman
-#' @details
-#' https://doi.org/10.1016/S0140-6736(86)90837-8
-#' @references
-#' @article{bland1986statistical,
-# title={Statistical methods for assessing agreement between two methods of clinical measurement},
-# author={Bland, J Martin and Altman, DouglasG},
-# journal={The lancet},
-# volume={327},
-# number={8476},
-# pages={307--310},
-# year={1986},
-# publisher={Elsevier}
-# }
-# https://cran.r-project.org/web/packages/Rdpack/vignettes/Inserting_bibtex_references.pdf
 
 #' @examples
 #' x <- seq(1, 60, 5)

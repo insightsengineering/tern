@@ -27,8 +27,6 @@ testthat::test_that("works correctly", {
     n = 20L
   )
   expect_identical(res, expect, tolerance = 1e-5)
-
-
 })
 
 
