@@ -116,6 +116,7 @@ Collate:
     'fit_rsp_step.R'
     'fit_survival_step.R'
     'g_forest.R'
+    'g_forest_new.R'
     'g_lineplot.R'
     'g_step.R'
     'g_waterfall.R'
