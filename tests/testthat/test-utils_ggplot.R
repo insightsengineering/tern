@@ -20,7 +20,7 @@ testthat::test_that("rtables2gg works as expected", {
   testthat::expect_snapshot_file(
     tbl %>%
       rtable2gg() %>%
-      svglite::ggsave(filename = "rtable2gg_default.svg", path = "./_snaps/utils_ggplot", width = 5) %>%
+      ggplot2::ggsave(filename = "rtable2gg_default.svg", path = "./_snaps/utils_ggplot", width = 5) %>%
       suppressMessages(),
     "rtable2gg_default.svg"
   )
@@ -29,7 +29,7 @@ testthat::test_that("rtables2gg works as expected", {
   testthat::expect_snapshot_file(
     tbl %>%
       rtable2gg(fontsize = 5) %>%
-      svglite::ggsave(filename = "rtable2gg_fs.svg", path = "./_snaps/utils_ggplot", width = 5) %>%
+      ggplot2::ggsave(filename = "rtable2gg_fs.svg", path = "./_snaps/utils_ggplot", width = 5) %>%
       suppressMessages(),
     "rtable2gg_fs.svg"
   )
@@ -38,7 +38,7 @@ testthat::test_that("rtables2gg works as expected", {
   testthat::expect_snapshot_file(
     tbl %>%
       rtable2gg(colwidths = c(4, 2, 2, 3)) %>%
-      svglite::ggsave(filename = "rtable2gg_cw.svg", path = "./_snaps/utils_ggplot", width = 5) %>%
+      ggplot2::ggsave(filename = "rtable2gg_cw.svg", path = "./_snaps/utils_ggplot", width = 5) %>%
       suppressMessages(),
     "rtable2gg_cw.svg"
   )
@@ -47,7 +47,7 @@ testthat::test_that("rtables2gg works as expected", {
   testthat::expect_snapshot_file(
     tbl %>%
       rtable2gg(lbl_col_padding = -5) %>%
-      svglite::ggsave(filename = "rtable2gg_lblpad.svg", path = "./_snaps/utils_ggplot", width = 5) %>%
+      ggplot2::ggsave(filename = "rtable2gg_lblpad.svg", path = "./_snaps/utils_ggplot", width = 5) %>%
       suppressMessages(),
     "rtable2gg_lblpad.svg"
   )
@@ -74,7 +74,7 @@ testthat::test_that("rtables2gg works with multiple column splits", {
   testthat::expect_snapshot_file(
     tbl %>%
       rtable2gg() %>%
-      svglite::ggsave(filename = "rtable2gg_colsplits.svg", path = "./_snaps/utils_ggplot", height = 3, width = 10),
+      ggplot2::ggsave(filename = "rtable2gg_colsplits.svg", path = "./_snaps/utils_ggplot", height = 3, width = 10),
     "rtable2gg_colsplits.svg"
   )
 })
