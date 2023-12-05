@@ -39,6 +39,12 @@ s_bland_altman <- function(x, y, conf_level = 0.95){
   ind <- complete.cases(x, y) # use only pairwise complete observations, and check if x and y have the same length
   x <- x[ind]
   y <- y[ind]
+  n <- length(n)                                      # number of 'observations'
+
+  if(n ==0){
+    stop("there is no valid paired data")
+  }
+
   difference <- x - y                                 # vector of differences
   average <- (x + y) / 2                              # vector of means
   difference_mean <- mean(difference)                 # mean difference
@@ -46,7 +52,7 @@ s_bland_altman <- function(x, y, conf_level = 0.95){
   al <- qnorm(1 - alpha / 2) * difference_sd
   upper_agreement_limit <- difference_mean + al       # agreement limits
   lower_agreement_limit <- difference_mean - al
-  n <- length(difference)                             # number of 'observations'
+
 
   difference_se <- difference_sd / sqrt(n)            # standard error of the mean
   al_se <- difference_sd * sqrt(3) / sqrt(n)          # standard error of the agreement limit

@@ -10,10 +10,10 @@ testthat::test_that("infeasible input gives correct error", {
 
 testthat::test_that("works correctly", {
   set.seed(1)
-  x = rnorm(20)
-  y = rnorm(20)
-  res = s_bland_altman(x, y, 0.9)
-  expect = list(
+  x <- rnorm(20)
+  y <- rnorm(20)
+  res <- s_bland_altman(x, y, 0.9)
+  expect <- list(
     difference_mean = mean(x) - mean(y),
     ci_mean = c(-0.3414723, 0.7354631),
     difference_sd = 1.392664,
@@ -34,12 +34,12 @@ testthat::test_that("works correctly", {
 
 testthat::test_that("works correctly with NA element in either vectors", {
   set.seed(1)
-  x = rnorm(20)
-  y = rnorm(20)
-  x = c(NA_real_, 2, x, NA_real_)
-  y = c(1, NA_real_, y, 2)
-  res = s_bland_altman(x, y, 0.9)
-  expect = list(
+  x <- rnorm(20)
+  y <- rnorm(20)
+  x <- c(NA_real_, 2, x, NA_real_)
+  y <- c(1, NA_real_, y, 2)
+  res <- s_bland_altman(x, y, 0.9)
+  expect <- list(
     difference_mean = 0.1969954,
     ci_mean = c(-0.3414723, 0.7354631),
     difference_sd = 1.392664,
