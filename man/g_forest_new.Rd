@@ -168,7 +168,18 @@ draw = TRUE,
 newpage = TRUE) {
 checkmate::assert_class(tbl, "VTableTree")}
 \usage{
-g_forest_new(tbl, fontsize = 3.5, col = "blue", width_plot = 0.25)
+g_forest_new(
+  tbl,
+  vline = 1,
+  forest_header = NULL,
+  fontsize = 4,
+  xlim = c(0.1, 10),
+  logx = TRUE,
+  x_at = c(0.1, 1, 10),
+  symbol_size = NULL,
+  col = getOption("ggplot2.discrete.colour")[1],
+  rel_width_plot = 0.25
+)
 }
 \description{
 nr <- nrow(tbl)

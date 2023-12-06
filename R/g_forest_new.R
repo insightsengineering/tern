@@ -257,13 +257,14 @@
 
 g_forest_new <- function(tbl,
                          vline = 1,
+                         forest_header = NULL,
                          fontsize = 4,
                          xlim = c(0.1, 10),
                          logx = TRUE,
                          x_at = c(0.1, 1, 10),
-                         symbol_size = attr(tbl, "col_symbol_size"),
+                         symbol_size = NULL,
                          col = getOption("ggplot2.discrete.colour")[1],
-                         width_plot = 0.25) {
+                         rel_width_plot = 0.25) {
   checkmate::assert_class(tbl, "VTableTree")
 
   gg_table <- rtable2gg(tbl) +
@@ -291,11 +292,12 @@ g_forest_new <- function(tbl,
   tbl_df[, c("ci_lwr", "ci_upr")] <- t(sapply(tbl_df[["95% CI"]], unlist))
   tbl_df <- tbl_df[names(tbl_df) != "95% CI"]
   tbl_df[, -1] <- apply(tbl_df[, -1], 2, unlist)
-
   tbl_df[["row_num"]] <- nlines_hdr + 1 + nrow(tbl_df) - tbl_df[["row_num"]]
 
   if (is.null(x_at)) x_at <- c(0.1, 1, 10)
   x_labels <- x_at
+  mid_pt <- if (!is.null(vline)) vline else if (length(x_at) == 3) x_at[2] else mean(xlim)
+
   if (logx) {
     xlim_t <- log(xlim)
     tbl_df[["Odds Ratio"]] <- log(tbl_df[["Odds Ratio"]])
@@ -304,12 +306,13 @@ g_forest_new <- function(tbl,
   } else {
     xlim_t <- xlim
   }
-  # # Rescale input values for modified x-axis
-  # rescale_x_val <- function(x) if (x < 1) (x - 0.1) / (1 - 0.1) * (1 - -9) + -9 else x
-  # tbl_df[["Odds Ratio"]] <- sapply(tbl_df[["Odds Ratio"]], rescale_x_val)
-  # tbl_df[["ci_lwr"]] <- sapply(tbl_df[["ci_lwr"]], rescale_x_val)
-  # tbl_df[["ci_upr"]] <- sapply(tbl_df[["ci_upr"]], rescale_x_val)
-  # vline <- rescale_x_val(vline)
+
+  if (is.null(forest_header)) {
+    forest_header <- c(
+      paste(if (!is.null(arms)) arms[1] else "Comparison", "Better", sep = "\n"),
+      paste(if (!is.null(arms)) arms[2] else "Treatment", "Better", sep = "\n")
+    )
+  }
 
   gg_plt <- ggplot(data = tbl_df) +
     theme(
@@ -335,21 +338,28 @@ g_forest_new <- function(tbl,
       expand = c(0, 0)
     ) +
     coord_cartesian(clip = "off") +
-    geom_rect(data = NULL, aes(xmin = xlim[1], xmax = xlim[2], ymin = 0, ymax = nrows_body + 0.5), fill = "grey92") +
+    geom_rect(
+      data = NULL,
+      aes(xmin = xlim[1], xmax = xlim[2], ymin = 0, ymax = nrows_body + 0.5),
+      fill = "grey92"
+    ) +
     geom_segment(aes(x = vline, xend = vline, y = 0, yend = nrows_body + 0.5)) +
-    geom_point(x = tbl_df[["Odds Ratio"]], y = tbl_df[["row_num"]], aes(size = `Total n`, color = col))
+    geom_point(
+      x = tbl_df[["Odds Ratio"]],
+      y = tbl_df[["row_num"]],
+      aes(size = if (is.null(symbol_size)) `Total n` else symbol_size, color = col)
+    )
 
-  mid_pt <- if (!is.null(vline)) vline else if (length(x_at) == 3) x_at[2] else mean(xlim)
   gg_plt <- gg_plt +
     geom_text(
       x = mean(log(c(xlim[1], mid_pt))), y = nrows_body + 1.25,
-      label = paste(if (!is.null(arms)) arms[1] else "Comparison", "Better", sep = "\n"),
+      label = forest_header[1],
       size = fontsize,
       lineheight = 0.9
     ) +
     geom_text(
       x = mean(log(c(mid_pt, xlim[2]))), y = nrows_body + 1.25,
-      label = paste(if (!is.null(arms)) arms[2] else "Treatment", "Better", sep = "\n"),
+      label = forest_header[2],
       size = fontsize,
       lineheight = 0.9
     )
@@ -377,6 +387,6 @@ g_forest_new <- function(tbl,
     gg_table,
     gg_plt,
     align = "h",
-    rel_widths = c(1 - width_plot, width_plot)
+    rel_widths = c(1 - rel_width_plot, rel_width_plot)
   )
 }
