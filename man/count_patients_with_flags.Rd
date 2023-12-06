@@ -14,7 +14,7 @@ count_patients_with_flags(
   var_labels = var,
   show_labels = "hidden",
   riskdiff = FALSE,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   table_names = paste0("tbl_flags_", var),

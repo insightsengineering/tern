@@ -15,7 +15,7 @@ estimate_proportion_diff(
   method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc", "strat_newcombe",
     "strat_newcombecc"),
   weights_method = "cmh",
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   var_labels = vars,

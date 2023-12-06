@@ -13,6 +13,7 @@
 * Added referential footnotes to `surv_time` for censored range observations, controlled via the `ref_fn_censor` parameter.
 * Added helper function `h_adlb_abnormal_by_worst_grade` to prepare `ADLB` data to use as input in `count_abnormal_by_worst_grade`.
 * Added function `rtable2gg` that converts `rtable` objects to `ggplot` objects.
+* Added helper function to set default `na_str` globally with `set_default_na_str()` and added `default_na_str()` for all interested functions.
 
 ### Enhancements
 * Added `ref_group_coxph` parameter to `g_km` to specify the reference group used for pairwise Cox-PH calculations when `annot_coxph = TRUE`.
@@ -29,6 +30,7 @@
 
 ### Miscellaneous
 * Specified minimal version of package dependencies.
+* Upgraded `to_string_matrix` to take into account `widths` and other printing parameters.
 
 # tern 0.9.2
 

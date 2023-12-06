@@ -341,10 +341,13 @@ testthat::test_that("summarize_ and count_occurrences_by_grade works with pagina
   pag_result <- paginate_table(result, lpp = 20)
 
   testthat::expect_identical(
-    to_string_matrix(pag_result[[1]])[3:4, 1],
+    to_string_matrix(pag_result[[1]], with_spaces = FALSE, print_txt_to_copy = FALSE)[3:4, 1],
     c("-Any-", "Grade 1-2")
   )
-  testthat::expect_identical(to_string_matrix(pag_result[[2]])[3, 1], "A")
+  testthat::expect_identical(
+    to_string_matrix(pag_result[[2]], with_spaces = FALSE, print_txt_to_copy = FALSE)[3, 1],
+    "  A"
+  )
 })
 
 testthat::test_that("count_occurrences_by_grade works as expected with risk difference column", {

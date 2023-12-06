@@ -114,7 +114,7 @@ a_change_from_baseline <- make_afun(
 summarize_change <- function(lyt,
                              vars,
                              variables,
-                             na_str = NA_character_,
+                             na_str = default_na_str(),
                              nested = TRUE,
                              ...,
                              table_names = vars,

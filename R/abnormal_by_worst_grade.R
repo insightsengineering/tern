@@ -139,7 +139,7 @@ count_abnormal_by_worst_grade <- function(lyt,
                                             param = "PARAM",
                                             grade_dir = "GRADE_DIR"
                                           ),
-                                          na_str = NA_character_,
+                                          na_str = default_na_str(),
                                           nested = TRUE,
                                           ...,
                                           .stats = NULL,

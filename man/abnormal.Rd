@@ -13,7 +13,7 @@ count_abnormal(
   abnormal = list(Low = "LOW", High = "HIGH"),
   variables = list(id = "USUBJID", baseline = "BNRIND"),
   exclude_base_abn = FALSE,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   table_names = var,

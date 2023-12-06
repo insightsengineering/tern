@@ -482,7 +482,7 @@ a_summary <- function(x,
                       .indent_mods = NULL,
                       na.rm = TRUE, # nolint
                       na_level = lifecycle::deprecated(),
-                      na_str = NA_character_,
+                      na_str = default_na_str(),
                       ...) {
   extra_args <- list(...)
   if (lifecycle::is_present(na_level)) {
@@ -671,7 +671,7 @@ analyze_vars <- function(lyt,
                          vars,
                          var_labels = vars,
                          na_level = lifecycle::deprecated(),
-                         na_str = NA_character_,
+                         na_str = default_na_str(),
                          nested = TRUE,
                          ...,
                          na.rm = TRUE, # nolint

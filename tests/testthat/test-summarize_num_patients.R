@@ -245,13 +245,16 @@ testthat::test_that("analyze_num_patients works well for pagination", {
   # Pagination tests (no repetition of the first lines)
   pag_result <- paginate_table(result, lpp = 10)
   testthat::expect_identical(
-    to_string_matrix(pag_result[[1]])[3:4, 1],
+    to_string_matrix(pag_result[[1]], with_spaces = FALSE, print_txt_to_copy = FALSE)[3:4, 1],
     c(
       "Number of patients with at least one event",
       "Number of events"
     )
   )
-  testthat::expect_identical(to_string_matrix(pag_result[[3]])[6, 1], "17")
+  testthat::expect_identical(
+    to_string_matrix(pag_result[[3]], with_spaces = FALSE, print_txt_to_copy = FALSE)[6, 1],
+    "  17"
+  )
 })
 
 testthat::test_that("summarize_num_patients works as expected with risk difference column", {

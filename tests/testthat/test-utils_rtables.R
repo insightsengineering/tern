@@ -260,3 +260,35 @@ testthat::test_that("append_varlabels correctly concatenates multiple variable l
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("default na_str works properly", {
+  tmp <- tern_ex_adsl[seq_len(10), seq_len(10)]
+  tmp$AGE[1] <- NA
+  df_to_tt(tmp)
+  set_default_na_str("N/A")
+  tbl <- basic_table() %>%
+    split_rows_by("SEX") %>%
+    split_cols_by("ARM") %>%
+    analyze("AGE",
+      afun = function(x) mean(x, na.rm = FALSE), inclNAs = TRUE,
+      format = "xx.", na_str = default_na_str()
+    ) %>%
+    build_table(tmp)
+  testthat::expect_identical(matrix_form(tbl)$strings[5, 2], "N/A")
+
+
+  # lets try with some default function
+  set_default_na_str(NULL)
+  dt <- data.frame("VAR" = c(NA, NA_real_))
+  tbl <- basic_table() %>%
+    analyze_vars(vars = "VAR", .stats = c("n", "mean")) %>%
+    build_table(dt)
+  testthat::expect_identical(matrix_form(tbl)$strings[-1, 2], c("0", "NA"))
+
+  set_default_na_str("<no-value>")
+  dt <- data.frame("VAR" = c(NA, NA_real_))
+  tbl <- basic_table() %>%
+    analyze_vars(vars = "VAR", .stats = c("n", "mean")) %>%
+    build_table(dt)
+  testthat::expect_identical(matrix_form(tbl)$strings[-1, 2], c("0", "<no-value>"))
+})
