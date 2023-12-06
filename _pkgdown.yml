@@ -118,6 +118,7 @@ reference:
       - h_content_first_row
       - starts_with("h_row_")
       - is_leaf_table
+      - rtable2gg
       - split_cols_by_groups
       - to_string_matrix
       - groups_list_to_df

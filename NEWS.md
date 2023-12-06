@@ -1,4 +1,4 @@
-# tern 0.9.2.9020
+# tern 0.9.2.9026
 
 ### New Features
 * Added `ref_group_position` function to place the reference group facet last, first or at a certain position.
@@ -12,6 +12,7 @@
 * Added summarize function version of `count_occurrences` analyze function, `summarize_occurrences`.
 * Added referential footnotes to `surv_time` for censored range observations, controlled via the `ref_fn_censor` parameter.
 * Added helper function `h_adlb_abnormal_by_worst_grade` to prepare `ADLB` data to use as input in `count_abnormal_by_worst_grade`.
+* Added function `rtable2gg` that converts `rtable` objects to `ggplot` objects.
 * Added helper function to set default `na_str` globally with `set_default_na_str()` and added `default_na_str()` for all interested functions.
 
 ### Enhancements
@@ -21,6 +22,7 @@
 * Remove 25% padding of y-axis in `g_lineplot`.
 * Added support for creating multiple risk difference columns, each comparing to a single comparison group. Multiple comparison groups can be specified as a vector via the `arm_y` argument.
 * Allowed numeric vector as `count_by` input in `analyze_num_patients` and `summarize_num_patients`.
+* Aligned plot and table vertically in `g_lineplot`.
 
 ### Bug Fixes
 * Fixed bug in `decorate_grob` preventing text wrapping from accounting for font size.
