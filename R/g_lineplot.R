@@ -406,7 +406,7 @@ g_lineplot <- function(df,
     }
 
     # align plot and table
-    cowplot::plot_grid(p, tbl, ncol = 1, align = "v")
+    cowplot::plot_grid(p, tbl, ncol = 1, align = "v", axis = "tblr")
   } else {
     p
   }
