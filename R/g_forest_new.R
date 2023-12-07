@@ -256,25 +256,68 @@
 #' }
 
 g_forest_new <- function(tbl,
+                         col_x = attr(tbl, "col_x"),
+                         col_ci = attr(tbl, "col_ci"),
                          vline = 1,
-                         forest_header = NULL,
-                         fontsize = 4,
+                         forest_header = attr(tbl, "forest_header"),
                          xlim = c(0.1, 10),
                          logx = TRUE,
                          x_at = c(0.1, 1, 10),
-                         symbol_size = NULL,
+                         width_row_names = lifecycle::deprecated(),
+                         width_columns = NULL,
+                         width_forest = lifecycle::deprecated(),
+                         lbl_col_padding = 0,
+                         rel_width_forest = 0.25,
+                         font_size = 4,
+                         col_symbol_size = attr(tbl, "col_symbol_size"),
                          col = getOption("ggplot2.discrete.colour")[1],
-                         rel_width_plot = 0.25) {
+                         ggtheme = NULL,
+                         gp = lifecycle::deprecated(),
+                         draw = lifecycle::deprecated(),
+                         newpage = lifecycle::deprecated()) {
+  # Deprecated argument warnings
+  if (lifecycle::is_present(width_row_names)) {lifecycle::deprecate_warn(
+    "0.9.3", "g_forest(width_row_names)", "g_forest(lbl_col_padding)",
+    details = "The width of the row label column can be adjusted via the `lbl_col_padding` parameter."
+  )}
+  if (lifecycle::is_present(width_forest)) {lifecycle::deprecate_warn(
+    "0.9.3", "g_forest(width_forest)", "g_forest(rel_width_forest)",
+    details = "Relative width of the forest plot (as a proportion) can be set via the `rel_width_forest` parameter."
+  )}
+  if (lifecycle::is_present(gp)) {lifecycle::deprecate_warn(
+    "0.9.3", "g_forest(gp)", "g_forest(ggtheme)",
+    details = paste(
+      "`g_forest` is now generated as a `ggplot` object.",
+      "Additional display settings should be supplied via the `ggtheme` parameter."
+    )
+  )}
+  if (lifecycle::is_present(draw)) {lifecycle::deprecate_warn(
+    "0.9.3", "g_forest(draw)",
+    details = "`g_forest` is now generated as a `ggplot` object. This parameter has no effect."
+  )}
+  if (lifecycle::is_present(newpage)) {lifecycle::deprecate_warn(
+    "0.9.3", "g_forest(newpage)",
+    details = "`g_forest` is now generated as a `ggplot` object. This parameter has no effect."
+  )}
+
   checkmate::assert_class(tbl, "VTableTree")
+  checkmate::assert_number(col_x, lower = 0, upper = ncol(tbl), null.ok = TRUE)
+  checkmate::assert_number(col_ci, lower = 0, upper = ncol(tbl), null.ok = TRUE)
+  checkmate::assert_number(font_size, lower = 0)
+  checkmate::assert_number(col_symbol_size, lower = 0, upper = ncol(tbl), null.ok = TRUE)
+  checkmate::assert_character(col, null.ok = TRUE)
 
-  gg_table <- rtable2gg(tbl) +
-    theme(plot.margin = margin(0, 0, 0, 0.025, "npc"))
-  gg_table$scales$scales[[1]]$expand <- c(0.01, 0.01)
-
+  # Extract info from table
   mat <- matrix_form(tbl)
   mat_strings <- formatters::mf_strings(mat)
   nlines_hdr <- formatters::mf_nlheader(mat)
   nrows_body <- nrow(mat_strings) - nlines_hdr
+  tbl_stats <- mat_strings[nlines_hdr, -1]
+
+  # Generate and modify table as ggplot object
+  gg_table <- rtable2gg(tbl, fontsize = font_size, colwidths = width_columns, lbl_col_padding = lbl_col_padding) +
+    theme(plot.margin = margin(0, 0, 0, 0.025, "npc"))
+  gg_table$scales$scales[[1]]$expand <- c(0.01, 0.01)
   if (nlines_hdr == 2) {
     gg_table$scales$scales[[2]]$limits[2] <- nrow(mat_strings) + 1
     gg_table$scales$scales[[2]]$expand <- c(0, 0)
@@ -282,41 +325,58 @@ g_forest_new <- function(tbl,
   } else {
     arms <- NULL
   }
-  tbl_stats <- mat_strings[nlines_hdr, -1]
 
   tbl_df <- as_result_df(tbl)
   dat_cols <- seq(which(names(tbl_df) == "node_class") + 1, ncol(tbl_df))
   tbl_df <- tbl_df[, c(which(names(tbl_df) == "row_num"), dat_cols)]
   names(tbl_df) <- c("row_num", tbl_stats)
 
-  tbl_df[, c("ci_lwr", "ci_upr")] <- t(sapply(tbl_df[["95% CI"]], unlist))
-  tbl_df <- tbl_df[names(tbl_df) != "95% CI"]
-  tbl_df[, -1] <- apply(tbl_df[, -1], 2, unlist)
-  tbl_df[["row_num"]] <- nlines_hdr + 1 + nrow(tbl_df) - tbl_df[["row_num"]]
-
-  if (is.null(x_at)) x_at <- c(0.1, 1, 10)
-  x_labels <- x_at
-  mid_pt <- if (!is.null(vline)) vline else if (length(x_at) == 3) x_at[2] else mean(xlim)
-
-  if (logx) {
-    xlim_t <- log(xlim)
-    tbl_df[["Odds Ratio"]] <- log(tbl_df[["Odds Ratio"]])
-    tbl_df[["ci_lwr"]] <- log(tbl_df[["ci_lwr"]])
-    tbl_df[["ci_upr"]] <- log(tbl_df[["ci_upr"]])
+  # Check table data columns
+  if (!is.null(col_ci)) {
+    ci_col <- col_ci + 1
   } else {
+    tbl_df[["empty_ci"]] <- rep(list(c(NA_real_, NA_real_)), nrow(tbl_df))
+    ci_col <- which(names(tbl_df) == "empty_ci")
+  }
+  if (length(tbl_df[, ci_col][[1]]) != 2) stop("CI column must have two elements (lower and upper limits).")
+
+  if (!is.null(col_x)) {
+    x_col <- col_x + 1
+  } else {
+    tbl_df[["empty_x"]] <- NA_real_
+    x_col <- which(names(tbl_df) == "empty_x")
+  }
+  if (!is.null(col_symbol_size)) {
+    sym_size <- unlist(tbl_df[, col_symbol_size + 1])
+  } else {
+    sym_size <- 1
+  }
+
+  tbl_df[, c("ci_lwr", "ci_upr")] <- t(sapply(tbl_df[, ci_col], unlist))
+  x <- unlist(tbl_df[, x_col])
+  lwr <- unlist(tbl_df[["ci_lwr"]])
+  upr <- unlist(tbl_df[["ci_upr"]])
+  row_num <- nlines_hdr + 1 + nrow(tbl_df) - tbl_df[["row_num"]]
+
+  if (is.null(col)) col <- "#343cff"
+  if (is.null(x_at)) x_at <- union(xlim, vline)
+  x_labels <- x_at
+
+  # Apply log transformation
+  if (logx) {
+    x <- log(x)
+    lwr_t <- log(lwr)
+    upr_t <- log(upr)
+    xlim_t <- log(xlim)
+  } else {
+    lwr_t <- lwr
+    upr_t <- upr
     xlim_t <- xlim
   }
 
-  if (is.null(forest_header)) {
-    forest_header <- c(
-      paste(if (!is.null(arms)) arms[1] else "Comparison", "Better", sep = "\n"),
-      paste(if (!is.null(arms)) arms[2] else "Treatment", "Better", sep = "\n")
-    )
-  }
-
-  gg_plt <- ggplot(data = tbl_df) +
+  # Set up plot area
+  gg_plt <- ggplot() +
     theme(
-      panel.background = element_blank(),
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(),
       axis.title.x = element_blank(),
@@ -340,32 +400,56 @@ g_forest_new <- function(tbl,
     coord_cartesian(clip = "off") +
     geom_rect(
       data = NULL,
-      aes(xmin = xlim[1], xmax = xlim[2], ymin = 0, ymax = nrows_body + 0.5),
-      fill = "grey92"
-    ) +
-    geom_segment(aes(x = vline, xend = vline, y = 0, yend = nrows_body + 0.5)) +
-    geom_point(
-      x = tbl_df[["Odds Ratio"]],
-      y = tbl_df[["row_num"]],
-      aes(size = if (is.null(symbol_size)) `Total n` else symbol_size, color = col)
+      aes(
+        xmin = xlim[1],
+        xmax = xlim[2],
+        ymin = nrows_body + 0.5,
+        ymax = nrow(mat_strings) + as.numeric(nlines_hdr == 2)
+      ),
+      fill = "white"
     )
 
-  gg_plt <- gg_plt +
-    geom_text(
-      x = mean(log(c(xlim[1], mid_pt))), y = nrows_body + 1.25,
-      label = forest_header[1],
-      size = fontsize,
-      lineheight = 0.9
-    ) +
-    geom_text(
-      x = mean(log(c(mid_pt, xlim[2]))), y = nrows_body + 1.25,
-      label = forest_header[2],
-      size = fontsize,
-      lineheight = 0.9
+  # Add points to plot
+  if (any(!is.na(x))) {
+    gg_plt <- gg_plt + geom_point(
+      x = x,
+      y = row_num,
+      aes(size = sym_size, color = col)
     )
+  }
+
+  if (!is.null(vline)) {
+    # Set default forest header
+    if (is.null(forest_header)) {
+      forest_header <- c(
+        paste(if (!is.null(arms)) arms[1] else "Comparison", "Better", sep = "\n"),
+        paste(if (!is.null(arms)) arms[2] else "Treatment", "Better", sep = "\n")
+      )
+    }
+
+    # Add vline and forest header labels
+    mid_pts <- exp(c(mean(log(c(xlim[1], vline))), mean(log(c(vline, xlim[2])))))
+    gg_plt <- gg_plt +
+      geom_segment(aes(x = vline, xend = vline, y = 0, yend = nrows_body + 0.5)) +
+      annotate(
+        "text",
+        x = mid_pts[1], y = nrows_body + 1.25,
+        label = forest_header[1],
+        size = font_size,
+        lineheight = 0.9
+      ) +
+      annotate(
+        "text",
+        x = mid_pts[2], y = nrows_body + 1.25,
+        label = forest_header[2],
+        size = font_size,
+        lineheight = 0.9
+      )
+  }
 
   for (i in seq_len(nrow(tbl_df))) {
-    which_arrow <- c(tbl_df[i, "ci_lwr"] < xlim_t[1], tbl_df[i, "ci_upr"] > xlim_t[2])
+    # Determine which arrow(s) to add to CI lines
+    which_arrow <- c(lwr_t[i] < xlim_t[1], upr_t[i] > xlim_t[2])
     which_arrow <- case_when(
       all(which_arrow) ~ "both",
       which_arrow[1] ~ "first",
@@ -373,20 +457,29 @@ g_forest_new <- function(tbl,
       TRUE ~ NA
     )
 
+    # Add CI lines
     gg_plt <- gg_plt +
-      geom_segment(
-        x = if (!which_arrow %in% c("first", "both")) tbl_df[["ci_lwr"]][i] else xlim_t[1],
-        xend = if (!which_arrow %in% c("last", "both")) tbl_df[["ci_upr"]][i] else xlim_t[2],
-        y = tbl_df[["row_num"]][i], yend = tbl_df[["row_num"]][i],
+      annotate(
+        "segment",
+        x = if (!which_arrow %in% c("first", "both")) lwr[i] else xlim[1],
+        xend = if (!which_arrow %in% c("last", "both")) upr[i] else xlim[2],
+        y = row_num[i], yend = row_num[i],
         color = col,
         arrow = if (is.na(which_arrow)) NULL else arrow(length = unit(0.05, "npc"), ends = which_arrow)
       )
+  }
+
+  # Apply custom ggtheme to table and plot
+  if (!is.null(ggtheme)) {
+    gg_table <- gg_table + ggtheme
+    gg_plt <- gg_plt + ggtheme
   }
 
   cowplot::plot_grid(
     gg_table,
     gg_plt,
     align = "h",
-    rel_widths = c(1 - rel_width_plot, rel_width_plot)
+    axis = "tblr",
+    rel_widths = c(1 - rel_width_forest, rel_width_forest)
   )
 }
