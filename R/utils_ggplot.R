@@ -95,7 +95,8 @@ rtable2gg <- function(tbl, fontsize = 4, colwidths = NULL, lbl_col_padding = 0) 
         )
 
         res <- res +
-          geom_text(
+          annotate(
+            "text",
             x = mean(line_pos),
             y = nrow(mat_strings) + 1 - hr,
             label = cur_lbl,
@@ -113,7 +114,8 @@ rtable2gg <- function(tbl, fontsize = 4, colwidths = NULL, lbl_col_padding = 0) 
 
   # Add table columns
   for (i in seq_len(ncol(tbl_df))) {
-    res <- res + geom_text(
+    res <- res + annotate(
+      "text",
       x = if (i == 1) 0 else sum(colwidths[1:i]) - 0.5 * colwidths[i] + lbl_col_padding,
       y = rev(seq_len(nrow(tbl_df))),
       label = tbl_df[, i],
