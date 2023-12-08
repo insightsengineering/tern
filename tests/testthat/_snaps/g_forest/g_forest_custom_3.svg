@@ -52,9 +52,10 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMjg4LjAwfDcyMC4wMHwwLjAwfDM2MC4wMA==)'>
-<rect x='288.00' y='0.00' width='432.00' height='360.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
+<rect x='288.00' y='0.00' width='432.00' height='360.00' style='stroke-width: 1.07; stroke: none;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHwzNjAuMDA=)'>
+<rect x='288.00' y='0.000000000000057' width='388.80' height='328.79' style='stroke-width: 1.07; stroke: none;' />
 <rect x='291.81' y='164.39' width='381.18' height='164.39' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #EBEBEB;' />
 <rect x='291.81' y='164.39' width='381.18' height='164.39' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #EBEBEB;' />
 <line x1='453.43' y1='328.79' x2='453.43' y2='164.39' style='stroke-width: 1.07; stroke-linecap: butt;' />

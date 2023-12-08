@@ -288,7 +288,8 @@ g_forest <- function(tbl,
   # Set up plot area
   gg_plt <- ggplot(data = tbl_df) +
     theme(
-      panel.background = element_blank(),
+      panel.background = element_rect(fill = "transparent", color = NA_character_),
+      plot.background = element_rect(fill = "transparent", color = NA_character_),
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(),
       axis.title.x = element_blank(),
