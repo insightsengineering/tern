@@ -286,6 +286,7 @@ g_forest <- function(tbl,
   # Set up plot area
   gg_plt <- ggplot(data = tbl_df) +
     theme(
+      panel.background = element_blank(),
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(),
       axis.title.x = element_blank(),
@@ -299,24 +300,27 @@ g_forest <- function(tbl,
       limits = xlim,
       breaks = x_at,
       labels = x_labels,
-      expand = c(0, 0)
+      expand = c(0.01, 0)
     ) +
     scale_y_continuous(
       limits = c(0, nrow(mat_strings) + 1),
       breaks = NULL,
       expand = c(0, 0)
     ) +
-    coord_cartesian(clip = "off") +
-    geom_rect(
+    coord_cartesian(clip = "off")
+
+  if (is.null(ggtheme)) {
+    gg_plt <- gg_plt + geom_rect(
       data = NULL,
       aes(
         xmin = xlim[1],
         xmax = xlim[2],
-        ymin = nrows_body + 0.5,
-        ymax = nrow(mat_strings) + 1
+        ymin = 0,
+        ymax = nrows_body + 0.5
       ),
-      fill = "white"
+      fill = "grey92"
     )
+  }
 
   # Add points to plot
   if (any(!is.na(x))) {
@@ -360,7 +364,7 @@ g_forest <- function(tbl,
   for (i in seq_len(nrow(tbl_df))) {
     # Determine which arrow(s) to add to CI lines
     which_arrow <- c(lwr_t[i] < xlim_t[1], upr_t[i] > xlim_t[2])
-    which_arrow <- case_when(
+    which_arrow <- dplyr::case_when(
       all(which_arrow) ~ "both",
       which_arrow[1] ~ "first",
       which_arrow[2] ~ "last",
