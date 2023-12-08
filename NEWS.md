@@ -3,6 +3,12 @@
 ### New Features
 * Refactored `g_forest` to output a `ggplot` object instead of a `grob` object.
 
+### Bug Fixes
+* Fixed nested column split label overlay issue in `rtable2gg` to clean up appearance of text labels.
+
+### Miscellaneous
+* Added function `expect_snapshot_ggplot` to test setup file to process plot snapshot tests and allow plot dimensions to be set.
+
 # tern 0.9.3
 
 ### New Features
