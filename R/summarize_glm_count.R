@@ -5,6 +5,7 @@
 #' Summarize results of a Poisson Negative Binomial Regression.
 #' This can be used to analyze count and/or frequency data using a linear model.
 #'
+#' @inheritParams h_glm_count
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("summarize_glm_count")`
 #'   to see available statistics for this function.
@@ -216,8 +217,6 @@ h_ppmeans <- function(obj, .df_row, arm, conf_level) {
 #' @describeIn summarize_glm_count Statistics function that produces a named list of results
 #'   of the investigated Poisson model.
 #'
-#' @inheritParams h_glm_count
-#'
 #' @return
 #' * `s_glm_count()` returns a named `list` of 5 statistics:
 #'   * `n`: Count of complete sample size for the group.
@@ -399,8 +398,14 @@ a_glm_count <- make_afun(
 #' @order 2
 summarize_glm_count <- function(lyt,
                                 vars,
+                                variables,
+                                distribution,
+                                conf_level,
+                                rate_mean_method,
+                                weights = stats::weights,
+                                scale = 1,
                                 var_labels,
-                                na_str = NA_character_,
+                                na_str = default_na_str(),
                                 nested = TRUE,
                                 ...,
                                 show_labels = "visible",
@@ -409,6 +414,11 @@ summarize_glm_count <- function(lyt,
                                 .formats = NULL,
                                 .labels = NULL,
                                 .indent_mods = NULL) {
+  extra_args <- list(
+    variables = variables, distribution = distribution, conf_level = conf_level,
+    rate_mean_method = rate_mean_method, weights = weights, scale = scale, ...
+  )
+
   afun <- make_afun(
     a_glm_count,
     .stats = .stats,
@@ -426,6 +436,6 @@ summarize_glm_count <- function(lyt,
     afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }

@@ -12,6 +12,9 @@
 #' If there are multiple records with the same flag present for a patient, only one occurrence is counted.
 #'
 #' @inheritParams argument_convention
+#' @param flag_variables (`character`)\cr a character vector specifying the names of `logical`
+#'   variables from analysis dataset used for counting the number of unique identifiers.
+#' @param flag_labels (`character`)\cr vector of labels to use for flag variables.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_patients_with_flags")`
 #'   to see available statistics for this function.
 #'
@@ -26,9 +29,6 @@ NULL
 #'
 #' @inheritParams analyze_variables
 #' @param .var (`character`)\cr name of the column that contains the unique identifier.
-#' @param flag_variables (`character`)\cr a character vector specifying the names of `logical`
-#'   variables from analysis dataset used for counting the number of unique identifiers.
-#' @param flag_labels (`character`)\cr vector of labels to use for flag variables.
 #'
 #' @note If `flag_labels` is not specified, variables labels will be extracted from `df`. If variables are not
 #'   labeled, variable names will be used instead. Alternatively, a named `vector` can be supplied to
@@ -163,10 +163,12 @@ a_count_patients_with_flags <- make_afun(
 #' @order 2
 count_patients_with_flags <- function(lyt,
                                       var,
+                                      flag_variables,
+                                      flag_labels = NULL,
                                       var_labels = var,
                                       show_labels = "hidden",
                                       riskdiff = FALSE,
-                                      na_str = NA_character_,
+                                      na_str = default_na_str(),
                                       nested = TRUE,
                                       ...,
                                       table_names = paste0("tbl_flags_", var),
@@ -174,6 +176,8 @@ count_patients_with_flags <- function(lyt,
                                       .formats = NULL,
                                       .indent_mods = NULL) {
   checkmate::assert_flag(riskdiff)
+
+  s_args <- list(flag_variables = flag_variables, flag_labels = flag_labels, ...)
 
   afun <- make_afun(
     a_count_patients_with_flags,
@@ -184,13 +188,13 @@ count_patients_with_flags <- function(lyt,
   )
 
   extra_args <- if (isFALSE(riskdiff)) {
-    list(...)
+    s_args
   } else {
     list(
       afun = list("s_count_patients_with_flags" = afun),
       .stats = .stats,
       .indent_mods = .indent_mods,
-      s_args = list(...)
+      s_args = s_args
     )
   }
 

@@ -10,6 +10,7 @@
 #' counts will be generated for each variable.
 #'
 #' @inheritParams argument_convention
+#' @param values (`character`)\cr specific values that should be counted.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_values")`
 #'   to see available statistics for this function.
 #'
@@ -26,7 +27,6 @@ NULL
 #' @describeIn count_values_funs S3 generic function to count values.
 #'
 #' @inheritParams s_summary.logical
-#' @param values (`character`)\cr specific values that should be counted.
 #'
 #' @return
 #' * `s_count_values()` returns output of [s_summary()] for specified values of a non-numeric variable.
@@ -131,7 +131,7 @@ a_count_values <- make_afun(
 count_values <- function(lyt,
                          vars,
                          values,
-                         na_str = NA_character_,
+                         na_str = default_na_str(),
                          nested = TRUE,
                          ...,
                          table_names = vars,
@@ -139,6 +139,8 @@ count_values <- function(lyt,
                          .formats = NULL,
                          .labels = c(count_fraction = paste(values, collapse = ", ")),
                          .indent_mods = NULL) {
+  extra_args <- list(values = values, ...)
+
   afun <- make_afun(
     a_count_values,
     .stats = .stats,
@@ -152,7 +154,7 @@ count_values <- function(lyt,
     afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = c(list(values = values), list(...)),
+    extra_args = extra_args,
     show_labels = ifelse(length(vars) > 1, "visible", "hidden"),
     table_names = table_names
   )

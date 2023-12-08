@@ -12,8 +12,13 @@
 #'   * `conf_type` (`string`)\cr confidence interval type. Options are "plain" (default), "log", or "log-log",
 #'     see more in [survival::survfit()]. Note option "none" is not supported.
 #'   * `quantiles` (`numeric`)\cr vector of length two to specify the quantiles of survival time.
+#' @param ref_fn_censor (`flag`)\cr whether referential footnotes indicating censored observations should be printed
+#'   when the `range` statistic is included.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("surv_time")`
 #'   to see available statistics for this function.
+#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
+#'   for that statistic's row label.
 #'
 #' @examples
 #' library(dplyr)
@@ -106,7 +111,7 @@ a_surv_time <- function(df,
                         .formats = NULL,
                         .labels = NULL,
                         .indent_mods = NULL,
-                        na_str = NA_character_) {
+                        na_str = default_na_str()) {
   x_stats <- s_surv_time(
     df = df, .var = .var, is_event = is_event, control = control
   )
@@ -156,12 +161,6 @@ a_surv_time <- function(df,
 #' @describeIn survival_time Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
-#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
-#'   for that statistic's row label.
-#' @param ref_fn_censor (`flag`)\cr whether referential footnotes indicating censored observations should be printed
-#'   when the `range` statistic is included.
-#'
 #' @return
 #' * `surv_time()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
@@ -183,8 +182,10 @@ a_surv_time <- function(df,
 #' @order 2
 surv_time <- function(lyt,
                       vars,
+                      is_event,
+                      control = control_surv_time(),
                       ref_fn_censor = TRUE,
-                      na_str = NA_character_,
+                      na_str = default_na_str(),
                       nested = TRUE,
                       ...,
                       var_labels = "Time to Event",
@@ -195,8 +196,8 @@ surv_time <- function(lyt,
                       .labels = NULL,
                       .indent_mods = c(median_ci = 1L)) {
   extra_args <- list(
-    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods,
-    na_str = na_str, ref_fn_censor = ref_fn_censor
+    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str,
+    is_event = is_event, control = control, ref_fn_censor = ref_fn_censor, ...
   )
 
   analyze(
@@ -208,6 +209,6 @@ surv_time <- function(lyt,
     table_names = table_names,
     na_str = na_str,
     nested = nested,
-    extra_args = c(extra_args, list(...))
+    extra_args = extra_args
   )
 }

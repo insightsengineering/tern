@@ -9,7 +9,8 @@
 summarize_change(
   lyt,
   vars,
-  na_str = NA_character_,
+  variables,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   table_names = vars,
@@ -27,6 +28,8 @@ a_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
@@ -54,8 +57,6 @@ unmodified default behavior. Can be negative.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
-
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 }

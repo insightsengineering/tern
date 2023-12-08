@@ -10,8 +10,10 @@
 surv_time(
   lyt,
   vars,
+  is_event,
+  control = control_surv_time(),
   ref_fn_censor = TRUE,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   var_labels = "Time to Event",
@@ -37,13 +39,24 @@ a_surv_time(
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL,
-  na_str = NA_character_
+  na_str = default_na_str()
 )
 }
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
+
+\item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
+\code{\link[=control_surv_time]{control_surv_time()}}. Some possible parameter options are:
+\itemize{
+\item \code{conf_level} (\code{proportion})\cr confidence level of the interval for survival time.
+\item \code{conf_type} (\code{string})\cr confidence interval type. Options are "plain" (default), "log", or "log-log",
+see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "none" is not supported.
+\item \code{quantiles} (\code{numeric})\cr vector of length two to specify the quantiles of survival time.
+}}
 
 \item{ref_fn_censor}{(\code{flag})\cr whether referential footnotes indicating censored observations should be printed
 when the \code{range} statistic is included.}
@@ -79,17 +92,6 @@ for that statistic's row label.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
-
-\item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
-
-\item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
-\code{\link[=control_surv_time]{control_surv_time()}}. Some possible parameter options are:
-\itemize{
-\item \code{conf_level} (\code{proportion})\cr confidence level of the interval for survival time.
-\item \code{conf_type} (\code{string})\cr confidence interval type. Options are "plain" (default), "log", or "log-log",
-see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "none" is not supported.
-\item \code{quantiles} (\code{numeric})\cr vector of length two to specify the quantiles of survival time.
-}}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}

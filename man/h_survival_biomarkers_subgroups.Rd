@@ -11,7 +11,14 @@ h_surv_to_coxreg_variables(variables, biomarker)
 
 h_coxreg_mult_cont_df(variables, data, control = control_coxreg())
 
-h_tab_surv_one_biomarker(df, vars, time_unit, .indent_mods = 0L)
+h_tab_surv_one_biomarker(
+  df,
+  vars,
+  time_unit,
+  na_str = default_na_str(),
+  .indent_mods = 0L,
+  ...
+)
 }
 \arguments{
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
@@ -40,8 +47,12 @@ Note, one of the statistics \code{n_tot} and \code{n_tot_events}, as well as bot
 
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
 
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
+
+\item{...}{additional arguments for the lower level functions.}
 }
 \value{
 \itemize{

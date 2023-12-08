@@ -8,8 +8,9 @@ h_tab_one_biomarker(
   df,
   afuns,
   colvars,
-  na_str = NA_character_,
-  .indent_mods = 0L
+  na_str = default_na_str(),
+  .indent_mods = 0L,
+  ...
 )
 }
 \arguments{
@@ -23,6 +24,8 @@ h_tab_one_biomarker(
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
+
+\item{...}{additional arguments for the lower level functions.}
 }
 \value{
 An \code{rtables} table object with statistics in columns.

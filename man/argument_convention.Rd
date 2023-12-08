@@ -53,9 +53,6 @@ that constitute the split. A custom label can be set for this level via the \cod
 
 \item{draw}{(\code{flag})\cr whether the plot should be drawn.}
 
-\item{drop}{(\code{flag})\cr should non appearing occurrence levels be dropped from the resulting table.
-Note that in that case the remaining occurrence levels in the table are sorted alphabetically.}
-
 \item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
 list, which specifies the new group levels via the names and the
 levels that belong to it in the character vectors that are elements of the list.}

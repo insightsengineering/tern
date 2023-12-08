@@ -10,7 +10,8 @@
 count_abnormal_by_worst_grade(
   lyt,
   var,
-  na_str = NA_character_,
+  variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR"),
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   .stats = NULL,
@@ -35,6 +36,8 @@ a_count_abnormal_by_worst_grade(
 }
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
@@ -62,8 +65,6 @@ by a statistics function.}
 
 \item{.spl_context}{(\code{data.frame})\cr gives information about ancestor split states
 that is passed by \code{rtables}.}
-
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 }
 \value{
 \itemize{

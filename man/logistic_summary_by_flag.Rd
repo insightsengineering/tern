@@ -4,7 +4,11 @@
 \alias{logistic_summary_by_flag}
 \title{Logistic Regression Summary Table Constructor Function}
 \usage{
-logistic_summary_by_flag(flag_var, na_str = NA_character_, .indent_mods = NULL)
+logistic_summary_by_flag(
+  flag_var,
+  na_str = default_na_str(),
+  .indent_mods = NULL
+)
 }
 \arguments{
 \item{flag_var}{(\code{string})\cr variable name identifying which row should be used in this

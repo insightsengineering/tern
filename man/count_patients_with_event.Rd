@@ -9,8 +9,9 @@
 count_patients_with_event(
   lyt,
   vars,
+  filters,
   riskdiff = FALSE,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   table_names = vars,
@@ -43,6 +44,12 @@ a_count_patients_with_event(
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{filters}{(\code{character})\cr a character vector specifying the column names and flag variables
+to be used for counting the number of unique identifiers satisfying such conditions.
+Multiple column names and flags are accepted in this format
+\code{c("column_name1" = "flag1", "column_name2" = "flag2")}.
+Note that only equality is being accepted as condition.}
+
 \item{riskdiff}{(\code{flag})\cr whether a risk difference column is present. When set to \code{TRUE}, \code{\link[=add_riskdiff]{add_riskdiff()}} must be
 used as \code{split_fun} in the prior column split of the table layout, specifying which columns should be compared.
 See \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} for details on risk difference calculation.}
@@ -72,12 +79,6 @@ unmodified default behavior. Can be negative.}
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{character})\cr name of the column that contains the unique identifier.}
-
-\item{filters}{(\code{character})\cr a character vector specifying the column names and flag variables
-to be used for counting the number of unique identifiers satisfying such conditions.
-Multiple column names and flags are accepted in this format
-\code{c("column_name1" = "flag1", "column_name2" = "flag2")}.
-Note that only equality is being accepted as condition.}
 
 \item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}

@@ -10,7 +10,10 @@
 analyze_num_patients(
   lyt,
   vars,
-  na_str = NA_character_,
+  required = NULL,
+  count_by = NULL,
+  unique_count_suffix = TRUE,
+  na_str = default_na_str(),
   nested = TRUE,
   .stats = NULL,
   .formats = NULL,
@@ -26,7 +29,10 @@ analyze_num_patients(
 summarize_num_patients(
   lyt,
   var,
-  na_str = NA_character_,
+  required = NULL,
+  count_by = NULL,
+  unique_count_suffix = TRUE,
+  na_str = default_na_str(),
   .stats = NULL,
   .formats = NULL,
   .labels = c(unique = "Number of patients with at least one event", nonunique =
@@ -59,6 +65,14 @@ s_num_patients_content(
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{required}{(\code{character} or \code{NULL})\cr optional name of a variable that is required to be non-missing.}
+
+\item{count_by}{(\code{vector})\cr optional vector of any type to be combined with \code{x} when counting \code{nonunique}
+records.}
+
+\item{unique_count_suffix}{(\code{logical})\cr should \code{"(n)"} suffix be added to \code{unique_count} labels.
+Defaults to \code{TRUE}.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
@@ -96,18 +110,10 @@ for more information.}
 \item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
 
-\item{count_by}{(\code{character} or \code{factor})\cr optional vector to be combined with \code{x} when counting
-\code{nonunique} records.}
-
-\item{unique_count_suffix}{(\code{logical})\cr should \code{"(n)"} suffix be added to \code{unique_count} labels.
-Defaults to \code{TRUE}.}
-
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
-
-\item{required}{(\code{character} or \code{NULL})\cr optional name of a variable that is required to be non-missing.}
 }
 \value{
 \itemize{
@@ -189,7 +195,7 @@ s_num_patients(
   x = as.character(c(1, 1, 1, 2, 4, NA)),
   labelstr = "",
   .N_col = 6L,
-  count_by = as.character(c(1, 1, 2, 1, 1, 1))
+  count_by = c(1, 1, 2, 1, 1, 1)
 )
 
 # Count number of unique and non-unique patients.
@@ -202,7 +208,7 @@ s_num_patients_content(df, .N_col = 5, .var = "USUBJID")
 
 df_by_event <- data.frame(
   USUBJID = as.character(c(1, 2, 1, 4, NA)),
-  EVENT = as.character(c(10, 15, 10, 17, 8))
+  EVENT = c(10, 15, 10, 17, 8)
 )
 s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
 

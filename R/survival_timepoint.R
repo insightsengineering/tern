@@ -13,8 +13,15 @@
 #'   * `conf_type` (`string`)\cr confidence interval type. Options are "plain" (default), "log", "log-log",
 #'     see more in [survival::survfit()]. Note option "none" is no longer supported.
 #'   * `time_point` (`number`)\cr survival time point of interest.
+#' @param method (`string`)\cr either `surv` (survival estimations),
+#'   `surv_diff` (difference in survival with the control) or `both`.
+#' @param table_names_suffix (`string`)\cr optional suffix for the `table_names` used for the `rtables` to
+#'   avoid warnings from duplicate table names.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("surv_timepoint")`
 #'   to see available statistics for this function.
+#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
+#'   for that statistic's row label.
 #'
 #' @name survival_timepoint
 #' @order 1
@@ -162,14 +169,6 @@ a_surv_timepoint_diff <- make_afun(
 #' @describeIn survival_timepoint Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @param method (`string`)\cr either `surv` (survival estimations),
-#'   `surv_diff` (difference in survival with the control) or `both`.
-#' @param table_names_suffix (`string`)\cr optional suffix for the `table_names` used for the `rtables` to
-#'   avoid warnings from duplicate table names.
-#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
-#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
-#'   for that statistic's row label.
-#'
 #' @return
 #' * `surv_timepoint()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
@@ -229,13 +228,16 @@ a_surv_timepoint_diff <- make_afun(
 #' @order 2
 surv_timepoint <- function(lyt,
                            vars,
-                           na_str = NA_character_,
+                           time_point,
+                           is_event,
+                           control = control_surv_timepoint(),
+                           method = c("surv", "surv_diff", "both"),
+                           na_str = default_na_str(),
                            nested = TRUE,
                            ...,
                            table_names_suffix = "",
                            var_labels = "Time",
                            show_labels = "visible",
-                           method = c("surv", "surv_diff", "both"),
                            .stats = c(
                              "pt_at_risk", "event_free_rate", "rate_ci",
                              "rate_diff", "rate_diff_ci", "ztest_pval"
@@ -249,6 +251,8 @@ surv_timepoint <- function(lyt,
                            }) {
   method <- match.arg(method)
   checkmate::assert_string(table_names_suffix)
+
+  extra_args <- list(time_point = time_point, is_event = is_event, control = control, ...)
 
   f <- list(
     surv = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci"),
@@ -275,26 +279,22 @@ surv_timepoint <- function(lyt,
     .indent_mods = .indent_mods$surv_diff
   )
 
-  time_point <- list(...)$time_point
+  time_point <- extra_args$time_point
 
   for (i in seq_along(time_point)) {
-    tpt <- time_point[i]
+    extra_args[["time_point"]] <- time_point[i]
 
     if (method %in% c("surv", "both")) {
       lyt <- analyze(
         lyt,
         vars,
-        var_labels = paste(tpt, var_labels),
-        table_names = paste0("surv_", tpt, table_names_suffix),
+        var_labels = paste(time_point[i], var_labels),
+        table_names = paste0("surv_", time_point[i], table_names_suffix),
         show_labels = show_labels,
         afun = afun_surv,
         na_str = na_str,
         nested = nested,
-        extra_args = list(
-          is_event = list(...)$is_event,
-          control = list(...)$control,
-          time_point = tpt
-        )
+        extra_args = extra_args
       )
     }
 
@@ -302,17 +302,13 @@ surv_timepoint <- function(lyt,
       lyt <- analyze(
         lyt,
         vars,
-        var_labels = paste(tpt, var_labels),
-        table_names = paste0("surv_diff_", tpt, table_names_suffix),
+        var_labels = paste(time_point[i], var_labels),
+        table_names = paste0("surv_diff_", time_point[i], table_names_suffix),
         show_labels = ifelse(method == "both", "hidden", show_labels),
         afun = afun_surv_diff,
         na_str = na_str,
         nested = nested,
-        extra_args = list(
-          is_event = list(...)$is_event,
-          control = list(...)$control,
-          time_point = tpt
-        )
+        extra_args = extra_args
       )
     }
   }

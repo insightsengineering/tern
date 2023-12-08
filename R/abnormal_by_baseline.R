@@ -202,6 +202,7 @@ a_count_abnormal_by_baseline <- make_afun(
 count_abnormal_by_baseline <- function(lyt,
                                        var,
                                        abnormal,
+                                       variables = list(id = "USUBJID", baseline = "BNRIND"),
                                        na_str = "<Missing>",
                                        nested = TRUE,
                                        ...,
@@ -212,6 +213,9 @@ count_abnormal_by_baseline <- function(lyt,
                                        .indent_mods = NULL) {
   checkmate::assert_character(abnormal, len = length(table_names), names = "named")
   checkmate::assert_string(var)
+
+  extra_args <- list(abnormal = abnormal, variables = variables, na_str = na_str, ...)
+
   afun <- make_afun(
     a_count_abnormal_by_baseline,
     .stats = .stats,
@@ -221,16 +225,17 @@ count_abnormal_by_baseline <- function(lyt,
     .ungroup_stats = "fraction"
   )
   for (i in seq_along(abnormal)) {
-    abn <- abnormal[i]
+    extra_args[["abnormal"]] <- abnormal[i]
+
     lyt <- analyze(
       lyt = lyt,
       vars = var,
-      var_labels = names(abn),
+      var_labels = names(abnormal[i]),
       afun = afun,
       na_str = na_str,
       nested = nested,
       table_names = table_names[i],
-      extra_args = c(list(abnormal = abn, na_str = na_str), list(...)),
+      extra_args = extra_args,
       show_labels = "visible"
     )
   }

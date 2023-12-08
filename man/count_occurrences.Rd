@@ -10,10 +10,12 @@
 count_occurrences(
   lyt,
   vars,
+  id = "USUBJID",
+  drop = TRUE,
   var_labels = vars,
   show_labels = "hidden",
   riskdiff = FALSE,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   table_names = vars,
@@ -26,8 +28,10 @@ count_occurrences(
 summarize_occurrences(
   lyt,
   var,
+  id = "USUBJID",
+  drop = TRUE,
   riskdiff = FALSE,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   ...,
   .stats = "count_fraction_fixed_dp",
   .formats = NULL,
@@ -58,13 +62,18 @@ a_count_occurrences(
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL,
-  na_str = NA_character_
+  na_str = default_na_str()
 )
 }
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{id}{(\code{string})\cr subject variable name.}
+
+\item{drop}{(\code{flag})\cr should non appearing occurrence levels be dropped from the resulting table.
+Note that in that case the remaining occurrence levels in the table are sorted alphabetically.}
 
 \item{var_labels}{(\code{character})\cr character for label.}
 
@@ -109,13 +118,8 @@ passed by \code{rtables}.}
 
 \item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
-\item{drop}{(\code{flag})\cr should non appearing occurrence levels be dropped from the resulting table.
-Note that in that case the remaining occurrence levels in the table are sorted alphabetically.}
-
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
-
-\item{id}{(\code{string})\cr subject variable name.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}

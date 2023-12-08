@@ -10,7 +10,10 @@
 estimate_odds_ratio(
   lyt,
   vars,
-  na_str = NA_character_,
+  variables = list(arm = NULL, strata = NULL),
+  conf_level = 0.95,
+  groups_list = NULL,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   show_labels = "hidden",
@@ -48,6 +51,13 @@ a_odds_ratio(
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
+
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
+\item{groups_list}{(named \code{list} of \code{character})\cr specifies the new group levels via the names and the
+levels that belong to it in the character vectors that are elements of the list.}
+
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
@@ -82,13 +92,6 @@ by a statistics function.}
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
 \item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
-
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
-
-\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
-
-\item{groups_list}{(named \code{list} of \code{character})\cr specifies the new group levels via the names and the
-levels that belong to it in the character vectors that are elements of the list.}
 }
 \value{
 \itemize{

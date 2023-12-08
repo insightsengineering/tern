@@ -146,13 +146,20 @@ a_count_abnormal_by_worst_grade <- make_afun( # nolint
 #' @order 2
 count_abnormal_by_worst_grade <- function(lyt,
                                           var,
-                                          na_str = NA_character_,
+                                          variables = list(
+                                            id = "USUBJID",
+                                            param = "PARAM",
+                                            grade_dir = "GRADE_DIR"
+                                          ),
+                                          na_str = default_na_str(),
                                           nested = TRUE,
                                           ...,
                                           .stats = NULL,
                                           .formats = NULL,
                                           .labels = NULL,
                                           .indent_mods = NULL) {
+  extra_args <- list(variables = variables, ...)
+
   afun <- make_afun(
     a_count_abnormal_by_worst_grade,
     .stats = .stats,
@@ -167,7 +174,7 @@ count_abnormal_by_worst_grade <- function(lyt,
     afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = list(...),
+    extra_args = extra_args,
     show_labels = "hidden"
   )
 }

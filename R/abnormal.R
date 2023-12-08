@@ -21,6 +21,8 @@
 #' @param abnormal (named `list`)\cr list identifying the abnormal range level(s) in `var`. Defaults to
 #'   `list(Low = "LOW", High = "HIGH")` but you can also group different levels into the named list,
 #'   for example, `abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))`.
+#' @param exclude_base_abn (`flag`)\cr whether to exclude subjects with baseline abnormality
+#'   from numerator and denominator.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("abnormal")`
 #'   to see available statistics for this function.
 #'
@@ -39,9 +41,6 @@ NULL
 
 #' @describeIn abnormal Statistics function which counts patients with abnormal range values
 #'   for a single `abnormal` level.
-#'
-#' @param exclude_base_abn (`flag`)\cr whether to exclude subjects with baseline abnormality
-#'   from numerator and denominator.
 #'
 #' @return
 #' * `s_count_abnormal()` returns the statistic `fraction` which is a vector with `num` and `denom` counts of patients.
@@ -154,7 +153,10 @@ a_count_abnormal <- make_afun(
 #' @order 2
 count_abnormal <- function(lyt,
                            var,
-                           na_str = NA_character_,
+                           abnormal = list(Low = "LOW", High = "HIGH"),
+                           variables = list(id = "USUBJID", baseline = "BNRIND"),
+                           exclude_base_abn = FALSE,
+                           na_str = default_na_str(),
                            nested = TRUE,
                            ...,
                            table_names = var,
@@ -162,6 +164,8 @@ count_abnormal <- function(lyt,
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = NULL) {
+  extra_args <- list(abnormal = abnormal, variables = variables, exclude_base_abn = exclude_base_abn, ...)
+
   afun <- make_afun(
     a_count_abnormal,
     .stats = .stats,
@@ -180,7 +184,7 @@ count_abnormal <- function(lyt,
     na_str = na_str,
     nested = nested,
     table_names = table_names,
-    extra_args = list(...),
+    extra_args = extra_args,
     show_labels = "hidden"
   )
 }

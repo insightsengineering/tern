@@ -223,8 +223,6 @@ a_count_occurrences_by_grade <- make_afun(
 #' @describeIn count_occurrences_by_grade Layout-creating function which can take statistics function
 #'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @param var_labels (`character`)\cr labels to show in the result table.
-#'
 #' @return
 #' * `count_occurrences_by_grade()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
@@ -278,10 +276,13 @@ a_count_occurrences_by_grade <- make_afun(
 #' @order 2
 count_occurrences_by_grade <- function(lyt,
                                        var,
+                                       id = "USUBJID",
+                                       grade_groups = list(),
+                                       remove_single = TRUE,
                                        var_labels = var,
                                        show_labels = "default",
                                        riskdiff = FALSE,
-                                       na_str = NA_character_,
+                                       na_str = default_na_str(),
                                        nested = TRUE,
                                        ...,
                                        table_names = var,
@@ -290,6 +291,8 @@ count_occurrences_by_grade <- function(lyt,
                                        .indent_mods = NULL,
                                        .labels = NULL) {
   checkmate::assert_flag(riskdiff)
+
+  s_args <- list(id = id, grade_groups = grade_groups, remove_single = remove_single, ...)
 
   afun <- make_afun(
     a_count_occurrences_by_grade,
@@ -300,13 +303,13 @@ count_occurrences_by_grade <- function(lyt,
   )
 
   extra_args <- if (isFALSE(riskdiff)) {
-    list(...)
+    s_args
   } else {
     list(
       afun = list("s_count_occurrences_by_grade" = afun),
       .stats = .stats,
       .indent_mods = .indent_mods,
-      s_args = list(...)
+      s_args = s_args
     )
   }
 
@@ -355,12 +358,17 @@ count_occurrences_by_grade <- function(lyt,
 #' @order 3
 summarize_occurrences_by_grade <- function(lyt,
                                            var,
-                                           na_str = NA_character_,
+                                           id = "USUBJID",
+                                           grade_groups = list(),
+                                           remove_single = TRUE,
+                                           na_str = default_na_str(),
                                            ...,
                                            .stats = NULL,
                                            .formats = NULL,
                                            .indent_mods = NULL,
                                            .labels = NULL) {
+  extra_args <- list(id = id, grade_groups = grade_groups, remove_single = remove_single, ...)
+
   cfun <- make_afun(
     a_count_occurrences_by_grade,
     .stats = .stats,
@@ -375,6 +383,6 @@ summarize_occurrences_by_grade <- function(lyt,
     var = var,
     cfun = cfun,
     na_str = na_str,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }

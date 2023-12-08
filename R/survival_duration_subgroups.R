@@ -6,6 +6,19 @@
 #'
 #' @inheritParams argument_convention
 #' @inheritParams survival_coxph_pairwise
+#' @param df (`list`)\cr of data frames containing all analysis variables. List should be
+#'   created using [extract_survival_subgroups()].
+#' @param vars (`character`)\cr the name of statistics to be reported among:
+#'   * `n_tot_events`: Total number of events per group.
+#'   * `n_events`: Number of events per group.
+#'   * `n_tot`: Total number of observations per group.
+#'   * `n`: Number of observations per group.
+#'   * `median`: Median survival time.
+#'   * `hr`: Hazard ratio.
+#'   * `ci`: Confidence interval of hazard ratio.
+#'   * `pval`: p-value of the effect.
+#'   Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci`
+#'   are required.
 #' @param time_unit (`string`)\cr label with unit of median survival time. Default `NULL` skips displaying unit.
 #'
 #' @details These functions create a layout starting from a data frame which contains
@@ -135,7 +148,8 @@ a_survival_subgroups <- function(.formats = list( # nolint start
                                    hr = list(format_extreme_values(2L)),
                                    ci = list(format_extreme_values_ci(2L)),
                                    pval = "x.xxxx | (<0.0001)"
-                                 )) { # nolint end
+                                 ),
+                                 na_str = default_na_str()) { # nolint end
   checkmate::assert_list(.formats)
   checkmate::assert_subset(
     names(.formats),
@@ -143,13 +157,14 @@ a_survival_subgroups <- function(.formats = list( # nolint start
   )
 
   afun_lst <- Map(
-    function(stat, fmt) {
+    function(stat, fmt, na_str) {
       if (stat == "ci") {
         function(df, labelstr = "", ...) {
           in_rows(
             .list = combine_vectors(df$lcl, df$ucl),
             .labels = as.character(df$subgroup),
-            .formats = fmt
+            .formats = fmt,
+            .format_na_strs = na_str
           )
         }
       } else {
@@ -157,13 +172,15 @@ a_survival_subgroups <- function(.formats = list( # nolint start
           in_rows(
             .list = as.list(df[[stat]]),
             .labels = as.character(df$subgroup),
-            .formats = fmt
+            .formats = fmt,
+            .format_na_strs = na_str
           )
         }
       }
     },
     stat = names(.formats),
-    fmt = .formats
+    fmt = .formats,
+    na_str = na_str
   )
 
   afun_lst
@@ -172,20 +189,6 @@ a_survival_subgroups <- function(.formats = list( # nolint start
 #' @describeIn survival_duration_subgroups Table-creating function which creates a table
 #'   summarizing survival by subgroup. This function is a wrapper for [rtables::analyze_colvars()]
 #'   and [rtables::summarize_row_groups()].
-#'
-#' @param df (`list`)\cr of data frames containing all analysis variables. List should be
-#'   created using [extract_survival_subgroups()].
-#' @param vars (`character`)\cr the name of statistics to be reported among:
-#'   * `n_tot_events`: Total number of events per group.
-#'   * `n_events`: Number of events per group.
-#'   * `n_tot`: Total number of observations per group.
-#'   * `n`: Number of observations per group.
-#'   * `median`: Median survival time.
-#'   * `hr`: Hazard ratio.
-#'   * `ci`: Confidence interval of hazard ratio.
-#'   * `pval`: p-value of the effect.
-#'   Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci`
-#'   are required.
 #'
 #' @return An `rtables` table summarizing survival by subgroup.
 #'
@@ -207,12 +210,16 @@ a_survival_subgroups <- function(.formats = list( # nolint start
 tabulate_survival_subgroups <- function(lyt,
                                         df,
                                         vars = c("n_tot_events", "n_events", "median", "hr", "ci"),
+                                        groups_lists = list(),
+                                        label_all = "All Patients",
                                         time_unit = NULL,
-                                        na_str = NA_character_) {
+                                        na_str = default_na_str()) {
   conf_level <- df$hr$conf_level[1]
   method <- df$hr$pval_label[1]
 
-  afun_lst <- a_survival_subgroups()
+  extra_args <- list(groups_lists = groups_lists, conf_level = conf_level, method = method, label_all = label_all)
+
+  afun_lst <- a_survival_subgroups(na_str = na_str)
   colvars <- d_survival_subgroups_colvars(
     vars,
     conf_level = conf_level,
@@ -242,7 +249,8 @@ tabulate_survival_subgroups <- function(lyt,
       lyt = lyt_survtime,
       var = "var_label",
       cfun = afun_lst[names(colvars_survtime$labels)],
-      na_str = na_str
+      na_str = na_str,
+      extra_args = extra_args
     )
     lyt_survtime <- split_cols_by_multivar(
       lyt = lyt_survtime,
@@ -262,7 +270,9 @@ tabulate_survival_subgroups <- function(lyt,
       lyt_survtime <- analyze_colvars(
         lyt = lyt_survtime,
         afun = afun_lst[names(colvars_survtime$labels)],
-        inclNAs = TRUE
+        na_str = na_str,
+        inclNAs = TRUE,
+        extra_args = extra_args
       )
     }
 
@@ -283,7 +293,8 @@ tabulate_survival_subgroups <- function(lyt,
     lyt = lyt_hr,
     var = "var_label",
     cfun = afun_lst[names(colvars_hr$labels)],
-    na_str = na_str
+    na_str = na_str,
+    extra_args = extra_args
   )
   lyt_hr <- split_cols_by_multivar(
     lyt = lyt_hr,
@@ -304,7 +315,9 @@ tabulate_survival_subgroups <- function(lyt,
     lyt_hr <- analyze_colvars(
       lyt = lyt_hr,
       afun = afun_lst[names(colvars_hr$labels)],
-      inclNAs = TRUE
+      na_str = na_str,
+      inclNAs = TRUE,
+      extra_args = extra_args
     )
   }
   table_hr <- build_table(lyt_hr, df = df$hr)

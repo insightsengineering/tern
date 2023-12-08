@@ -384,7 +384,7 @@ compare_vars <- function(lyt,
                          vars,
                          var_labels = vars,
                          na_level = lifecycle::deprecated(),
-                         na_str = NA_character_,
+                         na_str = default_na_str(),
                          nested = TRUE,
                          ...,
                          na.rm = TRUE, # nolint

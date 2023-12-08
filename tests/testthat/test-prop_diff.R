@@ -296,11 +296,11 @@ testthat::test_that("`estimate_proportion_diff` and strat_newcombe is compatible
       method = "strat_newcombe"
     )
   result <- build_table(l, df = dta)
-  result <- to_string_matrix(result)
+  result <- to_string_matrix(result, with_spaces = FALSE, print_txt_to_copy = FALSE)
   expected <- structure(
     c(
       "", "Difference in Response rate (%)",
-      "95% CI (Stratified Newcombe, without correction)",
+      "  95% CI (Stratified Newcombe, without correction)",
       "B", "", "", "A", "25.39", "(3.47, 44.54)"
     ),
     .Dim = c(3L, 3L)
