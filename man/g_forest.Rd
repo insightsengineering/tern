@@ -2,7 +2,7 @@
 % Please edit documentation in R/g_forest.R
 \name{g_forest}
 \alias{g_forest}
-\title{Create a forest plot based on a table}
+\title{Create a forest plot from an \code{rtable}}
 \usage{
 g_forest(
   tbl,
@@ -28,34 +28,45 @@ g_forest(
 )
 }
 \arguments{
-\item{tbl}{(\code{rtable})}
+\item{tbl}{(\code{rtable})\cr table with at least one column with a single value and one column with 2 values.}
 
 \item{col_x}{(\code{integer})\cr column index with estimator. By default tries to get this from
-\code{tbl} attribute \code{col_x}, otherwise needs to be manually specified.}
+\code{tbl} attribute \code{col_x}, otherwise needs to be manually specified. If \code{NULL}, points will be excluded
+from forest plot.}
 
-\item{col_ci}{(\code{integer})\cr column index with confidence intervals. By default tries
-to get this from \code{tbl} attribute \code{col_ci}, otherwise needs to be manually specified.}
+\item{col_ci}{(\code{integer})\cr column index with confidence intervals. By default tries to get this from
+\code{tbl} attribute \code{col_ci}, otherwise needs to be manually specified. If \code{NULL}, lines will be excluded
+from forest plot.}
 
-\item{vline}{(\code{number})\cr x coordinate for vertical line, if \code{NULL} then the line is omitted.}
+\item{vline}{(\code{numeric})\cr x coordinate for vertical line, if \code{NULL} then the line is omitted.}
 
 \item{forest_header}{(\code{character}, length 2)\cr text displayed to the left and right of \code{vline}, respectively.
-If \code{vline = NULL} then \code{forest_header} needs to be \code{NULL} too.
-By default tries to get this from \code{tbl} attribute \code{forest_header}.}
+If \code{vline = NULL} then \code{forest_header} is not printed. By default tries to get this from \code{tbl} attribute
+\code{forest_header}. If \code{NULL}, defaults will be extracted from the table if possible, and set to
+\code{"Comparison\\nBetter"} and \code{"Treatment\\nBetter"} if not.}
 
 \item{xlim}{(\code{numeric})\cr limits for x axis.}
 
 \item{logx}{(\code{flag})\cr show the x-values on logarithm scale.}
 
-\item{x_at}{(\code{numeric})\cr x-tick locations, if \code{NULL} they get automatically chosen.}
+\item{x_at}{(\code{numeric})\cr x-tick locations, if \code{NULL}, \code{x_at} is set to \code{vline} and both \code{xlim} values.}
 
-\item{width_row_names}{(\code{unit})\cr  \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{lbl_col_padding} argument
-instead.}
+\item{width_row_names}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{lbl_col_padding} argument instead.}
 
-\item{width_columns}{(\code{unit})\cr widths for the table columns.
-If \code{NULL} the widths get automatically calculated. See \code{\link[grid:unit]{grid::unit()}}.}
+\item{width_columns}{(\code{vector} of \code{numeric})\cr a vector of column widths. Each element's position in
+\code{colwidths} corresponds to the column of \code{tbl} in the same position. If \code{NULL}, column widths are calculated
+according to maximum number of characters per column.}
 
-\item{width_forest}{(\code{unit})\cr  \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{rel_width_forest} argument
-instead.}
+\item{width_forest}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{rel_width_forest} argument instead.}
+
+\item{lbl_col_padding}{(\code{numeric})\cr additional padding to use when calculating spacing between
+the first (label) column and the second column of \code{tbl}. If \code{colwidths} is specified,
+the width of the first column becomes \code{colwidths[1] + lbl_col_padding}. Defaults to 0.}
+
+\item{rel_width_forest}{(\code{proportion})\cr proportion of total width to allocate to the forest plot. Relative
+width of table is then \code{1 - rel_width_forest}.}
+
+\item{font_size}{(\code{numeric})\cr font size.}
 
 \item{col_symbol_size}{(\code{integer})\cr column index from \code{tbl} containing data to be used
 to determine relative size for estimator plot symbol. Typically, the symbol size is proportional
@@ -63,6 +74,8 @@ to the sample size used to calculate the estimator. If \code{NULL}, the same sym
 By default tries to get this from \code{tbl} attribute \code{col_symbol_size}, otherwise needs to be manually specified.}
 
 \item{col}{(\code{character})\cr color(s).}
+
+\item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to control styling of the plot.}
 
 \item{gp}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{g_forest} is now generated as a \code{ggplot} object. This argument
 is no longer used.}
@@ -80,11 +93,11 @@ is no longer used.}
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \details{
-Create a forest plot from any \code{\link[rtables:rtable]{rtables::rtable()}} object that has a
-column with a single value and a column with 2 values.
+Given a \code{\link[rtables:rtable]{rtables::rtable()}} object with at least one column with a single value and one column with 2
+values, converts table to a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object and generates an accompanying forest plot. The
+table and forest plot are printed side-by-side.
 }
 \examples{
-\donttest{
 library(dplyr)
 library(forcats)
 library(nestcolor)
@@ -190,6 +203,5 @@ g_forest(
   vline = 1,
   forest_header = c("Hello", "World")
 )
-}
 
 }

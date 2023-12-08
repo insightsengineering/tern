@@ -20,7 +20,7 @@ testthat::test_that("g_forest default plot works", {
 
   g_forest <- g_forest(tbl)
 
-  expect_snapshot_ggplot("g_forest", g_forest, width = 12, height = 3)
+  expect_snapshot_ggplot("g_forest", g_forest, width = 15, height = 3)
 })
 
 testthat::test_that("g_forest works with custom arguments", {

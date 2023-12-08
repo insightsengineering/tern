@@ -1,34 +1,42 @@
-#' Create a forest plot based on a table
+#' Create a forest plot from an `rtable`
 #'
-#' Create a forest plot from any [rtables::rtable()] object that has a
-#' column with a single value and a column with 2 values.
+#' Given a [rtables::rtable()] object with at least one column with a single value and one column with 2
+#' values, converts table to a [ggplot2::ggplot()] object and generates an accompanying forest plot. The
+#' table and forest plot are printed side-by-side.
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
+#' @inheritParams rtable2gg
 #' @inheritParams argument_convention
-#' @param tbl (`rtable`)
+#' @param tbl (`rtable`)\cr table with at least one column with a single value and one column with 2 values.
 #' @param col_x (`integer`)\cr column index with estimator. By default tries to get this from
-#'   `tbl` attribute `col_x`, otherwise needs to be manually specified.
-#' @param col_ci (`integer`)\cr column index with confidence intervals. By default tries
-#'   to get this from `tbl` attribute `col_ci`, otherwise needs to be manually specified.
-#' @param vline (`number`)\cr x coordinate for vertical line, if `NULL` then the line is omitted.
+#'   `tbl` attribute `col_x`, otherwise needs to be manually specified. If `NULL`, points will be excluded
+#'   from forest plot.
+#' @param col_ci (`integer`)\cr column index with confidence intervals. By default tries to get this from
+#'   `tbl` attribute `col_ci`, otherwise needs to be manually specified. If `NULL`, lines will be excluded
+#'   from forest plot.
+#' @param vline (`numeric`)\cr x coordinate for vertical line, if `NULL` then the line is omitted.
 #' @param forest_header (`character`, length 2)\cr text displayed to the left and right of `vline`, respectively.
-#'   If `vline = NULL` then `forest_header` needs to be `NULL` too.
-#'   By default tries to get this from `tbl` attribute `forest_header`.
+#'   If `vline = NULL` then `forest_header` is not printed. By default tries to get this from `tbl` attribute
+#'   `forest_header`. If `NULL`, defaults will be extracted from the table if possible, and set to
+#'   `"Comparison\nBetter"` and `"Treatment\nBetter"` if not.
 #' @param xlim (`numeric`)\cr limits for x axis.
 #' @param logx (`flag`)\cr show the x-values on logarithm scale.
-#' @param x_at (`numeric`)\cr x-tick locations, if `NULL` they get automatically chosen.
-#' @param width_row_names (`unit`)\cr  `r lifecycle::badge("deprecated")` Please use the `lbl_col_padding` argument
-#'   instead.
-#' @param width_columns (`unit`)\cr widths for the table columns.
-#'   If `NULL` the widths get automatically calculated. See [grid::unit()].
-#' @param width_forest (`unit`)\cr  `r lifecycle::badge("deprecated")` Please use the `rel_width_forest` argument
-#'   instead.
+#' @param x_at (`numeric`)\cr x-tick locations, if `NULL`, `x_at` is set to `vline` and both `xlim` values.
+#' @param width_row_names `r lifecycle::badge("deprecated")` Please use the `lbl_col_padding` argument instead.
+#' @param width_columns (`vector` of `numeric`)\cr a vector of column widths. Each element's position in
+#'   `colwidths` corresponds to the column of `tbl` in the same position. If `NULL`, column widths are calculated
+#'   according to maximum number of characters per column.
+#' @param width_forest `r lifecycle::badge("deprecated")` Please use the `rel_width_forest` argument instead.
+#' @param rel_width_forest (`proportion`)\cr proportion of total width to allocate to the forest plot. Relative
+#'   width of table is then `1 - rel_width_forest`.
+#' @param font_size (`numeric`)\cr font size.
 #' @param col_symbol_size (`integer`)\cr column index from `tbl` containing data to be used
 #'   to determine relative size for estimator plot symbol. Typically, the symbol size is proportional
 #'   to the sample size used to calculate the estimator. If `NULL`, the same symbol size is used for all subgroups.
 #'   By default tries to get this from `tbl` attribute `col_symbol_size`, otherwise needs to be manually specified.
 #' @param col (`character`)\cr color(s).
+#' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to control styling of the plot.
 #' @param gp `r lifecycle::badge("deprecated")` `g_forest` is now generated as a `ggplot` object. This argument
 #'   is no longer used.
 #' @param draw `r lifecycle::badge("deprecated")` `g_forest` is now generated as a `ggplot` object. This argument
@@ -39,7 +47,6 @@
 #' @return `ggplot` forest plot and table.
 #'
 #' @examples
-#' \donttest{
 #' library(dplyr)
 #' library(forcats)
 #' library(nestcolor)
@@ -145,7 +152,6 @@
 #'   vline = 1,
 #'   forest_header = c("Hello", "World")
 #' )
-#' }
 #'
 #' @export
 g_forest <- function(tbl,
@@ -206,8 +212,8 @@ g_forest <- function(tbl,
   checkmate::assert_class(tbl, "VTableTree")
   checkmate::assert_number(col_x, lower = 0, upper = ncol(tbl), null.ok = TRUE)
   checkmate::assert_number(col_ci, lower = 0, upper = ncol(tbl), null.ok = TRUE)
-  checkmate::assert_number(font_size, lower = 0)
   checkmate::assert_number(col_symbol_size, lower = 0, upper = ncol(tbl), null.ok = TRUE)
+  checkmate::assert_number(font_size, lower = 0)
   checkmate::assert_character(col, null.ok = TRUE)
 
   # Extract info from table
@@ -317,7 +323,8 @@ g_forest <- function(tbl,
     gg_plt <- gg_plt + geom_point(
       x = x,
       y = row_num,
-      aes(size = sym_size, color = col)
+      color = col,
+      aes(size = sym_size)
     )
   }
 
@@ -381,11 +388,8 @@ g_forest <- function(tbl,
       }
   }
 
-  # Apply custom ggtheme to table and plot
-  if (!is.null(ggtheme)) {
-    gg_table <- gg_table + ggtheme
-    gg_plt <- gg_plt + ggtheme
-  }
+  # Apply custom ggtheme to plot
+  if (!is.null(ggtheme)) gg_plt <- gg_plt + ggtheme
 
   cowplot::plot_grid(
     gg_table,
