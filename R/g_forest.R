@@ -215,6 +215,7 @@ g_forest <- function(tbl,
   checkmate::assert_number(col_symbol_size, lower = 0, upper = ncol(tbl), null.ok = TRUE)
   checkmate::assert_number(font_size, lower = 0)
   checkmate::assert_character(col, null.ok = TRUE)
+  checkmate::assert_true(is.null(col) | length(col) == 1 | length(col) == nrow(tbl))
 
   # Extract info from table
   mat <- matrix_form(tbl)
@@ -268,6 +269,7 @@ g_forest <- function(tbl,
   row_num <- nrow(mat_strings) - tbl_df[["row_num"]] - as.numeric(nlines_hdr == 2)
 
   if (is.null(col)) col <- "#343cff"
+  if (length(col) == 1) col <- rep(col, nrow(tbl_df))
   if (is.null(x_at)) x_at <- union(xlim, vline)
   x_labels <- x_at
 
@@ -322,16 +324,6 @@ g_forest <- function(tbl,
     )
   }
 
-  # Add points to plot
-  if (any(!is.na(x))) {
-    gg_plt <- gg_plt + geom_point(
-      x = x,
-      y = row_num,
-      color = col,
-      aes(size = sym_size)
-    )
-  }
-
   if (!is.null(vline)) {
     # Set default forest header
     if (is.null(forest_header)) {
@@ -361,6 +353,16 @@ g_forest <- function(tbl,
       )
   }
 
+  # Add points to plot
+  if (any(!is.na(x))) {
+    gg_plt <- gg_plt + geom_point(
+      x = x,
+      y = row_num,
+      color = col,
+      aes(size = sym_size)
+    )
+  }
+
   for (i in seq_len(nrow(tbl_df))) {
     # Determine which arrow(s) to add to CI lines
     which_arrow <- c(lwr_t[i] < xlim_t[1], upr_t[i] > xlim_t[2])
@@ -379,7 +381,7 @@ g_forest <- function(tbl,
           x = if (!which_arrow %in% c("first", "both")) lwr[i] else xlim[1],
           xend = if (!which_arrow %in% c("last", "both")) upr[i] else xlim[2],
           y = row_num[i], yend = row_num[i],
-          color = col,
+          color = if (length(col) == 1) col else col[i],
           arrow = arrow(length = unit(0.05, "npc"), ends = which_arrow)
         )
       } else {
@@ -387,7 +389,7 @@ g_forest <- function(tbl,
           "segment",
           x = lwr[i], xend = upr[i],
           y = row_num[i], yend = row_num[i],
-          color = col
+          color = if (length(col) == 1) col else col[i],
         )
       }
   }

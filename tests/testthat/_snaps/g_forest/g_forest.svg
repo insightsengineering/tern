@@ -121,11 +121,6 @@
 <rect x='812.38' y='48.00' width='238.24' height='143.99' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #EBEBEB;' />
 <rect x='812.38' y='48.00' width='238.24' height='143.99' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #EBEBEB;' />
 <rect x='812.38' y='48.00' width='238.24' height='143.99' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #EBEBEB;' />
-<circle cx='945.57' cy='57.60' r='6.76' style='stroke-width: 0.71; stroke: #343CFF; fill: #343CFF;' />
-<circle cx='-60.71' cy='95.99' r='3.70' style='stroke-width: 0.71; stroke: #343CFF; fill: #343CFF;' />
-<circle cx='1009.31' cy='115.19' r='1.42' style='stroke-width: 0.71; stroke: #343CFF; fill: #343CFF;' />
-<circle cx='931.50' cy='153.59' r='3.03' style='stroke-width: 0.71; stroke: #343CFF; fill: #343CFF;' />
-<circle cx='952.48' cy='172.79' r='3.03' style='stroke-width: 0.71; stroke: #343CFF; fill: #343CFF;' />
 <line x1='931.50' y1='191.99' x2='931.50' y2='48.00' style='stroke-width: 1.07; stroke-linecap: butt;' />
 <line x1='931.50' y1='191.99' x2='931.50' y2='48.00' style='stroke-width: 1.07; stroke-linecap: butt;' />
 <line x1='931.50' y1='191.99' x2='931.50' y2='48.00' style='stroke-width: 1.07; stroke-linecap: butt;' />
@@ -135,6 +130,11 @@
 <text x='871.94' y='43.82' text-anchor='middle' style='font-size: 11.38px; font-family: "Arial";' textLength='30.36px' lengthAdjust='spacingAndGlyphs'>Better</text>
 <text x='991.06' y='31.52' text-anchor='middle' style='font-size: 11.38px; font-family: "Arial";' textLength='55.03px' lengthAdjust='spacingAndGlyphs'>B: Placebo</text>
 <text x='991.06' y='43.82' text-anchor='middle' style='font-size: 11.38px; font-family: "Arial";' textLength='30.36px' lengthAdjust='spacingAndGlyphs'>Better</text>
+<circle cx='945.57' cy='57.60' r='6.76' style='stroke-width: 0.71; stroke: #343CFF; fill: #343CFF;' />
+<circle cx='-60.71' cy='95.99' r='3.70' style='stroke-width: 0.71; stroke: #343CFF; fill: #343CFF;' />
+<circle cx='1009.31' cy='115.19' r='1.42' style='stroke-width: 0.71; stroke: #343CFF; fill: #343CFF;' />
+<circle cx='931.50' cy='153.59' r='3.03' style='stroke-width: 0.71; stroke: #343CFF; fill: #343CFF;' />
+<circle cx='952.48' cy='172.79' r='3.03' style='stroke-width: 0.71; stroke: #343CFF; fill: #343CFF;' />
 <line x1='839.17' y1='57.60' x2='1050.62' y2='57.60' style='stroke-width: 1.07; stroke: #343CFF; stroke-linecap: butt;' />
 <polyline points='1042.30,62.40 1050.62,57.60 1042.30,52.80 ' style='stroke-width: 1.07; stroke: #343CFF; stroke-linecap: butt;' />
 <line x1='812.38' y1='95.99' x2='1050.62' y2='95.99' style='stroke-width: 1.07; stroke: #343CFF; stroke-linecap: butt;' />

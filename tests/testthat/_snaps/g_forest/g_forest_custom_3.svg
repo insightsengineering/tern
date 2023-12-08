@@ -57,8 +57,6 @@
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHwzNjAuMDA=)'>
 <rect x='291.81' y='164.39' width='381.18' height='164.39' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #EBEBEB;' />
 <rect x='291.81' y='164.39' width='381.18' height='164.39' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #EBEBEB;' />
-<circle cx='482.40' cy='197.27' r='5.19' style='stroke-width: 0.71; stroke: #FF0000; fill: #FF0000;' />
-<circle cx='532.53' cy='263.03' r='5.19' style='stroke-width: 0.71; stroke: #FF0000; fill: #FF0000;' />
 <line x1='453.43' y1='328.79' x2='453.43' y2='164.39' style='stroke-width: 1.07; stroke-linecap: butt;' />
 <line x1='453.43' y1='328.79' x2='453.43' y2='164.39' style='stroke-width: 1.07; stroke-linecap: butt;' />
 <text x='372.62' y='102.75' text-anchor='middle' style='font-size: 17.07px; font-family: "Arial";' textLength='18.02px' lengthAdjust='spacingAndGlyphs'>c1</text>
@@ -67,8 +65,10 @@
 <text x='563.21' y='102.75' text-anchor='middle' style='font-size: 17.07px; font-family: "Arial";' textLength='18.02px' lengthAdjust='spacingAndGlyphs'>c2</text>
 <text x='563.21' y='121.19' text-anchor='middle' style='font-size: 17.07px; font-family: "Arial";' textLength='12.33px' lengthAdjust='spacingAndGlyphs'>is</text>
 <text x='563.21' y='139.62' text-anchor='middle' style='font-size: 17.07px; font-family: "Arial";' textLength='43.62px' lengthAdjust='spacingAndGlyphs'>better</text>
+<circle cx='482.40' cy='197.27' r='5.19' style='stroke-width: 0.71; stroke: #FF0000; fill: #FF0000;' />
+<circle cx='532.53' cy='263.03' r='5.19' style='stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;' />
 <line x1='421.04' y1='197.27' x2='532.53' y2='197.27' style='stroke-width: 1.07; stroke: #FF0000; stroke-linecap: butt;' />
-<line x1='508.61' y1='263.03' x2='574.92' y2='263.03' style='stroke-width: 1.07; stroke: #FF0000; stroke-linecap: butt;' />
+<line x1='508.61' y1='263.03' x2='574.92' y2='263.03' style='stroke-width: 1.07; stroke: #00FF00; stroke-linecap: butt;' />
 <polyline points='288.00,328.79 676.80,328.79 ' style='stroke-width: 1.07; stroke-linecap: butt;' />
 <polyline points='291.81,331.53 291.81,328.79 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
 <polyline points='482.40,331.53 482.40,328.79 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />

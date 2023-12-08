@@ -65,7 +65,8 @@ testthat::test_that("g_forest works with custom arguments", {
     xlim = c(0.5, 1.5),
     x_at = seq(0.5, 1.5, by = 0.2),
     lbl_col_padding = -3,
-    width_columns = c(4, 3, 3)
+    width_columns = c(4, 3, 3),
+    col = "purple"
   )
 
   expect_snapshot_ggplot("g_forest_custom_2", g_forest_custom_2, width = 10, height = 5)
@@ -80,7 +81,7 @@ testthat::test_that("g_forest works with custom arguments", {
     forest_header = c("c1\nis\nbetter", "c2\nis\nbetter"),
     rel_width_forest = 0.6,
     font_size = 6,
-    col = "red"
+    col = c("red", "green")
   )
 
   expect_snapshot_ggplot("g_forest_custom_3", g_forest_custom_3, width = 10, height = 5)

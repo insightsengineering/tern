@@ -57,16 +57,16 @@
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHwzNjAuMDA=)'>
 <rect x='541.59' y='164.39' width='158.82' height='164.39' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #EBEBEB;' />
 <rect x='541.59' y='164.39' width='158.82' height='164.39' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #EBEBEB;' />
-<circle cx='621.00' cy='197.27' r='5.19' style='stroke-width: 0.71; stroke: #343CFF; fill: #343CFF;' />
-<circle cx='652.76' cy='263.03' r='5.19' style='stroke-width: 0.71; stroke: #343CFF; fill: #343CFF;' />
 <line x1='621.00' y1='328.79' x2='621.00' y2='164.39' style='stroke-width: 1.07; stroke-linecap: butt;' />
 <line x1='621.00' y1='328.79' x2='621.00' y2='164.39' style='stroke-width: 1.07; stroke-linecap: butt;' />
 <text x='574.48' y='113.00' text-anchor='middle' style='font-size: 11.38px; font-family: "Arial";' textLength='61.34px' lengthAdjust='spacingAndGlyphs'>Comparison</text>
 <text x='574.48' y='125.29' text-anchor='middle' style='font-size: 11.38px; font-family: "Arial";' textLength='30.36px' lengthAdjust='spacingAndGlyphs'>Better</text>
 <text x='656.69' y='113.00' text-anchor='middle' style='font-size: 11.38px; font-family: "Arial";' textLength='51.42px' lengthAdjust='spacingAndGlyphs'>Treatment</text>
 <text x='656.69' y='125.29' text-anchor='middle' style='font-size: 11.38px; font-family: "Arial";' textLength='30.36px' lengthAdjust='spacingAndGlyphs'>Better</text>
-<line x1='589.24' y1='197.27' x2='652.76' y2='197.27' style='stroke-width: 1.07; stroke: #343CFF; stroke-linecap: butt;' />
-<line x1='636.88' y1='263.03' x2='684.53' y2='263.03' style='stroke-width: 1.07; stroke: #343CFF; stroke-linecap: butt;' />
+<circle cx='621.00' cy='197.27' r='5.19' style='stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;' />
+<circle cx='652.76' cy='263.03' r='5.19' style='stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;' />
+<line x1='589.24' y1='197.27' x2='652.76' y2='197.27' style='stroke-width: 1.07; stroke: #A020F0; stroke-linecap: butt;' />
+<line x1='636.88' y1='263.03' x2='684.53' y2='263.03' style='stroke-width: 1.07; stroke: #A020F0; stroke-linecap: butt;' />
 <polyline points='540.00,328.79 702.00,328.79 ' style='stroke-width: 1.07; stroke-linecap: butt;' />
 <polyline points='541.59,331.53 541.59,328.79 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
 <polyline points='573.35,331.53 573.35,328.79 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
