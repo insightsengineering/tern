@@ -19,7 +19,8 @@ testthat::test_that("g_forest default plot works", {
     tabulate_rsp_subgroups(df)
 
   g_forest <- g_forest(tbl)
-  vdiffr::expect_doppelganger(title = "g_forest", fig = g_forest)
+
+  expect_snapshot_ggplot("g_forest", g_forest, width = 12, height = 3)
 })
 
 testthat::test_that("g_forest works with custom arguments", {
@@ -32,16 +33,15 @@ testthat::test_that("g_forest works with custom arguments", {
     rrow("row 2", 1.2, c(1.1, 1.4))
   )
 
-  g_forest_custom <-
-    g_forest(
-      tbl = tbl,
-      col_x = 1,
-      col_ci = 2,
-      xlim = c(0.5, 2),
-      x_at = c(0.5, 1, 2),
-      vline = 1,
-      forest_header = c("Hello", "World")
-    )
+  g_forest_custom <- g_forest(
+    tbl = tbl,
+    col_x = 1,
+    col_ci = 2,
+    xlim = c(0.5, 2),
+    x_at = c(0.5, 1, 2),
+    vline = 1,
+    forest_header = c("Hello", "World")
+  )
 
-  vdiffr::expect_doppelganger(title = "g_forest_custom", fig = g_forest_custom)
+  expect_snapshot_ggplot("g_forest_custom", g_forest_custom, width = 4, height = 2)
 })
