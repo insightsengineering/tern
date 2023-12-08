@@ -4,18 +4,43 @@
 \alias{to_string_matrix}
 \title{Convert Table into Matrix of Strings}
 \usage{
-to_string_matrix(x, with_spaces = FALSE, print_txt_to_copy = FALSE)
+to_string_matrix(
+  x,
+  widths = NULL,
+  max_width = NULL,
+  hsep = formatters::default_hsep(),
+  with_spaces = TRUE,
+  print_txt_to_copy = FALSE
+)
 }
 \arguments{
 \item{x}{\code{rtables} table.}
 
-\item{with_spaces}{Should the tested table keep the indentation and other relevant spaces?}
+\item{widths}{numeric (or  \code{NULL}). (proposed) widths for the columns
+of \code{x}. The expected length  of this numeric vector can be
+retrieved with  \code{ncol() + 1}  as the  column of row  names must
+also be considered.}
 
-\item{print_txt_to_copy}{Utility to have a way to copy the input table directly
+\item{max_width}{integer(1), character(1) or \code{NULL}. Width that title
+and   footer   (including   footnotes)  materials   should   be
+word-wrapped to. If \code{NULL}, it is  set to the current print width
+of the  session (\code{getOption("width")}). If set to \code{"auto"},
+the width of the table (plus any table inset) is used. Ignored
+completely if \code{tf_wrap} is \code{FALSE}.}
+
+\item{hsep}{character(1). Characters to repeat to create
+header/body separator line. If \code{NULL}, the object value will be
+used. If \code{" "}, an empty separator will be printed. Check \code{\link[formatters:default_hsep]{default_hsep()}}
+for more information.}
+
+\item{with_spaces}{(\code{logical})\cr should the tested table keep the indentation and other relevant spaces?}
+
+\item{print_txt_to_copy}{(\code{logical})\cr utility to have a way to copy the input table directly
 into the expected variable instead of copying it too manually.}
 }
 \value{
-A \code{matrix} of \code{string}s.
+A \code{matrix} of \code{string}s. If \code{print_txt_to_copy = TRUE} the well formatted printout of the
+table will be printed to console, ready to be copied as a expected value.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -24,4 +49,14 @@ Helper function to use mostly within tests. \code{with_spaces}parameter allows
 to test not only for content but also indentation and table structure.
 \code{print_txt_to_copy} instead facilitate the testing development by returning a well
 formatted text that needs only to be copied and pasted in the expected output.
+}
+\examples{
+tbl <- basic_table() \%>\%
+  split_rows_by("SEX") \%>\%
+  split_cols_by("ARM") \%>\%
+  analyze("AGE") \%>\%
+  build_table(tern_ex_adsl)
+
+to_string_matrix(tbl, widths = ceiling(propose_column_widths(tbl) / 2))
+
 }

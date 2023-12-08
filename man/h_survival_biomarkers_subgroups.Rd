@@ -15,7 +15,7 @@ h_tab_surv_one_biomarker(
   df,
   vars,
   time_unit,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   .indent_mods = 0L,
   ...
 )

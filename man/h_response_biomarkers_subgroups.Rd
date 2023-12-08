@@ -11,7 +11,7 @@ h_rsp_to_logistic_variables(variables, biomarker)
 
 h_logistic_mult_cont_df(variables, data, control = control_logistic())
 
-h_tab_rsp_one_biomarker(df, vars, na_str = NA_character_, .indent_mods = 0L)
+h_tab_rsp_one_biomarker(df, vars, na_str = default_na_str(), .indent_mods = 0L)
 }
 \arguments{
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}

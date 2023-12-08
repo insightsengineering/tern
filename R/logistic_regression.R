@@ -335,7 +335,7 @@ logistic_regression_cols <- function(lyt,
 #' @return A content function.
 #'
 #' @export
-logistic_summary_by_flag <- function(flag_var, na_str = NA_character_, .indent_mods = NULL) {
+logistic_summary_by_flag <- function(flag_var, na_str = default_na_str(), .indent_mods = NULL) {
   checkmate::assert_string(flag_var)
   function(lyt) {
     cfun_list <- list(

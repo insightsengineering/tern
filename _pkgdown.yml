@@ -110,6 +110,8 @@ reference:
       - add_riskdiff
       - add_rowcounts
       - append_varlabels
+      - default_na_str
+      - set_default_na_str
       - starts_with("as.rtable")
       - starts_with("combine_")
       - starts_with("h_col_")

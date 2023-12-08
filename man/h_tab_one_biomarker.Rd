@@ -8,7 +8,7 @@ h_tab_one_biomarker(
   df,
   afuns,
   colvars,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   .indent_mods = 0L,
   ...
 )

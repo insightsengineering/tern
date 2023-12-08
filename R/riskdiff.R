@@ -95,7 +95,7 @@ afun_riskdiff <- function(df,
                           .formats = NULL,
                           .labels = NULL,
                           .indent_mods = NULL,
-                          na_str = NA_character_,
+                          na_str = default_na_str(),
                           afun,
                           s_args = list()) {
   if (!any(grepl("riskdiff", names(.spl_context)))) {
