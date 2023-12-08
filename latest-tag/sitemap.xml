@@ -88,6 +88,9 @@
     <loc>https://insightsengineering.github.io/tern/reference/append_varlabels.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/reference/apply_auto_formatting.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/reference/argument_convention.html</loc>
   </url>
   <url>
@@ -247,6 +250,9 @@
     <loc>https://insightsengineering.github.io/tern/reference/decorate_grob_set.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/reference/default_na_str.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/reference/default_stats_formats_labels.html</loc>
   </url>
   <url>
@@ -385,6 +391,9 @@
     <loc>https://insightsengineering.github.io/tern/reference/groups_list_to_df.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/reference/h_adlb_abnormal_by_worst_grade.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/reference/h_adlb_worsen.html</loc>
   </url>
   <url>
@@ -517,6 +526,9 @@
     <loc>https://insightsengineering.github.io/tern/reference/labels_or_names.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/reference/labels_use_control.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/reference/logistic_regression_cols.html</loc>
   </url>
   <url>
@@ -557,6 +569,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/response_subgroups.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/reference/rtable2gg.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/rtables_access.html</loc>
@@ -668,5 +683,8 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/update_weights_strat_wilson.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/reference/utils_split_funs.html</loc>
   </url>
 </urlset>
