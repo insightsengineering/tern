@@ -21,6 +21,18 @@ testthat::test_that("g_forest default plot works", {
   g_forest <- g_forest(tbl)
 
   expect_snapshot_ggplot("g_forest", g_forest, width = 15, height = 3)
+
+  # Odds ratio only
+  tbl_or <- basic_table() %>%
+    tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci"))
+
+  g_forest_or <- g_forest(
+    tbl_or,
+    forest_header = c("Comparison\nBetter", "Treatment\nBetter"),
+    rel_width_forest = 0.4
+  )
+
+  expect_snapshot_ggplot("g_forest_or", g_forest_or, width = 8, height = 3)
 })
 
 testthat::test_that("g_forest works with custom arguments", {
@@ -33,15 +45,43 @@ testthat::test_that("g_forest works with custom arguments", {
     rrow("row 2", 1.2, c(1.1, 1.4))
   )
 
-  g_forest_custom <- g_forest(
+  g_forest_custom_1 <- g_forest(
     tbl = tbl,
     col_x = 1,
     col_ci = 2,
     xlim = c(0.5, 2),
     x_at = c(0.5, 1, 2),
-    vline = 1,
+    vline = 0.9,
     forest_header = c("Hello", "World")
   )
 
-  expect_snapshot_ggplot("g_forest_custom", g_forest_custom, width = 4, height = 2)
+  expect_snapshot_ggplot("g_forest_custom_1", g_forest_custom_1, width = 4, height = 2)
+
+  g_forest_custom_2 <- g_forest(
+    tbl = tbl,
+    col_x = 1,
+    col_ci = 2,
+    logx = FALSE,
+    xlim = c(0.5, 1.5),
+    x_at = seq(0.5, 1.5, by = 0.2),
+    lbl_col_padding = -3,
+    width_columns = c(4, 3, 3)
+  )
+
+  expect_snapshot_ggplot("g_forest_custom_2", g_forest_custom_2, width = 10, height = 5)
+
+  g_forest_custom_3 <- g_forest(
+    tbl = tbl,
+    col_x = 1,
+    col_ci = 2,
+    xlim = c(0.5, 2),
+    x_at = c(0.5, 1, 2),
+    vline = 0.9,
+    forest_header = c("c1\nis\nbetter", "c2\nis\nbetter"),
+    rel_width_forest = 0.6,
+    font_size = 6,
+    col = "red"
+  )
+
+  expect_snapshot_ggplot("g_forest_custom_3", g_forest_custom_3, width = 10, height = 5)
 })

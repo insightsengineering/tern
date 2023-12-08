@@ -336,8 +336,8 @@ g_forest <- function(tbl,
     # Set default forest header
     if (is.null(forest_header)) {
       forest_header <- c(
-        paste(if (!is.null(arms)) arms[1] else "Comparison", "Better", sep = "\n"),
-        paste(if (!is.null(arms)) arms[2] else "Treatment", "Better", sep = "\n")
+        paste(if (length(arms) == 2) arms[1] else "Comparison", "Better", sep = "\n"),
+        paste(if (length(arms) == 2) arms[2] else "Treatment", "Better", sep = "\n")
       )
     }
 
