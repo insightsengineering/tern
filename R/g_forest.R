@@ -1,11 +1,10 @@
-#' Create a Forest Plot based on a Table
+#' Create a forest plot based on a table
 #'
 #' Create a forest plot from any [rtables::rtable()] object that has a
 #' column with a single value and a column with 2 values.
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @inheritParams grid::gTree
 #' @inheritParams argument_convention
 #' @param tbl (`rtable`)
 #' @param col_x (`integer`)\cr column index with estimator. By default tries to get this from
@@ -19,17 +18,25 @@
 #' @param xlim (`numeric`)\cr limits for x axis.
 #' @param logx (`flag`)\cr show the x-values on logarithm scale.
 #' @param x_at (`numeric`)\cr x-tick locations, if `NULL` they get automatically chosen.
-#' @param width_row_names (`unit`)\cr  `r lifecycle::badge("deprecated")` Please use the `lbl_col_padding` argument instead.
+#' @param width_row_names (`unit`)\cr  `r lifecycle::badge("deprecated")` Please use the `lbl_col_padding` argument
+#'   instead.
 #' @param width_columns (`unit`)\cr widths for the table columns.
 #'   If `NULL` the widths get automatically calculated. See [grid::unit()].
-#' @param width_forest (`unit`)\cr  `r lifecycle::badge("deprecated")` Please use the `rel_width_forest` argument instead.
+#' @param width_forest (`unit`)\cr  `r lifecycle::badge("deprecated")` Please use the `rel_width_forest` argument
+#'   instead.
 #' @param col_symbol_size (`integer`)\cr column index from `tbl` containing data to be used
 #'   to determine relative size for estimator plot symbol. Typically, the symbol size is proportional
 #'   to the sample size used to calculate the estimator. If `NULL`, the same symbol size is used for all subgroups.
 #'   By default tries to get this from `tbl` attribute `col_symbol_size`, otherwise needs to be manually specified.
 #' @param col (`character`)\cr color(s).
+#' @param gp `r lifecycle::badge("deprecated")` `g_forest` is now generated as a `ggplot` object. This argument
+#'   is no longer used.
+#' @param draw `r lifecycle::badge("deprecated")` `g_forest` is now generated as a `ggplot` object. This argument
+#'   is no longer used.
+#' @param newpage `r lifecycle::badge("deprecated")` `g_forest` is now generated as a `ggplot` object. This argument
+#'   is no longer used.
 #'
-#' @return `gTree` object containing the forest plot and table.
+#' @return `ggplot` forest plot and table.
 #'
 #' @examples
 #' \donttest{

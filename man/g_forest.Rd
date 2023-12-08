@@ -2,7 +2,7 @@
 % Please edit documentation in R/g_forest.R
 \name{g_forest}
 \alias{g_forest}
-\title{Create a Forest Plot based on a Table}
+\title{Create a forest plot based on a table}
 \usage{
 g_forest(
   tbl,
@@ -48,12 +48,14 @@ By default tries to get this from \code{tbl} attribute \code{forest_header}.}
 
 \item{x_at}{(\code{numeric})\cr x-tick locations, if \code{NULL} they get automatically chosen.}
 
-\item{width_row_names}{(\code{unit})\cr  \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{lbl_col_padding} argument instead.}
+\item{width_row_names}{(\code{unit})\cr  \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{lbl_col_padding} argument
+instead.}
 
 \item{width_columns}{(\code{unit})\cr widths for the table columns.
 If \code{NULL} the widths get automatically calculated. See \code{\link[grid:unit]{grid::unit()}}.}
 
-\item{width_forest}{(\code{unit})\cr  \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{rel_width_forest} argument instead.}
+\item{width_forest}{(\code{unit})\cr  \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{rel_width_forest} argument
+instead.}
 
 \item{col_symbol_size}{(\code{integer})\cr column index from \code{tbl} containing data to be used
 to determine relative size for estimator plot symbol. Typically, the symbol size is proportional
@@ -62,17 +64,17 @@ By default tries to get this from \code{tbl} attribute \code{col_symbol_size}, o
 
 \item{col}{(\code{character})\cr color(s).}
 
-\item{gp}{A \code{"gpar"} object, typically the output
-    from a call to the function \code{\link[grid]{gpar}}.  This is basically
-    a list of graphical parameter settings.}
+\item{gp}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{g_forest} is now generated as a \code{ggplot} object. This argument
+is no longer used.}
 
-\item{draw}{(\code{flag})\cr whether the plot should be drawn.}
+\item{draw}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{g_forest} is now generated as a \code{ggplot} object. This argument
+is no longer used.}
 
-\item{newpage}{(\code{flag})\cr whether the plot should be drawn on a new page.
-Only considered if \code{draw = TRUE} is used.}
+\item{newpage}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{g_forest} is now generated as a \code{ggplot} object. This argument
+is no longer used.}
 }
 \value{
-\code{gTree} object containing the forest plot and table.
+\code{ggplot} forest plot and table.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
