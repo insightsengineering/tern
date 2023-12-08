@@ -13,14 +13,18 @@ g_forest(
   xlim = c(0.1, 10),
   logx = TRUE,
   x_at = c(0.1, 1, 10),
-  width_row_names = NULL,
+  width_row_names = lifecycle::deprecated(),
   width_columns = NULL,
-  width_forest = grid::unit(1, "null"),
+  width_forest = lifecycle::deprecated(),
+  lbl_col_padding = 0,
+  rel_width_forest = 0.25,
+  font_size = 4,
   col_symbol_size = attr(tbl, "col_symbol_size"),
   col = getOption("ggplot2.discrete.colour")[1],
-  gp = NULL,
-  draw = TRUE,
-  newpage = TRUE
+  ggtheme = NULL,
+  gp = lifecycle::deprecated(),
+  draw = lifecycle::deprecated(),
+  newpage = lifecycle::deprecated()
 )
 }
 \arguments{
@@ -44,14 +48,12 @@ By default tries to get this from \code{tbl} attribute \code{forest_header}.}
 
 \item{x_at}{(\code{numeric})\cr x-tick locations, if \code{NULL} they get automatically chosen.}
 
-\item{width_row_names}{(\code{unit})\cr width for row names.
-If \code{NULL} the widths get automatically calculated. See \code{\link[grid:unit]{grid::unit()}}.}
+\item{width_row_names}{(\code{unit})\cr  \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{lbl_col_padding} argument instead.}
 
 \item{width_columns}{(\code{unit})\cr widths for the table columns.
 If \code{NULL} the widths get automatically calculated. See \code{\link[grid:unit]{grid::unit()}}.}
 
-\item{width_forest}{(\code{unit})\cr width for the forest column.
-If \code{NULL} the widths get automatically calculated. See \code{\link[grid:unit]{grid::unit()}}.}
+\item{width_forest}{(\code{unit})\cr  \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{rel_width_forest} argument instead.}
 
 \item{col_symbol_size}{(\code{integer})\cr column index from \code{tbl} containing data to be used
 to determine relative size for estimator plot symbol. Typically, the symbol size is proportional
@@ -107,21 +109,16 @@ df <- extract_rsp_subgroups(
 
 tbl <- basic_table() \%>\%
   tabulate_rsp_subgroups(df)
-p <- g_forest(tbl, gp = grid::gpar(fontsize = 10))
-
-draw_grob(p)
+g_forest(tbl)
 
 # Odds ratio only table.
 
 tbl_or <- basic_table() \%>\%
   tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci"))
-tbl_or
-p <- g_forest(
+g_forest(
   tbl_or,
   forest_header = c("Comparison\nBetter", "Treatment\nBetter")
 )
-
-draw_grob(p)
 
 # Survival forest plot example.
 adtte <- tern_ex_adtte
@@ -158,6 +155,7 @@ df <- extract_survival_subgroups(
 table_hr <- basic_table() \%>\%
   tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])
 g_forest(table_hr)
+
 # Works with any `rtable`.
 tbl <- rtable(
   header = c("E", "CI", "N"),
@@ -172,6 +170,7 @@ g_forest(
   x_at = c(0.5, 1, 2),
   col_symbol_size = 3
 )
+
 tbl <- rtable(
   header = rheader(
     rrow("", rcell("A", colspan = 2)),
