@@ -299,6 +299,7 @@ g_forest <- function(tbl,
       axis.title.x = element_blank(),
       axis.title.y = element_blank(),
       axis.line.x = element_line(),
+      axis.text = element_text(size = font_size * .pt),
       legend.position = "none",
       plot.margin = margin(0, 0.1, 0.05, 0, "npc")
     ) +
