@@ -18,7 +18,7 @@ g_forest(
   width_forest = lifecycle::deprecated(),
   lbl_col_padding = 0,
   rel_width_forest = 0.25,
-  font_size = 4,
+  font_size = 12,
   col_symbol_size = attr(tbl, "col_symbol_size"),
   col = getOption("ggplot2.discrete.colour")[1],
   ggtheme = NULL,
