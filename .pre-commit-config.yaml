@@ -52,9 +52,9 @@ repos:
           .*\.sh|
           .*\.svg|
           .*\.xml|
-          (.*/|)\_pkgdown.y[a]ml|
+          (.*/|)\_pkgdown.y[a]?ml|
           (.*/|)\.gitignore|
-          (.*/|)\.gitlab-ci\.yml|
+          (.*/|)\.gitlab-ci\.y[a]?ml|
           (.*/|)\.lintr|
           (.*/|)\.pre-commit-.*|
           (.*/|)\.Rbuildignore|
@@ -64,8 +64,8 @@ repos:
           (.*/|)DESCRIPTION|
           (.*/|)LICENSE|
           (.*/|)NAMESPACE|
-          (.*/|)staged_dependencies\.yaml|
+          (.*/|)staged_dependencies\.y[a]?ml|
           (.*/|)WORDLIST|
-          \.github/.*\.yaml|
+          \.github/.*\.y[a]?ml|
           data/.*
           )$
