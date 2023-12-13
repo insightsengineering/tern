@@ -86,3 +86,15 @@ testthat::test_that("g_forest works with custom arguments", {
 
   expect_snapshot_ggplot("g_forest_custom_3", g_forest_custom_3, width = 10, height = 5)
 })
+
+testthat::test_that("g_forest as_list argument works", {
+  tbl <- basic_table() %>%
+    tabulate_rsp_subgroups(df)
+
+  f <- g_forest(tbl, as_list = TRUE)
+  g_forest_table_only <- f$table
+  g_forest_plot_only <- f$plot
+
+  expect_snapshot_ggplot("g_forest_table_only", g_forest_table_only, width = 9, height = 3)
+  expect_snapshot_ggplot("g_forest_plot_only", g_forest_plot_only, width = 2, height = 3)
+})

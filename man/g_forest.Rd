@@ -22,6 +22,7 @@ g_forest(
   col_symbol_size = attr(tbl, "col_symbol_size"),
   col = getOption("ggplot2.discrete.colour")[1],
   ggtheme = NULL,
+  as_list = FALSE,
   gp = lifecycle::deprecated(),
   draw = lifecycle::deprecated(),
   newpage = lifecycle::deprecated()
@@ -64,7 +65,7 @@ the first (label) column and the second column of \code{tbl}. If \code{colwidths
 the width of the first column becomes \code{colwidths[1] + lbl_col_padding}. Defaults to 0.}
 
 \item{rel_width_forest}{(\code{proportion})\cr proportion of total width to allocate to the forest plot. Relative
-width of table is then \code{1 - rel_width_forest}.}
+width of table is then \code{1 - rel_width_forest}. If \code{as_list = TRUE}, this parameter is ignored.}
 
 \item{font_size}{(\code{numeric})\cr font size.}
 
@@ -76,6 +77,10 @@ By default tries to get this from \code{tbl} attribute \code{col_symbol_size}, o
 \item{col}{(\code{character})\cr color(s).}
 
 \item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to control styling of the plot.}
+
+\item{as_list}{(\code{flag})\cr whether the two \code{ggplot} objects should be returned as a list. If \code{TRUE}, a named list
+with two elements, \code{table} and \code{plot}, will be returned. If \code{FALSE} (default) the table and forest plot are
+printed side-by-side via \code{\link[cowplot:plot_grid]{cowplot::plot_grid()}}.}
 
 \item{gp}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{g_forest} is now generated as a \code{ggplot} object. This argument
 is no longer used.}

@@ -29,7 +29,7 @@
 #'   according to maximum number of characters per column.
 #' @param width_forest `r lifecycle::badge("deprecated")` Please use the `rel_width_forest` argument instead.
 #' @param rel_width_forest (`proportion`)\cr proportion of total width to allocate to the forest plot. Relative
-#'   width of table is then `1 - rel_width_forest`.
+#'   width of table is then `1 - rel_width_forest`. If `as_list = TRUE`, this parameter is ignored.
 #' @param font_size (`numeric`)\cr font size.
 #' @param col_symbol_size (`integer`)\cr column index from `tbl` containing data to be used
 #'   to determine relative size for estimator plot symbol. Typically, the symbol size is proportional
@@ -37,6 +37,9 @@
 #'   By default tries to get this from `tbl` attribute `col_symbol_size`, otherwise needs to be manually specified.
 #' @param col (`character`)\cr color(s).
 #' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to control styling of the plot.
+#' @param as_list (`flag`)\cr whether the two `ggplot` objects should be returned as a list. If `TRUE`, a named list
+#'   with two elements, `table` and `plot`, will be returned. If `FALSE` (default) the table and forest plot are
+#'   printed side-by-side via [cowplot::plot_grid()].
 #' @param gp `r lifecycle::badge("deprecated")` `g_forest` is now generated as a `ggplot` object. This argument
 #'   is no longer used.
 #' @param draw `r lifecycle::badge("deprecated")` `g_forest` is now generated as a `ggplot` object. This argument
@@ -171,6 +174,7 @@ g_forest <- function(tbl,
                      col_symbol_size = attr(tbl, "col_symbol_size"),
                      col = getOption("ggplot2.discrete.colour")[1],
                      ggtheme = NULL,
+                     as_list = FALSE,
                      gp = lifecycle::deprecated(),
                      draw = lifecycle::deprecated(),
                      newpage = lifecycle::deprecated()) {
@@ -398,13 +402,20 @@ g_forest <- function(tbl,
   # Apply custom ggtheme to plot
   if (!is.null(ggtheme)) gg_plt <- gg_plt + ggtheme
 
-  cowplot::plot_grid(
-    gg_table,
-    gg_plt,
-    align = "h",
-    axis = "tblr",
-    rel_widths = c(1 - rel_width_forest, rel_width_forest)
-  )
+  if (as_list) {
+    list(
+      table = gg_table,
+      plot = gg_plt
+    )
+  } else {
+    cowplot::plot_grid(
+      gg_table,
+      gg_plt,
+      align = "h",
+      axis = "tblr",
+      rel_widths = c(1 - rel_width_forest, rel_width_forest)
+    )
+  }
 }
 
 #' Forest Plot Grob
