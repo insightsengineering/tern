@@ -344,7 +344,8 @@ g_forest <- function(tbl,
     gg_plt <- gg_plt +
       annotate(
         "segment",
-        x = vline, xend = vline, y = 0, yend = nrows_body + 0.5) +
+        x = vline, xend = vline, y = 0, yend = nrows_body + 0.5
+      ) +
       annotate(
         "text",
         x = mid_pts[1], y = nrows_body + 1.25,
