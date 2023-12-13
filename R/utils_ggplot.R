@@ -32,10 +32,10 @@
 #'
 #' rtable2gg(tbl)
 #'
-#' rtable2gg(tbl, fontsize = 5, colwidths = c(2, 1, 1, 1))
+#' rtable2gg(tbl, fontsize = 15, colwidths = c(2, 1, 1, 1))
 #'
 #' @export
-rtable2gg <- function(tbl, fontsize = 4, colwidths = NULL, lbl_col_padding = 0) {
+rtable2gg <- function(tbl, fontsize = 12, colwidths = NULL, lbl_col_padding = 0) {
   mat <- rtables::matrix_form(tbl)
   mat_strings <- formatters::mf_strings(mat)
   mat_aligns <- formatters::mf_aligns(mat)
@@ -69,10 +69,11 @@ rtable2gg <- function(tbl, fontsize = 4, colwidths = NULL, lbl_col_padding = 0) 
     theme_void() +
     scale_x_continuous(limits = c(0, tot_width)) +
     scale_y_continuous(limits = c(0, nrow(mat_strings))) +
-    geom_segment(aes(
+    annotate(
+      "segment",
       x = 0, xend = tot_width,
       y = nrow(mat_strings) - nlines_hdr + 0.5, yend = nrow(mat_strings) - nlines_hdr + 0.5
-    ))
+    )
 
   # If header content spans multiple columns, center over these columns
   if (length(shared_hdr_rows) > 0) {
@@ -95,13 +96,15 @@ rtable2gg <- function(tbl, fontsize = 4, colwidths = NULL, lbl_col_padding = 0) 
         )
 
         res <- res +
-          geom_text(
+          annotate(
+            "text",
             x = mean(line_pos),
             y = nrow(mat_strings) + 1 - hr,
             label = cur_lbl,
-            size = fontsize
+            size = fontsize / .pt
           ) +
-          geom_segment(
+          annotate(
+            "segment",
             x = line_pos[1],
             xend = line_pos[2],
             y = nrow(mat_strings) - hr + 0.5,
@@ -113,12 +116,13 @@ rtable2gg <- function(tbl, fontsize = 4, colwidths = NULL, lbl_col_padding = 0) 
 
   # Add table columns
   for (i in seq_len(ncol(tbl_df))) {
-    res <- res + geom_text(
+    res <- res + annotate(
+      "text",
       x = if (i == 1) 0 else sum(colwidths[1:i]) - 0.5 * colwidths[i] + lbl_col_padding,
       y = rev(seq_len(nrow(tbl_df))),
       label = tbl_df[, i],
       hjust = mat_aligns[, i],
-      size = fontsize
+      size = fontsize / .pt
     )
   }
 

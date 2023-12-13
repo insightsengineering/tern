@@ -4,7 +4,7 @@
 \alias{rtable2gg}
 \title{Convert \code{rtable} object to \code{ggplot} object}
 \usage{
-rtable2gg(tbl, fontsize = 4, colwidths = NULL, lbl_col_padding = 0)
+rtable2gg(tbl, fontsize = 12, colwidths = NULL, lbl_col_padding = 0)
 }
 \arguments{
 \item{tbl}{(\code{rtable})\cr a \code{rtable} object.}
@@ -44,6 +44,6 @@ tbl <- build_table(lyt, df = dta)
 
 rtable2gg(tbl)
 
-rtable2gg(tbl, fontsize = 5, colwidths = c(2, 1, 1, 1))
+rtable2gg(tbl, fontsize = 15, colwidths = c(2, 1, 1, 1))
 
 }
