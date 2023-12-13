@@ -170,7 +170,7 @@ g_forest <- function(tbl,
                      width_forest = lifecycle::deprecated(),
                      lbl_col_padding = 0,
                      rel_width_forest = 0.25,
-                     font_size = 4,
+                     font_size = 12,
                      col_symbol_size = attr(tbl, "col_symbol_size"),
                      col = getOption("ggplot2.discrete.colour")[1],
                      ggtheme = NULL,
@@ -299,7 +299,7 @@ g_forest <- function(tbl,
       axis.title.x = element_blank(),
       axis.title.y = element_blank(),
       axis.line.x = element_line(),
-      axis.text = element_text(size = font_size * .pt),
+      axis.text = element_text(size = font_size),
       legend.position = "none",
       plot.margin = margin(0, 0.1, 0.05, 0, "npc")
     ) +
@@ -342,19 +342,21 @@ g_forest <- function(tbl,
     # Add vline and forest header labels
     mid_pts <- exp(c(mean(log(c(xlim[1], vline))), mean(log(c(vline, xlim[2])))))
     gg_plt <- gg_plt +
-      geom_segment(aes(x = vline, xend = vline, y = 0, yend = nrows_body + 0.5)) +
+      annotate(
+        "segment",
+        x = vline, xend = vline, y = 0, yend = nrows_body + 0.5) +
       annotate(
         "text",
         x = mid_pts[1], y = nrows_body + 1.25,
         label = forest_header[1],
-        size = font_size,
+        size = font_size / .pt,
         lineheight = 0.9
       ) +
       annotate(
         "text",
         x = mid_pts[2], y = nrows_body + 1.25,
         label = forest_header[2],
-        size = font_size,
+        size = font_size / .pt,
         lineheight = 0.9
       )
   }
