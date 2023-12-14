@@ -55,10 +55,10 @@
 <rect x='541.59' y='162.92' width='158.82' height='162.92' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #EBEBEB;' />
 <rect x='541.59' y='162.92' width='158.82' height='162.92' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #EBEBEB;' />
 <line x1='621.00' y1='325.83' x2='621.00' y2='162.92' style='stroke-width: 1.07; stroke-linecap: butt;' />
-<text x='574.48' y='111.86' text-anchor='middle' style='font-size: 12.00px; font-family: "Arial";' textLength='64.71px' lengthAdjust='spacingAndGlyphs'>Comparison</text>
-<text x='574.48' y='124.82' text-anchor='middle' style='font-size: 12.00px; font-family: "Arial";' textLength='32.02px' lengthAdjust='spacingAndGlyphs'>Better</text>
-<text x='656.69' y='111.86' text-anchor='middle' style='font-size: 12.00px; font-family: "Arial";' textLength='54.24px' lengthAdjust='spacingAndGlyphs'>Treatment</text>
-<text x='656.69' y='124.82' text-anchor='middle' style='font-size: 12.00px; font-family: "Arial";' textLength='32.02px' lengthAdjust='spacingAndGlyphs'>Better</text>
+<text x='581.29' y='111.86' text-anchor='middle' style='font-size: 12.00px; font-family: "Arial";' textLength='64.71px' lengthAdjust='spacingAndGlyphs'>Comparison</text>
+<text x='581.29' y='124.82' text-anchor='middle' style='font-size: 12.00px; font-family: "Arial";' textLength='32.02px' lengthAdjust='spacingAndGlyphs'>Better</text>
+<text x='660.71' y='111.86' text-anchor='middle' style='font-size: 12.00px; font-family: "Arial";' textLength='54.24px' lengthAdjust='spacingAndGlyphs'>Treatment</text>
+<text x='660.71' y='124.82' text-anchor='middle' style='font-size: 12.00px; font-family: "Arial";' textLength='32.02px' lengthAdjust='spacingAndGlyphs'>Better</text>
 <circle cx='621.00' cy='195.50' r='5.19' style='stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;' />
 <circle cx='652.76' cy='260.67' r='5.19' style='stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;' />
 <line x1='589.24' y1='195.50' x2='652.76' y2='195.50' style='stroke-width: 1.07; stroke: #A020F0; stroke-linecap: butt;' />

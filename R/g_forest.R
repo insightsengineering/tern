@@ -279,11 +279,12 @@ g_forest <- function(tbl,
 
   # Apply log transformation
   if (logx) {
-    x <- log(x)
+    x_t <- log(x)
     lwr_t <- log(lwr)
     upr_t <- log(upr)
     xlim_t <- log(xlim)
   } else {
+    x_t <- x
     lwr_t <- lwr
     upr_t <- upr
     xlim_t <- xlim
@@ -340,7 +341,11 @@ g_forest <- function(tbl,
     }
 
     # Add vline and forest header labels
-    mid_pts <- c(mean(c(xlim[1], vline)), mean(c(vline, xlim[2])))
+    mid_pts <- if (logx) {
+      c(exp(mean(log(c(xlim[1], vline)))), exp(mean(log(c(vline, xlim[2])))))
+    } else {
+      c(mean(c(xlim[1], vline)), mean(c(vline, xlim[2])))
+    }
     gg_plt <- gg_plt +
       annotate(
         "segment",
@@ -363,12 +368,14 @@ g_forest <- function(tbl,
   }
 
   # Add points to plot
-  if (any(!is.na(x))) {
+  if (any(!is.na(x_t))) {
+    x_t[x < xlim[1] | x > xlim[2]] <- NA
     gg_plt <- gg_plt + geom_point(
-      x = x,
+      x = x_t,
       y = row_num,
       color = col,
-      aes(size = sym_size)
+      aes(size = sym_size),
+      na.rm = TRUE
     )
   }
 
@@ -391,7 +398,8 @@ g_forest <- function(tbl,
           xend = if (!which_arrow %in% c("last", "both")) upr[i] else xlim[2],
           y = row_num[i], yend = row_num[i],
           color = if (length(col) == 1) col else col[i],
-          arrow = arrow(length = unit(0.05, "npc"), ends = which_arrow)
+          arrow = arrow(length = unit(0.05, "npc"), ends = which_arrow),
+          na.rm = TRUE
         )
       } else {
         annotate(
@@ -399,6 +407,7 @@ g_forest <- function(tbl,
           x = lwr[i], xend = upr[i],
           y = row_num[i], yend = row_num[i],
           color = if (length(col) == 1) col else col[i],
+          na.rm = TRUE
         )
       }
   }
