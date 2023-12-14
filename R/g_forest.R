@@ -340,7 +340,7 @@ g_forest <- function(tbl,
     }
 
     # Add vline and forest header labels
-    mid_pts <- exp(c(mean(log(c(xlim[1], vline))), mean(log(c(vline, xlim[2])))))
+    mid_pts <- c(mean(c(xlim[1], vline)), mean(c(vline, xlim[2])))
     gg_plt <- gg_plt +
       annotate(
         "segment",
