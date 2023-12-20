@@ -1,6 +1,4 @@
-skip_if_not_installed("svglite")
-
-testthat::test_that("rtables2gg works as expected", {
+testthat::test_that("rtable2gg works as expected", {
   dta <- data.frame(
     USUBJID = rep(1:6, each = 3),
     PARAMCD = rep("lab", 6 * 3),
@@ -17,43 +15,23 @@ testthat::test_that("rtables2gg works as expected", {
   tbl <- build_table(lyt, df = dta)
 
   # defaults
-  testthat::expect_snapshot_file(
-    tbl %>%
-      rtable2gg() %>%
-      ggplot2::ggsave(filename = "rtable2gg_default.svg", path = "./_snaps/utils_ggplot", width = 5) %>%
-      suppressMessages(),
-    "rtable2gg_default.svg"
-  )
+  rtable2gg_default <- tbl %>% rtable2gg()
+  expect_snapshot_ggplot("rtable2gg_default", rtable2gg_default, width = 5)
 
   # custom fontsize
-  testthat::expect_snapshot_file(
-    tbl %>%
-      rtable2gg(fontsize = 5) %>%
-      ggplot2::ggsave(filename = "rtable2gg_fs.svg", path = "./_snaps/utils_ggplot", width = 5) %>%
-      suppressMessages(),
-    "rtable2gg_fs.svg"
-  )
+  rtable2gg_fs <- tbl %>% rtable2gg(fontsize = 5)
+  expect_snapshot_ggplot("rtable2gg_fs", rtable2gg_fs, width = 5)
 
   # custom colwidths
-  testthat::expect_snapshot_file(
-    tbl %>%
-      rtable2gg(colwidths = c(4, 2, 2, 3)) %>%
-      ggplot2::ggsave(filename = "rtable2gg_cw.svg", path = "./_snaps/utils_ggplot", width = 5) %>%
-      suppressMessages(),
-    "rtable2gg_cw.svg"
-  )
+  rtable2gg_cw <- tbl %>% rtable2gg(colwidths = c(4, 2, 2, 3))
+  expect_snapshot_ggplot("rtable2gg_cw", rtable2gg_cw, width = 5)
 
   # custom lbl_col_padding
-  testthat::expect_snapshot_file(
-    tbl %>%
-      rtable2gg(lbl_col_padding = -5) %>%
-      ggplot2::ggsave(filename = "rtable2gg_lblpad.svg", path = "./_snaps/utils_ggplot", width = 5) %>%
-      suppressMessages(),
-    "rtable2gg_lblpad.svg"
-  )
+  rtable2gg_lblpad <- tbl %>% rtable2gg(lbl_col_padding = -5)
+  expect_snapshot_ggplot("rtable2gg_lblpad", rtable2gg_lblpad, width = 5)
 })
 
-testthat::test_that("rtables2gg works with multiple column splits", {
+testthat::test_that("rtable2gg works with multiple column splits", {
   dta2 <- data.frame(
     USUBJID = rep(1:6, each = 3),
     PARAMCD = rep("lab", 6 * 3),
@@ -71,10 +49,6 @@ testthat::test_that("rtables2gg works with multiple column splits", {
 
   tbl <- build_table(lyt, df = dta2)
 
-  testthat::expect_snapshot_file(
-    tbl %>%
-      rtable2gg() %>%
-      ggplot2::ggsave(filename = "rtable2gg_colsplits.svg", path = "./_snaps/utils_ggplot", height = 3, width = 10),
-    "rtable2gg_colsplits.svg"
-  )
+  rtable2gg_colsplits <- tbl %>% rtable2gg()
+  expect_snapshot_ggplot("rtable2gg_colsplits", rtable2gg_colsplits, width = 10, height = 3)
 })
