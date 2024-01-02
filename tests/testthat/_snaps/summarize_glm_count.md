@@ -43,6 +43,31 @@
       2     B: Placebo 14.11838  5.392442 Inf    1  6.931571 4.161914e-12
       3 C: Combination 10.59153  4.074355 Inf    1  6.135104 8.510352e-10
 
+# h_glm_negbin glm-fit works with healthy input
+
+    Code
+      res
+    Output
+           Estimate        SE    z_value           Pr                coefs
+      1 1.005041594 0.1992268 5.04471149 4.542062e-07          (Intercept)
+      2 0.007741431 0.1919877 0.04032253 9.678360e-01          REGION1Asia
+      3 0.317703043 0.2360653 1.34582686 1.783584e-01       REGION1Eurasia
+      4 0.591541717 0.4058327 1.45759983 1.449509e-01        REGION1Europe
+      5 0.117240049 0.2196300 0.53380718 5.934749e-01 REGION1North America
+      6 0.139971334 0.2348685 0.59595610 5.512046e-01 REGION1South America
+      7 0.113082781 0.1056295 1.07056107 2.843668e-01        ARMB: Placebo
+      8 0.026817451 0.1131811 0.23694292 8.127011e-01    ARMC: Combination
+
+# h_glm_negbin emmeans-fit works with healthy input
+
+    Code
+      res
+    Output
+                   ARM response std.error  df null statistic      p.value
+      1      A: Drug X 3.322579 0.3367532 Inf    1  11.84712 2.227054e-32
+      2     B: Placebo 3.720373 0.3782682 Inf    1  12.92183 3.390023e-38
+      3 C: Combination 3.412887 0.3424577 Inf    1  12.23369 2.054037e-34
+
 # h_glm_count glm-fit works with healthy input
 
     Code
