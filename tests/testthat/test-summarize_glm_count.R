@@ -53,6 +53,43 @@ testthat::test_that("h_glm_poisson fails wrong inputs", {
   )
 })
 
+testthat::test_that("h_glm_poisson glm-fit works with healthy input with covariates", {
+  anl <- tern_ex_adtte %>%
+    filter(PARAMCD == "TNE")
+  anl$AVAL_f <- as.factor(anl$AVAL)
+
+  result <- h_glm_poisson(
+    .var = "AVAL",
+    .df_row = anl,
+    variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = c("REGION1"))
+  )
+
+  mat1 <- summary(result$glm_fit)$coefficients %>% as.data.frame()
+  mat1$coefs <- row.names(mat1)
+  rownames(mat1) <- NULL
+  names(mat1) <- c("Estimate", "SE", "z_value", "Pr", "coefs")
+
+  res <- testthat::expect_silent(mat1)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("h_glm_poisson emmeans-fit works with healthy input with covariates", {
+  anl <- tern_ex_adtte %>%
+    filter(PARAMCD == "TNE")
+  anl$AVAL_f <- as.factor(anl$AVAL)
+
+  result <- h_glm_count(
+    .var = "AVAL",
+    .df_row = anl,
+    variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
+    distribution = "poisson"
+  )
+  mat1 <- as.data.frame(broom::tidy(result$emmeans_fit))
+
+  res <- testthat::expect_silent(mat1)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("h_glm_quasipoisson glm-fit works with healthy input", {
   anl <- tern_ex_adtte %>%
     filter(PARAMCD == "TNE")

@@ -18,6 +18,31 @@
       2 ARM B 9.155436 0.5997925 Inf    1  33.80055 1.935734e-250
       3 ARM C 7.855107 0.5871181 Inf    1  27.57650 2.129731e-167
 
+# h_glm_poisson glm-fit works with healthy input with covariates
+
+    Code
+      res
+    Output
+           Estimate         SE    z_value           Pr                coefs
+      1  2.01065582 0.18541942 10.8438255 2.133586e-27          (Intercept)
+      2  0.07631174 0.17896220  0.4264126 6.698072e-01          REGION1Asia
+      3  0.64425750 0.22389462  2.8775033 4.008358e-03       REGION1Eurasia
+      4  2.13096720 0.36521976  5.8347533 5.387022e-09        REGION1Europe
+      5 -0.07449500 0.20314837 -0.3667024 7.138410e-01 REGION1North America
+      6  0.38101695 0.21554753  1.7676703 7.711605e-02 REGION1South America
+      7  0.11047866 0.09872549  1.1190490 2.631192e-01        ARMB: Placebo
+      8 -0.17694419 0.10873176 -1.6273459 1.036637e-01    ARMC: Combination
+
+# h_glm_poisson emmeans-fit works with healthy input with covariates
+
+    Code
+      res
+    Output
+        ARMCD     rate std.error  df null statistic       p.value
+      1 ARM A 12.64167 1.2378669 Inf    1  25.90902 5.270655e-148
+      2 ARM B 14.11838 1.2848735 Inf    1  29.09088 4.682722e-186
+      3 ARM C 10.59153 0.9708089 Inf    1  25.74821 3.375733e-146
+
 # h_glm_quasipoisson glm-fit works with healthy input
 
     Code

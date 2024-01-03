@@ -200,6 +200,7 @@ h_glm_count <- function(.var,
                         variables,
                         distribution,
                         weights) {
+  checkmate::assert_subset(distribution, c("poisson", "quasipoisson", "negbin"), empty.ok = FALSE)
   switch(distribution,
     poisson = h_glm_poisson(.var, .df_row, variables, weights),
     quasipoisson = h_glm_quasipoisson(.var, .df_row, variables, weights),
