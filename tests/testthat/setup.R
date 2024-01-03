@@ -25,11 +25,12 @@ skip_if_too_deep <- function(depth) {
 expect_snapshot_ggplot <- function(title, fig, width = NA, height = NA) {
   skip_if_not_installed("svglite")
 
+  path <- "_snaps"
   name <- paste0(title, ".svg")
-  path <- tempdir()
   suppressMessages(ggplot2::ggsave(name, fig, path = path, width = width, height = height))
   path <- file.path(path, name)
 
   testthat::announce_snapshot_file(name = name)
   testthat::expect_snapshot_file(path, name)
+  unlink(path)
 }
