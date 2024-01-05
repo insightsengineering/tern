@@ -6,6 +6,7 @@
 
 ### Bug Fixes
 * Fixed nested column split label overlay issue in `rtable2gg` to clean up appearance of text labels.
+* Fixed bug in `s_ancova` causing incorrect difference calculations for arm variables with irregular levels.
 
 ### Miscellaneous
 * Added function `expect_snapshot_ggplot` to test setup file to process plot snapshot tests and allow plot dimensions to be set.
