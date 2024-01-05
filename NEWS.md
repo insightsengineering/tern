@@ -2,6 +2,7 @@
 
 ### New Features
 * Refactored `g_forest` to output a `ggplot` object instead of a `grob` object.
+* Added `h_glm_negbin` to `h_glm_count` to enable count data analysis using a negative binomial model.
 
 ### Bug Fixes
 * Fixed nested column split label overlay issue in `rtable2gg` to clean up appearance of text labels.

@@ -38,6 +38,7 @@ Imports:
     labeling,
     lifecycle (>= 0.2.0),
     magrittr (>= 1.5),
+    MASS (>= 7.3-60),
     methods,
     Rdpack (>= 2.4),
     rlang (>= 1.1.0),

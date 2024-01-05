@@ -4,12 +4,15 @@
 \alias{h_glm_count}
 \alias{h_glm_poisson}
 \alias{h_glm_quasipoisson}
+\alias{h_glm_negbin}
 \alias{h_ppmeans}
 \title{Helper Functions for Poisson Models.}
 \usage{
 h_glm_poisson(.var, .df_row, variables, weights)
 
 h_glm_quasipoisson(.var, .df_row, variables, weights)
+
+h_glm_negbin(.var, .df_row, variables, weights)
 
 h_glm_count(.var, .df_row, variables, distribution, weights)
 
@@ -37,7 +40,7 @@ in averaging predictions. Number of weights must equal the number of levels incl
 Weights option passed to \code{\link[emmeans:emmeans]{emmeans::emmeans()}}.}
 
 \item{distribution}{(\code{character})\cr a character value specifying the distribution
-used in the regression (poisson, quasipoisson).}
+used in the regression (poisson, quasipoisson, negative binomial).}
 
 \item{obj}{(\code{glm.fit})\cr fitted model object used to derive the mean rate estimates in each treatment arm.}
 
@@ -53,6 +56,10 @@ summarized. Specifically, the first level of \code{arm} variable is taken as the
 
 \itemize{
 \item \code{h_glm_quasipoisson()} returns the results of a Quasi-Poisson model.
+}
+
+\itemize{
+\item \code{h_glm_negbin()} returns the results of a Negative Binomial model.
 }
 
 \itemize{
@@ -73,6 +80,8 @@ Helper functions that can be used to return the results of various Poisson model
 \item \code{h_glm_poisson()}: Helper function to return results of a poisson model.
 
 \item \code{h_glm_quasipoisson()}: Helper function to return results of a quasipoisson model.
+
+\item \code{h_glm_negbin()}: Helper function to return results of a negative binomial model.
 
 \item \code{h_glm_count()}: Helper function to return the results of the
 selected model (poisson, quasipoisson, negative binomial).
