@@ -311,6 +311,28 @@ testthat::test_that("s_glm_count works with healthy input", {
   testthat::expect_snapshot(res) # diff
 })
 
+testthat::test_that("s_glm_count (negative binomial) works with healthy input", {
+  set.seed(2)
+  anl <- tern_ex_adtte %>%
+    filter(PARAMCD == "TNE")
+  anl$AVAL_f <- as.factor(anl$AVAL)
+
+  result <- s_glm_count(
+    df = anl %>%
+      filter(ARMCD == "ARM B"),
+    .df_row = anl,
+    .var = "AVAL",
+    .in_ref_col = TRUE,
+    variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
+    conf_level = 0.95,
+    distribution = "negbin",
+    rate_mean_method = "emmeans" # XXX ppmeans fails snapshot diff in integration tests
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res) # diff
+})
+
 testthat::test_that("s_glm_count works with no reference group selected.", {
   set.seed(2)
   anl <- tern_ex_adtte %>%
@@ -328,6 +350,30 @@ testthat::test_that("s_glm_count works with no reference group selected.", {
     variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
     conf_level = 0.95,
     distribution = "poisson",
+    rate_mean_method = "emmeans" # XXX ppmeans fails snapshot diff in integration tests
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res) # diff
+})
+
+testthat::test_that("s_glm_count (negative binomial) works with no reference group selected.", {
+  set.seed(2)
+  anl <- tern_ex_adtte %>%
+    filter(PARAMCD == "TNE")
+  anl$AVAL_f <- as.factor(anl$AVAL)
+
+  result <- s_glm_count(
+    df = anl %>%
+      filter(ARMCD == "ARM B"),
+    .df_row = anl,
+    .var = "AVAL",
+    .in_ref_col = FALSE,
+    .ref_group = anl %>%
+      filter(ARMCD == "ARM B"),
+    variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
+    conf_level = 0.95,
+    distribution = "negbin",
     rate_mean_method = "emmeans" # XXX ppmeans fails snapshot diff in integration tests
   )
 
@@ -368,6 +414,37 @@ testthat::test_that("summarize_glm_count works with healthy inputs", {
       variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = NULL),
       conf_level = 0.95,
       distribution = "poisson",
+      rate_mean_method = "emmeans",
+      var_labels = "Unadjusted exacerbation rate (per year)",
+      table_names = "unadj",
+      .stats = c("rate"),
+      .labels = c(rate = "Rate")
+    ) %>%
+    build_table(anl)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("summarize_glm_count (negative binomial) works with healthy inputs", {
+  anl <- tern_ex_adtte %>%
+    filter(PARAMCD == "TNE")
+  anl$AVAL_f <- as.factor(anl$AVAL)
+  result <- basic_table() %>%
+    split_cols_by("ARM", ref_group = "B: Placebo", split_fun = ref_group_position("first")) %>%
+    add_colcounts() %>%
+    analyze_vars(
+      "AVAL_f",
+      var_labels = "Number of exacerbations per patient",
+      .stats = c("count_fraction"),
+      .formats = c("count_fraction" = "xx (xx.xx%)"),
+      .label = c("Number of exacerbations per patient")
+    ) %>%
+    summarize_glm_count(
+      vars = "AVAL",
+      variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = NULL),
+      conf_level = 0.95,
+      distribution = "negbin",
       rate_mean_method = "emmeans",
       var_labels = "Unadjusted exacerbation rate (per year)",
       table_names = "unadj",

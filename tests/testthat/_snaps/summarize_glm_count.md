@@ -213,6 +213,40 @@
       [1] "p-value"
       
 
+# s_glm_count (negative binomial) works with healthy input
+
+    Code
+      res
+    Output
+      $n
+      [1] 73
+      
+      $rate
+      [1] 3.720373
+      attr(,"label")
+      [1] "Adjusted Rate"
+      
+      $rate_ci
+      [1] 3.048181 4.540799
+      attr(,"label")
+      [1] "95% CI"
+      
+      $rate_ratio
+      character(0)
+      attr(,"label")
+      [1] "Adjusted Rate Ratio"
+      
+      $rate_ratio_ci
+      character(0)
+      attr(,"label")
+      [1] "95% CI"
+      
+      $pval
+      character(0)
+      attr(,"label")
+      [1] "p-value"
+      
+
 # s_glm_count works with no reference group selected.
 
     Code
@@ -247,6 +281,40 @@
       [1] "p-value"
       
 
+# s_glm_count (negative binomial) works with no reference group selected.
+
+    Code
+      res
+    Output
+      $n
+      [1] 73
+      
+      $rate
+      [1] 3.720373
+      attr(,"label")
+      [1] "Adjusted Rate"
+      
+      $rate_ci
+      [1] 3.048181 4.540799
+      attr(,"label")
+      [1] "95% CI"
+      
+      $rate_ratio
+      [1] 0.8930767 0.9173508
+      attr(,"label")
+      [1] "Adjusted Rate Ratio"
+      
+      $rate_ratio_ci
+      [1] 0.7260672 0.7381034 1.0985017 1.1401282
+      attr(,"label")
+      [1] "95% CI"
+      
+      $pval
+      [1] 0.2843668 0.4367453
+      attr(,"label")
+      [1] "p-value"
+      
+
 # summarize_glm_count works with healthy inputs
 
     Code
@@ -267,4 +335,25 @@
         10                                       0 (0.00%)     0 (0.00%)      1 (1.72%)   
       Unadjusted exacerbation rate (per year)                                             
         Rate                                      9.1554        8.2061          7.8551    
+
+# summarize_glm_count (negative binomial) works with healthy inputs
+
+    Code
+      res
+    Output
+                                                B: Placebo     A: Drug X    C: Combination
+                                                  (N=73)        (N=69)          (N=58)    
+      ————————————————————————————————————————————————————————————————————————————————————
+      Number of exacerbations per patient                                                 
+        0                                       8 (10.96%)     3 (4.35%)      6 (10.34%)  
+        1                                       9 (12.33%)    11 (15.94%)     6 (10.34%)  
+        2                                       15 (20.55%)   18 (26.09%)     9 (15.52%)  
+        3                                       11 (15.07%)   14 (20.29%)    15 (25.86%)  
+        4                                       9 (12.33%)    10 (14.49%)     9 (15.52%)  
+        5                                       9 (12.33%)    7 (10.14%)      8 (13.79%)  
+        6                                        4 (5.48%)     4 (5.80%)      4 (6.90%)   
+        7                                       8 (10.96%)     2 (2.90%)      0 (0.00%)   
+        10                                       0 (0.00%)     0 (0.00%)      1 (1.72%)   
+      Unadjusted exacerbation rate (per year)                                             
+        Rate                                      3.1918        2.9275          3.0862    
 
