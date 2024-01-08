@@ -167,7 +167,12 @@ s_ancova <- function(df,
       adjust = "none"
     )
 
-    sum_contrasts_level <- sum_contrasts[grepl(sum_level, sum_contrasts$contrast), ]
+    contrast_lvls <- gsub(paste0(" - ", .ref_group[[arm]][1], ".*"), "", sum_contrasts$contrast)
+    if (!is.null(interaction_item)) {
+      sum_contrasts_level <- sum_contrasts[grepl(sum_level, contrast_lvls, fixed = TRUE), ]
+    } else {
+      sum_contrasts_level <- sum_contrasts[sum_level == contrast_lvls, ]
+    }
     if (interaction_y != FALSE) {
       sum_contrasts_level <- sum_contrasts_level[interaction_y, ]
     }
