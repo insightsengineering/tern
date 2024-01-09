@@ -100,6 +100,22 @@ testthat::test_that("s_count_occurrences_by_grade works with valid input for gra
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
+
+  # keep only grade groups
+  result <- s_count_occurrences_by_grade(
+    df = df,
+    .var = "AETOXGR",
+    .N_col = 10,
+    grade_groups = list(
+      "Any Grade" = as.character(1:5),
+      "Grade 1-2" = c("1", "2"),
+      "Grade 3-4" = c("3", "4")
+    ),
+    only_grade_groups = TRUE
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_occurrences_by_grade works with valid input for intensity and custom arguments", {
@@ -176,6 +192,21 @@ testthat::test_that("count_occurrences_by_grade works with custom arguments for 
     count_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = grade_groups,
+      .formats = "xx.xx (xx.xx%)"
+    ) %>%
+    build_table(df, alt_counts_df = df_adsl)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # keep only grade groups
+  result <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    add_colcounts() %>%
+    count_occurrences_by_grade(
+      var = "AETOXGR",
+      grade_groups = grade_groups,
+      only_grade_groups = TRUE,
       .formats = "xx.xx (xx.xx%)"
     ) %>%
     build_table(df, alt_counts_df = df_adsl)
