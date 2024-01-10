@@ -4,7 +4,12 @@
 \alias{h_append_grade_groups}
 \title{Helper function for \code{\link[=s_count_occurrences_by_grade]{s_count_occurrences_by_grade()}}}
 \usage{
-h_append_grade_groups(grade_groups, refs, remove_single = TRUE)
+h_append_grade_groups(
+  grade_groups,
+  refs,
+  remove_single = TRUE,
+  only_grade_groups = FALSE
+)
 }
 \arguments{
 \item{grade_groups}{(named \code{list} of \code{character})\cr containing groupings of grades.}
@@ -13,7 +18,12 @@ h_append_grade_groups(grade_groups, refs, remove_single = TRUE)
 and each entry represents a count.}
 
 \item{remove_single}{(\code{logical})\cr \code{TRUE} to not include the elements of one-element grade groups
-in the the output list; in this case only the grade groups names will be included in the output.}
+in the the output list; in this case only the grade groups names will be included in the output. If
+\code{only_grade_groups} is set to \code{TRUE} this argument is ignored.}
+
+\item{only_grade_groups}{(\code{flag})\cr whether only the specified grade groups should be
+included, with individual grade rows removed (\code{TRUE}), or all grades and grade groups
+should be displayed (\code{FALSE}).}
 }
 \value{
 Formatted list of grade groupings.

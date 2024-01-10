@@ -13,6 +13,7 @@ count_occurrences_by_grade(
   id = "USUBJID",
   grade_groups = list(),
   remove_single = TRUE,
+  only_grade_groups = FALSE,
   var_labels = var,
   show_labels = "default",
   riskdiff = FALSE,
@@ -32,6 +33,7 @@ summarize_occurrences_by_grade(
   id = "USUBJID",
   grade_groups = list(),
   remove_single = TRUE,
+  only_grade_groups = FALSE,
   na_str = default_na_str(),
   ...,
   .stats = NULL,
@@ -47,6 +49,7 @@ s_count_occurrences_by_grade(
   id = "USUBJID",
   grade_groups = list(),
   remove_single = TRUE,
+  only_grade_groups = FALSE,
   labelstr = ""
 )
 
@@ -57,6 +60,7 @@ a_count_occurrences_by_grade(
   id = "USUBJID",
   grade_groups = list(),
   remove_single = TRUE,
+  only_grade_groups = FALSE,
   labelstr = ""
 )
 }
@@ -68,7 +72,12 @@ a_count_occurrences_by_grade(
 \item{grade_groups}{(named \code{list} of \code{character})\cr containing groupings of grades.}
 
 \item{remove_single}{(\code{logical})\cr \code{TRUE} to not include the elements of one-element grade groups
-in the the output list; in this case only the grade groups names will be included in the output.}
+in the the output list; in this case only the grade groups names will be included in the output. If
+\code{only_grade_groups} is set to \code{TRUE} this argument is ignored.}
+
+\item{only_grade_groups}{(\code{flag})\cr whether only the specified grade groups should be
+included, with individual grade rows removed (\code{TRUE}), or all grades and grade groups
+should be displayed (\code{FALSE}).}
 
 \item{var_labels}{(\code{character})\cr character for label.}
 
@@ -196,7 +205,8 @@ basic_table() \%>\%
   add_colcounts() \%>\%
   count_occurrences_by_grade(
     var = "AETOXGR",
-    grade_groups = grade_groups
+    grade_groups = grade_groups,
+    only_grade_groups = TRUE
   ) \%>\%
   build_table(df, alt_counts_df = df_adsl)
 
