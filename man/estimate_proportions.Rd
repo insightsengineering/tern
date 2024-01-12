@@ -10,7 +10,14 @@
 estimate_proportion(
   lyt,
   vars,
-  na_str = NA_character_,
+  conf_level = 0.95,
+  method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "strat_wilson",
+    "strat_wilsonc", "agresti-coull", "jeffreys"),
+  weights = NULL,
+  max_iterations = 50,
+  variables = list(strata = NULL),
+  long = FALSE,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   show_labels = "hidden",
@@ -50,13 +57,30 @@ a_proportion(
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
+\item{method}{(\code{string})\cr the method used to construct the confidence interval
+for proportion of successful outcomes; one of \code{waldcc}, \code{wald}, \code{clopper-pearson},
+\code{wilson}, \code{wilsonc}, \code{strat_wilson}, \code{strat_wilsonc}, \code{agresti-coull} or \code{jeffreys}.}
+
+\item{weights}{(\code{numeric} or \code{NULL})\cr weights for each level of the strata. If \code{NULL}, they are
+estimated using the iterative algorithm proposed in \insertCite{Yan2010-jt;textual}{tern} that
+minimizes the weighted squared length of the confidence interval.}
+
+\item{max_iterations}{(\code{count})\cr maximum number of iterations for the iterative procedure used
+to find estimates of optimal weights.}
+
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
+
+\item{long}{(\code{flag})\cr a long description is required.}
+
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
-\item{...}{other arguments are ultimately conveyed to \code{\link[=s_proportion]{s_proportion()}}.}
+\item{...}{additional arguments for the lower level functions.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
@@ -83,23 +107,6 @@ variable name in \code{.var}.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
-
-\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
-
-\item{method}{(\code{string})\cr the method used to construct the confidence interval
-for proportion of successful outcomes; one of \code{waldcc}, \code{wald}, \code{clopper-pearson},
-\code{wilson}, \code{wilsonc}, \code{strat_wilson}, \code{strat_wilsonc}, \code{agresti-coull} or \code{jeffreys}.}
-
-\item{weights}{(\code{numeric} or \code{NULL})\cr weights for each level of the strata. If \code{NULL}, they are
-estimated using the iterative algorithm proposed in \insertCite{Yan2010-jt;textual}{tern} that
-minimizes the weighted squared length of the confidence interval.}
-
-\item{max_iterations}{(\code{count})\cr maximum number of iterations for the iterative procedure used
-to find estimates of optimal weights.}
-
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
-
-\item{long}{(\code{flag})\cr a long description is required.}
 }
 \value{
 \itemize{

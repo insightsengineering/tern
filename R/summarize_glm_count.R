@@ -5,6 +5,7 @@
 #' Summarize results of a Poisson Negative Binomial Regression.
 #' This can be used to analyze count and/or frequency data using a linear model.
 #'
+#' @inheritParams h_glm_count
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("summarize_glm_count")`
 #'   to see available statistics for this function.
@@ -130,6 +131,50 @@ h_glm_quasipoisson <- function(.var,
   )
 }
 
+#' @describeIn h_glm_count Helper function to return results of a negative binomial model.
+#'
+#' @inheritParams summarize_glm_count
+#'
+#' @return
+#' * `h_glm_negbin()` returns the results of a Negative Binomial model.
+#'
+#' @keywords internal
+h_glm_negbin <- function(.var,
+                         .df_row,
+                         variables,
+                         weights) {
+  arm <- variables$arm
+  covariates <- variables$covariates
+
+  formula <- stats::as.formula(paste0(
+    .var, " ~ ",
+    " + ",
+    paste(covariates, collapse = " + "),
+    " + ",
+    arm
+  ))
+
+  glm_fit <- MASS::glm.nb(
+    formula = formula,
+    data = .df_row,
+    link = "log"
+  )
+
+  emmeans_fit <- emmeans::emmeans(
+    glm_fit,
+    specs = arm,
+    data = .df_row,
+    type = "response",
+    offset = 0,
+    weights = weights
+  )
+
+  list(
+    glm_fit = glm_fit,
+    emmeans_fit = emmeans_fit
+  )
+}
+
 #' @describeIn h_glm_count Helper function to return the results of the
 #'   selected model (poisson, quasipoisson, negative binomial).
 #'
@@ -144,7 +189,7 @@ h_glm_quasipoisson <- function(.var,
 #'     `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
 #'   * `offset` (`numeric`)\cr a numeric vector or scalar adding an offset.
 #' @param distribution (`character`)\cr a character value specifying the distribution
-#'   used in the regression (poisson, quasipoisson).
+#'   used in the regression (poisson, quasipoisson, negative binomial).
 #'
 #' @return
 #' * `h_glm_count()` returns the results of the selected model.
@@ -155,13 +200,11 @@ h_glm_count <- function(.var,
                         variables,
                         distribution,
                         weights) {
-  if (distribution == "negbin") {
-    stop("negative binomial distribution is not currently available.")
-  }
+  checkmate::assert_subset(distribution, c("poisson", "quasipoisson", "negbin"), empty.ok = FALSE)
   switch(distribution,
     poisson = h_glm_poisson(.var, .df_row, variables, weights),
     quasipoisson = h_glm_quasipoisson(.var, .df_row, variables, weights),
-    negbin = list() # h_glm_negbin(.var, .df_row, variables, weights) # nolint
+    negbin = h_glm_negbin(.var, .df_row, variables, weights)
   )
 }
 
@@ -215,8 +258,6 @@ h_ppmeans <- function(obj, .df_row, arm, conf_level) {
 
 #' @describeIn summarize_glm_count Statistics function that produces a named list of results
 #'   of the investigated Poisson model.
-#'
-#' @inheritParams h_glm_count
 #'
 #' @return
 #' * `s_glm_count()` returns a named `list` of 5 statistics:
@@ -399,8 +440,14 @@ a_glm_count <- make_afun(
 #' @order 2
 summarize_glm_count <- function(lyt,
                                 vars,
+                                variables,
+                                distribution,
+                                conf_level,
+                                rate_mean_method,
+                                weights = stats::weights,
+                                scale = 1,
                                 var_labels,
-                                na_str = NA_character_,
+                                na_str = default_na_str(),
                                 nested = TRUE,
                                 ...,
                                 show_labels = "visible",
@@ -409,6 +456,11 @@ summarize_glm_count <- function(lyt,
                                 .formats = NULL,
                                 .labels = NULL,
                                 .indent_mods = NULL) {
+  extra_args <- list(
+    variables = variables, distribution = distribution, conf_level = conf_level,
+    rate_mean_method = rate_mean_method, weights = weights, scale = scale, ...
+  )
+
   afun <- make_afun(
     a_glm_count,
     .stats = .stats,
@@ -426,6 +478,6 @@ summarize_glm_count <- function(lyt,
     afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }

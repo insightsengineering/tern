@@ -14,7 +14,7 @@ count_values(
   lyt,
   vars,
   values,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   table_names = vars,

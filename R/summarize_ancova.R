@@ -5,7 +5,10 @@
 #' Summarize results of `ANCOVA`. This can be used to analyze multiple endpoints and/or
 #' multiple timepoints within the same response variable `.var`.
 #'
+#' @inheritParams h_ancova
 #' @inheritParams argument_convention
+#' @param interaction_y (`character`)\cr a selected item inside of the interaction_item column which will be used
+#'   to select the specific `ANCOVA` results. if the interaction is not needed, the default option is `FALSE`.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("summarize_ancova")`
 #'   to see available statistics for this function.
 #'
@@ -84,10 +87,6 @@ h_ancova <- function(.var,
 
 #' @describeIn summarize_ancova Statistics function that produces a named list of results
 #'   of the investigated linear model.
-#'
-#' @inheritParams h_ancova
-#' @param interaction_y (`character`)\cr a selected item inside of the interaction_item column which will be used
-#'   to select the specific `ANCOVA` results. if the interaction is not needed, the default option is `FALSE`.
 #'
 #' @return
 #' * `s_ancova()` returns a named list of 5 statistics:
@@ -168,7 +167,12 @@ s_ancova <- function(df,
       adjust = "none"
     )
 
-    sum_contrasts_level <- sum_contrasts[grepl(sum_level, sum_contrasts$contrast), ]
+    contrast_lvls <- gsub(paste0(" - ", .ref_group[[arm]][1], ".*"), "", sum_contrasts$contrast)
+    if (!is.null(interaction_item)) {
+      sum_contrasts_level <- sum_contrasts[grepl(sum_level, contrast_lvls, fixed = TRUE), ]
+    } else {
+      sum_contrasts_level <- sum_contrasts[sum_level == contrast_lvls, ]
+    }
     if (interaction_y != FALSE) {
       sum_contrasts_level <- sum_contrasts_level[interaction_y, ]
     }
@@ -236,8 +240,12 @@ a_ancova <- make_afun(
 #' @order 2
 summarize_ancova <- function(lyt,
                              vars,
+                             variables,
+                             conf_level,
+                             interaction_y = FALSE,
+                             interaction_item = NULL,
                              var_labels,
-                             na_str = NA_character_,
+                             na_str = default_na_str(),
                              nested = TRUE,
                              ...,
                              show_labels = "visible",
@@ -245,9 +253,12 @@ summarize_ancova <- function(lyt,
                              .stats = NULL,
                              .formats = NULL,
                              .labels = NULL,
-                             .indent_mods = NULL,
-                             interaction_y = FALSE,
-                             interaction_item = NULL) {
+                             .indent_mods = NULL) {
+  extra_args <- list(
+    variables = variables, conf_level = conf_level, interaction_y = interaction_y,
+    interaction_item = interaction_item, ...
+  )
+
   afun <- make_afun(
     a_ancova,
     interaction_y = interaction_y,
@@ -267,6 +278,6 @@ summarize_ancova <- function(lyt,
     afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }

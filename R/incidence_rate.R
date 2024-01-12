@@ -135,7 +135,9 @@ a_incidence_rate <- make_afun(
 #' @order 2
 estimate_incidence_rate <- function(lyt,
                                     vars,
-                                    na_str = NA_character_,
+                                    n_events,
+                                    control = control_incidence_rate(),
+                                    na_str = default_na_str(),
                                     nested = TRUE,
                                     ...,
                                     show_labels = "hidden",
@@ -144,6 +146,8 @@ estimate_incidence_rate <- function(lyt,
                                     .formats = NULL,
                                     .labels = NULL,
                                     .indent_mods = NULL) {
+  extra_args <- list(n_events = n_events, control = control, ...)
+
   afun <- make_afun(
     a_incidence_rate,
     .stats = .stats,
@@ -160,7 +164,7 @@ estimate_incidence_rate <- function(lyt,
     afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }
 

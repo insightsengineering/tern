@@ -130,7 +130,7 @@ testthat::test_that("summarize_ancova works with interaction", {
       interaction_item = "p_group"
     ) %>%
     build_table(iris_new)
-  result_matrix <- to_string_matrix(result)
+  result_matrix <- to_string_matrix(result, with_spaces = FALSE, print_txt_to_copy = FALSE)
 
   lm_fit <- stats::lm(formula = "Petal.Length ~ Sepal.Width + p_group + Species*p_group + Species", data = iris_new)
   emmeans_fit <- emmeans::emmeans(lm_fit, specs = c("Species", "p_group"), data = iris_new)
@@ -152,4 +152,58 @@ testthat::test_that("summarize_ancova works with interaction", {
   ci_b <- paste0("(", as.numeric(sum_contrasts[2, 2]), ", ", as.numeric(sum_contrasts[2, 3]), ")")
   testthat::expect_identical(result_matrix[7, 3], ci_a)
   testthat::expect_identical(result_matrix[7, 4], ci_b)
+})
+
+testthat::test_that("summarize_ancova works with irregular arm levels", {
+  adsl <- tern_ex_adsl
+  adrs <- tern_ex_adrs
+  adsl$ARMCD2 <- factor(adsl$ARMCD,
+    levels = c("ARM A", "ARM B", "ARM C"),
+    labels = c("ARM A", "ARM A Subgroup", "ARM C")
+  )
+  adrs$ARMCD2 <- factor(adrs$ARMCD,
+    levels = c("ARM A", "ARM B", "ARM C"),
+    labels = c("ARM A", "ARM A Subgroup", "ARM C")
+  )
+  adsl$ARMCD3 <- factor(adsl$ARMCD,
+    levels = c("ARM A", "ARM B", "ARM C"),
+    labels = c("ARM A", "ARM B (x)", "ARM C")
+  )
+  adrs$ARMCD3 <- factor(adrs$ARMCD,
+    levels = c("ARM A", "ARM B", "ARM C"),
+    labels = c("ARM A", "ARM B (x)", "ARM C")
+  )
+
+  set.seed(1)
+  adrs_single <- adrs %>% mutate(CHG = rnorm(nrow(.)))
+
+  result1 <- basic_table() %>%
+    split_cols_by("ARMCD2", ref_group = "ARM C") %>%
+    add_colcounts() %>%
+    summarize_ancova(
+      vars = "CHG",
+      variables = list(arm = "ARMCD2", covariates = NULL),
+      table_names = "unadj",
+      conf_level = 0.95, var_labels = "Unadjusted comparison",
+      .labels = c(lsmean = "Mean", lsmean_diff = "Difference in Means")
+    ) %>%
+    build_table(adrs_single, alt_counts_df = adsl)
+
+  res <- testthat::expect_silent(result1)
+  testthat::expect_snapshot(res)
+
+  result2 <- basic_table() %>%
+    split_cols_by("ARMCD3", ref_group = "ARM C") %>%
+    add_colcounts() %>%
+    summarize_ancova(
+      vars = "CHG",
+      variables = list(arm = "ARMCD3", covariates = NULL),
+      table_names = "unadj",
+      conf_level = 0.95, var_labels = "Unadjusted comparison",
+      .labels = c(lsmean = "Mean", lsmean_diff = "Difference in Means")
+    ) %>%
+    build_table(adrs_single, alt_counts_df = adsl)
+
+  res <- testthat::expect_silent(result2)
+  testthat::expect_snapshot(res)
 })

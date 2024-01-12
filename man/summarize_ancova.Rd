@@ -9,8 +9,12 @@
 summarize_ancova(
   lyt,
   vars,
+  variables,
+  conf_level,
+  interaction_y = FALSE,
+  interaction_item = NULL,
   var_labels,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   show_labels = "visible",
@@ -18,9 +22,7 @@ summarize_ancova(
   .stats = NULL,
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL,
-  interaction_y = FALSE,
-  interaction_item = NULL
+  .indent_mods = NULL
 )
 
 s_ancova(
@@ -52,6 +54,22 @@ a_ancova(
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables, with expected elements:
+\itemize{
+\item \code{arm} (\code{string})\cr group variable, for which the covariate adjusted means of multiple groups will be
+summarized. Specifically, the first level of \code{arm} variable is taken as the reference group.
+\item \code{covariates} (\code{character})\cr a vector that can contain single variable names (such as \code{"X1"}), and/or
+interaction terms indicated by \code{"X1 * X2"}.
+}}
+
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
+\item{interaction_y}{(\code{character})\cr a selected item inside of the interaction_item column which will be used
+to select the specific \code{ANCOVA} results. if the interaction is not needed, the default option is \code{FALSE}.}
+
+\item{interaction_item}{(\code{character})\cr name of the variable that should have interactions
+with arm. if the interaction is not needed, the default option is \code{NULL}.}
+
 \item{var_labels}{(\code{character})\cr character for label.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
@@ -78,26 +96,16 @@ information on the \code{"auto"} setting.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
 
-\item{interaction_y}{(\code{character})\cr a selected item inside of the interaction_item column which will be used
-to select the specific \code{ANCOVA} results. if the interaction is not needed, the default option is \code{FALSE}.}
-
-\item{interaction_item}{(\code{character})\cr name of the variable that should have interactions
-with arm. if the interaction is not needed, the default option is \code{NULL}.}
-
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
-
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
+\item{.df_row}{(\code{data.frame})\cr data set that includes all the variables that are called in \code{.var} and \code{variables}.}
 
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
-
-\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 }
 \value{
 \itemize{

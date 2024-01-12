@@ -100,6 +100,22 @@ testthat::test_that("s_count_occurrences_by_grade works with valid input for gra
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
+
+  # keep only grade groups
+  result <- s_count_occurrences_by_grade(
+    df = df,
+    .var = "AETOXGR",
+    .N_col = 10,
+    grade_groups = list(
+      "Any Grade" = as.character(1:5),
+      "Grade 1-2" = c("1", "2"),
+      "Grade 3-4" = c("3", "4")
+    ),
+    only_grade_groups = TRUE
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("s_count_occurrences_by_grade works with valid input for intensity and custom arguments", {
@@ -176,6 +192,21 @@ testthat::test_that("count_occurrences_by_grade works with custom arguments for 
     count_occurrences_by_grade(
       var = "AETOXGR",
       grade_groups = grade_groups,
+      .formats = "xx.xx (xx.xx%)"
+    ) %>%
+    build_table(df, alt_counts_df = df_adsl)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # keep only grade groups
+  result <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    add_colcounts() %>%
+    count_occurrences_by_grade(
+      var = "AETOXGR",
+      grade_groups = grade_groups,
+      only_grade_groups = TRUE,
       .formats = "xx.xx (xx.xx%)"
     ) %>%
     build_table(df, alt_counts_df = df_adsl)
@@ -341,10 +372,13 @@ testthat::test_that("summarize_ and count_occurrences_by_grade works with pagina
   pag_result <- paginate_table(result, lpp = 20)
 
   testthat::expect_identical(
-    to_string_matrix(pag_result[[1]])[3:4, 1],
+    to_string_matrix(pag_result[[1]], with_spaces = FALSE, print_txt_to_copy = FALSE)[3:4, 1],
     c("-Any-", "Grade 1-2")
   )
-  testthat::expect_identical(to_string_matrix(pag_result[[2]])[3, 1], "A")
+  testthat::expect_identical(
+    to_string_matrix(pag_result[[2]], with_spaces = FALSE, print_txt_to_copy = FALSE)[3, 1],
+    "  A"
+  )
 })
 
 testthat::test_that("count_occurrences_by_grade works as expected with risk difference column", {

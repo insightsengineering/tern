@@ -272,4 +272,17 @@ testthat::test_that("summarize_occurrences works as expected with risk differenc
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
+
+  # Multiple comparison groups
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", c("B: Placebo", "C: Combination"))) %>%
+    split_rows_by("SEX", child_labels = "visible") %>%
+    summarize_occurrences(
+      var = "BMRKR2",
+      riskdiff = TRUE
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

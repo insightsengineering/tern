@@ -10,10 +10,14 @@
 count_occurrences_by_grade(
   lyt,
   var,
+  id = "USUBJID",
+  grade_groups = list(),
+  remove_single = TRUE,
+  only_grade_groups = FALSE,
   var_labels = var,
   show_labels = "default",
   riskdiff = FALSE,
-  na_str = NA_character_,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   table_names = var,
@@ -26,7 +30,11 @@ count_occurrences_by_grade(
 summarize_occurrences_by_grade(
   lyt,
   var,
-  na_str = NA_character_,
+  id = "USUBJID",
+  grade_groups = list(),
+  remove_single = TRUE,
+  only_grade_groups = FALSE,
+  na_str = default_na_str(),
   ...,
   .stats = NULL,
   .formats = NULL,
@@ -41,6 +49,7 @@ s_count_occurrences_by_grade(
   id = "USUBJID",
   grade_groups = list(),
   remove_single = TRUE,
+  only_grade_groups = FALSE,
   labelstr = ""
 )
 
@@ -51,13 +60,26 @@ a_count_occurrences_by_grade(
   id = "USUBJID",
   grade_groups = list(),
   remove_single = TRUE,
+  only_grade_groups = FALSE,
   labelstr = ""
 )
 }
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
-\item{var_labels}{(\code{character})\cr labels to show in the result table.}
+\item{id}{(\code{string})\cr subject variable name.}
+
+\item{grade_groups}{(named \code{list} of \code{character})\cr containing groupings of grades.}
+
+\item{remove_single}{(\code{logical})\cr \code{TRUE} to not include the elements of one-element grade groups
+in the the output list; in this case only the grade groups names will be included in the output. If
+\code{only_grade_groups} is set to \code{TRUE} this argument is ignored.}
+
+\item{only_grade_groups}{(\code{flag})\cr whether only the specified grade groups should be
+included, with individual grade rows removed (\code{TRUE}), or all grades and grade groups
+should be displayed (\code{FALSE}).}
+
+\item{var_labels}{(\code{character})\cr character for label.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
@@ -94,13 +116,6 @@ by a statistics function.}
 
 \item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
-
-\item{id}{(\code{string})\cr subject variable name.}
-
-\item{grade_groups}{(named \code{list} of \code{character})\cr containing groupings of grades.}
-
-\item{remove_single}{(\code{logical})\cr \code{TRUE} to not include the elements of one-element grade groups
-in the the output list; in this case only the grade groups names will be included in the output.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
@@ -190,7 +205,8 @@ basic_table() \%>\%
   add_colcounts() \%>\%
   count_occurrences_by_grade(
     var = "AETOXGR",
-    grade_groups = grade_groups
+    grade_groups = grade_groups,
+    only_grade_groups = TRUE
   ) \%>\%
   build_table(df, alt_counts_df = df_adsl)
 

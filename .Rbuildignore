@@ -21,6 +21,8 @@ LICENSE
 
 # pkgdown
 ^_pkgdown\.yml$
+pkgdown
+^pkgdown$
 
 # rstudio
 ^.*\.Rproj$

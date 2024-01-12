@@ -10,7 +10,10 @@
 count_abnormal(
   lyt,
   var,
-  na_str = NA_character_,
+  abnormal = list(Low = "LOW", High = "HIGH"),
+  variables = list(id = "USUBJID", baseline = "BNRIND"),
+  exclude_base_abn = FALSE,
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   table_names = var,
@@ -39,6 +42,15 @@ a_count_abnormal(
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
+\item{abnormal}{(named \code{list})\cr list identifying the abnormal range level(s) in \code{var}. Defaults to
+\code{list(Low = "LOW", High = "HIGH")} but you can also group different levels into the named list,
+for example, \code{abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))}.}
+
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
+
+\item{exclude_base_abn}{(\code{flag})\cr whether to exclude subjects with baseline abnormality
+from numerator and denominator.}
+
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
@@ -65,15 +77,6 @@ unmodified default behavior. Can be negative.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
-
-\item{abnormal}{(named \code{list})\cr list identifying the abnormal range level(s) in \code{var}. Defaults to
-\code{list(Low = "LOW", High = "HIGH")} but you can also group different levels into the named list,
-for example, \code{abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))}.}
-
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
-
-\item{exclude_base_abn}{(\code{flag})\cr whether to exclude subjects with baseline abnormality
-from numerator and denominator.}
 }
 \value{
 \itemize{

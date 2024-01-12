@@ -198,7 +198,9 @@ a_count_abnormal_by_marked <- make_afun(
 #' @order 2
 count_abnormal_by_marked <- function(lyt,
                                      var,
-                                     na_str = NA_character_,
+                                     category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
+                                     variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir"),
+                                     na_str = default_na_str(),
                                      nested = TRUE,
                                      ...,
                                      .stats = NULL,
@@ -206,6 +208,8 @@ count_abnormal_by_marked <- function(lyt,
                                      .labels = NULL,
                                      .indent_mods = NULL) {
   checkmate::assert_string(var)
+
+  extra_args <- list(category = category, variables = variables, ...)
 
   afun <- make_afun(
     a_count_abnormal_by_marked,
@@ -223,7 +227,7 @@ count_abnormal_by_marked <- function(lyt,
     na_str = na_str,
     nested = nested,
     show_labels = "hidden",
-    extra_args = c(list(...))
+    extra_args = extra_args
   )
   lyt
 }

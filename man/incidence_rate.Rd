@@ -10,7 +10,9 @@
 estimate_incidence_rate(
   lyt,
   vars,
-  na_str = NA_character_,
+  n_events,
+  control = control_incidence_rate(),
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   show_labels = "hidden",
@@ -42,6 +44,19 @@ a_incidence_rate(
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{n_events}{(\code{integer})\cr number of events observed.}
+
+\item{control}{(\code{list})\cr parameters for estimation details, specified by using
+the helper function \code{\link[=control_incidence_rate]{control_incidence_rate()}}. Possible parameter options are:
+\itemize{
+\item \code{conf_level} (\code{proportion})\cr confidence level for the estimated incidence rate.
+\item \code{conf_type} (\code{string})\cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
+for confidence interval type.
+\item \code{input_time_unit} (\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
+indicating time unit for data input.
+\item \code{num_pt_year} (\code{numeric})\cr time unit for desired output (in person-years).
+}}
+
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
@@ -71,20 +86,7 @@ unmodified default behavior. Can be negative.}
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{n_events}{(\code{integer})\cr number of events observed.}
-
 \item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
-
-\item{control}{(\code{list})\cr parameters for estimation details, specified by using
-the helper function \code{\link[=control_incidence_rate]{control_incidence_rate()}}. Possible parameter options are:
-\itemize{
-\item \code{conf_level} (\code{proportion})\cr confidence level for the estimated incidence rate.
-\item \code{conf_type} (\code{string})\cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
-for confidence interval type.
-\item \code{input_time_unit} (\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
-indicating time unit for data input.
-\item \code{num_pt_year} (\code{numeric})\cr time unit for desired output (in person-years).
-}}
 }
 \value{
 \itemize{

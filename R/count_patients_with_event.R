@@ -5,6 +5,11 @@
 #' The primary analysis variable `.var` denotes the unique patient identifier.
 #'
 #' @inheritParams argument_convention
+#' @param filters (`character`)\cr a character vector specifying the column names and flag variables
+#'   to be used for counting the number of unique identifiers satisfying such conditions.
+#'   Multiple column names and flags are accepted in this format
+#'   `c("column_name1" = "flag1", "column_name2" = "flag2")`.
+#'   Note that only equality is being accepted as condition.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_patients_with_event")`
 #'   to see available statistics for this function.
 #'
@@ -19,11 +24,6 @@ NULL
 #'
 #' @inheritParams analyze_variables
 #' @param .var (`character`)\cr name of the column that contains the unique identifier.
-#' @param filters (`character`)\cr a character vector specifying the column names and flag variables
-#'   to be used for counting the number of unique identifiers satisfying such conditions.
-#'   Multiple column names and flags are accepted in this format
-#'   `c("column_name1" = "flag1", "column_name2" = "flag2")`.
-#'   Note that only equality is being accepted as condition.
 #'
 #' @return
 #' * `s_count_patients_with_event()` returns the count and fraction of unique identifiers with the defined event.
@@ -149,8 +149,9 @@ a_count_patients_with_event <- make_afun(
 #' @order 2
 count_patients_with_event <- function(lyt,
                                       vars,
+                                      filters,
                                       riskdiff = FALSE,
-                                      na_str = NA_character_,
+                                      na_str = default_na_str(),
                                       nested = TRUE,
                                       ...,
                                       table_names = vars,
@@ -159,6 +160,8 @@ count_patients_with_event <- function(lyt,
                                       .labels = NULL,
                                       .indent_mods = NULL) {
   checkmate::assert_flag(riskdiff)
+
+  s_args <- list(filters = filters, ...)
 
   afun <- make_afun(
     a_count_patients_with_event,
@@ -169,13 +172,13 @@ count_patients_with_event <- function(lyt,
   )
 
   extra_args <- if (isFALSE(riskdiff)) {
-    list(...)
+    s_args
   } else {
     list(
       afun = list("s_count_patients_with_event" = afun),
       .stats = .stats,
       .indent_mods = .indent_mods,
-      s_args = list(...)
+      s_args = s_args
     )
   }
 

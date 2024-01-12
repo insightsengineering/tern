@@ -5,9 +5,19 @@
 #' Tabulate the estimated effects of multiple continuous biomarker variables
 #' across population subgroups.
 #'
-#' @inheritParams argument_convention
 #' @inheritParams fit_coxreg_multivar
 #' @inheritParams survival_duration_subgroups
+#' @inheritParams argument_convention
+#' @param df (`data.frame`)\cr containing all analysis variables, as returned by
+#'   [extract_survival_biomarkers()].
+#' @param vars (`character`)\cr the names of statistics to be reported among:
+#'   * `n_tot_events`: Total number of events per group.
+#'   * `n_tot`: Total number of observations per group.
+#'   * `median`: Median survival time.
+#'   * `hr`: Hazard ratio.
+#'   * `ci`: Confidence interval of hazard ratio.
+#'   * `pval`: p-value of the effect.
+#'   Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci` are required.
 #'
 #' @details These functions create a layout starting from a data frame which contains
 #'   the required statistics. The tables are then typically used as input for forest plots.
@@ -143,17 +153,6 @@ extract_survival_biomarkers <- function(variables,
 #' @describeIn survival_biomarkers_subgroups Table-creating function which creates a table
 #'   summarizing biomarker effects on survival by subgroup.
 #'
-#' @param df (`data.frame`)\cr containing all analysis variables, as returned by
-#'   [extract_survival_biomarkers()].
-#' @param vars (`character`)\cr the names of statistics to be reported among:
-#'   * `n_tot_events`: Total number of events per group.
-#'   * `n_tot`: Total number of observations per group.
-#'   * `median`: Median survival time.
-#'   * `hr`: Hazard ratio.
-#'   * `ci`: Confidence interval of hazard ratio.
-#'   * `pval`: p-value of the effect.
-#'   Note, one of the statistics `n_tot` and `n_tot_events`, as well as both `hr` and `ci` are required.
-#'
 #' @return An `rtables` table summarizing biomarker effects on survival by subgroup.
 #'
 #' @note In contrast to [tabulate_survival_subgroups()] this tabulation function does
@@ -182,12 +181,18 @@ extract_survival_biomarkers <- function(variables,
 #' @order 2
 tabulate_survival_biomarkers <- function(df,
                                          vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
+                                         groups_lists = list(),
+                                         control = control_coxreg(),
+                                         label_all = "All Patients",
                                          time_unit = NULL,
+                                         na_str = default_na_str(),
                                          .indent_mods = 0L) {
   checkmate::assert_data_frame(df)
   checkmate::assert_character(df$biomarker)
   checkmate::assert_character(df$biomarker_label)
   checkmate::assert_subset(vars, get_stats("tabulate_survival_biomarkers"))
+
+  extra_args <- list(groups_lists = groups_lists, control = control, label_all = label_all)
 
   df_subs <- split(df, f = df$biomarker)
   tabs <- lapply(df_subs, FUN = function(df_sub) {
@@ -195,7 +200,9 @@ tabulate_survival_biomarkers <- function(df,
       df = df_sub,
       vars = vars,
       time_unit = time_unit,
-      .indent_mods = .indent_mods
+      na_str = na_str,
+      .indent_mods = .indent_mods,
+      extra_args = extra_args
     )
     # Insert label row as first row in table.
     label_at_path(tab_sub, path = row_paths(tab_sub)[[1]][1]) <- df_sub$biomarker_label[1]

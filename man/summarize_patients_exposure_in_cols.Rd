@@ -11,8 +11,11 @@ analyze_patients_exposure_in_cols(
   lyt,
   var = NULL,
   ex_var = "AVAL",
-  col_split = TRUE,
+  id = "USUBJID",
   add_total_level = FALSE,
+  custom_label = NULL,
+  col_split = TRUE,
+  na_str = default_na_str(),
   .stats = c("n_patients", "sum_exposure"),
   .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
   .indent_mods = 0L,
@@ -22,12 +25,16 @@ analyze_patients_exposure_in_cols(
 summarize_patients_exposure_in_cols(
   lyt,
   var,
-  na_str = NA_character_,
+  ex_var = "AVAL",
+  id = "USUBJID",
+  add_total_level = FALSE,
+  custom_label = NULL,
+  col_split = TRUE,
+  na_str = default_na_str(),
   ...,
   .stats = c("n_patients", "sum_exposure"),
   .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
-  .indent_mods = NULL,
-  col_split = TRUE
+  .indent_mods = NULL
 )
 
 s_count_patients_sum_exposure(
@@ -45,12 +52,12 @@ a_count_patients_sum_exposure(
   var = NULL,
   ex_var = "AVAL",
   id = "USUBJID",
-  labelstr = "",
   add_total_level = FALSE,
+  custom_label = NULL,
+  labelstr = "",
   .N_col,
   .stats,
-  .formats = list(n_patients = "xx (xx.x\%)", sum_exposure = "xx"),
-  custom_label = NULL
+  .formats = list(n_patients = "xx (xx.x\%)", sum_exposure = "xx")
 )
 }
 \arguments{
@@ -61,11 +68,17 @@ by a statistics function.}
 
 \item{ex_var}{(\code{character})\cr name of the variable within \code{df} containing exposure values.}
 
-\item{col_split}{(\code{flag})\cr whether the columns should be split. Set to \code{FALSE} when the required
-column split has been done already earlier in the layout pipe.}
+\item{id}{(\code{string})\cr subject variable name.}
 
 \item{add_total_level}{(\code{flag})\cr adds a "total" level after the others which includes all the levels
 that constitute the split. A custom label can be set for this level via the \code{custom_label} argument.}
+
+\item{custom_label}{(\code{string} or \code{NULL})\cr if provided and \code{labelstr} is empty then this will be used as label.}
+
+\item{col_split}{(\code{flag})\cr whether the columns should be split. Set to \code{FALSE} when the required
+column split has been done already earlier in the layout pipe.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run
 \code{get_stats("analyze_patients_exposure_in_cols")} to see available statistics for this function.}
@@ -77,11 +90,7 @@ unmodified default behavior. Can be negative.}
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
-
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
-
-\item{id}{(\code{string})\cr subject variable name.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
@@ -89,8 +98,6 @@ for more information.}
 
 \item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
-
-\item{custom_label}{(\code{string} or \code{NULL})\cr if provided and \code{labelstr} is empty then this will be used as label.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}

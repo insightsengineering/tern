@@ -6,7 +6,7 @@ default_language_version:
   python: python3
 repos:
   - repo: https://github.com/lorenzwalthert/precommit
-    rev: v0.3.2.9025
+    rev: v0.3.2.9027
     hooks:
       - id: style-files
         name: Style code with `styler`
@@ -52,9 +52,9 @@ repos:
           .*\.sh|
           .*\.svg|
           .*\.xml|
-          (.*/|)\_pkgdown.y[a]ml|
+          (.*/|)\_pkgdown.y[a]?ml|
           (.*/|)\.gitignore|
-          (.*/|)\.gitlab-ci\.yml|
+          (.*/|)\.gitlab-ci\.y[a]?ml|
           (.*/|)\.lintr|
           (.*/|)\.pre-commit-.*|
           (.*/|)\.Rbuildignore|
@@ -64,8 +64,8 @@ repos:
           (.*/|)DESCRIPTION|
           (.*/|)LICENSE|
           (.*/|)NAMESPACE|
-          (.*/|)staged_dependencies\.yaml|
+          (.*/|)staged_dependencies\.y[a]?ml|
           (.*/|)WORDLIST|
-          \.github/.*\.yaml|
+          \.github/.*\.y[a]?ml|
           data/.*
           )$

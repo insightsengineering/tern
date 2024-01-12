@@ -8,6 +8,7 @@
 tabulate_rsp_biomarkers(
   df,
   vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
+  na_str = default_na_str(),
   .indent_mods = 0L
 )
 }
@@ -25,6 +26,8 @@ tabulate_rsp_biomarkers(
 \item \code{pval}: p-value of the effect.
 Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.
 }}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}

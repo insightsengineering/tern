@@ -191,6 +191,23 @@
       
       
 
+---
+
+    Code
+      res
+    Output
+      $count_fraction
+      $count_fraction$`Any Grade`
+      [1] 6.0 0.6
+      
+      $count_fraction$`Grade 1-2`
+      [1] 4.0 0.4
+      
+      $count_fraction$`Grade 3-4`
+      [1] 2.0 0.2
+      
+      
+
 # s_count_occurrences_by_grade works with valid input for intensity and custom arguments
 
     Code
@@ -270,6 +287,18 @@
       3           2.00 (66.67%)     0.00 (0.00%) 
       4            0.00 (0.00%)     0.00 (0.00%) 
       5            0.00 (0.00%)     0.00 (0.00%) 
+
+---
+
+    Code
+      res
+    Output
+                        A                B       
+                      (N=3)            (N=3)     
+      ———————————————————————————————————————————
+      -Any-       3.00 (100.00%)   3.00 (100.00%)
+      Grade 1-2   1.00 (33.33%)    3.00 (100.00%)
+      Grade 3-5   2.00 (66.67%)     0.00 (0.00%) 
 
 # summarize_occurrences_by_grade works with default arguments for intensity
 

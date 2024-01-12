@@ -10,7 +10,9 @@
 test_proportion_diff(
   lyt,
   vars,
-  na_str = NA_character_,
+  variables = list(strata = NULL),
+  method = c("chisq", "schouten", "fisher", "cmh"),
+  na_str = default_na_str(),
   nested = TRUE,
   ...,
   var_labels = vars,
@@ -45,13 +47,18 @@ a_test_proportion_diff(
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
+
+\item{method}{(\code{string})\cr one of \code{chisq}, \code{cmh}, \code{fisher}, or \code{schouten}; specifies the test used
+to calculate the p-value.}
+
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
 possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
-\item{...}{other arguments are passed to \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}.}
+\item{...}{additional arguments for the lower level functions.}
 
 \item{var_labels}{(\code{character})\cr character for label.}
 
@@ -79,11 +86,6 @@ by a statistics function.}
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
 \item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
-
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
-
-\item{method}{(\code{string})\cr one of \code{chisq}, \code{cmh}, \code{fisher}, or \code{schouten}; specifies the test used
-to calculate the p-value.}
 }
 \value{
 \itemize{

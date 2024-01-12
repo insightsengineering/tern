@@ -9,7 +9,11 @@
 #' @inheritParams argument_convention
 #' @param grade_groups (named `list` of `character`)\cr containing groupings of grades.
 #' @param remove_single (`logical`)\cr `TRUE` to not include the elements of one-element grade groups
-#'   in the the output list; in this case only the grade groups names will be included in the output.
+#'   in the the output list; in this case only the grade groups names will be included in the output. If
+#'   `only_grade_groups` is set to `TRUE` this argument is ignored.
+#' @param only_grade_groups (`flag`)\cr whether only the specified grade groups should be
+#'   included, with individual grade rows removed (`TRUE`), or all grades and grade groups
+#'   should be displayed (`FALSE`).
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_occurrences_by_grade")`
 #'   to see available statistics for this function.
 #'
@@ -63,7 +67,7 @@ NULL
 #' )
 #'
 #' @export
-h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
+h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE, only_grade_groups = FALSE) {
   checkmate::assert_list(grade_groups)
   checkmate::assert_list(refs)
   refs_orig <- refs
@@ -93,7 +97,9 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE) {
   ordr <- union(ordr, names(refs)) # from refs
 
   # remove elements of single-element groups, if any
-  if (remove_single) {
+  if (only_grade_groups) {
+    ordr <- intersect(ordr, names(grade_groups))
+  } else if (remove_single) {
     is_single <- sapply(grade_groups, length) == 1L
     ordr <- setdiff(ordr, unlist(grade_groups[is_single]))
   }
@@ -136,6 +142,7 @@ s_count_occurrences_by_grade <- function(df,
                                          id = "USUBJID",
                                          grade_groups = list(),
                                          remove_single = TRUE,
+                                         only_grade_groups = FALSE,
                                          labelstr = "") {
   assert_valid_factor(df[[.var]])
   assert_df_with_variables(df, list(grade = .var, id = id))
@@ -180,7 +187,7 @@ s_count_occurrences_by_grade <- function(df,
   }
 
   if (length(grade_groups) > 0) {
-    l_count <- h_append_grade_groups(grade_groups, l_count, remove_single)
+    l_count <- h_append_grade_groups(grade_groups, l_count, remove_single, only_grade_groups)
   }
 
   l_count_fraction <- lapply(l_count, function(i, denom) c(i, i / denom), denom = .N_col)
@@ -216,8 +223,6 @@ a_count_occurrences_by_grade <- make_afun(
 
 #' @describeIn count_occurrences_by_grade Layout-creating function which can take statistics function
 #'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
-#'
-#' @param var_labels (`character`)\cr labels to show in the result table.
 #'
 #' @return
 #' * `count_occurrences_by_grade()` returns a layout object suitable for passing to further layouting functions,
@@ -264,7 +269,8 @@ a_count_occurrences_by_grade <- make_afun(
 #'   add_colcounts() %>%
 #'   count_occurrences_by_grade(
 #'     var = "AETOXGR",
-#'     grade_groups = grade_groups
+#'     grade_groups = grade_groups,
+#'     only_grade_groups = TRUE
 #'   ) %>%
 #'   build_table(df, alt_counts_df = df_adsl)
 #'
@@ -272,10 +278,14 @@ a_count_occurrences_by_grade <- make_afun(
 #' @order 2
 count_occurrences_by_grade <- function(lyt,
                                        var,
+                                       id = "USUBJID",
+                                       grade_groups = list(),
+                                       remove_single = TRUE,
+                                       only_grade_groups = FALSE,
                                        var_labels = var,
                                        show_labels = "default",
                                        riskdiff = FALSE,
-                                       na_str = NA_character_,
+                                       na_str = default_na_str(),
                                        nested = TRUE,
                                        ...,
                                        table_names = var,
@@ -284,6 +294,9 @@ count_occurrences_by_grade <- function(lyt,
                                        .indent_mods = NULL,
                                        .labels = NULL) {
   checkmate::assert_flag(riskdiff)
+  s_args <- list(
+    id = id, grade_groups = grade_groups, remove_single = remove_single, only_grade_groups = only_grade_groups, ...
+  )
 
   afun <- make_afun(
     a_count_occurrences_by_grade,
@@ -294,13 +307,13 @@ count_occurrences_by_grade <- function(lyt,
   )
 
   extra_args <- if (isFALSE(riskdiff)) {
-    list(...)
+    s_args
   } else {
     list(
       afun = list("s_count_occurrences_by_grade" = afun),
       .stats = .stats,
       .indent_mods = .indent_mods,
-      s_args = list(...)
+      s_args = s_args
     )
   }
 
@@ -349,12 +362,20 @@ count_occurrences_by_grade <- function(lyt,
 #' @order 3
 summarize_occurrences_by_grade <- function(lyt,
                                            var,
-                                           na_str = NA_character_,
+                                           id = "USUBJID",
+                                           grade_groups = list(),
+                                           remove_single = TRUE,
+                                           only_grade_groups = FALSE,
+                                           na_str = default_na_str(),
                                            ...,
                                            .stats = NULL,
                                            .formats = NULL,
                                            .indent_mods = NULL,
                                            .labels = NULL) {
+  extra_args <- list(
+    id = id, grade_groups = grade_groups, remove_single = remove_single, only_grade_groups = only_grade_groups, ...
+  )
+
   cfun <- make_afun(
     a_count_occurrences_by_grade,
     .stats = .stats,
@@ -369,6 +390,6 @@ summarize_occurrences_by_grade <- function(lyt,
     var = var,
     cfun = cfun,
     na_str = na_str,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }

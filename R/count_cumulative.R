@@ -7,6 +7,7 @@
 #'
 #' @inheritParams h_count_cumulative
 #' @inheritParams argument_convention
+#' @param thresholds (`numeric`)\cr vector of cutoff value for the counts.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_cumulative")`
 #'   to see available statistics for this function.
 #'
@@ -94,8 +95,6 @@ d_count_cumulative <- function(threshold, lower_tail, include_eq) {
 
 #' @describeIn count_cumulative Statistics function that produces a named list given a numeric vector of thresholds.
 #'
-#' @param thresholds (`numeric`)\cr vector of cutoff value for the counts.
-#'
 #' @return
 #' * `s_count_cumulative()` returns a named list of `count_fraction`s: a list with each `thresholds` value as a
 #'   component, each component containing a vector for the count and fraction.
@@ -153,9 +152,12 @@ a_count_cumulative <- make_afun(
 #' @order 2
 count_cumulative <- function(lyt,
                              vars,
+                             thresholds,
+                             lower_tail = TRUE,
+                             include_eq = TRUE,
                              var_labels = vars,
                              show_labels = "visible",
-                             na_str = NA_character_,
+                             na_str = default_na_str(),
                              nested = TRUE,
                              ...,
                              table_names = vars,
@@ -163,6 +165,8 @@ count_cumulative <- function(lyt,
                              .formats = NULL,
                              .labels = NULL,
                              .indent_mods = NULL) {
+  extra_args <- list(thresholds = thresholds, lower_tail = lower_tail, include_eq = include_eq, ...)
+
   afun <- make_afun(
     a_count_cumulative,
     .stats = .stats,
@@ -180,6 +184,6 @@ count_cumulative <- function(lyt,
     var_labels = var_labels,
     show_labels = show_labels,
     nested = nested,
-    extra_args = list(...)
+    extra_args = extra_args
   )
 }
