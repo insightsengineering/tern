@@ -1,10 +1,10 @@
 testthat::test_that("unequal length vector gives correct error", {
-  testthat::expect_error(s_bland_altman (x = 1:5, y = 1:6, 0.95))
+  testthat::expect_error(s_bland_altman(x = 1:5, y = 1:6, 0.95))
 })
 
 testthat::test_that("infeasible input gives correct error", {
-  testthat::expect_error(s_bland_altman (x = c('a', 'b', 'c'), y = 1:3, 0.95))
-  testthat::expect_error(s_bland_altman (x = 1:3, y = 4:6, 2))
+  testthat::expect_error(s_bland_altman(x = c("a", "b", "c"), y = 1:3, 0.95))
+  testthat::expect_error(s_bland_altman(x = 1:3, y = 4:6, 2))
 })
 
 
@@ -22,7 +22,7 @@ testthat::test_that("works correctly", {
     lower_agreement_limit = -2.093733,
     agreement_limit_se = 0.5393764,
     upper_agreement_limit_ci = c(1.555070, 3.420377),
-    lower_agreement_limit_ci = c(-3.026386,-1.161079),
+    lower_agreement_limit_ci = c(-3.026386, -1.161079),
     t_value = 1.729133,
     n = 20L
   )
@@ -46,7 +46,7 @@ testthat::test_that("works correctly with NA element in either vectors", {
     lower_agreement_limit = -2.093733,
     agreement_limit_se = 0.5393764,
     upper_agreement_limit_ci = c(1.555070, 3.420377),
-    lower_agreement_limit_ci = c(-3.026386,-1.161079),
+    lower_agreement_limit_ci = c(-3.026386, -1.161079),
     t_value = 1.729133,
     n = 20L
   )
