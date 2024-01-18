@@ -23,7 +23,7 @@ s_bland_altman <- function(x, y, conf_level = 0.95) {
   ind <- complete.cases(x, y) # use only pairwise complete observations, and check if x and y have the same length
   x <- x[ind]
   y <- y[ind]
-  n <- length(n) # number of 'observations'
+  n <- length(ind) # number of 'observations'
 
   if (n == 0) {
     stop("there is no valid paired data")
@@ -61,3 +61,36 @@ s_bland_altman <- function(x, y, conf_level = 0.95) {
     n = n
   )
 }
+
+
+#' @inheritParams s_bland_altman
+#' @rdname s_bland_altman
+#' @examples
+#' x <- seq(1, 60, 5)
+#' y <- seq(5, 50, 4)
+#' conf_level <- 0.9
+#' g_bland_altman(x, y, conf_level = conf_level)
+#'
+g_bland_altman <- function(x, y, conf_level = 0.95){
+  result_tem <- s_bland_altman(x,y,conf_level = conf_level)
+  xpos <- max(result_tem$df$average) * 0.9 + min(result_tem$df$average) * 0.1
+  yrange <- diff(range(result_tem$df$difference))
+
+  p <- ggplot(result_tem$df) +
+    geom_point(aes(x = average, y = difference), color = "blue") +
+    geom_hline(yintercept = result_tem$difference_mean, color = "blue", linetype = 1) +
+    geom_hline(yintercept = 0, color = "blue", linetype = 2) +
+    geom_hline(yintercept = result_tem$lower_agreement_limit, color = "red", linetype = 2) +
+    geom_hline(yintercept = result_tem$upper_agreement_limit, color = "red", linetype = 2) +
+    annotate("text", x = xpos, y = result_tem$lower_agreement_limit + 0.03 * yrange, label = "lower limits of agreement", color = "red") +
+    annotate("text", x = xpos, y = result_tem$upper_agreement_limit + 0.03 * yrange, label = "upper limits of agreement", color = "red") +
+    annotate("text", x = xpos, y = result_tem$difference_mean + 0.03 * yrange, label = "mean of difference between two measures", color = "blue") +
+    annotate("text", x = xpos, y = result_tem$lower_agreement_limit - 0.03 * yrange, label = sprintf("%.2f", result_tem$lower_agreement_limit), color = "red") +
+    annotate("text", x = xpos, y = result_tem$upper_agreement_limit - 0.03 * yrange, label = sprintf("%.2f", result_tem$upper_agreement_limit), color = "red") +
+    annotate("text", x = xpos, y = result_tem$difference_mean - 0.03 * yrange, label = sprintf("%.2f", result_tem$difference_meanm), color = "blue") +
+    xlab("average of two measures") +
+    ylab("difference between two measures")
+
+  return(p)
+}
+
