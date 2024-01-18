@@ -31,7 +31,7 @@ s_bland_altman <- function(x, y, conf_level = 0.95) {
   ind <- complete.cases(x, y) # use only pairwise complete observations, and check if x and y have the same length
   x <- x[ind]
   y <- y[ind]
-  n <- length(ind) # number of 'observations'
+  n <- sum(ind) # number of 'observations'
 
   if (n == 0) {
     stop("there is no valid paired data")
