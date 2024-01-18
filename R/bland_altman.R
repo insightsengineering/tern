@@ -48,6 +48,7 @@ s_bland_altman <- function(x, y, conf_level = 0.95) {
 
 
   list(
+    df= data.frame(average, difference),
     difference_mean = difference_mean,
     ci_mean = difference_mean + c(-1, 1) * difference_mean_ci,
     difference_sd = difference_sd,
