@@ -2,29 +2,32 @@
 % Please edit documentation in R/bland_altman.R
 \name{s_bland_altman}
 \alias{s_bland_altman}
+\alias{g_bland_altman}
 \title{Bland Altman analysis}
 \usage{
 s_bland_altman(x, y, conf_level = 0.95)
+
+g_bland_altman(x, y, conf_level = 0.95)
 }
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{y}{('numeric')\cr vector of numbers we want to analyze.}
+\item{y}{('numeric')\cr vector of numbers we want to analyze, which we want to compare with x.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 }
 \description{
-'r lifecycle::badge("stable")'
-}
-\details{
-https://doi.org/10.1016/S0140-6736(86)90837-8
+'r lifecycle::badge("experimental")'
+This function uses bland altman method to assess the agreement between two numerical vectors.
 }
 \examples{
 x <- seq(1, 60, 5)
 y <- seq(5, 50, 4)
 conf_level <- 0.9
 s_bland_altman(x, y, conf_level = conf_level)
-}
-\references{
+x <- seq(1, 60, 5)
+y <- seq(5, 50, 4)
+conf_level <- 0.9
+g_bland_altman(x, y, conf_level = conf_level)
 
 }
