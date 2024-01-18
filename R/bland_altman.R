@@ -48,7 +48,7 @@ s_bland_altman <- function(x, y, conf_level = 0.95) {
 
 
   list(
-    df= data.frame(average, difference),
+    df = data.frame(average, difference),
     difference_mean = difference_mean,
     ci_mean = difference_mean + c(-1, 1) * difference_mean_ci,
     difference_sd = difference_sd,
@@ -72,8 +72,8 @@ s_bland_altman <- function(x, y, conf_level = 0.95) {
 #' conf_level <- 0.9
 #' g_bland_altman(x, y, conf_level = conf_level)
 #'
-g_bland_altman <- function(x, y, conf_level = 0.95){
-  result_tem <- s_bland_altman(x,y,conf_level = conf_level)
+g_bland_altman <- function(x, y, conf_level = 0.95) {
+  result_tem <- s_bland_altman(x, y, conf_level = conf_level)
   xpos <- max(result_tem$df$average) * 0.9 + min(result_tem$df$average) * 0.1
   yrange <- diff(range(result_tem$df$difference))
 
@@ -94,4 +94,3 @@ g_bland_altman <- function(x, y, conf_level = 0.95){
 
   return(p)
 }
-
