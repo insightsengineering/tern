@@ -259,6 +259,7 @@ tern_grob <- function(x) {
   x
 }
 
+#' @keywords internal
 print.ternGrob <- function(x, ...) {
   grid::grid.newpage()
   grid::grid.draw(x)
