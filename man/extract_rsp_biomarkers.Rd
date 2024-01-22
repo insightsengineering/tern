@@ -75,7 +75,7 @@ df
 # Here we group the levels of `BMRKR2` manually, and we add a stratification
 # variable `STRATA1`. We also here use a continuous variable `EOSDY`
 # which is then binarized internally (response is defined as this variable
-# being larger than 500).
+# being larger than 750).
 df_grouped <- extract_rsp_biomarkers(
   variables = list(
     rsp = "EOSDY",
@@ -93,7 +93,7 @@ df_grouped <- extract_rsp_biomarkers(
     )
   ),
   control = control_logistic(
-    response_definition = "I(response > 500)"
+    response_definition = "I(response > 750)"
   )
 )
 df_grouped
