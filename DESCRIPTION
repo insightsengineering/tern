@@ -90,6 +90,7 @@ Collate:
     'analyze_variables.R'
     'analyze_vars_in_cols.R'
     'argument_convention.R'
+    'bland_altman.R'
     'combination_function.R'
     'compare_variables.R'
     'control_incidence_rate.R'
