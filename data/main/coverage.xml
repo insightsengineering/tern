@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.907763183689473" branch-rate="0" lines-covered="9261" lines-valid="10202" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-01-22 15:44:51.527589">
+<coverage line-rate="0.907763183689473" branch-rate="0" lines-covered="9261" lines-valid="10202" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-01-22 19:50:59.75665">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
@@ -21606,8 +21606,8 @@
             </method>
             <method name="print.ternGrob" signature="" line-rate="0" branch-rate="0" complexity="0">
               <lines>
-                <line number="263" hits="0" branch="false"/>
                 <line number="264" hits="0" branch="false"/>
+                <line number="265" hits="0" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -21721,8 +21721,8 @@
             <line number="254" hits="3" branch="false"/>
             <line number="258" hits="0" branch="false"/>
             <line number="259" hits="0" branch="false"/>
-            <line number="263" hits="0" branch="false"/>
             <line number="264" hits="0" branch="false"/>
+            <line number="265" hits="0" branch="false"/>
           </lines>
         </class>
         <class name="utils_rtables.R" filename="R/utils_rtables.R" line-rate="0.91" branch-rate="0" complexity="0">
