@@ -24,7 +24,7 @@ groups_lists optionally specifies groupings for subgroups variables."><meta prop
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3.9008</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3.9009</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -199,7 +199,7 @@ variable reflecting binary response.</p>
 <span class="r-in"><span><span class="co"># Here we group the levels of `BMRKR2` manually, and we add a stratification</span></span></span>
 <span class="r-in"><span><span class="co"># variable `STRATA1`. We also here use a continuous variable `EOSDY`</span></span></span>
 <span class="r-in"><span><span class="co"># which is then binarized internally (response is defined as this variable</span></span></span>
-<span class="r-in"><span><span class="co"># being larger than 500).</span></span></span>
+<span class="r-in"><span><span class="co"># being larger than 750).</span></span></span>
 <span class="r-in"><span><span class="va">df_grouped</span> <span class="op">&lt;-</span> <span class="fu">extract_rsp_biomarkers</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    rsp <span class="op">=</span> <span class="st">"EOSDY"</span>,</span></span>
@@ -217,40 +217,28 @@ variable reflecting binary response.</p>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
 <span class="r-in"><span>  control <span class="op">=</span> <span class="fu"><a href="control_logistic.html">control_logistic</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    response_definition <span class="op">=</span> <span class="st">"I(response &gt; 500)"</span></span></span>
+<span class="r-in"><span>    response_definition <span class="op">=</span> <span class="st">"I(response &gt; 750)"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-in"><span><span class="va">df_grouped</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   biomarker              biomarker_label n_tot n_rsp prop or lcl ucl conf_level</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    BMRKR1 Continuous Level Biomarker 1   200   200    1  1   0 Inf       0.95</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       AGE                          Age   200   200    1  1   0 Inf       0.95</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    BMRKR1 Continuous Level Biomarker 1    70    70    1  1 NaN NaN       0.95</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       AGE                          Age    70    70    1  1 NaN NaN       0.95</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    BMRKR1 Continuous Level Biomarker 1   138   138    1  1 NaN NaN       0.95</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       AGE                          Age   138   138    1  1 NaN NaN       0.95</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    BMRKR1 Continuous Level Biomarker 1   200   200    1  1   0 Inf       0.95</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8       AGE                          Age   200   200    1  1   0 Inf       0.95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    BMRKR1 Continuous Level Biomarker 1   200     0    0 NA  NA  NA       0.95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       AGE                          Age   200     0    0 NA  NA  NA       0.95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    BMRKR1 Continuous Level Biomarker 1    70     0    0 NA  NA  NA       0.95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       AGE                          Age    70     0    0 NA  NA  NA       0.95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    BMRKR1 Continuous Level Biomarker 1   138     0    0 NA  NA  NA       0.95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       AGE                          Age   138     0    0 NA  NA  NA       0.95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    BMRKR1 Continuous Level Biomarker 1   200     0    0 NA  NA  NA       0.95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       AGE                          Age   200     0    0 NA  NA  NA       0.95</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   pval     pval_label        subgroup    var                    var_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    1 p-value (Wald)    All Patients    ALL                 All Patients</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    1 p-value (Wald)    All Patients    ALL                 All Patients</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  NaN p-value (Wald)             low BMRKR2 Continuous Level Biomarker 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  NaN p-value (Wald)             low BMRKR2 Continuous Level Biomarker 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  NaN p-value (Wald)      low/medium BMRKR2 Continuous Level Biomarker 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  NaN p-value (Wald)      low/medium BMRKR2 Continuous Level Biomarker 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    1 p-value (Wald) low/medium/high BMRKR2 Continuous Level Biomarker 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8    1 p-value (Wald) low/medium/high BMRKR2 Continuous Level Biomarker 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   NA p-value (Wald)    All Patients    ALL                 All Patients</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   NA p-value (Wald)    All Patients    ALL                 All Patients</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   NA p-value (Wald)             low BMRKR2 Continuous Level Biomarker 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   NA p-value (Wald)             low BMRKR2 Continuous Level Biomarker 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   NA p-value (Wald)      low/medium BMRKR2 Continuous Level Biomarker 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   NA p-value (Wald)      low/medium BMRKR2 Continuous Level Biomarker 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   NA p-value (Wald) low/medium/high BMRKR2 Continuous Level Biomarker 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   NA p-value (Wald) low/medium/high BMRKR2 Continuous Level Biomarker 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   row_type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  content</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  content</span>
