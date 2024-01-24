@@ -382,7 +382,6 @@ x <- c(NA_real_, 1, 2)
 s_summary(x, stats = NULL)
 
 ## Benefits in `rtables` contructions:
-require(rtables)
 dta_test <- data.frame(
   Group = rep(LETTERS[1:3], each = 2),
   sub_group = rep(letters[1:2], each = 3),

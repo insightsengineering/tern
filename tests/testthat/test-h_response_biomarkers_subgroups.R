@@ -31,15 +31,19 @@ testthat::test_that("h_rsp_to_logistic_variables works as expected", {
 testthat::test_that("h_logistic_mult_cont_df works as expected", {
   adrs_f <- adrs_local
 
-  result <- testthat::expect_silent(h_logistic_mult_cont_df(
-    variables = list(
-      rsp = "rsp",
-      biomarkers = c("BMRKR1", "AGE"),
-      covariates = "SEX",
-      strata = "STRATA2"
-    ),
-    data = adrs_f
-  ))
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    result <- testthat::expect_silent(h_logistic_mult_cont_df(
+      variables = list(
+        rsp = "rsp",
+        biomarkers = c("BMRKR1", "AGE"),
+        covariates = "SEX",
+        strata = "STRATA2"
+      ),
+      data = adrs_f
+    ))
+  )
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -66,15 +70,19 @@ testthat::test_that("h_logistic_mult_cont_df also works with response not being 
   adrs_f <- adrs_local %>%
     dplyr::rename(RESP = rsp)
 
-  result <- testthat::expect_silent(h_logistic_mult_cont_df(
-    variables = list(
-      rsp = "RESP",
-      biomarkers = c("BMRKR1", "AGE"),
-      covariates = "SEX",
-      strata = "STRATA2"
-    ),
-    data = adrs_f
-  ))
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    result <- testthat::expect_silent(h_logistic_mult_cont_df(
+      variables = list(
+        rsp = "RESP",
+        biomarkers = c("BMRKR1", "AGE"),
+        covariates = "SEX",
+        strata = "STRATA2"
+      ),
+      data = adrs_f
+    ))
+  )
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)

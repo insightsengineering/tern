@@ -406,7 +406,7 @@ a_glm_count <- make_afun(
 #'     var_labels = "Number of exacerbations per patient",
 #'     .stats = c("count_fraction"),
 #'     .formats = c("count_fraction" = "xx (xx.xx%)"),
-#'     .label = c("Number of exacerbations per patient")
+#'     .labels = c("Number of exacerbations per patient")
 #'   ) %>%
 #'   summarize_glm_count(
 #'     vars = "AVAL",

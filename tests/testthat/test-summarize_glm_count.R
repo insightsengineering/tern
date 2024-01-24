@@ -257,26 +257,37 @@ testthat::test_that("h_glm_count fails wrong inputs", {
 testthat::test_that("h_ppmeans works with healthy input", {
   set.seed(2)
   anl <- tern_ex_adtte %>%
-    filter(PARAMCD == "TNE")
+    dplyr::filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
-  fits <- h_glm_count(
-    .var = "AVAL",
-    .df_row = anl,
-    variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
-    distribution = "poisson"
+  # https://github.com/rvlenth/emmeans/issues/463
+  withr::with_options(
+    opts_partial_match_old,
+    {
+      fits <- h_glm_count(
+        .var = "AVAL",
+        .df_row = anl,
+        variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
+        distribution = "poisson"
+      )
+      testthat::expect_snapshot(fits)
+    }
   )
 
-  testthat::expect_snapshot(fits)
-
-  fits2 <- h_glm_count(
-    .var = "AVAL",
-    .df_row = anl,
-    variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
-    distribution = "quasipoisson"
+  # https://github.com/rvlenth/emmeans/issues/463
+  withr::with_options(
+    opts_partial_match_old,
+    {
+      fits2 <- h_glm_count(
+        .var = "AVAL",
+        .df_row = anl,
+        variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
+        distribution = "quasipoisson"
+      )
+      testthat::expect_snapshot(fits2)
+    }
   )
 
-  testthat::expect_snapshot(fits2)
 
   # XXX ppmeans fails snapshot diff in integration tests
   testthat::expect_silent(
@@ -407,7 +418,7 @@ testthat::test_that("summarize_glm_count works with healthy inputs", {
       var_labels = "Number of exacerbations per patient",
       .stats = c("count_fraction"),
       .formats = c("count_fraction" = "xx (xx.xx%)"),
-      .label = c("Number of exacerbations per patient")
+      .labels = c("Number of exacerbations per patient")
     ) %>%
     summarize_glm_count(
       vars = "AVAL",
@@ -438,7 +449,7 @@ testthat::test_that("summarize_glm_count (negative binomial) works with healthy 
       var_labels = "Number of exacerbations per patient",
       .stats = c("count_fraction"),
       .formats = c("count_fraction" = "xx (xx.xx%)"),
-      .label = c("Number of exacerbations per patient")
+      .labels = c("Number of exacerbations per patient")
     ) %>%
     summarize_glm_count(
       vars = "AVAL",

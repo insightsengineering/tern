@@ -172,7 +172,7 @@ testthat::test_that("h_col_indices works as expected", {
 testthat::test_that("as.rtable.data.frame works correctly", {
   x <- data.frame(
     a = 1:10,
-    b = seq(from = 10000, to = 20000, length = 10) / 1000
+    b = seq(from = 10000, to = 20000, length.out = 10) / 1000
   )
   rownames(x) <- LETTERS[1:10]
   result <- as.rtable(x, format = "xx.x")
@@ -192,7 +192,7 @@ testthat::test_that("as.rtable.data.frame fails when a column is not numeric", {
 testthat::test_that("as.rtable.data.frame uses variable labels for column headers when they are available", {
   x <- data.frame(
     a = 1:10,
-    b = seq(from = 10000, to = 20000, length = 10) / 1000
+    b = seq(from = 10000, to = 20000, length.out = 10) / 1000
   )
   formatters::var_labels(x) <- paste("label for", names(x))
   rownames(x) <- LETTERS[1:10]

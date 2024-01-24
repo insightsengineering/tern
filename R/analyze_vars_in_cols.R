@@ -59,7 +59,7 @@
 #'   split_rows_by(
 #'     var = "SEX",
 #'     label_pos = "topleft",
-#'     child_label = "hidden"
+#'     child_labels = "hidden"
 #'   ) %>% # Removes duplicated labels
 #'   analyze_vars_in_cols(vars = "AGE")
 #' result <- build_table(lyt = lyt, df = adpp)
@@ -101,7 +101,7 @@
 #'     var = "TLG_DISPLAY",
 #'     split_label = "PK Parameter",
 #'     label_pos = "topleft",
-#'     child_label = "hidden"
+#'     child_labels = "hidden"
 #'   ) %>%
 #'   analyze_vars_in_cols(
 #'     vars = "AVAL"
@@ -121,7 +121,7 @@
 #'     do_summarize_row_groups = TRUE # does a summarize level
 #'   ) %>%
 #'   split_rows_by("SEX",
-#'     child_label = "hidden",
+#'     child_labels = "hidden",
 #'     label_pos = "topleft"
 #'   ) %>%
 #'   analyze_vars_in_cols(

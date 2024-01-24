@@ -97,7 +97,7 @@ h_rsp_to_logistic_variables(
   variables = list(
     rsp = "RSP",
     covariates = c("A", "B"),
-    strat = "D"
+    strata = "D"
   ),
   biomarker = "AGE"
 )

@@ -39,7 +39,7 @@ NULL
 #'   variables = list(
 #'     rsp = "RSP",
 #'     covariates = c("A", "B"),
-#'     strat = "D"
+#'     strata = "D"
 #'   ),
 #'   biomarker = "AGE"
 #' )
@@ -53,7 +53,7 @@ h_rsp_to_logistic_variables <- function(variables, biomarker) {
     response = variables$rsp,
     arm = biomarker,
     covariates = variables$covariates,
-    strata = variables$strat
+    strata = variables$strata
   )
 }
 

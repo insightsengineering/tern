@@ -125,12 +125,16 @@ testthat::test_that("h_odds_ratio_df functions as expected with valid input and 
 testthat::test_that("h_odds_ratio_df functions as expected with strata", {
   adrs <- adrs_100
 
-  result <- h_odds_ratio_df(
-    rsp = adrs$rsp,
-    arm = adrs$ARM,
-    strata_data = adrs[, c("STRATA1", "STRATA2")],
-    method = "cmh",
-    conf_level = 0.9
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    result <- h_odds_ratio_df(
+      rsp = adrs$rsp,
+      arm = adrs$ARM,
+      strata_data = adrs[, c("STRATA1", "STRATA2")],
+      method = "cmh",
+      conf_level = 0.9
+    )
   )
 
   res <- testthat::expect_silent(result)
@@ -178,15 +182,19 @@ testthat::test_that("h_odds_ratio_subgroups_df functions as expected when subgro
 testthat::test_that("h_odds_ratio_subgroups_df functions as expected with strata", {
   adrs <- adrs_100
 
-  result <- h_odds_ratio_subgroups_df(
-    variables = list(
-      rsp = "rsp",
-      arm = "ARM",
-      subgroups = c("SEX", "STRATA2"),
-      strat = "STRATA1"
-    ),
-    data = adrs,
-    method = "cmh"
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    result <- h_odds_ratio_subgroups_df(
+      variables = list(
+        rsp = "rsp",
+        arm = "ARM",
+        subgroups = c("SEX", "STRATA2"),
+        strat = "STRATA1"
+      ),
+      data = adrs,
+      method = "cmh"
+    )
   )
 
   res <- testthat::expect_silent(result)
