@@ -14,11 +14,13 @@ step_matrix <- fit_survival_step(
 step_data <- broom::tidy(step_matrix)
 
 testthat::test_that("g_step works with default settings", {
+  testthat::skip_if_not_installed("vdiffr")
   g_step <- g_step(step_data)
   vdiffr::expect_doppelganger(title = "g_step", fig = g_step)
 })
 
 testthat::test_that("g_step works with custom settings", {
+  testthat::skip_if_not_installed("vdiffr")
   g_step_custom <- g_step(
     step_data,
     use_percentile = FALSE,
