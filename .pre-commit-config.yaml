@@ -41,16 +41,6 @@ repos:
           - tibble
           - tidyr
           - utils
-          - knitr
-          - lattice
-          - lubridate
-          - nestcolor
-          - rmarkdown
-          - stringr
-          - svglite
-          - testthat
-          - withr
-          - vdiffr
       - id: spell-check
         name: Check spelling with `spelling`
         exclude: >
