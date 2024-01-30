@@ -85,18 +85,48 @@ g_bland_altman <- function(x, y, conf_level = 0.95) {
     geom_hline(yintercept = 0, color = "blue", linetype = 2) +
     geom_hline(yintercept = result_tem$lower_agreement_limit, color = "red", linetype = 2) +
     geom_hline(yintercept = result_tem$upper_agreement_limit, color = "red", linetype = 2) +
-    annotate("text", x = xpos, y = result_tem$lower_agreement_limit + 0.03 * yrange,
-             label = "lower limits of agreement", color = "red") +
-    annotate("text", x = xpos, y = result_tem$upper_agreement_limit + 0.03 * yrange,
-             label = "upper limits of agreement", color = "red") +
-    annotate("text", x = xpos, y = result_tem$difference_mean + 0.03 * yrange,
-             label = "mean of difference between two measures", color = "blue") +
-    annotate("text", x = xpos, y = result_tem$lower_agreement_limit - 0.03 * yrange,
-             label = sprintf("%.2f", result_tem$lower_agreement_limit), color = "red") +
-    annotate("text", x = xpos, y = result_tem$upper_agreement_limit - 0.03 * yrange,
-             label = sprintf("%.2f", result_tem$upper_agreement_limit), color = "red") +
-    annotate("text", x = xpos, y = result_tem$difference_mean - 0.03 * yrange,
-             label = sprintf("%.2f", result_tem$difference_meanm), color = "blue") +
+    annotate(
+      "text",
+      x = xpos,
+      y = result_tem$lower_agreement_limit + 0.03 * yrange,
+      label = "lower limits of agreement",
+      color = "red"
+    ) +
+    annotate(
+      "text",
+      x = xpos,
+      y = result_tem$upper_agreement_limit + 0.03 * yrange,
+      label = "upper limits of agreement",
+      color = "red"
+    ) +
+    annotate(
+      "text",
+      x = xpos,
+      y = result_tem$difference_mean + 0.03 * yrange,
+      label = "mean of difference between two measures",
+      color = "blue"
+    ) +
+    annotate(
+      "text",
+      x = xpos,
+      y = result_tem$lower_agreement_limit - 0.03 * yrange,
+      label = sprintf("%.2f", result_tem$lower_agreement_limit),
+      color = "red"
+    ) +
+    annotate(
+      "text",
+      x = xpos,
+      y = result_tem$upper_agreement_limit - 0.03 * yrange,
+      label = sprintf("%.2f", result_tem$upper_agreement_limit),
+      color = "red"
+    ) +
+    annotate(
+      "text",
+      x = xpos,
+      y = result_tem$difference_mean - 0.03 * yrange,
+      label = sprintf("%.2f", result_tem$difference_meanm),
+      color = "blue"
+    ) +
     xlab("Average of two measures") +
     ylab("Difference between two measures")
 

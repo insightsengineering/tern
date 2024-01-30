@@ -45,14 +45,14 @@ format_auto(no_sc_x, "range")(x = no_sc_x)
 \seealso{
 Other formatting functions: 
 \code{\link{extreme_format}},
+\code{\link{format_count_fraction}()},
 \code{\link{format_count_fraction_fixed_dp}()},
 \code{\link{format_count_fraction_lt10}()},
-\code{\link{format_count_fraction}()},
-\code{\link{format_extreme_values_ci}()},
 \code{\link{format_extreme_values}()},
+\code{\link{format_extreme_values_ci}()},
+\code{\link{format_fraction}()},
 \code{\link{format_fraction_fixed_dp}()},
 \code{\link{format_fraction_threshold}()},
-\code{\link{format_fraction}()},
 \code{\link{format_sigfig}()},
 \code{\link{format_xx}()},
 \code{\link{formatting_functions}}
