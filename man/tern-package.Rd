@@ -11,7 +11,8 @@ Package to create tables, listings and graphs to analyze clinical trials data.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/insightsengineering/tern}
+  \item \url{https://insightsengineering.github.io/tern/}
+  \item \url{https://github.com/insightsengineering/tern/}
   \item Report bugs at \url{https://github.com/insightsengineering/tern/issues}
 }
 
