@@ -24,6 +24,9 @@ Authors:
 \itemize{
   \item Daniel Sabanés Bové \email{daniel.sabanes_bove@roche.com}
   \item Jana Stoilova \email{jana.stoilova@roche.com}
+  \item Davide Garolini \email{davide.garolini@roche.com}
+  \item Emily de la Rua \email{emily.de_la_rua@contractors.roche.com}
+  \item Abinaya Yogasekaram \email{abinaya.yogasekaram@contractors.roche.com}
   \item Heng Wang \email{wang.heng@gene.com}
   \item Francois Collin
   \item Adrian Waddell \email{adrian.waddell@gene.com}
