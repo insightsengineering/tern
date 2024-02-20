@@ -216,3 +216,22 @@ testthat::test_that("format_extreme_values_ci works with easy inputs", {
     "Number of inserted values as result \\(1\\)*"
   )
 })
+
+testthat::test_that("formats with nominator == to denominator are always formatted as 1", {
+  # Regression test for #1191
+  df <- data.frame(Ncol = seq(500)) %>%
+    rowwise() %>%
+    mutate(count = Ncol) %>%
+    mutate(pct = count * (1 / Ncol)) %>%
+    mutate(check_new = all.equal(pct, 1)) %>%
+    mutate(check = pct == 1) %>%
+    mutate(fmt_print = format_count_fraction_fixed_dp(c(count, pct)))
+
+  testthat::expect_true(nrow(df %>% filter(isFALSE(check))) > 0)
+  testthat::expect_equal(nrow(df %>% filter(isFALSE(check_new))), 0)
+
+  testthat::expect_equal(
+    sapply(df$fmt_print, function(x) substr(x, max(1, nchar(x) - 5), nchar(x)), USE.NAMES = FALSE),
+    rep("(100%)", nrow(df))
+  )
+})
