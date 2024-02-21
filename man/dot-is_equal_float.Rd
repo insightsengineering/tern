@@ -17,8 +17,4 @@
 \description{
 Uses \code{.Machine$double.eps} as the tolerance for the comparison.
 }
-\examples{
-.is_equal_float(49 / 49, 1)
-
-}
 \keyword{internal}
