@@ -151,7 +151,7 @@ check_same_n <- function(..., omit_null = TRUE) {
 #' @return `TRUE`, if identical. `FALSE`, otherwise
 #'
 #' @examples
-#' .is_equal_float(49/49, 1)
+#' .is_equal_float(49 / 49, 1)
 #'
 #' @keywords internal
 .is_equal_float <- function(x, y) {
