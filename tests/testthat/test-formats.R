@@ -223,7 +223,7 @@ testthat::test_that("formats with nominator == to denominator are always formatt
     rowwise() %>%
     mutate(count = Ncol) %>%
     mutate(pct = count * (1 / Ncol)) %>%
-    mutate(check_new = all.equal(pct, 1)) %>%
+    mutate(check_new = .is_equal_float(pct, 1)) %>%
     mutate(check = pct == 1) %>%
     mutate(fmt_print = format_count_fraction_fixed_dp(c(count, pct)))
 
