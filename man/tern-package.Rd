@@ -11,7 +11,8 @@ Package to create tables, listings and graphs to analyze clinical trials data.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/insightsengineering/tern}
+  \item \url{https://insightsengineering.github.io/tern/}
+  \item \url{https://github.com/insightsengineering/tern/}
   \item Report bugs at \url{https://github.com/insightsengineering/tern/issues}
 }
 
@@ -23,6 +24,9 @@ Authors:
 \itemize{
   \item Daniel Sabanés Bové \email{daniel.sabanes_bove@roche.com}
   \item Jana Stoilova \email{jana.stoilova@roche.com}
+  \item Davide Garolini \email{davide.garolini@roche.com}
+  \item Emily de la Rua \email{emily.de_la_rua@contractors.roche.com}
+  \item Abinaya Yogasekaram \email{abinaya.yogasekaram@contractors.roche.com}
   \item Heng Wang \email{wang.heng@gene.com}
   \item Francois Collin
   \item Adrian Waddell \email{adrian.waddell@gene.com}
