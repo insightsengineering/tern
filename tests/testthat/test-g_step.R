@@ -15,7 +15,7 @@ step_data <- broom::tidy(step_matrix)
 
 testthat::test_that("g_step works with default settings", {
   g_step <- g_step(step_data)
-  vdiffr::expect_doppelganger(title = "g_step", fig = g_step)
+  expect_snapshot_ggplot(title = "g_step", fig = g_step, width = 10, height = 8)
 })
 
 testthat::test_that("g_step works with custom settings", {
@@ -25,7 +25,7 @@ testthat::test_that("g_step works with custom settings", {
     est = list(col = "blue", lty = 1),
     ci_ribbon = NULL
   )
-  vdiffr::expect_doppelganger(title = "g_step_custom", fig = g_step_custom)
+  expect_snapshot_ggplot(title = "g_step_custom", fig = g_step_custom, width = 10, height = 8)
 })
 
 testthat::test_that("tidy.step works as expected for survival STEP results", {
