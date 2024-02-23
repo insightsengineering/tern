@@ -263,7 +263,7 @@ g_forest <- function(tbl,
   if (!is.null(col_symbol_size)) {
     sym_size <- unlist(tbl_df[, col_symbol_size + 1])
   } else {
-    sym_size <- 1
+    sym_size <- rep(1, nrow(tbl_df))
   }
 
   tbl_df[, c("ci_lwr", "ci_upr")] <- t(sapply(tbl_df[, ci_col], unlist))
@@ -319,14 +319,12 @@ g_forest <- function(tbl,
     coord_cartesian(clip = "off")
 
   if (is.null(ggtheme)) {
-    gg_plt <- gg_plt + geom_rect(
-      data = NULL,
-      aes(
-        xmin = xlim[1],
-        xmax = xlim[2],
-        ymin = 0,
-        ymax = nrows_body + 0.5
-      ),
+    gg_plt <- gg_plt + annotate(
+      "rect",
+      xmin = xlim[1],
+      xmax = xlim[2],
+      ymin = 0,
+      ymax = nrows_body + 0.5,
       fill = "grey92"
     )
   }
