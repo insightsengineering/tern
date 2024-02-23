@@ -74,7 +74,7 @@
 <text x='335.60' y='568.20' text-anchor='middle' style='font-size: 11.00px; font-family: "Arial";' textLength='18.36px' lengthAdjust='spacingAndGlyphs'>age</text>
 <text transform='translate(13.36,274.99) rotate(-90)' text-anchor='middle' style='font-size: 11.00px; font-family: "Arial";' textLength='64.21px' lengthAdjust='spacingAndGlyphs'>Hazard Ratio</text>
 <rect x='646.57' y='253.03' width='67.95' height='43.91' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<rect x='652.05' y='274.19' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #F2F2F2;' />
+<rect x='652.05' y='274.19' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #EBEBEB;' />
 <line x1='653.77' y1='282.83' x2='667.60' y2='282.83' style='stroke-width: 1.07; stroke: #0000FF; stroke-linecap: butt;' />
 <text x='674.81' y='285.98' style='font-size: 8.80px; font-family: "Arial";' textLength='34.24px' lengthAdjust='spacingAndGlyphs'>Estimate</text>
 </g>

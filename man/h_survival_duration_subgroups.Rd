@@ -100,7 +100,7 @@ treatment hazard ratio.
 \item \code{h_coxph_subgroups_df()}: summarizes estimates of the treatment hazard ratio
 across subgroups in a data frame. \code{variables} corresponds to the names of variables found in
 \code{data}, passed as a named list and requires elements \code{tte}, \code{is_event}, \code{arm} and
-optionally \code{subgroups} and \code{strat}. \code{groups_lists} optionally specifies
+optionally \code{subgroups} and \code{strata}. \code{groups_lists} optionally specifies
 groupings for \code{subgroups} variables.
 
 }}
@@ -206,7 +206,7 @@ h_coxph_subgroups_df(
     is_event = "is_event",
     arm = "ARM",
     subgroups = c("SEX", "BMRKR2"),
-    strat = c("STRATA1", "STRATA2")
+    strata = c("STRATA1", "STRATA2")
   ),
   data = adtte_f
 )

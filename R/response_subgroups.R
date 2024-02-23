@@ -39,7 +39,7 @@
 #'
 #' # Stratified analysis.
 #' df_strat <- extract_rsp_subgroups(
-#'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2"), strat = "STRATA1"),
+#'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2"), strata = "STRATA1"),
 #'   data = adrs_f
 #' )
 #' df_strat
@@ -69,7 +69,7 @@ NULL
 #' Prepares response rates and odds ratios for population subgroups in data frames. Simple wrapper
 #' for [h_odds_ratio_subgroups_df()] and [h_proportion_subgroups_df()]. Result is a list of two
 #' `data.frames`: `prop` and `or`. `variables` corresponds to the names of variables found in `data`,
-#' passed as a named `list` and requires elements `rsp`, `arm` and optionally `subgroups` and `strat`.
+#' passed as a named `list` and requires elements `rsp`, `arm` and optionally `subgroups` and `strata`.
 #' `groups_lists` optionally specifies groupings for `subgroups` variables.
 #'
 #' @inheritParams argument_convention
@@ -91,6 +91,15 @@ extract_rsp_subgroups <- function(variables,
                                   conf_level = 0.95,
                                   method = NULL,
                                   label_all = "All Patients") {
+  if ("strat" %in% names(variables)) {
+    warning(
+      "Warning: the `strat` element name of the `variables` list argument to `extract_rsp_subgroups() ",
+      "was deprecated in tern 0.9.3.\n  ",
+      "Please use the name `strata` instead of `strat` in the `variables` argument."
+    )
+    variables[["strata"]] <- variables[["strat"]]
+  }
+
   df_prop <- h_proportion_subgroups_df(
     variables,
     data,

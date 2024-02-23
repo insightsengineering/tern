@@ -84,7 +84,7 @@ names accepted by \code{extract_survival_subgroups()} and \code{fit_coxreg_multi
 times, as well as hazard ratio estimates, confidence intervals and p-values, for multiple biomarkers
 in a given single data set.
 \code{variables} corresponds to names of variables found in \code{data}, passed as a named list and requires elements
-\code{tte}, \code{is_event}, \code{biomarkers} (vector of continuous biomarker variables) and optionally \code{subgroups} and \code{strat}.
+\code{tte}, \code{is_event}, \code{biomarkers} (vector of continuous biomarker variables) and optionally \code{subgroups} and \code{strata}.
 
 \item \code{h_tab_surv_one_biomarker()}: prepares a single sub-table given a \code{df_sub} containing
 the results for a single biomarker.

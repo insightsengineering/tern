@@ -89,7 +89,7 @@ NULL
 #' Prepares estimates for number of events, patients and median survival times, as well as hazard ratio estimates,
 #' confidence intervals and p-values, for multiple biomarkers across population subgroups in a single data frame.
 #' `variables` corresponds to the names of variables found in `data`, passed as a named `list` and requires elements
-#' `tte`, `is_event`, `biomarkers` (vector of continuous biomarker variables), and optionally `subgroups` and `strat`.
+#' `tte`, `is_event`, `biomarkers` (vector of continuous biomarker variables), and optionally `subgroups` and `strata`.
 #' `groups_lists` optionally specifies groupings for `subgroups` variables.
 #'
 #' @inheritParams argument_convention
@@ -108,6 +108,15 @@ extract_survival_biomarkers <- function(variables,
                                         groups_lists = list(),
                                         control = control_coxreg(),
                                         label_all = "All Patients") {
+  if ("strat" %in% names(variables)) {
+    warning(
+      "Warning: the `strat` element name of the `variables` list argument to `extract_survival_biomarkers() ",
+      "was deprecated in tern 0.9.3.\n  ",
+      "Please use the name `strata` instead of `strat` in the `variables` argument."
+    )
+    variables[["strata"]] <- variables[["strat"]]
+  }
+
   checkmate::assert_list(variables)
   checkmate::assert_character(variables$subgroups, null.ok = TRUE)
   checkmate::assert_string(label_all)

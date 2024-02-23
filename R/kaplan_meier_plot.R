@@ -13,7 +13,7 @@
 #'   * `tte` (`numeric`)\cr variable indicating time-to-event duration values.
 #'   * `is_event` (`logical`)\cr event variable. `TRUE` if event, `FALSE` if time to event is censored.
 #'   * `arm` (`factor`)\cr the treatment group variable.
-#'   * `strat` (`character` or `NULL`)\cr variable names indicating stratification factors.
+#'   * `strata` (`character` or `NULL`)\cr variable names indicating stratification factors.
 #' @param control_surv (`list`)\cr parameters for comparison details, specified by using
 #'   the helper function [control_surv_timepoint()]. Some possible parameter options are:
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for survival rate.
@@ -168,14 +168,14 @@
 #' # Change widths/sizes of surv_med and coxph annotation tables.
 #' g_km(
 #'   df = df,
-#'   variables = c(variables, list(strat = "SEX")),
+#'   variables = c(variables, list(strata = "SEX")),
 #'   annot_coxph = TRUE,
 #'   width_annots = list(surv_med = grid::unit(2, "in"), coxph = grid::unit(3, "in"))
 #' )
 #'
 #' g_km(
 #'   df = df,
-#'   variables = c(variables, list(strat = "SEX")),
+#'   variables = c(variables, list(strata = "SEX")),
 #'   font_size = 15,
 #'   annot_coxph = TRUE,
 #'   control_coxph_pw = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
@@ -185,7 +185,7 @@
 #' # Change position of the treatment group annotation table.
 #' g_km(
 #'   df = df,
-#'   variables = c(variables, list(strat = "SEX")),
+#'   variables = c(variables, list(strata = "SEX")),
 #'   font_size = 15,
 #'   annot_coxph = TRUE,
 #'   control_coxph_pw = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
@@ -1377,6 +1377,15 @@ h_tbl_coxph_pairwise <- function(df,
                                  ref_group_coxph = NULL,
                                  control_coxph_pw = control_coxph(),
                                  annot_coxph_ref_lbls = FALSE) {
+  if ("strat" %in% names(variables)) {
+    warning(
+      "Warning: the `strat` element name of the `variables` list argument to `h_tbl_coxph_pairwise() ",
+      "was deprecated in tern 0.9.3.\n  ",
+      "Please use the name `strata` instead of `strat` in the `variables` argument."
+    )
+    variables[["strata"]] <- variables[["strat"]]
+  }
+
   assert_df_with_variables(df, variables)
   checkmate::assert_choice(ref_group_coxph, levels(df[[variables$arm]]), null.ok = TRUE)
   checkmate::assert_flag(annot_coxph_ref_lbls)
@@ -1394,7 +1403,7 @@ h_tbl_coxph_pairwise <- function(df,
       .in_ref_col = FALSE,
       .var = variables$tte,
       is_event = variables$is_event,
-      strat = variables$strat,
+      strata = variables$strata,
       control = control_coxph_pw
     )
     res_df <- data.frame(
