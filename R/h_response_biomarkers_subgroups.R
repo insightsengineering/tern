@@ -53,7 +53,7 @@ h_rsp_to_logistic_variables <- function(variables, biomarker) {
     response = variables$rsp,
     arm = biomarker,
     covariates = variables$covariates,
-    strata = variables$strata %||% variables$strat # temporary until https://github.com/insightsengineering/tern/issues/1186 # nolint
+    strata = rlang::`%||%`(variables$strata, variables$strat) # temporary until https://github.com/insightsengineering/tern/issues/1186 # nolint
   )
 }
 
