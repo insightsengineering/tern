@@ -114,5 +114,5 @@ testthat::test_that("text wrapping works as expected", {
     page = "Page 1 of 10"
   )
 
-  vdiffr::expect_doppelganger(title = "deco_grob_text_wrap", fig = deco_grob_text_wrap)
+  expect_snapshot_ggplot(title = "deco_grob_text_wrap", fig = deco_grob_text_wrap, width = 10, height = 8)
 })

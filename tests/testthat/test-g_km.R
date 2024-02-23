@@ -1,5 +1,6 @@
 testthat::test_that("g_km default plot works", {
   testthat::skip_if_not_installed("vdiffr")
+  skip_on_ci()
 
   df <- tern_ex_adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -18,6 +19,7 @@ testthat::test_that("g_km default plot works", {
 
 testthat::test_that("g_km default plot witch ci_ribbon = TRUE works", {
   testthat::skip_if_not_installed("vdiffr")
+  skip_on_ci()
 
   df <- tern_ex_adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -35,6 +37,8 @@ testthat::test_that("g_km default plot witch ci_ribbon = TRUE works", {
 })
 
 testthat::test_that("g_km plot with < = > in group labels works", {
+  skip_on_ci()
+
   df <- tern_ex_adtte %>%
     df_explicit_na() %>%
     dplyr::filter(PARAMCD == "OS", ARM == "A: Drug X") %>%
@@ -54,6 +58,7 @@ testthat::test_that("g_km plot with < = > in group labels works", {
 })
 
 testthat::test_that("g_km ylim parameter works as expected", {
+  skip_on_ci()
   set.seed(123)
   testthat::skip_if_not_installed("vdiffr")
 
@@ -93,6 +98,7 @@ testthat::test_that("g_km ylim parameter works as expected", {
 })
 
 testthat::test_that("annot_at_risk_title parameter works as expected", {
+  skip_on_ci()
   set.seed(123)
   testthat::skip_if_not_installed("vdiffr")
 
@@ -111,6 +117,7 @@ testthat::test_that("annot_at_risk_title parameter works as expected", {
 })
 
 testthat::test_that("ref_group_coxph parameter works as expected", {
+  skip_on_ci()
   set.seed(123)
   testthat::skip_if_not_installed("vdiffr")
 

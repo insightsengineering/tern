@@ -8,7 +8,7 @@ testthat::test_that("g_lineplot works with default settings", {
 
   g_lineplot <- g_lineplot(adlb, adsl)
 
-  vdiffr::expect_doppelganger(title = "g_lineplot", fig = g_lineplot)
+  expect_snapshot_ggplot(title = "g_lineplot", fig = g_lineplot, width = 10, height = 8)
 })
 
 testthat::test_that("g_lineplot works with custom settings and statistics table", {
@@ -28,7 +28,7 @@ testthat::test_that("g_lineplot works with custom settings and statistics table"
     caption = "caption"
   )
 
-  vdiffr::expect_doppelganger(title = "g_lineplot_w_stats", fig = g_lineplot_w_stats)
+  expect_snapshot_ggplot(title = "g_lineplot_w_stats", fig = g_lineplot_w_stats, width = 10, height = 8)
 })
 
 testthat::test_that("g_lineplot works with cohort_id specified", {
@@ -46,5 +46,5 @@ testthat::test_that("g_lineplot works with cohort_id specified", {
     subtitle = "Laboratory Test:",
     caption = "caption"
   )
-  vdiffr::expect_doppelganger(title = "g_lineplot_cohorts", fig = g_lineplot_cohorts)
+  expect_snapshot_ggplot(title = "g_lineplot_cohorts", fig = g_lineplot_cohorts, width = 10, height = 8)
 })
