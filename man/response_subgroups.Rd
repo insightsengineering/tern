@@ -103,7 +103,7 @@ df
 
 # Stratified analysis.
 df_strat <- extract_rsp_subgroups(
-  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2"), strat = "STRATA1"),
+  variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "BMRKR2"), strata = "STRATA1"),
   data = adrs_f
 )
 df_strat

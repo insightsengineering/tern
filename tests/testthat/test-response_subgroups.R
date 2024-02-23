@@ -70,7 +70,7 @@ testthat::test_that("extract_rsp_subgroups functions as expected with strata", {
   adrs <- adrs_100
 
   result <- extract_rsp_subgroups(
-    variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2"), strat = c("STRATA1")),
+    variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2"), strata = c("STRATA1")),
     data = adrs,
     conf_level = 0.9,
     method = "cmh",

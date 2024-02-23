@@ -117,7 +117,7 @@ a_test_proportion_diff <- make_afun(
 #' dta <- data.frame(
 #'   rsp = sample(c(TRUE, FALSE), 100, TRUE),
 #'   grp = factor(rep(c("A", "B"), each = 50)),
-#'   strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+#'   strata = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
 #' )
 #'
 #' # With `rtables` pipelines.
@@ -125,7 +125,7 @@ a_test_proportion_diff <- make_afun(
 #'   split_cols_by(var = "grp", ref_group = "B") %>%
 #'   test_proportion_diff(
 #'     vars = "rsp",
-#'     method = "cmh", variables = list(strata = "strat")
+#'     method = "cmh", variables = list(strata = "strata")
 #'   )
 #'
 #' build_table(l, df = dta)

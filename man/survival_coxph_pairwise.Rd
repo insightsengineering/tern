@@ -28,7 +28,8 @@ s_coxph_pairwise(
   .in_ref_col,
   .var,
   is_event,
-  strat = NULL,
+  strata = NULL,
+  strat = lifecycle::deprecated(),
   control = control_coxph()
 )
 
@@ -38,7 +39,8 @@ a_coxph_pairwise(
   .in_ref_col,
   .var,
   is_event,
-  strat = NULL,
+  strata = NULL,
+  strat = lifecycle::deprecated(),
   control = control_coxph()
 )
 }
@@ -84,7 +86,9 @@ by a statistics function.}
 
 \item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
-\item{strat}{(\code{character} or \code{NULL})\cr variable names indicating stratification factors.}
+\item{strata}{(\code{character} or \code{NULL})\cr variable names indicating stratification factors.}
+
+\item{strat}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{strata} argument instead.}
 
 \item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
 \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are:
@@ -160,7 +164,7 @@ basic_table() \%>\%
     vars = "AVAL",
     is_event = "is_event",
     var_labels = "Stratified Analysis",
-    strat = "SEX",
+    strata = "SEX",
     control = control_coxph(pval_method = "wald")
   ) \%>\%
   build_table(df = adtte_f)

@@ -255,7 +255,7 @@ testthat::test_that("h_coxph_subgroups_df functions as expected with stratificat
   adtte <- adtte_local
 
   result <- h_coxph_subgroups_df(
-    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "SEX", strat = "STRATA1"),
+    variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM", subgroups = "SEX", strata = "STRATA1"),
     data = adtte
   )
 

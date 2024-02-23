@@ -35,7 +35,7 @@ testthat::test_that("prop_cmh also works when there are strata with just one obs
     .Dimnames = list(
       grp = c("Placebo", "Treatment"),
       x = c("no", "yes"),
-      strat = c("A", "B", "C", "D", "E", "F", "G")
+      strata = c("A", "B", "C", "D", "E", "F", "G")
     ),
     class = "table"
   )
@@ -94,7 +94,7 @@ testthat::test_that("s_test_proportion_diff and d_test_proportion_diff return ri
   dta <- data.frame(
     rsp = sample(c(TRUE, FALSE), 100, TRUE),
     grp = factor(rep(c("A", "B"), each = 50)),
-    strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+    strata = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
   )
   method <- "cmh"
   result <- list(
@@ -104,7 +104,7 @@ testthat::test_that("s_test_proportion_diff and d_test_proportion_diff return ri
       .var = "rsp",
       .ref_group = subset(dta, grp == "B"),
       .in_ref_col = FALSE,
-      variables = list(strata = "strat"),
+      variables = list(strata = "strata"),
       method = "cmh"
     )
   )
@@ -118,14 +118,14 @@ testthat::test_that("test_proportion_diff returns right result", {
   dta <- data.frame(
     rsp = sample(c(TRUE, FALSE), 100, TRUE),
     grp = factor(rep(c("A", "B"), each = 50)),
-    strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+    strata = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
   )
 
   result <- basic_table() %>%
     split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
     test_proportion_diff(
       vars = "rsp",
-      method = "cmh", variables = list(strata = "strat")
+      method = "cmh", variables = list(strata = "strata")
     ) %>%
     build_table(df = dta)
 
@@ -193,7 +193,7 @@ testthat::test_that("test_proportion_diff edge case: all responder by CMH", {
   dta <- data.frame(
     rsp = rep(TRUE, each = 100),
     grp = factor(rep(c("A", "B"), each = 50)),
-    strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+    strata = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
   )
 
   result <- basic_table() %>%
@@ -203,7 +203,7 @@ testthat::test_that("test_proportion_diff edge case: all responder by CMH", {
       var_labels = "Variable Label",
       show_labels = "visible",
       method = c("chisq", "schouten", "fisher", "cmh")[4],
-      variables = list(strata = "strat")
+      variables = list(strata = "strata")
     ) %>%
     build_table(df = dta)
 

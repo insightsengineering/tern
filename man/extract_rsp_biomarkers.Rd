@@ -39,7 +39,7 @@ as well as odds ratio estimates, confidence intervals and p-values,
 for multiple biomarkers across population subgroups in a single data frame.
 \code{variables} corresponds to the names of variables found in \code{data}, passed as a
 named list and requires elements \code{rsp} and \code{biomarkers} (vector of continuous
-biomarker variables) and optionally \code{covariates}, \code{subgroups} and \code{strat}.
+biomarker variables) and optionally \code{covariates}, \code{subgroups} and \code{strata}.
 \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
 }
 \note{
@@ -82,7 +82,7 @@ df_grouped <- extract_rsp_biomarkers(
     biomarkers = c("BMRKR1", "AGE"),
     covariates = "SEX",
     subgroups = "BMRKR2",
-    strat = "STRATA1"
+    strata = "STRATA1"
   ),
   data = adrs_f,
   groups_lists = list(
