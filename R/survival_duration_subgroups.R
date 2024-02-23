@@ -94,7 +94,7 @@ NULL
 #' Prepares estimates of median survival times and treatment hazard ratios for population subgroups in
 #' data frames. Simple wrapper for [h_survtime_subgroups_df()] and [h_coxph_subgroups_df()]. Result is a `list`
 #' of two `data.frame`s: `survtime` and `hr`. `variables` corresponds to the names of variables found in `data`,
-#' passed as a named `list` and requires elements `tte`, `is_event`, `arm` and optionally `subgroups` and `strat`.
+#' passed as a named `list` and requires elements `tte`, `is_event`, `arm` and optionally `subgroups` and `strata`.
 #' `groups_lists` optionally specifies groupings for `subgroups` variables.
 #'
 #' @inheritParams argument_convention
@@ -115,6 +115,15 @@ extract_survival_subgroups <- function(variables,
                                        groups_lists = list(),
                                        control = control_coxph(),
                                        label_all = "All Patients") {
+  if ("strat" %in% names(variables)) {
+    warning(
+      "Warning: the `strat` element name of the `variables` list argument to `extract_survival_subgroups() ",
+      "was deprecated in tern 0.9.3.\n  ",
+      "Please use the name `strata` instead of `strat` in the `variables` argument."
+    )
+    variables[["strata"]] <- variables[["strat"]]
+  }
+
   df_survtime <- h_survtime_subgroups_df(
     variables,
     data,

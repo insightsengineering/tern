@@ -39,13 +39,21 @@ NULL
 #'   variables = list(
 #'     rsp = "RSP",
 #'     covariates = c("A", "B"),
-#'     strat = "D"
+#'     strata = "D"
 #'   ),
 #'   biomarker = "AGE"
 #' )
 #'
 #' @export
 h_rsp_to_logistic_variables <- function(variables, biomarker) {
+  if ("strat" %in% names(variables)) {
+    warning(
+      "Warning: the `strat` element name of the `variables` list argument to `h_rsp_to_logistic_variables() ",
+      "was deprecated in tern 0.9.3.\n  ",
+      "Please use the name `strata` instead of `strat` in the `variables` argument."
+    )
+    variables[["strata"]] <- variables[["strat"]]
+  }
   checkmate::assert_list(variables)
   checkmate::assert_string(variables$rsp)
   checkmate::assert_string(biomarker)
@@ -53,7 +61,7 @@ h_rsp_to_logistic_variables <- function(variables, biomarker) {
     response = variables$rsp,
     arm = biomarker,
     covariates = variables$covariates,
-    strata = variables$strat
+    strata = variables$strata
   )
 }
 
@@ -62,7 +70,7 @@ h_rsp_to_logistic_variables <- function(variables, biomarker) {
 #'   biomarkers in a given single data set.
 #'   `variables` corresponds to names of variables found in `data`, passed as a named list and requires elements
 #'   `rsp` and `biomarkers` (vector of continuous biomarker variables) and optionally `covariates`
-#'   and `strat`.
+#'   and `strata`.
 #'
 #' @return
 #' * `h_logistic_mult_cont_df()` returns a `data.frame` containing estimates and statistics for the selected biomarkers.
@@ -86,7 +94,7 @@ h_rsp_to_logistic_variables <- function(variables, biomarker) {
 #'     rsp = "rsp",
 #'     biomarkers = c("BMRKR1", "AGE"),
 #'     covariates = "SEX",
-#'     strat = "STRATA1"
+#'     strata = "STRATA1"
 #'   ),
 #'   data = adrs_f[NULL, ]
 #' )
@@ -95,6 +103,14 @@ h_rsp_to_logistic_variables <- function(variables, biomarker) {
 h_logistic_mult_cont_df <- function(variables,
                                     data,
                                     control = control_logistic()) {
+  if ("strat" %in% names(variables)) {
+    warning(
+      "Warning: the `strat` element name of the `variables` list argument to `h_logistic_mult_cont_df() ",
+      "was deprecated in tern 0.9.3.\n  ",
+      "Please use the name `strata` instead of `strat` in the `variables` argument."
+    )
+    variables[["strata"]] <- variables[["strat"]]
+  }
   assert_df_with_variables(data, variables)
 
   checkmate::assert_character(variables$biomarkers, min.len = 1, any.missing = FALSE)

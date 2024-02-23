@@ -11,7 +11,7 @@ testthat::test_that("s_coxph_pairwise works with default arguments and no strati
     .in_ref_col = FALSE,
     .var = "AVAL",
     is_event = "is_event",
-    strat = NULL
+    strata = NULL
   )
 
   res <- testthat::expect_silent(result)
@@ -31,7 +31,7 @@ testthat::test_that("s_coxph_pairwise works with customized arguments and no str
     .in_ref_col = FALSE,
     .var = "AVAL",
     is_event = "is_event",
-    strat = NULL,
+    strata = NULL,
     control = control_coxph(pval_method = "wald", ties = "breslow", conf_level = 0.9)
   )
 
@@ -52,7 +52,7 @@ testthat::test_that("s_coxph_pairwise works with default arguments and stratific
     .in_ref_col = FALSE,
     .var = "AVAL",
     is_event = "is_event",
-    strat = c("SEX", "RACE")
+    strata = c("SEX", "RACE")
   )
 
   res <- testthat::expect_silent(result)
@@ -72,7 +72,7 @@ testthat::test_that("s_coxph_pairwise works with customized arguments and strati
     .in_ref_col = FALSE,
     .var = "AVAL",
     is_event = "is_event",
-    strat = c("SEX", "RACE"),
+    strata = c("SEX", "RACE"),
     control = control_coxph(pval_method = "wald", ties = "breslow", conf_level = 0.9)
   )
 
@@ -94,7 +94,7 @@ testthat::test_that("coxph_pairwise works with default arguments and no stratifi
       vars = "AVAL",
       is_event = "is_event",
       var_labels = c("Unstratified Analysis"),
-      strat = NULL
+      strata = NULL
     ) %>%
     build_table(df = adtte_f)
 
@@ -117,7 +117,7 @@ testthat::test_that("coxph_pairwise works with customized arguments and no strat
       is_event = "is_event",
       var_labels = c("Unstratified Analysis"),
       control = control_coxph(pval_method = "likelihood", conf_level = 0.99),
-      strat = NULL
+      strata = NULL
     ) %>%
     build_table(df = adtte_f)
 
@@ -139,7 +139,7 @@ testthat::test_that("coxph_pairwise works with default arguments and stratificat
       vars = "AVAL",
       is_event = "is_event",
       var_labels = c("Stratified Analysis"),
-      strat = "SEX"
+      strata = "SEX"
     ) %>%
     build_table(df = adtte_f)
 
@@ -162,7 +162,7 @@ testthat::test_that("coxph_pairwise works with customized arguments and stratifi
       is_event = "is_event",
       var_labels = c("Stratified Analysis"),
       control = control_coxph(pval_method = "likelihood", conf_level = 0.99),
-      strat = c("SEX", "RACE"),
+      strata = c("SEX", "RACE"),
       .stats = c("hr", "hr_ci"),
       .formats = c(hr = "xx.xxx", hr_ci = "(xx.xxx, xx.xxx)")
     ) %>%
@@ -187,7 +187,7 @@ testthat::test_that("s_coxph_pairwise gets p-value (log-rank) calculated by surv
     .in_ref_col = FALSE,
     .var = "AVAL",
     is_event = "is_event",
-    strat = NULL
+    strata = NULL
   )
 
   data <- rbind(df_ref, df)

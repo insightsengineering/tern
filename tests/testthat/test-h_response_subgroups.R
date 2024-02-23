@@ -183,7 +183,7 @@ testthat::test_that("h_odds_ratio_subgroups_df functions as expected with strata
       rsp = "rsp",
       arm = "ARM",
       subgroups = c("SEX", "STRATA2"),
-      strat = "STRATA1"
+      strata = "STRATA1"
     ),
     data = adrs,
     method = "cmh"
