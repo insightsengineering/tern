@@ -50,7 +50,7 @@ to_string_matrix <- function(x, widths = NULL, max_width = NULL,
   if (with_spaces) {
     out <- strsplit(toString(tx, widths = widths, tf_wrap = tf_wrap, max_width = max_width, hsep = hsep), "\\n")[[1]]
   } else {
-    out <- tx$string
+    out <- tx$strings
   }
 
   # Printing to console formatted output that needs to be copied in "expected"
