@@ -4,7 +4,7 @@ testthat::test_that("g_waterfall default plot works", {
     id = letters[1:3],
     col = NULL
   )
-  vdiffr::expect_doppelganger(title = "g_waterfall", fig = g_waterfall)
+  expect_snapshot_ggplot(title = "g_waterfall", fig = g_waterfall, width = 10, height = 8)
 })
 
 testthat::test_that("g_waterfall plot with labels and colors works", {
@@ -25,5 +25,5 @@ testthat::test_that("g_waterfall plot with labels and colors works", {
       title = "Waterfall plot"
     )
 
-  vdiffr::expect_doppelganger(title = "g_waterfall_decorated", fig = g_waterfall_decorated)
+  expect_snapshot_ggplot(title = "g_waterfall_decorated", fig = g_waterfall_decorated, width = 10, height = 8)
 })
