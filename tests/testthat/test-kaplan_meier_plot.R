@@ -123,7 +123,7 @@ testthat::test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
 
   result2 <- h_tbl_coxph_pairwise(
     df = df,
-    variables = c(variables, list(strat = "SEX")),
+    variables = c(variables, list(strata = "SEX")),
     control_coxph_pw = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99)
   )
 

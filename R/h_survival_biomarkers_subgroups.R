@@ -71,7 +71,7 @@ h_surv_to_coxreg_variables <- function(variables, biomarker) {
 #'   times, as well as hazard ratio estimates, confidence intervals and p-values, for multiple biomarkers
 #'   in a given single data set.
 #'   `variables` corresponds to names of variables found in `data`, passed as a named list and requires elements
-#'   `tte`, `is_event`, `biomarkers` (vector of continuous biomarker variables) and optionally `subgroups` and `strat`.
+#'   `tte`, `is_event`, `biomarkers` (vector of continuous biomarker variables) and optionally `subgroups` and `strata`.
 #'
 #' @return
 #' * `h_coxreg_mult_cont_df()` returns a `data.frame` containing estimates and statistics for the selected biomarkers.
@@ -107,6 +107,15 @@ h_surv_to_coxreg_variables <- function(variables, biomarker) {
 h_coxreg_mult_cont_df <- function(variables,
                                   data,
                                   control = control_coxreg()) {
+  if ("strat" %in% names(variables)) {
+    warning(
+      "Warning: the `strat` element name of the `variables` list argument to `h_coxreg_mult_cont_df() ",
+      "was deprecated in tern 0.9.3.\n  ",
+      "Please use the name `strata` instead of `strat` in the `variables` argument."
+    )
+    variables[["strata"]] <- variables[["strat"]]
+  }
+
   assert_df_with_variables(data, variables)
   checkmate::assert_list(control, names = "named")
   checkmate::assert_character(variables$biomarkers, min.len = 1, any.missing = FALSE)

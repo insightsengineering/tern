@@ -43,7 +43,7 @@ testthat::test_that("extract_rsp_biomarkers works as expected with other custom 
       rsp = "BMRKR1",
       biomarkers = "AGE",
       subgroups = c("SEX", "BMRKR2"),
-      strat = c("STRATA1", "STRATA2")
+      strata = c("STRATA1", "STRATA2")
     ),
     data = adrs_f,
     groups_lists = list(

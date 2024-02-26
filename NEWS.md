@@ -1,4 +1,4 @@
-# tern 0.9.3.9016
+# tern 0.9.3.9018
 
 ### New Features
 * Refactored `g_forest` to output a `ggplot` object instead of a `grob` object.
@@ -12,6 +12,8 @@
 
 ### Miscellaneous
 * Added function `expect_snapshot_ggplot` to test setup file to process plot snapshot tests and allow plot dimensions to be set.
+* Began deprecation of the named element `strat`, to be renamed to `strata`, within the `variables` argument to `h_rsp_to_logistic_variables`, `h_logistic_mult_cont_df`, `h_odds_ratio_subgroups_df`, `h_coxreg_mult_cont_df`, `h_coxph_subgroups_df`, `h_tbl_coxph_pairwise`, `extract_rsp_biomarkers`, `extract_rsp_subgroups`, `extract_survival_biomarkers`, and `extract_survival_subgroups`.
+* Began deprecation of the `strat` argument to `s_coxph_pairwise` and replaced it with the `strata` argument.
 
 # tern 0.9.3
 

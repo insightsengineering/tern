@@ -94,7 +94,7 @@ the odds ratio between a treatment and a control arm.
 \item \code{h_odds_ratio_subgroups_df()}: summarizes estimates of the odds ratio between a treatment and a control
 arm across subgroups in a data frame. \code{variables} corresponds to the names of variables found in
 \code{data}, passed as a named list and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups}
-and \code{strat}. \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
+and \code{strata}. \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
 
 }}
 \examples{
@@ -167,7 +167,7 @@ h_odds_ratio_subgroups_df(
     rsp = "rsp",
     arm = "ARM",
     subgroups = c("SEX", "BMRKR2"),
-    strat = c("STRATA1", "STRATA2")
+    strata = c("STRATA1", "STRATA2")
   ),
   data = adrs_f
 )

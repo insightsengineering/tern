@@ -17,7 +17,7 @@ testthat::test_that("h_rsp_to_logistic_variables works as expected", {
     variables = list(
       rsp = "RSP",
       covariates = c("A", "B"),
-      strat = "D"
+      strata = "D"
     ),
     biomarker = "AGE"
   ))

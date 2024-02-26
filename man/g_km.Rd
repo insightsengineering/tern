@@ -52,7 +52,7 @@ g_km(
 \item \code{tte} (\code{numeric})\cr variable indicating time-to-event duration values.
 \item \code{is_event} (\code{logical})\cr event variable. \code{TRUE} if event, \code{FALSE} if time to event is censored.
 \item \code{arm} (\code{factor})\cr the treatment group variable.
-\item \code{strat} (\code{character} or \code{NULL})\cr variable names indicating stratification factors.
+\item \code{strata} (\code{character} or \code{NULL})\cr variable names indicating stratification factors.
 }}
 
 \item{control_surv}{(\code{list})\cr parameters for comparison details, specified by using
@@ -248,13 +248,13 @@ g_km(
 
 # Change widths/sizes of surv_med and coxph annotation tables.
 g_km(
-  df = df, variables = c(variables, list(strat = "SEX")),
+  df = df, variables = c(variables, list(strata = "SEX")),
   annot_coxph = TRUE,
   width_annots = list(surv_med = grid::unit(2, "in"), coxph = grid::unit(3, "in"))
 )
 
 g_km(
-  df = df, variables = c(variables, list(strat = "SEX")),
+  df = df, variables = c(variables, list(strata = "SEX")),
   font_size = 15,
   annot_coxph = TRUE,
   control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
@@ -263,7 +263,7 @@ g_km(
 
 # Change position of the treatment group annotation table.
 g_km(
-  df = df, variables = c(variables, list(strat = "SEX")),
+  df = df, variables = c(variables, list(strata = "SEX")),
   font_size = 15,
   annot_coxph = TRUE,
   control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),

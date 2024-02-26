@@ -48,7 +48,7 @@ A named \code{list} of two elements:
 Prepares estimates of median survival times and treatment hazard ratios for population subgroups in
 data frames. Simple wrapper for \code{\link[=h_survtime_subgroups_df]{h_survtime_subgroups_df()}} and \code{\link[=h_coxph_subgroups_df]{h_coxph_subgroups_df()}}. Result is a \code{list}
 of two \code{data.frame}s: \code{survtime} and \code{hr}. \code{variables} corresponds to the names of variables found in \code{data},
-passed as a named \code{list} and requires elements \code{tte}, \code{is_event}, \code{arm} and optionally \code{subgroups} and \code{strat}.
+passed as a named \code{list} and requires elements \code{tte}, \code{is_event}, \code{arm} and optionally \code{subgroups} and \code{strata}.
 \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
 }
 \seealso{

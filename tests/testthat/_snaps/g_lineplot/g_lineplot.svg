@@ -21,7 +21,7 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
-<rect x='0.00' y='0.00' width='720.00' height='576.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
+<rect x='0.000000000000064' y='0.00' width='720.00' height='576.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
 </g>
 <defs>
   <clipPath id='cpMTkuMzF8NzE0LjUyfDM2LjgyfDUxOC45OA=='>
@@ -129,23 +129,20 @@
 <text x='422.98' y='529.64' text-anchor='middle' style='font-size: 8.00px;fill: #4D4D4D; font-family: "Arial";' textLength='59.29px' lengthAdjust='spacingAndGlyphs'>WEEK 3 DAY 22</text>
 <text x='535.11' y='529.64' text-anchor='middle' style='font-size: 8.00px;fill: #4D4D4D; font-family: "Arial";' textLength='59.29px' lengthAdjust='spacingAndGlyphs'>WEEK 4 DAY 29</text>
 <text x='647.24' y='529.64' text-anchor='middle' style='font-size: 8.00px;fill: #4D4D4D; font-family: "Arial";' textLength='59.29px' lengthAdjust='spacingAndGlyphs'>WEEK 5 DAY 36</text>
-<rect x='143.62' y='542.28' width='446.58' height='28.24' style='stroke-width: 2.13; stroke: #BEBEBE;' />
-<text x='149.10' y='559.98' style='font-size: 10.00px; font-weight: bold; font-family: "Arial";' textLength='131.33px' lengthAdjust='spacingAndGlyphs'>Description of Planned Arm</text>
-<rect x='285.41' y='547.76' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #F2F2F2;' />
-<circle cx='294.05' cy='556.40' r='2.49' style='stroke-width: 0.71; stroke: none; fill: #343CFF;' />
-<line x1='287.14' y1='556.40' x2='300.97' y2='556.40' style='stroke-width: 1.07; stroke: #343CFF; stroke-linecap: butt;' />
-<line x1='287.14' y1='556.40' x2='300.97' y2='556.40' style='stroke-width: 1.07; stroke: #343CFF; stroke-linecap: butt;' />
-<rect x='378.69' y='547.76' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #F2F2F2;' />
+<rect x='142.13' y='542.28' width='449.57' height='28.24' style='stroke-width: 2.13; stroke: #BEBEBE;' />
+<text x='147.61' y='559.98' style='font-size: 10.00px; font-weight: bold; font-family: "Arial";' textLength='131.33px' lengthAdjust='spacingAndGlyphs'>Description of Planned Arm</text>
+<circle cx='293.06' cy='556.40' r='2.49' style='stroke-width: 0.71; stroke: none; fill: #343CFF;' />
+<line x1='286.15' y1='556.40' x2='299.97' y2='556.40' style='stroke-width: 1.07; stroke: #343CFF; stroke-linecap: butt;' />
+<line x1='286.15' y1='556.40' x2='299.97' y2='556.40' style='stroke-width: 1.07; stroke: #343CFF; stroke-linecap: butt;' />
 <polygon points='387.33,552.53 390.68,558.34 383.98,558.34 ' style='stroke-width: 0.71; stroke: none; fill: #FF484B;' />
 <line x1='380.42' y1='556.40' x2='394.24' y2='556.40' style='stroke-width: 1.07; stroke: #FF484B; stroke-dasharray: 2.85,2.85; stroke-linecap: butt;' />
 <line x1='380.42' y1='556.40' x2='394.24' y2='556.40' style='stroke-width: 1.07; stroke: #FF484B; stroke-dasharray: 2.85,2.85; stroke-linecap: butt;' />
-<rect x='475.98' y='547.76' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #F2F2F2;' />
-<polygon points='482.13,558.89 487.11,558.89 487.11,553.91 482.13,553.91 ' style='stroke-width: 0.71; stroke: none; fill: #232323;' />
-<line x1='477.71' y1='556.40' x2='491.53' y2='556.40' style='stroke-width: 1.07; stroke: #232323; stroke-dasharray: 5.69,2.85; stroke-linecap: butt;' />
-<line x1='477.71' y1='556.40' x2='491.53' y2='556.40' style='stroke-width: 1.07; stroke: #232323; stroke-dasharray: 5.69,2.85; stroke-linecap: butt;' />
-<text x='307.67' y='559.27' style='font-size: 8.00px; font-family: "Arial";' textLength='66.03px' lengthAdjust='spacingAndGlyphs'>A: Drug X (N = 69)</text>
-<text x='400.95' y='559.27' style='font-size: 8.00px; font-family: "Arial";' textLength='70.05px' lengthAdjust='spacingAndGlyphs'>B: Placebo (N = 73)</text>
-<text x='498.24' y='559.27' style='font-size: 8.00px; font-family: "Arial";' textLength='86.49px' lengthAdjust='spacingAndGlyphs'>C: Combination (N = 58)</text>
+<polygon points='483.13,558.89 488.10,558.89 488.10,553.91 483.13,553.91 ' style='stroke-width: 0.71; stroke: none; fill: #232323;' />
+<line x1='478.70' y1='556.40' x2='492.53' y2='556.40' style='stroke-width: 1.07; stroke: #232323; stroke-dasharray: 5.69,2.85; stroke-linecap: butt;' />
+<line x1='478.70' y1='556.40' x2='492.53' y2='556.40' style='stroke-width: 1.07; stroke: #232323; stroke-dasharray: 5.69,2.85; stroke-linecap: butt;' />
+<text x='307.18' y='559.27' style='font-size: 8.00px; font-family: "Arial";' textLength='66.03px' lengthAdjust='spacingAndGlyphs'>A: Drug X (N = 69)</text>
+<text x='401.45' y='559.27' style='font-size: 8.00px; font-family: "Arial";' textLength='70.05px' lengthAdjust='spacingAndGlyphs'>B: Placebo (N = 73)</text>
+<text x='499.73' y='559.27' style='font-size: 8.00px; font-family: "Arial";' textLength='86.49px' lengthAdjust='spacingAndGlyphs'>C: Combination (N = 58)</text>
 <text x='19.31' y='29.24' style='font-size: 10.00px; font-family: "Arial";' textLength='42.43px' lengthAdjust='spacingAndGlyphs'>ALT (U/L)</text>
 <text x='19.31' y='14.08' style='font-size: 12.00px; font-family: "Arial";' textLength='258.62px' lengthAdjust='spacingAndGlyphs'>Plot of Mean and 95% Confidence Limits by Visit</text>
 </g>

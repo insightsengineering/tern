@@ -6,7 +6,8 @@
 #'
 #' @inheritParams argument_convention
 #' @inheritParams s_surv_time
-#' @param strat (`character` or `NULL`)\cr variable names indicating stratification factors.
+#' @param strata (`character` or `NULL`)\cr variable names indicating stratification factors.
+#' @param strat `r lifecycle::badge("deprecated")` Please use the `strata` argument instead.
 #' @param control (`list`)\cr parameters for comparison details, specified by using the helper function
 #'   [control_coxph()]. Some possible parameter options are:
 #'   * `pval_method` (`string`)\cr p-value method for testing hazard ratio = 1. Default method is `"log-rank"` which
@@ -37,8 +38,14 @@ s_coxph_pairwise <- function(df,
                              .in_ref_col,
                              .var,
                              is_event,
-                             strat = NULL,
+                             strata = NULL,
+                             strat = lifecycle::deprecated(),
                              control = control_coxph()) {
+  if (lifecycle::is_present(strat)) {
+    lifecycle::deprecate_warn("0.9.3", "s_coxph_pairwise(strat)", "s_coxph_pairwise(strata)")
+    strata <- strat
+  }
+
   checkmate::assert_string(.var)
   checkmate::assert_numeric(df[[.var]])
   checkmate::assert_logical(df[[is_event]])
@@ -66,17 +73,17 @@ s_coxph_pairwise <- function(df,
     is_event = data[[is_event]],
     arm = group
   )
-  if (is.null(strat)) {
+  if (is.null(strata)) {
     formula_cox <- survival::Surv(tte, is_event) ~ arm
   } else {
     formula_cox <- stats::as.formula(
       paste0(
         "survival::Surv(tte, is_event) ~ arm + strata(",
-        paste(strat, collapse = ","),
+        paste(strata, collapse = ","),
         ")"
       )
     )
-    df_cox <- cbind(df_cox, data[strat])
+    df_cox <- cbind(df_cox, data[strata])
   }
   cox_fit <- survival::coxph(
     formula = formula_cox,
@@ -157,7 +164,7 @@ a_coxph_pairwise <- make_afun(
 #'     vars = "AVAL",
 #'     is_event = "is_event",
 #'     var_labels = "Stratified Analysis",
-#'     strat = "SEX",
+#'     strata = "SEX",
 #'     control = control_coxph(pval_method = "wald")
 #'   ) %>%
 #'   build_table(df = adtte_f)
