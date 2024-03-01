@@ -1,4 +1,4 @@
-# tern 0.9.3.9018
+# tern 0.9.3.9019
 
 ### New Features
 * Refactored `g_forest` to output a `ggplot` object instead of a `grob` object.
@@ -8,6 +8,7 @@
 ### Bug Fixes
 * Fixed nested column split label overlay issue in `rtable2gg` to clean up appearance of text labels.
 * Fixed bug in `s_ancova` causing incorrect difference calculations for arm variables with irregular levels.
+* Fixed bug in `format_count_fraction_fixed_dp` that did not have the same print when the fraction was 1 (100%).
 
 ### Miscellaneous
 * Added function `expect_snapshot_ggplot` to test setup file to process plot snapshot tests and allow plot dimensions to be set.

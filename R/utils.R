@@ -135,10 +135,31 @@ check_same_n <- function(..., omit_null = TRUE) {
 
   if (length(unique(n)) > 1) {
     sel <- which(n != n[1])
-    stop("dimension mismatch:", paste(names(n)[sel], collapse = ", "), " do not have N=", n[1])
+    stop("Dimension mismatch:", paste(names(n)[sel], collapse = ", "), " do not have N=", n[1])
   }
 
   TRUE
+}
+
+#' Utility function to check if a float is equal to another float
+#'
+#' @description Uses `.Machine$double.eps` as the tolerance for the comparison.
+#'
+#' @param x (`float`)\cr A single number.
+#' @param y (`float`)\cr A single number.
+#'
+#' @return `TRUE`, if identical. `FALSE`, otherwise
+#'
+#' @keywords internal
+.is_equal_float <- function(x, y) {
+  checkmate::assert_number(x)
+  checkmate::assert_number(y)
+
+  # Define a tolerance
+  tolerance <- .Machine$double.eps
+
+  # Check if x is close enough to y
+  abs(x - y) < tolerance
 }
 
 #' Make Names Without Dots
