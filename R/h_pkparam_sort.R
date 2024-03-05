@@ -21,7 +21,7 @@ h_pkparam_sort <- function(pk_data, key_var = "PARAMCD") {
   ordered_pk_data <- d_pkparam()
 
   # Add the numeric values from ordered_pk_data to pk_data
-  joined_data <- merge(pk_data, ordered_pk_data, by = "PARAMCD", suffix = c("", ".y"))
+  joined_data <- merge(pk_data, ordered_pk_data, by = "PARAMCD", suffixes = c("", ".y"))
 
   joined_data <- joined_data[, -grep(".*.y$", colnames(joined_data))]
 

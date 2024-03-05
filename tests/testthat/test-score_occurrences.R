@@ -25,7 +25,7 @@ full_table <- local({
     split_cols_by("ARM") %>%
     add_colcounts() %>%
     analyze_num_patients(
-      var = "USUBJID",
+      vars = "USUBJID",
       .stats = c("unique", "nonunique"),
       .labels = c(
         unique = "Total number of patients with at least one event",

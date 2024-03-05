@@ -222,7 +222,7 @@ testthat::test_that("analyze_vars_in_cols works well with categorical data", {
     split_rows_by(
       var = "SEX",
       label_pos = "topleft",
-      child_label = "hidden"
+      child_labels = "hidden"
     ) %>%
     # split_cols_by("STRATA1") %>%
     analyze_vars_in_cols(
@@ -240,7 +240,7 @@ testthat::test_that("analyze_vars_in_cols works well with categorical data", {
     split_rows_by(
       var = "SEX",
       label_pos = "topleft",
-      child_label = "hidden"
+      child_labels = "hidden"
     ) %>%
     split_cols_by("ARM") %>%
     analyze_vars_in_cols(

@@ -38,26 +38,30 @@ testthat::test_that("extract_rsp_biomarkers functions as expected with valid inp
 testthat::test_that("extract_rsp_biomarkers works as expected with other custom options", {
   adrs_f <- adrs_local
 
-  result <- testthat::expect_silent(extract_rsp_biomarkers(
-    variables = list(
-      rsp = "BMRKR1",
-      biomarkers = "AGE",
-      subgroups = c("SEX", "BMRKR2"),
-      strata = c("STRATA1", "STRATA2")
-    ),
-    data = adrs_f,
-    groups_lists = list(
-      BMRKR2 = list(
-        "low" = "LOW",
-        "low/medium" = c("LOW", "MEDIUM"),
-        "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    result <- testthat::expect_silent(extract_rsp_biomarkers(
+      variables = list(
+        rsp = "BMRKR1",
+        biomarkers = "AGE",
+        subgroups = c("SEX", "BMRKR2"),
+        strata = c("STRATA1", "STRATA2")
+      ),
+      data = adrs_f,
+      groups_lists = list(
+        BMRKR2 = list(
+          "low" = "LOW",
+          "low/medium" = c("LOW", "MEDIUM"),
+          "low/medium/high" = c("LOW", "MEDIUM", "HIGH")
+        )
+      ),
+      control = control_logistic(
+        response_definition = "I(response > 3)",
+        conf_level = 0.9
       )
-    ),
-    control = control_logistic(
-      response_definition = "I(response > 3)",
-      conf_level = 0.9
-    )
-  ))
+    ))
+  )
 
   # Check that `groups_list` was respected.
   sub_result <- subset(

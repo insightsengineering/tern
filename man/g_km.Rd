@@ -196,7 +196,7 @@ res <- g_km(
 )
 res <- g_km(df = df, variables = variables, ggtheme = theme_minimal())
 res <- g_km(df = df, variables = variables, ggtheme = theme_minimal(), lty = 1:3)
-res <- g_km(df = df, variables = variables, max = 2000)
+res <- g_km(df = df, variables = variables, max_time = 2000)
 res <- g_km(
   df = df,
   variables = variables,
@@ -213,11 +213,18 @@ lyt <- grid.layout(nrow = 2, ncol = 1) \%>\%
   pushViewport()
 
 res <- g_km(
-  df = df, variables = variables, newpage = FALSE, annot_surv_med = FALSE,
+  df = df,
+  variables = variables,
+  newpage = FALSE,
+  annot_surv_med = FALSE,
   vp = viewport(layout.pos.row = 1, layout.pos.col = 1)
 )
 res <- g_km(
-  df = df, variables = variables, max = 1000, newpage = FALSE, annot_surv_med = FALSE,
+  df = df,
+  variables = variables,
+  max_time = 1000,
+  newpage = FALSE,
+  annot_surv_med = FALSE,
   ggtheme = theme_dark(),
   vp = viewport(layout.pos.row = 2, layout.pos.col = 1)
 )
@@ -229,12 +236,19 @@ lyt <- grid.layout(nrow = 2, ncol = 1) \%>\%
   pushViewport()
 
 res <- g_km(
-  df = df, variables = variables, newpage = FALSE,
-  annot_surv_med = FALSE, annot_at_risk = FALSE,
+  df = df,
+  variables = variables,
+  newpage = FALSE,
+  annot_surv_med = FALSE,
+  annot_at_risk = FALSE,
   vp = viewport(layout.pos.row = 1, layout.pos.col = 1)
 )
 res <- g_km(
-  df = df, variables = variables, max = 2000, newpage = FALSE, annot_surv_med = FALSE,
+  df = df,
+  variables = variables,
+  max_time = 2000,
+  newpage = FALSE,
+  annot_surv_med = FALSE,
   annot_at_risk = TRUE,
   ggtheme = theme_dark(),
   vp = viewport(layout.pos.row = 2, layout.pos.col = 1)
@@ -242,31 +256,35 @@ res <- g_km(
 
 # Add annotation from a pairwise coxph analysis
 g_km(
-  df = df, variables = variables,
+  df = df,
+  variables = variables,
   annot_coxph = TRUE
 )
 
 # Change widths/sizes of surv_med and coxph annotation tables.
 g_km(
-  df = df, variables = c(variables, list(strata = "SEX")),
+  df = df,
+  variables = c(variables, list(strata = "SEX")),
   annot_coxph = TRUE,
   width_annots = list(surv_med = grid::unit(2, "in"), coxph = grid::unit(3, "in"))
 )
 
 g_km(
-  df = df, variables = c(variables, list(strata = "SEX")),
+  df = df,
+  variables = c(variables, list(strata = "SEX")),
   font_size = 15,
   annot_coxph = TRUE,
-  control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
+  control_coxph_pw = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
   position_coxph = c(0.5, 0.5)
 )
 
 # Change position of the treatment group annotation table.
 g_km(
-  df = df, variables = c(variables, list(strata = "SEX")),
+  df = df,
+  variables = c(variables, list(strata = "SEX")),
   font_size = 15,
   annot_coxph = TRUE,
-  control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
+  control_coxph_pw = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
   position_surv_med = c(1, 0.7)
 )
 }

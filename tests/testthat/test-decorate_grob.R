@@ -96,10 +96,12 @@ testthat::test_that("decorate_grob_set returns no warnings when creating a non-e
 })
 
 testthat::test_that("text wrapping works as expected", {
+  testthat::skip_if_not_installed("vdiffr")
+
   g <- ggplot2::ggplot(iris) +
     ggplot2::geom_point(aes(x = Sepal.Length, y = Sepal.Width))
 
-  deco_grob_text_wrap <- tern::decorate_grob(
+  deco_grob_text_wrap <- decorate_grob(
     grob = ggplot2::ggplotGrob(g),
     titles = paste(
       "this is title that is very long dasd asdas dasljdklasjdklasjlk dakldsj akldjakls jkald jaklsj dklsajklaj",
