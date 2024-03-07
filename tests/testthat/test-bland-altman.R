@@ -59,3 +59,28 @@ testthat::test_that("s_bland_altman works with two vectors with NA element in ei
   )
   expect_identical(res, expect, tolerance = 1e-5)
 })
+
+
+testthat::test_that("s_bland_altman works with customized parameters", {
+  set.seed(1)
+  x <- rnorm(20)
+  y <- rnorm(20)
+  result <- s_bland_altman(x, y, 0.9)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+
+testthat::test_that("g_lineplot works with default settings", {
+  set.seed(1)
+  x <- rnorm(20)
+  y <- rnorm(20)
+  conf_level <- 0.9
+  testthat::skip_if_not_installed("vdiffr")
+
+  withr::with_options(
+    opts_partial_match_old,
+    g_bland_altman <- g_bland_altman(x, y, conf_level = conf_level))
+
+  expect_snapshot_ggplot(title = "g_bland_altman", fig = g_bland_altman, width = 10, height = 8)
+})
