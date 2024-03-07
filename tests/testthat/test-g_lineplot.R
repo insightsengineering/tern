@@ -14,7 +14,7 @@ testthat::test_that("g_lineplot works with default settings", {
 testthat::test_that("g_lineplot works with custom settings and statistics table", {
   testthat::skip_if_not_installed("vdiffr")
 
-  g_lineplot_w_stats <-   withr::with_options(
+  g_lineplot_w_stats <- withr::with_options(
     opts_partial_match_old,
     g_lineplot(
       adlb,
@@ -37,7 +37,7 @@ testthat::test_that("g_lineplot works with custom settings and statistics table"
 testthat::test_that("g_lineplot works with cohort_id specified", {
   testthat::skip_if_not_installed("vdiffr")
 
-  g_lineplot_cohorts <-   withr::with_options(
+  g_lineplot_cohorts <- withr::with_options(
     opts_partial_match_old,
     g_lineplot(
       adlb,
