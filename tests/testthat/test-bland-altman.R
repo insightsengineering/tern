@@ -80,7 +80,8 @@ testthat::test_that("g_lineplot works with default settings", {
 
   withr::with_options(
     opts_partial_match_old,
-    g_bland_altman <- g_bland_altman(x, y, conf_level = conf_level))
+    g_bland_altman <- g_bland_altman(x, y, conf_level = conf_level)
+  )
 
   expect_snapshot_ggplot(title = "g_bland_altman", fig = g_bland_altman, width = 10, height = 8)
 })
