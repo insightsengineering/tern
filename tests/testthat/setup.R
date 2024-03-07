@@ -28,7 +28,10 @@ expect_snapshot_ggplot <- function(title, fig, width = NA, height = NA) {
 
   name <- paste0(title, ".svg")
   path <- tempdir()
-  suppressMessages(ggplot2::ggsave(name, fig, path = path, width = width, height = height))
+  withr::with_options(
+    opts_partial_match_old,
+    suppressMessages(ggplot2::ggsave(name, fig, path = path, width = width, height = height))
+  )
   path <- file.path(path, name)
 
   testthat::announce_snapshot_file(name = name)
