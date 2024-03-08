@@ -29,7 +29,12 @@ testthat::test_that("or_clogit estimates right OR and CI", {
     strata = LETTERS[c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)],
     stringsAsFactors = TRUE
   )
-  result <- or_clogit(data, conf_level = 0.95)
+
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    result <- or_clogit(data, conf_level = 0.95)
+  )
 
   # from SAS
   res <- testthat::expect_silent(result)
@@ -61,13 +66,17 @@ testthat::test_that("s_odds_ratio estimates right OR and CI (stratified analysis
     strata = factor(sample(c("C", "D"), 100, TRUE))
   )
 
-  result <- s_odds_ratio(
-    df = subset(dta, grp == "A"),
-    .var = "rsp",
-    .ref_group = subset(dta, grp == "B"),
-    .in_ref_col = FALSE,
-    .df_row = dta,
-    variables = list(arm = "grp", strata = "strata")
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    result <- s_odds_ratio(
+      df = subset(dta, grp == "A"),
+      .var = "rsp",
+      .ref_group = subset(dta, grp == "B"),
+      .in_ref_col = FALSE,
+      .df_row = dta,
+      variables = list(arm = "grp", strata = "strata")
+    )
   )
 
   res <- testthat::expect_silent(result)
@@ -85,15 +94,19 @@ testthat::test_that("s_odds_ratio returns error for incorrect groups", {
     "Arms A+B" = c("A", "B")
   )
 
-  result <- testthat::expect_error(s_odds_ratio(
-    df = subset(data, grp == "A"),
-    .var = "rsp",
-    .ref_group = subset(data, grp == "B"),
-    .in_ref_col = FALSE,
-    .df_row = data,
-    variables = list(arm = "grp", strata = "strata"),
-    groups_list = groups
-  ))
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    result <- testthat::expect_error(s_odds_ratio(
+      df = subset(data, grp == "A"),
+      .var = "rsp",
+      .ref_group = subset(data, grp == "B"),
+      .in_ref_col = FALSE,
+      .df_row = data,
+      variables = list(arm = "grp", strata = "strata"),
+      groups_list = groups
+    ))
+  )
 })
 
 testthat::test_that("estimate_odds_ratio estimates right OR and CI (unstratified analysis)", {
@@ -119,10 +132,14 @@ testthat::test_that("estimate_odds_ratio estimates right OR and CI (stratified a
     strata = factor(sample(c("C", "D"), 100, TRUE))
   )
 
-  result <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "A", split_fun = ref_group_position("first")) %>%
-    estimate_odds_ratio(vars = "rsp", variables = list(arm = "grp", strata = "strata")) %>%
-    build_table(df = data)
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    result <- basic_table() %>%
+      split_cols_by(var = "grp", ref_group = "A", split_fun = ref_group_position("first")) %>%
+      estimate_odds_ratio(vars = "rsp", variables = list(arm = "grp", strata = "strata")) %>%
+      build_table(df = data)
+  )
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -153,7 +170,11 @@ testthat::test_that("estimate_odds_ratio works with strata and combined groups",
       groups_list = groups
     )
 
-  result <- build_table(lyt = lyt, df = anl)
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    result <- build_table(lyt = lyt, df = anl)
+  )
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)

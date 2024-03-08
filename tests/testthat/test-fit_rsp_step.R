@@ -70,11 +70,15 @@ testthat::test_that("fit_rsp_step works as expected with strata", {
     response = "RSP",
     strata = c("STRATA1", "STRATA2")
   )
-  result <- testthat::expect_silent(fit_rsp_step(
-    variables = variables,
-    data = data,
-    control = c(control_logistic(), control_step(bandwidth = 0.9, num_points = 2L))
-  ))
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    result <- testthat::expect_silent(fit_rsp_step(
+      variables = variables,
+      data = data,
+      control = c(control_logistic(), control_step(bandwidth = 0.9, num_points = 2L))
+    ))
+  )
   testthat::expect_s3_class(result, c("matrix", "step"))
 
   res <- testthat::expect_silent(ncol(result))

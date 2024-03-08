@@ -78,18 +78,18 @@ testthat::test_that("assert_df_with_factors is silent with healthy input", {
   ))
   testthat::expect_silent(assert_df_with_factors(
     df = data.frame(a = factor("A", levels = c("A", "B")), b = 3),
-    variable = list(val = "a"),
+    variables = list(val = "a"),
     min.levels = 1
   ))
   testthat::expect_silent(assert_df_with_factors(
     df = data.frame(a = factor("A", levels = c("A", NA, "B")), b = 3),
-    variable = list(val = "a"),
+    variables = list(val = "a"),
     min.levels = 2,
     max.levels = 2
   ))
   testthat::expect_silent(assert_df_with_factors(
     df = data.frame(a = factor(c("A", NA, "B")), b = 3),
-    variable = list(val = "a"),
+    variables = list(val = "a"),
     min.levels = 2,
     max.levels = 2
   ))
@@ -102,18 +102,18 @@ testthat::test_that("assert_df_with_factors fails with wrong input", {
   ))
   testthat::expect_error(assert_df_with_factors(
     df = data.frame(a = 1, b = factor("x", levels = c("a", "b", "x"))),
-    variable = list(val = "b"),
+    variables = list(val = "b"),
     min.levels = 5
   ))
   testthat::expect_error(assert_df_with_factors(
     df = data.frame(a = 1, b = factor("x", levels = c("a", "b", "x"))),
-    variable = list(val = "b"),
+    variables = list(val = "b"),
     min.levels = 2,
     max.levels = 2
   ))
   testthat::expect_error(assert_df_with_factors(
     df = data.frame(a = 1, b = factor("x", levels = c("a", "b", "x"))),
-    variable = list(val = "b"),
+    variables = list(val = "b"),
     min.levels = 5,
     max.levels = 3
   ))

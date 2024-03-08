@@ -196,7 +196,11 @@ testthat::test_that("h_step_trt_effect works for logistic regression models with
 testthat::test_that("h_step_trt_effect works for conditional logistic regression without interaction", {
   dta <- adrs_local
   dta <- dta[sample(nrow(dta)), ]
-  mod <- survival::clogit(formula = RSP ~ ARMBIN + strata(STRATA1), data = dta)
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    mod <- survival::clogit(formula = RSP ~ ARMBIN + strata(STRATA1), data = dta)
+  )
   vars <- list(
     arm = "ARMBIN",
     biomarker = "AGE"
@@ -214,7 +218,11 @@ testthat::test_that("h_step_trt_effect works for conditional logistic regression
 testthat::test_that("h_step_trt_effect works for conditional logistic regression with interaction", {
   dta <- adrs_local
   dta <- dta[sample(nrow(dta)), ]
-  mod <- survival::clogit(formula = RSP ~ ARMBIN * AGE + strata(STRATA1), data = dta)
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    mod <- survival::clogit(formula = RSP ~ ARMBIN * AGE + strata(STRATA1), data = dta)
+  )
   vars <- list(
     arm = "ARMBIN",
     biomarker = "AGE"
@@ -451,13 +459,17 @@ testthat::test_that("h_step_rsp_est works as expected with strata", {
     control = c(control_logistic(), control_step(degree = 1))
   )
   subset <- dta_simple$age > 15
-  result <- testthat::expect_silent(h_step_rsp_est(
-    formula = form,
-    data = dta_simple,
-    variables = vars,
-    subset = subset,
-    x = age_vals
-  ))
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    result <- testthat::expect_silent(h_step_rsp_est(
+      formula = form,
+      data = dta_simple,
+      variables = vars,
+      subset = subset,
+      x = age_vals
+    ))
+  )
   testthat::expect_true(is.matrix(result))
 
   res <- testthat::expect_silent(dim(result))

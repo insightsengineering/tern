@@ -26,7 +26,7 @@ library(survival)
 
 adtte <- tern_ex_adtte \%>\% filter(PARAMCD == "OS")
 fit <- survfit(
-  form = Surv(AVAL, 1 - CNSR) ~ ARMCD,
+  formula = Surv(AVAL, 1 - CNSR) ~ ARMCD,
   data = adtte
 )
 h_tbl_median_surv(fit_km = fit)

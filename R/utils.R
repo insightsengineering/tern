@@ -379,8 +379,8 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
         data.frame(
           x = d[[x]],
           y = plx$fit,
-          ylow = plx$fit - stats::qt(level, plx$df) * plx$se,
-          yhigh = plx$fit + stats::qt(level, plx$df) * plx$se
+          ylow = plx$fit - stats::qt(level, plx$df) * plx$se.fit,
+          yhigh = plx$fit + stats::qt(level, plx$df) * plx$se.fit
         )
       })
 
@@ -396,8 +396,8 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
     df_smooth <- data.frame(
       x = df_c[[x]],
       y = plx$fit,
-      ylow = plx$fit - stats::qt(level, plx$df) * plx$se,
-      yhigh = plx$fit + stats::qt(level, plx$df) * plx$se
+      ylow = plx$fit - stats::qt(level, plx$df) * plx$se.fit,
+      yhigh = plx$fit + stats::qt(level, plx$df) * plx$se.fit
     )
 
     df_smooth

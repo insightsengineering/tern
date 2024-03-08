@@ -12,7 +12,7 @@ g_lineplot(
   interval = "mean_ci",
   whiskers = c("mean_ci_lwr", "mean_ci_upr"),
   table = NULL,
-  sfun = tern::s_summary,
+  sfun = s_summary,
   ...,
   mid_type = "pl",
   mid_point_size = 2,

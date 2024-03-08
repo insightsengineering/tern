@@ -37,7 +37,7 @@ library(grid)
 
 fit_km <- tern_ex_adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
-  survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+  survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 
 data_plot <- h_data_plot(fit_km = fit_km)
 
@@ -51,8 +51,8 @@ gg <- h_ggkm(
 )
 
 # The annotation table reports the patient at risk for a given strata and
-# time (`xticks`).
-annot_tbl <- summary(fit_km, time = xticks)
+# times (`xticks`).
+annot_tbl <- summary(fit_km, times = xticks)
 if (is.null(fit_km$strata)) {
   annot_tbl <- with(annot_tbl, data.frame(n.risk = n.risk, time = time, strata = "All"))
 } else {

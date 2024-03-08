@@ -33,7 +33,7 @@ h_step_window <- function(x,
     # Create windows according to percentile cutoffs.
     out <- cbind(out, out)
     colnames(out)[1:3] <- paste("Percentile", c("Center", "Lower", "Upper"))
-    xs <- seq(0, 1, length = control$num_points + 2)[-1]
+    xs <- seq(0, 1, length.out = control$num_points + 2)[-1]
     for (i in seq_len(control$num_points)) {
       out[i, 2:3] <- c(
         max(xs[i] - control$bandwidth, 0),
@@ -48,7 +48,7 @@ h_step_window <- function(x,
   } else {
     # Create windows according to cutoffs.
     m <- c(min(x), max(x))
-    xs <- seq(m[1], m[2], length = control$num_points + 2)[-1]
+    xs <- seq(m[1], m[2], length.out = control$num_points + 2)[-1]
     for (i in seq_len(control$num_points)) {
       out[i, 2:3] <- c(
         max(xs[i] - control$bandwidth, m[1]),

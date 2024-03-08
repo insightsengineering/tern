@@ -386,7 +386,7 @@ s_cox_multivariate <- function(formula, data,
 
     coef_inter <- lapply(
       for_inter, function(x) {
-        y <- attr(mod$terms, "factor")[, x]
+        y <- attr(mod$terms, "factors")[, x]
         y <- names(y[y > 0])
         Map(estimate_coef_local, variable = y, given = rev(y))
       }

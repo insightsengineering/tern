@@ -1,7 +1,7 @@
 # Local data pre-processing
 test_fit <- local({
   dta <- tern_ex_adtte[tern_ex_adtte$PARAMCD == "OS", ]
-  survival::survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = dta)
+  survival::survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = dta)
 })
 
 # h_data_plot ----
@@ -18,7 +18,7 @@ testthat::test_that("h_data_plot respects the ordering of the arm variable facto
   data <- tern_ex_adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM C", "ARM A"))) %>%
-    survival::survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+    survival::survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
   result <- h_data_plot(data)
 
   res <- testthat::expect_silent(levels(result$strata))
@@ -148,8 +148,11 @@ testthat::test_that("g_km works with default settings", {
     mutate(is_event = CNSR == 0)
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 
-  testthat::expect_silent(
-    g_km(df = df, variables = variables)
+  withr::with_options(
+    opts_partial_match_old,
+    testthat::expect_silent(
+      g_km(df = df, variables = variables)
+    )
   )
 })
 
@@ -159,13 +162,16 @@ testthat::test_that("g_km works with title/footnotes and annotation", {
     mutate(is_event = CNSR == 0)
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 
-  testthat::expect_silent(
-    g_km(
-      df = df,
-      variables = variables,
-      title = "KM Plot",
-      footnotes = "footnotes",
-      annot_coxph = TRUE
+  withr::with_options(
+    opts_partial_match_old,
+    testthat::expect_silent(
+      g_km(
+        df = df,
+        variables = variables,
+        title = "KM Plot",
+        footnotes = "footnotes",
+        annot_coxph = TRUE
+      )
     )
   )
 })
@@ -176,16 +182,19 @@ testthat::test_that("g_km works with custom settings", {
     mutate(is_event = CNSR == 0)
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 
-  testthat::expect_silent(
-    g_km(
-      df = df,
-      variables = variables,
-      yval = "Failure",
-      annot_at_risk = FALSE,
-      annot_surv_med = FALSE,
-      lty = 1,
-      xticks = 500,
-      max_time = NULL
+  withr::with_options(
+    opts_partial_match_old,
+    testthat::expect_silent(
+      g_km(
+        df = df,
+        variables = variables,
+        yval = "Failure",
+        annot_at_risk = FALSE,
+        annot_surv_med = FALSE,
+        lty = 1,
+        xticks = 500,
+        max_time = NULL
+      )
     )
   )
 })

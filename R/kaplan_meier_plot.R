@@ -100,7 +100,7 @@
 #' )
 #' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal())
 #' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal(), lty = 1:3)
-#' res <- g_km(df = df, variables = variables, max = 2000)
+#' res <- g_km(df = df, variables = variables, max_time = 2000)
 #' res <- g_km(
 #'   df = df,
 #'   variables = variables,
@@ -117,11 +117,18 @@
 #'   pushViewport()
 #'
 #' res <- g_km(
-#'   df = df, variables = variables, newpage = FALSE, annot_surv_med = FALSE,
+#'   df = df,
+#'   variables = variables,
+#'   newpage = FALSE,
+#'   annot_surv_med = FALSE,
 #'   vp = viewport(layout.pos.row = 1, layout.pos.col = 1)
 #' )
 #' res <- g_km(
-#'   df = df, variables = variables, max = 1000, newpage = FALSE, annot_surv_med = FALSE,
+#'   df = df,
+#'   variables = variables,
+#'   max_time = 1000,
+#'   newpage = FALSE,
+#'   annot_surv_med = FALSE,
 #'   ggtheme = theme_dark(),
 #'   vp = viewport(layout.pos.row = 2, layout.pos.col = 1)
 #' )
@@ -133,12 +140,19 @@
 #'   pushViewport()
 #'
 #' res <- g_km(
-#'   df = df, variables = variables, newpage = FALSE,
-#'   annot_surv_med = FALSE, annot_at_risk = FALSE,
+#'   df = df,
+#'   variables = variables,
+#'   newpage = FALSE,
+#'   annot_surv_med = FALSE,
+#'   annot_at_risk = FALSE,
 #'   vp = viewport(layout.pos.row = 1, layout.pos.col = 1)
 #' )
 #' res <- g_km(
-#'   df = df, variables = variables, max = 2000, newpage = FALSE, annot_surv_med = FALSE,
+#'   df = df,
+#'   variables = variables,
+#'   max_time = 2000,
+#'   newpage = FALSE,
+#'   annot_surv_med = FALSE,
 #'   annot_at_risk = TRUE,
 #'   ggtheme = theme_dark(),
 #'   vp = viewport(layout.pos.row = 2, layout.pos.col = 1)
@@ -146,31 +160,35 @@
 #'
 #' # Add annotation from a pairwise coxph analysis
 #' g_km(
-#'   df = df, variables = variables,
+#'   df = df,
+#'   variables = variables,
 #'   annot_coxph = TRUE
 #' )
 #'
 #' # Change widths/sizes of surv_med and coxph annotation tables.
 #' g_km(
-#'   df = df, variables = c(variables, list(strata = "SEX")),
+#'   df = df,
+#'   variables = c(variables, list(strata = "SEX")),
 #'   annot_coxph = TRUE,
 #'   width_annots = list(surv_med = grid::unit(2, "in"), coxph = grid::unit(3, "in"))
 #' )
 #'
 #' g_km(
-#'   df = df, variables = c(variables, list(strata = "SEX")),
+#'   df = df,
+#'   variables = c(variables, list(strata = "SEX")),
 #'   font_size = 15,
 #'   annot_coxph = TRUE,
-#'   control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
+#'   control_coxph_pw = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
 #'   position_coxph = c(0.5, 0.5)
 #' )
 #'
 #' # Change position of the treatment group annotation table.
 #' g_km(
-#'   df = df, variables = c(variables, list(strata = "SEX")),
+#'   df = df,
+#'   variables = c(variables, list(strata = "SEX")),
 #'   font_size = 15,
 #'   annot_coxph = TRUE,
-#'   control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
+#'   control_coxph_pw = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
 #'   position_surv_med = c(1, 0.7)
 #' )
 #' }
@@ -318,7 +336,7 @@ g_km <- function(df,
 
   if (annot_at_risk) {
     # This is the content of the table that will be below the graph.
-    annot_tbl <- summary(fit_km, time = xticks)
+    annot_tbl <- summary(fit_km, times = xticks)
     annot_tbl <- if (is.null(fit_km$strata)) {
       data.frame(
         n.risk = annot_tbl$n.risk,
@@ -510,13 +528,13 @@ g_km <- function(df,
 #' # Test with multiple arms
 #' tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
-#'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
+#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_data_plot()
 #'
 #' # Test with single arm
 #' tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS", ARMCD == "ARM B") %>%
-#'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
+#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_data_plot(armval = "ARM B")
 #' }
 #'
@@ -583,7 +601,7 @@ h_data_plot <- function(fit_km,
 #'
 #' data <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
-#'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
+#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_data_plot()
 #'
 #' h_xticks(data)
@@ -639,7 +657,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #'
 #' fit_km <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
-#'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
 #' xticks <- h_xticks(data = data_plot)
 #' gg <- h_ggkm(
@@ -806,7 +824,7 @@ h_ggkm <- function(data,
 #'
 #' fit_km <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
-#'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
 #' xticks <- h_xticks(data = data_plot)
 #' gg <- h_ggkm(
@@ -871,7 +889,7 @@ h_decompose_gg <- function(gg) {
 #'
 #' fit_km <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
-#'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
 #' xticks <- h_xticks(data = data_plot)
 #' gg <- h_ggkm(
@@ -891,7 +909,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, anno
   nlines <- nlevels(as.factor(data$strata))
   col_annot_width <- max(
     c(
-      as.numeric(grid::convertX(g_el$yaxis$width + g_el$ylab$width, "pt")),
+      as.numeric(grid::convertX(g_el$yaxis$widths + g_el$ylab$widths, "pt")),
       as.numeric(
         grid::convertX(
           grid::stringWidth(txtlines) + grid::unit(7, "pt"), "pt"
@@ -916,11 +934,11 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, anno
   ht_x <- c(
     ht_x,
     1,
-    grid::convertX(with(g_el, xaxis$height + ylab$width), "pt") + grid::unit(5, "pt"),
+    grid::convertX(with(g_el, xaxis$heights + ylab$widths), "pt") + grid::unit(5, "pt"),
     grid::convertX(g_el$guide$heights, "pt") + grid::unit(2, "pt"),
     1,
     nlines + 0.5,
-    grid::convertX(with(g_el, xaxis$height + ylab$width), "pt")
+    grid::convertX(with(g_el, xaxis$heights + ylab$widths), "pt")
   )
   ht_units <- c(
     ht_units,
@@ -984,7 +1002,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, anno
 #'
 #' fit_km <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
-#'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #'
 #' data_plot <- h_data_plot(fit_km = fit_km)
 #'
@@ -998,8 +1016,8 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, anno
 #' )
 #'
 #' # The annotation table reports the patient at risk for a given strata and
-#' # time (`xticks`).
-#' annot_tbl <- summary(fit_km, time = xticks)
+#' # times (`xticks`).
+#' annot_tbl <- summary(fit_km, times = xticks)
 #' if (is.null(fit_km$strata)) {
 #'   annot_tbl <- with(annot_tbl, data.frame(n.risk = n.risk, time = time, strata = "All"))
 #' } else {
@@ -1157,7 +1175,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim, title = TRUE) {
 #'
 #' adtte <- tern_ex_adtte %>% filter(PARAMCD == "OS")
 #' fit <- survfit(
-#'   form = Surv(AVAL, 1 - CNSR) ~ ARMCD,
+#'   formula = Surv(AVAL, 1 - CNSR) ~ ARMCD,
 #'   data = adtte
 #' )
 #' h_tbl_median_surv(fit_km = fit)
@@ -1211,7 +1229,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' grid.rect(gp = grid::gpar(lty = 1, col = "pink", fill = "gray85", lwd = 1))
 #' tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
-#'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
+#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_grob_median_surv() %>%
 #'   grid::grid.draw()
 #' }
@@ -1294,7 +1312,7 @@ h_grob_median_surv <- function(fit_km,
 #'
 #' fit_km <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
-#'   survfit(form = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
 #' data_plot <- h_data_plot(fit_km = fit_km)
 #' xticks <- h_xticks(data = data_plot)
 #' gg <- h_ggkm(
@@ -1318,7 +1336,7 @@ h_grob_y_annot <- function(ylab, yaxis) {
   grid::gList(
     grid::gTree(
       vp = grid::viewport(
-        width = grid::convertX(yaxis$width + ylab$width, "pt"),
+        width = grid::convertX(yaxis$widths + ylab$widths, "pt"),
         x = grid::unit(1, "npc"),
         just = "right"
       ),
