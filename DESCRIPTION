@@ -38,6 +38,7 @@ Imports:
     ggplot2 (>= 3.4.0),
     grid,
     gridExtra (>= 2.0.0),
+    ggsurvfit (>= 1.0.0),
     gtable (>= 0.3.0),
     labeling,
     lifecycle (>= 0.2.0),
@@ -123,6 +124,7 @@ Collate:
     'fit_rsp_step.R'
     'fit_survival_step.R'
     'g_forest.R'
+    'g_km.R'
     'g_lineplot.R'
     'g_step.R'
     'g_waterfall.R'
