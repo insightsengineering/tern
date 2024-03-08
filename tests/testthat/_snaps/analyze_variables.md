@@ -938,7 +938,7 @@
       8                  Mean 95% CI    (-0.43, 0.69)          0                 Mean 95% CI
       9                Mean -/+ 1xSE    (-0.11, 0.38)          0               Mean -/+ 1xSE
       10               Mean -/+ 1xSD    (-0.65, 0.91)          0               Mean -/+ 1xSD
-      11 Mean p-value (H0: mean = 0)             0.61          0 Mean p-value (H0: mean = 0)
+      11 Mean p-value (H0: mean = 0)           0.6052          0 Mean p-value (H0: mean = 0)
       12                      Median              0.3          0                      Median
       13   Median Absolute Deviation             -0.0          0   Median Absolute Deviation
       14               Median 95% CI    (-0.82, 0.74)          0               Median 95% CI
@@ -1059,7 +1059,7 @@
       8                  Mean 95% CI    (4.57, 5.69)          0                 Mean 95% CI
       9                Mean -/+ 1xSE    (4.89, 5.38)          0               Mean -/+ 1xSE
       10               Mean -/+ 1xSD    (4.35, 5.91)          0               Mean -/+ 1xSD
-      11 Mean p-value (H0: mean = 0)            0.00          0 Mean p-value (H0: mean = 0)
+      11 Mean p-value (H0: mean = 0)         <0.0001          0 Mean p-value (H0: mean = 0)
       12                      Median             5.3          0                      Median
       13   Median Absolute Deviation            -0.0          0   Median Absolute Deviation
       14               Median 95% CI    (4.18, 5.74)          0               Median 95% CI
