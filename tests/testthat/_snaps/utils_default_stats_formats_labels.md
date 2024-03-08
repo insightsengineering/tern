@@ -89,7 +89,7 @@
                    mean_se              mean_ci             mean_sei 
              "xx.x (xx.x)"     "(xx.xx, xx.xx)"     "(xx.xx, xx.xx)" 
                   mean_sdi            mean_pval               median 
-          "(xx.xx, xx.xx)"              "xx.xx"               "xx.x" 
+          "(xx.xx, xx.xx)" "x.xxxx | (<0.0001)"               "xx.x" 
                        mad            median_ci            quantiles 
                     "xx.x"     "(xx.xx, xx.xx)"        "xx.x - xx.x" 
                        iqr                range                  min 
@@ -161,7 +161,7 @@
                    mean_se              mean_ci             mean_sei 
              "xx.x (xx.x)"     "(xx.xx, xx.xx)"     "(xx.xx, xx.xx)" 
                   mean_sdi            mean_pval               median 
-          "(xx.xx, xx.xx)"              "xx.xx"               "xx.x" 
+          "(xx.xx, xx.xx)" "x.xxxx | (<0.0001)"               "xx.x" 
                        mad            median_ci            quantiles 
                     "xx.x"     "(xx.xx, xx.xx)"        "xx.x - xx.x" 
                        iqr                range                  min 

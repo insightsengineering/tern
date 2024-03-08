@@ -423,7 +423,7 @@ tern_default_formats <- c(
   mean_ci = "(xx.xx, xx.xx)",
   mean_sei = "(xx.xx, xx.xx)",
   mean_sdi = "(xx.xx, xx.xx)",
-  mean_pval = "xx.xx",
+  mean_pval = "x.xxxx | (<0.0001)",
   median = "xx.x",
   mad = "xx.x",
   median_ci = "(xx.xx, xx.xx)",
