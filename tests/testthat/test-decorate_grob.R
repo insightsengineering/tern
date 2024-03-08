@@ -61,34 +61,37 @@ testthat::test_that("decorate_grob_factory returns page warning correctly", {
 })
 
 testthat::test_that("decorate_grob_set returns no warnings when creating a non-empty plot", {
-  g <- with(data = iris, {
-    list(
-      ggplot2::ggplotGrob(
-        ggplot2::ggplot(mapping = aes(Sepal.Length, Sepal.Width, col = Species)) +
-          ggplot2::geom_point()
-      ),
-      ggplot2::ggplotGrob(
-        ggplot2::ggplot(mapping = aes(Sepal.Length, Petal.Length, col = Species)) +
-          ggplot2::geom_point()
-      ),
-      ggplot2::ggplotGrob(
-        ggplot2::ggplot(mapping = aes(Sepal.Length, Petal.Width, col = Species)) +
-          ggplot2::geom_point()
-      ),
-      ggplot2::ggplotGrob(
-        ggplot2::ggplot(mapping = aes(Sepal.Width, Petal.Length, col = Species)) +
-          ggplot2::geom_point()
-      ),
-      ggplot2::ggplotGrob(
-        ggplot2::ggplot(mapping = aes(Sepal.Width, Petal.Width, col = Species)) +
-          ggplot2::geom_point()
-      ),
-      ggplot2::ggplotGrob(
-        ggplot2::ggplot(mapping = aes(Petal.Length, Petal.Width, col = Species)) +
-          ggplot2::geom_point()
+  g <- withr::with_options(
+    opts_partial_match_old,
+    with(data = iris, {
+      list(
+        ggplot2::ggplotGrob(
+          ggplot2::ggplot(mapping = aes(Sepal.Length, Sepal.Width, col = Species)) +
+            ggplot2::geom_point()
+        ),
+        ggplot2::ggplotGrob(
+          ggplot2::ggplot(mapping = aes(Sepal.Length, Petal.Length, col = Species)) +
+            ggplot2::geom_point()
+        ),
+        ggplot2::ggplotGrob(
+          ggplot2::ggplot(mapping = aes(Sepal.Length, Petal.Width, col = Species)) +
+            ggplot2::geom_point()
+        ),
+        ggplot2::ggplotGrob(
+          ggplot2::ggplot(mapping = aes(Sepal.Width, Petal.Length, col = Species)) +
+            ggplot2::geom_point()
+        ),
+        ggplot2::ggplotGrob(
+          ggplot2::ggplot(mapping = aes(Sepal.Width, Petal.Width, col = Species)) +
+            ggplot2::geom_point()
+        ),
+        ggplot2::ggplotGrob(
+          ggplot2::ggplot(mapping = aes(Petal.Length, Petal.Width, col = Species)) +
+            ggplot2::geom_point()
+        )
       )
-    )
-  })
+    })
+  )
   lg <- testthat::expect_silent(
     decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")
   )
