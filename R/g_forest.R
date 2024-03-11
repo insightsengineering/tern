@@ -305,7 +305,7 @@ g_forest <- function(tbl,
       plot.margin = margin(0, 0.1, 0.05, 0, "npc")
     ) +
     scale_x_continuous(
-      trans = ifelse(logx, "log", "identity"),
+      transform = ifelse(logx, "log", "identity"),
       limits = xlim,
       breaks = x_at,
       labels = x_labels,

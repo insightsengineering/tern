@@ -35,7 +35,7 @@ Imports:
     emmeans (>= 1.8.0),
     forcats (>= 1.0.0),
     formatters (>= 0.5.5),
-    ggplot2 (>= 3.4.0),
+    ggplot2 (>= 3.5.0),
     grid,
     gridExtra (>= 2.0.0),
     gtable (>= 0.3.0),
