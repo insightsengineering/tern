@@ -32,7 +32,6 @@ Imports:
     checkmate (>= 2.1.0),
     cowplot (>= 0.7.0),
     dplyr (>= 1.0.0),
-    emmeans (>= 1.8.0),
     forcats (>= 1.0.0),
     formatters (>= 0.5.5),
     ggplot2 (>= 3.5.0),
