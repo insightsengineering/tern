@@ -1,9 +1,12 @@
-# tern 0.9.3.9021
+# tern 0.9.3.9022
 
 ### New Features
 * Refactored `g_forest` to output a `ggplot` object instead of a `grob` object.
 * Added `h_glm_negbin` to `h_glm_count` to enable count data analysis using a negative binomial model.
 * Added argument `grade_groups_only` to `count_occurrences_by_grade` to allow users to only display rows for specified grade groups.
+
+### Enhancements
+* Default format for mean p-values (`mean_pval`) updated from `"xx.xx"` to `"x.xxxx | (<0.0001)"`.
 
 ### Bug Fixes
 * Fixed nested column split label overlay issue in `rtable2gg` to clean up appearance of text labels.
