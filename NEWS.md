@@ -1,4 +1,4 @@
-# tern 0.9.3.9022
+# tern 0.9.3.9023
 
 ### New Features
 * Refactored `g_forest` to output a `ggplot` object instead of a `grob` object.
@@ -17,6 +17,7 @@
 * Added function `expect_snapshot_ggplot` to test setup file to process plot snapshot tests and allow plot dimensions to be set.
 * Began deprecation of the named element `strat`, to be renamed to `strata`, within the `variables` argument to `h_rsp_to_logistic_variables`, `h_logistic_mult_cont_df`, `h_odds_ratio_subgroups_df`, `h_coxreg_mult_cont_df`, `h_coxph_subgroups_df`, `h_tbl_coxph_pairwise`, `extract_rsp_biomarkers`, `extract_rsp_subgroups`, `extract_survival_biomarkers`, and `extract_survival_subgroups`.
 * Began deprecation of the `strat` argument to `s_coxph_pairwise` and replaced it with the `strata` argument.
+* Adapt to argument renames introduced in `ggplot2` 3.5.0.
 
 # tern 0.9.3
 
@@ -25,14 +26,14 @@
 * Added `keep_level_order` split function to retain original order of levels in a split.
 * Added `level_order` split function to reorder manually the levels.
 * Added function `get_indents_from_stats` to format and return indent modifiers for a given set of statistics.
-* Added internal utility function `apply_auto_formatting` to check for `"auto"` formats and replace them with 
+* Added internal utility function `apply_auto_formatting` to check for `"auto"` formats and replace them with
   implementation of `format_auto` in analyze functions.
 * Added utility function `labels_use_control` to modify labels with control specifications.
 * Added list containing default statistics for each method group, `tern_default_stats`.
 * Added summarize function version of `count_occurrences` analyze function, `summarize_occurrences`.
 * Added referential footnotes to `surv_time` for censored range observations, controlled via the `ref_fn_censor` parameter.
 * Added helper function `h_adlb_abnormal_by_worst_grade` to prepare `ADLB` data to use as input in `count_abnormal_by_worst_grade`.
-* Added `s_bland_altman` function to assess agreement between two numerical vectors. 
+* Added `s_bland_altman` function to assess agreement between two numerical vectors.
 * Added function `rtable2gg` that converts `rtable` objects to `ggplot` objects.
 * Added helper function to set default `na_str` globally with `set_default_na_str()` and added `default_na_str()` for all interested functions.
 
