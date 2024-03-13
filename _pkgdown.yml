@@ -189,5 +189,14 @@ reference:
     desc: Functions that are currently deprecated within `tern`.
     contents:
       - starts_with("create_")
+      - h_data_plot
+      - h_decompose_gg
+      - h_ggkm
+      - h_grob_coxph
+      - h_grob_median_surv
+      - h_grob_tbl_at_risk
+      - h_grob_y_annot
+      - h_km_layout
       - summarize_vars
       - summary_custom
+
