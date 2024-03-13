@@ -201,16 +201,16 @@ g_km_new <- function(df,
                    font_size = 10,
                    ci_ribbon = FALSE,
                    ggtheme = NULL,
-                   annot_at_risk = TRUE, # TODO
-                   annot_at_risk_title = TRUE, # TODO
+                   annot_at_risk = TRUE,
+                   annot_at_risk_title = TRUE,
                    annot_surv_med = TRUE,
                    annot_coxph = FALSE,
-                   annot_stats = NULL, # TODO
-                   annot_stats_vlines = FALSE, # TODO
+                   annot_stats = NULL,
+                   annot_stats_vlines = FALSE, ###### TODO
                    control_coxph_pw = control_coxph(),
                    ref_group_coxph = NULL,
-                   lyt_surv_med = list(x = 0.8, y = 0.85, w = 0.3, h = 0.18, fill = TRUE),
-                   lyt_coxph = list(x = 0.29, y = 0.28, w = 0.4, h = 0.125, fill = TRUE, ref_lbls = FALSE),
+                   control_annot_surv_med = control_annot_surv_med(),
+                   control_annot_coxph = control_annot_coxph(),
                    annot_coxph_ref_lbls = lifecycle::deprecated(),
                    position_coxph = lifecycle::deprecated(),
                    position_surv_med = lifecycle::deprecated(),
@@ -255,7 +255,6 @@ g_km_new <- function(df,
   checkmate::assert_logical(ci_ribbon, len = 1, any.missing = FALSE)
   checkmate::assert_subset(annot_stats, c("median", "min"))
   checkmate::assert_logical(annot_stats_vlines)
-  # checkmate::assert_numeric(unlist(width_annots), lower = 0, upper = 1, max.len = 2)
 
   tte <- variables$tte
   is_event <- variables$is_event
@@ -286,11 +285,6 @@ g_km_new <- function(df,
     conf.int = control_surv$conf_level,
     conf.type = control_surv$conf_type
   )
-  # data_plot <- h_data_plot(
-  #   fit_km = fit_km,
-  #   armval = armval,
-  #   max_time = max_time
-  # )
 
   data_plot <- ggsurvfit::tidy_survfit(fit_km)
 
@@ -327,12 +321,8 @@ g_km_new <- function(df,
 
   ###
   if (!is.null(annot_stats)) {
-    if ("median" %in% annot_stats) {
-      gg <- gg +
-        ggsurvfit::add_quantile(
-          y_value = 0.5
-        )
-    }
+    if ("min" %in% annot_stats) gg <- gg + ggsurvfit::add_quantile(y_value = 0)
+    if ("median" %in% annot_stats) gg <- gg + ggsurvfit::add_quantile(y_value = 0.5)
   }
 
   if (!is.null(col)) {
@@ -348,16 +338,16 @@ g_km_new <- function(df,
   if (annot_surv_med) {
     surv_med_tbl <- h_tbl_median_surv(fit_km = fit_km, armval = armval)
     scale_arm_lbls <- max(nchar(rownames(surv_med_tbl))) / 5
-    bg_fill <- if (isTRUE(lyt_surv_med[["fill"]])) "#00000020" else lyt_surv_med[["fill"]]
+    bg_fill <- if (isTRUE(control_annot_surv_med[["fill"]])) "#00000020" else control_annot_surv_med[["fill"]]
     dfgg <- df2gg(surv_med_tbl, colwidths = c(scale_arm_lbls, 1, 1, 2.5), bg_fill = bg_fill)
 
     gg <- cowplot::ggdraw(gg) +
       cowplot::draw_plot(
         dfgg,
-        lyt_surv_med[["x"]],
-        lyt_surv_med[["y"]],
-        width = lyt_surv_med[["w"]],
-        height = lyt_surv_med[["h"]],
+        control_annot_surv_med[["x"]],
+        control_annot_surv_med[["y"]],
+        width = control_annot_surv_med[["w"]],
+        height = control_annot_surv_med[["h"]],
         vjust = 0.5,
         hjust = 0.5
       )
@@ -369,228 +359,80 @@ g_km_new <- function(df,
       variables = variables,
       ref_group_coxph = ref_group_coxph,
       control_coxph_pw = control_coxph_pw,
-      annot_coxph_ref_lbls = lyt_coxph[["ref_lbls"]]
+      annot_coxph_ref_lbls = control_annot_coxph[["ref_lbls"]]
     )
     scale_arm_lbls <- max(nchar(rownames(coxph_tbl))) / 10
-    bg_fill <- if (isTRUE(lyt_coxph[["fill"]])) "#00000020" else lyt_coxph[["fill"]]
+    bg_fill <- if (isTRUE(control_annot_coxph[["fill"]])) "#00000020" else control_annot_coxph[["fill"]]
     dfgg <- df2gg(coxph_tbl, colwidths = c(scale_arm_lbls, 1, 1, 2.1), bg_fill = bg_fill)
 
     gg <- cowplot::ggdraw(gg) +
       cowplot::draw_plot(
         dfgg,
-        lyt_coxph[["x"]],
-        lyt_coxph[["y"]],
-        width = lyt_coxph[["w"]],
-        height = lyt_coxph[["h"]],
+        control_annot_coxph[["x"]],
+        control_annot_coxph[["y"]],
+        width = control_annot_coxph[["w"]],
+        height = control_annot_coxph[["h"]],
         vjust = 0.5,
         hjust = 0.5
       )
   }
 
-  return(gg)
+  gg
+}
 
-  # if (!is.null(annot_stats)) {
-  #   if ("median" %in% annot_stats) {
-  #     fit_km_all <- survival::survfit(
-  #       formula = stats::as.formula(paste0("survival::Surv(", tte, ", ", is_event, ") ~ ", 1)),
-  #       data = df,
-  #       conf.int = control_surv$conf_level,
-  #       conf.type = control_surv$conf_type
-  #     )
-  #     gg <- gg +
-  #       geom_text(
-  #         size = 8 / ggplot2::.pt, col = 1,
-  #         x = stats::median(fit_km_all) + 0.065 * max(data_plot$time),
-  #         y = ifelse(yval == "Survival", 0.62, 0.38),
-  #         label = paste("Median F/U:\n", round(stats::median(fit_km_all), 1), tolower(df$AVALU[1]))
-  #       )
-  #     if (annot_stats_vlines) {
-  #       gg <- gg +
-  #         geom_segment(aes(x = stats::median(fit_km_all), xend = stats::median(fit_km_all), y = -Inf, yend = Inf),
-  #                      linetype = 2, col = "darkgray"
-  #         )
-  #     }
-  #   }
-  #   if ("min" %in% annot_stats) {
-  #     min_fu <- min(df[[tte]])
-  #     gg <- gg +
-  #       geom_text(
-  #         size = 8 / ggplot2::.pt, col = 1,
-  #         x = min_fu + max(data_plot$time) * ifelse(yval == "Survival", 0.05, 0.07),
-  #         y = ifelse(yval == "Survival", 1.0, 0.05),
-  #         label = paste("Min. F/U:\n", round(min_fu, 1), tolower(df$AVALU[1]))
-  #       )
-  #     if (annot_stats_vlines) {
-  #       gg <- gg +
-  #         geom_segment(aes(x = min_fu, xend = min_fu, y = Inf, yend = -Inf), linetype = 2, col = "darkgray")
-  #     }
-  #   }
-  #   gg <- gg + ggplot2::guides(fill = ggplot2::guide_legend(override.aes = list(shape = NA, label = "")))
-  # }
+#' Control Functions for Kaplan-Meier Plot Annotation Tables
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Auxiliary functions for controlling arguments for formatting the annotation tables that can be added to plots
+#' generated via [g_km()].
+#'
+#' @param x (`proportion`)\cr x-coordinate for center of annotation table.
+#' @param y (`proportion`)\cr y-coordinate for center of annotation table.
+#' @param w (`proportion`)\cr relative width of the annotation table.
+#' @param h (`proportion`)\cr relative height of the annotation table.
+#' @param fill (`logical` or `character`)\cr whether the annotation table should have a background fill color.
+#'   Can also be a color code to use as the background fill color. If `TRUE`, color code defaults to `"#00000020"`.
+#'
+#' @return A list of components with the same names as the arguments.
+#'
+#' @seealso [g_km()]
+#'
+#' @name control_annot
+NULL
 
-  g_el <- h_decompose_gg(gg)
+#' @describeIn control_annot Control function for formatting the median survival time annotation table. This annotation
+#'   table can be added in [g_km()] by setting `annot_surv_med=TRUE`, and can be configured using the
+#'   `control_annot_surv_med()` function by setting it as the `control_annot_surv_med` argument.
+#'
+#'
+#' @examples
+#' control_annot_surv_med()
+#'
+#' @export
+control_annot_surv_med <- function(x = 0.8, y = 0.85, w = 0.3, h = 0.18, fill = TRUE) {
+  assert_proportion_value(x)
+  assert_proportion_value(y)
+  assert_proportion_value(w)
+  assert_proportion_value(h)
 
-  # if (annot_at_risk) {
-  #   # This is the content of the table that will be below the graph.
-  #   annot_tbl <- summary(fit_km, time = xticks)
-  #   annot_tbl <- if (is.null(fit_km$strata)) {
-  #     data.frame(
-  #       n.risk = annot_tbl$n.risk,
-  #       time = annot_tbl$time,
-  #       strata = as.factor(armval)
-  #     )
-  #   } else {
-  #     strata_lst <- strsplit(sub("=", "equals", levels(annot_tbl$strata)), "equals")
-  #     levels(annot_tbl$strata) <- matrix(unlist(strata_lst), ncol = 2, byrow = TRUE)[, 2]
-  #     data.frame(
-  #       n.risk = annot_tbl$n.risk,
-  #       time = annot_tbl$time,
-  #       strata = annot_tbl$strata
-  #     )
-  #   }
-  #
-  #   grobs_patient <- h_grob_tbl_at_risk(
-  #     data = data_plot,
-  #     annot_tbl = annot_tbl,
-  #     xlim = max(max_time, data_plot$time, xticks),
-  #     title = annot_at_risk_title
-  #   )
-  # }
+  list(x = x, y = y, w = w, h = h, fill = fill)
+}
 
-  if (annot_at_risk || annot_surv_med || annot_coxph) {
-    lyt <- h_km_layout(
-      data = data_plot, g_el = g_el, title = title, footnotes = footnotes,
-      annot_at_risk = annot_at_risk, annot_at_risk_title = annot_at_risk_title
-    )
-    at_risk_ttl <- as.numeric(annot_at_risk_title)
-    ttl_row <- as.numeric(!is.null(title))
-    foot_row <- as.numeric(!is.null(footnotes))
-    km_grob <- grid::gTree(
-      vp = grid::viewport(layout = lyt, height = .95, width = .95),
-      children = grid::gList(
-        # Title.
-        if (ttl_row == 1) {
-          grid::gTree(
-            vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 2),
-            children = grid::gList(grid::textGrob(label = title, x = grid::unit(0, "npc"), hjust = 0))
-          )
-        },
+#' @describeIn control_annot Control function for formatting the Cox-PH annotation table. This annotation table can be
+#'   added in [g_km()] by setting `annot_coxph=TRUE`, and can be configured using the `control_annot_coxph()` function
+#'   by setting it as the `control_annot_coxph` argument.
+#'
+#' @param ref_lbls (`logical`)\cr whether the reference group should be explicitly printed in labels for the
+#'   annotation table. If `FALSE` (default), only comparison groups will be printed in the table labels.
+#'
+#' @examples
+#' control_annot_coxph()
+#'
+#' @export
+control_annot_coxph <- function(x = 0.29, y = 0.28, w = 0.4, h = 0.125, fill = TRUE, ref_lbls = FALSE) {
+  checkmate::assert_logical(ref_lbls, any.missing = FALSE)
 
-        # The Kaplan - Meier curve (top-right corner).
-        grid::gTree(
-          vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
-          children = grid::gList(g_el$panel)
-        ),
-
-        # Survfit summary table (top-right corner).
-        if (annot_surv_med) {
-          grid::gTree(
-            vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
-            children = h_grob_median_surv(
-              fit_km = fit_km,
-              armval = armval,
-              x = position_surv_med[1],
-              y = position_surv_med[2],
-              width = if (!is.null(width_annots[["surv_med"]])) width_annots[["surv_med"]] else grid::unit(0.3, "npc"),
-              ttheme = gridExtra::ttheme_default(base_size = font_size)
-            )
-          )
-        },
-        if (annot_coxph) {
-          grid::gTree(
-            vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 2),
-            children = h_grob_coxph(
-              df = df,
-              variables = variables,
-              control_coxph_pw = control_coxph_pw,
-              ref_group_coxph = ref_group_coxph,
-              annot_coxph_ref_lbls = annot_coxph_ref_lbls,
-              x = position_coxph[1],
-              y = position_coxph[2],
-              width = if (!is.null(width_annots[["coxph"]])) width_annots[["coxph"]] else grid::unit(0.4, "npc"),
-              ttheme = gridExtra::ttheme_default(
-                base_size = font_size,
-                padding = grid::unit(c(1, .5), "lines"),
-                core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = .5))
-              )
-            )
-          )
-        },
-
-        # Add the y-axis annotation (top-left corner).
-        grid::gTree(
-          vp = grid::viewport(layout.pos.row = 1 + ttl_row, layout.pos.col = 1),
-          children = h_grob_y_annot(ylab = g_el$ylab, yaxis = g_el$yaxis)
-        ),
-
-        # Add the x-axis annotation (second row below the Kaplan Meier Curve).
-        grid::gTree(
-          vp = grid::viewport(layout.pos.row = 2 + ttl_row, layout.pos.col = 2),
-          children = grid::gList(rbind(g_el$xaxis, g_el$xlab))
-        ),
-
-        # Add the legend.
-        grid::gTree(
-          vp = grid::viewport(layout.pos.row = 3 + ttl_row, layout.pos.col = 2),
-          children = grid::gList(g_el$guide)
-        ),
-
-        # Add the table with patient-at-risk numbers.
-        if (annot_at_risk && annot_at_risk_title) {
-          grid::gTree(
-            vp = grid::viewport(layout.pos.row = 4 + ttl_row, layout.pos.col = 1),
-            children = grobs_patient$title
-          )
-        },
-        if (annot_at_risk) {
-          grid::gTree(
-            vp = grid::viewport(layout.pos.row = 4 + at_risk_ttl + ttl_row, layout.pos.col = 2),
-            children = grobs_patient$at_risk
-          )
-        },
-        if (annot_at_risk) {
-          grid::gTree(
-            vp = grid::viewport(layout.pos.row = 4 + at_risk_ttl + ttl_row, layout.pos.col = 1),
-            children = grobs_patient$label
-          )
-        },
-        if (annot_at_risk) {
-          # Add the x-axis for the table.
-          grid::gTree(
-            vp = grid::viewport(layout.pos.row = 5 + at_risk_ttl + ttl_row, layout.pos.col = 2),
-            children = grid::gList(rbind(g_el$xaxis, g_el$xlab))
-          )
-        },
-
-        # Footnotes.
-        if (foot_row == 1) {
-          grid::gTree(
-            vp = grid::viewport(
-              layout.pos.row = ifelse(annot_at_risk, 6 + at_risk_ttl + ttl_row, 4 + ttl_row),
-              layout.pos.col = 2
-            ),
-            children = grid::gList(grid::textGrob(label = footnotes, x = grid::unit(0, "npc"), hjust = 0))
-          )
-        }
-      )
-    )
-
-    result <- grid::gTree(
-      vp = vp,
-      gp = gp,
-      name = name,
-      children = grid::gList(km_grob)
-    )
-  } else {
-    result <- grid::gTree(
-      vp = vp,
-      gp = gp,
-      name = name,
-      children = grid::gList(ggplot2::ggplotGrob(gg))
-    )
-  }
-
-  if (newpage && draw) grid::grid.newpage()
-  if (draw) grid::grid.draw(result)
-  invisible(result)
+  res <- c(control_annot_surv_med(x = x, y = y, w = w, h = h), list(ref_lbls = ref_lbls))
+  res
 }
