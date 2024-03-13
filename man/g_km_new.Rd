@@ -26,10 +26,10 @@ g_km_new(
   newpage = lifecycle::deprecated(),
   gp = lifecycle::deprecated(),
   vp = lifecycle::deprecated(),
-  name = NULL,
-  font_size = 12,
+  name = lifecycle::deprecated(),
+  font_size = 10,
   ci_ribbon = FALSE,
-  ggtheme = nestcolor::theme_nest(),
+  ggtheme = NULL,
   annot_at_risk = TRUE,
   annot_at_risk_title = TRUE,
   annot_surv_med = TRUE,
@@ -38,10 +38,12 @@ g_km_new(
   annot_stats_vlines = FALSE,
   control_coxph_pw = control_coxph(),
   ref_group_coxph = NULL,
-  annot_coxph_ref_lbls = FALSE,
-  position_coxph = c(-0.03, -0.02),
-  position_surv_med = c(0.95, 0.9),
-  width_annots = list(surv_med = grid::unit(0.3, "npc"), coxph = grid::unit(0.4, "npc"))
+  lyt_surv_med = list(x = 0.8, y = 0.85, w = 0.3, h = 0.18, fill = TRUE),
+  lyt_coxph = list(x = 0.29, y = 0.28, w = 0.4, h = 0.125, fill = TRUE, ref_lbls = FALSE),
+  annot_coxph_ref_lbls = lifecycle::deprecated(),
+  position_coxph = lifecycle::deprecated(),
+  position_surv_med = lifecycle::deprecated(),
+  width_annots = lifecycle::deprecated()
 )
 }
 \arguments{
@@ -185,7 +187,7 @@ variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 
 # 1. Example - basic option
 
-res <- g_km(df = df, variables = variables)
+res <- g_km_new(df = df, variables = variables)
 res <- g_km(df = df, variables = variables, yval = "Failure")
 res <- g_km(
   df = df,

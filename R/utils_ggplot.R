@@ -128,3 +128,62 @@ rtable2gg <- function(tbl, fontsize = 12, colwidths = NULL, lbl_col_padding = 0)
 
   res
 }
+
+df2gg <- function(df,
+                  hline = TRUE,
+                  colwidths = NULL,
+                  row_labels = TRUE,
+                  col_labels = TRUE,
+                  row_lab_fontface = "italic",
+                  col_lab_fontface = "bold",
+                  font_size = 10,
+                  bg_fill = NULL) {
+  if (row_labels) {
+    df <- cbind(rownames(df), df)
+    rownames(df) <- NULL
+  }
+  if (col_labels) {
+    df <- rbind(names(df), df)
+    df[1, 1] <- ""
+  }
+
+  # Get column widths
+  if (is.null(colwidths)) {
+    colwidths <- apply(df, 2, function(x) max(nchar(x)))
+  }
+  tot_width <- sum(colwidths)
+
+  res <- ggplot(data = df) +
+    theme_void() +
+    scale_x_continuous(limits = c(-0.05, tot_width - 0.2), expand = c(0.02, 0.02)) +
+    scale_y_continuous(limits = c(0.9, nrow(df) + 0.05), expand = c(0.2, 0.2))
+
+  if (!is.null(bg_fill)) res <- res + theme(panel.background = element_rect(fill = bg_fill))
+
+  if (hline) {
+    res <- res +
+    annotate(
+      "segment",
+      x = colwidths[1] + 0.2 * colwidths[2], xend = tot_width - 0.1 * tail(colwidths, 1),
+      y = nrow(df) - 0.5, yend = nrow(df) - 0.5
+    )
+  }
+
+  for (i in seq_along(df)) {
+    line_pos <- c(
+      if (i == 1) 0 else sum(colwidths[1:(i - 1)]),
+      sum(colwidths[1:i])
+    )
+    res <- res +
+      annotate(
+        "text",
+        x = mean(line_pos),
+        y = (nrow(df)):1,
+        label = df[, i],
+        size = font_size / .pt,
+        fontface = if (i == 1 && row_labels) row_lab_fontface else if (col_labels) c(col_lab_fontface, rep("plain", nrow(df) - 1)) else NULL
+      )
+  }
+
+  res
+}

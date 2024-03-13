@@ -89,7 +89,7 @@
 #'
 #' # 1. Example - basic option
 #'
-#' res <- g_km(df = df, variables = variables)
+#' res <- g_km_new(df = df, variables = variables)
 #' res <- g_km(df = df, variables = variables, yval = "Failure")
 #' res <- g_km(
 #'   df = df,
@@ -176,62 +176,100 @@
 #' }
 #'
 #' @export
-g_km_new <- function(df,#
-                   variables,#
-                   control_surv = control_surv_timepoint(),#
+g_km_new <- function(df,
+                   variables,
+                   control_surv = control_surv_timepoint(),
                    col = NULL,
                    lty = NULL,
                    lwd = .5,
                    censor_show = TRUE,
-                   pch = 3,#
-                   size = 2,#
-                   max_time = NULL,#
-                   xticks = NULL,#
-                   xlab = "Days",#
-                   yval = c("Survival", "Failure"),#
-                   ylab = paste(yval, "Probability"),#
+                   pch = 3,
+                   size = 2,
+                   max_time = NULL,
+                   xticks = NULL,
+                   xlab = "Days",
+                   yval = c("Survival", "Failure"),
+                   ylab = paste(yval, "Probability"),
                    ylim = NULL,
-                   title = NULL,#
-                   footnotes = NULL,#
+                   title = NULL,
+                   footnotes = NULL,
                    draw = lifecycle::deprecated(),
                    newpage = lifecycle::deprecated(),
                    gp = lifecycle::deprecated(),
                    vp = lifecycle::deprecated(),
-                   name = NULL,
-                   font_size = 12,
+                   name = lifecycle::deprecated(),
+                   font_size = 10,
                    ci_ribbon = FALSE,
-                   ggtheme = nestcolor::theme_nest(),
-                   annot_at_risk = TRUE,#
-                   annot_at_risk_title = TRUE,#
+                   ggtheme = NULL,
+                   annot_at_risk = TRUE, # TODO
+                   annot_at_risk_title = TRUE, # TODO
                    annot_surv_med = TRUE,
                    annot_coxph = FALSE,
-                   annot_stats = NULL,
-                   annot_stats_vlines = FALSE,
+                   annot_stats = NULL, # TODO
+                   annot_stats_vlines = FALSE, # TODO
                    control_coxph_pw = control_coxph(),
                    ref_group_coxph = NULL,
-                   annot_coxph_ref_lbls = FALSE,
-                   position_coxph = c(-0.03, -0.02),
-                   position_surv_med = c(0.95, 0.9),
-                   width_annots = list(surv_med = grid::unit(0.3, "npc"), coxph = grid::unit(0.4, "npc"))) {
+                   lyt_surv_med = list(x = 0.8, y = 0.85, w = 0.3, h = 0.18, fill = TRUE),
+                   lyt_coxph = list(x = 0.29, y = 0.28, w = 0.4, h = 0.125, fill = TRUE, ref_lbls = FALSE),
+                   annot_coxph_ref_lbls = lifecycle::deprecated(),
+                   position_coxph = lifecycle::deprecated(),
+                   position_surv_med = lifecycle::deprecated(),
+                   width_annots = lifecycle::deprecated()) {
+  # Deprecated argument warnings
+  if (lifecycle::is_present(draw)) {
+    lifecycle::deprecate_warn(
+      "0.9.4", "g_km(draw)",
+      details = "This argument is no longer used since the plot is now generated as a ggplot2 object."
+    )
+  }
+  if (lifecycle::is_present(newpage)) {
+    lifecycle::deprecate_warn(
+      "0.9.4", "g_km(newpage)",
+      details = "This argument is no longer used since the plot is now generated as a ggplot2 object."
+    )
+  }
+  if (lifecycle::is_present(gp)) {
+    lifecycle::deprecate_warn(
+      "0.9.4", "g_km(gp)",
+      details = "This argument is no longer used since the plot is now generated as a ggplot2 object."
+    )
+  }
+  if (lifecycle::is_present(vp)) {
+    lifecycle::deprecate_warn(
+      "0.9.4", "g_km(vp)",
+      details = "This argument is no longer used since the plot is now generated as a ggplot2 object."
+    )
+  }
+  if (lifecycle::is_present(name)) {
+    lifecycle::deprecate_warn(
+      "0.9.4", "g_km(name)",
+      details = "This argument is no longer used since the plot is now generated as a ggplot2 object."
+    )
+  }
   checkmate::assert_list(variables)
   checkmate::assert_subset(c("tte", "arm", "is_event"), names(variables))
+  checkmate::assert_numeric(ylim, len = 2, null.ok = TRUE)
+  checkmate::assert_numeric(font_size, len = 1)
   checkmate::assert_string(title, null.ok = TRUE)
   checkmate::assert_string(footnotes, null.ok = TRUE)
-  checkmate::assert_character(col, null.ok = TRUE)
+  checkmate::assert_logical(ci_ribbon, len = 1, any.missing = FALSE)
   checkmate::assert_subset(annot_stats, c("median", "min"))
   checkmate::assert_logical(annot_stats_vlines)
-  checkmate::assert_true(all(sapply(width_annots, grid::is.unit)))
+  # checkmate::assert_numeric(unlist(width_annots), lower = 0, upper = 1, max.len = 2)
 
   tte <- variables$tte
   is_event <- variables$is_event
   arm <- variables$arm
 
   assert_valid_factor(df[[arm]])
+  armval <- as.character(unique(df[[arm]]))
   assert_df_with_variables(df, list(tte = tte, is_event = is_event, arm = arm))
   checkmate::assert_logical(df[[is_event]], min.len = 1, any.missing = FALSE)
   checkmate::assert_numeric(df[[tte]], min.len = 1, any.missing = FALSE)
+  checkmate::assert_vector(col, null.ok = TRUE, len = length(armval))
+  checkmate::assert_vector(lty, null.ok = TRUE)
+  checkmate::assert_numeric(lwd)
 
-  armval <- as.character(unique(df[[arm]]))
   if (annot_coxph && length(armval) < 2) {
     stop(paste(
       "When `annot_coxph` = TRUE, `df` must contain at least 2 levels of `variables$arm`",
@@ -258,26 +296,34 @@ g_km_new <- function(df,#
 
   xticks <- h_xticks(data = data_plot, xticks = xticks, max_time = max_time)
   if (is.null(max_time)) max_time <- max(xticks)
-  p_type <- if (yval == "Failure") "risk" else "survival"
+  p_type <- if (yval == "Failure") "risk" else if (yval == "Survival") "survival" else yval
 
   gg <- ggsurvfit::ggsurvfit(fit_km, type = p_type) +
     ggsurvfit::scale_ggsurvfit(
-      x_scales = list(limits = c(0, max_time), breaks = xticks)
+      x_scales = list(limits = c(0, max_time), breaks = xticks),
+      y_scales = list(limits = ylim, label = NULL)
     ) +
-    ggplot2::labs(title = title, x = xlab, y = ylab, caption = footnotes)
+    ggplot2::labs(title = title, x = xlab, y = ylab, caption = footnotes) +
+    theme(
+      axis.text = element_text(size = font_size),
+      axis.title = element_text(size = font_size),
+      legend.text = element_text(size = font_size),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank()
+    )
 
-  if (censor_show) {
-    gg <- gg + ggsurvfit::add_censor_mark(shape = pch, size = size)
-  }
-  browser()
+  if (censor_show) gg <- gg + ggsurvfit::add_censor_mark(shape = pch, size = size)
 
   if (annot_at_risk) {
     gg <- gg +
       ggsurvfit::add_risktable(
         risktable_stats = "n.risk",
-        stats_label = list(n.risk = if (annot_at_risk_title) "Patients at Risk:" else "")
+        stats_label = list(n.risk = if (annot_at_risk_title) "Patients at Risk:" else ""),
+        size = font_size / .pt
       )
   }
+
+  if (ci_ribbon) gg <- gg + ggsurvfit::add_confidence_interval()
 
   ###
   if (!is.null(annot_stats)) {
@@ -289,7 +335,59 @@ g_km_new <- function(df,#
     }
   }
 
+  if (!is.null(col)) {
+    gg <- gg +
+      scale_color_manual(values = col) +
+      scale_fill_manual(values = col)
+  }
+  if (!is.null(lty)) gg <- gg + scale_linetype_manual(values = lty)
+  if (!is.null(lwd)) gg <- gg + scale_linewidth_manual(values = lwd)
 
+  if (!is.null(ggtheme)) gg <- gg + ggtheme
+
+  if (annot_surv_med) {
+    surv_med_tbl <- h_tbl_median_surv(fit_km = fit_km, armval = armval)
+    scale_arm_lbls <- max(nchar(rownames(surv_med_tbl))) / 5
+    bg_fill <- if (isTRUE(lyt_surv_med[["fill"]])) "#00000020" else lyt_surv_med[["fill"]]
+    dfgg <- df2gg(surv_med_tbl, colwidths = c(scale_arm_lbls, 1, 1, 2.5), bg_fill = bg_fill)
+
+    gg <- cowplot::ggdraw(gg) +
+      cowplot::draw_plot(
+        dfgg,
+        lyt_surv_med[["x"]],
+        lyt_surv_med[["y"]],
+        width = lyt_surv_med[["w"]],
+        height = lyt_surv_med[["h"]],
+        vjust = 0.5,
+        hjust = 0.5
+      )
+  }
+
+  if (annot_coxph) {
+    coxph_tbl <- h_tbl_coxph_pairwise(
+      df = df,
+      variables = variables,
+      ref_group_coxph = ref_group_coxph,
+      control_coxph_pw = control_coxph_pw,
+      annot_coxph_ref_lbls = lyt_coxph[["ref_lbls"]]
+    )
+    scale_arm_lbls <- max(nchar(rownames(coxph_tbl))) / 10
+    bg_fill <- if (isTRUE(lyt_coxph[["fill"]])) "#00000020" else lyt_coxph[["fill"]]
+    dfgg <- df2gg(coxph_tbl, colwidths = c(scale_arm_lbls, 1, 1, 2.1), bg_fill = bg_fill)
+
+    gg <- cowplot::ggdraw(gg) +
+      cowplot::draw_plot(
+        dfgg,
+        lyt_coxph[["x"]],
+        lyt_coxph[["y"]],
+        width = lyt_coxph[["w"]],
+        height = lyt_coxph[["h"]],
+        vjust = 0.5,
+        hjust = 0.5
+      )
+  }
+
+  return(gg)
 
   # if (!is.null(annot_stats)) {
   #   if ("median" %in% annot_stats) {
