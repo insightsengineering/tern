@@ -30,7 +30,7 @@ h_grob_median_surv(
 A \code{grob} of a table containing statistics \code{N}, \code{Median}, and \verb{XX\% CI} (\code{XX} taken from \code{fit_km}).
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 The survival fit is transformed in a grob containing a table with groups in
 rows characterized by N, median and 95\% confidence interval.

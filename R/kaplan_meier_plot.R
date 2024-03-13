@@ -501,7 +501,7 @@ g_km <- function(df,
 
 #' Helper function: tidy survival fit
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("deprecated")`
 #'
 #' Convert the survival fit data into a data frame designed for plotting
 #' within `g_km`.
@@ -542,6 +542,12 @@ g_km <- function(df,
 h_data_plot <- function(fit_km,
                         armval = "All",
                         max_time = NULL) {
+  lifecycle::deprecate_warn(
+    "0.9.4",
+    "h_data_plot()",
+    details = "`g_km` now generates `ggplot` objects. This function is no longer used within `tern`."
+  )
+
   y <- broom::tidy(fit_km)
 
   if (!is.null(fit_km$strata)) {
@@ -641,7 +647,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 
 #' Helper function: KM plot
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("deprecated")`
 #'
 #' Draw the Kaplan-Meier plot using `ggplot2`.
 #'
@@ -690,6 +696,11 @@ h_ggkm <- function(data,
                    col = NULL,
                    ci_ribbon = FALSE,
                    ggtheme = nestcolor::theme_nest()) {
+  lifecycle::deprecate_warn(
+    "0.9.4",
+    "h_ggkm()",
+    details = "`g_km` now generates `ggplot` objects. This function is no longer used within `tern`."
+  )
   checkmate::assert_numeric(lty, null.ok = TRUE)
   checkmate::assert_character(col, null.ok = TRUE)
 
@@ -802,7 +813,7 @@ h_ggkm <- function(data,
 
 #' `ggplot` Decomposition
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("deprecated")`
 #'
 #' The elements composing the `ggplot` are extracted and organized in a `list`.
 #'
@@ -848,6 +859,11 @@ h_ggkm <- function(data,
 #'
 #' @export
 h_decompose_gg <- function(gg) {
+  lifecycle::deprecate_warn(
+    "0.9.4",
+    "h_decompose_gg()",
+    details = "`g_km` now generates `ggplot` objects. This function is no longer used within `tern`."
+  )
   g_el <- ggplot2::ggplotGrob(gg)
   y <- c(
     panel = "panel",
@@ -862,7 +878,7 @@ h_decompose_gg <- function(gg) {
 
 #' Helper: KM Layout
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("deprecated")`
 #'
 #' Prepares a (5 rows) x (2 cols) layout for the Kaplan-Meier curve.
 #'
@@ -905,6 +921,11 @@ h_decompose_gg <- function(gg) {
 #'
 #' @export
 h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, annot_at_risk_title = TRUE) {
+  lifecycle::deprecate_warn(
+    "0.9.4",
+    "h_km_layout()",
+    details = "`g_km` now generates `ggplot` objects. This function is no longer used within `tern`."
+  )
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
   col_annot_width <- max(
@@ -976,7 +997,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, anno
 
 #' Helper: Patient-at-Risk Grobs
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("deprecated")`
 #'
 #' Two graphical objects are obtained, one corresponding to row labeling and the second to the table of
 #' numbers of patients at risk. If `title = TRUE`, a third object corresponding to the table title is
@@ -1052,6 +1073,11 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, anno
 #'
 #' @export
 h_grob_tbl_at_risk <- function(data, annot_tbl, xlim, title = TRUE) {
+  lifecycle::deprecate_warn(
+    "0.9.4",
+    "h_grob_tbl_at_risk()",
+    details = "`g_km` now generates `ggplot` objects. This function is no longer used within `tern`."
+  )
   txtlines <- levels(as.factor(data$strata))
   nlines <- nlevels(as.factor(data$strata))
   y_int <- annot_tbl$time[2] - annot_tbl$time[1]
@@ -1205,7 +1231,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 
 #' Helper Function: Survival Estimation Grob
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("deprecated")`
 #'
 #' The survival fit is transformed in a grob containing a table with groups in
 #' rows characterized by N, median and 95% confidence interval.
@@ -1241,6 +1267,11 @@ h_grob_median_surv <- function(fit_km,
                                y = 0.9,
                                width = grid::unit(0.3, "npc"),
                                ttheme = gridExtra::ttheme_default()) {
+  lifecycle::deprecate_warn(
+    "0.9.4",
+    "h_grob_median_surv()",
+    details = "`g_km` now generates `ggplot` objects. This function is no longer used within `tern`."
+  )
   data <- h_tbl_median_surv(fit_km, armval = armval)
 
   width <- grid::convertUnit(grid::unit(as.numeric(width), grid::unitType(width)), "in")
@@ -1295,7 +1326,7 @@ h_grob_median_surv <- function(fit_km,
 
 #' Helper: Grid Object with y-axis Annotation
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("deprecated")`
 #'
 #' Build the y-axis annotation from a decomposed `ggplot`.
 #'
@@ -1333,6 +1364,11 @@ h_grob_median_surv <- function(fit_km,
 #'
 #' @export
 h_grob_y_annot <- function(ylab, yaxis) {
+  lifecycle::deprecate_warn(
+    "0.9.4",
+    "h_grob_y_annot()",
+    details = "`g_km` now generates `ggplot` objects. This function is no longer used within `tern`."
+  )
   grid::gList(
     grid::gTree(
       vp = grid::viewport(
@@ -1426,7 +1462,7 @@ h_tbl_coxph_pairwise <- function(df,
 
 #' Helper Function: `CoxPH` Grob
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("deprecated")`
 #'
 #' Grob of `rtable` output from [h_tbl_coxph_pairwise()]
 #'
@@ -1467,6 +1503,11 @@ h_grob_coxph <- function(...,
                            padding = grid::unit(c(1, .5), "lines"),
                            core = list(bg_params = list(fill = c("grey95", "grey90"), alpha = .5))
                          )) {
+  lifecycle::deprecate_warn(
+    "0.9.4",
+    "h_grob_coxph()",
+    details = "`g_km` now generates `ggplot` objects. This function is no longer used within `tern`."
+  )
   data <- h_tbl_coxph_pairwise(...)
 
   width <- grid::convertUnit(grid::unit(as.numeric(width), grid::unitType(width)), "in")

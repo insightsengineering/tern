@@ -29,7 +29,7 @@ A \code{grob} of a table containing statistics \code{HR}, \verb{XX\% CI} (\code{
 and \code{p-value (log-rank)}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 Grob of \code{rtable} output from \code{\link[=h_tbl_coxph_pairwise]{h_tbl_coxph_pairwise()}}
 }

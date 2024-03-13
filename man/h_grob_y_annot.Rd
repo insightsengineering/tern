@@ -15,7 +15,7 @@ h_grob_y_annot(ylab, yaxis)
 a \code{gTree} object containing the y-axis annotation from a \code{ggplot}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 Build the y-axis annotation from a decomposed \code{ggplot}.
 }

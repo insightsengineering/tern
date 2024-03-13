@@ -23,7 +23,7 @@ A named \code{list} of two \code{gTree} objects if \code{title = FALSE}: \code{a
 \code{gTree} objects if \code{title = TRUE}: \code{at_risk}, \code{label}, and \code{title}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 Two graphical objects are obtained, one corresponding to row labeling and the second to the table of
 numbers of patients at risk. If \code{title = TRUE}, a third object corresponding to the table title is
