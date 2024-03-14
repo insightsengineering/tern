@@ -18,9 +18,9 @@ h_km_layout(
 
 \item{g_el}{(\code{list} of \code{gtable})\cr list as obtained by \code{h_decompose_gg()}.}
 
-\item{title}{(\code{string})\cr title for plot.}
+\item{title}{(\code{string})\cr plot title.}
 
-\item{footnotes}{(\code{string})\cr footnotes for plot.}
+\item{footnotes}{(\code{string})\cr plot footnotes.}
 
 \item{annot_at_risk}{(\code{flag})\cr compute and add the annotation table reporting the number of
 patient at risk matching the main grid of the Kaplan-Meier curve.}

@@ -52,3 +52,17 @@ testthat::test_that("rtable2gg works with multiple column splits", {
   rtable2gg_colsplits <- tbl %>% rtable2gg()
   expect_snapshot_ggplot("rtable2gg_colsplits", rtable2gg_colsplits, width = 10, height = 3)
 })
+
+testthat::test_that("df2gg works as expected", {
+  # defaults
+  df2gg_default <- head(iris, 5) %>% df2gg()
+  expect_snapshot_ggplot("df2gg_default", df2gg_default, width = 5)
+
+  # custom fontsize, background color
+  df2gg_fs <- head(iris, 5) %>% df2gg(font_size = 15, bg_fill = "#00000020")
+  expect_snapshot_ggplot("df2gg_fs", df2gg_fs, width = 8)
+
+  # custom colwidths
+  df2gg_cw <- head(iris, 5) %>% df2gg(colwidths = c(1, 1, 1, 1, 1))
+  expect_snapshot_ggplot("df2gg_cw", df2gg_cw, width = 5)
+})

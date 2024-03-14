@@ -18,30 +18,30 @@
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for survival rate.
 #'   * `conf_type` (`string`)\cr `"plain"` (default), `"log"`, `"log-log"` for confidence interval type,
 #'     see more in [survival::survfit()]. Note that the option "none" is no longer supported.
-#' @param xticks (`numeric`, `number`, or `NULL`)\cr numeric vector of ticks or single number with spacing
-#'   between ticks on the x axis. If `NULL` (default), [labeling::extended()] is used to determine
-#'   an optimal tick position on the x axis.
-#' @param yval (`string`)\cr value of y-axis. Options are `Survival` (default) and `Failure` probability.
-#' @param censor_show (`flag`)\cr whether to show censored observations.
-#' @param xlab (`string`)\cr label of x-axis.
-#' @param ylab (`string`)\cr label of y-axis.
-#' @param ylim (`vector` of `numeric`)\cr vector of length 2 containing lower and upper limits for the y-axis.
-#'   If `NULL` (default), the minimum and maximum y-values displayed are used as limits.
-#' @param title (`string`)\cr title for plot.
-#' @param footnotes (`string`)\cr footnotes for plot.
 #' @param col (`character`)\cr lines colors. Length of a vector should be equal
 #'   to number of strata from [survival::survfit()].
 #' @param lty (`numeric`)\cr line type. Length of a vector should be equal
 #'   to number of strata from [survival::survfit()].
 #' @param lwd (`numeric`)\cr line width. Length of a vector should be equal
 #'   to number of strata from [survival::survfit()].
-#' @param pch (`numeric`, `string`)\cr value or character of points symbol to indicate censored cases.
-#' @param size (`numeric`)\cr size of censored point, a class of `unit`.
-#' @param max_time (`numeric`)\cr maximum value to show on X axis. Only data values less than or up to
+#' @param censor_show (`flag`)\cr whether to show censored observations.
+#' @param pch (`character`)\cr name of symbol or character to use as point symbol to indicate censored cases.
+#' @param size (`numeric`)\cr size of censored point symbols.
+#' @param max_time (`numeric`)\cr maximum value to show on x-axis. Only data values less than or up to
 #'   this threshold value will be plotted (defaults to `NULL`).
-#' @param font_size (`number`)\cr font size to be used.
-#' @param ci_ribbon (`flag`)\cr draw the confidence interval around the Kaplan-Meier curve.
-#' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to control outlook of the Kaplan-Meier curve.
+#' @param xticks (`numeric`, `number`, or `NULL`)\cr numeric vector of tick positions or single number with spacing
+#'   between ticks on the x-axis. If `NULL` (default), [labeling::extended()] is used to determine
+#'   optimal tick positions on the x-axis.
+#' @param xlab (`string`)\cr x-axis label.
+#' @param yval (`string`)\cr type of plot, to be plotted on the y-axis. Options are `Survival` (default) and `Failure`
+#'   probability.
+#' @param ylab (`string`)\cr y-axis label.
+#' @param ylim (`numeric(2)`)\cr vector of length 2 containing lower and upper limits for the y-axis, respectively.
+#'   If `NULL` (default), the minimum and maximum y-values displayed are used as limits.
+#' @param title (`string`)\cr plot title.
+#' @param footnotes (`string`)\cr plot footnotes.
+#' @param font_size (`number`)\cr font size to be used for all text.
+#' @param ci_ribbon (`flag`)\cr whether the confidence interval should be drawn around the Kaplan-Meier curve.
 #' @param annot_at_risk (`flag`)\cr compute and add the annotation table reporting the number of patient at risk
 #'   matching the main grid of the Kaplan-Meier curve.
 #' @param annot_at_risk_title (`flag`)\cr whether the "Patients at Risk" title should be added above the `annot_at_risk`
@@ -53,8 +53,8 @@
 #'   `median` (median survival follow-up time) and `min` (minimum survival follow-up time).
 #' @param annot_stats_vlines (`flag`)\cr add vertical lines corresponding to each of the statistics
 #'   specified by `annot_stats`. If `annot_stats` is `NULL` no lines will be added.
-#' @param control_coxph_pw (`list`)\cr parameters for comparison details, specified by using
-#'   the helper function [control_coxph()]. Some possible parameter options are:
+#' @param control_coxph_pw (`list`)\cr parameters for comparison details, specified using the helper function
+#'   [control_coxph()]. Some possible parameter options are:
 #'   * `pval_method` (`string`)\cr p-value method for testing hazard ratio = 1.
 #'     Default method is `"log-rank"`, can also be set to `"wald"` or `"likelihood"`.
 #'   * `ties` (`string`)\cr method for tie handling. Default is `"efron"`,
@@ -62,9 +62,19 @@
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
 #' @param ref_group_coxph (`character`)\cr level of arm variable to use as reference group in calculations for
 #'   `annot_coxph` table. If `NULL` (default), uses the first level of the arm variable.
+#' @param control_annot_surv_med (`list`)\cr parameters to control the position and size of the annotation table added
+#'   to the plot when `annot_surv_med = TRUE`, specified using the [control_surv_med_annot()] function. Parameter
+#'   options are: `x`, `y`, `w`, `h`, and `fill`. See [control_surv_med_annot()] for details.
+#' @param control_annot_coxph (`list`)\cr parameters to control the position and size of the annotation table added
+#'   to the plot when `annot_coxph = TRUE`, specified using the [control_coxph_annot()] function. Parameter
+#'   options are: `x`, `y`, `w`, `h`, `fill`, and `ref_lbls`. See [control_coxph_annot()] for details.
 #' @param rel_height_plot (`proportion`)\cr proportion of total figure height to allocate to the Kaplan-Meier plot.
 #'   Relative height of patients at risk table is then `1 - rel_height_plot`. If `annot_at_risk = FALSE` or
 #'   `as_list = TRUE`, this parameter is ignored.
+#' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to format the Kaplan-Meier plot.
+#' @param as_list (`flag`)\cr whether the two `ggplot` objects should be returned as a list when `annot_at_risk = TRUE`.
+#'   If `TRUE`, a named list with two elements, `plot` and `table`, will be returned. If `FALSE` (default) the patients
+#'   at risk table is printed below the plot via [cowplot::plot_grid()].
 #' @param draw `r lifecycle::badge("deprecated")` This function no longer generates `grob` objects.
 #' @param newpage `r lifecycle::badge("deprecated")` This function no longer generates `grob` objects.
 #' @param gp `r lifecycle::badge("deprecated")` This function no longer generates `grob` objects.
@@ -162,7 +172,7 @@ g_km <- function(df,
                  ref_group_coxph = NULL,
                  control_annot_surv_med = control_surv_med_annot(),
                  control_annot_coxph = control_coxph_annot(),
-                 rel_height_plot = 0.25,
+                 rel_height_plot = 0.75,
                  ggtheme = NULL,
                  as_list = FALSE,
                  draw = lifecycle::deprecated(),
@@ -242,24 +252,41 @@ g_km <- function(df,
 
   checkmate::assert_list(variables)
   checkmate::assert_subset(c("tte", "arm", "is_event"), names(variables))
+  checkmate::assert_logical(censor_show, len = 1)
+  checkmate::assert_numeric(pch, len = 1)
+  checkmate::assert_numeric(size, len = 1)
+  checkmate::assert_numeric(max_time, len = 1, null.ok = TRUE)
+  checkmate::assert_numeric(xticks, null.ok = TRUE)
+  checkmate::assert_character(xlab, len = 1, null.ok = TRUE)
+  checkmate::assert_character(yval)
+  checkmate::assert_character(ylab, null.ok = TRUE)
   checkmate::assert_numeric(ylim, len = 2, null.ok = TRUE)
+  checkmate::assert_character(title, len = 1, null.ok = TRUE)
+  checkmate::assert_character(footnotes, len = 1, null.ok = TRUE)
   checkmate::assert_numeric(font_size, len = 1)
-  checkmate::assert_string(title, null.ok = TRUE)
-  checkmate::assert_string(footnotes, null.ok = TRUE)
-  checkmate::assert_logical(ci_ribbon, len = 1, any.missing = FALSE)
+  checkmate::assert_logical(ci_ribbon, len = 1)
+  checkmate::assert_logical(annot_at_risk, len = 1)
+  checkmate::assert_logical(annot_at_risk_title, len = 1)
+  checkmate::assert_logical(annot_surv_med, len = 1)
+  checkmate::assert_logical(annot_coxph, len = 1)
   checkmate::assert_subset(annot_stats, c("median", "min"))
   checkmate::assert_logical(annot_stats_vlines)
+  checkmate::assert_list(control_coxph_pw)
+  checkmate::assert_character(ref_group_coxph, len = 1, null.ok = TRUE)
+  checkmate::assert_list(control_annot_surv_med)
+  checkmate::assert_list(control_annot_coxph)
+  assert_proportion_value(rel_height_plot)
+  checkmate::assert_logical(as_list)
 
   tte <- variables$tte
   is_event <- variables$is_event
   arm <- variables$arm
-
   assert_valid_factor(df[[arm]])
   armval <- as.character(unique(df[[arm]]))
   assert_df_with_variables(df, list(tte = tte, is_event = is_event, arm = arm))
-  checkmate::assert_logical(df[[is_event]], min.len = 1, any.missing = FALSE)
-  checkmate::assert_numeric(df[[tte]], min.len = 1, any.missing = FALSE)
-  checkmate::assert_vector(col, null.ok = TRUE, len = length(armval))
+  checkmate::assert_logical(df[[is_event]], min.len = 1)
+  checkmate::assert_numeric(df[[tte]], min.len = 1)
+  checkmate::assert_vector(col, len = length(armval), null.ok = TRUE)
   checkmate::assert_vector(lty, null.ok = TRUE)
   checkmate::assert_numeric(lwd, len = 1, null.ok = TRUE)
 
@@ -291,7 +318,7 @@ g_km <- function(df,
   p_type <- if (yval == "Failure") "risk" else if (yval == "Survival") "survival" else yval
 
   # initialize ggplot
-  gg <- ggsurvfit::ggsurvfit(fit_km, type = p_type, linetype_aes = !is.null(lty), na.rm = TRUE, lwd = lwd) +
+  gg_plt <- ggsurvfit::ggsurvfit(fit_km, type = p_type, linetype_aes = !is.null(lty), na.rm = TRUE, lwd = lwd) +
     ggsurvfit::scale_ggsurvfit(
       x_scales = list(limits = c(0, max_time), breaks = xticks),
       y_scales = list(limits = ylim, label = NULL)
@@ -310,18 +337,18 @@ g_km <- function(df,
     )
 
   # add censor marks
-  if (censor_show) gg <- gg + ggsurvfit::add_censor_mark(shape = pch, size = size)
+  if (censor_show) gg_plt <- gg_plt + ggsurvfit::add_censor_mark(shape = pch, size = size)
 
   # add ci ribbon
-  if (ci_ribbon) gg <- gg + ggsurvfit::add_confidence_interval()
+  if (ci_ribbon) gg_plt <- gg_plt + ggsurvfit::add_confidence_interval()
 
   # control aesthetics
   if (!is.null(col)) {
-    gg <- gg +
+    gg_plt <- gg_plt +
       scale_color_manual(values = col) +
       scale_fill_manual(values = col)
   }
-  if (!is.null(ggtheme)) gg <- gg + ggtheme
+  if (!is.null(ggtheme)) gg_plt <- gg_plt + ggtheme
 
   # annotate with stats (text/vlines)
   if (!is.null(annot_stats)) {
@@ -332,7 +359,7 @@ g_km <- function(df,
         conf.int = control_surv$conf_level,
         conf.type = control_surv$conf_type
       )
-      gg <- gg +
+      gg_plt <- gg_plt +
         annotate(
           "text",
           size = font_size / ggplot2::.pt, col = 1, lineheight = 0.95,
@@ -341,7 +368,7 @@ g_km <- function(df,
           label = paste("Median F/U:\n", round(stats::median(fit_km_all), 1), tolower(df$AVALU[1]))
         )
       if (annot_stats_vlines) {
-        gg <- gg +
+        gg_plt <- gg_plt +
           annotate(
             "segment",
             x = stats::median(fit_km_all), xend = stats::median(fit_km_all), y = -Inf, yend = Inf,
@@ -351,7 +378,7 @@ g_km <- function(df,
     }
     if ("min" %in% annot_stats) {
       min_fu <- min(df[[tte]])
-      gg <- gg +
+      gg_plt <- gg_plt +
         annotate(
           "text",
           size = font_size / ggplot2::.pt, col = 1, lineheight = 0.95,
@@ -360,14 +387,14 @@ g_km <- function(df,
           label = paste("Min. F/U:\n", round(min_fu, 1), tolower(df$AVALU[1]))
         )
       if (annot_stats_vlines) {
-        gg <- gg +
+        gg_plt <- gg_plt +
           annotate(
             "segment", linetype = 2, col = "darkgray",
             x = min_fu, xend = min_fu, y = Inf, yend = -Inf
           )
       }
     }
-    gg <- gg + ggplot2::guides(fill = ggplot2::guide_legend(override.aes = list(shape = NA, label = "")))
+    gg_plt <- gg_plt + ggplot2::guides(fill = ggplot2::guide_legend(override.aes = list(shape = NA, label = "")))
   }
 
   # add at risk annotation table
@@ -393,7 +420,7 @@ g_km <- function(df,
     at_risk_tbl[is.na(at_risk_tbl)] <- 0
     rownames(at_risk_tbl) <- levels(annot_tbl$strata)
 
-    at_risk <- df2gg(
+    gg_at_risk <- df2gg(
       at_risk_tbl,
       font_size = font_size, col_labels = FALSE, hline = FALSE,
       colwidths = rep(1, ncol(at_risk_tbl))
@@ -411,19 +438,21 @@ g_km <- function(df,
         axis.line.x = element_line()
       ) +
       coord_cartesian(clip = "off", ylim = c(0.5, nrow(at_risk_tbl)))
-    at_risk <- suppressMessages(at_risk +
+    gg_at_risk <- suppressMessages(gg_at_risk +
       scale_x_continuous(expand = c(0.025 , 0), breaks = seq_along(at_risk_tbl) - 0.5, labels = xticks) +
       scale_y_continuous(labels = rev(levels(annot_tbl$strata)), breaks = seq_len(nrow(at_risk_tbl)))
     )
 
-    gg <- cowplot::plot_grid(
-      gg,
-      at_risk,
-      align = "v",
-      axis = "tblr",
-      ncol = 1,
-      rel_heights = c(rel_height_plot, 1 - rel_height_plot)
-    )
+    if (!as_list) {
+      gg_plt <- cowplot::plot_grid(
+        gg_plt,
+        gg_at_risk,
+        align = "v",
+        axis = "tblr",
+        ncol = 1,
+        rel_heights = c(rel_height_plot, 1 - rel_height_plot)
+      )
+    }
   }
 
   # add median survival time annotation table
@@ -431,20 +460,20 @@ g_km <- function(df,
     surv_med_tbl <- h_tbl_median_surv(fit_km = fit_km, armval = armval)
     bg_fill <- if (isTRUE(control_annot_surv_med[["fill"]])) "#00000020" else control_annot_surv_med[["fill"]]
 
-    dfgg <- df2gg(surv_med_tbl, font_size = font_size, colwidths = c(1, 1, 2), bg_fill = bg_fill) +
+    gg_surv_med <- df2gg(surv_med_tbl, font_size = font_size, colwidths = c(1, 1, 2), bg_fill = bg_fill) +
       theme(
         axis.text.y = element_text(size = font_size, face = "italic"),
         plot.margin = margin(0, 2, 0, 5)
       ) +
       coord_cartesian(clip = "off", ylim = c(0.5, nrow(surv_med_tbl) + 1.5))
-    dfgg <- suppressMessages(dfgg +
+    gg_surv_med <- suppressMessages(gg_surv_med +
       scale_x_continuous(expand = c(0.025 , 0)) +
       scale_y_continuous(labels = rev(rownames(surv_med_tbl)), breaks = seq_len(nrow(surv_med_tbl)))
     )
 
-    gg <- cowplot::ggdraw(gg) +
+    gg_plt <- cowplot::ggdraw(gg_plt) +
       cowplot::draw_plot(
-        dfgg,
+        gg_surv_med,
         control_annot_surv_med[["x"]],
         control_annot_surv_med[["y"]],
         width = control_annot_surv_med[["w"]],
@@ -465,20 +494,20 @@ g_km <- function(df,
     )
     bg_fill <- if (isTRUE(control_annot_coxph[["fill"]])) "#00000020" else control_annot_coxph[["fill"]]
 
-    dfgg <- df2gg(coxph_tbl, font_size = font_size, colwidths = c(1.1, 1, 3), bg_fill = bg_fill) +
+    gg_coxph <- df2gg(coxph_tbl, font_size = font_size, colwidths = c(1.1, 1, 3), bg_fill = bg_fill) +
       theme(
         axis.text.y = element_text(size = font_size, face = "italic"),
         plot.margin = margin(0, 2, 0, 5)
       ) +
       coord_cartesian(clip = "off", ylim = c(0.5, nrow(coxph_tbl) + 1.5))
-    dfgg <- suppressMessages(dfgg +
+    gg_coxph <- suppressMessages(gg_coxph +
       scale_x_continuous(expand = c(0.025 , 0)) +
       scale_y_continuous(labels = rev(rownames(coxph_tbl)), breaks = seq_len(nrow(coxph_tbl)))
     )
 
-    gg <- cowplot::ggdraw(gg) +
+    gg_plt <- cowplot::ggdraw(gg_plt) +
       cowplot::draw_plot(
-        dfgg,
+        gg_coxph,
         control_annot_coxph[["x"]],
         control_annot_coxph[["y"]],
         width = control_annot_coxph[["w"]],
@@ -488,5 +517,9 @@ g_km <- function(df,
       )
   }
 
-  gg
+  if (as_list) {
+    list(plot = gg_plt, table = gg_at_risk)
+  } else {
+    gg_plt
+  }
 }

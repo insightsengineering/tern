@@ -27,26 +27,27 @@ h_ggkm(
 \arguments{
 \item{data}{(\code{data.frame})\cr survival data as pre-processed by \code{h_data_plot}.}
 
-\item{xticks}{(\code{numeric}, \code{number}, or \code{NULL})\cr numeric vector of ticks or single number with spacing
-between ticks on the x axis. If \code{NULL} (default), \code{\link[labeling:extended]{labeling::extended()}} is used to determine
-an optimal tick position on the x axis.}
+\item{xticks}{(\code{numeric}, \code{number}, or \code{NULL})\cr numeric vector of tick positions or single number with spacing
+between ticks on the x-axis. If \code{NULL} (default), \code{\link[labeling:extended]{labeling::extended()}} is used to determine
+optimal tick positions on the x-axis.}
 
-\item{yval}{(\code{string})\cr value of y-axis. Options are \code{Survival} (default) and \code{Failure} probability.}
+\item{yval}{(\code{string})\cr type of plot, to be plotted on the y-axis. Options are \code{Survival} (default) and \code{Failure}
+probability.}
 
 \item{censor_show}{(\code{flag})\cr whether to show censored observations.}
 
-\item{xlab}{(\code{string})\cr label of x-axis.}
+\item{xlab}{(\code{string})\cr x-axis label.}
 
-\item{ylab}{(\code{string})\cr label of y-axis.}
+\item{ylab}{(\code{string})\cr y-axis label.}
 
-\item{ylim}{(\code{vector} of \code{numeric})\cr vector of length 2 containing lower and upper limits for the y-axis.
+\item{ylim}{(\code{numeric(2)})\cr vector of length 2 containing lower and upper limits for the y-axis, respectively.
 If \code{NULL} (default), the minimum and maximum y-values displayed are used as limits.}
 
-\item{title}{(\code{string})\cr title for plot.}
+\item{title}{(\code{string})\cr plot title.}
 
-\item{footnotes}{(\code{string})\cr footnotes for plot.}
+\item{footnotes}{(\code{string})\cr plot footnotes.}
 
-\item{max_time}{(\code{numeric})\cr maximum value to show on X axis. Only data values less than or up to
+\item{max_time}{(\code{numeric})\cr maximum value to show on x-axis. Only data values less than or up to
 this threshold value will be plotted (defaults to \code{NULL}).}
 
 \item{lwd}{(\code{numeric})\cr line width. Length of a vector should be equal
@@ -55,16 +56,16 @@ to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 \item{lty}{(\code{numeric})\cr line type. Length of a vector should be equal
 to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 
-\item{pch}{(\code{numeric}, \code{string})\cr value or character of points symbol to indicate censored cases.}
+\item{pch}{(\code{character})\cr name of symbol or character to use as point symbol to indicate censored cases.}
 
-\item{size}{(\code{numeric})\cr size of censored point, a class of \code{unit}.}
+\item{size}{(\code{numeric})\cr size of censored point symbols.}
 
 \item{col}{(\code{character})\cr lines colors. Length of a vector should be equal
 to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 
-\item{ci_ribbon}{(\code{flag})\cr draw the confidence interval around the Kaplan-Meier curve.}
+\item{ci_ribbon}{(\code{flag})\cr whether the confidence interval should be drawn around the Kaplan-Meier curve.}
 
-\item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to control outlook of the Kaplan-Meier curve.}
+\item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to format the Kaplan-Meier plot.}
 }
 \value{
 A \code{ggplot} object.
