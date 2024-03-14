@@ -1,5 +1,35 @@
+testthat::test_that("g_km works with default settings", {
+  df <- tern_ex_adtte %>%
+    filter(PARAMCD == "OS") %>%
+    mutate(is_event = CNSR == 0)
+  variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
+
+  testthat::expect_silent(
+    g_km(df = df, variables = variables)
+  )
+})
+
+testthat::test_that("g_km works with title/footnotes and annotation", {
+  df <- tern_ex_adtte %>%
+    filter(PARAMCD == "OS") %>%
+    mutate(is_event = CNSR == 0)
+  variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
+
+  withr::with_options(
+    opts_partial_match_old,
+    testthat::expect_silent(
+      g_km(
+        df = df,
+        variables = variables,
+        title = "KM Plot",
+        footnotes = "footnotes",
+        annot_coxph = TRUE
+      )
+    )
+  )
+})
+
 testthat::test_that("g_km default plot works", {
-  testthat::skip_if_not_installed("vdiffr")
   skip_on_ci()
 
   df <- tern_ex_adtte %>%
@@ -10,18 +40,17 @@ testthat::test_that("g_km default plot works", {
 
   withr::with_options(
     opts_partial_match_old,
-    grob_tmp <- g_km(
+    g_km_default <- g_km(
       df = df,
       variables = variables,
       ci_ribbon = FALSE
     )
   )
 
-  vdiffr::expect_doppelganger(title = "grob_tmp", fig = grob_tmp)
+  expect_snapshot_ggplot("g_km_default", g_km_default, width = 9, height = 6)
 })
 
 testthat::test_that("g_km default plot witch ci_ribbon = TRUE works", {
-  testthat::skip_if_not_installed("vdiffr")
   skip_on_ci()
 
   df <- tern_ex_adtte %>%
@@ -30,7 +59,7 @@ testthat::test_that("g_km default plot witch ci_ribbon = TRUE works", {
 
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 
-  grob_tmp_ci <- withr::with_options(
+  g_km_ci_ribbon <- withr::with_options(
     opts_partial_match_old,
     g_km(
       df = df,
@@ -39,7 +68,7 @@ testthat::test_that("g_km default plot witch ci_ribbon = TRUE works", {
     )
   )
 
-  vdiffr::expect_doppelganger(title = "grob_tmp_ci", fig = grob_tmp_ci)
+  expect_snapshot_ggplot("g_km_ci_ribbon", g_km_ci_ribbon, width = 9, height = 9)
 })
 
 testthat::test_that("g_km plot with < = > in group labels works", {
@@ -71,7 +100,6 @@ testthat::test_that("g_km plot with < = > in group labels works", {
 testthat::test_that("g_km ylim parameter works as expected", {
   skip_on_ci()
   set.seed(123)
-  testthat::skip_if_not_installed("vdiffr")
 
   df <- tern_ex_adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -89,7 +117,7 @@ testthat::test_that("g_km ylim parameter works as expected", {
       max_time = 1000
     )
   )
-  vdiffr::expect_doppelganger(title = "g_km_crop_ylim", fig = g_km_crop_ylim)
+  expect_snapshot_ggplot("g_km_crop_ylim", g_km_crop_ylim, width = 9, height = 6)
 
   g_km_crop_ylim_failure <- withr::with_options(
     opts_partial_match_old,
@@ -102,7 +130,7 @@ testthat::test_that("g_km ylim parameter works as expected", {
       max_time = 1000
     )
   )
-  vdiffr::expect_doppelganger(title = "g_km_crop_ylim_failure", fig = g_km_crop_ylim_failure)
+  expect_snapshot_ggplot("g_km_crop_ylim_failure", g_km_crop_ylim_failure, width = 9, height = 6)
 
   g_km_custom_ylim <- withr::with_options(
     opts_partial_match_old,
@@ -114,13 +142,12 @@ testthat::test_that("g_km ylim parameter works as expected", {
       ylim = c(0.25, 0.75)
     )
   )
-  vdiffr::expect_doppelganger(title = "g_km_custom_ylim", fig = g_km_custom_ylim)
+  expect_snapshot_ggplot("g_km_custom_ylim", g_km_custom_ylim, width = 9, height = 6)
 })
 
 testthat::test_that("annot_at_risk_title parameter works as expected", {
   skip_on_ci()
   set.seed(123)
-  testthat::skip_if_not_installed("vdiffr")
 
   df <- tern_ex_adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -136,13 +163,12 @@ testthat::test_that("annot_at_risk_title parameter works as expected", {
       annot_at_risk_title = TRUE
     )
   )
-  vdiffr::expect_doppelganger(title = "g_km_at_risk_title", fig = g_km_at_risk_title)
+  expect_snapshot_ggplot("g_km_at_risk_title", g_km_at_risk_title, width = 9, height = 9)
 })
 
 testthat::test_that("ref_group_coxph parameter works as expected", {
   skip_on_ci()
   set.seed(123)
-  testthat::skip_if_not_installed("vdiffr")
 
   df <- tern_ex_adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -160,5 +186,5 @@ testthat::test_that("ref_group_coxph parameter works as expected", {
       annot_coxph_ref_lbls = TRUE
     )
   )
-  vdiffr::expect_doppelganger(title = "g_km_ref_group_coxph", fig = g_km_ref_group_coxph)
+  expect_snapshot_ggplot("g_km_ref_group_coxph", g_km_ref_group_coxph, width = 9, height = 9)
 })

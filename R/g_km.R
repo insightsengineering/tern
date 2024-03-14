@@ -89,16 +89,16 @@
 #'
 #' # 1. Example - basic option
 #'
-#' res <- g_km_new(df = df, variables = variables)
-#' res <- g_km(df = df, variables = variables, yval = "Failure")
-#' res <- g_km(
+#' g_km(df = df, variables = variables)
+#' g_km(df = df, variables = variables, yval = "Failure")
+#' g_km(
 #'   df = df,
 #'   variables = variables,
 #'   control_surv = control_surv_timepoint(conf_level = 0.9),
 #'   col = c("grey25", "grey50", "grey75"),
 #'   annot_at_risk_title = FALSE
 #' )
-#' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal())
+#' g_km(df = df, variables = variables, ggtheme = theme_minimal())
 #' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal(), lty = 1:3)
 #' res <- g_km(df = df, variables = variables, max = 2000)
 #' res <- g_km(
@@ -176,7 +176,7 @@
 #' }
 #'
 #' @export
-g_km_new <- function(df,
+g_km <- function(df,
                    variables,
                    control_surv = control_surv_timepoint(),
                    col = NULL,
@@ -209,8 +209,8 @@ g_km_new <- function(df,
                    annot_stats_vlines = FALSE, ###### TODO
                    control_coxph_pw = control_coxph(),
                    ref_group_coxph = NULL,
-                   control_annot_surv_med = control_annot_surv_med(),
-                   control_annot_coxph = control_annot_coxph(),
+                   control_annot_surv_med = control_surv_med_annot(),
+                   control_annot_coxph = control_coxph_annot(),
                    annot_coxph_ref_lbls = lifecycle::deprecated(),
                    position_coxph = lifecycle::deprecated(),
                    position_surv_med = lifecycle::deprecated(),
@@ -274,9 +274,9 @@ g_km_new <- function(df,
       "When `annot_coxph` = TRUE, `df` must contain at least 2 levels of `variables$arm`",
       "in order to calculate the hazard ratio."
     ))
-  } else if (length(armval) > 1) {
-    armval <- NULL
   }
+
+  # process model
   yval <- match.arg(yval)
   formula <- stats::as.formula(paste0("survival::Surv(", tte, ", ", is_event, ") ~ ", arm))
   fit_km <- ggsurvfit::survfit2(
@@ -285,38 +285,37 @@ g_km_new <- function(df,
     conf.int = control_surv$conf_level,
     conf.type = control_surv$conf_type
   )
-
   data_plot <- ggsurvfit::tidy_survfit(fit_km)
 
+  # add x-ticks
   xticks <- h_xticks(data = data_plot, xticks = xticks, max_time = max_time)
   if (is.null(max_time)) max_time <- max(xticks)
+
+  # set plot type
   p_type <- if (yval == "Failure") "risk" else if (yval == "Survival") "survival" else yval
 
-  gg <- ggsurvfit::ggsurvfit(fit_km, type = p_type) +
+  # initialize ggplot
+  gg <- ggsurvfit::ggsurvfit(fit_km, type = p_type, linetype_aes = !is.null(lty)) +
     ggsurvfit::scale_ggsurvfit(
       x_scales = list(limits = c(0, max_time), breaks = xticks),
       y_scales = list(limits = ylim, label = NULL)
     ) +
+    scale_linetype_manual(values = lty) +
     ggplot2::labs(title = title, x = xlab, y = ylab, caption = footnotes) +
     theme(
       axis.text = element_text(size = font_size),
       axis.title = element_text(size = font_size),
       legend.text = element_text(size = font_size),
+      legend.box.background = element_rect(colour = "black", linewidth = 0.75),
+      legend.margin = margin(c(1, 5, 2, 5)),
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank()
     )
 
+  # add censor marks
   if (censor_show) gg <- gg + ggsurvfit::add_censor_mark(shape = pch, size = size)
 
-  if (annot_at_risk) {
-    gg <- gg +
-      ggsurvfit::add_risktable(
-        risktable_stats = "n.risk",
-        stats_label = list(n.risk = if (annot_at_risk_title) "Patients at Risk:" else ""),
-        size = font_size / .pt
-      )
-  }
-
+  # add ci ribbon
   if (ci_ribbon) gg <- gg + ggsurvfit::add_confidence_interval()
 
   ###
@@ -325,21 +324,87 @@ g_km_new <- function(df,
     if ("median" %in% annot_stats) gg <- gg + ggsurvfit::add_quantile(y_value = 0.5)
   }
 
+  # control aesthetics
   if (!is.null(col)) {
     gg <- gg +
       scale_color_manual(values = col) +
       scale_fill_manual(values = col)
   }
-  if (!is.null(lty)) gg <- gg + scale_linetype_manual(values = lty)
   if (!is.null(lwd)) gg <- gg + scale_linewidth_manual(values = lwd)
-
   if (!is.null(ggtheme)) gg <- gg + ggtheme
 
+  # add at risk annotation table
+  if (annot_at_risk) {
+    annot_tbl <- summary(fit_km, times = xticks, extend = TRUE)
+    annot_tbl <- if (is.null(fit_km$strata)) {
+      data.frame(
+        n.risk = annot_tbl$n.risk,
+        time = annot_tbl$time,
+        strata = armval
+      )
+    } else {
+      strata_lst <- strsplit(sub("=", "equals", levels(annot_tbl$strata)), "equals")
+      levels(annot_tbl$strata) <- matrix(unlist(strata_lst), ncol = 2, byrow = TRUE)[, 2]
+      data.frame(
+        n.risk = annot_tbl$n.risk,
+        time = annot_tbl$time,
+        strata = annot_tbl$strata
+      )
+    }
+
+    at_risk_tbl <- as.data.frame(tidyr::pivot_wider(annot_tbl, names_from = "time", values_from = "n.risk")[, -1])
+    at_risk_tbl[is.na(at_risk_tbl)] <- 0
+    rownames(at_risk_tbl) <- levels(annot_tbl$strata)
+
+    at_risk <- df2gg(
+      at_risk_tbl,
+      col_labels = FALSE, hline = FALSE,
+      colwidths = rep(1, ncol(at_risk_tbl))
+    ) +
+      labs(title = if (annot_at_risk_title) "Patients at Risk:" else NULL, x = xlab) +
+      theme_bw(base_size = font_size) +
+      theme(
+        plot.title = element_text(size = font_size, vjust = 3, face = "bold"),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_text(size = font_size, face = "italic"),
+        axis.text.x = element_text(size = font_size),
+        axis.line.x = element_line()
+      ) +
+      coord_cartesian(clip = "off", ylim = c(0.5, nrow(at_risk_tbl)))
+    at_risk <- suppressMessages(at_risk +
+      scale_x_continuous(expand = c(0.025 , 0), breaks = seq_along(at_risk_tbl) - 0.5, labels = xticks) +
+      scale_y_continuous(labels = rev(levels(annot_tbl$strata)), breaks = seq_len(nrow(at_risk_tbl)))
+    )
+
+    gg <- cowplot::plot_grid(
+      gg,
+      at_risk,
+      align = "v",
+      axis = "tblr",
+      ncol = 1,
+      rel_heights = c(0.75, 0.25)
+    )
+  }
+
+  # add median survival time annotation table
   if (annot_surv_med) {
     surv_med_tbl <- h_tbl_median_surv(fit_km = fit_km, armval = armval)
     scale_arm_lbls <- max(nchar(rownames(surv_med_tbl))) / 5
     bg_fill <- if (isTRUE(control_annot_surv_med[["fill"]])) "#00000020" else control_annot_surv_med[["fill"]]
-    dfgg <- df2gg(surv_med_tbl, colwidths = c(scale_arm_lbls, 1, 1, 2.5), bg_fill = bg_fill)
+
+    dfgg <- df2gg(surv_med_tbl, colwidths = c(1, 1, 2), bg_fill = bg_fill) +
+      theme(
+        axis.text.y = element_text(size = font_size, face = "italic"),
+        plot.margin = margin(0, 2, 0, 5)
+      ) +
+      coord_cartesian(clip = "off", ylim = c(0.5, nrow(surv_med_tbl) + 1.5))
+    dfgg <- suppressMessages(dfgg +
+      scale_x_continuous(expand = c(0.025 , 0)) +
+      scale_y_continuous(labels = rev(rownames(surv_med_tbl)), breaks = seq_len(nrow(surv_med_tbl)))
+    )
 
     gg <- cowplot::ggdraw(gg) +
       cowplot::draw_plot(
@@ -353,6 +418,7 @@ g_km_new <- function(df,
       )
   }
 
+  # add coxph annotation table
   if (annot_coxph) {
     coxph_tbl <- h_tbl_coxph_pairwise(
       df = df,
@@ -363,7 +429,17 @@ g_km_new <- function(df,
     )
     scale_arm_lbls <- max(nchar(rownames(coxph_tbl))) / 10
     bg_fill <- if (isTRUE(control_annot_coxph[["fill"]])) "#00000020" else control_annot_coxph[["fill"]]
-    dfgg <- df2gg(coxph_tbl, colwidths = c(scale_arm_lbls, 1, 1, 2.1), bg_fill = bg_fill)
+
+    dfgg <- df2gg(coxph_tbl, colwidths = c(1.1, 1, 3), bg_fill = bg_fill) +
+      theme(
+        axis.text.y = element_text(size = font_size, face = "italic"),
+        plot.margin = margin(0, 2, 0, 5)
+      ) +
+      coord_cartesian(clip = "off", ylim = c(0.5, nrow(coxph_tbl) + 1.5))
+    dfgg <- suppressMessages(dfgg +
+      scale_x_continuous(expand = c(0.025 , 0)) +
+      scale_y_continuous(labels = rev(rownames(coxph_tbl)), breaks = seq_len(nrow(coxph_tbl)))
+    )
 
     gg <- cowplot::ggdraw(gg) +
       cowplot::draw_plot(
@@ -403,14 +479,14 @@ NULL
 
 #' @describeIn control_annot Control function for formatting the median survival time annotation table. This annotation
 #'   table can be added in [g_km()] by setting `annot_surv_med=TRUE`, and can be configured using the
-#'   `control_annot_surv_med()` function by setting it as the `control_annot_surv_med` argument.
+#'   `control_surv_med_annot()` function by setting it as the `control_annot_surv_med` argument.
 #'
 #'
 #' @examples
-#' control_annot_surv_med()
+#' control_surv_med_annot()
 #'
 #' @export
-control_annot_surv_med <- function(x = 0.8, y = 0.85, w = 0.3, h = 0.18, fill = TRUE) {
+control_surv_med_annot <- function(x = 0.8, y = 0.85, w = 0.32, h = 0.16, fill = TRUE) {
   assert_proportion_value(x)
   assert_proportion_value(y)
   assert_proportion_value(w)
@@ -420,7 +496,7 @@ control_annot_surv_med <- function(x = 0.8, y = 0.85, w = 0.3, h = 0.18, fill = 
 }
 
 #' @describeIn control_annot Control function for formatting the Cox-PH annotation table. This annotation table can be
-#'   added in [g_km()] by setting `annot_coxph=TRUE`, and can be configured using the `control_annot_coxph()` function
+#'   added in [g_km()] by setting `annot_coxph=TRUE`, and can be configured using the `control_coxph_annot()` function
 #'   by setting it as the `control_annot_coxph` argument.
 #'
 #' @param ref_lbls (`logical`)\cr whether the reference group should be explicitly printed in labels for the
@@ -430,9 +506,9 @@ control_annot_surv_med <- function(x = 0.8, y = 0.85, w = 0.3, h = 0.18, fill = 
 #' control_annot_coxph()
 #'
 #' @export
-control_annot_coxph <- function(x = 0.29, y = 0.28, w = 0.4, h = 0.125, fill = TRUE, ref_lbls = FALSE) {
+control_coxph_annot <- function(x = 0.29, y = 0.51, w = 0.4, h = 0.125, fill = TRUE, ref_lbls = FALSE) {
   checkmate::assert_logical(ref_lbls, any.missing = FALSE)
 
-  res <- c(control_annot_surv_med(x = x, y = y, w = w, h = h), list(ref_lbls = ref_lbls))
+  res <- c(control_surv_med_annot(x = x, y = y, w = w, h = h), list(ref_lbls = ref_lbls))
   res
 }

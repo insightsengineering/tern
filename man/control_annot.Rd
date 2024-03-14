@@ -2,13 +2,13 @@
 % Please edit documentation in R/g_km.R
 \name{control_annot}
 \alias{control_annot}
-\alias{control_annot_surv_med}
-\alias{control_annot_coxph}
+\alias{control_surv_med_annot}
+\alias{control_coxph_annot}
 \title{Control Functions for Kaplan-Meier Plot Annotation Tables}
 \usage{
-control_annot_surv_med(x = 0.8, y = 0.85, w = 0.3, h = 0.18, fill = TRUE)
+control_surv_med_annot(x = 0.8, y = 0.85, w = 0.3, h = 0.18, fill = TRUE)
 
-control_annot_coxph(
+control_coxph_annot(
   x = 0.29,
   y = 0.28,
   w = 0.4,
@@ -43,17 +43,17 @@ generated via \code{\link[=g_km]{g_km()}}.
 }
 \section{Functions}{
 \itemize{
-\item \code{control_annot_surv_med()}: Control function for formatting the median survival time annotation table. This annotation
+\item \code{control_surv_med_annot()}: Control function for formatting the median survival time annotation table. This annotation
 table can be added in \code{\link[=g_km]{g_km()}} by setting \code{annot_surv_med=TRUE}, and can be configured using the
-\code{control_annot_surv_med()} function by setting it as the \code{control_annot_surv_med} argument.
+\code{control_surv_med_annot()} function by setting it as the \code{control_annot_surv_med} argument.
 
-\item \code{control_annot_coxph()}: Control function for formatting the Cox-PH annotation table. This annotation table can be
-added in \code{\link[=g_km]{g_km()}} by setting \code{annot_coxph=TRUE}, and can be configured using the \code{control_annot_coxph()} function
+\item \code{control_coxph_annot()}: Control function for formatting the Cox-PH annotation table. This annotation table can be
+added in \code{\link[=g_km]{g_km()}} by setting \code{annot_coxph=TRUE}, and can be configured using the \code{control_coxph_annot()} function
 by setting it as the \code{control_annot_coxph} argument.
 
 }}
 \examples{
-control_annot_surv_med()
+control_surv_med_annot()
 
 control_annot_coxph()
 
