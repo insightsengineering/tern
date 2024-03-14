@@ -880,11 +880,11 @@ h_grob_y_annot <- function(ylab, yaxis) {
   )
 }
 
-#' Helper Function: Pairwise `CoxPH` table
+#' Helper Function: Pairwise Cox-PH table
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Create a `data.frame` of pairwise stratified or unstratified `CoxPH` analysis results.
+#' Create a `data.frame` of pairwise stratified or unstratified Cox-PH analysis results.
 #'
 #' @inheritParams g_km
 #'
@@ -959,7 +959,7 @@ h_tbl_coxph_pairwise <- function(df,
   do.call(rbind, results)
 }
 
-#' Helper Function: `CoxPH` Grob
+#' Helper Function: Cox-PH Grob
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'

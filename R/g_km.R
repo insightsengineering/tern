@@ -126,45 +126,46 @@
 #'
 #' @export
 g_km <- function(df,
-                   variables,
-                   control_surv = control_surv_timepoint(),
-                   col = NULL,
-                   lty = NULL,
-                   lwd = .5,
-                   censor_show = TRUE,
-                   pch = 3,
-                   size = 2,
-                   max_time = NULL,
-                   xticks = NULL,
-                   xlab = "Days",
-                   yval = c("Survival", "Failure"),
-                   ylab = paste(yval, "Probability"),
-                   ylim = NULL,
-                   title = NULL,
-                   footnotes = NULL,
-                   draw = lifecycle::deprecated(),
-                   newpage = lifecycle::deprecated(),
-                   gp = lifecycle::deprecated(),
-                   vp = lifecycle::deprecated(),
-                   name = lifecycle::deprecated(),
-                   font_size = 10,
-                   ci_ribbon = FALSE,
-                   ggtheme = NULL,
-                   annot_at_risk = TRUE,
-                   annot_at_risk_title = TRUE,
-                   annot_surv_med = TRUE,
-                   annot_coxph = FALSE,
-                   annot_stats = NULL,
-                   annot_stats_vlines = FALSE, ###### TODO
-                   control_coxph_pw = control_coxph(),
-                   ref_group_coxph = NULL,
-                   rel_height_at_risk = 0.25,
-                   control_annot_surv_med = control_surv_med_annot(),
-                   control_annot_coxph = control_coxph_annot(),
-                   annot_coxph_ref_lbls = lifecycle::deprecated(),
-                   position_coxph = lifecycle::deprecated(),
-                   position_surv_med = lifecycle::deprecated(),
-                   width_annots = lifecycle::deprecated()) {
+                 variables,
+                 control_surv = control_surv_timepoint(),
+                 col = NULL,
+                 lty = NULL,
+                 lwd = 0.5,
+                 censor_show = TRUE,
+                 pch = 3,
+                 size = 2,
+                 max_time = NULL,
+                 xticks = NULL,
+                 xlab = "Days",
+                 yval = c("Survival", "Failure"),
+                 ylab = paste(yval, "Probability"),
+                 ylim = NULL,
+                 title = NULL,
+                 footnotes = NULL,
+                 draw = lifecycle::deprecated(),
+                 newpage = lifecycle::deprecated(),
+                 gp = lifecycle::deprecated(),
+                 vp = lifecycle::deprecated(),
+                 name = lifecycle::deprecated(),
+                 font_size = 10,
+                 ci_ribbon = FALSE,
+                 annot_at_risk = TRUE,
+                 annot_at_risk_title = TRUE,
+                 annot_surv_med = TRUE,
+                 annot_coxph = FALSE,
+                 annot_stats = NULL,
+                 annot_stats_vlines = FALSE, ###### TODO
+                 control_coxph_pw = control_coxph(),
+                 ref_group_coxph = NULL,
+                 control_annot_surv_med = control_surv_med_annot(),
+                 control_annot_coxph = control_coxph_annot(),
+                 rel_height_at_risk = 0.25,
+                 ggtheme = NULL,
+                 as_list = FALSE,
+                 annot_coxph_ref_lbls = lifecycle::deprecated(),
+                 position_coxph = lifecycle::deprecated(),
+                 position_surv_med = lifecycle::deprecated(),
+                 width_annots = lifecycle::deprecated()) {
   # Deprecated argument warnings
   if (lifecycle::is_present(draw)) {
     lifecycle::deprecate_warn(
@@ -199,10 +200,38 @@ g_km <- function(df,
   if (lifecycle::is_present(annot_coxph_ref_lbls)) {
     lifecycle::deprecate_warn(
       "0.9.4", "g_km(annot_coxph_ref_lbls)",
-      details = "Please specify this setting in the 'ref_lbls' element of control_annot_coxph."
+      details = "Please specify this setting using the 'ref_lbls' element of control_annot_coxph."
     )
     control_annot_coxph[["ref_lbls"]] <- annot_coxph_ref_lbls
   }
+  if (lifecycle::is_present(position_coxph)) {
+    lifecycle::deprecate_warn(
+      "0.9.4", "g_km(position_coxph)",
+      details = "Please specify this setting using the 'x' and 'y' elements of control_annot_coxph."
+    )
+    control_annot_coxph[["x"]] <- position_coxph[1]
+    control_annot_coxph[["y"]] <- position_coxph[2]
+  }
+  if (lifecycle::is_present(position_surv_med)) {
+    lifecycle::deprecate_warn(
+      "0.9.4", "g_km(position_surv_med)",
+      details = "Please specify this setting using the 'x' and 'y' elements of control_annot_surv_med."
+    )
+    control_annot_surv_med[["x"]] <- position_surv_med[1]
+    control_annot_surv_med[["y"]] <- position_surv_med[2]
+  }
+  if (lifecycle::is_present(width_annots)) {
+    lifecycle::deprecate_warn(
+      "0.9.4", "g_km(width_annots)",
+      details = paste(
+        "Please specify widths of annotation tables relative to the plot area using the 'w' element of",
+        "control_annot_surv_med (for surv_med) and control_annot_coxph (for coxph)."
+      )
+    )
+    control_annot_surv_med[["w"]] <- as.numeric(width_annots[["surv_med"]])
+    control_annot_coxph[["w"]] <- as.numeric(width_annots[["coxph"]])
+  }
+
   checkmate::assert_list(variables)
   checkmate::assert_subset(c("tte", "arm", "is_event"), names(variables))
   checkmate::assert_numeric(ylim, len = 2, null.ok = TRUE)
@@ -224,7 +253,7 @@ g_km <- function(df,
   checkmate::assert_numeric(df[[tte]], min.len = 1, any.missing = FALSE)
   checkmate::assert_vector(col, null.ok = TRUE, len = length(armval))
   checkmate::assert_vector(lty, null.ok = TRUE)
-  checkmate::assert_numeric(lwd)
+  checkmate::assert_numeric(lwd, len = 1, null.ok = TRUE)
 
   if (annot_coxph && length(armval) < 2) {
     stop(paste(
@@ -254,7 +283,7 @@ g_km <- function(df,
   p_type <- if (yval == "Failure") "risk" else if (yval == "Survival") "survival" else yval
 
   # initialize ggplot
-  gg <- ggsurvfit::ggsurvfit(fit_km, type = p_type, linetype_aes = !is.null(lty), na.rm = TRUE) +
+  gg <- ggsurvfit::ggsurvfit(fit_km, type = p_type, linetype_aes = !is.null(lty), na.rm = TRUE, lwd = lwd) +
     ggsurvfit::scale_ggsurvfit(
       x_scales = list(limits = c(0, max_time), breaks = xticks),
       y_scales = list(limits = ylim, label = NULL)
@@ -262,6 +291,7 @@ g_km <- function(df,
     scale_linetype_manual(values = lty) +
     ggplot2::labs(title = title, x = xlab, y = ylab, caption = footnotes) +
     theme(
+      line = element_line(linewidth = lwd),
       axis.text = element_text(size = font_size),
       axis.title = element_text(size = font_size),
       legend.text = element_text(size = font_size),
@@ -277,20 +307,60 @@ g_km <- function(df,
   # add ci ribbon
   if (ci_ribbon) gg <- gg + ggsurvfit::add_confidence_interval()
 
-  ###
-  if (!is.null(annot_stats)) {
-    if ("min" %in% annot_stats) gg <- gg + ggsurvfit::add_quantile(y_value = 0)
-    if ("median" %in% annot_stats) gg <- gg + ggsurvfit::add_quantile(y_value = 0.5)
-  }
-
   # control aesthetics
   if (!is.null(col)) {
     gg <- gg +
       scale_color_manual(values = col) +
       scale_fill_manual(values = col)
   }
-  if (!is.null(lwd)) gg <- gg + scale_linewidth_manual(values = lwd)
   if (!is.null(ggtheme)) gg <- gg + ggtheme
+
+  # annotate with stats (text/vlines)
+  if (!is.null(annot_stats)) {
+    if ("median" %in% annot_stats) {
+      fit_km_all <- survival::survfit(
+        formula = stats::as.formula(paste0("survival::Surv(", tte, ", ", is_event, ") ~ ", 1)),
+        data = df,
+        conf.int = control_surv$conf_level,
+        conf.type = control_surv$conf_type
+      )
+      gg <- gg +
+        annotate(
+          "text",
+          size = font_size / ggplot2::.pt, col = 1, lineheight = 0.95,
+          x = stats::median(fit_km_all) + 0.07 * max(data_plot$time),
+          y = ifelse(yval == "Survival", 0.65, 0.35),
+          label = paste("Median F/U:\n", round(stats::median(fit_km_all), 1), tolower(df$AVALU[1]))
+        )
+      if (annot_stats_vlines) {
+        gg <- gg +
+          annotate(
+            "segment",
+            x = stats::median(fit_km_all), xend = stats::median(fit_km_all), y = -Inf, yend = Inf,
+            linetype = 2, col = "darkgray"
+          )
+      }
+    }
+    if ("min" %in% annot_stats) {
+      min_fu <- min(df[[tte]])
+      gg <- gg +
+        annotate(
+          "text",
+          size = font_size / ggplot2::.pt, col = 1, lineheight = 0.95,
+          x = min_fu + max(data_plot$time) * 0.07,
+          y = ifelse(yval == "Survival", 0.96, 0.05),
+          label = paste("Min. F/U:\n", round(min_fu, 1), tolower(df$AVALU[1]))
+        )
+      if (annot_stats_vlines) {
+        gg <- gg +
+          annotate(
+            "segment", linetype = 2, col = "darkgray",
+            x = min_fu, xend = min_fu, y = Inf, yend = -Inf
+          )
+      }
+    }
+    gg <- gg + ggplot2::guides(fill = ggplot2::guide_legend(override.aes = list(shape = NA, label = "")))
+  }
 
   # add at risk annotation table
   if (annot_at_risk) {
