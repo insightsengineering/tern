@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_km.R
 \name{h_xticks}
 \alias{h_xticks}
-\title{Helper function: x tick positions}
+\title{Helper function: x-tick positions}
 \usage{
 h_xticks(data, xticks = NULL, max_time = NULL)
 }
@@ -27,7 +27,6 @@ exists it is kept as is. It is based on the same function \code{ggplot2} relies 
 and is required in the graphic and the patient-at-risk annotation table.
 }
 \examples{
-\donttest{
 library(dplyr)
 library(survival)
 
@@ -42,6 +41,5 @@ h_xticks(data, xticks = 500)
 h_xticks(data, xticks = 500, max_time = 6000)
 h_xticks(data, xticks = c(0, 500), max_time = 300)
 h_xticks(data, xticks = 500, max_time = 300)
-}
 
 }

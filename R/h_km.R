@@ -1,3 +1,238 @@
+#' Control Functions for Kaplan-Meier Plot Annotation Tables
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Auxiliary functions for controlling arguments for formatting the annotation tables that can be added to plots
+#' generated via [g_km()].
+#'
+#' @param x (`proportion`)\cr x-coordinate for center of annotation table.
+#' @param y (`proportion`)\cr y-coordinate for center of annotation table.
+#' @param w (`proportion`)\cr relative width of the annotation table.
+#' @param h (`proportion`)\cr relative height of the annotation table.
+#' @param fill (`logical` or `character`)\cr whether the annotation table should have a background fill color.
+#'   Can also be a color code to use as the background fill color. If `TRUE`, color code defaults to `"#00000020"`.
+#'
+#' @return A list of components with the same names as the arguments.
+#'
+#' @seealso [g_km()]
+#'
+#' @name control_annot
+NULL
+
+#' @describeIn control_annot Control function for formatting the median survival time annotation table. This annotation
+#'   table can be added in [g_km()] by setting `annot_surv_med=TRUE`, and can be configured using the
+#'   `control_surv_med_annot()` function by setting it as the `control_annot_surv_med` argument.
+#'
+#'
+#' @examples
+#' control_surv_med_annot()
+#'
+#' @export
+control_surv_med_annot <- function(x = 0.8, y = 0.85, w = 0.32, h = 0.16, fill = TRUE) {
+  assert_proportion_value(x)
+  assert_proportion_value(y)
+  assert_proportion_value(w)
+  assert_proportion_value(h)
+
+  list(x = x, y = y, w = w, h = h, fill = fill)
+}
+
+#' @describeIn control_annot Control function for formatting the Cox-PH annotation table. This annotation table can be
+#'   added in [g_km()] by setting `annot_coxph=TRUE`, and can be configured using the `control_coxph_annot()` function
+#'   by setting it as the `control_annot_coxph` argument.
+#'
+#' @param ref_lbls (`logical`)\cr whether the reference group should be explicitly printed in labels for the
+#'   annotation table. If `FALSE` (default), only comparison groups will be printed in the table labels.
+#'
+#' @examples
+#' control_annot_coxph()
+#'
+#' @export
+control_coxph_annot <- function(x = 0.29, y = 0.51, w = 0.4, h = 0.125, fill = TRUE, ref_lbls = FALSE) {
+  checkmate::assert_logical(ref_lbls, any.missing = FALSE)
+
+  res <- c(control_surv_med_annot(x = x, y = y, w = w, h = h), list(ref_lbls = ref_lbls))
+  res
+}
+
+#' Helper function: x-tick positions
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Calculate the positions of ticks on the x-axis. However, if `xticks` already
+#' exists it is kept as is. It is based on the same function `ggplot2` relies on,
+#' and is required in the graphic and the patient-at-risk annotation table.
+#'
+#' @inheritParams g_km
+#' @inheritParams h_ggkm
+#'
+#' @return A vector of positions to use for x-axis ticks on a `ggplot` object.
+#'
+#' @examples
+#' library(dplyr)
+#' library(survival)
+#'
+#' data <- tern_ex_adtte %>%
+#'   filter(PARAMCD == "OS") %>%
+#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
+#'   h_data_plot()
+#'
+#' h_xticks(data)
+#' h_xticks(data, xticks = seq(0, 3000, 500))
+#' h_xticks(data, xticks = 500)
+#' h_xticks(data, xticks = 500, max_time = 6000)
+#' h_xticks(data, xticks = c(0, 500), max_time = 300)
+#' h_xticks(data, xticks = 500, max_time = 300)
+#'
+#' @export
+h_xticks <- function(data, xticks = NULL, max_time = NULL) {
+  if (is.null(xticks)) {
+    if (is.null(max_time)) {
+      labeling::extended(range(data$time)[1], range(data$time)[2], m = 5)
+    } else {
+      labeling::extended(range(data$time)[1], max(range(data$time)[2], max_time), m = 5)
+    }
+  } else if (checkmate::test_number(xticks)) {
+    if (is.null(max_time)) {
+      seq(0, max(data$time), xticks)
+    } else {
+      seq(0, max(data$time, max_time), xticks)
+    }
+  } else if (is.numeric(xticks)) {
+    xticks
+  } else {
+    stop(
+      paste(
+        "xticks should be either `NULL`",
+        "or a single number (interval between x ticks)",
+        "or a numeric vector (position of ticks on the x axis)"
+      )
+    )
+  }
+}
+
+#' Helper Function: Survival Estimations
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Transform a survival fit to a table with groups in rows characterized by N, median and confidence interval.
+#'
+#' @inheritParams h_data_plot
+#'
+#' @return A summary table with statistics `N`, `Median`, and `XX% CI` (`XX` taken from `fit_km`).
+#'
+#' @examples
+#' library(dplyr)
+#' library(survival)
+#'
+#' adtte <- tern_ex_adtte %>% filter(PARAMCD == "OS")
+#' fit <- survfit(
+#'   formula = Surv(AVAL, 1 - CNSR) ~ ARMCD,
+#'   data = adtte
+#' )
+#' h_tbl_median_surv(fit_km = fit)
+#'
+#' @export
+h_tbl_median_surv <- function(fit_km, armval = "All") {
+  y <- if (is.null(fit_km$strata)) {
+    as.data.frame(t(summary(fit_km)$table), row.names = armval)
+  } else {
+    tbl <- summary(fit_km)$table
+    rownames_lst <- strsplit(sub("=", "equals", rownames(tbl)), "equals")
+    rownames(tbl) <- matrix(unlist(rownames_lst), ncol = 2, byrow = TRUE)[, 2]
+    as.data.frame(tbl)
+  }
+  conf.int <- summary(fit_km)$conf.int # nolint
+  y$records <- round(y$records)
+  y$median <- signif(y$median, 4)
+  y$`CI` <- paste0(
+    "(", signif(y[[paste0(conf.int, "LCL")]], 4), ", ", signif(y[[paste0(conf.int, "UCL")]], 4), ")"
+  )
+  stats::setNames(
+    y[c("records", "median", "CI")],
+    c("N", "Median", f_conf_level(conf.int))
+  )
+}
+
+#' Helper Function: Pairwise Cox-PH table
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Create a `data.frame` of pairwise stratified or unstratified Cox-PH analysis results.
+#'
+#' @inheritParams g_km
+#'
+#' @return A `data.frame` containing statistics `HR`, `XX% CI` (`XX` taken from `control_coxph_pw`),
+#'   and `p-value (log-rank)`.
+#'
+#' @examples
+#' library(dplyr)
+#'
+#' adtte <- tern_ex_adtte %>%
+#'   filter(PARAMCD == "OS") %>%
+#'   mutate(is_event = CNSR == 0)
+#'
+#' h_tbl_coxph_pairwise(
+#'   df = adtte,
+#'   variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
+#'   control_coxph_pw = control_coxph(conf_level = 0.9)
+#' )
+#'
+#' @export
+h_tbl_coxph_pairwise <- function(df,
+                                 variables,
+                                 ref_group_coxph = NULL,
+                                 control_coxph_pw = control_coxph(),
+                                 annot_coxph_ref_lbls = FALSE) {
+  if ("strat" %in% names(variables)) {
+    warning(
+      "Warning: the `strat` element name of the `variables` list argument to `h_tbl_coxph_pairwise() ",
+      "was deprecated in tern 0.9.3.\n  ",
+      "Please use the name `strata` instead of `strat` in the `variables` argument."
+    )
+    variables[["strata"]] <- variables[["strat"]]
+  }
+
+  assert_df_with_variables(df, variables)
+  checkmate::assert_choice(ref_group_coxph, levels(df[[variables$arm]]), null.ok = TRUE)
+  checkmate::assert_flag(annot_coxph_ref_lbls)
+
+  arm <- variables$arm
+  df[[arm]] <- factor(df[[arm]])
+
+  ref_group <- if (!is.null(ref_group_coxph)) ref_group_coxph else levels(df[[variables$arm]])[1]
+  comp_group <- setdiff(levels(df[[arm]]), ref_group)
+
+  results <- Map(function(comp) {
+    res <- s_coxph_pairwise(
+      df = df[df[[arm]] == comp, , drop = FALSE],
+      .ref_group = df[df[[arm]] == ref_group, , drop = FALSE],
+      .in_ref_col = FALSE,
+      .var = variables$tte,
+      is_event = variables$is_event,
+      strata = variables$strata,
+      control = control_coxph_pw
+    )
+    res_df <- data.frame(
+      hr = format(round(res$hr, 2), nsmall = 2),
+      hr_ci = paste0(
+        "(", format(round(res$hr_ci[1], 2), nsmall = 2), ", ",
+        format(round(res$hr_ci[2], 2), nsmall = 2), ")"
+      ),
+      pvalue = if (res$pvalue < 0.0001) "<0.0001" else format(round(res$pvalue, 4), 4),
+      stringsAsFactors = FALSE
+    )
+    colnames(res_df) <- c("HR", vapply(res[c("hr_ci", "pvalue")], obj_label, FUN.VALUE = "character"))
+    row.names(res_df) <- comp
+    res_df
+  }, comp_group)
+  if (annot_coxph_ref_lbls) names(results) <- paste(comp_group, "vs.", ref_group)
+
+  do.call(rbind, results)
+}
+
+## Deprecated Functions ----
+
 #' Helper function: tidy survival fit
 #'
 #' @description `r lifecycle::badge("deprecated")`
@@ -84,64 +319,6 @@ h_data_plot <- function(fit_km,
     y <- y[y$time <= max(max_time), ]
   }
   y
-}
-
-#' Helper function: x tick positions
-#'
-#' @description `r lifecycle::badge("stable")`
-#'
-#' Calculate the positions of ticks on the x-axis. However, if `xticks` already
-#' exists it is kept as is. It is based on the same function `ggplot2` relies on,
-#' and is required in the graphic and the patient-at-risk annotation table.
-#'
-#' @inheritParams g_km
-#' @inheritParams h_ggkm
-#'
-#' @return A vector of positions to use for x-axis ticks on a `ggplot` object.
-#'
-#' @examples
-#' \donttest{
-#' library(dplyr)
-#' library(survival)
-#'
-#' data <- tern_ex_adtte %>%
-#'   filter(PARAMCD == "OS") %>%
-#'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
-#'   h_data_plot()
-#'
-#' h_xticks(data)
-#' h_xticks(data, xticks = seq(0, 3000, 500))
-#' h_xticks(data, xticks = 500)
-#' h_xticks(data, xticks = 500, max_time = 6000)
-#' h_xticks(data, xticks = c(0, 500), max_time = 300)
-#' h_xticks(data, xticks = 500, max_time = 300)
-#' }
-#'
-#' @export
-h_xticks <- function(data, xticks = NULL, max_time = NULL) {
-  if (is.null(xticks)) {
-    if (is.null(max_time)) {
-      labeling::extended(range(data$time)[1], range(data$time)[2], m = 5)
-    } else {
-      labeling::extended(range(data$time)[1], max(range(data$time)[2], max_time), m = 5)
-    }
-  } else if (checkmate::test_number(xticks)) {
-    if (is.null(max_time)) {
-      seq(0, max(data$time), xticks)
-    } else {
-      seq(0, max(data$time, max_time), xticks)
-    }
-  } else if (is.numeric(xticks)) {
-    xticks
-  } else {
-    stop(
-      paste(
-        "xticks should be either `NULL`",
-        "or a single number (interval between x ticks)",
-        "or a numeric vector (position of ticks on the x axis)"
-      )
-    )
-  }
 }
 
 #' Helper function: KM plot
@@ -683,51 +860,6 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim, title = TRUE) {
   ret
 }
 
-#' Helper Function: Survival Estimations
-#'
-#' @description `r lifecycle::badge("stable")`
-#'
-#' Transform a survival fit to a table with groups in rows characterized by N, median and confidence interval.
-#'
-#' @inheritParams h_data_plot
-#'
-#' @return A summary table with statistics `N`, `Median`, and `XX% CI` (`XX` taken from `fit_km`).
-#'
-#' @examples
-#' \donttest{
-#' library(dplyr)
-#' library(survival)
-#'
-#' adtte <- tern_ex_adtte %>% filter(PARAMCD == "OS")
-#' fit <- survfit(
-#'   formula = Surv(AVAL, 1 - CNSR) ~ ARMCD,
-#'   data = adtte
-#' )
-#' h_tbl_median_surv(fit_km = fit)
-#' }
-#'
-#' @export
-h_tbl_median_surv <- function(fit_km, armval = "All") {
-  y <- if (is.null(fit_km$strata)) {
-    as.data.frame(t(summary(fit_km)$table), row.names = armval)
-  } else {
-    tbl <- summary(fit_km)$table
-    rownames_lst <- strsplit(sub("=", "equals", rownames(tbl)), "equals")
-    rownames(tbl) <- matrix(unlist(rownames_lst), ncol = 2, byrow = TRUE)[, 2]
-    as.data.frame(tbl)
-  }
-  conf.int <- summary(fit_km)$conf.int # nolint
-  y$records <- round(y$records)
-  y$median <- signif(y$median, 4)
-  y$`CI` <- paste0(
-    "(", signif(y[[paste0(conf.int, "LCL")]], 4), ", ", signif(y[[paste0(conf.int, "UCL")]], 4), ")"
-  )
-  stats::setNames(
-    y[c("records", "median", "CI")],
-    c("N", "Median", f_conf_level(conf.int))
-  )
-}
-
 #' Helper Function: Survival Estimation Grob
 #'
 #' @description `r lifecycle::badge("deprecated")`
@@ -878,85 +1010,6 @@ h_grob_y_annot <- function(ylab, yaxis) {
       children = grid::gList(cbind(ylab, yaxis))
     )
   )
-}
-
-#' Helper Function: Pairwise Cox-PH table
-#'
-#' @description `r lifecycle::badge("stable")`
-#'
-#' Create a `data.frame` of pairwise stratified or unstratified Cox-PH analysis results.
-#'
-#' @inheritParams g_km
-#'
-#' @return A `data.frame` containing statistics `HR`, `XX% CI` (`XX` taken from `control_coxph_pw`),
-#'   and `p-value (log-rank)`.
-#'
-#' @examples
-#' \donttest{
-#' library(dplyr)
-#'
-#' adtte <- tern_ex_adtte %>%
-#'   filter(PARAMCD == "OS") %>%
-#'   mutate(is_event = CNSR == 0)
-#'
-#' h_tbl_coxph_pairwise(
-#'   df = adtte,
-#'   variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
-#'   control_coxph_pw = control_coxph(conf_level = 0.9)
-#' )
-#' }
-#'
-#' @export
-h_tbl_coxph_pairwise <- function(df,
-                                 variables,
-                                 ref_group_coxph = NULL,
-                                 control_coxph_pw = control_coxph(),
-                                 annot_coxph_ref_lbls = FALSE) {
-  if ("strat" %in% names(variables)) {
-    warning(
-      "Warning: the `strat` element name of the `variables` list argument to `h_tbl_coxph_pairwise() ",
-      "was deprecated in tern 0.9.3.\n  ",
-      "Please use the name `strata` instead of `strat` in the `variables` argument."
-    )
-    variables[["strata"]] <- variables[["strat"]]
-  }
-
-  assert_df_with_variables(df, variables)
-  checkmate::assert_choice(ref_group_coxph, levels(df[[variables$arm]]), null.ok = TRUE)
-  checkmate::assert_flag(annot_coxph_ref_lbls)
-
-  arm <- variables$arm
-  df[[arm]] <- factor(df[[arm]])
-
-  ref_group <- if (!is.null(ref_group_coxph)) ref_group_coxph else levels(df[[variables$arm]])[1]
-  comp_group <- setdiff(levels(df[[arm]]), ref_group)
-
-  results <- Map(function(comp) {
-    res <- s_coxph_pairwise(
-      df = df[df[[arm]] == comp, , drop = FALSE],
-      .ref_group = df[df[[arm]] == ref_group, , drop = FALSE],
-      .in_ref_col = FALSE,
-      .var = variables$tte,
-      is_event = variables$is_event,
-      strata = variables$strata,
-      control = control_coxph_pw
-    )
-    res_df <- data.frame(
-      hr = format(round(res$hr, 2), nsmall = 2),
-      hr_ci = paste0(
-        "(", format(round(res$hr_ci[1], 2), nsmall = 2), ", ",
-        format(round(res$hr_ci[2], 2), nsmall = 2), ")"
-      ),
-      pvalue = if (res$pvalue < 0.0001) "<0.0001" else format(round(res$pvalue, 4), 4),
-      stringsAsFactors = FALSE
-    )
-    colnames(res_df) <- c("HR", vapply(res[c("hr_ci", "pvalue")], obj_label, FUN.VALUE = "character"))
-    row.names(res_df) <- comp
-    res_df
-  }, comp_group)
-  if (annot_coxph_ref_lbls) names(results) <- paste(comp_group, "vs.", ref_group)
-
-  do.call(rbind, results)
 }
 
 #' Helper Function: Cox-PH Grob

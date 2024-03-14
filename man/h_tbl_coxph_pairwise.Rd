@@ -49,7 +49,6 @@ and \code{p-value (log-rank)}.
 Create a \code{data.frame} of pairwise stratified or unstratified Cox-PH analysis results.
 }
 \examples{
-\donttest{
 library(dplyr)
 
 adtte <- tern_ex_adtte \%>\%
@@ -61,6 +60,5 @@ h_tbl_coxph_pairwise(
   variables = list(tte = "AVAL", is_event = "is_event", arm = "ARM"),
   control_coxph_pw = control_coxph(conf_level = 0.9)
 )
-}
 
 }
