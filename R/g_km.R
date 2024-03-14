@@ -75,19 +75,13 @@
 #' @return A `grob` of class `gTree`.
 #'
 #' @examples
-#' \donttest{
 #' library(dplyr)
-#' library(ggplot2)
-#' library(survival)
-#' library(grid)
 #' library(nestcolor)
 #'
 #' df <- tern_ex_adtte %>%
 #'   filter(PARAMCD == "OS") %>%
 #'   mutate(is_event = CNSR == 0)
 #' variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
-#'
-#' # 1. Example - basic option
 #'
 #' g_km(df = df, variables = variables)
 #' g_km(df = df, variables = variables, yval = "Failure")
@@ -99,49 +93,13 @@
 #'   annot_at_risk_title = FALSE
 #' )
 #' g_km(df = df, variables = variables, ggtheme = theme_minimal())
-#' res <- g_km(df = df, variables = variables, ggtheme = theme_minimal(), lty = 1:3)
-#' res <- g_km(df = df, variables = variables, max = 2000)
-#' res <- g_km(
+#' g_km(df = df, variables = variables, ggtheme = theme_minimal(), lty = 1:3)
+#' g_km(df = df, variables = variables, max_time = 2000)
+#' g_km(
 #'   df = df,
 #'   variables = variables,
 #'   annot_stats = c("min", "median"),
 #'   annot_stats_vlines = TRUE
-#' )
-#'
-#' # 2. Example - Arrange several KM curve on a single graph device
-#'
-#' # 2.1 Use case: A general graph on the top, a zoom on the bottom.
-#' grid.newpage()
-#' lyt <- grid.layout(nrow = 2, ncol = 1) %>%
-#'   viewport(layout = .) %>%
-#'   pushViewport()
-#'
-#' res <- g_km(
-#'   df = df, variables = variables, newpage = FALSE, annot_surv_med = FALSE,
-#'   vp = viewport(layout.pos.row = 1, layout.pos.col = 1)
-#' )
-#' res <- g_km(
-#'   df = df, variables = variables, max = 1000, newpage = FALSE, annot_surv_med = FALSE,
-#'   ggtheme = theme_dark(),
-#'   vp = viewport(layout.pos.row = 2, layout.pos.col = 1)
-#' )
-#'
-#' # 2.1 Use case: No annotations on top, annotated graph on bottom
-#' grid.newpage()
-#' lyt <- grid.layout(nrow = 2, ncol = 1) %>%
-#'   viewport(layout = .) %>%
-#'   pushViewport()
-#'
-#' res <- g_km(
-#'   df = df, variables = variables, newpage = FALSE,
-#'   annot_surv_med = FALSE, annot_at_risk = FALSE,
-#'   vp = viewport(layout.pos.row = 1, layout.pos.col = 1)
-#' )
-#' res <- g_km(
-#'   df = df, variables = variables, max = 2000, newpage = FALSE, annot_surv_med = FALSE,
-#'   annot_at_risk = TRUE,
-#'   ggtheme = theme_dark(),
-#'   vp = viewport(layout.pos.row = 2, layout.pos.col = 1)
 #' )
 #'
 #' # Add annotation from a pairwise coxph analysis
@@ -152,28 +110,19 @@
 #'
 #' # Change widths/sizes of surv_med and coxph annotation tables.
 #' g_km(
-#'   df = df, variables = c(variables, list(strat = "SEX")),
+#'   df = df, variables = c(variables, list(strata = "SEX")),
 #'   annot_coxph = TRUE,
-#'   width_annots = list(surv_med = grid::unit(2, "in"), coxph = grid::unit(3, "in"))
+#'   control_annot_surv_med = control_surv_med_annot(x = 0.8, y = 0.9, w = 0.35),
+#'   control_annot_coxph = control_coxph_annot(x = 0.75, y = 0.7, w = 0.45)
 #' )
 #'
 #' g_km(
-#'   df = df, variables = c(variables, list(strat = "SEX")),
-#'   font_size = 15,
+#'   df = df, variables = c(variables, list(strata = "SEX")),
+#'   font_size = 12,
 #'   annot_coxph = TRUE,
 #'   control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
-#'   position_coxph = c(0.5, 0.5)
+#'   control_annot_coxph = control_coxph_annot(y = 0.45)
 #' )
-#'
-#' # Change position of the treatment group annotation table.
-#' g_km(
-#'   df = df, variables = c(variables, list(strat = "SEX")),
-#'   font_size = 15,
-#'   annot_coxph = TRUE,
-#'   control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
-#'   position_surv_med = c(1, 0.7)
-#' )
-#' }
 #'
 #' @export
 g_km <- function(df,
@@ -209,6 +158,7 @@ g_km <- function(df,
                    annot_stats_vlines = FALSE, ###### TODO
                    control_coxph_pw = control_coxph(),
                    ref_group_coxph = NULL,
+                   rel_height_at_risk = 0.25,
                    control_annot_surv_med = control_surv_med_annot(),
                    control_annot_coxph = control_coxph_annot(),
                    annot_coxph_ref_lbls = lifecycle::deprecated(),
@@ -245,6 +195,13 @@ g_km <- function(df,
       "0.9.4", "g_km(name)",
       details = "This argument is no longer used since the plot is now generated as a ggplot2 object."
     )
+  }
+  if (lifecycle::is_present(annot_coxph_ref_lbls)) {
+    lifecycle::deprecate_warn(
+      "0.9.4", "g_km(annot_coxph_ref_lbls)",
+      details = "Please specify this setting in the 'ref_lbls' element of control_annot_coxph."
+    )
+    control_annot_coxph[["ref_lbls"]] <- annot_coxph_ref_lbls
   }
   checkmate::assert_list(variables)
   checkmate::assert_subset(c("tte", "arm", "is_event"), names(variables))
@@ -287,6 +244,8 @@ g_km <- function(df,
   )
   data_plot <- ggsurvfit::tidy_survfit(fit_km)
 
+  if (!is.null(max_time)) data_plot <- data_plot[data_plot$time <= max_time, ]
+
   # add x-ticks
   xticks <- h_xticks(data = data_plot, xticks = xticks, max_time = max_time)
   if (is.null(max_time)) max_time <- max(xticks)
@@ -295,7 +254,7 @@ g_km <- function(df,
   p_type <- if (yval == "Failure") "risk" else if (yval == "Survival") "survival" else yval
 
   # initialize ggplot
-  gg <- ggsurvfit::ggsurvfit(fit_km, type = p_type, linetype_aes = !is.null(lty)) +
+  gg <- ggsurvfit::ggsurvfit(fit_km, type = p_type, linetype_aes = !is.null(lty), na.rm = TRUE) +
     ggsurvfit::scale_ggsurvfit(
       x_scales = list(limits = c(0, max_time), breaks = xticks),
       y_scales = list(limits = ylim, label = NULL)
@@ -306,7 +265,7 @@ g_km <- function(df,
       axis.text = element_text(size = font_size),
       axis.title = element_text(size = font_size),
       legend.text = element_text(size = font_size),
-      legend.box.background = element_rect(colour = "black", linewidth = 0.75),
+      legend.box.background = element_rect(linewidth = 0.75),
       legend.margin = margin(c(1, 5, 2, 5)),
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank()
@@ -358,7 +317,7 @@ g_km <- function(df,
 
     at_risk <- df2gg(
       at_risk_tbl,
-      col_labels = FALSE, hline = FALSE,
+      font_size = font_size, col_labels = FALSE, hline = FALSE,
       colwidths = rep(1, ncol(at_risk_tbl))
     ) +
       labs(title = if (annot_at_risk_title) "Patients at Risk:" else NULL, x = xlab) +
@@ -385,17 +344,16 @@ g_km <- function(df,
       align = "v",
       axis = "tblr",
       ncol = 1,
-      rel_heights = c(0.75, 0.25)
+      rel_heights = c(1 - rel_height_at_risk, rel_height_at_risk)
     )
   }
 
   # add median survival time annotation table
   if (annot_surv_med) {
     surv_med_tbl <- h_tbl_median_surv(fit_km = fit_km, armval = armval)
-    scale_arm_lbls <- max(nchar(rownames(surv_med_tbl))) / 5
     bg_fill <- if (isTRUE(control_annot_surv_med[["fill"]])) "#00000020" else control_annot_surv_med[["fill"]]
 
-    dfgg <- df2gg(surv_med_tbl, colwidths = c(1, 1, 2), bg_fill = bg_fill) +
+    dfgg <- df2gg(surv_med_tbl, font_size = font_size, colwidths = c(1, 1, 2), bg_fill = bg_fill) +
       theme(
         axis.text.y = element_text(size = font_size, face = "italic"),
         plot.margin = margin(0, 2, 0, 5)
@@ -427,10 +385,9 @@ g_km <- function(df,
       control_coxph_pw = control_coxph_pw,
       annot_coxph_ref_lbls = control_annot_coxph[["ref_lbls"]]
     )
-    scale_arm_lbls <- max(nchar(rownames(coxph_tbl))) / 10
     bg_fill <- if (isTRUE(control_annot_coxph[["fill"]])) "#00000020" else control_annot_coxph[["fill"]]
 
-    dfgg <- df2gg(coxph_tbl, colwidths = c(1.1, 1, 3), bg_fill = bg_fill) +
+    dfgg <- df2gg(coxph_tbl, font_size = font_size, colwidths = c(1.1, 1, 3), bg_fill = bg_fill) +
       theme(
         axis.text.y = element_text(size = font_size, face = "italic"),
         plot.margin = margin(0, 2, 0, 5)

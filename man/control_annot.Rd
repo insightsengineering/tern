@@ -6,11 +6,11 @@
 \alias{control_coxph_annot}
 \title{Control Functions for Kaplan-Meier Plot Annotation Tables}
 \usage{
-control_surv_med_annot(x = 0.8, y = 0.85, w = 0.3, h = 0.18, fill = TRUE)
+control_surv_med_annot(x = 0.8, y = 0.85, w = 0.32, h = 0.16, fill = TRUE)
 
 control_coxph_annot(
   x = 0.29,
-  y = 0.28,
+  y = 0.51,
   w = 0.4,
   h = 0.125,
   fill = TRUE,
