@@ -129,15 +129,43 @@ rtable2gg <- function(tbl, fontsize = 12, colwidths = NULL, lbl_col_padding = 0)
   res
 }
 
+#' Convert `data.frame` object to `ggplot` object
+#'
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' Given a `data.frame` object, performs basic conversion to a [ggplot2::ggplot()] object built using
+#' functions from the `ggplot2` package.
+#'
+#' @param tbl (`data.frame`)\cr a data frame.
+#' @param colwidths (`vector` of `numeric`)\cr a vector of column widths. Each element's position in
+#'   `colwidths` corresponds to the column of `df` in the same position. If `NULL`, column widths
+#'   are calculated according to maximum number of characters per column.
+#' @param font_size (`numeric`)\cr font size.
+#' @param col_labels (`logical`)\cr whether the column names (labels) of `df` should be used as the first row
+#'   of the output table.
+#' @param col_labels_fontface (`character`)\cr fontface to apply to the first row (of column labels
+#'   if `col_labels = TRUE`).
+#' @param hline (`logical`)\cr whether a horizontal line should be printed below the first row of the table.
+#' @param bg_fill (`character`)\cr table background fill color.
+#'
+#' @return a `ggplot` object.
+#'
+#' @examples
+#' df2gg(head(iris, 5))
+#'
+#' df2gg(head(iris, 5), font_size = 15, colwidths = c(1, 1, 1, 1, 1))
+#'
+#' @keywords internal
 df2gg <- function(df,
-                  hline = TRUE,
                   colwidths = NULL,
+                  font_size = 10,
                   col_labels = TRUE,
                   col_lab_fontface = "bold",
-                  font_size = 10,
+                  hline = TRUE,
                   bg_fill = NULL) {
   if (col_labels) {
-    df <- rbind(names(df), df)
+    df <- as.matrix(df)
+    df <- rbind(colnames(df), df)
   }
 
   # Get column widths
@@ -162,7 +190,7 @@ df2gg <- function(df,
     )
   }
 
-  for (i in seq_along(df)) {
+  for (i in seq_len(ncol(df))) {
     line_pos <- c(
       if (i == 1) 0 else sum(colwidths[1:(i - 1)]),
       sum(colwidths[1:i])

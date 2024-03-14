@@ -161,6 +161,8 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
 #' Create a `data.frame` of pairwise stratified or unstratified Cox-PH analysis results.
 #'
 #' @inheritParams g_km
+#' @param annot_coxph_ref_lbls (`flag`)\cr whether the reference group should be explicitly printed in labels for the
+#'   `annot_coxph` table. If `FALSE` (default), only comparison groups will be printed in `annot_coxph` table labels.
 #'
 #' @return A `data.frame` containing statistics `HR`, `XX% CI` (`XX` taken from `control_coxph_pw`),
 #'   and `p-value (log-rank)`.

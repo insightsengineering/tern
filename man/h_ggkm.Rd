@@ -33,7 +33,7 @@ an optimal tick position on the x axis.}
 
 \item{yval}{(\code{string})\cr value of y-axis. Options are \code{Survival} (default) and \code{Failure} probability.}
 
-\item{censor_show}{(\code{flag})\cr whether to show censored.}
+\item{censor_show}{(\code{flag})\cr whether to show censored observations.}
 
 \item{xlab}{(\code{string})\cr label of x-axis.}
 

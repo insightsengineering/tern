@@ -144,7 +144,6 @@ Collate:
     'imputation_rule.R'
     'incidence_rate.R'
     'individual_patient_plot.R'
-    'kaplan_meier_plot.R'
     'logistic_regression.R'
     'missing_data.R'
     'odds_ratio.R'

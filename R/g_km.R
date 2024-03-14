@@ -6,7 +6,6 @@
 #' including the number of patient at risk at given time and the median survival
 #' per group.
 #'
-#' @inheritParams grid::gTree
 #' @inheritParams argument_convention
 #' @param df (`data.frame`)\cr data set containing all analysis variables.
 #' @param variables (named `list`)\cr variable names. Details are:
@@ -23,7 +22,7 @@
 #'   between ticks on the x axis. If `NULL` (default), [labeling::extended()] is used to determine
 #'   an optimal tick position on the x axis.
 #' @param yval (`string`)\cr value of y-axis. Options are `Survival` (default) and `Failure` probability.
-#' @param censor_show (`flag`)\cr whether to show censored.
+#' @param censor_show (`flag`)\cr whether to show censored observations.
 #' @param xlab (`string`)\cr label of x-axis.
 #' @param ylab (`string`)\cr label of y-axis.
 #' @param ylim (`vector` of `numeric`)\cr vector of length 2 containing lower and upper limits for the y-axis.
@@ -63,16 +62,24 @@
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
 #' @param ref_group_coxph (`character`)\cr level of arm variable to use as reference group in calculations for
 #'   `annot_coxph` table. If `NULL` (default), uses the first level of the arm variable.
-#' @param annot_coxph_ref_lbls (`flag`)\cr whether the reference group should be explicitly printed in labels for the
-#'   `annot_coxph` table. If `FALSE` (default), only comparison groups will be printed in `annot_coxph` table labels.
-#' @param position_coxph (`numeric`)\cr x and y positions for plotting [survival::coxph()] model.
-#' @param position_surv_med (`numeric`)\cr x and y positions for plotting annotation table estimating median survival
-#'   time per group.
-#' @param width_annots (named `list` of `unit`s)\cr a named list of widths for annotation tables with names `surv_med`
-#'   (median survival time table) and `coxph` ([survival::coxph()] model table), where each value is the width
-#'   (in units) to implement when printing the annotation table.
+#' @param rel_height_plot (`proportion`)\cr proportion of total figure height to allocate to the Kaplan-Meier plot.
+#'   Relative height of patients at risk table is then `1 - rel_height_plot`. If `annot_at_risk = FALSE` or
+#'   `as_list = TRUE`, this parameter is ignored.
+#' @param draw `r lifecycle::badge("deprecated")` This function no longer generates `grob` objects.
+#' @param newpage `r lifecycle::badge("deprecated")` This function no longer generates `grob` objects.
+#' @param gp `r lifecycle::badge("deprecated")` This function no longer generates `grob` objects.
+#' @param vp `r lifecycle::badge("deprecated")` This function no longer generates `grob` objects.
+#' @param name `r lifecycle::badge("deprecated")` This function no longer generates `grob` objects.
+#' @param annot_coxph_ref_lbls `r lifecycle::badge("deprecated")` Please use the `ref_lbls` element of
+#'   `control_annot_coxph` instead.
+#' @param position_coxph `r lifecycle::badge("deprecated")`  Please use the `x` and `y` elements of
+#'   `control_annot_coxph` instead.
+#' @param position_surv_med `r lifecycle::badge("deprecated")` Please use the `x` and `y` elements of
+#'   `control_annot_surv_med` instead.
+#' @param width_annots `r lifecycle::badge("deprecated")` Please use the `w` element of `control_annot_surv_med`
+#'   (for surv_med) and `control_annot_coxph` (for coxph)."
 #'
-#' @return A `grob` of class `gTree`.
+#' @return A `ggplot` Kaplan-Meier plot and (optionally) summary table.
 #'
 #' @examples
 #' library(dplyr)
@@ -124,6 +131,7 @@
 #'   control_annot_coxph = control_coxph_annot(y = 0.45)
 #' )
 #'
+#' @aliases kaplan_meier
 #' @export
 g_km <- function(df,
                  variables,
@@ -142,11 +150,6 @@ g_km <- function(df,
                  ylim = NULL,
                  title = NULL,
                  footnotes = NULL,
-                 draw = lifecycle::deprecated(),
-                 newpage = lifecycle::deprecated(),
-                 gp = lifecycle::deprecated(),
-                 vp = lifecycle::deprecated(),
-                 name = lifecycle::deprecated(),
                  font_size = 10,
                  ci_ribbon = FALSE,
                  annot_at_risk = TRUE,
@@ -154,14 +157,19 @@ g_km <- function(df,
                  annot_surv_med = TRUE,
                  annot_coxph = FALSE,
                  annot_stats = NULL,
-                 annot_stats_vlines = FALSE, ###### TODO
+                 annot_stats_vlines = FALSE,
                  control_coxph_pw = control_coxph(),
                  ref_group_coxph = NULL,
                  control_annot_surv_med = control_surv_med_annot(),
                  control_annot_coxph = control_coxph_annot(),
-                 rel_height_at_risk = 0.25,
+                 rel_height_plot = 0.25,
                  ggtheme = NULL,
                  as_list = FALSE,
+                 draw = lifecycle::deprecated(),
+                 newpage = lifecycle::deprecated(),
+                 gp = lifecycle::deprecated(),
+                 vp = lifecycle::deprecated(),
+                 name = lifecycle::deprecated(),
                  annot_coxph_ref_lbls = lifecycle::deprecated(),
                  position_coxph = lifecycle::deprecated(),
                  position_surv_med = lifecycle::deprecated(),
@@ -414,7 +422,7 @@ g_km <- function(df,
       align = "v",
       axis = "tblr",
       ncol = 1,
-      rel_heights = c(1 - rel_height_at_risk, rel_height_at_risk)
+      rel_heights = c(rel_height_plot, 1 - rel_height_plot)
     )
   }
 

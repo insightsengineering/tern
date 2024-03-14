@@ -2,6 +2,7 @@
 % Please edit documentation in R/g_km.R
 \name{g_km}
 \alias{g_km}
+\alias{kaplan_meier}
 \title{Kaplan-Meier Plot}
 \usage{
 g_km(
@@ -22,11 +23,6 @@ g_km(
   ylim = NULL,
   title = NULL,
   footnotes = NULL,
-  draw = lifecycle::deprecated(),
-  newpage = lifecycle::deprecated(),
-  gp = lifecycle::deprecated(),
-  vp = lifecycle::deprecated(),
-  name = lifecycle::deprecated(),
   font_size = 10,
   ci_ribbon = FALSE,
   annot_at_risk = TRUE,
@@ -39,9 +35,14 @@ g_km(
   ref_group_coxph = NULL,
   control_annot_surv_med = control_surv_med_annot(),
   control_annot_coxph = control_coxph_annot(),
-  rel_height_at_risk = 0.25,
+  rel_height_plot = 0.25,
   ggtheme = NULL,
   as_list = FALSE,
+  draw = lifecycle::deprecated(),
+  newpage = lifecycle::deprecated(),
+  gp = lifecycle::deprecated(),
+  vp = lifecycle::deprecated(),
+  name = lifecycle::deprecated(),
   annot_coxph_ref_lbls = lifecycle::deprecated(),
   position_coxph = lifecycle::deprecated(),
   position_surv_med = lifecycle::deprecated(),
@@ -76,7 +77,7 @@ to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 \item{lwd}{(\code{numeric})\cr line width. Length of a vector should be equal
 to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 
-\item{censor_show}{(\code{flag})\cr whether to show censored.}
+\item{censor_show}{(\code{flag})\cr whether to show censored observations.}
 
 \item{pch}{(\code{numeric}, \code{string})\cr value or character of points symbol to indicate censored cases.}
 
@@ -101,20 +102,6 @@ If \code{NULL} (default), the minimum and maximum y-values displayed are used as
 \item{title}{(\code{string})\cr title for plot.}
 
 \item{footnotes}{(\code{string})\cr footnotes for plot.}
-
-\item{draw}{(\code{flag})\cr whether the plot should be drawn.}
-
-\item{newpage}{(\code{flag})\cr whether the plot should be drawn on a new page.
-Only considered if \code{draw = TRUE} is used.}
-
-\item{gp}{A \code{"gpar"} object, typically the output
-    from a call to the function \code{\link[grid]{gpar}}.  This is basically
-    a list of graphical parameter settings.}
-
-\item{vp}{a \code{\link[grid]{viewport}} object (or \code{NULL}).}
-
-\item{name}{a character identifier for the grob.  Used to find the
-    grob on the display list and/or as a child of another grob. }
 
 \item{font_size}{(\code{number})\cr font size to be used.}
 
@@ -150,22 +137,36 @@ can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[s
 \item{ref_group_coxph}{(\code{character})\cr level of arm variable to use as reference group in calculations for
 \code{annot_coxph} table. If \code{NULL} (default), uses the first level of the arm variable.}
 
+\item{rel_height_plot}{(\code{proportion})\cr proportion of total figure height to allocate to the Kaplan-Meier plot.
+Relative height of patients at risk table is then \code{1 - rel_height_plot}. If \code{annot_at_risk = FALSE} or
+\code{as_list = TRUE}, this parameter is ignored.}
+
 \item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to control outlook of the Kaplan-Meier curve.}
 
-\item{annot_coxph_ref_lbls}{(\code{flag})\cr whether the reference group should be explicitly printed in labels for the
-\code{annot_coxph} table. If \code{FALSE} (default), only comparison groups will be printed in \code{annot_coxph} table labels.}
+\item{draw}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} This function no longer generates \code{grob} objects.}
 
-\item{position_coxph}{(\code{numeric})\cr x and y positions for plotting \code{\link[survival:coxph]{survival::coxph()}} model.}
+\item{newpage}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} This function no longer generates \code{grob} objects.}
 
-\item{position_surv_med}{(\code{numeric})\cr x and y positions for plotting annotation table estimating median survival
-time per group.}
+\item{gp}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} This function no longer generates \code{grob} objects.}
 
-\item{width_annots}{(named \code{list} of \code{unit}s)\cr a named list of widths for annotation tables with names \code{surv_med}
-(median survival time table) and \code{coxph} (\code{\link[survival:coxph]{survival::coxph()}} model table), where each value is the width
-(in units) to implement when printing the annotation table.}
+\item{vp}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} This function no longer generates \code{grob} objects.}
+
+\item{name}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} This function no longer generates \code{grob} objects.}
+
+\item{annot_coxph_ref_lbls}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{ref_lbls} element of
+\code{control_annot_coxph} instead.}
+
+\item{position_coxph}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}  Please use the \code{x} and \code{y} elements of
+\code{control_annot_coxph} instead.}
+
+\item{position_surv_med}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{x} and \code{y} elements of
+\code{control_annot_surv_med} instead.}
+
+\item{width_annots}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{w} element of \code{control_annot_surv_med}
+(for surv_med) and \code{control_annot_coxph} (for coxph)."}
 }
 \value{
-A \code{grob} of class \code{gTree}.
+A \code{ggplot} Kaplan-Meier plot and (optionally) summary table.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
