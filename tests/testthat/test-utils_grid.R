@@ -1,3 +1,5 @@
+# All functions deprecated
+
 testthat::test_that("stack_grobs works with default settings", {
   g1 <- grid::circleGrob(gp = grid::gpar(col = "blue"))
   g2 <- grid::circleGrob(gp = grid::gpar(col = "red"))
