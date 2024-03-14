@@ -9,8 +9,7 @@ testthat::test_that("g_km default plot works", {
     opts_partial_match_old,
     g_km(
       df = df,
-      variables = variables,
-      ci_ribbon = FALSE
+      variables = variables
     )
   )
   expect_snapshot_ggplot("g_km_default", g_km_default, width = 8, height = 5)
@@ -111,7 +110,7 @@ testthat::test_that("annot_at_risk_title parameter works as expected", {
       annot_at_risk_title = TRUE
     )
   )
-  expect_snapshot_ggplot("g_km_at_risk_title", g_km_at_risk_title, width = 8, height = 4)
+  expect_snapshot_ggplot("g_km_at_risk_title", g_km_at_risk_title, width = 8, height = 5)
 })
 
 testthat::test_that("ref_group_coxph parameter works as expected", {
@@ -126,4 +125,38 @@ testthat::test_that("ref_group_coxph parameter works as expected", {
     )
   )
   expect_snapshot_ggplot("g_km_ref_group_coxph", g_km_ref_group_coxph, width = 10, height = 8)
+})
+
+testthat::test_that("g_km works with custom arguments", {
+  g_km_custom <- withr::with_options(
+    opts_partial_match_old,
+    g_km(
+      df = df,
+      variables = variables,
+      pch = "?",
+      size = 4,
+      lty = c("solid", "dotted", "dashed"),
+      lwd = 2,
+      rel_height_plot = 0.6,
+      font_size = 12,
+      col = c("red", "green", "purple")
+    )
+  )
+  expect_snapshot_ggplot("g_km_custom", g_km_custom, width = 10, height = 5)
+})
+
+testthat::test_that("g_km as_list argument works", {
+  g_km_list <- withr::with_options(
+    opts_partial_match_old,
+    g_km(
+      df = df,
+      variables = variables,
+      as_list = TRUE
+    )
+  )
+  g_km_plot_only <- g_km_list$plot
+  g_km_table_only <- g_km_list$table
+
+  expect_snapshot_ggplot("g_km_plot_only", g_km_plot_only, width = 10, height = 4)
+  expect_snapshot_ggplot("g_km_table_only", g_km_table_only, width = 9, height = 3)
 })

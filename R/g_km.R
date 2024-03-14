@@ -253,7 +253,6 @@ g_km <- function(df,
   checkmate::assert_list(variables)
   checkmate::assert_subset(c("tte", "arm", "is_event"), names(variables))
   checkmate::assert_logical(censor_show, len = 1)
-  checkmate::assert_numeric(pch, len = 1)
   checkmate::assert_numeric(size, len = 1)
   checkmate::assert_numeric(max_time, len = 1, null.ok = TRUE)
   checkmate::assert_numeric(xticks, null.ok = TRUE)
