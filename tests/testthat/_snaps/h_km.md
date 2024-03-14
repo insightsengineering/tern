@@ -71,3 +71,39 @@
       ARM B 1.44 (0.85, 2.44)         0.0784
       ARM C 1.89 (1.03, 3.44)         0.0066
 
+# h_data_plot works as expected
+
+    Code
+      res
+    Output
+      # A tibble: 203 x 10
+          time n.risk n.event n.censor estimate std.error conf.high conf.low strata
+         <dbl>  <dbl>   <dbl>    <dbl>    <dbl>     <dbl>     <dbl>    <dbl> <fct> 
+       1   0       70       0        0    1        0          1        1     ARM A 
+       2  10.4     69       1        0    0.986    0.0146     1        0.958 ARM A 
+       3  20.5     68       1        0    0.971    0.0208     1        0.932 ARM A 
+       4  21.5     67       1        0    0.957    0.0257     1        0.910 ARM A 
+       5  25.3     66       0        1    0.957    0.0257     1        0.910 ARM A 
+       6  48.1     65       1        0    0.942    0.0300     0.999    0.888 ARM A 
+       7  66.6     64       0        1    0.942    0.0300     0.999    0.888 ARM A 
+       8  73.9     63       0        1    0.942    0.0300     0.999    0.888 ARM A 
+       9  78.9     62       0        1    0.942    0.0300     0.999    0.888 ARM A 
+      10  90.3     61       1        0    0.926    0.0342     0.991    0.866 ARM A 
+      # i 193 more rows
+      # i 1 more variable: censor <dbl>
+
+# h_data_plot respects the ordering of the arm variable factor levels
+
+    Code
+      res
+    Output
+      [1] "ARM B" "ARM C" "ARM A"
+
+# h_data_plot adds rows that have time 0 and estimate 1
+
+    Code
+      res
+    Output
+      [1] ARM A ARM B ARM C
+      Levels: ARM A ARM B ARM C
+
