@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_km.R
 \name{h_grob_coxph}
 \alias{h_grob_coxph}
-\title{Helper Function: \code{CoxPH} Grob}
+\title{Helper Function: Cox-PH Grob}
 \usage{
 h_grob_coxph(
   ...,

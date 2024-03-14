@@ -29,7 +29,6 @@ g_km(
   name = lifecycle::deprecated(),
   font_size = 10,
   ci_ribbon = FALSE,
-  ggtheme = NULL,
   annot_at_risk = TRUE,
   annot_at_risk_title = TRUE,
   annot_surv_med = TRUE,
@@ -38,9 +37,11 @@ g_km(
   annot_stats_vlines = FALSE,
   control_coxph_pw = control_coxph(),
   ref_group_coxph = NULL,
-  rel_height_at_risk = 0.25,
   control_annot_surv_med = control_surv_med_annot(),
   control_annot_coxph = control_coxph_annot(),
+  rel_height_at_risk = 0.25,
+  ggtheme = NULL,
+  as_list = FALSE,
   annot_coxph_ref_lbls = lifecycle::deprecated(),
   position_coxph = lifecycle::deprecated(),
   position_surv_med = lifecycle::deprecated(),
@@ -119,8 +120,6 @@ Only considered if \code{draw = TRUE} is used.}
 
 \item{ci_ribbon}{(\code{flag})\cr draw the confidence interval around the Kaplan-Meier curve.}
 
-\item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to control outlook of the Kaplan-Meier curve.}
-
 \item{annot_at_risk}{(\code{flag})\cr compute and add the annotation table reporting the number of patient at risk
 matching the main grid of the Kaplan-Meier curve.}
 
@@ -150,6 +149,8 @@ can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[s
 
 \item{ref_group_coxph}{(\code{character})\cr level of arm variable to use as reference group in calculations for
 \code{annot_coxph} table. If \code{NULL} (default), uses the first level of the arm variable.}
+
+\item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to control outlook of the Kaplan-Meier curve.}
 
 \item{annot_coxph_ref_lbls}{(\code{flag})\cr whether the reference group should be explicitly printed in labels for the
 \code{annot_coxph} table. If \code{FALSE} (default), only comparison groups will be printed in \code{annot_coxph} table labels.}

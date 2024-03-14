@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_km.R
 \name{h_tbl_coxph_pairwise}
 \alias{h_tbl_coxph_pairwise}
-\title{Helper Function: Pairwise \code{CoxPH} table}
+\title{Helper Function: Pairwise Cox-PH table}
 \usage{
 h_tbl_coxph_pairwise(
   df,
@@ -46,7 +46,7 @@ and \code{p-value (log-rank)}.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Create a \code{data.frame} of pairwise stratified or unstratified \code{CoxPH} analysis results.
+Create a \code{data.frame} of pairwise stratified or unstratified Cox-PH analysis results.
 }
 \examples{
 \donttest{
