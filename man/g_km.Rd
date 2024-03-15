@@ -206,8 +206,8 @@ g_km(
   col = c("grey25", "grey50", "grey75"),
   annot_at_risk_title = FALSE
 )
-g_km(df = df, variables = variables, ggtheme = theme_minimal())
-g_km(df = df, variables = variables, ggtheme = theme_minimal(), lty = 1:3)
+g_km(df = df, variables = variables, ggtheme = ggplot2::theme_minimal())
+g_km(df = df, variables = variables, ggtheme = ggplot2::theme_minimal(), lty = 1:3)
 g_km(df = df, variables = variables, max_time = 2000)
 g_km(
   df = df,
