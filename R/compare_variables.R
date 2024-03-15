@@ -25,7 +25,7 @@
 #'   is well defined.
 #'
 #' @seealso Relevant constructor function [create_afun_compare()], [s_summary()] which is used internally
-#'   to compute a summary within `s_compare()`, and [a_compare()] which is used (with `compare = TRUE`) as the analysis
+#'   to compute a summary within `s_compare()`, and [a_summary()] which is used (with `compare = TRUE`) as the analysis
 #'   function for `compare_vars()`.
 #'
 #' @name compare_variables
@@ -250,45 +250,6 @@ s_compare.logical <- function(x,
   y
 }
 
-#' @describeIn compare_variables Formatted analysis function which is used as `afun`
-#'   in `compare_vars()`.
-#'
-#' @return
-#' * `a_compare()` returns the corresponding list with formatted [rtables::CellValue()].
-#'
-#' @note `a_compare()` has been deprecated in favor of `a_summary()` with argument `compare` set to `TRUE`.
-#'
-#' @examples
-#' # `a_compare` deprecated - use `a_summary()` instead
-#' a_compare(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .stats = c("n", "pval"))
-#'
-#' @export
-a_compare <- function(x,
-                      .N_col, # nolint
-                      .N_row, # nolint
-                      .var = NULL,
-                      .df_row = NULL,
-                      .ref_group = NULL,
-                      .in_ref_col = FALSE,
-                      ...) {
-  lifecycle::deprecate_warn(
-    "0.8.3",
-    "a_compare()",
-    details = "Please use a_summary() with argument `compare` set to TRUE instead."
-  )
-  a_summary(
-    x = x,
-    .N_col = .N_col,
-    .N_row = .N_row,
-    .var = .var,
-    .df_row = .df_row,
-    .ref_group = .ref_group,
-    .in_ref_col = .in_ref_col,
-    compare = TRUE,
-    ...
-  )
-}
-
 #' Constructor Function for [compare_vars()]
 #'
 #' @description `r lifecycle::badge("deprecated")`
@@ -385,6 +346,7 @@ compare_vars <- function(lyt,
                          .labels = NULL,
                          .indent_mods = NULL) {
   extra_args <- list(.stats = .stats, na.rm = na.rm, na_str = na_str, compare = TRUE, ...)
+
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods

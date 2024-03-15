@@ -130,12 +130,3 @@ testthat::test_that("compare_vars 'na_str' argument works as expected", {
 testthat::test_that("create_afun_compare returns error message", {
   testthat::expect_warning(create_afun_compare()) # before It was not covered directly
 })
-
-testthat::test_that("a_compare returns correct output and warning message", {
-  testthat::expect_warning({
-    result <- a_compare(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .stats = c("n", "pval"))
-  })
-  expected <- a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .stats = c("n", "pval"), compare = TRUE)
-
-  testthat::expect_equal(result, expected)
-})

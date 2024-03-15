@@ -482,6 +482,7 @@ a_summary <- function(x,
                       na.rm = TRUE, # nolint
                       na_str = default_na_str(),
                       ...) {
+  extra_args <- list(...)
   if (is.numeric(x)) {
     type <- "numeric"
     if (!is.null(.stats) && any(grepl("^pval", .stats))) {

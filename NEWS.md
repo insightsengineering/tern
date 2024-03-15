@@ -19,7 +19,7 @@
 * Began deprecation of the `strat` argument to `s_coxph_pairwise` and replaced it with the `strata` argument.
 * Adapt to argument renames introduced in `ggplot2` 3.5.0.
 * Removed all instances of the deprecated `na_level` parameter.
-* Removed all instances of the deprecated function `summary_custom`.
+* Removed deprecated functions `a_compare` and `summary_custom`.
 
 
 # tern 0.9.3
