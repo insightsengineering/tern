@@ -37,7 +37,6 @@
 #'   levels that belong to it in the character vectors that are elements of the list.
 #' @param id (`string`)\cr subject variable name.
 #' @param is_event (`logical`)\cr `TRUE` if event, `FALSE` if time to event is censored.
-#' @param indent_mod `r lifecycle::badge("deprecated")` Please use the `.indent_mods` argument instead.
 #' @param label_all (`string`)\cr label for the total population analysis.
 #' @param labelstr (`character`)\cr label of the level of the parent split currently being summarized
 #'   (must be present as second argument in Content Row Functions). See [rtables::summarize_row_groups()]

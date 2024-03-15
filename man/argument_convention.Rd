@@ -61,8 +61,6 @@ levels that belong to it in the character vectors that are elements of the list.
 
 \item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
-\item{indent_mod}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{.indent_mods} argument instead.}
-
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
 
 \item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
