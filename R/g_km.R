@@ -6,7 +6,6 @@
 #' including the number of patient at risk at given time and the median survival
 #' per group.
 #'
-#' @inheritParams argument_convention
 #' @param df (`data.frame`)\cr data set containing all analysis variables.
 #' @param variables (named `list`)\cr variable names. Details are:
 #'   * `tte` (`numeric`)\cr variable indicating time-to-event duration values.
@@ -388,7 +387,8 @@ g_km <- function(df,
       if (annot_stats_vlines) {
         gg_plt <- gg_plt +
           annotate(
-            "segment", linetype = 2, col = "darkgray",
+            "segment",
+            linetype = 2, col = "darkgray",
             x = min_fu, xend = min_fu, y = Inf, yend = -Inf
           )
       }
@@ -437,9 +437,10 @@ g_km <- function(df,
         axis.line.x = element_line()
       ) +
       coord_cartesian(clip = "off", ylim = c(0.5, nrow(at_risk_tbl)))
-    gg_at_risk <- suppressMessages(gg_at_risk +
-      scale_x_continuous(expand = c(0.025 , 0), breaks = seq_along(at_risk_tbl) - 0.5, labels = xticks) +
-      scale_y_continuous(labels = rev(levels(annot_tbl$strata)), breaks = seq_len(nrow(at_risk_tbl)))
+    gg_at_risk <- suppressMessages(
+      gg_at_risk +
+        scale_x_continuous(expand = c(0.025, 0), breaks = seq_along(at_risk_tbl) - 0.5, labels = xticks) +
+        scale_y_continuous(labels = rev(levels(annot_tbl$strata)), breaks = seq_len(nrow(at_risk_tbl)))
     )
 
     if (!as_list) {
@@ -465,9 +466,10 @@ g_km <- function(df,
         plot.margin = margin(0, 2, 0, 5)
       ) +
       coord_cartesian(clip = "off", ylim = c(0.5, nrow(surv_med_tbl) + 1.5))
-    gg_surv_med <- suppressMessages(gg_surv_med +
-      scale_x_continuous(expand = c(0.025 , 0)) +
-      scale_y_continuous(labels = rev(rownames(surv_med_tbl)), breaks = seq_len(nrow(surv_med_tbl)))
+    gg_surv_med <- suppressMessages(
+      gg_surv_med +
+        scale_x_continuous(expand = c(0.025, 0)) +
+        scale_y_continuous(labels = rev(rownames(surv_med_tbl)), breaks = seq_len(nrow(surv_med_tbl)))
     )
 
     gg_plt <- cowplot::ggdraw(gg_plt) +
@@ -499,9 +501,10 @@ g_km <- function(df,
         plot.margin = margin(0, 2, 0, 5)
       ) +
       coord_cartesian(clip = "off", ylim = c(0.5, nrow(coxph_tbl) + 1.5))
-    gg_coxph <- suppressMessages(gg_coxph +
-      scale_x_continuous(expand = c(0.025 , 0)) +
-      scale_y_continuous(labels = rev(rownames(coxph_tbl)), breaks = seq_len(nrow(coxph_tbl)))
+    gg_coxph <- suppressMessages(
+      gg_coxph +
+        scale_x_continuous(expand = c(0.025, 0)) +
+        scale_y_continuous(labels = rev(rownames(coxph_tbl)), breaks = seq_len(nrow(coxph_tbl)))
     )
 
     gg_plt <- cowplot::ggdraw(gg_plt) +

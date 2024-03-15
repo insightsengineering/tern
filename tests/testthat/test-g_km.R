@@ -5,7 +5,7 @@ df <- tern_ex_adtte %>%
 variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 
 testthat::test_that("g_km default plot works", {
-  g_km_default <-  withr::with_options(
+  g_km_default <- withr::with_options(
     opts_partial_match_old,
     g_km(
       df = df,
@@ -16,7 +16,7 @@ testthat::test_that("g_km default plot works", {
 })
 
 testthat::test_that("g_km works with title/footnotes and annotation", {
-  g_km_title_footer <-  withr::with_options(
+  g_km_title_footer <- withr::with_options(
     opts_partial_match_old,
     g_km(
       df = df,
@@ -29,7 +29,7 @@ testthat::test_that("g_km works with title/footnotes and annotation", {
 })
 
 testthat::test_that("g_km default plot witch ci_ribbon = TRUE works", {
-  g_km_ci_ribbon <-  withr::with_options(
+  g_km_ci_ribbon <- withr::with_options(
     opts_partial_match_old,
     g_km(
       df = df,
@@ -51,7 +51,7 @@ testthat::test_that("g_km plot with < = > in group labels works", {
 
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "group")
 
-  g_km_eq_lbls <-  withr::with_options(
+  g_km_eq_lbls <- withr::with_options(
     opts_partial_match_old,
     g_km(
       df = df,
@@ -75,7 +75,7 @@ testthat::test_that("g_km ylim parameter works as expected", {
   )
   expect_snapshot_ggplot("g_km_crop_ylim", g_km_crop_ylim, width = 8, height = 5)
 
-  g_km_crop_ylim_failure <-  withr::with_options(
+  g_km_crop_ylim_failure <- withr::with_options(
     opts_partial_match_old,
     g_km(
       df = df,
@@ -88,7 +88,7 @@ testthat::test_that("g_km ylim parameter works as expected", {
   )
   expect_snapshot_ggplot("g_km_crop_ylim_failure", g_km_crop_ylim_failure, width = 8, height = 4)
 
-  g_km_custom_ylim <-  withr::with_options(
+  g_km_custom_ylim <- withr::with_options(
     opts_partial_match_old,
     g_km(
       df = df,
@@ -102,7 +102,7 @@ testthat::test_that("g_km ylim parameter works as expected", {
 })
 
 testthat::test_that("annot_at_risk_title parameter works as expected", {
-  g_km_at_risk_title <-  withr::with_options(
+  g_km_at_risk_title <- withr::with_options(
     opts_partial_match_old,
     g_km(
       df = df,
@@ -114,7 +114,7 @@ testthat::test_that("annot_at_risk_title parameter works as expected", {
 })
 
 testthat::test_that("ref_group_coxph parameter works as expected", {
-  g_km_ref_group_coxph <-  withr::with_options(
+  g_km_ref_group_coxph <- withr::with_options(
     opts_partial_match_old,
     g_km(
       df = df,

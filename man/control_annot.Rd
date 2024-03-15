@@ -55,7 +55,7 @@ by setting it as the \code{control_annot_coxph} argument.
 \examples{
 control_surv_med_annot()
 
-control_annot_coxph()
+control_coxph_annot()
 
 }
 \seealso{

@@ -45,7 +45,7 @@ control_surv_med_annot <- function(x = 0.8, y = 0.85, w = 0.32, h = 0.16, fill =
 #'   annotation table. If `FALSE` (default), only comparison groups will be printed in the table labels.
 #'
 #' @examples
-#' control_annot_coxph()
+#' control_coxph_annot()
 #'
 #' @export
 control_coxph_annot <- function(x = 0.29, y = 0.51, w = 0.4, h = 0.125, fill = TRUE, ref_lbls = FALSE) {

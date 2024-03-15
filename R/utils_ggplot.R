@@ -183,11 +183,11 @@ df2gg <- function(df,
 
   if (hline) {
     res <- res +
-    annotate(
-      "segment",
-      x = 0 + 0.2 * colwidths[2], xend = tot_width - 0.1 * tail(colwidths, 1),
-      y = nrow(df) - 0.5, yend = nrow(df) - 0.5
-    )
+      annotate(
+        "segment",
+        x = 0 + 0.2 * colwidths[2], xend = tot_width - 0.1 * tail(colwidths, 1),
+        y = nrow(df) - 0.5, yend = nrow(df) - 0.5
+      )
   }
 
   for (i in seq_len(ncol(df))) {
@@ -203,10 +203,10 @@ df2gg <- function(df,
         label = df[, i],
         size = font_size / .pt,
         fontface = if (col_labels) {
-            c(col_lab_fontface, rep("plain", nrow(df) - 1))
-          } else {
-            rep("plain", nrow(df))
-          }
+          c(col_lab_fontface, rep("plain", nrow(df) - 1))
+        } else {
+          rep("plain", nrow(df))
+        }
       )
   }
 
