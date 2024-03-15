@@ -1,5 +1,4 @@
 testthat::test_that("g_waterfall default plot works", {
-  testthat::skip_if_not_installed("vdiffr")
   g_waterfall <- g_waterfall(
     height = c(3, 5, -1),
     id = letters[1:3],
@@ -10,7 +9,6 @@ testthat::test_that("g_waterfall default plot works", {
 
 testthat::test_that("g_waterfall plot with labels and colors works", {
   set.seed(123)
-  testthat::skip_if_not_installed("vdiffr")
 
   adrs <- tern_ex_adrs
   adrs_f <- head(dplyr::filter(adrs, PARAMCD == "OVRINV"), 30)
