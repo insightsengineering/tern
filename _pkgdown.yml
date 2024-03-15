@@ -184,8 +184,3 @@ reference:
     desc: Data included in the package.
     contents:
       - starts_with("ex_")
-
-  - title: Deprecated Functions
-    desc: Functions that are currently deprecated within `tern`.
-    contents:
-      - summarize_vars

@@ -221,7 +221,7 @@ testthat::test_that("a_summary works with custom input.", {
   options("width" = 100)
   result <- a_summary(
     rnorm(10),
-    .N_col = 10, .N_row = 20, control_summarize_vars(conf_level = 0.90), .stats = c("sd", "median_ci"),
+    .N_col = 10, .N_row = 20, control_analyze_vars(conf_level = 0.90), .stats = c("sd", "median_ci"),
     .formats = c(sd = "xx.", median_ci = "xx.xx - xx.xx"), .labels = c(sd = "std. dev"), .indent_mods = 3L
   )
   res <- testthat::expect_silent(result)
@@ -267,7 +267,7 @@ testthat::test_that("a_summary works with custom input when compare = TRUE.", {
   options("width" = 100)
   result <- a_summary(
     rnorm(10),
-    .ref_group = rnorm(20, -5, 1), .N_col = 10, .N_row = 20, control_summarize_vars(conf_level = 0.90),
+    .ref_group = rnorm(20, -5, 1), .N_col = 10, .N_row = 20, control_analyze_vars(conf_level = 0.90),
     .stats = c("pval", "median_ci"), .formats = c(median_ci = "xx.xx - xx.xx"), .labels = c(pval = "pvalue"),
     .indent_mods = 3L, compare = TRUE
   )

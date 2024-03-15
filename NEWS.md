@@ -19,7 +19,7 @@
 * Began deprecation of the `strat` argument to `s_coxph_pairwise` and replaced it with the `strata` argument.
 * Adapt to argument renames introduced in `ggplot2` 3.5.0.
 * Removed all instances of deprecated parameters `time_unit_input`, `time_unit_output`, `na_level` and `indent_mod`.
-* Removed deprecated functions `a_compare`, `create_afun_summary`, `create_afun_compare`, and `summary_custom`.
+* Removed deprecated functions `summarize_vars`, `control_summarize_vars`, `a_compare`, `create_afun_summary`, `create_afun_compare`, and `summary_custom`.
 
 # tern 0.9.3
 
