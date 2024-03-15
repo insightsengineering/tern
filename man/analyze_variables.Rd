@@ -16,7 +16,6 @@ analyze_vars(
   lyt,
   vars,
   var_labels = vars,
-  na_level = lifecycle::deprecated(),
   na_str = default_na_str(),
   nested = TRUE,
   ...,
@@ -86,7 +85,6 @@ a_summary(
   .labels = NULL,
   .indent_mods = NULL,
   na.rm = TRUE,
-  na_level = lifecycle::deprecated(),
   na_str = default_na_str(),
   ...
 )
@@ -99,8 +97,6 @@ summarize_vars(...)
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
 \item{var_labels}{(\code{character})\cr character for label.}
-
-\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 

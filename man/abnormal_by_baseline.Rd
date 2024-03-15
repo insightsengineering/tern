@@ -26,7 +26,6 @@ s_count_abnormal_by_baseline(
   df,
   .var,
   abnormal,
-  na_level = lifecycle::deprecated(),
   na_str = "<Missing>",
   variables = list(id = "USUBJID", baseline = "BNRIND")
 )
@@ -35,7 +34,6 @@ a_count_abnormal_by_baseline(
   df,
   .var,
   abnormal,
-  na_level = lifecycle::deprecated(),
   na_str = "<Missing>",
   variables = list(id = "USUBJID", baseline = "BNRIND")
 )
@@ -74,8 +72,6 @@ unmodified default behavior. Can be negative.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
-
-\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
 }
 \value{
 \itemize{

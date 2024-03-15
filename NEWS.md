@@ -18,6 +18,7 @@
 * Began deprecation of the named element `strat`, to be renamed to `strata`, within the `variables` argument to `h_rsp_to_logistic_variables`, `h_logistic_mult_cont_df`, `h_odds_ratio_subgroups_df`, `h_coxreg_mult_cont_df`, `h_coxph_subgroups_df`, `h_tbl_coxph_pairwise`, `extract_rsp_biomarkers`, `extract_rsp_subgroups`, `extract_survival_biomarkers`, and `extract_survival_subgroups`.
 * Began deprecation of the `strat` argument to `s_coxph_pairwise` and replaced it with the `strata` argument.
 * Adapt to argument renames introduced in `ggplot2` 3.5.0.
+* Remove all deprecated instances of the `na_level` parameter.
 
 # tern 0.9.3
 

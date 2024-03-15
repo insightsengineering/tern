@@ -171,17 +171,6 @@ testthat::test_that("summarize_coxreg `na_str` argument works", {
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
-
-  # deprecation message for `na_level` is correct
-  suppressWarnings(testthat::expect_warning(
-    result <- basic_table() %>%
-      summarize_coxreg(
-        variables = variables,
-        control = control_coxreg(interaction = TRUE),
-        na_level = "---"
-      ),
-    "The `na_level` argument"
-  ))
 })
 
 testthat::test_that("summarize_coxreg works without treatment arm in univariate case", {

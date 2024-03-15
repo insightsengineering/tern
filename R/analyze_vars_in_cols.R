@@ -158,16 +158,11 @@ analyze_vars_in_cols <- function(lyt,
                                  avalcat_var = "AVALCAT1",
                                  cache = FALSE,
                                  .indent_mods = NULL,
-                                 na_level = lifecycle::deprecated(),
                                  na_str = default_na_str(),
                                  nested = TRUE,
                                  .formats = NULL,
                                  .aligns = NULL) {
   extra_args <- list(...)
-  if (lifecycle::is_present(na_level)) {
-    lifecycle::deprecate_warn("0.9.1", "analyze_vars_in_cols(na_level)", "analyze_vars_in_cols(na_str)")
-    na_str <- na_level
-  }
 
   checkmate::assert_string(na_str, na.ok = TRUE, null.ok = TRUE)
   checkmate::assert_character(row_labels, null.ok = TRUE)

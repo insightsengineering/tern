@@ -480,15 +480,8 @@ a_summary <- function(x,
                       .labels = NULL,
                       .indent_mods = NULL,
                       na.rm = TRUE, # nolint
-                      na_level = lifecycle::deprecated(),
                       na_str = default_na_str(),
                       ...) {
-  extra_args <- list(...)
-  if (lifecycle::is_present(na_level)) {
-    lifecycle::deprecate_warn("0.9.1", "a_summary(na_level)", "a_summary(na_str)")
-    na_str <- na_level
-  }
-
   if (is.numeric(x)) {
     type <- "numeric"
     if (!is.null(.stats) && any(grepl("^pval", .stats))) {
@@ -669,7 +662,6 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 analyze_vars <- function(lyt,
                          vars,
                          var_labels = vars,
-                         na_level = lifecycle::deprecated(),
                          na_str = default_na_str(),
                          nested = TRUE,
                          ...,
@@ -681,11 +673,6 @@ analyze_vars <- function(lyt,
                          .formats = NULL,
                          .labels = NULL,
                          .indent_mods = NULL) {
-  if (lifecycle::is_present(na_level)) {
-    lifecycle::deprecate_warn("0.9.1", "analyze_vars(na_level)", "analyze_vars(na_str)")
-    na_str <- na_level
-  }
-
   extra_args <- list(.stats = .stats, na.rm = na.rm, na_str = na_str, ...)
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
