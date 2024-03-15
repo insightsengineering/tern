@@ -230,7 +230,6 @@ s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
 
 }
 \seealso{
-Relevant constructor function \code{\link[=create_afun_compare]{create_afun_compare()}}, \code{\link[=s_summary]{s_summary()}} which is used internally
-to compute a summary within \code{s_compare()}, and \code{\link[=a_summary]{a_summary()}} which is used (with \code{compare = TRUE}) as the analysis
-function for \code{compare_vars()}.
+\code{\link[=s_summary]{s_summary()}} which is used internally to compute a summary within \code{s_compare()}, and \code{\link[=a_summary]{a_summary()}}
+which is used (with \code{compare = TRUE}) as the analysis function for \code{compare_vars()}.
 }

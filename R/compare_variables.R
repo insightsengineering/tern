@@ -24,9 +24,8 @@
 #' * For `compare_vars()`, the column split must define a reference group via `ref_group` so that the comparison
 #'   is well defined.
 #'
-#' @seealso Relevant constructor function [create_afun_compare()], [s_summary()] which is used internally
-#'   to compute a summary within `s_compare()`, and [a_summary()] which is used (with `compare = TRUE`) as the analysis
-#'   function for `compare_vars()`.
+#' @seealso [s_summary()] which is used internally to compute a summary within `s_compare()`, and [a_summary()]
+#'   which is used (with `compare = TRUE`) as the analysis function for `compare_vars()`.
 #'
 #' @name compare_variables
 #' @include analyze_variables.R
@@ -248,52 +247,6 @@ s_compare.logical <- function(x,
   }
 
   y
-}
-
-#' Constructor Function for [compare_vars()]
-#'
-#' @description `r lifecycle::badge("deprecated")`
-#'
-#' Constructor function which creates a combined formatted analysis function.
-#'
-#' @inheritParams argument_convention
-#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
-#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
-#'   for that statistic's row label.
-#'
-#' @return Combined formatted analysis function for use in [compare_vars()].
-#'
-#' @note This function has been deprecated in favor of direct implementation of `a_summary()` with argument `compare`
-#'   set to `TRUE`.
-#'
-#' @seealso [compare_vars()]
-#'
-#' @export
-create_afun_compare <- function(.stats = NULL,
-                                .formats = NULL,
-                                .labels = NULL,
-                                .indent_mods = NULL) {
-  lifecycle::deprecate_warn(
-    "0.8.5.9010",
-    "create_afun_compare()",
-    details = "Please use a_summary(compare = TRUE) directly instead."
-  )
-  function(x,
-           .ref_group,
-           .in_ref_col,
-           ...,
-           .var) {
-    a_summary(x,
-      compare = TRUE,
-      .stats = .stats,
-      .formats = .formats,
-      .labels = .labels,
-      .indent_mods = .indent_mods,
-      .ref_group = .ref_group,
-      .in_ref_col = .in_ref_col,
-      .var = .var, ...
-    )
-  }
 }
 
 #' @describeIn compare_variables Layout-creating function which can take statistics function arguments

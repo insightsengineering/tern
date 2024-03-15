@@ -124,9 +124,3 @@ testthat::test_that("compare_vars 'na_str' argument works as expected", {
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
-
-# Deprecated functions
-
-testthat::test_that("create_afun_compare returns error message", {
-  testthat::expect_warning(create_afun_compare()) # before It was not covered directly
-})

@@ -188,5 +188,4 @@ reference:
   - title: Deprecated Functions
     desc: Functions that are currently deprecated within `tern`.
     contents:
-      - starts_with("create_")
       - summarize_vars

@@ -545,47 +545,6 @@ a_summary <- function(x,
   )
 }
 
-#' Constructor Function for [analyze_vars()] and [summarize_colvars()]
-#'
-#' @description `r lifecycle::badge("deprecated")`
-#'
-#' Constructor function which creates a combined formatted analysis function.
-#'
-#' @inheritParams argument_convention
-#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
-#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
-#'   for that statistic's row label.
-#'
-#' @return Combined formatted analysis function for use in [analyze_vars()].
-#'
-#' @note This function has been deprecated in favor of direct implementation of `a_summary()`.
-#'
-#' @seealso [analyze_vars()]
-#'
-#' @export
-create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
-  lifecycle::deprecate_warn(
-    "0.8.5.9010",
-    "create_afun_summary()",
-    details = "Please use a_summary() directly instead."
-  )
-  function(x,
-           .ref_group,
-           .in_ref_col,
-           ...,
-           .var) {
-    a_summary(x,
-      .stats = .stats,
-      .formats = .formats,
-      .labels = .labels,
-      .indent_mods = .indent_mods,
-      .ref_group = .ref_group,
-      .in_ref_col = .in_ref_col,
-      .var = .var, ...
-    )
-  }
-}
-
 #' @describeIn analyze_variables Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
