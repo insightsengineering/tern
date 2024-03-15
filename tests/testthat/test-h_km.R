@@ -99,7 +99,7 @@ testthat::test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
 # h_data_plot ----
 testthat::test_that("h_data_plot works as expected", {
   data <- test_fit
-  testthat::expect_warning(res <- h_data_plot(data))
+  testthat::expect_warning(res <- names(h_data_plot(data)))
 
   testthat::expect_snapshot(res)
   testthat::expect_s3_class(res, "tbl_df")
