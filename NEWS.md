@@ -20,6 +20,7 @@
 * Adapt to argument renames introduced in `ggplot2` 3.5.0.
 * Removed all instances of deprecated parameters `time_unit_input`, `time_unit_output`, `na_level` and `indent_mod`.
 * Removed deprecated functions `summarize_vars`, `control_summarize_vars`, `a_compare`, `create_afun_summary`, `create_afun_compare`, and `summary_custom`.
+* Began deprecation of the `forest_grob`, `forest_dot_line`, `forest_viewport`, `vp_forest_table_part`, and `grid.forest` functions.
 
 # tern 0.9.3
 

@@ -150,7 +150,6 @@ reference:
       - h_g_ipp
       - matches(".*grob.*")
       - h_xticks
-      - forest_viewport
 
   - title: Data Helper Functions
     desc: These functions are used by other functions to derive data.
@@ -184,3 +183,10 @@ reference:
     desc: Data included in the package.
     contents:
       - starts_with("ex_")
+
+
+  - title: Deprecated Functions
+    desc: Functions that are currently deprecated within `tern`.
+    contents:
+      - forest_viewport
+
