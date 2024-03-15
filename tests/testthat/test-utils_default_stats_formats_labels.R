@@ -218,17 +218,3 @@ testthat::test_that("summary_labels works as expected", {
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
-
-# Deprecated
-testthat::test_that("summary_custom works as expected", {
-  testthat::expect_warning(res <- summary_custom())
-  res$formats <- unlist(res$formats)
-  testthat::expect_snapshot(res)
-
-  testthat::expect_warning(res <- summary_custom(
-    type = "counts", stats_custom = c("n", "count"),
-    formats_custom = c(n = "xx.xx"), labels_custom = c(count = "#"), indent_mods_custom = 2L
-  ))
-
-  testthat::expect_snapshot(res)
-})
