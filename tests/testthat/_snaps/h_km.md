@@ -1,3 +1,48 @@
+# control_surv_med_annot works with default settings
+
+    Code
+      res
+    Output
+      $x
+      [1] 0.8
+      
+      $y
+      [1] 0.85
+      
+      $w
+      [1] 0.32
+      
+      $h
+      [1] 0.16
+      
+      $fill
+      [1] TRUE
+      
+
+# control_coxph_annot works with default settings
+
+    Code
+      res
+    Output
+      $x
+      [1] 0.29
+      
+      $y
+      [1] 0.51
+      
+      $w
+      [1] 0.4
+      
+      $h
+      [1] 0.125
+      
+      $fill
+      [1] TRUE
+      
+      $ref_lbls
+      [1] FALSE
+      
+
 # h_xticks works with default settings
 
     Code

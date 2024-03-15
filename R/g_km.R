@@ -183,6 +183,7 @@ g_km <- function(df,
                  position_coxph = lifecycle::deprecated(),
                  position_surv_med = lifecycle::deprecated(),
                  width_annots = lifecycle::deprecated()) {
+  # nocov start
   # Deprecated argument warnings
   if (lifecycle::is_present(draw)) {
     lifecycle::deprecate_warn(
@@ -248,6 +249,7 @@ g_km <- function(df,
     control_annot_surv_med[["w"]] <- as.numeric(width_annots[["surv_med"]])
     control_annot_coxph[["w"]] <- as.numeric(width_annots[["coxph"]])
   }
+  # nocov end
 
   checkmate::assert_list(variables)
   checkmate::assert_subset(c("tte", "arm", "is_event"), names(variables))

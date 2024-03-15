@@ -4,6 +4,20 @@ test_fit <- local({
   survival::survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = dta)
 })
 
+testthat::test_that("control_surv_med_annot works with default settings", {
+  result <- control_surv_med_annot()
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("control_coxph_annot works with default settings", {
+  result <- control_coxph_annot()
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("h_xticks works with default settings", {
   result <- ggsurvfit::tidy_survfit(test_fit) %>%
     h_xticks()
@@ -99,10 +113,11 @@ testthat::test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
 # h_data_plot ----
 testthat::test_that("h_data_plot works as expected", {
   data <- test_fit
-  testthat::expect_warning(res <- names(h_data_plot(data)))
+  testthat::expect_warning(result <- h_data_plot(data))
+  res <- names(result)
 
   testthat::expect_snapshot(res)
-  testthat::expect_s3_class(res, "tbl_df")
+  testthat::expect_s3_class(result, "tbl_df")
 })
 
 testthat::test_that("h_data_plot respects the ordering of the arm variable factor levels", {
