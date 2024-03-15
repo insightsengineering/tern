@@ -151,10 +151,11 @@ rtable2gg <- function(tbl, fontsize = 12, colwidths = NULL, lbl_col_padding = 0)
 #' @return a `ggplot` object.
 #'
 #' @examples
+#' \dontrun{
 #' df2gg(head(iris, 5))
 #'
 #' df2gg(head(iris, 5), font_size = 15, colwidths = c(1, 1, 1, 1, 1))
-#'
+#' }
 #' @keywords internal
 df2gg <- function(df,
                   colwidths = NULL,

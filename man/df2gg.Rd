@@ -43,9 +43,10 @@ Given a \code{data.frame} object, performs basic conversion to a \code{\link[ggp
 functions from the \code{ggplot2} package.
 }
 \examples{
+\dontrun{
 df2gg(head(iris, 5))
 
 df2gg(head(iris, 5), font_size = 15, colwidths = c(1, 1, 1, 1, 1))
-
+}
 }
 \keyword{internal}
