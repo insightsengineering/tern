@@ -199,7 +199,7 @@ df2gg <- function(df,
       annotate(
         "text",
         x = mean(line_pos),
-        y = (nrow(df)):1,
+        y = rev(seq_len(nrow(df))),
         label = df[, i],
         size = font_size / .pt,
         fontface = if (col_labels) {
