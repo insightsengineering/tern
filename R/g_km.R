@@ -99,45 +99,36 @@
 #'   mutate(is_event = CNSR == 0)
 #' variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 #'
+#' # Basic examples
 #' g_km(df = df, variables = variables)
 #' g_km(df = df, variables = variables, yval = "Failure")
+#'
+#' # Examples with customization parameters applied
 #' g_km(
 #'   df = df,
 #'   variables = variables,
 #'   control_surv = control_surv_timepoint(conf_level = 0.9),
 #'   col = c("grey25", "grey50", "grey75"),
-#'   annot_at_risk_title = FALSE
+#'   annot_at_risk_title = FALSE,
+#'   lty = 1:3,
+#'   font_size = 8
 #' )
-#' g_km(df = df, variables = variables, ggtheme = ggplot2::theme_minimal())
-#' g_km(df = df, variables = variables, ggtheme = ggplot2::theme_minimal(), lty = 1:3)
-#' g_km(df = df, variables = variables, max_time = 2000)
 #' g_km(
 #'   df = df,
 #'   variables = variables,
 #'   annot_stats = c("min", "median"),
-#'   annot_stats_vlines = TRUE
+#'   annot_stats_vlines = TRUE,
+#'   max_time = 3000,
+#'   ggtheme = ggplot2::theme_minimal()
 #' )
 #'
-#' # Add annotation from a pairwise coxph analysis
+#' # Example with pairwise coxph analysis annotation table, adjusted annotation tables
 #' g_km(
 #'   df = df, variables = variables,
-#'   annot_coxph = TRUE
-#' )
-#'
-#' # Change widths/sizes of surv_med and coxph annotation tables.
-#' g_km(
-#'   df = df, variables = c(variables, list(strata = "SEX")),
-#'   annot_coxph = TRUE,
-#'   control_annot_surv_med = control_surv_med_annot(x = 0.8, y = 0.9, w = 0.35),
-#'   control_annot_coxph = control_coxph_annot(x = 0.75, y = 0.7, w = 0.45)
-#' )
-#'
-#' g_km(
-#'   df = df, variables = c(variables, list(strata = "SEX")),
-#'   font_size = 12,
 #'   annot_coxph = TRUE,
 #'   control_coxph = control_coxph(pval_method = "wald", ties = "exact", conf_level = 0.99),
-#'   control_annot_coxph = control_coxph_annot(y = 0.45)
+#'   control_annot_coxph = control_coxph_annot(x = 0.26, w = 0.35),
+#'   control_annot_surv_med = control_surv_med_annot(x = 0.8, y = 0.9, w = 0.35)
 #' )
 #'
 #' @aliases kaplan_meier
