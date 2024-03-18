@@ -431,6 +431,8 @@ g_forest <- function(tbl,
 
 #' Forest Plot Grob
 #'
+#' @description `r lifecycle::badge("deprecated")`
+#'
 #' @inheritParams g_forest
 #' @param tbl ([rtables::rtable()])
 #' @param x (`numeric`)\cr coordinate of point.
@@ -488,6 +490,11 @@ forest_grob <- function(tbl,
                         name = NULL,
                         gp = NULL,
                         vp = NULL) {
+  lifecycle::deprecate_warn(
+    "0.9.4", "forest_grob()",
+    details = "`g_forest` now generates `ggplot` objects. This function is no longer used within `tern`."
+  )
+
   nr <- nrow(tbl)
   if (is.null(vline)) {
     checkmate::assert_true(is.null(forest_header))
@@ -757,6 +764,8 @@ cell_in_rows <- function(row_name,
 
 #' Graphic Object: Forest Dot Line
 #'
+#' @description `r lifecycle::badge("deprecated")`
+#'
 #' Calculate the `grob` corresponding to the dot line within the forest plot.
 #'
 #' @noRd
@@ -768,6 +777,11 @@ forest_dot_line <- function(x,
                             symbol_size = 1,
                             col = "blue",
                             datavp) {
+  lifecycle::deprecate_warn(
+    "0.9.4", "forest_dot_line()",
+    details = "`g_forest` now generates `ggplot` objects. This function is no longer used within `tern`."
+  )
+
   ci <- c(lower, upper)
   if (any(!is.na(c(x, ci)))) {
     # line
@@ -835,6 +849,9 @@ forest_dot_line <- function(x,
 }
 
 #' Create a Viewport Tree for the Forest Plot
+#'
+#' @description `r lifecycle::badge("deprecated")`
+#'
 #' @param tbl (`rtable`)
 #' @param width_row_names (`grid::unit`)\cr Width of row names
 #' @param width_columns (`grid::unit`)\cr Width of column spans
@@ -873,7 +890,7 @@ forest_viewport <- function(tbl,
                             gap_header = grid::unit(1, "lines"),
                             mat_form = NULL) {
   lifecycle::deprecate_warn(
-    "0.9.3",
+    "0.9.4",
     "forest_viewport()",
     details = "`g_forest` now generates `ggplot` objects. This function is no longer used within `tern`."
   )
@@ -951,6 +968,8 @@ forest_viewport <- function(tbl,
 
 #' Viewport Forest Plot: Table Part
 #'
+#' @description `r lifecycle::badge("deprecated")`
+#'
 #' Prepares a viewport for the table included in the forest plot.
 #'
 #' @noRd
@@ -961,6 +980,11 @@ vp_forest_table_part <- function(nrow,
                                  widths,
                                  heights,
                                  name) {
+  lifecycle::deprecate_warn(
+    "0.9.4", "vp_forest_table_part()",
+    details = "`g_forest` now generates `ggplot` objects. This function is no longer used within `tern`."
+  )
+
   grid::vpTree(
     grid::viewport(
       name = name,
@@ -1004,9 +1028,16 @@ vp_forest_table_part <- function(nrow,
 
 #' Forest Rendering
 #'
+#' @description `r lifecycle::badge("deprecated")`
+#'
 #' Renders the forest grob.
 #'
 #' @noRd
 grid.forest <- function(...) { # nolint
+  lifecycle::deprecate_warn(
+    "0.9.4", "grid.forest()",
+    details = "`g_forest` now generates `ggplot` objects. This function is no longer used within `tern`."
+  )
+
   grid::grid.draw(forest_grob(...))
 }
