@@ -12,14 +12,9 @@
 #'   This differs from R's default. See more about `type` in [stats::quantile()].
 #' @param test_mean (`numeric`)\cr to test against the mean under the null hypothesis when calculating p-value.
 #'
-#' @note Deprecation cycle started for `control_summarize_vars` as it is going to renamed into
-#'   `control_analyze_vars`. Intention is to reflect better the core underlying `rtables`
-#'   functions; in this case [analyze_vars()] wraps [rtables::analyze()].
-#'
 #' @return A list of components with the same names as the arguments.
 #'
-#' @export control_analyze_vars control_summarize_vars
-#' @aliases control_summarize_vars
+#' @export
 control_analyze_vars <- function(conf_level = 0.95,
                                  quantiles = c(0.25, 0.75),
                                  quantile_type = 2,
@@ -31,9 +26,6 @@ control_analyze_vars <- function(conf_level = 0.95,
   assert_proportion_value(conf_level)
   list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type, test_mean = test_mean)
 }
-
-control_summarize_vars <- control_analyze_vars
-
 
 #' Analyze Variables
 #'
@@ -50,10 +42,6 @@ control_summarize_vars <- control_analyze_vars
 #' variable(s) (`vars`) for certain statistics by setting the statistic format to `"auto"` in `.formats`.
 #' This utilizes the [format_auto()] formatting function. Note that only data for the current row & variable (for all
 #' columns) will be considered (`.df_row[[.var]]`, see [`rtables::additional_fun_params`]) and not the whole dataset.
-#'
-#' @note
-#' * Deprecation cycle started for `summarize_vars` which has been renamed to `analyze_vars`. This renaming is intended
-#'   to better reflect its core underlying `rtables` functions - in this case [rtables::analyze()].
 #'
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("analyze_vars_numeric")` to see
@@ -480,15 +468,9 @@ a_summary <- function(x,
                       .labels = NULL,
                       .indent_mods = NULL,
                       na.rm = TRUE, # nolint
-                      na_level = lifecycle::deprecated(),
                       na_str = default_na_str(),
                       ...) {
   extra_args <- list(...)
-  if (lifecycle::is_present(na_level)) {
-    lifecycle::deprecate_warn("0.9.1", "a_summary(na_level)", "a_summary(na_str)")
-    na_str <- na_level
-  }
-
   if (is.numeric(x)) {
     type <- "numeric"
     if (!is.null(.stats) && any(grepl("^pval", .stats))) {
@@ -549,47 +531,6 @@ a_summary <- function(x,
     .indent_mods = .indent_mods,
     .format_na_strs = na_str
   )
-}
-
-#' Constructor Function for [analyze_vars()] and [summarize_colvars()]
-#'
-#' @description `r lifecycle::badge("deprecated")`
-#'
-#' Constructor function which creates a combined formatted analysis function.
-#'
-#' @inheritParams argument_convention
-#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
-#'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
-#'   for that statistic's row label.
-#'
-#' @return Combined formatted analysis function for use in [analyze_vars()].
-#'
-#' @note This function has been deprecated in favor of direct implementation of `a_summary()`.
-#'
-#' @seealso [analyze_vars()]
-#'
-#' @export
-create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
-  lifecycle::deprecate_warn(
-    "0.8.5.9010",
-    "create_afun_summary()",
-    details = "Please use a_summary() directly instead."
-  )
-  function(x,
-           .ref_group,
-           .in_ref_col,
-           ...,
-           .var) {
-    a_summary(x,
-      .stats = .stats,
-      .formats = .formats,
-      .labels = .labels,
-      .indent_mods = .indent_mods,
-      .ref_group = .ref_group,
-      .in_ref_col = .in_ref_col,
-      .var = .var, ...
-    )
-  }
 }
 
 #' @describeIn analyze_variables Layout-creating function which can take statistics function arguments
@@ -664,12 +605,11 @@ create_afun_summary <- function(.stats, .formats, .labels, .indent_mods) {
 #'   ) %>%
 #'   build_table(dt)
 #'
-#' @export analyze_vars summarize_vars
+#' @export
 #' @order 2
 analyze_vars <- function(lyt,
                          vars,
                          var_labels = vars,
-                         na_level = lifecycle::deprecated(),
                          na_str = default_na_str(),
                          nested = TRUE,
                          ...,
@@ -681,11 +621,6 @@ analyze_vars <- function(lyt,
                          .formats = NULL,
                          .labels = NULL,
                          .indent_mods = NULL) {
-  if (lifecycle::is_present(na_level)) {
-    lifecycle::deprecate_warn("0.9.1", "analyze_vars(na_level)", "analyze_vars(na_str)")
-    na_str <- na_level
-  }
-
   extra_args <- list(.stats = .stats, na.rm = na.rm, na_str = na_str, ...)
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
@@ -704,9 +639,4 @@ analyze_vars <- function(lyt,
     table_names = table_names,
     section_div = section_div
   )
-}
-#' @describeIn analyze_variables `r lifecycle::badge("deprecated")` Use `analyze_vars` instead.
-summarize_vars <- function(...) {
-  lifecycle::deprecate_warn(when = "0.8.5.9010", "summarize_vars()", "analyze_vars()")
-  analyze_vars(...)
 }

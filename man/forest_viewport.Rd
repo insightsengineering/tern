@@ -33,7 +33,7 @@ forest_viewport(
 A viewport tree.
 }
 \description{
-Create a Viewport Tree for the Forest Plot
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 }
 \examples{
 library(grid)

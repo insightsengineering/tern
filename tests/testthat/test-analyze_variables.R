@@ -221,7 +221,7 @@ testthat::test_that("a_summary works with custom input.", {
   options("width" = 100)
   result <- a_summary(
     rnorm(10),
-    .N_col = 10, .N_row = 20, control_summarize_vars(conf_level = 0.90), .stats = c("sd", "median_ci"),
+    .N_col = 10, .N_row = 20, control_analyze_vars(conf_level = 0.90), .stats = c("sd", "median_ci"),
     .formats = c(sd = "xx.", median_ci = "xx.xx - xx.xx"), .labels = c(sd = "std. dev"), .indent_mods = 3L
   )
   res <- testthat::expect_silent(result)
@@ -267,7 +267,7 @@ testthat::test_that("a_summary works with custom input when compare = TRUE.", {
   options("width" = 100)
   result <- a_summary(
     rnorm(10),
-    .ref_group = rnorm(20, -5, 1), .N_col = 10, .N_row = 20, control_summarize_vars(conf_level = 0.90),
+    .ref_group = rnorm(20, -5, 1), .N_col = 10, .N_row = 20, control_analyze_vars(conf_level = 0.90),
     .stats = c("pval", "median_ci"), .formats = c(median_ci = "xx.xx - xx.xx"), .labels = c(pval = "pvalue"),
     .indent_mods = 3L, compare = TRUE
   )
@@ -505,32 +505,6 @@ testthat::test_that("control_analyze_vars works with customized parameters", {
 testthat::test_that("control_analyze_vars fails wrong inputs", {
   testthat::expect_error(control_analyze_vars(quantiles = c(25, 75)))
   testthat::expect_error(control_analyze_vars(conf_level = 95))
-})
-
-# Deprecated functions ------
-testthat::test_that("create_afun_summary creates an `afun` that works and throws a warning", {
-  testthat::expect_warning(afun <- create_afun_summary(
-    .stats = c("n", "count_fraction", "median", "range", "mean_ci"),
-    .formats = c(median = "xx."),
-    .labels = c(median = "My median"),
-    .indent_mods = c(median = 1L)
-  ))
-  dta_test <- data.frame(
-    USUBJID = rep(1:6, each = 3),
-    PARAMCD = rep("lab", 6 * 3),
-    AVISIT = rep(paste0("V", 1:3), 6),
-    ARM = rep(LETTERS[1:3], rep(6, 3)),
-    AVAL = c(9:1, rep(NA, 9)),
-    stringsAsFactors = TRUE
-  )
-
-  l <- basic_table() %>%
-    split_cols_by(var = "ARM") %>%
-    split_rows_by(var = "AVISIT") %>%
-    analyze(vars = c("AVAL", "ARM"), afun = afun)
-
-  # From visual inspection it works as before, same output
-  testthat::expect_silent(result <- build_table(l, df = dta_test))
 })
 
 testthat::test_that("analyze_vars works correctly with auto formats", {

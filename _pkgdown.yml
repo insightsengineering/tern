@@ -150,7 +150,6 @@ reference:
       - h_g_ipp
       - matches(".*grob.*")
       - h_xticks
-      - forest_viewport
 
   - title: Data Helper Functions
     desc: These functions are used by other functions to derive data.
@@ -185,10 +184,11 @@ reference:
     contents:
       - starts_with("ex_")
 
+
   - title: Deprecated Functions
     desc: Functions that are currently deprecated within `tern`.
     contents:
-      - starts_with("create_")
+      - forest_viewport
       - h_data_plot
       - h_decompose_gg
       - h_ggkm
@@ -197,6 +197,4 @@ reference:
       - h_grob_tbl_at_risk
       - h_grob_y_annot
       - h_km_layout
-      - summarize_vars
-      - summary_custom
 

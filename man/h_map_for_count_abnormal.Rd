@@ -10,7 +10,6 @@ h_map_for_count_abnormal(
     range_high = "ANRHI"),
   abnormal = list(low = c("LOW", "LOW LOW"), high = c("HIGH", "HIGH HIGH")),
   method = c("default", "range"),
-  na_level = lifecycle::deprecated(),
   na_str = "<Missing>"
 )
 }
@@ -24,8 +23,6 @@ abnormality of the input dataset, it can be something like \code{list(Low = "LOW
 \verb{abnormal = list(Low = "LOW", High = "HIGH"))}}
 
 \item{method}{(\code{string})\cr indicates how the returned map will be constructed. Can be \code{"default"} or \code{"range"}.}
-
-\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 }

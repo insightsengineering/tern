@@ -71,14 +71,8 @@ d_count_abnormal_by_baseline <- function(abnormal) {
 s_count_abnormal_by_baseline <- function(df,
                                          .var,
                                          abnormal,
-                                         na_level = lifecycle::deprecated(),
                                          na_str = "<Missing>",
                                          variables = list(id = "USUBJID", baseline = "BNRIND")) {
-  if (lifecycle::is_present(na_level)) {
-    lifecycle::deprecate_warn("0.9.1", "s_count_abnormal_by_baseline(na_level)", "s_count_abnormal_by_baseline(na_str)")
-    na_str <- na_level
-  }
-
   checkmate::assert_string(.var)
   checkmate::assert_string(abnormal)
   checkmate::assert_string(na_str)

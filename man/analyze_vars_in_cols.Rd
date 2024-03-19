@@ -18,7 +18,6 @@ analyze_vars_in_cols(
   avalcat_var = "AVALCAT1",
   cache = FALSE,
   .indent_mods = NULL,
-  na_level = lifecycle::deprecated(),
   na_str = default_na_str(),
   nested = TRUE,
   .formats = NULL,
@@ -65,8 +64,6 @@ used for multiple tables with different data. Defaults to \code{FALSE}.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
-
-\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 

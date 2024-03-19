@@ -194,14 +194,8 @@ a_coxreg <- function(df,
                      .stats,
                      .formats,
                      .indent_mods = NULL,
-                     na_level = lifecycle::deprecated(),
                      na_str = "",
                      cache_env = NULL) {
-  if (lifecycle::is_present(na_level)) {
-    lifecycle::deprecate_warn("0.9.1", "a_coxreg(na_level)", "a_coxreg(na_str)")
-    na_str <- na_level
-  }
-
   cov_no_arm <- !multivar && !"arm" %in% names(variables) && control$interaction # special case: univar no arm
   cov <- tail(.spl_context$value, 1) # current variable/covariate
   var_lbl <- formatters::var_labels(df)[cov] # check for df labels
@@ -339,14 +333,8 @@ summarize_coxreg <- function(lyt,
                              ),
                              varlabels = NULL,
                              .indent_mods = NULL,
-                             na_level = lifecycle::deprecated(),
                              na_str = "",
                              .section_div = NA_character_) {
-  if (lifecycle::is_present(na_level)) {
-    lifecycle::deprecate_warn("0.9.1", "summarize_coxreg(na_level)", "summarize_coxreg(na_str)")
-    na_str <- na_level
-  }
-
   if (multivar && control$interaction) {
     warning(paste(
       "Interactions are not available for multivariate cox regression using summarize_coxreg.",

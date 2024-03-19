@@ -9,14 +9,12 @@
 \alias{s_summary.character}
 \alias{s_summary.logical}
 \alias{a_summary}
-\alias{summarize_vars}
 \title{Analyze Variables}
 \usage{
 analyze_vars(
   lyt,
   vars,
   var_labels = vars,
-  na_level = lifecycle::deprecated(),
   na_str = default_na_str(),
   nested = TRUE,
   ...,
@@ -86,12 +84,9 @@ a_summary(
   .labels = NULL,
   .indent_mods = NULL,
   na.rm = TRUE,
-  na_level = lifecycle::deprecated(),
   na_str = default_na_str(),
   ...
 )
-
-summarize_vars(...)
 }
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
@@ -99,8 +94,6 @@ summarize_vars(...)
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
 \item{var_labels}{(\code{character})\cr character for label.}
-
-\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
@@ -272,15 +265,8 @@ conversion to factor (with a warning) and then forwards to the method for factor
 \item \code{a_summary()}: Formatted analysis function which is used as \code{afun} in \code{analyze_vars()} and
 \code{compare_vars()} and as \code{cfun} in \code{summarize_colvars()}.
 
-\item \code{summarize_vars()}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{analyze_vars} instead.
-
 }}
 \note{
-\itemize{
-\item Deprecation cycle started for \code{summarize_vars} which has been renamed to \code{analyze_vars}. This renaming is intended
-to better reflect its core underlying \code{rtables} functions - in this case \code{\link[rtables:analyze]{rtables::analyze()}}.
-}
-
 \itemize{
 \item If \code{x} is an empty vector, \code{NA} is returned. This is the expected feature so as to return \code{rcell} content in
 \code{rtables} when the intersection of a column and a row delimits an empty data selection.
