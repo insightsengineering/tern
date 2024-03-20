@@ -19,7 +19,7 @@ A \code{tibble} with columns \code{time}, \code{n.risk}, \code{n.event}, \code{n
 \code{conf.low}, \code{strata}, and \code{censor}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Convert the survival fit data into a data frame designed for plotting
 within \code{g_km}.
