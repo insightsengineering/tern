@@ -304,8 +304,6 @@ g_km <- function(df,
   )
   data <- h_data_plot(fit_km, armval = armval, max_time = max_time)
 
-  if (!is.null(max_time)) data <- data[data$time <= max_time, ]
-
   # calculate x-ticks
   xticks <- h_xticks(data = data, xticks = xticks, max_time = max_time)
   if (is.null(max_time)) max_time <- max(xticks)
