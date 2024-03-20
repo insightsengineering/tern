@@ -336,10 +336,14 @@ g_km <- function(df,
   # set legend position
   if (!is.null(legend_pos)) {
     gg_plt <- gg_plt + theme(legend.position.inside = legend_pos)
-  } else{
-    max_time2 <- sort(data_plot$time, partial = nrow(data_plot) - length(armval) - 1)[nrow(data_plot) - length(armval) - 1]
+  } else {
+    max_time2 <- sort(
+      data_plot$time,
+      partial = nrow(data_plot) - length(armval) - 1
+    )[nrow(data_plot) - length(armval) - 1]
 
-    if (p_type == "survival" && data_plot$estimate[data_plot$time == max_time2] > 0.09 && data_plot$estimate[data_plot$time == max_time2] < 0.3) {
+    if (p_type == "survival" && data_plot$estimate[data_plot$time == max_time2] > 0.09 &&
+      data_plot$estimate[data_plot$time == max_time2] < 0.3) { # nolint
       gg_plt <- gg_plt +
         theme(
           legend.position.inside = c(1, 0.4),
