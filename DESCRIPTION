@@ -75,7 +75,7 @@ Config/Needs/verdepcheck: insightsengineering/rtables, tidymodels/broom,
     GeoBosh/Rdpack, r-lib/rlang, r-lib/scales, tidyverse/tibble,
     tidyverse/tidyr, yihui/knitr, deepayan/lattice, tidyverse/lubridate,
     insightsengineering/nestcolor, rstudio/rmarkdown, tidyverse/stringr,
-    r-lib/svglite, r-lib/testthat, r-lib/withr
+    r-lib/svglite, r-lib/testthat, r-lib/withr, pharmaverse/ggsurvfit
 Config/Needs/website: insightsengineering/nesttemplate
 Config/testthat/edition: 3
 Encoding: UTF-8
