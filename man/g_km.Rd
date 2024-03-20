@@ -35,6 +35,7 @@ g_km(
   ref_group_coxph = NULL,
   control_annot_surv_med = control_surv_med_annot(),
   control_annot_coxph = control_coxph_annot(),
+  legend_pos = NULL,
   rel_height_plot = 0.75,
   ggtheme = NULL,
   as_list = FALSE,
@@ -145,6 +146,10 @@ options are: \code{x}, \code{y}, \code{w}, \code{h}, and \code{fill}. See \code{
 \item{control_annot_coxph}{(\code{list})\cr parameters to control the position and size of the annotation table added
 to the plot when \code{annot_coxph = TRUE}, specified using the \code{\link[=control_coxph_annot]{control_coxph_annot()}} function. Parameter
 options are: \code{x}, \code{y}, \code{w}, \code{h}, \code{fill}, and \code{ref_lbls}. See \code{\link[=control_coxph_annot]{control_coxph_annot()}} for details.}
+
+\item{legend_pos}{(\code{numeric(2)})\cr vector of length 2 containing x- and y-coordinates, respectively, for the legend
+position relative to the KM plot area. If \code{NULL} (default), the legend is positioned in the bottom right corner of
+the plot, or the middle right of the plot if needed to prevent overlapping.}
 
 \item{rel_height_plot}{(\code{proportion})\cr proportion of total figure height to allocate to the Kaplan-Meier plot.
 Relative height of patients at risk table is then \code{1 - rel_height_plot}. If \code{annot_at_risk = FALSE} or

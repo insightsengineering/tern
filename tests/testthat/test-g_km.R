@@ -138,6 +138,7 @@ testthat::test_that("g_km works with custom arguments", {
       lty = c("solid", "dotted", "dashed"),
       lwd = 2,
       rel_height_plot = 0.6,
+      legend_pos = c(0.075, 0.2),
       font_size = 12,
       col = c("red", "green", "purple")
     )

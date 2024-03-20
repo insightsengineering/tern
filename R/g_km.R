@@ -67,6 +67,9 @@
 #' @param control_annot_coxph (`list`)\cr parameters to control the position and size of the annotation table added
 #'   to the plot when `annot_coxph = TRUE`, specified using the [control_coxph_annot()] function. Parameter
 #'   options are: `x`, `y`, `w`, `h`, `fill`, and `ref_lbls`. See [control_coxph_annot()] for details.
+#' @param legend_pos (`numeric(2)`)\cr vector of length 2 containing x- and y-coordinates, respectively, for the legend
+#'   position relative to the KM plot area. If `NULL` (default), the legend is positioned in the bottom right corner of
+#'   the plot, or the middle right of the plot if needed to prevent overlapping.
 #' @param rel_height_plot (`proportion`)\cr proportion of total figure height to allocate to the Kaplan-Meier plot.
 #'   Relative height of patients at risk table is then `1 - rel_height_plot`. If `annot_at_risk = FALSE` or
 #'   `as_list = TRUE`, this parameter is ignored.
@@ -162,6 +165,7 @@ g_km <- function(df,
                  ref_group_coxph = NULL,
                  control_annot_surv_med = control_surv_med_annot(),
                  control_annot_coxph = control_coxph_annot(),
+                 legend_pos = NULL,
                  rel_height_plot = 0.75,
                  ggtheme = NULL,
                  as_list = FALSE,
@@ -266,6 +270,7 @@ g_km <- function(df,
   checkmate::assert_character(ref_group_coxph, len = 1, null.ok = TRUE)
   checkmate::assert_list(control_annot_surv_med)
   checkmate::assert_list(control_annot_coxph)
+  checkmate::assert_numeric(legend_pos, len = 2, null.ok = TRUE)
   assert_proportion_value(rel_height_plot)
   checkmate::assert_logical(as_list)
 
@@ -321,11 +326,33 @@ g_km <- function(df,
       axis.text = element_text(size = font_size),
       axis.title = element_text(size = font_size),
       legend.text = element_text(size = font_size),
-      legend.box.background = element_rect(linewidth = 0.75),
+      legend.box.background = element_rect(fill = "white", linewidth = 0.75),
       legend.margin = margin(c(1, 5, 2, 5)),
+      legend.position = "inside",
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank()
     )
+
+  # set legend position
+  if (!is.null(legend_pos)) {
+    gg_plt <- gg_plt + theme(legend.position.inside = legend_pos)
+  } else{
+    max_time2 <- sort(data_plot$time, partial = nrow(data_plot) - length(armval) - 1)[nrow(data_plot) - length(armval) - 1]
+
+    if (p_type == "survival" && data_plot$estimate[data_plot$time == max_time2] > 0.09 && data_plot$estimate[data_plot$time == max_time2] < 0.3) {
+      gg_plt <- gg_plt +
+        theme(
+          legend.position.inside = c(1, 0.4),
+          legend.justification = c(1.1, 0)
+        )
+    } else {
+      gg_plt <- gg_plt +
+        theme(
+          legend.position.inside = c(1, 0),
+          legend.justification = c(1.1, -0.5)
+        )
+    }
+  }
 
   # add censor marks
   if (censor_show) gg_plt <- gg_plt + ggsurvfit::add_censor_mark(shape = pch, size = size)
