@@ -255,7 +255,6 @@ h_tbl_coxph_pairwise <- function(df,
 #'   `conf.low`, `strata`, and `censor`.
 #'
 #' @examples
-#' \donttest{
 #' library(dplyr)
 #' library(survival)
 #'
@@ -270,7 +269,6 @@ h_tbl_coxph_pairwise <- function(df,
 #'   filter(PARAMCD == "OS", ARMCD == "ARM B") %>%
 #'   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) %>%
 #'   h_data_plot(armval = "ARM B")
-#' }
 #'
 #' @export
 h_data_plot <- function(fit_km,

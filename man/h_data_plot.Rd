@@ -34,7 +34,6 @@ downstream plot lines start at those coordinates.
 }
 }
 \examples{
-\donttest{
 library(dplyr)
 library(survival)
 
@@ -49,6 +48,5 @@ tern_ex_adtte \%>\%
   filter(PARAMCD == "OS", ARMCD == "ARM B") \%>\%
   survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .) \%>\%
   h_data_plot(armval = "ARM B")
-}
 
 }

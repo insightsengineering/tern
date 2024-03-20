@@ -19,7 +19,7 @@ testthat::test_that("control_coxph_annot works with default settings", {
 })
 
 testthat::test_that("h_xticks works with default settings", {
-  result <- ggsurvfit::tidy_survfit(test_fit) %>%
+  result <- h_data_plot(test_fit) %>%
     h_xticks()
 
   res <- testthat::expect_silent(result)
@@ -27,7 +27,7 @@ testthat::test_that("h_xticks works with default settings", {
 })
 
 testthat::test_that("h_xticks works with xticks number", {
-  result <- ggsurvfit::tidy_survfit(test_fit) %>%
+  result <- h_data_plot(test_fit) %>%
     h_xticks(xticks = 100)
 
   res <- testthat::expect_silent(result)
@@ -36,7 +36,7 @@ testthat::test_that("h_xticks works with xticks number", {
 
 testthat::test_that("h_xticks works with xticks numeric", {
   expected <- c(0, 365, 1000)
-  result <- ggsurvfit::tidy_survfit(test_fit) %>%
+  result <- h_data_plot(test_fit) %>%
     h_xticks(xticks = expected)
 
   res <- testthat::expect_silent(result)
@@ -45,12 +45,12 @@ testthat::test_that("h_xticks works with xticks numeric", {
 
 testthat::test_that("h_xticks returns error when xticks non-numeric", {
   testthat::expect_error(
-    ggsurvfit::tidy_survfit(test_fit) %>% h_xticks(xticks = TRUE)
+    h_data_plot(test_fit) %>% h_xticks(xticks = TRUE)
   )
 })
 
 testthat::test_that("h_xticks works with max_time only", {
-  result <- ggsurvfit::tidy_survfit(test_fit) %>%
+  result <- h_data_plot(test_fit) %>%
     filter(time <= 3000) %>%
     h_xticks(max_time = 3000)
 
@@ -60,7 +60,7 @@ testthat::test_that("h_xticks works with max_time only", {
 
 testthat::test_that("h_xticks works with xticks numeric when max_time is not NULL", {
   expected <- c(0, 365, 1000)
-  result <- ggsurvfit::tidy_survfit(test_fit) %>%
+  result <- h_data_plot(test_fit) %>%
     filter(time <= 1500) %>%
     h_xticks(xticks = expected, max_time = 1500)
 
@@ -69,7 +69,7 @@ testthat::test_that("h_xticks works with xticks numeric when max_time is not NUL
 })
 
 testthat::test_that("h_xticks works with xticks number when max_time is not NULL", {
-  result <- ggsurvfit::tidy_survfit(test_fit) %>%
+  result <- h_data_plot(test_fit) %>%
     filter(time <= 1500) %>%
     h_xticks(xticks = 500, max_time = 1500)
 
