@@ -183,31 +183,31 @@ g_km <- function(df,
   if (lifecycle::is_present(draw)) {
     lifecycle::deprecate_warn(
       "0.9.4", "g_km(draw)",
-      details = "This argument is no longer used since the plot is now generated as a ggplot2 object."
+      details = "This argument is no longer used since the plot is now generated as a `ggplot2` object."
     )
   }
   if (lifecycle::is_present(newpage)) {
     lifecycle::deprecate_warn(
       "0.9.4", "g_km(newpage)",
-      details = "This argument is no longer used since the plot is now generated as a ggplot2 object."
+      details = "This argument is no longer used since the plot is now generated as a `ggplot2` object."
     )
   }
   if (lifecycle::is_present(gp)) {
     lifecycle::deprecate_warn(
       "0.9.4", "g_km(gp)",
-      details = "This argument is no longer used since the plot is now generated as a ggplot2 object."
+      details = "This argument is no longer used since the plot is now generated as a `ggplot2` object."
     )
   }
   if (lifecycle::is_present(vp)) {
     lifecycle::deprecate_warn(
       "0.9.4", "g_km(vp)",
-      details = "This argument is no longer used since the plot is now generated as a ggplot2 object."
+      details = "This argument is no longer used since the plot is now generated as a `ggplot2` object."
     )
   }
   if (lifecycle::is_present(name)) {
     lifecycle::deprecate_warn(
       "0.9.4", "g_km(name)",
-      details = "This argument is no longer used since the plot is now generated as a ggplot2 object."
+      details = "This argument is no longer used since the plot is now generated as a `ggplot2` object."
     )
   }
   if (lifecycle::is_present(annot_coxph_ref_lbls)) {
@@ -320,7 +320,7 @@ g_km <- function(df,
       y_scales = list(limits = ylim, label = NULL)
     ) +
     scale_linetype_manual(values = lty) +
-    ggplot2::labs(title = title, x = xlab, y = ylab, caption = footnotes) +
+    labs(title = title, x = xlab, y = ylab, caption = footnotes) +
     theme(
       line = element_line(linewidth = lwd),
       axis.text = element_text(size = font_size),
@@ -384,7 +384,7 @@ g_km <- function(df,
       gg_plt <- gg_plt +
         annotate(
           "text",
-          size = font_size / ggplot2::.pt, col = 1, lineheight = 0.95,
+          size = font_size / .pt, col = 1, lineheight = 0.95,
           x = stats::median(fit_km_all) + 0.07 * max(data_plot$time),
           y = ifelse(yval == "Survival", 0.65, 0.35),
           label = paste("Median F/U:\n", round(stats::median(fit_km_all), 1), tolower(df$AVALU[1]))
@@ -403,7 +403,7 @@ g_km <- function(df,
       gg_plt <- gg_plt +
         annotate(
           "text",
-          size = font_size / ggplot2::.pt, col = 1, lineheight = 0.95,
+          size = font_size / .pt, col = 1, lineheight = 0.95,
           x = min_fu + max(data_plot$time) * 0.07,
           y = ifelse(yval == "Survival", 0.96, 0.05),
           label = paste("Min. F/U:\n", round(min_fu, 1), tolower(df$AVALU[1]))
@@ -417,7 +417,7 @@ g_km <- function(df,
           )
       }
     }
-    gg_plt <- gg_plt + ggplot2::guides(fill = ggplot2::guide_legend(override.aes = list(shape = NA, label = "")))
+    gg_plt <- gg_plt + guides(fill = guide_legend(override.aes = list(shape = NA, label = "")))
   }
 
   # add at risk annotation table
