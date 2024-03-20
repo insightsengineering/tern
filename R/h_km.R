@@ -233,11 +233,9 @@ h_tbl_coxph_pairwise <- function(df,
   do.call(rbind, results)
 }
 
-## Deprecated Functions ----
-
 #' Helper function: tidy survival fit
 #'
-#' @description `r lifecycle::badge("deprecated")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Convert the survival fit data into a data frame designed for plotting
 #' within `g_km`.
@@ -278,12 +276,6 @@ h_tbl_coxph_pairwise <- function(df,
 h_data_plot <- function(fit_km,
                         armval = "All",
                         max_time = NULL) {
-  lifecycle::deprecate_warn(
-    "0.9.4",
-    "h_data_plot()",
-    details = "`g_km` now generates `ggplot` objects. This function is no longer used within `tern`."
-  )
-
   y <- broom::tidy(fit_km)
 
   if (!is.null(fit_km$strata)) {
@@ -322,6 +314,8 @@ h_data_plot <- function(fit_km,
   }
   y
 }
+
+## Deprecated Functions ----
 
 #' Helper function: KM plot
 #'

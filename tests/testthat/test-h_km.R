@@ -108,12 +108,11 @@ testthat::test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
   testthat::expect_snapshot(res)
 })
 
-# Deprecated Functions ----
 
 # h_data_plot ----
 testthat::test_that("h_data_plot works as expected", {
   data <- test_fit
-  testthat::expect_warning(result <- h_data_plot(data))
+  testthat::expect_silent(result <- h_data_plot(data))
   res <- names(result)
 
   testthat::expect_snapshot(res)
@@ -125,7 +124,8 @@ testthat::test_that("h_data_plot respects the ordering of the arm variable facto
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM C", "ARM A"))) %>%
     survival::survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
-  testthat::expect_warning(result <- h_data_plot(data))
+
+  testthat::expect_silent(result <- h_data_plot(data))
   res <- levels(result$strata)
 
   testthat::expect_snapshot(res)
@@ -135,7 +135,7 @@ testthat::test_that("h_data_plot respects the ordering of the arm variable facto
 
 testthat::test_that("h_data_plot adds rows that have time 0 and estimate 1", {
   data <- test_fit
-  testthat::expect_warning(result <- h_data_plot(data))
+  testthat::expect_silent(result <- h_data_plot(data))
   result_corner <- result %>%
     dplyr::filter(time == 0, estimate == 1)
   res <- result_corner$strata
@@ -146,6 +146,8 @@ testthat::test_that("h_data_plot adds rows that have time 0 and estimate 1", {
     all(conf.high == 1) && all(conf.low == 1) && all(n.event == 0) && all(n.censor == 0)
   ))
 })
+
+# Deprecated Functions ----
 
 testthat::test_that("h_grob_coxph returns error when only one arm", {
   df <- tern_ex_adtte %>%

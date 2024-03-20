@@ -296,39 +296,52 @@ g_km <- function(df,
   # process model
   yval <- match.arg(yval)
   formula <- stats::as.formula(paste0("survival::Surv(", tte, ", ", is_event, ") ~ ", arm))
-  fit_km <- ggsurvfit::survfit2(
+  fit_km <- survival::survfit(
     formula = formula,
     data = df,
     conf.int = control_surv$conf_level,
     conf.type = control_surv$conf_type
   )
-  data_plot <- ggsurvfit::tidy_survfit(fit_km)
+  data <- h_data_plot(fit_km, armval = armval, max_time = max_time)
 
-  if (!is.null(max_time)) data_plot <- data_plot[data_plot$time <= max_time, ]
+  if (!is.null(max_time)) data <- data[data$time <= max_time, ]
 
-  # add x-ticks
-  xticks <- h_xticks(data = data_plot, xticks = xticks, max_time = max_time)
+  # calculate x-ticks
+  xticks <- h_xticks(data = data, xticks = xticks, max_time = max_time)
   if (is.null(max_time)) max_time <- max(xticks)
 
-  # set plot type
-  p_type <- if (yval == "Failure") "risk" else if (yval == "Survival") "survival" else yval
+  # change estimates of survival to estimates of failure (1 - survival)
+  if (yval == "Failure") {
+    data[c("estimate", "conf.low", "conf.high", "censor")] <- list(
+      1 - data$estimate, 1 - data$conf.low, 1 - data$conf.high, 1 - data$censor
+    )
+  }
 
   # initialize ggplot
-  gg_plt <- ggsurvfit::ggsurvfit(fit_km, type = p_type, linetype_aes = !is.null(lty), na.rm = TRUE, lwd = lwd) +
-    ggsurvfit::scale_ggsurvfit(
-      x_scales = list(limits = c(0, max_time), breaks = xticks),
-      y_scales = list(limits = ylim, label = NULL)
-    ) +
-    scale_linetype_manual(values = lty) +
+  gg_plt <- ggplot(
+    data = data,
+    mapping = aes(
+      x = .data[["time"]],
+      y = .data[["estimate"]],
+      ymin = .data[["conf.low"]],
+      ymax = .data[["conf.high"]],
+      color = .data[["strata"]],
+      fill = .data[["strata"]]
+    )
+  ) +
+    theme_bw(base_size = font_size) +
+    scale_x_continuous(limits = c(0, max_time), breaks = xticks, expand = c(0.025, 0)) +
+    scale_y_continuous(limits = ylim, expand = c(0.025, 0)) +
     labs(title = title, x = xlab, y = ylab, caption = footnotes) +
     theme(
-      line = element_line(linewidth = lwd),
       axis.text = element_text(size = font_size),
       axis.title = element_text(size = font_size),
+      legend.title = element_blank(),
       legend.text = element_text(size = font_size),
-      legend.box.background = element_rect(fill = "white", linewidth = 0.75),
-      legend.margin = margin(c(1, 5, 2, 5)),
+      legend.box.background = element_rect(fill = "white", linewidth = 0.5),
+      legend.background = element_blank(),
       legend.position = "inside",
+      legend.spacing.y = unit(-0.02, "npc"),
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank()
     )
@@ -338,31 +351,54 @@ g_km <- function(df,
     gg_plt <- gg_plt + theme(legend.position.inside = legend_pos)
   } else {
     max_time2 <- sort(
-      data_plot$time,
-      partial = nrow(data_plot) - length(armval) - 1
-    )[nrow(data_plot) - length(armval) - 1]
+      data$time,
+      partial = nrow(data) - length(armval) - 1
+    )[nrow(data) - length(armval) - 1]
 
-    if (p_type == "survival" && data_plot$estimate[data_plot$time == max_time2] > 0.09 &&
-      data_plot$estimate[data_plot$time == max_time2] < 0.3) { # nolint
+    ylim_rng <- layer_scales(gg_plt)$y$range$range
+    y_rng <- ylim_rng[2] - ylim_rng[1]
+
+    if (yval == "Survival" && data$estimate[data$time == max_time2] > ylim_rng[1] + 0.09 * y_rng &&
+      data$estimate[data$time == max_time2] < ylim_rng[1] + 0.5 * y_rng) { # nolint
       gg_plt <- gg_plt +
         theme(
-          legend.position.inside = c(1, 0.4),
-          legend.justification = c(1.1, 0)
+          legend.position.inside = c(1, 0.5),
+          legend.justification = c(1.1, 0.6)
         )
     } else {
       gg_plt <- gg_plt +
         theme(
           legend.position.inside = c(1, 0),
-          legend.justification = c(1.1, -0.5)
+          legend.justification = c(1.1, -0.4)
         )
     }
   }
 
+  # add lines
+  gg_plt <- if (is.null(lty)) {
+    gg_plt + geom_step(linewidth = lwd, na.rm = TRUE)
+  } else if (length(lty) == 1) {
+    gg_plt + geom_step(linewidth = lwd, lty = lty, na.rm = TRUE)
+  } else {
+    gg_plt +
+      geom_step(aes(lty = .data[["strata"]]), linewidth = lwd, na.rm = TRUE) +
+      scale_linetype_manual(values = lty)
+  }
+
   # add censor marks
-  if (censor_show) gg_plt <- gg_plt + ggsurvfit::add_censor_mark(shape = pch, size = size)
+  if (censor_show) {
+    gg_plt <- gg_plt + geom_point(
+      data = data[data$n.censor != 0, ],
+      aes(x = .data[["time"]], y = .data[["censor"]], shape = "Censored"),
+      size = size,
+      na.rm = TRUE
+    ) +
+      scale_shape_manual(name = NULL, values = pch) +
+      guides(fill = guide_legend(override.aes = list(shape = NA)))
+  }
 
   # add ci ribbon
-  if (ci_ribbon) gg_plt <- gg_plt + ggsurvfit::add_confidence_interval()
+  if (ci_ribbon) gg_plt <- gg_plt + geom_ribbon(alpha = 0.3, lty = 0, na.rm = TRUE)
 
   # control aesthetics
   if (!is.null(col)) {
@@ -385,7 +421,7 @@ g_km <- function(df,
         annotate(
           "text",
           size = font_size / .pt, col = 1, lineheight = 0.95,
-          x = stats::median(fit_km_all) + 0.07 * max(data_plot$time),
+          x = stats::median(fit_km_all) + 0.07 * max(data$time),
           y = ifelse(yval == "Survival", 0.65, 0.35),
           label = paste("Median F/U:\n", round(stats::median(fit_km_all), 1), tolower(df$AVALU[1]))
         )
@@ -404,7 +440,7 @@ g_km <- function(df,
         annotate(
           "text",
           size = font_size / .pt, col = 1, lineheight = 0.95,
-          x = min_fu + max(data_plot$time) * 0.07,
+          x = min_fu + max(data$time) * 0.07,
           y = ifelse(yval == "Survival", 0.96, 0.05),
           label = paste("Min. F/U:\n", round(min_fu, 1), tolower(df$AVALU[1]))
         )

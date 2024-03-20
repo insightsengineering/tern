@@ -70,7 +70,8 @@ testthat::test_that("g_km ylim parameter works as expected", {
       variables = variables,
       annot_surv_med = FALSE,
       annot_at_risk = FALSE,
-      max_time = 1000
+      max_time = 1000,
+      legend_pos = c(0.9, 0.8)
     )
   )
   expect_snapshot_ggplot("g_km_crop_ylim", g_km_crop_ylim, width = 8, height = 5)
@@ -138,7 +139,7 @@ testthat::test_that("g_km works with custom arguments", {
       lty = c("solid", "dotted", "dashed"),
       lwd = 2,
       rel_height_plot = 0.6,
-      legend_pos = c(0.075, 0.2),
+      legend_pos = c(0.5, 0.7),
       font_size = 12,
       col = c("red", "green", "purple")
     )
