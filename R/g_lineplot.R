@@ -512,10 +512,10 @@ control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", group_var = "ARM", p
 
   checkmate::assert_string(x)
   checkmate::assert_string(y)
-  checkmate::assert_string(group_var, na.ok = TRUE)
-  checkmate::assert_string(subject_var, na.ok = TRUE)
-  checkmate::assert_string(paramcd, na.ok = TRUE)
-  checkmate::assert_string(y_unit, na.ok = TRUE)
+  checkmate::assert_string(group_var, na.ok = TRUE, null.ok = TRUE)
+  checkmate::assert_string(subject_var, na.ok = TRUE, null.ok = TRUE)
+  checkmate::assert_string(paramcd, na.ok = TRUE, null.ok = TRUE)
+  checkmate::assert_string(y_unit, na.ok = TRUE, null.ok = TRUE)
 
   variables <- c(x = x, y = y, group_var = group_var, paramcd = paramcd, y_unit = y_unit, subject_var = subject_var)
   return(variables)
