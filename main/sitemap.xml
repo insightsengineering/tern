@@ -148,6 +148,9 @@
     <loc>https://insightsengineering.github.io/tern/reference/control_analyze_vars.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/reference/control_annot.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/reference/control_coxph.html</loc>
   </url>
   <url>
@@ -254,6 +257,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/desctools_binom.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/reference/df2gg.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/df_explicit_na.html</loc>
