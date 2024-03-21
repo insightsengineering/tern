@@ -61,7 +61,6 @@ Suggests:
     stringr (>= 1.4.1),
     svglite (>= 2.1.2),
     testthat (>= 3.1.9),
-    vdiffr (>= 1.0.7),
     withr (>= 2.0.0)
 VignetteBuilder:
     knitr
@@ -75,7 +74,7 @@ Config/Needs/verdepcheck: insightsengineering/rtables, tidymodels/broom,
     GeoBosh/Rdpack, r-lib/rlang, r-lib/scales, tidyverse/tibble,
     tidyverse/tidyr, yihui/knitr, deepayan/lattice, tidyverse/lubridate,
     insightsengineering/nestcolor, rstudio/rmarkdown, tidyverse/stringr,
-    r-lib/svglite, r-lib/testthat, r-lib/withr, r-lib/vdiffr
+    r-lib/svglite, r-lib/testthat, r-lib/withr
 Config/Needs/website: insightsengineering/nesttemplate
 Config/testthat/edition: 3
 Encoding: UTF-8
@@ -123,12 +122,14 @@ Collate:
     'fit_rsp_step.R'
     'fit_survival_step.R'
     'g_forest.R'
+    'g_km.R'
     'g_lineplot.R'
     'g_step.R'
     'g_waterfall.R'
     'h_adsl_adlb_merge_using_worst_flag.R'
     'h_biomarkers_subgroups.R'
     'h_cox_regression.R'
+    'h_km.R'
     'h_logistic_regression.R'
     'h_map_for_count_abnormal.R'
     'h_pkparam_sort.R'
@@ -141,7 +142,6 @@ Collate:
     'imputation_rule.R'
     'incidence_rate.R'
     'individual_patient_plot.R'
-    'kaplan_meier_plot.R'
     'logistic_regression.R'
     'missing_data.R'
     'odds_ratio.R'

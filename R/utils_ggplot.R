@@ -128,3 +128,91 @@ rtable2gg <- function(tbl, fontsize = 12, colwidths = NULL, lbl_col_padding = 0)
 
   res
 }
+
+#' Convert `data.frame` object to `ggplot` object
+#'
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' Given a `data.frame` object, performs basic conversion to a [ggplot2::ggplot()] object built using
+#' functions from the `ggplot2` package.
+#'
+#' @param tbl (`data.frame`)\cr a data frame.
+#' @param colwidths (`vector` of `numeric`)\cr a vector of column widths. Each element's position in
+#'   `colwidths` corresponds to the column of `df` in the same position. If `NULL`, column widths
+#'   are calculated according to maximum number of characters per column.
+#' @param font_size (`numeric`)\cr font size.
+#' @param col_labels (`logical`)\cr whether the column names (labels) of `df` should be used as the first row
+#'   of the output table.
+#' @param col_labels_fontface (`character`)\cr fontface to apply to the first row (of column labels
+#'   if `col_labels = TRUE`).
+#' @param hline (`logical`)\cr whether a horizontal line should be printed below the first row of the table.
+#' @param bg_fill (`character`)\cr table background fill color.
+#'
+#' @return a `ggplot` object.
+#'
+#' @examples
+#' \dontrun{
+#' df2gg(head(iris, 5))
+#'
+#' df2gg(head(iris, 5), font_size = 15, colwidths = c(1, 1, 1, 1, 1))
+#' }
+#' @keywords internal
+df2gg <- function(df,
+                  colwidths = NULL,
+                  font_size = 10,
+                  col_labels = TRUE,
+                  col_lab_fontface = "bold",
+                  hline = TRUE,
+                  bg_fill = NULL) {
+  # convert NAs to text
+  df <- as.data.frame(apply(df, 1:2, tidyr::replace_na, replace = "NA"))
+
+  if (col_labels) {
+    df <- as.matrix(df)
+    df <- rbind(colnames(df), df)
+  }
+
+  # Get column widths
+  if (is.null(colwidths)) {
+    colwidths <- apply(df, 2, function(x) max(nchar(x), na.rm = TRUE))
+  }
+  tot_width <- sum(colwidths)
+
+  res <- ggplot(data = df) +
+    theme_void() +
+    scale_x_continuous(limits = c(0, tot_width)) +
+    scale_y_continuous(limits = c(1, nrow(df)))
+
+  if (!is.null(bg_fill)) res <- res + theme(plot.background = element_rect(fill = bg_fill))
+
+  if (hline) {
+    res <- res +
+      annotate(
+        "segment",
+        x = 0 + 0.2 * colwidths[2], xend = tot_width - 0.1 * tail(colwidths, 1),
+        y = nrow(df) - 0.5, yend = nrow(df) - 0.5
+      )
+  }
+
+  for (i in seq_len(ncol(df))) {
+    line_pos <- c(
+      if (i == 1) 0 else sum(colwidths[1:(i - 1)]),
+      sum(colwidths[1:i])
+    )
+    res <- res +
+      annotate(
+        "text",
+        x = mean(line_pos),
+        y = rev(seq_len(nrow(df))),
+        label = df[, i],
+        size = font_size / .pt,
+        fontface = if (col_labels) {
+          c(col_lab_fontface, rep("plain", nrow(df) - 1))
+        } else {
+          rep("plain", nrow(df))
+        }
+      )
+  }
+
+  res
+}

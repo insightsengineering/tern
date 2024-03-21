@@ -1,6 +1,6 @@
 #' Add Titles, Footnotes, Page Number, and a Bounding Box to a Grid Grob
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("deprecated")`
 #'
 #' This function is useful to label grid grobs (also `ggplot2`, and `lattice` plots)
 #' with title, footnote, and page numbers.
@@ -143,6 +143,12 @@ decorate_grob <- function(grob,
                           name = NULL,
                           gp = grid::gpar(),
                           vp = NULL) {
+  lifecycle::deprecate_warn(
+    "0.9.4",
+    "decorate_grob()",
+    details = "`tern` plotting functions no longer generate `grob` objects."
+  )
+
   st_titles <- split_text_grob(
     titles,
     x = 0, y = 1,
@@ -321,6 +327,12 @@ split_text_grob <- function(text,
                             name = NULL,
                             gp = grid::gpar(),
                             vp = NULL) {
+  lifecycle::deprecate_warn(
+    "0.9.4",
+    "split_text_grob()",
+    details = "`tern` plotting functions no longer generate `grob` objects."
+  )
+
   if (!grid::is.unit(x)) x <- grid::unit(x, default.units)
   if (!grid::is.unit(y)) y <- grid::unit(y, default.units)
   if (!grid::is.unit(width)) width <- grid::unit(width, default.units)
@@ -408,6 +420,12 @@ drawDetails.dynamicSplitText <- function(x, recording) {
 #'
 #' @keywords internal
 decorate_grob_factory <- function(npages, ...) {
+  lifecycle::deprecate_warn(
+    "0.9.4",
+    "decorate_grob_factory()",
+    details = "`tern` plotting functions no longer generate `grob` objects."
+  )
+
   current_page <- 0
   function(grob) {
     current_page <<- current_page + 1
@@ -420,7 +438,7 @@ decorate_grob_factory <- function(npages, ...) {
 
 #' Decorate Set of `grobs` and Add Page Numbering
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("deprecated")`
 #'
 #' Note that this uses the [decorate_grob_factory()] function.
 #'
@@ -468,6 +486,12 @@ decorate_grob_factory <- function(npages, ...) {
 #'
 #' @export
 decorate_grob_set <- function(grobs, ...) {
+  lifecycle::deprecate_warn(
+    "0.9.4",
+    "decorate_grob_set()",
+    details = "`tern` plotting functions no longer generate `grob` objects."
+  )
+
   n <- length(grobs)
   lgf <- decorate_grob_factory(npages = n, ...)
   lapply(grobs, lgf)

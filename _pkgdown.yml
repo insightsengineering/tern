@@ -184,9 +184,15 @@ reference:
     contents:
       - starts_with("ex_")
 
-
   - title: Deprecated Functions
     desc: Functions that are currently deprecated within `tern`.
     contents:
       - forest_viewport
+      - h_decompose_gg
+      - h_ggkm
+      - h_grob_coxph
+      - h_grob_median_surv
+      - h_grob_tbl_at_risk
+      - h_grob_y_annot
+      - h_km_layout
 

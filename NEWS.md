@@ -4,6 +4,9 @@
 * Refactored `g_forest` to output a `ggplot` object instead of a `grob` object.
 * Added `h_glm_negbin` to `h_glm_count` to enable count data analysis using a negative binomial model.
 * Added argument `grade_groups_only` to `count_occurrences_by_grade` to allow users to only display rows for specified grade groups.
+* Added internal function `df2gg` that converts `data.frame` objects to `ggplot` objects.
+* Added functions `control_surv_med_annot` and `control_coxph_annot` to configure `g_km` annotation table sizes/positions.
+* Refactored `g_km` to output a `ggplot` object instead of a `grob` object.
 
 ### Enhancements
 * Default format for mean p-values (`mean_pval`) updated from `"xx.xx"` to `"x.xxxx | (<0.0001)"`.
@@ -22,6 +25,9 @@
 * Removed all instances of deprecated parameters `time_unit_input`, `time_unit_output`, `na_level` and `indent_mod`.
 * Removed deprecated functions `summarize_vars`, `control_summarize_vars`, `a_compare`, `create_afun_summary`, `create_afun_compare`, and `summary_custom`.
 * Began deprecation of the `forest_grob`, `forest_dot_line`, `forest_viewport`, `vp_forest_table_part`, and `grid.forest` functions.
+* Began deprecation of no longer used Kaplan-Meier helper functions `h_ggkm`, `h_decompose_gg`, `h_km_layout`, `h_grob_tbl_at_risk`, `h_grob_median_surv`, `h_grob_y_annot`, and `h_grob_coxph`.
+* Began deprecation of `grob`/`grid` related functions `stack_grobs`, `arrange_grobs`, `draw_grob`, `decorate_grob`, `split_text_grob`, `decorate_grob_factory`, and `decorate_grob_set` which are no longer used in `tern`.
+* Removed `vdiffr` package from Suggests in DESCRIPTION file.
 
 # tern 0.9.3
 

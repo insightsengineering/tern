@@ -24,7 +24,9 @@ altman
 biomarker
 biomarkers
 coercible
+coxph
 de
+fontface
 funder
 layouting
 params
@@ -37,6 +39,7 @@ responders
 rtables
 subtable
 subtables
+surv
 unformatted
 ungroup
 unstratified

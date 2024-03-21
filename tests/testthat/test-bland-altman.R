@@ -94,7 +94,6 @@ testthat::test_that("g_bland_altman works with default settings", {
     1.10002537, 0.76317575
   )
   conf_level <- 0.9
-  testthat::skip_if_not_installed("vdiffr")
 
   withr::with_options(
     opts_partial_match_old,

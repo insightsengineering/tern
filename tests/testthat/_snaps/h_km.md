@@ -1,25 +1,47 @@
-# h_data_plot works as expected
+# control_surv_med_annot works with default settings
 
     Code
       res
     Output
-       [1] "time"      "n.risk"    "n.event"   "n.censor"  "estimate"  "std.error"
-       [7] "conf.high" "conf.low"  "strata"    "censor"   
+      $x
+      [1] 0.8
+      
+      $y
+      [1] 0.85
+      
+      $w
+      [1] 0.32
+      
+      $h
+      [1] 0.16
+      
+      $fill
+      [1] TRUE
+      
 
-# h_data_plot respects the ordering of the arm variable factor levels
+# control_coxph_annot works with default settings
 
     Code
       res
     Output
-      [1] "ARM B" "ARM C" "ARM A"
-
-# h_data_plot adds rows that have time 0 and estimate 1
-
-    Code
-      res
-    Output
-      [1] ARM A ARM B ARM C
-      Levels: ARM A ARM B ARM C
+      $x
+      [1] 0.29
+      
+      $y
+      [1] 0.51
+      
+      $w
+      [1] 0.4
+      
+      $h
+      [1] 0.125
+      
+      $fill
+      [1] TRUE
+      
+      $ref_lbls
+      [1] FALSE
+      
 
 # h_xticks works with default settings
 
@@ -93,4 +115,27 @@
               HR       99% CI p-value (wald)
       ARM B 1.44 (0.85, 2.44)         0.0784
       ARM C 1.89 (1.03, 3.44)         0.0066
+
+# h_data_plot works as expected
+
+    Code
+      res
+    Output
+       [1] "time"      "n.risk"    "n.event"   "n.censor"  "estimate"  "std.error"
+       [7] "conf.high" "conf.low"  "strata"    "censor"   
+
+# h_data_plot respects the ordering of the arm variable factor levels
+
+    Code
+      res
+    Output
+      [1] "ARM B" "ARM C" "ARM A"
+
+# h_data_plot adds rows that have time 0 and estimate 1
+
+    Code
+      res
+    Output
+      [1] ARM A ARM B ARM C
+      Levels: ARM A ARM B ARM C
 

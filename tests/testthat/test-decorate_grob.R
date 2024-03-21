@@ -1,19 +1,23 @@
+# All functions deprecated
+
 testthat::test_that("decorate_grob returns no warnings when creating an empty plot", {
   titles <- "Edgar Anderson's Iris Data"
   footnotes <- "The species are Iris setosa, versicolor, and virginica."
 
   grid::grid.newpage()
-  testthat::expect_silent(grid::grid.draw(
-    decorate_grob(
-      NULL,
-      titles = titles,
-      footnotes = footnotes,
-      page = "Page 4 of 10",
-      outer_margins = c(1, 1, 1, 1),
-      margins = c(1, 1, 1, 1),
-      padding = c(1, 1, 1, 1)
+  lifecycle::expect_deprecated(lifecycle::expect_deprecated(lifecycle::expect_deprecated(
+    grid::grid.draw(
+      decorate_grob(
+        NULL,
+        titles = titles,
+        footnotes = footnotes,
+        page = "Page 4 of 10",
+        outer_margins = c(1, 1, 1, 1),
+        margins = c(1, 1, 1, 1),
+        padding = c(1, 1, 1, 1)
+      )
     )
-  ))
+  )))
 })
 
 testthat::test_that("decorate_grob returns no warnings when creating a non-empty plot", {
@@ -31,33 +35,34 @@ testthat::test_that("decorate_grob returns no warnings when creating a non-empty
     vp = grid::vpStack(grid::plotViewport(), grid::dataViewport(xData = iris$Sepal.Length, yData = iris$Petal.Length))
   )
   grid::grid.newpage()
-  testthat::expect_silent(grid::grid.draw(
-    decorate_grob(
-      grob = p,
-      titles = titles,
-      footnotes = footnotes,
-      page = "Page 6 of 129"
+  lifecycle::expect_deprecated(lifecycle::expect_deprecated(lifecycle::expect_deprecated(
+    grid::grid.draw(
+      decorate_grob(
+        grob = p,
+        titles = titles,
+        footnotes = footnotes,
+        page = "Page 6 of 129"
+      )
     )
-  ))
+  )))
 })
 
 testthat::test_that("split_string works with default settings", {
-  result <- split_string(
+  res <- split_string(
     "The species are Iris setosa, versicolor, and virginica.",
     width = grid::unit(4, "cm")
   )
 
-  res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
 
 testthat::test_that("decorate_grob_factory returns page warning correctly", {
-  pf <- decorate_grob_factory(
+  testthat::expect_warning(pf <- decorate_grob_factory(
     titles = "This is a test\nHello World",
     footnotes = "Here belong the footnotess",
     npages = 0
-  )
-  testthat::expect_error(draw_grob(pf(NULL)), "current page is 1 but max. 0 specified.")
+  ))
+  suppressWarnings(testthat::expect_error(draw_grob(pf(NULL)), "current page is 1 but max. 0 specified."))
 })
 
 testthat::test_that("decorate_grob_set returns no warnings when creating a non-empty plot", {
@@ -92,30 +97,30 @@ testthat::test_that("decorate_grob_set returns no warnings when creating a non-e
       )
     })
   )
-  lg <- testthat::expect_silent(
-    decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")
-  )
-  testthat::expect_silent(draw_grob(lg[[1]]))
+  suppressWarnings(lifecycle::expect_deprecated(
+    lg <- decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")
+  ))
+  testthat::expect_warning(draw_grob(lg[[1]]))
 })
 
 testthat::test_that("text wrapping works as expected", {
-  testthat::skip_if_not_installed("vdiffr")
-
   g <- ggplot2::ggplot(iris) +
     ggplot2::geom_point(aes(x = Sepal.Length, y = Sepal.Width))
 
-  deco_grob_text_wrap <- decorate_grob(
-    grob = ggplot2::ggplotGrob(g),
-    titles = paste(
-      "this is title that is very long dasd asdas dasljdklasjdklasjlk dakldsj akldjakls jkald jaklsj dklsajklaj",
-      "skldajkl jsakldjal jsadlk dasj lasjdlkasjkl ajskld asl jalksjd lkasjlk alkj dlkadlka sjd lakjsdl a"
-    ),
-    footnotes = paste(
-      "this is footnotes that is super super supre long long asdad as dasd ad ada ad asdadkhasdalksjdlkaj kdlajskl",
-      "dsajlkd ajldja lkdjas jdklas jdkasj dlasl;jd klasjdkl aldja lkjdlkaj lkfjalksd a"
-    ),
-    page = "Page 1 of 10"
-  )
+  lifecycle::expect_deprecated(lifecycle::expect_deprecated(lifecycle::expect_deprecated(
+    deco_grob_text_wrap <- decorate_grob(
+      grob = ggplot2::ggplotGrob(g),
+      titles = paste(
+        "this is title that is very long dasd asdas dasljdklasjdklasjlk dakldsj akldjakls jkald jaklsj dklsajklaj",
+        "skldajkl jsakldjal jsadlk dasj lasjdlkasjkl ajskld asl jalksjd lkasjlk alkj dlkadlka sjd lakjsdl a"
+      ),
+      footnotes = paste(
+        "this is footnotes that is super super supre long long asdad as dasd ad ada ad asdadkhasdalksjdlkaj kdlajskl",
+        "dsajlkd ajldja lkdjas jdklas jdkasj dlasl;jd klasjdkl aldja lkjdlkaj lkfjalksd a"
+      ),
+      page = "Page 1 of 10"
+    )
+  )))
 
   expect_snapshot_ggplot(title = "deco_grob_text_wrap", fig = deco_grob_text_wrap, width = 10, height = 8)
 })
