@@ -211,8 +211,8 @@
 <text x='645.71' y='51.75' text-anchor='middle' style='font-size: 12.00px; font-family: "Arial";' textLength='71.39px' lengthAdjust='spacingAndGlyphs'>(685.2, 1501)</text>
 <text x='645.71' y='64.84' text-anchor='middle' style='font-size: 12.00px; font-family: "Arial";' textLength='71.39px' lengthAdjust='spacingAndGlyphs'>(555.8, 1000)</text>
 <text x='645.71' y='77.93' text-anchor='middle' style='font-size: 12.00px; font-family: "Arial";' textLength='74.72px' lengthAdjust='spacingAndGlyphs'>(391.3, 792.1)</text>
-<text x='485.11' y='77.93' text-anchor='middle' style='font-size: 12.00px; font-style: italic; font-family: "Arial";' textLength='38.68px' lengthAdjust='spacingAndGlyphs'>ARM C</text>
-<text x='485.11' y='64.84' text-anchor='middle' style='font-size: 12.00px; font-style: italic; font-family: "Arial";' textLength='38.02px' lengthAdjust='spacingAndGlyphs'>ARM B</text>
-<text x='485.11' y='51.75' text-anchor='middle' style='font-size: 12.00px; font-style: italic; font-family: "Arial";' textLength='37.57px' lengthAdjust='spacingAndGlyphs'>ARM A</text>
+<text x='504.45' y='77.93' text-anchor='end' style='font-size: 12.00px; font-style: italic; font-family: "Arial";' textLength='38.68px' lengthAdjust='spacingAndGlyphs'>ARM C</text>
+<text x='504.45' y='64.84' text-anchor='end' style='font-size: 12.00px; font-style: italic; font-family: "Arial";' textLength='38.02px' lengthAdjust='spacingAndGlyphs'>ARM B</text>
+<text x='504.45' y='51.75' text-anchor='end' style='font-size: 12.00px; font-style: italic; font-family: "Arial";' textLength='37.57px' lengthAdjust='spacingAndGlyphs'>ARM A</text>
 </g>
 </svg>

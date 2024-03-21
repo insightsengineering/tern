@@ -271,9 +271,9 @@
 <text x='644.19' y='79.51' text-anchor='middle' style='font-size: 10.00px; font-family: "Arial";' textLength='59.53px' lengthAdjust='spacingAndGlyphs'>(685.2, 1501)</text>
 <text x='644.19' y='100.45' text-anchor='middle' style='font-size: 10.00px; font-family: "Arial";' textLength='59.53px' lengthAdjust='spacingAndGlyphs'>(555.8, 1000)</text>
 <text x='644.19' y='121.40' text-anchor='middle' style='font-size: 10.00px; font-family: "Arial";' textLength='62.31px' lengthAdjust='spacingAndGlyphs'>(391.3, 792.1)</text>
-<text x='481.89' y='121.40' text-anchor='middle' style='font-size: 10.00px; font-style: italic; font-family: "Arial";' textLength='32.22px' lengthAdjust='spacingAndGlyphs'>ARM C</text>
-<text x='481.89' y='100.45' text-anchor='middle' style='font-size: 10.00px; font-style: italic; font-family: "Arial";' textLength='31.67px' lengthAdjust='spacingAndGlyphs'>ARM B</text>
-<text x='481.89' y='79.51' text-anchor='middle' style='font-size: 10.00px; font-style: italic; font-family: "Arial";' textLength='31.29px' lengthAdjust='spacingAndGlyphs'>ARM A</text>
+<text x='498.00' y='121.40' text-anchor='end' style='font-size: 10.00px; font-style: italic; font-family: "Arial";' textLength='32.22px' lengthAdjust='spacingAndGlyphs'>ARM C</text>
+<text x='498.00' y='100.45' text-anchor='end' style='font-size: 10.00px; font-style: italic; font-family: "Arial";' textLength='31.67px' lengthAdjust='spacingAndGlyphs'>ARM B</text>
+<text x='498.00' y='79.51' text-anchor='end' style='font-size: 10.00px; font-style: italic; font-family: "Arial";' textLength='31.29px' lengthAdjust='spacingAndGlyphs'>ARM A</text>
 </g>
 <defs>
   <clipPath id='cpNTQuMDB8MzA2LjAwfDI4Ni41NnwzNTguNTY='>
@@ -294,7 +294,7 @@
 <text x='259.64' y='304.32' text-anchor='middle' style='font-size: 10.00px; font-weight: bold; font-family: "Arial";' textLength='83.92px' lengthAdjust='spacingAndGlyphs'>p-value (log-rank)</text>
 <text x='259.64' y='326.14' text-anchor='middle' style='font-size: 10.00px; font-family: "Arial";' textLength='30.61px' lengthAdjust='spacingAndGlyphs'>0.0905</text>
 <text x='259.64' y='347.96' text-anchor='middle' style='font-size: 10.00px; font-family: "Arial";' textLength='30.61px' lengthAdjust='spacingAndGlyphs'>0.3371</text>
-<text x='100.02' y='347.96' text-anchor='middle' style='font-size: 10.00px; font-style: italic; font-family: "Arial";' textLength='81.86px' lengthAdjust='spacingAndGlyphs'>ARM C vs. ARM B</text>
-<text x='100.02' y='326.14' text-anchor='middle' style='font-size: 10.00px; font-style: italic; font-family: "Arial";' textLength='80.55px' lengthAdjust='spacingAndGlyphs'>ARM A vs. ARM B</text>
+<text x='141.06' y='347.96' text-anchor='end' style='font-size: 10.00px; font-style: italic; font-family: "Arial";' textLength='81.86px' lengthAdjust='spacingAndGlyphs'>ARM C vs. ARM B</text>
+<text x='141.06' y='326.14' text-anchor='end' style='font-size: 10.00px; font-style: italic; font-family: "Arial";' textLength='80.55px' lengthAdjust='spacingAndGlyphs'>ARM A vs. ARM B</text>
 </g>
 </svg>

@@ -20,7 +20,7 @@ h_tbl_coxph_pairwise(
 \item \code{tte} (\code{numeric})\cr variable indicating time-to-event duration values.
 \item \code{is_event} (\code{logical})\cr event variable. \code{TRUE} if event, \code{FALSE} if time to event is censored.
 \item \code{arm} (\code{factor})\cr the treatment group variable.
-\item \code{strat} (\code{character} or \code{NULL})\cr variable names indicating stratification factors.
+\item \code{strata} (\code{character} or \code{NULL})\cr variable names indicating stratification factors.
 }}
 
 \item{ref_group_coxph}{(\code{character})\cr level of arm variable to use as reference group in calculations for

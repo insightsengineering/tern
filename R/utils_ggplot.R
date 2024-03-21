@@ -164,6 +164,9 @@ df2gg <- function(df,
                   col_lab_fontface = "bold",
                   hline = TRUE,
                   bg_fill = NULL) {
+  # convert NAs to text
+  df <- as.data.frame(apply(df, 1:2, tidyr::replace_na, replace = "NA"))
+
   if (col_labels) {
     df <- as.matrix(df)
     df <- rbind(colnames(df), df)

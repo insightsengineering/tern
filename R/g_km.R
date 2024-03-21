@@ -11,7 +11,7 @@
 #'   * `tte` (`numeric`)\cr variable indicating time-to-event duration values.
 #'   * `is_event` (`logical`)\cr event variable. `TRUE` if event, `FALSE` if time to event is censored.
 #'   * `arm` (`factor`)\cr the treatment group variable.
-#'   * `strat` (`character` or `NULL`)\cr variable names indicating stratification factors.
+#'   * `strata` (`character` or `NULL`)\cr variable names indicating stratification factors.
 #' @param control_surv (`list`)\cr parameters for comparison details, specified by using
 #'   the helper function [control_surv_timepoint()]. Some possible parameter options are:
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for survival rate.
@@ -255,7 +255,7 @@ g_km <- function(df,
   checkmate::assert_character(xlab, len = 1, null.ok = TRUE)
   checkmate::assert_character(yval)
   checkmate::assert_character(ylab, null.ok = TRUE)
-  checkmate::assert_numeric(ylim, len = 2, null.ok = TRUE)
+  checkmate::assert_numeric(ylim, finite = TRUE, any.missing = FALSE, len = 2, sorted = TRUE, null.ok = TRUE)
   checkmate::assert_character(title, len = 1, null.ok = TRUE)
   checkmate::assert_character(footnotes, len = 1, null.ok = TRUE)
   checkmate::assert_numeric(font_size, len = 1)
@@ -270,7 +270,7 @@ g_km <- function(df,
   checkmate::assert_character(ref_group_coxph, len = 1, null.ok = TRUE)
   checkmate::assert_list(control_annot_surv_med)
   checkmate::assert_list(control_annot_coxph)
-  checkmate::assert_numeric(legend_pos, len = 2, null.ok = TRUE)
+  checkmate::assert_numeric(legend_pos, finite = TRUE, any.missing = FALSE, len = 2, null.ok = TRUE)
   assert_proportion_value(rel_height_plot)
   checkmate::assert_logical(as_list)
 
@@ -306,13 +306,24 @@ g_km <- function(df,
 
   # calculate x-ticks
   xticks <- h_xticks(data = data, xticks = xticks, max_time = max_time)
-  if (is.null(max_time)) max_time <- max(xticks)
 
   # change estimates of survival to estimates of failure (1 - survival)
   if (yval == "Failure") {
     data[c("estimate", "conf.low", "conf.high", "censor")] <- list(
       1 - data$estimate, 1 - data$conf.low, 1 - data$conf.high, 1 - data$censor
     )
+  }
+
+  # derive y-axis limits
+  if (is.null(ylim)) {
+    if (!is.null(max_time)) {
+      y_lwr <- min(data[data$time < max_time, ][["estimate"]])
+      y_upr <- max(data[data$time < max_time, ][["estimate"]])
+    } else {
+      y_lwr <- min(data[["estimate"]])
+      y_upr <- max(data[["estimate"]])
+    }
+    ylim <- c(y_lwr, y_upr)
   }
 
   # initialize ggplot
@@ -328,7 +339,6 @@ g_km <- function(df,
     )
   ) +
     theme_bw(base_size = font_size) +
-    scale_x_continuous(limits = c(0, max_time), breaks = xticks, expand = c(0.025, 0)) +
     scale_y_continuous(limits = ylim, expand = c(0.025, 0)) +
     labs(title = title, x = xlab, y = ylab, caption = footnotes) +
     theme(
@@ -344,6 +354,23 @@ g_km <- function(df,
       panel.grid.minor = element_blank()
     )
 
+  # derive x-axis limits
+  if (!is.null(max_time) && !is.null(xticks)) {
+    gg_plt <- gg_plt + scale_x_continuous(
+      breaks = xticks, limits = c(min(0, xticks), max(c(xticks, max_time))), expand = c(0.025, 0)
+    )
+  } else if (!is.null(xticks)) {
+    if (max(data$time) <= max(xticks)) {
+      gg_plt <- gg_plt + scale_x_continuous(
+        breaks = xticks, limits = c(min(0, min(xticks)), max(xticks)), expand = c(0.025, 0)
+      )
+    } else {
+      gg_plt <- gg_plt + scale_x_continuous(breaks = xticks, expand = c(0.025, 0))
+    }
+  } else if (!is.null(max_time)) {
+    gg_plt <- gg_plt + scale_x_continuous(limits = c(0, max_time), expand = c(0.025, 0))
+  }
+
   # set legend position
   if (!is.null(legend_pos)) {
     gg_plt <- gg_plt + theme(legend.position.inside = legend_pos)
@@ -353,11 +380,10 @@ g_km <- function(df,
       partial = nrow(data) - length(armval) - 1
     )[nrow(data) - length(armval) - 1]
 
-    ylim_rng <- layer_scales(gg_plt)$y$range$range
-    y_rng <- ylim_rng[2] - ylim_rng[1]
+    y_rng <- ylim[2] - ylim[1]
 
-    if (yval == "Survival" && data$estimate[data$time == max_time2] > ylim_rng[1] + 0.09 * y_rng &&
-      data$estimate[data$time == max_time2] < ylim_rng[1] + 0.5 * y_rng) { # nolint
+    if (yval == "Survival" && data$estimate[data$time == max_time2] > ylim[1] + 0.09 * y_rng &&
+      data$estimate[data$time == max_time2] < ylim[1] + 0.5 * y_rng) { # nolint
       gg_plt <- gg_plt +
         theme(
           legend.position.inside = c(1, 0.5),
@@ -490,7 +516,7 @@ g_km <- function(df,
         panel.grid = element_blank(),
         axis.title.y = element_blank(),
         axis.ticks.y = element_blank(),
-        axis.text.y = element_text(size = font_size, face = "italic"),
+        axis.text.y = element_text(size = font_size, face = "italic", hjust = 1),
         axis.text.x = element_text(size = font_size),
         axis.line.x = element_line()
       ) +
@@ -520,7 +546,7 @@ g_km <- function(df,
 
     gg_surv_med <- df2gg(surv_med_tbl, font_size = font_size, colwidths = c(1, 1, 2), bg_fill = bg_fill) +
       theme(
-        axis.text.y = element_text(size = font_size, face = "italic"),
+        axis.text.y = element_text(size = font_size, face = "italic", hjust = 1),
         plot.margin = margin(0, 2, 0, 5)
       ) +
       coord_cartesian(clip = "off", ylim = c(0.5, nrow(surv_med_tbl) + 1.5))
@@ -555,7 +581,7 @@ g_km <- function(df,
 
     gg_coxph <- df2gg(coxph_tbl, font_size = font_size, colwidths = c(1.1, 1, 3), bg_fill = bg_fill) +
       theme(
-        axis.text.y = element_text(size = font_size, face = "italic"),
+        axis.text.y = element_text(size = font_size, face = "italic", hjust = 1),
         plot.margin = margin(0, 2, 0, 5)
       ) +
       coord_cartesian(clip = "off", ylim = c(0.5, nrow(coxph_tbl) + 1.5))

@@ -58,7 +58,7 @@ g_km(
 \item \code{tte} (\code{numeric})\cr variable indicating time-to-event duration values.
 \item \code{is_event} (\code{logical})\cr event variable. \code{TRUE} if event, \code{FALSE} if time to event is censored.
 \item \code{arm} (\code{factor})\cr the treatment group variable.
-\item \code{strat} (\code{character} or \code{NULL})\cr variable names indicating stratification factors.
+\item \code{strata} (\code{character} or \code{NULL})\cr variable names indicating stratification factors.
 }}
 
 \item{control_surv}{(\code{list})\cr parameters for comparison details, specified by using
