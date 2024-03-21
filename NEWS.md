@@ -1,4 +1,4 @@
-# tern 0.9.3.9025
+# tern 0.9.3.9026
 
 ### New Features
 * Refactored `g_forest` to output a `ggplot` object instead of a `grob` object.
@@ -15,6 +15,7 @@
 * Fixed nested column split label overlay issue in `rtable2gg` to clean up appearance of text labels.
 * Fixed bug in `s_ancova` causing incorrect difference calculations for arm variables with irregular levels.
 * Fixed bug in `format_count_fraction_fixed_dp` that did not have the same print when the fraction was 1 (100%).
+* Fixed bug in `g_lineplot` causing default labels not to update according to specified `control` settings.
 
 ### Miscellaneous
 * Added function `expect_snapshot_ggplot` to test setup file to process plot snapshot tests and allow plot dimensions to be set.
@@ -26,6 +27,7 @@
 * Began deprecation of the `forest_grob`, `forest_dot_line`, `forest_viewport`, `vp_forest_table_part`, and `grid.forest` functions.
 * Began deprecation of no longer used Kaplan-Meier helper functions `h_ggkm`, `h_decompose_gg`, `h_km_layout`, `h_grob_tbl_at_risk`, `h_grob_median_surv`, `h_grob_y_annot`, and `h_grob_coxph`.
 * Began deprecation of `grob`/`grid` related functions `stack_grobs`, `arrange_grobs`, `draw_grob`, `decorate_grob`, `split_text_grob`, `decorate_grob_factory`, and `decorate_grob_set` which are no longer used in `tern`.
+* Removed `vdiffr` package from Suggests in DESCRIPTION file.
 
 # tern 0.9.3
 
