@@ -12,6 +12,7 @@
 * Fixed nested column split label overlay issue in `rtable2gg` to clean up appearance of text labels.
 * Fixed bug in `s_ancova` causing incorrect difference calculations for arm variables with irregular levels.
 * Fixed bug in `format_count_fraction_fixed_dp` that did not have the same print when the fraction was 1 (100%).
+* Fixed bug in `g_lineplot` causing default labels not to update according to specified `control` settings.
 
 ### Miscellaneous
 * Added function `expect_snapshot_ggplot` to test setup file to process plot snapshot tests and allow plot dimensions to be set.

@@ -147,8 +147,8 @@ g_lineplot <- function(df,
                        subtitle_add_paramcd = TRUE,
                        subtitle_add_unit = TRUE,
                        caption = NULL,
-                       table_format = summary_formats(),
-                       table_labels = summary_labels(),
+                       table_format = get_formats_from_stats(table),
+                       table_labels = get_labels_from_stats(table),
                        table_font_size = 3,
                        newpage = TRUE,
                        col = NULL) {
@@ -159,6 +159,11 @@ g_lineplot <- function(df,
 
   checkmate::assert_string(title, null.ok = TRUE)
   checkmate::assert_string(subtitle, null.ok = TRUE)
+
+  extra_args <- list(...)
+  if ("control" %in% names(extra_args) && all(table_labels == get_labels_from_stats(table))) {
+    table_labels <- table_labels %>% labels_use_control(extra_args[["control"]])
+  }
 
   if (is.character(interval)) {
     checkmate::assert_vector(whiskers, min.len = 0, max.len = 2)
@@ -507,10 +512,10 @@ control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", group_var = "ARM", p
 
   checkmate::assert_string(x)
   checkmate::assert_string(y)
-  checkmate::assert_string(group_var, na.ok = TRUE)
-  checkmate::assert_string(subject_var, na.ok = TRUE)
-  checkmate::assert_string(paramcd, na.ok = TRUE)
-  checkmate::assert_string(y_unit, na.ok = TRUE)
+  checkmate::assert_string(group_var, na.ok = TRUE, null.ok = TRUE)
+  checkmate::assert_string(subject_var, na.ok = TRUE, null.ok = TRUE)
+  checkmate::assert_string(paramcd, na.ok = TRUE, null.ok = TRUE)
+  checkmate::assert_string(y_unit, na.ok = TRUE, null.ok = TRUE)
 
   variables <- c(x = x, y = y, group_var = group_var, paramcd = paramcd, y_unit = y_unit, subject_var = subject_var)
   return(variables)

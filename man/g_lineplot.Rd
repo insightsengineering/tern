@@ -29,8 +29,8 @@ g_lineplot(
   subtitle_add_paramcd = TRUE,
   subtitle_add_unit = TRUE,
   caption = NULL,
-  table_format = summary_formats(),
-  table_labels = summary_labels(),
+  table_format = get_formats_from_stats(table),
+  table_labels = get_labels_from_stats(table),
   table_font_size = 3,
   newpage = TRUE,
   col = NULL
