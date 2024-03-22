@@ -203,7 +203,7 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 #'
 #' @export
 get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL) {
-  checkmate::assert_character(stats, min.len = 1)
+  checkmate::assert_character(stats, min.len = 1, null.ok = TRUE)
   checkmate::assert_character(row_nms, null.ok = TRUE)
   # It may be a list
   if (checkmate::test_list(labels_in, null.ok = TRUE)) {
