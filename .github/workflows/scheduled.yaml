@@ -4,6 +4,9 @@ name: Scheduled 🕰️
 on:
   schedule:
     - cron: '45 3 * * 0'
+  push:
+    branches:
+      - fix_verdepcheck
   workflow_dispatch:
 
 jobs:
