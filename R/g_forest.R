@@ -384,7 +384,7 @@ g_forest <- function(tbl,
       all(which_arrow) ~ "both",
       which_arrow[1] ~ "first",
       which_arrow[2] ~ "last",
-      TRUE ~ NA
+      TRUE ~ NA_character_
     )
 
     # Add CI lines
