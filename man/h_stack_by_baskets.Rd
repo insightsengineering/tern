@@ -10,7 +10,6 @@ h_stack_by_baskets(
   smq_varlabel = "Standardized MedDRA Query",
   keys = c("STUDYID", "USUBJID", "ASTDTM", "AEDECOD", "AESEQ"),
   aag_summary = NULL,
-  na_level = lifecycle::deprecated(),
   na_str = "<Missing>"
 )
 }
@@ -26,8 +25,6 @@ h_stack_by_baskets(
 \item{aag_summary}{(\code{data.frame})\cr containing the \code{SMQ} baskets and the levels of interest for the final \code{SMQ}
 variable. This is useful when there are some levels of interest that are not observed in the \code{df} dataset.
 The two columns of this dataset should be named \code{basket} and \code{basket_name}.}
-
-\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 }

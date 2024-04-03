@@ -2,7 +2,6 @@
 % Please edit documentation in R/analyze_variables.R
 \name{control_analyze_vars}
 \alias{control_analyze_vars}
-\alias{control_summarize_vars}
 \title{Control Function for Descriptive Statistics}
 \usage{
 control_analyze_vars(
@@ -31,9 +30,4 @@ A list of components with the same names as the arguments.
 
 Sets a list of parameters for summaries of descriptive statistics. Typically used internally to specify
 details for \code{\link[=s_summary]{s_summary()}}. This function family is mainly used by \code{\link[=analyze_vars]{analyze_vars()}}.
-}
-\note{
-Deprecation cycle started for \code{control_summarize_vars} as it is going to renamed into
-\code{control_analyze_vars}. Intention is to reflect better the core underlying \code{rtables}
-functions; in this case \code{\link[=analyze_vars]{analyze_vars()}} wraps \code{\link[rtables:analyze]{rtables::analyze()}}.
 }

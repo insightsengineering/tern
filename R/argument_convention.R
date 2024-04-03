@@ -37,7 +37,6 @@
 #'   levels that belong to it in the character vectors that are elements of the list.
 #' @param id (`string`)\cr subject variable name.
 #' @param is_event (`logical`)\cr `TRUE` if event, `FALSE` if time to event is censored.
-#' @param indent_mod `r lifecycle::badge("deprecated")` Please use the `.indent_mods` argument instead.
 #' @param label_all (`string`)\cr label for the total population analysis.
 #' @param labelstr (`character`)\cr label of the level of the parent split currently being summarized
 #'   (must be present as second argument in Content Row Functions). See [rtables::summarize_row_groups()]
@@ -46,7 +45,6 @@
 #' @param method (`string`)\cr specifies the test used to calculate the p-value for the difference between
 #'   two proportions. For options, see [s_test_proportion_diff()]. Default is `NULL` so no test is performed.
 #' @param na.rm (`flag`)\cr whether `NA` values should be removed from `x` prior to analysis.
-#' @param na_level `r lifecycle::badge("deprecated")` Please use the `na_str` argument instead.
 #' @param na_str (`string`)\cr string used to replace all `NA` or empty values in the output.
 #' @param nested (`flag`)\cr whether this layout instruction should be applied within the existing layout structure _if
 #'   possible_ (`TRUE`, the default) or as a new top-level element (`FALSE`). Ignored if it would nest a split.

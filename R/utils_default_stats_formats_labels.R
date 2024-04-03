@@ -203,7 +203,7 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 #'
 #' @export
 get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL) {
-  checkmate::assert_character(stats, min.len = 1)
+  checkmate::assert_character(stats, min.len = 1, null.ok = TRUE)
   checkmate::assert_character(row_nms, null.ok = TRUE)
   # It may be a list
   if (checkmate::test_list(labels_in, null.ok = TRUE)) {
@@ -521,70 +521,4 @@ summary_formats <- function(type = "numeric", include_pval = FALSE) {
 summary_labels <- function(type = "numeric", include_pval = FALSE) {
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
   get_labels_from_stats(get_stats(met_grp, add_pval = include_pval))
-}
-
-#' @describeIn default_stats_formats_labels `r lifecycle::badge("deprecated")` Function to
-#'   configure settings for default or custom summary statistics for a given data type. In
-#'   addition to selecting a custom subset of statistics, the user can also set custom
-#'   formats, labels, and indent modifiers for any of these statistics.
-#'
-#' @param stats_custom (`named vector` of `character`)\cr vector of statistics to include if
-#'   not the defaults. This argument overrides `include_pval` and other custom value arguments
-#'   such that only settings for these statistics will be returned.
-#' @param formats_custom (`named vector` of `character`)\cr vector of custom statistics formats
-#'   to use in place of the defaults defined in [`summary_formats()`]. Names should be a subset
-#'   of the statistics defined in `stats_custom` (or default statistics if this is `NULL`).
-#' @param labels_custom (`named vector` of `character`)\cr vector of custom statistics labels
-#'   to use in place of the defaults defined in [`summary_labels()`]. Names should be a subset
-#'   of the statistics defined in `stats_custom` (or default statistics if this is `NULL`).
-#' @param indent_mods_custom (`integer` or `named vector` of `integer`)\cr vector of custom
-#'   indentation modifiers for statistics to use instead of the default of `0L` for all statistics.
-#'   Names should be a subset of the statistics defined in `stats_custom` (or default statistics
-#'   if this is `NULL`). Alternatively, the same indentation modifier can be applied to all
-#'   statistics by setting `indent_mods_custom` to a single integer value.
-#'
-#' @return
-#' * `summary_custom` returns a `list` of 4 named elements: `stats`, `formats`, `labels`,
-#'   and `indent_mods`.
-#'
-#' @examples
-#' summary_custom()
-#' summary_custom(type = "counts", include_pval = TRUE)
-#' summary_custom(
-#'   include_pval = TRUE, stats_custom = c("n", "mean", "sd", "pval"),
-#'   labels_custom = c(sd = "Std. Dev."), indent_mods_custom = 3L
-#' )
-#'
-#' @export
-summary_custom <- function(type = "numeric",
-                           include_pval = FALSE,
-                           stats_custom = NULL,
-                           formats_custom = NULL,
-                           labels_custom = NULL,
-                           indent_mods_custom = NULL) {
-  lifecycle::deprecate_warn(
-    "0.9.0.9001",
-    "summary_custom()",
-    details = "Please use `get_stats`, `get_formats_from_stats`, and `get_labels_from_stats` directly instead."
-  )
-  met_grp <- paste0(c("analyze_vars", type), collapse = "_")
-  .stats <- get_stats(met_grp, stats_custom, add_pval = include_pval)
-  .formats <- get_formats_from_stats(.stats, formats_custom)
-  .labels <- get_labels_from_stats(.stats, labels_custom)
-  .indent_mods <- stats::setNames(rep(0L, length(.stats)), .stats)
-
-  if (!is.null(indent_mods_custom)) {
-    if (is.null(names(indent_mods_custom)) && length(indent_mods_custom) == 1) {
-      .indent_mods[names(.indent_mods)] <- indent_mods_custom
-    } else {
-      .indent_mods[names(indent_mods_custom)] <- indent_mods_custom
-    }
-  }
-
-  list(
-    stats = .stats,
-    formats = .formats,
-    labels = .labels,
-    indent_mods = .indent_mods[.stats]
-  )
 }

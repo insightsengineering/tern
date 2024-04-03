@@ -4,16 +4,12 @@ adlb$AVISIT <- droplevels(adlb$AVISIT)
 adlb <- dplyr::mutate(adlb, AVISIT = forcats::fct_reorder(AVISIT, AVISITN, min))
 
 testthat::test_that("g_lineplot works with default settings", {
-  testthat::skip_if_not_installed("vdiffr")
-
   g_lineplot <- g_lineplot(adlb, adsl)
 
   expect_snapshot_ggplot(title = "g_lineplot", fig = g_lineplot, width = 10, height = 8)
 })
 
 testthat::test_that("g_lineplot works with custom settings and statistics table", {
-  testthat::skip_if_not_installed("vdiffr")
-
   g_lineplot_w_stats <- withr::with_options(
     opts_partial_match_old,
     g_lineplot(
@@ -35,8 +31,6 @@ testthat::test_that("g_lineplot works with custom settings and statistics table"
 })
 
 testthat::test_that("g_lineplot works with cohort_id specified", {
-  testthat::skip_if_not_installed("vdiffr")
-
   g_lineplot_cohorts <- withr::with_options(
     opts_partial_match_old,
     g_lineplot(

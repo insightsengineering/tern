@@ -1,6 +1,6 @@
 #' Stack Multiple Grobs
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("deprecated")`
 #'
 #' Stack grobs as a new grob with 1 column and multiple rows layout.
 #'
@@ -39,6 +39,12 @@ stack_grobs <- function(...,
                         vp = NULL,
                         gp = NULL,
                         name = NULL) {
+  lifecycle::deprecate_warn(
+    "0.9.4",
+    "stack_grobs()",
+    details = "`tern` plotting functions no longer generate `grob` objects."
+  )
+
   checkmate::assert_true(
     all(vapply(grobs, grid::is.grob, logical(1)))
   )
@@ -132,6 +138,12 @@ arrange_grobs <- function(...,
                           vp = NULL,
                           gp = NULL,
                           name = NULL) {
+  lifecycle::deprecate_warn(
+    "0.9.4",
+    "arrange_grobs()",
+    details = "`tern` plotting functions no longer generate `grob` objects."
+  )
+
   checkmate::assert_true(
     all(vapply(grobs, grid::is.grob, logical(1)))
   )
@@ -218,7 +230,7 @@ arrange_grobs <- function(...,
 
 #' Draw `grob`
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("deprecated")`
 #'
 #' Draw grob on device page.
 #'
@@ -245,6 +257,12 @@ arrange_grobs <- function(...,
 #'
 #' @export
 draw_grob <- function(grob, newpage = TRUE, vp = NULL) {
+  lifecycle::deprecate_warn(
+    "0.9.4",
+    "draw_grob()",
+    details = "`tern` plotting functions no longer generate `grob` objects."
+  )
+
   if (newpage) {
     grid::grid.newpage()
   }

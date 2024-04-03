@@ -71,13 +71,7 @@ h_map_for_count_abnormal <- function(df,
                                      ),
                                      abnormal = list(low = c("LOW", "LOW LOW"), high = c("HIGH", "HIGH HIGH")),
                                      method = c("default", "range"),
-                                     na_level = lifecycle::deprecated(),
                                      na_str = "<Missing>") {
-  if (lifecycle::is_present(na_level)) {
-    lifecycle::deprecate_warn("0.9.1", "h_map_for_count_abnormal(na_level)", "h_map_for_count_abnormal(na_str)")
-    na_str <- na_level
-  }
-
   method <- match.arg(method)
   checkmate::assert_subset(c("anl", "split_rows"), names(variables))
   checkmate::assert_false(anyNA(df[variables$split_rows]))
