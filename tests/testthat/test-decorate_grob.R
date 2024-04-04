@@ -1,11 +1,9 @@
-# All functions deprecated
-
 testthat::test_that("decorate_grob returns no warnings when creating an empty plot", {
   titles <- "Edgar Anderson's Iris Data"
   footnotes <- "The species are Iris setosa, versicolor, and virginica."
 
   grid::grid.newpage()
-  lifecycle::expect_deprecated(lifecycle::expect_deprecated(lifecycle::expect_deprecated(
+  testthat::expect_silent(
     grid::grid.draw(
       decorate_grob(
         NULL,
@@ -17,7 +15,7 @@ testthat::test_that("decorate_grob returns no warnings when creating an empty pl
         padding = c(1, 1, 1, 1)
       )
     )
-  )))
+  )
 })
 
 testthat::test_that("decorate_grob returns no warnings when creating a non-empty plot", {
@@ -35,7 +33,7 @@ testthat::test_that("decorate_grob returns no warnings when creating a non-empty
     vp = grid::vpStack(grid::plotViewport(), grid::dataViewport(xData = iris$Sepal.Length, yData = iris$Petal.Length))
   )
   grid::grid.newpage()
-  lifecycle::expect_deprecated(lifecycle::expect_deprecated(lifecycle::expect_deprecated(
+  testthat::expect_silent(
     grid::grid.draw(
       decorate_grob(
         grob = p,
@@ -44,7 +42,7 @@ testthat::test_that("decorate_grob returns no warnings when creating a non-empty
         page = "Page 6 of 129"
       )
     )
-  )))
+  )
 })
 
 testthat::test_that("split_string works with default settings", {
@@ -57,11 +55,11 @@ testthat::test_that("split_string works with default settings", {
 })
 
 testthat::test_that("decorate_grob_factory returns page warning correctly", {
-  testthat::expect_warning(pf <- decorate_grob_factory(
+  pf <- decorate_grob_factory(
     titles = "This is a test\nHello World",
     footnotes = "Here belong the footnotess",
     npages = 0
-  ))
+  )
   suppressWarnings(testthat::expect_error(draw_grob(pf(NULL)), "current page is 1 but max. 0 specified."))
 })
 
@@ -97,9 +95,9 @@ testthat::test_that("decorate_grob_set returns no warnings when creating a non-e
       )
     })
   )
-  suppressWarnings(lifecycle::expect_deprecated(
+  testthat::expect_silent(
     lg <- decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")
-  ))
+  )
   testthat::expect_warning(draw_grob(lg[[1]]))
 })
 
@@ -107,7 +105,7 @@ testthat::test_that("text wrapping works as expected", {
   g <- ggplot2::ggplot(iris) +
     ggplot2::geom_point(aes(x = Sepal.Length, y = Sepal.Width))
 
-  lifecycle::expect_deprecated(lifecycle::expect_deprecated(lifecycle::expect_deprecated(
+  testthat::expect_silent(
     deco_grob_text_wrap <- decorate_grob(
       grob = ggplot2::ggplotGrob(g),
       titles = paste(
@@ -120,7 +118,7 @@ testthat::test_that("text wrapping works as expected", {
       ),
       page = "Page 1 of 10"
     )
-  )))
+  )
 
   expect_snapshot_ggplot(title = "deco_grob_text_wrap", fig = deco_grob_text_wrap, width = 10, height = 8)
 })

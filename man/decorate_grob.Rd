@@ -61,7 +61,7 @@ according to the page width.}
 A grid grob (\code{gTree}).
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 This function is useful to label grid grobs (also \code{ggplot2}, and \code{lattice} plots)
 with title, footnote, and page numbers.
