@@ -30,7 +30,7 @@ Imports:
     broom (>= 0.5.4),
     car (>= 3.0-13),
     checkmate (>= 2.1.0),
-    cowplot (>= 0.7.0),
+    cowplot (>= 1.0.0),
     dplyr (>= 1.0.0),
     emmeans (>= 1.8.0),
     forcats (>= 1.0.0),
