@@ -1,4 +1,4 @@
-# tern 0.9.3.9028
+# tern 0.9.3.9029
 
 ### New Features
 * Refactored `g_forest` to output a `ggplot` object instead of a `grob` object.
@@ -26,7 +26,7 @@
 * Removed deprecated functions `summarize_vars`, `control_summarize_vars`, `a_compare`, `create_afun_summary`, `create_afun_compare`, and `summary_custom`.
 * Began deprecation of the `forest_grob`, `forest_dot_line`, `forest_viewport`, `vp_forest_table_part`, and `grid.forest` functions.
 * Began deprecation of no longer used Kaplan-Meier helper functions `h_ggkm`, `h_decompose_gg`, `h_km_layout`, `h_grob_tbl_at_risk`, `h_grob_median_surv`, `h_grob_y_annot`, and `h_grob_coxph`.
-* Began deprecation of `grob`/`grid` related functions `stack_grobs`, `arrange_grobs`, `draw_grob`, `decorate_grob`, `split_text_grob`, `decorate_grob_factory`, and `decorate_grob_set` which are no longer used in `tern`.
+* Began deprecation of `grob`/`grid` related functions `stack_grobs`, `arrange_grobs`, and `draw_grob` which are no longer used in `tern`.
 * Removed `vdiffr` package from Suggests in DESCRIPTION file.
 
 # tern 0.9.3
