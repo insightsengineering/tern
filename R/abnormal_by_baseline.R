@@ -1,4 +1,4 @@
-#' Patient Counts with Abnormal Range Values by Baseline Status
+#' Patient counts with abnormal range values by baseline status
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -32,7 +32,7 @@
 #' @order 1
 NULL
 
-#' Description Function for [s_count_abnormal_by_baseline()]
+#' Description function for `s_count_abnormal_by_baseline()`
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

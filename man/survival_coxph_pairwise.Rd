@@ -5,7 +5,7 @@
 \alias{coxph_pairwise}
 \alias{s_coxph_pairwise}
 \alias{a_coxph_pairwise}
-\title{Pairwise \code{CoxPH} model}
+\title{Pairwise Cox-PH model}
 \usage{
 coxph_pairwise(
   lyt,
@@ -125,7 +125,7 @@ the statistics from \code{s_coxph_pairwise()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Summarize p-value, HR and CIs from stratified or unstratified \code{CoxPH} model.
+Summarize p-value, HR and CIs from stratified or unstratified Cox-PH model.
 }
 \section{Functions}{
 \itemize{

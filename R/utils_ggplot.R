@@ -143,7 +143,7 @@ rtable2gg <- function(tbl, fontsize = 12, colwidths = NULL, lbl_col_padding = 0)
 #' @param font_size (`numeric`)\cr font size.
 #' @param col_labels (`logical`)\cr whether the column names (labels) of `df` should be used as the first row
 #'   of the output table.
-#' @param col_labels_fontface (`character`)\cr fontface to apply to the first row (of column labels
+#' @param col_labels_fontface (`character`)\cr font face to apply to the first row (of column labels
 #'   if `col_labels = TRUE`).
 #' @param hline (`logical`)\cr whether a horizontal line should be printed below the first row of the table.
 #' @param bg_fill (`character`)\cr table background fill color.

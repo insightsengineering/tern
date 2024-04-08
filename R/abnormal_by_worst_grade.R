@@ -1,4 +1,4 @@
-#' Patient Counts with the Most Extreme Post-baseline Toxicity Grade per Direction of Abnormality
+#' Patient counts with the most extreme post-baseline toxicity grade per direction of abnormality
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -19,7 +19,7 @@
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("abnormal_by_worst_grade")`
 #'   to see available statistics for this function.
 #'
-#' @seealso [h_adlb_abnormal_by_worst_grade()] which pre-processes `ADLB` data frames to be used in
+#' @seealso [h_adlb_abnormal_by_worst_grade()] which pre-processes ADLB data frames to be used in
 #'   [count_abnormal_by_worst_grade()].
 #'
 #' @name abnormal_by_worst_grade
@@ -167,11 +167,11 @@ count_abnormal_by_worst_grade <- function(lyt,
   )
 }
 
-#' Helper function to prepare `ADLB` for [count_abnormal_by_worst_grade()]
+#' Helper function to prepare ADLB for [count_abnormal_by_worst_grade()]
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Helper function to prepare an `ADLB` data frame to be used as input in
+#' Helper function to prepare an ADLB data frame to be used as input in
 #' [count_abnormal_by_worst_grade()]. The following pre-processing steps are applied:
 #'
 #' 1. `adlb` is filtered on variable `avisit` to only include post-baseline visits.
@@ -185,7 +185,7 @@ count_abnormal_by_worst_grade <- function(lyt,
 #'     replaced by their absolute values.
 #' 4. Unused factor levels are dropped from `adlb` via [droplevels()].
 #'
-#' @param adlb (`data.frame`)\cr `ADLB` dataframe.
+#' @param adlb (`data.frame`)\cr ADLB data frame.
 #' @param atoxgr (`character`)\cr Analysis toxicity grade variable. This must be a `factor`
 #'   variable.
 #' @param avisit (`character`)\cr Analysis visit variable.

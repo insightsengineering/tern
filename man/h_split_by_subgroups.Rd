@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_survival_duration_subgroups.R
 \name{h_split_by_subgroups}
 \alias{h_split_by_subgroups}
-\title{Split Dataframe by Subgroups}
+\title{Split data frame by subgroups}
 \usage{
 h_split_by_subgroups(data, subgroups, groups_lists = list())
 }
@@ -23,7 +23,7 @@ A list with subset data (\code{df}) and metadata about the subset (\code{df_labe
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Split a dataframe into a non-nested list of subsets.
+Split a data frame into a non-nested list of subsets.
 }
 \details{
 Main functionality is to prepare data for use in forest plot layouts.

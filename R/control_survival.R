@@ -1,9 +1,9 @@
-#' Control Function for `CoxPH` Model
+#' Control Function for Cox-PH Model
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This is an auxiliary function for controlling arguments for `CoxPH` model, typically used internally to specify
-#' details of `CoxPH` model for [s_coxph_pairwise()]. `conf_level` refers to Hazard Ratio estimation.
+#' This is an auxiliary function for controlling arguments for Cox-PH model, typically used internally to specify
+#' details of Cox-PH model for [s_coxph_pairwise()]. `conf_level` refers to Hazard Ratio estimation.
 #'
 #' @inheritParams argument_convention
 #' @param pval_method (`string`)\cr p-value method for testing hazard ratio = 1.

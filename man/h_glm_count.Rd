@@ -40,7 +40,7 @@ in averaging predictions. Number of weights must equal the number of levels incl
 Weights option passed to \code{\link[emmeans:emmeans]{emmeans::emmeans()}}.}
 
 \item{distribution}{(\code{character})\cr a character value specifying the distribution
-used in the regression (poisson, quasipoisson, negative binomial).}
+used in the regression (Poisson, Quasi-Poisson, negative binomial).}
 
 \item{obj}{(\code{glm.fit})\cr fitted model object used to derive the mean rate estimates in each treatment arm.}
 
@@ -77,14 +77,14 @@ Helper functions that can be used to return the results of various Poisson model
 }
 \section{Functions}{
 \itemize{
-\item \code{h_glm_poisson()}: Helper function to return results of a poisson model.
+\item \code{h_glm_poisson()}: Helper function to return results of a Poisson model.
 
-\item \code{h_glm_quasipoisson()}: Helper function to return results of a quasipoisson model.
+\item \code{h_glm_quasipoisson()}: Helper function to return results of a Quasi-Poisson model.
 
 \item \code{h_glm_negbin()}: Helper function to return results of a negative binomial model.
 
 \item \code{h_glm_count()}: Helper function to return the results of the
-selected model (poisson, quasipoisson, negative binomial).
+selected model (Poisson, Quasi-Poisson, negative binomial).
 
 \item \code{h_ppmeans()}: Helper function to return the estimated means.
 

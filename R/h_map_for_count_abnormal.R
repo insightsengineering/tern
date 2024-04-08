@@ -1,8 +1,8 @@
-#' Helper Function to create a map dataframe that can be used in `trim_levels_to_map` split function.
+#' Helper Function to create a map data frame that can be used in `trim_levels_to_map` split function.
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Helper Function to create a map dataframe from the input dataset, which can be used as an argument in the
+#' Helper Function to create a map data frame from the input dataset, which can be used as an argument in the
 #' `trim_levels_to_map` split function. Based on different method, the map is constructed differently.
 #'
 #' @inheritParams argument_convention

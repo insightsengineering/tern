@@ -181,7 +181,7 @@ at risk table is printed below the plot via \code{\link[cowplot:plot_grid]{cowpl
 \code{control_annot_surv_med} instead.}
 
 \item{width_annots}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{w} element of \code{control_annot_surv_med}
-(for surv_med) and \code{control_annot_coxph} (for coxph)."}
+(for \code{surv_med}) and \code{control_annot_coxph} (for \code{coxph})."}
 }
 \value{
 A \code{ggplot} Kaplan-Meier plot and (optionally) summary table.
@@ -225,7 +225,7 @@ g_km(
   ggtheme = ggplot2::theme_minimal()
 )
 
-# Example with pairwise coxph analysis annotation table, adjusted annotation tables
+# Example with pairwise Cox-PH analysis annotation table, adjusted annotation tables
 g_km(
   df = df, variables = variables,
   annot_coxph = TRUE,

@@ -408,7 +408,6 @@ prop_wald <- function(rsp, conf_level, correct = FALSE) {
   c(l_ci, u_ci)
 }
 
-#' @describeIn h_proportions Calculates the `Agresti-Coull` interval (created by `Alan Agresti` and `Brent Coull`) by
 #'   (for 95% CI) adding two successes and two failures to the data and then using the Wald formula to construct a CI.
 #'
 #' @examples

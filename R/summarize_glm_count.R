@@ -27,7 +27,7 @@ NULL
 #' @name h_glm_count
 NULL
 
-#' @describeIn h_glm_count Helper function to return results of a poisson model.
+#' @describeIn h_glm_count Helper function to return results of a Poisson model.
 #'
 #' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called
 #'   in `.var` and `variables`.
@@ -85,7 +85,7 @@ h_glm_poisson <- function(.var,
   )
 }
 
-#' @describeIn h_glm_count Helper function to return results of a quasipoisson model.
+#' @describeIn h_glm_count Helper function to return results of a Quasi-Poisson model.
 #'
 #' @inheritParams summarize_glm_count
 #'
@@ -176,7 +176,7 @@ h_glm_negbin <- function(.var,
 }
 
 #' @describeIn h_glm_count Helper function to return the results of the
-#'   selected model (poisson, quasipoisson, negative binomial).
+#'   selected model (Poisson, Quasi-Poisson, negative binomial).
 #'
 #' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called
 #'   in `.var` and `variables`.
@@ -189,7 +189,7 @@ h_glm_negbin <- function(.var,
 #'     `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
 #'   * `offset` (`numeric`)\cr a numeric vector or scalar adding an offset.
 #' @param distribution (`character`)\cr a character value specifying the distribution
-#'   used in the regression (poisson, quasipoisson, negative binomial).
+#'   used in the regression (Poisson, Quasi-Poisson, negative binomial).
 #'
 #' @return
 #' * `h_glm_count()` returns the results of the selected model.

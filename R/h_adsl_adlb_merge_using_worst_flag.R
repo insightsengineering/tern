@@ -1,13 +1,13 @@
-#' Helper Function for Deriving Analysis Datasets for `LBT13` and `LBT14`
+#' Helper Function for Deriving Analysis Datasets for Select Laboratory Tables
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Helper function that merges `ADSL` and `ADLB` datasets so that missing lab test records are inserted in the
+#' Helper function that merges ADSL and ADLB datasets so that missing lab test records are inserted in the
 #' output dataset. Remember that `na_level` must match the needed pre-processing
 #' done with [df_explicit_na()] to have the desired output.
 #'
-#' @param adsl (`data.frame`)\cr `ADSL` dataframe.
-#' @param adlb (`data.frame`)\cr `ADLB` dataframe.
+#' @param adsl (`data.frame`)\cr ADSL data frame.
+#' @param adlb (`data.frame`)\cr ADLB data frame.
 #' @param worst_flag (named `vector`)\cr Worst post-baseline lab flag variable.
 #' @param by_visit (`logical`)\cr defaults to `FALSE` to generate worst grade per patient.
 #'   If worst grade per patient per visit is specified for `worst_flag`, then

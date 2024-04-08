@@ -89,7 +89,7 @@
 #' @param position_surv_med `r lifecycle::badge("deprecated")` Please use the `x` and `y` elements of
 #'   `control_annot_surv_med` instead.
 #' @param width_annots `r lifecycle::badge("deprecated")` Please use the `w` element of `control_annot_surv_med`
-#'   (for surv_med) and `control_annot_coxph` (for coxph)."
+#'   (for `surv_med`) and `control_annot_coxph` (for `coxph`)."
 #'
 #' @return A `ggplot` Kaplan-Meier plot and (optionally) summary table.
 #'
@@ -125,7 +125,7 @@
 #'   ggtheme = ggplot2::theme_minimal()
 #' )
 #'
-#' # Example with pairwise coxph analysis annotation table, adjusted annotation tables
+#' # Example with pairwise Cox-PH analysis annotation table, adjusted annotation tables
 #' g_km(
 #'   df = df, variables = variables,
 #'   annot_coxph = TRUE,

@@ -7,13 +7,13 @@
 aesi_label(aesi, scope = NULL)
 }
 \arguments{
-\item{aesi}{(\code{character})\cr with standardized \code{MedDRA} query name (e.g. \code{SMQzzNAM}) or customized query
-name (e.g. \code{CQzzNAM}).}
+\item{aesi}{(\code{character})\cr with standardized MedDRA query name (e.g. \code{SMQZZNAM}) or customized query
+name (e.g. \code{CQZZNAM}).}
 
-\item{scope}{(\code{character})\cr with scope of query (e.g. \code{SMQzzSC}).}
+\item{scope}{(\code{character})\cr with scope of query (e.g. \code{SMQZZSC}).}
 }
 \value{
-A \code{string} with the standard label for the \code{AE} basket.
+A \code{string} with the standard label for the AE basket.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

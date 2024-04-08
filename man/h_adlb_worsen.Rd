@@ -2,7 +2,7 @@
 % Please edit documentation in R/abnormal_by_worst_grade_worsen.R
 \name{h_adlb_worsen}
 \alias{h_adlb_worsen}
-\title{Helper Function to Prepare \code{ADLB} with Worst Labs}
+\title{Helper function to prepare ADLB with worst labs}
 \usage{
 h_adlb_worsen(
   adlb,
@@ -12,7 +12,7 @@ h_adlb_worsen(
 )
 }
 \arguments{
-\item{adlb}{(\code{data.frame})\cr \code{ADLB} dataframe}
+\item{adlb}{(\code{data.frame})\cr ADLB data frame.}
 
 \item{worst_flag_low}{(named \code{vector})\cr Worst low post-baseline lab grade flag variable}
 

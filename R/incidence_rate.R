@@ -259,7 +259,7 @@ h_incidence_rate_exact <- function(person_years,
 }
 
 #' @describeIn h_incidence_rate Helper function to estimate the incidence rate and
-#'   associated `Byar`'s confidence interval. Unit is one person-year.
+#'   associated Byar's confidence interval. Unit is one person-year.
 #'
 #' @examples
 #' h_incidence_rate_byar(200, 2)

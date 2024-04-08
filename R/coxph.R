@@ -160,7 +160,7 @@ estimate_coef <- function(variable, given,
 #'
 #' @examples
 #' # `car::Anova` on cox regression model including strata and expected
-#' # a likelihood ratio test triggers a warning as only `Wald` method is
+#' # a likelihood ratio test triggers a warning as only Wald method is
 #' # accepted.
 #'
 #' library(survival)
@@ -202,7 +202,7 @@ try_car_anova <- function(mod,
   return(y)
 }
 
-#' Fit the Cox Regression Model and `Anova`
+#' Fit the Cox Regression Model and ANOVA
 #'
 #' The functions allows to derive from the [survival::coxph()] results the effect p.values using [car::Anova()].
 #' This last package introduces more flexibility to get the effect p.values.

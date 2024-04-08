@@ -1,4 +1,4 @@
-#' Count Patients with Marked Laboratory Abnormalities
+#' Count patients with marked laboratory abnormalities
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

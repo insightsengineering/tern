@@ -51,7 +51,7 @@ check_df_with_variables <- function(df, variables, na_level = NULL) {
     vars <- setdiff(unlist(variables), colnames(df))
     return(paste(
       deparse(substitute(df)),
-      "does not contain all specified variables as column names. Missing from dataframe:",
+      "does not contain all specified variables as column names. Missing from data frame:",
       paste(vars, collapse = ", ")
     ))
   }

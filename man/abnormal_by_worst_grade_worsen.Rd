@@ -5,7 +5,7 @@
 \alias{count_abnormal_lab_worsen_by_baseline}
 \alias{s_count_abnormal_lab_worsen_by_baseline}
 \alias{a_count_abnormal_lab_worsen_by_baseline}
-\title{Patient Counts for Laboratory Events (Worsen From Baseline) by Highest Grade Post-Baseline}
+\title{Patient counts for laboratory events (worsen from baseline) by highest grade post-baseline}
 \usage{
 count_abnormal_lab_worsen_by_baseline(
   lyt,

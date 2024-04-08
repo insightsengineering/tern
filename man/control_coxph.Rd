@@ -2,7 +2,7 @@
 % Please edit documentation in R/control_survival.R
 \name{control_coxph}
 \alias{control_coxph}
-\title{Control Function for \code{CoxPH} Model}
+\title{Control Function for Cox-PH Model}
 \usage{
 control_coxph(
   pval_method = c("log-rank", "wald", "likelihood"),
@@ -25,6 +25,6 @@ A list of components with the same names as the arguments
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This is an auxiliary function for controlling arguments for \code{CoxPH} model, typically used internally to specify
-details of \code{CoxPH} model for \code{\link[=s_coxph_pairwise]{s_coxph_pairwise()}}. \code{conf_level} refers to Hazard Ratio estimation.
+This is an auxiliary function for controlling arguments for Cox-PH model, typically used internally to specify
+details of Cox-PH model for \code{\link[=s_coxph_pairwise]{s_coxph_pairwise()}}. \code{conf_level} refers to Hazard Ratio estimation.
 }

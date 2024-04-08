@@ -391,11 +391,11 @@ h_coxph_subgroups_df <- function(variables,
   }
 }
 
-#' Split Dataframe by Subgroups
+#' Split data frame by subgroups
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Split a dataframe into a non-nested list of subsets.
+#' Split a data frame into a non-nested list of subsets.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams survival_duration_subgroups
@@ -460,7 +460,7 @@ h_split_by_subgroups <- function(data,
     )
   }, df_subgroups, names(df_subgroups))
 
-  # Create a dataframe with one row per subgroup.
+  # Create a data frame with one row per subgroup.
   df_labels <- do.call(rbind, args = c(l_labels, make.row.names = FALSE))
   row_label <- paste0(df_labels$var, ".", df_labels$subgroup)
   row_split_var <- factor(row_label, levels = row_label)

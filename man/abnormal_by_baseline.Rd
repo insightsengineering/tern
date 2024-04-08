@@ -5,7 +5,7 @@
 \alias{count_abnormal_by_baseline}
 \alias{s_count_abnormal_by_baseline}
 \alias{a_count_abnormal_by_baseline}
-\title{Patient Counts with Abnormal Range Values by Baseline Status}
+\title{Patient counts with abnormal range values by baseline status}
 \usage{
 count_abnormal_by_baseline(
   lyt,

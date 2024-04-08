@@ -56,7 +56,7 @@ logarithm of the incidence rate. Unit is one person-year.
 associated exact confidence interval. Unit is one person-year.
 
 \item \code{h_incidence_rate_byar()}: Helper function to estimate the incidence rate and
-associated \code{Byar}'s confidence interval. Unit is one person-year.
+associated Byar's confidence interval. Unit is one person-year.
 
 \item \code{h_incidence_rate()}: Helper function to estimate the incidence rate and
 associated confidence interval.

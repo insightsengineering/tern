@@ -72,7 +72,7 @@ reference group.
 }}
 
 \item{distribution}{(\code{character})\cr a character value specifying the distribution
-used in the regression (poisson, quasipoisson, negative binomial).}
+used in the regression (Poisson, Quasi-Poisson, negative binomial).}
 
 \item{conf_level}{(\code{numeric})\cr value used to derive the confidence interval for the rate.}
 

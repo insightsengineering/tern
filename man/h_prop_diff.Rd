@@ -58,18 +58,18 @@ interval.
 
 \item \code{prop_diff_ha()}: Anderson-Hauck confidence interval.
 
-\item \code{prop_diff_nc()}: \code{Newcombe} confidence interval. It is based on
+\item \code{prop_diff_nc()}: Newcombe confidence interval. It is based on
 the Wilson score confidence interval for a single binomial proportion.
 
 \item \code{prop_diff_cmh()}: Calculates the weighted difference. This is defined as the difference in
 response rates between the experimental treatment group and the control treatment group, adjusted
-for stratification factors by applying \code{Cochran-Mantel-Haenszel} (\code{CMH}) weights. For the \code{CMH} chi-squared
+for stratification factors by applying Cochran-Mantel-Haenszel (CMH) weights. For the CMH chi-squared
 test, use \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}.
 
-\item \code{prop_diff_strat_nc()}: Calculates the stratified \code{Newcombe} confidence interval and difference in response
+\item \code{prop_diff_strat_nc()}: Calculates the stratified Newcombe confidence interval and difference in response
 rates between the experimental treatment group and the control treatment group, adjusted for stratification
 factors. This implementation follows closely the one proposed by \insertCite{Yan2010-jt;textual}{tern}.
-Weights can be estimated from the heuristic proposed in \code{\link[=prop_strat_wilson]{prop_strat_wilson()}} or from \code{CMH}-derived weights
+Weights can be estimated from the heuristic proposed in \code{\link[=prop_strat_wilson]{prop_strat_wilson()}} or from CMH-derived weights
 (see \code{\link[=prop_diff_cmh]{prop_diff_cmh()}}).
 
 }}
@@ -94,7 +94,7 @@ grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
 
 prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.6)
 
-# `Newcombe` confidence interval
+# Newcombe confidence interval
 
 set.seed(1)
 rsp <- c(
@@ -123,7 +123,7 @@ prop_diff_cmh(
   conf_level = 0.90
 )
 
-# Stratified `Newcombe` confidence interval
+# Stratified Newcombe confidence interval
 
 set.seed(2)
 data_set <- data.frame(

@@ -4,7 +4,7 @@
 \alias{bland_altman}
 \alias{s_bland_altman}
 \alias{g_bland_altman}
-\title{Bland Altman analysis}
+\title{Bland-Altman analysis}
 \usage{
 s_bland_altman(x, y, conf_level = 0.95)
 
@@ -20,7 +20,7 @@ g_bland_altman(x, y, conf_level = 0.95)
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Functions of bland altman method to assess the agreement between two numerical vectors.
+Functions of Bland-Altman method to assess the agreement between two numerical vectors.
 }
 \section{Functions}{
 \itemize{
@@ -33,8 +33,8 @@ Functions of bland altman method to assess the agreement between two numerical v
 x <- seq(1, 60, 5)
 y <- seq(5, 50, 4)
 conf_level <- 0.9
-# Derive statistics that are needed for Bland Altman plot
+# Derive statistics that are needed for Bland-Altman plot
 s_bland_altman(x, y, conf_level = conf_level)
-# Create a Bland Altman plot
+# Create a Bland-Altman plot
 g_bland_altman(x, y, conf_level = conf_level)
 }

@@ -30,7 +30,7 @@ of the output table.}
 
 \item{tbl}{(\code{data.frame})\cr a data frame.}
 
-\item{col_labels_fontface}{(\code{character})\cr fontface to apply to the first row (of column labels
+\item{col_labels_fontface}{(\code{character})\cr font face to apply to the first row (of column labels
 if \code{col_labels = TRUE}).}
 }
 \value{

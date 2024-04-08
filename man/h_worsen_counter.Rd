@@ -2,7 +2,7 @@
 % Please edit documentation in R/abnormal_by_worst_grade_worsen.R
 \name{h_worsen_counter}
 \alias{h_worsen_counter}
-\title{Helper Function to Analyze Patients for \code{\link[=s_count_abnormal_lab_worsen_by_baseline]{s_count_abnormal_lab_worsen_by_baseline()}}}
+\title{Helper function to analyze patients for \code{s_count_abnormal_lab_worsen_by_baseline}}
 \usage{
 h_worsen_counter(df, id, .var, baseline_var, direction_var)
 }

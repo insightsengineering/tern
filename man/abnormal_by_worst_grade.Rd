@@ -5,7 +5,7 @@
 \alias{count_abnormal_by_worst_grade}
 \alias{s_count_abnormal_by_worst_grade}
 \alias{a_count_abnormal_by_worst_grade}
-\title{Patient Counts with the Most Extreme Post-baseline Toxicity Grade per Direction of Abnormality}
+\title{Patient counts with the most extreme post-baseline toxicity grade per direction of abnormality}
 \usage{
 count_abnormal_by_worst_grade(
   lyt,
@@ -148,7 +148,7 @@ basic_table() \%>\%
 
 }
 \seealso{
-\code{\link[=h_adlb_abnormal_by_worst_grade]{h_adlb_abnormal_by_worst_grade()}} which pre-processes \code{ADLB} data frames to be used in
+\code{\link[=h_adlb_abnormal_by_worst_grade]{h_adlb_abnormal_by_worst_grade()}} which pre-processes ADLB data frames to be used in
 \code{\link[=count_abnormal_by_worst_grade]{count_abnormal_by_worst_grade()}}.
 }
 \keyword{internal}

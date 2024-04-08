@@ -2,7 +2,7 @@
 % Please edit documentation in R/abnormal_by_baseline.R
 \name{d_count_abnormal_by_baseline}
 \alias{d_count_abnormal_by_baseline}
-\title{Description Function for \code{\link[=s_count_abnormal_by_baseline]{s_count_abnormal_by_baseline()}}}
+\title{Description function for \code{s_count_abnormal_by_baseline()}}
 \usage{
 d_count_abnormal_by_baseline(abnormal)
 }

@@ -5,7 +5,7 @@
 \alias{count_abnormal_by_marked}
 \alias{s_count_abnormal_by_marked}
 \alias{a_count_abnormal_by_marked}
-\title{Count Patients with Marked Laboratory Abnormalities}
+\title{Count patients with marked laboratory abnormalities}
 \usage{
 count_abnormal_by_marked(
   lyt,

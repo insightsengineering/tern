@@ -2,7 +2,7 @@
 % Please edit documentation in R/abnormal_by_worst_grade.R
 \name{h_adlb_abnormal_by_worst_grade}
 \alias{h_adlb_abnormal_by_worst_grade}
-\title{Helper function to prepare \code{ADLB} for \code{\link[=count_abnormal_by_worst_grade]{count_abnormal_by_worst_grade()}}}
+\title{Helper function to prepare ADLB for \code{\link[=count_abnormal_by_worst_grade]{count_abnormal_by_worst_grade()}}}
 \usage{
 h_adlb_abnormal_by_worst_grade(
   adlb,
@@ -13,7 +13,7 @@ h_adlb_abnormal_by_worst_grade(
 )
 }
 \arguments{
-\item{adlb}{(\code{data.frame})\cr \code{ADLB} dataframe.}
+\item{adlb}{(\code{data.frame})\cr ADLB data frame.}
 
 \item{atoxgr}{(\code{character})\cr Analysis toxicity grade variable. This must be a \code{factor}
 variable.}
@@ -33,7 +33,7 @@ variables: \code{GRADE_DIR} and \code{GRADE_ANL}.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Helper function to prepare an \code{ADLB} data frame to be used as input in
+Helper function to prepare an ADLB data frame to be used as input in
 \code{\link[=count_abnormal_by_worst_grade]{count_abnormal_by_worst_grade()}}. The following pre-processing steps are applied:
 \enumerate{
 \item \code{adlb} is filtered on variable \code{avisit} to only include post-baseline visits.

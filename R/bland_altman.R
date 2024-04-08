@@ -1,8 +1,8 @@
-#' Bland Altman analysis
+#' Bland-Altman analysis
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#' Functions of bland altman method to assess the agreement between two numerical vectors.
+#' Functions of Bland-Altman method to assess the agreement between two numerical vectors.
 #'
 #' @inheritParams argument_convention
 #' @param y ('numeric')\cr vector of numbers we want to analyze, which we want to compare with x.
@@ -12,9 +12,9 @@
 #' x <- seq(1, 60, 5)
 #' y <- seq(5, 50, 4)
 #' conf_level <- 0.9
-#' # Derive statistics that are needed for Bland Altman plot
+#' # Derive statistics that are needed for Bland-Altman plot
 #' s_bland_altman(x, y, conf_level = conf_level)
-#' # Create a Bland Altman plot
+#' # Create a Bland-Altman plot
 #' g_bland_altman(x, y, conf_level = conf_level)
 NULL
 
