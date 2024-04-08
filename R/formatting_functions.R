@@ -549,7 +549,9 @@ str_extract <- function(string, pattern = "xx|xx\\.|xx\\.x+", invert = FALSE) {
 
 # Helper function
 count_decimalplaces <- function(dec) {
-  if (abs(dec - round(dec)) > .Machine$double.eps^0.5) { # For precision
+  if (is.na(dec)) {
+    return(0)
+  } else if (abs(dec - round(dec)) > .Machine$double.eps^0.5) { # For precision
     nchar(strsplit(format(dec, scientific = FALSE, trim = FALSE), ".", fixed = TRUE)[[1]][[2]])
   } else {
     return(0)

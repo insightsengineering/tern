@@ -235,3 +235,19 @@ testthat::test_that("formats with nominator == to denominator are always formatt
     rep("(100%)", nrow(df))
   )
 })
+
+testthat::test_that("auto formatting works with NA values", {
+  dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4, NA))
+
+  testthat::expect_silent(
+    result <- basic_table() %>%
+      analyze_vars(
+        vars = "VAR",
+        .stats = c("n", "mean", "mean_sd", "range"),
+        .formats = c("mean_sd" = "auto", "range" = "auto")
+      ) %>%
+      build_table(dt)
+  )
+
+  testthat::expect_snapshot(result)
+})

@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.9.3.9028
-Date: 2024-03-22
+Version: 0.9.3.9031
+Date: 2024-04-05
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = "aut"),
@@ -30,7 +30,7 @@ Imports:
     broom (>= 0.5.4),
     car (>= 3.0-13),
     checkmate (>= 2.1.0),
-    cowplot (>= 0.7.0),
+    cowplot (>= 1.0.0),
     dplyr (>= 1.0.0),
     emmeans (>= 1.8.0),
     forcats (>= 1.0.0),

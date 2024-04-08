@@ -146,9 +146,11 @@ reference:
   - title: Graph Helper Functions
     desc: These functions are useful to modify graphs.
     contents:
-      - starts_with("decorate_")
+      - decorate_grob
+      - split_text_grob
+      - decorate_grob_factory
+      - decorate_grob_set
       - h_g_ipp
-      - matches(".*grob.*")
       - h_xticks
 
   - title: Data Helper Functions
@@ -195,4 +197,6 @@ reference:
       - h_grob_tbl_at_risk
       - h_grob_y_annot
       - h_km_layout
-
+      - stack_grobs
+      - arrange_grobs
+      - draw_grob

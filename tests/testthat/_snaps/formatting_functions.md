@@ -166,3 +166,15 @@
     Output
       [1] "(0.13, >999.99)" "(0.00, <0.01)"   "(NA, NA)"       
 
+# auto formatting works with NA values
+
+    Code
+      result
+    Output
+                       all obs     
+      —————————————————————————————
+      n                   5        
+      Mean               1.4       
+      Mean (SD)   1.44042 (1.91481)
+      Min - Max    0.0010 - 4.0000 
+
