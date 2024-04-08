@@ -4,7 +4,7 @@
 \alias{count_cumulative}
 \alias{s_count_cumulative}
 \alias{a_count_cumulative}
-\title{Cumulative Counts with Thresholds}
+\title{Cumulative counts with thresholds}
 \usage{
 count_cumulative(
   lyt,
@@ -49,9 +49,9 @@ a_count_cumulative(
 
 \item{thresholds}{(\code{numeric})\cr vector of cutoff value for the counts.}
 
-\item{lower_tail}{(\code{logical})\cr whether to count lower tail, default is \code{TRUE}.}
+\item{lower_tail}{(\code{flag})\cr whether to count lower tail, default is \code{TRUE}.}
 
-\item{include_eq}{(\code{logical})\cr whether to include value equal to the \code{threshold} in
+\item{include_eq}{(\code{flag})\cr whether to include value equal to the \code{threshold} in
 count, default is \code{TRUE}.}
 
 \item{var_labels}{(\code{character})\cr character for label.}
@@ -104,7 +104,7 @@ component, each component containing a vector for the count and fraction.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Summarize cumulative counts of a (\code{numeric}) vector that is less than, less or equal to,
+Summarize cumulative counts of a \code{numeric} vector that is less than, less or equal to,
 greater than, or greater or equal to user-specific thresholds.
 }
 \section{Functions}{

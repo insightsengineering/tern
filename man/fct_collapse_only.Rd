@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_factor.R
 \name{fct_collapse_only}
 \alias{fct_collapse_only}
-\title{Collapsing of Factor Levels and Keeping Only Those New Group Levels}
+\title{Collapse factor levels and keep only those new group levels}
 \usage{
 fct_collapse_only(.f, ..., .na_level = "<Missing>")
 }

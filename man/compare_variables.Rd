@@ -8,7 +8,7 @@
 \alias{s_compare.factor}
 \alias{s_compare.character}
 \alias{s_compare.logical}
-\title{Compare Variables Between Groups}
+\title{Compare variables between groups}
 \usage{
 compare_vars(
   lyt,
@@ -88,7 +88,7 @@ for that statistic's row label.}
 
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
-\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+\item{.in_ref_col}{(\code{flag})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
 \item{denom}{(\code{string})\cr choice of denominator for factor proportions,
 can only be \code{n} (number of values in this row and column intersection).}
@@ -96,7 +96,7 @@ can only be \code{n} (number of values in this row and column intersection).}
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{verbose}{(\code{logical})\cr Whether warnings and messages should be printed. Mainly used
+\item{verbose}{(\code{flag})\cr whether warnings and messages should be printed. Mainly used
 to print out information about factor casting. Defaults to \code{TRUE}.}
 }
 \value{

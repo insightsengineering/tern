@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_km.R
 \name{h_grob_median_surv}
 \alias{h_grob_median_surv}
-\title{Helper Function: Survival Estimation Grob}
+\title{Helper function to create survival estimation grobs}
 \usage{
 h_grob_median_surv(
   fit_km,

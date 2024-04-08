@@ -2,7 +2,7 @@
 % Please edit documentation in R/response_subgroups.R
 \name{d_rsp_subgroups_colvars}
 \alias{d_rsp_subgroups_colvars}
-\title{Labels for Column Variables in Binary Response by Subgroup Table}
+\title{Labels for column variables in binary response by subgroup table}
 \usage{
 d_rsp_subgroups_colvars(vars, conf_level = NULL, method = NULL)
 }

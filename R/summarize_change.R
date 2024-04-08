@@ -1,4 +1,4 @@
-#' Summarize the Change from Baseline or Absolute Baseline Values
+#' Summarize the change from baseline or absolute baseline values
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

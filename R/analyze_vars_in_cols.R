@@ -1,4 +1,4 @@
-#' Summary numeric variables in columns
+#' Summarize numeric variables in columns
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
@@ -19,7 +19,7 @@
 #' @param cache (`flag`)\cr whether to store computed values in a temporary caching environment. This will
 #'   speed up calculations in large tables, but should be set to `FALSE` if the same `rtable` layout is
 #'   used for multiple tables with different data. Defaults to `FALSE`.
-#' @param row_labels (`character`)\cr as this function works in columns space, usual `.labels`
+#' @param row_labels (`character`)\cr as this function works in columns space, usually `.labels`
 #'   character vector applies on the column space. You can change the row labels by defining this
 #'   parameter to a named character vector with names corresponding to the split values. It defaults
 #'   to `NULL` and if it contains only one `string`, it will duplicate that as a row label.
@@ -380,7 +380,7 @@ analyze_vars_in_cols <- function(lyt,
   }
 }
 
-# Help function
+# Helper function
 get_last_col_split <- function(lyt) {
   tail(tail(clayout(lyt), 1)[[1]], 1)[[1]]
 }

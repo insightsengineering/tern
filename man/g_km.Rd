@@ -3,7 +3,7 @@
 \name{g_km}
 \alias{g_km}
 \alias{kaplan_meier}
-\title{Kaplan-Meier Plot}
+\title{Kaplan-Meier plot}
 \usage{
 g_km(
   df,

@@ -1,4 +1,4 @@
-#' Combination Functions Class
+#' Class for `CombinationFunction`
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -9,10 +9,7 @@
 #' @param e2 (`CombinationFunction`)\cr right hand side of logical operator.
 #' @param x (`CombinationFunction`)\cr the function which should be negated.
 #'
-#' @return Returns a logical value indicating whether the left hand side of the equation equals the right hand side.
-#'
-#' @exportClass CombinationFunction
-#' @export CombinationFunction
+#' @return A logical value indicating whether the left hand side of the equation equals the right hand side.
 #'
 #' @examples
 #' higher <- function(a) {
@@ -38,8 +35,10 @@
 #' c3 <- higher(5) & lower(10)
 #' c3(7)
 #'
-#' @aliases CombinationFunction-class
 #' @name combination_function
+#' @aliases CombinationFunction-class
+#' @exportClass CombinationFunction
+#' @export CombinationFunction
 CombinationFunction <- methods::setClass("CombinationFunction", contains = "function") # nolint
 
 #' @describeIn combination_function Logical "AND" combination of `CombinationFunction` functions.

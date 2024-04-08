@@ -2,12 +2,12 @@
 % Please edit documentation in R/logistic_regression.R
 \name{tidy.glm}
 \alias{tidy.glm}
-\title{Custom Tidy Method for Binomial GLM Results}
+\title{Custom tidy method for binomial GLM results}
 \usage{
 \method{tidy}{glm}(x, conf_level = 0.95, at = NULL, ...)
 }
 \arguments{
-\item{x}{logistic regression model fitted by \code{\link[stats:glm]{stats::glm()}} with "binomial" family.}
+\item{x}{(\code{glm})\cr logistic regression model fitted by \code{\link[stats:glm]{stats::glm()}} with "binomial" family.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 

@@ -21,10 +21,10 @@ are calculated according to maximum number of characters per column.}
 
 \item{font_size}{(\code{numeric})\cr font size.}
 
-\item{col_labels}{(\code{logical})\cr whether the column names (labels) of \code{df} should be used as the first row
+\item{col_labels}{(\code{flag})\cr whether the column names (labels) of \code{df} should be used as the first row
 of the output table.}
 
-\item{hline}{(\code{logical})\cr whether a horizontal line should be printed below the first row of the table.}
+\item{hline}{(\code{flag})\cr whether a horizontal line should be printed below the first row of the table.}
 
 \item{bg_fill}{(\code{character})\cr table background fill color.}
 
@@ -34,7 +34,7 @@ of the output table.}
 if \code{col_labels = TRUE}).}
 }
 \value{
-a \code{ggplot} object.
+A \code{ggplot} object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

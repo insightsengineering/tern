@@ -2,7 +2,7 @@
 % Please edit documentation in R/abnormal_by_worst_grade_worsen.R
 \name{h_worsen_counter}
 \alias{h_worsen_counter}
-\title{Helper function to analyze patients for \code{s_count_abnormal_lab_worsen_by_baseline}}
+\title{Helper function to analyze patients for \code{s_count_abnormal_lab_worsen_by_baseline()}}
 \usage{
 h_worsen_counter(df, id, .var, baseline_var, direction_var)
 }
@@ -14,9 +14,9 @@ h_worsen_counter(df, id, .var, baseline_var, direction_var)
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{baseline_var}{(\code{string})\cr baseline lab grade variable}
+\item{baseline_var}{(\code{string})\cr baseline lab grade variable.}
 
-\item{direction_var}{(\code{string})\cr Direction variable specifying the direction of the shift table of interest.
+\item{direction_var}{(\code{string})\cr direction variable specifying the direction of the shift table of interest.
 Only lab records flagged by \code{L}, \code{H} or \code{B} are included in the shift table.
 \itemize{
 \item \code{L}: low direction only
@@ -25,7 +25,7 @@ Only lab records flagged by \code{L}, \code{H} or \code{B} are included in the s
 }}
 }
 \value{
-\code{h_worsen_counter()} returns the counts and fraction of patients
+The counts and fraction of patients
 whose worst post-baseline lab grades are worse than their baseline grades, for
 post-baseline worst grades "1", "2", "3", "4" and "Any".
 }

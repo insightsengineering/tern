@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_km.R
 \name{h_data_plot}
 \alias{h_data_plot}
-\title{Helper function: tidy survival fit}
+\title{Helper function to tidy survival fit data}
 \usage{
 h_data_plot(fit_km, armval = "All", max_time = NULL)
 }

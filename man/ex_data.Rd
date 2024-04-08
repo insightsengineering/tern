@@ -9,7 +9,7 @@
 \alias{tern_ex_adpp}
 \alias{tern_ex_adrs}
 \alias{tern_ex_adtte}
-\title{Simulated CDISC Data for Examples}
+\title{Simulated CDISC data for examples}
 \format{
 \code{rds} (\code{data.frame})
 
@@ -39,7 +39,7 @@ tern_ex_adrs
 tern_ex_adtte
 }
 \description{
-Simulated CDISC Data for Examples
+Simulated CDISC data for examples
 }
 \section{Functions}{
 \itemize{

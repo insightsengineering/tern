@@ -2,7 +2,7 @@
 % Please edit documentation in R/split_cols_by_groups.R
 \name{combine_groups}
 \alias{combine_groups}
-\title{Reference and Treatment Group Combination}
+\title{Reference and treatment group combination}
 \usage{
 combine_groups(fct, ref = NULL, collapse = "/")
 }

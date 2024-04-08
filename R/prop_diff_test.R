@@ -1,4 +1,4 @@
-#' Difference Test for Two Proportions
+#' Difference test for two proportions
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -70,7 +70,7 @@ s_test_proportion_diff <- function(df,
   y
 }
 
-#' Description of the Difference Test Between Two Proportions
+#' Description of the difference test between two proportions
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -78,7 +78,7 @@ s_test_proportion_diff <- function(df,
 #'
 #' @inheritParams s_test_proportion_diff
 #'
-#' @return `string` describing the test from which the p-value is derived.
+#' @return A `string` describing the test from which the p-value is derived.
 #'
 #' @export
 d_test_proportion_diff <- function(method) {
@@ -168,7 +168,7 @@ test_proportion_diff <- function(lyt,
   )
 }
 
-#' Helper Functions to Test Proportion Differences
+#' Helper functions to test proportion differences
 #'
 #' Helper functions to implement various tests on the difference between two proportions.
 #'
@@ -181,7 +181,7 @@ test_proportion_diff <- function(lyt,
 #' @name h_prop_diff_test
 NULL
 
-#' @describeIn h_prop_diff_test performs Chi-Squared test. Internally calls [stats::prop.test()].
+#' @describeIn h_prop_diff_test Performs Chi-Squared test. Internally calls [stats::prop.test()].
 #'
 #' @keywords internal
 prop_chisq <- function(tbl) {
@@ -193,7 +193,7 @@ prop_chisq <- function(tbl) {
   stats::prop.test(tbl, correct = FALSE)$p.value
 }
 
-#' @describeIn h_prop_diff_test performs stratified Cochran-Mantel-Haenszel test. Internally calls
+#' @describeIn h_prop_diff_test Performs stratified Cochran-Mantel-Haenszel test. Internally calls
 #'   [stats::mantelhaen.test()]. Note that strata with less than two observations are automatically discarded.
 #'
 #' @param ary (`array`, 3 dimensions)\cr array with two groups in rows, the binary response
@@ -213,7 +213,7 @@ prop_cmh <- function(ary) {
   stats::mantelhaen.test(ary, correct = FALSE)$p.value
 }
 
-#' @describeIn h_prop_diff_test performs the Chi-Squared test with Schouten correction.
+#' @describeIn h_prop_diff_test Performs the Chi-Squared test with Schouten correction.
 #'
 #' @seealso Schouten correction is based upon \insertCite{Schouten1980-kd;textual}{tern}.
 #'
@@ -241,7 +241,7 @@ prop_schouten <- function(tbl) {
   1 - stats::pchisq(t_schouten, df = 1)
 }
 
-#' @describeIn h_prop_diff_test performs the Fisher's exact test. Internally calls [stats::fisher.test()].
+#' @describeIn h_prop_diff_test Performs the Fisher's exact test. Internally calls [stats::fisher.test()].
 #'
 #' @keywords internal
 prop_fisher <- function(tbl) {

@@ -1,4 +1,4 @@
-#' Control Function for Descriptive Statistics
+#' Control function for descriptive statistics
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -6,11 +6,11 @@
 #' details for [s_summary()]. This function family is mainly used by [analyze_vars()].
 #'
 #' @inheritParams argument_convention
-#' @param quantiles (`numeric`)\cr of length two to specify the quantiles to calculate.
-#' @param quantile_type (`numeric`)\cr between 1 and 9 selecting quantile algorithms to be used.
+#' @param quantiles (`numeric`)\cr vector of length two to specify the quantiles to calculate.
+#' @param quantile_type (`numeric`)\cr number between 1 and 9 selecting quantile algorithms to be used.
 #'   Default is set to 2 as this matches the default quantile algorithm in SAS `proc univariate` set by `QNTLDEF=5`.
 #'   This differs from R's default. See more about `type` in [stats::quantile()].
-#' @param test_mean (`numeric`)\cr to test against the mean under the null hypothesis when calculating p-value.
+#' @param test_mean (`numeric`)\cr number to test against the mean under the null hypothesis when calculating p-value.
 #'
 #' @return A list of components with the same names as the arguments.
 #'
@@ -27,7 +27,7 @@ control_analyze_vars <- function(conf_level = 0.95,
   list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type, test_mean = test_mean)
 }
 
-#' Analyze Variables
+#' Analyze variables
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -318,7 +318,7 @@ s_summary.factor <- function(x,
 #' @describeIn analyze_variables Method for `character` class. This makes an automatic
 #'   conversion to factor (with a warning) and then forwards to the method for factors.
 #'
-#' @param verbose (`logical`)\cr Defaults to `TRUE`, which prints out warnings and messages. It is mainly used
+#' @param verbose (`flag`)\cr defaults to `TRUE`, which prints out warnings and messages. It is mainly used
 #'   to print out information about factor casting.
 #'
 #' @note
@@ -422,7 +422,7 @@ s_summary.logical <- function(x,
 #' @describeIn analyze_variables Formatted analysis function which is used as `afun` in `analyze_vars()` and
 #'   `compare_vars()` and as `cfun` in `summarize_colvars()`.
 #'
-#' @param compare (`logical`)\cr Whether comparison statistics should be analyzed instead of summary statistics
+#' @param compare (`flag`)\cr whether comparison statistics should be analyzed instead of summary statistics
 #'   (`compare = TRUE` adds `pval` statistic comparing against reference group).
 #'
 #' @return

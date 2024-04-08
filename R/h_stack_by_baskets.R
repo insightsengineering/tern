@@ -1,8 +1,8 @@
-#' Helper Function to create a new SMQ variable in ADAE by stacking SMQ and/or CQ records.
+#' Helper function to create a new SMQ variable in ADAE by stacking SMQ and/or CQ records.
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Helper Function to create a new SMQ variable in ADAE that consists of all adverse events belonging to
+#' Helper function to create a new SMQ variable in ADAE that consists of all adverse events belonging to
 #' selected Standardized/Customized queries. The new dataset will only contain records of the adverse events
 #' belonging to any of the selected baskets. Remember that `na_str` must match the needed pre-processing
 #' done with [df_explicit_na()] to have the desired output.
@@ -15,7 +15,7 @@
 #'   variable. This is useful when there are some levels of interest that are not observed in the `df` dataset.
 #'   The two columns of this dataset should be named `basket` and `basket_name`.
 #'
-#' @return `data.frame` with variables in `keys` taken from `df` and new variable SMQ containing
+#' @return A `data.frame` with variables in `keys` taken from `df` and new variable SMQ containing
 #'   records belonging to the baskets selected via the `baskets` argument.
 #'
 #' @examples

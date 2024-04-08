@@ -2,7 +2,7 @@
 % Please edit documentation in R/abnormal_by_worst_grade.R
 \name{h_adlb_abnormal_by_worst_grade}
 \alias{h_adlb_abnormal_by_worst_grade}
-\title{Helper function to prepare ADLB for \code{\link[=count_abnormal_by_worst_grade]{count_abnormal_by_worst_grade()}}}
+\title{Helper function to prepare ADLB for \code{count_abnormal_by_worst_grade()}}
 \usage{
 h_adlb_abnormal_by_worst_grade(
   adlb,
@@ -15,15 +15,15 @@ h_adlb_abnormal_by_worst_grade(
 \arguments{
 \item{adlb}{(\code{data.frame})\cr ADLB data frame.}
 
-\item{atoxgr}{(\code{character})\cr Analysis toxicity grade variable. This must be a \code{factor}
+\item{atoxgr}{(\code{character})\cr analysis toxicity grade variable. This must be a \code{factor}
 variable.}
 
-\item{avisit}{(\code{character})\cr Analysis visit variable.}
+\item{avisit}{(\code{character})\cr analysis visit variable.}
 
-\item{worst_flag_low}{(\code{character})\cr Worst low lab grade flag variable. This variable is
+\item{worst_flag_low}{(\code{character})\cr worst low lab grade flag variable. This variable is
 set to \code{"Y"} when indicating records of worst low lab grades.}
 
-\item{worst_flag_high}{(\code{character})\cr Worst high lab grade flag variable. This variable is
+\item{worst_flag_high}{(\code{character})\cr worst high lab grade flag variable. This variable is
 set to \code{"Y"} when indicating records of worst high lab grades.}
 }
 \value{

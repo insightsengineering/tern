@@ -2,7 +2,7 @@
 % Please edit documentation in R/riskdiff.R
 \name{afun_riskdiff}
 \alias{afun_riskdiff}
-\title{Analysis Function to Calculate Risk Difference Column Values}
+\title{Analysis function to calculate risk difference column values}
 \usage{
 afun_riskdiff(
   df,
@@ -58,11 +58,11 @@ unmodified default behavior. Can be negative.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{afun}{(named \code{list})\cr A named list containing one name-value pair where the name corresponds to
+\item{afun}{(named \code{list})\cr a named list containing one name-value pair where the name corresponds to
 the name of the statistics function that should be used in calculations and the value is the corresponding
 analysis function.}
 
-\item{s_args}{(named \code{list})\cr Additional arguments to be passed to the statistics function and analysis
+\item{s_args}{(named \code{list})\cr additional arguments to be passed to the statistics function and analysis
 function supplied in \code{afun}.}
 }
 \value{

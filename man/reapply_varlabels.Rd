@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{reapply_varlabels}
 \alias{reapply_varlabels}
-\title{Reapply Variable Labels}
+\title{Reapply variable labels}
 \usage{
 reapply_varlabels(x, varlabels, ...)
 }

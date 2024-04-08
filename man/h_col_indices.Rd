@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_rtables.R
 \name{h_col_indices}
 \alias{h_col_indices}
-\title{Obtain Column Indices}
+\title{Obtain column indices}
 \usage{
 h_col_indices(table_tree, col_names)
 }

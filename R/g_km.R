@@ -1,4 +1,4 @@
-#' Kaplan-Meier Plot
+#' Kaplan-Meier plot
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

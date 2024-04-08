@@ -1,4 +1,4 @@
-#' Confidence Interval for Mean
+#' Confidence interval for mean
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -7,8 +7,8 @@
 #'
 #' @inheritParams argument_convention
 #' @param n_min (`number`)\cr a minimum number of non-missing `x` to estimate the confidence interval for mean.
-#' @param gg_helper (`logical`)\cr `TRUE` when output should be aligned for the use with `ggplot`.
-#' @param geom_mean (`logical`)\cr `TRUE` when the geometric mean should be calculated.
+#' @param gg_helper (`flag`)\cr whether output should be aligned for use with `ggplot`s.
+#' @param geom_mean (`flag`)\cr whether the geometric mean should be calculated.
 #'
 #' @return A named `vector` of values `mean_ci_lwr` and `mean_ci_upr`.
 #'
@@ -77,7 +77,7 @@ stat_mean_ci <- function(x,
   return(ci)
 }
 
-#' Confidence Interval for Median
+#' Confidence interval for median
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -85,9 +85,9 @@ stat_mean_ci <- function(x,
 #' function for plotting.
 #'
 #' @inheritParams argument_convention
-#' @param gg_helper (`logical`)\cr `TRUE` when output should be aligned for the use with `ggplot`.
+#' @param gg_helper (`flag`)\cr whether output should be aligned for use with `ggplot`s.
 #'
-#' @details The function was adapted from `DescTools/versions/0.99.35/source`
+#' @details This function was adapted from `DescTools/versions/0.99.35/source`
 #'
 #' @return A named `vector` of values `median_ci_lwr` and `median_ci_upr`.
 #'
@@ -134,7 +134,7 @@ stat_median_ci <- function(x,
   return(ci)
 }
 
-#' p-Value of the Mean
+#' p-Value of the mean
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -175,7 +175,7 @@ stat_mean_pval <- function(x,
   return(pv)
 }
 
-#' Proportion Difference and Confidence Interval
+#' Proportion difference and confidence interval
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

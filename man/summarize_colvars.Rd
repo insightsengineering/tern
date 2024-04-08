@@ -2,7 +2,7 @@
 % Please edit documentation in R/summarize_colvars.R
 \name{summarize_colvars}
 \alias{summarize_colvars}
-\title{Summarize Variables in Columns}
+\title{Summarize variables in columns}
 \usage{
 summarize_colvars(
   lyt,

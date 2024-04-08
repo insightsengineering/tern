@@ -16,7 +16,7 @@
 #' @order 1
 NULL
 
-#' Helper Function to Return Results of a Linear Model
+#' Helper function to return results of a linear model
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

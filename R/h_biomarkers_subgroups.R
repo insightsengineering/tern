@@ -1,4 +1,4 @@
-#' Helper Function for Tabulation of a Single Biomarker Result
+#' Helper function for tabulation of a single biomarker result
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

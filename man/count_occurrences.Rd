@@ -5,7 +5,7 @@
 \alias{summarize_occurrences}
 \alias{s_count_occurrences}
 \alias{a_count_occurrences}
-\title{Occurrence Counts}
+\title{Occurrence counts}
 \usage{
 count_occurrences(
   lyt,
@@ -72,7 +72,7 @@ a_count_occurrences(
 
 \item{id}{(\code{string})\cr subject variable name.}
 
-\item{drop}{(\code{flag})\cr should non appearing occurrence levels be dropped from the resulting table.
+\item{drop}{(\code{flag})\cr whether non-appearing occurrence levels should be dropped from the resulting table.
 Note that in that case the remaining occurrence levels in the table are sorted alphabetically.}
 
 \item{var_labels}{(\code{character})\cr character for label.}

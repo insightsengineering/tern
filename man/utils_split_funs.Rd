@@ -4,25 +4,26 @@
 \alias{utils_split_funs}
 \alias{ref_group_position}
 \alias{level_order}
-\title{Custom Split Functions}
+\title{Custom split functions}
 \usage{
 ref_group_position(position = "first")
 
 level_order(order)
 }
 \arguments{
-\item{position}{(\code{string} or \code{integer})\cr should it be \code{"first"} or \code{"last"} or in a specific position?}
+\item{position}{(\code{string} or \code{integer})\cr position to use for the reference group facet. Can be \code{"first"},
+\code{"last"}, or a specific position.}
 
-\item{order}{(\code{character} or \code{integer})\cr vector of ordering indexes for the split facets.}
+\item{order}{(\code{character} or \code{integer})\cr vector of ordering indices for the split facets.}
 }
 \value{
 \itemize{
-\item \code{ref_group_position} returns an utility function that puts the reference group
+\item \code{ref_group_position()} returns an utility function that puts the reference group
 as first, last or at a certain position and needs to be assigned to \code{split_fun}.
 }
 
 \itemize{
-\item \code{level_order} returns an utility function that changes the original levels' order,
+\item \code{level_order()} returns an utility function that changes the original levels' order,
 depending on input \code{order} and split levels.
 }
 }
@@ -37,10 +38,10 @@ happens. For other split functions, consider consulting \code{\link[rtables:spli
 }
 \section{Functions}{
 \itemize{
-\item \code{ref_group_position()}: split function to place reference group facet at a specific position
+\item \code{ref_group_position()}: Split function to place reference group facet at a specific position
 during post-processing stage.
 
-\item \code{level_order()}: split function to change level order based on a \code{integer}
+\item \code{level_order()}: Split function to change level order based on an \code{integer}
 vector or a \code{character} vector that represent the split variable's factor levels.
 
 }}

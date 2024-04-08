@@ -2,7 +2,7 @@
 % Please edit documentation in R/g_waterfall.R
 \name{g_waterfall}
 \alias{g_waterfall}
-\title{Horizontal Waterfall Plot}
+\title{Horizontal waterfall plot}
 \usage{
 g_waterfall(
   height,
@@ -16,11 +16,11 @@ g_waterfall(
 )
 }
 \arguments{
-\item{height}{(`numeric``)\cr vector containing values to be plotted as the waterfall bars.}
+\item{height}{(\code{numeric})\cr vector containing values to be plotted as the waterfall bars.}
 
 \item{id}{(\code{character})\cr vector containing IDs to use as the x-axis label for the waterfall bars.}
 
-\item{col_var}{(\code{factor}, \code{character} or \code{NULL})\cr categorical variable for bar coloring. \code{NULL} by default.}
+\item{col_var}{(\code{factor}, \code{character}, or \code{NULL})\cr categorical variable for bar coloring. \code{NULL} by default.}
 
 \item{col}{(\code{character})\cr colors.}
 
@@ -37,8 +37,7 @@ A \code{ggplot} waterfall plot.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
+
 This basic waterfall plot visualizes a quantity \code{height} ordered by value with some markup.
 }
 \examples{

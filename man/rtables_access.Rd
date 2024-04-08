@@ -9,7 +9,7 @@
 \alias{h_content_first_row}
 \alias{is_leaf_table}
 \alias{check_names_indices}
-\title{\code{rtables} Access Helper Functions}
+\title{Helper functions for accessing information from \code{rtables}}
 \usage{
 h_row_first_values(table_row, col_names = NULL, col_indices = NULL)
 
@@ -80,7 +80,7 @@ cell and from specified columns in a \code{TableRow}. Defaults to all columns.
 \item \code{h_row_counts()}: Helper function that extracts row values and checks if they are
 convertible to integers (\code{integerish} values).
 
-\item \code{h_row_fractions()}: helper function to extract fractions from specified columns in a \code{TableRow}.
+\item \code{h_row_fractions()}: Helper function to extract fractions from specified columns in a \code{TableRow}.
 More specifically it extracts the second values from each content cell and checks it is a fraction.
 
 \item \code{h_col_counts()}: Helper function to extract column counts from specified columns in a table.

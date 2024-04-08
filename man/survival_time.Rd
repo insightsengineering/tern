@@ -5,7 +5,7 @@
 \alias{surv_time}
 \alias{s_surv_time}
 \alias{a_surv_time}
-\title{Survival Time Analysis}
+\title{Survival time analysis}
 \usage{
 surv_time(
   lyt,

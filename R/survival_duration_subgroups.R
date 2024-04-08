@@ -1,4 +1,4 @@
-#' Tabulate Survival Duration by Subgroup
+#' Tabulate survival duration by subgroup
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -6,7 +6,7 @@
 #'
 #' @inheritParams argument_convention
 #' @inheritParams survival_coxph_pairwise
-#' @param df (`list`)\cr of data frames containing all analysis variables. List should be
+#' @param df (`list`)\cr list of data frames containing all analysis variables. List should be
 #'   created using [extract_survival_subgroups()].
 #' @param vars (`character`)\cr the name of statistics to be reported among:
 #'   * `n_tot_events`: Total number of events per group.
@@ -87,7 +87,7 @@
 #' @order 1
 NULL
 
-#' Prepares Survival Data for Population Subgroups in Data Frames
+#' Prepare survival data for population subgroups in data frames
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -356,7 +356,7 @@ tabulate_survival_subgroups <- function(lyt,
   )
 }
 
-#' Labels for Column Variables in Survival Duration by Subgroup Table
+#' Labels for column variables in survival duration by subgroup table
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

@@ -10,7 +10,7 @@
 \alias{has_fraction_in_any_col}
 \alias{has_fractions_difference}
 \alias{has_counts_difference}
-\title{Occurrence Table Pruning}
+\title{Occurrence table pruning}
 \usage{
 keep_rows(row_condition)
 

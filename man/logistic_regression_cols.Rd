@@ -2,7 +2,7 @@
 % Please edit documentation in R/logistic_regression.R
 \name{logistic_regression_cols}
 \alias{logistic_regression_cols}
-\title{Logistic Regression Multivariate Column Layout Function}
+\title{Logistic regression multivariate column layout function}
 \usage{
 logistic_regression_cols(lyt, conf_level = 0.95)
 }

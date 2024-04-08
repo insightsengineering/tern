@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_factor.R
 \name{ungroup_stats}
 \alias{ungroup_stats}
-\title{Ungroup Non-Numeric Statistics}
+\title{Ungroup non-numeric statistics}
 \usage{
 ungroup_stats(x, .formats, .labels, .indent_mods)
 }

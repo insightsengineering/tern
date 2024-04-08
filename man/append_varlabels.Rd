@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_rtables.R
 \name{append_varlabels}
 \alias{append_varlabels}
-\title{Add Variable Labels to Top Left Corner in Table}
+\title{Add variable labels to top left corner in table}
 \usage{
 append_varlabels(lyt, df, vars, indent = 0L)
 }
@@ -22,7 +22,7 @@ A modified layout with the new variable label(s) added to the top-left material.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Helper layout creating function to just append the variable labels of a given variables vector
+Helper layout-creating function to append the variable labels of a given variables vector
 from a given dataset in the top left corner. If a variable label is not found then the
 variable name itself is used instead. Multiple variable labels are concatenated with slashes.
 }

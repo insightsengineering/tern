@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_km.R
 \name{h_xticks}
 \alias{h_xticks}
-\title{Helper function: x-tick positions}
+\title{Helper function to calculate x-tick positions}
 \usage{
 h_xticks(data, xticks = NULL, max_time = NULL)
 }

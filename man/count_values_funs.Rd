@@ -8,7 +8,7 @@
 \alias{s_count_values.factor}
 \alias{s_count_values.logical}
 \alias{a_count_values}
-\title{Counting Specific Values}
+\title{Count specific values}
 \usage{
 count_values(
   lyt,

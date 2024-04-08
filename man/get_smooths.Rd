@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{get_smooths}
 \alias{get_smooths}
-\title{Smooth Function with Optional Grouping}
+\title{Smooth function with optional grouping}
 \usage{
 get_smooths(df, x, y, groups = NULL, level = 0.95)
 }

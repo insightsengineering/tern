@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_rtables.R
 \name{c_label_n_alt}
 \alias{c_label_n_alt}
-\title{Content Row Function to Add \code{alt_counts_df} Row Total to Labels}
+\title{Content row function to add \code{alt_counts_df} row total to labels}
 \usage{
 c_label_n_alt(df, labelstr, .alt_df_row)
 }

@@ -1,11 +1,11 @@
-#' Re-implemented [range()] Default S3 method for numerical objects
+#' Re-implemented `range()` default S3 method for numerical objects
 #'
 #' This function returns `c(NA, NA)` instead of `c(-Inf, Inf)` for zero-length data
 #' without any warnings.
 #'
 #' @param x (`numeric`)\cr a sequence of numbers for which the range is computed.
-#' @param na.rm (`logical`)\cr indicating if `NA` should be omitted.
-#' @param finite (`logical`)\cr indicating if non-finite elements should be removed.
+#' @param na.rm (`flag`)\cr flag indicating if `NA` should be omitted.
+#' @param finite (`flag`)\cr flag indicating if non-finite elements should be removed.
 #'
 #' @return A 2-element vector of class `numeric`.
 #'
@@ -58,7 +58,7 @@ f_pval <- function(test_mean) {
   paste0("p-value (H0: mean = ", test_mean, ")")
 }
 
-#' Utility function to return a named list of covariate names.
+#' Utility function to return a named list of covariate names
 #'
 #' @param covariates (`character`)\cr a vector that can contain single variable names (such as
 #'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
@@ -72,14 +72,14 @@ get_covariates <- function(covariates) {
   stats::setNames(as.list(cov_vars), cov_vars)
 }
 
-#' Replicate Entries of a Vector if Required
+#' Replicate entries of a vector if required
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Replicate entries of a vector if required.
 #'
 #' @inheritParams argument_convention
-#' @param n (`count`)\cr how many entries we need.
+#' @param n (`count`)\cr number of entries that are needed.
 #'
 #' @return `x` if it has the required length already or is `NULL`,
 #'   otherwise if it is scalar the replicated version of it with `n` entries.
@@ -99,12 +99,12 @@ to_n <- function(x, n) {
   }
 }
 
-#' Check Element Dimension
+#' Check element dimension
 #'
 #' Checks if the elements in `...` have the same dimension.
 #'
-#' @param ... (`data.frame`s or `vector`s)\cr any data frames/vectors.
-#' @param omit_null (`logical`)\cr whether `NULL` elements in `...` should be omitted from the check.
+#' @param ... (`data.frame`s or `vector`s)\cr any data frames or vectors.
+#' @param omit_null (`flag`)\cr whether `NULL` elements in `...` should be omitted from the check.
 #'
 #' @return A `logical` value.
 #'
@@ -141,14 +141,14 @@ check_same_n <- function(..., omit_null = TRUE) {
   TRUE
 }
 
-#' Utility function to check if a float is equal to another float
+#' Utility function to check if a float value is equal to another float value
 #'
-#' @description Uses `.Machine$double.eps` as the tolerance for the comparison.
+#' Uses `.Machine$double.eps` as the tolerance for the comparison.
 #'
-#' @param x (`float`)\cr A single number.
-#' @param y (`float`)\cr A single number.
+#' @param x (`float`)\cr a single number.
+#' @param y (`float`)\cr a single number.
 #'
-#' @return `TRUE`, if identical. `FALSE`, otherwise
+#' @return `TRUE` if identical, otherwise `FALSE`.
 #'
 #' @keywords internal
 .is_equal_float <- function(x, y) {
@@ -162,7 +162,7 @@ check_same_n <- function(..., omit_null = TRUE) {
   abs(x - y) < tolerance
 }
 
-#' Make Names Without Dots
+#' Make names without dots
 #'
 #' @param nams (`character`)\cr vector of original names.
 #'
@@ -174,11 +174,11 @@ make_names <- function(nams) {
   gsub(".", "", x = orig, fixed = TRUE)
 }
 
-#' Conversion of Months to Days
+#' Conversion of months to days
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Conversion of Months to Days. This is an approximative calculation because it
+#' Conversion of months to days. This is an approximative calculation because it
 #' considers each month as having an average of 30.4375 days.
 #'
 #' @param x (`numeric`)\cr time in months.
@@ -195,7 +195,7 @@ month2day <- function(x) {
   x * 30.4375
 }
 
-#' Conversion of Days to Months
+#' Conversion of days to months
 #'
 #' @param x (`numeric`)\cr time in days.
 #'
@@ -229,7 +229,7 @@ empty_vector_if_na <- function(x) {
   }
 }
 
-#' Combine Two Vectors Element Wise
+#' Element-wise combination of two vectors
 #'
 #' @param x (`vector`)\cr first vector to combine.
 #' @param y (`vector`)\cr second vector to combine.
@@ -249,7 +249,7 @@ combine_vectors <- function(x, y) {
   result
 }
 
-#' Extract Elements by Name
+#' Extract elements by name
 #'
 #' This utility function extracts elements from a vector `x` by `names`.
 #' Differences to the standard `[` function are:
@@ -278,13 +278,13 @@ extract_by_name <- function(x, names) {
   }
 }
 
-#' Labels for Adverse Event Baskets
+#' Labels for adverse event baskets
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param aesi (`character`)\cr with standardized MedDRA query name (e.g. `SMQZZNAM`) or customized query
-#'   name (e.g. `CQZZNAM`).
-#' @param scope (`character`)\cr with scope of query (e.g. `SMQZZSC`).
+#' @param aesi (`character`)\cr vector with standardized MedDRA query name (e.g. `SMQxxNAM`) or customized query
+#'   name (e.g. `CQxxNAM`).
+#' @param scope (`character`)\cr vector with scope of query (e.g. `SMQxxSC`).
 #'
 #' @return A `string` with the standard label for the AE basket.
 #'
@@ -319,7 +319,7 @@ aesi_label <- function(aesi, scope = NULL) {
   lbl
 }
 
-#' Indicate Study Arm Variable in Formula
+#' Indicate study arm variable in formula
 #'
 #' We use `study_arm` to indicate the study arm variable in `tern` formulas.
 #'
@@ -332,7 +332,7 @@ study_arm <- function(x) {
   structure(x, varname = deparse(substitute(x)))
 }
 
-#' Smooth Function with Optional Grouping
+#' Smooth function with optional grouping
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -404,7 +404,7 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
   }
 }
 
-#' Number of Available (Non-Missing Entries) in a Vector
+#' Number of available (non-missing entries) in a vector
 #'
 #' Small utility function for better readability.
 #'
@@ -417,7 +417,7 @@ n_available <- function(x) {
   sum(!is.na(x))
 }
 
-#' Reapply Variable Labels
+#' Reapply variable labels
 #'
 #' This is a helper function that is used in tests.
 #'

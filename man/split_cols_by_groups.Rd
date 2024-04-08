@@ -2,7 +2,7 @@
 % Please edit documentation in R/split_cols_by_groups.R
 \name{split_cols_by_groups}
 \alias{split_cols_by_groups}
-\title{Split Columns by Groups of Levels}
+\title{Split columns by groups of levels}
 \usage{
 split_cols_by_groups(lyt, var, groups_list = NULL, ref_group = NULL, ...)
 }

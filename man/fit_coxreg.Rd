@@ -4,7 +4,7 @@
 \alias{fit_coxreg}
 \alias{fit_coxreg_univar}
 \alias{fit_coxreg_multivar}
-\title{Fits for Cox Proportional Hazards Regression}
+\title{Fitting functions for Cox proportional hazards regression}
 \usage{
 fit_coxreg_univar(variables, data, at = list(), control = control_coxreg())
 

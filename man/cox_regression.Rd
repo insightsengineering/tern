@@ -5,7 +5,7 @@
 \alias{summarize_coxreg}
 \alias{s_coxreg}
 \alias{a_coxreg}
-\title{Cox Proportional Hazards Regression}
+\title{Cox proportional hazards regression}
 \usage{
 summarize_coxreg(
   lyt,
@@ -52,7 +52,7 @@ a_coxreg(
 \item{at}{(\code{list} of \code{numeric})\cr when the candidate covariate is a \code{numeric}, use \code{at} to specify
 the value of the covariate at which the effect should be estimated.}
 
-\item{multivar}{(\code{flag})\cr Defaults to \code{FALSE}. If \code{TRUE} multivariate Cox regression will run, otherwise
+\item{multivar}{(\code{flag})\cr whether multivariate Cox regression should run (defaults to \code{FALSE}), otherwise
 univariate Cox regression will run.}
 
 \item{common_var}{(\code{character})\cr the name of a factor variable in the dataset which takes the same value
@@ -95,7 +95,7 @@ variables can be selected by specifying \code{.var_nms}.}
 \item{.var_nms}{(\code{character})\cr the \code{term} value of rows in \code{df} for which \code{.stats} should be returned. Typically
 this is the name of a variable. If using variable labels, \code{var} should be a vector of both the desired
 variable name and the variable label in that order to see all \code{.stats} related to that variable. When \code{.which_vars}
-is \code{"var_main"} \code{.var_nms} should be only the variable name.}
+is \code{"var_main"}, \code{.var_nms} should be only the variable name.}
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 

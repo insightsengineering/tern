@@ -2,7 +2,7 @@
 % Please edit documentation in R/formatting_functions.R
 \name{format_extreme_values_ci}
 \alias{format_extreme_values_ci}
-\title{Formatting Extreme Values Part of a Confidence Interval}
+\title{Format extreme values part of a confidence interval}
 \usage{
 format_extreme_values_ci(digits = 2L)
 }

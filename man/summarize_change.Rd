@@ -4,7 +4,7 @@
 \alias{summarize_change}
 \alias{s_change_from_baseline}
 \alias{a_change_from_baseline}
-\title{Summarize the Change from Baseline or Absolute Baseline Values}
+\title{Summarize the change from baseline or absolute baseline values}
 \usage{
 summarize_change(
   lyt,

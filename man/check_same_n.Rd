@@ -2,14 +2,14 @@
 % Please edit documentation in R/utils.R
 \name{check_same_n}
 \alias{check_same_n}
-\title{Check Element Dimension}
+\title{Check element dimension}
 \usage{
 check_same_n(..., omit_null = TRUE)
 }
 \arguments{
-\item{...}{(\code{data.frame}s or \code{vector}s)\cr any data frames/vectors.}
+\item{...}{(\code{data.frame}s or \code{vector}s)\cr any data frames or vectors.}
 
-\item{omit_null}{(\code{logical})\cr whether \code{NULL} elements in \code{...} should be omitted from the check.}
+\item{omit_null}{(\code{flag})\cr whether \code{NULL} elements in \code{...} should be omitted from the check.}
 }
 \value{
 A \code{logical} value.

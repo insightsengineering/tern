@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_factor.R
 \name{bins_percent_labels}
 \alias{bins_percent_labels}
-\title{Labels for Bins in Percent}
+\title{Labels for bins in percent}
 \usage{
 bins_percent_labels(probs, digits = 0)
 }

@@ -5,7 +5,7 @@
 \alias{estimate_odds_ratio}
 \alias{s_odds_ratio}
 \alias{a_odds_ratio}
-\title{Odds Ratio Estimation}
+\title{Odds ratio estimation}
 \usage{
 estimate_odds_ratio(
   lyt,
@@ -89,7 +89,7 @@ by a statistics function.}
 
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
-\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+\item{.in_ref_col}{(\code{flag})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
 \item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 }

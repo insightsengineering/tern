@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimate_proportion.R
 \name{update_weights_strat_wilson}
 \alias{update_weights_strat_wilson}
-\title{Helper Function for the Estimation of Weights for \code{prop_strat_wilson}}
+\title{Helper function for the estimation of weights for \code{prop_strat_wilson()}}
 \usage{
 update_weights_strat_wilson(
   vars,

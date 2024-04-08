@@ -1,4 +1,4 @@
-#' Confidence Intervals for a Difference of Binomials
+#' Confidence intervals for a difference of binomials
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
@@ -7,7 +7,7 @@
 #' @name desctools_binom
 NULL
 
-#' Recycle List of Parameters
+#' Recycle list of parameters
 #'
 #' This function recycles all supplied elements to the maximal dimension.
 #'
@@ -307,8 +307,8 @@ desctools_binom <- function(x1,
 
 #' @describeIn desctools_binom Compute confidence intervals for binomial proportions.
 #'
-#' @param x (`count`)\cr number of successes
-#' @param n (`count`)\cr number of trials
+#' @param x (`count`)\cr number of successes.
+#' @param n (`count`)\cr number of trials.
 #' @param conf.level (`proportion`)\cr confidence level, defaults to 0.95.
 #' @param sides (`character`)\cr side of the confidence interval to compute. Must be one of `"two-sided"` (default),
 #'   `"left"`, or `"right"`.

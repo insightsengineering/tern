@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_km.R
 \name{h_grob_tbl_at_risk}
 \alias{h_grob_tbl_at_risk}
-\title{Helper: Patient-at-Risk Grobs}
+\title{Helper function to create patient-at-risk grobs}
 \usage{
 h_grob_tbl_at_risk(data, annot_tbl, xlim, title = TRUE)
 }

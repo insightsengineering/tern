@@ -7,7 +7,7 @@
 \alias{a_surv_timepoint}
 \alias{s_surv_timepoint_diff}
 \alias{a_surv_timepoint_diff}
-\title{Survival Time Point Analysis}
+\title{Survival time point analysis}
 \usage{
 surv_timepoint(
   lyt,
@@ -88,8 +88,8 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "no
 \item \code{time_point} (\code{number})\cr survival time point of interest.
 }}
 
-\item{method}{(\code{string})\cr either \code{surv} (survival estimations),
-\code{surv_diff} (difference in survival with the control) or \code{both}.}
+\item{method}{(\code{string})\cr \code{surv} (survival estimations),
+\code{surv_diff} (difference in survival with the control), or \code{both}.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
@@ -125,7 +125,7 @@ by a statistics function.}
 
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
-\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+\item{.in_ref_col}{(\code{flag})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 }
 \value{
 \itemize{

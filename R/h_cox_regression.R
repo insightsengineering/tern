@@ -1,4 +1,4 @@
-#' Helper Functions for Cox Proportional Hazards Regression
+#' Helper functions for Cox proportional hazards regression
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

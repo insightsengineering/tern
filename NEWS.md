@@ -29,6 +29,7 @@
 * Began deprecation of no longer used Kaplan-Meier helper functions `h_ggkm`, `h_decompose_gg`, `h_km_layout`, `h_grob_tbl_at_risk`, `h_grob_median_surv`, `h_grob_y_annot`, and `h_grob_coxph`.
 * Began deprecation of `grob`/`grid` related functions `stack_grobs`, `arrange_grobs`, and `draw_grob` which are no longer used in `tern`.
 * Removed `vdiffr` package from Suggests in DESCRIPTION file.
+* Renamed `individual_patient_plot.R` to `g_ipp.R`. 
 
 # tern 0.9.3
 

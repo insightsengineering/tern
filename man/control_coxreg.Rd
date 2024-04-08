@@ -2,7 +2,7 @@
 % Please edit documentation in R/cox_regression.R
 \name{control_coxreg}
 \alias{control_coxreg}
-\title{Controls for Cox Regression}
+\title{Control function for Cox regression}
 \usage{
 control_coxreg(
   pval_method = c("wald", "likelihood"),

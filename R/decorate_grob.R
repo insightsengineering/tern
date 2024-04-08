@@ -1,4 +1,4 @@
-#' Add Titles, Footnotes, Page Number, and a Bounding Box to a Grid Grob
+#' Add titles, footnotes, page Number, and a bounding box to a grid grob
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -6,19 +6,19 @@
 #' with title, footnote, and page numbers.
 #'
 #' @inheritParams grid::grob
-#' @param grob a grid grob object, optionally `NULL` if only a `grob` with the decoration should be shown.
-#' @param titles vector of character strings. Vector elements are separated by a newline and strings are wrapped
+#' @param grob (`grob`)\cr a grid grob object, optionally `NULL` if only a `grob` with the decoration should be shown.
+#' @param titles (`vector` of `string`s)\cr vector elements are separated by a newline and strings are wrapped
 #'   according to the page width.
-#' @param footnotes vector of character string. Same rules as for `titles`.
-#' @param page string with page numeration, if `NULL` then no page number is displayed.
-#' @param width_titles unit object
-#' @param width_footnotes unit object
-#' @param border boolean, whether a a border should be drawn around the plot or not.
-#' @param margins unit object of length 4
-#' @param padding  unit object of length 4
-#' @param outer_margins  unit object of length 4
-#' @param gp_titles a `gpar` object
-#' @param gp_footnotes a `gpar` object
+#' @param footnotes (`vector` of `string`s)\cr same rules as for `titles`.
+#' @param page (`string`)\cr page numeration. If `NULL` then no page number is displayed.
+#' @param width_titles (`grid::unit`)\cr width of titles.
+#' @param width_footnotes (`grid::unit`)\cr width of footnotes.
+#' @param border (`flag`)\cr whether a border should be drawn around the plot or not.
+#' @param margins (`grid::unit`)\cr margins. A unit object of length 4.
+#' @param padding (`grid::unit`)\cr padding. A unit object of length 4.
+#' @param outer_margins (`grid::unit`)\cr outer margins. A unit object of length 4.
+#' @param gp_titles (`gpar`)\cr a `gpar` object.
+#' @param gp_footnotes (`gpar`)\cr a `gpar` object.
 #'
 #' @return A grid grob (`gTree`).
 #'
@@ -297,15 +297,15 @@ split_string <- function(text, width) {
   paste(out_string, collapse = "\n")
 }
 
-#' Split Text According To Available Text Width
+#' Split text according to available text width
 #'
 #' Dynamically wrap text.
 #'
 #' @inheritParams grid::grid.text
-#' @param text character string
-#' @param width a unit object specifying max width of text
+#' @param text (`string`)\cr the text to wrap.
+#' @param width (`grid::unit`)\cr a unit object specifying maximum width of text.
 #'
-#' @return A text grob.
+#' @return A text `grob`.
 #'
 #' @details This code is taken from `R Graphics by Paul Murell, 2nd edition`
 #'
@@ -397,12 +397,12 @@ drawDetails.dynamicSplitText <- function(x, recording) {
   grid::grid.draw(x)
 }
 
-#' Update Page Number
+#' Update page number
 #'
 #' Automatically updates page number.
 #'
-#' @param npages number of pages in total
-#' @param ... passed on to [decorate_grob()]
+#' @param npages (`numeric`)\cr number of pages in total.
+#' @param ... arguments passed on to [decorate_grob()].
 #'
 #' @return Closure that increments the page number.
 #'
@@ -418,13 +418,13 @@ decorate_grob_factory <- function(npages, ...) {
   }
 }
 
-#' Decorate Set of `grobs` and Add Page Numbering
+#' Decorate set of `grob`s and add page numbering
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Note that this uses the [decorate_grob_factory()] function.
 #'
-#' @param grobs a list of grid grobs
+#' @param grobs (`list` of `grob`s)\cr a list of grid grobs.
 #' @param ... arguments passed on to [decorate_grob()].
 #'
 #' @return A decorated grob.

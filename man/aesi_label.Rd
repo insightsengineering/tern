@@ -2,15 +2,15 @@
 % Please edit documentation in R/utils.R
 \name{aesi_label}
 \alias{aesi_label}
-\title{Labels for Adverse Event Baskets}
+\title{Labels for adverse event baskets}
 \usage{
 aesi_label(aesi, scope = NULL)
 }
 \arguments{
-\item{aesi}{(\code{character})\cr with standardized MedDRA query name (e.g. \code{SMQZZNAM}) or customized query
-name (e.g. \code{CQZZNAM}).}
+\item{aesi}{(\code{character})\cr vector with standardized MedDRA query name (e.g. \code{SMQxxNAM}) or customized query
+name (e.g. \code{CQxxNAM}).}
 
-\item{scope}{(\code{character})\cr with scope of query (e.g. \code{SMQZZSC}).}
+\item{scope}{(\code{character})\cr vector with scope of query (e.g. \code{SMQxxSC}).}
 }
 \value{
 A \code{string} with the standard label for the AE basket.

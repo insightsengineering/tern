@@ -50,7 +50,7 @@ tern_default_labels
 
 summary_formats(type = "numeric", include_pval = FALSE)
 
-summary_labels(type = "numeric", include_pval = FALSE)
+summary_labels(type = "numeric", include_pval = lifecycle::deprecated())
 }
 \arguments{
 \item{method_groups}{(\code{character})\cr indicates the statistical method group (\code{tern} analyze function)
@@ -64,7 +64,7 @@ method group.}
 
 \item{stats}{(\code{character})\cr statistical methods to get defaults for.}
 
-\item{formats_in}{(named \code{vector}) \cr inserted formats to replace defaults. It can be a
+\item{formats_in}{(named \code{vector})\cr inserted formats to replace defaults. It can be a
 character vector from \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or a custom format function.}
 
 \item{labels_in}{(named \code{vector} of \code{character})\cr inserted labels to replace defaults.}
@@ -77,9 +77,9 @@ variable names if rows correspond to different variables instead of levels. Defa
 
 \item{indents_in}{(named \code{vector})\cr inserted indent modifiers to replace defaults (default is \code{0L}).}
 
-\item{type}{(\code{flag})\cr is it going to be \code{"numeric"} or \code{"counts"}?}
+\item{type}{(\code{string})\cr \code{"numeric"} or \code{"counts"}.}
 
-\item{include_pval}{(\code{flag})\cr deprecated parameter. Same as \code{add_pval}.}
+\item{include_pval}{(\code{flag})\cr same as the \code{add_pval} argument in \code{\link[=get_stats]{get_stats()}}.}
 }
 \value{
 \itemize{
@@ -142,7 +142,7 @@ group (analyze function).
 \code{\link[=analyze_vars]{analyze_vars()}} and \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}} principally.
 
 \item \code{summary_labels()}: Quick function to retrieve default labels for summary statistics.
-Returns labels of descriptive statistics which are understood by \code{rtables}. Similar to \code{summary_formats}
+Returns labels of descriptive statistics which are understood by \code{rtables}. Similar to \code{summary_formats}.
 
 }}
 \note{

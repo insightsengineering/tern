@@ -10,7 +10,7 @@ default_na_str()
 set_default_na_str(na_str)
 }
 \arguments{
-\item{na_str}{(\code{string})\cr Single string value to set in the R environment options as
+\item{na_str}{(\code{string})\cr single string value to set in the R environment options as
 the default value to replace \code{NA}s. Use \code{getOption("tern_default_na_str")} to check the
 current value set in the R environment (defaults to \code{NULL} if not set).}
 }
@@ -35,7 +35,7 @@ then \code{NA} is used.
 }
 \section{Functions}{
 \itemize{
-\item \code{default_na_str()}: Getter for default \code{NA} value replacement string.
+\item \code{default_na_str()}: Accessor for default \code{NA} value replacement string.
 
 \item \code{set_default_na_str()}: Setter for default \code{NA} value replacement string. Sets the
 option \code{"tern_default_na_str"} within the R environment.

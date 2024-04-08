@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_rtables.R
 \name{unlist_and_blank_na}
 \alias{unlist_and_blank_na}
-\title{Blank for Missing Input}
+\title{Blank for missing input}
 \usage{
 unlist_and_blank_na(x)
 }

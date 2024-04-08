@@ -6,7 +6,7 @@
 \alias{h_glm_quasipoisson}
 \alias{h_glm_negbin}
 \alias{h_ppmeans}
-\title{Helper Functions for Poisson Models.}
+\title{Helper functions for Poisson models}
 \usage{
 h_glm_poisson(.var, .df_row, variables, weights)
 
@@ -22,9 +22,9 @@ h_ppmeans(obj, .df_row, arm, conf_level)
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.df_row}{(\code{data.frame})\cr data set that includes all the variables that are called in \code{.var} and \code{variables}.}
+\item{.df_row}{(\code{data.frame})\cr dataset that includes all the variables that are called in \code{.var} and \code{variables}.}
 
-\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables, with
+\item{variables}{(named \code{list} of \code{string}s)\cr list of additional analysis variables, with
 expected elements:
 \itemize{
 \item \code{arm} (\code{string})\cr group variable, for which the covariate adjusted means of multiple
@@ -59,7 +59,7 @@ summarized. Specifically, the first level of \code{arm} variable is taken as the
 }
 
 \itemize{
-\item \code{h_glm_negbin()} returns the results of a Negative Binomial model.
+\item \code{h_glm_negbin()} returns the results of a negative binomial model.
 }
 
 \itemize{

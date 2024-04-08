@@ -1,4 +1,4 @@
-#' Helper Function for Deriving Analysis Datasets for Select Laboratory Tables
+#' Helper function for deriving analysis datasets for select laboratory tables
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -8,11 +8,11 @@
 #'
 #' @param adsl (`data.frame`)\cr ADSL data frame.
 #' @param adlb (`data.frame`)\cr ADLB data frame.
-#' @param worst_flag (named `vector`)\cr Worst post-baseline lab flag variable.
-#' @param by_visit (`logical`)\cr defaults to `FALSE` to generate worst grade per patient.
+#' @param worst_flag (named `vector`)\cr worst post-baseline lab flag variable.
+#' @param by_visit (`flag`)\cr defaults to `FALSE` to generate worst grade per patient.
 #'   If worst grade per patient per visit is specified for `worst_flag`, then
 #'   `by_visit` should be `TRUE` to generate worst grade patient per visit.
-#' @param no_fillin_visits (named `character`)\cr Visits that are not considered for post-baseline worst toxicity
+#' @param no_fillin_visits (named `character`)\cr visits that are not considered for post-baseline worst toxicity
 #'   grade. Defaults to `c("SCREENING", "BASELINE")`.
 #'
 #' @return `df` containing variables shared between `adlb` and `adsl` along with variables `PARAM`, `PARAMCD`,

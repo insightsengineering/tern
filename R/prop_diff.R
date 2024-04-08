@@ -1,4 +1,4 @@
-#' Proportion Difference
+#' Proportion difference
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -233,7 +233,7 @@ estimate_proportion_diff <- function(lyt,
   )
 }
 
-#' Check: Proportion Difference Arguments
+#' Check proportion difference arguments
 #'
 #' Verifies that and/or convert arguments into valid values to be used in the
 #' estimation of difference in responder proportions.
@@ -259,15 +259,15 @@ check_diff_prop_ci <- function(rsp,
   invisible()
 }
 
-#' Description of Method Used for Proportion Comparison
+#' Description of method used for proportion comparison
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' This is an auxiliary function that describes the analysis in
-#' `s_proportion_diff`.
+#' [s_proportion_diff()].
 #'
 #' @inheritParams s_proportion_diff
-#' @param long (`logical`)\cr Whether a long or a short (default) description is required.
+#' @param long (`flag`)\cr whether a long (`TRUE`) or a short (`FALSE`, default) description is required.
 #'
 #' @return A `string` describing the analysis.
 #'
@@ -303,7 +303,7 @@ d_proportion_diff <- function(conf_level,
   paste0(label, " (", method_part, ")")
 }
 
-#' Helper Functions to Calculate Proportion Difference
+#' Helper functions to calculate proportion difference
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -325,7 +325,7 @@ NULL
 #'   approximation. It is possible to include a continuity correction for Wald's
 #'   interval.
 #'
-#' @param correct (`logical`)\cr whether to include the continuity correction. For further
+#' @param correct (`flag`)\cr whether to include the continuity correction. For further
 #'   information, see [stats::prop.test()].
 #'
 #' @examples

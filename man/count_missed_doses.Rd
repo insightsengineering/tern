@@ -5,7 +5,7 @@
 \alias{s_count_nonmissing}
 \alias{s_count_missed_doses}
 \alias{a_count_missed_doses}
-\title{Counting Missed Doses}
+\title{Count missed doses}
 \usage{
 count_missed_doses(
   lyt,

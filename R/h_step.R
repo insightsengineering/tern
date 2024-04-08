@@ -1,4 +1,4 @@
-#' Helper Functions for Subgroup Treatment Effect Pattern (STEP) Calculations
+#' Helper functions for subgroup treatment effect pattern (STEP) calculations
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -10,7 +10,7 @@
 #' @include control_step.R
 NULL
 
-#' @describeIn h_step creates the windows for STEP, based on the control settings
+#' @describeIn h_step Creates the windows for STEP, based on the control settings
 #'   provided.
 #'
 #' @param x (`numeric`)\cr biomarker value(s) to use (without `NA`).
@@ -62,13 +62,13 @@ h_step_window <- function(x,
   list(sel = sel, interval = out)
 }
 
-#' @describeIn h_step calculates the estimated treatment effect estimate
+#' @describeIn h_step Calculates the estimated treatment effect estimate
 #'   on the linear predictor scale and corresponding standard error from a STEP `model` fitted
 #'   on `data` given `variables` specification, for a single biomarker value `x`.
 #'   This works for both `coxph` and `glm` models, i.e. for calculating log hazard ratio or log odds
 #'   ratio estimates.
 #'
-#' @param model the regression model object.
+#' @param model (`coxph` or `glm`)\cr the regression model object.
 #'
 #' @return
 #' * `h_step_trt_effect()` returns a vector with elements `est` and `se`.
@@ -103,7 +103,7 @@ h_step_trt_effect <- function(data,
   )
 }
 
-#' @describeIn h_step builds the model formula used in survival STEP calculations.
+#' @describeIn h_step Builds the model formula used in survival STEP calculations.
 #'
 #' @return
 #' * `h_step_survival_formula()` returns a model formula.
@@ -127,7 +127,7 @@ h_step_survival_formula <- function(variables,
   stats::as.formula(form)
 }
 
-#' @describeIn h_step estimates the model with `formula` built based on
+#' @describeIn h_step Estimates the model with `formula` built based on
 #'   `variables` in `data` for a given `subset` and `control` parameters for the
 #'   Cox regression.
 #'
@@ -200,7 +200,7 @@ h_step_survival_est <- function(formula,
   )
 }
 
-#' @describeIn h_step builds the model formula used in response STEP calculations.
+#' @describeIn h_step Builds the model formula used in response STEP calculations.
 #'
 #' @return
 #' * `h_step_rsp_formula()` returns a model formula.
@@ -234,7 +234,7 @@ h_step_rsp_formula <- function(variables,
   stats::as.formula(form)
 }
 
-#' @describeIn h_step estimates the model with `formula` built based on
+#' @describeIn h_step Estimates the model with `formula` built based on
 #'   `variables` in `data` for a given `subset` and `control` parameters for the
 #'   logistic regression.
 #'

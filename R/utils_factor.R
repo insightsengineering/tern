@@ -1,12 +1,12 @@
-#' Combine Factor Levels
+#' Combine factor levels
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Combine specified old factor Levels in a single new level.
 #'
-#' @param x factor
-#' @param levels level names to be combined
-#' @param new_level name of new level
+#' @param x (`factor`)\cr factor variable.
+#' @param levels (`character`)\cr level names to be combined.
+#' @param new_level (`string`)\cr name of new level.
 #'
 #' @return A `factor` with the new levels.
 #'
@@ -30,7 +30,7 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
   x
 }
 
-#' Conversion of a Vector to a Factor
+#' Conversion of a vector to a factor
 #'
 #' Converts `x` to a factor and keeps its attributes. Warns appropriately such that the user
 #' can decide whether they prefer converting to factor manually (e.g. for full control of
@@ -85,7 +85,7 @@ as_factor_keep_attributes <- function(x,
   }
 }
 
-#' Labels for Bins in Percent
+#' Labels for bins in percent
 #'
 #' This creates labels for quantile based bins in percent. This assumes the right-closed
 #' intervals as produced by [cut_quantile_bins()].
@@ -117,7 +117,7 @@ bins_percent_labels <- function(probs,
   with_left_bracket
 }
 
-#' Cutting Numeric Vector into Empirical Quantile Bins
+#' Cut numeric vector into empirical quantile bins
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -192,14 +192,14 @@ cut_quantile_bins <- function(x,
   )
 }
 
-#' Discard Certain Levels from a Factor
+#' Discard specified levels of a factor
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' This discards the observations as well as the levels specified from a factor.
 #'
 #' @param x (`factor`)\cr the original factor.
-#' @param discard (`character`)\cr which levels to discard.
+#' @param discard (`character`)\cr levels to discard.
 #'
 #' @return A modified `factor` with observations as well as levels from `discard` dropped.
 #'
@@ -215,16 +215,16 @@ fct_discard <- function(x, discard) {
   factor(new_obs, levels = new_levels)
 }
 
-#' Insertion of Explicit Missings in a Factor
+#' Insertion of explicit missing values in a factor
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This inserts explicit missings in a factor based on a condition. Additionally,
+#' This inserts explicit missing values in a factor based on a condition. Additionally,
 #' existing `NA` values will be explicitly converted to given `na_level`.
 #'
 #' @param x (`factor`)\cr the original factor.
-#' @param condition (`logical`)\cr where to insert missings.
-#' @param na_level (`string`)\cr which level to use for missings.
+#' @param condition (`logical`)\cr where to insert missing values.
+#' @param na_level (`string`)\cr which level to use for missing values.
 #'
 #' @return A modified `factor` with inserted and existing `NA` converted to `na_level`.
 #'
@@ -242,7 +242,7 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
   forcats::fct_drop(x, only = na_level)
 }
 
-#' Collapsing of Factor Levels and Keeping Only Those New Group Levels
+#' Collapse factor levels and keep only those new group levels
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -277,7 +277,7 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
   do.call(forcats::fct_relevel, args = c(list(.f = x), as.list(new_lvls)))
 }
 
-#' Ungroup Non-Numeric Statistics
+#' Ungroup non-numeric statistics
 #'
 #' Ungroups grouped non-numeric statistics within input vectors `.formats`, `.labels`, and `.indent_mods`.
 #'

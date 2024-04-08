@@ -4,7 +4,7 @@
 \alias{response_subgroups}
 \alias{tabulate_rsp_subgroups}
 \alias{a_response_subgroups}
-\title{Tabulate Binary Response by Subgroup}
+\title{Tabulate binary response by subgroup}
 \usage{
 tabulate_rsp_subgroups(
   lyt,

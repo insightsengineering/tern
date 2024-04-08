@@ -1,4 +1,4 @@
-#' Counting Missed Doses
+#' Count missed doses
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -27,7 +27,7 @@ s_count_nonmissing <- function(x) {
   list(n = n_available(x))
 }
 
-#' Description Function that Calculates Labels for [s_count_missed_doses()].
+#' Description function that calculates labels for `s_count_missed_doses()`
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

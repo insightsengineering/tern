@@ -2,17 +2,17 @@
 % Please edit documentation in R/h_pkparam_sort.R
 \name{h_pkparam_sort}
 \alias{h_pkparam_sort}
-\title{Sort Data by \verb{PK PARAM} Variable}
+\title{Sort pharmacokinetic data by \code{PARAM} variable}
 \usage{
 h_pkparam_sort(pk_data, key_var = "PARAMCD")
 }
 \arguments{
-\item{pk_data}{(\code{data.frame})\cr pharmacokinetics data frame.}
+\item{pk_data}{(\code{data.frame})\cr pharmacokinetic data frame.}
 
-\item{key_var}{(\code{character})\cr key variable used to merge pk_data and metadata created by \code{d_pkparam()}}
+\item{key_var}{(\code{character})\cr key variable used to merge pk_data and metadata created by \code{d_pkparam()}.}
 }
 \value{
-A PK \code{data.frame} sorted by a \code{PARAM} variable.
+A pharmacokinetic \code{data.frame} sorted by a \code{PARAM} variable.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

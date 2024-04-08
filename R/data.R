@@ -1,4 +1,4 @@
-#' Simulated CDISC Data for Examples
+#' Simulated CDISC data for examples
 #'
 #' @format `rds` (`data.frame`)
 #'

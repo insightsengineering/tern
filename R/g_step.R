@@ -1,4 +1,4 @@
-#' Create a STEP Graph
+#' Create a STEP graph
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -135,14 +135,14 @@ g_step <- function(df,
   p
 }
 
-#' Custom Tidy Method for STEP Results
+#' Custom tidy method for STEP results
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Tidy the STEP results into a `tibble` format ready for plotting.
 #'
-#' @param x (`step` matrix)\cr results from [fit_survival_step()].
-#' @param ... not used here.
+#' @param x (`matrix`)\cr results from [fit_survival_step()].
+#' @param ... not used.
 #'
 #' @return A `tibble` with one row per STEP subgroup. The estimates and CIs are on the HR or OR scale,
 #'   respectively. Additional attributes carry metadata also used for plotting.

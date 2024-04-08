@@ -4,7 +4,7 @@
 \alias{count_patients_events_in_cols}
 \alias{summarize_patients_events_in_cols}
 \alias{s_count_patients_and_multiple_events}
-\title{Counting Patients and Events in Columns}
+\title{Count patients and events in columns}
 \usage{
 summarize_patients_events_in_cols(
   lyt,
@@ -33,7 +33,7 @@ s_count_patients_and_multiple_events(
 
 \item{id}{(\code{string})\cr subject variable name.}
 
-\item{filters_list}{(named \code{list} of \code{character})\cr each element in this list describes one
+\item{filters_list}{(named \code{list} of \code{character})\cr list where each element in this list describes one
 type of event describe by filters, in the same format as \code{\link[=s_count_patients_with_event]{s_count_patients_with_event()}}.
 If it has a label, then this will be used for the column title.}
 

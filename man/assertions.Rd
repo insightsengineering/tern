@@ -7,7 +7,7 @@
 \alias{assert_valid_factor}
 \alias{assert_df_with_factors}
 \alias{assert_proportion_value}
-\title{Additional Assertions for \code{checkmate}}
+\title{Additional assertions to use with \code{checkmate}}
 \usage{
 assert_list_of_variables(x, .var.name = checkmate::vname(x), add = NULL)
 
@@ -84,7 +84,7 @@ Default is \code{NULL} (no check).}
 \item{len}{[\code{integer(1)}]\cr
 Exact expected length of \code{x}.}
 
-\item{include_boundaries}{(\code{logical})\cr whether to include boundaries when testing
+\item{include_boundaries}{(\code{flag})\cr whether to include boundaries when testing
 for proportions.}
 }
 \value{

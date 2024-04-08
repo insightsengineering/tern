@@ -429,21 +429,19 @@ g_forest <- function(tbl,
   }
 }
 
-#' Forest Plot Grob
+#' Forest plot grob
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
 #' @inheritParams g_forest
-#' @param tbl ([rtables::rtable()])
+#' @param tbl ([rtables::rtable()]) table object.
 #' @param x (`numeric`)\cr coordinate of point.
 #' @param lower,upper (`numeric`)\cr lower/upper bound of the confidence interval.
 #' @param symbol_size (`numeric`)\cr vector with relative size for plot symbol.
-#' If `NULL`, the same symbol size is used.
+#'   If `NULL`, the same symbol size is used.
 #'
 #' @details
 #' The heights get automatically determined.
-#'
-#' @noRd
 #'
 #' @examples
 #' tbl <- rtable(
@@ -473,6 +471,8 @@ g_forest <- function(tbl,
 #'
 #' draw_grob(p)
 #' }
+#'
+#' @noRd
 forest_grob <- function(tbl,
                         x,
                         lower,
@@ -762,7 +762,7 @@ cell_in_rows <- function(row_name,
   )
 }
 
-#' Graphic Object: Forest Dot Line
+#' Graphic object: forest dot line
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
@@ -848,17 +848,18 @@ forest_dot_line <- function(x,
   }
 }
 
-#' Create a Viewport Tree for the Forest Plot
+#' Create a viewport tree for the forest plot
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
-#' @param tbl (`rtable`)
-#' @param width_row_names (`grid::unit`)\cr Width of row names
-#' @param width_columns (`grid::unit`)\cr Width of column spans
-#' @param width_forest (`grid::unit`)\cr Width of the forest plot
-#' @param gap_column (`grid::unit`)\cr Gap width between the columns
-#' @param gap_header (`grid::unit`)\cr Gap width between the header
-#' @param mat_form matrix print form of the table
+#' @param tbl (`rtable`) table object.
+#' @param width_row_names (`grid::unit`)\cr width of row names.
+#' @param width_columns (`grid::unit`)\cr width of column spans.
+#' @param width_forest (`grid::unit`)\cr width of the forest plot.
+#' @param gap_column (`grid::unit`)\cr gap width between the columns.
+#' @param gap_header (`grid::unit`)\cr gap width between the header.
+#' @param mat_form (`rtables::MatrixPrintForm`)\cr matrix print form of the table.
+#'
 #' @return A viewport tree.
 #'
 #' @examples
@@ -966,7 +967,7 @@ forest_viewport <- function(tbl,
   vp_tbl
 }
 
-#' Viewport Forest Plot: Table Part
+#' Viewport forest plot: table part
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
@@ -1026,7 +1027,7 @@ vp_forest_table_part <- function(nrow,
   )
 }
 
-#' Forest Rendering
+#' Forest rendering
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'

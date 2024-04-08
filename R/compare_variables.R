@@ -1,4 +1,4 @@
-#' Compare Variables Between Groups
+#' Compare variables between groups
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -148,7 +148,7 @@ s_compare.factor <- function(x,
 #' @describeIn compare_variables Method for `character` class. This makes an automatic
 #'   conversion to `factor` (with a warning) and then forwards to the method for factors.
 #'
-#' @param verbose (`logical`)\cr Whether warnings and messages should be printed. Mainly used
+#' @param verbose (`flag`)\cr whether warnings and messages should be printed. Mainly used
 #'   to print out information about factor casting. Defaults to `TRUE`.
 #'
 #' @method s_compare character

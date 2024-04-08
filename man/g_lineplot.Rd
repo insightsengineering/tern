@@ -2,7 +2,7 @@
 % Please edit documentation in R/g_lineplot.R
 \name{g_lineplot}
 \alias{g_lineplot}
-\title{Line plot with the optional table}
+\title{Line plot with optional table}
 \usage{
 g_lineplot(
   df,
@@ -32,7 +32,7 @@ g_lineplot(
   table_format = get_formats_from_stats(table),
   table_labels = get_labels_from_stats(table),
   table_font_size = 3,
-  newpage = TRUE,
+  newpage = lifecycle::deprecated(),
   col = NULL
 )
 }
@@ -87,7 +87,7 @@ or point and line (\code{pl}).}
 \item{position}{(\code{character} or \code{call})\cr geom element position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
-\item{legend_title}{(\code{character} string)\cr legend title.}
+\item{legend_title}{(\code{string})\cr legend title.}
 
 \item{legend_position}{(\code{character})\cr the position of the plot legend (\code{none}, \code{left}, \code{right}, \code{bottom}, \code{top},
 or two-element numeric vector).}
@@ -98,21 +98,21 @@ or two-element numeric vector).}
 
 \item{y_lab}{(\code{character})\cr y-axis label. If equal to \code{NULL}, then no label will be added.}
 
-\item{y_lab_add_paramcd}{(\code{logical})\cr should \code{paramcd}, i.e. \code{unique(df[[variables["paramcd"]]])} be added to the
-y-axis label \code{y_lab}?}
+\item{y_lab_add_paramcd}{(\code{logical})\cr whether \code{paramcd}, i.e. \code{unique(df[[variables["paramcd"]]])} should be added
+to the y-axis label (\code{y_lab}).}
 
-\item{y_lab_add_unit}{(\code{logical})\cr should y unit, i.e. \code{unique(df[[variables["y_unit"]]])} be added to the y-axis
-label \code{y_lab}?}
+\item{y_lab_add_unit}{(\code{logical})\cr whether y-axis unit, i.e. \code{unique(df[[variables["y_unit"]]])} should be added
+to the y-axis label (\code{y_lab}).}
 
 \item{title}{(\code{character})\cr plot title.}
 
 \item{subtitle}{(\code{character})\cr plot subtitle.}
 
-\item{subtitle_add_paramcd}{(\code{logical})\cr should \code{paramcd}, i.e. \code{unique(df[[variables["paramcd"]]])} be added to
-the plot's subtitle \code{subtitle}?}
+\item{subtitle_add_paramcd}{(\code{logical})\cr whether \code{paramcd}, i.e. \code{unique(df[[variables["paramcd"]]])} should be
+added to the plot's subtitle (\code{subtitle}).}
 
-\item{subtitle_add_unit}{(\code{logical})\cr should y unit, i.e. \code{unique(df[[variables["y_unit"]]])} be added to the
-plot's subtitle \code{subtitle}?}
+\item{subtitle_add_unit}{(\code{logical})\cr whether y-axis unit, i.e. \code{unique(df[[variables["y_unit"]]])} should be
+added to the plot's subtitle (\code{subtitle}).}
 
 \item{caption}{(\code{character})\cr optional caption below the plot.}
 
@@ -125,7 +125,7 @@ appended to the plot. Names of \code{table_labels} must match the names of stati
 
 \item{table_font_size}{(\code{integer} or \code{double})\cr controls the font size of values in the table.}
 
-\item{newpage}{(\code{logical})\cr should plot be drawn on new page?}
+\item{newpage}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} not used.}
 
 \item{col}{(\code{character})\cr colors.}
 }

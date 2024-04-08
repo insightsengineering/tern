@@ -22,12 +22,12 @@ NULL
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Helper function to prepare a `df` for generate the patient count shift table
+#' Helper function to prepare a `df` for generate the patient count shift table.
 #'
 #' @param adlb (`data.frame`)\cr ADLB data frame.
-#' @param worst_flag_low (named `vector`)\cr Worst low post-baseline lab grade flag variable
-#' @param worst_flag_high (named `vector`)\cr Worst high post-baseline lab grade flag variable
-#' @param direction_var (`string`)\cr Direction variable specifying the direction of the shift table of interest.
+#' @param worst_flag_low (named `vector`)\cr worst low post-baseline lab grade flag variable.
+#' @param worst_flag_high (named `vector`)\cr worst high post-baseline lab grade flag variable.
+#' @param direction_var (`string`)\cr direction variable specifying the direction of the shift table of interest.
 #'   Only lab records flagged by `L`, `H` or `B` are included in the shift table.
 #'   * `L`: low direction only
 #'   * `H`: high direction only
@@ -154,7 +154,7 @@ h_adlb_worsen <- function(adlb,
   out
 }
 
-#' Helper function to analyze patients for `s_count_abnormal_lab_worsen_by_baseline`
+#' Helper function to analyze patients for `s_count_abnormal_lab_worsen_by_baseline()`
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -164,9 +164,9 @@ h_adlb_worsen <- function(adlb,
 #'
 #' @inheritParams argument_convention
 #' @inheritParams h_adlb_worsen
-#' @param baseline_var (`string`)\cr baseline lab grade variable
+#' @param baseline_var (`string`)\cr baseline lab grade variable.
 #'
-#' @return `h_worsen_counter()` returns the counts and fraction of patients
+#' @return The counts and fraction of patients
 #'   whose worst post-baseline lab grades are worse than their baseline grades, for
 #'   post-baseline worst grades "1", "2", "3", "4" and "Any".
 #'

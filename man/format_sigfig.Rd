@@ -2,7 +2,7 @@
 % Please edit documentation in R/formatting_functions.R
 \name{format_sigfig}
 \alias{format_sigfig}
-\title{Formatting Numeric Values By Significant Figures}
+\title{Format numeric values by significant figures}
 \usage{
 format_sigfig(sigfig, format = "xx", num_fmt = "fg")
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/count_missed_doses.R
 \name{d_count_missed_doses}
 \alias{d_count_missed_doses}
-\title{Description Function that Calculates Labels for \code{\link[=s_count_missed_doses]{s_count_missed_doses()}}.}
+\title{Description function that calculates labels for \code{s_count_missed_doses()}}
 \usage{
 d_count_missed_doses(thresholds)
 }

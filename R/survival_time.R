@@ -1,4 +1,4 @@
-#' Survival Time Analysis
+#' Survival time analysis
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

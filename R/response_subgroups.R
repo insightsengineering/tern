@@ -1,4 +1,4 @@
-#' Tabulate Binary Response by Subgroup
+#' Tabulate binary response by subgroup
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -62,7 +62,7 @@
 #' @order 1
 NULL
 
-#' Prepares Response Data for Population Subgroups in Data Frames
+#' Prepare response data for population subgroups in data frames
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -339,7 +339,7 @@ tabulate_rsp_subgroups <- function(lyt,
   )
 }
 
-#' Labels for Column Variables in Binary Response by Subgroup Table
+#' Labels for column variables in binary response by subgroup table
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/analyze_vars_in_cols.R
 \name{analyze_vars_in_cols}
 \alias{analyze_vars_in_cols}
-\title{Summary numeric variables in columns}
+\title{Summarize numeric variables in columns}
 \usage{
 analyze_vars_in_cols(
   lyt,
@@ -35,7 +35,7 @@ analyze_vars_in_cols(
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{row_labels}{(\code{character})\cr as this function works in columns space, usual \code{.labels}
+\item{row_labels}{(\code{character})\cr as this function works in columns space, usually \code{.labels}
 character vector applies on the column space. You can change the row labels by defining this
 parameter to a named character vector with names corresponding to the split values. It defaults
 to \code{NULL} and if it contains only one \code{string}, it will duplicate that as a row label.}

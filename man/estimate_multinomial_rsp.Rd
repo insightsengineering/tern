@@ -5,7 +5,7 @@
 \alias{estimate_multinomial_response}
 \alias{s_length_proportion}
 \alias{a_length_proportion}
-\title{Estimation of Proportions per Level of Factor}
+\title{Estimation of proportions per level of factor}
 \usage{
 estimate_multinomial_response(
   lyt,

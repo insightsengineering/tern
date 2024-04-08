@@ -2,7 +2,7 @@
 % Please edit documentation in R/prop_diff_test.R
 \name{d_test_proportion_diff}
 \alias{d_test_proportion_diff}
-\title{Description of the Difference Test Between Two Proportions}
+\title{Description of the difference test between two proportions}
 \usage{
 d_test_proportion_diff(method)
 }
@@ -11,7 +11,7 @@ d_test_proportion_diff(method)
 to calculate the p-value.}
 }
 \value{
-\code{string} describing the test from which the p-value is derived.
+A \code{string} describing the test from which the p-value is derived.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

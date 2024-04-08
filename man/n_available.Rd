@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{n_available}
 \alias{n_available}
-\title{Number of Available (Non-Missing Entries) in a Vector}
+\title{Number of available (non-missing entries) in a vector}
 \usage{
 n_available(x)
 }

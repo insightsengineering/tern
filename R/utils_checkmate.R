@@ -1,4 +1,4 @@
-#' Additional Assertions for `checkmate`
+#' Additional assertions to use with `checkmate`
 #'
 #' Additional assertion functions which can be used together with the `checkmate` package.
 #'
@@ -6,7 +6,7 @@
 #' @param x (`any`)\cr object to test.
 #' @param df (`data.frame`)\cr data set to test.
 #' @param variables (named `list` of `character`)\cr list of variables to test.
-#' @param include_boundaries (`logical`)\cr whether to include boundaries when testing
+#' @param include_boundaries (`flag`)\cr whether to include boundaries when testing
 #'   for proportions.
 #' @param na_level (`character`)\cr the string you have been using to represent NA or
 #'   missing data. For `NA` values please consider using directly [is.na()] or
@@ -109,7 +109,6 @@ check_valid_factor <- function(x,
 #' @keywords internal
 assert_valid_factor <- checkmate::makeAssertionFunction(check_valid_factor)
 
-
 check_df_with_factors <- function(df,
                                   variables,
                                   min.levels = 1, # nolint
@@ -142,6 +141,7 @@ check_df_with_factors <- function(df,
   }
   return(res)
 }
+
 #' @describeIn assertions Check whether `df` is a data frame where the analysis `variables`
 #'   are all factors. Note that the creation of `NA` by direct call of `factor()` will
 #'   trim `NA` levels out of the vector list itself.

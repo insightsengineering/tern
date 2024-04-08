@@ -2,7 +2,7 @@
 % Please edit documentation in R/response_subgroups.R
 \name{extract_rsp_subgroups}
 \alias{extract_rsp_subgroups}
-\title{Prepares Response Data for Population Subgroups in Data Frames}
+\title{Prepare response data for population subgroups in data frames}
 \usage{
 extract_rsp_subgroups(
   variables,

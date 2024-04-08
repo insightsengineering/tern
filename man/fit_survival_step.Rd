@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit_survival_step.R
 \name{fit_survival_step}
 \alias{fit_survival_step}
-\title{Subgroup Treatment Effect Pattern (STEP) Fit for Survival Outcome}
+\title{Subgroup treatment effect pattern (STEP) fit for survival outcome}
 \usage{
 fit_survival_step(
   variables,
@@ -26,7 +26,7 @@ second part of the columns contain the estimates for the treatment arm compariso
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This fits the Subgroup Treatment Effect Pattern models for a survival outcome. The treatment arm
+This fits the subgroup treatment effect pattern (STEP) models for a survival outcome. The treatment arm
 variable must have exactly 2 levels, where the first one is taken as reference and the estimated
 hazard ratios are for the comparison of the second level vs. the first one.
 

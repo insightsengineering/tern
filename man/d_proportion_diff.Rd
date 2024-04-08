@@ -2,7 +2,7 @@
 % Please edit documentation in R/prop_diff.R
 \name{d_proportion_diff}
 \alias{d_proportion_diff}
-\title{Description of Method Used for Proportion Comparison}
+\title{Description of method used for proportion comparison}
 \usage{
 d_proportion_diff(conf_level, method, long = FALSE)
 }
@@ -11,7 +11,7 @@ d_proportion_diff(conf_level, method, long = FALSE)
 
 \item{method}{(\code{string})\cr the method used for the confidence interval estimation.}
 
-\item{long}{(\code{logical})\cr Whether a long or a short (default) description is required.}
+\item{long}{(\code{flag})\cr whether a long (\code{TRUE}) or a short (\code{FALSE}, default) description is required.}
 }
 \value{
 A \code{string} describing the analysis.
@@ -20,7 +20,7 @@ A \code{string} describing the analysis.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 This is an auxiliary function that describes the analysis in
-\code{s_proportion_diff}.
+\code{\link[=s_proportion_diff]{s_proportion_diff()}}.
 }
 \seealso{
 \link{prop_diff}

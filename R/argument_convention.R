@@ -1,4 +1,4 @@
-#' Standard Arguments
+#' Standard arguments
 #'
 #' The documentation to this function lists all the arguments in `tern`
 #' that are used repeatedly to express an analysis.
@@ -11,7 +11,7 @@
 #' @param .df_row (`data.frame`)\cr data frame across all of the columns for the given row split.
 #' @param .formats (named `character` or `list`)\cr formats for the statistics. See Details in `analyze_vars` for more
 #'   information on the `"auto"` setting.
-#' @param .in_ref_col (`logical`)\cr `TRUE` when working with the reference level, `FALSE` otherwise.
+#' @param .in_ref_col (`flag`)\cr `TRUE` when working with the reference level, `FALSE` otherwise.
 #' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 #'   unmodified default behavior. Can be negative.
 #' @param .labels (named `character`)\cr labels for the statistics (without indent).
@@ -67,7 +67,7 @@
 #' @param vars (`character`)\cr variable names for the primary analysis variable to be iterated over.
 #' @param var (`string`)\cr single variable name for the primary analysis variable.
 #' @param x (`numeric`)\cr vector of numbers we want to analyze.
-
+#'
 #' @details Although this function just returns `NULL` it has two uses, for
 #'   the `tern` users it provides a documentation of arguments that are
 #'   commonly and consistently used in the framework. For the developer it adds a

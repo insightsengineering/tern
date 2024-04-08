@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_km.R
 \name{h_decompose_gg}
 \alias{h_decompose_gg}
-\title{\code{ggplot} Decomposition}
+\title{\code{ggplot} decomposition}
 \usage{
 h_decompose_gg(gg)
 }

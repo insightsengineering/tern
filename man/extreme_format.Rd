@@ -4,7 +4,7 @@
 \alias{extreme_format}
 \alias{h_get_format_threshold}
 \alias{h_format_threshold}
-\title{Formatting Extreme Values}
+\title{Format extreme values}
 \usage{
 h_get_format_threshold(digits = 2L)
 

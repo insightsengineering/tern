@@ -14,11 +14,11 @@ h_adlb_worsen(
 \arguments{
 \item{adlb}{(\code{data.frame})\cr ADLB data frame.}
 
-\item{worst_flag_low}{(named \code{vector})\cr Worst low post-baseline lab grade flag variable}
+\item{worst_flag_low}{(named \code{vector})\cr worst low post-baseline lab grade flag variable.}
 
-\item{worst_flag_high}{(named \code{vector})\cr Worst high post-baseline lab grade flag variable}
+\item{worst_flag_high}{(named \code{vector})\cr worst high post-baseline lab grade flag variable.}
 
-\item{direction_var}{(\code{string})\cr Direction variable specifying the direction of the shift table of interest.
+\item{direction_var}{(\code{string})\cr direction variable specifying the direction of the shift table of interest.
 Only lab records flagged by \code{L}, \code{H} or \code{B} are included in the shift table.
 \itemize{
 \item \code{L}: low direction only
@@ -38,7 +38,7 @@ for the high direction.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Helper function to prepare a \code{df} for generate the patient count shift table
+Helper function to prepare a \code{df} for generate the patient count shift table.
 }
 \examples{
 library(dplyr)

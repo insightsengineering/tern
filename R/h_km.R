@@ -1,4 +1,4 @@
-#' Control Functions for Kaplan-Meier Plot Annotation Tables
+#' Control functions for Kaplan-Meier plot annotation tables
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -9,7 +9,7 @@
 #' @param y (`proportion`)\cr y-coordinate for center of annotation table.
 #' @param w (`proportion`)\cr relative width of the annotation table.
 #' @param h (`proportion`)\cr relative height of the annotation table.
-#' @param fill (`logical` or `character`)\cr whether the annotation table should have a background fill color.
+#' @param fill (`flag` or `character`)\cr whether the annotation table should have a background fill color.
 #'   Can also be a color code to use as the background fill color. If `TRUE`, color code defaults to `"#00000020"`.
 #'
 #' @return A list of components with the same names as the arguments.
@@ -22,7 +22,6 @@ NULL
 #' @describeIn control_annot Control function for formatting the median survival time annotation table. This annotation
 #'   table can be added in [g_km()] by setting `annot_surv_med=TRUE`, and can be configured using the
 #'   `control_surv_med_annot()` function by setting it as the `control_annot_surv_med` argument.
-#'
 #'
 #' @examples
 #' control_surv_med_annot()
@@ -41,7 +40,7 @@ control_surv_med_annot <- function(x = 0.8, y = 0.85, w = 0.32, h = 0.16, fill =
 #'   added in [g_km()] by setting `annot_coxph=TRUE`, and can be configured using the `control_coxph_annot()` function
 #'   by setting it as the `control_annot_coxph` argument.
 #'
-#' @param ref_lbls (`logical`)\cr whether the reference group should be explicitly printed in labels for the
+#' @param ref_lbls (`flag`)\cr whether the reference group should be explicitly printed in labels for the
 #'   annotation table. If `FALSE` (default), only comparison groups will be printed in the table labels.
 #'
 #' @examples
@@ -55,7 +54,7 @@ control_coxph_annot <- function(x = 0.29, y = 0.51, w = 0.4, h = 0.125, fill = T
   res
 }
 
-#' Helper function: x-tick positions
+#' Helper function to calculate x-tick positions
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -111,7 +110,7 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
   }
 }
 
-#' Helper Function: Survival Estimations
+#' Helper function for survival estimations
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -154,7 +153,7 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
   )
 }
 
-#' Helper Function: Pairwise Cox-PH table
+#' Helper function for generating a pairwise Cox-PH table
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -233,7 +232,7 @@ h_tbl_coxph_pairwise <- function(df,
   do.call(rbind, results)
 }
 
-#' Helper function: tidy survival fit
+#' Helper function to tidy survival fit data
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -315,7 +314,7 @@ h_data_plot <- function(fit_km,
 
 ## Deprecated Functions ----
 
-#' Helper function: KM plot
+#' Helper function to create a KM plot
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
@@ -481,7 +480,7 @@ h_ggkm <- function(data,
   )
 }
 
-#' `ggplot` Decomposition
+#' `ggplot` decomposition
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
@@ -546,7 +545,7 @@ h_decompose_gg <- function(gg) {
   lapply(X = y, function(x) gtable::gtable_filter(g_el, x))
 }
 
-#' Helper: KM Layout
+#' Helper function to prepare a KM layout
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
@@ -665,7 +664,7 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, anno
   )
 }
 
-#' Helper: Patient-at-Risk Grobs
+#' Helper function to create patient-at-risk grobs
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
@@ -854,7 +853,7 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim, title = TRUE) {
   ret
 }
 
-#' Helper Function: Survival Estimation Grob
+#' Helper function to create survival estimation grobs
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
@@ -949,7 +948,7 @@ h_grob_median_surv <- function(fit_km,
   )
 }
 
-#' Helper: Grid Object with y-axis Annotation
+#' Helper function to create grid object with y-axis annotation
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
@@ -958,7 +957,7 @@ h_grob_median_surv <- function(fit_km,
 #' @param ylab (`gtable`)\cr the y-lab as a graphical object derived from a `ggplot`.
 #' @param yaxis (`gtable`)\cr the y-axis as a graphical object derived from a `ggplot`.
 #'
-#' @return a `gTree` object containing the y-axis annotation from a `ggplot`.
+#' @return A `gTree` object containing the y-axis annotation from a `ggplot`.
 #'
 #' @examples
 #' \donttest{
@@ -1006,14 +1005,14 @@ h_grob_y_annot <- function(ylab, yaxis) {
   )
 }
 
-#' Helper Function: Cox-PH Grob
+#' Helper function to create Cox-PH grobs
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
 #' Grob of `rtable` output from [h_tbl_coxph_pairwise()]
 #'
 #' @inheritParams h_grob_median_surv
-#' @param ... arguments will be passed to [h_tbl_coxph_pairwise()].
+#' @param ... arguments to pass to [h_tbl_coxph_pairwise()].
 #' @param x (`numeric`)\cr a value between 0 and 1 specifying x-location.
 #' @param y (`numeric`)\cr a value between 0 and 1 specifying y-location.
 #' @param width (`unit`)\cr width (as a unit) to use when printing the grob.

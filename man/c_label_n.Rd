@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_rtables.R
 \name{c_label_n}
 \alias{c_label_n}
-\title{Content Row Function to Add Row Total to Labels}
+\title{Content row function to add row total to labels}
 \usage{
 c_label_n(df, labelstr, .N_row)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_factor.R
 \name{cut_quantile_bins}
 \alias{cut_quantile_bins}
-\title{Cutting Numeric Vector into Empirical Quantile Bins}
+\title{Cut numeric vector into empirical quantile bins}
 \usage{
 cut_quantile_bins(
   x,

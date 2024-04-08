@@ -4,7 +4,7 @@
 \alias{summarize_glm_count}
 \alias{s_glm_count}
 \alias{a_glm_count}
-\title{Summary for Poisson Negative Binomial.}
+\title{Summarize Poisson negative binomial regression}
 \usage{
 summarize_glm_count(
   lyt,
@@ -60,7 +60,7 @@ a_glm_count(
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables, with
+\item{variables}{(named \code{list} of \code{string}s)\cr list of additional analysis variables, with
 expected elements:
 \itemize{
 \item \code{arm} (\code{string})\cr group variable, for which the covariate adjusted means of multiple
@@ -111,11 +111,11 @@ unmodified default behavior. Can be negative.}
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.df_row}{(\code{data.frame})\cr data set that includes all the variables that are called in \code{.var} and \code{variables}.}
+\item{.df_row}{(\code{data.frame})\cr dataset that includes all the variables that are called in \code{.var} and \code{variables}.}
 
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
-\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+\item{.in_ref_col}{(\code{flag})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 }
 \value{
 \itemize{
@@ -143,7 +143,7 @@ the statistics from \code{s_glm_count()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Summarize results of a Poisson Negative Binomial Regression.
+Summarize results of a Poisson negative binomial regression.
 This can be used to analyze count and/or frequency data using a linear model.
 }
 \section{Functions}{

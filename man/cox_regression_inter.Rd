@@ -8,7 +8,7 @@
 \alias{h_coxreg_inter_effect.character}
 \alias{h_coxreg_extract_interaction}
 \alias{h_coxreg_inter_estimations}
-\title{Cox Regression Helper: Interactions}
+\title{Cox regression helper function for interactions}
 \usage{
 h_coxreg_inter_effect(x, effect, covar, mod, label, control, ...)
 

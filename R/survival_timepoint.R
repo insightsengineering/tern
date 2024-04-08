@@ -1,4 +1,4 @@
-#' Survival Time Point Analysis
+#' Survival time point analysis
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -13,8 +13,8 @@
 #'   * `conf_type` (`string`)\cr confidence interval type. Options are "plain" (default), "log", "log-log",
 #'     see more in [survival::survfit()]. Note option "none" is no longer supported.
 #'   * `time_point` (`number`)\cr survival time point of interest.
-#' @param method (`string`)\cr either `surv` (survival estimations),
-#'   `surv_diff` (difference in survival with the control) or `both`.
+#' @param method (`string`)\cr `surv` (survival estimations),
+#'   `surv_diff` (difference in survival with the control), or `both`.
 #' @param table_names_suffix (`string`)\cr optional suffix for the `table_names` used for the `rtables` to
 #'   avoid warnings from duplicate table names.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("surv_timepoint")`

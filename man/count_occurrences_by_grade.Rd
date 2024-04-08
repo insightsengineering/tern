@@ -5,7 +5,7 @@
 \alias{summarize_occurrences_by_grade}
 \alias{s_count_occurrences_by_grade}
 \alias{a_count_occurrences_by_grade}
-\title{Occurrence Counts by Grade}
+\title{Occurrence counts by grade}
 \usage{
 count_occurrences_by_grade(
   lyt,
@@ -69,9 +69,9 @@ a_count_occurrences_by_grade(
 
 \item{id}{(\code{string})\cr subject variable name.}
 
-\item{grade_groups}{(named \code{list} of \code{character})\cr containing groupings of grades.}
+\item{grade_groups}{(named \code{list} of \code{character})\cr list containing groupings of grades.}
 
-\item{remove_single}{(\code{logical})\cr \code{TRUE} to not include the elements of one-element grade groups
+\item{remove_single}{(\code{flag})\cr \code{TRUE} to not include the elements of one-element grade groups
 in the the output list; in this case only the grade groups names will be included in the output. If
 \code{only_grade_groups} is set to \code{TRUE} this argument is ignored.}
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/control_survival.R
 \name{control_coxph}
 \alias{control_coxph}
-\title{Control Function for Cox-PH Model}
+\title{Control function for Cox-PH model}
 \usage{
 control_coxph(
   pval_method = c("log-rank", "wald", "likelihood"),
@@ -14,13 +14,13 @@ control_coxph(
 \item{pval_method}{(\code{string})\cr p-value method for testing hazard ratio = 1.
 Default method is \code{"log-rank"}, can also be set to \code{"wald"} or \code{"likelihood"}.}
 
-\item{ties}{(\code{string})\cr specifying the method for tie handling. Default is \code{"efron"},
+\item{ties}{(\code{string})\cr string specifying the method for tie handling. Default is \code{"efron"},
 can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[survival:coxph]{survival::coxph()}}.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 }
 \value{
-A list of components with the same names as the arguments
+A list of components with the same names as the arguments.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

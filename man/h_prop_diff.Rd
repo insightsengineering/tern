@@ -7,7 +7,7 @@
 \alias{prop_diff_nc}
 \alias{prop_diff_cmh}
 \alias{prop_diff_strat_nc}
-\title{Helper Functions to Calculate Proportion Difference}
+\title{Helper functions to calculate proportion difference}
 \usage{
 prop_diff_wald(rsp, grp, conf_level = 0.95, correct = FALSE)
 
@@ -34,7 +34,7 @@ prop_diff_strat_nc(
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{correct}{(\code{logical})\cr whether to include the continuity correction. For further
+\item{correct}{(\code{flag})\cr whether to include the continuity correction. For further
 information, see \code{\link[stats:prop.test]{stats::prop.test()}}.}
 
 \item{strata}{(\code{factor})\cr variable with one level per stratum and same length as \code{rsp}.}

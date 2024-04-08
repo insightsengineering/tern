@@ -1,4 +1,4 @@
-#' Convert `rtable` object to `ggplot` object
+#' Convert `rtable` objects to `ggplot` objects
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
@@ -14,7 +14,7 @@
 #'   the first (label) column and the second column of `tbl`. If `colwidths` is specified,
 #'   the width of the first column becomes `colwidths[1] + lbl_col_padding`. Defaults to 0.
 #'
-#' @return a `ggplot` object.
+#' @return A `ggplot` object.
 #'
 #' @examples
 #' dta <- data.frame(
@@ -141,14 +141,14 @@ rtable2gg <- function(tbl, fontsize = 12, colwidths = NULL, lbl_col_padding = 0)
 #'   `colwidths` corresponds to the column of `df` in the same position. If `NULL`, column widths
 #'   are calculated according to maximum number of characters per column.
 #' @param font_size (`numeric`)\cr font size.
-#' @param col_labels (`logical`)\cr whether the column names (labels) of `df` should be used as the first row
+#' @param col_labels (`flag`)\cr whether the column names (labels) of `df` should be used as the first row
 #'   of the output table.
 #' @param col_labels_fontface (`character`)\cr font face to apply to the first row (of column labels
 #'   if `col_labels = TRUE`).
-#' @param hline (`logical`)\cr whether a horizontal line should be printed below the first row of the table.
+#' @param hline (`flag`)\cr whether a horizontal line should be printed below the first row of the table.
 #' @param bg_fill (`character`)\cr table background fill color.
 #'
-#' @return a `ggplot` object.
+#' @return A `ggplot` object.
 #'
 #' @examples
 #' \dontrun{

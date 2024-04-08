@@ -1,4 +1,4 @@
-#' Helper Functions for Multivariate Logistic Regression
+#' Helper functions for multivariate logistic regression
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -64,11 +64,9 @@ h_get_interaction_vars <- function(fit_glm) {
 #'   interaction variable names and the given levels. The main value here is that the order
 #'   of first and second variable is checked in the `interaction_vars` input.
 #'
-#' @param interaction_vars (`character` of length 2)\cr interaction variable names.
-#' @param first_var_with_level (`character` of length 2)\cr the first variable name with
-#'   the interaction level.
-#' @param second_var_with_level (`character` of length 2)\cr the second variable name with
-#'   the interaction level.
+#' @param interaction_vars (`character(2)`)\cr interaction variable names.
+#' @param first_var_with_level (`character(2)`)\cr the first variable name with the interaction level.
+#' @param second_var_with_level (`character(2)`)\cr the second variable name with the interaction level.
 #'
 #' @return Name of coefficient.
 #'
@@ -148,7 +146,7 @@ h_or_cat_interaction <- function(odds_ratio_var,
 #' @describeIn h_logistic_regression Helper function to calculate the odds ratio estimates
 #'   for the case when either the odds ratio or the interaction variable is continuous.
 #'
-#' @param at (`NULL` or `numeric`)\cr optional values for the interaction variable. Otherwise
+#' @param at (`numeric` or `NULL`)\cr optional values for the interaction variable. Otherwise
 #'   the median is used.
 #'
 #' @return Odds ratio.

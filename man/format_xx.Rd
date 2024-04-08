@@ -2,7 +2,7 @@
 % Please edit documentation in R/formatting_functions.R
 \name{format_xx}
 \alias{format_xx}
-\title{Formatting: XX as Formatting Function}
+\title{Format XX as a formatting function}
 \usage{
 format_xx(str)
 }

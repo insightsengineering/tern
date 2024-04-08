@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_km.R
 \name{h_tbl_coxph_pairwise}
 \alias{h_tbl_coxph_pairwise}
-\title{Helper Function: Pairwise Cox-PH table}
+\title{Helper function for generating a pairwise Cox-PH table}
 \usage{
 h_tbl_coxph_pairwise(
   df,

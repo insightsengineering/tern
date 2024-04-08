@@ -2,7 +2,7 @@
 % Please edit documentation in R/survival_duration_subgroups.R
 \name{d_survival_subgroups_colvars}
 \alias{d_survival_subgroups_colvars}
-\title{Labels for Column Variables in Survival Duration by Subgroup Table}
+\title{Labels for column variables in survival duration by subgroup table}
 \usage{
 d_survival_subgroups_colvars(vars, conf_level, method, time_unit = NULL)
 }

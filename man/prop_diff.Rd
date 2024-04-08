@@ -5,7 +5,7 @@
 \alias{estimate_proportion_diff}
 \alias{s_proportion_diff}
 \alias{a_proportion_diff}
-\title{Proportion Difference}
+\title{Proportion difference}
 \usage{
 estimate_proportion_diff(
   lyt,
@@ -98,7 +98,7 @@ by a statistics function.}
 
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
-\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+\item{.in_ref_col}{(\code{flag})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 }
 \value{
 \itemize{

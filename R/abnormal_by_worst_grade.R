@@ -167,7 +167,7 @@ count_abnormal_by_worst_grade <- function(lyt,
   )
 }
 
-#' Helper function to prepare ADLB for [count_abnormal_by_worst_grade()]
+#' Helper function to prepare ADLB for `count_abnormal_by_worst_grade()`
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -186,12 +186,12 @@ count_abnormal_by_worst_grade <- function(lyt,
 #' 4. Unused factor levels are dropped from `adlb` via [droplevels()].
 #'
 #' @param adlb (`data.frame`)\cr ADLB data frame.
-#' @param atoxgr (`character`)\cr Analysis toxicity grade variable. This must be a `factor`
+#' @param atoxgr (`character`)\cr analysis toxicity grade variable. This must be a `factor`
 #'   variable.
-#' @param avisit (`character`)\cr Analysis visit variable.
-#' @param worst_flag_low (`character`)\cr Worst low lab grade flag variable. This variable is
+#' @param avisit (`character`)\cr analysis visit variable.
+#' @param worst_flag_low (`character`)\cr worst low lab grade flag variable. This variable is
 #'   set to `"Y"` when indicating records of worst low lab grades.
-#' @param worst_flag_high (`character`)\cr Worst high lab grade flag variable. This variable is
+#' @param worst_flag_high (`character`)\cr worst high lab grade flag variable. This variable is
 #'   set to `"Y"` when indicating records of worst high lab grades.
 #'
 #' @return `h_adlb_abnormal_by_worst_grade()` returns the `adlb` data frame with two new

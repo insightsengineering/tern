@@ -2,7 +2,7 @@
 % Please edit documentation in R/stat.R
 \name{stat_mean_pval}
 \alias{stat_mean_pval}
-\title{p-Value of the Mean}
+\title{p-Value of the mean}
 \usage{
 stat_mean_pval(x, na.rm = TRUE, n_min = 2, test_mean = 0)
 }

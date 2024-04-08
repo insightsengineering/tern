@@ -2,7 +2,7 @@
 % Please edit documentation in R/summarize_ancova.R
 \name{h_ancova}
 \alias{h_ancova}
-\title{Helper Function to Return Results of a Linear Model}
+\title{Helper function to return results of a linear model}
 \usage{
 h_ancova(.var, .df_row, variables, interaction_item = NULL)
 }

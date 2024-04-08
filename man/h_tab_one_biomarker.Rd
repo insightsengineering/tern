@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_biomarkers_subgroups.R
 \name{h_tab_one_biomarker}
 \alias{h_tab_one_biomarker}
-\title{Helper Function for Tabulation of a Single Biomarker Result}
+\title{Helper function for tabulation of a single biomarker result}
 \usage{
 h_tab_one_biomarker(
   df,

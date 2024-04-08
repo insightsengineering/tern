@@ -2,14 +2,14 @@
 % Please edit documentation in R/utils.R
 \name{to_n}
 \alias{to_n}
-\title{Replicate Entries of a Vector if Required}
+\title{Replicate entries of a vector if required}
 \usage{
 to_n(x, n)
 }
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{n}{(\code{count})\cr how many entries we need.}
+\item{n}{(\code{count})\cr number of entries that are needed.}
 }
 \value{
 \code{x} if it has the required length already or is \code{NULL},

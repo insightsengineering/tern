@@ -1,4 +1,4 @@
-#' Count the Number of Patients with a Particular Event
+#' Count the number of patients with a particular event
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

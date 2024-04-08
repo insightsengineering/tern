@@ -1,4 +1,4 @@
-#' Incidence Rate
+#' Incidence rate
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -168,7 +168,7 @@ estimate_incidence_rate <- function(lyt,
   )
 }
 
-#' Helper Functions for Incidence Rate
+#' Helper functions for incidence rate
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -184,7 +184,7 @@ estimate_incidence_rate <- function(lyt,
 #' @param alpha (`numeric`)\cr two-sided alpha-level for confidence interval.
 #' @param n_events (`integer`)\cr number of events observed.
 #'
-#' @return Estimated incidence rate `rate` and associated confidence interval `rate_ci`.
+#' @return Estimated incidence rate, `rate`, and associated confidence interval, `rate_ci`.
 #'
 #' @seealso [incidence_rate]
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/imputation_rule.R
 \name{imputation_rule}
 \alias{imputation_rule}
-\title{Apply 1/3 or 1/2 Imputation Rule to Data}
+\title{Apply 1/3 or 1/2 imputation rule to data}
 \usage{
 imputation_rule(
   df,

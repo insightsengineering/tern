@@ -1,10 +1,10 @@
-#' Missing Data
+#' Missing data
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Substitute missing data with a string or factor level.
 #'
-#' @param x (`factor` or `character` vector)\cr values for which any missing values should be substituted.
+#' @param x (vector of `factor` or `character`)\cr values for which any missing values should be substituted.
 #' @param label (`character`)\cr string that missing data should be replaced with.
 #'
 #' @return `x` with any `NA` values substituted by `label`.
@@ -33,7 +33,7 @@ explicit_na <- function(x, label = "<Missing>") {
   }
 }
 
-#' Convert Strings to `NA`
+#' Convert strings to `NA`
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -41,8 +41,8 @@ explicit_na <- function(x, label = "<Missing>") {
 #' convert these values to `NA`s.
 #'
 #' @inheritParams explicit_na
-#' @param empty (`logical`)\cr if `TRUE` empty strings get replaced by `NA`.
-#' @param whitespaces (`logical`)\cr if `TRUE` then strings made from whitespaces only get replaced with `NA`.
+#' @param empty (`flag`)\cr if `TRUE`, empty strings get replaced by `NA`.
+#' @param whitespaces (`flag`)\cr if `TRUE`, strings made from only whitespaces get replaced with `NA`.
 #'
 #' @return `x` with `""` and/or whitespace-only values substituted by `NA`, depending on the values of
 #'   `empty` and `whitespaces`.

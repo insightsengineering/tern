@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_rtables.R
 \name{add_rowcounts}
 \alias{add_rowcounts}
-\title{Layout Creating Function to Add Row Total Counts}
+\title{Layout-creating function to add row total counts}
 \usage{
 add_rowcounts(lyt, alt_counts = FALSE)
 }

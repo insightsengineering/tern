@@ -5,7 +5,7 @@
 \alias{analyze_num_patients}
 \alias{s_num_patients}
 \alias{s_num_patients_content}
-\title{Number of Patients}
+\title{Number of patients}
 \usage{
 analyze_num_patients(
   lyt,
@@ -64,12 +64,12 @@ s_num_patients_content(
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{required}{(\code{character} or \code{NULL})\cr optional name of a variable that is required to be non-missing.}
+\item{required}{(\code{character} or \code{NULL})\cr optional, name of a variable that is required to be non-missing.}
 
 \item{count_by}{(\code{vector})\cr optional vector of any type to be combined with \code{x} when counting \code{nonunique}
 records.}
 
-\item{unique_count_suffix}{(\code{logical})\cr should \code{"(n)"} suffix be added to \code{unique_count} labels.
+\item{unique_count_suffix}{(\code{flag})\cr whether the \code{"(n)"} suffix should be added to \code{unique_count} labels.
 Defaults to \code{TRUE}.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_default_stats_formats_labels.R
 \name{labels_use_control}
 \alias{labels_use_control}
-\title{Update Labels According to Control Specifications}
+\title{Update labels according to control specifications}
 \usage{
 labels_use_control(labels_default, control, labels_custom = NULL)
 }

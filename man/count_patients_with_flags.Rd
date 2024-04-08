@@ -4,7 +4,7 @@
 \alias{count_patients_with_flags}
 \alias{s_count_patients_with_flags}
 \alias{a_count_patients_with_flags}
-\title{Count the Number of Patients with Particular Flags}
+\title{Count the number of patients with particular flags}
 \usage{
 count_patients_with_flags(
   lyt,

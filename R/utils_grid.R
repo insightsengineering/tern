@@ -1,15 +1,15 @@
-#' Stack Multiple Grobs
+#' Stack multiple grobs
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
 #' Stack grobs as a new grob with 1 column and multiple rows layout.
 #'
 #' @param ... grobs.
-#' @param grobs list of grobs.
-#' @param padding unit of length 1, space between each grob.
-#' @param vp a [viewport()] object (or `NULL`).
-#' @param name a character identifier for the grob.
-#' @param gp A [gpar()] object.
+#' @param grobs (`list` of `grob`s)\cr a list of grobs.
+#' @param padding (`grid::unit`)\cr unit of length 1, space between each grob.
+#' @param vp (`viewport`)\cr a [viewport()] object (or `NULL`).
+#' @param name (`string`)\cr a character identifier for the grob.
+#' @param gp (`gpar`)\cr a [gpar()] object.
 #'
 #' @return A `grob`.
 #'
@@ -90,17 +90,20 @@ stack_grobs <- function(...,
   )
 }
 
-#' Arrange Multiple Grobs
+#' Arrange multiple grobs
 #'
-#' Arrange grobs as a new grob with \verb{n*m (rows*cols)} layout.
+#' @description `r lifecycle::badge("deprecated")`
+#'
+#' Arrange grobs as a new grob with `n * m (rows * cols)` layout.
 #'
 #' @inheritParams stack_grobs
-#' @param ncol number of columns in layout.
-#' @param nrow number of rows in layout.
-#' @param padding_ht unit of length 1, vertical space between each grob.
-#' @param padding_wt unit of length 1, horizontal space between each grob.
+#' @param ncol (`integer(1)`)\cr number of columns in layout.
+#' @param nrow (`integer(1)`)\cr number of rows in layout.
+#' @param padding_ht (`grid::unit`)\cr unit of length 1, vertical space between each grob.
+#' @param padding_wt (`grid::unit`)\cr unit of length 1, horizontal space between each grob.
 #'
 #' @return A `grob`.
+#'
 #' @examples
 #' library(grid)
 #'
@@ -234,9 +237,9 @@ arrange_grobs <- function(...,
 #'
 #' Draw grob on device page.
 #'
-#' @param grob grid object
-#' @param newpage draw on a new page
-#' @param vp a [viewport()] object (or `NULL`).
+#' @param grob (`grob`)\cr grid object.
+#' @param newpage (`flag`)\cr draw on a new page.
+#' @param vp (`viewport`)\cr a [viewport()] object (or `NULL`).
 #'
 #' @return A `grob`.
 #'

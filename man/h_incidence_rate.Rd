@@ -6,7 +6,7 @@
 \alias{h_incidence_rate_normal_log}
 \alias{h_incidence_rate_exact}
 \alias{h_incidence_rate_byar}
-\title{Helper Functions for Incidence Rate}
+\title{Helper functions for incidence rate}
 \usage{
 h_incidence_rate_normal(person_years, n_events, alpha = 0.05)
 
@@ -37,7 +37,7 @@ indicating time unit for data input.
 }}
 }
 \value{
-Estimated incidence rate \code{rate} and associated confidence interval \code{rate_ci}.
+Estimated incidence rate, \code{rate}, and associated confidence interval, \code{rate_ci}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

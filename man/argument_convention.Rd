@@ -2,7 +2,7 @@
 % Please edit documentation in R/argument_convention.R
 \name{argument_convention}
 \alias{argument_convention}
-\title{Standard Arguments}
+\title{Standard arguments}
 \arguments{
 \item{...}{additional arguments for the lower level functions.}
 
@@ -17,7 +17,7 @@ taken from \code{alt_counts_df} if specified (see \code{\link[rtables:build_tabl
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
 
-\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+\item{.in_ref_col}{(\code{flag})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}

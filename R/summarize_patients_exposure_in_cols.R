@@ -1,4 +1,4 @@
-#' Counting Patients Summing Exposure Across All Patients in Columns
+#' Count patients and sum exposure across all patients in columns
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -6,10 +6,10 @@
 #' when a column table layout is required.
 #'
 #' @inheritParams argument_convention
-#' @param ex_var (`character`)\cr name of the variable within `df` containing exposure values.
-#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will be used as label.
+#' @param ex_var (`character`)\cr name of the variable in `df` containing exposure values.
+#' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty, this will be used as label.
 #' @param .stats (`character`)\cr statistics to select for the table. Run
-#' `get_stats("analyze_patients_exposure_in_cols")` to see available statistics for this function.
+#'   `get_stats("analyze_patients_exposure_in_cols")` to see available statistics for this function.
 #'
 #' @name summarize_patients_exposure_in_cols
 #' @order 1

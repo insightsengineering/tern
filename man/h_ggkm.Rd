@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_km.R
 \name{h_ggkm}
 \alias{h_ggkm}
-\title{Helper function: KM plot}
+\title{Helper function to create a KM plot}
 \usage{
 h_ggkm(
   data,

@@ -2,14 +2,14 @@
 % Please edit documentation in R/formatting_functions.R
 \name{format_count_fraction}
 \alias{format_count_fraction}
-\title{Formatting Count and Fraction}
+\title{Format count and fraction}
 \usage{
 format_count_fraction(x, ...)
 }
 \arguments{
-\item{x}{(\code{integer})\cr vector of length 2, count and fraction.}
+\item{x}{(\code{integer})\cr vector of length 2 with count and fraction, respectively.}
 
-\item{...}{required for \code{rtables} interface.}
+\item{...}{not used. Required for \code{rtables} interface.}
 }
 \value{
 A string in the format \verb{count (fraction \%)}. If \code{count} is 0, the format is \code{0}.

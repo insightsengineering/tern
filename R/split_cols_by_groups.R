@@ -1,11 +1,11 @@
-#' Convert List of Groups to Data Frame
+#' Convert list of groups to a data frame
 #'
 #' This converts a list of group levels into a data frame format which is expected by [rtables::add_combo_levels()].
 #'
 #' @param groups_list (named `list` of `character`)\cr specifies the new group levels via the names and the
 #'   levels that belong to it in the character vectors that are elements of the list.
 #'
-#' @return [tibble::tibble()] in the required format.
+#' @return A `tibble` in the required format.
 #'
 #' @examples
 #' grade_groups <- list(
@@ -27,7 +27,7 @@ groups_list_to_df <- function(groups_list) {
   )
 }
 
-#' Reference and Treatment Group Combination
+#' Reference and treatment group combination
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -76,7 +76,7 @@ combine_groups <- function(fct,
   stats::setNames(groups, nm = lapply(groups, paste, collapse = collapse))
 }
 
-#' Split Columns by Groups of Levels
+#' Split columns by groups of levels
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -208,7 +208,7 @@ split_cols_by_groups <- function(lyt,
   }
 }
 
-#' Combine Counts
+#' Combine counts
 #'
 #' Simplifies the estimation of column counts, especially when group combination is required.
 #'

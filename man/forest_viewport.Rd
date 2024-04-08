@@ -2,7 +2,7 @@
 % Please edit documentation in R/g_forest.R
 \name{forest_viewport}
 \alias{forest_viewport}
-\title{Create a Viewport Tree for the Forest Plot}
+\title{Create a viewport tree for the forest plot}
 \usage{
 forest_viewport(
   tbl,
@@ -15,19 +15,19 @@ forest_viewport(
 )
 }
 \arguments{
-\item{tbl}{(\code{rtable})}
+\item{tbl}{(\code{rtable}) table object.}
 
-\item{width_row_names}{(\code{grid::unit})\cr Width of row names}
+\item{width_row_names}{(\code{grid::unit})\cr width of row names.}
 
-\item{width_columns}{(\code{grid::unit})\cr Width of column spans}
+\item{width_columns}{(\code{grid::unit})\cr width of column spans.}
 
-\item{width_forest}{(\code{grid::unit})\cr Width of the forest plot}
+\item{width_forest}{(\code{grid::unit})\cr width of the forest plot.}
 
-\item{gap_column}{(\code{grid::unit})\cr Gap width between the columns}
+\item{gap_column}{(\code{grid::unit})\cr gap width between the columns.}
 
-\item{gap_header}{(\code{grid::unit})\cr Gap width between the header}
+\item{gap_header}{(\code{grid::unit})\cr gap width between the header.}
 
-\item{mat_form}{matrix print form of the table}
+\item{mat_form}{(\code{rtables::MatrixPrintForm})\cr matrix print form of the table.}
 }
 \value{
 A viewport tree.

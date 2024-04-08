@@ -9,7 +9,7 @@
 \alias{s_summary.character}
 \alias{s_summary.logical}
 \alias{a_summary}
-\title{Analyze Variables}
+\title{Analyze variables}
 \usage{
 analyze_vars(
   lyt,
@@ -154,16 +154,16 @@ See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 \item \code{test_mean} (\code{numeric})\cr value to test against the mean under the null hypothesis when calculating p-value.
 }}
 
-\item{verbose}{(\code{logical})\cr Defaults to \code{TRUE}, which prints out warnings and messages. It is mainly used
+\item{verbose}{(\code{flag})\cr defaults to \code{TRUE}, which prints out warnings and messages. It is mainly used
 to print out information about factor casting.}
 
 \item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
-\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+\item{.in_ref_col}{(\code{flag})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
-\item{compare}{(\code{logical})\cr Whether comparison statistics should be analyzed instead of summary statistics
+\item{compare}{(\code{flag})\cr whether comparison statistics should be analyzed instead of summary statistics
 (\code{compare = TRUE} adds \code{pval} statistic comparing against reference group).}
 }
 \value{

@@ -1,4 +1,4 @@
-#' Control Function for Subgroup Treatment Effect Pattern (STEP) Calculations
+#' Control function for subgroup treatment effect pattern (STEP) calculations
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

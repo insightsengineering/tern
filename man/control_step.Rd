@@ -2,7 +2,7 @@
 % Please edit documentation in R/control_step.R
 \name{control_step}
 \alias{control_step}
-\title{Control Function for Subgroup Treatment Effect Pattern (STEP) Calculations}
+\title{Control function for subgroup treatment effect pattern (STEP) calculations}
 \usage{
 control_step(
   biomarker = NULL,

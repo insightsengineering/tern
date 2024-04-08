@@ -4,7 +4,7 @@
 \alias{count_patients_with_event}
 \alias{s_count_patients_with_event}
 \alias{a_count_patients_with_event}
-\title{Count the Number of Patients with a Particular Event}
+\title{Count the number of patients with a particular event}
 \usage{
 count_patients_with_event(
   lyt,

@@ -1,4 +1,4 @@
-#' Split Function to Configure Risk Difference Column
+#' Split function to configure risk difference column
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -7,10 +7,10 @@
 #' should be used as `split_fun` in calls to [rtables::split_cols_by()], followed by setting argument
 #' `riskdiff` to `TRUE` in all following analyze function calls.
 #'
-#' @param arm_x (`character`)\cr Name of reference arm to use in risk difference calculations.
-#' @param arm_y (`character`)\cr Names of one or more arms to compare to reference arm in risk difference
+#' @param arm_x (`character`)\cr name of reference arm to use in risk difference calculations.
+#' @param arm_y (`character`)\cr names of one or more arms to compare to reference arm in risk difference
 #'   calculations. A new column will be added for each value of `arm_y`.
-#' @param col_label (`character`)\cr Labels to use when rendering the risk difference column within the table.
+#' @param col_label (`character`)\cr labels to use when rendering the risk difference column within the table.
 #'   If more than one comparison arm is specified in `arm_y`, default labels will specify which two arms are
 #'   being compared (reference arm vs. comparison arm).
 #' @param pct (`flag`)\cr whether output should be returned as percentages. Defaults to `TRUE`.
@@ -59,7 +59,7 @@ add_riskdiff <- function(arm_x,
   add_combo_levels(combodf)
 }
 
-#' Analysis Function to Calculate Risk Difference Column Values
+#' Analysis function to calculate risk difference column values
 #'
 #' In the risk difference column, this function uses the statistics function associated with `afun` to
 #' calculates risk difference values from arm X (reference group) and arm Y. These arms are specified
@@ -68,10 +68,10 @@ add_riskdiff <- function(arm_x,
 #' function utilizes the [stat_propdiff_ci()] function to perform risk difference calculations.
 #'
 #' @inheritParams argument_convention
-#' @param afun (named `list`)\cr A named list containing one name-value pair where the name corresponds to
+#' @param afun (named `list`)\cr a named list containing one name-value pair where the name corresponds to
 #'   the name of the statistics function that should be used in calculations and the value is the corresponding
 #'   analysis function.
-#' @param s_args (named `list`)\cr Additional arguments to be passed to the statistics function and analysis
+#' @param s_args (named `list`)\cr additional arguments to be passed to the statistics function and analysis
 #'   function supplied in `afun`.
 #'
 #' @return A list of formatted [rtables::CellValue()].

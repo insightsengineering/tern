@@ -1,4 +1,4 @@
-#' Cox Proportional Hazards Regression
+#' Cox proportional hazards regression
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -73,7 +73,7 @@ NULL
 #' @param .var_nms (`character`)\cr the `term` value of rows in `df` for which `.stats` should be returned. Typically
 #'   this is the name of a variable. If using variable labels, `var` should be a vector of both the desired
 #'   variable name and the variable label in that order to see all `.stats` related to that variable. When `.which_vars`
-#'   is `"var_main"` `.var_nms` should be only the variable name.
+#'   is `"var_main"`, `.var_nms` should be only the variable name.
 #'
 #' @return
 #' * `s_coxreg()` returns the selected statistic for from the Cox regression model for the selected variable(s).
@@ -269,7 +269,7 @@ a_coxreg <- function(df,
 #'   is a wrapper for [rtables::analyze_colvars()] and [rtables::summarize_row_groups()].
 #'
 #' @inheritParams fit_coxreg_univar
-#' @param multivar (`flag`)\cr Defaults to `FALSE`. If `TRUE` multivariate Cox regression will run, otherwise
+#' @param multivar (`flag`)\cr whether multivariate Cox regression should run (defaults to `FALSE`), otherwise
 #'   univariate Cox regression will run.
 #' @param common_var (`character`)\cr the name of a factor variable in the dataset which takes the same value
 #'   for all rows. This should be created during pre-processing if no such variable currently exists.

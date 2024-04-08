@@ -5,7 +5,7 @@
 \alias{test_proportion_diff}
 \alias{s_test_proportion_diff}
 \alias{a_test_proportion_diff}
-\title{Difference Test for Two Proportions}
+\title{Difference test for two proportions}
 \usage{
 test_proportion_diff(
   lyt,
@@ -85,7 +85,7 @@ by a statistics function.}
 
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
-\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+\item{.in_ref_col}{(\code{flag})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 }
 \value{
 \itemize{

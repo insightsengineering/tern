@@ -40,7 +40,7 @@ a_count_abnormal_by_marked(
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
-\item{category}{(\code{list})\cr with different marked category names for single
+\item{category}{(\code{list})\cr a list with different marked category names for single
 and last or replicated.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}

@@ -1,4 +1,4 @@
-#' Line plot with the optional table
+#' Line plot with optional table
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -40,22 +40,22 @@
 #' @param mid_point_size (`integer` or `double`)\cr controls the font size of the point for `mid` plot.
 #' @param position (`character` or `call`)\cr geom element position adjustment, either as a string, or the result of
 #'   a call to a position adjustment function.
-#' @param legend_title (`character` string)\cr legend title.
+#' @param legend_title (`string`)\cr legend title.
 #' @param legend_position (`character`)\cr the position of the plot legend (`none`, `left`, `right`, `bottom`, `top`,
 #'   or two-element numeric vector).
 #' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to control styling of the plot.
 #' @param x_lab (`character`)\cr x-axis label. If equal to `NULL`, then no label will be added.
 #' @param y_lab (`character`)\cr y-axis label. If equal to `NULL`, then no label will be added.
-#' @param y_lab_add_paramcd (`logical`)\cr should `paramcd`, i.e. `unique(df[[variables["paramcd"]]])` be added to the
-#'   y-axis label `y_lab`?
-#' @param y_lab_add_unit (`logical`)\cr should y unit, i.e. `unique(df[[variables["y_unit"]]])` be added to the y-axis
-#'   label `y_lab`?
+#' @param y_lab_add_paramcd (`logical`)\cr whether `paramcd`, i.e. `unique(df[[variables["paramcd"]]])` should be added
+#'   to the y-axis label (`y_lab`).
+#' @param y_lab_add_unit (`logical`)\cr whether y-axis unit, i.e. `unique(df[[variables["y_unit"]]])` should be added
+#'   to the y-axis label (`y_lab`).
 #' @param title (`character`)\cr plot title.
 #' @param subtitle (`character`)\cr plot subtitle.
-#' @param subtitle_add_paramcd (`logical`)\cr should `paramcd`, i.e. `unique(df[[variables["paramcd"]]])` be added to
-#'   the plot's subtitle `subtitle`?
-#' @param subtitle_add_unit (`logical`)\cr should y unit, i.e. `unique(df[[variables["y_unit"]]])` be added to the
-#'   plot's subtitle `subtitle`?
+#' @param subtitle_add_paramcd (`logical`)\cr whether `paramcd`, i.e. `unique(df[[variables["paramcd"]]])` should be
+#'   added to the plot's subtitle (`subtitle`).
+#' @param subtitle_add_unit (`logical`)\cr whether y-axis unit, i.e. `unique(df[[variables["y_unit"]]])` should be
+#'   added to the plot's subtitle (`subtitle`).
 #' @param caption (`character`)\cr optional caption below the plot.
 #' @param table_format (named `character` or `NULL`)\cr format patterns for descriptive statistics used in the
 #'   (optional) table appended to the plot. It is passed directly to the `h_format_row` function through the `format`
@@ -63,7 +63,7 @@
 #' @param table_labels (named `character` or `NULL`)\cr labels for descriptive statistics used in the (optional) table
 #'   appended to the plot. Names of `table_labels` must match the names of statistics returned by `sfun` function.
 #' @param table_font_size (`integer` or `double`)\cr controls the font size of values in the table.
-#' @param newpage (`logical`)\cr should plot be drawn on new page?
+#' @param newpage `r lifecycle::badge("deprecated")` not used.
 #' @param col (`character`)\cr colors.
 #'
 #' @return A `ggplot` line plot (and statistics table if applicable).
@@ -150,7 +150,7 @@ g_lineplot <- function(df,
                        table_format = get_formats_from_stats(table),
                        table_labels = get_labels_from_stats(table),
                        table_font_size = 3,
-                       newpage = TRUE,
+                       newpage = lifecycle::deprecated(),
                        col = NULL) {
   checkmate::assert_character(variables, any.missing = TRUE)
   checkmate::assert_character(mid, null.ok = TRUE)
@@ -417,7 +417,7 @@ g_lineplot <- function(df,
   }
 }
 
-#' Helper function to get the right formatting in the optional table in `g_lineplot`.
+#' Helper function to format the optional `g_lineplot` table
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -474,7 +474,7 @@ h_format_row <- function(x, format, labels = NULL) {
   row
 }
 
-#' Control Function for `g_lineplot` Function
+#' Control function for `g_lineplot()`
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -484,9 +484,9 @@ h_format_row <- function(x, format, labels = NULL) {
 #' @param x (`character`)\cr x variable name.
 #' @param y (`character`)\cr y variable name.
 #' @param group_var (`character` or `NA`)\cr group variable name.
-#' @param strata (`character` or `NA`)\cr deprecated - group variable name.
+#' @param strata `r lifecycle::badge("deprecated")` use the `group_var` parameter instead.
 #' @param subject_var (`character` or `NA`)\cr subject variable name.
-#' @param cohort_id (`character` or `NA`)\cr deprecated - subject variable name.
+#' @param cohort_id `r lifecycle::badge("deprecated")` use the `subject_var` parameter instead.
 #' @param paramcd (`character` or `NA`)\cr `paramcd` variable name.
 #' @param y_unit (`character` or `NA`)\cr `y_unit` variable name.
 #'
@@ -497,8 +497,13 @@ h_format_row <- function(x, format, labels = NULL) {
 #' control_lineplot_vars(group_var = NA)
 #'
 #' @export
-control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", group_var = "ARM", paramcd = "PARAMCD", y_unit = "AVALU",
-                                  subject_var = "USUBJID", strata = lifecycle::deprecated(),
+control_lineplot_vars <- function(x = "AVISIT",
+                                  y = "AVAL",
+                                  group_var = "ARM",
+                                  paramcd = "PARAMCD",
+                                  y_unit = "AVALU",
+                                  subject_var = "USUBJID",
+                                  strata = lifecycle::deprecated(),
                                   cohort_id = lifecycle::deprecated()) {
   if (lifecycle::is_present(strata)) {
     lifecycle::deprecate_warn("0.9.2", "control_lineplot_vars(strata)", "control_lineplot_vars(group_var)")

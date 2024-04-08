@@ -3,7 +3,7 @@
 \name{desctools_binom}
 \alias{desctools_binom}
 \alias{desctools_binomci}
-\title{Confidence Intervals for a Difference of Binomials}
+\title{Confidence intervals for a difference of binomials}
 \usage{
 desctools_binom(
   x1,
@@ -38,9 +38,9 @@ desctools_binomci(
 \code{"agresti-coull"}, \code{"jeffreys"}, \code{"modified wilson"}, \code{"modified jeffreys"}, \code{"clopper-pearson"}, \code{"arcsine"},
 \code{"logit"}, \code{"witting"}, \code{"pratt"}, \code{"midp"}, \code{"lik"}, and \code{"blaker"}.}
 
-\item{x}{(\code{count})\cr number of successes}
+\item{x}{(\code{count})\cr number of successes.}
 
-\item{n}{(\code{count})\cr number of trials}
+\item{n}{(\code{count})\cr number of trials.}
 }
 \value{
 A \code{matrix} of 3 values:

@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimate_multinomial_rsp.R
 \name{d_onco_rsp_label}
 \alias{d_onco_rsp_label}
-\title{Description of Standard Oncology Response}
+\title{Description of standard oncology response}
 \usage{
 d_onco_rsp_label(x)
 }

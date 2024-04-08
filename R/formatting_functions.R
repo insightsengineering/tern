@@ -1,4 +1,4 @@
-#' Formatting Functions
+#' Formatting functions
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -11,14 +11,14 @@
 #' @name formatting_functions
 NULL
 
-#' Formatting Fraction and Percentage
+#' Format fraction and percentage
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Formats a fraction together with ratio in percent.
 #'
-#' @param x (`integer`)\cr with elements `num` and `denom`.
-#' @param ... required for `rtables` interface.
+#' @param x (named `vector` of `integer`)\cr vector with elements `num` and `denom`.
+#' @param ... not used. Required for `rtables` interface.
 #'
 #' @return A string in the format `num / denom (ratio %)`. If `num` is 0, the format is `num / denom`.
 #'
@@ -47,15 +47,15 @@ format_fraction <- function(x, ...) {
   return(result)
 }
 
-#' Formatting Fraction and Percentage with Fixed Single Decimal Place
+#' Format fraction and percentage with fixed single decimal place
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Formats a fraction together with ratio in percent with fixed single decimal place.
 #' Includes trailing zero in case of whole number percentages to always keep one decimal place.
 #'
-#' @param x (`integer`)\cr with elements `num` and `denom`.
-#' @param ... required for `rtables` interface.
+#' @param x (named `vector` of `integer`)\cr vector with elements `num` and `denom`.
+#' @param ... not used. Required for `rtables` interface.
 #'
 #' @return A string in the format `num / denom (ratio %)`. If `num` is 0, the format is `num / denom`.
 #'
@@ -83,14 +83,14 @@ format_fraction_fixed_dp <- function(x, ...) {
   return(result)
 }
 
-#' Formatting Count and Fraction
+#' Format count and fraction
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Formats a count together with fraction with special consideration when count is `0`.
 #'
-#' @param x (`integer`)\cr vector of length 2, count and fraction.
-#' @param ... required for `rtables` interface.
+#' @param x (`integer`)\cr vector of length 2 with count and fraction, respectively.
+#' @param ... not used. Required for `rtables` interface.
 #'
 #' @return A string in the format `count (fraction %)`. If `count` is 0, the format is `0`.
 #'
@@ -120,7 +120,7 @@ format_count_fraction <- function(x, ...) {
   return(result)
 }
 
-#' Formatting Count and Percentage with Fixed Single Decimal Place
+#' Format count and percentage with fixed single decimal place
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
@@ -160,7 +160,7 @@ format_count_fraction_fixed_dp <- function(x, ...) {
   return(result)
 }
 
-#' Formatting Count and Fraction with Special Case for Count < 10
+#' Format count and fraction with special case for count < 10
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -197,7 +197,7 @@ format_count_fraction_lt10 <- function(x, ...) {
   return(result)
 }
 
-#' Formatting: XX as Formatting Function
+#' Format XX as a formatting function
 #'
 #' Translate a string where x and dots are interpreted as number place
 #' holders, and others as formatting elements.
@@ -246,7 +246,7 @@ format_xx <- function(str) {
   return(rtable_format)
 }
 
-#' Formatting Numeric Values By Significant Figures
+#' Format numeric values by significant figures
 #'
 #' Format numeric values to print with a specified number of significant figures.
 #'
@@ -285,7 +285,7 @@ format_sigfig <- function(sigfig, format = "xx", num_fmt = "fg") {
   }
 }
 
-#' Formatting Fraction with Lower Threshold
+#' Format fraction with lower threshold
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -324,7 +324,7 @@ format_fraction_threshold <- function(threshold) {
   }
 }
 
-#' Formatting Extreme Values
+#' Format extreme values
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -401,11 +401,11 @@ h_format_threshold <- function(x, digits = 2L) {
   unname(result)
 }
 
-#' Formatting a Single Extreme Value
+#' Format a single extreme value
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Create Formatting Function for a single extreme value.
+#' Create a formatting function for a single extreme value.
 #'
 #' @inheritParams extreme_format
 #'
@@ -428,7 +428,7 @@ format_extreme_values <- function(digits = 2L) {
   }
 }
 
-#' Formatting Extreme Values Part of a Confidence Interval
+#' Format extreme values part of a confidence interval
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -457,7 +457,7 @@ format_extreme_values_ci <- function(digits = 2L) {
   }
 }
 
-#' Automatic formats from data significant digits
+#' Format automatically using data significant digits
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -467,11 +467,11 @@ format_extreme_values_ci <- function(digits = 2L) {
 #' This function can be called internally with "auto" like, for example,
 #' `.formats = c("mean" = "auto")`. See details to see how this works with the inner function.
 #'
-#' @param dt_var (`numeric`) \cr all the data the statistics was created upon. Used only to find
+#' @param dt_var (`numeric`)\cr all the data the statistics was created upon. Used only to find
 #'   significant digits. In [analyze_vars] this comes from `.df_row` (see
 #'   [rtables::additional_fun_params]), and it is the row data after the above row splits. No
 #'   column split is considered.
-#' @param x_stat (`string`) \cr string indicating the current statistical method used.
+#' @param x_stat (`string`)\cr string indicating the current statistical method used.
 #'
 #' @return A string that `rtables` prints in a table cell.
 #'
@@ -558,7 +558,7 @@ count_decimalplaces <- function(dec) {
   }
 }
 
-#' Apply Auto Formatting
+#' Apply automatic formatting
 #'
 #' Checks if any of the listed formats in `.formats` are `"auto"`, and replaces `"auto"` with
 #' the correct implementation of `format_auto` for the given statistics, data, and variable.

@@ -1,4 +1,4 @@
-#' Apply 1/3 or 1/2 Imputation Rule to Data
+#' Apply 1/3 or 1/2 imputation rule to data
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

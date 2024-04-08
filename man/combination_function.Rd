@@ -8,7 +8,7 @@
 \alias{&,CombinationFunction,CombinationFunction-method}
 \alias{|,CombinationFunction,CombinationFunction-method}
 \alias{!,CombinationFunction-method}
-\title{Combination Functions Class}
+\title{Class for \code{CombinationFunction}}
 \usage{
 \S4method{&}{CombinationFunction,CombinationFunction}(e1, e2)
 
@@ -24,7 +24,7 @@
 \item{x}{(\code{CombinationFunction})\cr the function which should be negated.}
 }
 \value{
-Returns a logical value indicating whether the left hand side of the equation equals the right hand side.
+A logical value indicating whether the left hand side of the equation equals the right hand side.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

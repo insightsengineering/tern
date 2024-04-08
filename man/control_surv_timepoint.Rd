@@ -2,7 +2,7 @@
 % Please edit documentation in R/control_survival.R
 \name{control_surv_timepoint}
 \alias{control_surv_timepoint}
-\title{Control Function for \code{survfit} Model for Patient's Survival Rate at time point}
+\title{Control function for \code{survfit} models for patients' survival rate at time points}
 \usage{
 control_surv_timepoint(
   conf_level = 0.95,
@@ -16,7 +16,7 @@ control_surv_timepoint(
 see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "none" is no longer supported.}
 }
 \value{
-A list of components with the same names as the arguments
+A list of components with the same names as the arguments.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

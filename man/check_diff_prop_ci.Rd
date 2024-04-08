@@ -2,7 +2,7 @@
 % Please edit documentation in R/prop_diff.R
 \name{check_diff_prop_ci}
 \alias{check_diff_prop_ci}
-\title{Check: Proportion Difference Arguments}
+\title{Check proportion difference arguments}
 \usage{
 check_diff_prop_ci(rsp, grp, strata = NULL, conf_level, correct = NULL)
 }
@@ -16,7 +16,7 @@ check_diff_prop_ci(rsp, grp, strata = NULL, conf_level, correct = NULL)
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{correct}{(\code{logical})\cr whether to include the continuity correction. For further
+\item{correct}{(\code{flag})\cr whether to include the continuity correction. For further
 information, see \code{\link[stats:prop.test]{stats::prop.test()}}.}
 }
 \description{

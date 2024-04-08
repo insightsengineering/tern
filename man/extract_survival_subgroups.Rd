@@ -2,7 +2,7 @@
 % Please edit documentation in R/survival_duration_subgroups.R
 \name{extract_survival_subgroups}
 \alias{extract_survival_subgroups}
-\title{Prepares Survival Data for Population Subgroups in Data Frames}
+\title{Prepare survival data for population subgroups in data frames}
 \usage{
 extract_survival_subgroups(
   variables,

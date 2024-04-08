@@ -123,7 +123,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
 
 #' @describeIn default_stats_formats_labels Get formats corresponding to a list of statistics.
 #'
-#' @param formats_in (named `vector`) \cr inserted formats to replace defaults. It can be a
+#' @param formats_in (named `vector`)\cr inserted formats to replace defaults. It can be a
 #'   character vector from [formatters::list_valid_format_labels()] or a custom format function.
 #'
 #' @return
@@ -296,7 +296,7 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
   out
 }
 
-#' Update Labels According to Control Specifications
+#' Update labels according to control specifications
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -491,7 +491,7 @@ tern_default_labels <- c(
 #' @describeIn default_stats_formats_labels Quick function to retrieve default formats for summary statistics:
 #'   [analyze_vars()] and [analyze_vars_in_cols()] principally.
 #'
-#' @param type (`flag`)\cr is it going to be `"numeric"` or `"counts"`?
+#' @param type (`string`)\cr `"numeric"` or `"counts"`.
 #'
 #' @return
 #' * `summary_formats()` returns a named `vector` of default statistic formats for the given data type.
@@ -507,9 +507,10 @@ summary_formats <- function(type = "numeric", include_pval = FALSE) {
 }
 
 #' @describeIn default_stats_formats_labels Quick function to retrieve default labels for summary statistics.
-#'   Returns labels of descriptive statistics which are understood by `rtables`. Similar to `summary_formats`
+#'   Returns labels of descriptive statistics which are understood by `rtables`. Similar to `summary_formats`.
 #'
-#' @param include_pval (`flag`)\cr deprecated parameter. Same as `add_pval`.
+#' @param include_pval (`flag`)\cr same as the `add_pval` argument in [get_stats()].
+#'
 #' @return
 #' * `summary_labels` returns a named `vector` of default statistic labels for the given data type.
 #'
@@ -518,7 +519,7 @@ summary_formats <- function(type = "numeric", include_pval = FALSE) {
 #' summary_labels(type = "counts", include_pval = TRUE)
 #'
 #' @export
-summary_labels <- function(type = "numeric", include_pval = FALSE) {
+summary_labels <- function(type = "numeric", include_pval = lifecycle::deprecated()) {
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
   get_labels_from_stats(get_stats(met_grp, add_pval = include_pval))
 }

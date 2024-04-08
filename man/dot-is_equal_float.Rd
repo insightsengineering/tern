@@ -2,17 +2,17 @@
 % Please edit documentation in R/utils.R
 \name{.is_equal_float}
 \alias{.is_equal_float}
-\title{Utility function to check if a float is equal to another float}
+\title{Utility function to check if a float value is equal to another float value}
 \usage{
 .is_equal_float(x, y)
 }
 \arguments{
-\item{x}{(\code{float})\cr A single number.}
+\item{x}{(\code{float})\cr a single number.}
 
-\item{y}{(\code{float})\cr A single number.}
+\item{y}{(\code{float})\cr a single number.}
 }
 \value{
-\code{TRUE}, if identical. \code{FALSE}, otherwise
+\code{TRUE} if identical, otherwise \code{FALSE}.
 }
 \description{
 Uses \code{.Machine$double.eps} as the tolerance for the comparison.

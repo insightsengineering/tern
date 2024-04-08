@@ -4,7 +4,7 @@
 \alias{control_annot}
 \alias{control_surv_med_annot}
 \alias{control_coxph_annot}
-\title{Control Functions for Kaplan-Meier Plot Annotation Tables}
+\title{Control functions for Kaplan-Meier plot annotation tables}
 \usage{
 control_surv_med_annot(x = 0.8, y = 0.85, w = 0.32, h = 0.16, fill = TRUE)
 
@@ -26,10 +26,10 @@ control_coxph_annot(
 
 \item{h}{(\code{proportion})\cr relative height of the annotation table.}
 
-\item{fill}{(\code{logical} or \code{character})\cr whether the annotation table should have a background fill color.
+\item{fill}{(\code{flag} or \code{character})\cr whether the annotation table should have a background fill color.
 Can also be a color code to use as the background fill color. If \code{TRUE}, color code defaults to \code{"#00000020"}.}
 
-\item{ref_lbls}{(\code{logical})\cr whether the reference group should be explicitly printed in labels for the
+\item{ref_lbls}{(\code{flag})\cr whether the reference group should be explicitly printed in labels for the
 annotation table. If \code{FALSE} (default), only comparison groups will be printed in the table labels.}
 }
 \value{

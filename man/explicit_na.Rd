@@ -2,12 +2,12 @@
 % Please edit documentation in R/missing_data.R
 \name{explicit_na}
 \alias{explicit_na}
-\title{Missing Data}
+\title{Missing data}
 \usage{
 explicit_na(x, label = "<Missing>")
 }
 \arguments{
-\item{x}{(\code{factor} or \code{character} vector)\cr values for which any missing values should be substituted.}
+\item{x}{(vector of \code{factor} or \code{character})\cr values for which any missing values should be substituted.}
 
 \item{label}{(\code{character})\cr string that missing data should be replaced with.}
 }

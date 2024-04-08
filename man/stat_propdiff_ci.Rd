@@ -2,7 +2,7 @@
 % Please edit documentation in R/stat.R
 \name{stat_propdiff_ci}
 \alias{stat_propdiff_ci}
-\title{Proportion Difference and Confidence Interval}
+\title{Proportion difference and confidence interval}
 \usage{
 stat_propdiff_ci(
   x,

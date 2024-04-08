@@ -1,4 +1,4 @@
-#' Occurrence Table Pruning
+#' Occurrence table pruning
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

@@ -4,7 +4,7 @@
 \alias{survival_duration_subgroups}
 \alias{tabulate_survival_subgroups}
 \alias{a_survival_subgroups}
-\title{Tabulate Survival Duration by Subgroup}
+\title{Tabulate survival duration by subgroup}
 \usage{
 tabulate_survival_subgroups(
   lyt,
@@ -26,7 +26,7 @@ a_survival_subgroups(
 \arguments{
 \item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
 
-\item{df}{(\code{list})\cr of data frames containing all analysis variables. List should be
+\item{df}{(\code{list})\cr list of data frames containing all analysis variables. List should be
 created using \code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}}.}
 
 \item{vars}{(\code{character})\cr the name of statistics to be reported among:

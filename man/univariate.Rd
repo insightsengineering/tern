@@ -2,12 +2,12 @@
 % Please edit documentation in R/coxph.R
 \name{univariate}
 \alias{univariate}
-\title{Univariate Formula Special Term}
+\title{Univariate formula special term}
 \usage{
 univariate(x)
 }
 \arguments{
-\item{x}{A vector of variable name separated by commas.}
+\item{x}{(\code{vector} of \code{character})\cr a vector of variable names separated by commas.}
 }
 \value{
 When used within a model formula, produces univariate models for each variable provided.

@@ -7,11 +7,11 @@
 draw_grob(grob, newpage = TRUE, vp = NULL)
 }
 \arguments{
-\item{grob}{grid object}
+\item{grob}{(\code{grob})\cr grid object.}
 
-\item{newpage}{draw on a new page}
+\item{newpage}{(\code{flag})\cr draw on a new page.}
 
-\item{vp}{a \code{\link[=viewport]{viewport()}} object (or \code{NULL}).}
+\item{vp}{(\code{viewport})\cr a \code{\link[=viewport]{viewport()}} object (or \code{NULL}).}
 }
 \value{
 A \code{grob}.

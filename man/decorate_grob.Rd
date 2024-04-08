@@ -2,7 +2,7 @@
 % Please edit documentation in R/decorate_grob.R
 \name{decorate_grob}
 \alias{decorate_grob}
-\title{Add Titles, Footnotes, Page Number, and a Bounding Box to a Grid Grob}
+\title{Add titles, footnotes, page Number, and a bounding box to a grid grob}
 \usage{
 decorate_grob(
   grob,
@@ -23,30 +23,30 @@ decorate_grob(
 )
 }
 \arguments{
-\item{grob}{a grid grob object, optionally \code{NULL} if only a \code{grob} with the decoration should be shown.}
+\item{grob}{(\code{grob})\cr a grid grob object, optionally \code{NULL} if only a \code{grob} with the decoration should be shown.}
 
-\item{titles}{vector of character strings. Vector elements are separated by a newline and strings are wrapped
+\item{titles}{(\code{vector} of \code{string}s)\cr vector elements are separated by a newline and strings are wrapped
 according to the page width.}
 
-\item{footnotes}{vector of character string. Same rules as for \code{titles}.}
+\item{footnotes}{(\code{vector} of \code{string}s)\cr same rules as for \code{titles}.}
 
-\item{page}{string with page numeration, if \code{NULL} then no page number is displayed.}
+\item{page}{(\code{string})\cr page numeration. If \code{NULL} then no page number is displayed.}
 
-\item{width_titles}{unit object}
+\item{width_titles}{(\code{grid::unit})\cr width of titles.}
 
-\item{width_footnotes}{unit object}
+\item{width_footnotes}{(\code{grid::unit})\cr width of footnotes.}
 
-\item{border}{boolean, whether a a border should be drawn around the plot or not.}
+\item{border}{(\code{flag})\cr whether a border should be drawn around the plot or not.}
 
-\item{margins}{unit object of length 4}
+\item{margins}{(\code{grid::unit})\cr margins. A unit object of length 4.}
 
-\item{padding}{unit object of length 4}
+\item{padding}{(\code{grid::unit})\cr padding. A unit object of length 4.}
 
-\item{outer_margins}{unit object of length 4}
+\item{outer_margins}{(\code{grid::unit})\cr outer margins. A unit object of length 4.}
 
-\item{gp_titles}{a \code{gpar} object}
+\item{gp_titles}{(\code{gpar})\cr a \code{gpar} object.}
 
-\item{gp_footnotes}{a \code{gpar} object}
+\item{gp_footnotes}{(\code{gpar})\cr a \code{gpar} object.}
 
 \item{name}{a character identifier for the grob.  Used to find the
     grob on the display list and/or as a child of another grob. }

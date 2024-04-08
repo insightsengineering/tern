@@ -1,4 +1,4 @@
-#' Count the Number of Patients with Particular Flags
+#' Count the number of patients with particular flags
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

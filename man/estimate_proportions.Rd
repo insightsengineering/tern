@@ -5,7 +5,7 @@
 \alias{estimate_proportion}
 \alias{s_proportion}
 \alias{a_proportion}
-\title{Estimation of Proportions}
+\title{Estimation of proportions}
 \usage{
 estimate_proportion(
   lyt,
@@ -72,7 +72,7 @@ to find estimates of optimal weights.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
-\item{long}{(\code{flag})\cr a long description is required.}
+\item{long}{(\code{flag})\cr whether a long description is required.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
