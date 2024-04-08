@@ -50,6 +50,7 @@ jobs:
         _R_CHECK_CRAN_INCOMING_REMOTE_=false
       enforce-note-blocklist: true
       publish-unit-test-report-gh-pages: false
+      junit-xml-comparison: false
       concurrency-group: non-cran
       disable-unit-test-reports: true
       skip-r-cmd-install: true
