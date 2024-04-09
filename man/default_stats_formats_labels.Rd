@@ -50,7 +50,7 @@ tern_default_labels
 
 summary_formats(type = "numeric", include_pval = FALSE)
 
-summary_labels(type = "numeric", include_pval = lifecycle::deprecated())
+summary_labels(type = "numeric", include_pval = FALSE)
 }
 \arguments{
 \item{method_groups}{(\code{character})\cr indicates the statistical method group (\code{tern} analyze function)

@@ -519,7 +519,7 @@ summary_formats <- function(type = "numeric", include_pval = FALSE) {
 #' summary_labels(type = "counts", include_pval = TRUE)
 #'
 #' @export
-summary_labels <- function(type = "numeric", include_pval = lifecycle::deprecated()) {
+summary_labels <- function(type = "numeric", include_pval = FALSE) {
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
   get_labels_from_stats(get_stats(met_grp, add_pval = include_pval))
 }
