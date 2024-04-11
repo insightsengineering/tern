@@ -23,7 +23,7 @@ biomarker values.}
 \item{ci_ribbon}{(named \code{list} or \code{NULL})\cr \code{fill} and \code{alpha} settings for the confidence interval
 ribbon area, or \code{NULL} to not plot a CI ribbon.}
 
-\item{col}{(\code{character})\cr colors.}
+\item{col}{(\code{character})\cr color(s).}
 }
 \value{
 A \code{ggplot} STEP graph.

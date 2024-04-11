@@ -4,8 +4,8 @@
 #'
 #' Substitute missing data with a string or factor level.
 #'
-#' @param x (vector of `factor` or `character`)\cr values for which any missing values should be substituted.
-#' @param label (`character`)\cr string that missing data should be replaced with.
+#' @param x (`factor` or `character`)\cr values for which any missing values should be substituted.
+#' @param label (`string`)\cr string that missing data should be replaced with.
 #'
 #' @return `x` with any `NA` values substituted by `label`.
 #'

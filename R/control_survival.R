@@ -34,7 +34,7 @@ control_coxph <- function(pval_method = c("log-rank", "wald", "likelihood"),
 #' @inheritParams argument_convention
 #' @param conf_type (`string`)\cr confidence interval type. Options are "plain" (default), "log", "log-log",
 #'   see more in [survival::survfit()]. Note option "none" is no longer supported.
-#' @param quantiles (`numeric`)\cr vector of length two specifying the quantiles of survival time.
+#' @param quantiles (`numeric(2)`)\cr vector of length two specifying the quantiles of survival time.
 #'
 #' @return A list of components with the same names as the arguments.
 #'

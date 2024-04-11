@@ -29,7 +29,7 @@ s_count_patients_and_multiple_events(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{id}{(\code{string})\cr subject variable name.}
 
@@ -55,7 +55,7 @@ Set to \code{FALSE} when the required column split has been done already earlier
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+\item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
 

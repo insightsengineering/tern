@@ -11,7 +11,7 @@ NULL
 #'
 #' This function recycles all supplied elements to the maximal dimension.
 #'
-#' @param ... (`any`)\cr Elements to recycle.
+#' @param ... (`any`)\cr elements to recycle.
 #'
 #' @return A `list`.
 #'
@@ -307,12 +307,12 @@ desctools_binom <- function(x1,
 
 #' @describeIn desctools_binom Compute confidence intervals for binomial proportions.
 #'
-#' @param x (`count`)\cr number of successes.
-#' @param n (`count`)\cr number of trials.
+#' @param x (`integer(1)`)\cr number of successes.
+#' @param n (`integer(1)`)\cr number of trials.
 #' @param conf.level (`proportion`)\cr confidence level, defaults to 0.95.
-#' @param sides (`character`)\cr side of the confidence interval to compute. Must be one of `"two-sided"` (default),
+#' @param sides (`string`)\cr side of the confidence interval to compute. Must be one of `"two-sided"` (default),
 #'   `"left"`, or `"right"`.
-#' @param method (`character`)\cr method to use. Can be one out of: `"wald"`, `"wilson"`, `"wilsoncc"`,
+#' @param method (`string`)\cr method to use. Can be one out of: `"wald"`, `"wilson"`, `"wilsoncc"`,
 #' `"agresti-coull"`, `"jeffreys"`, `"modified wilson"`, `"modified jeffreys"`, `"clopper-pearson"`, `"arcsine"`,
 #' `"logit"`, `"witting"`, `"pratt"`, `"midp"`, `"lik"`, and `"blaker"`.
 #'

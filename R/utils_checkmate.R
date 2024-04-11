@@ -8,7 +8,7 @@
 #' @param variables (named `list` of `character`)\cr list of variables to test.
 #' @param include_boundaries (`flag`)\cr whether to include boundaries when testing
 #'   for proportions.
-#' @param na_level (`character`)\cr the string you have been using to represent NA or
+#' @param na_level (`string`)\cr the string you have been using to represent NA or
 #'   missing data. For `NA` values please consider using directly [is.na()] or
 #'   similar approaches.
 #'

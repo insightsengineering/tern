@@ -65,7 +65,7 @@ a_count_occurrences_by_grade(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{id}{(\code{string})\cr subject variable name.}
 
@@ -79,7 +79,7 @@ in the the output list; in this case only the grade groups names will be include
 included, with individual grade rows removed (\code{TRUE}), or all grades and grade groups
 should be displayed (\code{FALSE}).}
 
-\item{var_labels}{(\code{character})\cr character for label.}
+\item{var_labels}{(\code{character})\cr variable labels.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
@@ -89,14 +89,14 @@ See \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} for details on risk diff
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("count_occurrences_by_grade")}
 to see available statistics for this function.}
@@ -114,10 +114,10 @@ unmodified default behavior. Can be negative.}
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
 
-\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+\item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
 }

@@ -18,19 +18,19 @@ g_waterfall(
 \arguments{
 \item{height}{(\code{numeric})\cr vector containing values to be plotted as the waterfall bars.}
 
-\item{id}{(\code{character})\cr vector containing IDs to use as the x-axis label for the waterfall bars.}
+\item{id}{(\code{character})\cr vector containing identifiers to use as the x-axis label for the waterfall bars.}
 
 \item{col_var}{(\code{factor}, \code{character}, or \code{NULL})\cr categorical variable for bar coloring. \code{NULL} by default.}
 
-\item{col}{(\code{character})\cr colors.}
+\item{col}{(\code{character})\cr color(s).}
 
-\item{xlab}{(\code{character})\cr x label. Default is \code{"ID"}.}
+\item{xlab}{(\code{string})\cr x label. Default is \code{"ID"}.}
 
-\item{ylab}{(\code{character})\cr y label. Default is \code{"Value"}.}
+\item{ylab}{(\code{string})\cr y label. Default is \code{"Value"}.}
 
-\item{col_legend_title}{(\code{character})\cr text to be displayed as legend title.}
+\item{col_legend_title}{(\code{string})\cr text to be displayed as legend title.}
 
-\item{title}{(\code{character})\cr text to be displayed as plot title.}
+\item{title}{(\code{string})\cr text to be displayed as plot title.}
 }
 \value{
 A \code{ggplot} waterfall plot.

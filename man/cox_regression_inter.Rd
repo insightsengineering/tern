@@ -52,7 +52,7 @@ item is a vector of levels at which the interaction should be estimated.}
 \item{variable, given}{(\code{string})\cr the name of variables in interaction. We seek the estimation
 of the levels of \code{variable} given the levels of \code{given}.}
 
-\item{lvl_var, lvl_given}{(\code{character})\cr corresponding levels has given by \code{\link[=levels]{levels()}}.}
+\item{lvl_var, lvl_given}{(\code{character})\cr corresponding levels as given by \code{\link[=levels]{levels()}}.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 }

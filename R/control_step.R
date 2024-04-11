@@ -10,17 +10,17 @@
 #'   quantiles rather than actual values, i.e. the bandwidth refers to the percentage of data
 #'   covered in each window. Suggest `TRUE` if the biomarker variable is not uniformly
 #'   distributed.
-#' @param bandwidth (`number` or `NULL`)\cr indicating the bandwidth of each window.
+#' @param bandwidth (`numeric(1)` or `NULL`)\cr indicating the bandwidth of each window.
 #'   Depending on the argument `use_percentile`, it can be either the length of actual-value
 #'   windows on the real biomarker scale, or percentage windows.
 #'   If `use_percentile = TRUE`, it should be a number between 0 and 1.
 #'   If `NULL`, treat the bandwidth to be infinity, which means only one global model will be fitted.
 #'   By default, `0.25` is used for percentage windows and one quarter of the range of the `biomarker`
 #'   variable for actual-value windows.
-#' @param degree (`count`)\cr the degree of polynomial function of the biomarker as an interaction term
+#' @param degree (`integer(1)`)\cr the degree of polynomial function of the biomarker as an interaction term
 #'   with the treatment arm fitted at each window. If 0 (default), then the biomarker variable
 #'   is not included in the model fitted in each biomarker window.
-#' @param num_points (`count`)\cr the number of points at which the hazard ratios are estimated. The
+#' @param num_points (`integer(1)`)\cr the number of points at which the hazard ratios are estimated. The
 #'   smallest number is 2.
 #'
 #' @return A list of components with the same names as the arguments, except `biomarker` which is

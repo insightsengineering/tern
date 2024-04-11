@@ -7,7 +7,7 @@
 format_count_fraction(x, ...)
 }
 \arguments{
-\item{x}{(\code{integer})\cr vector of length 2 with count and fraction, respectively.}
+\item{x}{(\code{numeric(2)})\cr vector of length 2 with count and fraction, respectively.}
 
 \item{...}{not used. Required for \code{rtables} interface.}
 }

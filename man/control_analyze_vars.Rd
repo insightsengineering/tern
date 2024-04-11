@@ -14,13 +14,13 @@ control_analyze_vars(
 \arguments{
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{quantiles}{(\code{numeric})\cr vector of length two to specify the quantiles to calculate.}
+\item{quantiles}{(\code{numeric(2)})\cr vector of length two to specify the quantiles to calculate.}
 
-\item{quantile_type}{(\code{numeric})\cr number between 1 and 9 selecting quantile algorithms to be used.
+\item{quantile_type}{(\code{numeric(1)})\cr number between 1 and 9 selecting quantile algorithms to be used.
 Default is set to 2 as this matches the default quantile algorithm in SAS \verb{proc univariate} set by \code{QNTLDEF=5}.
 This differs from R's default. See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.}
 
-\item{test_mean}{(\code{numeric})\cr number to test against the mean under the null hypothesis when calculating p-value.}
+\item{test_mean}{(\code{numeric(1)})\cr number to test against the mean under the null hypothesis when calculating p-value.}
 }
 \value{
 A list of components with the same names as the arguments.

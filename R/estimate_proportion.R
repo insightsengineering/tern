@@ -541,12 +541,12 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
 #'
 #' @inheritParams prop_strat_wilson
 #' @param vars (`numeric`)\cr normalized proportions for each strata.
-#' @param strata_qnorm (`numeric`)\cr initial estimation with identical weights of the quantiles.
+#' @param strata_qnorm (`numeric(1)`)\cr initial estimation with identical weights of the quantiles.
 #' @param initial_weights (`numeric`)\cr initial weights used to calculate `strata_qnorm`. This can
 #'   be optimized in the future if we need to estimate better initial weights.
 #' @param n_per_strata (`numeric`)\cr number of elements in each strata.
-#' @param max_iterations (`count`)\cr maximum number of iterations to be tried. Convergence is always checked.
-#' @param tol (`number`)\cr tolerance threshold for convergence.
+#' @param max_iterations (`integer(1)`)\cr maximum number of iterations to be tried. Convergence is always checked.
+#' @param tol (`numeric(1)`)\cr tolerance threshold for convergence.
 #'
 #' @return A `list` of 3 elements: `n_it`, `weights`, and `diff_v`.
 #'

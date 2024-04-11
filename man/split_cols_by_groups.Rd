@@ -7,7 +7,7 @@
 split_cols_by_groups(lyt, var, groups_list = NULL, ref_group = NULL, ...)
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}

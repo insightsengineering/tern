@@ -7,9 +7,9 @@
 .is_equal_float(x, y)
 }
 \arguments{
-\item{x}{(\code{float})\cr a single number.}
+\item{x}{(\code{numeric(1)})\cr a float number.}
 
-\item{y}{(\code{float})\cr a single number.}
+\item{y}{(\code{numeric(1)})\cr a float number.}
 }
 \value{
 \code{TRUE} if identical, otherwise \code{FALSE}.

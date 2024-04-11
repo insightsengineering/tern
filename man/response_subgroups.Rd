@@ -23,7 +23,7 @@ a_response_subgroups(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{df}{(\code{list})\cr of data frames containing all analysis variables. List should be
 created using \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.}

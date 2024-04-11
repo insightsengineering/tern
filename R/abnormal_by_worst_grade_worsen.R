@@ -25,10 +25,12 @@ NULL
 #' Helper function to prepare a `df` for generate the patient count shift table.
 #'
 #' @param adlb (`data.frame`)\cr ADLB data frame.
-#' @param worst_flag_low (named `vector`)\cr worst low post-baseline lab grade flag variable.
-#' @param worst_flag_high (named `vector`)\cr worst high post-baseline lab grade flag variable.
-#' @param direction_var (`string`)\cr direction variable specifying the direction of the shift table of interest.
-#'   Only lab records flagged by `L`, `H` or `B` are included in the shift table.
+#' @param worst_flag_low (named `vector`)\cr worst low post-baseline lab grade flag variable. See how this is
+#'   implemented in the following examples.
+#' @param worst_flag_high (named `vector`)\cr worst high post-baseline lab grade flag variable. See how this is
+#'   implemented in the following examples.
+#' @param direction_var (`string`)\cr name of the direction variable specifying the direction of the shift table of
+#'   interest. Only lab records flagged by `L`, `H` or `B` are included in the shift table.
 #'   * `L`: low direction only
 #'   * `H`: high direction only
 #'   * `B`: both low and high directions
@@ -164,7 +166,7 @@ h_adlb_worsen <- function(adlb,
 #'
 #' @inheritParams argument_convention
 #' @inheritParams h_adlb_worsen
-#' @param baseline_var (`string`)\cr baseline lab grade variable.
+#' @param baseline_var (`string`)\cr name of the baseline lab grade variable.
 #'
 #' @return The counts and fraction of patients
 #'   whose worst post-baseline lab grades are worse than their baseline grades, for

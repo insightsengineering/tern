@@ -12,8 +12,8 @@ h_grob_tbl_at_risk(data, annot_tbl, xlim, title = TRUE)
 \item{annot_tbl}{(\code{data.frame})\cr annotation as prepared by \code{\link[survival:summary.survfit]{survival::summary.survfit()}} which
 includes the number of patients at risk at given time points.}
 
-\item{xlim}{(\code{numeric})\cr the maximum value on the x-axis (used to
-ensure the at risk table aligns with the KM graph).}
+\item{xlim}{(\code{numeric(1)})\cr the maximum value on the x-axis (used to ensure the at risk table aligns with the KM
+graph).}
 
 \item{title}{(\code{flag})\cr whether the "Patients at Risk" title should be added above the \code{annot_at_risk}
 table. Has no effect if \code{annot_at_risk} is \code{FALSE}. Defaults to \code{TRUE}.}

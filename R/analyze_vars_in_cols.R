@@ -8,11 +8,11 @@
 #'
 #' @inheritParams argument_convention
 #' @inheritParams rtables::analyze_colvars
-#' @param imp_rule (`character`)\cr imputation rule setting. Defaults to `NULL` for no imputation rule. Can
+#' @param imp_rule (`string` or `NULL`)\cr imputation rule setting. Defaults to `NULL` for no imputation rule. Can
 #'   also be `"1/3"` to implement 1/3 imputation rule or `"1/2"` to implement 1/2 imputation rule. In order
 #'   to use an imputation rule, the `avalcat_var` argument must be specified. See [imputation_rule()]
 #'   for more details on imputation.
-#' @param avalcat_var (`character`)\cr if `imp_rule` is not `NULL`, name of variable that indicates whether a
+#' @param avalcat_var (`string`)\cr if `imp_rule` is not `NULL`, name of variable that indicates whether a
 #'   row in the data corresponds to an analysis value in category `"BLQ"`, `"LTR"`, `"<PCLLOQ"`, or none of
 #'   the above (defaults to `"AVALCAT1"`). Variable must be present in the data and should match the variable
 #'   used to calculate the `n_blq` statistic (if included in `.stats`).

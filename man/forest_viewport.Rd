@@ -15,7 +15,7 @@ forest_viewport(
 )
 }
 \arguments{
-\item{tbl}{(\code{rtable}) table object.}
+\item{tbl}{(\code{VTableTree})\cr \code{rtables} table object.}
 
 \item{width_row_names}{(\code{grid::unit})\cr width of row names.}
 
@@ -27,7 +27,7 @@ forest_viewport(
 
 \item{gap_header}{(\code{grid::unit})\cr gap width between the header.}
 
-\item{mat_form}{(\code{rtables::MatrixPrintForm})\cr matrix print form of the table.}
+\item{mat_form}{(\code{MatrixPrintForm})\cr matrix print form of the table.}
 }
 \value{
 A viewport tree.

@@ -43,7 +43,7 @@ a_coxreg(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
@@ -55,10 +55,10 @@ the value of the covariate at which the effect should be estimated.}
 \item{multivar}{(\code{flag})\cr whether multivariate Cox regression should run (defaults to \code{FALSE}), otherwise
 univariate Cox regression will run.}
 
-\item{common_var}{(\code{character})\cr the name of a factor variable in the dataset which takes the same value
+\item{common_var}{(\code{string})\cr the name of a factor variable in the dataset which takes the same value
 for all rows. This should be created during pre-processing if no such variable currently exists.}
 
-\item{.stats}{(\code{character})\cr the name of statistics to be reported among:
+\item{.stats}{(\code{character})\cr the names of statistics to be reported among:
 \itemize{
 \item \code{n}: number of observations (univariate only)
 \item \code{hr}: hazard ratio
@@ -80,7 +80,7 @@ unmodified default behavior. Can be negative.}
 
 \item{na_str}{(\code{string})\cr custom string to replace all \code{NA} values with. Defaults to \code{""}.}
 
-\item{.section_div}{(\code{character})\cr string which should be repeated as a section divider between sections.
+\item{.section_div}{(\code{string} or \code{NA})\cr string which should be repeated as a section divider between sections.
 Defaults to \code{NA} for no section divider. If a vector of two strings are given, the first will be used between
 treatment and covariate sections and the second between different covariates.}
 
@@ -88,8 +88,8 @@ treatment and covariate sections and the second between different covariates.}
 function with tidying applied via \code{\link[broom:reexports]{broom::tidy()}}.}
 
 \item{.which_vars}{(\code{character})\cr which rows should statistics be returned for from the given model.
-Defaults to "all". Other options include "var_main" for main effects, \code{"inter"} for interaction effects,
-and \code{"multi_lvl"} for multivariate model covariate level rows. When \code{.which_vars} is "all" specific
+Defaults to \code{"all"}. Other options include \code{"var_main"} for main effects, \code{"inter"} for interaction effects,
+and \code{"multi_lvl"} for multivariate model covariate level rows. When \code{.which_vars} is \code{"all"}, specific
 variables can be selected by specifying \code{.var_nms}.}
 
 \item{.var_nms}{(\code{character})\cr the \code{term} value of rows in \code{df} for which \code{.stats} should be returned. Typically
@@ -99,7 +99,7 @@ is \code{"var_main"}, \code{.var_nms} should be only the variable name.}
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+\item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
 

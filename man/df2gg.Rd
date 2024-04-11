@@ -15,23 +15,23 @@ df2gg(
 )
 }
 \arguments{
-\item{colwidths}{(\code{vector} of \code{numeric})\cr a vector of column widths. Each element's position in
+\item{colwidths}{(\code{numeric} or \code{NULL})\cr a vector of column widths. Each element's position in
 \code{colwidths} corresponds to the column of \code{df} in the same position. If \code{NULL}, column widths
 are calculated according to maximum number of characters per column.}
 
-\item{font_size}{(\code{numeric})\cr font size.}
+\item{font_size}{(\code{numeric(1)})\cr font size.}
 
 \item{col_labels}{(\code{flag})\cr whether the column names (labels) of \code{df} should be used as the first row
 of the output table.}
 
 \item{hline}{(\code{flag})\cr whether a horizontal line should be printed below the first row of the table.}
 
-\item{bg_fill}{(\code{character})\cr table background fill color.}
+\item{bg_fill}{(\code{string})\cr table background fill color.}
 
 \item{tbl}{(\code{data.frame})\cr a data frame.}
 
-\item{col_labels_fontface}{(\code{character})\cr font face to apply to the first row (of column labels
-if \code{col_labels = TRUE}).}
+\item{col_labels_fontface}{(\code{string})\cr font face to apply to the first row (of column labels
+if \code{col_labels = TRUE}). Defaults to \code{"bold"}.}
 }
 \value{
 A \code{ggplot} object.

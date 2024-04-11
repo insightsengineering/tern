@@ -16,18 +16,18 @@ imputation_rule(
 \arguments{
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{x_stats}{(\verb{named list})\cr a named list of statistics, typically the results of \code{\link[=s_summary]{s_summary()}}.}
+\item{x_stats}{(named \code{list})\cr a named list of statistics, typically the results of \code{\link[=s_summary]{s_summary()}}.}
 
-\item{stat}{(\code{character})\cr statistic to return the value/NA level of according to the imputation
+\item{stat}{(\code{string})\cr statistic to return the value/NA level of according to the imputation
 rule applied.}
 
-\item{imp_rule}{(\code{character})\cr imputation rule setting. Set to \code{"1/3"} to implement 1/3 imputation
+\item{imp_rule}{(\code{string})\cr imputation rule setting. Set to \code{"1/3"} to implement 1/3 imputation
 rule or \code{"1/2"} to implement 1/2 imputation rule.}
 
 \item{post}{(\code{flag})\cr whether the data corresponds to a post-dose time-point (defaults to \code{FALSE}).
 This parameter is only used when \code{imp_rule} is set to \code{"1/3"}.}
 
-\item{avalcat_var}{(\code{character})\cr name of variable that indicates whether a row in \code{df} corresponds
+\item{avalcat_var}{(\code{string})\cr name of variable that indicates whether a row in \code{df} corresponds
 to an analysis value in category \code{"BLQ"}, \code{"LTR"}, \code{"<PCLLOQ"}, or none of the above
 (defaults to \code{"AVALCAT1"}). Variable \code{avalcat_var} must be present in \code{df}.}
 }

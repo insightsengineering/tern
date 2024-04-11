@@ -45,24 +45,24 @@ a_coxph_pairwise(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{var_labels}{(\code{character})\cr character for label.}
+\item{var_labels}{(\code{character})\cr variable labels.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("coxph_pairwise")}
 to see available statistics for this function.}
@@ -84,7 +84,7 @@ unmodified default behavior. Can be negative.}
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
+\item{is_event}{(\code{flag})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
 \item{strata}{(\code{character} or \code{NULL})\cr variable names indicating stratification factors.}
 

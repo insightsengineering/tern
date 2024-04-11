@@ -257,7 +257,7 @@ h_coxreg_extract_interaction <- function(effect,
 #'
 #' @param variable,given (`string`)\cr the name of variables in interaction. We seek the estimation
 #'   of the levels of `variable` given the levels of `given`.
-#' @param lvl_var,lvl_given (`character`)\cr corresponding levels has given by [levels()].
+#' @param lvl_var,lvl_given (`character`)\cr corresponding levels as given by [levels()].
 #' @param mod (`coxph`)\cr a fitted Cox regression model (see [survival::coxph()]).
 #'
 #' @details Given the cox regression investigating the effect of Arm (A, B, C; reference A)

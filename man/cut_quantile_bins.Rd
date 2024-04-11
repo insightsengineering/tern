@@ -17,14 +17,14 @@ cut_quantile_bins(
 quantile bins. This may contain \code{NA} values, which are then
 not used for the quantile calculations, but included in the return vector.}
 
-\item{probs}{(\code{proportion} vector)\cr the probabilities identifying the quantiles.
+\item{probs}{(\code{numeric})\cr the probabilities identifying the quantiles.
 This is a sorted vector of unique \code{proportion} values, i.e. between 0 and 1, where
 the boundaries 0 and 1 must not be included.}
 
 \item{labels}{(\code{character})\cr the unique labels for the quantile bins. When there are \code{n}
 probabilities in \code{probs}, then this must be \code{n + 1} long.}
 
-\item{type}{(\code{integer})\cr type of quantiles to use, see \code{\link[stats:quantile]{stats::quantile()}} for details.}
+\item{type}{(\code{integer(1)})\cr type of quantiles to use, see \code{\link[stats:quantile]{stats::quantile()}} for details.}
 
 \item{ordered}{(\code{flag})\cr should the result be an ordered factor.}
 }

@@ -19,27 +19,27 @@
 #'     see more in [survival::survfit()]. Note that the option "none" is no longer supported.
 #' @param col (`character`)\cr lines colors. Length of a vector should be equal
 #'   to number of strata from [survival::survfit()].
-#' @param lty (`numeric`)\cr line type. Length of a vector should be equal
-#'   to number of strata from [survival::survfit()].
-#' @param lwd (`numeric`)\cr line width. Length of a vector should be equal
-#'   to number of strata from [survival::survfit()].
+#' @param lty (`numeric`)\cr line type. If a vector is given, its length should be equal to the number of strata from
+#'   [survival::survfit()].
+#' @param lwd (`numeric`)\cr line width. If a vector is given, its length should be equal to the number of strata from
+#'   [survival::survfit()].
 #' @param censor_show (`flag`)\cr whether to show censored observations.
-#' @param pch (`character`)\cr name of symbol or character to use as point symbol to indicate censored cases.
-#' @param size (`numeric`)\cr size of censored point symbols.
-#' @param max_time (`numeric`)\cr maximum value to show on x-axis. Only data values less than or up to
+#' @param pch (`string`)\cr name of symbol or character to use as point symbol to indicate censored cases.
+#' @param size (`numeric(1)`)\cr size of censored point symbols.
+#' @param max_time (`numeric(1)`)\cr maximum value to show on x-axis. Only data values less than or up to
 #'   this threshold value will be plotted (defaults to `NULL`).
-#' @param xticks (`numeric`, `number`, or `NULL`)\cr numeric vector of tick positions or single number with spacing
+#' @param xticks (`numeric` or `NULL`)\cr numeric vector of tick positions or a single number with spacing
 #'   between ticks on the x-axis. If `NULL` (default), [labeling::extended()] is used to determine
 #'   optimal tick positions on the x-axis.
 #' @param xlab (`string`)\cr x-axis label.
 #' @param yval (`string`)\cr type of plot, to be plotted on the y-axis. Options are `Survival` (default) and `Failure`
 #'   probability.
 #' @param ylab (`string`)\cr y-axis label.
-#' @param ylim (`numeric(2)`)\cr vector of length 2 containing lower and upper limits for the y-axis, respectively.
+#' @param ylim (`numeric(2)`)\cr vector containing lower and upper limits for the y-axis, respectively.
 #'   If `NULL` (default), the minimum and maximum y-values displayed are used as limits.
 #' @param title (`string`)\cr plot title.
 #' @param footnotes (`string`)\cr plot footnotes.
-#' @param font_size (`number`)\cr font size to be used for all text.
+#' @param font_size (`numeric(1)`)\cr font size to use for all text.
 #' @param ci_ribbon (`flag`)\cr whether the confidence interval should be drawn around the Kaplan-Meier curve.
 #' @param annot_at_risk (`flag`)\cr compute and add the annotation table reporting the number of patient at risk
 #'   matching the main grid of the Kaplan-Meier curve.
@@ -47,8 +47,8 @@
 #'   table. Has no effect if `annot_at_risk` is `FALSE`. Defaults to `TRUE`.
 #' @param annot_surv_med (`flag`)\cr compute and add the annotation table on the Kaplan-Meier curve estimating the
 #'   median survival time per group.
-#' @param annot_coxph (`flag`)\cr add the annotation table from a [survival::coxph()] model.
-#' @param annot_stats (`string`)\cr statistics annotations to add to the plot. Options are
+#' @param annot_coxph (`flag`)\cr whether to add the annotation table from a [survival::coxph()] model.
+#' @param annot_stats (`string` or `NULL`)\cr statistics annotations to add to the plot. Options are
 #'   `median` (median survival follow-up time) and `min` (minimum survival follow-up time).
 #' @param annot_stats_vlines (`flag`)\cr add vertical lines corresponding to each of the statistics
 #'   specified by `annot_stats`. If `annot_stats` is `NULL` no lines will be added.
@@ -59,7 +59,7 @@
 #'   * `ties` (`string`)\cr method for tie handling. Default is `"efron"`,
 #'     can also be set to `"breslow"` or `"exact"`. See more in [survival::coxph()]
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
-#' @param ref_group_coxph (`character`)\cr level of arm variable to use as reference group in calculations for
+#' @param ref_group_coxph (`string` or `NULL`)\cr level of arm variable to use as reference group in calculations for
 #'   `annot_coxph` table. If `NULL` (default), uses the first level of the arm variable.
 #' @param control_annot_surv_med (`list`)\cr parameters to control the position and size of the annotation table added
 #'   to the plot when `annot_surv_med = TRUE`, specified using the [control_surv_med_annot()] function. Parameter
@@ -67,7 +67,7 @@
 #' @param control_annot_coxph (`list`)\cr parameters to control the position and size of the annotation table added
 #'   to the plot when `annot_coxph = TRUE`, specified using the [control_coxph_annot()] function. Parameter
 #'   options are: `x`, `y`, `w`, `h`, `fill`, and `ref_lbls`. See [control_coxph_annot()] for details.
-#' @param legend_pos (`numeric(2)`)\cr vector of length 2 containing x- and y-coordinates, respectively, for the legend
+#' @param legend_pos (`numeric(2)` or `NULL`)\cr vector containing x- and y-coordinates, respectively, for the legend
 #'   position relative to the KM plot area. If `NULL` (default), the legend is positioned in the bottom right corner of
 #'   the plot, or the middle right of the plot if needed to prevent overlapping.
 #' @param rel_height_plot (`proportion`)\cr proportion of total figure height to allocate to the Kaplan-Meier plot.

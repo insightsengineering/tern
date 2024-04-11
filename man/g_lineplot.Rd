@@ -42,17 +42,17 @@ g_lineplot(
 \item{alt_counts_df}{(\code{data.frame} or \code{NULL})\cr data set that will be used (only)
 to counts objects in groups for stratification.}
 
-\item{variables}{(named \code{character} vector) of variable names in \code{df} data set. Details are:
+\item{variables}{(named \code{character}) vector of variable names in \code{df} which should include:
 \itemize{
-\item \code{x} (\code{character})\cr name of x-axis variable.
-\item \code{y} (\code{character})\cr name of y-axis variable.
-\item \code{group_var} (\code{character})\cr name of grouping variable (or strata), i.e. treatment arm.
+\item \code{x} (\code{string})\cr name of x-axis variable.
+\item \code{y} (\code{string})\cr name of y-axis variable.
+\item \code{group_var} (\code{string} or \code{NULL})\cr name of grouping variable (or strata), i.e. treatment arm.
 Can be \code{NA} to indicate lack of groups.
-\item \code{subject_var} (\code{character})\cr name of subject variable. Only applies if \code{group_var} is
+\item \code{subject_var} (\code{string} or \code{NULL})\cr name of subject variable. Only applies if \code{group_var} is
 not NULL.
-\item \code{paramcd} (\code{character})\cr name of the variable for parameter's code. Used for y-axis label and plot's subtitle.
-Can be \code{NA} if \code{paramcd} is not to be added to the y-axis label or subtitle.
-\item \code{y_unit} (\code{character})\cr name of variable with units of \code{y}. Used for y-axis label and plot's subtitle.
+\item \code{paramcd} (\code{string} or \code{NA})\cr name of the variable for parameter's code. Used for y-axis label and plot's
+subtitle. Can be \code{NA} if \code{paramcd} is not to be added to the y-axis label or subtitle.
+\item \code{y_unit} (\code{string} or \code{NA})\cr name of variable with units of \code{y}. Used for y-axis label and plot's subtitle.
 Can be \code{NA} if y unit is not to be added to the y-axis label or subtitle.
 }}
 
@@ -73,48 +73,48 @@ of the list element \code{interval} that will be returned by \code{sfun} (e.g. \
 \item{table}{(\code{character} or \code{NULL})\cr names of the statistics that will be displayed in the table below the plot.
 All the statistics indicated in \code{table} variable must be present in the object returned by \code{sfun}.}
 
-\item{sfun}{(\code{closure})\cr the function to compute the values of required statistics. It must return a named \code{list}
+\item{sfun}{(\code{function})\cr the function to compute the values of required statistics. It must return a named \code{list}
 with atomic vectors. The names of the \code{list} elements refer to the names of the statistics and are used by \code{mid},
 \code{interval}, \code{table}. It must be able to accept as input a vector with data for which statistics are computed.}
 
 \item{...}{optional arguments to \code{sfun}.}
 
-\item{mid_type}{(\code{character})\cr controls the type of the \code{mid} plot, it can be point (\code{p}), line (\code{l}),
-or point and line (\code{pl}).}
+\item{mid_type}{(\code{string})\cr controls the type of the \code{mid} plot, it can be point (\code{"p"}), line (\code{"l"}),
+or point and line (\code{"pl"}).}
 
-\item{mid_point_size}{(\code{integer} or \code{double})\cr controls the font size of the point for \code{mid} plot.}
+\item{mid_point_size}{(\code{numeric(1)})\cr font size of the \code{mid} plot points.}
 
 \item{position}{(\code{character} or \code{call})\cr geom element position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
 \item{legend_title}{(\code{string})\cr legend title.}
 
-\item{legend_position}{(\code{character})\cr the position of the plot legend (\code{none}, \code{left}, \code{right}, \code{bottom}, \code{top},
-or two-element numeric vector).}
+\item{legend_position}{(\code{string})\cr the position of the plot legend (\code{"none"}, \code{"left"}, \code{"right"}, \code{"bottom"},
+\code{"top"}, or a two-element numeric vector).}
 
 \item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to control styling of the plot.}
 
-\item{x_lab}{(\code{character})\cr x-axis label. If equal to \code{NULL}, then no label will be added.}
+\item{x_lab}{(\code{string} or \code{NULL})\cr x-axis label. If \code{NULL} then no label will be added.}
 
-\item{y_lab}{(\code{character})\cr y-axis label. If equal to \code{NULL}, then no label will be added.}
+\item{y_lab}{(\code{string} or \code{NULL})\cr y-axis label. If \code{NULL} then no label will be added.}
 
-\item{y_lab_add_paramcd}{(\code{logical})\cr whether \code{paramcd}, i.e. \code{unique(df[[variables["paramcd"]]])} should be added
+\item{y_lab_add_paramcd}{(\code{flag})\cr whether \code{paramcd}, i.e. \code{unique(df[[variables["paramcd"]]])} should be added
 to the y-axis label (\code{y_lab}).}
 
-\item{y_lab_add_unit}{(\code{logical})\cr whether y-axis unit, i.e. \code{unique(df[[variables["y_unit"]]])} should be added
+\item{y_lab_add_unit}{(\code{flag})\cr whether y-axis unit, i.e. \code{unique(df[[variables["y_unit"]]])} should be added
 to the y-axis label (\code{y_lab}).}
 
-\item{title}{(\code{character})\cr plot title.}
+\item{title}{(\code{string})\cr plot title.}
 
-\item{subtitle}{(\code{character})\cr plot subtitle.}
+\item{subtitle}{(\code{string})\cr plot subtitle.}
 
-\item{subtitle_add_paramcd}{(\code{logical})\cr whether \code{paramcd}, i.e. \code{unique(df[[variables["paramcd"]]])} should be
+\item{subtitle_add_paramcd}{(\code{flag})\cr whether \code{paramcd}, i.e. \code{unique(df[[variables["paramcd"]]])} should be
 added to the plot's subtitle (\code{subtitle}).}
 
-\item{subtitle_add_unit}{(\code{logical})\cr whether y-axis unit, i.e. \code{unique(df[[variables["y_unit"]]])} should be
+\item{subtitle_add_unit}{(\code{flag})\cr whether the y-axis unit, i.e. \code{unique(df[[variables["y_unit"]]])} should be
 added to the plot's subtitle (\code{subtitle}).}
 
-\item{caption}{(\code{character})\cr optional caption below the plot.}
+\item{caption}{(\code{string})\cr optional caption below the plot.}
 
 \item{table_format}{(named \code{character} or \code{NULL})\cr format patterns for descriptive statistics used in the
 (optional) table appended to the plot. It is passed directly to the \code{h_format_row} function through the \code{format}
@@ -123,11 +123,11 @@ parameter. Names of \code{table_format} must match the names of statistics retur
 \item{table_labels}{(named \code{character} or \code{NULL})\cr labels for descriptive statistics used in the (optional) table
 appended to the plot. Names of \code{table_labels} must match the names of statistics returned by \code{sfun} function.}
 
-\item{table_font_size}{(\code{integer} or \code{double})\cr controls the font size of values in the table.}
+\item{table_font_size}{(\code{numeric(1)})\cr font size of the text in the table.}
 
 \item{newpage}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} not used.}
 
-\item{col}{(\code{character})\cr colors.}
+\item{col}{(\code{character})\cr color(s).}
 }
 \value{
 A \code{ggplot} line plot (and statistics table if applicable).

@@ -8,7 +8,7 @@
 #' @inheritParams survival_coxph_pairwise
 #' @param df (`list`)\cr list of data frames containing all analysis variables. List should be
 #'   created using [extract_survival_subgroups()].
-#' @param vars (`character`)\cr the name of statistics to be reported among:
+#' @param vars (`character`)\cr the names of statistics to be reported among:
 #'   * `n_tot_events`: Total number of events per group.
 #'   * `n_events`: Number of events per group.
 #'   * `n_tot`: Total number of observations per group.
@@ -364,7 +364,7 @@ tabulate_survival_subgroups <- function(lyt,
 #'
 #' @inheritParams tabulate_survival_subgroups
 #' @inheritParams argument_convention
-#' @param method (`character`)\cr p-value method for testing hazard ratio = 1.
+#' @param method (`string`)\cr p-value method for testing hazard ratio = 1.
 #'
 #' @return A `list` of variables and their labels to tabulate.
 #'

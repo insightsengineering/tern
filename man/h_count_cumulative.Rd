@@ -16,7 +16,7 @@ h_count_cumulative(
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{threshold}{(\code{number})\cr a cutoff value as threshold to count values of \code{x}.}
+\item{threshold}{(\code{numeric(1)})\cr a cutoff value as threshold to count values of \code{x}.}
 
 \item{lower_tail}{(\code{flag})\cr whether to count lower tail, default is \code{TRUE}.}
 
@@ -25,7 +25,7 @@ count, default is \code{TRUE}.}
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
 }
 \value{

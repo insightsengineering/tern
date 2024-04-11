@@ -9,7 +9,7 @@ c_label_n_alt(df, labelstr, .alt_df_row)
 \arguments{
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+\item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
 }

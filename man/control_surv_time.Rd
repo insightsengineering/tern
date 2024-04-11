@@ -16,7 +16,7 @@ control_surv_time(
 \item{conf_type}{(\code{string})\cr confidence interval type. Options are "plain" (default), "log", "log-log",
 see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "none" is no longer supported.}
 
-\item{quantiles}{(\code{numeric})\cr vector of length two specifying the quantiles of survival time.}
+\item{quantiles}{(\code{numeric(2)})\cr vector of length two specifying the quantiles of survival time.}
 }
 \value{
 A list of components with the same names as the arguments.

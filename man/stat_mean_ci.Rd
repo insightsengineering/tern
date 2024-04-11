@@ -20,7 +20,7 @@ stat_mean_ci(
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{n_min}{(\code{number})\cr a minimum number of non-missing \code{x} to estimate the confidence interval for mean.}
+\item{n_min}{(\code{numeric(1)})\cr a minimum number of non-missing \code{x} to estimate the confidence interval for mean.}
 
 \item{gg_helper}{(\code{flag})\cr whether output should be aligned for use with \code{ggplot}s.}
 

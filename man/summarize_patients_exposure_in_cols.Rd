@@ -61,12 +61,12 @@ a_count_patients_sum_exposure(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{ex_var}{(\code{character})\cr name of the variable in \code{df} containing exposure values.}
+\item{ex_var}{(\code{string})\cr name of the variable in \code{df} containing exposure values.}
 
 \item{id}{(\code{string})\cr subject variable name.}
 
@@ -92,11 +92,11 @@ unmodified default behavior. Can be negative.}
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+\item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
 
-\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more

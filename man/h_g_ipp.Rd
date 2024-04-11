@@ -37,7 +37,7 @@ h_g_ipp(
 
 \item{subtitle}{(\code{string})\cr subtitle for plot.}
 
-\item{caption}{(\code{character} scalar)\cr optional caption below the plot.}
+\item{caption}{(\code{string})\cr optional caption below the plot.}
 
 \item{add_baseline_hline}{(\code{flag})\cr adds horizontal line at baseline y-value on
 plot when \code{TRUE}.}

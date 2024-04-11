@@ -7,7 +7,7 @@
 decorate_grob_factory(npages, ...)
 }
 \arguments{
-\item{npages}{(\code{numeric})\cr number of pages in total.}
+\item{npages}{(\code{numeric(1)})\cr total number of pages.}
 
 \item{...}{arguments passed on to \code{\link[=decorate_grob]{decorate_grob()}}.}
 }

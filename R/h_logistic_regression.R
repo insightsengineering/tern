@@ -8,8 +8,7 @@
 #' @param fit_glm (`glm`)\cr logistic regression model fitted by [stats::glm()] with "binomial" family.
 #'   Limited functionality is also available for conditional logistic regression models fitted by
 #'   [survival::clogit()], currently this is used only by [extract_rsp_biomarkers()].
-#' @param x (`string` or `character`)\cr a variable or interaction term in `fit_glm` (depending on the
-#'   helper function).
+#' @param x (`character`)\cr a variable or interaction term in `fit_glm` (depending on the helper function used).
 #'
 #' @examples
 #' library(dplyr)

@@ -19,11 +19,11 @@
 #'   Ignored when `add_baseline_hline` is `FALSE`.
 #' @param ggtheme (`theme`)\cr optional graphical theme function as provided
 #'   by `ggplot2` to control outlook of plot. Use `ggplot2::theme()` to tweak the display.
-#' @param plotting_choices (`character`)\cr specifies options for displaying
-#'   plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".
-#' @param max_obs_per_plot (`count`)\cr number of observations to be plotted on one
-#'   plot. Ignored when `plotting_choices` is not "separate_by_obs".
-#' @param caption (`character` scalar)\cr optional caption below the plot.
+#' @param plotting_choices (`string`)\cr specifies options for displaying
+#'   plots. Must be one of `"all_in_one"`, `"split_by_max_obs"`, or `"separate_by_obs"`.
+#' @param max_obs_per_plot (`integer(1)`)\cr number of observations to be plotted on one
+#'   plot. Ignored if `plotting_choices` is not `"separate_by_obs"`.
+#' @param caption (`string`)\cr optional caption below the plot.
 #' @param col (`character`)\cr line colors.
 #'
 #' @seealso Relevant helper function [h_g_ipp()].

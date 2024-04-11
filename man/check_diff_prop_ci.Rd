@@ -7,7 +7,7 @@
 check_diff_prop_ci(rsp, grp, strata = NULL, conf_level, correct = NULL)
 }
 \arguments{
-\item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
+\item{rsp}{(\code{logical})\cr vector indicating whether each subject is a responder or not.}
 
 \item{grp}{(\code{factor})\cr vector assigning observations to one out of two groups
 (e.g. reference and treatment group).}

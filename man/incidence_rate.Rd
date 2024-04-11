@@ -40,11 +40,11 @@ a_incidence_rate(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{n_events}{(\code{integer})\cr number of events observed.}
+\item{n_events}{(\code{integer(1)})\cr number of events observed.}
 
 \item{control}{(\code{list})\cr parameters for estimation details, specified by using
 the helper function \code{\link[=control_incidence_rate]{control_incidence_rate()}}. Possible parameter options are:
@@ -59,16 +59,16 @@ indicating time unit for data input.
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("estimate_incidence_rate")}
 to see available statistics for this function.}
@@ -86,7 +86,7 @@ unmodified default behavior. Can be negative.}
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
+\item{is_event}{(\code{flag})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 }
 \value{
 \itemize{

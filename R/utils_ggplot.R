@@ -5,9 +5,9 @@
 #' Given a [rtables::rtable()] object, performs basic conversion to a [ggplot2::ggplot()] object built using
 #' functions from the `ggplot2` package. Any table titles and/or footnotes are ignored.
 #'
-#' @param tbl (`rtable`)\cr a `rtable` object.
-#' @param fontsize (`numeric`)\cr font size.
-#' @param colwidths (`vector` of `numeric`)\cr a vector of column widths. Each element's position in
+#' @param tbl (`VTableTree`)\cr `rtables` table object.
+#' @param fontsize (`numeric(1)`)\cr font size.
+#' @param colwidths (`numeric` or `NULL`)\cr a vector of column widths. Each element's position in
 #'   `colwidths` corresponds to the column of `tbl` in the same position. If `NULL`, column widths
 #'   are calculated according to maximum number of characters per column.
 #' @param lbl_col_padding (`numeric`)\cr additional padding to use when calculating spacing between
@@ -137,16 +137,16 @@ rtable2gg <- function(tbl, fontsize = 12, colwidths = NULL, lbl_col_padding = 0)
 #' functions from the `ggplot2` package.
 #'
 #' @param tbl (`data.frame`)\cr a data frame.
-#' @param colwidths (`vector` of `numeric`)\cr a vector of column widths. Each element's position in
+#' @param colwidths (`numeric` or `NULL`)\cr a vector of column widths. Each element's position in
 #'   `colwidths` corresponds to the column of `df` in the same position. If `NULL`, column widths
 #'   are calculated according to maximum number of characters per column.
-#' @param font_size (`numeric`)\cr font size.
+#' @param font_size (`numeric(1)`)\cr font size.
 #' @param col_labels (`flag`)\cr whether the column names (labels) of `df` should be used as the first row
 #'   of the output table.
-#' @param col_labels_fontface (`character`)\cr font face to apply to the first row (of column labels
-#'   if `col_labels = TRUE`).
+#' @param col_labels_fontface (`string`)\cr font face to apply to the first row (of column labels
+#'   if `col_labels = TRUE`). Defaults to `"bold"`.
 #' @param hline (`flag`)\cr whether a horizontal line should be printed below the first row of the table.
-#' @param bg_fill (`character`)\cr table background fill color.
+#' @param bg_fill (`string`)\cr table background fill color.
 #'
 #' @return A `ggplot` object.
 #'

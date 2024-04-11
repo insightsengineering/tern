@@ -47,7 +47,7 @@ a_odds_ratio(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
@@ -60,16 +60,16 @@ levels that belong to it in the character vectors that are elements of the list.
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{arguments passed to \code{s_odds_ratio()}.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("estimate_odds_ratio")}
 to see available statistics for this function.}

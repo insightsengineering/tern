@@ -92,8 +92,7 @@ the median is used.}
 \item{any}{(\code{flag})\cr whether any of \code{term1} and \code{term2} can be fulfilled to count the
 number of patients. In that case they can only be scalar (strings).}
 
-\item{x}{(\code{string} or \code{character})\cr a variable or interaction term in \code{fit_glm} (depending on the
-helper function).}
+\item{x}{(\code{character})\cr a variable or interaction term in \code{fit_glm} (depending on the helper function used).}
 
 \item{...}{additional arguments for the lower level functions.}
 }

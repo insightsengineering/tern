@@ -24,12 +24,12 @@ a_survival_subgroups(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{df}{(\code{list})\cr list of data frames containing all analysis variables. List should be
 created using \code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}}.}
 
-\item{vars}{(\code{character})\cr the name of statistics to be reported among:
+\item{vars}{(\code{character})\cr the names of statistics to be reported among:
 \itemize{
 \item \code{n_tot_events}: Total number of events per group.
 \item \code{n_events}: Number of events per group.

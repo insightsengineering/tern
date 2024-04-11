@@ -3,7 +3,7 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @param pk_data (`data.frame`)\cr pharmacokinetic data frame.
-#' @param key_var (`character`)\cr key variable used to merge pk_data and metadata created by `d_pkparam()`.
+#' @param key_var (`string`)\cr key variable used to merge pk_data and metadata created by [d_pkparam()].
 #'
 #' @return A pharmacokinetic `data.frame` sorted by a `PARAM` variable.
 #'

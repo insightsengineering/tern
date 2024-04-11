@@ -19,11 +19,11 @@ h_incidence_rate_byar(person_years, n_events, alpha = 0.05)
 h_incidence_rate(person_years, n_events, control = control_incidence_rate())
 }
 \arguments{
-\item{person_years}{(\code{numeric})\cr total person-years at risk.}
+\item{person_years}{(\code{numeric(1)})\cr total person-years at risk.}
 
-\item{n_events}{(\code{integer})\cr number of events observed.}
+\item{n_events}{(\code{integer(1)})\cr number of events observed.}
 
-\item{alpha}{(\code{numeric})\cr two-sided alpha-level for confidence interval.}
+\item{alpha}{(\code{numeric(1)})\cr two-sided alpha-level for confidence interval.}
 
 \item{control}{(\code{list})\cr parameters for estimation details, specified by using
 the helper function \code{\link[=control_incidence_rate]{control_incidence_rate()}}. Possible parameter options are:

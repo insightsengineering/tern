@@ -25,7 +25,7 @@ analyze_vars_in_cols(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
@@ -48,12 +48,12 @@ to define row labels. This behavior is not supported as we never need to overloa
 This option allows you to add multiple instances of this functions, also in a nested fashion,
 without adding more splits. This split must happen only one time on a single layout.}
 
-\item{imp_rule}{(\code{character})\cr imputation rule setting. Defaults to \code{NULL} for no imputation rule. Can
+\item{imp_rule}{(\code{string} or \code{NULL})\cr imputation rule setting. Defaults to \code{NULL} for no imputation rule. Can
 also be \code{"1/3"} to implement 1/3 imputation rule or \code{"1/2"} to implement 1/2 imputation rule. In order
 to use an imputation rule, the \code{avalcat_var} argument must be specified. See \code{\link[=imputation_rule]{imputation_rule()}}
 for more details on imputation.}
 
-\item{avalcat_var}{(\code{character})\cr if \code{imp_rule} is not \code{NULL}, name of variable that indicates whether a
+\item{avalcat_var}{(\code{string})\cr if \code{imp_rule} is not \code{NULL}, name of variable that indicates whether a
 row in the data corresponds to an analysis value in category \code{"BLQ"}, \code{"LTR"}, \code{"<PCLLOQ"}, or none of
 the above (defaults to \code{"AVALCAT1"}). Variable must be present in the data and should match the variable
 used to calculate the \code{n_blq} statistic (if included in \code{.stats}).}
@@ -67,15 +67,15 @@ unmodified default behavior. Can be negative.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
 
-\item{.aligns}{(\code{character})\cr alignment for table contents (not including labels). When \code{NULL}, \code{"center"}
-is applied. See \code{\link[formatters:list_formats]{formatters::list_valid_aligns()}} for a list of all currently supported alignments.}
+\item{.aligns}{(\code{character} or \code{NULL})\cr alignment for table contents (not including labels). When \code{NULL},
+\code{"center"} is applied. See \code{\link[formatters:list_formats]{formatters::list_valid_aligns()}} for a list of all currently supported alignments.}
 }
 \value{
 A layout object suitable for passing to further layouting functions, or to \code{\link[rtables:build_table]{rtables::build_table()}}.

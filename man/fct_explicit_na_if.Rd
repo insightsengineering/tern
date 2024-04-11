@@ -9,7 +9,7 @@ fct_explicit_na_if(x, condition, na_level = "<Missing>")
 \arguments{
 \item{x}{(\code{factor})\cr the original factor.}
 
-\item{condition}{(\code{logical})\cr where to insert missing values.}
+\item{condition}{(\code{logical})\cr positions at which to insert missing values.}
 
 \item{na_level}{(\code{string})\cr which level to use for missing values.}
 }

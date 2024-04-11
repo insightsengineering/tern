@@ -11,7 +11,7 @@ draw_grob(grob, newpage = TRUE, vp = NULL)
 
 \item{newpage}{(\code{flag})\cr draw on a new page.}
 
-\item{vp}{(\code{viewport})\cr a \code{\link[=viewport]{viewport()}} object (or \code{NULL}).}
+\item{vp}{(\code{viewport} or \code{NULL})\cr a \code{\link[=viewport]{viewport()}} object (or \code{NULL}).}
 }
 \value{
 A \code{grob}.

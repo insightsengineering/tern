@@ -14,10 +14,10 @@ h_worsen_counter(df, id, .var, baseline_var, direction_var)
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{baseline_var}{(\code{string})\cr baseline lab grade variable.}
+\item{baseline_var}{(\code{string})\cr name of the baseline lab grade variable.}
 
-\item{direction_var}{(\code{string})\cr direction variable specifying the direction of the shift table of interest.
-Only lab records flagged by \code{L}, \code{H} or \code{B} are included in the shift table.
+\item{direction_var}{(\code{string})\cr name of the direction variable specifying the direction of the shift table of
+interest. Only lab records flagged by \code{L}, \code{H} or \code{B} are included in the shift table.
 \itemize{
 \item \code{L}: low direction only
 \item \code{H}: high direction only

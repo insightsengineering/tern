@@ -89,16 +89,16 @@ a_summary(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{var_labels}{(\code{character})\cr character for label.}
+\item{var_labels}{(\code{character})\cr variable labels.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{arguments passed to \code{s_summary()}.}
@@ -107,8 +107,8 @@ underneath analyses, which is not allowed.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
 
 \item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
 defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
@@ -122,7 +122,7 @@ information on the \code{"auto"} setting.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Each element of the vector
 should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
 for that statistic's row label.}
 
@@ -135,10 +135,10 @@ for that statistic's row label.}
 \item \code{N_col}: total number of values in this column across rows.
 }}
 
-\item{.N_row}{(\code{integer})\cr row-wise N (row group count) for the group of observations being analyzed
+\item{.N_row}{(\code{integer(1)})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
 
-\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
@@ -148,10 +148,10 @@ by a statistics function.}
 the helper function \code{\link[=control_analyze_vars]{control_analyze_vars()}}. Some possible parameter options are:
 \itemize{
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for mean and median.
-\item \code{quantiles} (\code{numeric})\cr vector of length two to specify the quantiles.
-\item \code{quantile_type} (\code{numeric})\cr between 1 and 9 selecting quantile algorithms to be used.
+\item \code{quantiles} (\code{numeric(2)})\cr vector of length two to specify the quantiles.
+\item \code{quantile_type} (\code{numeric(1)})\cr between 1 and 9 selecting quantile algorithms to be used.
 See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
-\item \code{test_mean} (\code{numeric})\cr value to test against the mean under the null hypothesis when calculating p-value.
+\item \code{test_mean} (\code{numeric(1)})\cr value to test against the mean under the null hypothesis when calculating p-value.
 }}
 
 \item{verbose}{(\code{flag})\cr defaults to \code{TRUE}, which prints out warnings and messages. It is mainly used

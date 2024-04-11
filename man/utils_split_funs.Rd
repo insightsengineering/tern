@@ -14,7 +14,7 @@ level_order(order)
 \item{position}{(\code{string} or \code{integer})\cr position to use for the reference group facet. Can be \code{"first"},
 \code{"last"}, or a specific position.}
 
-\item{order}{(\code{character} or \code{integer})\cr vector of ordering indices for the split facets.}
+\item{order}{(\code{character} or \code{numeric})\cr vector of ordering indices for the split facets.}
 }
 \value{
 \itemize{

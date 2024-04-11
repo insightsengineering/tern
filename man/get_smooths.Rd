@@ -9,13 +9,13 @@ get_smooths(df, x, y, groups = NULL, level = 0.95)
 \arguments{
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{x}{(\code{character})\cr value with x column name.}
+\item{x}{(\code{string})\cr x column name.}
 
-\item{y}{(\code{character})\cr value with y column name.}
+\item{y}{(\code{string})\cr y column name.}
 
-\item{groups}{(\code{character})\cr vector with optional grouping variables names.}
+\item{groups}{(\code{character} or \code{NULL})\cr vector with optional grouping variables names.}
 
-\item{level}{(\code{numeric})\cr level of confidence interval to use (0.95 by default).}
+\item{level}{(\code{proportion})\cr level of confidence interval to use (0.95 by default).}
 }
 \value{
 A \code{data.frame} with original \code{x}, smoothed \code{y}, \code{ylow}, and \code{yhigh}, and

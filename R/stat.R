@@ -6,7 +6,7 @@
 #' geometric mean. It can be used as a `ggplot` helper function for plotting.
 #'
 #' @inheritParams argument_convention
-#' @param n_min (`number`)\cr a minimum number of non-missing `x` to estimate the confidence interval for mean.
+#' @param n_min (`numeric(1)`)\cr a minimum number of non-missing `x` to estimate the confidence interval for mean.
 #' @param gg_helper (`flag`)\cr whether output should be aligned for use with `ggplot`s.
 #' @param geom_mean (`flag`)\cr whether the geometric mean should be calculated.
 #'
@@ -141,8 +141,8 @@ stat_median_ci <- function(x,
 #' Convenient function for calculating the two-sided p-value of the mean.
 #'
 #' @inheritParams argument_convention
-#' @param n_min (`numeric`)\cr a minimum number of non-missing `x` to estimate the p-value of the mean.
-#' @param test_mean (`numeric`)\cr mean value to test under the null hypothesis.
+#' @param n_min (`numeric(1)`)\cr a minimum number of non-missing `x` to estimate the p-value of the mean.
+#' @param test_mean (`numeric(1)`)\cr mean value to test under the null hypothesis.
 #'
 #' @return A p-value.
 #'
@@ -186,8 +186,8 @@ stat_mean_pval <- function(x,
 #' @inheritParams argument_convention
 #' @param x (`list` of `integer`)\cr list of number of occurrences in arm X (reference group).
 #' @param y (`list` of `integer`)\cr list of number of occurrences in arm Y. Must be of equal length to `x`.
-#' @param N_x (`numeric`)\cr total number of records in arm X.
-#' @param N_y (`numeric`)\cr total number of records in arm Y.
+#' @param N_x (`numeric(1)`)\cr total number of records in arm X.
+#' @param N_y (`numeric(1)`)\cr total number of records in arm Y.
 #' @param list_names (`character`)\cr names of each variable/level corresponding to pair of proportions in
 #'   `x` and `y`. Must be of equal length to `x` and `y`.
 #' @param pct (`flag`)\cr whether output should be returned as percentages. Defaults to `TRUE`.

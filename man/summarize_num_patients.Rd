@@ -60,7 +60,7 @@ s_num_patients_content(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
@@ -74,8 +74,8 @@ Defaults to \code{TRUE}.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("summarize_num_patients")}
@@ -99,11 +99,11 @@ See \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} for details on risk diff
 
 \item{x}{(\code{character} or \code{factor})\cr vector of patient IDs.}
 
-\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+\item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
 
-\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}

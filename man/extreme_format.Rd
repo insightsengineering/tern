@@ -11,9 +11,9 @@ h_get_format_threshold(digits = 2L)
 h_format_threshold(x, digits = 2L)
 }
 \arguments{
-\item{digits}{(\code{integer})\cr number of decimal places to display.}
+\item{digits}{(\code{integer(1)})\cr number of decimal places to display.}
 
-\item{x}{(\code{number})\cr value to format.}
+\item{x}{(\code{numeric(1)})\cr value to format.}
 }
 \value{
 \itemize{

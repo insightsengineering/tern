@@ -7,7 +7,7 @@
 month2day(x)
 }
 \arguments{
-\item{x}{(\code{numeric})\cr time in months.}
+\item{x}{(\code{numeric(1)})\cr time in months.}
 }
 \value{
 A \code{numeric} vector with the time in days.

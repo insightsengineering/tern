@@ -56,11 +56,11 @@ a_glm_count(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{variables}{(named \code{list} of \code{string}s)\cr list of additional analysis variables, with
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables, with
 expected elements:
 \itemize{
 \item \code{arm} (\code{string})\cr group variable, for which the covariate adjusted means of multiple
@@ -74,26 +74,26 @@ reference group.
 \item{distribution}{(\code{character})\cr a character value specifying the distribution
 used in the regression (Poisson, Quasi-Poisson, negative binomial).}
 
-\item{conf_level}{(\code{numeric})\cr value used to derive the confidence interval for the rate.}
+\item{conf_level}{(\code{proportion})\cr value used to derive the confidence interval for the rate.}
 
 \item{weights}{(\code{character})\cr a character vector specifying weights used
 in averaging predictions. Number of weights must equal the number of levels included in the covariates.
 Weights option passed to \code{\link[emmeans:emmeans]{emmeans::emmeans()}}.}
 
-\item{var_labels}{(\code{character})\cr character for label.}
+\item{var_labels}{(\code{character})\cr variable labels.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("summarize_glm_count")}
 to see available statistics for this function.}

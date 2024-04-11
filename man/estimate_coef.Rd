@@ -16,14 +16,14 @@ estimate_coef(
 )
 }
 \arguments{
-\item{variable, given}{(\code{vector} of \code{character})\cr names of two variables in interaction. We seek the estimation of
+\item{variable, given}{(\code{character(2)})\cr names of the two variables in the interaction. We seek the estimation of
 the levels of \code{variable} given the levels of \code{given}.}
 
-\item{lvl_var, lvl_given}{(\code{vector} of \code{character})\cr corresponding levels given by \code{levels}.}
+\item{lvl_var, lvl_given}{(\code{character})\cr corresponding levels given by \code{\link[=levels]{levels()}}.}
 
-\item{coef}{(\code{vector} of \code{numeric})\cr vector of estimated coefficients.}
+\item{coef}{(\code{numeric})\cr vector of estimated coefficients.}
 
-\item{mmat}{(named \code{vector} of \code{numeric}) a vector filled with \code{0}s used as a template to obtain the design matrix.}
+\item{mmat}{(named \code{numeric}) a vector filled with \code{0}s used as a template to obtain the design matrix.}
 
 \item{vcov}{(\code{matrix})\cr variance-covariance matrix of underlying model.}
 

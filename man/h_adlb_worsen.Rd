@@ -14,12 +14,14 @@ h_adlb_worsen(
 \arguments{
 \item{adlb}{(\code{data.frame})\cr ADLB data frame.}
 
-\item{worst_flag_low}{(named \code{vector})\cr worst low post-baseline lab grade flag variable.}
+\item{worst_flag_low}{(named \code{vector})\cr worst low post-baseline lab grade flag variable. See how this is
+implemented in the following examples.}
 
-\item{worst_flag_high}{(named \code{vector})\cr worst high post-baseline lab grade flag variable.}
+\item{worst_flag_high}{(named \code{vector})\cr worst high post-baseline lab grade flag variable. See how this is
+implemented in the following examples.}
 
-\item{direction_var}{(\code{string})\cr direction variable specifying the direction of the shift table of interest.
-Only lab records flagged by \code{L}, \code{H} or \code{B} are included in the shift table.
+\item{direction_var}{(\code{string})\cr name of the direction variable specifying the direction of the shift table of
+interest. Only lab records flagged by \code{L}, \code{H} or \code{B} are included in the shift table.
 \itemize{
 \item \code{L}: low direction only
 \item \code{H}: high direction only

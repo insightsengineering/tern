@@ -7,7 +7,7 @@
 decorate_grob_set(grobs, ...)
 }
 \arguments{
-\item{grobs}{(\code{list} of \code{grob}s)\cr a list of grid grobs.}
+\item{grobs}{(\code{list} of \code{grob})\cr a list of grid grobs.}
 
 \item{...}{arguments passed on to \code{\link[=decorate_grob]{decorate_grob()}}.}
 }

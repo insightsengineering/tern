@@ -19,9 +19,9 @@ stat_propdiff_ci(
 
 \item{y}{(\code{list} of \code{integer})\cr list of number of occurrences in arm Y. Must be of equal length to \code{x}.}
 
-\item{N_x}{(\code{numeric})\cr total number of records in arm X.}
+\item{N_x}{(\code{numeric(1)})\cr total number of records in arm X.}
 
-\item{N_y}{(\code{numeric})\cr total number of records in arm Y.}
+\item{N_y}{(\code{numeric(1)})\cr total number of records in arm Y.}
 
 \item{list_names}{(\code{character})\cr names of each variable/level corresponding to pair of proportions in
 \code{x} and \code{y}. Must be of equal length to \code{x} and \code{y}.}

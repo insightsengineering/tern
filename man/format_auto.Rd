@@ -7,8 +7,8 @@
 format_auto(dt_var, x_stat)
 }
 \arguments{
-\item{dt_var}{(\code{numeric})\cr all the data the statistics was created upon. Used only to find
-significant digits. In \link{analyze_vars} this comes from \code{.df_row} (see
+\item{dt_var}{(\code{numeric})\cr variable data the statistics were calculated from. Used only to
+find significant digits. In \link{analyze_vars} this comes from \code{.df_row} (see
 \link[rtables:additional_fun_params]{rtables::additional_fun_params}), and it is the row data after the above row splits. No
 column split is considered.}
 

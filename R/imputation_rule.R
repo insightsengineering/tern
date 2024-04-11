@@ -3,14 +3,14 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams argument_convention
-#' @param x_stats (`named list`)\cr a named list of statistics, typically the results of [s_summary()].
-#' @param stat (`character`)\cr statistic to return the value/NA level of according to the imputation
+#' @param x_stats (named `list`)\cr a named list of statistics, typically the results of [s_summary()].
+#' @param stat (`string`)\cr statistic to return the value/NA level of according to the imputation
 #'   rule applied.
-#' @param imp_rule (`character`)\cr imputation rule setting. Set to `"1/3"` to implement 1/3 imputation
+#' @param imp_rule (`string`)\cr imputation rule setting. Set to `"1/3"` to implement 1/3 imputation
 #'   rule or `"1/2"` to implement 1/2 imputation rule.
 #' @param post (`flag`)\cr whether the data corresponds to a post-dose time-point (defaults to `FALSE`).
 #'   This parameter is only used when `imp_rule` is set to `"1/3"`.
-#' @param avalcat_var (`character`)\cr name of variable that indicates whether a row in `df` corresponds
+#' @param avalcat_var (`string`)\cr name of variable that indicates whether a row in `df` corresponds
 #'   to an analysis value in category `"BLQ"`, `"LTR"`, `"<PCLLOQ"`, or none of the above
 #'   (defaults to `"AVALCAT1"`). Variable `avalcat_var` must be present in `df`.
 #'

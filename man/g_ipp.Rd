@@ -40,7 +40,7 @@ g_ipp(
 
 \item{subtitle}{(\code{string})\cr subtitle for plot.}
 
-\item{caption}{(\code{character} scalar)\cr optional caption below the plot.}
+\item{caption}{(\code{string})\cr optional caption below the plot.}
 
 \item{add_baseline_hline}{(\code{flag})\cr adds horizontal line at baseline y-value on
 plot when \code{TRUE}.}
@@ -51,11 +51,11 @@ Ignored when \code{add_baseline_hline} is \code{FALSE}.}
 \item{ggtheme}{(\code{theme})\cr optional graphical theme function as provided
 by \code{ggplot2} to control outlook of plot. Use \code{ggplot2::theme()} to tweak the display.}
 
-\item{plotting_choices}{(\code{character})\cr specifies options for displaying
-plots. Must be one of "all_in_one", "split_by_max_obs", "separate_by_obs".}
+\item{plotting_choices}{(\code{string})\cr specifies options for displaying
+plots. Must be one of \code{"all_in_one"}, \code{"split_by_max_obs"}, or \code{"separate_by_obs"}.}
 
-\item{max_obs_per_plot}{(\code{count})\cr number of observations to be plotted on one
-plot. Ignored when \code{plotting_choices} is not "separate_by_obs".}
+\item{max_obs_per_plot}{(\code{integer(1)})\cr number of observations to be plotted on one
+plot. Ignored if \code{plotting_choices} is not \code{"separate_by_obs"}.}
 
 \item{col}{(\code{character})\cr line colors.}
 }

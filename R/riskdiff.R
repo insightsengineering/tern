@@ -7,7 +7,7 @@
 #' should be used as `split_fun` in calls to [rtables::split_cols_by()], followed by setting argument
 #' `riskdiff` to `TRUE` in all following analyze function calls.
 #'
-#' @param arm_x (`character`)\cr name of reference arm to use in risk difference calculations.
+#' @param arm_x (`string`)\cr name of reference arm to use in risk difference calculations.
 #' @param arm_y (`character`)\cr names of one or more arms to compare to reference arm in risk difference
 #'   calculations. A new column will be added for each value of `arm_y`.
 #' @param col_label (`character`)\cr labels to use when rendering the risk difference column within the table.

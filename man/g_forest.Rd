@@ -29,24 +29,25 @@ g_forest(
 )
 }
 \arguments{
-\item{tbl}{(\code{rtable})\cr table with at least one column with a single value and one column with 2 values.}
+\item{tbl}{(\code{VTableTree})\cr \code{rtables} table with at least one column with a single value and one column with 2
+values.}
 
-\item{col_x}{(\code{integer})\cr column index with estimator. By default tries to get this from
+\item{col_x}{(\code{integer(1)} or \code{NULL})\cr column index with estimator. By default tries to get this from
 \code{tbl} attribute \code{col_x}, otherwise needs to be manually specified. If \code{NULL}, points will be excluded
 from forest plot.}
 
-\item{col_ci}{(\code{integer})\cr column index with confidence intervals. By default tries to get this from
+\item{col_ci}{(\code{integer(1)} or \code{NULL})\cr column index with confidence intervals. By default tries to get this from
 \code{tbl} attribute \code{col_ci}, otherwise needs to be manually specified. If \code{NULL}, lines will be excluded
 from forest plot.}
 
-\item{vline}{(\code{numeric})\cr x coordinate for vertical line, if \code{NULL} then the line is omitted.}
+\item{vline}{(\code{numeric(1)} or \code{NULL})\cr x coordinate for vertical line, if \code{NULL} then the line is omitted.}
 
-\item{forest_header}{(\code{character}, length 2)\cr text displayed to the left and right of \code{vline}, respectively.
+\item{forest_header}{(\code{character(2)})\cr text displayed to the left and right of \code{vline}, respectively.
 If \code{vline = NULL} then \code{forest_header} is not printed. By default tries to get this from \code{tbl} attribute
 \code{forest_header}. If \code{NULL}, defaults will be extracted from the table if possible, and set to
 \code{"Comparison\\nBetter"} and \code{"Treatment\\nBetter"} if not.}
 
-\item{xlim}{(\code{numeric})\cr limits for x axis.}
+\item{xlim}{(\code{numeric(2)})\cr limits for x axis.}
 
 \item{logx}{(\code{flag})\cr show the x-values on logarithm scale.}
 
@@ -54,7 +55,7 @@ If \code{vline = NULL} then \code{forest_header} is not printed. By default trie
 
 \item{width_row_names}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{lbl_col_padding} argument instead.}
 
-\item{width_columns}{(\code{vector} of \code{numeric})\cr a vector of column widths. Each element's position in
+\item{width_columns}{(\code{numeric})\cr a vector of column widths. Each element's position in
 \code{colwidths} corresponds to the column of \code{tbl} in the same position. If \code{NULL}, column widths are calculated
 according to maximum number of characters per column.}
 
@@ -67,9 +68,9 @@ the width of the first column becomes \code{colwidths[1] + lbl_col_padding}. Def
 \item{rel_width_forest}{(\code{proportion})\cr proportion of total width to allocate to the forest plot. Relative
 width of table is then \code{1 - rel_width_forest}. If \code{as_list = TRUE}, this parameter is ignored.}
 
-\item{font_size}{(\code{numeric})\cr font size.}
+\item{font_size}{(\code{numeric(1)})\cr font size.}
 
-\item{col_symbol_size}{(\code{integer})\cr column index from \code{tbl} containing data to be used
+\item{col_symbol_size}{(\code{numeric} or \code{NULL})\cr column index from \code{tbl} containing data to be used
 to determine relative size for estimator plot symbol. Typically, the symbol size is proportional
 to the sample size used to calculate the estimator. If \code{NULL}, the same symbol size is used for all subgroups.
 By default tries to get this from \code{tbl} attribute \code{col_symbol_size}, otherwise needs to be manually specified.}

@@ -6,20 +6,20 @@
 #'
 #' @inheritParams argument_convention
 #' @inheritParams s_surv_time
-#' @param time_point (`number`)\cr survival time point of interest.
+#' @param time_point (`numeric(1)`)\cr survival time point of interest.
 #' @param control (`list`)\cr parameters for comparison details, specified by using the helper function
 #'   [control_surv_timepoint()]. Some possible parameter options are:
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for survival rate.
 #'   * `conf_type` (`string`)\cr confidence interval type. Options are "plain" (default), "log", "log-log",
 #'     see more in [survival::survfit()]. Note option "none" is no longer supported.
-#'   * `time_point` (`number`)\cr survival time point of interest.
+#'   * `time_point` (`numeric(1)`)\cr survival time point of interest.
 #' @param method (`string`)\cr `surv` (survival estimations),
 #'   `surv_diff` (difference in survival with the control), or `both`.
 #' @param table_names_suffix (`string`)\cr optional suffix for the `table_names` used for the `rtables` to
 #'   avoid warnings from duplicate table names.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("surv_timepoint")`
 #'   to see available statistics for this function.
-#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Each element of the vector
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.
 #'

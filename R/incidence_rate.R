@@ -14,7 +14,7 @@
 #'   * `input_time_unit` (`string`)\cr `day`, `week`, `month`, or `year` (default)
 #'     indicating time unit for data input.
 #'   * `num_pt_year` (`numeric`)\cr time unit for desired output (in person-years).
-#' @param n_events (`integer`)\cr number of events observed.
+#' @param n_events (`integer(1)`)\cr number of events observed.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_incidence_rate")`
 #'   to see available statistics for this function.
 #'
@@ -180,9 +180,9 @@ estimate_incidence_rate <- function(lyt,
 #'   * `input_time_unit`: (`string`)\cr `day`, `week`, `month`, or `year` (default)
 #'     indicating time unit for data input.
 #'   * `num_pt_year`: (`numeric`)\cr time unit for desired output (in person-years).
-#' @param person_years (`numeric`)\cr total person-years at risk.
-#' @param alpha (`numeric`)\cr two-sided alpha-level for confidence interval.
-#' @param n_events (`integer`)\cr number of events observed.
+#' @param person_years (`numeric(1)`)\cr total person-years at risk.
+#' @param alpha (`numeric(1)`)\cr two-sided alpha-level for confidence interval.
+#' @param n_events (`integer(1)`)\cr number of events observed.
 #'
 #' @return Estimated incidence rate, `rate`, and associated confidence interval, `rate_ci`.
 #'

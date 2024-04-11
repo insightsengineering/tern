@@ -7,9 +7,9 @@
 format_count_fraction_fixed_dp(x, ...)
 }
 \arguments{
-\item{x}{(\code{integer})\cr vector of length 2, count and fraction.}
+\item{x}{(\code{numeric(2)})\cr vector of length 2 with count and fraction, respectively.}
 
-\item{...}{required for \code{rtables} interface.}
+\item{...}{not used. Required for \code{rtables} interface.}
 }
 \value{
 A string in the format \verb{count (fraction \%)}. If \code{count} is 0, the format is \code{0}.

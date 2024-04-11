@@ -24,7 +24,7 @@ levels that belong to it in the character vectors that are elements of the list.
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{method}{(\code{string})\cr specifies the test used to calculate the p-value for the difference between
+\item{method}{(\code{string} or \code{NULL})\cr specifies the test used to calculate the p-value for the difference between
 two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL} so no test is performed.}
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}

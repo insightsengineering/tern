@@ -39,23 +39,23 @@ a_count_abnormal_by_baseline(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
-\item{abnormal}{(\code{character})\cr identifying the abnormal range level(s) in \code{.var}.}
+\item{abnormal}{(\code{character})\cr values identifying the abnormal range level(s) in \code{.var}.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{na_str}{(\code{string})\cr the explicit \code{na_level} argument you used in the pre-processing steps (maybe with
 \code{\link[=df_explicit_na]{df_explicit_na()}}). The default is \code{"<Missing>"}.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("abnormal_by_baseline")}
 to see available statistics for this function.}

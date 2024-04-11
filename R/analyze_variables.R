@@ -6,11 +6,11 @@
 #' details for [s_summary()]. This function family is mainly used by [analyze_vars()].
 #'
 #' @inheritParams argument_convention
-#' @param quantiles (`numeric`)\cr vector of length two to specify the quantiles to calculate.
-#' @param quantile_type (`numeric`)\cr number between 1 and 9 selecting quantile algorithms to be used.
+#' @param quantiles (`numeric(2)`)\cr vector of length two to specify the quantiles to calculate.
+#' @param quantile_type (`numeric(1)`)\cr number between 1 and 9 selecting quantile algorithms to be used.
 #'   Default is set to 2 as this matches the default quantile algorithm in SAS `proc univariate` set by `QNTLDEF=5`.
 #'   This differs from R's default. See more about `type` in [stats::quantile()].
-#' @param test_mean (`numeric`)\cr number to test against the mean under the null hypothesis when calculating p-value.
+#' @param test_mean (`numeric(1)`)\cr number to test against the mean under the null hypothesis when calculating p-value.
 #'
 #' @return A list of components with the same names as the arguments.
 #'
@@ -74,10 +74,10 @@ s_summary <- function(x,
 #' @param control (`list`)\cr parameters for descriptive statistics details, specified by using
 #'   the helper function [control_analyze_vars()]. Some possible parameter options are:
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for mean and median.
-#'   * `quantiles` (`numeric`)\cr vector of length two to specify the quantiles.
-#'   * `quantile_type` (`numeric`)\cr between 1 and 9 selecting quantile algorithms to be used.
+#'   * `quantiles` (`numeric(2)`)\cr vector of length two to specify the quantiles.
+#'   * `quantile_type` (`numeric(1)`)\cr between 1 and 9 selecting quantile algorithms to be used.
 #'     See more about `type` in [stats::quantile()].
-#'   * `test_mean` (`numeric`)\cr value to test against the mean under the null hypothesis when calculating p-value.
+#'   * `test_mean` (`numeric(1)`)\cr value to test against the mean under the null hypothesis when calculating p-value.
 #'
 #' @return
 #'   * If `x` is of class `numeric`, returns a `list` with the following named `numeric` items:
@@ -537,7 +537,7 @@ a_summary <- function(x,
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @param ... arguments passed to `s_summary()`.
-#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Each element of the vector
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.
 #'

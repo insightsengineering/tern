@@ -16,11 +16,11 @@ h_grob_coxph(
 \arguments{
 \item{...}{arguments to pass to \code{\link[=h_tbl_coxph_pairwise]{h_tbl_coxph_pairwise()}}.}
 
-\item{x}{(\code{numeric})\cr a value between 0 and 1 specifying x-location.}
+\item{x}{(\code{proportion})\cr a value between 0 and 1 specifying x-location.}
 
-\item{y}{(\code{numeric})\cr a value between 0 and 1 specifying y-location.}
+\item{y}{(\code{proportion})\cr a value between 0 and 1 specifying y-location.}
 
-\item{width}{(\code{unit})\cr width (as a unit) to use when printing the grob.}
+\item{width}{(\code{grid::unit})\cr width (as a unit) to use when printing the grob.}
 
 \item{ttheme}{(\code{list})\cr see \code{\link[gridExtra:tableGrob]{gridExtra::ttheme_default()}}.}
 }

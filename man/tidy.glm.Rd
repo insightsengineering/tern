@@ -11,7 +11,7 @@
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{at}{(\code{NULL} or \code{numeric})\cr optional values for the interaction variable. Otherwise the median is used.}
+\item{at}{(\code{numeric} or \code{NULL})\cr optional values for the interaction variable. Otherwise the median is used.}
 
 \item{...}{additional arguments for the lower level functions.}
 }

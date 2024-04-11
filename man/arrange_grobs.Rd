@@ -19,7 +19,7 @@ arrange_grobs(
 \arguments{
 \item{...}{grobs.}
 
-\item{grobs}{(\code{list} of \code{grob}s)\cr a list of grobs.}
+\item{grobs}{(\code{list} of \code{grob})\cr a list of grobs.}
 
 \item{ncol}{(\code{integer(1)})\cr number of columns in layout.}
 
@@ -29,7 +29,7 @@ arrange_grobs(
 
 \item{padding_wt}{(\code{grid::unit})\cr unit of length 1, horizontal space between each grob.}
 
-\item{vp}{(\code{viewport})\cr a \code{\link[=viewport]{viewport()}} object (or \code{NULL}).}
+\item{vp}{(\code{viewport} or \code{NULL})\cr a \code{\link[=viewport]{viewport()}} object (or \code{NULL}).}
 
 \item{gp}{(\code{gpar})\cr a \code{\link[=gpar]{gpar()}} object.}
 

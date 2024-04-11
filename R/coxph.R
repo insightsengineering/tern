@@ -5,7 +5,7 @@
 #' The special term `univariate` indicate that the model should be fitted individually for
 #' every variable included in univariate.
 #'
-#' @param x (`vector` of `character`)\cr a vector of variable names separated by commas.
+#' @param x (`character`)\cr a vector of variable names separated by commas.
 #'
 #' @return When used within a model formula, produces univariate models for each variable provided.
 #'
@@ -34,11 +34,11 @@ rht <- function(x) {
 #' This function estimates the hazard ratios between arms when an interaction variable is given with
 #' specific values.
 #'
-#' @param variable,given (`vector` of `character`)\cr names of two variables in interaction. We seek the estimation of
+#' @param variable,given (`character(2)`)\cr names of the two variables in the interaction. We seek the estimation of
 #'   the levels of `variable` given the levels of `given`.
-#' @param lvl_var,lvl_given (`vector` of `character`)\cr corresponding levels given by `levels`.
-#' @param mmat (named `vector` of `numeric`) a vector filled with `0`s used as a template to obtain the design matrix.
-#' @param coef (`vector` of `numeric`)\cr vector of estimated coefficients.
+#' @param lvl_var,lvl_given (`character`)\cr corresponding levels given by [levels()].
+#' @param mmat (named `numeric`) a vector filled with `0`s used as a template to obtain the design matrix.
+#' @param coef (`numeric`)\cr vector of estimated coefficients.
 #' @param vcov (`matrix`)\cr variance-covariance matrix of underlying model.
 #' @param conf_level (`proportion`)\cr confidence level of estimate intervals.
 #'
@@ -304,7 +304,7 @@ check_increments <- function(increments, covariates) {
 #'   including covariates.
 #' @param data (`data.frame`)\cr a data frame which includes the variable in formula and covariates.
 #' @param conf_level (`proportion`)\cr the confidence level for the hazard ratio interval estimations. Default is 0.95.
-#' @param pval_method (`character`)\cr the method used for the estimation of p-values, should be one of
+#' @param pval_method (`string`)\cr the method used for the estimation of p-values, should be one of
 #'   `"wald"` (default) or `"likelihood"`.
 #' @param ... optional parameters passed to [survival::coxph()]. Can include `ties`, a character string specifying the
 #'   method for tie handling, one of `exact` (default), `efron`, `breslow`.

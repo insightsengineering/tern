@@ -31,16 +31,16 @@ desctools_binomci(
 \arguments{
 \item{conf.level}{(\code{proportion})\cr confidence level, defaults to 0.95.}
 
-\item{sides}{(\code{character})\cr side of the confidence interval to compute. Must be one of \code{"two-sided"} (default),
+\item{sides}{(\code{string})\cr side of the confidence interval to compute. Must be one of \code{"two-sided"} (default),
 \code{"left"}, or \code{"right"}.}
 
-\item{method}{(\code{character})\cr method to use. Can be one out of: \code{"wald"}, \code{"wilson"}, \code{"wilsoncc"},
+\item{method}{(\code{string})\cr method to use. Can be one out of: \code{"wald"}, \code{"wilson"}, \code{"wilsoncc"},
 \code{"agresti-coull"}, \code{"jeffreys"}, \code{"modified wilson"}, \code{"modified jeffreys"}, \code{"clopper-pearson"}, \code{"arcsine"},
 \code{"logit"}, \code{"witting"}, \code{"pratt"}, \code{"midp"}, \code{"lik"}, and \code{"blaker"}.}
 
-\item{x}{(\code{count})\cr number of successes.}
+\item{x}{(\code{integer(1)})\cr number of successes.}
 
-\item{n}{(\code{count})\cr number of trials.}
+\item{n}{(\code{integer(1)})\cr number of trials.}
 }
 \value{
 A \code{matrix} of 3 values:

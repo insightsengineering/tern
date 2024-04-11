@@ -7,13 +7,13 @@
 append_varlabels(lyt, df, vars, indent = 0L)
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{vars}{(\code{character})\cr variable names of which the labels are to be looked up in \code{df}.}
 
-\item{indent}{(\code{integer})\cr non-negative number of nested indent space, default to 0L which means no indent.
+\item{indent}{(\code{integer(1)})\cr non-negative number of nested indent space, default to 0L which means no indent.
 1L means two spaces indent, 2L means four spaces indent and so on.}
 }
 \value{

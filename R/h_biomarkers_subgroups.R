@@ -8,7 +8,7 @@
 #' @inheritParams argument_convention
 #' @param df (`data.frame`)\cr results for a single biomarker.
 #' @param afuns (named `list` of `function`)\cr analysis functions.
-#' @param colvars (`list` with `vars` and `labels`)\cr variables to tabulate and their labels.
+#' @param colvars (named `list`)\cr named list with elements `vars` (variables to tabulate) and `labels` (their labels).
 #'
 #' @return An `rtables` table object with statistics in columns.
 #'

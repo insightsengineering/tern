@@ -676,8 +676,8 @@ h_km_layout <- function(data, g_el, title, footnotes, annot_at_risk = TRUE, anno
 #' @inheritParams h_ggkm
 #' @param annot_tbl (`data.frame`)\cr annotation as prepared by [survival::summary.survfit()] which
 #'   includes the number of patients at risk at given time points.
-#' @param xlim (`numeric`)\cr the maximum value on the x-axis (used to
-#'   ensure the at risk table aligns with the KM graph).
+#' @param xlim (`numeric(1)`)\cr the maximum value on the x-axis (used to ensure the at risk table aligns with the KM
+#'   graph).
 #' @param title (`flag`)\cr whether the "Patients at Risk" title should be added above the `annot_at_risk`
 #'   table. Has no effect if `annot_at_risk` is `FALSE`. Defaults to `TRUE`.
 #'
@@ -863,9 +863,9 @@ h_grob_tbl_at_risk <- function(data, annot_tbl, xlim, title = TRUE) {
 #' @inheritParams g_km
 #' @inheritParams h_data_plot
 #' @param ttheme (`list`)\cr see [gridExtra::ttheme_default()].
-#' @param x (`numeric`)\cr a value between 0 and 1 specifying x-location.
-#' @param y (`numeric`)\cr a value between 0 and 1 specifying y-location.
-#' @param width (`unit`)\cr width (as a unit) to use when printing the grob.
+#' @param x (`proportion`)\cr a value between 0 and 1 specifying x-location.
+#' @param y (`proportion`)\cr a value between 0 and 1 specifying y-location.
+#' @param width (`grid::unit`)\cr width (as a unit) to use when printing the grob.
 #'
 #' @return A `grob` of a table containing statistics `N`, `Median`, and `XX% CI` (`XX` taken from `fit_km`).
 #'
@@ -1013,9 +1013,9 @@ h_grob_y_annot <- function(ylab, yaxis) {
 #'
 #' @inheritParams h_grob_median_surv
 #' @param ... arguments to pass to [h_tbl_coxph_pairwise()].
-#' @param x (`numeric`)\cr a value between 0 and 1 specifying x-location.
-#' @param y (`numeric`)\cr a value between 0 and 1 specifying y-location.
-#' @param width (`unit`)\cr width (as a unit) to use when printing the grob.
+#' @param x (`proportion`)\cr a value between 0 and 1 specifying x-location.
+#' @param y (`proportion`)\cr a value between 0 and 1 specifying y-location.
+#' @param width (`grid::unit`)\cr width (as a unit) to use when printing the grob.
 #'
 #' @return A `grob` of a table containing statistics `HR`, `XX% CI` (`XX` taken from `control_coxph_pw`),
 #'   and `p-value (log-rank)`.

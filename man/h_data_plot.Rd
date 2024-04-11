@@ -11,7 +11,7 @@ h_data_plot(fit_km, armval = "All", max_time = NULL)
 
 \item{armval}{(\code{string})\cr used as strata name when treatment arm variable only has one level. Default is \code{"All"}.}
 
-\item{max_time}{(\code{numeric})\cr maximum value to show on x-axis. Only data values less than or up to
+\item{max_time}{(\code{numeric(1)})\cr maximum value to show on x-axis. Only data values less than or up to
 this threshold value will be plotted (defaults to \code{NULL}).}
 }
 \value{

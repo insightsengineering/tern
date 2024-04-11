@@ -7,7 +7,7 @@
 format_fraction_fixed_dp(x, ...)
 }
 \arguments{
-\item{x}{(named \code{vector} of \code{integer})\cr vector with elements \code{num} and \code{denom}.}
+\item{x}{(named \code{integer})\cr vector with elements \code{num} and \code{denom}.}
 
 \item{...}{not used. Required for \code{rtables} interface.}
 }

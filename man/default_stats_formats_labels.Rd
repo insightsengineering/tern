@@ -67,7 +67,7 @@ method group.}
 \item{formats_in}{(named \code{vector})\cr inserted formats to replace defaults. It can be a
 character vector from \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or a custom format function.}
 
-\item{labels_in}{(named \code{vector} of \code{character})\cr inserted labels to replace defaults.}
+\item{labels_in}{(named \code{character})\cr inserted labels to replace defaults.}
 
 \item{row_nms}{(\code{character})\cr row names. Levels of a \code{factor} or \code{character} variable, each
 of which the statistics in \code{.stats} will be calculated for. If this parameter is set, these

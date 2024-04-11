@@ -7,7 +7,7 @@
 ungroup_stats(x, .formats, .labels, .indent_mods)
 }
 \arguments{
-\item{x}{(\verb{named list} of \code{numeric})\cr list of numeric statistics containing the statistics to ungroup.}
+\item{x}{(named \code{list} of \code{numeric})\cr list of numeric statistics containing the statistics to ungroup.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}

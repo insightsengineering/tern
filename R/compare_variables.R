@@ -253,7 +253,7 @@ s_compare.logical <- function(x,
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @param ... arguments passed to `s_compare()`.
-#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Each element of the vector
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.
 #'

@@ -15,15 +15,15 @@ h_adlb_abnormal_by_worst_grade(
 \arguments{
 \item{adlb}{(\code{data.frame})\cr ADLB data frame.}
 
-\item{atoxgr}{(\code{character})\cr analysis toxicity grade variable. This must be a \code{factor}
+\item{atoxgr}{(\code{string})\cr name of the analysis toxicity grade variable. This must be a \code{factor}
 variable.}
 
-\item{avisit}{(\code{character})\cr analysis visit variable.}
+\item{avisit}{(\code{string})\cr name of the analysis visit variable.}
 
-\item{worst_flag_low}{(\code{character})\cr worst low lab grade flag variable. This variable is
+\item{worst_flag_low}{(\code{string})\cr name of the worst low lab grade flag variable. This variable is
 set to \code{"Y"} when indicating records of worst low lab grades.}
 
-\item{worst_flag_high}{(\code{character})\cr worst high lab grade flag variable. This variable is
+\item{worst_flag_high}{(\code{string})\cr name of the worst high lab grade flag variable. This variable is
 set to \code{"Y"} when indicating records of worst high lab grades.}
 }
 \value{

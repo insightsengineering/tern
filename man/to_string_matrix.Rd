@@ -14,7 +14,7 @@ to_string_matrix(
 )
 }
 \arguments{
-\item{x}{(\code{rtable})\cr a \code{rtables} table.}
+\item{x}{(\code{VTableTree})\cr \code{rtables} table object.}
 
 \item{widths}{(\code{numeric} or  \code{NULL})\cr Proposed widths for the columns of \code{x}. The expected
 length of this numeric vector can be retrieved with \code{ncol(x) + 1} as the column of row names

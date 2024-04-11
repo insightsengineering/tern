@@ -16,17 +16,17 @@ control_lineplot_vars(
 )
 }
 \arguments{
-\item{x}{(\code{character})\cr x variable name.}
+\item{x}{(\code{string})\cr x-variable name.}
 
-\item{y}{(\code{character})\cr y variable name.}
+\item{y}{(\code{string})\cr y-variable name.}
 
-\item{group_var}{(\code{character} or \code{NA})\cr group variable name.}
+\item{group_var}{(\code{string} or \code{NA})\cr group variable name.}
 
-\item{paramcd}{(\code{character} or \code{NA})\cr \code{paramcd} variable name.}
+\item{paramcd}{(\code{string} or \code{NA})\cr parameter code variable name.}
 
-\item{y_unit}{(\code{character} or \code{NA})\cr \code{y_unit} variable name.}
+\item{y_unit}{(\code{string} or \code{NA})\cr y-axis unit variable name.}
 
-\item{subject_var}{(\code{character} or \code{NA})\cr subject variable name.}
+\item{subject_var}{(\code{string} or \code{NA})\cr subject variable name.}
 
 \item{strata}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} use the \code{group_var} parameter instead.}
 

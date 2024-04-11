@@ -9,11 +9,11 @@ c_label_n(df, labelstr, .N_row)
 \arguments{
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+\item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
 
-\item{.N_row}{(\code{integer})\cr row-wise N (row group count) for the group of observations being analyzed
+\item{.N_row}{(\code{integer(1)})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
 }
 \value{

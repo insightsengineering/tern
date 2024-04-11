@@ -7,10 +7,10 @@
 #'
 #' @inheritParams grid::grob
 #' @param grob (`grob`)\cr a grid grob object, optionally `NULL` if only a `grob` with the decoration should be shown.
-#' @param titles (`vector` of `string`s)\cr vector elements are separated by a newline and strings are wrapped
+#' @param titles (`character`)\cr titles given as a vector of strings that are each separated by a newline and wrapped
 #'   according to the page width.
-#' @param footnotes (`vector` of `string`s)\cr same rules as for `titles`.
-#' @param page (`string`)\cr page numeration. If `NULL` then no page number is displayed.
+#' @param footnotes (`character`)\cr footnotes. Uses the same formatting rules as `titles`.
+#' @param page (`string` or `NULL`)\cr page numeration. If `NULL` then no page number is displayed.
 #' @param width_titles (`grid::unit`)\cr width of titles.
 #' @param width_footnotes (`grid::unit`)\cr width of footnotes.
 #' @param border (`flag`)\cr whether a border should be drawn around the plot or not.
@@ -401,7 +401,7 @@ drawDetails.dynamicSplitText <- function(x, recording) {
 #'
 #' Automatically updates page number.
 #'
-#' @param npages (`numeric`)\cr number of pages in total.
+#' @param npages (`numeric(1)`)\cr total number of pages.
 #' @param ... arguments passed on to [decorate_grob()].
 #'
 #' @return Closure that increments the page number.
@@ -424,7 +424,7 @@ decorate_grob_factory <- function(npages, ...) {
 #'
 #' Note that this uses the [decorate_grob_factory()] function.
 #'
-#' @param grobs (`list` of `grob`s)\cr a list of grid grobs.
+#' @param grobs (`list` of `grob`)\cr a list of grid grobs.
 #' @param ... arguments passed on to [decorate_grob()].
 #'
 #' @return A decorated grob.

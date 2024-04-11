@@ -7,7 +7,7 @@
 univariate(x)
 }
 \arguments{
-\item{x}{(\code{vector} of \code{character})\cr a vector of variable names separated by commas.}
+\item{x}{(\code{character})\cr a vector of variable names separated by commas.}
 }
 \value{
 When used within a model formula, produces univariate models for each variable provided.

@@ -7,7 +7,7 @@
 format_extreme_values(digits = 2L)
 }
 \arguments{
-\item{digits}{(\code{integer})\cr number of decimal places to display.}
+\item{digits}{(\code{integer(1)})\cr number of decimal places to display.}
 }
 \value{
 An \code{rtables} formatting function that uses threshold \code{digits} to return a formatted extreme value.

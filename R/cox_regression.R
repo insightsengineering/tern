@@ -244,8 +244,8 @@ tidy.coxreg.multivar <- function(x, # nolint
 #'
 #' Fitting functions for univariate and multivariate Cox regression models.
 #'
-#' @param variables (`list`)\cr a named list corresponds to the names of variables found in `data`, passed as a named
-#'   list and corresponding to `time`, `event`, `arm`, `strata`, and `covariates` terms. If `arm` is missing from
+#' @param variables (named `list`)\cr the names of the variables found in `data`, passed as a named list and
+#'   corresponding to the `time`, `event`, `arm`, `strata`, and `covariates` terms. If `arm` is missing from
 #'   `variables`, then only Cox model(s) including the `covariates` will be fitted and the corresponding effect
 #'   estimates will be tabulated later.
 #' @param data (`data.frame`)\cr the dataset containing the variables to fit the models.

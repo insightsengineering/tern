@@ -9,7 +9,7 @@ combine_groups(fct, ref = NULL, collapse = "/")
 \arguments{
 \item{fct}{(\code{factor})\cr the variable with levels which needs to be grouped.}
 
-\item{ref}{(\code{string})\cr the reference level(s).}
+\item{ref}{(\code{character})\cr the reference level(s).}
 
 \item{collapse}{(\code{string})\cr a character string to separate \code{fct} and \code{ref}.}
 }

@@ -17,7 +17,8 @@ h_adsl_adlb_merge_using_worst_flag(
 
 \item{adlb}{(\code{data.frame})\cr ADLB data frame.}
 
-\item{worst_flag}{(named \code{vector})\cr worst post-baseline lab flag variable.}
+\item{worst_flag}{(named \code{character})\cr worst post-baseline lab flag variable. See how this is implemented in the
+following examples.}
 
 \item{by_visit}{(\code{flag})\cr defaults to \code{FALSE} to generate worst grade per patient.
 If worst grade per patient per visit is specified for \code{worst_flag}, then

@@ -12,11 +12,11 @@ summarize_logistic(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{drop_and_remove_str}{(\code{character})\cr string to be dropped and removed.}
+\item{drop_and_remove_str}{(\code{string})\cr string to be dropped and removed.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}

@@ -25,12 +25,12 @@ decorate_grob(
 \arguments{
 \item{grob}{(\code{grob})\cr a grid grob object, optionally \code{NULL} if only a \code{grob} with the decoration should be shown.}
 
-\item{titles}{(\code{vector} of \code{string}s)\cr vector elements are separated by a newline and strings are wrapped
+\item{titles}{(\code{character})\cr titles given as a vector of strings that are each separated by a newline and wrapped
 according to the page width.}
 
-\item{footnotes}{(\code{vector} of \code{string}s)\cr same rules as for \code{titles}.}
+\item{footnotes}{(\code{character})\cr footnotes. Uses the same formatting rules as \code{titles}.}
 
-\item{page}{(\code{string})\cr page numeration. If \code{NULL} then no page number is displayed.}
+\item{page}{(\code{string} or \code{NULL})\cr page numeration. If \code{NULL} then no page number is displayed.}
 
 \item{width_titles}{(\code{grid::unit})\cr width of titles.}
 

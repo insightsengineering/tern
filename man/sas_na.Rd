@@ -7,7 +7,7 @@
 sas_na(x, empty = TRUE, whitespaces = TRUE)
 }
 \arguments{
-\item{x}{(vector of \code{factor} or \code{character})\cr values for which any missing values should be substituted.}
+\item{x}{(\code{factor} or \code{character})\cr values for which any missing values should be substituted.}
 
 \item{empty}{(\code{flag})\cr if \code{TRUE}, empty strings get replaced by \code{NA}.}
 

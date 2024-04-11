@@ -23,7 +23,7 @@ NULL
 #'   the defined event has occurred.
 #'
 #' @inheritParams analyze_variables
-#' @param .var (`character`)\cr name of the column that contains the unique identifier.
+#' @param .var (`string`)\cr name of the column that contains the unique identifier.
 #'
 #' @return
 #' * `s_count_patients_with_event()` returns the count and fraction of unique identifiers with the defined event.

@@ -9,7 +9,7 @@ to_n(x, n)
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{n}{(\code{count})\cr number of entries that are needed.}
+\item{n}{(\code{integer(1)})\cr number of entries that are needed.}
 }
 \value{
 \code{x} if it has the required length already or is \code{NULL},

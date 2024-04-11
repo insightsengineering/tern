@@ -28,9 +28,9 @@ h_coxph_subgroups_df(
 )
 }
 \arguments{
-\item{tte}{(\code{numeric})\cr contains time-to-event duration values.}
+\item{tte}{(\code{numeric})\cr vector of time-to-event duration values.}
 
-\item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
+\item{is_event}{(\code{flag})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
 \item{arm}{(\code{factor})\cr the treatment group variable.}
 

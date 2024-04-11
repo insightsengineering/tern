@@ -5,9 +5,9 @@
 #' Stack grobs as a new grob with 1 column and multiple rows layout.
 #'
 #' @param ... grobs.
-#' @param grobs (`list` of `grob`s)\cr a list of grobs.
+#' @param grobs (`list` of `grob`)\cr a list of grobs.
 #' @param padding (`grid::unit`)\cr unit of length 1, space between each grob.
-#' @param vp (`viewport`)\cr a [viewport()] object (or `NULL`).
+#' @param vp (`viewport` or `NULL`)\cr a [viewport()] object (or `NULL`).
 #' @param name (`string`)\cr a character identifier for the grob.
 #' @param gp (`gpar`)\cr a [gpar()] object.
 #'
@@ -239,7 +239,7 @@ arrange_grobs <- function(...,
 #'
 #' @param grob (`grob`)\cr grid object.
 #' @param newpage (`flag`)\cr draw on a new page.
-#' @param vp (`viewport`)\cr a [viewport()] object (or `NULL`).
+#' @param vp (`viewport` or `NULL`)\cr a [viewport()] object (or `NULL`).
 #'
 #' @return A `grob`.
 #'

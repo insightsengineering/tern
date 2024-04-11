@@ -10,7 +10,7 @@
 #' formatted text that needs only to be copied and pasted in the expected output.
 #'
 #' @inheritParams formatters::toString
-#' @param x (`rtable`)\cr a `rtables` table.
+#' @param x (`VTableTree`)\cr `rtables` table object.
 #' @param with_spaces (`flag`)\cr whether the tested table should keep the indentation and other relevant spaces.
 #' @param print_txt_to_copy (`flag`)\cr utility to have a way to copy the input table directly
 #'   into the expected variable instead of copying it too manually.
@@ -207,7 +207,7 @@ add_rowcounts <- function(lyt, alt_counts = FALSE) {
 #' Helper function to extract column indices from a `VTableTree` for a given
 #' vector of column names.
 #'
-#' @param table_tree (`VTableTree`)\cr table to extract the indices from.
+#' @param table_tree (`VTableTree`)\cr `rtables` table object to extract the indices from.
 #' @param col_names (`character`)\cr vector of column names.
 #'
 #' @return A vector of column indices.
@@ -303,7 +303,7 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) {
 #'
 #' @param param (`vector`)\cr the parameter to be split.
 #' @param value (`vector`)\cr the value used to split.
-#' @param f (`list` of `vectors`)\cr the reference to make the split.
+#' @param f (`list`)\cr the reference to make the split.
 #'
 #' @return A named `list` with the same element names as `f`, each containing the elements specified in `.stats`.
 #'
@@ -371,7 +371,7 @@ afun_selected_stats <- function(.stats, all_stats) {
 #'
 #' @inheritParams argument_convention
 #' @param vars (`character`)\cr variable names of which the labels are to be looked up in `df`.
-#' @param indent (`integer`)\cr non-negative number of nested indent space, default to 0L which means no indent.
+#' @param indent (`integer(1)`)\cr non-negative number of nested indent space, default to 0L which means no indent.
 #'   1L means two spaces indent, 2L means four spaces indent and so on.
 #'
 #' @return A modified layout with the new variable label(s) added to the top-left material.

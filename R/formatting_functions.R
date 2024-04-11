@@ -17,7 +17,7 @@ NULL
 #'
 #' Formats a fraction together with ratio in percent.
 #'
-#' @param x (named `vector` of `integer`)\cr vector with elements `num` and `denom`.
+#' @param x (named `integer`)\cr vector with elements `num` and `denom`.
 #' @param ... not used. Required for `rtables` interface.
 #'
 #' @return A string in the format `num / denom (ratio %)`. If `num` is 0, the format is `num / denom`.
@@ -54,8 +54,7 @@ format_fraction <- function(x, ...) {
 #' Formats a fraction together with ratio in percent with fixed single decimal place.
 #' Includes trailing zero in case of whole number percentages to always keep one decimal place.
 #'
-#' @param x (named `vector` of `integer`)\cr vector with elements `num` and `denom`.
-#' @param ... not used. Required for `rtables` interface.
+#' @inheritParams format_fraction
 #'
 #' @return A string in the format `num / denom (ratio %)`. If `num` is 0, the format is `num / denom`.
 #'
@@ -89,7 +88,7 @@ format_fraction_fixed_dp <- function(x, ...) {
 #'
 #' Formats a count together with fraction with special consideration when count is `0`.
 #'
-#' @param x (`integer`)\cr vector of length 2 with count and fraction, respectively.
+#' @param x (`numeric(2)`)\cr vector of length 2 with count and fraction, respectively.
 #' @param ... not used. Required for `rtables` interface.
 #'
 #' @return A string in the format `count (fraction %)`. If `count` is 0, the format is `0`.
@@ -126,8 +125,7 @@ format_count_fraction <- function(x, ...) {
 #'
 #' Formats a count together with fraction with special consideration when count is `0`.
 #'
-#' @param x (`integer`)\cr vector of length 2, count and fraction.
-#' @param ... required for `rtables` interface.
+#' @inheritParams format_count_fraction
 #'
 #' @return A string in the format `count (fraction %)`. If `count` is 0, the format is `0`.
 #'
@@ -250,11 +248,11 @@ format_xx <- function(str) {
 #'
 #' Format numeric values to print with a specified number of significant figures.
 #'
-#' @param sigfig (`integer`)\cr number of significant figures to display.
-#' @param format (`character`)\cr the format label (string) to apply when printing the value. Decimal
+#' @param sigfig (`integer(1)`)\cr number of significant figures to display.
+#' @param format (`string`)\cr the format label (string) to apply when printing the value. Decimal
 #'   places in string are ignored in favor of formatting by significant figures. Formats options are:
 #'   `"xx"`, `"xx / xx"`, `"(xx, xx)"`, `"xx - xx"`, and `"xx (xx)"`.
-#' @param num_fmt (`character`)\cr numeric format modifiers to apply to the value. Defaults to `"fg"` for
+#' @param num_fmt (`string`)\cr numeric format modifiers to apply to the value. Defaults to `"fg"` for
 #'   standard significant figures formatting - fixed (non-scientific notation) format (`"f"`)
 #'   and `sigfig` equal to number of significant figures instead of decimal places (`"g"`). See the
 #'   [formatC()] `format` argument for more options.
@@ -330,7 +328,7 @@ format_fraction_threshold <- function(threshold) {
 #'
 #' `rtables` formatting functions that handle extreme values.
 #'
-#' @param digits (`integer`)\cr number of decimal places to display.
+#' @param digits (`integer(1)`)\cr number of decimal places to display.
 #'
 #' @details For each input, apply a format to the specified number of `digits`. If the value is
 #'    below a threshold, it returns "<0.01" e.g. if the number of `digits` is 2. If the value is
@@ -370,7 +368,7 @@ h_get_format_threshold <- function(digits = 2L) {
 #' @describeIn extreme_format Internal helper function to apply a threshold format to a value.
 #'   Creates a formatted string to be used in Formatting Functions.
 #'
-#' @param x (`number`)\cr value to format.
+#' @param x (`numeric(1)`)\cr value to format.
 #'
 #' @return
 #' * `h_format_threshold()` returns the given value, or if the value is not within the digit threshold the relation
@@ -467,8 +465,8 @@ format_extreme_values_ci <- function(digits = 2L) {
 #' This function can be called internally with "auto" like, for example,
 #' `.formats = c("mean" = "auto")`. See details to see how this works with the inner function.
 #'
-#' @param dt_var (`numeric`)\cr all the data the statistics was created upon. Used only to find
-#'   significant digits. In [analyze_vars] this comes from `.df_row` (see
+#' @param dt_var (`numeric`)\cr variable data the statistics were calculated from. Used only to
+#'   find significant digits. In [analyze_vars] this comes from `.df_row` (see
 #'   [rtables::additional_fun_params]), and it is the row data after the above row splits. No
 #'   column split is considered.
 #' @param x_stat (`string`)\cr string indicating the current statistical method used.

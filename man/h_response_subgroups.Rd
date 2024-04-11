@@ -29,7 +29,7 @@ h_odds_ratio_subgroups_df(
 )
 }
 \arguments{
-\item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
+\item{rsp}{(\code{logical})\cr vector indicating whether each subject is a responder or not.}
 
 \item{arm}{(\code{factor})\cr the treatment group variable.}
 
@@ -47,7 +47,7 @@ levels that belong to it in the character vectors that are elements of the list.
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{method}{(\code{string})\cr specifies the test used to calculate the p-value for the difference between
+\item{method}{(\code{string} or \code{NULL})\cr specifies the test used to calculate the p-value for the difference between
 two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL} so no test is performed.}
 }
 \value{

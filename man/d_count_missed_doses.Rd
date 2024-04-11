@@ -7,7 +7,7 @@
 d_count_missed_doses(thresholds)
 }
 \arguments{
-\item{thresholds}{(vector of \code{count})\cr number of missed doses the patients at least had.}
+\item{thresholds}{(\code{numeric})\cr minimum number of missed doses the patients had.}
 }
 \value{
 \code{\link[=d_count_missed_doses]{d_count_missed_doses()}} returns a named \code{character} vector with the labels.

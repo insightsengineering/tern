@@ -24,7 +24,7 @@ by a statistics function.}
 
 \item{.df_row}{(\code{data.frame})\cr dataset that includes all the variables that are called in \code{.var} and \code{variables}.}
 
-\item{variables}{(named \code{list} of \code{string}s)\cr list of additional analysis variables, with
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables, with
 expected elements:
 \itemize{
 \item \code{arm} (\code{string})\cr group variable, for which the covariate adjusted means of multiple
@@ -47,7 +47,7 @@ used in the regression (Poisson, Quasi-Poisson, negative binomial).}
 \item{arm}{(\code{string})\cr group variable, for which the covariate adjusted means of multiple groups will be
 summarized. Specifically, the first level of \code{arm} variable is taken as the reference group.}
 
-\item{conf_level}{(\code{numeric})\cr value used to derive the confidence interval for the rate.}
+\item{conf_level}{(\code{proportion})\cr value used to derive the confidence interval for the rate.}
 }
 \value{
 \itemize{

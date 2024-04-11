@@ -7,7 +7,7 @@
 logistic_regression_cols(lyt, conf_level = 0.95)
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 }

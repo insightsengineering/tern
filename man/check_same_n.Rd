@@ -7,7 +7,7 @@
 check_same_n(..., omit_null = TRUE)
 }
 \arguments{
-\item{...}{(\code{data.frame}s or \code{vector}s)\cr any data frames or vectors.}
+\item{...}{(\code{data.frame} or \code{vector})\cr any data frames or vectors.}
 
 \item{omit_null}{(\code{flag})\cr whether \code{NULL} elements in \code{...} should be omitted from the check.}
 }

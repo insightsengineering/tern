@@ -18,7 +18,7 @@ h_tab_one_biomarker(
 
 \item{afuns}{(named \code{list} of \code{function})\cr analysis functions.}
 
-\item{colvars}{(\code{list} with \code{vars} and \code{labels})\cr variables to tabulate and their labels.}
+\item{colvars}{(named \code{list})\cr named list with elements \code{vars} (variables to tabulate) and \code{labels} (their labels).}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 

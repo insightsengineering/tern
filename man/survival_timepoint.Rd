@@ -71,13 +71,13 @@ a_surv_timepoint_diff(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{time_point}{(\code{number})\cr survival time point of interest.}
+\item{time_point}{(\code{numeric(1)})\cr survival time point of interest.}
 
-\item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
+\item{is_event}{(\code{flag})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
 \item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
 \code{\link[=control_surv_timepoint]{control_surv_timepoint()}}. Some possible parameter options are:
@@ -85,7 +85,7 @@ a_surv_timepoint_diff(
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for survival rate.
 \item \code{conf_type} (\code{string})\cr confidence interval type. Options are "plain" (default), "log", "log-log",
 see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "none" is no longer supported.
-\item \code{time_point} (\code{number})\cr survival time point of interest.
+\item \code{time_point} (\code{numeric(1)})\cr survival time point of interest.
 }}
 
 \item{method}{(\code{string})\cr \code{surv} (survival estimations),
@@ -93,8 +93,8 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "no
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
@@ -102,7 +102,7 @@ underneath analyses, which is not allowed.}
 \item{table_names_suffix}{(\code{string})\cr optional suffix for the \code{table_names} used for the \code{rtables} to
 avoid warnings from duplicate table names.}
 
-\item{var_labels}{(\code{character})\cr character for label.}
+\item{var_labels}{(\code{character})\cr variable labels.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
@@ -114,7 +114,7 @@ information on the \code{"auto"} setting.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Each element of the vector
 should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
 for that statistic's row label.}
 

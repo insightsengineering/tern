@@ -7,7 +7,7 @@
 d_onco_rsp_label(x)
 }
 \arguments{
-\item{x}{(\code{character})\cr the standard oncology code to be described.}
+\item{x}{(\code{character})\cr the standard oncology codes to be described.}
 }
 \value{
 Response labels.

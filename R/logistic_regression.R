@@ -13,7 +13,7 @@
 #' each interaction degree of freedom.
 #'
 #' @inheritParams argument_convention
-#' @param drop_and_remove_str (`character`)\cr string to be dropped and removed.
+#' @param drop_and_remove_str (`string`)\cr string to be dropped and removed.
 #'
 #' @return A layout object suitable for passing to further layouting functions, or to [rtables::build_table()].
 #'   Adding this function to an `rtable` layout will add a logistic regression variable summary to the table layout.
@@ -215,7 +215,7 @@ fit_logistic <- function(data,
 #' with `binomial` family.
 #'
 #' @inheritParams argument_convention
-#' @param at (`NULL` or `numeric`)\cr optional values for the interaction variable. Otherwise the median is used.
+#' @param at (`numeric` or `NULL`)\cr optional values for the interaction variable. Otherwise the median is used.
 #' @param x (`glm`)\cr logistic regression model fitted by [stats::glm()] with "binomial" family.
 #'
 #' @return A `data.frame` containing the tidied model.

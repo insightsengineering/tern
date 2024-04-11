@@ -35,7 +35,7 @@ groups_list_to_df <- function(groups_list) {
 #' columns in the `rtables` framework and teal modules.
 #'
 #' @param fct (`factor`)\cr the variable with levels which needs to be grouped.
-#' @param ref (`string`)\cr the reference level(s).
+#' @param ref (`character`)\cr the reference level(s).
 #' @param collapse (`string`)\cr a character string to separate `fct` and `ref`.
 #'
 #' @return A `list` with first item `ref` (reference) and second item `trt` (treatment).

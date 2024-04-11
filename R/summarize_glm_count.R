@@ -31,7 +31,7 @@ NULL
 #'
 #' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called
 #'   in `.var` and `variables`.
-#' @param variables (named `list` of `strings`)\cr list of additional analysis variables, with
+#' @param variables (named `list` of `string`)\cr list of additional analysis variables, with
 #'   expected elements:
 #'   * `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
 #'     groups will be summarized. Specifically, the first level of `arm` variable is taken as the
@@ -180,7 +180,7 @@ h_glm_negbin <- function(.var,
 #'
 #' @param .df_row (`data.frame`)\cr dataset that includes all the variables that are called
 #'   in `.var` and `variables`.
-#' @param variables (named `list` of `string`s)\cr list of additional analysis variables, with
+#' @param variables (named `list` of `string`)\cr list of additional analysis variables, with
 #'   expected elements:
 #'   * `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
 #'     groups will be summarized. Specifically, the first level of `arm` variable is taken as the
@@ -211,7 +211,7 @@ h_glm_count <- function(.var,
 #' @describeIn h_glm_count Helper function to return the estimated means.
 #'
 #' @param .df_row (`data.frame`)\cr dataset that includes all the variables that are called in `.var` and `variables`.
-#' @param conf_level (`numeric`)\cr value used to derive the confidence interval for the rate.
+#' @param conf_level (`proportion`)\cr value used to derive the confidence interval for the rate.
 #' @param obj (`glm.fit`)\cr fitted model object used to derive the mean rate estimates in each treatment arm.
 #' @param arm (`string`)\cr group variable, for which the covariate adjusted means of multiple groups will be
 #'   summarized. Specifically, the first level of `arm` variable is taken as the reference group.

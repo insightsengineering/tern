@@ -48,7 +48,7 @@ f_conf_level <- function(conf_level) {
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param test_mean (`number`)\cr mean value to test under the null hypothesis.
+#' @param test_mean (`numeric(1)`)\cr mean value to test under the null hypothesis.
 #'
 #' @return A `string`.
 #'
@@ -79,7 +79,7 @@ get_covariates <- function(covariates) {
 #' Replicate entries of a vector if required.
 #'
 #' @inheritParams argument_convention
-#' @param n (`count`)\cr number of entries that are needed.
+#' @param n (`integer(1)`)\cr number of entries that are needed.
 #'
 #' @return `x` if it has the required length already or is `NULL`,
 #'   otherwise if it is scalar the replicated version of it with `n` entries.
@@ -103,7 +103,7 @@ to_n <- function(x, n) {
 #'
 #' Checks if the elements in `...` have the same dimension.
 #'
-#' @param ... (`data.frame`s or `vector`s)\cr any data frames or vectors.
+#' @param ... (`data.frame` or `vector`)\cr any data frames or vectors.
 #' @param omit_null (`flag`)\cr whether `NULL` elements in `...` should be omitted from the check.
 #'
 #' @return A `logical` value.
@@ -145,8 +145,8 @@ check_same_n <- function(..., omit_null = TRUE) {
 #'
 #' Uses `.Machine$double.eps` as the tolerance for the comparison.
 #'
-#' @param x (`float`)\cr a single number.
-#' @param y (`float`)\cr a single number.
+#' @param x (`numeric(1)`)\cr a float number.
+#' @param y (`numeric(1)`)\cr a float number.
 #'
 #' @return `TRUE` if identical, otherwise `FALSE`.
 #'
@@ -181,7 +181,7 @@ make_names <- function(nams) {
 #' Conversion of months to days. This is an approximative calculation because it
 #' considers each month as having an average of 30.4375 days.
 #'
-#' @param x (`numeric`)\cr time in months.
+#' @param x (`numeric(1)`)\cr time in months.
 #'
 #' @return A `numeric` vector with the time in days.
 #'
@@ -197,7 +197,7 @@ month2day <- function(x) {
 
 #' Conversion of days to months
 #'
-#' @param x (`numeric`)\cr time in days.
+#' @param x (`numeric(1)`)\cr time in days.
 #'
 #' @return A `numeric` vector with the time in months.
 #'
@@ -339,10 +339,10 @@ study_arm <- function(x) {
 #' This produces `loess` smoothed estimates of `y` with Student confidence intervals.
 #'
 #' @param df (`data.frame`)\cr data set containing all analysis variables.
-#' @param x (`character`)\cr value with x column name.
-#' @param y (`character`)\cr value with y column name.
-#' @param groups (`character`)\cr vector with optional grouping variables names.
-#' @param level (`numeric`)\cr level of confidence interval to use (0.95 by default).
+#' @param x (`string`)\cr x column name.
+#' @param y (`string`)\cr y column name.
+#' @param groups (`character` or `NULL`)\cr vector with optional grouping variables names.
+#' @param level (`proportion`)\cr level of confidence interval to use (0.95 by default).
 #'
 #' @return A `data.frame` with original `x`, smoothed `y`, `ylow`, and `yhigh`, and
 #'   optional `groups` variables formatted as `factor` type.
@@ -408,7 +408,7 @@ get_smooths <- function(df, x, y, groups = NULL, level = 0.95) {
 #'
 #' Small utility function for better readability.
 #'
-#' @param x (`any`)\cr vector in which to count non-missing values.
+#' @param x (`vector`)\cr vector in which to count non-missing values.
 #'
 #' @return Number of non-missing values.
 #'

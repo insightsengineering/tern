@@ -13,7 +13,7 @@ add_riskdiff(
 )
 }
 \arguments{
-\item{arm_x}{(\code{character})\cr name of reference arm to use in risk difference calculations.}
+\item{arm_x}{(\code{string})\cr name of reference arm to use in risk difference calculations.}
 
 \item{arm_y}{(\code{character})\cr names of one or more arms to compare to reference arm in risk difference
 calculations. A new column will be added for each value of \code{arm_y}.}

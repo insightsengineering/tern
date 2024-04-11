@@ -8,7 +8,8 @@
 #'
 #' @param adsl (`data.frame`)\cr ADSL data frame.
 #' @param adlb (`data.frame`)\cr ADLB data frame.
-#' @param worst_flag (named `vector`)\cr worst post-baseline lab flag variable.
+#' @param worst_flag (named `character`)\cr worst post-baseline lab flag variable. See how this is implemented in the
+#'   following examples.
 #' @param by_visit (`flag`)\cr defaults to `FALSE` to generate worst grade per patient.
 #'   If worst grade per patient per visit is specified for `worst_flag`, then
 #'   `by_visit` should be `TRUE` to generate worst grade patient per visit.

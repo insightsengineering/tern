@@ -21,7 +21,7 @@ NULL
 #'
 #' Describe the oncology response in a standard way.
 #'
-#' @param x (`character`)\cr the standard oncology code to be described.
+#' @param x (`character`)\cr the standard oncology codes to be described.
 #'
 #' @return Response labels.
 #'

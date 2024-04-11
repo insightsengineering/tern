@@ -110,7 +110,7 @@ ref_group_position <- function(position = "first") {
 #' @describeIn utils_split_funs Split function to change level order based on an `integer`
 #'   vector or a `character` vector that represent the split variable's factor levels.
 #'
-#' @param order (`character` or `integer`)\cr vector of ordering indices for the split facets.
+#' @param order (`character` or `numeric`)\cr vector of ordering indices for the split facets.
 #'
 #' @return
 #' * `level_order()` returns an utility function that changes the original levels' order,

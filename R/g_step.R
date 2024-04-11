@@ -11,7 +11,7 @@
 #' @param est (named `list`)\cr `col` and `lty` settings for estimate line.
 #' @param ci_ribbon (named `list` or `NULL`)\cr `fill` and `alpha` settings for the confidence interval
 #'   ribbon area, or `NULL` to not plot a CI ribbon.
-#' @param col (`character`)\cr colors.
+#' @param col (`character`)\cr color(s).
 #'
 #' @return A `ggplot` STEP graph.
 #'

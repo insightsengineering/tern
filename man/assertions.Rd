@@ -58,7 +58,7 @@ Collection to store assertion messages. See \code{\link[checkmate]{AssertCollect
 
 \item{variables}{(named \code{list} of \code{character})\cr list of variables to test.}
 
-\item{na_level}{(\code{character})\cr the string you have been using to represent NA or
+\item{na_level}{(\code{string})\cr the string you have been using to represent NA or
 missing data. For \code{NA} values please consider using directly \code{\link[=is.na]{is.na()}} or
 similar approaches.}
 

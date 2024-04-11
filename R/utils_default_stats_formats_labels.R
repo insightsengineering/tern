@@ -179,7 +179,7 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 
 #' @describeIn default_stats_formats_labels Get labels corresponding to a list of statistics.
 #'
-#' @param labels_in (named `vector` of `character`)\cr inserted labels to replace defaults.
+#' @param labels_in (named `character`)\cr inserted labels to replace defaults.
 #' @param row_nms (`character`)\cr row names. Levels of a `factor` or `character` variable, each
 #'   of which the statistics in `.stats` will be calculated for. If this parameter is set, these
 #'   variable levels will be used as the defaults, and the names of the given custom values should
@@ -305,10 +305,10 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
 #' label for statistic `mean_ci` will be updated to `"Mean 90% CI"`. Any labels that are supplied
 #' via `labels_custom` will not be updated regardless of `control`.
 #'
-#' @param labels_default (named `vector` of `character`)\cr a named vector of statistic labels to modify
+#' @param labels_default (named `character`)\cr a named vector of statistic labels to modify
 #'   according to the control specifications. Labels that are explicitly defined in `labels_custom` will
 #'   not be affected.
-#' @param labels_custom (named `vector` of `character`)\cr named vector of labels that are customized by
+#' @param labels_custom (named `character`)\cr named vector of labels that are customized by
 #'   the user and should not be affected by `control`.
 #' @param control (named `list`)\cr list of control parameters to apply to adjust default labels.
 #'

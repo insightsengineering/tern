@@ -27,7 +27,7 @@ h_ggkm(
 \arguments{
 \item{data}{(\code{data.frame})\cr survival data as pre-processed by \code{h_data_plot}.}
 
-\item{xticks}{(\code{numeric}, \code{number}, or \code{NULL})\cr numeric vector of tick positions or single number with spacing
+\item{xticks}{(\code{numeric} or \code{NULL})\cr numeric vector of tick positions or a single number with spacing
 between ticks on the x-axis. If \code{NULL} (default), \code{\link[labeling:extended]{labeling::extended()}} is used to determine
 optimal tick positions on the x-axis.}
 
@@ -40,25 +40,25 @@ probability.}
 
 \item{ylab}{(\code{string})\cr y-axis label.}
 
-\item{ylim}{(\code{numeric(2)})\cr vector of length 2 containing lower and upper limits for the y-axis, respectively.
+\item{ylim}{(\code{numeric(2)})\cr vector containing lower and upper limits for the y-axis, respectively.
 If \code{NULL} (default), the minimum and maximum y-values displayed are used as limits.}
 
 \item{title}{(\code{string})\cr plot title.}
 
 \item{footnotes}{(\code{string})\cr plot footnotes.}
 
-\item{max_time}{(\code{numeric})\cr maximum value to show on x-axis. Only data values less than or up to
+\item{max_time}{(\code{numeric(1)})\cr maximum value to show on x-axis. Only data values less than or up to
 this threshold value will be plotted (defaults to \code{NULL}).}
 
-\item{lwd}{(\code{numeric})\cr line width. Length of a vector should be equal
-to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
+\item{lwd}{(\code{numeric})\cr line width. If a vector is given, its length should be equal to the number of strata from
+\code{\link[survival:survfit]{survival::survfit()}}.}
 
-\item{lty}{(\code{numeric})\cr line type. Length of a vector should be equal
-to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
+\item{lty}{(\code{numeric})\cr line type. If a vector is given, its length should be equal to the number of strata from
+\code{\link[survival:survfit]{survival::survfit()}}.}
 
-\item{pch}{(\code{character})\cr name of symbol or character to use as point symbol to indicate censored cases.}
+\item{pch}{(\code{string})\cr name of symbol or character to use as point symbol to indicate censored cases.}
 
-\item{size}{(\code{numeric})\cr size of censored point symbols.}
+\item{size}{(\code{numeric(1)})\cr size of censored point symbols.}
 
 \item{col}{(\code{character})\cr lines colors. Length of a vector should be equal
 to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}

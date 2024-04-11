@@ -40,7 +40,7 @@ a_count_patients_with_event(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
@@ -56,14 +56,14 @@ See \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} for details on risk diff
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("count_patients_with_event")}
 to see available statistics for this function.}
@@ -78,12 +78,12 @@ unmodified default behavior. Can be negative.}
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{.var}{(\code{character})\cr name of the column that contains the unique identifier.}
+\item{.var}{(\code{string})\cr name of the column that contains the unique identifier.}
 
-\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
 
-\item{.N_row}{(\code{integer})\cr row-wise N (row group count) for the group of observations being analyzed
+\item{.N_row}{(\code{integer(1)})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
 
 \item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
