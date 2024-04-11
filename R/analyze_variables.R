@@ -10,7 +10,8 @@
 #' @param quantile_type (`numeric(1)`)\cr number between 1 and 9 selecting quantile algorithms to be used.
 #'   Default is set to 2 as this matches the default quantile algorithm in SAS `proc univariate` set by `QNTLDEF=5`.
 #'   This differs from R's default. See more about `type` in [stats::quantile()].
-#' @param test_mean (`numeric(1)`)\cr number to test against the mean under the null hypothesis when calculating p-value.
+#' @param test_mean (`numeric(1)`)\cr number to test against the mean under the null hypothesis when calculating
+#'   p-value.
 #'
 #' @return A list of components with the same names as the arguments.
 #'
