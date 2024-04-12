@@ -8,6 +8,7 @@ control_lineplot_vars(
   x = "AVISIT",
   y = "AVAL",
   group_var = "ARM",
+  facet_var = NA,
   paramcd = "PARAMCD",
   y_unit = "AVALU",
   subject_var = "USUBJID",

@@ -54,6 +54,7 @@ not NULL.
 subtitle. Can be \code{NA} if \code{paramcd} is not to be added to the y-axis label or subtitle.
 \item \code{y_unit} (\code{string} or \code{NA})\cr name of variable with units of \code{y}. Used for y-axis label and plot's subtitle.
 Can be \code{NA} if y unit is not to be added to the y-axis label or subtitle.
+\item \code{facet_var} (\code{string})\cr name of the secondary grouping variable used for plot faceting, i.e. treatment arm. Can be \code{NA} to indicate lack of groups.
 }}
 
 \item{mid}{(\code{character} or \code{NULL})\cr names of the statistics that will be plotted as midpoints.
