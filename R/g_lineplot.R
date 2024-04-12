@@ -217,7 +217,7 @@ g_lineplot <- function(df,
   ####################################### |
   if (!is.null(facet_var) & !is.null(group_var)) {
     df_grp <- tidyr::expand(df, .data[[facet_var]], .data[[group_var]], .data[[x]]) # expand based on levels of factors
-  } else  if (!is.null(group_var)) {
+  } else if (!is.null(group_var)) {
     df_grp <- tidyr::expand(df, .data[[group_var]], .data[[x]]) # expand based on levels of factors
   } else {
     df_grp <- tidyr::expand(df, NULL, .data[[x]])
@@ -245,7 +245,7 @@ g_lineplot <- function(df,
     # keep strata factor levels
     matches <- sapply(unique(df_N[[group_var]]), function(x) unique(df_N[[paste0(group_var, "_N")]])[grepl(paste0("^", x), unique(df_N[[paste0(group_var, "_N")]]))])
     df_N[[paste0(group_var, "_N")]] <- factor(df_N[[group_var]])
-    levels(df_N[[paste0(group_var, "_N")]]) <-  unlist(matches)
+    levels(df_N[[paste0(group_var, "_N")]]) <- unlist(matches)
 
     # strata_N should not be in colnames(df_stats)
     checkmate::assert_disjunct(strata_N, colnames(df_stats))
@@ -314,7 +314,7 @@ g_lineplot <- function(df,
     # lines
     # further conditions in if are to ensure that not all of the groups consist of only one observation
     if (grepl("l", mid_type, fixed = TRUE) && !is.null(group_var) &&
-        !all(dplyr::summarise(df_grp, count_n = dplyr::n())[["count_n"]] == 1L)) { # nolint
+      !all(dplyr::summarise(df_grp, count_n = dplyr::n())[["count_n"]] == 1L)) { # nolint
       p <- p + ggplot2::geom_line(position = position, na.rm = TRUE)
     }
   }
