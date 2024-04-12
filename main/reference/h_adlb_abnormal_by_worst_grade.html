@@ -46,7 +46,7 @@ Unused factor levels are dropped from adlb via droplevels().
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3.9030</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3.9031</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,14 +94,14 @@ Unused factor levels are dropped from adlb via droplevels().
 </nav><div class="container template-reference-topic">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Helper function to prepare <code>ADLB</code> for <code><a href="abnormal_by_worst_grade.html">count_abnormal_by_worst_grade()</a></code></h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Helper function to prepare ADLB for <code>count_abnormal_by_worst_grade()</code></h1>
       <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/HEAD/R/abnormal_by_worst_grade.R" class="external-link"><code>R/abnormal_by_worst_grade.R</code></a></small>
       <div class="d-none name"><code>h_adlb_abnormal_by_worst_grade.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
     <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="figures/lifecycle-stable.svg" alt="[Stable]"></a></p>
-<p>Helper function to prepare an <code>ADLB</code> data frame to be used as input in
+<p>Helper function to prepare an ADLB data frame to be used as input in
 <code><a href="abnormal_by_worst_grade.html">count_abnormal_by_worst_grade()</a></code>. The following pre-processing steps are applied:</p><ol><li><p><code>adlb</code> is filtered on variable <code>avisit</code> to only include post-baseline visits.</p></li>
 <li><p><code>adlb</code> is filtered on variables <code>worst_flag_low</code> and <code>worst_flag_high</code> so that only
 worst grades (in either direction) are included.</p></li>
@@ -128,25 +128,25 @@ replaced by their absolute values.</p></li>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>adlb</dt>
-<dd><p>(<code>data.frame</code>)<br><code>ADLB</code> dataframe.</p></dd>
+<dd><p>(<code>data.frame</code>)<br> ADLB data frame.</p></dd>
 
 
 <dt>atoxgr</dt>
-<dd><p>(<code>character</code>)<br> Analysis toxicity grade variable. This must be a <code>factor</code>
+<dd><p>(<code>string</code>)<br> name of the analysis toxicity grade variable. This must be a <code>factor</code>
 variable.</p></dd>
 
 
 <dt>avisit</dt>
-<dd><p>(<code>character</code>)<br> Analysis visit variable.</p></dd>
+<dd><p>(<code>string</code>)<br> name of the analysis visit variable.</p></dd>
 
 
 <dt>worst_flag_low</dt>
-<dd><p>(<code>character</code>)<br> Worst low lab grade flag variable. This variable is
+<dd><p>(<code>string</code>)<br> name of the worst low lab grade flag variable. This variable is
 set to <code>"Y"</code> when indicating records of worst low lab grades.</p></dd>
 
 
 <dt>worst_flag_high</dt>
-<dd><p>(<code>character</code>)<br> Worst high lab grade flag variable. This variable is
+<dd><p>(<code>string</code>)<br> name of the worst high lab grade flag variable. This variable is
 set to <code>"Y"</code> when indicating records of worst high lab grades.</p></dd>
 
 </dl></div>

@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3.9030</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3.9031</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,34 +97,35 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>tbl</dt>
-<dd><p>(<code>rtable</code>)<br> table with at least one column with a single value and one column with 2 values.</p></dd>
+<dd><p>(<code>VTableTree</code>)<br><code>rtables</code> table with at least one column with a single value and one column with 2
+values.</p></dd>
 
 
 <dt>col_x</dt>
-<dd><p>(<code>integer</code>)<br> column index with estimator. By default tries to get this from
+<dd><p>(<code>integer(1)</code> or <code>NULL</code>)<br> column index with estimator. By default tries to get this from
 <code>tbl</code> attribute <code>col_x</code>, otherwise needs to be manually specified. If <code>NULL</code>, points will be excluded
 from forest plot.</p></dd>
 
 
 <dt>col_ci</dt>
-<dd><p>(<code>integer</code>)<br> column index with confidence intervals. By default tries to get this from
+<dd><p>(<code>integer(1)</code> or <code>NULL</code>)<br> column index with confidence intervals. By default tries to get this from
 <code>tbl</code> attribute <code>col_ci</code>, otherwise needs to be manually specified. If <code>NULL</code>, lines will be excluded
 from forest plot.</p></dd>
 
 
 <dt>vline</dt>
-<dd><p>(<code>numeric</code>)<br> x coordinate for vertical line, if <code>NULL</code> then the line is omitted.</p></dd>
+<dd><p>(<code>numeric(1)</code> or <code>NULL</code>)<br> x coordinate for vertical line, if <code>NULL</code> then the line is omitted.</p></dd>
 
 
 <dt>forest_header</dt>
-<dd><p>(<code>character</code>, length 2)<br> text displayed to the left and right of <code>vline</code>, respectively.
+<dd><p>(<code>character(2)</code>)<br> text displayed to the left and right of <code>vline</code>, respectively.
 If <code>vline = NULL</code> then <code>forest_header</code> is not printed. By default tries to get this from <code>tbl</code> attribute
 <code>forest_header</code>. If <code>NULL</code>, defaults will be extracted from the table if possible, and set to
 <code>"Comparison\nBetter"</code> and <code>"Treatment\nBetter"</code> if not.</p></dd>
 
 
 <dt>xlim</dt>
-<dd><p>(<code>numeric</code>)<br> limits for x axis.</p></dd>
+<dd><p>(<code>numeric(2)</code>)<br> limits for x axis.</p></dd>
 
 
 <dt>logx</dt>
@@ -140,7 +141,7 @@ If <code>vline = NULL</code> then <code>forest_header</code> is not printed. By 
 
 
 <dt>width_columns</dt>
-<dd><p>(<code>vector</code> of <code>numeric</code>)<br> a vector of column widths. Each element's position in
+<dd><p>(<code>numeric</code>)<br> a vector of column widths. Each element's position in
 <code>colwidths</code> corresponds to the column of <code>tbl</code> in the same position. If <code>NULL</code>, column widths are calculated
 according to maximum number of characters per column.</p></dd>
 
@@ -161,11 +162,11 @@ width of table is then <code>1 - rel_width_forest</code>. If <code>as_list = TRU
 
 
 <dt>font_size</dt>
-<dd><p>(<code>numeric</code>)<br> font size.</p></dd>
+<dd><p>(<code>numeric(1)</code>)<br> font size.</p></dd>
 
 
 <dt>col_symbol_size</dt>
-<dd><p>(<code>integer</code>)<br> column index from <code>tbl</code> containing data to be used
+<dd><p>(<code>numeric</code> or <code>NULL</code>)<br> column index from <code>tbl</code> containing data to be used
 to determine relative size for estimator plot symbol. Typically, the symbol size is proportional
 to the sample size used to calculate the estimator. If <code>NULL</code>, the same symbol size is used for all subgroups.
 By default tries to get this from <code>tbl</code> attribute <code>col_symbol_size</code>, otherwise needs to be manually specified.</p></dd>

@@ -18,7 +18,7 @@ seen in analyze_vars(). See notes to understand why this is experimental."><meta
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3.9030</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3.9031</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -136,12 +136,12 @@ method group.</p></dd>
 
 
 <dt>formats_in</dt>
-<dd><p>(named <code>vector</code>) <br> inserted formats to replace defaults. It can be a
+<dd><p>(named <code>vector</code>)<br> inserted formats to replace defaults. It can be a
 character vector from <code><a href="https://insightsengineering.github.io/formatters/latest-tag/reference/list_formats.html" class="external-link">formatters::list_valid_format_labels()</a></code> or a custom format function.</p></dd>
 
 
 <dt>labels_in</dt>
-<dd><p>(named <code>vector</code> of <code>character</code>)<br> inserted labels to replace defaults.</p></dd>
+<dd><p>(named <code>character</code>)<br> inserted labels to replace defaults.</p></dd>
 
 
 <dt>row_nms</dt>
@@ -157,11 +157,11 @@ variable names if rows correspond to different variables instead of levels. Defa
 
 
 <dt>type</dt>
-<dd><p>(<code>flag</code>)<br> is it going to be <code>"numeric"</code> or <code>"counts"</code>?</p></dd>
+<dd><p>(<code>string</code>)<br><code>"numeric"</code> or <code>"counts"</code>.</p></dd>
 
 
 <dt>include_pval</dt>
-<dd><p>(<code>flag</code>)<br> deprecated parameter. Same as <code>add_pval</code>.</p></dd>
+<dd><p>(<code>flag</code>)<br> same as the <code>add_pval</code> argument in <code>get_stats()</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -197,7 +197,7 @@ group (analyze function).</p></li>
 <li><p><code>summary_formats()</code>: Quick function to retrieve default formats for summary statistics:
 <code><a href="analyze_variables.html">analyze_vars()</a></code> and <code><a href="analyze_vars_in_cols.html">analyze_vars_in_cols()</a></code> principally.</p></li>
 <li><p><code>summary_labels()</code>: Quick function to retrieve default labels for summary statistics.
-Returns labels of descriptive statistics which are understood by <code>rtables</code>. Similar to <code>summary_formats</code></p></li>
+Returns labels of descriptive statistics which are understood by <code>rtables</code>. Similar to <code>summary_formats</code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>

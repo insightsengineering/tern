@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3.9030</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3.9031</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -404,8 +404,8 @@ China subgroups, respectively:</p>
 </h3>
 <p>The standard table of adverse events is a summary by system organ
 class and preferred term. For frequency counts by preferred term, if
-there are multiple occurrences of the same <code>AE</code> in an
-individual we count them only once.</p>
+there are multiple occurrences of the same AE in an individual we count
+them only once.</p>
 <p>To create this table we will need to use a combination of several
 layout creating functions in a tabulation pipeline.</p>
 <p>We start by creating the high-level summary. The layout creating
@@ -444,14 +444,14 @@ multiple records per patient as <code>df</code>, such as
 <div class="section level4">
 <h4 id="statistics-functions">Statistics Functions<a class="anchor" aria-label="anchor" href="#statistics-functions"></a>
 </h4>
-<p>Before building out the rest of the <code>AE</code> table it is
-helpful to introduce some more <code>tern</code> package design
-conventions. Each layout creating function in <code>tern</code> is a
-wrapper for a Statistics function. Statistics functions are the ones
-that do the actual computation of numbers in a table. These functions
-always return named lists whose elements are the statistics available to
-include in a layout via the <code>.stats</code> argument at the layout
-creating function level.</p>
+<p>Before building out the rest of the AE table it is helpful to
+introduce some more <code>tern</code> package design conventions. Each
+layout creating function in <code>tern</code> is a wrapper for a
+Statistics function. Statistics functions are the ones that do the
+actual computation of numbers in a table. These functions always return
+named lists whose elements are the statistics available to include in a
+layout via the <code>.stats</code> argument at the layout creating
+function level.</p>
 <p>Statistics functions follow a naming convention to always begin with
 <code>s_*</code> and for ease of use are documented on the same page as
 their layout creating function counterpart. It is helpful to review a
@@ -481,9 +481,9 @@ The results of this Statistics function is a list with the elements
 <span><span class="co">#&gt; [1] "(n)"</span></span></code></pre></div>
 <p>From these results you can see that the <code>unique</code> and
 <code>nonunique</code> statistics are those displayed in the “All
-Patients” column in the initial <code>AE</code> table output above. Also
-you can see that these are raw numbers and are not formatted in any way.
-All formatting functionality is handled at the layout creating function
+Patients” column in the initial AE table output above. Also you can see
+that these are raw numbers and are not formatted in any way. All
+formatting functionality is handled at the layout creating function
 level with the <code>.formats</code> argument.</p>
 <p>Now that we know what types of statistics can be derived by
 <code><a href="../reference/summarize_num_patients.html">s_num_patients()</a></code>, we can try modifying the default layout
@@ -604,8 +604,7 @@ a simpler layout without row splits:</p>
 <span><span class="co">#&gt; dcd D.1.1.1.1   50 (37.3%)   42 (31.3%)     51 (38.6%)     143 (35.8%) </span></span>
 <span><span class="co">#&gt; dcd D.1.1.4.2   48 (35.8%)   42 (31.3%)     50 (37.9%)     140 (35.0%) </span></span>
 <span><span class="co">#&gt; dcd D.2.1.5.3   47 (35.1%)   58 (43.3%)     57 (43.2%)     162 (40.5%)</span></span></code></pre></div>
-<p>Putting everything together, the final <code>AE</code> table looks
-like this:</p>
+<p>Putting everything together, the final AE table looks like this:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ACTARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -690,9 +689,8 @@ vs. control group</li>
 groups vs. control group</li>
 </ul>
 <p>We can build a table layout like this by following the same approach
-we used for the <code>AE</code> table: each table section will be
-produced using a different layout creating function from
-<code>tern</code>.</p>
+we used for the AE table: each table section will be produced using a
+different layout creating function from <code>tern</code>.</p>
 <p>First we start with some data preparation steps to set up the
 analysis dataset. We select the endpoint to analyze from
 <code>PARAMCD</code> and define the logical variable <code>is_rsp</code>

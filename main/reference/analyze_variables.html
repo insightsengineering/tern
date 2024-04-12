@@ -4,7 +4,7 @@ The analyze function analyze_vars() generates a summary of one or more variables
 s_summary() to calculate a list of summary statistics. A list of all available statistics for numeric
 variables can be viewed by running get_stats("analyze_vars_numeric") and for non-numeric variables by running
 get_stats("analyze_vars_counts"). Use the .stats parameter to specify the statistics to include in your output
-summary table.'><title>Analyze Variables — analyze_variables • tern</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Analyze Variables — analyze_variables"><meta property="og:description" content='
+summary table.'><title>Analyze variables — analyze_variables • tern</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Analyze variables — analyze_variables"><meta property="og:description" content='
 The analyze function analyze_vars() generates a summary of one or more variables, using the S3 generic function
 s_summary() to calculate a list of summary statistics. A list of all available statistics for numeric
 variables can be viewed by running get_stats("analyze_vars_numeric") and for non-numeric variables by running
@@ -20,7 +20,7 @@ summary table.'><meta property="og:image" content="https://insightsengineering.g
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3.9030</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3.9031</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,7 +68,7 @@ summary table.'><meta property="og:image" content="https://insightsengineering.g
 </nav><div class="container template-reference-topic">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Analyze Variables</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Analyze variables</h1>
       <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/HEAD/R/analyze_variables.R" class="external-link"><code>R/analyze_variables.R</code></a></small>
       <div class="d-none name"><code>analyze_variables.Rd</code></div>
     </div>
@@ -169,7 +169,7 @@ summary table.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>lyt</dt>
-<dd><p>(<code>layout</code>)<br> input layout where analyses will be added to.</p></dd>
+<dd><p>(<code>PreDataTableLayouts</code>)<br> layout that analyses will be added to.</p></dd>
 
 
 <dt>vars</dt>
@@ -177,7 +177,7 @@ summary table.</p>
 
 
 <dt>var_labels</dt>
-<dd><p>(<code>character</code>)<br> character for label.</p></dd>
+<dd><p>(<code>character</code>)<br> variable labels.</p></dd>
 
 
 <dt>na_str</dt>
@@ -185,8 +185,8 @@ summary table.</p>
 
 
 <dt>nested</dt>
-<dd><p>(<code>flag</code>)<br> whether this layout instruction should be applied within the existing layout structure <em>if
-possible</em> (<code>TRUE</code>, the default) or as a new top-level element (<code>FALSE</code>). Ignored if it would nest a split.
+<dd><p>(<code>flag</code>)<br> whether this layout instruction should be applied within the existing layout structure _if
+possible (<code>TRUE</code>, the default) or as a new top-level element (<code>FALSE</code>). Ignored if it would nest a split.
 underneath analyses, which is not allowed.</p></dd>
 
 
@@ -203,8 +203,8 @@ underneath analyses, which is not allowed.</p></dd>
 
 
 <dt>table_names</dt>
-<dd><p>(<code>character</code>)<br> this can be customized in case that the same <code>vars</code> are analyzed multiple times,
-to avoid warnings from <code>rtables</code>.</p></dd>
+<dd><p>(<code>character</code>)<br> this can be customized in the case that the same <code>vars</code> are analyzed multiple
+times, to avoid warnings from <code>rtables</code>.</p></dd>
 
 
 <dt>section_div</dt>
@@ -228,7 +228,7 @@ information on the <code>"auto"</code> setting.</p></dd>
 
 
 <dt>.indent_mods</dt>
-<dd><p>(named <code>vector</code> of <code>integer</code>)<br> indent modifiers for the labels. Each element of the vector
+<dd><p>(named <code>integer</code>)<br> indent modifiers for the labels. Each element of the vector
 should be a name-value pair with name corresponding to a statistic specified in <code>.stats</code> and value the indentation
 for that statistic's row label.</p></dd>
 
@@ -245,12 +245,12 @@ for that statistic's row label.</p></dd>
 
 
 <dt>.N_row</dt>
-<dd><p>(<code>integer</code>)<br> row-wise N (row group count) for the group of observations being analyzed
+<dd><p>(<code>integer(1)</code>)<br> row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is typically passed by <code>rtables</code>.</p></dd>
 
 
 <dt>.N_col</dt>
-<dd><p>(<code>integer</code>)<br> column-wise N (column count) for the full column being analyzed that is typically
+<dd><p>(<code>integer(1)</code>)<br> column-wise N (column count) for the full column being analyzed that is typically
 passed by <code>rtables</code>.</p></dd>
 
 
@@ -262,15 +262,15 @@ by a statistics function.</p></dd>
 <dt>control</dt>
 <dd><p>(<code>list</code>)<br> parameters for descriptive statistics details, specified by using
 the helper function <code><a href="control_analyze_vars.html">control_analyze_vars()</a></code>. Some possible parameter options are:</p><ul><li><p><code>conf_level</code> (<code>proportion</code>)<br> confidence level of the interval for mean and median.</p></li>
-<li><p><code>quantiles</code> (<code>numeric</code>)<br> vector of length two to specify the quantiles.</p></li>
-<li><p><code>quantile_type</code> (<code>numeric</code>)<br> between 1 and 9 selecting quantile algorithms to be used.
+<li><p><code>quantiles</code> (<code>numeric(2)</code>)<br> vector of length two to specify the quantiles.</p></li>
+<li><p><code>quantile_type</code> (<code>numeric(1)</code>)<br> between 1 and 9 selecting quantile algorithms to be used.
 See more about <code>type</code> in <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">stats::quantile()</a></code>.</p></li>
-<li><p><code>test_mean</code> (<code>numeric</code>)<br> value to test against the mean under the null hypothesis when calculating p-value.</p></li>
+<li><p><code>test_mean</code> (<code>numeric(1)</code>)<br> value to test against the mean under the null hypothesis when calculating p-value.</p></li>
 </ul></dd>
 
 
 <dt>verbose</dt>
-<dd><p>(<code>logical</code>)<br> Defaults to <code>TRUE</code>, which prints out warnings and messages. It is mainly used
+<dd><p>(<code>flag</code>)<br> defaults to <code>TRUE</code>, which prints out warnings and messages. It is mainly used
 to print out information about factor casting.</p></dd>
 
 
@@ -283,11 +283,11 @@ to print out information about factor casting.</p></dd>
 
 
 <dt>.in_ref_col</dt>
-<dd><p>(<code>logical</code>)<br><code>TRUE</code> when working with the reference level, <code>FALSE</code> otherwise.</p></dd>
+<dd><p>(<code>flag</code>)<br><code>TRUE</code> when working with the reference level, <code>FALSE</code> otherwise.</p></dd>
 
 
 <dt>compare</dt>
-<dd><p>(<code>logical</code>)<br> Whether comparison statistics should be analyzed instead of summary statistics
+<dd><p>(<code>flag</code>)<br> whether comparison statistics should be analyzed instead of summary statistics
 (<code>compare = TRUE</code> adds <code>pval</code> statistic comparing against reference group).</p></dd>
 
 </dl></div>

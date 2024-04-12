@@ -14,7 +14,7 @@ multiple timepoints within the same response variable .var."><meta property="og:
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3.9030</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3.9031</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,14 +62,14 @@ multiple timepoints within the same response variable .var."><meta property="og:
 </nav><div class="container template-reference-topic">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Summary for analysis of covariance (<code>ANCOVA</code>).</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Summary for analysis of covariance (ANCOVA).</h1>
       <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/HEAD/R/summarize_ancova.R" class="external-link"><code>R/summarize_ancova.R</code></a></small>
       <div class="d-none name"><code>summarize_ancova.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
     <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="figures/lifecycle-stable.svg" alt="[Stable]"></a></p>
-<p>Summarize results of <code>ANCOVA</code>. This can be used to analyze multiple endpoints and/or
+<p>Summarize results of ANCOVA. This can be used to analyze multiple endpoints and/or
 multiple timepoints within the same response variable <code>.var</code>.</p>
     </div>
 
@@ -122,7 +122,7 @@ multiple timepoints within the same response variable <code>.var</code>.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>lyt</dt>
-<dd><p>(<code>layout</code>)<br> input layout where analyses will be added to.</p></dd>
+<dd><p>(<code>PreDataTableLayouts</code>)<br> layout that analyses will be added to.</p></dd>
 
 
 <dt>vars</dt>
@@ -130,7 +130,7 @@ multiple timepoints within the same response variable <code>.var</code>.</p>
 
 
 <dt>variables</dt>
-<dd><p>(named <code>list</code> of <code>strings</code>)<br> list of additional analysis variables, with expected elements:</p><ul><li><p><code>arm</code> (<code>string</code>)<br> group variable, for which the covariate adjusted means of multiple groups will be
+<dd><p>(named <code>list</code> of <code>string</code>)<br> list of additional analysis variables, with expected elements:</p><ul><li><p><code>arm</code> (<code>string</code>)<br> group variable, for which the covariate adjusted means of multiple groups will be
 summarized. Specifically, the first level of <code>arm</code> variable is taken as the reference group.</p></li>
 <li><p><code>covariates</code> (<code>character</code>)<br> a vector that can contain single variable names (such as <code>"X1"</code>), and/or
 interaction terms indicated by <code>"X1 * X2"</code>.</p></li>
@@ -142,17 +142,17 @@ interaction terms indicated by <code>"X1 * X2"</code>.</p></li>
 
 
 <dt>interaction_y</dt>
-<dd><p>(<code>character</code>)<br> a selected item inside of the interaction_item column which will be used
-to select the specific <code>ANCOVA</code> results. if the interaction is not needed, the default option is <code>FALSE</code>.</p></dd>
+<dd><p>(<code>string</code> or <code>flag</code>)<br> a selected item inside of the interaction_item column which will be used
+to select the specific ANCOVA results. if the interaction is not needed, the default option is <code>FALSE</code>.</p></dd>
 
 
 <dt>interaction_item</dt>
-<dd><p>(<code>character</code>)<br> name of the variable that should have interactions
+<dd><p>(<code>string</code> or <code>NULL</code>)<br> name of the variable that should have interactions
 with arm. if the interaction is not needed, the default option is <code>NULL</code>.</p></dd>
 
 
 <dt>var_labels</dt>
-<dd><p>(<code>character</code>)<br> character for label.</p></dd>
+<dd><p>(<code>character</code>)<br> variable labels.</p></dd>
 
 
 <dt>na_str</dt>
@@ -160,8 +160,8 @@ with arm. if the interaction is not needed, the default option is <code>NULL</co
 
 
 <dt>nested</dt>
-<dd><p>(<code>flag</code>)<br> whether this layout instruction should be applied within the existing layout structure <em>if
-possible</em> (<code>TRUE</code>, the default) or as a new top-level element (<code>FALSE</code>). Ignored if it would nest a split.
+<dd><p>(<code>flag</code>)<br> whether this layout instruction should be applied within the existing layout structure _if
+possible (<code>TRUE</code>, the default) or as a new top-level element (<code>FALSE</code>). Ignored if it would nest a split.
 underneath analyses, which is not allowed.</p></dd>
 
 
@@ -174,8 +174,8 @@ underneath analyses, which is not allowed.</p></dd>
 
 
 <dt>table_names</dt>
-<dd><p>(<code>character</code>)<br> this can be customized in case that the same <code>vars</code> are analyzed multiple times,
-to avoid warnings from <code>rtables</code>.</p></dd>
+<dd><p>(<code>character</code>)<br> this can be customized in the case that the same <code>vars</code> are analyzed multiple
+times, to avoid warnings from <code>rtables</code>.</p></dd>
 
 
 <dt>.stats</dt>
@@ -215,7 +215,7 @@ by a statistics function.</p></dd>
 
 
 <dt>.in_ref_col</dt>
-<dd><p>(<code>logical</code>)<br><code>TRUE</code> when working with the reference level, <code>FALSE</code> otherwise.</p></dd>
+<dd><p>(<code>flag</code>)<br><code>TRUE</code> when working with the reference level, <code>FALSE</code> otherwise.</p></dd>
 
 </dl></div>
     <div class="section level2">

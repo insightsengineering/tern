@@ -14,7 +14,7 @@ functions from the ggplot2 package."><meta property="og:image" content="https://
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3.9030</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3.9031</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,26 +89,26 @@ functions from the <code>ggplot2</code> package.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>colwidths</dt>
-<dd><p>(<code>vector</code> of <code>numeric</code>)<br> a vector of column widths. Each element's position in
+<dd><p>(<code>numeric</code> or <code>NULL</code>)<br> a vector of column widths. Each element's position in
 <code>colwidths</code> corresponds to the column of <code>df</code> in the same position. If <code>NULL</code>, column widths
 are calculated according to maximum number of characters per column.</p></dd>
 
 
 <dt>font_size</dt>
-<dd><p>(<code>numeric</code>)<br> font size.</p></dd>
+<dd><p>(<code>numeric(1)</code>)<br> font size.</p></dd>
 
 
 <dt>col_labels</dt>
-<dd><p>(<code>logical</code>)<br> whether the column names (labels) of <code>df</code> should be used as the first row
+<dd><p>(<code>flag</code>)<br> whether the column names (labels) of <code>df</code> should be used as the first row
 of the output table.</p></dd>
 
 
 <dt>hline</dt>
-<dd><p>(<code>logical</code>)<br> whether a horizontal line should be printed below the first row of the table.</p></dd>
+<dd><p>(<code>flag</code>)<br> whether a horizontal line should be printed below the first row of the table.</p></dd>
 
 
 <dt>bg_fill</dt>
-<dd><p>(<code>character</code>)<br> table background fill color.</p></dd>
+<dd><p>(<code>string</code>)<br> table background fill color.</p></dd>
 
 
 <dt>tbl</dt>
@@ -116,15 +116,15 @@ of the output table.</p></dd>
 
 
 <dt>col_labels_fontface</dt>
-<dd><p>(<code>character</code>)<br> fontface to apply to the first row (of column labels
-if <code>col_labels = TRUE</code>).</p></dd>
+<dd><p>(<code>string</code>)<br> font face to apply to the first row (of column labels
+if <code>col_labels = TRUE</code>). Defaults to <code>"bold"</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>a <code>ggplot</code> object.</p>
+<p>A <code>ggplot</code> object.</p>
     </div>
 
     <div class="section level2">

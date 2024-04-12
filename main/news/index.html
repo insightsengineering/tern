@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3.9030</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3.9031</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,9 +63,9 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.9.3.9030" id="tern-0939030">tern 0.9.3.9030<a class="anchor" aria-label="anchor" href="#tern-0939030"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.9.3.9031" id="tern-0939031">tern 0.9.3.9031<a class="anchor" aria-label="anchor" href="#tern-0939031"></a></h2>
 <div class="section level4">
-<h4 id="new-features-0-9-3-9030">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-9-3-9030"></a></h4>
+<h4 id="new-features-0-9-3-9031">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-9-3-9031"></a></h4>
 <ul><li>Refactored <code>g_forest</code> to output a <code>ggplot</code> object instead of a <code>grob</code> object.</li>
 <li>Added <code>h_glm_negbin</code> to <code>h_glm_count</code> to enable count data analysis using a negative binomial model.</li>
 <li>Added argument <code>grade_groups_only</code> to <code>count_occurrences_by_grade</code> to allow users to only display rows for specified grade groups.</li>
@@ -74,11 +74,11 @@
 <li>Refactored <code>g_km</code> to output a <code>ggplot</code> object instead of a <code>grob</code> object.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="enhancements-0-9-3-9030">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-9-3-9030"></a></h4>
+<h4 id="enhancements-0-9-3-9031">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-9-3-9031"></a></h4>
 <ul><li>Default format for mean p-values (<code>mean_pval</code>) updated from <code>"xx.xx"</code> to <code>"x.xxxx | (&lt;0.0001)"</code>.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="bug-fixes-0-9-3-9030">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-9-3-9030"></a></h4>
+<h4 id="bug-fixes-0-9-3-9031">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-9-3-9031"></a></h4>
 <ul><li>Fixed nested column split label overlay issue in <code>rtable2gg</code> to clean up appearance of text labels.</li>
 <li>Fixed bug in <code>s_ancova</code> causing incorrect difference calculations for arm variables with irregular levels.</li>
 <li>Fixed bug in <code>format_count_fraction_fixed_dp</code> that did not have the same print when the fraction was 1 (100%).</li>
@@ -86,7 +86,7 @@
 <li>Fixed bug causing an error when automatic value formatting was applied to <code>NA</code> values.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="miscellaneous-0-9-3-9030">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-9-3-9030"></a></h4>
+<h4 id="miscellaneous-0-9-3-9031">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-9-3-9031"></a></h4>
 <ul><li>Added function <code>expect_snapshot_ggplot</code> to test setup file to process plot snapshot tests and allow plot dimensions to be set.</li>
 <li>Began deprecation of the named element <code>strat</code>, to be renamed to <code>strata</code>, within the <code>variables</code> argument to <code>h_rsp_to_logistic_variables</code>, <code>h_logistic_mult_cont_df</code>, <code>h_odds_ratio_subgroups_df</code>, <code>h_coxreg_mult_cont_df</code>, <code>h_coxph_subgroups_df</code>, <code>h_tbl_coxph_pairwise</code>, <code>extract_rsp_biomarkers</code>, <code>extract_rsp_subgroups</code>, <code>extract_survival_biomarkers</code>, and <code>extract_survival_subgroups</code>.</li>
 <li>Began deprecation of the <code>strat</code> argument to <code>s_coxph_pairwise</code> and replaced it with the <code>strata</code> argument.</li>
@@ -97,6 +97,7 @@
 <li>Began deprecation of no longer used Kaplan-Meier helper functions <code>h_ggkm</code>, <code>h_decompose_gg</code>, <code>h_km_layout</code>, <code>h_grob_tbl_at_risk</code>, <code>h_grob_median_surv</code>, <code>h_grob_y_annot</code>, and <code>h_grob_coxph</code>.</li>
 <li>Began deprecation of <code>grob</code>/<code>grid</code> related functions <code>stack_grobs</code>, <code>arrange_grobs</code>, and <code>draw_grob</code> which are no longer used in <code>tern</code>.</li>
 <li>Removed <code>vdiffr</code> package from Suggests in DESCRIPTION file.</li>
+<li>Renamed <code>individual_patient_plot.R</code> to <code>g_ipp.R</code>.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -112,7 +113,7 @@
 <li>Added list containing default statistics for each method group, <code>tern_default_stats</code>.</li>
 <li>Added summarize function version of <code>count_occurrences</code> analyze function, <code>summarize_occurrences</code>.</li>
 <li>Added referential footnotes to <code>surv_time</code> for censored range observations, controlled via the <code>ref_fn_censor</code> parameter.</li>
-<li>Added helper function <code>h_adlb_abnormal_by_worst_grade</code> to prepare <code>ADLB</code> data to use as input in <code>count_abnormal_by_worst_grade</code>.</li>
+<li>Added helper function <code>h_adlb_abnormal_by_worst_grade</code> to prepare ADLB data to use as input in <code>count_abnormal_by_worst_grade</code>.</li>
 <li>Added <code>s_bland_altman</code> function to assess agreement between two numerical vectors.</li>
 <li>Added function <code>rtable2gg</code> that converts <code>rtable</code> objects to <code>ggplot</code> objects.</li>
 <li>Added helper function to set default <code>na_str</code> globally with <code><a href="../reference/default_na_str.html">set_default_na_str()</a></code> and added <code><a href="../reference/default_na_str.html">default_na_str()</a></code> for all interested functions.</li>
@@ -336,7 +337,7 @@
 <li>Fixed table tests using <code>analyze_num_patients</code> to generate an initial summary so there is no repetition when paginating.</li>
 <li>Updated tests to use <code>testthat</code> 3rd edition and replaced applicable tests with snapshot testing.</li>
 <li>Updated <code>summarize_ancova</code> examples to use <code>iris</code> dataset instead of <code>scda</code> data.</li>
-<li>Created vignette which saves cached synthetic <code>CDISC</code> dataset files to the <code>data/</code> folder and generated cached synthetic datasets.</li>
+<li>Created vignette which saves cached synthetic CDISC dataset files to the <code>data/</code> folder and generated cached synthetic datasets.</li>
 <li>Updated all examples/tests to use datasets from the <code>data/</code> folder instead of <code>scda</code> datasets.</li>
 <li>Removed all template tests from <code>tern</code>. These tests are in internal repo <code>scda.test</code>.</li>
 </ul></div>
@@ -355,7 +356,7 @@
 <h2 class="pkg-version" data-toc-text="0.7.10" id="tern-0710">tern 0.7.10<a class="anchor" aria-label="anchor" href="#tern-0710"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-7-10">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-7-10"></a></h4>
-<ul><li>Added stratified <code>Newcombe</code> and stratified Wilson statistics to <code>estimate_proportion</code> and <code>estimate_proportion_diff</code> with relative tests.</li>
+<ul><li>Added stratified Newcombe and stratified Wilson statistics to <code>estimate_proportion</code> and <code>estimate_proportion_diff</code> with relative tests.</li>
 <li>Added <code>stat_mean_pval</code>, a new summary statistic to calculate the p-value of the mean.</li>
 <li>Added statistic <code>mean_se</code> (mean with standard error) for <code>summarize_variables</code> and related functions.</li>
 <li>Introduced again <code>Rdpack</code> for references.</li>
@@ -367,7 +368,7 @@
 <li>Added new parameter to <code>summarize_logistic</code> to specify which pivoted value to use during analysis.</li>
 <li>Updated <code>s_coxph_pairwise</code> to generate log-rank p-value using original log-rank test instead of Cox Proportional-Hazards Model.</li>
 <li>Implemented <code>nestcolor</code> in all examples by adapting <code>g_km</code>, <code>g_ipp</code>, <code>g_waterfall</code>, <code>g_step</code>, <code>g_lineplot</code>, and <code>g_forest</code>.</li>
-<li>Added parameters <code>interaction_y</code> and <code>interaction_item</code> in <code>ANCOVA</code> to make the interaction calculations available.</li>
+<li>Added parameters <code>interaction_y</code> and <code>interaction_item</code> in ANCOVA to make the interaction calculations available.</li>
 <li>Added new parameter <code>footnotes</code> to add footnotes to <code>g_km</code>.</li>
 </ul></div>
 <div class="section level4">
@@ -431,7 +432,7 @@
 <li>Removed warnings and messages to console occurring in examples and tests.</li>
 <li>Deprecated functions <code>color_palette</code> and <code>h_set_nest_theme</code> in favor of <code><a href="https://insightsengineering.github.io/nestcolor/reference/color_palette.html" class="external-link">nestcolor::color_palette</a></code> and <code><a href="https://insightsengineering.github.io/nestcolor/reference/theme_nest.html" class="external-link">nestcolor::theme_nest</a></code>, respectively.</li>
 <li>Removed deprecated functions: <code>color_palette</code>, <code>color_palette_core</code>, <code>h_set_nest_theme</code>, <code>s_cox_univariate</code>.</li>
-<li>Removed deprecated <code>mmrm</code> functions: <code>fit_mmrm</code>, <code>g_mmrm_diagnostic</code>, <code>g_mmrm_lsmeans</code>, <code>as.rtable.mmrm</code>, <code>h_mmrm_fixed</code>, <code>h_mmrm_cov</code>, <code>h_mmrm_diagnostic</code>, <code>tidy.mmrm</code>, <code>s_mmrm_lsmeans</code>, <code>s_mmrm_lsmeans_single</code>, <code>summarize_lsmeans</code>.</li>
+<li>Removed deprecated MMRM functions: <code>fit_mmrm</code>, <code>g_mmrm_diagnostic</code>, <code>g_mmrm_lsmeans</code>, <code>as.rtable.mmrm</code>, <code>h_mmrm_fixed</code>, <code>h_mmrm_cov</code>, <code>h_mmrm_diagnostic</code>, <code>tidy.mmrm</code>, <code>s_mmrm_lsmeans</code>, <code>s_mmrm_lsmeans_single</code>, <code>summarize_lsmeans</code>.</li>
 <li>Renamed functions <code>arm</code> to <code>study_arm</code> and <code>extract</code> to <code>extract_by_name</code>.</li>
 <li>Renamed <code>rtables.R</code> to <code>utils_rtables.R</code>.</li>
 <li>Extracted <code>cox_regression_inter</code> into a separate file from <code>cox_regression</code>.</li>
@@ -469,7 +470,7 @@
 <h4 id="enhancements-0-7-8">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-7-8"></a></h4>
 <ul><li>Enhanced <code>g_lineplot</code> with table to automatically scale the table height and return a <code>ggplot</code> object.</li>
 <li>Enhanced <code>g_ipp</code> with caption argument and adjust the position.</li>
-<li>Enhanced <code>prop_diff</code>, <code>tern</code> function and related functions to be able to apply a continuity correction in the <code>Newcombe</code> method.</li>
+<li>Enhanced <code>prop_diff</code>, <code>tern</code> function and related functions to be able to apply a continuity correction in the Newcombe method.</li>
 <li>Enhanced <code>summarize_numeric_in_columns</code> and <code>summarize_variables</code> to allow factor/character summary and to be able to summarize the number of <code>BLQs</code> in <code>AVALC</code> from <code>ADPC</code> dataset.</li>
 <li>Updated order of summarize variables stats in manual for order consistency.</li>
 <li>Added a <code>sum</code> option to <code>summarize_variables</code>.</li>
@@ -492,7 +493,7 @@
 <h2 class="pkg-version" data-toc-text="0.7.7" id="tern-077">tern 0.7.7<a class="anchor" aria-label="anchor" href="#tern-077"></a></h2>
 <div class="section level4">
 <h4 id="breaking-changes-0-7-7">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-7-7"></a></h4>
-<ul><li>Move <code>MMRM</code> into a separate package <code>tern.mmrm</code>.</li>
+<ul><li>Move MMRM into a separate package <code>tern.mmrm</code>.</li>
 </ul></div>
 <div class="section level4">
 <h4 id="new-features-0-7-7">New features<a class="anchor" aria-label="anchor" href="#new-features-0-7-7"></a></h4>
@@ -543,7 +544,7 @@
 <h4 id="new-features-0-7-5">New features<a class="anchor" aria-label="anchor" href="#new-features-0-7-5"></a></h4>
 <ul><li>Added functions to estimate continuous biomarker effects across subgroups for survival and binary response endpoints, used to produce corresponding forest plots, see <code>survival_biomarkers_subgroups</code> and <code>response_biomarkers_subgroups</code>.</li>
 <li>Added <code>g_lineplot</code> plot function, including new <code>h_format_row</code> helper function and <code>control_lineplot_vars</code> function. Removed <code>g_summary_by</code>.</li>
-<li>Added new safety helper function <code>h_stack_by_baskets</code> to stack events in <code>SMQ</code> and/or <code>CQ</code> basket flag in <code>ADAE</code> data set.</li>
+<li>Added new safety helper function <code>h_stack_by_baskets</code> to stack events in SMQ and/or CQ basket flag in ADAE data set.</li>
 </ul></div>
 <div class="section level4">
 <h4 id="enhancements-0-7-5">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-7-5"></a></h4>
@@ -559,7 +560,7 @@
 <ul><li>Fixed <code>prop_diff_cmh</code> to handle edge case of no FALSE (or TRUE) responses.</li>
 <li>Enhanced <code>g_mmrm_diagnostic</code> to improve error handling when data is not amenable to the Locally Weighted Scatterplot Smoothing.</li>
 <li>Fixes in <code>g_km</code>:
-<ul><li>Plot can now display any combination of the annotation tables for number of patients at risk, median survival time, and <code>CoxPH</code> summary.</li>
+<ul><li>Plot can now display any combination of the annotation tables for number of patients at risk, median survival time, and Cox-PH summary.</li>
 <li>Function will return a warning instead of an error if the <code>arm</code> variable includes a single level and <code>annot_coxph = TRUE</code>.</li>
 <li>Lines in the plot now start at time 0 and probability 1.</li>
 <li>Category labels can include the equals sign.</li>
@@ -587,7 +588,7 @@
 </ul></div>
 <div class="section level4">
 <h4 id="enhancements-0-7-4">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-7-4"></a></h4>
-<ul><li>Enhanced <code>mmrm</code> related functions for fitting models without <code>arm</code> variable.</li>
+<ul><li>Enhanced MMRM-related functions for fitting models without <code>arm</code> variable.</li>
 <li>Updated <code>cox_regression</code> to work without covariates. Also in case of interaction model summary, p-values for main effect coefficients are no longer displayed.</li>
 <li>Descriptive statistics returned by <code>summarize_vars</code> now include quantiles. <code>summarize_vars</code> now accepts the control function <code>control_summarize_vars</code> to specify details about confidence level for mean and median and quantile details. The <code>control</code> argument replaces <code>conf_level</code>.</li>
 <li>Added <code>var_labels</code> and <code>show_labels</code> arguments to <code>count_occurrences_by_grade</code>.</li>
@@ -667,13 +668,13 @@
 <li>New arguments <code>yval</code> and <code>ci_ribbon</code> added to <code>g_km</code>.</li>
 <li>Add new individual patient plot function <code>g_ipp</code> along with helpers <code>h_g_ipp</code> and <code>h_set_nest_theme</code>.</li>
 <li>Fixed bug in <code>count_patients_with_events</code>, now shows zero counts without percentage.</li>
-<li>Fixed bug in <code>get_mmrm_lsmeans</code> which did not allow <code>MMRM</code> analysis of more than 3000 observations.</li>
+<li>Fixed bug in <code>get_mmrm_lsmeans</code> which did not allow MMRM analysis of more than 3000 observations.</li>
 <li>Updated <code>stat_mean_ci</code> and <code>stat_median_ci</code> to handle edge cases with number of elements in input series equal to 1. For such cases, <code>NA_real_</code> is now returned, instead of <code>NA</code> or <code>+/-Inf</code> for confidence interval (CI) estimates.</li>
 <li>Rename <code>n_lim</code> argument of <code>stat_mean_ci</code> to <code>n_min</code> to better reflect its desired meaning.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.7.0" id="tern-070">tern 0.7.0<a class="anchor" aria-label="anchor" href="#tern-070"></a></h2>
-<p>This version of <code>tern</code> introduces a major rewriting of <code>tern</code> due to the change to layout based tabulation in <code>rtables</code>. <code>tern</code> now does not build tables directly anymore, instead it provides analysis functions to build tables, see the examples. * Counting patients with abnormal values post-baseline with <code>count_abnormal</code>. * Counting patients with graded abnormal values with <code>count_abnormal_by_worst_grade</code>. * Counting patients with abnormal values by baseline status with <code>count_abnormal_by_baseline</code>. * Counting patients with missed doses with <code>s_count_missed_doses</code> and <code>count_missed_doses</code>. * Counting patients with event flags with <code>count_patients_with_event</code> and <code>count_patients_with_flags</code>. * Summarizing variables with <code>summarize_vars</code> (supports numeric, factor, character and logical variables). Note that factors need to have <code>NA</code>s converted to <code>na_level</code> before use. * Summarizing change from baseline with <code>summarize_change</code>. * Summarizing variables in columns with <code>summarize_colvars</code>. * Estimating difference for responder proportions with <code>estimate_proportion_diff</code>. * Estimating difference for Odds Ratio with <code>estimate_odds_ratio</code>. * Testing the difference in responder proportions with <code>test_proportion_diff</code>. * Estimating the responder proportion for the level of a factor with <code>estimate_multinomial_response</code>. * Fitting and tabulating the results of Cox regressions with <code>fit_coxreg_univar</code>, <code>fit_coxreg_multivar</code> and <code>summarize_coxreg</code>, respectively. * Pruning occurrence tables (or tables with counts and fractions) with flexible rules, see <code><a href="../reference/prune_occurrences.html">?prune_occurrences</a></code> for details. * Sorting occurrence tables using different options, see <code><a href="../reference/score_occurrences.html">?score_occurrences</a></code> for details. * Fitting and tabulating <code>MMRM</code> models with <code>fit_mmrm</code> and <code>as.rtable</code> and <code>summarize_lsmeans</code>, see <code>?tabulate_mmrm</code> for details. * Counting the number of unique and non-unique patients with <code>summarize_num_patients</code>. * Counting occurrences with <code>count_occurrences</code>. * Counting occurrences by grade with <code>summarize_occurrences_by_grade</code> and <code>count_occurrences_by_grade</code>. * Counting patients and events in columns with <code>summarize_patients_events_in_cols</code>. * Tabulating the binary outcome response by subgroup with <code>extract_rsp_subgroups</code> and <code>tabulate_rsp_subgroups</code>. * Tabulating the survival duration by subgroup with <code>extract_survival_subgroups</code> and <code>tabulate_survival_subgroups</code>.</p>
+<p>This version of <code>tern</code> introduces a major rewriting of <code>tern</code> due to the change to layout based tabulation in <code>rtables</code>. <code>tern</code> now does not build tables directly anymore, instead it provides analysis functions to build tables, see the examples. * Counting patients with abnormal values post-baseline with <code>count_abnormal</code>. * Counting patients with graded abnormal values with <code>count_abnormal_by_worst_grade</code>. * Counting patients with abnormal values by baseline status with <code>count_abnormal_by_baseline</code>. * Counting patients with missed doses with <code>s_count_missed_doses</code> and <code>count_missed_doses</code>. * Counting patients with event flags with <code>count_patients_with_event</code> and <code>count_patients_with_flags</code>. * Summarizing variables with <code>summarize_vars</code> (supports numeric, factor, character and logical variables). Note that factors need to have <code>NA</code>s converted to <code>na_level</code> before use. * Summarizing change from baseline with <code>summarize_change</code>. * Summarizing variables in columns with <code>summarize_colvars</code>. * Estimating difference for responder proportions with <code>estimate_proportion_diff</code>. * Estimating difference for Odds Ratio with <code>estimate_odds_ratio</code>. * Testing the difference in responder proportions with <code>test_proportion_diff</code>. * Estimating the responder proportion for the level of a factor with <code>estimate_multinomial_response</code>. * Fitting and tabulating the results of Cox regressions with <code>fit_coxreg_univar</code>, <code>fit_coxreg_multivar</code> and <code>summarize_coxreg</code>, respectively. * Pruning occurrence tables (or tables with counts and fractions) with flexible rules, see <code><a href="../reference/prune_occurrences.html">?prune_occurrences</a></code> for details. * Sorting occurrence tables using different options, see <code><a href="../reference/score_occurrences.html">?score_occurrences</a></code> for details. * Fitting and tabulating MMRM models with <code>fit_mmrm</code> and <code>as.rtable</code> and <code>summarize_lsmeans</code>, see <code>?tabulate_mmrm</code> for details. * Counting the number of unique and non-unique patients with <code>summarize_num_patients</code>. * Counting occurrences with <code>count_occurrences</code>. * Counting occurrences by grade with <code>summarize_occurrences_by_grade</code> and <code>count_occurrences_by_grade</code>. * Counting patients and events in columns with <code>summarize_patients_events_in_cols</code>. * Tabulating the binary outcome response by subgroup with <code>extract_rsp_subgroups</code> and <code>tabulate_rsp_subgroups</code>. * Tabulating the survival duration by subgroup with <code>extract_survival_subgroups</code> and <code>tabulate_survival_subgroups</code>.</p>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.6.9" id="tern-069">tern 0.6.9<a class="anchor" aria-label="anchor" href="#tern-069"></a></h2>
@@ -686,16 +687,16 @@
 <li>Add new function <code>t_contingency</code> for contingency tables.</li>
 <li>Renamed the class <code>splitText</code> to <code>dynamicSplitText</code> to resolve the name conflict with the package <code>ggpubr</code>.</li>
 <li>Add <code>rreplace_format</code> for tabulation post-processing.</li>
-<li>Add new tern function <code>t_ancova</code> to create <code>ANCOVA</code> tables, as well as corresponding elementary table function <code>t_el_ancova</code> and summary function <code>s_ancova</code>.</li>
+<li>Add new tern function <code>t_ancova</code> to create ANCOVA tables, as well as corresponding elementary table function <code>t_el_ancova</code> and summary function <code>s_ancova</code>.</li>
 <li>Add new tern function <code>s_odds_ratio</code> to estimate Odds Ratio of response between categories, as well as the corresponding elementary table function <code>t_el_odds_ratio</code>.</li>
-<li>Added new CI methods (<code>Agresti-Coull</code>, <code>Jeffreys</code>) for <code>s_proportion</code>.</li>
+<li>Added new CI methods (<code>agresti-coull</code>, <code>jeffreys</code>) for <code>s_proportion</code>.</li>
 <li>Added new CI methods <code>anderson-hauck</code> and <code>newcombe</code> to <code>s_proportion_diff</code>.</li>
 <li>Added new p-value methods (Fisher’s Exact, Chi-Squared Test with Schouten Correction) for <code>s_test_proportion_diff</code>.</li>
 <li>The binary summary table function <code>t_binary_outcome</code> takes now lists (instead of character vectors) specified by the helper function <code>control_binary_comparison</code> as the arguments <code>strat_analysis</code> and <code>unstrat_analysis</code>. Odds Ratio estimates and CIs are now removable and included by default, similarly to the other subsections of the arm comparison analyses. Also added argument <code>rsp_multinomial</code>.</li>
 <li>Add new table function <code>t_el_multinomial_proportion</code>.</li>
 <li>Add new table function <code>t_abn_shift</code>.</li>
-<li>Add new <code>MMRM</code> analysis function <code>s_mmrm</code>, as well as corresponding table functions <code>t_mmrm_lsmeans</code>, <code>t_mmrm_cov</code>, <code>t_mmrm_diagnostic</code>, <code>t_mmrm_fixed</code>, and plot functions <code>g_mmrm_lsmeans</code>, <code>g_mmrm_diagnostic</code>. The results of these match SAS results (up to numeric precision).</li>
-<li>Deprecated old <code>MMRM</code> functions <code>a_mmrm</code> and <code>t_mmrm</code> (they give a deprecation warning but still work) to remove in the next release. The reason is that the results of these functions don’t match SAS results.</li>
+<li>Add new MMRM analysis function <code>s_mmrm</code>, as well as corresponding table functions <code>t_mmrm_lsmeans</code>, <code>t_mmrm_cov</code>, <code>t_mmrm_diagnostic</code>, <code>t_mmrm_fixed</code>, and plot functions <code>g_mmrm_lsmeans</code>, <code>g_mmrm_diagnostic</code>. The results of these match SAS results (up to numeric precision).</li>
+<li>Deprecated old MMRM functions <code>a_mmrm</code> and <code>t_mmrm</code> (they give a deprecation warning but still work) to remove in the next release. The reason is that the results of these functions don’t match SAS results.</li>
 <li>Fix bug in <code>g_km</code> related to numbers in patients at risk table to correct numbers for integer time-to-event variable inputs.</li>
 </ul></div>
     <div class="section level2">
