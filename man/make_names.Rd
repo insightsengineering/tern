@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{make_names}
 \alias{make_names}
-\title{Make Names Without Dots}
+\title{Make names without dots}
 \usage{
 make_names(nams)
 }
@@ -13,6 +13,6 @@ make_names(nams)
 A \code{character} \code{vector} of proper names, which does not use dots in contrast to \code{\link[=make.names]{make.names()}}.
 }
 \description{
-Make Names Without Dots
+Make names without dots
 }
 \keyword{internal}

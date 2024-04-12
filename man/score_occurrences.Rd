@@ -5,7 +5,7 @@
 \alias{score_occurrences_cols}
 \alias{score_occurrences_subtable}
 \alias{score_occurrences_cont_cols}
-\title{Occurrence Table Sorting}
+\title{Occurrence table sorting}
 \usage{
 score_occurrences(table_row)
 
@@ -60,7 +60,7 @@ specific columns in the scoring. See \code{\link[=h_row_counts]{h_row_counts()}}
 subtables: They sum up all specified column counts in the subtable. This is useful when
 there is no available content row summing up these counts.
 
-\item \code{score_occurrences_cont_cols()}: Produce score function for sorting table by summing the first content row in
+\item \code{score_occurrences_cont_cols()}: Produces a score function for sorting table by summing the first content row in
 specified columns. Note that this is extending \code{\link[rtables:score_funs]{rtables::cont_n_onecol()}} and \code{\link[rtables:score_funs]{rtables::cont_n_allcols()}}.
 
 }}

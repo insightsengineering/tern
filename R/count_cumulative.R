@@ -1,13 +1,13 @@
-#' Cumulative Counts with Thresholds
+#' Cumulative counts with thresholds
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Summarize cumulative counts of a (`numeric`) vector that is less than, less or equal to,
+#' Summarize cumulative counts of a `numeric` vector that is less than, less or equal to,
 #' greater than, or greater or equal to user-specific thresholds.
 #'
 #' @inheritParams h_count_cumulative
 #' @inheritParams argument_convention
-#' @param thresholds (`numeric`)\cr vector of cutoff value for the counts.
+#' @param thresholds (`numeric`)\cr vector of cutoff values for the counts.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_cumulative")`
 #'   to see available statistics for this function.
 #'
@@ -17,16 +17,16 @@
 #' @order 1
 NULL
 
-#' Helper Function for [s_count_cumulative()]
+#' Helper function for `s_count_cumulative()`
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Helper function to calculate count and fraction of `x` values in the lower or upper tail given a threshold.
 #'
 #' @inheritParams argument_convention
-#' @param threshold (`number`)\cr a cutoff value as threshold to count values of `x`.
-#' @param lower_tail (`logical`)\cr whether to count lower tail, default is `TRUE`.
-#' @param include_eq (`logical`)\cr whether to include value equal to the `threshold` in
+#' @param threshold (`numeric(1)`)\cr a cutoff value as threshold to count values of `x`.
+#' @param lower_tail (`flag`)\cr whether to count lower tail, default is `TRUE`.
+#' @param include_eq (`flag`)\cr whether to include value equal to the `threshold` in
 #'   count, default is `TRUE`.
 #'
 #' @return A named vector with items:
@@ -75,7 +75,7 @@ h_count_cumulative <- function(x,
   result
 }
 
-#' Description of Cumulative Count
+#' Description of cumulative count
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

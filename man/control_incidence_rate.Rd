@@ -20,7 +20,7 @@ for confidence interval type.}
 \item{input_time_unit}{(\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
 indicating time unit for data input.}
 
-\item{num_pt_year}{(\code{numeric})\cr number of patient-years to use when calculating adverse event rates.}
+\item{num_pt_year}{(\code{numeric(1)})\cr number of patient-years to use when calculating adverse event rates.}
 }
 \value{
 A list of components with the same names as the arguments.

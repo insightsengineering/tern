@@ -1,4 +1,4 @@
-#' Tabulate Biomarker Effects on Binary Response by Subgroup
+#' Tabulate biomarker effects on binary response by subgroup
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -101,7 +101,7 @@ tabulate_rsp_biomarkers <- function(df,
   )
 }
 
-#' Prepares Response Data Estimates for Multiple Biomarkers in a Single Data Frame
+#' Prepare response data estimates for multiple biomarkers in a single data frame
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

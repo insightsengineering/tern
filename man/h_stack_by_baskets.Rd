@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_stack_by_baskets.R
 \name{h_stack_by_baskets}
 \alias{h_stack_by_baskets}
-\title{Helper Function to create a new \code{SMQ} variable in \code{ADAE} by stacking \code{SMQ} and/or \code{CQ} records.}
+\title{Helper function to create a new SMQ variable in ADAE by stacking SMQ and/or CQ records.}
 \usage{
 h_stack_by_baskets(
   df,
@@ -22,20 +22,20 @@ h_stack_by_baskets(
 
 \item{keys}{(\code{character})\cr names of the key variables to be returned along with the new variable created.}
 
-\item{aag_summary}{(\code{data.frame})\cr containing the \code{SMQ} baskets and the levels of interest for the final \code{SMQ}
+\item{aag_summary}{(\code{data.frame})\cr containing the SMQ baskets and the levels of interest for the final SMQ
 variable. This is useful when there are some levels of interest that are not observed in the \code{df} dataset.
 The two columns of this dataset should be named \code{basket} and \code{basket_name}.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 }
 \value{
-\code{data.frame} with variables in \code{keys} taken from \code{df} and new variable \code{SMQ} containing
+A \code{data.frame} with variables in \code{keys} taken from \code{df} and new variable SMQ containing
 records belonging to the baskets selected via the \code{baskets} argument.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Helper Function to create a new \code{SMQ} variable in \code{ADAE} that consists of all adverse events belonging to
+Helper function to create a new SMQ variable in ADAE that consists of all adverse events belonging to
 selected Standardized/Customized queries. The new dataset will only contain records of the adverse events
 belonging to any of the selected baskets. Remember that \code{na_str} must match the needed pre-processing
 done with \code{\link[=df_explicit_na]{df_explicit_na()}} to have the desired output.

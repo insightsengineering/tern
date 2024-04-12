@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimate_proportion.R
 \name{d_proportion}
 \alias{d_proportion}
-\title{Description of the Proportion Summary}
+\title{Description of the proportion summary}
 \usage{
 d_proportion(conf_level, method, long = FALSE)
 }

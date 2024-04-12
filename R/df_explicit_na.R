@@ -1,4 +1,4 @@
-#' Encode Categorical Missing Values in a Data Frame
+#' Encode categorical missing values in a data frame
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -19,7 +19,7 @@
 #'   in `data` to factors.
 #' @param logical_as_factor (`flag`)\cr whether to convert logical variables
 #'   in `data` to factors.
-#' @param na_level (`string`)\cr used to replace all `NA` or empty
+#' @param na_level (`string`)\cr string used to replace all `NA` or empty
 #'   values inside non-`omit_columns` columns.
 #'
 #' @return A `data.frame` with the chosen modifications applied.

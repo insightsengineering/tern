@@ -1,11 +1,11 @@
-#' Univariate Formula Special Term
+#' Univariate formula special term
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' The special term `univariate` indicate that the model should be fitted individually for
 #' every variable included in univariate.
 #'
-#' @param x A vector of variable name separated by commas.
+#' @param x (`character`)\cr a vector of variable names separated by commas.
 #'
 #' @return When used within a model formula, produces univariate models for each variable provided.
 #'
@@ -29,18 +29,18 @@ rht <- function(x) {
   return(y)
 }
 
-#' Hazard Ratio Estimation in Interactions
+#' Hazard ratio estimation in interactions
 #'
 #' This function estimates the hazard ratios between arms when an interaction variable is given with
 #' specific values.
 #'
-#' @param variable,given Names of two variable in interaction. We seek the estimation of the levels of `variable`
-#'   given the levels of `given`.
-#' @param lvl_var,lvl_given corresponding levels has given by `levels`.
-#' @param mmat A name numeric filled with 0 used as template to obtain the design matrix.
-#' @param coef Numeric of estimated coefficients.
-#' @param vcov Variance-covariance matrix of underlying model.
-#' @param conf_level Single numeric for the confidence level of estimate intervals.
+#' @param variable,given (`character(2)`)\cr names of the two variables in the interaction. We seek the estimation of
+#'   the levels of `variable` given the levels of `given`.
+#' @param lvl_var,lvl_given (`character`)\cr corresponding levels given by [levels()].
+#' @param mmat (named `numeric`) a vector filled with `0`s used as a template to obtain the design matrix.
+#' @param coef (`numeric`)\cr vector of estimated coefficients.
+#' @param vcov (`matrix`)\cr variance-covariance matrix of underlying model.
+#' @param conf_level (`proportion`)\cr confidence level of estimate intervals.
 #'
 #' @details Given the cox regression investigating the effect of Arm (A, B, C; reference A)
 #'   and Sex (F, M; reference Female). The model is abbreviated: y ~ Arm + Sex + Arm x Sex.
@@ -55,7 +55,7 @@ rht <- function(x) {
 #'   therefore the interaction coefficient is given by b2 + b5 while the standard error is obtained
 #'   as $1.96 * sqrt(Var b2 + Var b5 + 2 * covariance (b2,b5))$ for a confidence level of 0.95.
 #'
-#' @return A list of matrix (one per level of variable) with rows corresponding to the combinations of
+#' @return A list of matrices (one per level of variable) with rows corresponding to the combinations of
 #'   `variable` and `given`, with columns:
 #'   * `coef_hat`: Estimation of the coefficient.
 #'   * `coef_se`: Standard error of the estimation.
@@ -160,7 +160,7 @@ estimate_coef <- function(variable, given,
 #'
 #' @examples
 #' # `car::Anova` on cox regression model including strata and expected
-#' # a likelihood ratio test triggers a warning as only `Wald` method is
+#' # a likelihood ratio test triggers a warning as only Wald method is
 #' # accepted.
 #'
 #' library(survival)
@@ -202,10 +202,9 @@ try_car_anova <- function(mod,
   return(y)
 }
 
-#' Fit the Cox Regression Model and `Anova`
+#' Fit a Cox regression model and ANOVA
 #'
-#' The functions allows to derive from the [survival::coxph()] results the effect p.values using [car::Anova()].
-#' This last package introduces more flexibility to get the effect p.values.
+#' The functions derives the effect p-values using [car::Anova()] from [survival::coxph()] results.
 #'
 #' @inheritParams t_coxreg
 #'
@@ -290,7 +289,7 @@ check_increments <- function(increments, covariates) {
   invisible()
 }
 
-#' Multivariate Cox Model - Summarized Results
+#' Multivariate Cox model - summarized results
 #'
 #' Analyses based on multivariate Cox model are usually not performed for the Controlled Substance Reporting or
 #' regulatory documents but serve exploratory purposes only (e.g., for publication). In practice, the model usually
@@ -301,13 +300,13 @@ check_increments <- function(increments, covariates) {
 #' the p.values need to be interpreted with caution. (**Statistical Analysis of Clinical Trials Data with R**,
 #' `NEST's bookdown`)
 #'
-#' @param formula (`formula`)\cr A formula corresponding to the investigated [survival::Surv()] survival model
+#' @param formula (`formula`)\cr a formula corresponding to the investigated [survival::Surv()] survival model
 #'   including covariates.
-#' @param data (`data.frame`)\cr A data frame which includes the variable in formula and covariates.
-#' @param conf_level (`proportion`)\cr The confidence level for the hazard ratio interval estimations. Default is 0.95.
-#' @param pval_method (`character`)\cr The method used for the estimation of p-values, should be one of
+#' @param data (`data.frame`)\cr a data frame which includes the variable in formula and covariates.
+#' @param conf_level (`proportion`)\cr the confidence level for the hazard ratio interval estimations. Default is 0.95.
+#' @param pval_method (`string`)\cr the method used for the estimation of p-values, should be one of
 #'   `"wald"` (default) or `"likelihood"`.
-#' @param ... Optional parameters passed to [survival::coxph()]. Can include `ties`, a character string specifying the
+#' @param ... optional parameters passed to [survival::coxph()]. Can include `ties`, a character string specifying the
 #'   method for tie handling, one of `exact` (default), `efron`, `breslow`.
 #'
 #' @return A `list` with elements `mod`, `msum`, `aov`, and `coef_inter`.

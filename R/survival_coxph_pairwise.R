@@ -1,8 +1,8 @@
-#' Pairwise `CoxPH` model
+#' Pairwise Cox-PH model
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Summarize p-value, HR and CIs from stratified or unstratified `CoxPH` model.
+#' Summarize p-value, HR and CIs from stratified or unstratified Cox-PH model.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams s_surv_time

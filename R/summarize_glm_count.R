@@ -1,8 +1,8 @@
-#' Summary for Poisson Negative Binomial.
+#' Summarize Poisson negative binomial regression
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#' Summarize results of a Poisson Negative Binomial Regression.
+#' Summarize results of a Poisson negative binomial regression.
 #' This can be used to analyze count and/or frequency data using a linear model.
 #'
 #' @inheritParams h_glm_count
@@ -14,7 +14,7 @@
 #' @order 1
 NULL
 
-#' Helper Functions for Poisson Models.
+#' Helper functions for Poisson models
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
@@ -27,11 +27,11 @@ NULL
 #' @name h_glm_count
 NULL
 
-#' @describeIn h_glm_count Helper function to return results of a poisson model.
+#' @describeIn h_glm_count Helper function to return results of a Poisson model.
 #'
 #' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called
 #'   in `.var` and `variables`.
-#' @param variables (named `list` of `strings`)\cr list of additional analysis variables, with
+#' @param variables (named `list` of `string`)\cr list of additional analysis variables, with
 #'   expected elements:
 #'   * `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
 #'     groups will be summarized. Specifically, the first level of `arm` variable is taken as the
@@ -85,7 +85,7 @@ h_glm_poisson <- function(.var,
   )
 }
 
-#' @describeIn h_glm_count Helper function to return results of a quasipoisson model.
+#' @describeIn h_glm_count Helper function to return results of a Quasi-Poisson model.
 #'
 #' @inheritParams summarize_glm_count
 #'
@@ -136,7 +136,7 @@ h_glm_quasipoisson <- function(.var,
 #' @inheritParams summarize_glm_count
 #'
 #' @return
-#' * `h_glm_negbin()` returns the results of a Negative Binomial model.
+#' * `h_glm_negbin()` returns the results of a negative binomial model.
 #'
 #' @keywords internal
 h_glm_negbin <- function(.var,
@@ -176,11 +176,11 @@ h_glm_negbin <- function(.var,
 }
 
 #' @describeIn h_glm_count Helper function to return the results of the
-#'   selected model (poisson, quasipoisson, negative binomial).
+#'   selected model (Poisson, Quasi-Poisson, negative binomial).
 #'
-#' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called
+#' @param .df_row (`data.frame`)\cr dataset that includes all the variables that are called
 #'   in `.var` and `variables`.
-#' @param variables (named `list` of `strings`)\cr list of additional analysis variables, with
+#' @param variables (named `list` of `string`)\cr list of additional analysis variables, with
 #'   expected elements:
 #'   * `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple
 #'     groups will be summarized. Specifically, the first level of `arm` variable is taken as the
@@ -189,7 +189,7 @@ h_glm_negbin <- function(.var,
 #'     `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
 #'   * `offset` (`numeric`)\cr a numeric vector or scalar adding an offset.
 #' @param distribution (`character`)\cr a character value specifying the distribution
-#'   used in the regression (poisson, quasipoisson, negative binomial).
+#'   used in the regression (Poisson, Quasi-Poisson, negative binomial).
 #'
 #' @return
 #' * `h_glm_count()` returns the results of the selected model.
@@ -210,8 +210,8 @@ h_glm_count <- function(.var,
 
 #' @describeIn h_glm_count Helper function to return the estimated means.
 #'
-#' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called in `.var` and `variables`.
-#' @param conf_level (`numeric`)\cr value used to derive the confidence interval for the rate.
+#' @param .df_row (`data.frame`)\cr dataset that includes all the variables that are called in `.var` and `variables`.
+#' @param conf_level (`proportion`)\cr value used to derive the confidence interval for the rate.
 #' @param obj (`glm.fit`)\cr fitted model object used to derive the mean rate estimates in each treatment arm.
 #' @param arm (`string`)\cr group variable, for which the covariate adjusted means of multiple groups will be
 #'   summarized. Specifically, the first level of `arm` variable is taken as the reference group.

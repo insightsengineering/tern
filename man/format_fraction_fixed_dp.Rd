@@ -2,14 +2,14 @@
 % Please edit documentation in R/formatting_functions.R
 \name{format_fraction_fixed_dp}
 \alias{format_fraction_fixed_dp}
-\title{Formatting Fraction and Percentage with Fixed Single Decimal Place}
+\title{Format fraction and percentage with fixed single decimal place}
 \usage{
 format_fraction_fixed_dp(x, ...)
 }
 \arguments{
-\item{x}{(\code{integer})\cr with elements \code{num} and \code{denom}.}
+\item{x}{(named \code{integer})\cr vector with elements \code{num} and \code{denom}.}
 
-\item{...}{required for \code{rtables} interface.}
+\item{...}{not used. Required for \code{rtables} interface.}
 }
 \value{
 A string in the format \verb{num / denom (ratio \%)}. If \code{num} is 0, the format is \code{num / denom}.

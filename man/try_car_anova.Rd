@@ -32,7 +32,7 @@ Captures warnings when executing \link[car:Anova]{car::Anova}.
 }
 \examples{
 # `car::Anova` on cox regression model including strata and expected
-# a likelihood ratio test triggers a warning as only `Wald` method is
+# a likelihood ratio test triggers a warning as only Wald method is
 # accepted.
 
 library(survival)

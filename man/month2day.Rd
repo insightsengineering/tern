@@ -2,12 +2,12 @@
 % Please edit documentation in R/utils.R
 \name{month2day}
 \alias{month2day}
-\title{Conversion of Months to Days}
+\title{Conversion of months to days}
 \usage{
 month2day(x)
 }
 \arguments{
-\item{x}{(\code{numeric})\cr time in months.}
+\item{x}{(\code{numeric(1)})\cr time in months.}
 }
 \value{
 A \code{numeric} vector with the time in days.
@@ -15,7 +15,7 @@ A \code{numeric} vector with the time in days.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Conversion of Months to Days. This is an approximative calculation because it
+Conversion of months to days. This is an approximative calculation because it
 considers each month as having an average of 30.4375 days.
 }
 \examples{

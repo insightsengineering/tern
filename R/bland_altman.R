@@ -1,24 +1,30 @@
-#' Bland Altman analysis
+#' Bland-Altman analysis
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#' Functions of bland altman method to assess the agreement between two numerical vectors.
+#' Functions that use the Bland-Altman method to assess the agreement between two numerical vectors.
 #'
 #' @inheritParams argument_convention
-#' @param y ('numeric')\cr vector of numbers we want to analyze, which we want to compare with x.
+#' @param y (`numeric`)\cr vector of numbers we want to analyze, to be compared with `x`.
 #'
 #' @name bland_altman
+NULL
+
+#' @describeIn bland_altman Statistics function that compares two numeric vectors using the Bland-Altman method
+#'   and calculates a variety of statistics.
+#'
+#' @return
+#' * `s_bland_altman()` returns a named list of the following elements: `df`, `difference_mean`, `ci_mean`,
+#'   `difference_sd`, `difference_se`, `upper_agreement_limit`, `lower_agreement_limit`, `agreement_limit_se`,
+#'   `upper_agreement_limit_ci`, `lower_agreement_limit_ci`, `t_value`, and `n`.
+#'
 #' @examples
 #' x <- seq(1, 60, 5)
 #' y <- seq(5, 50, 4)
 #' conf_level <- 0.9
-#' # Derive statistics that are needed for Bland Altman plot
+#'
+#' # Derive statistics that are needed for Bland-Altman plot
 #' s_bland_altman(x, y, conf_level = conf_level)
-#' # Create a Bland Altman plot
-#' g_bland_altman(x, y, conf_level = conf_level)
-NULL
-
-#' @describeIn bland_altman
 #'
 #' @export
 s_bland_altman <- function(x, y, conf_level = 0.95) {
@@ -45,7 +51,6 @@ s_bland_altman <- function(x, y, conf_level = 0.95) {
   upper_agreement_limit <- difference_mean + al # agreement limits
   lower_agreement_limit <- difference_mean - al
 
-
   difference_se <- difference_sd / sqrt(n) # standard error of the mean
   al_se <- difference_sd * sqrt(3) / sqrt(n) # standard error of the agreement limit
   tvalue <- qt(1 - alpha / 2, n - 1) # t value for 95% CI calculation
@@ -53,7 +58,6 @@ s_bland_altman <- function(x, y, conf_level = 0.95) {
   al_ci <- al_se * tvalue
   upper_agreement_limit_ci <- c(upper_agreement_limit - al_ci, upper_agreement_limit + al_ci)
   lower_agreement_limit_ci <- c(lower_agreement_limit - al_ci, lower_agreement_limit + al_ci)
-
 
   list(
     df = data.frame(average, difference),
@@ -71,7 +75,14 @@ s_bland_altman <- function(x, y, conf_level = 0.95) {
   )
 }
 
-#' @describeIn bland_altman
+#' @describeIn bland_altman Graphing function that produces a Bland-Altman plot.
+#'
+#' @return
+#' * `g_bland_altman()` returns a `ggplot` Bland-Altman plot.
+#'
+#' @examples
+#' # Create a Bland-Altman plot
+#' g_bland_altman(x = x, y = y, conf_level = conf_level)
 #'
 #' @export
 g_bland_altman <- function(x, y, conf_level = 0.95) {

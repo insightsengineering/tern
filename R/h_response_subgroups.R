@@ -1,4 +1,4 @@
-#' Helper Functions for Tabulating Binary Response by Subgroup
+#' Helper functions for tabulating binary response by subgroup
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -32,7 +32,7 @@
 #' @name h_response_subgroups
 NULL
 
-#' @describeIn h_response_subgroups helper to prepare a data frame of binary responses by arm.
+#' @describeIn h_response_subgroups Helper to prepare a data frame of binary responses by arm.
 #'
 #' @return
 #' * `h_proportion_df()` returns a `data.frame` with columns `arm`, `n`, `n_rsp`, and `prop`.
@@ -78,7 +78,7 @@ h_proportion_df <- function(rsp, arm) {
   df
 }
 
-#' @describeIn h_response_subgroups summarizes proportion of binary responses by arm and across subgroups
+#' @describeIn h_response_subgroups Summarizes proportion of binary responses by arm and across subgroups
 #'    in a data frame. `variables` corresponds to the names of variables found in `data`, passed as a named list and
 #'    requires elements `rsp`, `arm` and optionally `subgroups`. `groups_lists` optionally specifies
 #'    groupings for `subgroups` variables.
@@ -146,11 +146,11 @@ h_proportion_subgroups_df <- function(variables,
   }
 }
 
-#' @describeIn h_response_subgroups helper to prepare a data frame with estimates of
+#' @describeIn h_response_subgroups Helper to prepare a data frame with estimates of
 #'   the odds ratio between a treatment and a control arm.
 #'
 #' @inheritParams response_subgroups
-#' @param strata_data (`factor`, `data.frame` or `NULL`)\cr required if stratified analysis is performed.
+#' @param strata_data (`factor`, `data.frame`, or `NULL`)\cr required if stratified analysis is performed.
 #'
 #' @return
 #' * `h_odds_ratio_df()` returns a `data.frame` with columns `arm`, `n_tot`, `or`, `lcl`, `ucl`, `conf_level`, and
@@ -274,7 +274,7 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
   df
 }
 
-#' @describeIn h_response_subgroups summarizes estimates of the odds ratio between a treatment and a control
+#' @describeIn h_response_subgroups Summarizes estimates of the odds ratio between a treatment and a control
 #'   arm across subgroups in a data frame. `variables` corresponds to the names of variables found in
 #'   `data`, passed as a named list and requires elements `rsp`, `arm` and optionally `subgroups`
 #'   and `strata`. `groups_lists` optionally specifies groupings for `subgroups` variables.

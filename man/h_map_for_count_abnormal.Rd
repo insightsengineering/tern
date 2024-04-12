@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_map_for_count_abnormal.R
 \name{h_map_for_count_abnormal}
 \alias{h_map_for_count_abnormal}
-\title{Helper Function to create a map dataframe that can be used in \code{trim_levels_to_map} split function.}
+\title{Helper function to create a map data frame for \code{trim_levels_to_map()}}
 \usage{
 h_map_for_count_abnormal(
   df,
@@ -32,7 +32,7 @@ A map \code{data.frame}.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Helper Function to create a map dataframe from the input dataset, which can be used as an argument in the
+Helper function to create a map data frame from the input dataset, which can be used as an argument in the
 \code{trim_levels_to_map} split function. Based on different method, the map is constructed differently.
 }
 \note{

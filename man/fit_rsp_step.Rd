@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit_rsp_step.R
 \name{fit_rsp_step}
 \alias{fit_rsp_step}
-\title{Subgroup Treatment Effect Pattern (STEP) Fit for Binary (Response) Outcome}
+\title{Subgroup treatment effect pattern (STEP) fit for binary (response) outcome}
 \usage{
 fit_rsp_step(variables, data, control = c(control_step(), control_logistic()))
 }

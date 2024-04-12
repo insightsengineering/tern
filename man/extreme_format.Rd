@@ -4,16 +4,16 @@
 \alias{extreme_format}
 \alias{h_get_format_threshold}
 \alias{h_format_threshold}
-\title{Formatting Extreme Values}
+\title{Format extreme values}
 \usage{
 h_get_format_threshold(digits = 2L)
 
 h_format_threshold(x, digits = 2L)
 }
 \arguments{
-\item{digits}{(\code{integer})\cr number of decimal places to display.}
+\item{digits}{(\code{integer(1)})\cr number of decimal places to display.}
 
-\item{x}{(\code{number})\cr value to format.}
+\item{x}{(\code{numeric(1)})\cr value to format.}
 }
 \value{
 \itemize{

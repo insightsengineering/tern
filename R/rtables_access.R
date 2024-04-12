@@ -1,4 +1,4 @@
-#' `rtables` Access Helper Functions
+#' Helper functions for accessing information from `rtables`
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -84,7 +84,7 @@ h_row_counts <- function(table_row,
   counts
 }
 
-#' @describeIn rtables_access helper function to extract fractions from specified columns in a `TableRow`.
+#' @describeIn rtables_access Helper function to extract fractions from specified columns in a `TableRow`.
 #'   More specifically it extracts the second values from each content cell and checks it is a fraction.
 #'
 #' @return

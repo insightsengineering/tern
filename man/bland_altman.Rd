@@ -4,7 +4,7 @@
 \alias{bland_altman}
 \alias{s_bland_altman}
 \alias{g_bland_altman}
-\title{Bland Altman analysis}
+\title{Bland-Altman analysis}
 \usage{
 s_bland_altman(x, y, conf_level = 0.95)
 
@@ -13,28 +13,43 @@ g_bland_altman(x, y, conf_level = 0.95)
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{y}{('numeric')\cr vector of numbers we want to analyze, which we want to compare with x.}
+\item{y}{(\code{numeric})\cr vector of numbers we want to analyze, to be compared with \code{x}.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+}
+\value{
+\itemize{
+\item \code{s_bland_altman()} returns a named list of the following elements: \code{df}, \code{difference_mean}, \code{ci_mean},
+\code{difference_sd}, \code{difference_se}, \code{upper_agreement_limit}, \code{lower_agreement_limit}, \code{agreement_limit_se},
+\code{upper_agreement_limit_ci}, \code{lower_agreement_limit_ci}, \code{t_value}, and \code{n}.
+}
+
+\itemize{
+\item \code{g_bland_altman()} returns a \code{ggplot} Bland-Altman plot.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Functions of bland altman method to assess the agreement between two numerical vectors.
+Functions that use the Bland-Altman method to assess the agreement between two numerical vectors.
 }
 \section{Functions}{
 \itemize{
-\item \code{s_bland_altman()}: 
+\item \code{s_bland_altman()}: Statistics function that compares two numeric vectors using the Bland-Altman method
+and calculates a variety of statistics.
 
-\item \code{g_bland_altman()}: 
+\item \code{g_bland_altman()}: Graphing function that produces a Bland-Altman plot.
 
 }}
 \examples{
 x <- seq(1, 60, 5)
 y <- seq(5, 50, 4)
 conf_level <- 0.9
-# Derive statistics that are needed for Bland Altman plot
+
+# Derive statistics that are needed for Bland-Altman plot
 s_bland_altman(x, y, conf_level = conf_level)
-# Create a Bland Altman plot
-g_bland_altman(x, y, conf_level = conf_level)
+
+# Create a Bland-Altman plot
+g_bland_altman(x = x, y = y, conf_level = conf_level)
+
 }

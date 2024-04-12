@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_km.R
 \name{h_grob_median_surv}
 \alias{h_grob_median_surv}
-\title{Helper Function: Survival Estimation Grob}
+\title{Helper function to create survival estimation grobs}
 \usage{
 h_grob_median_surv(
   fit_km,
@@ -18,11 +18,11 @@ h_grob_median_surv(
 
 \item{armval}{(\code{string})\cr used as strata name when treatment arm variable only has one level. Default is \code{"All"}.}
 
-\item{x}{(\code{numeric})\cr a value between 0 and 1 specifying x-location.}
+\item{x}{(\code{proportion})\cr a value between 0 and 1 specifying x-location.}
 
-\item{y}{(\code{numeric})\cr a value between 0 and 1 specifying y-location.}
+\item{y}{(\code{proportion})\cr a value between 0 and 1 specifying y-location.}
 
-\item{width}{(\code{unit})\cr width (as a unit) to use when printing the grob.}
+\item{width}{(\code{grid::unit})\cr width (as a unit) to use when printing the grob.}
 
 \item{ttheme}{(\code{list})\cr see \code{\link[gridExtra:tableGrob]{gridExtra::ttheme_default()}}.}
 }

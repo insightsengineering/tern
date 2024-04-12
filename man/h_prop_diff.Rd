@@ -7,7 +7,7 @@
 \alias{prop_diff_nc}
 \alias{prop_diff_cmh}
 \alias{prop_diff_strat_nc}
-\title{Helper Functions to Calculate Proportion Difference}
+\title{Helper functions to calculate proportion difference}
 \usage{
 prop_diff_wald(rsp, grp, conf_level = 0.95, correct = FALSE)
 
@@ -27,14 +27,14 @@ prop_diff_strat_nc(
 )
 }
 \arguments{
-\item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
+\item{rsp}{(\code{logical})\cr vector indicating whether each subject is a responder or not.}
 
 \item{grp}{(\code{factor})\cr vector assigning observations to one out of two groups
 (e.g. reference and treatment group).}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{correct}{(\code{logical})\cr whether to include the continuity correction. For further
+\item{correct}{(\code{flag})\cr whether to include the continuity correction. For further
 information, see \code{\link[stats:prop.test]{stats::prop.test()}}.}
 
 \item{strata}{(\code{factor})\cr variable with one level per stratum and same length as \code{rsp}.}
@@ -58,18 +58,18 @@ interval.
 
 \item \code{prop_diff_ha()}: Anderson-Hauck confidence interval.
 
-\item \code{prop_diff_nc()}: \code{Newcombe} confidence interval. It is based on
+\item \code{prop_diff_nc()}: Newcombe confidence interval. It is based on
 the Wilson score confidence interval for a single binomial proportion.
 
 \item \code{prop_diff_cmh()}: Calculates the weighted difference. This is defined as the difference in
 response rates between the experimental treatment group and the control treatment group, adjusted
-for stratification factors by applying \code{Cochran-Mantel-Haenszel} (\code{CMH}) weights. For the \code{CMH} chi-squared
+for stratification factors by applying Cochran-Mantel-Haenszel (CMH) weights. For the CMH chi-squared
 test, use \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}.
 
-\item \code{prop_diff_strat_nc()}: Calculates the stratified \code{Newcombe} confidence interval and difference in response
+\item \code{prop_diff_strat_nc()}: Calculates the stratified Newcombe confidence interval and difference in response
 rates between the experimental treatment group and the control treatment group, adjusted for stratification
 factors. This implementation follows closely the one proposed by \insertCite{Yan2010-jt;textual}{tern}.
-Weights can be estimated from the heuristic proposed in \code{\link[=prop_strat_wilson]{prop_strat_wilson()}} or from \code{CMH}-derived weights
+Weights can be estimated from the heuristic proposed in \code{\link[=prop_strat_wilson]{prop_strat_wilson()}} or from CMH-derived weights
 (see \code{\link[=prop_diff_cmh]{prop_diff_cmh()}}).
 
 }}
@@ -94,7 +94,7 @@ grp <- factor(c("A", "A", "B", "B"), levels = c("A", "B"))
 
 prop_diff_ha(rsp = rsp, grp = grp, conf_level = 0.6)
 
-# `Newcombe` confidence interval
+# Newcombe confidence interval
 
 set.seed(1)
 rsp <- c(
@@ -123,7 +123,7 @@ prop_diff_cmh(
   conf_level = 0.90
 )
 
-# Stratified `Newcombe` confidence interval
+# Stratified Newcombe confidence interval
 
 set.seed(2)
 data_set <- data.frame(

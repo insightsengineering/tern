@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_km.R
 \name{h_km_layout}
 \alias{h_km_layout}
-\title{Helper: KM Layout}
+\title{Helper function to prepare a KM layout}
 \usage{
 h_km_layout(
   data,

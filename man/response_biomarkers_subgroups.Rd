@@ -3,7 +3,7 @@
 \name{response_biomarkers_subgroups}
 \alias{response_biomarkers_subgroups}
 \alias{tabulate_rsp_biomarkers}
-\title{Tabulate Biomarker Effects on Binary Response by Subgroup}
+\title{Tabulate biomarker effects on binary response by subgroup}
 \usage{
 tabulate_rsp_biomarkers(
   df,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/g_lineplot.R
 \name{h_format_row}
 \alias{h_format_row}
-\title{Helper function to get the right formatting in the optional table in \code{g_lineplot}.}
+\title{Helper function to format the optional \code{g_lineplot} table}
 \usage{
 h_format_row(x, format, labels = NULL)
 }

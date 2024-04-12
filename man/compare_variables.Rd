@@ -8,7 +8,7 @@
 \alias{s_compare.factor}
 \alias{s_compare.character}
 \alias{s_compare.logical}
-\title{Compare Variables Between Groups}
+\title{Compare variables between groups}
 \usage{
 compare_vars(
   lyt,
@@ -47,16 +47,16 @@ s_compare(x, .ref_group, .in_ref_col, ...)
 \method{s_compare}{logical}(x, .ref_group, .in_ref_col, na.rm = TRUE, denom = "n", ...)
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{var_labels}{(\code{character})\cr character for label.}
+\item{var_labels}{(\code{character})\cr variable labels.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{arguments passed to \code{s_compare()}.}
@@ -65,8 +65,8 @@ underneath analyses, which is not allowed.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
 
 \item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
 defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
@@ -80,7 +80,7 @@ information on the \code{"auto"} setting.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Each element of the vector
 should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
 for that statistic's row label.}
 
@@ -88,7 +88,7 @@ for that statistic's row label.}
 
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
-\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+\item{.in_ref_col}{(\code{flag})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
 \item{denom}{(\code{string})\cr choice of denominator for factor proportions,
 can only be \code{n} (number of values in this row and column intersection).}
@@ -96,7 +96,7 @@ can only be \code{n} (number of values in this row and column intersection).}
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{verbose}{(\code{logical})\cr Whether warnings and messages should be printed. Mainly used
+\item{verbose}{(\code{flag})\cr whether warnings and messages should be printed. Mainly used
 to print out information about factor casting. Defaults to \code{TRUE}.}
 }
 \value{

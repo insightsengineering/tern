@@ -8,30 +8,31 @@
 #'
 #' @inheritParams rtable2gg
 #' @inheritParams argument_convention
-#' @param tbl (`rtable`)\cr table with at least one column with a single value and one column with 2 values.
-#' @param col_x (`integer`)\cr column index with estimator. By default tries to get this from
+#' @param tbl (`VTableTree`)\cr `rtables` table with at least one column with a single value and one column with 2
+#'   values.
+#' @param col_x (`integer(1)` or `NULL`)\cr column index with estimator. By default tries to get this from
 #'   `tbl` attribute `col_x`, otherwise needs to be manually specified. If `NULL`, points will be excluded
 #'   from forest plot.
-#' @param col_ci (`integer`)\cr column index with confidence intervals. By default tries to get this from
+#' @param col_ci (`integer(1)` or `NULL`)\cr column index with confidence intervals. By default tries to get this from
 #'   `tbl` attribute `col_ci`, otherwise needs to be manually specified. If `NULL`, lines will be excluded
 #'   from forest plot.
-#' @param vline (`numeric`)\cr x coordinate for vertical line, if `NULL` then the line is omitted.
-#' @param forest_header (`character`, length 2)\cr text displayed to the left and right of `vline`, respectively.
+#' @param vline (`numeric(1)` or `NULL`)\cr x coordinate for vertical line, if `NULL` then the line is omitted.
+#' @param forest_header (`character(2)`)\cr text displayed to the left and right of `vline`, respectively.
 #'   If `vline = NULL` then `forest_header` is not printed. By default tries to get this from `tbl` attribute
 #'   `forest_header`. If `NULL`, defaults will be extracted from the table if possible, and set to
 #'   `"Comparison\nBetter"` and `"Treatment\nBetter"` if not.
-#' @param xlim (`numeric`)\cr limits for x axis.
+#' @param xlim (`numeric(2)`)\cr limits for x axis.
 #' @param logx (`flag`)\cr show the x-values on logarithm scale.
 #' @param x_at (`numeric`)\cr x-tick locations, if `NULL`, `x_at` is set to `vline` and both `xlim` values.
 #' @param width_row_names `r lifecycle::badge("deprecated")` Please use the `lbl_col_padding` argument instead.
-#' @param width_columns (`vector` of `numeric`)\cr a vector of column widths. Each element's position in
+#' @param width_columns (`numeric`)\cr a vector of column widths. Each element's position in
 #'   `colwidths` corresponds to the column of `tbl` in the same position. If `NULL`, column widths are calculated
 #'   according to maximum number of characters per column.
 #' @param width_forest `r lifecycle::badge("deprecated")` Please use the `rel_width_forest` argument instead.
 #' @param rel_width_forest (`proportion`)\cr proportion of total width to allocate to the forest plot. Relative
 #'   width of table is then `1 - rel_width_forest`. If `as_list = TRUE`, this parameter is ignored.
-#' @param font_size (`numeric`)\cr font size.
-#' @param col_symbol_size (`integer`)\cr column index from `tbl` containing data to be used
+#' @param font_size (`numeric(1)`)\cr font size.
+#' @param col_symbol_size (`numeric` or `NULL`)\cr column index from `tbl` containing data to be used
 #'   to determine relative size for estimator plot symbol. Typically, the symbol size is proportional
 #'   to the sample size used to calculate the estimator. If `NULL`, the same symbol size is used for all subgroups.
 #'   By default tries to get this from `tbl` attribute `col_symbol_size`, otherwise needs to be manually specified.
@@ -429,21 +430,19 @@ g_forest <- function(tbl,
   }
 }
 
-#' Forest Plot Grob
+#' Forest plot grob
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
 #' @inheritParams g_forest
-#' @param tbl ([rtables::rtable()])
+#' @param tbl (`VTableTree`)\cr `rtables` table object.
 #' @param x (`numeric`)\cr coordinate of point.
 #' @param lower,upper (`numeric`)\cr lower/upper bound of the confidence interval.
 #' @param symbol_size (`numeric`)\cr vector with relative size for plot symbol.
-#' If `NULL`, the same symbol size is used.
+#'   If `NULL`, the same symbol size is used.
 #'
 #' @details
 #' The heights get automatically determined.
-#'
-#' @noRd
 #'
 #' @examples
 #' tbl <- rtable(
@@ -473,6 +472,9 @@ g_forest <- function(tbl,
 #'
 #' draw_grob(p)
 #' }
+#'
+#' @noRd
+#' @keywords internal
 forest_grob <- function(tbl,
                         x,
                         lower,
@@ -762,13 +764,14 @@ cell_in_rows <- function(row_name,
   )
 }
 
-#' Graphic Object: Forest Dot Line
+#' Graphic object: forest dot line
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
 #' Calculate the `grob` corresponding to the dot line within the forest plot.
 #'
 #' @noRd
+#' @keywords internal
 forest_dot_line <- function(x,
                             lower,
                             upper,
@@ -848,17 +851,18 @@ forest_dot_line <- function(x,
   }
 }
 
-#' Create a Viewport Tree for the Forest Plot
+#' Create a viewport tree for the forest plot
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
-#' @param tbl (`rtable`)
-#' @param width_row_names (`grid::unit`)\cr Width of row names
-#' @param width_columns (`grid::unit`)\cr Width of column spans
-#' @param width_forest (`grid::unit`)\cr Width of the forest plot
-#' @param gap_column (`grid::unit`)\cr Gap width between the columns
-#' @param gap_header (`grid::unit`)\cr Gap width between the header
-#' @param mat_form matrix print form of the table
+#' @param tbl (`VTableTree`)\cr `rtables` table object.
+#' @param width_row_names (`grid::unit`)\cr width of row names.
+#' @param width_columns (`grid::unit`)\cr width of column spans.
+#' @param width_forest (`grid::unit`)\cr width of the forest plot.
+#' @param gap_column (`grid::unit`)\cr gap width between the columns.
+#' @param gap_header (`grid::unit`)\cr gap width between the header.
+#' @param mat_form (`MatrixPrintForm`)\cr matrix print form of the table.
+#'
 #' @return A viewport tree.
 #'
 #' @examples
@@ -966,13 +970,14 @@ forest_viewport <- function(tbl,
   vp_tbl
 }
 
-#' Viewport Forest Plot: Table Part
+#' Viewport forest plot: table part
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
 #' Prepares a viewport for the table included in the forest plot.
 #'
 #' @noRd
+#' @keywords internal
 vp_forest_table_part <- function(nrow,
                                  ncol,
                                  l_row,
@@ -1026,13 +1031,14 @@ vp_forest_table_part <- function(nrow,
   )
 }
 
-#' Forest Rendering
+#' Forest rendering
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
 #' Renders the forest grob.
 #'
 #' @noRd
+#' @keywords internal
 grid.forest <- function(...) { # nolint
   lifecycle::deprecate_warn(
     "0.9.4", "grid.forest()",

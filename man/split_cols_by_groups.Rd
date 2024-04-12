@@ -2,12 +2,12 @@
 % Please edit documentation in R/split_cols_by_groups.R
 \name{split_cols_by_groups}
 \alias{split_cols_by_groups}
-\title{Split Columns by Groups of Levels}
+\title{Split columns by groups of levels}
 \usage{
 split_cols_by_groups(lyt, var, groups_list = NULL, ref_group = NULL, ...)
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}

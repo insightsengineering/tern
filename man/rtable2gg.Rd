@@ -2,16 +2,16 @@
 % Please edit documentation in R/utils_ggplot.R
 \name{rtable2gg}
 \alias{rtable2gg}
-\title{Convert \code{rtable} object to \code{ggplot} object}
+\title{Convert \code{rtable} objects to \code{ggplot} objects}
 \usage{
 rtable2gg(tbl, fontsize = 12, colwidths = NULL, lbl_col_padding = 0)
 }
 \arguments{
-\item{tbl}{(\code{rtable})\cr a \code{rtable} object.}
+\item{tbl}{(\code{VTableTree})\cr \code{rtables} table object.}
 
-\item{fontsize}{(\code{numeric})\cr font size.}
+\item{fontsize}{(\code{numeric(1)})\cr font size.}
 
-\item{colwidths}{(\code{vector} of \code{numeric})\cr a vector of column widths. Each element's position in
+\item{colwidths}{(\code{numeric} or \code{NULL})\cr a vector of column widths. Each element's position in
 \code{colwidths} corresponds to the column of \code{tbl} in the same position. If \code{NULL}, column widths
 are calculated according to maximum number of characters per column.}
 
@@ -20,7 +20,7 @@ the first (label) column and the second column of \code{tbl}. If \code{colwidths
 the width of the first column becomes \code{colwidths[1] + lbl_col_padding}. Defaults to 0.}
 }
 \value{
-a \code{ggplot} object.
+A \code{ggplot} object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

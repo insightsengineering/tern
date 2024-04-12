@@ -2,7 +2,7 @@
 % Please edit documentation in R/split_cols_by_groups.R
 \name{combine_counts}
 \alias{combine_counts}
-\title{Combine Counts}
+\title{Combine counts}
 \usage{
 combine_counts(fct, groups_list = NULL)
 }

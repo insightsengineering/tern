@@ -1,4 +1,4 @@
-#' Patient Counts with Abnormal Range Values
+#' Patient counts with abnormal range values
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/analyze_functions.R
 \name{analyze_functions}
 \alias{analyze_functions}
-\title{Analyze Functions}
+\title{Analyze functions}
 \description{
 These functions are wrappers of \code{\link[rtables:analyze]{rtables::analyze()}} which apply corresponding \code{tern} statistics functions
 to add an analysis to a given table layout:

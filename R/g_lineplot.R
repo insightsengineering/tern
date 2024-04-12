@@ -1,4 +1,4 @@
-#' Line plot with the optional table
+#' Line plot with optional table
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -7,16 +7,16 @@
 #' @param df (`data.frame`)\cr data set containing all analysis variables.
 #' @param alt_counts_df (`data.frame` or `NULL`)\cr data set that will be used (only)
 #'   to counts objects in groups for stratification.
-#' @param variables (named `character` vector) of variable names in `df` data set. Details are:
-#'   * `x` (`character`)\cr name of x-axis variable.
-#'   * `y` (`character`)\cr name of y-axis variable.
-#'   * `group_var` (`character`)\cr name of grouping variable (or strata), i.e. treatment arm.
+#' @param variables (named `character`) vector of variable names in `df` which should include:
+#'   * `x` (`string`)\cr name of x-axis variable.
+#'   * `y` (`string`)\cr name of y-axis variable.
+#'   * `group_var` (`string` or `NULL`)\cr name of grouping variable (or strata), i.e. treatment arm.
 #'     Can be `NA` to indicate lack of groups.
-#'   * `subject_var` (`character`)\cr name of subject variable. Only applies if `group_var` is
+#'   * `subject_var` (`string` or `NULL`)\cr name of subject variable. Only applies if `group_var` is
 #'      not NULL.
-#'   * `paramcd` (`character`)\cr name of the variable for parameter's code. Used for y-axis label and plot's subtitle.
-#'     Can be `NA` if `paramcd` is not to be added to the y-axis label or subtitle.
-#'   * `y_unit` (`character`)\cr name of variable with units of `y`. Used for y-axis label and plot's subtitle.
+#'   * `paramcd` (`string` or `NA`)\cr name of the variable for parameter's code. Used for y-axis label and plot's
+#'     subtitle. Can be `NA` if `paramcd` is not to be added to the y-axis label or subtitle.
+#'   * `y_unit` (`string` or `NA`)\cr name of variable with units of `y`. Used for y-axis label and plot's subtitle.
 #'     Can be `NA` if y unit is not to be added to the y-axis label or subtitle.
 #' @param mid (`character` or `NULL`)\cr names of the statistics that will be plotted as midpoints.
 #'   All the statistics indicated in `mid` variable must be present in the object returned by `sfun`,
@@ -31,40 +31,40 @@
 #'   `interval = NULL`.
 #' @param table (`character` or `NULL`)\cr names of the statistics that will be displayed in the table below the plot.
 #'   All the statistics indicated in `table` variable must be present in the object returned by `sfun`.
-#' @param sfun (`closure`)\cr the function to compute the values of required statistics. It must return a named `list`
+#' @param sfun (`function`)\cr the function to compute the values of required statistics. It must return a named `list`
 #'   with atomic vectors. The names of the `list` elements refer to the names of the statistics and are used by `mid`,
 #'   `interval`, `table`. It must be able to accept as input a vector with data for which statistics are computed.
 #' @param ... optional arguments to `sfun`.
-#' @param mid_type (`character`)\cr controls the type of the `mid` plot, it can be point (`p`), line (`l`),
-#'   or point and line (`pl`).
-#' @param mid_point_size (`integer` or `double`)\cr controls the font size of the point for `mid` plot.
+#' @param mid_type (`string`)\cr controls the type of the `mid` plot, it can be point (`"p"`), line (`"l"`),
+#'   or point and line (`"pl"`).
+#' @param mid_point_size (`numeric(1)`)\cr font size of the `mid` plot points.
 #' @param position (`character` or `call`)\cr geom element position adjustment, either as a string, or the result of
 #'   a call to a position adjustment function.
-#' @param legend_title (`character` string)\cr legend title.
-#' @param legend_position (`character`)\cr the position of the plot legend (`none`, `left`, `right`, `bottom`, `top`,
-#'   or two-element numeric vector).
+#' @param legend_title (`string`)\cr legend title.
+#' @param legend_position (`string`)\cr the position of the plot legend (`"none"`, `"left"`, `"right"`, `"bottom"`,
+#'   `"top"`, or a two-element numeric vector).
 #' @param ggtheme (`theme`)\cr a graphical theme as provided by `ggplot2` to control styling of the plot.
-#' @param x_lab (`character`)\cr x-axis label. If equal to `NULL`, then no label will be added.
-#' @param y_lab (`character`)\cr y-axis label. If equal to `NULL`, then no label will be added.
-#' @param y_lab_add_paramcd (`logical`)\cr should `paramcd`, i.e. `unique(df[[variables["paramcd"]]])` be added to the
-#'   y-axis label `y_lab`?
-#' @param y_lab_add_unit (`logical`)\cr should y unit, i.e. `unique(df[[variables["y_unit"]]])` be added to the y-axis
-#'   label `y_lab`?
-#' @param title (`character`)\cr plot title.
-#' @param subtitle (`character`)\cr plot subtitle.
-#' @param subtitle_add_paramcd (`logical`)\cr should `paramcd`, i.e. `unique(df[[variables["paramcd"]]])` be added to
-#'   the plot's subtitle `subtitle`?
-#' @param subtitle_add_unit (`logical`)\cr should y unit, i.e. `unique(df[[variables["y_unit"]]])` be added to the
-#'   plot's subtitle `subtitle`?
-#' @param caption (`character`)\cr optional caption below the plot.
+#' @param x_lab (`string` or `NULL`)\cr x-axis label. If `NULL` then no label will be added.
+#' @param y_lab (`string` or `NULL`)\cr y-axis label. If `NULL` then no label will be added.
+#' @param y_lab_add_paramcd (`flag`)\cr whether `paramcd`, i.e. `unique(df[[variables["paramcd"]]])` should be added
+#'   to the y-axis label (`y_lab`).
+#' @param y_lab_add_unit (`flag`)\cr whether y-axis unit, i.e. `unique(df[[variables["y_unit"]]])` should be added
+#'   to the y-axis label (`y_lab`).
+#' @param title (`string`)\cr plot title.
+#' @param subtitle (`string`)\cr plot subtitle.
+#' @param subtitle_add_paramcd (`flag`)\cr whether `paramcd`, i.e. `unique(df[[variables["paramcd"]]])` should be
+#'   added to the plot's subtitle (`subtitle`).
+#' @param subtitle_add_unit (`flag`)\cr whether the y-axis unit, i.e. `unique(df[[variables["y_unit"]]])` should be
+#'   added to the plot's subtitle (`subtitle`).
+#' @param caption (`string`)\cr optional caption below the plot.
 #' @param table_format (named `character` or `NULL`)\cr format patterns for descriptive statistics used in the
 #'   (optional) table appended to the plot. It is passed directly to the `h_format_row` function through the `format`
 #'   parameter. Names of `table_format` must match the names of statistics returned by `sfun` function.
 #' @param table_labels (named `character` or `NULL`)\cr labels for descriptive statistics used in the (optional) table
 #'   appended to the plot. Names of `table_labels` must match the names of statistics returned by `sfun` function.
-#' @param table_font_size (`integer` or `double`)\cr controls the font size of values in the table.
-#' @param newpage (`logical`)\cr should plot be drawn on new page?
-#' @param col (`character`)\cr colors.
+#' @param table_font_size (`numeric(1)`)\cr font size of the text in the table.
+#' @param newpage `r lifecycle::badge("deprecated")` not used.
+#' @param col (`character`)\cr color(s).
 #'
 #' @return A `ggplot` line plot (and statistics table if applicable).
 #'
@@ -150,7 +150,7 @@ g_lineplot <- function(df,
                        table_format = get_formats_from_stats(table),
                        table_labels = get_labels_from_stats(table),
                        table_font_size = 3,
-                       newpage = TRUE,
+                       newpage = lifecycle::deprecated(),
                        col = NULL) {
   checkmate::assert_character(variables, any.missing = TRUE)
   checkmate::assert_character(mid, null.ok = TRUE)
@@ -417,7 +417,7 @@ g_lineplot <- function(df,
   }
 }
 
-#' Helper function to get the right formatting in the optional table in `g_lineplot`.
+#' Helper function to format the optional `g_lineplot` table
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -474,21 +474,21 @@ h_format_row <- function(x, format, labels = NULL) {
   row
 }
 
-#' Control Function for `g_lineplot` Function
+#' Control function for `g_lineplot()`
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Default values for `variables` parameter in `g_lineplot` function.
 #' A variable's default value can be overwritten for any variable.
 #'
-#' @param x (`character`)\cr x variable name.
-#' @param y (`character`)\cr y variable name.
-#' @param group_var (`character` or `NA`)\cr group variable name.
-#' @param strata (`character` or `NA`)\cr deprecated - group variable name.
-#' @param subject_var (`character` or `NA`)\cr subject variable name.
-#' @param cohort_id (`character` or `NA`)\cr deprecated - subject variable name.
-#' @param paramcd (`character` or `NA`)\cr `paramcd` variable name.
-#' @param y_unit (`character` or `NA`)\cr `y_unit` variable name.
+#' @param x (`string`)\cr x-variable name.
+#' @param y (`string`)\cr y-variable name.
+#' @param group_var (`string` or `NA`)\cr group variable name.
+#' @param strata `r lifecycle::badge("deprecated")` use the `group_var` parameter instead.
+#' @param subject_var (`string` or `NA`)\cr subject variable name.
+#' @param cohort_id `r lifecycle::badge("deprecated")` use the `subject_var` parameter instead.
+#' @param paramcd (`string` or `NA`)\cr parameter code variable name.
+#' @param y_unit (`string` or `NA`)\cr y-axis unit variable name.
 #'
 #' @return A named character vector of variable names.
 #'
@@ -497,8 +497,13 @@ h_format_row <- function(x, format, labels = NULL) {
 #' control_lineplot_vars(group_var = NA)
 #'
 #' @export
-control_lineplot_vars <- function(x = "AVISIT", y = "AVAL", group_var = "ARM", paramcd = "PARAMCD", y_unit = "AVALU",
-                                  subject_var = "USUBJID", strata = lifecycle::deprecated(),
+control_lineplot_vars <- function(x = "AVISIT",
+                                  y = "AVAL",
+                                  group_var = "ARM",
+                                  paramcd = "PARAMCD",
+                                  y_unit = "AVALU",
+                                  subject_var = "USUBJID",
+                                  strata = lifecycle::deprecated(),
                                   cohort_id = lifecycle::deprecated()) {
   if (lifecycle::is_present(strata)) {
     lifecycle::deprecate_warn("0.9.2", "control_lineplot_vars(strata)", "control_lineplot_vars(group_var)")

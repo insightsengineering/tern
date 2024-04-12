@@ -1,4 +1,4 @@
-#' Summarize Variables in Columns
+#' Summarize variables in columns
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

@@ -14,7 +14,7 @@
 \alias{h_glm_inter_term_extract}
 \alias{h_logistic_simple_terms}
 \alias{h_logistic_inter_terms}
-\title{Helper Functions for Multivariate Logistic Regression}
+\title{Helper functions for multivariate logistic regression}
 \usage{
 h_get_interaction_vars(fit_glm)
 
@@ -66,13 +66,11 @@ h_logistic_inter_terms(x, fit_glm, conf_level = 0.95, at = NULL)
 Limited functionality is also available for conditional logistic regression models fitted by
 \code{\link[survival:clogit]{survival::clogit()}}, currently this is used only by \code{\link[=extract_rsp_biomarkers]{extract_rsp_biomarkers()}}.}
 
-\item{interaction_vars}{(\code{character} of length 2)\cr interaction variable names.}
+\item{interaction_vars}{(\code{character(2)})\cr interaction variable names.}
 
-\item{first_var_with_level}{(\code{character} of length 2)\cr the first variable name with
-the interaction level.}
+\item{first_var_with_level}{(\code{character(2)})\cr the first variable name with the interaction level.}
 
-\item{second_var_with_level}{(\code{character} of length 2)\cr the second variable name with
-the interaction level.}
+\item{second_var_with_level}{(\code{character(2)})\cr the second variable name with the interaction level.}
 
 \item{odds_ratio_var}{(\code{string})\cr the odds ratio variable.}
 
@@ -80,7 +78,7 @@ the interaction level.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{at}{(\code{NULL} or \code{numeric})\cr optional values for the interaction variable. Otherwise
+\item{at}{(\code{numeric} or \code{NULL})\cr optional values for the interaction variable. Otherwise
 the median is used.}
 
 \item{terms}{(\code{character})\cr simple terms.}
@@ -94,8 +92,7 @@ the median is used.}
 \item{any}{(\code{flag})\cr whether any of \code{term1} and \code{term2} can be fulfilled to count the
 number of patients. In that case they can only be scalar (strings).}
 
-\item{x}{(\code{string} or \code{character})\cr a variable or interaction term in \code{fit_glm} (depending on the
-helper function).}
+\item{x}{(\code{character})\cr a variable or interaction term in \code{fit_glm} (depending on the helper function used).}
 
 \item{...}{additional arguments for the lower level functions.}
 }

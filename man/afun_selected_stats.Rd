@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_rtables.R
 \name{afun_selected_stats}
 \alias{afun_selected_stats}
-\title{Get Selected Statistics Names}
+\title{Get selected statistics names}
 \usage{
 afun_selected_stats(.stats, all_stats)
 }

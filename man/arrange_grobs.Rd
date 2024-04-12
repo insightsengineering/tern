@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_grid.R
 \name{arrange_grobs}
 \alias{arrange_grobs}
-\title{Arrange Multiple Grobs}
+\title{Arrange multiple grobs}
 \usage{
 arrange_grobs(
   ...,
@@ -19,27 +19,29 @@ arrange_grobs(
 \arguments{
 \item{...}{grobs.}
 
-\item{grobs}{list of grobs.}
+\item{grobs}{(\code{list} of \code{grob})\cr a list of grobs.}
 
-\item{ncol}{number of columns in layout.}
+\item{ncol}{(\code{integer(1)})\cr number of columns in layout.}
 
-\item{nrow}{number of rows in layout.}
+\item{nrow}{(\code{integer(1)})\cr number of rows in layout.}
 
-\item{padding_ht}{unit of length 1, vertical space between each grob.}
+\item{padding_ht}{(\code{grid::unit})\cr unit of length 1, vertical space between each grob.}
 
-\item{padding_wt}{unit of length 1, horizontal space between each grob.}
+\item{padding_wt}{(\code{grid::unit})\cr unit of length 1, horizontal space between each grob.}
 
-\item{vp}{a \code{\link[=viewport]{viewport()}} object (or \code{NULL}).}
+\item{vp}{(\code{viewport} or \code{NULL})\cr a \code{\link[=viewport]{viewport()}} object (or \code{NULL}).}
 
-\item{gp}{A \code{\link[=gpar]{gpar()}} object.}
+\item{gp}{(\code{gpar})\cr a \code{\link[=gpar]{gpar()}} object.}
 
-\item{name}{a character identifier for the grob.}
+\item{name}{(\code{string})\cr a character identifier for the grob.}
 }
 \value{
 A \code{grob}.
 }
 \description{
-Arrange grobs as a new grob with \verb{n*m (rows*cols)} layout.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+Arrange grobs as a new grob with \code{n * m (rows * cols)} layout.
 }
 \examples{
 library(grid)

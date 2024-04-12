@@ -2,7 +2,7 @@
 % Please edit documentation in R/g_step.R
 \name{g_step}
 \alias{g_step}
-\title{Create a STEP Graph}
+\title{Create a STEP graph}
 \usage{
 g_step(
   df,
@@ -23,7 +23,7 @@ biomarker values.}
 \item{ci_ribbon}{(named \code{list} or \code{NULL})\cr \code{fill} and \code{alpha} settings for the confidence interval
 ribbon area, or \code{NULL} to not plot a CI ribbon.}
 
-\item{col}{(\code{character})\cr colors.}
+\item{col}{(\code{character})\cr color(s).}
 }
 \value{
 A \code{ggplot} STEP graph.

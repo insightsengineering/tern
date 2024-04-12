@@ -10,7 +10,7 @@
 \alias{has_fraction_in_any_col}
 \alias{has_fractions_difference}
 \alias{has_counts_difference}
-\title{Occurrence Table Pruning}
+\title{Occurrence table pruning}
 \usage{
 keep_rows(row_condition)
 
@@ -35,7 +35,7 @@ analysis rows and flags whether these should be kept in the pruned table.}
 \item{content_row_condition}{(\code{CombinationFunction})\cr condition function which works on individual
 first content rows of leaf tables and flags whether these leaf tables should be kept in the pruned table.}
 
-\item{atleast}{(\code{count} or \code{proportion})\cr threshold which should be met in order to keep the row.}
+\item{atleast}{(\code{numeric(1)})\cr threshold which should be met in order to keep the row.}
 
 \item{...}{arguments for row or column access, see \code{\link{rtables_access}}: either \code{col_names} (\code{character}) including
 the names of the columns which should be used, or alternatively \code{col_indices} (\code{integer}) giving the indices

@@ -7,7 +7,7 @@
 \alias{assert_valid_factor}
 \alias{assert_df_with_factors}
 \alias{assert_proportion_value}
-\title{Additional Assertions for \code{checkmate}}
+\title{Additional assertions to use with \code{checkmate}}
 \usage{
 assert_list_of_variables(x, .var.name = checkmate::vname(x), add = NULL)
 
@@ -58,7 +58,7 @@ Collection to store assertion messages. See \code{\link[checkmate]{AssertCollect
 
 \item{variables}{(named \code{list} of \code{character})\cr list of variables to test.}
 
-\item{na_level}{(\code{character})\cr the string you have been using to represent NA or
+\item{na_level}{(\code{string})\cr the string you have been using to represent NA or
 missing data. For \code{NA} values please consider using directly \code{\link[=is.na]{is.na()}} or
 similar approaches.}
 
@@ -84,7 +84,7 @@ Default is \code{NULL} (no check).}
 \item{len}{[\code{integer(1)}]\cr
 Exact expected length of \code{x}.}
 
-\item{include_boundaries}{(\code{logical})\cr whether to include boundaries when testing
+\item{include_boundaries}{(\code{flag})\cr whether to include boundaries when testing
 for proportions.}
 }
 \value{

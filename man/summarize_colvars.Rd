@@ -2,7 +2,7 @@
 % Please edit documentation in R/summarize_colvars.R
 \name{summarize_colvars}
 \alias{summarize_colvars}
-\title{Summarize Variables in Columns}
+\title{Summarize variables in columns}
 \usage{
 summarize_colvars(
   lyt,
@@ -15,7 +15,7 @@ summarize_colvars(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{...}{arguments passed to \code{s_summary()}.}
 

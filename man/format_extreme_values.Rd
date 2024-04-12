@@ -2,12 +2,12 @@
 % Please edit documentation in R/formatting_functions.R
 \name{format_extreme_values}
 \alias{format_extreme_values}
-\title{Formatting a Single Extreme Value}
+\title{Format a single extreme value}
 \usage{
 format_extreme_values(digits = 2L)
 }
 \arguments{
-\item{digits}{(\code{integer})\cr number of decimal places to display.}
+\item{digits}{(\code{integer(1)})\cr number of decimal places to display.}
 }
 \value{
 An \code{rtables} formatting function that uses threshold \code{digits} to return a formatted extreme value.
@@ -15,7 +15,7 @@ An \code{rtables} formatting function that uses threshold \code{digits} to retur
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Create Formatting Function for a single extreme value.
+Create a formatting function for a single extreme value.
 }
 \examples{
 format_fun <- format_extreme_values(2L)

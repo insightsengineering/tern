@@ -5,7 +5,7 @@
 \alias{tidy.summary.coxph}
 \alias{tidy.coxreg.univar}
 \alias{tidy.coxreg.multivar}
-\title{Custom Tidy Methods for Cox Regression}
+\title{Custom tidy methods for Cox regression}
 \usage{
 \method{tidy}{summary.coxph}(x, ...)
 
@@ -14,7 +14,7 @@
 \method{tidy}{coxreg.multivar}(x, ...)
 }
 \arguments{
-\item{x}{(\code{list})\cr Result of the Cox regression model fitted by \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} (for univariate models)
+\item{x}{(\code{list})\cr result of the Cox regression model fitted by \code{\link[=fit_coxreg_univar]{fit_coxreg_univar()}} (for univariate models)
 or \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} (for multivariate models).}
 
 \item{...}{additional arguments for the lower level functions.}

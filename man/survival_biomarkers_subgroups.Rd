@@ -3,7 +3,7 @@
 \name{survival_biomarkers_subgroups}
 \alias{survival_biomarkers_subgroups}
 \alias{tabulate_survival_biomarkers}
-\title{Tabulate Biomarker Effects on Survival by Subgroup}
+\title{Tabulate biomarker effects on survival by subgroup}
 \usage{
 tabulate_survival_biomarkers(
   df,

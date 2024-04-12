@@ -1,4 +1,4 @@
-#' Occurrence Counts by Grade
+#' Occurrence counts by grade
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -7,8 +7,8 @@
 #' greatest intensity/highest grade level.
 #'
 #' @inheritParams argument_convention
-#' @param grade_groups (named `list` of `character`)\cr containing groupings of grades.
-#' @param remove_single (`logical`)\cr `TRUE` to not include the elements of one-element grade groups
+#' @param grade_groups (named `list` of `character`)\cr list containing groupings of grades.
+#' @param remove_single (`flag`)\cr `TRUE` to not include the elements of one-element grade groups
 #'   in the the output list; in this case only the grade groups names will be included in the output. If
 #'   `only_grade_groups` is set to `TRUE` this argument is ignored.
 #' @param only_grade_groups (`flag`)\cr whether only the specified grade groups should be
@@ -23,7 +23,7 @@
 #' @order 1
 NULL
 
-#' Helper function for [s_count_occurrences_by_grade()]
+#' Helper function for `s_count_occurrences_by_grade()`
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -33,7 +33,7 @@ NULL
 #' the end. Grade groups names must be unique.
 #'
 #' @inheritParams count_occurrences_by_grade
-#' @param refs (named `list` of `numeric`)\cr where each name corresponds to a reference grade level
+#' @param refs (named `list` of `numeric`)\cr named list where each name corresponds to a reference grade level
 #'   and each entry represents a count.
 #'
 #' @return Formatted list of grade groupings.

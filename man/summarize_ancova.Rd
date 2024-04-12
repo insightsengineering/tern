@@ -4,7 +4,7 @@
 \alias{summarize_ancova}
 \alias{s_ancova}
 \alias{a_ancova}
-\title{Summary for analysis of covariance (\code{ANCOVA}).}
+\title{Summary for analysis of covariance (ANCOVA).}
 \usage{
 summarize_ancova(
   lyt,
@@ -50,11 +50,11 @@ a_ancova(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables, with expected elements:
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables, with expected elements:
 \itemize{
 \item \code{arm} (\code{string})\cr group variable, for which the covariate adjusted means of multiple groups will be
 summarized. Specifically, the first level of \code{arm} variable is taken as the reference group.
@@ -64,26 +64,26 @@ interaction terms indicated by \code{"X1 * X2"}.
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{interaction_y}{(\code{character})\cr a selected item inside of the interaction_item column which will be used
-to select the specific \code{ANCOVA} results. if the interaction is not needed, the default option is \code{FALSE}.}
+\item{interaction_y}{(\code{string} or \code{flag})\cr a selected item inside of the interaction_item column which will be used
+to select the specific ANCOVA results. if the interaction is not needed, the default option is \code{FALSE}.}
 
-\item{interaction_item}{(\code{character})\cr name of the variable that should have interactions
+\item{interaction_item}{(\code{string} or \code{NULL})\cr name of the variable that should have interactions
 with arm. if the interaction is not needed, the default option is \code{NULL}.}
 
-\item{var_labels}{(\code{character})\cr character for label.}
+\item{var_labels}{(\code{character})\cr variable labels.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("summarize_ancova")}
 to see available statistics for this function.}
@@ -105,7 +105,7 @@ by a statistics function.}
 
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
-\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+\item{.in_ref_col}{(\code{flag})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 }
 \value{
 \itemize{
@@ -134,7 +134,7 @@ to the reference group.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Summarize results of \code{ANCOVA}. This can be used to analyze multiple endpoints and/or
+Summarize results of ANCOVA. This can be used to analyze multiple endpoints and/or
 multiple timepoints within the same response variable \code{.var}.
 }
 \section{Functions}{

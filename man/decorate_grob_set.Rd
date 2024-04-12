@@ -2,12 +2,12 @@
 % Please edit documentation in R/decorate_grob.R
 \name{decorate_grob_set}
 \alias{decorate_grob_set}
-\title{Decorate Set of \code{grobs} and Add Page Numbering}
+\title{Decorate set of \code{grob}s and add page numbering}
 \usage{
 decorate_grob_set(grobs, ...)
 }
 \arguments{
-\item{grobs}{a list of grid grobs}
+\item{grobs}{(\code{list} of \code{grob})\cr a list of grid grobs.}
 
 \item{...}{arguments passed on to \code{\link[=decorate_grob]{decorate_grob()}}.}
 }

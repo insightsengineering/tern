@@ -1,4 +1,4 @@
-#' Helper Functions for Tabulating Survival Duration by Subgroup
+#' Helper functions for tabulating survival duration by subgroup
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -39,7 +39,7 @@
 #' @name h_survival_duration_subgroups
 NULL
 
-#' @describeIn h_survival_duration_subgroups helper to prepare a data frame of median survival times by arm.
+#' @describeIn h_survival_duration_subgroups Helper to prepare a data frame of median survival times by arm.
 #'
 #' @return
 #' * `h_survtime_df()` returns a `data.frame` with columns `arm`, `n`, `n_events`, and `median`.
@@ -94,7 +94,7 @@ h_survtime_df <- function(tte, is_event, arm) {
   df
 }
 
-#' @describeIn h_survival_duration_subgroups summarizes median survival times by arm and across subgroups
+#' @describeIn h_survival_duration_subgroups Summarizes median survival times by arm and across subgroups
 #'    in a data frame. `variables` corresponds to the names of variables found in `data`, passed as a named list and
 #'    requires elements `tte`, `is_event`, `arm` and optionally `subgroups`. `groups_lists` optionally specifies
 #'    groupings for `subgroups` variables.
@@ -173,10 +173,10 @@ h_survtime_subgroups_df <- function(variables,
   }
 }
 
-#' @describeIn h_survival_duration_subgroups helper to prepare a data frame with estimates of
+#' @describeIn h_survival_duration_subgroups Helper to prepare a data frame with estimates of
 #'   treatment hazard ratio.
 #'
-#' @param strata_data (`factor`, `data.frame` or `NULL`)\cr required if stratified analysis is performed.
+#' @param strata_data (`factor`, `data.frame`, or `NULL`)\cr required if stratified analysis is performed.
 #'
 #' @return
 #' * `h_coxph_df()` returns a `data.frame` with columns `arm`, `n_tot`, `n_tot_events`, `hr`, `lcl`, `ucl`,
@@ -274,7 +274,7 @@ h_coxph_df <- function(tte, is_event, arm, strata_data = NULL, control = control
   df
 }
 
-#' @describeIn h_survival_duration_subgroups summarizes estimates of the treatment hazard ratio
+#' @describeIn h_survival_duration_subgroups Summarizes estimates of the treatment hazard ratio
 #'   across subgroups in a data frame. `variables` corresponds to the names of variables found in
 #'   `data`, passed as a named list and requires elements `tte`, `is_event`, `arm` and
 #'   optionally `subgroups` and `strata`. `groups_lists` optionally specifies
@@ -391,11 +391,11 @@ h_coxph_subgroups_df <- function(variables,
   }
 }
 
-#' Split Dataframe by Subgroups
+#' Split data frame by subgroups
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Split a dataframe into a non-nested list of subsets.
+#' Split a data frame into a non-nested list of subsets.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams survival_duration_subgroups
@@ -460,7 +460,7 @@ h_split_by_subgroups <- function(data,
     )
   }, df_subgroups, names(df_subgroups))
 
-  # Create a dataframe with one row per subgroup.
+  # Create a data frame with one row per subgroup.
   df_labels <- do.call(rbind, args = c(l_labels, make.row.names = FALSE))
   row_label <- paste0(df_labels$var, ".", df_labels$subgroup)
   row_split_var <- factor(row_label, levels = row_label)

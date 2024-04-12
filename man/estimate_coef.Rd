@@ -2,7 +2,7 @@
 % Please edit documentation in R/coxph.R
 \name{estimate_coef}
 \alias{estimate_coef}
-\title{Hazard Ratio Estimation in Interactions}
+\title{Hazard ratio estimation in interactions}
 \usage{
 estimate_coef(
   variable,
@@ -16,21 +16,21 @@ estimate_coef(
 )
 }
 \arguments{
-\item{variable, given}{Names of two variable in interaction. We seek the estimation of the levels of \code{variable}
-given the levels of \code{given}.}
+\item{variable, given}{(\code{character(2)})\cr names of the two variables in the interaction. We seek the estimation of
+the levels of \code{variable} given the levels of \code{given}.}
 
-\item{lvl_var, lvl_given}{corresponding levels has given by \code{levels}.}
+\item{lvl_var, lvl_given}{(\code{character})\cr corresponding levels given by \code{\link[=levels]{levels()}}.}
 
-\item{coef}{Numeric of estimated coefficients.}
+\item{coef}{(\code{numeric})\cr vector of estimated coefficients.}
 
-\item{mmat}{A name numeric filled with 0 used as template to obtain the design matrix.}
+\item{mmat}{(named \code{numeric}) a vector filled with \code{0}s used as a template to obtain the design matrix.}
 
-\item{vcov}{Variance-covariance matrix of underlying model.}
+\item{vcov}{(\code{matrix})\cr variance-covariance matrix of underlying model.}
 
-\item{conf_level}{Single numeric for the confidence level of estimate intervals.}
+\item{conf_level}{(\code{proportion})\cr confidence level of estimate intervals.}
 }
 \value{
-A list of matrix (one per level of variable) with rows corresponding to the combinations of
+A list of matrices (one per level of variable) with rows corresponding to the combinations of
 \code{variable} and \code{given}, with columns:
 \itemize{
 \item \code{coef_hat}: Estimation of the coefficient.

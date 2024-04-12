@@ -2,14 +2,14 @@
 % Please edit documentation in R/formatting_functions.R
 \name{format_fraction}
 \alias{format_fraction}
-\title{Formatting Fraction and Percentage}
+\title{Format fraction and percentage}
 \usage{
 format_fraction(x, ...)
 }
 \arguments{
-\item{x}{(\code{integer})\cr with elements \code{num} and \code{denom}.}
+\item{x}{(named \code{integer})\cr vector with elements \code{num} and \code{denom}.}
 
-\item{...}{required for \code{rtables} interface.}
+\item{...}{not used. Required for \code{rtables} interface.}
 }
 \value{
 A string in the format \verb{num / denom (ratio \%)}. If \code{num} is 0, the format is \code{num / denom}.

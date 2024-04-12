@@ -7,7 +7,7 @@
 f_pval(test_mean)
 }
 \arguments{
-\item{test_mean}{(\code{number})\cr mean value to test under the null hypothesis.}
+\item{test_mean}{(\code{numeric(1)})\cr mean value to test under the null hypothesis.}
 }
 \value{
 A \code{string}.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/df_explicit_na.R
 \name{df_explicit_na}
 \alias{df_explicit_na}
-\title{Encode Categorical Missing Values in a Data Frame}
+\title{Encode categorical missing values in a data frame}
 \usage{
 df_explicit_na(
   data,
@@ -24,7 +24,7 @@ in \code{data} to factors.}
 \item{logical_as_factor}{(\code{flag})\cr whether to convert logical variables
 in \code{data} to factors.}
 
-\item{na_level}{(\code{string})\cr used to replace all \code{NA} or empty
+\item{na_level}{(\code{string})\cr string used to replace all \code{NA} or empty
 values inside non-\code{omit_columns} columns.}
 }
 \value{

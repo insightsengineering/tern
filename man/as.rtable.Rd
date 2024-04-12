@@ -10,11 +10,11 @@ as.rtable(x, ...)
 \method{as.rtable}{data.frame}(x, format = "xx.xx", ...)
 }
 \arguments{
-\item{x}{the object which should be converted to an \code{rtable}.}
+\item{x}{(\code{data.frame})\cr the object which should be converted to an \code{rtable}.}
 
 \item{...}{additional arguments for methods.}
 
-\item{format}{the format which should be used for the columns.}
+\item{format}{(\code{string} or \code{function})\cr the format which should be used for the columns.}
 }
 \value{
 An \code{rtables} table object. Note that the concrete class will depend on the method used.
@@ -26,7 +26,7 @@ This is a new generic function to convert objects to \code{rtable} tables.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{as.rtable(data.frame)}: method for converting \code{data.frame} that contain numeric columns to \code{rtable}.
+\item \code{as.rtable(data.frame)}: Method for converting a \code{data.frame} that contains numeric columns to \code{rtable}.
 
 }}
 \examples{

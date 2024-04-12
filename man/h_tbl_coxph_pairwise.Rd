@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_km.R
 \name{h_tbl_coxph_pairwise}
 \alias{h_tbl_coxph_pairwise}
-\title{Helper Function: Pairwise Cox-PH table}
+\title{Helper function for generating a pairwise Cox-PH table}
 \usage{
 h_tbl_coxph_pairwise(
   df,
@@ -23,7 +23,7 @@ h_tbl_coxph_pairwise(
 \item \code{strata} (\code{character} or \code{NULL})\cr variable names indicating stratification factors.
 }}
 
-\item{ref_group_coxph}{(\code{character})\cr level of arm variable to use as reference group in calculations for
+\item{ref_group_coxph}{(\code{string} or \code{NULL})\cr level of arm variable to use as reference group in calculations for
 \code{annot_coxph} table. If \code{NULL} (default), uses the first level of the arm variable.}
 
 \item{control_coxph_pw}{(\code{list})\cr parameters for comparison details, specified using the helper function

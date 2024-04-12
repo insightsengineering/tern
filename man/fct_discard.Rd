@@ -2,14 +2,14 @@
 % Please edit documentation in R/utils_factor.R
 \name{fct_discard}
 \alias{fct_discard}
-\title{Discard Certain Levels from a Factor}
+\title{Discard specified levels of a factor}
 \usage{
 fct_discard(x, discard)
 }
 \arguments{
 \item{x}{(\code{factor})\cr the original factor.}
 
-\item{discard}{(\code{character})\cr which levels to discard.}
+\item{discard}{(\code{character})\cr levels to discard.}
 }
 \value{
 A modified \code{factor} with observations as well as levels from \code{discard} dropped.

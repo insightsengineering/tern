@@ -7,7 +7,7 @@
 d_pkparam()
 }
 \value{
-\code{data.frame} of PK parameters
+A \code{data.frame} of PK parameters.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
