@@ -18,7 +18,8 @@
 #'     subtitle. Can be `NA` if `paramcd` is not to be added to the y-axis label or subtitle.
 #'   * `y_unit` (`string` or `NA`)\cr name of variable with units of `y`. Used for y-axis label and plot's subtitle.
 #'     Can be `NA` if y unit is not to be added to the y-axis label or subtitle.
-#'   * `facet_var` (`string`)\cr name of the secondary grouping variable used for plot faceting, i.e. treatment arm. Can be `NA` to indicate lack of groups.
+#'   * `facet_var` (`string` or `NA`)\cr name of the secondary grouping variable used for plot faceting, i.e. treatment
+#'     arm. Can be `NA` to indicate lack of groups.
 #' @param mid (`character` or `NULL`)\cr names of the statistics that will be plotted as midpoints.
 #'   All the statistics indicated in `mid` variable must be present in the object returned by `sfun`,
 #'   and be of a `double` or `numeric` type vector of length one.
