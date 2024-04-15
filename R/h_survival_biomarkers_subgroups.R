@@ -1,4 +1,4 @@
-#' Helper Functions for Tabulating Biomarker Effects on Survival by Subgroup
+#' Helper functions for tabulating biomarker effects on survival by subgroup
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -30,7 +30,7 @@
 #' @name h_survival_biomarkers_subgroups
 NULL
 
-#' @describeIn h_survival_biomarkers_subgroups helps with converting the "survival" function variable list
+#' @describeIn h_survival_biomarkers_subgroups Helps with converting the "survival" function variable list
 #'   to the "Cox regression" variable list. The reason is that currently there is an inconsistency between the variable
 #'   names accepted by `extract_survival_subgroups()` and `fit_coxreg_multivar()`.
 #'
@@ -67,7 +67,7 @@ h_surv_to_coxreg_variables <- function(variables, biomarker) {
   )
 }
 
-#' @describeIn h_survival_biomarkers_subgroups prepares estimates for number of events, patients and median survival
+#' @describeIn h_survival_biomarkers_subgroups Prepares estimates for number of events, patients and median survival
 #'   times, as well as hazard ratio estimates, confidence intervals and p-values, for multiple biomarkers
 #'   in a given single data set.
 #'   `variables` corresponds to names of variables found in `data`, passed as a named list and requires elements
@@ -178,7 +178,7 @@ h_coxreg_mult_cont_df <- function(variables,
   }
 }
 
-#' @describeIn h_survival_biomarkers_subgroups prepares a single sub-table given a `df_sub` containing
+#' @describeIn h_survival_biomarkers_subgroups Prepares a single sub-table given a `df_sub` containing
 #'   the results for a single biomarker.
 #'
 #' @param df (`data.frame`)\cr results for a single biomarker, as part of what is

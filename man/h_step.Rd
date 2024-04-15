@@ -8,7 +8,7 @@
 \alias{h_step_survival_est}
 \alias{h_step_rsp_formula}
 \alias{h_step_rsp_est}
-\title{Helper Functions for Subgroup Treatment Effect Pattern (STEP) Calculations}
+\title{Helper functions for subgroup treatment effect pattern (STEP) calculations}
 \usage{
 h_step_window(x, control = control_step())
 
@@ -43,7 +43,7 @@ h_step_rsp_est(
 
 \item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
-\item{model}{the regression model object.}
+\item{model}{(\code{coxph} or \code{glm})\cr the regression model object.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
@@ -89,24 +89,24 @@ Helper functions that are used internally for the STEP calculations.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_step_window()}: creates the windows for STEP, based on the control settings
+\item \code{h_step_window()}: Creates the windows for STEP, based on the control settings
 provided.
 
-\item \code{h_step_trt_effect()}: calculates the estimated treatment effect estimate
+\item \code{h_step_trt_effect()}: Calculates the estimated treatment effect estimate
 on the linear predictor scale and corresponding standard error from a STEP \code{model} fitted
 on \code{data} given \code{variables} specification, for a single biomarker value \code{x}.
 This works for both \code{coxph} and \code{glm} models, i.e. for calculating log hazard ratio or log odds
 ratio estimates.
 
-\item \code{h_step_survival_formula()}: builds the model formula used in survival STEP calculations.
+\item \code{h_step_survival_formula()}: Builds the model formula used in survival STEP calculations.
 
-\item \code{h_step_survival_est()}: estimates the model with \code{formula} built based on
+\item \code{h_step_survival_est()}: Estimates the model with \code{formula} built based on
 \code{variables} in \code{data} for a given \code{subset} and \code{control} parameters for the
 Cox regression.
 
-\item \code{h_step_rsp_formula()}: builds the model formula used in response STEP calculations.
+\item \code{h_step_rsp_formula()}: Builds the model formula used in response STEP calculations.
 
-\item \code{h_step_rsp_est()}: estimates the model with \code{formula} built based on
+\item \code{h_step_rsp_est()}: Estimates the model with \code{formula} built based on
 \code{variables} in \code{data} for a given \code{subset} and \code{control} parameters for the
 logistic regression.
 

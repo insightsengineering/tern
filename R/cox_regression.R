@@ -1,4 +1,4 @@
-#' Controls for Cox Regression
+#' Control function for Cox regression
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -36,12 +36,12 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
   )
 }
 
-#' Custom Tidy Methods for Cox Regression
+#' Custom tidy methods for Cox regression
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams argument_convention
-#' @param x (`list`)\cr Result of the Cox regression model fitted by [fit_coxreg_univar()] (for univariate models)
+#' @param x (`list`)\cr result of the Cox regression model fitted by [fit_coxreg_univar()] (for univariate models)
 #'   or [fit_coxreg_multivar()] (for multivariate models).
 #'
 #' @return [tidy()] returns:
@@ -238,14 +238,14 @@ tidy.coxreg.multivar <- function(x, # nolint
   result
 }
 
-#' Fits for Cox Proportional Hazards Regression
+#' Fitting functions for Cox proportional hazards regression
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Fitting functions for univariate and multivariate Cox regression models.
 #'
-#' @param variables (`list`)\cr a named list corresponds to the names of variables found in `data`, passed as a named
-#'   list and corresponding to `time`, `event`, `arm`, `strata`, and `covariates` terms. If `arm` is missing from
+#' @param variables (named `list`)\cr the names of the variables found in `data`, passed as a named list and
+#'   corresponding to the `time`, `event`, `arm`, `strata`, and `covariates` terms. If `arm` is missing from
 #'   `variables`, then only Cox model(s) including the `covariates` will be fitted and the corresponding effect
 #'   estimates will be tabulated later.
 #' @param data (`data.frame`)\cr the dataset containing the variables to fit the models.
@@ -463,7 +463,7 @@ fit_coxreg_multivar <- function(variables,
 #' @param mod (`coxph`)\cr Cox regression model fitted by [survival::coxph()].
 #' @param test_statistic (`string`)\cr the method used for estimation of p.values; `wald` (default) or `likelihood`.
 #'
-#' @return Returns the output of [car::Anova()], with convergence message muffled.
+#' @return The output of [car::Anova()], with convergence message muffled.
 #'
 #' @keywords internal
 muffled_car_anova <- function(mod, test_statistic) {

@@ -1,4 +1,4 @@
-#' Tabulate Biomarker Effects on Survival by Subgroup
+#' Tabulate biomarker effects on survival by subgroup
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -82,7 +82,7 @@
 #' @order 1
 NULL
 
-#' Prepares Survival Data Estimates for Multiple Biomarkers in a Single Data Frame
+#' Prepare survival data estimates for multiple biomarkers in a single data frame
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

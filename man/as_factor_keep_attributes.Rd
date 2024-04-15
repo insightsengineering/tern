@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_factor.R
 \name{as_factor_keep_attributes}
 \alias{as_factor_keep_attributes}
-\title{Conversion of a Vector to a Factor}
+\title{Conversion of a vector to a factor}
 \usage{
 as_factor_keep_attributes(
   x,
@@ -12,13 +12,13 @@ as_factor_keep_attributes(
 )
 }
 \arguments{
-\item{x}{(\code{atomic})\cr object to convert.}
+\item{x}{(\code{vector})\cr object to convert.}
 
 \item{x_name}{(\code{string})\cr name of \code{x}.}
 
 \item{na_level}{(\code{string})\cr the explicit missing level which should be used when converting a character vector.}
 
-\item{verbose}{defaults to \code{TRUE}. It prints out warnings and messages.}
+\item{verbose}{(\code{flag})\cr defaults to \code{TRUE}. It prints out warnings and messages.}
 }
 \value{
 A \code{factor} with same attributes (except class) as \code{x}. Does not modify \code{x} if already a \code{factor}.

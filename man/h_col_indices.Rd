@@ -2,12 +2,12 @@
 % Please edit documentation in R/utils_rtables.R
 \name{h_col_indices}
 \alias{h_col_indices}
-\title{Obtain Column Indices}
+\title{Obtain column indices}
 \usage{
 h_col_indices(table_tree, col_names)
 }
 \arguments{
-\item{table_tree}{(\code{VTableTree})\cr table to extract the indices from.}
+\item{table_tree}{(\code{VTableTree})\cr \code{rtables} table object to extract the indices from.}
 
 \item{col_names}{(\code{character})\cr vector of column names.}
 }

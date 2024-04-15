@@ -1,4 +1,4 @@
-#' Survival Time Analysis
+#' Survival time analysis
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -16,7 +16,7 @@
 #'   when the `range` statistic is included.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("surv_time")`
 #'   to see available statistics for this function.
-#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Each element of the vector
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.
 #'

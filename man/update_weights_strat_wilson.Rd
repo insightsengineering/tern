@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimate_proportion.R
 \name{update_weights_strat_wilson}
 \alias{update_weights_strat_wilson}
-\title{Helper Function for the Estimation of Weights for \code{prop_strat_wilson}}
+\title{Helper function for the estimation of weights for \code{prop_strat_wilson()}}
 \usage{
 update_weights_strat_wilson(
   vars,
@@ -17,18 +17,18 @@ update_weights_strat_wilson(
 \arguments{
 \item{vars}{(\code{numeric})\cr normalized proportions for each strata.}
 
-\item{strata_qnorm}{(\code{numeric})\cr initial estimation with identical weights of the quantiles.}
+\item{strata_qnorm}{(\code{numeric(1)})\cr initial estimation with identical weights of the quantiles.}
 
 \item{initial_weights}{(\code{numeric})\cr initial weights used to calculate \code{strata_qnorm}. This can
 be optimized in the future if we need to estimate better initial weights.}
 
 \item{n_per_strata}{(\code{numeric})\cr number of elements in each strata.}
 
-\item{max_iterations}{(\code{count})\cr maximum number of iterations to be tried. Convergence is always checked.}
+\item{max_iterations}{(\code{integer(1)})\cr maximum number of iterations to be tried. Convergence is always checked.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{tol}{(\code{number})\cr tolerance threshold for convergence.}
+\item{tol}{(\code{numeric(1)})\cr tolerance threshold for convergence.}
 }
 \value{
 A \code{list} of 3 elements: \code{n_it}, \code{weights}, and \code{diff_v}.

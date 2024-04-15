@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_rtables.R
 \name{cfun_by_flag}
 \alias{cfun_by_flag}
-\title{Constructor for Content Functions given Data Frame with Flag Input}
+\title{Constructor for content functions given a data frame with flag input}
 \usage{
 cfun_by_flag(analysis_var, flag_var, format = "xx", .indent_mods = NULL)
 }

@@ -5,7 +5,7 @@
 \alias{count_abnormal_by_worst_grade}
 \alias{s_count_abnormal_by_worst_grade}
 \alias{a_count_abnormal_by_worst_grade}
-\title{Patient Counts with the Most Extreme Post-baseline Toxicity Grade per Direction of Abnormality}
+\title{Patient counts with the most extreme post-baseline toxicity grade per direction of abnormality}
 \usage{
 count_abnormal_by_worst_grade(
   lyt,
@@ -35,14 +35,14 @@ a_count_abnormal_by_worst_grade(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
@@ -148,7 +148,7 @@ basic_table() \%>\%
 
 }
 \seealso{
-\code{\link[=h_adlb_abnormal_by_worst_grade]{h_adlb_abnormal_by_worst_grade()}} which pre-processes \code{ADLB} data frames to be used in
+\code{\link[=h_adlb_abnormal_by_worst_grade]{h_adlb_abnormal_by_worst_grade()}} which pre-processes ADLB data frames to be used in
 \code{\link[=count_abnormal_by_worst_grade]{count_abnormal_by_worst_grade()}}.
 }
 \keyword{internal}

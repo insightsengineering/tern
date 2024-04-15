@@ -2,18 +2,18 @@
 % Please edit documentation in R/utils.R
 \name{aesi_label}
 \alias{aesi_label}
-\title{Labels for Adverse Event Baskets}
+\title{Labels for adverse event baskets}
 \usage{
 aesi_label(aesi, scope = NULL)
 }
 \arguments{
-\item{aesi}{(\code{character})\cr with standardized \code{MedDRA} query name (e.g. \code{SMQzzNAM}) or customized query
-name (e.g. \code{CQzzNAM}).}
+\item{aesi}{(\code{character})\cr vector with standardized MedDRA query name (e.g. \code{SMQxxNAM}) or customized query
+name (e.g. \code{CQxxNAM}).}
 
-\item{scope}{(\code{character})\cr with scope of query (e.g. \code{SMQzzSC}).}
+\item{scope}{(\code{character})\cr vector with scope of query (e.g. \code{SMQxxSC}).}
 }
 \value{
-A \code{string} with the standard label for the \code{AE} basket.
+A \code{string} with the standard label for the AE basket.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

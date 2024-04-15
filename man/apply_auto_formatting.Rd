@@ -2,7 +2,7 @@
 % Please edit documentation in R/formatting_functions.R
 \name{apply_auto_formatting}
 \alias{apply_auto_formatting}
-\title{Apply Auto Formatting}
+\title{Apply automatic formatting}
 \usage{
 apply_auto_formatting(.formats, x_stats, .df_row, .var)
 }

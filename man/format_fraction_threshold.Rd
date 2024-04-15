@@ -2,7 +2,7 @@
 % Please edit documentation in R/formatting_functions.R
 \name{format_fraction_threshold}
 \alias{format_fraction_threshold}
-\title{Formatting Fraction with Lower Threshold}
+\title{Format fraction with lower threshold}
 \usage{
 format_fraction_threshold(threshold)
 }

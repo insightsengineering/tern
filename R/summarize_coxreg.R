@@ -1,4 +1,4 @@
-#' Cox Proportional Hazards Regression
+#' Cox proportional hazards regression
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -60,20 +60,20 @@ NULL
 #'
 #' @param model_df (`data.frame`)\cr contains the resulting model fit from a [fit_coxreg]
 #'   function with tidying applied via [broom::tidy()].
-#' @param .stats (`character`)\cr the name of statistics to be reported among:
+#' @param .stats (`character`)\cr the names of statistics to be reported among:
 #'   * `n`: number of observations (univariate only)
 #'   * `hr`: hazard ratio
 #'   * `ci`: confidence interval
 #'   * `pval`: p-value of the treatment effect
 #'   * `pval_inter`: p-value of the interaction effect between the treatment and the covariate (univariate only)
 #' @param .which_vars (`character`)\cr which rows should statistics be returned for from the given model.
-#'   Defaults to "all". Other options include "var_main" for main effects, `"inter"` for interaction effects,
-#'   and `"multi_lvl"` for multivariate model covariate level rows. When `.which_vars` is "all" specific
+#'   Defaults to `"all"`. Other options include `"var_main"` for main effects, `"inter"` for interaction effects,
+#'   and `"multi_lvl"` for multivariate model covariate level rows. When `.which_vars` is `"all"`, specific
 #'   variables can be selected by specifying `.var_nms`.
 #' @param .var_nms (`character`)\cr the `term` value of rows in `df` for which `.stats` should be returned. Typically
 #'   this is the name of a variable. If using variable labels, `var` should be a vector of both the desired
 #'   variable name and the variable label in that order to see all `.stats` related to that variable. When `.which_vars`
-#'   is `"var_main"` `.var_nms` should be only the variable name.
+#'   is `"var_main"`, `.var_nms` should be only the variable name.
 #'
 #' @return
 #' * `s_coxreg()` returns the selected statistic for from the Cox regression model for the selected variable(s).
@@ -269,11 +269,11 @@ a_coxreg <- function(df,
 #'   is a wrapper for [rtables::analyze_colvars()] and [rtables::summarize_row_groups()].
 #'
 #' @inheritParams fit_coxreg_univar
-#' @param multivar (`flag`)\cr Defaults to `FALSE`. If `TRUE` multivariate Cox regression will run, otherwise
+#' @param multivar (`flag`)\cr whether multivariate Cox regression should run (defaults to `FALSE`), otherwise
 #'   univariate Cox regression will run.
-#' @param common_var (`character`)\cr the name of a factor variable in the dataset which takes the same value
+#' @param common_var (`string`)\cr the name of a factor variable in the dataset which takes the same value
 #'   for all rows. This should be created during pre-processing if no such variable currently exists.
-#' @param .section_div (`character`)\cr string which should be repeated as a section divider between sections.
+#' @param .section_div (`string` or `NA`)\cr string which should be repeated as a section divider between sections.
 #'   Defaults to `NA` for no section divider. If a vector of two strings are given, the first will be used between
 #'   treatment and covariate sections and the second between different covariates.
 #'

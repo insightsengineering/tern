@@ -2,12 +2,12 @@
 % Please edit documentation in R/formatting_functions.R
 \name{format_extreme_values_ci}
 \alias{format_extreme_values_ci}
-\title{Formatting Extreme Values Part of a Confidence Interval}
+\title{Format extreme values part of a confidence interval}
 \usage{
 format_extreme_values_ci(digits = 2L)
 }
 \arguments{
-\item{digits}{(\code{integer})\cr number of decimal places to display.}
+\item{digits}{(\code{integer(1)})\cr number of decimal places to display.}
 }
 \value{
 An \code{rtables} formatting function that uses threshold \code{digits} to return a formatted extreme

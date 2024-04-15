@@ -1,4 +1,4 @@
-#' Compare Variables Between Groups
+#' Compare variables between groups
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -148,7 +148,7 @@ s_compare.factor <- function(x,
 #' @describeIn compare_variables Method for `character` class. This makes an automatic
 #'   conversion to `factor` (with a warning) and then forwards to the method for factors.
 #'
-#' @param verbose (`logical`)\cr Whether warnings and messages should be printed. Mainly used
+#' @param verbose (`flag`)\cr whether warnings and messages should be printed. Mainly used
 #'   to print out information about factor casting. Defaults to `TRUE`.
 #'
 #' @method s_compare character
@@ -253,7 +253,7 @@ s_compare.logical <- function(x,
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @param ... arguments passed to `s_compare()`.
-#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Each element of the vector
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.
 #'

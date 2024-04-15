@@ -2,7 +2,7 @@
 % Please edit documentation in R/coxph.R
 \name{s_cox_multivariate}
 \alias{s_cox_multivariate}
-\title{Multivariate Cox Model - Summarized Results}
+\title{Multivariate Cox model - summarized results}
 \usage{
 s_cox_multivariate(
   formula,
@@ -13,17 +13,17 @@ s_cox_multivariate(
 )
 }
 \arguments{
-\item{formula}{(\code{formula})\cr A formula corresponding to the investigated \code{\link[survival:Surv]{survival::Surv()}} survival model
+\item{formula}{(\code{formula})\cr a formula corresponding to the investigated \code{\link[survival:Surv]{survival::Surv()}} survival model
 including covariates.}
 
-\item{data}{(\code{data.frame})\cr A data frame which includes the variable in formula and covariates.}
+\item{data}{(\code{data.frame})\cr a data frame which includes the variable in formula and covariates.}
 
-\item{conf_level}{(\code{proportion})\cr The confidence level for the hazard ratio interval estimations. Default is 0.95.}
+\item{conf_level}{(\code{proportion})\cr the confidence level for the hazard ratio interval estimations. Default is 0.95.}
 
-\item{pval_method}{(\code{character})\cr The method used for the estimation of p-values, should be one of
+\item{pval_method}{(\code{string})\cr the method used for the estimation of p-values, should be one of
 \code{"wald"} (default) or \code{"likelihood"}.}
 
-\item{...}{Optional parameters passed to \code{\link[survival:coxph]{survival::coxph()}}. Can include \code{ties}, a character string specifying the
+\item{...}{optional parameters passed to \code{\link[survival:coxph]{survival::coxph()}}. Can include \code{ties}, a character string specifying the
 method for tie handling, one of \code{exact} (default), \code{efron}, \code{breslow}.}
 }
 \value{

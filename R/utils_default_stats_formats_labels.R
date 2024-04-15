@@ -123,7 +123,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
 
 #' @describeIn default_stats_formats_labels Get formats corresponding to a list of statistics.
 #'
-#' @param formats_in (named `vector`) \cr inserted formats to replace defaults. It can be a
+#' @param formats_in (named `vector`)\cr inserted formats to replace defaults. It can be a
 #'   character vector from [formatters::list_valid_format_labels()] or a custom format function.
 #'
 #' @return
@@ -179,7 +179,7 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 
 #' @describeIn default_stats_formats_labels Get labels corresponding to a list of statistics.
 #'
-#' @param labels_in (named `vector` of `character`)\cr inserted labels to replace defaults.
+#' @param labels_in (named `character`)\cr inserted labels to replace defaults.
 #' @param row_nms (`character`)\cr row names. Levels of a `factor` or `character` variable, each
 #'   of which the statistics in `.stats` will be calculated for. If this parameter is set, these
 #'   variable levels will be used as the defaults, and the names of the given custom values should
@@ -296,7 +296,7 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
   out
 }
 
-#' Update Labels According to Control Specifications
+#' Update labels according to control specifications
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -305,10 +305,10 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
 #' label for statistic `mean_ci` will be updated to `"Mean 90% CI"`. Any labels that are supplied
 #' via `labels_custom` will not be updated regardless of `control`.
 #'
-#' @param labels_default (named `vector` of `character`)\cr a named vector of statistic labels to modify
+#' @param labels_default (named `character`)\cr a named vector of statistic labels to modify
 #'   according to the control specifications. Labels that are explicitly defined in `labels_custom` will
 #'   not be affected.
-#' @param labels_custom (named `vector` of `character`)\cr named vector of labels that are customized by
+#' @param labels_custom (named `character`)\cr named vector of labels that are customized by
 #'   the user and should not be affected by `control`.
 #' @param control (named `list`)\cr list of control parameters to apply to adjust default labels.
 #'
@@ -491,7 +491,7 @@ tern_default_labels <- c(
 #' @describeIn default_stats_formats_labels Quick function to retrieve default formats for summary statistics:
 #'   [analyze_vars()] and [analyze_vars_in_cols()] principally.
 #'
-#' @param type (`flag`)\cr is it going to be `"numeric"` or `"counts"`?
+#' @param type (`string`)\cr `"numeric"` or `"counts"`.
 #'
 #' @return
 #' * `summary_formats()` returns a named `vector` of default statistic formats for the given data type.
@@ -507,9 +507,10 @@ summary_formats <- function(type = "numeric", include_pval = FALSE) {
 }
 
 #' @describeIn default_stats_formats_labels Quick function to retrieve default labels for summary statistics.
-#'   Returns labels of descriptive statistics which are understood by `rtables`. Similar to `summary_formats`
+#'   Returns labels of descriptive statistics which are understood by `rtables`. Similar to `summary_formats`.
 #'
-#' @param include_pval (`flag`)\cr deprecated parameter. Same as `add_pval`.
+#' @param include_pval (`flag`)\cr same as the `add_pval` argument in [get_stats()].
+#'
 #' @return
 #' * `summary_labels` returns a named `vector` of default statistic labels for the given data type.
 #'

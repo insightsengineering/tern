@@ -2,18 +2,18 @@
 % Please edit documentation in R/h_km.R
 \name{h_xticks}
 \alias{h_xticks}
-\title{Helper function: x-tick positions}
+\title{Helper function to calculate x-tick positions}
 \usage{
 h_xticks(data, xticks = NULL, max_time = NULL)
 }
 \arguments{
 \item{data}{(\code{data.frame})\cr survival data as pre-processed by \code{h_data_plot}.}
 
-\item{xticks}{(\code{numeric}, \code{number}, or \code{NULL})\cr numeric vector of tick positions or single number with spacing
+\item{xticks}{(\code{numeric} or \code{NULL})\cr numeric vector of tick positions or a single number with spacing
 between ticks on the x-axis. If \code{NULL} (default), \code{\link[labeling:extended]{labeling::extended()}} is used to determine
 optimal tick positions on the x-axis.}
 
-\item{max_time}{(\code{numeric})\cr maximum value to show on x-axis. Only data values less than or up to
+\item{max_time}{(\code{numeric(1)})\cr maximum value to show on x-axis. Only data values less than or up to
 this threshold value will be plotted (defaults to \code{NULL}).}
 }
 \value{

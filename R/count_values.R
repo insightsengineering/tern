@@ -1,4 +1,4 @@
-#' Counting Specific Values
+#' Count specific values
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

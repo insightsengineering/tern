@@ -5,7 +5,7 @@
 \alias{summarize_occurrences}
 \alias{s_count_occurrences}
 \alias{a_count_occurrences}
-\title{Occurrence Counts}
+\title{Occurrence counts}
 \usage{
 count_occurrences(
   lyt,
@@ -66,16 +66,16 @@ a_count_occurrences(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
 \item{id}{(\code{string})\cr subject variable name.}
 
-\item{drop}{(\code{flag})\cr should non appearing occurrence levels be dropped from the resulting table.
+\item{drop}{(\code{flag})\cr whether non-appearing occurrence levels should be dropped from the resulting table.
 Note that in that case the remaining occurrence levels in the table are sorted alphabetically.}
 
-\item{var_labels}{(\code{character})\cr character for label.}
+\item{var_labels}{(\code{character})\cr variable labels.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
@@ -85,14 +85,14 @@ See \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} for details on risk diff
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("count_occurrences")}
 to see available statistics for this function.}
@@ -113,7 +113,7 @@ unmodified default behavior. Can be negative.}
 \item \code{n}: number of patients with any occurrences
 }}
 
-\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
 
 \item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
@@ -121,7 +121,7 @@ passed by \code{rtables}.}
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+\item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
 }

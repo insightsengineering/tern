@@ -1,4 +1,4 @@
-#' Subgroup Treatment Effect Pattern (STEP) Fit for Binary (Response) Outcome
+#' Subgroup treatment effect pattern (STEP) fit for binary (response) outcome
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

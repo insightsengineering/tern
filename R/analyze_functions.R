@@ -1,4 +1,4 @@
-#' Analyze Functions
+#' Analyze functions
 #'
 #' @description
 #'

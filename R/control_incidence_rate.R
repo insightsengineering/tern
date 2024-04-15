@@ -10,7 +10,7 @@
 #'   for confidence interval type.
 #' @param input_time_unit (`string`)\cr `day`, `week`, `month`, or `year` (default)
 #'   indicating time unit for data input.
-#' @param num_pt_year (`numeric`)\cr number of patient-years to use when calculating adverse event rates.
+#' @param num_pt_year (`numeric(1)`)\cr number of patient-years to use when calculating adverse event rates.
 #'
 #' @return A list of components with the same names as the arguments.
 #'

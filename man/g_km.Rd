@@ -3,7 +3,7 @@
 \name{g_km}
 \alias{g_km}
 \alias{kaplan_meier}
-\title{Kaplan-Meier Plot}
+\title{Kaplan-Meier plot}
 \usage{
 g_km(
   df,
@@ -72,22 +72,22 @@ see more in \code{\link[survival:survfit]{survival::survfit()}}. Note that the o
 \item{col}{(\code{character})\cr lines colors. Length of a vector should be equal
 to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
 
-\item{lty}{(\code{numeric})\cr line type. Length of a vector should be equal
-to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
+\item{lty}{(\code{numeric})\cr line type. If a vector is given, its length should be equal to the number of strata from
+\code{\link[survival:survfit]{survival::survfit()}}.}
 
-\item{lwd}{(\code{numeric})\cr line width. Length of a vector should be equal
-to number of strata from \code{\link[survival:survfit]{survival::survfit()}}.}
+\item{lwd}{(\code{numeric})\cr line width. If a vector is given, its length should be equal to the number of strata from
+\code{\link[survival:survfit]{survival::survfit()}}.}
 
 \item{censor_show}{(\code{flag})\cr whether to show censored observations.}
 
-\item{pch}{(\code{character})\cr name of symbol or character to use as point symbol to indicate censored cases.}
+\item{pch}{(\code{string})\cr name of symbol or character to use as point symbol to indicate censored cases.}
 
-\item{size}{(\code{numeric})\cr size of censored point symbols.}
+\item{size}{(\code{numeric(1)})\cr size of censored point symbols.}
 
-\item{max_time}{(\code{numeric})\cr maximum value to show on x-axis. Only data values less than or up to
+\item{max_time}{(\code{numeric(1)})\cr maximum value to show on x-axis. Only data values less than or up to
 this threshold value will be plotted (defaults to \code{NULL}).}
 
-\item{xticks}{(\code{numeric}, \code{number}, or \code{NULL})\cr numeric vector of tick positions or single number with spacing
+\item{xticks}{(\code{numeric} or \code{NULL})\cr numeric vector of tick positions or a single number with spacing
 between ticks on the x-axis. If \code{NULL} (default), \code{\link[labeling:extended]{labeling::extended()}} is used to determine
 optimal tick positions on the x-axis.}
 
@@ -98,14 +98,14 @@ probability.}
 
 \item{ylab}{(\code{string})\cr y-axis label.}
 
-\item{ylim}{(\code{numeric(2)})\cr vector of length 2 containing lower and upper limits for the y-axis, respectively.
+\item{ylim}{(\code{numeric(2)})\cr vector containing lower and upper limits for the y-axis, respectively.
 If \code{NULL} (default), the minimum and maximum y-values displayed are used as limits.}
 
 \item{title}{(\code{string})\cr plot title.}
 
 \item{footnotes}{(\code{string})\cr plot footnotes.}
 
-\item{font_size}{(\code{number})\cr font size to be used for all text.}
+\item{font_size}{(\code{numeric(1)})\cr font size to use for all text.}
 
 \item{ci_ribbon}{(\code{flag})\cr whether the confidence interval should be drawn around the Kaplan-Meier curve.}
 
@@ -118,9 +118,9 @@ table. Has no effect if \code{annot_at_risk} is \code{FALSE}. Defaults to \code{
 \item{annot_surv_med}{(\code{flag})\cr compute and add the annotation table on the Kaplan-Meier curve estimating the
 median survival time per group.}
 
-\item{annot_coxph}{(\code{flag})\cr add the annotation table from a \code{\link[survival:coxph]{survival::coxph()}} model.}
+\item{annot_coxph}{(\code{flag})\cr whether to add the annotation table from a \code{\link[survival:coxph]{survival::coxph()}} model.}
 
-\item{annot_stats}{(\code{string})\cr statistics annotations to add to the plot. Options are
+\item{annot_stats}{(\code{string} or \code{NULL})\cr statistics annotations to add to the plot. Options are
 \code{median} (median survival follow-up time) and \code{min} (minimum survival follow-up time).}
 
 \item{annot_stats_vlines}{(\code{flag})\cr add vertical lines corresponding to each of the statistics
@@ -136,7 +136,7 @@ can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[s
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
 }}
 
-\item{ref_group_coxph}{(\code{character})\cr level of arm variable to use as reference group in calculations for
+\item{ref_group_coxph}{(\code{string} or \code{NULL})\cr level of arm variable to use as reference group in calculations for
 \code{annot_coxph} table. If \code{NULL} (default), uses the first level of the arm variable.}
 
 \item{control_annot_surv_med}{(\code{list})\cr parameters to control the position and size of the annotation table added
@@ -147,7 +147,7 @@ options are: \code{x}, \code{y}, \code{w}, \code{h}, and \code{fill}. See \code{
 to the plot when \code{annot_coxph = TRUE}, specified using the \code{\link[=control_coxph_annot]{control_coxph_annot()}} function. Parameter
 options are: \code{x}, \code{y}, \code{w}, \code{h}, \code{fill}, and \code{ref_lbls}. See \code{\link[=control_coxph_annot]{control_coxph_annot()}} for details.}
 
-\item{legend_pos}{(\code{numeric(2)})\cr vector of length 2 containing x- and y-coordinates, respectively, for the legend
+\item{legend_pos}{(\code{numeric(2)} or \code{NULL})\cr vector containing x- and y-coordinates, respectively, for the legend
 position relative to the KM plot area. If \code{NULL} (default), the legend is positioned in the bottom right corner of
 the plot, or the middle right of the plot if needed to prevent overlapping.}
 
@@ -181,7 +181,7 @@ at risk table is printed below the plot via \code{\link[cowplot:plot_grid]{cowpl
 \code{control_annot_surv_med} instead.}
 
 \item{width_annots}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{w} element of \code{control_annot_surv_med}
-(for surv_med) and \code{control_annot_coxph} (for coxph)."}
+(for \code{surv_med}) and \code{control_annot_coxph} (for \code{coxph})."}
 }
 \value{
 A \code{ggplot} Kaplan-Meier plot and (optionally) summary table.
@@ -225,7 +225,7 @@ g_km(
   ggtheme = ggplot2::theme_minimal()
 )
 
-# Example with pairwise coxph analysis annotation table, adjusted annotation tables
+# Example with pairwise Cox-PH analysis annotation table, adjusted annotation tables
 g_km(
   df = df, variables = variables,
   annot_coxph = TRUE,

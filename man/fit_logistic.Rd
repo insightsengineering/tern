@@ -2,7 +2,7 @@
 % Please edit documentation in R/logistic_regression.R
 \name{fit_logistic}
 \alias{fit_logistic}
-\title{Fit for Logistic Regression}
+\title{Fit for logistic regression}
 \usage{
 fit_logistic(
   data,

@@ -1,4 +1,4 @@
-#' Control Function for Descriptive Statistics
+#' Control function for descriptive statistics
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -6,11 +6,12 @@
 #' details for [s_summary()]. This function family is mainly used by [analyze_vars()].
 #'
 #' @inheritParams argument_convention
-#' @param quantiles (`numeric`)\cr of length two to specify the quantiles to calculate.
-#' @param quantile_type (`numeric`)\cr between 1 and 9 selecting quantile algorithms to be used.
+#' @param quantiles (`numeric(2)`)\cr vector of length two to specify the quantiles to calculate.
+#' @param quantile_type (`numeric(1)`)\cr number between 1 and 9 selecting quantile algorithms to be used.
 #'   Default is set to 2 as this matches the default quantile algorithm in SAS `proc univariate` set by `QNTLDEF=5`.
 #'   This differs from R's default. See more about `type` in [stats::quantile()].
-#' @param test_mean (`numeric`)\cr to test against the mean under the null hypothesis when calculating p-value.
+#' @param test_mean (`numeric(1)`)\cr number to test against the mean under the null hypothesis when calculating
+#'   p-value.
 #'
 #' @return A list of components with the same names as the arguments.
 #'
@@ -27,7 +28,7 @@ control_analyze_vars <- function(conf_level = 0.95,
   list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type, test_mean = test_mean)
 }
 
-#' Analyze Variables
+#' Analyze variables
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -74,10 +75,10 @@ s_summary <- function(x,
 #' @param control (`list`)\cr parameters for descriptive statistics details, specified by using
 #'   the helper function [control_analyze_vars()]. Some possible parameter options are:
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for mean and median.
-#'   * `quantiles` (`numeric`)\cr vector of length two to specify the quantiles.
-#'   * `quantile_type` (`numeric`)\cr between 1 and 9 selecting quantile algorithms to be used.
+#'   * `quantiles` (`numeric(2)`)\cr vector of length two to specify the quantiles.
+#'   * `quantile_type` (`numeric(1)`)\cr between 1 and 9 selecting quantile algorithms to be used.
 #'     See more about `type` in [stats::quantile()].
-#'   * `test_mean` (`numeric`)\cr value to test against the mean under the null hypothesis when calculating p-value.
+#'   * `test_mean` (`numeric(1)`)\cr value to test against the mean under the null hypothesis when calculating p-value.
 #'
 #' @return
 #'   * If `x` is of class `numeric`, returns a `list` with the following named `numeric` items:
@@ -318,7 +319,7 @@ s_summary.factor <- function(x,
 #' @describeIn analyze_variables Method for `character` class. This makes an automatic
 #'   conversion to factor (with a warning) and then forwards to the method for factors.
 #'
-#' @param verbose (`logical`)\cr Defaults to `TRUE`, which prints out warnings and messages. It is mainly used
+#' @param verbose (`flag`)\cr defaults to `TRUE`, which prints out warnings and messages. It is mainly used
 #'   to print out information about factor casting.
 #'
 #' @note
@@ -422,7 +423,7 @@ s_summary.logical <- function(x,
 #' @describeIn analyze_variables Formatted analysis function which is used as `afun` in `analyze_vars()` and
 #'   `compare_vars()` and as `cfun` in `summarize_colvars()`.
 #'
-#' @param compare (`logical`)\cr Whether comparison statistics should be analyzed instead of summary statistics
+#' @param compare (`flag`)\cr whether comparison statistics should be analyzed instead of summary statistics
 #'   (`compare = TRUE` adds `pval` statistic comparing against reference group).
 #'
 #' @return
@@ -537,7 +538,7 @@ a_summary <- function(x,
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @param ... arguments passed to `s_summary()`.
-#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Each element of the vector
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.
 #'

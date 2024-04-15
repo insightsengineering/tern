@@ -2,14 +2,14 @@
 % Please edit documentation in R/g_step.R
 \name{tidy.step}
 \alias{tidy.step}
-\title{Custom Tidy Method for STEP Results}
+\title{Custom tidy method for STEP results}
 \usage{
 \method{tidy}{step}(x, ...)
 }
 \arguments{
-\item{x}{(\code{step} matrix)\cr results from \code{\link[=fit_survival_step]{fit_survival_step()}}.}
+\item{x}{(\code{matrix})\cr results from \code{\link[=fit_survival_step]{fit_survival_step()}}.}
 
-\item{...}{not used here.}
+\item{...}{not used.}
 }
 \value{
 A \code{tibble} with one row per STEP subgroup. The estimates and CIs are on the HR or OR scale,

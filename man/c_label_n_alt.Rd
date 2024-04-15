@@ -2,14 +2,14 @@
 % Please edit documentation in R/utils_rtables.R
 \name{c_label_n_alt}
 \alias{c_label_n_alt}
-\title{Content Row Function to Add \code{alt_counts_df} Row Total to Labels}
+\title{Content row function to add \code{alt_counts_df} row total to labels}
 \usage{
 c_label_n_alt(df, labelstr, .alt_df_row)
 }
 \arguments{
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+\item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
 }

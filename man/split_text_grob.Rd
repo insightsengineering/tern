@@ -2,7 +2,7 @@
 % Please edit documentation in R/decorate_grob.R
 \name{split_text_grob}
 \alias{split_text_grob}
-\title{Split Text According To Available Text Width}
+\title{Split text according to available text width}
 \usage{
 split_text_grob(
   text,
@@ -19,13 +19,13 @@ split_text_grob(
 )
 }
 \arguments{
-\item{text}{character string}
+\item{text}{(\code{string})\cr the text to wrap.}
 
 \item{x}{A numeric vector or unit object specifying x-values.}
 
 \item{y}{A numeric vector or unit object specifying y-values.}
 
-\item{width}{a unit object specifying max width of text}
+\item{width}{(\code{grid::unit})\cr a unit object specifying maximum width of text.}
 
 \item{just}{The justification of the text
     relative to its (x, y) location.  If there are two values, the first
@@ -55,7 +55,7 @@ split_text_grob(
 \item{vp}{A Grid viewport object (or NULL).}
 }
 \value{
-A text grob.
+A text \code{grob}.
 }
 \description{
 Dynamically wrap text.

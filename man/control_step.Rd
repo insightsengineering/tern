@@ -2,7 +2,7 @@
 % Please edit documentation in R/control_step.R
 \name{control_step}
 \alias{control_step}
-\title{Control Function for Subgroup Treatment Effect Pattern (STEP) Calculations}
+\title{Control function for subgroup treatment effect pattern (STEP) calculations}
 \usage{
 control_step(
   biomarker = NULL,
@@ -21,7 +21,7 @@ quantiles rather than actual values, i.e. the bandwidth refers to the percentage
 covered in each window. Suggest \code{TRUE} if the biomarker variable is not uniformly
 distributed.}
 
-\item{bandwidth}{(\code{number} or \code{NULL})\cr indicating the bandwidth of each window.
+\item{bandwidth}{(\code{numeric(1)} or \code{NULL})\cr indicating the bandwidth of each window.
 Depending on the argument \code{use_percentile}, it can be either the length of actual-value
 windows on the real biomarker scale, or percentage windows.
 If \code{use_percentile = TRUE}, it should be a number between 0 and 1.
@@ -29,11 +29,11 @@ If \code{NULL}, treat the bandwidth to be infinity, which means only one global 
 By default, \code{0.25} is used for percentage windows and one quarter of the range of the \code{biomarker}
 variable for actual-value windows.}
 
-\item{degree}{(\code{count})\cr the degree of polynomial function of the biomarker as an interaction term
+\item{degree}{(\code{integer(1)})\cr the degree of polynomial function of the biomarker as an interaction term
 with the treatment arm fitted at each window. If 0 (default), then the biomarker variable
 is not included in the model fitted in each biomarker window.}
 
-\item{num_points}{(\code{count})\cr the number of points at which the hazard ratios are estimated. The
+\item{num_points}{(\code{integer(1)})\cr the number of points at which the hazard ratios are estimated. The
 smallest number is 2.}
 }
 \value{

@@ -2,14 +2,14 @@
 % Please edit documentation in R/formatting_functions.R
 \name{format_count_fraction_fixed_dp}
 \alias{format_count_fraction_fixed_dp}
-\title{Formatting Count and Percentage with Fixed Single Decimal Place}
+\title{Format count and percentage with fixed single decimal place}
 \usage{
 format_count_fraction_fixed_dp(x, ...)
 }
 \arguments{
-\item{x}{(\code{integer})\cr vector of length 2, count and fraction.}
+\item{x}{(\code{numeric(2)})\cr vector of length 2 with count and fraction, respectively.}
 
-\item{...}{required for \code{rtables} interface.}
+\item{...}{not used. Required for \code{rtables} interface.}
 }
 \value{
 A string in the format \verb{count (fraction \%)}. If \code{count} is 0, the format is \code{0}.

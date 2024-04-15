@@ -5,7 +5,7 @@
 \alias{h_rsp_to_logistic_variables}
 \alias{h_logistic_mult_cont_df}
 \alias{h_tab_rsp_one_biomarker}
-\title{Helper Functions for Tabulating Biomarker Effects on Binary Response by Subgroup}
+\title{Helper functions for tabulating biomarker effects on binary response by subgroup}
 \usage{
 h_rsp_to_logistic_variables(variables, biomarker)
 
@@ -76,7 +76,7 @@ biomarkers in a given single data set.
 \code{rsp} and \code{biomarkers} (vector of continuous biomarker variables) and optionally \code{covariates}
 and \code{strata}.
 
-\item \code{h_tab_rsp_one_biomarker()}: prepares a single sub-table given a \code{df_sub} containing
+\item \code{h_tab_rsp_one_biomarker()}: Prepares a single sub-table given a \code{df_sub} containing
 the results for a single biomarker.
 
 }}

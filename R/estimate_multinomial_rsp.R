@@ -1,4 +1,4 @@
-#' Estimation of Proportions per Level of Factor
+#' Estimation of proportions per level of factor
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -15,13 +15,13 @@
 #' @order 1
 NULL
 
-#' Description of Standard Oncology Response
+#' Description of standard oncology response
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Describe the oncology response in a standard way.
 #'
-#' @param x (`character`)\cr the standard oncology code to be described.
+#' @param x (`character`)\cr the standard oncology codes to be described.
 #'
 #' @return Response labels.
 #'

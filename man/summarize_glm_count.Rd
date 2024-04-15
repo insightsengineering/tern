@@ -4,7 +4,7 @@
 \alias{summarize_glm_count}
 \alias{s_glm_count}
 \alias{a_glm_count}
-\title{Summary for Poisson Negative Binomial.}
+\title{Summarize Poisson negative binomial regression}
 \usage{
 summarize_glm_count(
   lyt,
@@ -56,11 +56,11 @@ a_glm_count(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables, with
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables, with
 expected elements:
 \itemize{
 \item \code{arm} (\code{string})\cr group variable, for which the covariate adjusted means of multiple
@@ -72,28 +72,28 @@ reference group.
 }}
 
 \item{distribution}{(\code{character})\cr a character value specifying the distribution
-used in the regression (poisson, quasipoisson, negative binomial).}
+used in the regression (Poisson, Quasi-Poisson, negative binomial).}
 
-\item{conf_level}{(\code{numeric})\cr value used to derive the confidence interval for the rate.}
+\item{conf_level}{(\code{proportion})\cr value used to derive the confidence interval for the rate.}
 
 \item{weights}{(\code{character})\cr a character vector specifying weights used
 in averaging predictions. Number of weights must equal the number of levels included in the covariates.
 Weights option passed to \code{\link[emmeans:emmeans]{emmeans::emmeans()}}.}
 
-\item{var_labels}{(\code{character})\cr character for label.}
+\item{var_labels}{(\code{character})\cr variable labels.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("summarize_glm_count")}
 to see available statistics for this function.}
@@ -111,11 +111,11 @@ unmodified default behavior. Can be negative.}
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.df_row}{(\code{data.frame})\cr data set that includes all the variables that are called in \code{.var} and \code{variables}.}
+\item{.df_row}{(\code{data.frame})\cr dataset that includes all the variables that are called in \code{.var} and \code{variables}.}
 
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
-\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+\item{.in_ref_col}{(\code{flag})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 }
 \value{
 \itemize{
@@ -143,7 +143,7 @@ the statistics from \code{s_glm_count()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Summarize results of a Poisson Negative Binomial Regression.
+Summarize results of a Poisson negative binomial regression.
 This can be used to analyze count and/or frequency data using a linear model.
 }
 \section{Functions}{

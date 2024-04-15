@@ -1,4 +1,4 @@
-#' Number of Patients
+#' Number of patients
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -7,7 +7,7 @@
 #' @inheritParams argument_convention
 #' @param count_by (`vector`)\cr optional vector of any type to be combined with `x` when counting `nonunique`
 #'   records.
-#' @param unique_count_suffix (`logical`)\cr should `"(n)"` suffix be added to `unique_count` labels.
+#' @param unique_count_suffix (`flag`)\cr whether the `"(n)"` suffix should be added to `unique_count` labels.
 #'   Defaults to `TRUE`.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("summarize_num_patients")`
 #'   to see available statistics for this function.
@@ -69,7 +69,7 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_su
 #'   in a column (variable), the corresponding percentage taken with respect to the total number of
 #'   patients, and the number of non-unique patients in the column.
 #'
-#' @param required (`character` or `NULL`)\cr optional name of a variable that is required to be non-missing.
+#' @param required (`character` or `NULL`)\cr optional, name of a variable that is required to be non-missing.
 #'
 #' @return
 #' * `s_num_patients_content()` returns the same values as `s_num_patients()`.

@@ -200,7 +200,7 @@ build_table(lyt, df = adsl %>% dplyr::filter(COUNTRY == "CHN"))
 
 ### Adverse Event Table
 
-The standard table of adverse events is a summary by system organ class and preferred term. For frequency counts by preferred term, if there are multiple occurrences of the same `AE` in an individual we count them only once.
+The standard table of adverse events is a summary by system organ class and preferred term. For frequency counts by preferred term, if there are multiple occurrences of the same AE in an individual we count them only once.
 
 To create this table we will need to use a combination of several layout creating functions in a tabulation pipeline.
 
@@ -228,7 +228,7 @@ Note that for this table, the denominator used for percentages and shown in the 
 
 #### Statistics Functions
 
-Before building out the rest of the `AE` table it is helpful to introduce some more `tern` package design conventions. Each layout creating function in `tern` is a wrapper for a Statistics function. Statistics functions are the ones that do the actual computation of numbers in a table. These functions always return named lists whose elements are the statistics available to include in a layout via the `.stats` argument at the layout creating function level.
+Before building out the rest of the AE table it is helpful to introduce some more `tern` package design conventions. Each layout creating function in `tern` is a wrapper for a Statistics function. Statistics functions are the ones that do the actual computation of numbers in a table. These functions always return named lists whose elements are the statistics available to include in a layout via the `.stats` argument at the layout creating function level.
 
 Statistics functions follow a naming convention to always begin with `s_*` and for ease of use are documented on the same page as their layout creating function counterpart. It is helpful to review a Statistic function to understand the logic used to calculate the numbers in a table and see what options may be available to modify the analysis.
 
@@ -237,7 +237,7 @@ For example, the Statistics function calculating the numbers in `summarize_num_p
 s_num_patients(x = adae$USUBJID, labelstr = "", .N_col = nrow(adae))
 ```
 
-From these results you can see that the `unique` and `nonunique` statistics are those displayed in the "All Patients" column in the initial `AE` table output above. Also you can see that these are raw numbers and are not formatted in any way. All formatting functionality is handled at the layout creating function level with the `.formats` argument.
+From these results you can see that the `unique` and `nonunique` statistics are those displayed in the "All Patients" column in the initial AE table output above. Also you can see that these are raw numbers and are not formatted in any way. All formatting functionality is handled at the layout creating function level with the `.formats` argument.
 
 Now that we know what types of statistics can be derived by `s_num_patients()`, we can try modifying the default layout returned by `summarize_num_patients()`. Instead of reporting the `unique` and `nonqunie` statistics, we specify that the analysis should include only the `unique_count` statistic. The result will show only the counts of unique patients. Note we make this update in both the `.stats` and `.labels` argument of `summarize_num_patients()`.
 
@@ -308,7 +308,7 @@ basic_table() %>%
   )
 ```
 
-Putting everything together, the final `AE` table looks like this:
+Putting everything together, the final AE table looks like this:
 
 ```{r}
 basic_table() %>%
@@ -353,7 +353,7 @@ A typical response table for a binary clinical trial endpoint may be composed of
 * Difference between proportion of responders in comparison groups vs. control group
 * Chi-Square test for difference in response rates between comparison groups vs. control group
 
-We can build a table layout like this by following the same approach we used for the `AE` table: each table section will be produced using a different layout creating function from `tern`.
+We can build a table layout like this by following the same approach we used for the AE table: each table section will be produced using a different layout creating function from `tern`.
 
 First we start with some data preparation steps to set up the analysis dataset. We select the endpoint to analyze from `PARAMCD` and define the logical variable `is_rsp` which indicates whether a patient is classified as a responder or not.
 

@@ -1,4 +1,4 @@
-#' Estimation of Proportions
+#' Estimation of proportions
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -11,7 +11,7 @@
 #' @param method (`string`)\cr the method used to construct the confidence interval
 #'   for proportion of successful outcomes; one of `waldcc`, `wald`, `clopper-pearson`,
 #'   `wilson`, `wilsonc`, `strat_wilson`, `strat_wilsonc`, `agresti-coull` or `jeffreys`.
-#' @param long (`flag`)\cr a long description is required.
+#' @param long (`flag`)\cr whether a long description is required.
 #'
 #' @seealso [h_proportions]
 #'
@@ -207,7 +207,7 @@ estimate_proportion <- function(lyt,
   )
 }
 
-#' Helper Functions for Calculating Proportion Confidence Intervals
+#' Helper functions for calculating proportion confidence intervals
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -255,8 +255,8 @@ prop_wilson <- function(rsp, conf_level, correct = FALSE) {
 #'   minimizes the weighted squared length of the confidence interval.
 #' @param max_iterations (`count`)\cr maximum number of iterations for the iterative procedure used
 #'   to find estimates of optimal weights.
-#' @param correct (`flag`)\cr include the continuity correction. For further information, see for example
-#'   [stats::prop.test()].
+#' @param correct (`flag`)\cr whether to include the continuity correction. For further information, see for example
+#'   for [stats::prop.test()].
 #'
 #' @references
 #' \insertRef{Yan2010-jt}{tern}
@@ -313,7 +313,6 @@ prop_strat_wilson <- function(rsp,
   checkmate::assert_numeric(weights, lower = 0, upper = 1, any.missing = FALSE, len = n_strata)
   sum_weights <- checkmate::assert_int(sum(weights))
   if (as.integer(sum_weights + 0.5) != 1L) stop("Sum of weights must be 1L.")
-
 
   xs <- tbl["TRUE", ]
   ns <- colSums(tbl)
@@ -387,7 +386,7 @@ prop_clopper_pearson <- function(rsp,
 #' @describeIn h_proportions Calculates the Wald interval by following the usual textbook definition
 #'   for a single proportion confidence interval using the normal approximation.
 #'
-#' @param correct (`flag`)\cr apply continuity correction.
+#' @param correct (`flag`)\cr whether to apply continuity correction.
 #'
 #' @examples
 #' prop_wald(rsp, conf_level = 0.95)
@@ -408,8 +407,8 @@ prop_wald <- function(rsp, conf_level, correct = FALSE) {
   c(l_ci, u_ci)
 }
 
-#' @describeIn h_proportions Calculates the `Agresti-Coull` interval (created by `Alan Agresti` and `Brent Coull`) by
-#'   (for 95% CI) adding two successes and two failures to the data and then using the Wald formula to construct a CI.
+#' @describeIn h_proportions Calculates the Agresti-Coull interval. Constructed (for 95% CI) by adding two successes
+#'   and two failures to the data and then using the Wald formula to construct a CI.
 #'
 #' @examples
 #' prop_agresti_coull(rsp, conf_level = 0.95)
@@ -462,7 +461,7 @@ prop_jeffreys <- function(rsp,
   c(l_ci, u_ci)
 }
 
-#' Description of the Proportion Summary
+#' Description of the proportion summary
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -497,7 +496,7 @@ d_proportion <- function(conf_level,
   paste0(label, " (", method_part, ")")
 }
 
-#' Helper Function for the Estimation of Stratified Quantiles
+#' Helper function for the estimation of stratified quantiles
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -532,7 +531,7 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
   sqrt(sum(summands)) / sum(sqrt(summands)) * stats::qnorm((1 + conf_level) / 2)
 }
 
-#' Helper Function for the Estimation of Weights for `prop_strat_wilson`
+#' Helper function for the estimation of weights for `prop_strat_wilson()`
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -542,12 +541,12 @@ strata_normal_quantile <- function(vars, weights, conf_level) {
 #'
 #' @inheritParams prop_strat_wilson
 #' @param vars (`numeric`)\cr normalized proportions for each strata.
-#' @param strata_qnorm (`numeric`)\cr initial estimation with identical weights of the quantiles.
+#' @param strata_qnorm (`numeric(1)`)\cr initial estimation with identical weights of the quantiles.
 #' @param initial_weights (`numeric`)\cr initial weights used to calculate `strata_qnorm`. This can
 #'   be optimized in the future if we need to estimate better initial weights.
 #' @param n_per_strata (`numeric`)\cr number of elements in each strata.
-#' @param max_iterations (`count`)\cr maximum number of iterations to be tried. Convergence is always checked.
-#' @param tol (`number`)\cr tolerance threshold for convergence.
+#' @param max_iterations (`integer(1)`)\cr maximum number of iterations to be tried. Convergence is always checked.
+#' @param tol (`numeric(1)`)\cr tolerance threshold for convergence.
 #'
 #' @return A `list` of 3 elements: `n_it`, `weights`, and `diff_v`.
 #'

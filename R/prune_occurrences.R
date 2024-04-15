@@ -1,4 +1,4 @@
-#' Occurrence Table Pruning
+#' Occurrence table pruning
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -93,7 +93,7 @@ keep_content_rows <- function(content_row_condition) {
 
 #' @describeIn prune_occurrences Constructor for creating condition functions on total counts in the specified columns.
 #'
-#' @param atleast (`count` or `proportion`)\cr threshold which should be met in order to keep the row.
+#' @param atleast (`numeric(1)`)\cr threshold which should be met in order to keep the row.
 #' @param ... arguments for row or column access, see [`rtables_access`]: either `col_names` (`character`) including
 #'   the names of the columns which should be used, or alternatively `col_indices` (`integer`) giving the indices
 #'   directly instead.
@@ -120,7 +120,7 @@ has_count_in_cols <- function(atleast, ...) {
 #' @describeIn prune_occurrences Constructor for creating condition functions on any of the counts in
 #'   the specified columns satisfying a threshold.
 #'
-#' @param atleast (`count` or `proportion`)\cr threshold which should be met in order to keep the row.
+#' @param atleast (`numeric(1)`)\cr threshold which should be met in order to keep the row.
 #'
 #' @return
 #' * `has_count_in_any_col()` returns a condition function that compares the counts in the

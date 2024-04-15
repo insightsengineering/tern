@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_km.R
 \name{h_tbl_median_surv}
 \alias{h_tbl_median_surv}
-\title{Helper Function: Survival Estimations}
+\title{Helper function for survival estimations}
 \usage{
 h_tbl_median_surv(fit_km, armval = "All")
 }

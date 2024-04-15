@@ -2,7 +2,7 @@
 % Please edit documentation in R/survival_biomarkers_subgroups.R
 \name{extract_survival_biomarkers}
 \alias{extract_survival_biomarkers}
-\title{Prepares Survival Data Estimates for Multiple Biomarkers in a Single Data Frame}
+\title{Prepare survival data estimates for multiple biomarkers in a single data frame}
 \usage{
 extract_survival_biomarkers(
   variables,

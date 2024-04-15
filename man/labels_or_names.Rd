@@ -2,12 +2,12 @@
 % Please edit documentation in R/utils_rtables.R
 \name{labels_or_names}
 \alias{labels_or_names}
-\title{Labels or Names of List Elements}
+\title{Labels or names of list elements}
 \usage{
 labels_or_names(x)
 }
 \arguments{
-\item{x}{a list.}
+\item{x}{(\code{list})\cr a list.}
 }
 \value{
 A \code{character} vector with the labels or names for the list elements.

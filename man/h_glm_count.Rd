@@ -6,7 +6,7 @@
 \alias{h_glm_quasipoisson}
 \alias{h_glm_negbin}
 \alias{h_ppmeans}
-\title{Helper Functions for Poisson Models.}
+\title{Helper functions for Poisson models}
 \usage{
 h_glm_poisson(.var, .df_row, variables, weights)
 
@@ -22,9 +22,9 @@ h_ppmeans(obj, .df_row, arm, conf_level)
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.df_row}{(\code{data.frame})\cr data set that includes all the variables that are called in \code{.var} and \code{variables}.}
+\item{.df_row}{(\code{data.frame})\cr dataset that includes all the variables that are called in \code{.var} and \code{variables}.}
 
-\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables, with
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables, with
 expected elements:
 \itemize{
 \item \code{arm} (\code{string})\cr group variable, for which the covariate adjusted means of multiple
@@ -40,14 +40,14 @@ in averaging predictions. Number of weights must equal the number of levels incl
 Weights option passed to \code{\link[emmeans:emmeans]{emmeans::emmeans()}}.}
 
 \item{distribution}{(\code{character})\cr a character value specifying the distribution
-used in the regression (poisson, quasipoisson, negative binomial).}
+used in the regression (Poisson, Quasi-Poisson, negative binomial).}
 
 \item{obj}{(\code{glm.fit})\cr fitted model object used to derive the mean rate estimates in each treatment arm.}
 
 \item{arm}{(\code{string})\cr group variable, for which the covariate adjusted means of multiple groups will be
 summarized. Specifically, the first level of \code{arm} variable is taken as the reference group.}
 
-\item{conf_level}{(\code{numeric})\cr value used to derive the confidence interval for the rate.}
+\item{conf_level}{(\code{proportion})\cr value used to derive the confidence interval for the rate.}
 }
 \value{
 \itemize{
@@ -59,7 +59,7 @@ summarized. Specifically, the first level of \code{arm} variable is taken as the
 }
 
 \itemize{
-\item \code{h_glm_negbin()} returns the results of a Negative Binomial model.
+\item \code{h_glm_negbin()} returns the results of a negative binomial model.
 }
 
 \itemize{
@@ -77,14 +77,14 @@ Helper functions that can be used to return the results of various Poisson model
 }
 \section{Functions}{
 \itemize{
-\item \code{h_glm_poisson()}: Helper function to return results of a poisson model.
+\item \code{h_glm_poisson()}: Helper function to return results of a Poisson model.
 
-\item \code{h_glm_quasipoisson()}: Helper function to return results of a quasipoisson model.
+\item \code{h_glm_quasipoisson()}: Helper function to return results of a Quasi-Poisson model.
 
 \item \code{h_glm_negbin()}: Helper function to return results of a negative binomial model.
 
 \item \code{h_glm_count()}: Helper function to return the results of the
-selected model (poisson, quasipoisson, negative binomial).
+selected model (Poisson, Quasi-Poisson, negative binomial).
 
 \item \code{h_ppmeans()}: Helper function to return the estimated means.
 

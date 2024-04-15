@@ -2,7 +2,7 @@
 % Please edit documentation in R/stat.R
 \name{stat_median_ci}
 \alias{stat_median_ci}
-\title{Confidence Interval for Median}
+\title{Confidence interval for median}
 \usage{
 stat_median_ci(x, conf_level = 0.95, na.rm = TRUE, gg_helper = TRUE)
 }
@@ -13,7 +13,7 @@ stat_median_ci(x, conf_level = 0.95, na.rm = TRUE, gg_helper = TRUE)
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{gg_helper}{(\code{logical})\cr \code{TRUE} when output should be aligned for the use with \code{ggplot}.}
+\item{gg_helper}{(\code{flag})\cr whether output should be aligned for use with \code{ggplot}s.}
 }
 \value{
 A named \code{vector} of values \code{median_ci_lwr} and \code{median_ci_upr}.
@@ -25,7 +25,7 @@ Convenient function for calculating the median confidence interval. It can be us
 function for plotting.
 }
 \details{
-The function was adapted from \verb{DescTools/versions/0.99.35/source}
+This function was adapted from \verb{DescTools/versions/0.99.35/source}
 }
 \examples{
 stat_median_ci(sample(10), gg_helper = FALSE)

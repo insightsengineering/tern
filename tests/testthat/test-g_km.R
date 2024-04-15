@@ -162,3 +162,40 @@ testthat::test_that("g_km as_list argument works", {
   expect_snapshot_ggplot("g_km_plot_only", g_km_plot_only, width = 10, height = 4)
   expect_snapshot_ggplot("g_km_table_only", g_km_table_only, width = 9, height = 3)
 })
+
+testthat::test_that("g_km argument deprecation warnings work", {
+  lifecycle::expect_deprecated(
+    lifecycle::expect_deprecated(
+      lifecycle::expect_deprecated(
+        lifecycle::expect_deprecated(
+          lifecycle::expect_deprecated(
+            lifecycle::expect_deprecated(
+              lifecycle::expect_deprecated(
+                lifecycle::expect_deprecated(
+                  lifecycle::expect_deprecated(
+                    withr::with_options(
+                      opts_partial_match_old,
+                      g_km(
+                        df = df,
+                        variables = variables,
+                        draw = "test_warning",
+                        newpage = "test_warning",
+                        gp = "test_warning",
+                        vp = "test_warning",
+                        name = "test_warning",
+                        annot_coxph_ref_lbls = FALSE,
+                        position_coxph = c(0.29, 0.51),
+                        position_surv_med = c(0.8, 0.85),
+                        width_annots = list(surv_med = 0.32, coxph = 0.4)
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+})

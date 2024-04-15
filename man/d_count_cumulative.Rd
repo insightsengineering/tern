@@ -2,16 +2,16 @@
 % Please edit documentation in R/count_cumulative.R
 \name{d_count_cumulative}
 \alias{d_count_cumulative}
-\title{Description of Cumulative Count}
+\title{Description of cumulative count}
 \usage{
 d_count_cumulative(threshold, lower_tail, include_eq)
 }
 \arguments{
-\item{threshold}{(\code{number})\cr a cutoff value as threshold to count values of \code{x}.}
+\item{threshold}{(\code{numeric(1)})\cr a cutoff value as threshold to count values of \code{x}.}
 
-\item{lower_tail}{(\code{logical})\cr whether to count lower tail, default is \code{TRUE}.}
+\item{lower_tail}{(\code{flag})\cr whether to count lower tail, default is \code{TRUE}.}
 
-\item{include_eq}{(\code{logical})\cr whether to include value equal to the \code{threshold} in
+\item{include_eq}{(\code{flag})\cr whether to include value equal to the \code{threshold} in
 count, default is \code{TRUE}.}
 }
 \value{

@@ -2,16 +2,16 @@
 % Please edit documentation in R/utils_factor.R
 \name{bins_percent_labels}
 \alias{bins_percent_labels}
-\title{Labels for Bins in Percent}
+\title{Labels for bins in percent}
 \usage{
 bins_percent_labels(probs, digits = 0)
 }
 \arguments{
-\item{probs}{(\code{proportion} vector)\cr the probabilities identifying the quantiles.
+\item{probs}{(\code{numeric})\cr the probabilities identifying the quantiles.
 This is a sorted vector of unique \code{proportion} values, i.e. between 0 and 1, where
 the boundaries 0 and 1 must not be included.}
 
-\item{digits}{(\code{integer})\cr number of decimal places to round the percent numbers.}
+\item{digits}{(\code{integer(1)})\cr number of decimal places to round the percent numbers.}
 }
 \value{
 A \code{character} vector with labels in the format \verb{[0\%,20\%]}, \verb{(20\%,50\%]}, etc.

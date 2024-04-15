@@ -1,4 +1,4 @@
-#' Helper Functions for Tabulating Biomarker Effects on Binary Response by Subgroup
+#' Helper functions for tabulating biomarker effects on binary response by subgroup
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -174,7 +174,7 @@ h_logistic_mult_cont_df <- function(variables,
   }
 }
 
-#' @describeIn h_response_biomarkers_subgroups prepares a single sub-table given a `df_sub` containing
+#' @describeIn h_response_biomarkers_subgroups Prepares a single sub-table given a `df_sub` containing
 #'   the results for a single biomarker.
 #'
 #' @param df (`data.frame`)\cr results for a single biomarker, as part of what is

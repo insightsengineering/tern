@@ -1,12 +1,12 @@
-#' Combine Factor Levels
+#' Combine factor levels
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Combine specified old factor Levels in a single new level.
 #'
-#' @param x factor
-#' @param levels level names to be combined
-#' @param new_level name of new level
+#' @param x (`factor`)\cr factor variable.
+#' @param levels (`character`)\cr level names to be combined.
+#' @param new_level (`string`)\cr name of new level.
 #'
 #' @return A `factor` with the new levels.
 #'
@@ -30,16 +30,16 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
   x
 }
 
-#' Conversion of a Vector to a Factor
+#' Conversion of a vector to a factor
 #'
 #' Converts `x` to a factor and keeps its attributes. Warns appropriately such that the user
 #' can decide whether they prefer converting to factor manually (e.g. for full control of
 #' factor levels).
 #'
-#' @param x (`atomic`)\cr object to convert.
+#' @param x (`vector`)\cr object to convert.
 #' @param x_name (`string`)\cr name of `x`.
 #' @param na_level (`string`)\cr the explicit missing level which should be used when converting a character vector.
-#' @param verbose defaults to `TRUE`. It prints out warnings and messages.
+#' @param verbose (`flag`)\cr defaults to `TRUE`. It prints out warnings and messages.
 #'
 #' @return A `factor` with same attributes (except class) as `x`. Does not modify `x` if already a `factor`.
 #'
@@ -85,15 +85,15 @@ as_factor_keep_attributes <- function(x,
   }
 }
 
-#' Labels for Bins in Percent
+#' Labels for bins in percent
 #'
 #' This creates labels for quantile based bins in percent. This assumes the right-closed
 #' intervals as produced by [cut_quantile_bins()].
 #'
-#' @param probs (`proportion` vector)\cr the probabilities identifying the quantiles.
+#' @param probs (`numeric`)\cr the probabilities identifying the quantiles.
 #'   This is a sorted vector of unique `proportion` values, i.e. between 0 and 1, where
 #'   the boundaries 0 and 1 must not be included.
-#' @param digits (`integer`)\cr number of decimal places to round the percent numbers.
+#' @param digits (`integer(1)`)\cr number of decimal places to round the percent numbers.
 #'
 #' @return A `character` vector with labels in the format `[0%,20%]`, `(20%,50%]`, etc.
 #'
@@ -117,7 +117,7 @@ bins_percent_labels <- function(probs,
   with_left_bracket
 }
 
-#' Cutting Numeric Vector into Empirical Quantile Bins
+#' Cut numeric vector into empirical quantile bins
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -129,7 +129,7 @@ bins_percent_labels <- function(probs,
 #'   not used for the quantile calculations, but included in the return vector.
 #' @param labels (`character`)\cr the unique labels for the quantile bins. When there are `n`
 #'   probabilities in `probs`, then this must be `n + 1` long.
-#' @param type (`integer`)\cr type of quantiles to use, see [stats::quantile()] for details.
+#' @param type (`integer(1)`)\cr type of quantiles to use, see [stats::quantile()] for details.
 #' @param ordered (`flag`)\cr should the result be an ordered factor.
 #'
 #' @return A `factor` variable with appropriately-labeled bins as levels.
@@ -192,14 +192,14 @@ cut_quantile_bins <- function(x,
   )
 }
 
-#' Discard Certain Levels from a Factor
+#' Discard specified levels of a factor
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' This discards the observations as well as the levels specified from a factor.
 #'
 #' @param x (`factor`)\cr the original factor.
-#' @param discard (`character`)\cr which levels to discard.
+#' @param discard (`character`)\cr levels to discard.
 #'
 #' @return A modified `factor` with observations as well as levels from `discard` dropped.
 #'
@@ -215,16 +215,16 @@ fct_discard <- function(x, discard) {
   factor(new_obs, levels = new_levels)
 }
 
-#' Insertion of Explicit Missings in a Factor
+#' Insertion of explicit missing values in a factor
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This inserts explicit missings in a factor based on a condition. Additionally,
+#' This inserts explicit missing values in a factor based on a condition. Additionally,
 #' existing `NA` values will be explicitly converted to given `na_level`.
 #'
 #' @param x (`factor`)\cr the original factor.
-#' @param condition (`logical`)\cr where to insert missings.
-#' @param na_level (`string`)\cr which level to use for missings.
+#' @param condition (`logical`)\cr positions at which to insert missing values.
+#' @param na_level (`string`)\cr which level to use for missing values.
 #'
 #' @return A modified `factor` with inserted and existing `NA` converted to `na_level`.
 #'
@@ -242,7 +242,7 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
   forcats::fct_drop(x, only = na_level)
 }
 
-#' Collapsing of Factor Levels and Keeping Only Those New Group Levels
+#' Collapse factor levels and keep only those new group levels
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -251,7 +251,7 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 #' only be included if there are missing values).
 #'
 #' @param .f (`factor` or `character`)\cr original vector.
-#' @param ... (named `character` vectors)\cr levels in each vector provided will be collapsed into
+#' @param ... (named `character`)\cr levels in each vector provided will be collapsed into
 #'   the new level given by the respective name.
 #' @param .na_level (`string`)\cr which level to use for other levels, which should be missing in the
 #'   new factor. Note that this level must not be contained in the new levels specified in `...`.
@@ -277,12 +277,12 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
   do.call(forcats::fct_relevel, args = c(list(.f = x), as.list(new_lvls)))
 }
 
-#' Ungroup Non-Numeric Statistics
+#' Ungroup non-numeric statistics
 #'
 #' Ungroups grouped non-numeric statistics within input vectors `.formats`, `.labels`, and `.indent_mods`.
 #'
 #' @inheritParams argument_convention
-#' @param x  (`named list` of `numeric`)\cr list of numeric statistics containing the statistics to ungroup.
+#' @param x  (named `list` of `numeric`)\cr list of numeric statistics containing the statistics to ungroup.
 #'
 #' @return A `list` with modified elements `x`, `.formats`, `.labels`, and `.indent_mods`.
 #'

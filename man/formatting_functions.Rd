@@ -2,7 +2,7 @@
 % Please edit documentation in R/formatting_functions.R
 \name{formatting_functions}
 \alias{formatting_functions}
-\title{Formatting Functions}
+\title{Formatting functions}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 

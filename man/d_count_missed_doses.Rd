@@ -2,12 +2,12 @@
 % Please edit documentation in R/count_missed_doses.R
 \name{d_count_missed_doses}
 \alias{d_count_missed_doses}
-\title{Description Function that Calculates Labels for \code{\link[=s_count_missed_doses]{s_count_missed_doses()}}.}
+\title{Description function that calculates labels for \code{s_count_missed_doses()}}
 \usage{
 d_count_missed_doses(thresholds)
 }
 \arguments{
-\item{thresholds}{(vector of \code{count})\cr number of missed doses the patients at least had.}
+\item{thresholds}{(\code{numeric})\cr minimum number of missed doses the patients had.}
 }
 \value{
 \code{\link[=d_count_missed_doses]{d_count_missed_doses()}} returns a named \code{character} vector with the labels.

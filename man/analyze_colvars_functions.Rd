@@ -2,7 +2,7 @@
 % Please edit documentation in R/analyze_colvars_functions.R
 \name{analyze_colvars_functions}
 \alias{analyze_colvars_functions}
-\title{Analyze Functions on Columns}
+\title{Analyze functions on columns}
 \description{
 These functions are wrappers of \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}} which apply corresponding \code{tern}
 statistics functions to add an analysis to a given table layout. In particular, these functions

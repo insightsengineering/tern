@@ -6,7 +6,7 @@
 \alias{prop_cmh}
 \alias{prop_schouten}
 \alias{prop_fisher}
-\title{Helper Functions to Test Proportion Differences}
+\title{Helper functions to test proportion differences}
 \usage{
 prop_chisq(tbl)
 
@@ -30,14 +30,14 @@ Helper functions to implement various tests on the difference between two propor
 }
 \section{Functions}{
 \itemize{
-\item \code{prop_chisq()}: performs Chi-Squared test. Internally calls \code{\link[stats:prop.test]{stats::prop.test()}}.
+\item \code{prop_chisq()}: Performs Chi-Squared test. Internally calls \code{\link[stats:prop.test]{stats::prop.test()}}.
 
-\item \code{prop_cmh()}: performs stratified Cochran-Mantel-Haenszel test. Internally calls
+\item \code{prop_cmh()}: Performs stratified Cochran-Mantel-Haenszel test. Internally calls
 \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}. Note that strata with less than two observations are automatically discarded.
 
-\item \code{prop_schouten()}: performs the Chi-Squared test with Schouten correction.
+\item \code{prop_schouten()}: Performs the Chi-Squared test with Schouten correction.
 
-\item \code{prop_fisher()}: performs the Fisher's exact test. Internally calls \code{\link[stats:fisher.test]{stats::fisher.test()}}.
+\item \code{prop_fisher()}: Performs the Fisher's exact test. Internally calls \code{\link[stats:fisher.test]{stats::fisher.test()}}.
 
 }}
 \seealso{

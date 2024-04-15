@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_km.R
 \name{h_grob_y_annot}
 \alias{h_grob_y_annot}
-\title{Helper: Grid Object with y-axis Annotation}
+\title{Helper function to create grid object with y-axis annotation}
 \usage{
 h_grob_y_annot(ylab, yaxis)
 }
@@ -12,7 +12,7 @@ h_grob_y_annot(ylab, yaxis)
 \item{yaxis}{(\code{gtable})\cr the y-axis as a graphical object derived from a \code{ggplot}.}
 }
 \value{
-a \code{gTree} object containing the y-axis annotation from a \code{ggplot}.
+A \code{gTree} object containing the y-axis annotation from a \code{ggplot}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}

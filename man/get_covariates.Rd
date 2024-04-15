@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{get_covariates}
 \alias{get_covariates}
-\title{Utility function to return a named list of covariate names.}
+\title{Utility function to return a named list of covariate names}
 \usage{
 get_covariates(covariates)
 }
@@ -14,6 +14,6 @@ get_covariates(covariates)
 A named \code{list} of \code{character} vector.
 }
 \description{
-Utility function to return a named list of covariate names.
+Utility function to return a named list of covariate names
 }
 \keyword{internal}

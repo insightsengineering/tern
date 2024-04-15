@@ -1,6 +1,4 @@
-#' Summarize Functions
-#'
-#' @description
+#' Summarize functions
 #'
 #' These functions are wrappers for [`rtables::summarize_row_groups()`], applying corresponding `tern` content functions
 #' to add summary rows to a given table layout:
