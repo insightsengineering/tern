@@ -118,5 +118,5 @@ jobs:
   #   name: Grammar Check 🔤
   #   uses: insightsengineering/r.pkg.template/.github/workflows/grammar.yaml@main
   revdepcheck:
-    name: revdepcheck 💧
+    name: revdepcheck ↩️
     uses: insightsengineering/r.pkg.template/.github/workflows/revdepcheck.yaml@initialize-revdepcheck-action
