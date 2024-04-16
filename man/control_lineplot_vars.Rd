@@ -8,6 +8,7 @@ control_lineplot_vars(
   x = "AVISIT",
   y = "AVAL",
   group_var = "ARM",
+  facet_var = NA,
   paramcd = "PARAMCD",
   y_unit = "AVALU",
   subject_var = "USUBJID",
@@ -21,6 +22,8 @@ control_lineplot_vars(
 \item{y}{(\code{string})\cr y-variable name.}
 
 \item{group_var}{(\code{string} or \code{NA})\cr group variable name.}
+
+\item{facet_var}{(\code{string} or \code{NA})\cr faceting variable name.}
 
 \item{paramcd}{(\code{string} or \code{NA})\cr parameter code variable name.}
 

@@ -48,3 +48,22 @@ testthat::test_that("g_lineplot works with cohort_id specified", {
   )
   expect_snapshot_ggplot(title = "g_lineplot_cohorts", fig = g_lineplot_cohorts, width = 10, height = 8)
 })
+
+
+testthat::test_that("g_lineplot works with facet_var specified", {
+  g_lineplot_facets <- withr::with_options(
+    opts_partial_match_old,
+    g_lineplot(
+      adlb,
+      adsl,
+      variables = control_lineplot_vars(facet_var = "COUNTRY"),
+      mid = "median",
+      control = control_analyze_vars(conf_level = 0.80),
+      title = "Plot of Mean and 80% Confidence Limits by Visit",
+      y_lab = "Lab Test",
+      subtitle = "Laboratory Test:",
+      caption = "caption"
+    )
+  )
+  expect_snapshot_ggplot(title = "g_lineplot_facets", fig = g_lineplot_facets, width = 10, height = 8)
+})
