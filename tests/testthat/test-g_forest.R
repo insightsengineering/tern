@@ -148,7 +148,7 @@ testthat::test_that("forest_grob works", {
           lifecycle::expect_deprecated(
             lifecycle::expect_deprecated(
               lifecycle::expect_deprecated(
-                  p <- forest_grob(tbl, x, lower, upper,
+                p <- forest_grob(tbl, x, lower, upper,
                   vline = 1, forest_header = c("A", "B"),
                   x_at = c(.1, 1, 10), xlim = c(0.1, 10), logx = TRUE, symbol_size = symbol_scale,
                   vp = grid::plotViewport(margins = c(1, 1, 1, 1))
