@@ -24,8 +24,7 @@ testthat::test_that("g_waterfall plot with labels and colors works", {
       xlab = "ID",
       ylab = "Percentage Change",
       title = "Waterfall plot"
-    )
-  )
+    ))
 
   expect_snapshot_ggplot(title = "g_waterfall_decorated", fig = g_waterfall_decorated, width = 10, height = 8)
 })
