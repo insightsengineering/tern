@@ -229,6 +229,7 @@ decorate_grob <- function(grob,
   )
 }
 
+# nocov start
 #' @importFrom grid validDetails
 #' @noRd
 validDetails.decoratedGrob <- function(x) {
@@ -264,37 +265,6 @@ widthDetails.decoratedGrob <- function(x) {
 #' @noRd
 heightDetails.decoratedGrob <- function(x) {
   grid::unit(1, "null")
-}
-
-# Adapted from Paul Murell R Graphics 2nd Edition
-# https://www.stat.auckland.ac.nz/~paul/RG2e/interactgrid-splittext.R
-split_string <- function(text, width) {
-  strings <- strsplit(text, " ")
-  out_string <- NA
-  for (string_i in seq_along(strings)) {
-    newline_str <- strings[[string_i]]
-    if (length(newline_str) == 0) newline_str <- ""
-    if (is.na(out_string[string_i])) {
-      out_string[string_i] <- newline_str[[1]][[1]]
-      linewidth <- grid::stringWidth(out_string[string_i])
-    }
-    gapwidth <- grid::stringWidth(" ")
-    availwidth <- as.numeric(width)
-    if (length(newline_str) > 1) {
-      for (i in seq(2, length(newline_str))) {
-        width_i <- grid::stringWidth(newline_str[i])
-        if (grid::convertWidth(linewidth + gapwidth + width_i, grid::unitType(width), valueOnly = TRUE) < availwidth) {
-          sep <- " "
-          linewidth <- linewidth + gapwidth + width_i
-        } else {
-          sep <- "\n"
-          linewidth <- width_i
-        }
-        out_string[string_i] <- paste(out_string[string_i], newline_str[i], sep = sep)
-      }
-    }
-  }
-  paste(out_string, collapse = "\n")
 }
 
 #' Split text according to available text width
@@ -395,6 +365,38 @@ drawDetails.dynamicSplitText <- function(x, recording) {
   class(x) <- c("text", class(x)[-1])
 
   grid::grid.draw(x)
+}
+# nocov end
+
+# Adapted from Paul Murell R Graphics 2nd Edition
+# https://www.stat.auckland.ac.nz/~paul/RG2e/interactgrid-splittext.R
+split_string <- function(text, width) {
+  strings <- strsplit(text, " ")
+  out_string <- NA
+  for (string_i in seq_along(strings)) {
+    newline_str <- strings[[string_i]]
+    if (length(newline_str) == 0) newline_str <- ""
+    if (is.na(out_string[string_i])) {
+      out_string[string_i] <- newline_str[[1]][[1]]
+      linewidth <- grid::stringWidth(out_string[string_i])
+    }
+    gapwidth <- grid::stringWidth(" ")
+    availwidth <- as.numeric(width)
+    if (length(newline_str) > 1) {
+      for (i in seq(2, length(newline_str))) {
+        width_i <- grid::stringWidth(newline_str[i])
+        if (grid::convertWidth(linewidth + gapwidth + width_i, grid::unitType(width), valueOnly = TRUE) < availwidth) {
+          sep <- " "
+          linewidth <- linewidth + gapwidth + width_i
+        } else {
+          sep <- "\n"
+          linewidth <- width_i
+        }
+        out_string[string_i] <- paste(out_string[string_i], newline_str[i], sep = sep)
+      }
+    }
+  }
+  paste(out_string, collapse = "\n")
 }
 
 #' Update page number

@@ -14,17 +14,17 @@ step_matrix <- fit_survival_step(
 step_data <- broom::tidy(step_matrix)
 
 testthat::test_that("g_step works with default settings", {
-  g_step <- g_step(step_data)
+  testthat::expect_silent(g_step <- g_step(step_data))
   expect_snapshot_ggplot(title = "g_step", fig = g_step, width = 10, height = 8)
 })
 
 testthat::test_that("g_step works with custom settings", {
-  g_step_custom <- g_step(
+  testthat::expect_silent(g_step_custom <- g_step(
     step_data,
     use_percentile = FALSE,
     est = list(col = "blue", lty = 1),
     ci_ribbon = NULL
-  )
+  ))
   expect_snapshot_ggplot(title = "g_step_custom", fig = g_step_custom, width = 10, height = 8)
 })
 

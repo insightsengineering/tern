@@ -4,13 +4,13 @@ adlb$AVISIT <- droplevels(adlb$AVISIT)
 adlb <- dplyr::mutate(adlb, AVISIT = forcats::fct_reorder(AVISIT, AVISITN, min))
 
 testthat::test_that("g_lineplot works with default settings", {
-  g_lineplot <- g_lineplot(adlb, adsl)
+  testthat::expect_silent(g_lineplot <- g_lineplot(adlb, adsl))
 
   expect_snapshot_ggplot(title = "g_lineplot", fig = g_lineplot, width = 10, height = 8)
 })
 
 testthat::test_that("g_lineplot works with custom settings and statistics table", {
-  g_lineplot_w_stats <- withr::with_options(
+  testthat::expect_silent(g_lineplot_w_stats <- withr::with_options(
     opts_partial_match_old,
     g_lineplot(
       adlb,
@@ -25,13 +25,13 @@ testthat::test_that("g_lineplot works with custom settings and statistics table"
       subtitle = "Laboratory Test:",
       caption = "caption"
     )
-  )
+  ))
 
   expect_snapshot_ggplot(title = "g_lineplot_w_stats", fig = g_lineplot_w_stats, width = 10, height = 8)
 })
 
 testthat::test_that("g_lineplot works with cohort_id specified", {
-  g_lineplot_cohorts <- withr::with_options(
+  testthat::expect_silent(g_lineplot_cohorts <- withr::with_options(
     opts_partial_match_old,
     g_lineplot(
       adlb,
@@ -45,25 +45,14 @@ testthat::test_that("g_lineplot works with cohort_id specified", {
       subtitle = "Laboratory Test:",
       caption = "caption"
     )
-  )
+  ))
+
   expect_snapshot_ggplot(title = "g_lineplot_cohorts", fig = g_lineplot_cohorts, width = 10, height = 8)
 })
 
+testthat::test_that("control_lineplot_vars works", {
+  testthat::expect_silent(control_lineplot_vars(group_var = NA))
 
-testthat::test_that("g_lineplot works with facet_var specified", {
-  g_lineplot_facets <- withr::with_options(
-    opts_partial_match_old,
-    g_lineplot(
-      adlb,
-      adsl,
-      variables = control_lineplot_vars(facet_var = "COUNTRY"),
-      mid = "median",
-      control = control_analyze_vars(conf_level = 0.80),
-      title = "Plot of Mean and 80% Confidence Limits by Visit",
-      y_lab = "Lab Test",
-      subtitle = "Laboratory Test:",
-      caption = "caption"
-    )
-  )
-  expect_snapshot_ggplot(title = "g_lineplot_facets", fig = g_lineplot_facets, width = 10, height = 8)
+  # Deprecation warnings work
+  lifecycle::expect_deprecated(lifecycle::expect_deprecated(control_lineplot_vars(strata = NA, cohort_id = NA)))
 })

@@ -15,19 +15,19 @@ testthat::test_that("rtable2gg works as expected", {
   tbl <- build_table(lyt, df = dta)
 
   # defaults
-  rtable2gg_default <- tbl %>% rtable2gg()
+  testthat::expect_silent(rtable2gg_default <- tbl %>% rtable2gg())
   expect_snapshot_ggplot("rtable2gg_default", rtable2gg_default, width = 5)
 
   # custom fontsize
-  rtable2gg_fs <- tbl %>% rtable2gg(fontsize = 5)
+  testthat::expect_silent(rtable2gg_fs <- tbl %>% rtable2gg(fontsize = 5))
   expect_snapshot_ggplot("rtable2gg_fs", rtable2gg_fs, width = 5)
 
   # custom colwidths
-  rtable2gg_cw <- tbl %>% rtable2gg(colwidths = c(4, 2, 2, 3))
+  testthat::expect_silent(rtable2gg_cw <- tbl %>% rtable2gg(colwidths = c(4, 2, 2, 3)))
   expect_snapshot_ggplot("rtable2gg_cw", rtable2gg_cw, width = 5)
 
   # custom lbl_col_padding
-  rtable2gg_lblpad <- tbl %>% rtable2gg(lbl_col_padding = -5)
+  testthat::expect_silent(rtable2gg_lblpad <- tbl %>% rtable2gg(lbl_col_padding = -5))
   expect_snapshot_ggplot("rtable2gg_lblpad", rtable2gg_lblpad, width = 5)
 })
 
@@ -49,20 +49,20 @@ testthat::test_that("rtable2gg works with multiple column splits", {
 
   tbl <- build_table(lyt, df = dta2)
 
-  rtable2gg_colsplits <- tbl %>% rtable2gg()
+  testthat::expect_silent(rtable2gg_colsplits <- tbl %>% rtable2gg())
   expect_snapshot_ggplot("rtable2gg_colsplits", rtable2gg_colsplits, width = 10, height = 3)
 })
 
 testthat::test_that("df2gg works as expected", {
   # defaults
-  df2gg_default <- head(iris, 5) %>% df2gg()
+  testthat::expect_silent(df2gg_default <- head(iris, 5) %>% df2gg())
   expect_snapshot_ggplot("df2gg_default", df2gg_default, width = 5)
 
   # custom fontsize, background color
-  df2gg_fs <- head(iris, 5) %>% df2gg(font_size = 15, bg_fill = "#00000020")
+  testthat::expect_silent(df2gg_fs <- head(iris, 5) %>% df2gg(font_size = 15, bg_fill = "#00000020"))
   expect_snapshot_ggplot("df2gg_fs", df2gg_fs, width = 8)
 
   # custom colwidths
-  df2gg_cw <- head(iris, 5) %>% df2gg(colwidths = c(1, 1, 1, 1, 1))
+  testthat::expect_silent(df2gg_cw <- head(iris, 5) %>% df2gg(colwidths = c(1, 1, 1, 1, 1)))
   expect_snapshot_ggplot("df2gg_cw", df2gg_cw, width = 5)
 })
