@@ -18,7 +18,7 @@ testthat::test_that("g_forest default plot works", {
   tbl <- basic_table() %>%
     tabulate_rsp_subgroups(df)
 
-  g_forest <- g_forest(tbl)
+  testthat::expect_silent(g_forest <- g_forest(tbl))
 
   expect_snapshot_ggplot("g_forest", g_forest, width = 15, height = 3)
 
@@ -26,11 +26,11 @@ testthat::test_that("g_forest default plot works", {
   tbl_or <- basic_table() %>%
     tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci"))
 
-  g_forest_or <- g_forest(
+  testthat::expect_silent(g_forest_or <- g_forest(
     tbl_or,
     forest_header = c("Comparison\nBetter", "Treatment\nBetter"),
     rel_width_forest = 0.4
-  )
+  ))
 
   expect_snapshot_ggplot("g_forest_or", g_forest_or, width = 8, height = 3)
 })
@@ -45,7 +45,7 @@ testthat::test_that("g_forest works with custom arguments", {
     rrow("row 2", 1.2, c(1.1, 1.4))
   )
 
-  g_forest_custom_1 <- g_forest(
+  testthat::expect_silent(g_forest_custom_1 <- g_forest(
     tbl = tbl,
     col_x = 1,
     col_ci = 2,
@@ -53,11 +53,11 @@ testthat::test_that("g_forest works with custom arguments", {
     x_at = c(0.5, 1, 2),
     vline = 0.9,
     forest_header = c("Hello", "World")
-  )
+  ))
 
   expect_snapshot_ggplot("g_forest_custom_1", g_forest_custom_1, width = 4, height = 2)
 
-  g_forest_custom_2 <- g_forest(
+  testthat::expect_silent(g_forest_custom_2 <- g_forest(
     tbl = tbl,
     col_x = 1,
     col_ci = 2,
@@ -67,11 +67,11 @@ testthat::test_that("g_forest works with custom arguments", {
     lbl_col_padding = -3,
     width_columns = c(4, 3, 3),
     col = "purple"
-  )
+  ))
 
   expect_snapshot_ggplot("g_forest_custom_2", g_forest_custom_2, width = 10, height = 5)
 
-  g_forest_custom_3 <- g_forest(
+  testthat::expect_silent(g_forest_custom_3 <- g_forest(
     tbl = tbl,
     col_x = 1,
     col_ci = 2,
@@ -82,7 +82,7 @@ testthat::test_that("g_forest works with custom arguments", {
     rel_width_forest = 0.6,
     font_size = 6,
     col = c("red", "green")
-  )
+  ))
 
   expect_snapshot_ggplot("g_forest_custom_3", g_forest_custom_3, width = 10, height = 5)
 })
@@ -91,10 +91,26 @@ testthat::test_that("g_forest as_list argument works", {
   tbl <- basic_table() %>%
     tabulate_rsp_subgroups(df)
 
-  f <- g_forest(tbl, as_list = TRUE)
+  testthat::expect_silent(f <- g_forest(tbl, as_list = TRUE))
   g_forest_table_only <- f$table
   g_forest_plot_only <- f$plot
 
   expect_snapshot_ggplot("g_forest_table_only", g_forest_table_only, width = 9, height = 3)
   expect_snapshot_ggplot("g_forest_plot_only", g_forest_plot_only, width = 2, height = 3)
+})
+
+## Deprecated functions ----
+
+testthat::test_that("forest_viewport works", {
+  tbl <- rtables::rtable(
+    header = rtables::rheader(
+      rtables::rrow("", "E", rtables::rcell("CI", colspan = 2)),
+      rtables::rrow("", "A", "B", "C")
+    ),
+    rtables::rrow("row 1", 1, 0.8, 1.1),
+    rtables::rrow("row 2", 1.4, 0.8, 1.6),
+    rtables::rrow("row 3", 1.2, 0.8, 1.2)
+  )
+
+  lifecycle::expect_deprecated(lifecycle::expect_deprecated(lifecycle::expect_deprecated(v <- forest_viewport(tbl))))
 })
