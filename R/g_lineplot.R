@@ -18,6 +18,8 @@
 #'     subtitle. Can be `NA` if `paramcd` is not to be added to the y-axis label or subtitle.
 #'   * `y_unit` (`string` or `NA`)\cr name of variable with units of `y`. Used for y-axis label and plot's subtitle.
 #'     Can be `NA` if y unit is not to be added to the y-axis label or subtitle.
+#'   * `facet_var` (`string` or `NA`)\cr name of the secondary grouping variable used for plot faceting, i.e. treatment
+#'     arm. Can be `NA` to indicate lack of groups.
 #' @param mid (`character` or `NULL`)\cr names of the statistics that will be plotted as midpoints.
 #'   All the statistics indicated in `mid` variable must be present in the object returned by `sfun`,
 #'   and be of a `double` or `numeric` type vector of length one.
@@ -188,6 +190,11 @@ g_lineplot <- function(df,
     group_var <- variables[["group_var"]]
     subject_var <- variables[["subject_var"]]
   }
+  if (is.na(variables["facet_var"])) {
+    facet_var <- NULL # NULL if facet_var == NA or it is not in variables
+  } else {
+    facet_var <- variables[["facet_var"]]
+  }
   checkmate::assert_flag(y_lab_add_paramcd, null.ok = TRUE)
   checkmate::assert_flag(subtitle_add_paramcd, null.ok = TRUE)
   if ((!is.null(y_lab) && y_lab_add_paramcd) || (!is.null(subtitle) && subtitle_add_paramcd)) {
@@ -209,18 +216,20 @@ g_lineplot <- function(df,
   ####################################### |
   # ---- Compute required statistics ----
   ####################################### |
-  if (!is.null(group_var)) {
+  if (!is.null(facet_var) && !is.null(group_var)) {
+    df_grp <- tidyr::expand(df, .data[[facet_var]], .data[[group_var]], .data[[x]]) # expand based on levels of factors
+  } else if (!is.null(group_var)) {
     df_grp <- tidyr::expand(df, .data[[group_var]], .data[[x]]) # expand based on levels of factors
   } else {
     df_grp <- tidyr::expand(df, NULL, .data[[x]])
   }
   df_grp <- df_grp %>%
-    dplyr::full_join(y = df[, c(group_var, x, y)], by = c(group_var, x), multiple = "all") %>%
-    dplyr::group_by_at(c(group_var, x))
+    dplyr::full_join(y = df[, c(facet_var, group_var, x, y)], by = c(facet_var, group_var, x), multiple = "all") %>%
+    dplyr::group_by_at(c(facet_var, group_var, x))
 
   df_stats <- df_grp %>%
     dplyr::summarise(
-      data.frame(t(do.call(c, unname(sfun(.data[[y]], ...)[c(mid, interval)])))),
+      data.frame(t(do.call(c, unname(sfun(.data[[y]])[c(mid, interval)])))),
       .groups = "drop"
     )
 
@@ -234,7 +243,14 @@ g_lineplot <- function(df,
     colnames(df_N) <- c(group_var, "N") # nolint
     df_N[[strata_N]] <- paste0(df_N[[group_var]], " (N = ", df_N$N, ")") # nolint
 
-    # strata_N should not be in clonames(df_stats)
+    # keep strata factor levels
+    matches <- sapply(unique(df_N[[group_var]]),
+                      function(x) unique(df_N[[paste0(group_var, "_N")]]) #nolint
+                      [grepl(paste0("^", x), unique(df_N[[paste0(group_var, "_N")]]))])
+    df_N[[paste0(group_var, "_N")]] <- factor(df_N[[group_var]]) #nolint
+    levels(df_N[[paste0(group_var, "_N")]]) <- unlist(matches) #nolint
+
+    # strata_N should not be in colnames(df_stats)
     checkmate::assert_disjunct(strata_N, colnames(df_stats))
 
     df_stats <- merge(x = df_stats, y = df_N[, c(group_var, strata_N)], by = group_var)
@@ -344,6 +360,11 @@ g_lineplot <- function(df,
   if (!is.null(col)) {
     p <- p +
       ggplot2::scale_color_manual(values = col)
+  }
+
+  if (!is.null(facet_var)) {
+    p <- p +
+      facet_grid(cols = vars(df_stats[[facet_var]]))
   }
 
   if (!is.null(ggtheme)) {
@@ -487,6 +508,7 @@ h_format_row <- function(x, format, labels = NULL) {
 #' @param strata `r lifecycle::badge("deprecated")` use the `group_var` parameter instead.
 #' @param subject_var (`string` or `NA`)\cr subject variable name.
 #' @param cohort_id `r lifecycle::badge("deprecated")` use the `subject_var` parameter instead.
+#' @param facet_var (`string` or `NA`)\cr faceting variable name.
 #' @param paramcd (`string` or `NA`)\cr parameter code variable name.
 #' @param y_unit (`string` or `NA`)\cr y-axis unit variable name.
 #'
@@ -500,6 +522,7 @@ h_format_row <- function(x, format, labels = NULL) {
 control_lineplot_vars <- function(x = "AVISIT",
                                   y = "AVAL",
                                   group_var = "ARM",
+                                  facet_var = NA,
                                   paramcd = "PARAMCD",
                                   y_unit = "AVALU",
                                   subject_var = "USUBJID",
@@ -518,10 +541,12 @@ control_lineplot_vars <- function(x = "AVISIT",
   checkmate::assert_string(x)
   checkmate::assert_string(y)
   checkmate::assert_string(group_var, na.ok = TRUE, null.ok = TRUE)
+  checkmate::assert_string(facet_var, na.ok = TRUE, null.ok = TRUE)
   checkmate::assert_string(subject_var, na.ok = TRUE, null.ok = TRUE)
   checkmate::assert_string(paramcd, na.ok = TRUE, null.ok = TRUE)
   checkmate::assert_string(y_unit, na.ok = TRUE, null.ok = TRUE)
 
-  variables <- c(x = x, y = y, group_var = group_var, paramcd = paramcd, y_unit = y_unit, subject_var = subject_var)
+  variables <- c(x = x, y = y, group_var = group_var, paramcd = paramcd,
+                 y_unit = y_unit, subject_var = subject_var, facet_var = facet_var)
   return(variables)
 }
