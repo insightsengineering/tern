@@ -216,7 +216,7 @@ g_lineplot <- function(df,
   ####################################### |
   # ---- Compute required statistics ----
   ####################################### |
-  if (!is.null(facet_var) & !is.null(group_var)) {
+  if (!is.null(facet_var) && !is.null(group_var)) {
     df_grp <- tidyr::expand(df, .data[[facet_var]], .data[[group_var]], .data[[x]]) # expand based on levels of factors
   } else if (!is.null(group_var)) {
     df_grp <- tidyr::expand(df, .data[[group_var]], .data[[x]]) # expand based on levels of factors
@@ -239,19 +239,21 @@ g_lineplot <- function(df,
   if (!is.null(group_var) && !is.null(alt_counts_df)) {
     strata_N <- paste0(group_var, "_N") # nolint
 
-    df_N <- stats::aggregate(eval(parse(text = subject_var)) ~ eval(parse(text = group_var)), data = alt_counts_df, FUN = function(x) length(unique(x))) # nolint
-    colnames(df_N) <- c(group_var, "N") # nolint
-    df_N[[strata_N]] <- paste0(df_N[[group_var]], " (N = ", df_N$N, ")") # nolint
+    df_n <- stats::aggregate(eval(parse(text = subject_var)) ~ eval(parse(text = group_var)), data = alt_counts_df, FUN = function(x) length(unique(x))) # nolint
+    colnames(df_n) <- c(group_var, "N") # nolint
+    df_n[[strata_N]] <- paste0(df_n[[group_var]], " (N = ", df_n$N, ")") # nolint
 
     # keep strata factor levels
-    matches <- sapply(unique(df_N[[group_var]]), function(x) unique(df_N[[paste0(group_var, "_N")]])[grepl(paste0("^", x), unique(df_N[[paste0(group_var, "_N")]]))])
-    df_N[[paste0(group_var, "_N")]] <- factor(df_N[[group_var]])
-    levels(df_N[[paste0(group_var, "_N")]]) <- unlist(matches)
+    matches <- sapply(unique(df_n[[group_var]]),
+                      function(x) unique(df_n[[paste0(group_var, "_N")]])
+                      [grepl(paste0("^", x), unique(df_n[[paste0(group_var, "_N")]]))])
+    df_n[[paste0(group_var, "_N")]] <- factor(df_n[[group_var]])
+    levels(df_n[[paste0(group_var, "_N")]]) <- unlist(matches)
 
     # strata_N should not be in colnames(df_stats)
     checkmate::assert_disjunct(strata_N, colnames(df_stats))
 
-    df_stats <- merge(x = df_stats, y = df_N[, c(group_var, strata_N)], by = group_var)
+    df_stats <- merge(x = df_stats, y = df_n[, c(group_var, strata_N)], by = group_var)
   } else if (!is.null(group_var)) {
     strata_N <- group_var # nolint
   } else {
@@ -506,6 +508,7 @@ h_format_row <- function(x, format, labels = NULL) {
 #' @param strata `r lifecycle::badge("deprecated")` use the `group_var` parameter instead.
 #' @param subject_var (`string` or `NA`)\cr subject variable name.
 #' @param cohort_id `r lifecycle::badge("deprecated")` use the `subject_var` parameter instead.
+#' @param facet_var (`string` or `NA`)\cr faceting variable name.
 #' @param paramcd (`string` or `NA`)\cr parameter code variable name.
 #' @param y_unit (`string` or `NA`)\cr y-axis unit variable name.
 #'
@@ -543,6 +546,7 @@ control_lineplot_vars <- function(x = "AVISIT",
   checkmate::assert_string(paramcd, na.ok = TRUE, null.ok = TRUE)
   checkmate::assert_string(y_unit, na.ok = TRUE, null.ok = TRUE)
 
-  variables <- c(x = x, y = y, group_var = group_var, paramcd = paramcd, y_unit = y_unit, subject_var = subject_var, facet_var = facet_var)
+  variables <- c(x = x, y = y, group_var = group_var, paramcd = paramcd,
+                 y_unit = y_unit, subject_var = subject_var, facet_var = facet_var)
   return(variables)
 }

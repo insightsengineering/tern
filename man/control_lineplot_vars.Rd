@@ -23,6 +23,8 @@ control_lineplot_vars(
 
 \item{group_var}{(\code{string} or \code{NA})\cr group variable name.}
 
+\item{facet_var}{(\code{string} or \code{NA})\cr faceting variable name.}
+
 \item{paramcd}{(\code{string} or \code{NA})\cr parameter code variable name.}
 
 \item{y_unit}{(\code{string} or \code{NA})\cr y-axis unit variable name.}
