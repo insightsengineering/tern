@@ -245,7 +245,7 @@ g_lineplot <- function(df,
 
     # keep strata factor levels
     matches <- sapply(unique(df_n[[group_var]]),
-                      function(x) unique(df_n[[paste0(group_var, "_N")]])
+                      function(x) unique(df_n[[paste0(group_var, "_N")]]) #nolint
                       [grepl(paste0("^", x), unique(df_n[[paste0(group_var, "_N")]]))])
     df_n[[paste0(group_var, "_N")]] <- factor(df_n[[group_var]])
     levels(df_n[[paste0(group_var, "_N")]]) <- unlist(matches)
