@@ -239,21 +239,21 @@ g_lineplot <- function(df,
   if (!is.null(group_var) && !is.null(alt_counts_df)) {
     strata_N <- paste0(group_var, "_N") # nolint
 
-    df_n <- stats::aggregate(eval(parse(text = subject_var)) ~ eval(parse(text = group_var)), data = alt_counts_df, FUN = function(x) length(unique(x))) # nolint
-    colnames(df_n) <- c(group_var, "N") # nolint
-    df_n[[strata_N]] <- paste0(df_n[[group_var]], " (N = ", df_n$N, ")") # nolint
+    df_N <- stats::aggregate(eval(parse(text = subject_var)) ~ eval(parse(text = group_var)), data = alt_counts_df, FUN = function(x) length(unique(x))) # nolint
+    colnames(df_N) <- c(group_var, "N") # nolint
+    df_N[[strata_N]] <- paste0(df_N[[group_var]], " (N = ", df_N$N, ")") # nolint
 
     # keep strata factor levels
-    matches <- sapply(unique(df_n[[group_var]]),
-                      function(x) unique(df_n[[paste0(group_var, "_N")]]) #nolint
-                      [grepl(paste0("^", x), unique(df_n[[paste0(group_var, "_N")]]))])
-    df_n[[paste0(group_var, "_N")]] <- factor(df_n[[group_var]])
-    levels(df_n[[paste0(group_var, "_N")]]) <- unlist(matches)
+    matches <- sapply(unique(df_N[[group_var]]),
+                      function(x) unique(df_N[[paste0(group_var, "_N")]]) #nolint
+                      [grepl(paste0("^", x), unique(df_N[[paste0(group_var, "_N")]]))])
+    df_N[[paste0(group_var, "_N")]] <- factor(df_N[[group_var]]) #nolint
+    levels(df_N[[paste0(group_var, "_N")]]) <- unlist(matches) #nolint
 
     # strata_N should not be in colnames(df_stats)
     checkmate::assert_disjunct(strata_N, colnames(df_stats))
 
-    df_stats <- merge(x = df_stats, y = df_n[, c(group_var, strata_N)], by = group_var)
+    df_stats <- merge(x = df_stats, y = df_N[, c(group_var, strata_N)], by = group_var)
   } else if (!is.null(group_var)) {
     strata_N <- group_var # nolint
   } else {
