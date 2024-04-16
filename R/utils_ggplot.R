@@ -136,14 +136,14 @@ rtable2gg <- function(tbl, fontsize = 12, colwidths = NULL, lbl_col_padding = 0)
 #' Given a `data.frame` object, performs basic conversion to a [ggplot2::ggplot()] object built using
 #' functions from the `ggplot2` package.
 #'
-#' @param tbl (`data.frame`)\cr a data frame.
+#' @param df (`data.frame`)\cr a data frame.
 #' @param colwidths (`numeric` or `NULL`)\cr a vector of column widths. Each element's position in
 #'   `colwidths` corresponds to the column of `df` in the same position. If `NULL`, column widths
 #'   are calculated according to maximum number of characters per column.
 #' @param font_size (`numeric(1)`)\cr font size.
 #' @param col_labels (`flag`)\cr whether the column names (labels) of `df` should be used as the first row
 #'   of the output table.
-#' @param col_labels_fontface (`string`)\cr font face to apply to the first row (of column labels
+#' @param col_lab_fontface (`string`)\cr font face to apply to the first row (of column labels
 #'   if `col_labels = TRUE`). Defaults to `"bold"`.
 #' @param hline (`flag`)\cr whether a horizontal line should be printed below the first row of the table.
 #' @param bg_fill (`string`)\cr table background fill color.
