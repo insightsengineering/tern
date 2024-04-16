@@ -1,9 +1,9 @@
 testthat::test_that("g_waterfall default plot works", {
-  g_waterfall <- g_waterfall(
+  testthat::expect_silent(g_waterfall <- g_waterfall(
     height = c(3, 5, -1),
     id = letters[1:3],
     col = NULL
-  )
+  ))
   expect_snapshot_ggplot(title = "g_waterfall", fig = g_waterfall, width = 10, height = 8)
 })
 
@@ -15,7 +15,7 @@ testthat::test_that("g_waterfall plot with labels and colors works", {
   adrs_f$pchg <- rnorm(30, 10, 50)
   adrs_f <- adrs_f[!duplicated(adrs_f$USUBJID), ]
 
-  g_waterfall_decorated <-
+  testthat::expect_silent(g_waterfall_decorated <-
     g_waterfall(
       height = adrs_f$pchg,
       id = paste("asdfdsfdsfsd", adrs_f$USUBJID),
@@ -24,7 +24,7 @@ testthat::test_that("g_waterfall plot with labels and colors works", {
       xlab = "ID",
       ylab = "Percentage Change",
       title = "Waterfall plot"
-    )
+    ))
 
   expect_snapshot_ggplot(title = "g_waterfall_decorated", fig = g_waterfall_decorated, width = 10, height = 8)
 })
