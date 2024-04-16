@@ -297,6 +297,7 @@ split_string <- function(text, width) {
   paste(out_string, collapse = "\n")
 }
 
+# nocov start
 #' Split text according to available text width
 #'
 #' Dynamically wrap text.
@@ -353,6 +354,7 @@ split_text_grob <- function(text,
     draw = FALSE
   )
 }
+# nocov end
 
 #' @importFrom grid validDetails
 #' @noRd

@@ -99,17 +99,78 @@ testthat::test_that("g_forest as_list argument works", {
   expect_snapshot_ggplot("g_forest_plot_only", g_forest_plot_only, width = 2, height = 3)
 })
 
+testthat::test_that("g_forest argument deprecation warnings work", {
+  tbl <- basic_table() %>%
+    tabulate_rsp_subgroups(df)
+
+  lifecycle::expect_deprecated(
+    lifecycle::expect_deprecated(
+      lifecycle::expect_deprecated(
+        lifecycle::expect_deprecated(
+          lifecycle::expect_deprecated(
+            g_forest(
+              tbl,
+              width_row_names = "test_warning",
+              width_forest = "test_warning",
+              gp = "test_warning",
+              draw = "test_warning",
+              newpage = "test_warning"
+            )
+          )
+        )
+      )
+    )
+  )
+})
+
 ## Deprecated functions ----
 
-testthat::test_that("forest_viewport works", {
-  tbl <- rtables::rtable(
-    header = rtables::rheader(
-      rtables::rrow("", "E", rtables::rcell("CI", colspan = 2)),
-      rtables::rrow("", "A", "B", "C")
+testthat::test_that("forest_grob works", {
+  tbl <- rtable(
+    header = rheader(
+      rrow("", "E", rcell("CI", colspan = 2), "N"),
+      rrow("", "A", "B", "C", "D")
     ),
-    rtables::rrow("row 1", 1, 0.8, 1.1),
-    rtables::rrow("row 2", 1.4, 0.8, 1.6),
-    rtables::rrow("row 3", 1.2, 0.8, 1.2)
+    rrow("row 1", 1, 0.8, 1.1, 16),
+    rrow("row 2", 1.4, 0.8, 1.6, 25),
+    rrow("row 3", 1.2, 0.8, 1.6, 36)
+  )
+
+  x <- c(1, 1.4, 1.2)
+  lower <- c(0.8, 0.8, 0.8)
+  upper <- c(1.1, 1.6, 1.6)
+  symbol_scale <- c(1, 1.25, 1.5)
+
+  lifecycle::expect_deprecated(
+    lifecycle::expect_deprecated(
+      lifecycle::expect_deprecated(
+        lifecycle::expect_deprecated(
+          lifecycle::expect_deprecated(
+            lifecycle::expect_deprecated(
+              lifecycle::expect_deprecated(
+                  p <- forest_grob(tbl, x, lower, upper,
+                  vline = 1, forest_header = c("A", "B"),
+                  x_at = c(.1, 1, 10), xlim = c(0.1, 10), logx = TRUE, symbol_size = symbol_scale,
+                  vp = grid::plotViewport(margins = c(1, 1, 1, 1))
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+})
+
+testthat::test_that("forest_viewport works", {
+  tbl <- rtable(
+    header = rheader(
+      rrow("", "E", rcell("CI", colspan = 2)),
+      rrow("", "A", "B", "C")
+    ),
+    rrow("row 1", 1, 0.8, 1.1),
+    rrow("row 2", 1.4, 0.8, 1.6),
+    rrow("row 3", 1.2, 0.8, 1.2)
   )
 
   lifecycle::expect_deprecated(lifecycle::expect_deprecated(lifecycle::expect_deprecated(v <- forest_viewport(tbl))))
