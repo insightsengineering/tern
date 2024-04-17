@@ -4,9 +4,9 @@ name: revdepcheck ⏪
 on:
   schedule:
     - cron: '45 3 * * 0'
-  push:
-    branches:
-      - initialize-revdepcheck-action
+  # push:
+  #   branches:
+  #     - initialize-revdepcheck-action
   workflow_dispatch:
 
 
