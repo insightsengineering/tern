@@ -4,7 +4,7 @@ The analyze function analyze_vars() generates a summary of one or more variables
 s_summary() to calculate a list of summary statistics. A list of all available statistics for numeric
 variables can be viewed by running get_stats("analyze_vars_numeric") and for non-numeric variables by running
 get_stats("analyze_vars_counts"). Use the .stats parameter to specify the statistics to include in your output
-summary table.'><title>Analyze Variables — analyze_variables • tern</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Analyze Variables — analyze_variables"><meta property="og:description" content='
+summary table.'><title>Analyze variables — analyze_variables • tern</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Analyze variables — analyze_variables"><meta property="og:description" content='
 The analyze function analyze_vars() generates a summary of one or more variables, using the S3 generic function
 s_summary() to calculate a list of summary statistics. A list of all available statistics for numeric
 variables can be viewed by running get_stats("analyze_vars_numeric") and for non-numeric variables by running
@@ -20,7 +20,7 @@ summary table.'><meta property="og:image" content="https://insightsengineering.g
     
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.4</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,6 +62,7 @@ summary table.'><meta property="og:image" content="https://insightsengineering.g
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.4">v0.9.4</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.3">v0.9.3</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.2">v0.9.2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.1">v0.9.1</a>
@@ -96,7 +97,7 @@ summary table.'><meta property="og:image" content="https://insightsengineering.g
 </nav><div class="container template-reference-topic">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Analyze Variables</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Analyze variables</h1>
       <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/HEAD/R/analyze_variables.R" class="external-link"><code>R/analyze_variables.R</code></a></small>
       <div class="d-none name"><code>analyze_variables.Rd</code></div>
     </div>
@@ -116,7 +117,6 @@ summary table.</p>
 <span>  <span class="va">lyt</span>,</span>
 <span>  <span class="va">vars</span>,</span>
 <span>  var_labels <span class="op">=</span> <span class="va">vars</span>,</span>
-<span>  na_level <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  na_str <span class="op">=</span> <span class="fu"><a href="default_na_str.html">default_na_str</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span>,</span>
@@ -190,18 +190,15 @@ summary table.</p>
 <span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  na_level <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  na_str <span class="op">=</span> <span class="fu"><a href="default_na_str.html">default_na_str</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">summarize_vars</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>lyt</dt>
-<dd><p>(<code>layout</code>)<br> input layout where analyses will be added to.</p></dd>
+<dd><p>(<code>PreDataTableLayouts</code>)<br> layout that analyses will be added to.</p></dd>
 
 
 <dt>vars</dt>
@@ -209,11 +206,7 @@ summary table.</p>
 
 
 <dt>var_labels</dt>
-<dd><p>(<code>character</code>)<br> character for label.</p></dd>
-
-
-<dt>na_level</dt>
-<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> Please use the <code>na_str</code> argument instead.</p></dd>
+<dd><p>(<code>character</code>)<br> variable labels.</p></dd>
 
 
 <dt>na_str</dt>
@@ -221,8 +214,8 @@ summary table.</p>
 
 
 <dt>nested</dt>
-<dd><p>(<code>flag</code>)<br> whether this layout instruction should be applied within the existing layout structure <em>if
-possible</em> (<code>TRUE</code>, the default) or as a new top-level element (<code>FALSE</code>). Ignored if it would nest a split.
+<dd><p>(<code>flag</code>)<br> whether this layout instruction should be applied within the existing layout structure _if
+possible (<code>TRUE</code>, the default) or as a new top-level element (<code>FALSE</code>). Ignored if it would nest a split.
 underneath analyses, which is not allowed.</p></dd>
 
 
@@ -239,8 +232,8 @@ underneath analyses, which is not allowed.</p></dd>
 
 
 <dt>table_names</dt>
-<dd><p>(<code>character</code>)<br> this can be customized in case that the same <code>vars</code> are analyzed multiple times,
-to avoid warnings from <code>rtables</code>.</p></dd>
+<dd><p>(<code>character</code>)<br> this can be customized in the case that the same <code>vars</code> are analyzed multiple
+times, to avoid warnings from <code>rtables</code>.</p></dd>
 
 
 <dt>section_div</dt>
@@ -264,7 +257,7 @@ information on the <code>"auto"</code> setting.</p></dd>
 
 
 <dt>.indent_mods</dt>
-<dd><p>(named <code>vector</code> of <code>integer</code>)<br> indent modifiers for the labels. Each element of the vector
+<dd><p>(named <code>integer</code>)<br> indent modifiers for the labels. Each element of the vector
 should be a name-value pair with name corresponding to a statistic specified in <code>.stats</code> and value the indentation
 for that statistic's row label.</p></dd>
 
@@ -281,12 +274,12 @@ for that statistic's row label.</p></dd>
 
 
 <dt>.N_row</dt>
-<dd><p>(<code>integer</code>)<br> row-wise N (row group count) for the group of observations being analyzed
+<dd><p>(<code>integer(1)</code>)<br> row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is typically passed by <code>rtables</code>.</p></dd>
 
 
 <dt>.N_col</dt>
-<dd><p>(<code>integer</code>)<br> column-wise N (column count) for the full column being analyzed that is typically
+<dd><p>(<code>integer(1)</code>)<br> column-wise N (column count) for the full column being analyzed that is typically
 passed by <code>rtables</code>.</p></dd>
 
 
@@ -298,15 +291,15 @@ by a statistics function.</p></dd>
 <dt>control</dt>
 <dd><p>(<code>list</code>)<br> parameters for descriptive statistics details, specified by using
 the helper function <code><a href="control_analyze_vars.html">control_analyze_vars()</a></code>. Some possible parameter options are:</p><ul><li><p><code>conf_level</code> (<code>proportion</code>)<br> confidence level of the interval for mean and median.</p></li>
-<li><p><code>quantiles</code> (<code>numeric</code>)<br> vector of length two to specify the quantiles.</p></li>
-<li><p><code>quantile_type</code> (<code>numeric</code>)<br> between 1 and 9 selecting quantile algorithms to be used.
+<li><p><code>quantiles</code> (<code>numeric(2)</code>)<br> vector of length two to specify the quantiles.</p></li>
+<li><p><code>quantile_type</code> (<code>numeric(1)</code>)<br> between 1 and 9 selecting quantile algorithms to be used.
 See more about <code>type</code> in <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">stats::quantile()</a></code>.</p></li>
-<li><p><code>test_mean</code> (<code>numeric</code>)<br> value to test against the mean under the null hypothesis when calculating p-value.</p></li>
+<li><p><code>test_mean</code> (<code>numeric(1)</code>)<br> value to test against the mean under the null hypothesis when calculating p-value.</p></li>
 </ul></dd>
 
 
 <dt>verbose</dt>
-<dd><p>(<code>logical</code>)<br> Defaults to <code>TRUE</code>, which prints out warnings and messages. It is mainly used
+<dd><p>(<code>flag</code>)<br> defaults to <code>TRUE</code>, which prints out warnings and messages. It is mainly used
 to print out information about factor casting.</p></dd>
 
 
@@ -319,11 +312,11 @@ to print out information about factor casting.</p></dd>
 
 
 <dt>.in_ref_col</dt>
-<dd><p>(<code>logical</code>)<br><code>TRUE</code> when working with the reference level, <code>FALSE</code> otherwise.</p></dd>
+<dd><p>(<code>flag</code>)<br><code>TRUE</code> when working with the reference level, <code>FALSE</code> otherwise.</p></dd>
 
 
 <dt>compare</dt>
-<dd><p>(<code>logical</code>)<br> Whether comparison statistics should be analyzed instead of summary statistics
+<dd><p>(<code>flag</code>)<br> whether comparison statistics should be analyzed instead of summary statistics
 (<code>compare = TRUE</code> adds <code>pval</code> statistic comparing against reference group).</p></dd>
 
 </dl></div>
@@ -332,7 +325,7 @@ to print out information about factor casting.</p></dd>
     
 
 <ul><li><p><code>analyze_vars()</code> returns a layout object suitable for passing to further layouting functions,
-or to <code><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted rows containing
+or to <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted rows containing
 the statistics from <code>s_summary()</code> to the table layout.</p></li>
 </ul><ul><li><p><code>s_summary()</code> returns different statistics depending on the class of <code>x</code>.</p></li>
 </ul><ul><li><p>If <code>x</code> is of class <code>numeric</code>, returns a <code>list</code> with the following named <code>numeric</code> items:</p><ul><li><p><code>n</code>: The <code><a href="https://rdrr.io/r/base/length.html" class="external-link">length()</a></code> of <code>x</code>.</p></li>
@@ -370,20 +363,20 @@ factor <code>x</code> relative to the denominator, or <code>NA</code> if the den
 <li><p><code>count_fraction</code>: Count and proportion of <code>TRUE</code> in <code>x</code> relative to the denominator, or <code>NA</code> if the
 denominator is zero. Note that <code>NA</code>s in <code>x</code> are never counted or leading to <code>NA</code> here.</p></li>
 </ul></li>
-</ul><ul><li><p><code>a_summary()</code> returns the corresponding list with formatted <code><a href="https://rdrr.io/pkg/rtables/man/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
+</ul><ul><li><p><code>a_summary()</code> returns the corresponding list with formatted <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p><strong>Automatic digit formatting:</strong> The number of digits to display can be automatically determined from the analyzed
 variable(s) (<code>vars</code>) for certain statistics by setting the statistic format to <code>"auto"</code> in <code>.formats</code>.
 This utilizes the <code><a href="format_auto.html">format_auto()</a></code> formatting function. Note that only data for the current row &amp; variable (for all
-columns) will be considered (<code>.df_row[[.var]]</code>, see <code><a href="https://rdrr.io/pkg/rtables/man/additional_fun_params.html" class="external-link">rtables::additional_fun_params</a></code>) and not the whole dataset.</p>
+columns) will be considered (<code>.df_row[[.var]]</code>, see <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/additional_fun_params.html" class="external-link">rtables::additional_fun_params</a></code>) and not the whole dataset.</p>
     </div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
 <ul><li><p><code>analyze_vars()</code>: Layout-creating function which can take statistics function arguments
-and additional format arguments. This function is a wrapper for <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
+and additional format arguments. This function is a wrapper for <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
 <li><p><code>s_summary()</code>: S3 generic function to produces a variable summary.</p></li>
 <li><p><code>s_summary(numeric)</code>: Method for <code>numeric</code> class.</p></li>
 <li><p><code>s_summary(factor)</code>: Method for <code>factor</code> class.</p></li>
@@ -392,14 +385,11 @@ conversion to factor (with a warning) and then forwards to the method for factor
 <li><p><code>s_summary(logical)</code>: Method for <code>logical</code> class.</p></li>
 <li><p><code>a_summary()</code>: Formatted analysis function which is used as <code>afun</code> in <code>analyze_vars()</code> and
 <code><a href="compare_variables.html">compare_vars()</a></code> and as <code>cfun</code> in <code><a href="summarize_colvars.html">summarize_colvars()</a></code>.</p></li>
-<li><p><code>summarize_vars()</code>: <a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> Use <code>analyze_vars</code> instead.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
     
-<ul><li><p>Deprecation cycle started for <code>summarize_vars</code> which has been renamed to <code>analyze_vars</code>. This renaming is intended
-to better reflect its core underlying <code>rtables</code> functions - in this case <code><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
-</ul><ul><li><p>If <code>x</code> is an empty vector, <code>NA</code> is returned. This is the expected feature so as to return <code>rcell</code> content in
+<ul><li><p>If <code>x</code> is an empty vector, <code>NA</code> is returned. This is the expected feature so as to return <code>rcell</code> content in
 <code>rtables</code> when the intersection of a column and a row delimits an empty data selection.</p></li>
 <li><p>When the <code>mean</code> function is applied to an empty vector, <code>NA</code> will be returned instead of <code>NaN</code>, the latter
 being standard behavior in R.</p></li>
@@ -412,7 +402,7 @@ default <code>na_level</code> (<code>"&lt;Missing&gt;"</code>) will also be excl
 </ul><ul><li><p>Automatic conversion of character to factor does not guarantee that the table
 can be generated correctly. In particular for sparse tables this very likely can fail.
 It is therefore better to always pre-process the dataset such that factors are manually
-created from character variables before passing the dataset to <code><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">rtables::build_table()</a></code>.</p></li>
+created from character variables before passing the dataset to <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">rtables::build_table()</a></code>.</p></li>
 </ul><ul><li><p>To use for comparison (with additional p-value statistic), parameter <code>compare</code> must be set to <code>TRUE</code>.</p></li>
 <li><p>Ensure that either all <code>NA</code> values are converted to an explicit <code>NA</code> level or all <code>NA</code> values are left as is.</p></li>
 </ul></div>
@@ -1005,7 +995,6 @@ created from character variables before passing the dataset to <code><a href="ht
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Benefits in `rtables` contructions:</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/insightsengineering/rtables" class="external-link">rtables</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dta_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  Group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, each <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  sub_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
@@ -1013,23 +1002,11 @@ created from character variables before passing the dataset to <code><a href="ht
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## The summary obtained in with `rtables`:</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/rtables/man/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"sub_group"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/analyze.html" class="external-link">analyze</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"x"</span>, afun <span class="op">=</span> <span class="va">s_summary</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/rtables/man/build_table.html" class="external-link">build_table</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>number of items to replace is not a multiple of replacement length</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>number of items to replace is not a multiple of replacement length</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>number of items to replace is not a multiple of replacement length</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>number of items to replace is not a multiple of replacement length</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>number of items to replace is not a multiple of replacement length</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>number of items to replace is not a multiple of replacement length</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>number of items to replace is not a multiple of replacement length</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>number of items to replace is not a multiple of replacement length</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>number of items to replace is not a multiple of replacement length</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>number of items to replace is not a multiple of replacement length</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>number of items to replace is not a multiple of replacement length</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>number of items to replace is not a multiple of replacement length</span>
+<span class="r-in"><span><span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">split_cols_by</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"Group"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">split_rows_by</span><span class="op">(</span>var <span class="op">=</span> <span class="st">"sub_group"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">analyze</span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"x"</span>, afun <span class="op">=</span> <span class="va">s_summary</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">build_table</span><span class="op">(</span>df <span class="op">=</span> <span class="va">dta_test</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                  A                        B                       C                  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a                                                                                                                    </span>
@@ -2241,26 +2218,26 @@ created from character variables before passing the dataset to <code><a href="ht
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                       row_name    formatted_cell indent_mod</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                            n                10          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          Sum              -3.8          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          Sum              -4.4          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3                         Mean              -0.4          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                           SD               0.8          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                           SE               0.2          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                    Mean (SD)        -0.4 (0.8)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                    Mean (SE)        -0.4 (0.2)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8                  Mean 95% CI     (-0.93, 0.16)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9                Mean -/+ 1xSE    (-0.63, -0.14)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10               Mean -/+ 1xSD     (-1.15, 0.38)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Mean p-value (H0: mean = 0)              0.15          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12                      Median              -0.4          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13   Median Absolute Deviation              -0.0          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14               Median 95% CI     (-1.26, 0.27)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15             25% and 75%-ile        -0.9 - 0.3          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16                         IQR               1.2          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17                   Min - Max        -1.5 - 0.9          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18                     Minimum              -1.5          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19                     Maximum               0.9          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20          Median (Min - Max) -0.4 (-1.5 - 0.9)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21                      CV (%)            -198.9          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                           SD               1.1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                           SE               0.4          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                    Mean (SD)        -0.4 (1.1)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                    Mean (SE)        -0.4 (0.4)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                  Mean 95% CI     (-1.24, 0.36)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                Mean -/+ 1xSE    (-0.79, -0.09)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10               Mean -/+ 1xSD     (-1.56, 0.68)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Mean p-value (H0: mean = 0)            0.2432          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12                      Median              -0.2          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   Median Absolute Deviation               0.0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14               Median 95% CI     (-1.82, 0.62)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15             25% and 75%-ile        -1.4 - 0.3          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16                         IQR               1.7          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17                   Min - Max        -2.4 - 1.1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18                     Minimum              -2.4          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19                     Maximum               1.1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20          Median (Min - Max) -0.2 (-2.4 - 1.1)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21                      CV (%)            -253.2          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 22              Geometric Mean                NA          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 23       Geometric Mean 95% CI                NA          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 24         CV % Geometric Mean                NA          0</span>
@@ -2294,29 +2271,29 @@ created from character variables before passing the dataset to <code><a href="ht
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                       row_name  formatted_cell indent_mod</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                            n              10          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          Sum            47.6          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          Sum            48.2          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3                         Mean             4.8          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                           SD             0.7          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                           SE             0.2          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                    Mean (SD)       4.8 (0.7)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                    Mean (SE)       4.8 (0.2)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8                  Mean 95% CI    (4.25, 5.27)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9                Mean -/+ 1xSE    (4.53, 4.99)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10               Mean -/+ 1xSD    (4.04, 5.48)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Mean p-value (H0: mean = 0)            0.00          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12                      Median             4.8          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13   Median Absolute Deviation            -0.0          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14               Median 95% CI    (4.16, 5.63)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15             25% and 75%-ile       4.2 - 5.5          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16                         IQR             1.4          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17                   Min - Max       3.7 - 5.8          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18                     Minimum             3.7          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19                     Maximum             5.8          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20          Median (Min - Max) 4.8 (3.7 - 5.8)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21                      CV (%)            15.1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                           SD             1.2          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                           SE             0.4          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                    Mean (SD)       4.8 (1.2)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                    Mean (SE)       4.8 (0.4)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                  Mean 95% CI    (3.98, 5.66)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                Mean -/+ 1xSE    (4.45, 5.19)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10               Mean -/+ 1xSD    (3.65, 6.00)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 Mean p-value (H0: mean = 0)         &lt;0.0001          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12                      Median             4.7          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   Median Absolute Deviation             0.0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14               Median 95% CI    (3.37, 5.63)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15             25% and 75%-ile       4.1 - 5.5          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16                         IQR             1.5          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17                   Min - Max       3.1 - 7.1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18                     Minimum             3.1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19                     Maximum             7.1          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20          Median (Min - Max) 4.7 (3.1 - 7.1)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21                      CV (%)            24.4          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 22              Geometric Mean             4.7          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23       Geometric Mean 95% CI    (4.23, 5.25)          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24         CV % Geometric Mean            15.3          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23       Geometric Mean 95% CI    (3.93, 5.60)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24         CV % Geometric Mean            25.2          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 25            p-value (t-test)         &lt;0.0001          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      row_label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                            n</span>

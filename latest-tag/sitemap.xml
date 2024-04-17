@@ -109,6 +109,9 @@
     <loc>https://insightsengineering.github.io/tern/reference/bins_percent_labels.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/reference/bland_altman.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/reference/c_label_n.html</loc>
   </url>
   <url>
@@ -143,6 +146,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/control_analyze_vars.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/reference/control_annot.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/control_coxph.html</loc>
@@ -199,12 +205,6 @@
     <loc>https://insightsengineering.github.io/tern/reference/cox_regression_inter.html</loc>
   </url>
   <url>
-    <loc>https://insightsengineering.github.io/tern/reference/create_afun_compare.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/reference/create_afun_summary.html</loc>
-  </url>
-  <url>
     <loc>https://insightsengineering.github.io/tern/reference/cut_quantile_bins.html</loc>
   </url>
   <url>
@@ -259,7 +259,13 @@
     <loc>https://insightsengineering.github.io/tern/reference/desctools_binom.html</loc>
   </url>
   <url>
+    <loc>https://insightsengineering.github.io/tern/reference/df2gg.html</loc>
+  </url>
+  <url>
     <loc>https://insightsengineering.github.io/tern/reference/df_explicit_na.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/reference/dot-is_equal_float.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/draw_grob.html</loc>
@@ -368,6 +374,9 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/g_forest.html</loc>
+  </url>
+  <url>
+    <loc>https://insightsengineering.github.io/tern/reference/g_ipp.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/g_km.html</loc>
@@ -518,9 +527,6 @@
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://insightsengineering.github.io/tern/reference/individual_patient_plot.html</loc>
   </url>
   <url>
     <loc>https://insightsengineering.github.io/tern/reference/labels_or_names.html</loc>
