@@ -15,6 +15,8 @@ df2gg(
 )
 }
 \arguments{
+\item{df}{(\code{data.frame})\cr a data frame.}
+
 \item{colwidths}{(\code{numeric} or \code{NULL})\cr a vector of column widths. Each element's position in
 \code{colwidths} corresponds to the column of \code{df} in the same position. If \code{NULL}, column widths
 are calculated according to maximum number of characters per column.}
@@ -24,14 +26,12 @@ are calculated according to maximum number of characters per column.}
 \item{col_labels}{(\code{flag})\cr whether the column names (labels) of \code{df} should be used as the first row
 of the output table.}
 
+\item{col_lab_fontface}{(\code{string})\cr font face to apply to the first row (of column labels
+if \code{col_labels = TRUE}). Defaults to \code{"bold"}.}
+
 \item{hline}{(\code{flag})\cr whether a horizontal line should be printed below the first row of the table.}
 
 \item{bg_fill}{(\code{string})\cr table background fill color.}
-
-\item{tbl}{(\code{data.frame})\cr a data frame.}
-
-\item{col_labels_fontface}{(\code{string})\cr font face to apply to the first row (of column labels
-if \code{col_labels = TRUE}). Defaults to \code{"bold"}.}
 }
 \value{
 A \code{ggplot} object.
