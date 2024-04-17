@@ -246,8 +246,10 @@ g_lineplot <- function(df,
     # keep strata factor levels
     matches <- sapply(unique(df_N[[group_var]]), function(x) {
       regex_pattern <- gsub("([][(){}^$.|*+?\\\\])", "\\\\\\1", x)
-      unique(df_N[[paste0(group_var, "_N")]])[grepl(paste0("^", regex_pattern),
-                                                    unique(df_N[[paste0(group_var, "_N")]]))]
+      unique(df_N[[paste0(group_var, "_N")]])[grepl(
+        paste0("^", regex_pattern),
+        unique(df_N[[paste0(group_var, "_N")]])
+      )]
     })
     df_N[[paste0(group_var, "_N")]] <- factor(df_N[[group_var]]) # nolint
     levels(df_N[[paste0(group_var, "_N")]]) <- unlist(matches) # nolint
