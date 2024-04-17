@@ -42,6 +42,13 @@ testthat::test_that("get_covariates fails for non-character input", {
   testthat::expect_error(get_covariates(factor(c("a", "b", "b"))))
 })
 
+testthat::test_that("to_n fails for non-character input", {
+  testthat::expect_equal(to_n(NULL, 3), NULL)
+  testthat::expect_equal(to_n("a", 3), rep("a", 3))
+  testthat::expect_equal(to_n(rep("a", 3), 3), rep("a", 3))
+  testthat::expect_error(to_n(rep("a", 2), 3))
+})
+
 testthat::test_that("month2day works correctly", {
   x <- c(13.25, 8.15, 1, 2.834, NA)
   result <- month2day(x)

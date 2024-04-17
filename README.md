@@ -36,7 +36,7 @@ Data visualizations:
 
 Statistical model fit summaries:
 
--   Logistic regression ([`summarize_logistic`](https://insightsengineering.github.io/tern/latest-tag/reference/logistic_regression.html))
+-   Logistic regression ([`summarize_logistic`](https://insightsengineering.github.io/tern/latest-tag/reference/summarize_logistic.html))
 -   Cox regression ([`summarize_coxreg`](https://insightsengineering.github.io/tern/latest-tag/reference/cox_regression.html))
 
 Analysis tables:

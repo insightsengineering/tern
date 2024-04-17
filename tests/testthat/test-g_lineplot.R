@@ -4,13 +4,13 @@ adlb$AVISIT <- droplevels(adlb$AVISIT)
 adlb <- dplyr::mutate(adlb, AVISIT = forcats::fct_reorder(AVISIT, AVISITN, min))
 
 testthat::test_that("g_lineplot works with default settings", {
-  g_lineplot <- g_lineplot(adlb, adsl)
+  testthat::expect_silent(g_lineplot <- g_lineplot(adlb, adsl))
 
   expect_snapshot_ggplot(title = "g_lineplot", fig = g_lineplot, width = 10, height = 8)
 })
 
 testthat::test_that("g_lineplot works with custom settings and statistics table", {
-  g_lineplot_w_stats <- withr::with_options(
+  testthat::expect_silent(g_lineplot_w_stats <- withr::with_options(
     opts_partial_match_old,
     g_lineplot(
       adlb,
@@ -25,13 +25,13 @@ testthat::test_that("g_lineplot works with custom settings and statistics table"
       subtitle = "Laboratory Test:",
       caption = "caption"
     )
-  )
+  ))
 
   expect_snapshot_ggplot(title = "g_lineplot_w_stats", fig = g_lineplot_w_stats, width = 10, height = 8)
 })
 
 testthat::test_that("g_lineplot works with cohort_id specified", {
-  g_lineplot_cohorts <- withr::with_options(
+  testthat::expect_silent(g_lineplot_cohorts <- withr::with_options(
     opts_partial_match_old,
     g_lineplot(
       adlb,
@@ -45,6 +45,14 @@ testthat::test_that("g_lineplot works with cohort_id specified", {
       subtitle = "Laboratory Test:",
       caption = "caption"
     )
-  )
+  ))
+
   expect_snapshot_ggplot(title = "g_lineplot_cohorts", fig = g_lineplot_cohorts, width = 10, height = 8)
+})
+
+testthat::test_that("control_lineplot_vars works", {
+  testthat::expect_silent(control_lineplot_vars(group_var = NA))
+
+  # Deprecation warnings work
+  lifecycle::expect_deprecated(lifecycle::expect_deprecated(control_lineplot_vars(strata = NA, cohort_id = NA)))
 })
