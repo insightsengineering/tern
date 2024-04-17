@@ -50,6 +50,25 @@ testthat::test_that("g_lineplot works with cohort_id specified", {
   expect_snapshot_ggplot(title = "g_lineplot_cohorts", fig = g_lineplot_cohorts, width = 10, height = 8)
 })
 
+testthat::test_that("g_lineplot maintains factor levels in legend", {
+  adlb$ARM <- factor(adlb$ARM, levels = c("C: Combination", "A: Drug X", "B: Placebo"))
+  testthat::expect_silent(g_lineplot_factor_levels <- withr::with_options(
+    opts_partial_match_old,
+    g_lineplot(
+      adlb,
+      mid = "median",
+      table = c("n", "mean", "mean_ci"),
+      control = control_analyze_vars(conf_level = 0.80),
+      title = "Plot of Mean and 80% Confidence Limits by Visit",
+      y_lab = "Lab Test",
+      subtitle = "Laboratory Test:",
+      caption = "caption"
+    )
+  ))
+
+  expect_snapshot_ggplot(title = "g_lineplot_factor_levels", fig = g_lineplot_factor_levels, width = 10, height = 8)
+})
+
 testthat::test_that("control_lineplot_vars works", {
   testthat::expect_silent(control_lineplot_vars(group_var = NA))
 
