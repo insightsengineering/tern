@@ -203,8 +203,10 @@ tabulate_survival_biomarkers <- function(df,
   if (lifecycle::is_present(label_all)) {
     lifecycle::deprecate_warn(
       "0.9.5", "tabulate_survival_biomarkers(label_all)",
-      details =
-        "Please assign the `label_all` parameter within the `extract_survival_biomarkers()` function when creating `df`."
+      details = paste(
+        "Please assign the `label_all` parameter within the",
+        "`extract_survival_biomarkers()` function when creating `df`."
+      )
     )
   }
 
