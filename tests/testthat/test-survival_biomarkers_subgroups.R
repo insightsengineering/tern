@@ -169,7 +169,8 @@ testthat::test_that("label_all argument to extract_survival_subgroups works as e
 
   lifecycle::expect_deprecated(
     result <- tabulate_survival_biomarkers(
-      df, time_unit = as.character(adtte_f$AVALU[1]), label_all = "Full Analysis Set"
+      df,
+      time_unit = as.character(adtte_f$AVALU[1]), label_all = "Full Analysis Set"
     )
   )
 
