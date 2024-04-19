@@ -152,3 +152,27 @@ testthat::test_that("tabulate_survival_biomarkers na_str argument works as expec
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("label_all argument to extract_survival_subgroups works as expected", {
+  adtte_f <- adtte_local
+
+  df <- extract_survival_biomarkers(
+    variables = list(
+      tte = "AVAL",
+      is_event = "is_event",
+      biomarkers = c("AGE", "BMRKR1"),
+      subgroups = c("SEX", "BMRKR2")
+    ),
+    data = adtte_f,
+    label_all = "Full Analysis Set"
+  )
+
+  lifecycle::expect_deprecated(
+    result <- tabulate_survival_biomarkers(
+      df, time_unit = as.character(adtte_f$AVALU[1]), label_all = "Full Analysis Set"
+    )
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})

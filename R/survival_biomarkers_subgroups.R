@@ -53,6 +53,7 @@
 #'     covariates = "SEX",
 #'     subgroups = "BMRKR2"
 #'   ),
+#'   label_all = "Total Patients",
 #'   data = adtte_f
 #' )
 #' df
@@ -162,6 +163,9 @@ extract_survival_biomarkers <- function(variables,
 #' @describeIn survival_biomarkers_subgroups Table-creating function which creates a table
 #'   summarizing biomarker effects on survival by subgroup.
 #'
+#' @param label_all `r lifecycle::badge("deprecated")`\cr please assign the `label_all` parameter within the
+#'   [extract_survival_biomarkers()] function when creating `df`.
+#'
 #' @return An `rtables` table summarizing biomarker effects on survival by subgroup.
 #'
 #' @note In contrast to [tabulate_survival_subgroups()] this tabulation function does
@@ -192,16 +196,24 @@ tabulate_survival_biomarkers <- function(df,
                                          vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
                                          groups_lists = list(),
                                          control = control_coxreg(),
-                                         label_all = "All Patients",
+                                         label_all = lifecycle::deprecated(),
                                          time_unit = NULL,
                                          na_str = default_na_str(),
                                          .indent_mods = 0L) {
+  if (lifecycle::is_present(label_all)) {
+    lifecycle::deprecate_warn(
+      "0.9.5", "tabulate_survival_biomarkers(label_all)",
+      details =
+        "Please assign the `label_all` parameter within the `extract_survival_biomarkers()` function when creating `df`."
+    )
+  }
+
   checkmate::assert_data_frame(df)
   checkmate::assert_character(df$biomarker)
   checkmate::assert_character(df$biomarker_label)
   checkmate::assert_subset(vars, get_stats("tabulate_survival_biomarkers"))
 
-  extra_args <- list(groups_lists = groups_lists, control = control, label_all = label_all)
+  extra_args <- list(groups_lists = groups_lists, control = control)
 
   df_subs <- split(df, f = df$biomarker)
   tabs <- lapply(df_subs, FUN = function(df_sub) {
