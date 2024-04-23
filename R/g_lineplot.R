@@ -308,7 +308,7 @@ g_lineplot <- function(df,
     )
   )
 
-  if (nlevels(df_stats[[strata_N]]) > 6) {
+  if (!is.null(group_var) && nlevels(df_stats[[strata_N]]) > 6) {
     p <- p +
       scale_shape_manual(values = seq(15, 15 + nlevels(df_stats[[strata_N]])))
   }
