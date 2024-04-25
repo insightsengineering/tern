@@ -1,4 +1,10 @@
-# tern 0.9.4.9000
+# tern 0.9.4.9002
+
+### Enhancements
+* Added examples and tests for `label_all` parameter to `extract_survival_biomarkers` and `extract_survival_subgroups`.
+
+### Miscellaneous
+* Began deprecation of the unused `label_all` parameter to `tabulate_survival_biomarkers` and `tabulate_survival_subgroups`, with redirection to the same parameter in their associated `extract_*` functions.
 
 # tern 0.9.4
 

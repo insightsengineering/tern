@@ -28,7 +28,6 @@
 #'
 #' @examples
 #' library(dplyr)
-#' library(forcats)
 #'
 #' adtte <- tern_ex_adtte
 #'
@@ -43,7 +42,7 @@
 #'   ) %>%
 #'   mutate(
 #'     # Reorder levels of ARM to display reference arm before treatment arm.
-#'     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
+#'     ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
 #'     SEX = droplevels(SEX),
 #'     AVALU = as.character(AVALU),
 #'     is_event = CNSR == 0
@@ -62,6 +61,7 @@
 #'     is_event = "is_event",
 #'     arm = "ARM", subgroups = c("SEX", "BMRKR2")
 #'   ),
+#'   label_all = "Total Patients",
 #'   data = adtte_f
 #' )
 #' df
@@ -199,6 +199,10 @@ a_survival_subgroups <- function(.formats = list( # nolint start
 #'   summarizing survival by subgroup. This function is a wrapper for [rtables::analyze_colvars()]
 #'   and [rtables::summarize_row_groups()].
 #'
+#' @param label_all `r lifecycle::badge("deprecated")`\cr please assign the `label_all` parameter within the
+#'   [extract_survival_subgroups()] function when creating `df`.
+#'
+#'
 #' @return An `rtables` table summarizing survival by subgroup.
 #'
 #' @examples
@@ -220,13 +224,21 @@ tabulate_survival_subgroups <- function(lyt,
                                         df,
                                         vars = c("n_tot_events", "n_events", "median", "hr", "ci"),
                                         groups_lists = list(),
-                                        label_all = "All Patients",
+                                        label_all = lifecycle::deprecated(),
                                         time_unit = NULL,
                                         na_str = default_na_str()) {
+  if (lifecycle::is_present(label_all)) {
+    lifecycle::deprecate_warn(
+      "0.9.5", "tabulate_survival_subgroups(label_all)",
+      details =
+        "Please assign the `label_all` parameter within the `extract_survival_subgroups()` function when creating `df`."
+    )
+  }
+
   conf_level <- df$hr$conf_level[1]
   method <- df$hr$pval_label[1]
 
-  extra_args <- list(groups_lists = groups_lists, conf_level = conf_level, method = method, label_all = label_all)
+  extra_args <- list(groups_lists = groups_lists, conf_level = conf_level, method = method)
 
   afun_lst <- a_survival_subgroups(na_str = na_str)
   colvars <- d_survival_subgroups_colvars(

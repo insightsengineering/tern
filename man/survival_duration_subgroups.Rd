@@ -11,7 +11,7 @@ tabulate_survival_subgroups(
   df,
   vars = c("n_tot_events", "n_events", "median", "hr", "ci"),
   groups_lists = list(),
-  label_all = "All Patients",
+  label_all = lifecycle::deprecated(),
   time_unit = NULL,
   na_str = default_na_str()
 )
@@ -47,7 +47,8 @@ are required.
 list, which specifies the new group levels via the names and the
 levels that belong to it in the character vectors that are elements of the list.}
 
-\item{label_all}{(\code{string})\cr label for the total population analysis.}
+\item{label_all}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}\cr please assign the \code{label_all} parameter within the
+\code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}} function when creating \code{df}.}
 
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
 
@@ -84,7 +85,6 @@ and \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 }}
 \examples{
 library(dplyr)
-library(forcats)
 
 adtte <- tern_ex_adtte
 
@@ -99,7 +99,7 @@ adtte_f <- adtte \%>\%
   ) \%>\%
   mutate(
     # Reorder levels of ARM to display reference arm before treatment arm.
-    ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
+    ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
     SEX = droplevels(SEX),
     AVALU = as.character(AVALU),
     is_event = CNSR == 0
@@ -118,6 +118,7 @@ df <- extract_survival_subgroups(
     is_event = "is_event",
     arm = "ARM", subgroups = c("SEX", "BMRKR2")
   ),
+  label_all = "Total Patients",
   data = adtte_f
 )
 df
