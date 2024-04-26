@@ -312,6 +312,11 @@ g_lineplot <- function(df,
     )
   )
 
+  if (!is.null(group_var) && nlevels(df_stats[[strata_N]]) > 6) {
+    p <- p +
+      scale_shape_manual(values = seq(15, 15 + nlevels(df_stats[[strata_N]])))
+  }
+
   if (!is.null(mid)) {
     # points
     if (grepl("p", mid_type, fixed = TRUE)) {

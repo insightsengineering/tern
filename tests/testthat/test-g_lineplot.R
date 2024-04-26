@@ -66,7 +66,19 @@ testthat::test_that("g_lineplot maintains factor levels in legend", {
     )
   ))
 
-  expect_snapshot_ggplot(title = "g_lineplot_factor_levels", fig = g_lineplot_factor_levels, width = 10, height = 8)
+expect_snapshot_ggplot(title = "g_lineplot_factor_levels", fig = g_lineplot_factor_levels, width = 10, height = 8)
+  })
+testthat::test_that("g_lineplot does not produce a warning if group_var has >6 levels", {
+  set.seed(1)
+  adlb$FACTOR7 <- as.factor(sample(1:7, nrow(adlb), replace = TRUE))
+
+  testthat::expect_silent(withr::with_options(
+    opts_partial_match_old,
+    g_lineplot(
+      adlb,
+      variables = control_lineplot_vars(group_var = "FACTOR7")
+    )
+  ))
 })
 
 testthat::test_that("control_lineplot_vars works", {
