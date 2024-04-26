@@ -36,11 +36,11 @@
 <text x='22.45' y='47.50' style='font-size: 12.00px; font-family: "Arial";' textLength='116.06px' lengthAdjust='spacingAndGlyphs'>Baseline Risk Factors</text>
 <text x='22.45' y='69.10' style='font-size: 12.00px; font-family: "Arial";' textLength='60.03px' lengthAdjust='spacingAndGlyphs'>All Patients</text>
 <text x='22.45' y='90.70' style='font-size: 12.00px; font-family: "Arial";' textLength='20.69px' lengthAdjust='spacingAndGlyphs'>Sex</text>
-<text x='22.45' y='112.30' style='font-size: 12.00px; font-family: "Arial";' textLength='20.66px' lengthAdjust='spacingAndGlyphs'>    F</text>
-<text x='22.45' y='133.90' style='font-size: 12.00px; font-family: "Arial";' textLength='23.34px' lengthAdjust='spacingAndGlyphs'>    M</text>
+<text x='22.45' y='112.30' style='font-size: 12.00px; font-family: "Arial";' textLength='27.33px' lengthAdjust='spacingAndGlyphs'>      F</text>
+<text x='22.45' y='133.90' style='font-size: 12.00px; font-family: "Arial";' textLength='30.00px' lengthAdjust='spacingAndGlyphs'>      M</text>
 <text x='22.45' y='155.50' style='font-size: 12.00px; font-family: "Arial";' textLength='113.39px' lengthAdjust='spacingAndGlyphs'>Stratification Factor 2</text>
-<text x='22.45' y='177.10' style='font-size: 12.00px; font-family: "Arial";' textLength='28.02px' lengthAdjust='spacingAndGlyphs'>    S1</text>
-<text x='22.45' y='198.70' style='font-size: 12.00px; font-family: "Arial";' textLength='28.02px' lengthAdjust='spacingAndGlyphs'>    S2</text>
+<text x='22.45' y='177.10' style='font-size: 12.00px; font-family: "Arial";' textLength='34.68px' lengthAdjust='spacingAndGlyphs'>      S1</text>
+<text x='22.45' y='198.70' style='font-size: 12.00px; font-family: "Arial";' textLength='34.68px' lengthAdjust='spacingAndGlyphs'>      S2</text>
 <text x='186.04' y='47.50' text-anchor='middle' style='font-size: 12.00px; font-family: "Arial";' textLength='35.35px' lengthAdjust='spacingAndGlyphs'>Total n</text>
 <text x='186.04' y='69.10' text-anchor='middle' style='font-size: 12.00px; font-family: "Arial";' textLength='13.35px' lengthAdjust='spacingAndGlyphs'>20</text>
 <text x='186.04' y='112.30' text-anchor='middle' style='font-size: 12.00px; font-family: "Arial";' textLength='12.46px' lengthAdjust='spacingAndGlyphs'>11</text>
