@@ -17,3 +17,6 @@ InputVads.Rdata
 t_ae_ctc_SE.out
 t_ae_ctc_ATEZOREL_SENBX.out
 temp/
+
+tests/testthat/_snaps/**/*.new.md
+tests/testthat/_snaps/**/*.new.svg

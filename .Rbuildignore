@@ -36,3 +36,4 @@ pkgdown
 ^renv\.lock$
 ^.revdeprefs\.yaml$
 ^revdep$
+^\.covrignore$
