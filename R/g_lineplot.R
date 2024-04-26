@@ -244,11 +244,15 @@ g_lineplot <- function(df,
     df_N[[strata_N]] <- paste0(df_N[[group_var]], " (N = ", df_N$N, ")") # nolint
 
     # keep strata factor levels
-    matches <- sapply(unique(df_N[[group_var]]),
-                      function(x) unique(df_N[[paste0(group_var, "_N")]]) #nolint
-                      [grepl(paste0("^", x), unique(df_N[[paste0(group_var, "_N")]]))])
-    df_N[[paste0(group_var, "_N")]] <- factor(df_N[[group_var]]) #nolint
-    levels(df_N[[paste0(group_var, "_N")]]) <- unlist(matches) #nolint
+    matches <- sapply(unique(df_N[[group_var]]), function(x) {
+      regex_pattern <- gsub("([][(){}^$.|*+?\\\\])", "\\\\\\1", x)
+      unique(df_N[[paste0(group_var, "_N")]])[grepl(
+        paste0("^", regex_pattern),
+        unique(df_N[[paste0(group_var, "_N")]])
+      )]
+    })
+    df_N[[paste0(group_var, "_N")]] <- factor(df_N[[group_var]]) # nolint
+    levels(df_N[[paste0(group_var, "_N")]]) <- unlist(matches) # nolint
 
     # strata_N should not be in colnames(df_stats)
     checkmate::assert_disjunct(strata_N, colnames(df_stats))
@@ -551,7 +555,9 @@ control_lineplot_vars <- function(x = "AVISIT",
   checkmate::assert_string(paramcd, na.ok = TRUE, null.ok = TRUE)
   checkmate::assert_string(y_unit, na.ok = TRUE, null.ok = TRUE)
 
-  variables <- c(x = x, y = y, group_var = group_var, paramcd = paramcd,
-                 y_unit = y_unit, subject_var = subject_var, facet_var = facet_var)
+  variables <- c(
+    x = x, y = y, group_var = group_var, paramcd = paramcd,
+    y_unit = y_unit, subject_var = subject_var, facet_var = facet_var
+  )
   return(variables)
 }

@@ -1,6 +1,8 @@
 # tern 0.9.4.9002
 
 ### Enhancements
+* Added `facet_var` to `g_lineplot` to allow plot faceting by a factor variable.
+* Updated `g_lineplot` legend to follow factor levels set by users.
 * Added examples and tests for `label_all` parameter to `extract_survival_biomarkers` and `extract_survival_subgroups`.
 
 ### Miscellaneous
