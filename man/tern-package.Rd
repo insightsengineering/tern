@@ -22,7 +22,7 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Daniel Sabanés Bové \email{daniel.sabanes_bove@roche.com}
+  \item Daniel Saban<U+00E9>s Bov<U+00E9> \email{daniel.sabanes_bove@roche.com}
   \item Jana Stoilova \email{jana.stoilova@roche.com}
   \item Davide Garolini \email{davide.garolini@roche.com}
   \item Emily de la Rua \email{emily.de_la_rua@contractors.roche.com}
