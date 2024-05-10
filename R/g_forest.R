@@ -223,7 +223,7 @@ g_forest <- function(tbl,
   checkmate::assert_true(is.null(col) | length(col) == 1 | length(col) == nrow(tbl))
 
   # Extract info from table
-  mat <- matrix_form(tbl)
+  mat <- matrix_form(tbl, indent_rownames = TRUE)
   mat_strings <- formatters::mf_strings(mat)
   nlines_hdr <- formatters::mf_nlheader(mat)
   nrows_body <- nrow(mat_strings) - nlines_hdr

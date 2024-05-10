@@ -36,7 +36,7 @@
 #'
 #' @export
 rtable2gg <- function(tbl, fontsize = 12, colwidths = NULL, lbl_col_padding = 0) {
-  mat <- rtables::matrix_form(tbl)
+  mat <- rtables::matrix_form(tbl, indent_rownames = TRUE)
   mat_strings <- formatters::mf_strings(mat)
   mat_aligns <- formatters::mf_aligns(mat)
   mat_indent <- formatters::mf_rinfo(mat)$indent
