@@ -206,4 +206,27 @@ testthat::test_that("summarize_ancova works with irregular arm levels", {
 
   res <- testthat::expect_silent(result2)
   testthat::expect_snapshot(res)
+
+  adsl <- adsl |>
+    mutate(
+      ARMCD = case_match(
+        ARMCD,
+        "ARM A" ~ "10mg/kg",
+        "ARM B" ~ "20mg/kg",
+        "ARM C" ~ "30mg/kg"
+      ) |> factor(levels = paste0(1:3, "0mg/kg")),
+    )
+
+  result3 <- basic_table() |>
+    split_cols_by("ARMCD", ref_group = "10mg/kg") |>
+    summarize_ancova(
+      vars = "BMRKR1",
+      variables = list(arm = "ARMCD"),
+      conf_level = 0.95,
+      var_labels = "ARMCD"
+    ) |>
+    build_table(adsl)
+
+  res <- testthat::expect_silent(result3)
+  testthat::expect_snapshot(res)
 })
