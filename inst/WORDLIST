@@ -7,8 +7,6 @@ ADTTE
 AE
 ANCOVA
 Agresti
-Anova
-Bové
 Byar's
 CDISC
 CMH
@@ -28,7 +26,6 @@ Newcombe
 Pre
 Rua
 SMQ
-Sabanés
 Satterthwaite
 Schouten
 TLG
@@ -41,13 +38,11 @@ coercible
 de
 funder
 layouting
-params
 pharmacokinetic
 pre
 repo
 responder
 responders
-rtables
 subtable
 subtables
 unformatted
