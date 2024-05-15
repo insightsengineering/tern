@@ -1,4 +1,4 @@
-# tern 0.9.4.9006
+# tern 0.9.4.9007
 
 ### Enhancements
 * Added `facet_var` to `g_lineplot` to allow plot faceting by a factor variable.
