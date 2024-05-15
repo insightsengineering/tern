@@ -99,6 +99,43 @@ testthat::test_that("g_lineplot works with facet_var specified", {
   expect_snapshot_ggplot(title = "g_lineplot_facets", fig = g_lineplot_facets, width = 10, height = 8)
 })
 
+testthat::test_that("g_lineplot xticks, xlim, and ylim arguments work", {
+  g_lineplot_xticks_by <- withr::with_options(
+    opts_partial_match_old,
+    g_lineplot(
+      adlb,
+      adsl,
+      variables = control_lineplot_vars(x = "AVISITN"),
+      xticks = 1
+    )
+  )
+  expect_snapshot_ggplot(title = "g_lineplot_xticks_by", fig = g_lineplot_xticks_by, width = 10, height = 8)
+
+  g_lineplot_xticks <- withr::with_options(
+    opts_partial_match_old,
+    g_lineplot(
+      adlb,
+      adsl,
+      variables = control_lineplot_vars(x = "AVISITN"),
+      xticks = c(0, 2.5, 5)
+    )
+  )
+  expect_snapshot_ggplot(title = "g_lineplot_xticks", fig = g_lineplot_xticks, width = 10, height = 8)
+
+  g_lineplot_xlim_ylim <- withr::with_options(
+    opts_partial_match_old,
+    g_lineplot(
+      adlb,
+      adsl,
+      variables = control_lineplot_vars(x = "AVISITN"),
+      xlim = c(1, 6),
+      ylim = c(17, 21),
+      xticks = 1:6
+    )
+  )
+  expect_snapshot_ggplot(title = "g_lineplot_xlim_ylim", fig = g_lineplot_xlim_ylim, width = 10, height = 8)
+})
+
 testthat::test_that("control_lineplot_vars works", {
   testthat::expect_silent(control_lineplot_vars(group_var = NA))
 

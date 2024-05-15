@@ -20,6 +20,9 @@ g_lineplot(
   legend_title = NULL,
   legend_position = "bottom",
   ggtheme = nestcolor::theme_nest(),
+  xticks = NULL,
+  xlim = NULL,
+  ylim = NULL,
   x_lab = obj_label(df[[variables[["x"]]]]),
   y_lab = NULL,
   y_lab_add_paramcd = TRUE,
@@ -95,6 +98,16 @@ a call to a position adjustment function.}
 \code{"top"}, or a two-element numeric vector).}
 
 \item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to control styling of the plot.}
+
+\item{xticks}{(\code{numeric} or \code{NULL})\cr numeric vector of tick positions or a single number with spacing
+between ticks on the x-axis, for use when \code{variables$x} is numeric. If \code{NULL} (default), \code{\link[labeling:extended]{labeling::extended()}} is
+used to determine optimal tick positions on the x-axis. If \code{variables$x} is not numeric, this argument is ignored.}
+
+\item{xlim}{(\code{numeric(2)})\cr vector containing lower and upper limits for the x-axis, respectively.
+If \code{NULL} (default), the default scale range is used.}
+
+\item{ylim}{(\code{numeric(2)})\cr vector containing lower and upper limits for the y-axis, respectively.
+If \code{NULL} (default), the default scale range is used.}
 
 \item{x_lab}{(\code{string} or \code{NULL})\cr x-axis label. If \code{NULL} then no label will be added.}
 

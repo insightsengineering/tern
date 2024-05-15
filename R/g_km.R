@@ -6,7 +6,7 @@
 #' including the number of patient at risk at given time and the median survival
 #' per group.
 #'
-#' @param df (`data.frame`)\cr data set containing all analysis variables.
+#' @inheritParams argument_convention
 #' @param variables (named `list`)\cr variable names. Details are:
 #'   * `tte` (`numeric`)\cr variable indicating time-to-event duration values.
 #'   * `is_event` (`logical`)\cr event variable. `TRUE` if event, `FALSE` if time to event is censored.
@@ -35,8 +35,6 @@
 #' @param yval (`string`)\cr type of plot, to be plotted on the y-axis. Options are `Survival` (default) and `Failure`
 #'   probability.
 #' @param ylab (`string`)\cr y-axis label.
-#' @param ylim (`numeric(2)`)\cr vector containing lower and upper limits for the y-axis, respectively.
-#'   If `NULL` (default), the minimum and maximum y-values displayed are used as limits.
 #' @param title (`string`)\cr plot title.
 #' @param footnotes (`string`)\cr plot footnotes.
 #' @param font_size (`numeric(1)`)\cr font size to use for all text.
