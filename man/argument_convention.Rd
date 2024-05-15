@@ -110,6 +110,12 @@ times, to avoid warnings from \code{rtables}.}
 \item{var}{(\code{string})\cr single variable name for the primary analysis variable.}
 
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
+
+\item{xlim}{(\code{numeric(2)})\cr vector containing lower and upper limits for the x-axis, respectively.
+If \code{NULL} (default), the default scale range is used.}
+
+\item{ylim}{(\code{numeric(2)})\cr vector containing lower and upper limits for the y-axis, respectively.
+If \code{NULL} (default), the default scale range is used.}
 }
 \description{
 The documentation to this function lists all the arguments in \code{tern}

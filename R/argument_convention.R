@@ -67,6 +67,11 @@
 #' @param vars (`character`)\cr variable names for the primary analysis variable to be iterated over.
 #' @param var (`string`)\cr single variable name for the primary analysis variable.
 #' @param x (`numeric`)\cr vector of numbers we want to analyze.
+#' @param xlim (`numeric(2)`)\cr vector containing lower and upper limits for the x-axis, respectively.
+#'   If `NULL` (default), the default scale range is used.
+#' @param ylim (`numeric(2)`)\cr vector containing lower and upper limits for the y-axis, respectively.
+#'   If `NULL` (default), the default scale range is used.
+#'
 #'
 #' @details Although this function just returns `NULL` it has two uses, for
 #'   the `tern` users it provides a documentation of arguments that are

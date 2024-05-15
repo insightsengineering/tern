@@ -99,7 +99,7 @@ probability.}
 \item{ylab}{(\code{string})\cr y-axis label.}
 
 \item{ylim}{(\code{numeric(2)})\cr vector containing lower and upper limits for the y-axis, respectively.
-If \code{NULL} (default), the minimum and maximum y-values displayed are used as limits.}
+If \code{NULL} (default), the default scale range is used.}
 
 \item{title}{(\code{string})\cr plot title.}
 
