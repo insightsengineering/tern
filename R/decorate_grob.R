@@ -11,14 +11,22 @@
 #'   according to the page width.
 #' @param footnotes (`character`)\cr footnotes. Uses the same formatting rules as `titles`.
 #' @param page (`string` or `NULL`)\cr page numeration. If `NULL` then no page number is displayed.
-#' @param width_titles (`grid::unit`)\cr width of titles.
-#' @param width_footnotes (`grid::unit`)\cr width of footnotes.
+#' @param width_titles (`grid::unit`)\cr width of titles. Usually defined as all the available space
+#'   `grid::unit(1, "npc")`, it is affected by the parameter `outer_margins`. Right margins (`outer_margins[4]`)
+#'   need to be subtracted to the allowed width.
+#' @param width_footnotes (`grid::unit`)\cr width of footnotes. Same default and margin correction as `width_titles`.
 #' @param border (`flag`)\cr whether a border should be drawn around the plot or not.
-#' @param margins (`grid::unit`)\cr margins. A unit object of length 4.
-#' @param padding (`grid::unit`)\cr padding. A unit object of length 4.
-#' @param outer_margins (`grid::unit`)\cr outer margins. A unit object of length 4.
-#' @param gp_titles (`gpar`)\cr a `gpar` object.
-#' @param gp_footnotes (`gpar`)\cr a `gpar` object.
+#' @param padding (`grid::unit`)\cr padding. A unit object of length 4. Innermost margin between the plot (`grop`)
+#'   and, possibly, the border of the plot. Usually expressed in 4 identical values (usually `"lines"`). It defaults
+#'   to `grid::unit(rep(1, 4), "lines")`.
+#' @param margins (`grid::unit`)\cr margins. A unit object of length 4. Margins between the plot and the other
+#'   elements in the list (e.g. titles, plot, and footers). This is usually expressed in 4 `"lines"`, where the
+#'   lateral ones are 0s, while top and bottom are 1s. It defaults to `grid::unit(c(1, 0, 1, 0), "lines")`.
+#' @param outer_margins (`grid::unit`)\cr outer margins. A unit object of length 4. It defines the general margin of
+#'   the plot, considering also decorations like titles, footnotes, and page numbers. It defaults to
+#'   `grid::unit(c(2, 1.5, 3, 1.5), "cm")`.
+#' @param gp_titles (`gpar`)\cr a `gpar` object. Mainly used to set different `"fontsize"`.
+#' @param gp_footnotes (`gpar`)\cr a `gpar` object. Mainly used to set different `"fontsize"`.
 #'
 #' @return A grid grob (`gTree`).
 #'
@@ -132,17 +140,24 @@ decorate_grob <- function(grob,
                           titles,
                           footnotes,
                           page = "",
-                          width_titles = grid::unit(1, "npc") - grid::unit(1.5, "cm"),
-                          width_footnotes = grid::unit(1, "npc") - grid::unit(1.5, "cm"),
+                          width_titles = grid::unit(1, "npc"),
+                          width_footnotes = grid::unit(1, "npc"),
                           border = TRUE,
-                          margins = grid::unit(c(1, 0, 1, 0), "lines"),
                           padding = grid::unit(rep(1, 4), "lines"),
+                          margins = grid::unit(c(1, 0, 1, 0), "lines"),
                           outer_margins = grid::unit(c(2, 1.5, 3, 1.5), "cm"),
                           gp_titles = grid::gpar(),
                           gp_footnotes = grid::gpar(fontsize = 8),
                           name = NULL,
                           gp = grid::gpar(),
                           vp = NULL) {
+  # External margins need to be taken into account when defining the width of titles and footers
+  # because the text is split in advance depending on only the width of the viewport.
+  if (any(as.numeric(outer_margins) > 0)) {
+    width_titles <- width_titles - outer_margins[4]
+    width_footnotes <- width_footnotes - outer_margins[4]
+  }
+
   st_titles <- split_text_grob(
     titles,
     x = 0, y = 1,
@@ -169,6 +184,23 @@ decorate_grob <- function(grob,
     gp = gp_footnotes
   )
 
+  # Initial decoration of the grob -> border, paddings, and margins are used here
+  main_plot <- grid::gTree(
+    children = grid::gList(
+      if (border) grid::rectGrob(),
+      grid::gTree(
+        children = grid::gList(
+          grob
+        ),
+        vp = grid::plotViewport(margins = padding) # innermost margins of the grob plot
+      )
+    ),
+    vp = grid::vpStack(
+      grid::viewport(layout.pos.row = 2, layout.pos.col = 1),
+      grid::plotViewport(margins = margins) # margins around the border plot
+    )
+  )
+
   grid::gTree(
     grob = grob,
     titles = titles,
@@ -176,9 +208,9 @@ decorate_grob <- function(grob,
     page = page,
     width_titles = width_titles,
     width_footnotes = width_footnotes,
-    border = border,
-    margins = margins,
-    padding = padding,
+    # border = border,
+    # margins = margins,
+    # padding = padding,
     outer_margins = outer_margins,
     gp_titles = gp_titles,
     gp_footnotes = gp_footnotes,
@@ -186,28 +218,14 @@ decorate_grob <- function(grob,
       grid::gTree(
         children = grid::gList(
           st_titles,
-          grid::gTree(
-            children = grid::gList(
-              if (border) grid::rectGrob(),
-              grid::gTree(
-                children = grid::gList(
-                  grob
-                ),
-                vp = grid::plotViewport(margins = padding)
-              )
-            ),
-            vp = grid::vpStack(
-              grid::viewport(layout.pos.row = 2, layout.pos.col = 1),
-              grid::plotViewport(margins = margins)
-            )
-          ),
+          main_plot, # main plot with border, padding, and margins
           st_footnotes,
           pg_footnote
         ),
         childrenvp = NULL,
         name = "titles_grob_footnotes",
         vp = grid::vpStack(
-          grid::plotViewport(margins = outer_margins),
+          grid::plotViewport(margins = outer_margins), # Main external margins
           grid::viewport(
             layout = grid::grid.layout(
               nrow = 4, ncol = 1,
@@ -385,6 +403,7 @@ split_string <- function(text, width) {
     if (length(newline_str) > 1) {
       for (i in seq(2, length(newline_str))) {
         width_i <- grid::stringWidth(newline_str[i])
+        # Main conversion of allowed text width -> npc units are 0<npc<1. External viewport is used for conversion
         if (grid::convertWidth(linewidth + gapwidth + width_i, grid::unitType(width), valueOnly = TRUE) < availwidth) {
           sep <- " "
           linewidth <- linewidth + gapwidth + width_i
