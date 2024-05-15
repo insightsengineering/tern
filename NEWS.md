@@ -7,6 +7,7 @@
 
 ### Bug Fixes
 * Fixed bug in `s_ancova` that prevented statistics from being printed when arm levels include special characters.
+* Fixed bug in `decorate_grob` that prevented the right margins to be respected when adding title and footers decorations.
 
 ### Miscellaneous
 * Began deprecation of the unused `label_all` parameter to `tabulate_survival_biomarkers` and `tabulate_survival_subgroups`, with redirection to the same parameter in their associated `extract_*` functions.
