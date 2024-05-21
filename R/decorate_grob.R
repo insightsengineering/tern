@@ -16,7 +16,7 @@
 #'   need to be subtracted to the allowed width.
 #' @param width_footnotes (`grid::unit`)\cr width of footnotes. Same default and margin correction as `width_titles`.
 #' @param border (`flag`)\cr whether a border should be drawn around the plot or not.
-#' @param padding (`grid::unit`)\cr padding. A unit object of length 4. Innermost margin between the plot (`grop`)
+#' @param padding (`grid::unit`)\cr padding. A unit object of length 4. Innermost margin between the plot (`grob`)
 #'   and, possibly, the border of the plot. Usually expressed in 4 identical values (usually `"lines"`). It defaults
 #'   to `grid::unit(rep(1, 4), "lines")`.
 #' @param margins (`grid::unit`)\cr margins. A unit object of length 4. Margins between the plot and the other

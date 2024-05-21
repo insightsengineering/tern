@@ -40,7 +40,7 @@ need to be subtracted to the allowed width.}
 
 \item{border}{(\code{flag})\cr whether a border should be drawn around the plot or not.}
 
-\item{padding}{(\code{grid::unit})\cr padding. A unit object of length 4. Innermost margin between the plot (\code{grop})
+\item{padding}{(\code{grid::unit})\cr padding. A unit object of length 4. Innermost margin between the plot (\code{grob})
 and, possibly, the border of the plot. Usually expressed in 4 identical values (usually \code{"lines"}). It defaults
 to \code{grid::unit(rep(1, 4), "lines")}.}
 
