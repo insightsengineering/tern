@@ -1,6 +1,7 @@
 testthat::test_that("decorate_grob returns no warnings when creating an empty plot", {
   titles <- "Edgar Anderson's Iris Data"
   footnotes <- "The species are Iris setosa, versicolor, and virginica."
+  all_ones <- grid::unit(c(1, 1, 1, 1), "cm")
 
   grid::grid.newpage()
   testthat::expect_silent(
@@ -10,9 +11,9 @@ testthat::test_that("decorate_grob returns no warnings when creating an empty pl
         titles = titles,
         footnotes = footnotes,
         page = "Page 4 of 10",
-        outer_margins = c(1, 1, 1, 1),
-        margins = c(1, 1, 1, 1),
-        padding = c(1, 1, 1, 1)
+        outer_margins = all_ones,
+        margins = all_ones,
+        padding = all_ones
       )
     )
   )
