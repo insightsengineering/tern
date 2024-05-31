@@ -34,7 +34,7 @@ Imports:
     dplyr (>= 1.0.0),
     emmeans (>= 1.8.0),
     forcats (>= 1.0.0),
-    formatters (>= 0.5.6.9007),
+    formatters (>= 0.5.7.9000),
     ggplot2 (>= 3.5.0),
     grid,
     gridExtra (>= 2.0.0),
