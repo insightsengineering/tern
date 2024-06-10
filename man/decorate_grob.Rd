@@ -9,11 +9,11 @@ decorate_grob(
   titles,
   footnotes,
   page = "",
-  width_titles = grid::unit(1, "npc") - grid::unit(1.5, "cm"),
-  width_footnotes = grid::unit(1, "npc") - grid::unit(1.5, "cm"),
+  width_titles = grid::unit(1, "npc"),
+  width_footnotes = grid::unit(1, "npc"),
   border = TRUE,
-  margins = grid::unit(c(1, 0, 1, 0), "lines"),
   padding = grid::unit(rep(1, 4), "lines"),
+  margins = grid::unit(c(1, 0, 1, 0), "lines"),
   outer_margins = grid::unit(c(2, 1.5, 3, 1.5), "cm"),
   gp_titles = grid::gpar(),
   gp_footnotes = grid::gpar(fontsize = 8),
@@ -32,21 +32,29 @@ according to the page width.}
 
 \item{page}{(\code{string} or \code{NULL})\cr page numeration. If \code{NULL} then no page number is displayed.}
 
-\item{width_titles}{(\code{grid::unit})\cr width of titles.}
+\item{width_titles}{(\code{grid::unit})\cr width of titles. Usually defined as all the available space
+\code{grid::unit(1, "npc")}, it is affected by the parameter \code{outer_margins}. Right margins (\code{outer_margins[4]})
+need to be subtracted to the allowed width.}
 
-\item{width_footnotes}{(\code{grid::unit})\cr width of footnotes.}
+\item{width_footnotes}{(\code{grid::unit})\cr width of footnotes. Same default and margin correction as \code{width_titles}.}
 
 \item{border}{(\code{flag})\cr whether a border should be drawn around the plot or not.}
 
-\item{margins}{(\code{grid::unit})\cr margins. A unit object of length 4.}
+\item{padding}{(\code{grid::unit})\cr padding. A unit object of length 4. Innermost margin between the plot (\code{grob})
+and, possibly, the border of the plot. Usually expressed in 4 identical values (usually \code{"lines"}). It defaults
+to \code{grid::unit(rep(1, 4), "lines")}.}
 
-\item{padding}{(\code{grid::unit})\cr padding. A unit object of length 4.}
+\item{margins}{(\code{grid::unit})\cr margins. A unit object of length 4. Margins between the plot and the other
+elements in the list (e.g. titles, plot, and footers). This is usually expressed in 4 \code{"lines"}, where the
+lateral ones are 0s, while top and bottom are 1s. It defaults to \code{grid::unit(c(1, 0, 1, 0), "lines")}.}
 
-\item{outer_margins}{(\code{grid::unit})\cr outer margins. A unit object of length 4.}
+\item{outer_margins}{(\code{grid::unit})\cr outer margins. A unit object of length 4. It defines the general margin of
+the plot, considering also decorations like titles, footnotes, and page numbers. It defaults to
+\code{grid::unit(c(2, 1.5, 3, 1.5), "cm")}.}
 
-\item{gp_titles}{(\code{gpar})\cr a \code{gpar} object.}
+\item{gp_titles}{(\code{gpar})\cr a \code{gpar} object. Mainly used to set different \code{"fontsize"}.}
 
-\item{gp_footnotes}{(\code{gpar})\cr a \code{gpar} object.}
+\item{gp_footnotes}{(\code{gpar})\cr a \code{gpar} object. Mainly used to set different \code{"fontsize"}.}
 
 \item{name}{a character identifier for the grob.  Used to find the
     grob on the display list and/or as a child of another grob. }

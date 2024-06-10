@@ -31,7 +31,7 @@ Data visualizations:
 -   Kaplan-Meier plots ([`g_km`](https://insightsengineering.github.io/tern/latest-tag/reference/g_km.html))
 -   Forest plots ([`g_forest`](https://insightsengineering.github.io/tern/latest-tag/reference/g_forest.html))
 -   STEP graphs ([`g_step`](https://insightsengineering.github.io/tern/latest-tag/reference/g_step.html))
--   Individual patient plots ([`g_ipp`](https://insightsengineering.github.io/tern/latest-tag/reference/individual_patient_plot.html))
+-   Individual patient plots ([`g_ipp`](https://insightsengineering.github.io/tern/latest-tag/reference/g_ipp.html))
 -   Waterfall plots ([`g_waterfall`](https://insightsengineering.github.io/tern/latest-tag/reference/g_waterfall.html))
 
 Statistical model fit summaries:
