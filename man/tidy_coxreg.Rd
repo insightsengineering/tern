@@ -20,7 +20,7 @@ or \code{\link[=fit_coxreg_multivar]{fit_coxreg_multivar()}} (for multivariate m
 \item{...}{additional arguments for the lower level functions.}
 }
 \value{
-\code{\link[=tidy]{tidy()}} returns:
+\code{\link[broom:reexports]{broom::tidy()}} returns:
 \itemize{
 \item For \code{summary.coxph} objects,  a \code{data.frame} with columns: \verb{Pr(>|z|)}, \code{exp(coef)}, \code{exp(-coef)}, \verb{lower .95},
 \verb{upper .95}, \code{level}, and \code{n}.
