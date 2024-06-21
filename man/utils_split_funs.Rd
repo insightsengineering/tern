@@ -33,7 +33,7 @@ depending on input \code{order} and split levels.
 Collection of useful functions that are expanding on the core list of functions
 provided by \code{rtables}. See \link[rtables:custom_split_funs]{rtables::custom_split_funs} and \code{\link[rtables:make_split_fun]{rtables::make_split_fun()}}
 for more information on how to make a custom split function. All these functions
-work with \code{\link[=split_rows_by]{split_rows_by()}} argument \code{split_fun} to modify the way the split
+work with \code{\link[rtables:split_rows_by]{rtables::split_rows_by()}} argument \code{split_fun} to modify the way the split
 happens. For other split functions, consider consulting \code{\link[rtables:split_funcs]{rtables::split_funcs}}.
 }
 \section{Functions}{

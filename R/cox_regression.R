@@ -44,7 +44,7 @@ control_coxreg <- function(pval_method = c("wald", "likelihood"),
 #' @param x (`list`)\cr result of the Cox regression model fitted by [fit_coxreg_univar()] (for univariate models)
 #'   or [fit_coxreg_multivar()] (for multivariate models).
 #'
-#' @return [tidy()] returns:
+#' @return [broom::tidy()] returns:
 #' * For `summary.coxph` objects,  a `data.frame` with columns: `Pr(>|z|)`, `exp(coef)`, `exp(-coef)`, `lower .95`,
 #'   `upper .95`, `level`, and `n`.
 #' * For `coxreg.univar` objects, a `data.frame` with columns: `effect`, `term`, `term_label`, `level`, `n`, `hr`,
