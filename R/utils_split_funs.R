@@ -5,7 +5,7 @@
 #' Collection of useful functions that are expanding on the core list of functions
 #' provided by `rtables`. See [rtables::custom_split_funs] and [rtables::make_split_fun()]
 #' for more information on how to make a custom split function. All these functions
-#' work with [split_rows_by()] argument `split_fun` to modify the way the split
+#' work with [rtables::split_rows_by()] argument `split_fun` to modify the way the split
 #' happens. For other split functions, consider consulting [`rtables::split_funcs`].
 #'
 #' @seealso [rtables::make_split_fun()]
