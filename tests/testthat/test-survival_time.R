@@ -157,8 +157,8 @@ testthat::test_that("surv_time works with referential footnotes", {
 testthat::test_that("a_surv_time works when `is_event` only has TRUE observations", {
   anl <- tibble::tribble(
     ~AVAL, ~ARM, ~is_event,
-    1,  "A",     TRUE,
-    2,  "A",     TRUE
+    1, "A", TRUE,
+    2, "A", TRUE
   )
 
   testthat::expect_silent(
@@ -169,8 +169,8 @@ testthat::test_that("a_surv_time works when `is_event` only has TRUE observation
 testthat::test_that("a_surv_time works when `is_event` only has FALSE observations", {
   anl <- tibble::tribble(
     ~AVAL, ~ARM, ~is_event,
-    1,  "A",     FALSE,
-    2,  "A",     FALSE
+    1, "A", FALSE,
+    2, "A", FALSE
   )
 
   testthat::expect_silent(
