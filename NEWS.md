@@ -1,7 +1,11 @@
 # tern 0.9.5.9002
+### Enhancements
+* Added `errorbar_width` and `linetype` parameters to `g_lineplot`.
 
 ### Bug Fixes
 * Fixed a bug in `a_surv_time` that threw an error when split only has `"is_event"`.
+* Empty levels on `g_lineplot` x-axis are not shown in either plots.
+* Fixed disappearing line in `g_lineplot` when using only one group or strata level.
 
 # tern 0.9.5
 
