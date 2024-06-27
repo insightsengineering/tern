@@ -331,10 +331,8 @@ g_lineplot <- function(df,
       p <- p + ggplot2::geom_point(position = position, size = mid_point_size, na.rm = TRUE)
     }
 
-    # lines
-    # further conditions in if are to ensure that not all of the groups consist of only one observation
-    if (grepl("l", mid_type, fixed = TRUE) && !is.null(group_var) &&
-      !all(dplyr::summarise(df_grp, count_n = dplyr::n())[["count_n"]] == 1L)) { # nolint
+    # lines - plotted only if there is a strata grouping (group_var)
+    if (grepl("l", mid_type, fixed = TRUE) && !is.null(strata_N)) { # nolint
       p <- p + ggplot2::geom_line(position = position, na.rm = TRUE)
     }
   }
