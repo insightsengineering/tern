@@ -36,7 +36,8 @@ g_lineplot(
   table_labels = get_labels_from_stats(table),
   table_font_size = 3,
   newpage = lifecycle::deprecated(),
-  col = NULL
+  col = NULL,
+  linetype = NULL
 )
 }
 \arguments{
@@ -143,6 +144,8 @@ appended to the plot. Names of \code{table_labels} must match the names of stati
 \item{newpage}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} not used.}
 
 \item{col}{(\code{character})\cr color(s).}
+
+\item{linetype}{(\code{character})\cr line type(s).}
 }
 \value{
 A \code{ggplot} line plot (and statistics table if applicable).

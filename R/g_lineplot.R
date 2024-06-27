@@ -70,6 +70,7 @@
 #' @param table_font_size (`numeric(1)`)\cr font size of the text in the table.
 #' @param newpage `r lifecycle::badge("deprecated")` not used.
 #' @param col (`character`)\cr color(s).
+#' @param linetype (`character`)\cr line type(s).
 #'
 #' @return A `ggplot` line plot (and statistics table if applicable).
 #'
@@ -159,11 +160,13 @@ g_lineplot <- function(df,
                        table_labels = get_labels_from_stats(table),
                        table_font_size = 3,
                        newpage = lifecycle::deprecated(),
-                       col = NULL) {
+                       col = NULL,
+                       linetype = NULL) {
   checkmate::assert_character(variables, any.missing = TRUE)
   checkmate::assert_character(mid, null.ok = TRUE)
   checkmate::assert_character(interval, null.ok = TRUE)
   checkmate::assert_character(col, null.ok = TRUE)
+  checkmate::assert_character(linetype, null.ok = TRUE)
   checkmate::assert_numeric(xticks, null.ok = TRUE)
   checkmate::assert_numeric(xlim, finite = TRUE, any.missing = FALSE, len = 2, sorted = TRUE, null.ok = TRUE)
   checkmate::assert_numeric(ylim, finite = TRUE, any.missing = FALSE, len = 2, sorted = TRUE, null.ok = TRUE)
@@ -380,6 +383,10 @@ g_lineplot <- function(df,
   if (!is.null(col)) {
     p <- p +
       ggplot2::scale_color_manual(values = col)
+  }
+  if (!is.null(linetype)) {
+    p <- p +
+      ggplot2::scale_linetype_manual(values = linetype)
   }
 
   if (!is.null(facet_var)) {
