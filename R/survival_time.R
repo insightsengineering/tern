@@ -138,11 +138,11 @@ a_surv_time <- function(df,
 
   cell_fns <- setNames(vector("list", length = length(x_stats)), .labels)
   if ("range" %in% names(x_stats) && ref_fn_censor) {
-    if (x_stats[["range"]][1] == rng_censor_lwr && x_stats[["range"]][2] == rng_censor_upr) {
+    if (identical(x_stats[["range"]][1], rng_censor_lwr) && identical(x_stats[["range"]][2], rng_censor_upr)) {
       cell_fns[[.labels[["range"]]]] <- "Censored observations: range minimum & maximum"
-    } else if (x_stats[["range"]][1] == rng_censor_lwr) {
+    } else if (identical(x_stats[["range"]][1], rng_censor_lwr)) {
       cell_fns[[.labels[["range"]]]] <- "Censored observation: range minimum"
-    } else if (x_stats[["range"]][2] == rng_censor_upr) {
+    } else if (identical(x_stats[["range"]][2], rng_censor_upr)) {
       cell_fns[[.labels[["range"]]]] <- "Censored observation: range maximum"
     }
   }

@@ -1,5 +1,8 @@
 # tern 0.9.5.9001
 
+### Bug Fixes
+* Fixed a bug in `a_surv_time` that threw an error when split only has `"is_event"`.
+
 # tern 0.9.5
 
 ### Enhancements
