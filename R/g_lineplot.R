@@ -230,6 +230,9 @@ g_lineplot <- function(df,
   ####################################### |
   # ---- Compute required statistics ----
   ####################################### |
+  # Remove unused levels for x-axis
+  df[[x]] <- droplevels(df[[x]])
+
   if (!is.null(facet_var) && !is.null(group_var)) {
     df_grp <- tidyr::expand(df, .data[[facet_var]], .data[[group_var]], .data[[x]]) # expand based on levels of factors
   } else if (!is.null(group_var)) {
@@ -237,6 +240,7 @@ g_lineplot <- function(df,
   } else {
     df_grp <- tidyr::expand(df, NULL, .data[[x]])
   }
+
   df_grp <- df_grp %>%
     dplyr::full_join(y = df[, c(facet_var, group_var, x, y)], by = c(facet_var, group_var, x), multiple = "all") %>%
     dplyr::group_by_at(c(facet_var, group_var, x))

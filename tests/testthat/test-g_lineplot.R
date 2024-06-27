@@ -185,7 +185,9 @@ testthat::test_that("g_lineplot works with no strata (group_var) and allows poin
     )
   )
 })
+
 testthat::test_that("linetype works as well as col with manual scaling and other options (errorbar_width)", {
+  # Regression test issues #1235 #1236 #1081
   g_lineplot_linetype <- testthat::expect_silent(
     withr::with_options(
       opts_partial_match_old,
@@ -194,8 +196,22 @@ testthat::test_that("linetype works as well as col with manual scaling and other
         adsl,
         variables = control_lineplot_vars(group_var = "ARM"),
         col = c("blue", "black", "blue"),
-        linetype = c("dashed", "solid", "dashed"),
-        errorbar_width = 0.6
+        linetype = c("dashed", "solid", "dashed"), # Visual testing necessary here
+        errorbar_width = 1.6 # Visual testing necessary here
+      )
+    )
+  )
+})
+
+testthat::test_that("NA values are removed also from the table plot", {
+  # Regression test issues teal.modules.clinical#1197
+  levels(adlb$AVISIT) <- c(levels(adlb$AVISIT), "Not present")
+  g_lineplot_linetype <- testthat::expect_silent(
+    withr::with_options(
+      opts_partial_match_old,
+      g_lineplot(
+        adlb,
+        table = "n" # Visual testing necessary here
       )
     )
   )
