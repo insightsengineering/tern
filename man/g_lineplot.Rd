@@ -35,6 +35,7 @@ g_lineplot(
   table_format = get_formats_from_stats(table),
   table_labels = get_labels_from_stats(table),
   table_font_size = 3,
+  errorbar_width = 0.45,
   newpage = lifecycle::deprecated(),
   col = NULL,
   linetype = NULL
@@ -140,6 +141,8 @@ parameter. Names of \code{table_format} must match the names of statistics retur
 appended to the plot. Names of \code{table_labels} must match the names of statistics returned by \code{sfun} function.}
 
 \item{table_font_size}{(\code{numeric(1)})\cr font size of the text in the table.}
+
+\item{errorbar_width}{(\code{numeric(1)})\cr width of the error bars.}
 
 \item{newpage}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} not used.}
 

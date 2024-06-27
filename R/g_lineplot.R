@@ -71,6 +71,7 @@
 #' @param newpage `r lifecycle::badge("deprecated")` not used.
 #' @param col (`character`)\cr color(s).
 #' @param linetype (`character`)\cr line type(s).
+#' @param errorbar_width (`numeric(1)`)\cr width of the error bars.
 #'
 #' @return A `ggplot` line plot (and statistics table if applicable).
 #'
@@ -159,6 +160,7 @@ g_lineplot <- function(df,
                        table_format = get_formats_from_stats(table),
                        table_labels = get_labels_from_stats(table),
                        table_font_size = 3,
+                       errorbar_width = 0.45,
                        newpage = lifecycle::deprecated(),
                        col = NULL,
                        linetype = NULL) {
@@ -170,6 +172,7 @@ g_lineplot <- function(df,
   checkmate::assert_numeric(xticks, null.ok = TRUE)
   checkmate::assert_numeric(xlim, finite = TRUE, any.missing = FALSE, len = 2, sorted = TRUE, null.ok = TRUE)
   checkmate::assert_numeric(ylim, finite = TRUE, any.missing = FALSE, len = 2, sorted = TRUE, null.ok = TRUE)
+  checkmate::assert_number(errorbar_width, lower = 0)
   checkmate::assert_string(title, null.ok = TRUE)
   checkmate::assert_string(subtitle, null.ok = TRUE)
 
@@ -345,7 +348,7 @@ g_lineplot <- function(df,
     p <- p +
       ggplot2::geom_errorbar(
         ggplot2::aes(ymin = .data[[whiskers[1]]], ymax = .data[[whiskers[max(1, length(whiskers))]]]),
-        width = 0.45,
+        width = errorbar_width,
         position = position
       )
 

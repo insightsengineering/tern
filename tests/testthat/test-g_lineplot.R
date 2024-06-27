@@ -185,7 +185,7 @@ testthat::test_that("g_lineplot works with no strata (group_var) and allows poin
     )
   )
 })
-testthat::test_that("linetype works as well as col with manual scaling", {
+testthat::test_that("linetype works as well as col with manual scaling and other options (errorbar_width)", {
   g_lineplot_linetype <- testthat::expect_silent(
     withr::with_options(
       opts_partial_match_old,
@@ -194,7 +194,8 @@ testthat::test_that("linetype works as well as col with manual scaling", {
         adsl,
         variables = control_lineplot_vars(group_var = "ARM"),
         col = c("blue", "black", "blue"),
-        linetype = c("dashed", "solid", "dashed")
+        linetype = c("dashed", "solid", "dashed"),
+        errorbar_width = 0.6
       )
     )
   )
