@@ -231,7 +231,9 @@ g_lineplot <- function(df,
   # ---- Compute required statistics ----
   ####################################### |
   # Remove unused levels for x-axis
-  df[[x]] <- droplevels(df[[x]])
+  if (is.factor(df[[x]])) {
+    df[[x]] <- droplevels(df[[x]])
+  }
 
   if (!is.null(facet_var) && !is.null(group_var)) {
     df_grp <- tidyr::expand(df, .data[[facet_var]], .data[[group_var]], .data[[x]]) # expand based on levels of factors
