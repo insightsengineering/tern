@@ -158,7 +158,7 @@ testthat::test_that("g_lineplot works with no strata (group_var) and allows poin
       variables = control_lineplot_vars(group_var = NULL)
     )
   )
-  testthat::expect_true(
+  testthat::expect_false( # no group variable
     any(
       vapply(
         g_lineplot_no_strata$layers, function(x) {
@@ -178,6 +178,23 @@ testthat::test_that("g_lineplot works with no strata (group_var) and allows poin
     any(
       vapply(
         g_lineplot_strata$layers, function(x) {
+          any(grepl(class(x$geom), pattern = "line", ignore.case = TRUE))
+        },
+        logical(1L)
+      )
+    )
+  )
+  g_lineplot_single_strata <- withr::with_options(
+    opts_partial_match_old,
+    g_lineplot(
+      adlb2,
+      adsl2
+    )
+  )
+  testthat::expect_true( # only one group variable
+    any(
+      vapply(
+        g_lineplot_single_strata$layers, function(x) {
           any(grepl(class(x$geom), pattern = "line", ignore.case = TRUE))
         },
         logical(1L)
