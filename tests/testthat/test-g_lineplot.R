@@ -142,3 +142,94 @@ testthat::test_that("control_lineplot_vars works", {
   # Deprecation warnings work
   lifecycle::expect_deprecated(lifecycle::expect_deprecated(control_lineplot_vars(strata = NA, cohort_id = NA)))
 })
+
+testthat::test_that("g_lineplot works with no strata (group_var) and allows points when only one strata is provided", {
+  adlb2 <- adlb |>
+    dplyr::filter(USUBJID == "AB12345-BRA-1-id-105")
+
+  adsl2 <- adsl |>
+    dplyr::filter(USUBJID == "AB12345-BRA-1-id-105")
+
+  g_lineplot_no_strata <- withr::with_options(
+    opts_partial_match_old,
+    g_lineplot(
+      adlb2,
+      adsl2,
+      variables = control_lineplot_vars(group_var = NULL)
+    )
+  )
+  testthat::expect_false( # no group variable
+    any(
+      vapply(
+        g_lineplot_no_strata$layers, function(x) {
+          any(grepl(class(x$geom), pattern = "line", ignore.case = TRUE))
+        },
+        logical(1L)
+      )
+    )
+  )
+  g_lineplot_strata <- withr::with_options(
+    opts_partial_match_old,
+    g_lineplot(
+      adlb2
+    )
+  )
+  testthat::expect_true(
+    any(
+      vapply(
+        g_lineplot_strata$layers, function(x) {
+          any(grepl(class(x$geom), pattern = "line", ignore.case = TRUE))
+        },
+        logical(1L)
+      )
+    )
+  )
+  g_lineplot_single_strata <- withr::with_options(
+    opts_partial_match_old,
+    g_lineplot(
+      adlb2,
+      adsl2
+    )
+  )
+  testthat::expect_true( # only one group variable
+    any(
+      vapply(
+        g_lineplot_single_strata$layers, function(x) {
+          any(grepl(class(x$geom), pattern = "line", ignore.case = TRUE))
+        },
+        logical(1L)
+      )
+    )
+  )
+})
+
+testthat::test_that("linetype works as well as col with manual scaling and other options (errorbar_width)", {
+  # Regression test issues #1235 #1236 #1081
+  g_lineplot_linetype <- testthat::expect_silent(
+    withr::with_options(
+      opts_partial_match_old,
+      g_lineplot(
+        adlb,
+        adsl,
+        variables = control_lineplot_vars(group_var = "ARM"),
+        col = c("blue", "black", "blue"),
+        linetype = c("dashed", "solid", "dashed"), # Visual testing necessary here
+        errorbar_width = 1.6 # Visual testing necessary here
+      )
+    )
+  )
+})
+
+testthat::test_that("NA values are removed also from the table plot", {
+  # Regression test issues teal.modules.clinical#1197
+  levels(adlb$AVISIT) <- c(levels(adlb$AVISIT), "Not present")
+  g_lineplot_linetype <- testthat::expect_silent(
+    withr::with_options(
+      opts_partial_match_old,
+      g_lineplot(
+        adlb,
+        table = "n" # Visual testing necessary here
+      )
+    )
+  )
+})

@@ -35,8 +35,10 @@ g_lineplot(
   table_format = get_formats_from_stats(table),
   table_labels = get_labels_from_stats(table),
   table_font_size = 3,
+  errorbar_width = 0.45,
   newpage = lifecycle::deprecated(),
-  col = NULL
+  col = NULL,
+  linetype = NULL
 )
 }
 \arguments{
@@ -140,9 +142,13 @@ appended to the plot. Names of \code{table_labels} must match the names of stati
 
 \item{table_font_size}{(\code{numeric(1)})\cr font size of the text in the table.}
 
+\item{errorbar_width}{(\code{numeric(1)})\cr width of the error bars.}
+
 \item{newpage}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} not used.}
 
-\item{col}{(\code{character})\cr color(s).}
+\item{col}{(\code{character})\cr color(s). See \code{?ggplot2::aes_colour_fill_alpha} for example values.}
+
+\item{linetype}{(\code{character})\cr line type(s). See \code{?ggplot2::aes_linetype_size_shape} for example values.}
 }
 \value{
 A \code{ggplot} line plot (and statistics table if applicable).
