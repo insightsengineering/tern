@@ -1,4 +1,4 @@
-# tern 0.9.5.9002
+# tern 0.9.5.9003
 ### Enhancements
 * Added `errorbar_width` and `linetype` parameters to `g_lineplot`.
 
