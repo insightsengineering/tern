@@ -69,8 +69,8 @@
 #'   appended to the plot. Names of `table_labels` must match the names of statistics returned by `sfun` function.
 #' @param table_font_size (`numeric(1)`)\cr font size of the text in the table.
 #' @param newpage `r lifecycle::badge("deprecated")` not used.
-#' @param col (`character`)\cr color(s).
-#' @param linetype (`character`)\cr line type(s).
+#' @param col (`character`)\cr color(s). See `?ggplot2::aes_colour_fill_alpha` for example values.
+#' @param linetype (`character`)\cr line type(s). See `?ggplot2::aes_linetype_size_shape` for example values.
 #' @param errorbar_width (`numeric(1)`)\cr width of the error bars.
 #'
 #' @return A `ggplot` line plot (and statistics table if applicable).
