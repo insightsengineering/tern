@@ -4,6 +4,7 @@
 
 ### Bug Fixes
 * Fixed a bug in `a_surv_time` that threw an error when split only has `"is_event"`.
+* Added defaults for `d_count_cumulative` parameters as described in the documentation.
 * Empty levels on `g_lineplot` x-axis are not shown in either plots.
 * Fixed disappearing line in `g_lineplot` when using only one group or strata level.
 
