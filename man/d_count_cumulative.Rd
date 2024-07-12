@@ -4,7 +4,7 @@
 \alias{d_count_cumulative}
 \title{Description of cumulative count}
 \usage{
-d_count_cumulative(threshold, lower_tail, include_eq)
+d_count_cumulative(threshold, lower_tail = TRUE, include_eq = TRUE)
 }
 \arguments{
 \item{threshold}{(\code{numeric(1)})\cr a cutoff value as threshold to count values of \code{x}.}

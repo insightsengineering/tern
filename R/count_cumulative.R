@@ -86,7 +86,7 @@ h_count_cumulative <- function(x,
 #' @return Labels for [s_count_cumulative()].
 #'
 #' @export
-d_count_cumulative <- function(threshold, lower_tail, include_eq) {
+d_count_cumulative <- function(threshold, lower_tail = TRUE, include_eq = TRUE) {
   checkmate::assert_numeric(threshold)
   lg <- if (lower_tail) "<" else ">"
   eq <- if (include_eq) "=" else ""
