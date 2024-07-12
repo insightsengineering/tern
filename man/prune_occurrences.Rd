@@ -167,7 +167,7 @@ prune_table(tab, keep_rows(more_than_five_percent))
 \donttest{
 # `has_fraction_in_any_col`
 any_atleast_five_percent <- has_fraction_in_any_col(atleast = 0.05, col_names = names(tab))
-prune_table(tab, keep_rows(more_than_five_percent))
+prune_table(tab, keep_rows(any_atleast_five_percent))
 }
 
 \donttest{
