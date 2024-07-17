@@ -201,7 +201,7 @@ testthat::test_that("labels_use_control works as expected", {
 testthat::test_that("summary_formats works as expected", {
   result <- testthat::expect_warning(
     summary_formats() %>%
-    unlist() # More compact fruition
+      unlist() # More compact fruition
   )
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
