@@ -178,7 +178,7 @@ s_glm_count <- function(df,
 
   # ensure there is only 1 value
   checkmate::assert_scalar(smry_level)
-  browser()
+
   results <- h_glm_count(
     .var = .var,
     .df_row = .df_row,
