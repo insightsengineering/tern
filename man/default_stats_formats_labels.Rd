@@ -111,7 +111,7 @@ or a named numeric vector of indent modifiers (if present, otherwise \code{NULL}
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Utility functions to get valid statistic methods for different method groups
 (\code{.stats}) and their associated formats (\code{.formats}), labels (\code{.labels}), and indent modifiers
@@ -124,13 +124,17 @@ Current choices for \code{type} are \code{counts} and \code{numeric} for \code{\
 \section{Functions}{
 \itemize{
 \item \code{get_stats()}: Get statistics available for a given method
-group (analyze function).
+group (analyze function). To check available defaults see \code{tern::tern_default_stats} list.
 
 \item \code{get_formats_from_stats()}: Get formats corresponding to a list of statistics.
+To check available defaults see \code{tern::tern_default_formats} list.
 
 \item \code{get_labels_from_stats()}: Get labels corresponding to a list of statistics.
+To check for available defaults see \code{tern::tern_default_labels} list. If not available there,
+the statistics name will be used as label.
 
 \item \code{get_indents_from_stats()}: Format indent modifiers for a given vector/list of statistics.
+It defaults to 0L for all values.
 
 \item \code{tern_default_stats}: Named list of available statistics by method group for \code{tern}.
 
@@ -138,10 +142,12 @@ group (analyze function).
 
 \item \code{tern_default_labels}: Named \code{character} vector of default labels for \code{tern}.
 
-\item \code{summary_formats()}: Quick function to retrieve default formats for summary statistics:
+\item \code{summary_formats()}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+Quick function to retrieve default formats for summary statistics:
 \code{\link[=analyze_vars]{analyze_vars()}} and \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}} principally.
 
-\item \code{summary_labels()}: Quick function to retrieve default labels for summary statistics.
+\item \code{summary_labels()}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+Quick function to retrieve default labels for summary statistics.
 Returns labels of descriptive statistics which are understood by \code{rtables}. Similar to \code{summary_formats}.
 
 }}

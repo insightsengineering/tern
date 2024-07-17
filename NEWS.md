@@ -1,12 +1,17 @@
 # tern 0.9.5.9005
 ### Enhancements
 * Added `errorbar_width` and `linetype` parameters to `g_lineplot`.
+* Reworking of `summarize_glm_count()` documentation and all its associated functions to better describe the results and the functions' purpose.
 
 ### Bug Fixes
 * Fixed a bug in `a_surv_time` that threw an error when split only has `"is_event"`.
 * Added defaults for `d_count_cumulative` parameters as described in the documentation.
 * Empty levels on `g_lineplot` x-axis are not shown in either plots.
 * Fixed disappearing line in `g_lineplot` when using only one group or strata level.
+* Fixed defaults for formats and labels in `get_formats_from_stats` and `get_labels_from_stats`.
+
+### Miscellaneous
+* Began deprecation of the confusing functions `summary_formats` and `summary_labels`.
 
 # tern 0.9.5
 

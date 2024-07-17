@@ -3,7 +3,6 @@
 \name{summarize_glm_count}
 \alias{summarize_glm_count}
 \alias{s_glm_count}
-\alias{a_glm_count}
 \title{Summarize Poisson negative binomial regression}
 \usage{
 summarize_glm_count(
@@ -12,7 +11,7 @@ summarize_glm_count(
   variables,
   distribution,
   conf_level,
-  rate_mean_method,
+  rate_mean_method = c("emmeans", "ppmeans")[1],
   weights = stats::weights,
   scale = 1,
   var_labels,
@@ -21,27 +20,14 @@ summarize_glm_count(
   ...,
   show_labels = "visible",
   table_names = vars,
-  .stats = NULL,
+  .stats = get_stats("summarize_glm_count"),
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL
+  .indent_mods = c(n = 0L, rate = 0L, rate_ci = 1L, rate_ratio = 0L, rate_ratio_ci = 1L,
+    pval = 1L)
 )
 
 s_glm_count(
-  df,
-  .var,
-  .df_row,
-  variables,
-  .ref_group,
-  .in_ref_col,
-  distribution,
-  conf_level,
-  rate_mean_method,
-  weights,
-  scale = 1
-)
-
-a_glm_count(
   df,
   .var,
   .df_row,
@@ -74,11 +60,16 @@ reference group.
 \item{distribution}{(\code{character})\cr a character value specifying the distribution
 used in the regression (Poisson, Quasi-Poisson, negative binomial).}
 
-\item{conf_level}{(\code{proportion})\cr value used to derive the confidence interval for the rate.}
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
+\item{rate_mean_method}{(\code{character(1)})\cr method used to estimate the mean odds ratio. Defaults to \code{emmeans}.
+see details for more information.}
 
 \item{weights}{(\code{character})\cr a character vector specifying weights used
 in averaging predictions. Number of weights must equal the number of levels included in the covariates.
 Weights option passed to \code{\link[emmeans:emmeans]{emmeans::emmeans()}}.}
+
+\item{scale}{(\code{mumeric(1)})\cr linear scaling factor for rate and confidence intervals. Defaults to \code{1}.}
 
 \item{var_labels}{(\code{character})\cr variable labels.}
 
@@ -111,7 +102,8 @@ unmodified default behavior. Can be negative.}
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.df_row}{(\code{data.frame})\cr dataset that includes all the variables that are called in \code{.var} and \code{variables}.}
+\item{.df_row}{(\code{data.frame})\cr dataset that includes all the variables that are called
+in \code{.var} and \code{variables}.}
 
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
@@ -135,16 +127,30 @@ the statistics from \code{s_glm_count()} to the table layout.
 \item \code{pval}: p-value.
 }
 }
-
-\itemize{
-\item \code{a_glm_count()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
-}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Summarize results of a Poisson negative binomial regression.
 This can be used to analyze count and/or frequency data using a linear model.
+It is specifically useful for analyzing count data (hence with Poisson or Negative
+Binomial distribution) that is result of a generalized linear model of one (e.g. arm) or more
+covariates.
+}
+\details{
+\code{summarize_glm_count()} uses \code{s_glm_count()} to calculate the statistics for the table. This
+analysis function uses \code{\link[=h_glm_count]{h_glm_count()}} to estimate the GLM with \code{\link[stats:glm]{stats::glm()}} or \code{\link[MASS:glm.nb]{MASS::glm.nb()}} for
+Poisson (and Quasi-Poisson) or Negative Binomial distribution, respectively. All methods assume a
+logarithmic link function.
+
+At this point, rates and confidence intervals are estimated from the model using
+either \code{\link[emmeans:emmeans]{emmeans::emmeans()}} when \code{rate_mean_method = "emmeans"} or \code{\link[=h_ppmeans]{h_ppmeans()}}
+when \code{rate_mean_method = "ppmeans"}.
+
+If a reference group is specified while building the table with \code{split_cols_by(ref_group)},
+no rate ratio or \code{p-value} are calculated. Otherwise, we use \code{\link[emmeans:contrast]{emmeans::contrast()}} to
+calculate the rate ratio and \code{p-value} for the reference group. Values are always estimated
+with \code{method = "trt.vs.ctrl"} and \code{ref} equal to the first \code{arm} value.
 }
 \section{Functions}{
 \itemize{
@@ -153,8 +159,6 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 
 \item \code{s_glm_count()}: Statistics function that produces a named list of results
 of the investigated Poisson model.
-
-\item \code{a_glm_count()}: Formatted analysis function which is used as \code{afun} in \code{summarize_glm_count()}.
 
 }}
 \examples{
@@ -179,8 +183,8 @@ lyt <- basic_table() \%>\%
     conf_level = 0.95,
     distribution = "poisson",
     rate_mean_method = "emmeans",
-    var_labels = "Unadjusted exacerbation rate (per year)",
-    table_names = "unadj",
+    var_labels = "Adjusted (P) exacerbation rate (per year)",
+    table_names = "adjP",
     .stats = c("rate"),
     .labels = c(rate = "Rate")
   ) \%>\%
@@ -191,7 +195,7 @@ lyt <- basic_table() \%>\%
     distribution = "quasipoisson",
     rate_mean_method = "ppmeans",
     var_labels = "Adjusted (QP) exacerbation rate (per year)",
-    table_names = "adj",
+    table_names = "adjQP",
     .stats = c("rate", "rate_ci", "rate_ratio", "rate_ratio_ci", "pval"),
     .labels = c(
       rate = "Rate", rate_ci = "Rate CI", rate_ratio = "Rate Ratio",

@@ -1,6 +1,6 @@
 #' Get default statistical methods and their associated formats, labels, and indent modifiers
 #'
-#' @description `r lifecycle::badge("experimental")`
+#' @description `r lifecycle::badge("stable")`
 #'
 #' Utility functions to get valid statistic methods for different method groups
 #' (`.stats`) and their associated formats (`.formats`), labels (`.labels`), and indent modifiers
@@ -20,7 +20,7 @@
 NULL
 
 #' @describeIn default_stats_formats_labels Get statistics available for a given method
-#'   group (analyze function).
+#'   group (analyze function). To check available defaults see `tern::tern_default_stats` list.
 #'
 #' @param method_groups (`character`)\cr indicates the statistical method group (`tern` analyze function)
 #'   to retrieve default statistics for. A character vector can be used to specify more than one statistical
@@ -122,6 +122,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
 }
 
 #' @describeIn default_stats_formats_labels Get formats corresponding to a list of statistics.
+#'   To check available defaults see `tern::tern_default_formats` list.
 #'
 #' @param formats_in (named `vector`)\cr inserted formats to replace defaults. It can be a
 #'   character vector from [formatters::list_valid_format_labels()] or a custom format function.
@@ -178,6 +179,8 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 }
 
 #' @describeIn default_stats_formats_labels Get labels corresponding to a list of statistics.
+#'   To check for available defaults see `tern::tern_default_labels` list. If not available there,
+#'   the statistics name will be used as label.
 #'
 #' @param labels_in (named `character`)\cr inserted labels to replace defaults.
 #' @param row_nms (`character`)\cr row names. Levels of a `factor` or `character` variable, each
@@ -203,7 +206,7 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 #'
 #' @export
 get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL) {
-  checkmate::assert_character(stats, min.len = 1, null.ok = TRUE)
+  checkmate::assert_character(stats, min.len = 1)
   checkmate::assert_character(row_nms, null.ok = TRUE)
   # It may be a list
   if (checkmate::test_list(labels_in, null.ok = TRUE)) {
@@ -224,7 +227,7 @@ get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL) {
   } else {
     which_lbl <- match(stats, names(tern_default_labels))
 
-    ret <- vector("character", length = length(stats)) # it needs to be a character vector
+    ret <- stats # The default
     ret[!is.na(which_lbl)] <- tern_default_labels[which_lbl[!is.na(which_lbl)]]
 
     out <- setNames(ret, stats)
@@ -241,6 +244,7 @@ get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL) {
 }
 
 #' @describeIn default_stats_formats_labels Format indent modifiers for a given vector/list of statistics.
+#'   It defaults to 0L for all values.
 #'
 #' @param indents_in (named `vector`)\cr inserted indent modifiers to replace defaults (default is `0L`).
 #'
@@ -440,7 +444,11 @@ tern_default_formats <- c(
   pval = "x.xxxx | (<0.0001)",
   pval_counts = "x.xxxx | (<0.0001)",
   range_censor = "xx.x to xx.x",
-  range_event = "xx.x to xx.x"
+  range_event = "xx.x to xx.x",
+  rate = "xx.xxxx",
+  rate_ci = "(xx.xxxx, xx.xxxx)",
+  rate_ratio = "xx.xxxx",
+  rate_ratio_ci = "(xx.xxxx, xx.xxxx)"
 )
 
 #' @describeIn default_stats_formats_labels Named `character` vector of default labels for `tern`.
@@ -488,7 +496,8 @@ tern_default_labels <- c(
 
 # To deprecate ---------
 
-#' @describeIn default_stats_formats_labels Quick function to retrieve default formats for summary statistics:
+#' @describeIn default_stats_formats_labels `r lifecycle::badge("deprecated")`
+#'   Quick function to retrieve default formats for summary statistics:
 #'   [analyze_vars()] and [analyze_vars_in_cols()] principally.
 #'
 #' @param type (`string`)\cr `"numeric"` or `"counts"`.
@@ -502,11 +511,16 @@ tern_default_labels <- c(
 #'
 #' @export
 summary_formats <- function(type = "numeric", include_pval = FALSE) {
+  lifecycle::deprecate_warn(
+    "0.9.0.9.5.9005", "summary_formats()",
+    details = 'Use get_formats_from_stats(get_stats("analyze_vars_numeric", add_pval = include_pval)) instead'
+  )
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
   get_formats_from_stats(get_stats(met_grp, add_pval = include_pval))
 }
 
-#' @describeIn default_stats_formats_labels Quick function to retrieve default labels for summary statistics.
+#' @describeIn default_stats_formats_labels `r lifecycle::badge("deprecated")`
+#'   Quick function to retrieve default labels for summary statistics.
 #'   Returns labels of descriptive statistics which are understood by `rtables`. Similar to `summary_formats`.
 #'
 #' @param include_pval (`flag`)\cr same as the `add_pval` argument in [get_stats()].
@@ -520,6 +534,10 @@ summary_formats <- function(type = "numeric", include_pval = FALSE) {
 #'
 #' @export
 summary_labels <- function(type = "numeric", include_pval = FALSE) {
+  lifecycle::deprecate_warn(
+    "0.9.0.9.5.9005", "summary_formats()",
+    details = 'Use get_labels_from_stats(get_stats("analyze_vars_numeric", add_pval = include_pval)) instead'
+  )
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
   get_labels_from_stats(get_stats(met_grp, add_pval = include_pval))
 }
