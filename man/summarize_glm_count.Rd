@@ -69,7 +69,7 @@ see details for more information.}
 in averaging predictions. Number of weights must equal the number of levels included in the covariates.
 Weights option passed to \code{\link[emmeans:emmeans]{emmeans::emmeans()}}.}
 
-\item{scale}{(\code{mumeric(1)})\cr linear scaling factor for rate and confidence intervals. Defaults to \code{1}.}
+\item{scale}{(\code{numeric(1)})\cr linear scaling factor for rate and confidence intervals. Defaults to \code{1}.}
 
 \item{var_labels}{(\code{character})\cr variable labels.}
 
