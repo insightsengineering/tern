@@ -133,14 +133,14 @@ the statistics from \code{s_glm_count()} to the table layout.
 
 Summarize results of a Poisson negative binomial regression.
 This can be used to analyze count and/or frequency data using a linear model.
-It is specifically useful for analyzing count data (hence with Poisson or Negative
+It is specifically useful for analyzing count data (using the Poisson or Negative
 Binomial distribution) that is result of a generalized linear model of one (e.g. arm) or more
 covariates.
 }
 \details{
 \code{summarize_glm_count()} uses \code{s_glm_count()} to calculate the statistics for the table. This
-analysis function uses \code{\link[=h_glm_count]{h_glm_count()}} to estimate the GLM with \code{\link[stats:glm]{stats::glm()}} or \code{\link[MASS:glm.nb]{MASS::glm.nb()}} for
-Poisson (and Quasi-Poisson) or Negative Binomial distribution, respectively. All methods assume a
+analysis function uses \code{\link[=h_glm_count]{h_glm_count()}} to estimate the GLM with \code{\link[stats:glm]{stats::glm()}} for Poisson and Quasi-Poisson
+distributions or \code{\link[MASS:glm.nb]{MASS::glm.nb()}} for Negative Binomial distribution. All methods assume a
 logarithmic link function.
 
 At this point, rates and confidence intervals are estimated from the model using
