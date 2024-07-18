@@ -199,24 +199,24 @@ testthat::test_that("labels_use_control works as expected", {
 })
 
 testthat::test_that("summary_formats works as expected", {
-  result <- testthat::expect_warning(
-    summary_formats() %>%
+  testthat::expect_warning(
+    result <- summary_formats() %>%
       unlist() # More compact fruition
   )
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
-testthat::expect_warning(result <- summary_formats(type = "counts", include_pval = TRUE))
+  testthat::expect_warning(result <- summary_formats(type = "counts", include_pval = TRUE))
   testthat::expect_true(all(result[c("n", "count", "n_blq")] == "xx."))
   testthat::expect_identical(result[["pval_counts"]], "x.xxxx | (<0.0001)")
 })
 
 testthat::test_that("summary_labels works as expected", {
-  result <- testthat::expect_warning(summary_labels())
+  testthat::expect_warning(result <- summary_labels())
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
-  result <- testthat::expect_warning(summary_labels(type = "counts", include_pval = TRUE))
+  testthat::expect_warning(result <- summary_labels(type = "counts", include_pval = TRUE))
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
