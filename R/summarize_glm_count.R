@@ -5,7 +5,7 @@
 #'
 #' Summarize results of a Poisson negative binomial regression.
 #' This can be used to analyze count and/or frequency data using a linear model.
-#' It is specifically useful for analyzing count data (hence with Poisson or Negative
+#' It is specifically useful for analyzing count data (using the Poisson or Negative
 #' Binomial distribution) that is result of a generalized linear model of one (e.g. arm) or more
 #' covariates.
 #'
@@ -19,8 +19,8 @@
 #'
 #' @details
 #' `summarize_glm_count()` uses `s_glm_count()` to calculate the statistics for the table. This
-#' analysis function uses [h_glm_count()] to estimate the GLM with [stats::glm()] or [MASS::glm.nb()] for
-#' Poisson (and Quasi-Poisson) or Negative Binomial distribution, respectively. All methods assume a
+#' analysis function uses [h_glm_count()] to estimate the GLM with [stats::glm()] for Poisson and Quasi-Poisson 
+#' distributions or [MASS::glm.nb()] for Negative Binomial distribution. All methods assume a
 #' logarithmic link function.
 #'
 #' At this point, rates and confidence intervals are estimated from the model using
