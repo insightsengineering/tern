@@ -13,7 +13,7 @@
 #' @inheritParams argument_convention
 #' @param rate_mean_method (`character(1)`)\cr method used to estimate the mean odds ratio. Defaults to `emmeans`.
 #'   see details for more information.
-#' @param scale (`mumeric(1)`)\cr linear scaling factor for rate and confidence intervals. Defaults to `1`.
+#' @param scale (`numeric(1)`)\cr linear scaling factor for rate and confidence intervals. Defaults to `1`.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("summarize_glm_count")`
 #'   to see available statistics for this function.
 #'
