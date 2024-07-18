@@ -206,7 +206,7 @@ testthat::test_that("summary_formats works as expected", {
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
-testthat::expect_warning(result <- summary_formats(type = "counts", include_pval = TRUE))
+  testthat::expect_warning(result <- summary_formats(type = "counts", include_pval = TRUE))
   testthat::expect_true(all(result[c("n", "count", "n_blq")] == "xx."))
   testthat::expect_identical(result[["pval_counts"]], "x.xxxx | (<0.0001)")
 })

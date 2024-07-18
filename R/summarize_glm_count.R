@@ -19,7 +19,7 @@
 #'
 #' @details
 #' `summarize_glm_count()` uses `s_glm_count()` to calculate the statistics for the table. This
-#' analysis function uses [h_glm_count()] to estimate the GLM with [stats::glm()] for Poisson and Quasi-Poisson 
+#' analysis function uses [h_glm_count()] to estimate the GLM with [stats::glm()] for Poisson and Quasi-Poisson
 #' distributions or [MASS::glm.nb()] for Negative Binomial distribution. All methods assume a
 #' logarithmic link function.
 #'
