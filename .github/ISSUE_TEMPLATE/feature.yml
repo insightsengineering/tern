@@ -7,6 +7,11 @@ body:
   - type: textarea
     attributes:
       label: Feature description
+      description: |
+        Do not use this form to ask a question, or ask for assistance. Instead, ask on [Stackoverflow](https://stackoverflow.com/)\
+        using the `nest-rtables` and `nest-tern` tags. Questions about a function's use will be closed without a response.\n\n
+        Is your feature request related to a problem? Please describe with a clear and concise description of the problem. \n\n
+        Could you describe the solution you would like? Please provide a clear and concise description of what you want to happen.
     validations:
       required: true
   - type: checkboxes
