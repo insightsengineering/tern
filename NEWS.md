@@ -9,6 +9,7 @@
 * Empty levels on `g_lineplot` x-axis are not shown in either plots.
 * Fixed disappearing line in `g_lineplot` when using only one group or strata level.
 * Fixed defaults for formats and labels in `get_formats_from_stats` and `get_labels_from_stats`.
+* Fixed bug for linear scaling factor (`scale` parameter) being applied to response but not to rate in `h_glm_count` while all distributions have logarithmic link function.
 
 ### Miscellaneous
 * Began deprecation of the confusing functions `summary_formats` and `summary_labels`.

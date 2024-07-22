@@ -2,7 +2,7 @@
 % Please edit documentation in R/summarize_glm_count.R
 \name{h_ppmeans}
 \alias{h_ppmeans}
-\title{Helper function to return the estimated means.}
+\title{Function to return the estimated means using predicted probabilities}
 \usage{
 h_ppmeans(obj, .df_row, arm, conf_level)
 }
@@ -22,9 +22,10 @@ summarized. Specifically, the first level of \code{arm} variable is taken as the
 }
 }
 \description{
-Helper function to return the estimated means.
+For each arm level, the predicted mean rate is calculated using the fitted model object, with \code{newdata}
+set to the result of \code{stats::model.frame}, a reconstructed data or the original data, depending on the
+object formula (coming from the fit). The confidence interval is derived using the \code{conf_level} parameter.
 }
 \seealso{
 \code{\link[=summarize_glm_count]{summarize_glm_count()}}.
 }
-\keyword{internal}

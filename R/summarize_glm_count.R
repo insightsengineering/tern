@@ -186,7 +186,7 @@ s_glm_count <- function(df,
     distribution = distribution,
     weights
   )
-
+  browser()
   if (rate_mean_method == "emmeans") {
     emmeans_smry <- summary(results$emmeans_fit, level = conf_level)
   } else if (rate_mean_method == "ppmeans") {
@@ -200,7 +200,7 @@ s_glm_count <- function(df,
     list(
       n = length(y[!is.na(y)]),
       rate = formatters::with_label(
-        ifelse(distribution == "negbin", emmeans_smry_level$response * scale, emmeans_smry_level$rate),
+        ifelse(distribution == "negbin", emmeans_smry_level$response * scale, emmeans_smry_level$rate * scale),
         "Adjusted Rate"
       ),
       rate_ci = formatters::with_label(
@@ -234,7 +234,7 @@ s_glm_count <- function(df,
       rate = formatters::with_label(
         ifelse(distribution == "negbin",
           emmeans_smry_level$response * scale,
-          emmeans_smry_level$rate
+          emmeans_smry_level$rate * scale
         ),
         "Adjusted Rate"
       ),
@@ -440,7 +440,12 @@ h_glm_negbin <- function(.var,
 }
 
 # h_ppmeans --------------------------------------------------------------------
-#' Helper function to return the estimated means.
+#' Function to return the estimated means using predicted probabilities
+#'
+#' @description
+#' For each arm level, the predicted mean rate is calculated using the fitted model object, with `newdata`
+#' set to the result of `stats::model.frame`, a reconstructed data or the original data, depending on the
+#' object formula (coming from the fit). The confidence interval is derived using the `conf_level` parameter.
 #'
 #' @param obj (`glm.fit`)\cr fitted model object used to derive the mean rate estimates in each treatment arm.
 #' @param .df_row (`data.frame`)\cr dataset that includes all the variables that are called in `.var` and `variables`.
@@ -453,7 +458,7 @@ h_glm_negbin <- function(.var,
 #'
 #' @seealso [summarize_glm_count()].
 #'
-#' @keywords internal
+#' @export
 h_ppmeans <- function(obj, .df_row, arm, conf_level) {
   alpha <- 1 - conf_level
   p <- 1 - alpha / 2
