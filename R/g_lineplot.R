@@ -157,8 +157,8 @@ g_lineplot <- function(df,
                        subtitle_add_paramcd = TRUE,
                        subtitle_add_unit = TRUE,
                        caption = NULL,
-                       table_format = get_formats_from_stats(table),
-                       table_labels = get_labels_from_stats(table),
+                       table_format = NULL,
+                       table_labels = NULL,
                        table_font_size = 3,
                        errorbar_width = 0.45,
                        newpage = lifecycle::deprecated(),
@@ -176,9 +176,16 @@ g_lineplot <- function(df,
   checkmate::assert_string(title, null.ok = TRUE)
   checkmate::assert_string(subtitle, null.ok = TRUE)
 
+  if (!is.null(table)) {
+    table_format <- get_formats_from_stats(table)
+    table_labels <- get_labels_from_stats(table)
+  }
+
   extra_args <- list(...)
-  if ("control" %in% names(extra_args) && all(table_labels == get_labels_from_stats(table))) {
-    table_labels <- table_labels %>% labels_use_control(extra_args[["control"]])
+  if ("control" %in% names(extra_args)) {
+    if (!is.null(table) && all(table_labels == get_labels_from_stats(table))) {
+      table_labels <- table_labels %>% labels_use_control(extra_args[["control"]])
+    }
   }
 
   if (is.character(interval)) {
