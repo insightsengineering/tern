@@ -186,7 +186,7 @@ s_glm_count <- function(df,
     distribution = distribution,
     weights
   )
-  browser()
+
   if (rate_mean_method == "emmeans") {
     emmeans_smry <- summary(results$emmeans_fit, level = conf_level)
   } else if (rate_mean_method == "ppmeans") {

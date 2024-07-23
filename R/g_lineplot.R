@@ -182,9 +182,10 @@ g_lineplot <- function(df,
   }
 
   extra_args <- list(...)
-  if ("control" %in% names(extra_args) &&
-    (!is.null(table) && all(table_labels == get_labels_from_stats(table)))) {
-    table_labels <- table_labels %>% labels_use_control(extra_args[["control"]])
+  if ("control" %in% names(extra_args)) {
+    if (!is.null(table) && all(table_labels == get_labels_from_stats(table))) {
+      table_labels <- table_labels %>% labels_use_control(extra_args[["control"]])
+    }
   }
 
   if (is.character(interval)) {

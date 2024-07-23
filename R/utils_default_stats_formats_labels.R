@@ -492,10 +492,8 @@ tern_default_labels <- c(
   geom_cv = "CV % Geometric Mean",
   pval = "p-value (t-test)", # Default for numeric
   pval_counts = "p-value (chi-squared test)", # Default for counts
-  rate = "Adjusted Rate",
-  # rate_ci = f_conf_level(conf_level), # to handle better
-  rate_ratio = "Adjusted Rate Ratio"
-  # rate_ratio_ci = f_conf_level(conf_level) # to handle better
+  rate = "Adjusted Rate", # rate_ci = f_conf_level(conf_level), # to handle better
+  rate_ratio = "Adjusted Rate Ratio" # rate_ratio_ci = f_conf_level(conf_level) # to handle better
 )
 
 # To deprecate ---------
