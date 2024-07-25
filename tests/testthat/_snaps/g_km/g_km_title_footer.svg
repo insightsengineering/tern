@@ -189,18 +189,18 @@
 <text transform='translate(13.05,124.01) rotate(-90)' text-anchor='middle' style='font-size: 10.00px; font-family: "Arial";' textLength='85.09px' lengthAdjust='spacingAndGlyphs'>Survival Probability</text>
 <rect x='487.89' y='114.26' width='75.57' height='80.41' style='stroke-width: 1.07; fill: #FFFFFF;' />
 <rect x='492.87' y='119.24' width='17.28' height='17.28' style='stroke-width: 0.97; stroke: none; fill: #FFFFFF;' />
-<line x1='494.60' y1='127.88' x2='508.42' y2='127.88' style='stroke-width: 1.07; stroke: #343CFF; stroke-linecap: butt;' />
-<rect x='492.87' y='136.52' width='17.28' height='17.28' style='stroke-width: 0.97; stroke: none; fill: #FFFFFF;' />
-<line x1='494.60' y1='145.16' x2='508.42' y2='145.16' style='stroke-width: 1.07; stroke: #FF484B; stroke-linecap: butt;' />
-<rect x='492.87' y='153.80' width='17.28' height='17.28' style='stroke-width: 0.97; stroke: none; fill: #FFFFFF;' />
-<line x1='494.60' y1='162.44' x2='508.42' y2='162.44' style='stroke-width: 1.07; stroke: #232323; stroke-linecap: butt;' />
-<text x='515.13' y='131.46' style='font-size: 10.00px; font-family: "Arial";' textLength='31.11px' lengthAdjust='spacingAndGlyphs'>ARM A</text>
-<text x='515.13' y='148.74' style='font-size: 10.00px; font-family: "Arial";' textLength='31.67px' lengthAdjust='spacingAndGlyphs'>ARM B</text>
-<text x='515.13' y='166.02' style='font-size: 10.00px; font-family: "Arial";' textLength='32.22px' lengthAdjust='spacingAndGlyphs'>ARM C</text>
+<line x1='497.99' y1='127.88' x2='505.03' y2='127.88' style='stroke-width: 0.71;' />
+<line x1='501.51' y1='131.40' x2='501.51' y2='124.36' style='stroke-width: 0.71;' />
+<text x='515.13' y='131.46' style='font-size: 10.00px; font-family: "Arial";' textLength='43.39px' lengthAdjust='spacingAndGlyphs'>Censored</text>
+<rect x='492.87' y='137.84' width='17.28' height='17.28' style='stroke-width: 0.97; stroke: none; fill: #FFFFFF;' />
+<line x1='494.60' y1='146.48' x2='508.42' y2='146.48' style='stroke-width: 1.07; stroke: #343CFF; stroke-linecap: butt;' />
+<rect x='492.87' y='155.12' width='17.28' height='17.28' style='stroke-width: 0.97; stroke: none; fill: #FFFFFF;' />
+<line x1='494.60' y1='163.76' x2='508.42' y2='163.76' style='stroke-width: 1.07; stroke: #FF484B; stroke-linecap: butt;' />
 <rect x='492.87' y='172.40' width='17.28' height='17.28' style='stroke-width: 0.97; stroke: none; fill: #FFFFFF;' />
-<line x1='497.99' y1='181.04' x2='505.03' y2='181.04' style='stroke-width: 0.71;' />
-<line x1='501.51' y1='184.56' x2='501.51' y2='177.53' style='stroke-width: 0.71;' />
-<text x='515.13' y='184.63' style='font-size: 10.00px; font-family: "Arial";' textLength='43.39px' lengthAdjust='spacingAndGlyphs'>Censored</text>
+<line x1='494.60' y1='181.04' x2='508.42' y2='181.04' style='stroke-width: 1.07; stroke: #232323; stroke-linecap: butt;' />
+<text x='515.13' y='150.07' style='font-size: 10.00px; font-family: "Arial";' textLength='31.11px' lengthAdjust='spacingAndGlyphs'>ARM A</text>
+<text x='515.13' y='167.35' style='font-size: 10.00px; font-family: "Arial";' textLength='31.67px' lengthAdjust='spacingAndGlyphs'>ARM B</text>
+<text x='515.13' y='184.63' style='font-size: 10.00px; font-family: "Arial";' textLength='32.22px' lengthAdjust='spacingAndGlyphs'>ARM C</text>
 <text x='41.68' y='13.58' style='font-size: 12.00px; font-family: "Arial";' textLength='42.02px' lengthAdjust='spacingAndGlyphs'>KM Plot</text>
 <text x='571.02' y='263.26' text-anchor='end' style='font-size: 8.00px; font-family: "Arial";' textLength='32.93px' lengthAdjust='spacingAndGlyphs'>footnotes</text>
 </g>
