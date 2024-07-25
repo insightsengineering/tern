@@ -138,17 +138,17 @@
 <text transform='translate(12.15,131.25) rotate(-90)' text-anchor='middle' style='font-size: 10.00px; font-family: "Arial";' textLength='85.09px' lengthAdjust='spacingAndGlyphs'>Survival Probability</text>
 <rect x='487.85' y='140.91' width='75.61' height='83.29' style='stroke-width: 1.07; fill: #FFFFFF;' />
 <rect x='492.83' y='145.89' width='17.28' height='17.28' style='stroke-width: 0.97; stroke: none; fill: #FFFFFF;' />
-<line x1='494.56' y1='154.53' x2='508.38' y2='154.53' style='stroke-width: 1.07; stroke: #343CFF; stroke-linecap: butt;' />
-<rect x='492.83' y='163.17' width='17.28' height='17.28' style='stroke-width: 0.97; stroke: none; fill: #FFFFFF;' />
-<line x1='494.56' y1='171.81' x2='508.38' y2='171.81' style='stroke-width: 1.07; stroke: #FF484B; stroke-linecap: butt;' />
-<rect x='492.83' y='180.45' width='17.28' height='17.28' style='stroke-width: 0.97; stroke: none; fill: #FFFFFF;' />
-<line x1='494.56' y1='189.09' x2='508.38' y2='189.09' style='stroke-width: 1.07; stroke: #232323; stroke-linecap: butt;' />
-<text x='515.09' y='158.12' style='font-size: 10.00px; font-family: "Arial";' textLength='31.11px' lengthAdjust='spacingAndGlyphs'>ARM A</text>
-<text x='515.09' y='175.40' style='font-size: 10.00px; font-family: "Arial";' textLength='31.67px' lengthAdjust='spacingAndGlyphs'>ARM B</text>
-<text x='515.09' y='192.68' style='font-size: 10.00px; font-family: "Arial";' textLength='32.22px' lengthAdjust='spacingAndGlyphs'>ARM C</text>
+<line x1='497.95' y1='154.53' x2='504.99' y2='154.53' style='stroke-width: 0.71;' />
+<line x1='501.47' y1='158.05' x2='501.47' y2='151.01' style='stroke-width: 0.71;' />
+<text x='515.09' y='158.12' style='font-size: 10.00px; font-family: "Arial";' textLength='43.39px' lengthAdjust='spacingAndGlyphs'>Censored</text>
+<rect x='492.83' y='167.38' width='17.28' height='17.28' style='stroke-width: 0.97; stroke: none; fill: #FFFFFF;' />
+<line x1='494.56' y1='176.02' x2='508.38' y2='176.02' style='stroke-width: 1.07; stroke: #343CFF; stroke-linecap: butt;' />
+<rect x='492.83' y='184.66' width='17.28' height='17.28' style='stroke-width: 0.97; stroke: none; fill: #FFFFFF;' />
+<line x1='494.56' y1='193.30' x2='508.38' y2='193.30' style='stroke-width: 1.07; stroke: #FF484B; stroke-linecap: butt;' />
 <rect x='492.83' y='201.94' width='17.28' height='17.28' style='stroke-width: 0.97; stroke: none; fill: #FFFFFF;' />
-<line x1='497.95' y1='210.58' x2='504.99' y2='210.58' style='stroke-width: 0.71;' />
-<line x1='501.47' y1='214.10' x2='501.47' y2='207.06' style='stroke-width: 0.71;' />
-<text x='515.09' y='214.16' style='font-size: 10.00px; font-family: "Arial";' textLength='43.39px' lengthAdjust='spacingAndGlyphs'>Censored</text>
+<line x1='494.56' y1='210.58' x2='508.38' y2='210.58' style='stroke-width: 1.07; stroke: #232323; stroke-linecap: butt;' />
+<text x='515.09' y='179.60' style='font-size: 10.00px; font-family: "Arial";' textLength='31.11px' lengthAdjust='spacingAndGlyphs'>ARM A</text>
+<text x='515.09' y='196.88' style='font-size: 10.00px; font-family: "Arial";' textLength='31.67px' lengthAdjust='spacingAndGlyphs'>ARM B</text>
+<text x='515.09' y='214.16' style='font-size: 10.00px; font-family: "Arial";' textLength='32.22px' lengthAdjust='spacingAndGlyphs'>ARM C</text>
 </g>
 </svg>

@@ -192,21 +192,21 @@
 <text transform='translate(13.05,122.14) rotate(-90)' text-anchor='middle' style='font-size: 10.00px; font-family: "Arial";' textLength='85.09px' lengthAdjust='spacingAndGlyphs'>Survival Probability</text>
 <rect x='487.89' y='126.73' width='75.57' height='80.41' style='stroke-width: 1.07; fill: #FFFFFF;' />
 <rect x='492.87' y='131.71' width='17.28' height='17.28' style='stroke-width: 0.97; stroke: none; fill: #FFFFFF;' />
-<line x1='494.60' y1='140.35' x2='508.42' y2='140.35' style='stroke-width: 1.07; stroke: #343CFF; stroke-linecap: butt;' />
-<rect x='493.58' y='132.42' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #343CFF; fill-opacity: 0.30;' />
-<rect x='492.87' y='148.99' width='17.28' height='17.28' style='stroke-width: 0.97; stroke: none; fill: #FFFFFF;' />
-<line x1='494.60' y1='157.63' x2='508.42' y2='157.63' style='stroke-width: 1.07; stroke: #FF484B; stroke-linecap: butt;' />
-<rect x='493.58' y='149.70' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FF484B; fill-opacity: 0.30;' />
-<rect x='492.87' y='166.27' width='17.28' height='17.28' style='stroke-width: 0.97; stroke: none; fill: #FFFFFF;' />
-<line x1='494.60' y1='174.91' x2='508.42' y2='174.91' style='stroke-width: 1.07; stroke: #232323; stroke-linecap: butt;' />
-<rect x='493.58' y='166.98' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #232323; fill-opacity: 0.30;' />
-<text x='515.13' y='143.94' style='font-size: 10.00px; font-family: "Arial";' textLength='31.11px' lengthAdjust='spacingAndGlyphs'>ARM A</text>
-<text x='515.13' y='161.22' style='font-size: 10.00px; font-family: "Arial";' textLength='31.67px' lengthAdjust='spacingAndGlyphs'>ARM B</text>
-<text x='515.13' y='178.50' style='font-size: 10.00px; font-family: "Arial";' textLength='32.22px' lengthAdjust='spacingAndGlyphs'>ARM C</text>
+<line x1='497.99' y1='140.35' x2='505.03' y2='140.35' style='stroke-width: 0.71;' />
+<line x1='501.51' y1='143.87' x2='501.51' y2='136.84' style='stroke-width: 0.71;' />
+<text x='515.13' y='143.94' style='font-size: 10.00px; font-family: "Arial";' textLength='43.39px' lengthAdjust='spacingAndGlyphs'>Censored</text>
+<rect x='492.87' y='150.32' width='17.28' height='17.28' style='stroke-width: 0.97; stroke: none; fill: #FFFFFF;' />
+<line x1='494.60' y1='158.96' x2='508.42' y2='158.96' style='stroke-width: 1.07; stroke: #343CFF; stroke-linecap: butt;' />
+<rect x='493.58' y='151.03' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #343CFF; fill-opacity: 0.30;' />
+<rect x='492.87' y='167.60' width='17.28' height='17.28' style='stroke-width: 0.97; stroke: none; fill: #FFFFFF;' />
+<line x1='494.60' y1='176.24' x2='508.42' y2='176.24' style='stroke-width: 1.07; stroke: #FF484B; stroke-linecap: butt;' />
+<rect x='493.58' y='168.31' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FF484B; fill-opacity: 0.30;' />
 <rect x='492.87' y='184.88' width='17.28' height='17.28' style='stroke-width: 0.97; stroke: none; fill: #FFFFFF;' />
-<line x1='497.99' y1='193.52' x2='505.03' y2='193.52' style='stroke-width: 0.71;' />
-<line x1='501.51' y1='197.04' x2='501.51' y2='190.00' style='stroke-width: 0.71;' />
-<text x='515.13' y='197.10' style='font-size: 10.00px; font-family: "Arial";' textLength='43.39px' lengthAdjust='spacingAndGlyphs'>Censored</text>
+<line x1='494.60' y1='193.52' x2='508.42' y2='193.52' style='stroke-width: 1.07; stroke: #232323; stroke-linecap: butt;' />
+<rect x='493.58' y='185.59' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #232323; fill-opacity: 0.30;' />
+<text x='515.13' y='162.54' style='font-size: 10.00px; font-family: "Arial";' textLength='31.11px' lengthAdjust='spacingAndGlyphs'>ARM A</text>
+<text x='515.13' y='179.82' style='font-size: 10.00px; font-family: "Arial";' textLength='31.67px' lengthAdjust='spacingAndGlyphs'>ARM B</text>
+<text x='515.13' y='197.10' style='font-size: 10.00px; font-family: "Arial";' textLength='32.22px' lengthAdjust='spacingAndGlyphs'>ARM C</text>
 </g>
 <defs>
   <clipPath id='cpMC4wMHw1NzYuMDB8MjcwLjAwfDM2MC4wMA=='>

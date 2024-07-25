@@ -514,7 +514,7 @@ tern_default_labels <- c(
 #' @export
 summary_formats <- function(type = "numeric", include_pval = FALSE) {
   lifecycle::deprecate_warn(
-    "0.9.0.9.5.9005", "summary_formats()",
+    "0.9.5.9005", "summary_formats()",
     details = 'Use get_formats_from_stats(get_stats("analyze_vars_numeric", add_pval = include_pval)) instead'
   )
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
@@ -537,7 +537,7 @@ summary_formats <- function(type = "numeric", include_pval = FALSE) {
 #' @export
 summary_labels <- function(type = "numeric", include_pval = FALSE) {
   lifecycle::deprecate_warn(
-    "0.9.0.9.5.9005", "summary_formats()",
+    "0.9.5.9005", "summary_formats()",
     details = 'Use get_labels_from_stats(get_stats("analyze_vars_numeric", add_pval = include_pval)) instead'
   )
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
