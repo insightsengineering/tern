@@ -107,7 +107,7 @@ testthat::test_that("get_labels_from_stats works as expected", {
   res <- testthat::expect_silent(get_labels_from_stats(sts))
   testthat::expect_snapshot(res)
 
-  testthat::expect_identical(get_labels_from_stats(c("nothing", "n"))[["nothing"]], "")
+  testthat::expect_identical(get_labels_from_stats(c("nothing", "n"))[["nothing"]], "nothing")
 
   testthat::expect_identical(
     get_labels_from_stats(c("nothing", "unique"))[["unique"]],
