@@ -123,3 +123,24 @@ testthat::test_that("text wrapping works as expected", {
 
   expect_snapshot_ggplot(title = "deco_grob_text_wrap", fig = deco_grob_text_wrap, width = 10, height = 8)
 })
+
+testthat::test_that("Edge cases work for titles and footers in split_text_grob", {
+  # regression test #1254
+  should_appear <- NULL
+  testthat::expect_error(
+    split_text_grob(should_appear),
+    "should_appear is NULL or an empty string. Please provide a valid text."
+  )
+  should_appear <- ""
+  testthat::expect_error(
+    split_text_grob(should_appear),
+    "should_appear is NULL or an empty string. Please provide a valid text."
+  )
+  should_appear <- c("", NA)
+  testthat::expect_error(
+    split_text_grob(should_appear),
+    "should_appear contains NA values. Please provide a valid text."
+  )
+  should_appear <- c("", "a a")
+  testthat::expect_silent(split_text_grob(should_appear)) # no more error (replaced by " ")
+})

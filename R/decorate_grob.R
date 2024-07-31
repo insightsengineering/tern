@@ -306,6 +306,18 @@ split_text_grob <- function(text,
                             name = NULL,
                             gp = grid::gpar(),
                             vp = NULL) {
+  # Silly checks for text
+  if ((length(text) == 1 && text == "") || length(text) == 0) {
+    stop(substitute(text), " is NULL or an empty string. Please provide a valid text.")
+  }
+  if(any(sapply(text, function(ti) {is.na(ti)}))) {
+    stop(substitute(text), " contains NA values. Please provide a valid text.")
+  }
+  text_is_empty <- sapply(text, function(ti) {ti == ""})
+  if(any(text_is_empty)) {
+    text[text_is_empty] <- "\n"
+  }
+
   if (!grid::is.unit(x)) x <- grid::unit(x, default.units)
   if (!grid::is.unit(y)) y <- grid::unit(y, default.units)
   if (!grid::is.unit(width)) width <- grid::unit(width, default.units)
