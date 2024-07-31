@@ -319,7 +319,7 @@ split_text_grob <- function(text,
     ti == ""
   })
   if (any(text_is_empty)) {
-    text[text_is_empty] <- "\n"
+    text[text_is_empty] <- " "
   }
 
   if (!grid::is.unit(x)) x <- grid::unit(x, default.units)
