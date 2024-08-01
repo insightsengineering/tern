@@ -31,7 +31,7 @@ when creating a table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Wrapper function for \code{\link[rtables:add_combo_levels]{rtables::add_combo_levels()}} which configures settings for the risk difference
+Wrapper function for \code{\link[rtables:add_overall_level]{rtables::add_combo_levels()}} which configures settings for the risk difference
 column to be added to an \code{rtables} object. To add a risk difference column to a table, this function
 should be used as \code{split_fun} in calls to \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}}, followed by setting argument
 \code{riskdiff} to \code{TRUE} in all following analyze function calls.
