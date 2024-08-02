@@ -161,11 +161,28 @@ afun_riskdiff <- function(df,
   }
 }
 
+#' Control function for risk difference column
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Sets a list of parameters to use when generating a risk (proportion) difference column. Used as input to the
+#' `riskdiff` parameter of [tabulate_rsp_subgroups()].
+#'
+#' @inheritParams add_riskdiff
+#'
+#' @return A `list` of items with names corresponding to the arguments.
+#'
+#' @seealso [add_riskdiff()] and [tabulate_rsp_subgroups()].
+#'
+#' @examples
+#' control_riskdiff(arm_x = "ARM A", arm_y = "ARM B")
+#'
 #' @export
 control_riskdiff <- function(arm_x,
                              arm_y,
                              col_label = paste0(
-                               "Risk Difference (%) (95% CI)", if (length(arm_y) > 1) paste0("\n", arm_x, " vs. ", arm_y)
+                               "Risk Difference (%) (95% CI)",
+                               if (length(arm_y) > 1) paste0("\n", arm_x, " vs. ", arm_y)
                              ),
                              pct = TRUE) {
   checkmate::assert_character(arm_x, len = 1)
