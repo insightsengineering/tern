@@ -217,7 +217,7 @@ tabulate_rsp_subgroups <- function(lyt,
                                      pval = "x.xxxx | (<0.0001)"
                                    )) {
   checkmate::assert_list(riskdiff, null.ok = TRUE)
-  checkmate::assert_subset(c("n_tot", "or", "ci"), vars)
+  checkmate::assert_true(all(c("n_tot", "or", "ci") %in% vars))
 
   # Create "ci" column from "lcl" and "ucl"
   df$or <- df$or %>% mutate(ci = combine_vectors(lcl, ucl))
@@ -248,7 +248,7 @@ tabulate_rsp_subgroups <- function(lyt,
 
     df_prop_diff <- df$prop %>%
       select(-prop) %>%
-      pivot_wider(
+      tidyr::pivot_wider(
         id_cols = c("subgroup", "var", "var_label", "row_type"),
         names_from = "arm",
         values_from = c("n", "n_rsp")
