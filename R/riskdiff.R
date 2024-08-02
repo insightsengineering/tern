@@ -175,7 +175,7 @@ afun_riskdiff <- function(df,
 #'
 #' @return A `list` of items with names corresponding to the arguments.
 #'
-#' @seealso [add_riskdiff()] and [tabulate_rsp_subgroups()].
+#' @seealso [add_riskdiff()], [tabulate_survival_subgroups()], and [tabulate_rsp_subgroups()].
 #'
 #' @examples
 #' control_riskdiff(arm_x = "ARM A", arm_y = "ARM B")

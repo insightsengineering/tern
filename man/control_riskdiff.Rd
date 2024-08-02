@@ -43,5 +43,5 @@ control_riskdiff(arm_x = "ARM A", arm_y = "ARM B")
 
 }
 \seealso{
-\code{\link[=add_riskdiff]{add_riskdiff()}} and \code{\link[=tabulate_rsp_subgroups]{tabulate_rsp_subgroups()}}.
+\code{\link[=add_riskdiff]{add_riskdiff()}}, \code{\link[=tabulate_survival_subgroups]{tabulate_survival_subgroups()}}, and \code{\link[=tabulate_rsp_subgroups]{tabulate_rsp_subgroups()}}.
 }

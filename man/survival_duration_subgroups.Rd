@@ -13,7 +13,11 @@ tabulate_survival_subgroups(
   groups_lists = list(),
   label_all = lifecycle::deprecated(),
   time_unit = NULL,
-  na_str = default_na_str()
+  riskdiff = NULL,
+  na_str = default_na_str(),
+  .formats = c(n = "xx", n_events = "xx", n_tot_events = "xx", median = "xx.x", n_tot =
+    "xx", hr = list(format_extreme_values(2L)), ci = list(format_extreme_values_ci(2L)),
+    pval = "x.xxxx | (<0.0001)")
 )
 
 a_survival_subgroups(
@@ -51,6 +55,9 @@ levels that belong to it in the character vectors that are elements of the list.
 \code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}} function when creating \code{df}.}
 
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
+
+\item{riskdiff}{(\code{list})\cr if a risk (proportion) difference column should be added, a list of settings to apply
+within the column. See \code{\link[=control_riskdiff]{control_riskdiff()}} for details. If \code{NULL}, no risk difference column will be added.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
