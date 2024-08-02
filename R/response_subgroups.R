@@ -131,13 +131,14 @@ a_response_subgroups <- function(.formats = list(
                                    n_tot = "xx",
                                    or = list(format_extreme_values(2L)),
                                    ci = list(format_extreme_values_ci(2L)),
-                                   pval = "x.xxxx | (<0.0001)" # nolint end
+                                   pval = "x.xxxx | (<0.0001)",
+                                   riskdiff = "xx.x (xx.x - xx.x)" # nolint end
                                  ),
                                  na_str = default_na_str()) {
   checkmate::assert_list(.formats)
   checkmate::assert_subset(
     names(.formats),
-    c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval")
+    c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval", "riskdiff")
   )
 
   afun_lst <- Map(
@@ -146,6 +147,15 @@ a_response_subgroups <- function(.formats = list(
         function(df, labelstr = "", ...) {
           in_rows(
             .list = combine_vectors(df$lcl, df$ucl),
+            .labels = as.character(df$subgroup),
+            .formats = fmt,
+            .format_na_strs = na_str
+          )
+        }
+      } else if (stat == "riskdiff") {
+        function(df, labelstr = "", ...) {
+          in_rows(
+            .list = as.list(df[[stat]]),
             .labels = as.character(df$subgroup),
             .formats = fmt,
             .format_na_strs = na_str
