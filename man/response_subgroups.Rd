@@ -126,18 +126,18 @@ df_grouped <- extract_rsp_subgroups(
 )
 df_grouped
 
-## Table with default columns.
+# Table with default columns
 basic_table() \%>\%
   tabulate_rsp_subgroups(df)
 
-## Table with selected columns.
+# Table with selected columns
 basic_table() \%>\%
   tabulate_rsp_subgroups(
     df = df,
     vars = c("n_tot", "n", "n_rsp", "prop", "or", "ci")
   )
 
-## Table with default columns.
+# Table with risk difference column added
 basic_table() \%>\%
   tabulate_rsp_subgroups(
     df,
