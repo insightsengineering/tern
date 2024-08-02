@@ -19,7 +19,7 @@ control_riskdiff(
 \item{arm_y}{(\code{character})\cr names of one or more arms to compare to reference arm in risk difference
 calculations. A new column will be added for each value of \code{arm_y}.}
 
-\item{format}{(\code{string} or \code{function})\cr the format label (string) or formatter function to apply to the risk
+\item{format}{(\code{string} or \code{function})\cr the format label (string) or formatting function to apply to the risk
 difference statistic. See the \verb{3d} string options in \code{\link[=list_valid_format_labels]{list_valid_format_labels()}} for possible format strings.
 Defaults to \code{"xx.x (xx.x - xx.x)"}.}
 

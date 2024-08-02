@@ -169,7 +169,7 @@ afun_riskdiff <- function(df,
 #' `riskdiff` parameter of [tabulate_rsp_subgroups()].
 #'
 #' @inheritParams add_riskdiff
-#' @param format (`string` or `function`)\cr the format label (string) or formatter function to apply to the risk
+#' @param format (`string` or `function`)\cr the format label (string) or formatting function to apply to the risk
 #'   difference statistic. See the `3d` string options in [list_valid_format_labels()] for possible format strings.
 #'   Defaults to `"xx.x (xx.x - xx.x)"`.
 #'
