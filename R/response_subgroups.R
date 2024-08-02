@@ -207,6 +207,10 @@ tabulate_rsp_subgroups <- function(lyt,
                                    vars = c("n_tot", "n", "prop", "or", "ci"),
                                    groups_lists = list(),
                                    label_all = "All Patients",
+                                   riskdiff = control_riskdiff(
+                                     arm_x = levels(df$prop$arm)[1],
+                                     arm_y = levels(df$prop$arm)[2]
+                                   ),
                                    na_str = default_na_str()) {
   conf_level <- df$or$conf_level[1]
   method <- if ("pval_label" %in% names(df$or)) {
@@ -228,6 +232,36 @@ tabulate_rsp_subgroups <- function(lyt,
     vars = colvars$vars[names(colvars$labels) %in% c("n_tot", "or", "ci", "pval")],
     labels = colvars$labels[names(colvars$labels) %in% c("n_tot", "or", "ci", "pval")]
   )
+
+  if (!is.null(riskdiff)) {
+    colvars_or$vars <- c(colvars_or$vars, "riskdiff")
+    colvars_or$labels <- c(colvars_or$labels, riskdiff = riskdiff$col_label)
+    arm_cols <- paste(rep(c("n_rsp", "n_rsp", "n", "n")), c(riskdiff$arm_x, riskdiff$arm_y), sep = "_")
+
+    df_prop_diff <- df$prop %>%
+      select(-prop) %>%
+      pivot_wider(
+        id_cols = c("subgroup", "var", "var_label", "row_type"),
+        names_from = "arm",
+        values_from = c("n", "n_rsp")
+      ) %>%
+      rowwise() %>%
+      mutate(
+        riskdiff = stat_propdiff_ci(
+          x = as.list(.data[[arm_cols[1]]]),
+          y = as.list(.data[[arm_cols[2]]]),
+          N_x = .data[[arm_cols[3]]],
+          N_y = .data[[arm_cols[4]]]
+        )
+      ) %>%
+      select(-all_of(arm_cols))
+
+    df$or <- df$or %>%
+      left_join(
+        df_prop_diff,
+        by = c("subgroup", "var", "var_label", "row_type")
+      )
+  }
 
   # Columns from table_prop are optional.
   if (length(colvars_prop$vars) > 0) {
