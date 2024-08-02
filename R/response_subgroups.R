@@ -244,6 +244,8 @@ tabulate_rsp_subgroups <- function(lyt,
 
   # Add risk difference column
   if (!is.null(riskdiff)) {
+    if (is.null(riskdiff$arm_x)) riskdiff$arm_x <- levels(df$prop$arm)[1]
+    if (is.null(riskdiff$arm_y)) riskdiff$arm_y <- levels(df$prop$arm)[2]
     colvars_or$vars <- c(colvars_or$vars, "riskdiff")
     colvars_or$labels <- c(colvars_or$labels, riskdiff = riskdiff$col_label)
     arm_cols <- paste(rep(c("n_rsp", "n_rsp", "n", "n")), c(riskdiff$arm_x, riskdiff$arm_y), sep = "_")
