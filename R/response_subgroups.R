@@ -222,9 +222,9 @@ tabulate_rsp_subgroups <- function(lyt,
   # Create "ci" column from "lcl" and "ucl"
   df$or <- df$or %>% mutate(ci = combine_vectors(lcl, ucl))
 
-  # Process formats
+  # Fill in missing formats with defaults
   default_fmts <- eval(formals(tabulate_rsp_subgroups)$.formats)
-  .formats <- c(.formats, default_fmts[vars[!vars %in% names(.formats)]]) # fill in defaults where needed
+  .formats <- c(.formats, default_fmts[vars[!vars %in% names(.formats)]])
 
   # Extract additional parameters from df
   conf_level <- df$or$conf_level[1]
