@@ -12,13 +12,14 @@ tabulate_rsp_subgroups(
   vars = c("n_tot", "n", "prop", "or", "ci"),
   groups_lists = list(),
   label_all = "All Patients",
+  riskdiff = NULL,
   na_str = default_na_str()
 )
 
 a_response_subgroups(
   .formats = list(n = "xx", n_rsp = "xx", prop = "xx.x\%", n_tot = "xx", or =
     list(format_extreme_values(2L)), ci = list(format_extreme_values_ci(2L)), pval =
-    "x.xxxx | (<0.0001)"),
+    "x.xxxx | (<0.0001)", riskdiff = "xx.x (xx.x - xx.x)"),
   na_str = default_na_str()
 )
 }
@@ -45,6 +46,9 @@ list, which specifies the new group levels via the names and the
 levels that belong to it in the character vectors that are elements of the list.}
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
+
+\item{riskdiff}{(\code{list})\cr if a risk (proportion) difference column should be added, a list of settings to apply
+within the column. See \code{\link[=control_riskdiff]{control_riskdiff()}} for details. If \code{NULL}, no risk difference column will be added.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
@@ -131,6 +135,16 @@ basic_table() \%>\%
   tabulate_rsp_subgroups(
     df = df,
     vars = c("n_tot", "n", "n_rsp", "prop", "or", "ci")
+  )
+
+## Table with default columns.
+basic_table() \%>\%
+  tabulate_rsp_subgroups(
+    df,
+    riskdiff = control_riskdiff(
+      arm_x = levels(df$prop$arm)[1],
+      arm_y = levels(df$prop$arm)[2]
+    )
   )
 
 }

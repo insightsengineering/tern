@@ -195,6 +195,8 @@ a_response_subgroups <- function(.formats = list(
 #'   * `ci` : Confidence interval of odds ratio.
 #'   * `pval`: p-value of the effect.
 #'   Note, the statistics `n_tot`, `or` and `ci` are required.
+#' @param riskdiff (`list`)\cr if a risk (proportion) difference column should be added, a list of settings to apply
+#'   within the column. See [control_riskdiff()] for details. If `NULL`, no risk difference column will be added.
 #'
 #' @return An `rtables` table summarizing binary response by subgroup.
 #'
@@ -210,6 +212,16 @@ a_response_subgroups <- function(.formats = list(
 #'     vars = c("n_tot", "n", "n_rsp", "prop", "or", "ci")
 #'   )
 #'
+#' ## Table with default columns.
+#' basic_table() %>%
+#'   tabulate_rsp_subgroups(
+#'     df,
+#'     riskdiff = control_riskdiff(
+#'       arm_x = levels(df$prop$arm)[1],
+#'       arm_y = levels(df$prop$arm)[2]
+#'     )
+#'   )
+#'
 #' @export
 #' @order 2
 tabulate_rsp_subgroups <- function(lyt,
@@ -217,10 +229,7 @@ tabulate_rsp_subgroups <- function(lyt,
                                    vars = c("n_tot", "n", "prop", "or", "ci"),
                                    groups_lists = list(),
                                    label_all = "All Patients",
-                                   riskdiff = control_riskdiff(
-                                     arm_x = levels(df$prop$arm)[1],
-                                     arm_y = levels(df$prop$arm)[2]
-                                   ),
+                                   riskdiff = NULL,
                                    na_str = default_na_str()) {
   conf_level <- df$or$conf_level[1]
   method <- if ("pval_label" %in% names(df$or)) {
