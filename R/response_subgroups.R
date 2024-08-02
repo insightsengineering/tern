@@ -237,16 +237,19 @@ tabulate_rsp_subgroups <- function(lyt,
                                      pval = "x.xxxx | (<0.0001)"
                                    )) {
   checkmate::assert_list(riskdiff, null.ok = TRUE)
+  checkmate::assert_subset(c("n_tot", "or", "ci"), vars)
 
   # Extract additional parameters from df
   conf_level <- df$or$conf_level[1]
   method <- if ("pval_label" %in% names(df$or)) df$or$pval_label[1] else NULL
-  extra_args <- list(groups_lists = groups_lists, conf_level = conf_level, method = method, label_all = label_all)
   colvars <- d_rsp_subgroups_colvars(vars, conf_level = conf_level, method = method)
-  prop_vars <- intersect(names(colvars$labels), c("n", "prop", "n_rsp"))
-  or_vars <- intersect(names(colvars$labels), c("n_tot", "or", "ci", "pval"))
+  prop_vars <- intersect(colvars$vars, c("n", "prop", "n_rsp"))
+  or_vars <- intersect(colvars$vars, c("n_tot", "or", "lcl", "pval"))
+  or_lbls <- intersect(names(colvars$labels), c("n_tot", "or", "ci", "pval"))
   colvars_prop <- list(vars = prop_vars, labels = colvars$labels[prop_vars])
-  colvars_or <- list(vars = or_vars, labels = colvars$labels[or_vars])
+  colvars_or <- list(vars = or_vars, labels = colvars$labels[or_lbls])
+
+  extra_args <- list(groups_lists = groups_lists, conf_level = conf_level, method = method, label_all = label_all)
 
   # Get analysis function for each statistic
   afun_lst <- a_response_subgroups(.formats = c(.formats, riskdiff = riskdiff$format), na_str = na_str)
