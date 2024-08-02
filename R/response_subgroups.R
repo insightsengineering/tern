@@ -143,33 +143,13 @@ a_response_subgroups <- function(.formats = list(
 
   afun_lst <- Map(
     function(stat, fmt, na_str) {
-      if (stat == "ci") {
-        function(df, labelstr = "", ...) {
-          in_rows(
-            .list = combine_vectors(df$lcl, df$ucl),
-            .labels = as.character(df$subgroup),
-            .formats = fmt,
-            .format_na_strs = na_str
-          )
-        }
-      } else if (stat == "riskdiff") {
-        function(df, labelstr = "", ...) {
-          in_rows(
-            .list = as.list(df[[stat]]),
-            .labels = as.character(df$subgroup),
-            .formats = fmt,
-            .format_na_strs = na_str
-          )
-        }
-      } else {
-        function(df, labelstr = "", ...) {
-          in_rows(
-            .list = as.list(df[[stat]]),
-            .labels = as.character(df$subgroup),
-            .formats = fmt,
-            .format_na_strs = na_str
-          )
-        }
+      function(df, labelstr = "", ...) {
+        in_rows(
+          .list = as.list(df[[stat]]),
+          .labels = as.character(df$subgroup),
+          .formats = fmt,
+          .format_na_strs = na_str
+        )
       }
     },
     stat = names(.formats),
@@ -239,15 +219,17 @@ tabulate_rsp_subgroups <- function(lyt,
   checkmate::assert_list(riskdiff, null.ok = TRUE)
   checkmate::assert_subset(c("n_tot", "or", "ci"), vars)
 
+  # Create "ci" column from "lcl" and "ucl"
+  df$or <- df$or %>% mutate(ci = combine_vectors(lcl, ucl))
+
   # Extract additional parameters from df
   conf_level <- df$or$conf_level[1]
   method <- if ("pval_label" %in% names(df$or)) df$or$pval_label[1] else NULL
   colvars <- d_rsp_subgroups_colvars(vars, conf_level = conf_level, method = method)
   prop_vars <- intersect(colvars$vars, c("n", "prop", "n_rsp"))
-  or_vars <- intersect(colvars$vars, c("n_tot", "or", "lcl", "pval"))
-  or_lbls <- intersect(names(colvars$labels), c("n_tot", "or", "ci", "pval"))
+  or_vars <- intersect(names(colvars$labels), c("n_tot", "or", "ci", "pval"))
   colvars_prop <- list(vars = prop_vars, labels = colvars$labels[prop_vars])
-  colvars_or <- list(vars = or_vars, labels = colvars$labels[or_lbls])
+  colvars_or <- list(vars = or_vars, labels = colvars$labels[or_vars])
 
   extra_args <- list(groups_lists = groups_lists, conf_level = conf_level, method = method, label_all = label_all)
 
@@ -383,11 +365,11 @@ tabulate_rsp_subgroups <- function(lyt,
   if (is.null(table_prop)) {
     result <- table_or
     or_id <- match("or", colvars_or$vars)
-    ci_id <- match("lcl", colvars_or$vars)
+    ci_id <- match("ci", colvars_or$vars)
   } else {
     result <- cbind_rtables(table_or[, n_tot_id], table_prop, table_or[, -n_tot_id])
     or_id <- 1L + ncol(table_prop) + match("or", colvars_or$vars[-n_tot_id])
-    ci_id <- 1L + ncol(table_prop) + match("lcl", colvars_or$vars[-n_tot_id])
+    ci_id <- 1L + ncol(table_prop) + match("ci", colvars_or$vars[-n_tot_id])
     n_tot_id <- 1L
   }
   structure(
