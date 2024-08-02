@@ -8,8 +8,7 @@ control_riskdiff(
   arm_x = NULL,
   arm_y = NULL,
   format = "xx.x (xx.x - xx.x)",
-  col_label = paste0("Risk Difference (\%) (95\% CI)", if (length(arm_y) > 1)
-    paste0("\\n", arm_x, " vs. ", arm_y)),
+  col_label = "Risk Difference (\%) (95\% CI)",
   pct = TRUE
 )
 }
@@ -36,12 +35,13 @@ A \code{list} of items with names corresponding to the arguments.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Sets a list of parameters to use when generating a risk (proportion) difference column. Used as input to the
-\code{riskdiff} parameter of \code{\link[=tabulate_rsp_subgroups]{tabulate_rsp_subgroups()}}.
+\code{riskdiff} parameter of \code{\link[=tabulate_rsp_subgroups]{tabulate_rsp_subgroups()}} and \code{\link[=tabulate_survival_subgroups]{tabulate_survival_subgroups()}}.
 }
 \examples{
+control_riskdiff()
 control_riskdiff(arm_x = "ARM A", arm_y = "ARM B")
 
 }
 \seealso{
-\code{\link[=add_riskdiff]{add_riskdiff()}}, \code{\link[=tabulate_survival_subgroups]{tabulate_survival_subgroups()}}, and \code{\link[=tabulate_rsp_subgroups]{tabulate_rsp_subgroups()}}.
+\code{\link[=add_riskdiff]{add_riskdiff()}}, \code{\link[=tabulate_rsp_subgroups]{tabulate_rsp_subgroups()}}, and \code{\link[=tabulate_survival_subgroups]{tabulate_survival_subgroups()}}.
 }

@@ -280,8 +280,6 @@ testthat::test_that("tabulate_survival_subgroups riskdiff argument works as expe
       df,
       time_unit = adtte$AVALU[1],
       riskdiff = control_riskdiff(
-        arm_x = levels(df$survtime$arm)[1],
-        arm_y = levels(df$survtime$arm)[2],
         col_label = "Prop. Diff\n(95% CI)"
       )
     )

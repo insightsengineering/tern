@@ -166,7 +166,7 @@ afun_riskdiff <- function(df,
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Sets a list of parameters to use when generating a risk (proportion) difference column. Used as input to the
-#' `riskdiff` parameter of [tabulate_rsp_subgroups()].
+#' `riskdiff` parameter of [tabulate_rsp_subgroups()] and [tabulate_survival_subgroups()].
 #'
 #' @inheritParams add_riskdiff
 #' @param format (`string` or `function`)\cr the format label (string) or formatting function to apply to the risk
@@ -175,24 +175,22 @@ afun_riskdiff <- function(df,
 #'
 #' @return A `list` of items with names corresponding to the arguments.
 #'
-#' @seealso [add_riskdiff()], [tabulate_survival_subgroups()], and [tabulate_rsp_subgroups()].
+#' @seealso [add_riskdiff()], [tabulate_rsp_subgroups()], and [tabulate_survival_subgroups()].
 #'
 #' @examples
+#' control_riskdiff()
 #' control_riskdiff(arm_x = "ARM A", arm_y = "ARM B")
 #'
 #' @export
 control_riskdiff <- function(arm_x = NULL,
                              arm_y = NULL,
                              format = "xx.x (xx.x - xx.x)",
-                             col_label = paste0(
-                               "Risk Difference (%) (95% CI)",
-                               if (length(arm_y) > 1) paste0("\n", arm_x, " vs. ", arm_y)
-                             ),
+                             col_label = "Risk Difference (%) (95% CI)",
                              pct = TRUE) {
   checkmate::assert_character(arm_x, len = 1, null.ok = TRUE)
   checkmate::assert_character(arm_y, min.len = 1, null.ok = TRUE)
   checkmate::assert_character(format, len = 1)
-  checkmate::assert_character(col_label, len = length(arm_y))
+  checkmate::assert_character(col_label)
   checkmate::assert_flag(pct)
 
   list(arm_x = arm_x, arm_y = arm_y, format = format, col_label = col_label, pct = pct)
