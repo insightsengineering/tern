@@ -236,27 +236,22 @@ tabulate_rsp_subgroups <- function(lyt,
                                      or = list(format_extreme_values(2L)), ci = list(format_extreme_values_ci(2L)),
                                      pval = "x.xxxx | (<0.0001)"
                                    )) {
+  checkmate::assert_list(riskdiff, null.ok = TRUE)
+
+  # Extract additional parameters from df
   conf_level <- df$or$conf_level[1]
-  method <- if ("pval_label" %in% names(df$or)) {
-    df$or$pval_label[1]
-  } else {
-    NULL
-  }
-
+  method <- if ("pval_label" %in% names(df$or)) df$or$pval_label[1] else NULL
   extra_args <- list(groups_lists = groups_lists, conf_level = conf_level, method = method, label_all = label_all)
-
-  afun_lst <- a_response_subgroups(.formats = c(.formats, riskdiff = riskdiff$format), na_str = na_str)
   colvars <- d_rsp_subgroups_colvars(vars, conf_level = conf_level, method = method)
+  prop_vars <- intersect(names(colvars$labels), c("n", "prop", "n_rsp"))
+  or_vars <- intersect(names(colvars$labels), c("n_tot", "or", "ci", "pval"))
+  colvars_prop <- list(vars = prop_vars, labels = colvars$labels[prop_vars])
+  colvars_or <- list(vars = or_vars, labels = colvars$labels[or_vars])
 
-  colvars_prop <- list(
-    vars = colvars$vars[names(colvars$labels) %in% c("n", "prop", "n_rsp")],
-    labels = colvars$labels[names(colvars$labels) %in% c("n", "prop", "n_rsp")]
-  )
-  colvars_or <- list(
-    vars = colvars$vars[names(colvars$labels) %in% c("n_tot", "or", "ci", "pval")],
-    labels = colvars$labels[names(colvars$labels) %in% c("n_tot", "or", "ci", "pval")]
-  )
+  # Get analysis function for each statistic
+  afun_lst <- a_response_subgroups(.formats = c(.formats, riskdiff = riskdiff$format), na_str = na_str)
 
+  # Add risk difference column
   if (!is.null(riskdiff)) {
     colvars_or$vars <- c(colvars_or$vars, "riskdiff")
     colvars_or$labels <- c(colvars_or$labels, riskdiff = riskdiff$col_label)
@@ -287,7 +282,7 @@ tabulate_rsp_subgroups <- function(lyt,
       )
   }
 
-  # Columns from table_prop are optional.
+  # Add columns from table_prop (optional)
   if (length(colvars_prop$vars) > 0) {
     lyt_prop <- split_cols_by(lyt = lyt, var = "arm")
     lyt_prop <- split_cols_by_multivar(
@@ -296,7 +291,7 @@ tabulate_rsp_subgroups <- function(lyt,
       varlabels = colvars_prop$labels
     )
 
-    # "All Patients" row
+    # Add "All Patients" row
     lyt_prop <- split_rows_by(
       lyt = lyt_prop,
       var = "row_type",
@@ -311,6 +306,7 @@ tabulate_rsp_subgroups <- function(lyt,
       extra_args = extra_args
     )
 
+    # Add analysis rows
     if ("analysis" %in% df$prop$row_type) {
       lyt_prop <- split_rows_by(
         lyt = lyt_prop,
@@ -334,7 +330,7 @@ tabulate_rsp_subgroups <- function(lyt,
     table_prop <- NULL
   }
 
-  # Columns "n_tot", "or", "ci" in table_or are required.
+  # Add columns from table_or ("n_tot", "or", and "ci" required)
   lyt_or <- split_cols_by(lyt = lyt, var = "arm")
   lyt_or <- split_cols_by_multivar(
     lyt = lyt_or,
@@ -342,7 +338,7 @@ tabulate_rsp_subgroups <- function(lyt,
     varlabels = colvars_or$labels
   )
 
-  # "All Patients" row
+  # Add "All Patients" row
   lyt_or <- split_rows_by(
     lyt = lyt_or,
     var = "row_type",
@@ -358,6 +354,7 @@ tabulate_rsp_subgroups <- function(lyt,
   ) %>%
     append_topleft("Baseline Risk Factors")
 
+  # Add analysis rows
   if ("analysis" %in% df$or$row_type) {
     lyt_or <- split_rows_by(
       lyt = lyt_or,
@@ -375,8 +372,10 @@ tabulate_rsp_subgroups <- function(lyt,
       extra_args = extra_args
     )
   }
+
   table_or <- build_table(lyt_or, df = df$or)
 
+  # Join tables, add forest plot attributes
   n_tot_id <- match("n_tot", colvars_or$vars)
   if (is.null(table_prop)) {
     result <- table_or
