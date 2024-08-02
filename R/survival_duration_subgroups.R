@@ -191,7 +191,9 @@ a_survival_subgroups <- function(.formats = list( # nolint start
 #' @param label_all `r lifecycle::badge("deprecated")`\cr please assign the `label_all` parameter within the
 #'   [extract_survival_subgroups()] function when creating `df`.
 #' @param riskdiff (`list`)\cr if a risk (proportion) difference column should be added, a list of settings to apply
-#'   within the column. See [control_riskdiff()] for details. If `NULL`, no risk difference column will be added.
+#'   within the column. See [control_riskdiff()] for details. If `NULL`, no risk difference column will be added. If
+#'   `riskdiff$arm_x` and `riskdiff$arm_y` are `NULL`, the first level of `df$survtime$arm` will be used as `arm_x`
+#'   and the second level as `arm_y`.
 #'
 #' @return An `rtables` table summarizing survival by subgroup.
 #'
@@ -258,6 +260,8 @@ tabulate_survival_subgroups <- function(lyt,
 
   # Add risk difference column
   if (!is.null(riskdiff)) {
+    if (is.null(riskdiff$arm_x)) riskdiff$arm_x <- levels(df$survtime$arm)[1]
+    if (is.null(riskdiff$arm_y)) riskdiff$arm_y <- levels(df$survtime$arm)[2]
     colvars_hr$vars <- c(colvars_hr$vars, "riskdiff")
     colvars_hr$labels <- c(colvars_hr$labels, riskdiff = riskdiff$col_label)
     arm_cols <- paste(rep(c("n_events", "n_events", "n", "n")), c(riskdiff$arm_x, riskdiff$arm_y), sep = "_")

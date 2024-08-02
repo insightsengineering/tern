@@ -5,8 +5,8 @@
 \title{Control function for risk difference column}
 \usage{
 control_riskdiff(
-  arm_x,
-  arm_y,
+  arm_x = NULL,
+  arm_y = NULL,
   format = "xx.x (xx.x - xx.x)",
   col_label = paste0("Risk Difference (\%) (95\% CI)", if (length(arm_y) > 1)
     paste0("\\n", arm_x, " vs. ", arm_y)),

@@ -176,7 +176,9 @@ a_response_subgroups <- function(.formats = list(
 #'   * `pval`: p-value of the effect.
 #'   Note, the statistics `n_tot`, `or`, and `ci` are required.
 #' @param riskdiff (`list`)\cr if a risk (proportion) difference column should be added, a list of settings to apply
-#'   within the column. See [control_riskdiff()] for details. If `NULL`, no risk difference column will be added.
+#'   within the column. See [control_riskdiff()] for details. If `NULL`, no risk difference column will be added. If
+#'   `riskdiff$arm_x` and `riskdiff$arm_y` are `NULL`, the first level of `df$prop$arm` will be used as `arm_x` and
+#'   the second level as `arm_y`.
 #'
 #' @return An `rtables` table summarizing binary response by subgroup.
 #'

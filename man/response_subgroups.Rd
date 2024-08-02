@@ -51,7 +51,9 @@ levels that belong to it in the character vectors that are elements of the list.
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
 
 \item{riskdiff}{(\code{list})\cr if a risk (proportion) difference column should be added, a list of settings to apply
-within the column. See \code{\link[=control_riskdiff]{control_riskdiff()}} for details. If \code{NULL}, no risk difference column will be added.}
+within the column. See \code{\link[=control_riskdiff]{control_riskdiff()}} for details. If \code{NULL}, no risk difference column will be added. If
+\code{riskdiff$arm_x} and \code{riskdiff$arm_y} are \code{NULL}, the first level of \code{df$prop$arm} will be used as \code{arm_x} and
+the second level as \code{arm_y}.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 

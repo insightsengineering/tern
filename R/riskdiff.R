@@ -181,16 +181,16 @@ afun_riskdiff <- function(df,
 #' control_riskdiff(arm_x = "ARM A", arm_y = "ARM B")
 #'
 #' @export
-control_riskdiff <- function(arm_x,
-                             arm_y,
+control_riskdiff <- function(arm_x = NULL,
+                             arm_y = NULL,
                              format = "xx.x (xx.x - xx.x)",
                              col_label = paste0(
                                "Risk Difference (%) (95% CI)",
                                if (length(arm_y) > 1) paste0("\n", arm_x, " vs. ", arm_y)
                              ),
                              pct = TRUE) {
-  checkmate::assert_character(arm_x, len = 1)
-  checkmate::assert_character(arm_y, min.len = 1)
+  checkmate::assert_character(arm_x, len = 1, null.ok = TRUE)
+  checkmate::assert_character(arm_y, min.len = 1, null.ok = TRUE)
   checkmate::assert_character(format, len = 1)
   checkmate::assert_character(col_label, len = length(arm_y))
   checkmate::assert_flag(pct)
