@@ -160,3 +160,18 @@ afun_riskdiff <- function(df,
     in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
   }
 }
+
+#' @export
+control_riskdiff <- function(arm_x,
+                             arm_y,
+                             col_label = paste0(
+                               "Risk Difference (%) (95% CI)", if (length(arm_y) > 1) paste0("\n", arm_x, " vs. ", arm_y)
+                             ),
+                             pct = TRUE) {
+  checkmate::assert_character(arm_x, len = 1)
+  checkmate::assert_character(arm_y, min.len = 1)
+  checkmate::assert_character(col_label, len = length(arm_y))
+  checkmate::assert_flag(pct)
+
+  list(arm_x = arm_x, arm_y = arm_y, col_label = col_label, pct = pct)
+}
