@@ -76,7 +76,7 @@ tabulate_rsp_biomarkers <- function(df,
   checkmate::assert_subset(vars, get_stats("tabulate_rsp_biomarkers"))
 
   # Create "ci" column from "lcl" and "ucl"
-  df <- df %>% mutate(ci = combine_vectors(lcl, ucl))
+  df$ci <- combine_vectors(df$lcl, df$ucl)
 
   df_subs <- split(df, f = df$biomarker)
   tabs <- lapply(df_subs, FUN = function(df_sub) {

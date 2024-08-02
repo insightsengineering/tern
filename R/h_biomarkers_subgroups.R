@@ -22,7 +22,7 @@ h_tab_one_biomarker <- function(df,
   extra_args <- list(...)
 
   # Create "ci" column from "lcl" and "ucl"
-  df <- df %>% mutate(ci = combine_vectors(lcl, ucl))
+  df$ci <- combine_vectors(df$lcl, df$ucl)
 
   lyt <- basic_table()
 

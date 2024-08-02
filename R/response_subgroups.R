@@ -220,7 +220,7 @@ tabulate_rsp_subgroups <- function(lyt,
   checkmate::assert_true(all(c("n_tot", "or", "ci") %in% vars))
 
   # Create "ci" column from "lcl" and "ucl"
-  df$or <- df$or %>% mutate(ci = combine_vectors(lcl, ucl))
+  df$or$ci <- combine_vectors(df$or$lcl, df$or$ucl)
 
   # Fill in missing formats with defaults
   default_fmts <- eval(formals(tabulate_rsp_subgroups)$.formats)
@@ -247,14 +247,14 @@ tabulate_rsp_subgroups <- function(lyt,
     arm_cols <- paste(rep(c("n_rsp", "n_rsp", "n", "n")), c(riskdiff$arm_x, riskdiff$arm_y), sep = "_")
 
     df_prop_diff <- df$prop %>%
-      select(-prop) %>%
+      dplyr::select(-"prop") %>%
       tidyr::pivot_wider(
         id_cols = c("subgroup", "var", "var_label", "row_type"),
         names_from = "arm",
         values_from = c("n", "n_rsp")
       ) %>%
-      rowwise() %>%
-      mutate(
+      dplyr::rowwise() %>%
+      dplyr::mutate(
         riskdiff = stat_propdiff_ci(
           x = as.list(.data[[arm_cols[1]]]),
           y = as.list(.data[[arm_cols[2]]]),
@@ -262,10 +262,10 @@ tabulate_rsp_subgroups <- function(lyt,
           N_y = .data[[arm_cols[4]]]
         )
       ) %>%
-      select(-all_of(arm_cols))
+      dplyr::select(-dplyr::all_of(arm_cols))
 
     df$or <- df$or %>%
-      left_join(
+      dplyr::left_join(
         df_prop_diff,
         by = c("subgroup", "var", "var_label", "row_type")
       )
