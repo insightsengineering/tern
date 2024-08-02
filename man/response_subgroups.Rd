@@ -13,7 +13,10 @@ tabulate_rsp_subgroups(
   groups_lists = list(),
   label_all = "All Patients",
   riskdiff = NULL,
-  na_str = default_na_str()
+  na_str = default_na_str(),
+  .formats = c(n = "xx", n_rsp = "xx", prop = "xx.x\%", n_tot = "xx", or =
+    list(format_extreme_values(2L)), ci = list(format_extreme_values_ci(2L)), pval =
+    "x.xxxx | (<0.0001)")
 )
 
 a_response_subgroups(

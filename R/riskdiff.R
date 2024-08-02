@@ -169,6 +169,9 @@ afun_riskdiff <- function(df,
 #' `riskdiff` parameter of [tabulate_rsp_subgroups()].
 #'
 #' @inheritParams add_riskdiff
+#' @param format (`string` or `function`)\cr the format label (string) or formatter function to apply to the risk
+#'   difference statistic. See the `3d` string options in [list_valid_format_labels()] for possible format strings.
+#'   Defaults to `"xx.x (xx.x - xx.x)"`.
 #'
 #' @return A `list` of items with names corresponding to the arguments.
 #'
@@ -180,6 +183,7 @@ afun_riskdiff <- function(df,
 #' @export
 control_riskdiff <- function(arm_x,
                              arm_y,
+                             format = "xx.x (xx.x - xx.x)",
                              col_label = paste0(
                                "Risk Difference (%) (95% CI)",
                                if (length(arm_y) > 1) paste0("\n", arm_x, " vs. ", arm_y)
@@ -187,8 +191,9 @@ control_riskdiff <- function(arm_x,
                              pct = TRUE) {
   checkmate::assert_character(arm_x, len = 1)
   checkmate::assert_character(arm_y, min.len = 1)
+  checkmate::assert_character(format, len = 1)
   checkmate::assert_character(col_label, len = length(arm_y))
   checkmate::assert_flag(pct)
 
-  list(arm_x = arm_x, arm_y = arm_y, col_label = col_label, pct = pct)
+  list(arm_x = arm_x, arm_y = arm_y, format = format, col_label = col_label, pct = pct)
 }

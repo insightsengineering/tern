@@ -230,7 +230,12 @@ tabulate_rsp_subgroups <- function(lyt,
                                    groups_lists = list(),
                                    label_all = "All Patients",
                                    riskdiff = NULL,
-                                   na_str = default_na_str()) {
+                                   na_str = default_na_str(),
+                                   .formats = c(
+                                     n = "xx", n_rsp = "xx", prop = "xx.x%", n_tot = "xx",
+                                     or = list(format_extreme_values(2L)), ci = list(format_extreme_values_ci(2L)),
+                                     pval = "x.xxxx | (<0.0001)"
+                                   )) {
   conf_level <- df$or$conf_level[1]
   method <- if ("pval_label" %in% names(df$or)) {
     df$or$pval_label[1]
@@ -240,7 +245,7 @@ tabulate_rsp_subgroups <- function(lyt,
 
   extra_args <- list(groups_lists = groups_lists, conf_level = conf_level, method = method, label_all = label_all)
 
-  afun_lst <- a_response_subgroups(na_str = na_str)
+  afun_lst <- a_response_subgroups(.formats = c(.formats, riskdiff = riskdiff$format), na_str = na_str)
   colvars <- d_rsp_subgroups_colvars(vars, conf_level = conf_level, method = method)
 
   colvars_prop <- list(
