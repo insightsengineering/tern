@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.947011647890013" branch-rate="0" lines-covered="9919" lines-valid="10474" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-08-02 21:02:24.560493">
+<coverage line-rate="0.947202596906626" branch-rate="0" lines-covered="9921" lines-valid="10474" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-08-02 21:54:06.3992">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
   <packages>
-    <package name="tern" line-rate="0.947011647890013" branch-rate="0" complexity="0">
+    <package name="tern" line-rate="0.947202596906626" branch-rate="0" complexity="0">
       <classes>
         <class name="abnormal_by_baseline.R" filename="R/abnormal_by_baseline.R" line-rate="1" branch-rate="0" complexity="0">
           <methods>
@@ -17734,12 +17734,12 @@
             </method>
             <method name="control_riskdiff" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="190" hits="2" branch="false"/>
+                <line number="191" hits="2" branch="false"/>
                 <line number="192" hits="2" branch="false"/>
                 <line number="193" hits="2" branch="false"/>
                 <line number="194" hits="2" branch="false"/>
-                <line number="195" hits="2" branch="false"/>
                 <line number="196" hits="2" branch="false"/>
-                <line number="198" hits="2" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -17803,12 +17803,12 @@
             <line number="157" hits="11" branch="false"/>
             <line number="158" hits="11" branch="false"/>
             <line number="160" hits="11" branch="false"/>
+            <line number="190" hits="2" branch="false"/>
+            <line number="191" hits="2" branch="false"/>
             <line number="192" hits="2" branch="false"/>
             <line number="193" hits="2" branch="false"/>
             <line number="194" hits="2" branch="false"/>
-            <line number="195" hits="2" branch="false"/>
             <line number="196" hits="2" branch="false"/>
-            <line number="198" hits="2" branch="false"/>
           </lines>
         </class>
         <class name="rtables_access.R" filename="R/rtables_access.R" line-rate="0.894736842105263" branch-rate="0" complexity="0">
@@ -20155,7 +20155,7 @@
             <line number="205" hits="5" branch="false"/>
           </lines>
         </class>
-        <class name="survival_duration_subgroups.R" filename="R/survival_duration_subgroups.R" line-rate="0.962085308056872" branch-rate="0" complexity="0">
+        <class name="survival_duration_subgroups.R" filename="R/survival_duration_subgroups.R" line-rate="0.971563981042654" branch-rate="0" complexity="0">
           <methods>
             <method name="extract_survival_subgroups" signature="" line-rate="0.714285714285714" branch-rate="0" complexity="0">
               <lines>
@@ -20207,7 +20207,7 @@
                 <line number="184" hits="20" branch="false"/>
               </lines>
             </method>
-            <method name="tabulate_survival_subgroups" signature="" line-rate="0.985714285714286" branch-rate="0" complexity="0">
+            <method name="tabulate_survival_subgroups" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="228" hits="9" branch="false"/>
                 <line number="229" hits="9" branch="false"/>
@@ -20231,8 +20231,8 @@
                 <line number="256" hits="9" branch="false"/>
                 <line number="259" hits="9" branch="false"/>
                 <line number="262" hits="9" branch="false"/>
-                <line number="263" hits="0" branch="false"/>
-                <line number="264" hits="0" branch="false"/>
+                <line number="263" hits="1" branch="false"/>
+                <line number="264" hits="1" branch="false"/>
                 <line number="265" hits="1" branch="false"/>
                 <line number="266" hits="1" branch="false"/>
                 <line number="267" hits="1" branch="false"/>
@@ -20450,8 +20450,8 @@
             <line number="256" hits="9" branch="false"/>
             <line number="259" hits="9" branch="false"/>
             <line number="262" hits="9" branch="false"/>
-            <line number="263" hits="0" branch="false"/>
-            <line number="264" hits="0" branch="false"/>
+            <line number="263" hits="1" branch="false"/>
+            <line number="264" hits="1" branch="false"/>
             <line number="265" hits="1" branch="false"/>
             <line number="266" hits="1" branch="false"/>
             <line number="267" hits="1" branch="false"/>
