@@ -174,7 +174,7 @@ a_response_subgroups <- function(.formats = list(
 #'   * `or`: Odds ratio.
 #'   * `ci` : Confidence interval of odds ratio.
 #'   * `pval`: p-value of the effect.
-#'   Note, the statistics `n_tot`, `or` and `ci` are required.
+#'   Note, the statistics `n_tot`, `or`, and `ci` are required.
 #' @param riskdiff (`list`)\cr if a risk (proportion) difference column should be added, a list of settings to apply
 #'   within the column. See [control_riskdiff()] for details. If `NULL`, no risk difference column will be added.
 #'

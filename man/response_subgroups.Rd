@@ -41,7 +41,7 @@ created using \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.}
 \item \code{or}: Odds ratio.
 \item \code{ci} : Confidence interval of odds ratio.
 \item \code{pval}: p-value of the effect.
-Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.
+Note, the statistics \code{n_tot}, \code{or}, and \code{ci} are required.
 }}
 
 \item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a

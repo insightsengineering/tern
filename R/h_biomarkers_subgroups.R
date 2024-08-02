@@ -21,6 +21,9 @@ h_tab_one_biomarker <- function(df,
                                 ...) {
   extra_args <- list(...)
 
+  # Create "ci" column from "lcl" and "ucl"
+  df <- df %>% mutate(ci = combine_vectors(lcl, ucl))
+
   lyt <- basic_table()
 
   # Row split by row type - only keep the content rows here.
