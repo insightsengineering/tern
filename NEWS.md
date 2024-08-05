@@ -1,4 +1,4 @@
-# tern 0.9.5.9008
+# tern 0.9.5.9009
 ### Enhancements
 * Added `errorbar_width` and `linetype` parameters to `g_lineplot`.
 * Reworking of `summarize_glm_count()` documentation and all its associated functions to better describe the results and the functions' purpose.
