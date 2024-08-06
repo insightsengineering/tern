@@ -240,6 +240,27 @@ testthat::test_that("d_rsp_subgroups_colvars functions as expected with valid in
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("tabulate_rsp_subgroups .formats argument works as expected", {
+  adrs <- adrs_200
+
+  df <- extract_rsp_subgroups(
+    variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
+    data = adrs,
+    conf_level = 0.95,
+    method = "chisq"
+  )
+
+  result <- basic_table() %>%
+    tabulate_rsp_subgroups(
+      df = df,
+      vars = c("n", "prop", "n_tot", "or", "ci", "pval"),
+      .formats = list(n_tot = "xx.xx", ci = "xx.x to xx.x")
+    )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("tabulate_rsp_subgroups na_str argument works as expected", {
   adrs <- adrs_200
 
@@ -256,6 +277,31 @@ testthat::test_that("tabulate_rsp_subgroups na_str argument works as expected", 
       df = df,
       vars = c("n", "prop", "n_tot", "or", "ci", "pval"),
       na_str = "<No data>"
+    )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("tabulate_rsp_subgroups riskdiff argument works as expected", {
+  adrs <- adrs_200
+
+  df <- extract_rsp_subgroups(
+    variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
+    data = adrs,
+    conf_level = 0.95,
+    method = "chisq"
+  )
+
+  result <- basic_table() %>%
+    tabulate_rsp_subgroups(
+      df = df,
+      vars = c("n", "prop", "n_tot", "or", "ci", "pval"),
+      riskdiff = control_riskdiff(
+        arm_x = levels(df$prop$arm)[1],
+        arm_y = levels(df$prop$arm)[2],
+        col_label = "Prop. Diff\n(95% CI)"
+      )
     )
 
   res <- testthat::expect_silent(result)
