@@ -306,6 +306,8 @@ split_text_grob <- function(text,
                             name = NULL,
                             gp = grid::gpar(),
                             vp = NULL) {
+  text <- paste0(text, collapse = "\n") # necessary for c("", "a a")
+
   if (!grid::is.unit(x)) x <- grid::unit(x, default.units)
   if (!grid::is.unit(y)) y <- grid::unit(y, default.units)
   if (!grid::is.unit(width)) width <- grid::unit(width, default.units)
@@ -313,7 +315,7 @@ split_text_grob <- function(text,
   if (grid::unitType(y) %in% c("sum", "min", "max")) y <- grid::convertUnit(y, default.units)
   if (grid::unitType(width) %in% c("sum", "min", "max")) width <- grid::convertUnit(width, default.units)
 
-  if (length(gp) > 0) { # account for effect of gp on text width
+  if (length(gp) > 0) { # account for effect of gp on text width -> it was bugging when text was empty
     width <- width * grid::convertWidth(grid::grobWidth(grid::textGrob(text)), "npc", valueOnly = TRUE) /
       grid::convertWidth(grid::grobWidth(grid::textGrob(text, gp = gp)), "npc", valueOnly = TRUE)
   }

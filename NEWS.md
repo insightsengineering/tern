@@ -10,6 +10,8 @@
 * Fixed disappearing line in `g_lineplot` when using only one group or strata level.
 * Fixed defaults for formats and labels in `get_formats_from_stats` and `get_labels_from_stats`.
 * Fixed bug for linear scaling factor (`scale` parameter) being applied to response but not to rate in `h_glm_count` while all distributions have logarithmic link function.
+* Fixed bug in `decorate_grob` that did not handle well empty strings or `NULL` values for title and footers.
+
 
 ### Miscellaneous
 * Began deprecation of the confusing functions `summary_formats` and `summary_labels`.
