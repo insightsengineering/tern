@@ -378,8 +378,8 @@ g_km <- function(df,
 
     y_rng <- ylim[2] - ylim[1]
 
-    if (yval == "Survival" && data$estimate[data$time == max_time2] > ylim[1] + 0.09 * y_rng &&
-      data$estimate[data$time == max_time2] < ylim[1] + 0.5 * y_rng) { # nolint
+    if (yval == "Survival" && all(data$estimate[data$time == max_time2] > ylim[1] + 0.09 * y_rng) &&
+      all(data$estimate[data$time == max_time2] < ylim[1] + 0.5 * y_rng)) { # nolint
       gg_plt <- gg_plt +
         theme(
           legend.position.inside = c(1, 0.5),
