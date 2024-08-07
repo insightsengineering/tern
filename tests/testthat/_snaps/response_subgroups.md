@@ -239,6 +239,22 @@
       "p-value (Chi-Squared Test)" 
       
 
+# tabulate_rsp_subgroups .formats argument works as expected
+
+    Code
+      res
+    Output
+                                             B: Placebo           A: Drug X                                                            
+      Baseline Risk Factors     Total n   n    Response (%)   n    Response (%)   Odds Ratio     95% CI      p-value (Chi-Squared Test)
+      —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+      All Patients              142.00    73      68.5%       69      85.5%          2.71      1.2 to 6.2              0.0164          
+      Sex                                                                                                                              
+        F                        78.00    40      62.5%       38      94.7%         10.80      2.3 to 51.5             0.0006          
+        M                        64.00    33      75.8%       31      74.2%          0.92      0.3 to 2.9              0.8852          
+      Stratification Factor 2                                                                                                          
+        S1                       73.00    34      70.6%       39      87.2%          2.83      0.9 to 9.4              0.0801          
+        S2                       69.00    39      66.7%       30      83.3%          2.50      0.8 to 8.0              0.1181          
+
 # tabulate_rsp_subgroups na_str argument works as expected
 
     Code
@@ -254,4 +270,21 @@
       Stratification Factor 2                                                                                                            
         S1                        73      34      70.6%       39      87.2%       <No data>    (0.86, 9.35)              0.0801          
         S2                        69      39      66.7%       30      83.3%       <No data>    (0.78, 8.04)              0.1181          
+
+# tabulate_rsp_subgroups riskdiff argument works as expected
+
+    Code
+      res
+    Output
+                                             B: Placebo           A: Drug X                                                                                      
+                                                                                                                                                 Prop. Diff      
+      Baseline Risk Factors     Total n   n    Response (%)   n    Response (%)   Odds Ratio      95% CI       p-value (Chi-Squared Test)         (95% CI)       
+      ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+      All Patients                142     73      68.5%       69      85.5%          2.71      (1.18, 6.24)              0.0164             -17.0 (-30.5 - -3.5) 
+      Sex                                                                                                                                                        
+        F                         78      40      62.5%       38      94.7%         10.80      (2.27, 51.45)             0.0006             -32.2 (-48.8 - -15.6)
+        M                         64      33      75.8%       31      74.2%          0.92      (0.30, 2.85)              0.8852              1.6 (-19.7 - 22.8)  
+      Stratification Factor 2                                                                                                                                    
+        S1                        73      34      70.6%       39      87.2%          2.83      (0.86, 9.35)              0.0801              -16.6 (-35.2 - 2.0) 
+        S2                        69      39      66.7%       30      83.3%          2.50      (0.78, 8.04)              0.1181              -16.7 (-36.6 - 3.3) 
 
