@@ -123,3 +123,22 @@ testthat::test_that("text wrapping works as expected", {
 
   expect_snapshot_ggplot(title = "deco_grob_text_wrap", fig = deco_grob_text_wrap, width = 10, height = 8)
 })
+
+testthat::test_that("Edge cases work for titles and footers in split_text_grob", {
+  # regression test #1254
+  testthat::expect_silent(
+    split_text_grob(NULL)
+  )
+  testthat::expect_silent(
+    split_text_grob("")
+  )
+  testthat::expect_silent(
+    split_text_grob(c("", NA))
+  )
+  testthat::expect_silent(
+    split_text_grob(NA)
+  )
+  testthat::expect_silent(
+    split_text_grob(c("", "a a"))
+  )
+})
