@@ -5,11 +5,7 @@
 \alias{count_abnormal_lab_worsen_by_baseline}
 \alias{s_count_abnormal_lab_worsen_by_baseline}
 \alias{a_count_abnormal_lab_worsen_by_baseline}
-<<<<<<< HEAD
 \title{Count patients with toxicity grades that have worsened from baseline by highest grade post-baseline}
-=======
-\title{Patient counts for laboratory events (worsen from baseline) by highest grade post-baseline}
->>>>>>> main
 \usage{
 count_abnormal_lab_worsen_by_baseline(
   lyt,

@@ -8,10 +8,6 @@
 \alias{s_compare.factor}
 \alias{s_compare.character}
 \alias{s_compare.logical}
-<<<<<<< HEAD
-\alias{a_compare}
-=======
->>>>>>> main
 \title{Compare variables between groups}
 \usage{
 compare_vars(

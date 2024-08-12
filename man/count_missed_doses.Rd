@@ -5,11 +5,7 @@
 \alias{s_count_nonmissing}
 \alias{s_count_missed_doses}
 \alias{a_count_missed_doses}
-<<<<<<< HEAD
 \title{Count number of patients with missed doses by thresholds}
-=======
-\title{Count missed doses}
->>>>>>> main
 \usage{
 count_missed_doses(
   lyt,

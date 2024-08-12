@@ -4,11 +4,7 @@
 \alias{count_patients_events_in_cols}
 \alias{summarize_patients_events_in_cols}
 \alias{s_count_patients_and_multiple_events}
-<<<<<<< HEAD
 \title{Count patient events in columns}
-=======
-\title{Count patients and events in columns}
->>>>>>> main
 \usage{
 summarize_patients_events_in_cols(
   lyt,

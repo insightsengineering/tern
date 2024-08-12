@@ -5,11 +5,7 @@
 \alias{count_abnormal_by_worst_grade}
 \alias{s_count_abnormal_by_worst_grade}
 \alias{a_count_abnormal_by_worst_grade}
-<<<<<<< HEAD
 \title{Count patients by most extreme post-baseline toxicity grade per direction of abnormality}
-=======
-\title{Patient counts with the most extreme post-baseline toxicity grade per direction of abnormality}
->>>>>>> main
 \usage{
 count_abnormal_by_worst_grade(
   lyt,

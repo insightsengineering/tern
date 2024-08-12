@@ -5,11 +5,7 @@
 \alias{count_abnormal}
 \alias{s_count_abnormal}
 \alias{a_count_abnormal}
-<<<<<<< HEAD
 \title{Count patients with abnormal range values}
-=======
-\title{Patient counts with abnormal range values}
->>>>>>> main
 \usage{
 count_abnormal(
   lyt,

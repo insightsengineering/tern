@@ -9,10 +9,6 @@
 \alias{s_summary.character}
 \alias{s_summary.logical}
 \alias{a_summary}
-<<<<<<< HEAD
-\alias{summarize_vars}
-=======
->>>>>>> main
 \title{Analyze variables}
 \usage{
 analyze_vars(

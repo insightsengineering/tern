@@ -5,11 +5,7 @@
 \alias{summarize_occurrences_by_grade}
 \alias{s_count_occurrences_by_grade}
 \alias{a_count_occurrences_by_grade}
-<<<<<<< HEAD
 \title{Count occurrences by grade}
-=======
-\title{Occurrence counts by grade}
->>>>>>> main
 \usage{
 count_occurrences_by_grade(
   lyt,

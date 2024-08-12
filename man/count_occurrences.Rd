@@ -5,11 +5,7 @@
 \alias{summarize_occurrences}
 \alias{s_count_occurrences}
 \alias{a_count_occurrences}
-<<<<<<< HEAD
 \title{Count occurrences}
-=======
-\title{Occurrence counts}
->>>>>>> main
 \usage{
 count_occurrences(
   lyt,
