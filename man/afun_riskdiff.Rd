@@ -2,7 +2,7 @@
 % Please edit documentation in R/riskdiff.R
 \name{afun_riskdiff}
 \alias{afun_riskdiff}
-\title{Analysis Function to Calculate Risk Difference Column Values}
+\title{Analysis function to calculate risk difference column values}
 \usage{
 afun_riskdiff(
   df,
@@ -25,17 +25,17 @@ afun_riskdiff(
 \arguments{
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+\item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
 
-\item{.N_row}{(\code{integer})\cr row-wise N (row group count) for the group of observations being analyzed
+\item{.N_row}{(\code{integer(1)})\cr row-wise N (row group count) for the group of observations being analyzed
 (i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
 
 \item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
@@ -43,7 +43,7 @@ passed by \code{rtables}.}
 \item{.spl_context}{(\code{data.frame})\cr gives information about ancestor split states
 that is passed by \code{rtables}.}
 
-\item{.all_col_counts}{(\code{vector} of \code{integer})\cr each value represents a global count for a column. Values are
+\item{.all_col_counts}{(\code{integer})\cr vector where each value represents a global count for a column. Values are
 taken from \code{alt_counts_df} if specified (see \code{\link[rtables:build_table]{rtables::build_table()}}).}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
@@ -58,11 +58,11 @@ unmodified default behavior. Can be negative.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{afun}{(named \code{list})\cr A named list containing one name-value pair where the name corresponds to
+\item{afun}{(named \code{list})\cr a named list containing one name-value pair where the name corresponds to
 the name of the statistics function that should be used in calculations and the value is the corresponding
 analysis function.}
 
-\item{s_args}{(named \code{list})\cr Additional arguments to be passed to the statistics function and analysis
+\item{s_args}{(named \code{list})\cr additional arguments to be passed to the statistics function and analysis
 function supplied in \code{afun}.}
 }
 \value{

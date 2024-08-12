@@ -2,7 +2,7 @@
 % Please edit documentation in R/stat.R
 \name{stat_mean_ci}
 \alias{stat_mean_ci}
-\title{Confidence Interval for Mean}
+\title{Confidence interval for mean}
 \usage{
 stat_mean_ci(
   x,
@@ -20,11 +20,11 @@ stat_mean_ci(
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{n_min}{(\code{number})\cr a minimum number of non-missing \code{x} to estimate the confidence interval for mean.}
+\item{n_min}{(\code{numeric(1)})\cr a minimum number of non-missing \code{x} to estimate the confidence interval for mean.}
 
-\item{gg_helper}{(\code{logical})\cr \code{TRUE} when output should be aligned for the use with \code{ggplot}.}
+\item{gg_helper}{(\code{flag})\cr whether output should be aligned for use with \code{ggplot}s.}
 
-\item{geom_mean}{(\code{logical})\cr \code{TRUE} when the geometric mean should be calculated.}
+\item{geom_mean}{(\code{flag})\cr whether the geometric mean should be calculated.}
 }
 \value{
 A named \code{vector} of values \code{mean_ci_lwr} and \code{mean_ci_upr}.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimate_proportion.R
 \name{strata_normal_quantile}
 \alias{strata_normal_quantile}
-\title{Helper Function for the Estimation of Stratified Quantiles}
+\title{Helper function for the estimation of stratified quantiles}
 \usage{
 strata_normal_quantile(vars, weights, conf_level)
 }

@@ -27,17 +27,17 @@ The package provides a large range of functionality, such as:
 
 Data visualizations:
 
--   Line plots ([`g_lineplot`](https://insightsengineering.github.io/tern/reference/g_lineplot.html))
--   Kaplan-Meier plots ([`g_km`](https://insightsengineering.github.io/tern/reference/g_km.html))
--   Forest plots ([`g_forest`](https://insightsengineering.github.io/tern/reference/g_forest.html))
--   STEP graphs ([`g_step`](https://insightsengineering.github.io/tern/reference/g_step.html))
--   Individual patient plots ([`g_ipp`](https://insightsengineering.github.io/tern/reference/individual_patient_plot.html))
--   Waterfall plots ([`g_waterfall`](https://insightsengineering.github.io/tern/reference/g_waterfall.html))
+-   Line plots ([`g_lineplot`](https://insightsengineering.github.io/tern/latest-tag/reference/g_lineplot.html))
+-   Kaplan-Meier plots ([`g_km`](https://insightsengineering.github.io/tern/latest-tag/reference/g_km.html))
+-   Forest plots ([`g_forest`](https://insightsengineering.github.io/tern/latest-tag/reference/g_forest.html))
+-   STEP graphs ([`g_step`](https://insightsengineering.github.io/tern/latest-tag/reference/g_step.html))
+-   Individual patient plots ([`g_ipp`](https://insightsengineering.github.io/tern/latest-tag/reference/g_ipp.html))
+-   Waterfall plots ([`g_waterfall`](https://insightsengineering.github.io/tern/latest-tag/reference/g_waterfall.html))
 
 Statistical model fit summaries:
 
--   Logistic regression ([`summarize_logistic`](https://insightsengineering.github.io/tern/reference/logistic_regression.html))
--   Cox regression ([`summarize_coxreg`](https://insightsengineering.github.io/tern/reference/cox_regression.html))
+-   Logistic regression ([`summarize_logistic`](https://insightsengineering.github.io/tern/latest-tag/reference/summarize_logistic.html))
+-   Cox regression ([`summarize_coxreg`](https://insightsengineering.github.io/tern/latest-tag/reference/cox_regression.html))
 
 Analysis tables:
 

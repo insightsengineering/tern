@@ -1,4 +1,4 @@
-#' Odds Ratio Estimation
+#' Odds ratio estimation
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -220,7 +220,7 @@ estimate_odds_ratio <- function(lyt,
   )
 }
 
-#' Helper Functions for Odds Ratio Estimation
+#' Helper functions for odds ratio estimation
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -279,7 +279,7 @@ or_glm <- function(data, conf_level) {
   list(or_ci = values, n_tot = n_tot)
 }
 
-#' @describeIn h_odds_ratio estimates the odds ratio based on [survival::clogit()]. This is done for
+#' @describeIn h_odds_ratio Estimates the odds ratio based on [survival::clogit()]. This is done for
 #'   the whole data set including all groups, since the results are not the same as when doing
 #'   pairwise comparisons between the groups.
 #'

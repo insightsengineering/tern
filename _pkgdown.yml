@@ -16,6 +16,8 @@ navbar:
           href: coverage-report/
         - text: Unit test report
           href: unit-test-report/
+        - text: Non-CRAN unit test report
+          href: unit-test-report-non-cran/
     github:
       icon: fa-github
       href: https://github.com/insightsengineering/tern
@@ -146,11 +148,12 @@ reference:
   - title: Graph Helper Functions
     desc: These functions are useful to modify graphs.
     contents:
-      - starts_with("decorate_")
+      - decorate_grob
+      - split_text_grob
+      - decorate_grob_factory
+      - decorate_grob_set
       - h_g_ipp
-      - matches(".*grob.*")
       - h_xticks
-      - forest_viewport
 
   - title: Data Helper Functions
     desc: These functions are used by other functions to derive data.
@@ -188,6 +191,14 @@ reference:
   - title: Deprecated Functions
     desc: Functions that are currently deprecated within `tern`.
     contents:
-      - starts_with("create_")
-      - summarize_vars
-      - summary_custom
+      - forest_viewport
+      - h_decompose_gg
+      - h_ggkm
+      - h_grob_coxph
+      - h_grob_median_surv
+      - h_grob_tbl_at_risk
+      - h_grob_y_annot
+      - h_km_layout
+      - stack_grobs
+      - arrange_grobs
+      - draw_grob

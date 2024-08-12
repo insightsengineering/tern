@@ -6,7 +6,7 @@
 \alias{h_proportion_subgroups_df}
 \alias{h_odds_ratio_df}
 \alias{h_odds_ratio_subgroups_df}
-\title{Helper Functions for Tabulating Binary Response by Subgroup}
+\title{Helper functions for tabulating binary response by subgroup}
 \usage{
 h_proportion_df(rsp, arm)
 
@@ -29,7 +29,7 @@ h_odds_ratio_subgroups_df(
 )
 }
 \arguments{
-\item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
+\item{rsp}{(\code{logical})\cr vector indicating whether each subject is a responder or not.}
 
 \item{arm}{(\code{factor})\cr the treatment group variable.}
 
@@ -43,11 +43,11 @@ levels that belong to it in the character vectors that are elements of the list.
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
 
-\item{strata_data}{(\code{factor}, \code{data.frame} or \code{NULL})\cr required if stratified analysis is performed.}
+\item{strata_data}{(\code{factor}, \code{data.frame}, or \code{NULL})\cr required if stratified analysis is performed.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{method}{(\code{string})\cr specifies the test used to calculate the p-value for the difference between
+\item{method}{(\code{string} or \code{NULL})\cr specifies the test used to calculate the p-value for the difference between
 two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL} so no test is performed.}
 }
 \value{
@@ -81,20 +81,20 @@ Main functionality is to prepare data for use in a layout-creating function.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_proportion_df()}: helper to prepare a data frame of binary responses by arm.
+\item \code{h_proportion_df()}: Helper to prepare a data frame of binary responses by arm.
 
-\item \code{h_proportion_subgroups_df()}: summarizes proportion of binary responses by arm and across subgroups
+\item \code{h_proportion_subgroups_df()}: Summarizes proportion of binary responses by arm and across subgroups
 in a data frame. \code{variables} corresponds to the names of variables found in \code{data}, passed as a named list and
 requires elements \code{rsp}, \code{arm} and optionally \code{subgroups}. \code{groups_lists} optionally specifies
 groupings for \code{subgroups} variables.
 
-\item \code{h_odds_ratio_df()}: helper to prepare a data frame with estimates of
+\item \code{h_odds_ratio_df()}: Helper to prepare a data frame with estimates of
 the odds ratio between a treatment and a control arm.
 
-\item \code{h_odds_ratio_subgroups_df()}: summarizes estimates of the odds ratio between a treatment and a control
+\item \code{h_odds_ratio_subgroups_df()}: Summarizes estimates of the odds ratio between a treatment and a control
 arm across subgroups in a data frame. \code{variables} corresponds to the names of variables found in
 \code{data}, passed as a named list and requires elements \code{rsp}, \code{arm} and optionally \code{subgroups}
-and \code{strat}. \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
+and \code{strata}. \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
 
 }}
 \examples{
@@ -167,7 +167,7 @@ h_odds_ratio_subgroups_df(
     rsp = "rsp",
     arm = "ARM",
     subgroups = c("SEX", "BMRKR2"),
-    strat = c("STRATA1", "STRATA2")
+    strata = c("STRATA1", "STRATA2")
   ),
   data = adrs_f
 )

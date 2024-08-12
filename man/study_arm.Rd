@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{study_arm}
 \alias{study_arm}
-\title{Indicate Study Arm Variable in Formula}
+\title{Indicate study arm variable in formula}
 \usage{
 study_arm(x)
 }

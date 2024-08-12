@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{extract_by_name}
 \alias{extract_by_name}
-\title{Extract Elements by Name}
+\title{Extract elements by name}
 \usage{
 extract_by_name(x, names)
 }

@@ -1,4 +1,4 @@
-#' Split Function to Configure Risk Difference Column
+#' Split function to configure risk difference column
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -7,10 +7,10 @@
 #' should be used as `split_fun` in calls to [rtables::split_cols_by()], followed by setting argument
 #' `riskdiff` to `TRUE` in all following analyze function calls.
 #'
-#' @param arm_x (`character`)\cr Name of reference arm to use in risk difference calculations.
-#' @param arm_y (`character`)\cr Names of one or more arms to compare to reference arm in risk difference
+#' @param arm_x (`string`)\cr name of reference arm to use in risk difference calculations.
+#' @param arm_y (`character`)\cr names of one or more arms to compare to reference arm in risk difference
 #'   calculations. A new column will be added for each value of `arm_y`.
-#' @param col_label (`character`)\cr Labels to use when rendering the risk difference column within the table.
+#' @param col_label (`character`)\cr labels to use when rendering the risk difference column within the table.
 #'   If more than one comparison arm is specified in `arm_y`, default labels will specify which two arms are
 #'   being compared (reference arm vs. comparison arm).
 #' @param pct (`flag`)\cr whether output should be returned as percentages. Defaults to `TRUE`.
@@ -59,7 +59,7 @@ add_riskdiff <- function(arm_x,
   add_combo_levels(combodf)
 }
 
-#' Analysis Function to Calculate Risk Difference Column Values
+#' Analysis function to calculate risk difference column values
 #'
 #' In the risk difference column, this function uses the statistics function associated with `afun` to
 #' calculates risk difference values from arm X (reference group) and arm Y. These arms are specified
@@ -68,10 +68,10 @@ add_riskdiff <- function(arm_x,
 #' function utilizes the [stat_propdiff_ci()] function to perform risk difference calculations.
 #'
 #' @inheritParams argument_convention
-#' @param afun (named `list`)\cr A named list containing one name-value pair where the name corresponds to
+#' @param afun (named `list`)\cr a named list containing one name-value pair where the name corresponds to
 #'   the name of the statistics function that should be used in calculations and the value is the corresponding
 #'   analysis function.
-#' @param s_args (named `list`)\cr Additional arguments to be passed to the statistics function and analysis
+#' @param s_args (named `list`)\cr additional arguments to be passed to the statistics function and analysis
 #'   function supplied in `afun`.
 #'
 #' @return A list of formatted [rtables::CellValue()].
@@ -159,4 +159,39 @@ afun_riskdiff <- function(df,
 
     in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
   }
+}
+
+#' Control function for risk difference column
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Sets a list of parameters to use when generating a risk (proportion) difference column. Used as input to the
+#' `riskdiff` parameter of [tabulate_rsp_subgroups()] and [tabulate_survival_subgroups()].
+#'
+#' @inheritParams add_riskdiff
+#' @param format (`string` or `function`)\cr the format label (string) or formatting function to apply to the risk
+#'   difference statistic. See the `3d` string options in [list_valid_format_labels()] for possible format strings.
+#'   Defaults to `"xx.x (xx.x - xx.x)"`.
+#'
+#' @return A `list` of items with names corresponding to the arguments.
+#'
+#' @seealso [add_riskdiff()], [tabulate_rsp_subgroups()], and [tabulate_survival_subgroups()].
+#'
+#' @examples
+#' control_riskdiff()
+#' control_riskdiff(arm_x = "ARM A", arm_y = "ARM B")
+#'
+#' @export
+control_riskdiff <- function(arm_x = NULL,
+                             arm_y = NULL,
+                             format = "xx.x (xx.x - xx.x)",
+                             col_label = "Risk Difference (%) (95% CI)",
+                             pct = TRUE) {
+  checkmate::assert_character(arm_x, len = 1, null.ok = TRUE)
+  checkmate::assert_character(arm_y, min.len = 1, null.ok = TRUE)
+  checkmate::assert_character(format, len = 1)
+  checkmate::assert_character(col_label)
+  checkmate::assert_flag(pct)
+
+  list(arm_x = arm_x, arm_y = arm_y, format = format, col_label = col_label, pct = pct)
 }

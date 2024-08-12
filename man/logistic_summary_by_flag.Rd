@@ -2,7 +2,7 @@
 % Please edit documentation in R/logistic_regression.R
 \name{logistic_summary_by_flag}
 \alias{logistic_summary_by_flag}
-\title{Logistic Regression Summary Table Constructor Function}
+\title{Logistic regression summary table}
 \usage{
 logistic_summary_by_flag(
   flag_var,

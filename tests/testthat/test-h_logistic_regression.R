@@ -263,13 +263,17 @@ testthat::test_that("h_glm_simple_term_extract can extract continuous variable r
     RACE = LETTERS[c(rep(c(3, 4), 10))]
   )
 
-  mod <- fit_logistic(
-    data,
-    variables = list(
-      response = "Response",
-      arm = "ARMCD",
-      covariates = c("AGE", "RACE"),
-      strata = "STRATA1"
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    mod <- fit_logistic(
+      data,
+      variables = list(
+        response = "Response",
+        arm = "ARMCD",
+        covariates = c("AGE", "RACE"),
+        strata = "STRATA1"
+      )
     )
   )
 
@@ -350,13 +354,17 @@ testthat::test_that("h_logistic_simple_terms can extract continuous variable res
     RACE = LETTERS[c(rep(c(3, 4), 10))]
   )
 
-  mod <- fit_logistic(
-    data,
-    variables = list(
-      response = "Response",
-      arm = "ARMCD",
-      covariates = c("AGE", "RACE", "SEX"),
-      strata = "STRATA1"
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    mod <- fit_logistic(
+      data,
+      variables = list(
+        response = "Response",
+        arm = "ARMCD",
+        covariates = c("AGE", "RACE", "SEX"),
+        strata = "STRATA1"
+      )
     )
   )
   result <- testthat::expect_silent(unlist(h_logistic_simple_terms("AGE", mod)))

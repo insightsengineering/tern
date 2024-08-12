@@ -2,16 +2,16 @@
 % Please edit documentation in R/utils.R
 \name{range_noinf}
 \alias{range_noinf}
-\title{Re-implemented \code{\link[=range]{range()}} Default S3 method for numerical objects}
+\title{Re-implemented \code{range()} default S3 method for numerical objects}
 \usage{
 range_noinf(x, na.rm = FALSE, finite = FALSE)
 }
 \arguments{
 \item{x}{(\code{numeric})\cr a sequence of numbers for which the range is computed.}
 
-\item{na.rm}{(\code{logical})\cr indicating if \code{NA} should be omitted.}
+\item{na.rm}{(\code{flag})\cr flag indicating if \code{NA} should be omitted.}
 
-\item{finite}{(\code{logical})\cr indicating if non-finite elements should be removed.}
+\item{finite}{(\code{flag})\cr flag indicating if non-finite elements should be removed.}
 }
 \value{
 A 2-element vector of class \code{numeric}.

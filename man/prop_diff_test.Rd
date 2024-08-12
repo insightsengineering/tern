@@ -5,7 +5,7 @@
 \alias{test_proportion_diff}
 \alias{s_test_proportion_diff}
 \alias{a_test_proportion_diff}
-\title{Difference Test for Two Proportions}
+\title{Difference test for two proportions}
 \usage{
 test_proportion_diff(
   lyt,
@@ -43,7 +43,7 @@ a_test_proportion_diff(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
@@ -54,18 +54,18 @@ to calculate the p-value.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{var_labels}{(\code{character})\cr character for label.}
+\item{var_labels}{(\code{character})\cr variable labels.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("test_proportion_diff")}
 to see available statistics for this function.}
@@ -85,7 +85,7 @@ by a statistics function.}
 
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
-\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+\item{.in_ref_col}{(\code{flag})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 }
 \value{
 \itemize{
@@ -122,7 +122,7 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 dta <- data.frame(
   rsp = sample(c(TRUE, FALSE), 100, TRUE),
   grp = factor(rep(c("A", "B"), each = 50)),
-  strat = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+  strata = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
 )
 
 # With `rtables` pipelines.
@@ -130,7 +130,7 @@ l <- basic_table() \%>\%
   split_cols_by(var = "grp", ref_group = "B") \%>\%
   test_proportion_diff(
     vars = "rsp",
-    method = "cmh", variables = list(strata = "strat")
+    method = "cmh", variables = list(strata = "strata")
   )
 
 build_table(l, df = dta)

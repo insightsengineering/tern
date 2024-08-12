@@ -22,6 +22,7 @@ LICENSE
 # pkgdown
 ^_pkgdown\.yml$
 pkgdown
+^pkgdown$
 
 # rstudio
 ^.*\.Rproj$
@@ -33,3 +34,6 @@ pkgdown
 # others
 ^renv$
 ^renv\.lock$
+^.revdeprefs\.yaml$
+^revdep$
+^\.covrignore$

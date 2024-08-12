@@ -1,8 +1,8 @@
-#' Helper Function to create a new `SMQ` variable in `ADAE` by stacking `SMQ` and/or `CQ` records.
+#' Helper function to create a new SMQ variable in ADAE by stacking SMQ and/or CQ records.
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Helper Function to create a new `SMQ` variable in `ADAE` that consists of all adverse events belonging to
+#' Helper function to create a new SMQ variable in ADAE that consists of all adverse events belonging to
 #' selected Standardized/Customized queries. The new dataset will only contain records of the adverse events
 #' belonging to any of the selected baskets. Remember that `na_str` must match the needed pre-processing
 #' done with [df_explicit_na()] to have the desired output.
@@ -11,11 +11,11 @@
 #' @param baskets (`character`)\cr variable names of the selected Standardized/Customized queries.
 #' @param smq_varlabel (`string`)\cr a label for the new variable created.
 #' @param keys (`character`)\cr names of the key variables to be returned along with the new variable created.
-#' @param aag_summary (`data.frame`)\cr containing the `SMQ` baskets and the levels of interest for the final `SMQ`
+#' @param aag_summary (`data.frame`)\cr containing the SMQ baskets and the levels of interest for the final SMQ
 #'   variable. This is useful when there are some levels of interest that are not observed in the `df` dataset.
 #'   The two columns of this dataset should be named `basket` and `basket_name`.
 #'
-#' @return `data.frame` with variables in `keys` taken from `df` and new variable `SMQ` containing
+#' @return A `data.frame` with variables in `keys` taken from `df` and new variable SMQ containing
 #'   records belonging to the baskets selected via the `baskets` argument.
 #'
 #' @examples
@@ -25,8 +25,8 @@
 #' aag <- data.frame(
 #'   NAMVAR = c("CQ01NAM", "CQ02NAM", "SMQ01NAM", "SMQ02NAM"),
 #'   REFNAME = c(
-#'     "D.2.1.5.3/A.1.1.1.1 AESI", "X.9.9.9.9/Y.8.8.8.8 AESI",
-#'     "C.1.1.1.3/B.2.2.3.1 AESI", "C.1.1.1.3/B.3.3.3.3 AESI"
+#'     "D.2.1.5.3/A.1.1.1.1 aesi", "X.9.9.9.9/Y.8.8.8.8 aesi",
+#'     "C.1.1.1.3/B.2.2.3.1 aesi", "C.1.1.1.3/B.3.3.3.3 aesi"
 #'   ),
 #'   SCOPE = c("", "", "BROAD", "BROAD"),
 #'   stringsAsFactors = FALSE
@@ -62,13 +62,7 @@ h_stack_by_baskets <- function(df,
                                smq_varlabel = "Standardized MedDRA Query",
                                keys = c("STUDYID", "USUBJID", "ASTDTM", "AEDECOD", "AESEQ"),
                                aag_summary = NULL,
-                               na_level = lifecycle::deprecated(),
                                na_str = "<Missing>") {
-  if (lifecycle::is_present(na_level)) {
-    lifecycle::deprecate_warn("0.9.1", "h_stack_by_baskets(na_level)", "h_stack_by_baskets(na_str)")
-    na_str <- na_level
-  }
-
   smq_nam <- baskets[startsWith(baskets, "SMQ")]
   # SC corresponding to NAM
   smq_sc <- gsub(pattern = "NAM", replacement = "SC", x = smq_nam, fixed = TRUE)
@@ -102,7 +96,7 @@ h_stack_by_baskets <- function(df,
   df[, c(baskets, smq_sc)][df[, c(baskets, smq_sc)] == na_str] <- NA
 
   if (all(is.na(df[, baskets]))) { # in case there is no level for the target baskets
-    df_long <- df[-seq_len(nrow(df)), keys] # we just need an empty dataframe keeping all factor levels
+    df_long <- df[-seq_len(nrow(df)), keys] # we just need an empty data frame keeping all factor levels
   } else {
     # Concatenate SMQxxxNAM with corresponding SMQxxxSC
     df_cnct <- df[, c(keys, baskets[startsWith(baskets, "CQ")])]
@@ -116,7 +110,7 @@ h_stack_by_baskets <- function(df,
 
     df_cnct$unique_id <- seq(1, nrow(df_cnct))
     var_cols <- names(df_cnct)[!(names(df_cnct) %in% c(keys, "unique_id"))]
-    # have to convert df_cnct from tibble to dataframe
+    # have to convert df_cnct from tibble to data frame
     # as it throws a warning otherwise about rownames.
     # tibble do not support rownames and reshape creates rownames
 

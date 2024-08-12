@@ -2,7 +2,7 @@
 % Please edit documentation in R/summarize_ancova.R
 \name{h_ancova}
 \alias{h_ancova}
-\title{Helper Function to Return Results of a Linear Model}
+\title{Helper function to return results of a linear model}
 \usage{
 h_ancova(.var, .df_row, variables, interaction_item = NULL)
 }
@@ -12,7 +12,7 @@ by a statistics function.}
 
 \item{.df_row}{(\code{data.frame})\cr data set that includes all the variables that are called in \code{.var} and \code{variables}.}
 
-\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables, with expected elements:
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables, with expected elements:
 \itemize{
 \item \code{arm} (\code{string})\cr group variable, for which the covariate adjusted means of multiple groups will be
 summarized. Specifically, the first level of \code{arm} variable is taken as the reference group.
@@ -20,7 +20,7 @@ summarized. Specifically, the first level of \code{arm} variable is taken as the
 interaction terms indicated by \code{"X1 * X2"}.
 }}
 
-\item{interaction_item}{(\code{character})\cr name of the variable that should have interactions
+\item{interaction_item}{(\code{string} or \code{NULL})\cr name of the variable that should have interactions
 with arm. if the interaction is not needed, the default option is \code{NULL}.}
 }
 \value{

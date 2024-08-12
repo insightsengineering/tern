@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_map_for_count_abnormal.R
 \name{h_map_for_count_abnormal}
 \alias{h_map_for_count_abnormal}
-\title{Helper Function to create a map dataframe that can be used in \code{trim_levels_to_map} split function.}
+\title{Helper function to create a map data frame for \code{trim_levels_to_map()}}
 \usage{
 h_map_for_count_abnormal(
   df,
@@ -10,7 +10,6 @@ h_map_for_count_abnormal(
     range_high = "ANRHI"),
   abnormal = list(low = c("LOW", "LOW LOW"), high = c("HIGH", "HIGH HIGH")),
   method = c("default", "range"),
-  na_level = lifecycle::deprecated(),
   na_str = "<Missing>"
 )
 }
@@ -25,8 +24,6 @@ abnormality of the input dataset, it can be something like \code{list(Low = "LOW
 
 \item{method}{(\code{string})\cr indicates how the returned map will be constructed. Can be \code{"default"} or \code{"range"}.}
 
-\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
-
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 }
 \value{
@@ -35,7 +32,7 @@ A map \code{data.frame}.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Helper Function to create a map dataframe from the input dataset, which can be used as an argument in the
+Helper function to create a map data frame from the input dataset, which can be used as an argument in the
 \code{trim_levels_to_map} split function. Based on different method, the map is constructed differently.
 }
 \note{

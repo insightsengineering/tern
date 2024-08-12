@@ -39,17 +39,19 @@
 #' @order 1
 NULL
 
-#' Helper Function to Prepare `ADLB` with Worst Labs
+#' Helper function to prepare ADLB with worst labs
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Helper function to prepare a `df` for generate the patient count shift table
+#' Helper function to prepare a `df` for generate the patient count shift table.
 #'
-#' @param adlb (`data.frame`)\cr `ADLB` dataframe
-#' @param worst_flag_low (named `vector`)\cr Worst low post-baseline lab grade flag variable
-#' @param worst_flag_high (named `vector`)\cr Worst high post-baseline lab grade flag variable
-#' @param direction_var (`string`)\cr Direction variable specifying the direction of the shift table of interest.
-#'   Only lab records flagged by `L`, `H` or `B` are included in the shift table.
+#' @param adlb (`data.frame`)\cr ADLB data frame.
+#' @param worst_flag_low (named `vector`)\cr worst low post-baseline lab grade flag variable. See how this is
+#'   implemented in the following examples.
+#' @param worst_flag_high (named `vector`)\cr worst high post-baseline lab grade flag variable. See how this is
+#'   implemented in the following examples.
+#' @param direction_var (`string`)\cr name of the direction variable specifying the direction of the shift table of
+#'   interest. Only lab records flagged by `L`, `H` or `B` are included in the shift table.
 #'   * `L`: low direction only
 #'   * `H`: high direction only
 #'   * `B`: both low and high directions
@@ -175,7 +177,7 @@ h_adlb_worsen <- function(adlb,
   out
 }
 
-#' Helper Function to Analyze Patients for [s_count_abnormal_lab_worsen_by_baseline()]
+#' Helper function to analyze patients for `s_count_abnormal_lab_worsen_by_baseline()`
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -185,9 +187,9 @@ h_adlb_worsen <- function(adlb,
 #'
 #' @inheritParams argument_convention
 #' @inheritParams h_adlb_worsen
-#' @param baseline_var (`string`)\cr baseline lab grade variable
+#' @param baseline_var (`string`)\cr name of the baseline lab grade variable.
 #'
-#' @return `h_worsen_counter()` returns the counts and fraction of patients
+#' @return The counts and fraction of patients
 #'   whose worst post-baseline lab grades are worse than their baseline grades, for
 #'   post-baseline worst grades "1", "2", "3", "4" and "Any".
 #'
@@ -314,7 +316,6 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
 
   h_worsen_counter(df, variables$id, .var, variables$baseline_var, variables$direction_var)
 }
-
 
 #' @describeIn abnormal_by_worst_grade_worsen Formatted analysis function which is used as `afun`
 #'   in `count_abnormal_lab_worsen_by_baseline()`.

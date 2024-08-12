@@ -1,11 +1,11 @@
-#' Sort Data by `PK PARAM` Variable
+#' Sort pharmacokinetic data by `PARAM` variable
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param pk_data (`data.frame`)\cr `Pharmacokinetics` dataframe
-#' @param key_var (`character`)\cr key variable used to merge pk_data and metadata created by `d_pkparam()`
+#' @param pk_data (`data.frame`)\cr pharmacokinetic data frame.
+#' @param key_var (`string`)\cr key variable used to merge pk_data and metadata created by [d_pkparam()].
 #'
-#' @return A PK `data.frame` sorted by a `PARAM` variable.
+#' @return A pharmacokinetic `data.frame` sorted by a `PARAM` variable.
 #'
 #' @examples
 #' library(dplyr)
@@ -21,7 +21,7 @@ h_pkparam_sort <- function(pk_data, key_var = "PARAMCD") {
   ordered_pk_data <- d_pkparam()
 
   # Add the numeric values from ordered_pk_data to pk_data
-  joined_data <- merge(pk_data, ordered_pk_data, by = "PARAMCD", suffix = c("", ".y"))
+  joined_data <- merge(pk_data, ordered_pk_data, by = "PARAMCD", suffixes = c("", ".y"))
 
   joined_data <- joined_data[, -grep(".*.y$", colnames(joined_data))]
 

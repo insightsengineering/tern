@@ -2,7 +2,7 @@
 % Please edit documentation in R/control_logistic.R
 \name{control_logistic}
 \alias{control_logistic}
-\title{Control Function for Logistic Regression Model Fitting}
+\title{Control function for logistic regression model fitting}
 \usage{
 control_logistic(response_definition = "response", conf_level = 0.95)
 }

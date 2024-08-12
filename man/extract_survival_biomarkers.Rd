@@ -2,7 +2,7 @@
 % Please edit documentation in R/survival_biomarkers_subgroups.R
 \name{extract_survival_biomarkers}
 \alias{extract_survival_biomarkers}
-\title{Prepares Survival Data Estimates for Multiple Biomarkers in a Single Data Frame}
+\title{Prepare survival data estimates for multiple biomarkers in a single data frame}
 \usage{
 extract_survival_biomarkers(
   variables,
@@ -36,7 +36,7 @@ A \code{data.frame} with columns \code{biomarker}, \code{biomarker_label}, \code
 Prepares estimates for number of events, patients and median survival times, as well as hazard ratio estimates,
 confidence intervals and p-values, for multiple biomarkers across population subgroups in a single data frame.
 \code{variables} corresponds to the names of variables found in \code{data}, passed as a named \code{list} and requires elements
-\code{tte}, \code{is_event}, \code{biomarkers} (vector of continuous biomarker variables), and optionally \code{subgroups} and \code{strat}.
+\code{tte}, \code{is_event}, \code{biomarkers} (vector of continuous biomarker variables), and optionally \code{subgroups} and \code{strata}.
 \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
 }
 \seealso{

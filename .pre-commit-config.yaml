@@ -6,7 +6,7 @@ default_language_version:
   python: python3
 repos:
   - repo: https://github.com/lorenzwalthert/precommit
-    rev: v0.3.2.9027
+    rev: v0.4.3
     hooks:
       - id: style-files
         name: Style code with `styler`
@@ -15,26 +15,32 @@ repos:
       - id: roxygenize
         name: Regenerate package documentation
         additional_dependencies:
-          - checkmate
-          - digest
-          - dplyr
-          - ggplot2
-          - glue
-          - grDevices
-          - lifecycle
-          - logger
-          - magrittr
-          - methods
-          - bioc::MultiAssayExperiment
-          - R6
-          - rlang
           - rtables
-          - shinyjs
-          - shinyWidgets
+          - broom
+          - car
+          - checkmate
+          - cowplot
+          - dplyr
+          - emmeans
+          - forcats
+          - formatters
+          - ggplot2
+          - grid
+          - gridExtra
+          - gtable
+          - labeling
+          - lifecycle
+          - magrittr
+          - MASS
+          - methods
+          - Rdpack
+          - rlang
+          - scales
           - stats
-          - bioc::SummarizedExperiment
+          - survival
+          - tibble
+          - tidyr
           - utils
-          - yaml
       - id: spell-check
         name: Check spelling with `spelling`
         exclude: >
@@ -52,9 +58,10 @@ repos:
           .*\.sh|
           .*\.svg|
           .*\.xml|
-          (.*/|)\_pkgdown.y[a]ml|
+          (.*/|)\_pkgdown.y[a]?ml|
+          (.*/|)\.covrignore|
           (.*/|)\.gitignore|
-          (.*/|)\.gitlab-ci\.yml|
+          (.*/|)\.gitlab-ci\.y[a]?ml|
           (.*/|)\.lintr|
           (.*/|)\.pre-commit-.*|
           (.*/|)\.Rbuildignore|
@@ -64,8 +71,8 @@ repos:
           (.*/|)DESCRIPTION|
           (.*/|)LICENSE|
           (.*/|)NAMESPACE|
-          (.*/|)staged_dependencies\.yaml|
+          (.*/|)staged_dependencies\.y[a]?ml|
           (.*/|)WORDLIST|
-          \.github/.*\.yaml|
+          \.github/.*\.y[a]?ml|
           data/.*
           )$

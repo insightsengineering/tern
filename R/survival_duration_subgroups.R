@@ -1,4 +1,4 @@
-#' Tabulate Survival Duration by Subgroup
+#' Tabulate survival duration by subgroup
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -6,9 +6,9 @@
 #'
 #' @inheritParams argument_convention
 #' @inheritParams survival_coxph_pairwise
-#' @param df (`list`)\cr of data frames containing all analysis variables. List should be
+#' @param df (`list`)\cr list of data frames containing all analysis variables. List should be
 #'   created using [extract_survival_subgroups()].
-#' @param vars (`character`)\cr the name of statistics to be reported among:
+#' @param vars (`character`)\cr the names of statistics to be reported among:
 #'   * `n_tot_events`: Total number of events per group.
 #'   * `n_events`: Number of events per group.
 #'   * `n_tot`: Total number of observations per group.
@@ -28,7 +28,6 @@
 #'
 #' @examples
 #' library(dplyr)
-#' library(forcats)
 #'
 #' adtte <- tern_ex_adtte
 #'
@@ -43,7 +42,7 @@
 #'   ) %>%
 #'   mutate(
 #'     # Reorder levels of ARM to display reference arm before treatment arm.
-#'     ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
+#'     ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
 #'     SEX = droplevels(SEX),
 #'     AVALU = as.character(AVALU),
 #'     is_event = CNSR == 0
@@ -62,6 +61,7 @@
 #'     is_event = "is_event",
 #'     arm = "ARM", subgroups = c("SEX", "BMRKR2")
 #'   ),
+#'   label_all = "Total Patients",
 #'   data = adtte_f
 #' )
 #' df
@@ -87,14 +87,14 @@
 #' @order 1
 NULL
 
-#' Prepares Survival Data for Population Subgroups in Data Frames
+#' Prepare survival data for population subgroups in data frames
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Prepares estimates of median survival times and treatment hazard ratios for population subgroups in
 #' data frames. Simple wrapper for [h_survtime_subgroups_df()] and [h_coxph_subgroups_df()]. Result is a `list`
 #' of two `data.frame`s: `survtime` and `hr`. `variables` corresponds to the names of variables found in `data`,
-#' passed as a named `list` and requires elements `tte`, `is_event`, `arm` and optionally `subgroups` and `strat`.
+#' passed as a named `list` and requires elements `tte`, `is_event`, `arm` and optionally `subgroups` and `strata`.
 #' `groups_lists` optionally specifies groupings for `subgroups` variables.
 #'
 #' @inheritParams argument_convention
@@ -115,6 +115,15 @@ extract_survival_subgroups <- function(variables,
                                        groups_lists = list(),
                                        control = control_coxph(),
                                        label_all = "All Patients") {
+  if ("strat" %in% names(variables)) {
+    warning(
+      "Warning: the `strat` element name of the `variables` list argument to `extract_survival_subgroups() ",
+      "was deprecated in tern 0.9.3.\n  ",
+      "Please use the name `strata` instead of `strat` in the `variables` argument."
+    )
+    variables[["strata"]] <- variables[["strat"]]
+  }
+
   df_survtime <- h_survtime_subgroups_df(
     variables,
     data,
@@ -153,29 +162,18 @@ a_survival_subgroups <- function(.formats = list( # nolint start
   checkmate::assert_list(.formats)
   checkmate::assert_subset(
     names(.formats),
-    c("n", "n_events", "median", "n_tot", "n_tot_events", "hr", "ci", "pval")
+    c("n", "n_events", "median", "n_tot", "n_tot_events", "hr", "ci", "pval", "riskdiff")
   )
 
   afun_lst <- Map(
     function(stat, fmt, na_str) {
-      if (stat == "ci") {
-        function(df, labelstr = "", ...) {
-          in_rows(
-            .list = combine_vectors(df$lcl, df$ucl),
-            .labels = as.character(df$subgroup),
-            .formats = fmt,
-            .format_na_strs = na_str
-          )
-        }
-      } else {
-        function(df, labelstr = "", ...) {
-          in_rows(
-            .list = as.list(df[[stat]]),
-            .labels = as.character(df$subgroup),
-            .formats = fmt,
-            .format_na_strs = na_str
-          )
-        }
+      function(df, labelstr = "", ...) {
+        in_rows(
+          .list = as.list(df[[stat]]),
+          .labels = as.character(df$subgroup),
+          .formats = fmt,
+          .format_na_strs = na_str
+        )
       }
     },
     stat = names(.formats),
@@ -189,6 +187,13 @@ a_survival_subgroups <- function(.formats = list( # nolint start
 #' @describeIn survival_duration_subgroups Table-creating function which creates a table
 #'   summarizing survival by subgroup. This function is a wrapper for [rtables::analyze_colvars()]
 #'   and [rtables::summarize_row_groups()].
+#'
+#' @param label_all `r lifecycle::badge("deprecated")`\cr please assign the `label_all` parameter within the
+#'   [extract_survival_subgroups()] function when creating `df`.
+#' @param riskdiff (`list`)\cr if a risk (proportion) difference column should be added, a list of settings to apply
+#'   within the column. See [control_riskdiff()] for details. If `NULL`, no risk difference column will be added. If
+#'   `riskdiff$arm_x` and `riskdiff$arm_y` are `NULL`, the first level of `df$survtime$arm` will be used as `arm_x`
+#'   and the second level as `arm_y`.
 #'
 #' @return An `rtables` table summarizing survival by subgroup.
 #'
@@ -211,32 +216,82 @@ tabulate_survival_subgroups <- function(lyt,
                                         df,
                                         vars = c("n_tot_events", "n_events", "median", "hr", "ci"),
                                         groups_lists = list(),
-                                        label_all = "All Patients",
+                                        label_all = lifecycle::deprecated(),
                                         time_unit = NULL,
-                                        na_str = default_na_str()) {
+                                        riskdiff = NULL,
+                                        na_str = default_na_str(),
+                                        .formats = c(
+                                          n = "xx", n_events = "xx", n_tot_events = "xx", median = "xx.x", n_tot = "xx",
+                                          hr = list(format_extreme_values(2L)), ci = list(format_extreme_values_ci(2L)),
+                                          pval = "x.xxxx | (<0.0001)"
+                                        )) {
+  checkmate::assert_list(riskdiff, null.ok = TRUE)
+  checkmate::assert_true(any(c("n_tot", "n_tot_events") %in% vars))
+  checkmate::assert_true(all(c("hr", "ci") %in% vars))
+
+  if (lifecycle::is_present(label_all)) {
+    lifecycle::deprecate_warn(
+      "0.9.5", "tabulate_survival_subgroups(label_all)",
+      details =
+        "Please assign the `label_all` parameter within the `extract_survival_subgroups()` function when creating `df`."
+    )
+  }
+
+  # Create "ci" column from "lcl" and "ucl"
+  df$hr$ci <- combine_vectors(df$hr$lcl, df$hr$ucl)
+
+  # Fill in missing formats with defaults
+  default_fmts <- eval(formals(tabulate_survival_subgroups)$.formats)
+  .formats <- c(.formats, default_fmts[vars[!vars %in% names(.formats)]])
+
+  # Extract additional parameters from df
   conf_level <- df$hr$conf_level[1]
   method <- df$hr$pval_label[1]
+  colvars <- d_survival_subgroups_colvars(vars, conf_level = conf_level, method = method, time_unit = time_unit)
+  survtime_vars <- intersect(colvars$vars, c("n", "n_events", "median"))
+  hr_vars <- intersect(names(colvars$labels), c("n_tot", "n_tot_events", "hr", "ci", "pval"))
+  colvars_survtime <- list(vars = survtime_vars, labels = colvars$labels[survtime_vars])
+  colvars_hr <- list(vars = hr_vars, labels = colvars$labels[hr_vars])
 
-  extra_args <- list(groups_lists = groups_lists, conf_level = conf_level, method = method, label_all = label_all)
+  extra_args <- list(groups_lists = groups_lists, conf_level = conf_level, method = method)
 
-  afun_lst <- a_survival_subgroups(na_str = na_str)
-  colvars <- d_survival_subgroups_colvars(
-    vars,
-    conf_level = conf_level,
-    method = method,
-    time_unit = time_unit
-  )
+  # Get analysis function for each statistic
+  afun_lst <- a_survival_subgroups(.formats = c(.formats, riskdiff = riskdiff$format), na_str = na_str)
 
-  colvars_survtime <- list(
-    vars = colvars$vars[names(colvars$labels) %in% c("n", "n_events", "median")],
-    labels = colvars$labels[names(colvars$labels) %in% c("n", "n_events", "median")]
-  )
-  colvars_hr <- list(
-    vars = colvars$vars[names(colvars$labels) %in% c("n_tot", "n_tot_events", "hr", "ci", "pval")],
-    labels = colvars$labels[names(colvars$labels) %in% c("n_tot", "n_tot_events", "hr", "ci", "pval")]
-  )
+  # Add risk difference column
+  if (!is.null(riskdiff)) {
+    if (is.null(riskdiff$arm_x)) riskdiff$arm_x <- levels(df$survtime$arm)[1]
+    if (is.null(riskdiff$arm_y)) riskdiff$arm_y <- levels(df$survtime$arm)[2]
+    colvars_hr$vars <- c(colvars_hr$vars, "riskdiff")
+    colvars_hr$labels <- c(colvars_hr$labels, riskdiff = riskdiff$col_label)
+    arm_cols <- paste(rep(c("n_events", "n_events", "n", "n")), c(riskdiff$arm_x, riskdiff$arm_y), sep = "_")
 
-  # Columns from table_survtime are optional.
+    df_prop_diff <- df$survtime %>%
+      dplyr::select(-"median") %>%
+      tidyr::pivot_wider(
+        id_cols = c("subgroup", "var", "var_label", "row_type"),
+        names_from = "arm",
+        values_from = c("n", "n_events")
+      ) %>%
+      dplyr::rowwise() %>%
+      dplyr::mutate(
+        riskdiff = stat_propdiff_ci(
+          x = as.list(.data[[arm_cols[1]]]),
+          y = as.list(.data[[arm_cols[2]]]),
+          N_x = .data[[arm_cols[3]]],
+          N_y = .data[[arm_cols[4]]]
+        )
+      ) %>%
+      dplyr::select(-dplyr::all_of(arm_cols))
+
+    df$hr <- df$hr %>%
+      dplyr::left_join(
+        df_prop_diff,
+        by = c("subgroup", "var", "var_label", "row_type")
+      )
+  }
+
+  # Add columns from table_survtime (optional)
   if (length(colvars_survtime$vars) > 0) {
     lyt_survtime <- split_cols_by(lyt = lyt, var = "arm")
     lyt_survtime <- split_rows_by(
@@ -245,6 +300,8 @@ tabulate_survival_subgroups <- function(lyt,
       split_fun = keep_split_levels("content"),
       nested = FALSE
     )
+
+    # Add "All Patients" row
     lyt_survtime <- summarize_row_groups(
       lyt = lyt_survtime,
       var = "var_label",
@@ -258,6 +315,7 @@ tabulate_survival_subgroups <- function(lyt,
       varlabels = colvars_survtime$labels
     )
 
+    # Add analysis rows
     if ("analysis" %in% df$survtime$row_type) {
       lyt_survtime <- split_rows_by(
         lyt = lyt_survtime,
@@ -281,7 +339,7 @@ tabulate_survival_subgroups <- function(lyt,
     table_survtime <- NULL
   }
 
-  # Columns "n_tot_events" or "n_tot", and "hr", "ci" in table_hr are required.
+  # Add columns from table_hr ("n_tot_events" or "n_tot", "or" and "ci" required)
   lyt_hr <- split_cols_by(lyt = lyt, var = "arm")
   lyt_hr <- split_rows_by(
     lyt = lyt_hr,
@@ -303,6 +361,7 @@ tabulate_survival_subgroups <- function(lyt,
   ) %>%
     append_topleft("Baseline Risk Factors")
 
+  # Add analysis rows
   if ("analysis" %in% df$survtime$row_type) {
     lyt_hr <- split_rows_by(
       lyt = lyt_hr,
@@ -320,34 +379,31 @@ tabulate_survival_subgroups <- function(lyt,
       extra_args = extra_args
     )
   }
+
   table_hr <- build_table(lyt_hr, df = df$hr)
 
-  # There can be one or two vars starting with "n_tot".
+  # Join tables, add forest plot attributes
   n_tot_ids <- grep("^n_tot", colvars_hr$vars)
   if (is.null(table_survtime)) {
     result <- table_hr
     hr_id <- match("hr", colvars_hr$vars)
-    ci_id <- match("lcl", colvars_hr$vars)
+    ci_id <- match("ci", colvars_hr$vars)
   } else {
-    # Reorder the table.
     result <- cbind_rtables(table_hr[, n_tot_ids], table_survtime, table_hr[, -n_tot_ids])
-    # And then calculate column indices accordingly.
     hr_id <- length(n_tot_ids) + ncol(table_survtime) + match("hr", colvars_hr$vars[-n_tot_ids])
-    ci_id <- length(n_tot_ids) + ncol(table_survtime) + match("lcl", colvars_hr$vars[-n_tot_ids])
+    ci_id <- length(n_tot_ids) + ncol(table_survtime) + match("ci", colvars_hr$vars[-n_tot_ids])
     n_tot_ids <- seq_along(n_tot_ids)
   }
-
   structure(
     result,
     forest_header = paste0(rev(levels(df$survtime$arm)), "\nBetter"),
     col_x = hr_id,
     col_ci = ci_id,
-    # Take the first one for scaling the symbol sizes in graph.
-    col_symbol_size = n_tot_ids[1]
+    col_symbol_size = n_tot_ids[1] # for scaling the symbol sizes in forest plots
   )
 }
 
-#' Labels for Column Variables in Survival Duration by Subgroup Table
+#' Labels for column variables in survival duration by subgroup table
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -355,7 +411,7 @@ tabulate_survival_subgroups <- function(lyt,
 #'
 #' @inheritParams tabulate_survival_subgroups
 #' @inheritParams argument_convention
-#' @param method (`character`)\cr p-value method for testing hazard ratio = 1.
+#' @param method (`string`)\cr p-value method for testing hazard ratio = 1.
 #'
 #' @return A `list` of variables and their labels to tabulate.
 #'

@@ -4,15 +4,15 @@
 \alias{fit_coxreg}
 \alias{fit_coxreg_univar}
 \alias{fit_coxreg_multivar}
-\title{Fits for Cox Proportional Hazards Regression}
+\title{Fitting functions for Cox proportional hazards regression}
 \usage{
 fit_coxreg_univar(variables, data, at = list(), control = control_coxreg())
 
 fit_coxreg_multivar(variables, data, control = control_coxreg())
 }
 \arguments{
-\item{variables}{(\code{list})\cr a named list corresponds to the names of variables found in \code{data}, passed as a named
-list and corresponding to \code{time}, \code{event}, \code{arm}, \code{strata}, and \code{covariates} terms. If \code{arm} is missing from
+\item{variables}{(named \code{list})\cr the names of the variables found in \code{data}, passed as a named list and
+corresponding to the \code{time}, \code{event}, \code{arm}, \code{strata}, and \code{covariates} terms. If \code{arm} is missing from
 \code{variables}, then only Cox model(s) including the \code{covariates} will be fitted and the corresponding effect
 estimates will be tabulated later.}
 

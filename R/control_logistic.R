@@ -1,4 +1,4 @@
-#' Control Function for Logistic Regression Model Fitting
+#' Control function for logistic regression model fitting
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

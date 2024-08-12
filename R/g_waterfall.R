@@ -1,17 +1,17 @@
-#' Horizontal Waterfall Plot
-#'
-#' This basic waterfall plot visualizes a quantity `height` ordered by value with some markup.
+#' Horizontal waterfall plot
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param height (`numeric``)\cr vector containing values to be plotted as the waterfall bars.
-#' @param id (`character`)\cr vector containing IDs to use as the x-axis label for the waterfall bars.
-#' @param col (`character`)\cr colors.
-#' @param col_var (`factor`, `character` or `NULL`)\cr categorical variable for bar coloring. `NULL` by default.
-#' @param xlab (`character`)\cr x label. Default is `"ID"`.
-#' @param ylab (`character`)\cr y label. Default is `"Value"`.
-#' @param title (`character`)\cr text to be displayed as plot title.
-#' @param col_legend_title (`character`)\cr text to be displayed as legend title.
+#' This basic waterfall plot visualizes a quantity `height` ordered by value with some markup.
+#'
+#' @param height (`numeric`)\cr vector containing values to be plotted as the waterfall bars.
+#' @param id (`character`)\cr vector containing identifiers to use as the x-axis label for the waterfall bars.
+#' @param col (`character`)\cr color(s).
+#' @param col_var (`factor`, `character`, or `NULL`)\cr categorical variable for bar coloring. `NULL` by default.
+#' @param xlab (`string`)\cr x label. Default is `"ID"`.
+#' @param ylab (`string`)\cr y label. Default is `"Value"`.
+#' @param title (`string`)\cr text to be displayed as plot title.
+#' @param col_legend_title (`string`)\cr text to be displayed as legend title.
 #'
 #' @return A `ggplot` waterfall plot.
 #'

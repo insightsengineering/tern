@@ -206,6 +206,23 @@
       "p-value (log-rank)" 
       
 
+# tabulate_survival_subgroups .formats argument works as expected
+
+    Code
+      res
+    Output
+                                                          B: Placebo               A: Drug X                                    
+      Baseline Risk Factors          Total Events   Events   Median (DAYS)   Events   Median (DAYS)   Hazard Ratio   95% Wald CI
+      ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+      All Patients                      101.00        57         727.8         44         974.6           0.71       0.5 to 1.1 
+      Sex                                                                                                                       
+        F                               55.00         31         599.2         24        1016.3           0.56       0.3 to 1.0 
+        M                               46.00         26         888.5         20         974.6           0.91       0.5 to 1.6 
+      Continuous Level Biomarker 2                                                                                              
+        LOW                             36.00         21         735.5         15         974.6           0.76       0.4 to 1.5 
+        MEDIUM                          31.00         14         731.8         17         964.2           0.77       0.4 to 1.6 
+        HIGH                            34.00         22         654.8         12        1016.3           0.67       0.3 to 1.4 
+
 # tabulate_survival_subgroups na_str argument works as expected
 
     Code
@@ -222,4 +239,39 @@
         LOW                               36          21         735.5         15         974.6        <No data>     (0.39, 1.51)
         MEDIUM                            31          14         731.8         17         964.2        <No data>     (0.36, 1.61)
         HIGH                              34          22         654.8         12        1016.3           0.67       (0.33, 1.36)
+
+# label_all argument to extract_survival_subgroups works as expected
+
+    Code
+      res
+    Output
+                                                          B: Placebo               A: Drug X                                     
+      Baseline Risk Factors          Total Events   Events   Median (DAYS)   Events   Median (DAYS)   Hazard Ratio   95% Wald CI 
+      ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+      Full Analysis Set                  101          57         727.8         44         974.6           0.71       (0.48, 1.06)
+      Sex                                                                                                                        
+        F                                 55          31         599.2         24        1016.3           0.56       (0.32, 0.96)
+        M                                 46          26         888.5         20         974.6           0.91       (0.50, 1.65)
+      Continuous Level Biomarker 2                                                                                               
+        LOW                               36          21         735.5         15         974.6           0.76       (0.39, 1.51)
+        MEDIUM                            31          14         731.8         17         964.2           0.77       (0.36, 1.61)
+        HIGH                              34          22         654.8         12        1016.3           0.67       (0.33, 1.36)
+
+# tabulate_survival_subgroups riskdiff argument works as expected
+
+    Code
+      res
+    Output
+                                                          B: Placebo               A: Drug X                                                           
+                                                                                                                                        Prop. Diff     
+      Baseline Risk Factors          Total Events   Events   Median (DAYS)   Events   Median (DAYS)   Hazard Ratio   95% Wald CI         (95% CI)      
+      —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+      All Patients                       101          57         727.8         44         974.6           0.71       (0.48, 1.06)   14.3 (-0.5 - 29.1) 
+      Sex                                                                                                                                              
+        F                                 55          31         599.2         24        1016.3           0.56       (0.32, 0.96)   14.3 (-5.7 - 34.4) 
+        M                                 46          26         888.5         20         974.6           0.91       (0.50, 1.65)   14.3 (-7.6 - 36.1) 
+      Continuous Level Biomarker 2                                                                                                                     
+        LOW                               36          21         735.5         15         974.6           0.76       (0.39, 1.51)    29.8 (6.7 - 53.0) 
+        MEDIUM                            31          14         731.8         17         964.2           0.77       (0.36, 1.61)   -4.5 (-31.6 - 22.5)
+        HIGH                              34          22         654.8         12        1016.3           0.67       (0.33, 1.36)   14.0 (-11.7 - 39.7)
 

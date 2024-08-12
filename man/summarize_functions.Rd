@@ -2,10 +2,12 @@
 % Please edit documentation in R/summarize_functions.R
 \name{summarize_functions}
 \alias{summarize_functions}
-\title{Summarize Functions}
+\title{Summarize functions}
 \description{
 These functions are wrappers for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}, applying corresponding \code{tern} content functions
 to add summary rows to a given table layout:
+}
+\details{
 \itemize{
 \item \code{\link[=add_rowcounts]{add_rowcounts()}}
 \item \code{\link[=estimate_multinomial_response]{estimate_multinomial_response()}} (with \code{\link[rtables:analyze]{rtables::analyze()}})

@@ -2,7 +2,7 @@
 % Please edit documentation in R/riskdiff.R
 \name{add_riskdiff}
 \alias{add_riskdiff}
-\title{Split Function to Configure Risk Difference Column}
+\title{Split function to configure risk difference column}
 \usage{
 add_riskdiff(
   arm_x,
@@ -13,12 +13,12 @@ add_riskdiff(
 )
 }
 \arguments{
-\item{arm_x}{(\code{character})\cr Name of reference arm to use in risk difference calculations.}
+\item{arm_x}{(\code{string})\cr name of reference arm to use in risk difference calculations.}
 
-\item{arm_y}{(\code{character})\cr Names of one or more arms to compare to reference arm in risk difference
+\item{arm_y}{(\code{character})\cr names of one or more arms to compare to reference arm in risk difference
 calculations. A new column will be added for each value of \code{arm_y}.}
 
-\item{col_label}{(\code{character})\cr Labels to use when rendering the risk difference column within the table.
+\item{col_label}{(\code{character})\cr labels to use when rendering the risk difference column within the table.
 If more than one comparison arm is specified in \code{arm_y}, default labels will specify which two arms are
 being compared (reference arm vs. comparison arm).}
 
@@ -31,7 +31,7 @@ when creating a table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Wrapper function for \code{\link[rtables:add_combo_levels]{rtables::add_combo_levels()}} which configures settings for the risk difference
+Wrapper function for \code{\link[rtables:add_overall_level]{rtables::add_combo_levels()}} which configures settings for the risk difference
 column to be added to an \code{rtables} object. To add a risk difference column to a table, this function
 should be used as \code{split_fun} in calls to \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}}, followed by setting argument
 \code{riskdiff} to \code{TRUE} in all following analyze function calls.

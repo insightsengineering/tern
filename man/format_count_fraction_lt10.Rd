@@ -2,14 +2,14 @@
 % Please edit documentation in R/formatting_functions.R
 \name{format_count_fraction_lt10}
 \alias{format_count_fraction_lt10}
-\title{Formatting Count and Fraction with Special Case for Count < 10}
+\title{Format count and fraction with special case for count < 10}
 \usage{
 format_count_fraction_lt10(x, ...)
 }
 \arguments{
-\item{x}{(\code{integer})\cr vector of length 2, count and fraction.}
+\item{x}{(\code{numeric(2)})\cr vector of length 2 with count and fraction, respectively.}
 
-\item{...}{required for \code{rtables} interface.}
+\item{...}{not used. Required for \code{rtables} interface.}
 }
 \value{
 A string in the format \verb{count (fraction \%)}. If \code{count} is less than 10, only \code{count} is printed.
@@ -29,13 +29,13 @@ format_count_fraction_lt10(x = c(9, 1))
 Other formatting functions: 
 \code{\link{extreme_format}},
 \code{\link{format_auto}()},
-\code{\link{format_count_fraction_fixed_dp}()},
 \code{\link{format_count_fraction}()},
-\code{\link{format_extreme_values_ci}()},
+\code{\link{format_count_fraction_fixed_dp}()},
 \code{\link{format_extreme_values}()},
+\code{\link{format_extreme_values_ci}()},
+\code{\link{format_fraction}()},
 \code{\link{format_fraction_fixed_dp}()},
 \code{\link{format_fraction_threshold}()},
-\code{\link{format_fraction}()},
 \code{\link{format_sigfig}()},
 \code{\link{format_xx}()},
 \code{\link{formatting_functions}}

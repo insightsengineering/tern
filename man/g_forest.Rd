@@ -2,7 +2,7 @@
 % Please edit documentation in R/g_forest.R
 \name{g_forest}
 \alias{g_forest}
-\title{Create a Forest Plot based on a Table}
+\title{Create a forest plot from an \code{rtable}}
 \usage{
 g_forest(
   tbl,
@@ -13,74 +13,97 @@ g_forest(
   xlim = c(0.1, 10),
   logx = TRUE,
   x_at = c(0.1, 1, 10),
-  width_row_names = NULL,
+  width_row_names = lifecycle::deprecated(),
   width_columns = NULL,
-  width_forest = grid::unit(1, "null"),
+  width_forest = lifecycle::deprecated(),
+  lbl_col_padding = 0,
+  rel_width_forest = 0.25,
+  font_size = 12,
   col_symbol_size = attr(tbl, "col_symbol_size"),
   col = getOption("ggplot2.discrete.colour")[1],
-  gp = NULL,
-  draw = TRUE,
-  newpage = TRUE
+  ggtheme = NULL,
+  as_list = FALSE,
+  gp = lifecycle::deprecated(),
+  draw = lifecycle::deprecated(),
+  newpage = lifecycle::deprecated()
 )
 }
 \arguments{
-\item{tbl}{(\code{rtable})}
+\item{tbl}{(\code{VTableTree})\cr \code{rtables} table with at least one column with a single value and one column with 2
+values.}
 
-\item{col_x}{(\code{integer})\cr column index with estimator. By default tries to get this from
-\code{tbl} attribute \code{col_x}, otherwise needs to be manually specified.}
+\item{col_x}{(\code{integer(1)} or \code{NULL})\cr column index with estimator. By default tries to get this from
+\code{tbl} attribute \code{col_x}, otherwise needs to be manually specified. If \code{NULL}, points will be excluded
+from forest plot.}
 
-\item{col_ci}{(\code{integer})\cr column index with confidence intervals. By default tries
-to get this from \code{tbl} attribute \code{col_ci}, otherwise needs to be manually specified.}
+\item{col_ci}{(\code{integer(1)} or \code{NULL})\cr column index with confidence intervals. By default tries to get this from
+\code{tbl} attribute \code{col_ci}, otherwise needs to be manually specified. If \code{NULL}, lines will be excluded
+from forest plot.}
 
-\item{vline}{(\code{number})\cr x coordinate for vertical line, if \code{NULL} then the line is omitted.}
+\item{vline}{(\code{numeric(1)} or \code{NULL})\cr x coordinate for vertical line, if \code{NULL} then the line is omitted.}
 
-\item{forest_header}{(\code{character}, length 2)\cr text displayed to the left and right of \code{vline}, respectively.
-If \code{vline = NULL} then \code{forest_header} needs to be \code{NULL} too.
-By default tries to get this from \code{tbl} attribute \code{forest_header}.}
+\item{forest_header}{(\code{character(2)})\cr text displayed to the left and right of \code{vline}, respectively.
+If \code{vline = NULL} then \code{forest_header} is not printed. By default tries to get this from \code{tbl} attribute
+\code{forest_header}. If \code{NULL}, defaults will be extracted from the table if possible, and set to
+\code{"Comparison\\nBetter"} and \code{"Treatment\\nBetter"} if not.}
 
-\item{xlim}{(\code{numeric})\cr limits for x axis.}
+\item{xlim}{(\code{numeric(2)})\cr limits for x axis.}
 
 \item{logx}{(\code{flag})\cr show the x-values on logarithm scale.}
 
-\item{x_at}{(\code{numeric})\cr x-tick locations, if \code{NULL} they get automatically chosen.}
+\item{x_at}{(\code{numeric})\cr x-tick locations, if \code{NULL}, \code{x_at} is set to \code{vline} and both \code{xlim} values.}
 
-\item{width_row_names}{(\code{unit})\cr width for row names.
-If \code{NULL} the widths get automatically calculated. See \code{\link[grid:unit]{grid::unit()}}.}
+\item{width_row_names}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{lbl_col_padding} argument instead.}
 
-\item{width_columns}{(\code{unit})\cr widths for the table columns.
-If \code{NULL} the widths get automatically calculated. See \code{\link[grid:unit]{grid::unit()}}.}
+\item{width_columns}{(\code{numeric})\cr a vector of column widths. Each element's position in
+\code{colwidths} corresponds to the column of \code{tbl} in the same position. If \code{NULL}, column widths are calculated
+according to maximum number of characters per column.}
 
-\item{width_forest}{(\code{unit})\cr width for the forest column.
-If \code{NULL} the widths get automatically calculated. See \code{\link[grid:unit]{grid::unit()}}.}
+\item{width_forest}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{rel_width_forest} argument instead.}
 
-\item{col_symbol_size}{(\code{integer})\cr column index from \code{tbl} containing data to be used
+\item{lbl_col_padding}{(\code{numeric})\cr additional padding to use when calculating spacing between
+the first (label) column and the second column of \code{tbl}. If \code{colwidths} is specified,
+the width of the first column becomes \code{colwidths[1] + lbl_col_padding}. Defaults to 0.}
+
+\item{rel_width_forest}{(\code{proportion})\cr proportion of total width to allocate to the forest plot. Relative
+width of table is then \code{1 - rel_width_forest}. If \code{as_list = TRUE}, this parameter is ignored.}
+
+\item{font_size}{(\code{numeric(1)})\cr font size.}
+
+\item{col_symbol_size}{(\code{numeric} or \code{NULL})\cr column index from \code{tbl} containing data to be used
 to determine relative size for estimator plot symbol. Typically, the symbol size is proportional
 to the sample size used to calculate the estimator. If \code{NULL}, the same symbol size is used for all subgroups.
 By default tries to get this from \code{tbl} attribute \code{col_symbol_size}, otherwise needs to be manually specified.}
 
 \item{col}{(\code{character})\cr color(s).}
 
-\item{gp}{A \code{"gpar"} object, typically the output
-    from a call to the function \code{\link[grid]{gpar}}.  This is basically
-    a list of graphical parameter settings.}
+\item{ggtheme}{(\code{theme})\cr a graphical theme as provided by \code{ggplot2} to control styling of the plot.}
 
-\item{draw}{(\code{flag})\cr whether the plot should be drawn.}
+\item{as_list}{(\code{flag})\cr whether the two \code{ggplot} objects should be returned as a list. If \code{TRUE}, a named list
+with two elements, \code{table} and \code{plot}, will be returned. If \code{FALSE} (default) the table and forest plot are
+printed side-by-side via \code{\link[cowplot:plot_grid]{cowplot::plot_grid()}}.}
 
-\item{newpage}{(\code{flag})\cr whether the plot should be drawn on a new page.
-Only considered if \code{draw = TRUE} is used.}
+\item{gp}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{g_forest} is now generated as a \code{ggplot} object. This argument
+is no longer used.}
+
+\item{draw}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{g_forest} is now generated as a \code{ggplot} object. This argument
+is no longer used.}
+
+\item{newpage}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{g_forest} is now generated as a \code{ggplot} object. This argument
+is no longer used.}
 }
 \value{
-\code{gTree} object containing the forest plot and table.
+\code{ggplot} forest plot and table.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
 \details{
-Create a forest plot from any \code{\link[rtables:rtable]{rtables::rtable()}} object that has a
-column with a single value and a column with 2 values.
+Given a \code{\link[rtables:rtable]{rtables::rtable()}} object with at least one column with a single value and one column with 2
+values, converts table to a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object and generates an accompanying forest plot. The
+table and forest plot are printed side-by-side.
 }
 \examples{
-\donttest{
 library(dplyr)
 library(forcats)
 library(nestcolor)
@@ -107,21 +130,16 @@ df <- extract_rsp_subgroups(
 
 tbl <- basic_table() \%>\%
   tabulate_rsp_subgroups(df)
-p <- g_forest(tbl, gp = grid::gpar(fontsize = 10))
-
-draw_grob(p)
+g_forest(tbl)
 
 # Odds ratio only table.
 
 tbl_or <- basic_table() \%>\%
   tabulate_rsp_subgroups(df, vars = c("n_tot", "or", "ci"))
-tbl_or
-p <- g_forest(
+g_forest(
   tbl_or,
   forest_header = c("Comparison\nBetter", "Treatment\nBetter")
 )
-
-draw_grob(p)
 
 # Survival forest plot example.
 adtte <- tern_ex_adtte
@@ -158,6 +176,7 @@ df <- extract_survival_subgroups(
 table_hr <- basic_table() \%>\%
   tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])
 g_forest(table_hr)
+
 # Works with any `rtable`.
 tbl <- rtable(
   header = c("E", "CI", "N"),
@@ -172,6 +191,7 @@ g_forest(
   x_at = c(0.5, 1, 2),
   col_symbol_size = 3
 )
+
 tbl <- rtable(
   header = rheader(
     rrow("", rcell("A", colspan = 2)),
@@ -189,6 +209,5 @@ g_forest(
   vline = 1,
   forest_header = c("Hello", "World")
 )
-}
 
 }

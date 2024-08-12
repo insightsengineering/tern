@@ -12,7 +12,7 @@
 #' If there are multiple occurrences of the same event recorded for a patient, the event is only counted once.
 #'
 #' @inheritParams argument_convention
-#' @param filters_list (named `list` of `character`)\cr each element in this list describes one
+#' @param filters_list (named `list` of `character`)\cr list where each element in this list describes one
 #'   type of event describe by filters, in the same format as [s_count_patients_with_event()].
 #'   If it has a label, then this will be used for the column title.
 #' @param empty_stats (`character`)\cr optional names of the statistics that should be returned empty such

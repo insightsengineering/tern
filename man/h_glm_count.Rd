@@ -4,24 +4,25 @@
 \alias{h_glm_count}
 \alias{h_glm_poisson}
 \alias{h_glm_quasipoisson}
-\alias{h_ppmeans}
-\title{Helper Functions for Poisson Models.}
+\alias{h_glm_negbin}
+\title{Helper functions for Poisson models}
 \usage{
+h_glm_count(.var, .df_row, variables, distribution, weights)
+
 h_glm_poisson(.var, .df_row, variables, weights)
 
 h_glm_quasipoisson(.var, .df_row, variables, weights)
 
-h_glm_count(.var, .df_row, variables, distribution, weights)
-
-h_ppmeans(obj, .df_row, arm, conf_level)
+h_glm_negbin(.var, .df_row, variables, weights)
 }
 \arguments{
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{.df_row}{(\code{data.frame})\cr data set that includes all the variables that are called in \code{.var} and \code{variables}.}
+\item{.df_row}{(\code{data.frame})\cr dataset that includes all the variables that are called
+in \code{.var} and \code{variables}.}
 
-\item{variables}{(named \code{list} of \code{strings})\cr list of additional analysis variables, with
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables, with
 expected elements:
 \itemize{
 \item \code{arm} (\code{string})\cr group variable, for which the covariate adjusted means of multiple
@@ -32,21 +33,18 @@ reference group.
 \item \code{offset} (\code{numeric})\cr a numeric vector or scalar adding an offset.
 }}
 
+\item{distribution}{(\code{character})\cr a character value specifying the distribution
+used in the regression (Poisson, Quasi-Poisson, negative binomial).}
+
 \item{weights}{(\code{character})\cr a character vector specifying weights used
 in averaging predictions. Number of weights must equal the number of levels included in the covariates.
 Weights option passed to \code{\link[emmeans:emmeans]{emmeans::emmeans()}}.}
-
-\item{distribution}{(\code{character})\cr a character value specifying the distribution
-used in the regression (poisson, quasipoisson).}
-
-\item{obj}{(\code{glm.fit})\cr fitted model object used to derive the mean rate estimates in each treatment arm.}
-
-\item{arm}{(\code{string})\cr group variable, for which the covariate adjusted means of multiple groups will be
-summarized. Specifically, the first level of \code{arm} variable is taken as the reference group.}
-
-\item{conf_level}{(\code{numeric})\cr value used to derive the confidence interval for the rate.}
 }
 \value{
+\itemize{
+\item \code{h_glm_count()} returns the results of the selected model.
+}
+
 \itemize{
 \item \code{h_glm_poisson()} returns the results of a Poisson model.
 }
@@ -56,28 +54,26 @@ summarized. Specifically, the first level of \code{arm} variable is taken as the
 }
 
 \itemize{
-\item \code{h_glm_count()} returns the results of the selected model.
-}
-
-\itemize{
-\item \code{h_ppmeans()} returns the estimated means.
+\item \code{h_glm_negbin()} returns the results of a negative binomial model.
 }
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Helper functions that can be used to return the results of various Poisson models.
+Helper functions that returns the results of \code{\link[stats:glm]{stats::glm()}} when Poisson or Quasi-Poisson
+distributions are needed (see \code{family} parameter), or \code{\link[MASS:glm.nb]{MASS::glm.nb()}} for Negative Binomial
+distributions. Link function for the GLM is \code{log}.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_glm_poisson()}: Helper function to return results of a poisson model.
-
-\item \code{h_glm_quasipoisson()}: Helper function to return results of a quasipoisson model.
-
 \item \code{h_glm_count()}: Helper function to return the results of the
-selected model (poisson, quasipoisson, negative binomial).
+selected model (Poisson, Quasi-Poisson, negative binomial).
 
-\item \code{h_ppmeans()}: Helper function to return the estimated means.
+\item \code{h_glm_poisson()}: Helper function to return results of a Poisson model.
+
+\item \code{h_glm_quasipoisson()}: Helper function to return results of a Quasi-Poisson model.
+
+\item \code{h_glm_negbin()}: Helper function to return results of a negative binomial model.
 
 }}
 \seealso{

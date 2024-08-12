@@ -5,7 +5,7 @@
 \alias{analyze_patients_exposure_in_cols}
 \alias{s_count_patients_sum_exposure}
 \alias{a_count_patients_sum_exposure}
-\title{Counting Patients Summing Exposure Across All Patients in Columns}
+\title{Count patients and sum exposure across all patients in columns}
 \usage{
 analyze_patients_exposure_in_cols(
   lyt,
@@ -61,19 +61,19 @@ a_count_patients_sum_exposure(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{ex_var}{(\code{character})\cr name of the variable within \code{df} containing exposure values.}
+\item{ex_var}{(\code{string})\cr name of the variable in \code{df} containing exposure values.}
 
 \item{id}{(\code{string})\cr subject variable name.}
 
 \item{add_total_level}{(\code{flag})\cr adds a "total" level after the others which includes all the levels
 that constitute the split. A custom label can be set for this level via the \code{custom_label} argument.}
 
-\item{custom_label}{(\code{string} or \code{NULL})\cr if provided and \code{labelstr} is empty then this will be used as label.}
+\item{custom_label}{(\code{string} or \code{NULL})\cr if provided and \code{labelstr} is empty, this will be used as label.}
 
 \item{col_split}{(\code{flag})\cr whether the columns should be split. Set to \code{FALSE} when the required
 column split has been done already earlier in the layout pipe.}
@@ -92,11 +92,11 @@ unmodified default behavior. Can be negative.}
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+\item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
 
-\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more

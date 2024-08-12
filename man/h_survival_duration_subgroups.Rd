@@ -6,7 +6,7 @@
 \alias{h_survtime_subgroups_df}
 \alias{h_coxph_df}
 \alias{h_coxph_subgroups_df}
-\title{Helper Functions for Tabulating Survival Duration by Subgroup}
+\title{Helper functions for tabulating survival duration by subgroup}
 \usage{
 h_survtime_df(tte, is_event, arm)
 
@@ -28,9 +28,9 @@ h_coxph_subgroups_df(
 )
 }
 \arguments{
-\item{tte}{(\code{numeric})\cr contains time-to-event duration values.}
+\item{tte}{(\code{numeric})\cr vector of time-to-event duration values.}
 
-\item{is_event}{(\code{logical})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
+\item{is_event}{(\code{flag})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
 \item{arm}{(\code{factor})\cr the treatment group variable.}
 
@@ -44,7 +44,7 @@ levels that belong to it in the character vectors that are elements of the list.
 
 \item{label_all}{(\code{string})\cr label for the total population analysis.}
 
-\item{strata_data}{(\code{factor}, \code{data.frame} or \code{NULL})\cr required if stratified analysis is performed.}
+\item{strata_data}{(\code{factor}, \code{data.frame}, or \code{NULL})\cr required if stratified analysis is performed.}
 
 \item{control}{(\code{list})\cr parameters for comparison details, specified by using the helper function
 \code{\link[=control_coxph]{control_coxph()}}. Some possible parameter options are:
@@ -87,20 +87,20 @@ Main functionality is to prepare data for use in a layout-creating function.
 }
 \section{Functions}{
 \itemize{
-\item \code{h_survtime_df()}: helper to prepare a data frame of median survival times by arm.
+\item \code{h_survtime_df()}: Helper to prepare a data frame of median survival times by arm.
 
-\item \code{h_survtime_subgroups_df()}: summarizes median survival times by arm and across subgroups
+\item \code{h_survtime_subgroups_df()}: Summarizes median survival times by arm and across subgroups
 in a data frame. \code{variables} corresponds to the names of variables found in \code{data}, passed as a named list and
 requires elements \code{tte}, \code{is_event}, \code{arm} and optionally \code{subgroups}. \code{groups_lists} optionally specifies
 groupings for \code{subgroups} variables.
 
-\item \code{h_coxph_df()}: helper to prepare a data frame with estimates of
+\item \code{h_coxph_df()}: Helper to prepare a data frame with estimates of
 treatment hazard ratio.
 
-\item \code{h_coxph_subgroups_df()}: summarizes estimates of the treatment hazard ratio
+\item \code{h_coxph_subgroups_df()}: Summarizes estimates of the treatment hazard ratio
 across subgroups in a data frame. \code{variables} corresponds to the names of variables found in
 \code{data}, passed as a named list and requires elements \code{tte}, \code{is_event}, \code{arm} and
-optionally \code{subgroups} and \code{strat}. \code{groups_lists} optionally specifies
+optionally \code{subgroups} and \code{strata}. \code{groups_lists} optionally specifies
 groupings for \code{subgroups} variables.
 
 }}
@@ -206,7 +206,7 @@ h_coxph_subgroups_df(
     is_event = "is_event",
     arm = "ARM",
     subgroups = c("SEX", "BMRKR2"),
-    strat = c("STRATA1", "STRATA2")
+    strata = c("STRATA1", "STRATA2")
   ),
   data = adtte_f
 )

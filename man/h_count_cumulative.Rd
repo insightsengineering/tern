@@ -2,7 +2,7 @@
 % Please edit documentation in R/count_cumulative.R
 \name{h_count_cumulative}
 \alias{h_count_cumulative}
-\title{Helper Function for \code{\link[=s_count_cumulative]{s_count_cumulative()}}}
+\title{Helper function for \code{s_count_cumulative()}}
 \usage{
 h_count_cumulative(
   x,
@@ -16,16 +16,16 @@ h_count_cumulative(
 \arguments{
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{threshold}{(\code{number})\cr a cutoff value as threshold to count values of \code{x}.}
+\item{threshold}{(\code{numeric(1)})\cr a cutoff value as threshold to count values of \code{x}.}
 
-\item{lower_tail}{(\code{logical})\cr whether to count lower tail, default is \code{TRUE}.}
+\item{lower_tail}{(\code{flag})\cr whether to count lower tail, default is \code{TRUE}.}
 
-\item{include_eq}{(\code{logical})\cr whether to include value equal to the \code{threshold} in
+\item{include_eq}{(\code{flag})\cr whether to include value equal to the \code{threshold} in
 count, default is \code{TRUE}.}
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
 }
 \value{

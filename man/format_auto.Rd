@@ -2,17 +2,17 @@
 % Please edit documentation in R/formatting_functions.R
 \name{format_auto}
 \alias{format_auto}
-\title{Automatic formats from data significant digits}
+\title{Format automatically using data significant digits}
 \usage{
 format_auto(dt_var, x_stat)
 }
 \arguments{
-\item{dt_var}{(\code{numeric}) \cr all the data the statistics was created upon. Used only to find
-significant digits. In \link{analyze_vars} this comes from \code{.df_row} (see
+\item{dt_var}{(\code{numeric})\cr variable data the statistics were calculated from. Used only to
+find significant digits. In \link{analyze_vars} this comes from \code{.df_row} (see
 \link[rtables:additional_fun_params]{rtables::additional_fun_params}), and it is the row data after the above row splits. No
 column split is considered.}
 
-\item{x_stat}{(\code{string}) \cr string indicating the current statistical method used.}
+\item{x_stat}{(\code{string})\cr string indicating the current statistical method used.}
 }
 \value{
 A string that \code{rtables} prints in a table cell.
@@ -45,14 +45,14 @@ format_auto(no_sc_x, "range")(x = no_sc_x)
 \seealso{
 Other formatting functions: 
 \code{\link{extreme_format}},
+\code{\link{format_count_fraction}()},
 \code{\link{format_count_fraction_fixed_dp}()},
 \code{\link{format_count_fraction_lt10}()},
-\code{\link{format_count_fraction}()},
-\code{\link{format_extreme_values_ci}()},
 \code{\link{format_extreme_values}()},
+\code{\link{format_extreme_values_ci}()},
+\code{\link{format_fraction}()},
 \code{\link{format_fraction_fixed_dp}()},
 \code{\link{format_fraction_threshold}()},
-\code{\link{format_fraction}()},
 \code{\link{format_sigfig}()},
 \code{\link{format_xx}()},
 \code{\link{formatting_functions}}

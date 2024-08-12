@@ -12,13 +12,15 @@
 #' @importFrom Rdpack reprompt
 #' @importFrom rlang .data
 #' @importFrom survival coxph strata Surv
-#' @importFrom stats pchisq setNames
+#' @importFrom stats pchisq setNames complete.cases qnorm qt sd
 NULL
 
 # Resolve missing global definitions:
 utils::globalVariables(c(
   ".",
   "x",
+  "average",
+  "difference",
   "control_coxph",
   "control_incidence_rate",
   "control_analyze_vars",

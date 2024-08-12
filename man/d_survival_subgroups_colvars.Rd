@@ -2,12 +2,12 @@
 % Please edit documentation in R/survival_duration_subgroups.R
 \name{d_survival_subgroups_colvars}
 \alias{d_survival_subgroups_colvars}
-\title{Labels for Column Variables in Survival Duration by Subgroup Table}
+\title{Labels for column variables in survival duration by subgroup table}
 \usage{
 d_survival_subgroups_colvars(vars, conf_level, method, time_unit = NULL)
 }
 \arguments{
-\item{vars}{(\code{character})\cr the name of statistics to be reported among:
+\item{vars}{(\code{character})\cr the names of statistics to be reported among:
 \itemize{
 \item \code{n_tot_events}: Total number of events per group.
 \item \code{n_events}: Number of events per group.
@@ -23,7 +23,7 @@ are required.
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{method}{(\code{character})\cr p-value method for testing hazard ratio = 1.}
+\item{method}{(\code{string})\cr p-value method for testing hazard ratio = 1.}
 
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
 }

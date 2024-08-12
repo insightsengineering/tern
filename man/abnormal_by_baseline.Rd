@@ -5,7 +5,11 @@
 \alias{count_abnormal_by_baseline}
 \alias{s_count_abnormal_by_baseline}
 \alias{a_count_abnormal_by_baseline}
+<<<<<<< HEAD
 \title{Count patients with abnormal analysis range values by baseline status}
+=======
+\title{Patient counts with abnormal range values by baseline status}
+>>>>>>> main
 \usage{
 count_abnormal_by_baseline(
   lyt,
@@ -26,7 +30,6 @@ s_count_abnormal_by_baseline(
   df,
   .var,
   abnormal,
-  na_level = lifecycle::deprecated(),
   na_str = "<Missing>",
   variables = list(id = "USUBJID", baseline = "BNRIND")
 )
@@ -35,29 +38,28 @@ a_count_abnormal_by_baseline(
   df,
   .var,
   abnormal,
-  na_level = lifecycle::deprecated(),
   na_str = "<Missing>",
   variables = list(id = "USUBJID", baseline = "BNRIND")
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
-\item{abnormal}{(\code{character})\cr identifying the abnormal range level(s) in \code{.var}.}
+\item{abnormal}{(\code{character})\cr values identifying the abnormal range level(s) in \code{.var}.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
 \item{na_str}{(\code{string})\cr the explicit \code{na_level} argument you used in the pre-processing steps (maybe with
 \code{\link[=df_explicit_na]{df_explicit_na()}}). The default is \code{"<Missing>"}.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("abnormal_by_baseline")}
 to see available statistics for this function.}
@@ -74,8 +76,6 @@ unmodified default behavior. Can be negative.}
 
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
-
-\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
 }
 \value{
 \itemize{

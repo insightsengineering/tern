@@ -5,7 +5,7 @@
 \alias{analyze_num_patients}
 \alias{s_num_patients}
 \alias{s_num_patients_content}
-\title{Number of Patients}
+\title{Number of patients}
 \usage{
 analyze_num_patients(
   lyt,
@@ -20,7 +20,6 @@ analyze_num_patients(
   .labels = c(unique = "Number of patients with at least one event", nonunique =
     "Number of events"),
   show_labels = c("default", "visible", "hidden"),
-  indent_mod = lifecycle::deprecated(),
   .indent_mods = 0L,
   riskdiff = FALSE,
   ...
@@ -37,7 +36,6 @@ summarize_num_patients(
   .formats = NULL,
   .labels = c(unique = "Number of patients with at least one event", nonunique =
     "Number of events"),
-  indent_mod = lifecycle::deprecated(),
   .indent_mods = 0L,
   riskdiff = FALSE,
   ...
@@ -62,22 +60,22 @@ s_num_patients_content(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{required}{(\code{character} or \code{NULL})\cr optional name of a variable that is required to be non-missing.}
+\item{required}{(\code{character} or \code{NULL})\cr optional, name of a variable that is required to be non-missing.}
 
 \item{count_by}{(\code{vector})\cr optional vector of any type to be combined with \code{x} when counting \code{nonunique}
 records.}
 
-\item{unique_count_suffix}{(\code{logical})\cr should \code{"(n)"} suffix be added to \code{unique_count} labels.
+\item{unique_count_suffix}{(\code{flag})\cr whether the \code{"(n)"} suffix should be added to \code{unique_count} labels.
 Defaults to \code{TRUE}.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("summarize_num_patients")}
@@ -90,8 +88,6 @@ information on the \code{"auto"} setting.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
-\item{indent_mod}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{.indent_mods} argument instead.}
-
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
 
@@ -103,11 +99,11 @@ See \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} for details on risk diff
 
 \item{x}{(\code{character} or \code{factor})\cr vector of patient IDs.}
 
-\item{labelstr}{(\code{character})\cr label of the level of the parent split currently being summarized
+\item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
 
-\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}

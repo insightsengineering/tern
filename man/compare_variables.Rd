@@ -8,14 +8,16 @@
 \alias{s_compare.factor}
 \alias{s_compare.character}
 \alias{s_compare.logical}
+<<<<<<< HEAD
 \alias{a_compare}
+=======
+>>>>>>> main
 \title{Compare variables between groups}
 \usage{
 compare_vars(
   lyt,
   vars,
   var_labels = vars,
-  na_level = lifecycle::deprecated(),
   na_str = default_na_str(),
   nested = TRUE,
   ...,
@@ -47,31 +49,18 @@ s_compare(x, .ref_group, .in_ref_col, ...)
 )
 
 \method{s_compare}{logical}(x, .ref_group, .in_ref_col, na.rm = TRUE, denom = "n", ...)
-
-a_compare(
-  x,
-  .N_col,
-  .N_row,
-  .var = NULL,
-  .df_row = NULL,
-  .ref_group = NULL,
-  .in_ref_col = FALSE,
-  ...
-)
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{var_labels}{(\code{character})\cr character for label.}
-
-\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
+\item{var_labels}{(\code{character})\cr variable labels.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{arguments passed to \code{s_compare()}.}
@@ -80,8 +69,8 @@ underneath analyses, which is not allowed.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
 
 \item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
 defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
@@ -95,7 +84,7 @@ information on the \code{"auto"} setting.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{.indent_mods}{(named \code{vector} of \code{integer})\cr indent modifiers for the labels. Each element of the vector
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Each element of the vector
 should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
 for that statistic's row label.}
 
@@ -103,7 +92,7 @@ for that statistic's row label.}
 
 \item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
 
-\item{.in_ref_col}{(\code{logical})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
+\item{.in_ref_col}{(\code{flag})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
 \item{denom}{(\code{string})\cr choice of denominator for factor proportions,
 can only be \code{n} (number of values in this row and column intersection).}
@@ -111,16 +100,8 @@ can only be \code{n} (number of values in this row and column intersection).}
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
-\item{verbose}{(\code{logical})\cr Whether warnings and messages should be printed. Mainly used
+\item{verbose}{(\code{flag})\cr whether warnings and messages should be printed. Mainly used
 to print out information about factor casting. Defaults to \code{TRUE}.}
-
-\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
-passed by \code{rtables}.}
-
-\item{.N_row}{(\code{integer})\cr row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
-
-\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 }
 \value{
 \itemize{
@@ -131,10 +112,6 @@ the statistics from \code{s_compare()} to the table layout.
 
 \itemize{
 \item \code{s_compare()} returns output of \code{\link[=s_summary]{s_summary()}} and comparisons versus the reference group in the form of p-values.
-}
-
-\itemize{
-\item \code{a_compare()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 }
 \description{
@@ -171,9 +148,6 @@ conversion to \code{factor} (with a warning) and then forwards to the method for
 \item \code{s_compare(logical)}: Method for \code{logical} class. A chi-squared test
 is used. If missing values are not removed, then they are counted as \code{FALSE}.
 
-\item \code{a_compare()}: Formatted analysis function which is used as \code{afun}
-in \code{compare_vars()}.
-
 }}
 \note{
 \itemize{
@@ -191,8 +165,6 @@ Therefore it is always better to manually convert character variables to factors
 \item For \code{compare_vars()}, the column split must define a reference group via \code{ref_group} so that the comparison
 is well defined.
 }
-
-\code{a_compare()} has been deprecated in favor of \code{a_summary()} with argument \code{compare} set to \code{TRUE}.
 }
 \examples{
 # `compare_vars()` in `rtables` pipelines
@@ -270,12 +242,8 @@ y <- c(NA, NA, NA, NA, FALSE)
 s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
 s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
 
-# `a_compare` deprecated - use `a_summary()` instead
-a_compare(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .stats = c("n", "pval"))
-
 }
 \seealso{
-Relevant constructor function \code{\link[=create_afun_compare]{create_afun_compare()}}, \code{\link[=s_summary]{s_summary()}} which is used internally
-to compute a summary within \code{s_compare()}, and \code{\link[=a_compare]{a_compare()}} which is used (with \code{compare = TRUE}) as the analysis
-function for \code{compare_vars()}.
+\code{\link[=s_summary]{s_summary()}} which is used internally to compute a summary within \code{s_compare()}, and \code{\link[=a_summary]{a_summary()}}
+which is used (with \code{compare = TRUE}) as the analysis function for \code{compare_vars()}.
 }

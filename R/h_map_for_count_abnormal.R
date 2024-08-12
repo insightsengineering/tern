@@ -1,8 +1,8 @@
-#' Helper Function to create a map dataframe that can be used in `trim_levels_to_map` split function.
+#' Helper function to create a map data frame for `trim_levels_to_map()`
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Helper Function to create a map dataframe from the input dataset, which can be used as an argument in the
+#' Helper function to create a map data frame from the input dataset, which can be used as an argument in the
 #' `trim_levels_to_map` split function. Based on different method, the map is constructed differently.
 #'
 #' @inheritParams argument_convention
@@ -71,13 +71,7 @@ h_map_for_count_abnormal <- function(df,
                                      ),
                                      abnormal = list(low = c("LOW", "LOW LOW"), high = c("HIGH", "HIGH HIGH")),
                                      method = c("default", "range"),
-                                     na_level = lifecycle::deprecated(),
                                      na_str = "<Missing>") {
-  if (lifecycle::is_present(na_level)) {
-    lifecycle::deprecate_warn("0.9.1", "h_map_for_count_abnormal(na_level)", "h_map_for_count_abnormal(na_str)")
-    na_str <- na_level
-  }
-
   method <- match.arg(method)
   checkmate::assert_subset(c("anl", "split_rows"), names(variables))
   checkmate::assert_false(anyNA(df[variables$split_rows]))

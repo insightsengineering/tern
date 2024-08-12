@@ -2,14 +2,14 @@
 % Please edit documentation in R/formatting_functions.R
 \name{format_fraction}
 \alias{format_fraction}
-\title{Formatting Fraction and Percentage}
+\title{Format fraction and percentage}
 \usage{
 format_fraction(x, ...)
 }
 \arguments{
-\item{x}{(\code{integer})\cr with elements \code{num} and \code{denom}.}
+\item{x}{(named \code{integer})\cr vector with elements \code{num} and \code{denom}.}
 
-\item{...}{required for \code{rtables} interface.}
+\item{...}{not used. Required for \code{rtables} interface.}
 }
 \value{
 A string in the format \verb{num / denom (ratio \%)}. If \code{num} is 0, the format is \code{num / denom}.
@@ -28,11 +28,11 @@ format_fraction(x = c(num = 0L, denom = 3L))
 Other formatting functions: 
 \code{\link{extreme_format}},
 \code{\link{format_auto}()},
+\code{\link{format_count_fraction}()},
 \code{\link{format_count_fraction_fixed_dp}()},
 \code{\link{format_count_fraction_lt10}()},
-\code{\link{format_count_fraction}()},
-\code{\link{format_extreme_values_ci}()},
 \code{\link{format_extreme_values}()},
+\code{\link{format_extreme_values_ci}()},
 \code{\link{format_fraction_fixed_dp}()},
 \code{\link{format_fraction_threshold}()},
 \code{\link{format_sigfig}()},

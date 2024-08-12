@@ -4,16 +4,20 @@
 \alias{survival_duration_subgroups}
 \alias{tabulate_survival_subgroups}
 \alias{a_survival_subgroups}
-\title{Tabulate Survival Duration by Subgroup}
+\title{Tabulate survival duration by subgroup}
 \usage{
 tabulate_survival_subgroups(
   lyt,
   df,
   vars = c("n_tot_events", "n_events", "median", "hr", "ci"),
   groups_lists = list(),
-  label_all = "All Patients",
+  label_all = lifecycle::deprecated(),
   time_unit = NULL,
-  na_str = default_na_str()
+  riskdiff = NULL,
+  na_str = default_na_str(),
+  .formats = c(n = "xx", n_events = "xx", n_tot_events = "xx", median = "xx.x", n_tot =
+    "xx", hr = list(format_extreme_values(2L)), ci = list(format_extreme_values_ci(2L)),
+    pval = "x.xxxx | (<0.0001)")
 )
 
 a_survival_subgroups(
@@ -24,12 +28,12 @@ a_survival_subgroups(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
-\item{df}{(\code{list})\cr of data frames containing all analysis variables. List should be
+\item{df}{(\code{list})\cr list of data frames containing all analysis variables. List should be
 created using \code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}}.}
 
-\item{vars}{(\code{character})\cr the name of statistics to be reported among:
+\item{vars}{(\code{character})\cr the names of statistics to be reported among:
 \itemize{
 \item \code{n_tot_events}: Total number of events per group.
 \item \code{n_events}: Number of events per group.
@@ -47,9 +51,15 @@ are required.
 list, which specifies the new group levels via the names and the
 levels that belong to it in the character vectors that are elements of the list.}
 
-\item{label_all}{(\code{string})\cr label for the total population analysis.}
+\item{label_all}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}\cr please assign the \code{label_all} parameter within the
+\code{\link[=extract_survival_subgroups]{extract_survival_subgroups()}} function when creating \code{df}.}
 
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
+
+\item{riskdiff}{(\code{list})\cr if a risk (proportion) difference column should be added, a list of settings to apply
+within the column. See \code{\link[=control_riskdiff]{control_riskdiff()}} for details. If \code{NULL}, no risk difference column will be added. If
+\code{riskdiff$arm_x} and \code{riskdiff$arm_y} are \code{NULL}, the first level of \code{df$survtime$arm} will be used as \code{arm_x}
+and the second level as \code{arm_y}.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
@@ -84,7 +94,6 @@ and \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 }}
 \examples{
 library(dplyr)
-library(forcats)
 
 adtte <- tern_ex_adtte
 
@@ -99,7 +108,7 @@ adtte_f <- adtte \%>\%
   ) \%>\%
   mutate(
     # Reorder levels of ARM to display reference arm before treatment arm.
-    ARM = droplevels(fct_relevel(ARM, "B: Placebo")),
+    ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
     SEX = droplevels(SEX),
     AVALU = as.character(AVALU),
     is_event = CNSR == 0
@@ -118,6 +127,7 @@ df <- extract_survival_subgroups(
     is_event = "is_event",
     arm = "ARM", subgroups = c("SEX", "BMRKR2")
   ),
+  label_all = "Total Patients",
   data = adtte_f
 )
 df

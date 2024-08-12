@@ -1,19 +1,22 @@
 testthat::test_that("decorate_grob returns no warnings when creating an empty plot", {
   titles <- "Edgar Anderson's Iris Data"
   footnotes <- "The species are Iris setosa, versicolor, and virginica."
+  all_ones <- grid::unit(c(1, 1, 1, 1), "cm")
 
   grid::grid.newpage()
-  testthat::expect_silent(grid::grid.draw(
-    decorate_grob(
-      NULL,
-      titles = titles,
-      footnotes = footnotes,
-      page = "Page 4 of 10",
-      outer_margins = c(1, 1, 1, 1),
-      margins = c(1, 1, 1, 1),
-      padding = c(1, 1, 1, 1)
+  testthat::expect_silent(
+    grid::grid.draw(
+      decorate_grob(
+        NULL,
+        titles = titles,
+        footnotes = footnotes,
+        page = "Page 4 of 10",
+        outer_margins = all_ones,
+        margins = all_ones,
+        padding = all_ones
+      )
     )
-  ))
+  )
 })
 
 testthat::test_that("decorate_grob returns no warnings when creating a non-empty plot", {
@@ -31,23 +34,24 @@ testthat::test_that("decorate_grob returns no warnings when creating a non-empty
     vp = grid::vpStack(grid::plotViewport(), grid::dataViewport(xData = iris$Sepal.Length, yData = iris$Petal.Length))
   )
   grid::grid.newpage()
-  testthat::expect_silent(grid::grid.draw(
-    decorate_grob(
-      grob = p,
-      titles = titles,
-      footnotes = footnotes,
-      page = "Page 6 of 129"
+  testthat::expect_silent(
+    grid::grid.draw(
+      decorate_grob(
+        grob = p,
+        titles = titles,
+        footnotes = footnotes,
+        page = "Page 6 of 129"
+      )
     )
-  ))
+  )
 })
 
 testthat::test_that("split_string works with default settings", {
-  result <- split_string(
+  res <- split_string(
     "The species are Iris setosa, versicolor, and virginica.",
     width = grid::unit(4, "cm")
   )
 
-  res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
 
@@ -57,60 +61,84 @@ testthat::test_that("decorate_grob_factory returns page warning correctly", {
     footnotes = "Here belong the footnotess",
     npages = 0
   )
-  testthat::expect_error(draw_grob(pf(NULL)), "current page is 1 but max. 0 specified.")
+  suppressWarnings(testthat::expect_error(draw_grob(pf(NULL)), "current page is 1 but max. 0 specified."))
 })
 
 testthat::test_that("decorate_grob_set returns no warnings when creating a non-empty plot", {
-  g <- with(data = iris, {
-    list(
-      ggplot2::ggplotGrob(
-        ggplot2::ggplot(mapping = aes(Sepal.Length, Sepal.Width, col = Species)) +
-          ggplot2::geom_point()
-      ),
-      ggplot2::ggplotGrob(
-        ggplot2::ggplot(mapping = aes(Sepal.Length, Petal.Length, col = Species)) +
-          ggplot2::geom_point()
-      ),
-      ggplot2::ggplotGrob(
-        ggplot2::ggplot(mapping = aes(Sepal.Length, Petal.Width, col = Species)) +
-          ggplot2::geom_point()
-      ),
-      ggplot2::ggplotGrob(
-        ggplot2::ggplot(mapping = aes(Sepal.Width, Petal.Length, col = Species)) +
-          ggplot2::geom_point()
-      ),
-      ggplot2::ggplotGrob(
-        ggplot2::ggplot(mapping = aes(Sepal.Width, Petal.Width, col = Species)) +
-          ggplot2::geom_point()
-      ),
-      ggplot2::ggplotGrob(
-        ggplot2::ggplot(mapping = aes(Petal.Length, Petal.Width, col = Species)) +
-          ggplot2::geom_point()
+  g <- withr::with_options(
+    opts_partial_match_old,
+    with(data = iris, {
+      list(
+        ggplot2::ggplotGrob(
+          ggplot2::ggplot(mapping = aes(Sepal.Length, Sepal.Width, col = Species)) +
+            ggplot2::geom_point()
+        ),
+        ggplot2::ggplotGrob(
+          ggplot2::ggplot(mapping = aes(Sepal.Length, Petal.Length, col = Species)) +
+            ggplot2::geom_point()
+        ),
+        ggplot2::ggplotGrob(
+          ggplot2::ggplot(mapping = aes(Sepal.Length, Petal.Width, col = Species)) +
+            ggplot2::geom_point()
+        ),
+        ggplot2::ggplotGrob(
+          ggplot2::ggplot(mapping = aes(Sepal.Width, Petal.Length, col = Species)) +
+            ggplot2::geom_point()
+        ),
+        ggplot2::ggplotGrob(
+          ggplot2::ggplot(mapping = aes(Sepal.Width, Petal.Width, col = Species)) +
+            ggplot2::geom_point()
+        ),
+        ggplot2::ggplotGrob(
+          ggplot2::ggplot(mapping = aes(Petal.Length, Petal.Width, col = Species)) +
+            ggplot2::geom_point()
+        )
       )
-    )
-  })
-  lg <- testthat::expect_silent(
-    decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")
+    })
   )
-  testthat::expect_silent(draw_grob(lg[[1]]))
+  testthat::expect_silent(
+    lg <- decorate_grob_set(grobs = g, titles = "Hello\nOne\nTwo\nThree", footnotes = "")
+  )
+  testthat::expect_warning(draw_grob(lg[[1]]))
 })
 
 testthat::test_that("text wrapping works as expected", {
   g <- ggplot2::ggplot(iris) +
     ggplot2::geom_point(aes(x = Sepal.Length, y = Sepal.Width))
 
-  deco_grob_text_wrap <- tern::decorate_grob(
-    grob = ggplot2::ggplotGrob(g),
-    titles = paste(
-      "this is title that is very long dasd asdas dasljdklasjdklasjlk dakldsj akldjakls jkald jaklsj dklsajklaj",
-      "skldajkl jsakldjal jsadlk dasj lasjdlkasjkl ajskld asl jalksjd lkasjlk alkj dlkadlka sjd lakjsdl a"
-    ),
-    footnotes = paste(
-      "this is footnotes that is super super supre long long asdad as dasd ad ada ad asdadkhasdalksjdlkaj kdlajskl",
-      "dsajlkd ajldja lkdjas jdklas jdkasj dlasl;jd klasjdkl aldja lkjdlkaj lkfjalksd a"
-    ),
-    page = "Page 1 of 10"
+  testthat::expect_silent(
+    deco_grob_text_wrap <- decorate_grob(
+      grob = ggplot2::ggplotGrob(g),
+      titles = paste(
+        "this is title that is very long dasd asdas dasljdklasjdklasjlk dakldsj akldjakls jkald jaklsj dklsajklaj",
+        "skldajkl jsakldjal jsadlk dasj lasjdlkasjkl ajskld asl jalksjd lkasjlk alkj dlkadlka sjd lakjsdl a"
+      ),
+      footnotes = paste(
+        "this is footnotes that is super super supre long long asdad as dasd ad ada ad asdadkhasdalksjdlkaj kdlajskl",
+        "dsajlkd ajldja lkdjas jdklas jdkasj dlasl;jd klasjdkl aldja lkjdlkaj lkfjalksd a"
+      ),
+      page = "Page 1 of 10"
+    )
   )
 
-  vdiffr::expect_doppelganger(title = "deco_grob_text_wrap", fig = deco_grob_text_wrap)
+  expect_snapshot_ggplot(title = "deco_grob_text_wrap", fig = deco_grob_text_wrap, width = 10, height = 8)
+})
+
+testthat::test_that("Edge cases work for titles and footers in split_text_grob", {
+  # regression test #1254
+  testthat::expect_silent(
+    split_text_grob(NULL)
+  )
+  testthat::expect_silent(
+    split_text_grob("")
+  )
+  testthat::expect_silent(
+    split_text_grob(c("", NA))
+  )
+  testthat::expect_silent(
+    split_text_grob(NA)
+  )
+  testthat::expect_silent(
+    split_text_grob(c("", "a a"))
+  )
 })

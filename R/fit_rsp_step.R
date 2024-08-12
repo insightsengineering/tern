@@ -1,4 +1,4 @@
-#' Subgroup Treatment Effect Pattern (STEP) Fit for Binary (Response) Outcome
+#' Subgroup treatment effect pattern (STEP) fit for binary (response) outcome
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -58,7 +58,7 @@
 #' step_matrix <- fit_rsp_step(
 #'   variables = variables,
 #'   data = adrs_f,
-#'   control = c(control_logistic(), control_step(bandwidth = 0.5))
+#'   control = c(control_logistic(), control_step(bandwidth = 0.9))
 #' )
 #' dim(step_matrix)
 #' head(step_matrix)
@@ -68,7 +68,7 @@
 #' step_matrix2 <- fit_rsp_step(
 #'   variables = variables,
 #'   data = adrs_f,
-#'   control = c(control_logistic(conf_level = 0.9), control_step(bandwidth = 0.6, degree = 1))
+#'   control = c(control_logistic(conf_level = 0.9), control_step(bandwidth = NULL, degree = 1))
 #' )
 #'
 #' # Use a global constant model. This is helpful as a reference for the subgroup models.
@@ -90,7 +90,7 @@
 #' step_matrix4 <- fit_rsp_step(
 #'   variables = variables2,
 #'   data = adrs_f,
-#'   control = c(control_logistic(), control_step(bandwidth = 0.6))
+#'   control = c(control_logistic(), control_step(bandwidth = NULL))
 #' )
 #'
 #' @export

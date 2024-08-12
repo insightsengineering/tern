@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit_rsp_step.R
 \name{fit_rsp_step}
 \alias{fit_rsp_step}
-\title{Subgroup Treatment Effect Pattern (STEP) Fit for Binary (Response) Outcome}
+\title{Subgroup treatment effect pattern (STEP) fit for binary (response) outcome}
 \usage{
 fit_rsp_step(variables, data, control = c(control_step(), control_logistic()))
 }
@@ -67,7 +67,7 @@ variables <- list(
 step_matrix <- fit_rsp_step(
   variables = variables,
   data = adrs_f,
-  control = c(control_logistic(), control_step(bandwidth = 0.5))
+  control = c(control_logistic(), control_step(bandwidth = 0.9))
 )
 dim(step_matrix)
 head(step_matrix)
@@ -77,7 +77,7 @@ head(step_matrix)
 step_matrix2 <- fit_rsp_step(
   variables = variables,
   data = adrs_f,
-  control = c(control_logistic(conf_level = 0.9), control_step(bandwidth = 0.6, degree = 1))
+  control = c(control_logistic(conf_level = 0.9), control_step(bandwidth = NULL, degree = 1))
 )
 
 # Use a global constant model. This is helpful as a reference for the subgroup models.
@@ -99,7 +99,7 @@ variables2 <- list(
 step_matrix4 <- fit_rsp_step(
   variables = variables2,
   data = adrs_f,
-  control = c(control_logistic(), control_step(bandwidth = 0.6))
+  control = c(control_logistic(), control_step(bandwidth = NULL))
 )
 
 }

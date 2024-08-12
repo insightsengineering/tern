@@ -2,7 +2,7 @@
 % Please edit documentation in R/split_cols_by_groups.R
 \name{groups_list_to_df}
 \alias{groups_list_to_df}
-\title{Convert List of Groups to Data Frame}
+\title{Convert list of groups to a data frame}
 \usage{
 groups_list_to_df(groups_list)
 }
@@ -11,10 +11,10 @@ groups_list_to_df(groups_list)
 levels that belong to it in the character vectors that are elements of the list.}
 }
 \value{
-\code{\link[tibble:tibble]{tibble::tibble()}} in the required format.
+A \code{tibble} in the required format.
 }
 \description{
-This converts a list of group levels into a data frame format which is expected by \code{\link[rtables:add_combo_levels]{rtables::add_combo_levels()}}.
+This converts a list of group levels into a data frame format which is expected by \code{\link[rtables:add_overall_level]{rtables::add_combo_levels()}}.
 }
 \examples{
 grade_groups <- list(

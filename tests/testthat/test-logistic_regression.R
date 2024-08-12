@@ -82,15 +82,19 @@ testthat::test_that("fit_logistic works with a single stratification variable", 
     RACE = LETTERS[c(rep(c(3, 4), 10))]
   )
 
-  result <- testthat::expect_silent(fit_logistic(
-    data,
-    variables = list(
-      response = "Response",
-      arm = "ARMCD",
-      covariates = c("RACE", "AGE"),
-      strata = "STRATA1"
-    )
-  ))
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    result <- testthat::expect_silent(fit_logistic(
+      data,
+      variables = list(
+        response = "Response",
+        arm = "ARMCD",
+        covariates = c("RACE", "AGE"),
+        strata = "STRATA1"
+      )
+    ))
+  )
   testthat::expect_s3_class(result, c("clogit", "coxph"))
 
   expected_formula <- Surv(rep(1, 20L), Response) ~ ARMCD + RACE + AGE + strata(STRATA1)
@@ -109,15 +113,19 @@ testthat::test_that("fit_logistic works with two stratification variables", {
     RACE = LETTERS[c(rep(c(3, 4), 10))]
   )
 
-  result <- testthat::expect_silent(fit_logistic(
-    data,
-    variables = list(
-      response = "Response",
-      arm = "ARMCD",
-      covariates = c("RACE", "AGE"),
-      strata = c("STRATA1", "STRATA2")
-    )
-  ))
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    result <- testthat::expect_silent(fit_logistic(
+      data,
+      variables = list(
+        response = "Response",
+        arm = "ARMCD",
+        covariates = c("RACE", "AGE"),
+        strata = c("STRATA1", "STRATA2")
+      )
+    ))
+  )
   testthat::expect_s3_class(result, c("clogit", "coxph"))
 
   expected_formula <- Surv(rep(1, 20L), Response) ~ ARMCD + RACE + AGE +

@@ -1,17 +1,17 @@
-#' Control Function for `CoxPH` Model
+#' Control function for Cox-PH model
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This is an auxiliary function for controlling arguments for `CoxPH` model, typically used internally to specify
-#' details of `CoxPH` model for [s_coxph_pairwise()]. `conf_level` refers to Hazard Ratio estimation.
+#' This is an auxiliary function for controlling arguments for Cox-PH model, typically used internally to specify
+#' details of Cox-PH model for [s_coxph_pairwise()]. `conf_level` refers to Hazard Ratio estimation.
 #'
 #' @inheritParams argument_convention
 #' @param pval_method (`string`)\cr p-value method for testing hazard ratio = 1.
 #'   Default method is `"log-rank"`, can also be set to `"wald"` or `"likelihood"`.
-#' @param ties (`string`)\cr specifying the method for tie handling. Default is `"efron"`,
+#' @param ties (`string`)\cr string specifying the method for tie handling. Default is `"efron"`,
 #'   can also be set to `"breslow"` or `"exact"`. See more in [survival::coxph()].
 #'
-#' @return A list of components with the same names as the arguments
+#' @return A list of components with the same names as the arguments.
 #'
 #' @export
 control_coxph <- function(pval_method = c("log-rank", "wald", "likelihood"),
@@ -24,7 +24,7 @@ control_coxph <- function(pval_method = c("log-rank", "wald", "likelihood"),
   list(pval_method = pval_method, ties = ties, conf_level = conf_level)
 }
 
-#' Control Function for `survfit` Model for Survival Time
+#' Control function for `survfit` models for survival time
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -34,9 +34,9 @@ control_coxph <- function(pval_method = c("log-rank", "wald", "likelihood"),
 #' @inheritParams argument_convention
 #' @param conf_type (`string`)\cr confidence interval type. Options are "plain" (default), "log", "log-log",
 #'   see more in [survival::survfit()]. Note option "none" is no longer supported.
-#' @param quantiles (`numeric`)\cr of length two to specify the quantiles of survival time.
+#' @param quantiles (`numeric(2)`)\cr vector of length two specifying the quantiles of survival time.
 #'
-#' @return A list of components with the same names as the arguments
+#' @return A list of components with the same names as the arguments.
 #'
 #' @export
 control_surv_time <- function(conf_level = 0.95,
@@ -49,7 +49,7 @@ control_surv_time <- function(conf_level = 0.95,
   list(conf_level = conf_level, conf_type = conf_type, quantiles = quantiles)
 }
 
-#' Control Function for `survfit` Model for Patient's Survival Rate at time point
+#' Control function for `survfit` models for patients' survival rate at time points
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -59,7 +59,7 @@ control_surv_time <- function(conf_level = 0.95,
 #' @inheritParams argument_convention
 #' @inheritParams control_surv_time
 #'
-#' @return A list of components with the same names as the arguments
+#' @return A list of components with the same names as the arguments.
 #'
 #' @export
 control_surv_timepoint <- function(conf_level = 0.95,

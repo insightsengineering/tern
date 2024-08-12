@@ -1,4 +1,4 @@
-#' Survival Time Analysis
+#' Survival time analysis
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -16,7 +16,7 @@
 #'   when the `range` statistic is included.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("surv_time")`
 #'   to see available statistics for this function.
-#' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
+#' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Each element of the vector
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.
 #'
@@ -138,11 +138,11 @@ a_surv_time <- function(df,
 
   cell_fns <- setNames(vector("list", length = length(x_stats)), .labels)
   if ("range" %in% names(x_stats) && ref_fn_censor) {
-    if (x_stats[["range"]][1] == rng_censor_lwr && x_stats[["range"]][2] == rng_censor_upr) {
+    if (identical(x_stats[["range"]][1], rng_censor_lwr) && identical(x_stats[["range"]][2], rng_censor_upr)) {
       cell_fns[[.labels[["range"]]]] <- "Censored observations: range minimum & maximum"
-    } else if (x_stats[["range"]][1] == rng_censor_lwr) {
+    } else if (identical(x_stats[["range"]][1], rng_censor_lwr)) {
       cell_fns[[.labels[["range"]]]] <- "Censored observation: range minimum"
-    } else if (x_stats[["range"]][2] == rng_censor_upr) {
+    } else if (identical(x_stats[["range"]][2], rng_censor_upr)) {
       cell_fns[[.labels[["range"]]]] <- "Censored observation: range maximum"
     }
   }

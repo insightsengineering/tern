@@ -6,7 +6,7 @@
 \alias{h_incidence_rate_normal_log}
 \alias{h_incidence_rate_exact}
 \alias{h_incidence_rate_byar}
-\title{Helper Functions for Incidence Rate}
+\title{Helper functions for incidence rate}
 \usage{
 h_incidence_rate_normal(person_years, n_events, alpha = 0.05)
 
@@ -19,11 +19,11 @@ h_incidence_rate_byar(person_years, n_events, alpha = 0.05)
 h_incidence_rate(person_years, n_events, control = control_incidence_rate())
 }
 \arguments{
-\item{person_years}{(\code{numeric})\cr total person-years at risk.}
+\item{person_years}{(\code{numeric(1)})\cr total person-years at risk.}
 
-\item{n_events}{(\code{integer})\cr number of events observed.}
+\item{n_events}{(\code{integer(1)})\cr number of events observed.}
 
-\item{alpha}{(\code{numeric})\cr two-sided alpha-level for confidence interval.}
+\item{alpha}{(\code{numeric(1)})\cr two-sided alpha-level for confidence interval.}
 
 \item{control}{(\code{list})\cr parameters for estimation details, specified by using
 the helper function \code{\link[=control_incidence_rate]{control_incidence_rate()}}. Possible parameter options are:
@@ -37,7 +37,7 @@ indicating time unit for data input.
 }}
 }
 \value{
-Estimated incidence rate \code{rate} and associated confidence interval \code{rate_ci}.
+Estimated incidence rate, \code{rate}, and associated confidence interval, \code{rate_ci}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -56,7 +56,7 @@ logarithm of the incidence rate. Unit is one person-year.
 associated exact confidence interval. Unit is one person-year.
 
 \item \code{h_incidence_rate_byar()}: Helper function to estimate the incidence rate and
-associated \code{Byar}'s confidence interval. Unit is one person-year.
+associated Byar's confidence interval. Unit is one person-year.
 
 \item \code{h_incidence_rate()}: Helper function to estimate the incidence rate and
 associated confidence interval.

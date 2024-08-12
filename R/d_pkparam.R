@@ -2,7 +2,7 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @return `data.frame` of PK parameters
+#' @return A `data.frame` of PK parameters.
 #'
 #' @examples
 #' pk_reference_dataset <- d_pkparam()

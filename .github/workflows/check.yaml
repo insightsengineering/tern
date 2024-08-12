@@ -37,6 +37,30 @@ jobs:
         checking S3 generic/method consistency .* NOTE
         checking Rd .usage sections .* NOTE
         checking for unstated dependencies in vignettes .* NOTE
+        checking top-level files .* NOTE
+      unit-test-report-brand: >-
+        https://raw.githubusercontent.com/insightsengineering/hex-stickers/main/thumbs/tern.png
+  r-cmd-non-cran:
+    name: R CMD Check (non-CRAN) 🧬
+    uses: insightsengineering/r.pkg.template/.github/workflows/build-check-install.yaml@main
+    secrets:
+      REPO_GITHUB_TOKEN: ${{ secrets.REPO_GITHUB_TOKEN }}
+    with:
+      additional-env-vars: |
+        _R_CHECK_CRAN_INCOMING_REMOTE_=false
+        NOT_CRAN=true
+      enforce-note-blocklist: true
+      concurrency-group: non-cran
+      unit-test-report-directory: unit-test-report-non-cran
+      note-blocklist: |
+        checking dependencies in R code .* NOTE
+        checking R code for possible problems .* NOTE
+        checking examples .* NOTE
+        checking Rd line widths .* NOTE
+        checking S3 generic/method consistency .* NOTE
+        checking Rd .usage sections .* NOTE
+        checking for unstated dependencies in vignettes .* NOTE
+        checking top-level files .* NOTE
       unit-test-report-brand: >-
         https://raw.githubusercontent.com/insightsengineering/hex-stickers/main/thumbs/tern.png
   coverage:
@@ -85,6 +109,8 @@ jobs:
     uses: insightsengineering/r.pkg.template/.github/workflows/style.yaml@main
     with:
       auto-update: true
+    secrets:
+      REPO_GITHUB_TOKEN: ${{ secrets.REPO_GITHUB_TOKEN }}
   grammar:
     if: github.event_name != 'push'
     name: Grammar Check 🔤

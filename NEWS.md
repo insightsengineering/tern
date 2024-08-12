@@ -1,4 +1,71 @@
-# tern 0.9.3.9000
+# tern 0.9.5.9013
+### Enhancements
+* Added `errorbar_width` and `linetype` parameters to `g_lineplot`.
+* Reworking of `summarize_glm_count()` documentation and all its associated functions to better describe the results and the functions' purpose.
+* Added the `.formats` argument to `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` to allow users to specify formats.
+* Added the `riskdiff` argument to `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` to allow users to add a risk difference table column, and function `control_riskdiff` to specify settings for the risk difference column.
+
+### Bug Fixes
+* Fixed a bug in `a_surv_time` that threw an error when split only has `"is_event"`.
+* Added defaults for `d_count_cumulative` parameters as described in the documentation.
+* Empty levels on `g_lineplot` x-axis are not shown in either plots.
+* Fixed disappearing line in `g_lineplot` when using only one group or strata level.
+* Fixed defaults for formats and labels in `get_formats_from_stats` and `get_labels_from_stats`.
+* Fixed bug for linear scaling factor (`scale` parameter) being applied to response but not to rate in `h_glm_count` while all distributions have logarithmic link function.
+* Fixed bug in `decorate_grob` that did not handle well empty strings or `NULL` values for title and footers.
+* Fixed bug in `g_km` that caused an error when multiple records in the data had estimates at max time.
+
+
+### Miscellaneous
+* Began deprecation of the confusing functions `summary_formats` and `summary_labels`.
+
+# tern 0.9.5
+
+### Enhancements
+* Added `facet_var` to `g_lineplot` to allow plot faceting by a factor variable.
+* Added examples and tests for `label_all` parameter to `extract_survival_biomarkers` and `extract_survival_subgroups`.
+* Added the `xticks`, `xlim`, and `ylim` arguments to `g_lineplot` to allow for customization of the x and y axes.
+* Updated `g_lineplot` legend to follow factor levels set by users.
+
+### Bug Fixes
+* Fixed a bug in `s_ancova` that prevented statistics from being printed when arm levels include special characters.
+* Fixed a bug in `decorate_grob` that prevented the right margins to be respected when adding title and footers decorations.
+
+### Miscellaneous
+* Began deprecation of the unused `label_all` parameter to `tabulate_survival_biomarkers` and `tabulate_survival_subgroups`, with redirection to the same parameter in their associated `extract_*` functions.
+
+# tern 0.9.4
+
+### New Features
+* Added `h_glm_negbin` to `h_glm_count` to enable count data analysis using a negative binomial model.
+* Added argument `grade_groups_only` to `count_occurrences_by_grade` to allow users to only display rows for specified grade groups.
+* Added internal function `df2gg` that converts `data.frame` objects to `ggplot` objects.
+* Added functions `control_surv_med_annot` and `control_coxph_annot` to configure `g_km` annotation table sizes/positions.
+* Refactored `g_km` to output a `ggplot` object instead of a `grob` object.
+* Refactored `g_forest` to output a `ggplot` object instead of a `grob` object.
+
+### Enhancements
+* Default format for mean p-values (`mean_pval`) updated from `"xx.xx"` to `"x.xxxx | (<0.0001)"`.
+
+### Bug Fixes
+* Fixed nested column split label overlay issue in `rtable2gg` to clean up appearance of text labels.
+* Fixed bug in `s_ancova` causing incorrect difference calculations for arm variables with irregular levels.
+* Fixed bug in `format_count_fraction_fixed_dp` that did not have the same print when the fraction was 1 (100%).
+* Fixed bug in `g_lineplot` causing default labels not to update according to specified `control` settings.
+* Fixed bug causing an error when automatic value formatting was applied to `NA` values.
+
+### Miscellaneous
+* Added function `expect_snapshot_ggplot` to test setup file to process plot snapshot tests and allow plot dimensions to be set.
+* Adapted to argument renames introduced in `ggplot2` 3.5.0.
+* Renamed `individual_patient_plot.R` to `g_ipp.R`. 
+* Removed all instances of deprecated parameters `time_unit_input`, `time_unit_output`, `na_level` and `indent_mod`.
+* Removed deprecated functions `summarize_vars`, `control_summarize_vars`, `a_compare`, `create_afun_summary`, `create_afun_compare`, and `summary_custom`.
+* Removed `vdiffr` package from Suggests in DESCRIPTION file.
+* Began deprecation of the named element `strat`, to be renamed to `strata`, within the `variables` argument to `h_rsp_to_logistic_variables`, `h_logistic_mult_cont_df`, `h_odds_ratio_subgroups_df`, `h_coxreg_mult_cont_df`, `h_coxph_subgroups_df`, `h_tbl_coxph_pairwise`, `extract_rsp_biomarkers`, `extract_rsp_subgroups`, `extract_survival_biomarkers`, and `extract_survival_subgroups`.
+* Began deprecation of the `strat` argument to `s_coxph_pairwise` and replaced it with the `strata` argument.
+* Began deprecation of the `forest_grob`, `forest_dot_line`, `forest_viewport`, `vp_forest_table_part`, and `grid.forest` functions.
+* Began deprecation of no longer used Kaplan-Meier helper functions `h_ggkm`, `h_decompose_gg`, `h_km_layout`, `h_grob_tbl_at_risk`, `h_grob_median_surv`, `h_grob_y_annot`, and `h_grob_coxph`.
+* Began deprecation of `grob`/`grid` related functions `stack_grobs`, `arrange_grobs`, and `draw_grob` which are no longer used in `tern`.
 
 # tern 0.9.3
 
@@ -7,13 +74,14 @@
 * Added `keep_level_order` split function to retain original order of levels in a split.
 * Added `level_order` split function to reorder manually the levels.
 * Added function `get_indents_from_stats` to format and return indent modifiers for a given set of statistics.
-* Added internal utility function `apply_auto_formatting` to check for `"auto"` formats and replace them with 
+* Added internal utility function `apply_auto_formatting` to check for `"auto"` formats and replace them with
   implementation of `format_auto` in analyze functions.
 * Added utility function `labels_use_control` to modify labels with control specifications.
 * Added list containing default statistics for each method group, `tern_default_stats`.
 * Added summarize function version of `count_occurrences` analyze function, `summarize_occurrences`.
 * Added referential footnotes to `surv_time` for censored range observations, controlled via the `ref_fn_censor` parameter.
-* Added helper function `h_adlb_abnormal_by_worst_grade` to prepare `ADLB` data to use as input in `count_abnormal_by_worst_grade`.
+* Added helper function `h_adlb_abnormal_by_worst_grade` to prepare ADLB data to use as input in `count_abnormal_by_worst_grade`.
+* Added `s_bland_altman` function to assess agreement between two numerical vectors.
 * Added function `rtable2gg` that converts `rtable` objects to `ggplot` objects.
 * Added helper function to set default `na_str` globally with `set_default_na_str()` and added `default_na_str()` for all interested functions.
 
@@ -205,7 +273,7 @@
   repetition when paginating.
 * Updated tests to use `testthat` 3rd edition and replaced applicable tests with snapshot testing.
 * Updated `summarize_ancova` examples to use `iris` dataset instead of `scda` data.
-* Created vignette which saves cached synthetic `CDISC` dataset files to the `data/` folder and
+* Created vignette which saves cached synthetic CDISC dataset files to the `data/` folder and
   generated cached synthetic datasets.
 * Updated all examples/tests to use datasets from the `data/` folder instead of `scda` datasets.
 * Removed all template tests from `tern`. These tests are in internal repo `scda.test`.
@@ -222,7 +290,7 @@
 # tern 0.7.10
 
 ### New Features
-* Added stratified `Newcombe` and stratified Wilson statistics to `estimate_proportion` and
+* Added stratified Newcombe and stratified Wilson statistics to `estimate_proportion` and
   `estimate_proportion_diff` with relative tests.
 * Added `stat_mean_pval`, a new summary statistic to calculate the p-value of
   the mean.
@@ -240,7 +308,7 @@
   log-rank test instead of Cox Proportional-Hazards Model.
 * Implemented `nestcolor` in all examples by adapting `g_km`, `g_ipp`,
   `g_waterfall`, `g_step`, `g_lineplot`, and `g_forest`.
-* Added parameters `interaction_y` and `interaction_item` in `ANCOVA` to make the
+* Added parameters `interaction_y` and `interaction_item` in ANCOVA to make the
   interaction calculations available.
 * Added new parameter `footnotes` to add footnotes to `g_km`.
 
@@ -337,7 +405,7 @@
   `nestcolor::color_palette` and `nestcolor::theme_nest`, respectively.
 * Removed deprecated functions: `color_palette`, `color_palette_core`,
   `h_set_nest_theme`, `s_cox_univariate`.
-* Removed deprecated `mmrm` functions: `fit_mmrm`, `g_mmrm_diagnostic`,
+* Removed deprecated MMRM functions: `fit_mmrm`, `g_mmrm_diagnostic`,
   `g_mmrm_lsmeans`, `as.rtable.mmrm`, `h_mmrm_fixed`, `h_mmrm_cov`,
   `h_mmrm_diagnostic`, `tidy.mmrm`, `s_mmrm_lsmeans`, `s_mmrm_lsmeans_single`,
   `summarize_lsmeans`.
@@ -383,7 +451,7 @@
 
 * Enhanced `g_lineplot` with table to automatically scale the table height and return a `ggplot` object.
 * Enhanced `g_ipp` with caption argument and adjust the position.
-* Enhanced `prop_diff`, `tern` function and related functions to be able to apply a continuity correction in the `Newcombe` method.
+* Enhanced `prop_diff`, `tern` function and related functions to be able to apply a continuity correction in the Newcombe method.
 * Enhanced `summarize_numeric_in_columns` and `summarize_variables` to allow factor/character summary and to be able to summarize the number of `BLQs` in `AVALC` from `ADPC` dataset.
 * Updated order of summarize variables stats in manual for order consistency.
 * Added a `sum` option to `summarize_variables`.
@@ -404,7 +472,7 @@
 
 ### Breaking changes
 
-* Move `MMRM` into a separate package `tern.mmrm`.
+* Move MMRM into a separate package `tern.mmrm`.
 
 ### New features
 
@@ -448,7 +516,7 @@
 ### New features
 * Added functions to estimate continuous biomarker effects across subgroups for survival and binary response endpoints, used to produce corresponding forest plots, see `survival_biomarkers_subgroups` and `response_biomarkers_subgroups`.
 * Added `g_lineplot` plot function, including new `h_format_row` helper function and `control_lineplot_vars` function. Removed `g_summary_by`.
-* Added new safety helper function `h_stack_by_baskets` to stack events in `SMQ` and/or `CQ` basket flag in `ADAE` data set.
+* Added new safety helper function `h_stack_by_baskets` to stack events in SMQ and/or CQ basket flag in ADAE data set.
 
 ### Enhancements
 * Added a couple of new statistics to `s_summary.numeric`. Added `names` attribute to each element of the final list returned by the `s_summary.numeric` function. Added `summary_formats` and `summary_labels` helper functions.
@@ -462,7 +530,7 @@
 * Fixed `prop_diff_cmh` to handle edge case of no FALSE (or TRUE) responses.
 * Enhanced `g_mmrm_diagnostic` to improve error handling when data is not amenable to the Locally Weighted Scatterplot Smoothing.
 * Fixes in `g_km`:
-  * Plot can now display any combination of the annotation tables for number of patients at risk, median survival time, and `CoxPH` summary.
+  * Plot can now display any combination of the annotation tables for number of patients at risk, median survival time, and Cox-PH summary.
   * Function will return a warning instead of an error if the `arm` variable includes a single level and `annot_coxph = TRUE`.
   * Lines in the plot now start at time 0 and probability 1.
   * Category labels can include the equals sign.
@@ -482,7 +550,7 @@
   * `summarize_patients_exposure_in_cols` tabulates patient counts and sum of exposure across all patients.
 
 ### Enhancements
-* Enhanced `mmrm` related functions for fitting models without `arm` variable.
+* Enhanced MMRM-related functions for fitting models without `arm` variable.
 * Updated `cox_regression` to work without covariates. Also in case of interaction model summary, p-values for main effect coefficients are no longer displayed.
 * Descriptive statistics returned by `summarize_vars` now include quantiles. `summarize_vars` now accepts the control function `control_summarize_vars` to specify details about confidence level for mean and median and quantile details. The `control` argument replaces `conf_level`.
 * Added `var_labels` and `show_labels` arguments to `count_occurrences_by_grade`.
@@ -546,7 +614,7 @@
 * New arguments `yval` and `ci_ribbon` added to `g_km`.
 * Add new individual patient plot function `g_ipp` along with helpers `h_g_ipp` and `h_set_nest_theme`.
 * Fixed bug in `count_patients_with_events`, now shows zero counts without percentage.
-* Fixed bug in `get_mmrm_lsmeans` which did not allow `MMRM` analysis of more than 3000 observations.
+* Fixed bug in `get_mmrm_lsmeans` which did not allow MMRM analysis of more than 3000 observations.
 * Updated `stat_mean_ci` and `stat_median_ci` to handle edge cases with number of elements in input series equal to 1. For such cases, `NA_real_` is now returned, instead of `NA` or `+/-Inf` for confidence interval (CI) estimates.
 * Rename `n_lim` argument of `stat_mean_ci` to `n_min` to better reflect its desired meaning.
 
@@ -567,7 +635,7 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * Fitting and tabulating the results of Cox regressions with `fit_coxreg_univar`, `fit_coxreg_multivar` and `summarize_coxreg`, respectively.
 * Pruning occurrence tables (or tables with counts and fractions) with flexible rules, see `?prune_occurrences` for details.
 * Sorting occurrence tables using different options, see `?score_occurrences` for details.
-* Fitting and tabulating `MMRM` models with `fit_mmrm` and `as.rtable` and `summarize_lsmeans`, see `?tabulate_mmrm` for details.
+* Fitting and tabulating MMRM models with `fit_mmrm` and `as.rtable` and `summarize_lsmeans`, see `?tabulate_mmrm` for details.
 * Counting the number of unique and non-unique patients with `summarize_num_patients`.
 * Counting occurrences with `count_occurrences`.
 * Counting occurrences by grade with `summarize_occurrences_by_grade` and `count_occurrences_by_grade`.
@@ -584,16 +652,16 @@ This version of `tern` introduces a major rewriting of `tern` due to the change 
 * Add new function `t_contingency` for contingency tables.
 * Renamed the class `splitText` to `dynamicSplitText` to resolve the name conflict with the package `ggpubr`.
 * Add `rreplace_format` for tabulation post-processing.
-* Add new tern function `t_ancova` to create `ANCOVA` tables, as well as corresponding elementary table function `t_el_ancova` and summary function `s_ancova`.
+* Add new tern function `t_ancova` to create ANCOVA tables, as well as corresponding elementary table function `t_el_ancova` and summary function `s_ancova`.
 * Add new tern function `s_odds_ratio` to estimate Odds Ratio of response between categories, as well as the corresponding elementary table function `t_el_odds_ratio`.
-* Added new CI methods (`Agresti-Coull`, `Jeffreys`) for `s_proportion`.
+* Added new CI methods (`agresti-coull`, `jeffreys`) for `s_proportion`.
 * Added new CI methods `anderson-hauck` and `newcombe` to `s_proportion_diff`.
 * Added new p-value methods (Fisher's Exact, Chi-Squared Test with Schouten Correction) for `s_test_proportion_diff`.
 * The binary summary table function `t_binary_outcome` takes now lists (instead of character vectors) specified by the helper function `control_binary_comparison` as the arguments `strat_analysis` and `unstrat_analysis`. Odds Ratio estimates and CIs are now removable and included by default, similarly to the other subsections of the arm comparison analyses. Also added argument `rsp_multinomial`.
 * Add new table function `t_el_multinomial_proportion`.
 * Add new table function `t_abn_shift`.
-* Add new `MMRM` analysis function `s_mmrm`, as well as corresponding table functions `t_mmrm_lsmeans`, `t_mmrm_cov`, `t_mmrm_diagnostic`, `t_mmrm_fixed`, and plot functions `g_mmrm_lsmeans`, `g_mmrm_diagnostic`. The results of these match SAS results (up to numeric precision).
-* Deprecated old `MMRM` functions `a_mmrm` and `t_mmrm` (they give a deprecation warning but still work) to remove in the next release. The reason is that the results of these functions don't match SAS results.
+* Add new MMRM analysis function `s_mmrm`, as well as corresponding table functions `t_mmrm_lsmeans`, `t_mmrm_cov`, `t_mmrm_diagnostic`, `t_mmrm_fixed`, and plot functions `g_mmrm_lsmeans`, `g_mmrm_diagnostic`. The results of these match SAS results (up to numeric precision).
+* Deprecated old MMRM functions `a_mmrm` and `t_mmrm` (they give a deprecation warning but still work) to remove in the next release. The reason is that the results of these functions don't match SAS results.
 * Fix bug in `g_km` related to numbers in patients at risk table to correct numbers for integer time-to-event variable inputs.
 
 # tern 0.6.7

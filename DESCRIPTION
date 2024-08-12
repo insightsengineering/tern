@@ -1,11 +1,14 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.9.3.9000
-Date: 2023-12-08
+Version: 0.9.5.9013
+Date: 2024-08-12
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = "aut"),
     person("Jana", "Stoilova", , "jana.stoilova@roche.com", role = "aut"),
+    person("Davide", "Garolini", , "davide.garolini@roche.com", role = "aut"),
+    person("Emily", "de la Rua", , "emily.de_la_rua@contractors.roche.com", role = "aut"),
+    person("Abinaya", "Yogasekaram", , "abinaya.yogasekaram@contractors.roche.com", role = "aut"),
     person("Heng", "Wang", , "wang.heng@gene.com", role = "aut"),
     person("Francois", "Collin", role = "aut"),
     person("Adrian", "Waddell", , "adrian.waddell@gene.com", role = "aut"),
@@ -17,27 +20,29 @@ Authors@R: c(
 Description: Table, Listings, and Graphs (TLG) library for common outputs
     used in clinical trials.
 License: Apache License 2.0
-URL: https://github.com/insightsengineering/tern
+URL: https://insightsengineering.github.io/tern/,
+    https://github.com/insightsengineering/tern/
 BugReports: https://github.com/insightsengineering/tern/issues
 Depends:
     R (>= 3.6),
-    rtables (>= 0.6.6)
+    rtables (>= 0.6.8)
 Imports:
     broom (>= 0.5.4),
     car (>= 3.0-13),
     checkmate (>= 2.1.0),
-    cowplot (>= 0.7.0),
+    cowplot (>= 1.0.0),
     dplyr (>= 1.0.0),
     emmeans (>= 1.8.0),
     forcats (>= 1.0.0),
-    formatters (>= 0.5.5),
-    ggplot2 (>= 3.4.0),
+    formatters (>= 0.5.8),
+    ggplot2 (>= 3.5.0),
     grid,
     gridExtra (>= 2.0.0),
     gtable (>= 0.3.0),
     labeling,
     lifecycle (>= 0.2.0),
     magrittr (>= 1.5),
+    MASS (>= 7.3-60),
     methods,
     Rdpack (>= 2.4),
     rlang (>= 1.1.0),
@@ -52,11 +57,11 @@ Suggests:
     lattice (>= 0.18-4),
     lubridate (>= 1.7.9),
     nestcolor (>= 0.1.1),
-    rmarkdown (>= 2.19),
+    rmarkdown (>= 2.23),
     stringr (>= 1.4.1),
     svglite (>= 2.1.2),
     testthat (>= 3.1.9),
-    vdiffr (>= 1.0.7)
+    withr (>= 2.0.0)
 VignetteBuilder:
     knitr
 RdMacros:
@@ -69,14 +74,14 @@ Config/Needs/verdepcheck: insightsengineering/rtables, tidymodels/broom,
     GeoBosh/Rdpack, r-lib/rlang, r-lib/scales, tidyverse/tibble,
     tidyverse/tidyr, yihui/knitr, deepayan/lattice, tidyverse/lubridate,
     insightsengineering/nestcolor, rstudio/rmarkdown, tidyverse/stringr,
-    r-lib/svglite, r-lib/testthat, r-lib/vdiffr
+    r-lib/svglite, r-lib/testthat, r-lib/withr
 Config/Needs/website: insightsengineering/nesttemplate
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Collate:
     'formatting_functions.R'
     'abnormal.R'
@@ -89,6 +94,7 @@ Collate:
     'analyze_variables.R'
     'analyze_vars_in_cols.R'
     'argument_convention.R'
+    'bland_altman.R'
     'combination_function.R'
     'compare_variables.R'
     'control_incidence_rate.R'
@@ -116,12 +122,15 @@ Collate:
     'fit_rsp_step.R'
     'fit_survival_step.R'
     'g_forest.R'
+    'g_ipp.R'
+    'g_km.R'
     'g_lineplot.R'
     'g_step.R'
     'g_waterfall.R'
     'h_adsl_adlb_merge_using_worst_flag.R'
     'h_biomarkers_subgroups.R'
     'h_cox_regression.R'
+    'h_km.R'
     'h_logistic_regression.R'
     'h_map_for_count_abnormal.R'
     'h_pkparam_sort.R'
@@ -133,8 +142,6 @@ Collate:
     'h_survival_duration_subgroups.R'
     'imputation_rule.R'
     'incidence_rate.R'
-    'individual_patient_plot.R'
-    'kaplan_meier_plot.R'
     'logistic_regression.R'
     'missing_data.R'
     'odds_ratio.R'

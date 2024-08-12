@@ -4,7 +4,7 @@
 \alias{h_odds_ratio}
 \alias{or_glm}
 \alias{or_clogit}
-\title{Helper Functions for Odds Ratio Estimation}
+\title{Helper functions for odds ratio estimation}
 \usage{
 or_glm(data, conf_level)
 
@@ -29,7 +29,7 @@ Functions to calculate odds ratios in \code{\link[=estimate_odds_ratio]{estimate
 \item \code{or_glm()}: Estimates the odds ratio based on \code{\link[stats:glm]{stats::glm()}}. Note that there must be
 exactly 2 groups in \code{data} as specified by the \code{grp} variable.
 
-\item \code{or_clogit()}: estimates the odds ratio based on \code{\link[survival:clogit]{survival::clogit()}}. This is done for
+\item \code{or_clogit()}: Estimates the odds ratio based on \code{\link[survival:clogit]{survival::clogit()}}. This is done for
 the whole data set including all groups, since the results are not the same as when doing
 pairwise comparisons between the groups.
 

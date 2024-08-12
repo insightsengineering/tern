@@ -2,7 +2,7 @@
 % Please edit documentation in R/response_biomarkers_subgroups.R
 \name{extract_rsp_biomarkers}
 \alias{extract_rsp_biomarkers}
-\title{Prepares Response Data Estimates for Multiple Biomarkers in a Single Data Frame}
+\title{Prepare response data estimates for multiple biomarkers in a single data frame}
 \usage{
 extract_rsp_biomarkers(
   variables,
@@ -39,7 +39,7 @@ as well as odds ratio estimates, confidence intervals and p-values,
 for multiple biomarkers across population subgroups in a single data frame.
 \code{variables} corresponds to the names of variables found in \code{data}, passed as a
 named list and requires elements \code{rsp} and \code{biomarkers} (vector of continuous
-biomarker variables) and optionally \code{covariates}, \code{subgroups} and \code{strat}.
+biomarker variables) and optionally \code{covariates}, \code{subgroups} and \code{strata}.
 \code{groups_lists} optionally specifies groupings for \code{subgroups} variables.
 }
 \note{
@@ -75,14 +75,14 @@ df
 # Here we group the levels of `BMRKR2` manually, and we add a stratification
 # variable `STRATA1`. We also here use a continuous variable `EOSDY`
 # which is then binarized internally (response is defined as this variable
-# being larger than 500).
+# being larger than 750).
 df_grouped <- extract_rsp_biomarkers(
   variables = list(
     rsp = "EOSDY",
     biomarkers = c("BMRKR1", "AGE"),
     covariates = "SEX",
     subgroups = "BMRKR2",
-    strat = "STRATA1"
+    strata = "STRATA1"
   ),
   data = adrs_f,
   groups_lists = list(
@@ -93,7 +93,7 @@ df_grouped <- extract_rsp_biomarkers(
     )
   ),
   control = control_logistic(
-    response_definition = "I(response > 500)"
+    response_definition = "I(response > 750)"
   )
 )
 df_grouped

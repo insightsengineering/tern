@@ -2,7 +2,7 @@
 % Please edit documentation in R/control_survival.R
 \name{control_surv_time}
 \alias{control_surv_time}
-\title{Control Function for \code{survfit} Model for Survival Time}
+\title{Control function for \code{survfit} models for survival time}
 \usage{
 control_surv_time(
   conf_level = 0.95,
@@ -16,10 +16,10 @@ control_surv_time(
 \item{conf_type}{(\code{string})\cr confidence interval type. Options are "plain" (default), "log", "log-log",
 see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "none" is no longer supported.}
 
-\item{quantiles}{(\code{numeric})\cr of length two to specify the quantiles of survival time.}
+\item{quantiles}{(\code{numeric(2)})\cr vector of length two specifying the quantiles of survival time.}
 }
 \value{
-A list of components with the same names as the arguments
+A list of components with the same names as the arguments.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}

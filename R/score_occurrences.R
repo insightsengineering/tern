@@ -1,4 +1,4 @@
-#' Occurrence Table Sorting
+#' Occurrence table sorting
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -109,7 +109,7 @@ score_occurrences_subtable <- function(...) {
   }
 }
 
-#' @describeIn score_occurrences Produce score function for sorting table by summing the first content row in
+#' @describeIn score_occurrences Produces a score function for sorting table by summing the first content row in
 #'   specified columns. Note that this is extending [rtables::cont_n_onecol()] and [rtables::cont_n_allcols()].
 #'
 #' @return

@@ -2,12 +2,11 @@
 % Please edit documentation in R/summarize_colvars.R
 \name{summarize_colvars}
 \alias{summarize_colvars}
-\title{Summarize Variables in Columns}
+\title{Summarize variables in columns}
 \usage{
 summarize_colvars(
   lyt,
   ...,
-  na_level = lifecycle::deprecated(),
   na_str = default_na_str(),
   .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
   .formats = NULL,
@@ -16,11 +15,9 @@ summarize_colvars(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{...}{arguments passed to \code{s_summary()}.}
-
-\item{na_level}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{na_str} argument instead.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 

@@ -2,18 +2,18 @@
 % Please edit documentation in R/formatting_functions.R
 \name{format_sigfig}
 \alias{format_sigfig}
-\title{Formatting Numeric Values By Significant Figures}
+\title{Format numeric values by significant figures}
 \usage{
 format_sigfig(sigfig, format = "xx", num_fmt = "fg")
 }
 \arguments{
-\item{sigfig}{(\code{integer})\cr number of significant figures to display.}
+\item{sigfig}{(\code{integer(1)})\cr number of significant figures to display.}
 
-\item{format}{(\code{character})\cr the format label (string) to apply when printing the value. Decimal
+\item{format}{(\code{string})\cr the format label (string) to apply when printing the value. Decimal
 places in string are ignored in favor of formatting by significant figures. Formats options are:
 \code{"xx"}, \code{"xx / xx"}, \code{"(xx, xx)"}, \code{"xx - xx"}, and \code{"xx (xx)"}.}
 
-\item{num_fmt}{(\code{character})\cr numeric format modifiers to apply to the value. Defaults to \code{"fg"} for
+\item{num_fmt}{(\code{string})\cr numeric format modifiers to apply to the value. Defaults to \code{"fg"} for
 standard significant figures formatting - fixed (non-scientific notation) format (\code{"f"})
 and \code{sigfig} equal to number of significant figures instead of decimal places (\code{"g"}). See the
 \code{\link[=formatC]{formatC()}} \code{format} argument for more options.}
@@ -38,14 +38,14 @@ fmt_5sf(0.000025645)
 Other formatting functions: 
 \code{\link{extreme_format}},
 \code{\link{format_auto}()},
+\code{\link{format_count_fraction}()},
 \code{\link{format_count_fraction_fixed_dp}()},
 \code{\link{format_count_fraction_lt10}()},
-\code{\link{format_count_fraction}()},
-\code{\link{format_extreme_values_ci}()},
 \code{\link{format_extreme_values}()},
+\code{\link{format_extreme_values_ci}()},
+\code{\link{format_fraction}()},
 \code{\link{format_fraction_fixed_dp}()},
 \code{\link{format_fraction_threshold}()},
-\code{\link{format_fraction}()},
 \code{\link{format_xx}()},
 \code{\link{formatting_functions}}
 }

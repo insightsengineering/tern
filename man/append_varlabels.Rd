@@ -2,18 +2,18 @@
 % Please edit documentation in R/utils_rtables.R
 \name{append_varlabels}
 \alias{append_varlabels}
-\title{Add Variable Labels to Top Left Corner in Table}
+\title{Add variable labels to top left corner in table}
 \usage{
 append_varlabels(lyt, df, vars, indent = 0L)
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{vars}{(\code{character})\cr variable names of which the labels are to be looked up in \code{df}.}
 
-\item{indent}{(\code{integer})\cr non-negative number of nested indent space, default to 0L which means no indent.
+\item{indent}{(\code{integer(1)})\cr non-negative number of nested indent space, default to 0L which means no indent.
 1L means two spaces indent, 2L means four spaces indent and so on.}
 }
 \value{
@@ -22,7 +22,7 @@ A modified layout with the new variable label(s) added to the top-left material.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Helper layout creating function to just append the variable labels of a given variables vector
+Helper layout-creating function to append the variable labels of a given variables vector
 from a given dataset in the top left corner. If a variable label is not found then the
 variable name itself is used instead. Multiple variable labels are concatenated with slashes.
 }

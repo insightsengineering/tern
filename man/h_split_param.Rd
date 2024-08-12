@@ -11,7 +11,7 @@ h_split_param(param, value, f)
 
 \item{value}{(\code{vector})\cr the value used to split.}
 
-\item{f}{(\code{list} of \code{vectors})\cr the reference to make the split}
+\item{f}{(\code{list})\cr the reference to make the split.}
 }
 \value{
 A named \code{list} with the same element names as \code{f}, each containing the elements specified in \code{.stats}.

@@ -3,14 +3,14 @@
 \name{survival_biomarkers_subgroups}
 \alias{survival_biomarkers_subgroups}
 \alias{tabulate_survival_biomarkers}
-\title{Tabulate Biomarker Effects on Survival by Subgroup}
+\title{Tabulate biomarker effects on survival by subgroup}
 \usage{
 tabulate_survival_biomarkers(
   df,
   vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
   groups_lists = list(),
   control = control_coxreg(),
-  label_all = "All Patients",
+  label_all = lifecycle::deprecated(),
   time_unit = NULL,
   na_str = default_na_str(),
   .indent_mods = 0L
@@ -37,7 +37,8 @@ levels that belong to it in the character vectors that are elements of the list.
 
 \item{control}{(\code{list})\cr a list of parameters as returned by the helper function \code{\link[=control_coxreg]{control_coxreg()}}.}
 
-\item{label_all}{(\code{string})\cr label for the total population analysis.}
+\item{label_all}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}\cr please assign the \code{label_all} parameter within the
+\code{\link[=extract_survival_biomarkers]{extract_survival_biomarkers()}} function when creating \code{df}.}
 
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
 
@@ -101,6 +102,7 @@ df <- extract_survival_biomarkers(
     covariates = "SEX",
     subgroups = "BMRKR2"
   ),
+  label_all = "Total Patients",
   data = adtte_f
 )
 df

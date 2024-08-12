@@ -11,7 +11,7 @@
 #'
 #' @inheritParams s_count_cumulative
 #' @inheritParams argument_convention
-#' @param thresholds (vector of `count`)\cr number of missed doses the patients at least had.
+#' @param thresholds (`numeric`)\cr minimum number of missed doses the patients had.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_missed_doses")`
 #'   to see available statistics for this function.
 #'
@@ -34,7 +34,7 @@ s_count_nonmissing <- function(x) {
   list(n = n_available(x))
 }
 
-#' Description Function that Calculates Labels for [s_count_missed_doses()].
+#' Description function that calculates labels for `s_count_missed_doses()`
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

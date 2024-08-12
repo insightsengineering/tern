@@ -8,7 +8,7 @@
 \alias{prop_wald}
 \alias{prop_agresti_coull}
 \alias{prop_jeffreys}
-\title{Helper Functions for Calculating Proportion Confidence Intervals}
+\title{Helper functions for calculating proportion confidence intervals}
 \usage{
 prop_wilson(rsp, conf_level, correct = FALSE)
 
@@ -30,11 +30,11 @@ prop_agresti_coull(rsp, conf_level)
 prop_jeffreys(rsp, conf_level)
 }
 \arguments{
-\item{rsp}{(\code{logical})\cr whether each subject is a responder or not.}
+\item{rsp}{(\code{logical})\cr vector indicating whether each subject is a responder or not.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{correct}{(\code{flag})\cr apply continuity correction.}
+\item{correct}{(\code{flag})\cr whether to apply continuity correction.}
 
 \item{strata}{(\code{factor})\cr variable with one level per stratum and same length as \code{rsp}.}
 
@@ -67,8 +67,8 @@ Also referred to as the \code{exact} method.
 \item \code{prop_wald()}: Calculates the Wald interval by following the usual textbook definition
 for a single proportion confidence interval using the normal approximation.
 
-\item \code{prop_agresti_coull()}: Calculates the \code{Agresti-Coull} interval (created by \verb{Alan Agresti} and \verb{Brent Coull}) by
-(for 95\% CI) adding two successes and two failures to the data and then using the Wald formula to construct a CI.
+\item \code{prop_agresti_coull()}: Calculates the Agresti-Coull interval. Constructed (for 95\% CI) by adding two successes
+and two failures to the data and then using the Wald formula to construct a CI.
 
 \item \code{prop_jeffreys()}: Calculates the Jeffreys interval, an equal-tailed interval based on the
 non-informative Jeffreys prior for a binomial proportion.

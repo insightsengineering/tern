@@ -4,7 +4,11 @@
 \alias{count_cumulative}
 \alias{s_count_cumulative}
 \alias{a_count_cumulative}
+<<<<<<< HEAD
 \title{Cumulative counts of numeric variable by thresholds}
+=======
+\title{Cumulative counts with thresholds}
+>>>>>>> main
 \usage{
 count_cumulative(
   lyt,
@@ -43,31 +47,31 @@ a_count_cumulative(
 )
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{thresholds}{(\code{numeric})\cr vector of cutoff value for the counts.}
+\item{thresholds}{(\code{numeric})\cr vector of cutoff values for the counts.}
 
-\item{lower_tail}{(\code{logical})\cr whether to count lower tail, default is \code{TRUE}.}
+\item{lower_tail}{(\code{flag})\cr whether to count lower tail, default is \code{TRUE}.}
 
-\item{include_eq}{(\code{logical})\cr whether to include value equal to the \code{threshold} in
+\item{include_eq}{(\code{flag})\cr whether to include value equal to the \code{threshold} in
 count, default is \code{TRUE}.}
 
-\item{var_labels}{(\code{character})\cr character for label.}
+\item{var_labels}{(\code{character})\cr variable labels.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("count_cumulative")}
 to see available statistics for this function.}
@@ -82,7 +86,7 @@ unmodified default behavior. Can be negative.}
 
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{.N_col}{(\code{integer})\cr column-wise N (column count) for the full column being analyzed that is typically
+\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
 }
 \value{
@@ -104,6 +108,7 @@ component, each component containing a vector for the count and fraction.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
+<<<<<<< HEAD
 The analyze function \code{\link[=count_cumulative]{count_cumulative()}} creates a layout element to generate a table of cumulative
 counts of values in a numeric variable that are less than, less or equal to, greater than, or greater or
 equal to user-specified threshold values.
@@ -112,6 +117,10 @@ This function analyzes numeric variable \code{vars} against the threshold values
 argument as a numeric vector. Whether counts should include the threshold values, and whether to count
 values lower or higher than the threshold values can be set via the \code{include_eq} and \code{lower_tail}
 parameters, respectively.
+=======
+Summarize cumulative counts of a \code{numeric} vector that is less than, less or equal to,
+greater than, or greater or equal to user-specific thresholds.
+>>>>>>> main
 }
 \section{Functions}{
 \itemize{

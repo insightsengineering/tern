@@ -2,7 +2,7 @@
 % Please edit documentation in R/response_subgroups.R
 \name{d_rsp_subgroups_colvars}
 \alias{d_rsp_subgroups_colvars}
-\title{Labels for Column Variables in Binary Response by Subgroup Table}
+\title{Labels for column variables in binary response by subgroup table}
 \usage{
 d_rsp_subgroups_colvars(vars, conf_level = NULL, method = NULL)
 }
@@ -11,7 +11,7 @@ d_rsp_subgroups_colvars(vars, conf_level = NULL, method = NULL)
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{method}{(\code{string})\cr specifies the test used to calculate the p-value for the difference between
+\item{method}{(\code{string} or \code{NULL})\cr specifies the test used to calculate the p-value for the difference between
 two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL} so no test is performed.}
 }
 \value{

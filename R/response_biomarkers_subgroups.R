@@ -1,4 +1,4 @@
-#' Tabulate Biomarker Effects on Binary Response by Subgroup
+#' Tabulate biomarker effects on binary response by subgroup
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -75,6 +75,9 @@ tabulate_rsp_biomarkers <- function(df,
   checkmate::assert_character(df$biomarker_label)
   checkmate::assert_subset(vars, get_stats("tabulate_rsp_biomarkers"))
 
+  # Create "ci" column from "lcl" and "ucl"
+  df$ci <- combine_vectors(df$lcl, df$ucl)
+
   df_subs <- split(df, f = df$biomarker)
   tabs <- lapply(df_subs, FUN = function(df_sub) {
     tab_sub <- h_tab_rsp_one_biomarker(
@@ -101,7 +104,7 @@ tabulate_rsp_biomarkers <- function(df,
   )
 }
 
-#' Prepares Response Data Estimates for Multiple Biomarkers in a Single Data Frame
+#' Prepare response data estimates for multiple biomarkers in a single data frame
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -110,7 +113,7 @@ tabulate_rsp_biomarkers <- function(df,
 #' for multiple biomarkers across population subgroups in a single data frame.
 #' `variables` corresponds to the names of variables found in `data`, passed as a
 #' named list and requires elements `rsp` and `biomarkers` (vector of continuous
-#' biomarker variables) and optionally `covariates`, `subgroups` and `strat`.
+#' biomarker variables) and optionally `covariates`, `subgroups` and `strata`.
 #' `groups_lists` optionally specifies groupings for `subgroups` variables.
 #'
 #' @inheritParams argument_convention
@@ -156,14 +159,14 @@ tabulate_rsp_biomarkers <- function(df,
 #' # Here we group the levels of `BMRKR2` manually, and we add a stratification
 #' # variable `STRATA1`. We also here use a continuous variable `EOSDY`
 #' # which is then binarized internally (response is defined as this variable
-#' # being larger than 500).
+#' # being larger than 750).
 #' df_grouped <- extract_rsp_biomarkers(
 #'   variables = list(
 #'     rsp = "EOSDY",
 #'     biomarkers = c("BMRKR1", "AGE"),
 #'     covariates = "SEX",
 #'     subgroups = "BMRKR2",
-#'     strat = "STRATA1"
+#'     strata = "STRATA1"
 #'   ),
 #'   data = adrs_f,
 #'   groups_lists = list(
@@ -174,7 +177,7 @@ tabulate_rsp_biomarkers <- function(df,
 #'     )
 #'   ),
 #'   control = control_logistic(
-#'     response_definition = "I(response > 500)"
+#'     response_definition = "I(response > 750)"
 #'   )
 #' )
 #' df_grouped
@@ -185,6 +188,15 @@ extract_rsp_biomarkers <- function(variables,
                                    groups_lists = list(),
                                    control = control_logistic(),
                                    label_all = "All Patients") {
+  if ("strat" %in% names(variables)) {
+    warning(
+      "Warning: the `strat` element name of the `variables` list argument to `extract_rsp_biomarkers() ",
+      "was deprecated in tern 0.9.3.\n  ",
+      "Please use the name `strata` instead of `strat` in the `variables` argument."
+    )
+    variables[["strata"]] <- variables[["strat"]]
+  }
+
   assert_list_of_variables(variables)
   checkmate::assert_string(variables$rsp)
   checkmate::assert_character(variables$subgroups, null.ok = TRUE)

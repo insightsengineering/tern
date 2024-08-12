@@ -4,7 +4,7 @@
 \alias{summarize_change}
 \alias{s_change_from_baseline}
 \alias{a_change_from_baseline}
-\title{Summarize the Change from Baseline or Absolute Baseline Values}
+\title{Summarize the change from baseline or absolute baseline values}
 \usage{
 summarize_change(
   lyt,
@@ -25,7 +25,7 @@ s_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
 a_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
 }
 \arguments{
-\item{lyt}{(\code{layout})\cr input layout where analyses will be added to.}
+\item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
@@ -33,14 +33,14 @@ a_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure \emph{if
-possible} (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{table_names}{(\code{character})\cr this can be customized in case that the same \code{vars} are analyzed multiple times,
-to avoid warnings from \code{rtables}.}
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run \verb{get_stats("analyze_vars_numeric)}
 to see available statistics for this function.}

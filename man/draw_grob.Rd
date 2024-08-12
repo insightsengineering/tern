@@ -7,17 +7,17 @@
 draw_grob(grob, newpage = TRUE, vp = NULL)
 }
 \arguments{
-\item{grob}{grid object}
+\item{grob}{(\code{grob})\cr grid object.}
 
-\item{newpage}{draw on a new page}
+\item{newpage}{(\code{flag})\cr draw on a new page.}
 
-\item{vp}{a \code{\link[=viewport]{viewport()}} object (or \code{NULL}).}
+\item{vp}{(\code{viewport} or \code{NULL})\cr a \code{\link[=viewport]{viewport()}} object (or \code{NULL}).}
 }
 \value{
 A \code{grob}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 Draw grob on device page.
 }

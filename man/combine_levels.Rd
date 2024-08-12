@@ -2,16 +2,16 @@
 % Please edit documentation in R/utils_factor.R
 \name{combine_levels}
 \alias{combine_levels}
-\title{Combine Factor Levels}
+\title{Combine factor levels}
 \usage{
 combine_levels(x, levels, new_level = paste(levels, collapse = "/"))
 }
 \arguments{
-\item{x}{factor}
+\item{x}{(\code{factor})\cr factor variable.}
 
-\item{levels}{level names to be combined}
+\item{levels}{(\code{character})\cr level names to be combined.}
 
-\item{new_level}{name of new level}
+\item{new_level}{(\code{string})\cr name of new level.}
 }
 \value{
 A \code{factor} with the new levels.

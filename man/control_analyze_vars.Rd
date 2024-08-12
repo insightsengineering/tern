@@ -2,8 +2,7 @@
 % Please edit documentation in R/analyze_variables.R
 \name{control_analyze_vars}
 \alias{control_analyze_vars}
-\alias{control_summarize_vars}
-\title{Control Function for Descriptive Statistics}
+\title{Control function for descriptive statistics}
 \usage{
 control_analyze_vars(
   conf_level = 0.95,
@@ -15,13 +14,14 @@ control_analyze_vars(
 \arguments{
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{quantiles}{(\code{numeric})\cr of length two to specify the quantiles to calculate.}
+\item{quantiles}{(\code{numeric(2)})\cr vector of length two to specify the quantiles to calculate.}
 
-\item{quantile_type}{(\code{numeric})\cr between 1 and 9 selecting quantile algorithms to be used.
+\item{quantile_type}{(\code{numeric(1)})\cr number between 1 and 9 selecting quantile algorithms to be used.
 Default is set to 2 as this matches the default quantile algorithm in SAS \verb{proc univariate} set by \code{QNTLDEF=5}.
 This differs from R's default. See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.}
 
-\item{test_mean}{(\code{numeric})\cr to test against the mean under the null hypothesis when calculating p-value.}
+\item{test_mean}{(\code{numeric(1)})\cr number to test against the mean under the null hypothesis when calculating
+p-value.}
 }
 \value{
 A list of components with the same names as the arguments.
@@ -31,9 +31,4 @@ A list of components with the same names as the arguments.
 
 Sets a list of parameters for summaries of descriptive statistics. Typically used internally to specify
 details for \code{\link[=s_summary]{s_summary()}}. This function family is mainly used by \code{\link[=analyze_vars]{analyze_vars()}}.
-}
-\note{
-Deprecation cycle started for \code{control_summarize_vars} as it is going to renamed into
-\code{control_analyze_vars}. Intention is to reflect better the core underlying \code{rtables}
-functions; in this case \code{\link[=analyze_vars]{analyze_vars()}} wraps \code{\link[rtables:analyze]{rtables::analyze()}}.
 }

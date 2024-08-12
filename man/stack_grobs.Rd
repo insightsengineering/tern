@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_grid.R
 \name{stack_grobs}
 \alias{stack_grobs}
-\title{Stack Multiple Grobs}
+\title{Stack multiple grobs}
 \usage{
 stack_grobs(
   ...,
@@ -16,21 +16,21 @@ stack_grobs(
 \arguments{
 \item{...}{grobs.}
 
-\item{grobs}{list of grobs.}
+\item{grobs}{(\code{list} of \code{grob})\cr a list of grobs.}
 
-\item{padding}{unit of length 1, space between each grob.}
+\item{padding}{(\code{grid::unit})\cr unit of length 1, space between each grob.}
 
-\item{vp}{a \code{\link[=viewport]{viewport()}} object (or \code{NULL}).}
+\item{vp}{(\code{viewport} or \code{NULL})\cr a \code{\link[=viewport]{viewport()}} object (or \code{NULL}).}
 
-\item{gp}{A \code{\link[=gpar]{gpar()}} object.}
+\item{gp}{(\code{gpar})\cr a \code{\link[=gpar]{gpar()}} object.}
 
-\item{name}{a character identifier for the grob.}
+\item{name}{(\code{string})\cr a character identifier for the grob.}
 }
 \value{
 A \code{grob}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 Stack grobs as a new grob with 1 column and multiple rows layout.
 }

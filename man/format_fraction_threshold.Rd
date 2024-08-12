@@ -2,7 +2,7 @@
 % Please edit documentation in R/formatting_functions.R
 \name{format_fraction_threshold}
 \alias{format_fraction_threshold}
-\title{Formatting Fraction with Lower Threshold}
+\title{Format fraction with lower threshold}
 \usage{
 format_fraction_threshold(threshold)
 }
@@ -32,13 +32,13 @@ format_fun(x = c(0, 0))
 Other formatting functions: 
 \code{\link{extreme_format}},
 \code{\link{format_auto}()},
+\code{\link{format_count_fraction}()},
 \code{\link{format_count_fraction_fixed_dp}()},
 \code{\link{format_count_fraction_lt10}()},
-\code{\link{format_count_fraction}()},
-\code{\link{format_extreme_values_ci}()},
 \code{\link{format_extreme_values}()},
-\code{\link{format_fraction_fixed_dp}()},
+\code{\link{format_extreme_values_ci}()},
 \code{\link{format_fraction}()},
+\code{\link{format_fraction_fixed_dp}()},
 \code{\link{format_sigfig}()},
 \code{\link{format_xx}()},
 \code{\link{formatting_functions}}

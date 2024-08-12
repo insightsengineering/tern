@@ -1,11 +1,11 @@
-#' Custom Split Functions
+#' Custom split functions
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Collection of useful functions that are expanding on the core list of functions
 #' provided by `rtables`. See [rtables::custom_split_funs] and [rtables::make_split_fun()]
 #' for more information on how to make a custom split function. All these functions
-#' work with [split_rows_by()] argument `split_fun` to modify the way the split
+#' work with [rtables::split_rows_by()] argument `split_fun` to modify the way the split
 #' happens. For other split functions, consider consulting [`rtables::split_funcs`].
 #'
 #' @seealso [rtables::make_split_fun()]
@@ -13,14 +13,15 @@
 #' @name utils_split_funs
 NULL
 
-#' @describeIn utils_split_funs split function to place reference group facet at a specific position
+#' @describeIn utils_split_funs Split function to place reference group facet at a specific position
 #'  during post-processing stage.
 #'
-#' @param position (`string` or `integer`)\cr should it be `"first"` or `"last"` or in a specific position?
+#' @param position (`string` or `integer`)\cr position to use for the reference group facet. Can be `"first"`,
+#'   `"last"`, or a specific position.
 #'
 #' @return
-#' * `ref_group_position` returns an utility function that puts the reference group
-#'  as first, last or at a certain position and needs to be assigned to `split_fun`.
+#' * `ref_group_position()` returns an utility function that puts the reference group
+#'   as first, last or at a certain position and needs to be assigned to `split_fun`.
 #'
 #' @examples
 #' library(dplyr)
@@ -106,13 +107,13 @@ ref_group_position <- function(position = "first") {
   )
 }
 
-#' @describeIn utils_split_funs split function to change level order based on a `integer`
+#' @describeIn utils_split_funs Split function to change level order based on an `integer`
 #'   vector or a `character` vector that represent the split variable's factor levels.
 #'
-#' @param order (`character` or `integer`)\cr vector of ordering indexes for the split facets.
+#' @param order (`character` or `numeric`)\cr vector of ordering indices for the split facets.
 #'
 #' @return
-#' * `level_order` returns an utility function that changes the original levels' order,
+#' * `level_order()` returns an utility function that changes the original levels' order,
 #'   depending on input `order` and split levels.
 #'
 #' @examples

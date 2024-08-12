@@ -4,16 +4,16 @@
 \alias{extreme_format}
 \alias{h_get_format_threshold}
 \alias{h_format_threshold}
-\title{Formatting Extreme Values}
+\title{Format extreme values}
 \usage{
 h_get_format_threshold(digits = 2L)
 
 h_format_threshold(x, digits = 2L)
 }
 \arguments{
-\item{digits}{(\code{integer})\cr number of decimal places to display.}
+\item{digits}{(\code{integer(1)})\cr number of decimal places to display.}
 
-\item{x}{(\code{number})\cr value to format.}
+\item{x}{(\code{numeric(1)})\cr value to format.}
 }
 \value{
 \itemize{
@@ -56,14 +56,14 @@ h_format_threshold(1000)
 \seealso{
 Other formatting functions: 
 \code{\link{format_auto}()},
+\code{\link{format_count_fraction}()},
 \code{\link{format_count_fraction_fixed_dp}()},
 \code{\link{format_count_fraction_lt10}()},
-\code{\link{format_count_fraction}()},
-\code{\link{format_extreme_values_ci}()},
 \code{\link{format_extreme_values}()},
+\code{\link{format_extreme_values_ci}()},
+\code{\link{format_fraction}()},
 \code{\link{format_fraction_fixed_dp}()},
 \code{\link{format_fraction_threshold}()},
-\code{\link{format_fraction}()},
 \code{\link{format_sigfig}()},
 \code{\link{format_xx}()},
 \code{\link{formatting_functions}}

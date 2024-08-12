@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_adsl_adlb_merge_using_worst_flag.R
 \name{h_adsl_adlb_merge_using_worst_flag}
 \alias{h_adsl_adlb_merge_using_worst_flag}
-\title{Helper Function for Deriving Analysis Datasets for \code{LBT13} and \code{LBT14}}
+\title{Helper function for deriving analysis datasets for select laboratory tables}
 \usage{
 h_adsl_adlb_merge_using_worst_flag(
   adsl,
@@ -13,17 +13,18 @@ h_adsl_adlb_merge_using_worst_flag(
 )
 }
 \arguments{
-\item{adsl}{(\code{data.frame})\cr \code{ADSL} dataframe.}
+\item{adsl}{(\code{data.frame})\cr ADSL data frame.}
 
-\item{adlb}{(\code{data.frame})\cr \code{ADLB} dataframe.}
+\item{adlb}{(\code{data.frame})\cr ADLB data frame.}
 
-\item{worst_flag}{(named \code{vector})\cr Worst post-baseline lab flag variable.}
+\item{worst_flag}{(named \code{character})\cr worst post-baseline lab flag variable. See how this is implemented in the
+following examples.}
 
-\item{by_visit}{(\code{logical})\cr defaults to \code{FALSE} to generate worst grade per patient.
+\item{by_visit}{(\code{flag})\cr defaults to \code{FALSE} to generate worst grade per patient.
 If worst grade per patient per visit is specified for \code{worst_flag}, then
 \code{by_visit} should be \code{TRUE} to generate worst grade patient per visit.}
 
-\item{no_fillin_visits}{(named \code{character})\cr Visits that are not considered for post-baseline worst toxicity
+\item{no_fillin_visits}{(named \code{character})\cr visits that are not considered for post-baseline worst toxicity
 grade. Defaults to \code{c("SCREENING", "BASELINE")}.}
 }
 \value{
@@ -34,7 +35,7 @@ grade. Defaults to \code{c("SCREENING", "BASELINE")}.}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Helper function that merges \code{ADSL} and \code{ADLB} datasets so that missing lab test records are inserted in the
+Helper function that merges ADSL and ADLB datasets so that missing lab test records are inserted in the
 output dataset. Remember that \code{na_level} must match the needed pre-processing
 done with \code{\link[=df_explicit_na]{df_explicit_na()}} to have the desired output.
 }

@@ -1,14 +1,14 @@
-#' Summary for analysis of covariance (`ANCOVA`).
+#' Summary for analysis of covariance (ANCOVA).
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Summarize results of `ANCOVA`. This can be used to analyze multiple endpoints and/or
+#' Summarize results of ANCOVA. This can be used to analyze multiple endpoints and/or
 #' multiple timepoints within the same response variable `.var`.
 #'
 #' @inheritParams h_ancova
 #' @inheritParams argument_convention
-#' @param interaction_y (`character`)\cr a selected item inside of the interaction_item column which will be used
-#'   to select the specific `ANCOVA` results. if the interaction is not needed, the default option is `FALSE`.
+#' @param interaction_y (`string` or `flag`)\cr a selected item inside of the interaction_item column which will be used
+#'   to select the specific ANCOVA results. if the interaction is not needed, the default option is `FALSE`.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("summarize_ancova")`
 #'   to see available statistics for this function.
 #'
@@ -16,18 +16,18 @@
 #' @order 1
 NULL
 
-#' Helper Function to Return Results of a Linear Model
+#' Helper function to return results of a linear model
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' @inheritParams argument_convention
 #' @param .df_row (`data.frame`)\cr data set that includes all the variables that are called in `.var` and `variables`.
-#' @param variables (named `list` of `strings`)\cr list of additional analysis variables, with expected elements:
+#' @param variables (named `list` of `string`)\cr list of additional analysis variables, with expected elements:
 #'   * `arm` (`string`)\cr group variable, for which the covariate adjusted means of multiple groups will be
 #'     summarized. Specifically, the first level of `arm` variable is taken as the reference group.
 #'   * `covariates` (`character`)\cr a vector that can contain single variable names (such as `"X1"`), and/or
 #'     interaction terms indicated by `"X1 * X2"`.
-#' @param interaction_item (`character`)\cr name of the variable that should have interactions
+#' @param interaction_item (`string` or `NULL`)\cr name of the variable that should have interactions
 #'   with arm. if the interaction is not needed, the default option is `NULL`.
 #'
 #' @return The summary of a linear model.
@@ -167,7 +167,14 @@ s_ancova <- function(df,
       adjust = "none"
     )
 
-    sum_contrasts_level <- sum_contrasts[grepl(sum_level, sum_contrasts$contrast), ]
+    contrast_lvls <- gsub(
+      "^\\(|\\)$", "", gsub(paste0(" - \\(*", .ref_group[[arm]][1], ".*"), "", sum_contrasts$contrast)
+    )
+    if (!is.null(interaction_item)) {
+      sum_contrasts_level <- sum_contrasts[grepl(sum_level, contrast_lvls, fixed = TRUE), ]
+    } else {
+      sum_contrasts_level <- sum_contrasts[sum_level == contrast_lvls, ]
+    }
     if (interaction_y != FALSE) {
       sum_contrasts_level <- sum_contrasts_level[interaction_y, ]
     }

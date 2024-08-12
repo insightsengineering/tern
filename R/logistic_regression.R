@@ -1,4 +1,4 @@
-#' Multivariate Logistic Regression Table
+#' Multivariate logistic regression table
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -13,7 +13,7 @@
 #' each interaction degree of freedom.
 #'
 #' @inheritParams argument_convention
-#' @param drop_and_remove_str (`character`)\cr string to be dropped and removed.
+#' @param drop_and_remove_str (`string`)\cr string to be dropped and removed.
 #'
 #' @return A layout object suitable for passing to further layouting functions, or to [rtables::build_table()].
 #'   Adding this function to an `rtable` layout will add a logistic regression variable summary to the table layout.
@@ -100,7 +100,7 @@ summarize_logistic <- function(lyt,
   lyt
 }
 
-#' Fit for Logistic Regression
+#' Fit for logistic regression
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -207,7 +207,7 @@ fit_logistic <- function(data,
   }
 }
 
-#' Custom Tidy Method for Binomial GLM Results
+#' Custom tidy method for binomial GLM results
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -215,8 +215,8 @@ fit_logistic <- function(data,
 #' with `binomial` family.
 #'
 #' @inheritParams argument_convention
-#' @param at (`NULL` or `numeric`)\cr optional values for the interaction variable. Otherwise the median is used.
-#' @param x logistic regression model fitted by [stats::glm()] with "binomial" family.
+#' @param at (`numeric` or `NULL`)\cr optional values for the interaction variable. Otherwise the median is used.
+#' @param x (`glm`)\cr logistic regression model fitted by [stats::glm()] with "binomial" family.
 #'
 #' @return A `data.frame` containing the tidied model.
 #'
@@ -289,7 +289,7 @@ tidy.glm <- function(x, # nolint
   df
 }
 
-#' Logistic Regression Multivariate Column Layout Function
+#' Logistic regression multivariate column layout function
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -321,7 +321,7 @@ logistic_regression_cols <- function(lyt,
   )
 }
 
-#' Logistic Regression Summary Table Constructor Function
+#' Logistic regression summary table
 #'
 #' @description `r lifecycle::badge("stable")`
 #'

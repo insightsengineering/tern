@@ -89,3 +89,47 @@
           95% CI                                               (-1.98, -1.22)   (-2.66, -1.58)
           p-value                                                 <0.0001          <0.0001    
 
+# summarize_ancova works with irregular arm levels
+
+    Code
+      res
+    Output
+                                  ARM A       ARM A Subgroup   ARM C 
+                                 (N=69)           (N=73)       (N=58)
+      ———————————————————————————————————————————————————————————————
+      Unadjusted comparison                                          
+        n                          552             584          464  
+        Mean                      0.01             0.01        -0.05 
+        Difference in Means       0.06             0.06              
+          95% CI              (-0.07, 0.19)   (-0.06, 0.19)          
+          p-value                0.3442           0.3186             
+
+---
+
+    Code
+      res
+    Output
+                                  ARM A       ARM B (x)   ARM C 
+                                 (N=69)        (N=73)     (N=58)
+      ——————————————————————————————————————————————————————————
+      Unadjusted comparison                                     
+        n                          552           584       464  
+        Mean                      0.01          0.01      -0.05 
+        Difference in Means       0.06                          
+          95% CI              (-0.07, 0.19)                     
+          p-value                0.3442                         
+
+---
+
+    Code
+      res
+    Output
+                                       10mg/kg      20mg/kg         30mg/kg   
+      ————————————————————————————————————————————————————————————————————————
+      ARMCD                                                                   
+        n                                69           73              58      
+        Adjusted Mean                   6.30         6.75            6.16     
+        Difference in Adjusted Means                 0.45            -0.14    
+          95% CI                                 (-0.70, 1.60)   (-1.36, 1.08)
+          p-value                                   0.4433          0.8214    
+

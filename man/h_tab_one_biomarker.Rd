@@ -2,7 +2,7 @@
 % Please edit documentation in R/h_biomarkers_subgroups.R
 \name{h_tab_one_biomarker}
 \alias{h_tab_one_biomarker}
-\title{Helper Function for Tabulation of a Single Biomarker Result}
+\title{Helper function for tabulation of a single biomarker result}
 \usage{
 h_tab_one_biomarker(
   df,
@@ -18,7 +18,7 @@ h_tab_one_biomarker(
 
 \item{afuns}{(named \code{list} of \code{function})\cr analysis functions.}
 
-\item{colvars}{(\code{list} with \code{vars} and \code{labels})\cr variables to tabulate and their labels.}
+\item{colvars}{(named \code{list})\cr named list with elements \code{vars} (variables to tabulate) and \code{labels} (their labels).}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 

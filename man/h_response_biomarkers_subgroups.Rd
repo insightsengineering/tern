@@ -5,7 +5,7 @@
 \alias{h_rsp_to_logistic_variables}
 \alias{h_logistic_mult_cont_df}
 \alias{h_tab_rsp_one_biomarker}
-\title{Helper Functions for Tabulating Biomarker Effects on Binary Response by Subgroup}
+\title{Helper functions for tabulating biomarker effects on binary response by subgroup}
 \usage{
 h_rsp_to_logistic_variables(variables, biomarker)
 
@@ -74,9 +74,9 @@ overall response rate, as well as odds ratio estimates, confidence intervals and
 biomarkers in a given single data set.
 \code{variables} corresponds to names of variables found in \code{data}, passed as a named list and requires elements
 \code{rsp} and \code{biomarkers} (vector of continuous biomarker variables) and optionally \code{covariates}
-and \code{strat}.
+and \code{strata}.
 
-\item \code{h_tab_rsp_one_biomarker()}: prepares a single sub-table given a \code{df_sub} containing
+\item \code{h_tab_rsp_one_biomarker()}: Prepares a single sub-table given a \code{df_sub} containing
 the results for a single biomarker.
 
 }}
@@ -97,7 +97,7 @@ h_rsp_to_logistic_variables(
   variables = list(
     rsp = "RSP",
     covariates = c("A", "B"),
-    strat = "D"
+    strata = "D"
   ),
   biomarker = "AGE"
 )
@@ -120,7 +120,7 @@ h_coxreg_mult_cont_df(
     rsp = "rsp",
     biomarkers = c("BMRKR1", "AGE"),
     covariates = "SEX",
-    strat = "STRATA1"
+    strata = "STRATA1"
   ),
   data = adrs_f[NULL, ]
 )

@@ -6,7 +6,7 @@
 \alias{h_coxreg_multivar_formula}
 \alias{h_coxreg_univar_extract}
 \alias{h_coxreg_multivar_extract}
-\title{Helper Functions for Cox Proportional Hazards Regression}
+\title{Helper functions for Cox proportional hazards regression}
 \usage{
 h_coxreg_univar_formulas(variables, interaction = FALSE)
 

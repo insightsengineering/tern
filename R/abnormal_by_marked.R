@@ -27,7 +27,7 @@
 #' row splits, one on variable `param` and one on variable `direction`.
 #'
 #' @inheritParams argument_convention
-#' @param category (`list`)\cr with different marked category names for single
+#' @param category (`list`)\cr a list with different marked category names for single
 #'   and last or replicated.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("abnormal_by_marked")`
 #'   to see available statistics for this function.

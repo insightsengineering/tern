@@ -12,8 +12,8 @@
 #' If there are multiple records with the same flag present for a patient, only one occurrence is counted.
 #'
 #' @inheritParams argument_convention
-#' @param flag_variables (`character`)\cr a character vector specifying the names of `logical`
-#'   variables from analysis dataset used for counting the number of unique identifiers.
+#' @param flag_variables (`character`)\cr a vector specifying the names of `logical` variables from analysis dataset
+#'   used for counting the number of unique identifiers.
 #' @param flag_labels (`character`)\cr vector of labels to use for flag variables.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_patients_with_flags")`
 #'   to see available statistics for this function.
@@ -28,7 +28,7 @@ NULL
 #'   a particular flag variable is `TRUE`.
 #'
 #' @inheritParams analyze_variables
-#' @param .var (`character`)\cr name of the column that contains the unique identifier.
+#' @param .var (`string`)\cr name of the column that contains the unique identifier.
 #'
 #' @note If `flag_labels` is not specified, variables labels will be extracted from `df`. If variables are not
 #'   labeled, variable names will be used instead. Alternatively, a named `vector` can be supplied to

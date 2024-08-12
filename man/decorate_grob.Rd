@@ -2,18 +2,18 @@
 % Please edit documentation in R/decorate_grob.R
 \name{decorate_grob}
 \alias{decorate_grob}
-\title{Add Titles, Footnotes, Page Number, and a Bounding Box to a Grid Grob}
+\title{Add titles, footnotes, page Number, and a bounding box to a grid grob}
 \usage{
 decorate_grob(
   grob,
   titles,
   footnotes,
   page = "",
-  width_titles = grid::unit(1, "npc") - grid::unit(1.5, "cm"),
-  width_footnotes = grid::unit(1, "npc") - grid::unit(1.5, "cm"),
+  width_titles = grid::unit(1, "npc"),
+  width_footnotes = grid::unit(1, "npc"),
   border = TRUE,
-  margins = grid::unit(c(1, 0, 1, 0), "lines"),
   padding = grid::unit(rep(1, 4), "lines"),
+  margins = grid::unit(c(1, 0, 1, 0), "lines"),
   outer_margins = grid::unit(c(2, 1.5, 3, 1.5), "cm"),
   gp_titles = grid::gpar(),
   gp_footnotes = grid::gpar(fontsize = 8),
@@ -23,30 +23,38 @@ decorate_grob(
 )
 }
 \arguments{
-\item{grob}{a grid grob object, optionally \code{NULL} if only a \code{grob} with the decoration should be shown.}
+\item{grob}{(\code{grob})\cr a grid grob object, optionally \code{NULL} if only a \code{grob} with the decoration should be shown.}
 
-\item{titles}{vector of character strings. Vector elements are separated by a newline and strings are wrapped
+\item{titles}{(\code{character})\cr titles given as a vector of strings that are each separated by a newline and wrapped
 according to the page width.}
 
-\item{footnotes}{vector of character string. Same rules as for \code{titles}.}
+\item{footnotes}{(\code{character})\cr footnotes. Uses the same formatting rules as \code{titles}.}
 
-\item{page}{string with page numeration, if \code{NULL} then no page number is displayed.}
+\item{page}{(\code{string} or \code{NULL})\cr page numeration. If \code{NULL} then no page number is displayed.}
 
-\item{width_titles}{unit object}
+\item{width_titles}{(\code{grid::unit})\cr width of titles. Usually defined as all the available space
+\code{grid::unit(1, "npc")}, it is affected by the parameter \code{outer_margins}. Right margins (\code{outer_margins[4]})
+need to be subtracted to the allowed width.}
 
-\item{width_footnotes}{unit object}
+\item{width_footnotes}{(\code{grid::unit})\cr width of footnotes. Same default and margin correction as \code{width_titles}.}
 
-\item{border}{boolean, whether a a border should be drawn around the plot or not.}
+\item{border}{(\code{flag})\cr whether a border should be drawn around the plot or not.}
 
-\item{margins}{unit object of length 4}
+\item{padding}{(\code{grid::unit})\cr padding. A unit object of length 4. Innermost margin between the plot (\code{grob})
+and, possibly, the border of the plot. Usually expressed in 4 identical values (usually \code{"lines"}). It defaults
+to \code{grid::unit(rep(1, 4), "lines")}.}
 
-\item{padding}{unit object of length 4}
+\item{margins}{(\code{grid::unit})\cr margins. A unit object of length 4. Margins between the plot and the other
+elements in the list (e.g. titles, plot, and footers). This is usually expressed in 4 \code{"lines"}, where the
+lateral ones are 0s, while top and bottom are 1s. It defaults to \code{grid::unit(c(1, 0, 1, 0), "lines")}.}
 
-\item{outer_margins}{unit object of length 4}
+\item{outer_margins}{(\code{grid::unit})\cr outer margins. A unit object of length 4. It defines the general margin of
+the plot, considering also decorations like titles, footnotes, and page numbers. It defaults to
+\code{grid::unit(c(2, 1.5, 3, 1.5), "cm")}.}
 
-\item{gp_titles}{a \code{gpar} object}
+\item{gp_titles}{(\code{gpar})\cr a \code{gpar} object. Mainly used to set different \code{"fontsize"}.}
 
-\item{gp_footnotes}{a \code{gpar} object}
+\item{gp_footnotes}{(\code{gpar})\cr a \code{gpar} object. Mainly used to set different \code{"fontsize"}.}
 
 \item{name}{a character identifier for the grob.  Used to find the
     grob on the display list and/or as a child of another grob. }

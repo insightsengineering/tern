@@ -1,4 +1,4 @@
-#' Tabulate Biomarker Effects on Survival by Subgroup
+#' Tabulate biomarker effects on survival by subgroup
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -53,6 +53,7 @@
 #'     covariates = "SEX",
 #'     subgroups = "BMRKR2"
 #'   ),
+#'   label_all = "Total Patients",
 #'   data = adtte_f
 #' )
 #' df
@@ -82,14 +83,14 @@
 #' @order 1
 NULL
 
-#' Prepares Survival Data Estimates for Multiple Biomarkers in a Single Data Frame
+#' Prepare survival data estimates for multiple biomarkers in a single data frame
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
 #' Prepares estimates for number of events, patients and median survival times, as well as hazard ratio estimates,
 #' confidence intervals and p-values, for multiple biomarkers across population subgroups in a single data frame.
 #' `variables` corresponds to the names of variables found in `data`, passed as a named `list` and requires elements
-#' `tte`, `is_event`, `biomarkers` (vector of continuous biomarker variables), and optionally `subgroups` and `strat`.
+#' `tte`, `is_event`, `biomarkers` (vector of continuous biomarker variables), and optionally `subgroups` and `strata`.
 #' `groups_lists` optionally specifies groupings for `subgroups` variables.
 #'
 #' @inheritParams argument_convention
@@ -108,6 +109,15 @@ extract_survival_biomarkers <- function(variables,
                                         groups_lists = list(),
                                         control = control_coxreg(),
                                         label_all = "All Patients") {
+  if ("strat" %in% names(variables)) {
+    warning(
+      "Warning: the `strat` element name of the `variables` list argument to `extract_survival_biomarkers() ",
+      "was deprecated in tern 0.9.3.\n  ",
+      "Please use the name `strata` instead of `strat` in the `variables` argument."
+    )
+    variables[["strata"]] <- variables[["strat"]]
+  }
+
   checkmate::assert_list(variables)
   checkmate::assert_character(variables$subgroups, null.ok = TRUE)
   checkmate::assert_string(label_all)
@@ -153,6 +163,9 @@ extract_survival_biomarkers <- function(variables,
 #' @describeIn survival_biomarkers_subgroups Table-creating function which creates a table
 #'   summarizing biomarker effects on survival by subgroup.
 #'
+#' @param label_all `r lifecycle::badge("deprecated")`\cr please assign the `label_all` parameter within the
+#'   [extract_survival_biomarkers()] function when creating `df`.
+#'
 #' @return An `rtables` table summarizing biomarker effects on survival by subgroup.
 #'
 #' @note In contrast to [tabulate_survival_subgroups()] this tabulation function does
@@ -183,16 +196,26 @@ tabulate_survival_biomarkers <- function(df,
                                          vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
                                          groups_lists = list(),
                                          control = control_coxreg(),
-                                         label_all = "All Patients",
+                                         label_all = lifecycle::deprecated(),
                                          time_unit = NULL,
                                          na_str = default_na_str(),
                                          .indent_mods = 0L) {
+  if (lifecycle::is_present(label_all)) {
+    lifecycle::deprecate_warn(
+      "0.9.5", "tabulate_survival_biomarkers(label_all)",
+      details = paste(
+        "Please assign the `label_all` parameter within the",
+        "`extract_survival_biomarkers()` function when creating `df`."
+      )
+    )
+  }
+
   checkmate::assert_data_frame(df)
   checkmate::assert_character(df$biomarker)
   checkmate::assert_character(df$biomarker_label)
   checkmate::assert_subset(vars, get_stats("tabulate_survival_biomarkers"))
 
-  extra_args <- list(groups_lists = groups_lists, control = control, label_all = label_all)
+  extra_args <- list(groups_lists = groups_lists, control = control)
 
   df_subs <- split(df, f = df$biomarker)
   tabs <- lapply(df_subs, FUN = function(df_sub) {

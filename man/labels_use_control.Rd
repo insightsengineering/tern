@@ -2,18 +2,18 @@
 % Please edit documentation in R/utils_default_stats_formats_labels.R
 \name{labels_use_control}
 \alias{labels_use_control}
-\title{Update Labels According to Control Specifications}
+\title{Update labels according to control specifications}
 \usage{
 labels_use_control(labels_default, control, labels_custom = NULL)
 }
 \arguments{
-\item{labels_default}{(named \code{vector} of \code{character})\cr a named vector of statistic labels to modify
+\item{labels_default}{(named \code{character})\cr a named vector of statistic labels to modify
 according to the control specifications. Labels that are explicitly defined in \code{labels_custom} will
 not be affected.}
 
 \item{control}{(named \code{list})\cr list of control parameters to apply to adjust default labels.}
 
-\item{labels_custom}{(named \code{vector} of \code{character})\cr named vector of labels that are customized by
+\item{labels_custom}{(named \code{character})\cr named vector of labels that are customized by
 the user and should not be affected by \code{control}.}
 }
 \value{

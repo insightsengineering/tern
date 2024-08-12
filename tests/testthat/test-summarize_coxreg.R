@@ -30,7 +30,7 @@ testthat::test_that("s_coxreg converts tabulated results in a list", {
     variables = variables,
     data = dta_bladder
   ) %>% broom::tidy()
-  result <- s_coxreg(model_df = univar_model, .stat = "hr")
+  result <- s_coxreg(model_df = univar_model, .stats = "hr")
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -42,7 +42,7 @@ testthat::test_that("s_coxreg works with which_vars and var_nms arguments", {
     control = control_coxreg(interaction = TRUE),
     data = dta_bladder
   ) %>% broom::tidy()
-  result <- s_coxreg(model_df = univar_model, .stat = "hr", .which_vars = "inter", .var_nms = "COVAR2")
+  result <- s_coxreg(model_df = univar_model, .stats = "hr", .which_vars = "inter", .var_nms = "COVAR2")
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -54,7 +54,7 @@ testthat::test_that("s_coxreg works with character covariates in the univariate 
     data = dta_bladder,
     control = control_coxreg(interaction = TRUE)
   ) %>% broom::tidy()
-  result <- s_coxreg(model_df = univar_model, .stat = "hr")
+  result <- s_coxreg(model_df = univar_model, .stats = "hr")
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -171,17 +171,6 @@ testthat::test_that("summarize_coxreg `na_str` argument works", {
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
-
-  # deprecation message for `na_level` is correct
-  suppressWarnings(testthat::expect_warning(
-    result <- basic_table() %>%
-      summarize_coxreg(
-        variables = variables,
-        control = control_coxreg(interaction = TRUE),
-        na_level = "---"
-      ),
-    "The `na_level` argument"
-  ))
 })
 
 testthat::test_that("summarize_coxreg works without treatment arm in univariate case", {

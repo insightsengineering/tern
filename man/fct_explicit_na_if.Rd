@@ -2,16 +2,16 @@
 % Please edit documentation in R/utils_factor.R
 \name{fct_explicit_na_if}
 \alias{fct_explicit_na_if}
-\title{Insertion of Explicit Missings in a Factor}
+\title{Insertion of explicit missing values in a factor}
 \usage{
 fct_explicit_na_if(x, condition, na_level = "<Missing>")
 }
 \arguments{
 \item{x}{(\code{factor})\cr the original factor.}
 
-\item{condition}{(\code{logical})\cr where to insert missings.}
+\item{condition}{(\code{logical})\cr positions at which to insert missing values.}
 
-\item{na_level}{(\code{string})\cr which level to use for missings.}
+\item{na_level}{(\code{string})\cr which level to use for missing values.}
 }
 \value{
 A modified \code{factor} with inserted and existing \code{NA} converted to \code{na_level}.
@@ -19,7 +19,7 @@ A modified \code{factor} with inserted and existing \code{NA} converted to \code
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This inserts explicit missings in a factor based on a condition. Additionally,
+This inserts explicit missing values in a factor based on a condition. Additionally,
 existing \code{NA} values will be explicitly converted to given \code{na_level}.
 }
 \examples{

@@ -1,4 +1,4 @@
-#' Helper Functions for Tabulating Binary Response by Subgroup
+#' Helper functions for tabulating binary response by subgroup
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
@@ -32,7 +32,7 @@
 #' @name h_response_subgroups
 NULL
 
-#' @describeIn h_response_subgroups helper to prepare a data frame of binary responses by arm.
+#' @describeIn h_response_subgroups Helper to prepare a data frame of binary responses by arm.
 #'
 #' @return
 #' * `h_proportion_df()` returns a `data.frame` with columns `arm`, `n`, `n_rsp`, and `prop`.
@@ -78,7 +78,7 @@ h_proportion_df <- function(rsp, arm) {
   df
 }
 
-#' @describeIn h_response_subgroups summarizes proportion of binary responses by arm and across subgroups
+#' @describeIn h_response_subgroups Summarizes proportion of binary responses by arm and across subgroups
 #'    in a data frame. `variables` corresponds to the names of variables found in `data`, passed as a named list and
 #'    requires elements `rsp`, `arm` and optionally `subgroups`. `groups_lists` optionally specifies
 #'    groupings for `subgroups` variables.
@@ -146,11 +146,11 @@ h_proportion_subgroups_df <- function(variables,
   }
 }
 
-#' @describeIn h_response_subgroups helper to prepare a data frame with estimates of
+#' @describeIn h_response_subgroups Helper to prepare a data frame with estimates of
 #'   the odds ratio between a treatment and a control arm.
 #'
 #' @inheritParams response_subgroups
-#' @param strata_data (`factor`, `data.frame` or `NULL`)\cr required if stratified analysis is performed.
+#' @param strata_data (`factor`, `data.frame`, or `NULL`)\cr required if stratified analysis is performed.
 #'
 #' @return
 #' * `h_odds_ratio_df()` returns a `data.frame` with columns `arm`, `n_tot`, `or`, `lcl`, `ucl`, `conf_level`, and
@@ -274,10 +274,10 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
   df
 }
 
-#' @describeIn h_response_subgroups summarizes estimates of the odds ratio between a treatment and a control
+#' @describeIn h_response_subgroups Summarizes estimates of the odds ratio between a treatment and a control
 #'   arm across subgroups in a data frame. `variables` corresponds to the names of variables found in
 #'   `data`, passed as a named list and requires elements `rsp`, `arm` and optionally `subgroups`
-#'   and `strat`. `groups_lists` optionally specifies groupings for `subgroups` variables.
+#'   and `strata`. `groups_lists` optionally specifies groupings for `subgroups` variables.
 #'
 #' @return
 #' * `h_odds_ratio_subgroups_df()` returns a `data.frame` with columns `arm`, `n_tot`, `or`, `lcl`, `ucl`,
@@ -296,7 +296,7 @@ h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, met
 #'     rsp = "rsp",
 #'     arm = "ARM",
 #'     subgroups = c("SEX", "BMRKR2"),
-#'     strat = c("STRATA1", "STRATA2")
+#'     strata = c("STRATA1", "STRATA2")
 #'   ),
 #'   data = adrs_f
 #' )
@@ -325,18 +325,27 @@ h_odds_ratio_subgroups_df <- function(variables,
                                       conf_level = 0.95,
                                       method = NULL,
                                       label_all = "All Patients") {
+  if ("strat" %in% names(variables)) {
+    warning(
+      "Warning: the `strat` element name of the `variables` list argument to `h_odds_ratio_subgroups_df() ",
+      "was deprecated in tern 0.9.3.\n  ",
+      "Please use the name `strata` instead of `strat` in the `variables` argument."
+    )
+    variables[["strata"]] <- variables[["strat"]]
+  }
+
   checkmate::assert_character(variables$rsp)
   checkmate::assert_character(variables$arm)
   checkmate::assert_character(variables$subgroups, null.ok = TRUE)
-  checkmate::assert_character(variables$strat, null.ok = TRUE)
+  checkmate::assert_character(variables$strata, null.ok = TRUE)
   assert_df_with_factors(data, list(val = variables$arm), min.levels = 2, max.levels = 2)
   assert_df_with_variables(data, variables)
   checkmate::assert_string(label_all)
 
-  strata_data <- if (is.null(variables$strat)) {
+  strata_data <- if (is.null(variables$strata)) {
     NULL
   } else {
-    data[, variables$strat, drop = FALSE]
+    data[, variables$strata, drop = FALSE]
   }
 
   # Add All Patients.
@@ -358,10 +367,10 @@ h_odds_ratio_subgroups_df <- function(variables,
     l_data <- h_split_by_subgroups(data, variables$subgroups, groups_lists = groups_lists)
 
     l_result <- lapply(l_data, function(grp) {
-      grp_strata_data <- if (is.null(variables$strat)) {
+      grp_strata_data <- if (is.null(variables$strata)) {
         NULL
       } else {
-        grp$df[, variables$strat, drop = FALSE]
+        grp$df[, variables$strata, drop = FALSE]
       }
 
       result <- h_odds_ratio_df(

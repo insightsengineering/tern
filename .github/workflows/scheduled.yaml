@@ -21,6 +21,8 @@ jobs:
       strategy: ${{ matrix.test-strategy }}
       additional-env-vars: |
         PKG_SYSREQS_DRY_RUN=true
+      extra-deps: |
+        lme4 (>= 1.1-35)
   branch-cleanup:
     name: Branch Cleanup 🧹
     uses: insightsengineering/r.pkg.template/.github/workflows/branch-cleanup.yaml@main
@@ -31,3 +33,13 @@ jobs:
     uses: insightsengineering/r.pkg.template/.github/workflows/cran-status.yaml@main
     with:
       issue-assignees: "shajoezhu,Melkiades,edelarua,gmbecker,ayogasekaram"
+  revdepcheck:
+    name: revdepcheck ↩️
+    uses: insightsengineering/r.pkg.template/.github/workflows/revdepcheck.yaml@main
+  rhub:
+    name: R-hub 🌐
+    uses: insightsengineering/r.pkg.template/.github/workflows/rhub.yaml@main
+    with:
+      lookup-refs: |
+        insightsengineering/rtables
+        insightsengineering/formatters
