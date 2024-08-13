@@ -1,14 +1,22 @@
-#' Summary for analysis of covariance (ANCOVA).
+#' Summarize analysis of covariance (ANCOVA) results
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Summarize results of ANCOVA. This can be used to analyze multiple endpoints and/or
-#' multiple timepoints within the same response variable `.var`.
+#' The analyze function [summarize_ancova()] creates a layout element to summarize ANCOVA results.
+#'
+#' This function can be used to analyze multiple endpoints and/or multiple timepoints within the response variable(s)
+#' specified as `vars`.
+#'
+#' Additional variables for the analysis, namely an arm (grouping) variable and covariate variables, can be defined
+#' via the `variables` argument. See below for more details on how to specify `variables`. An interaction term can
+#' be implemented in the model if needed. The interaction variable that should interact with the arm variable is
+#' specified via the `interaction_term` parameter, and the specific value of `interaction_term` for which to extract
+#' the ANCOVA results via the `interaction_y` parameter.
 #'
 #' @inheritParams h_ancova
 #' @inheritParams argument_convention
-#' @param interaction_y (`string` or `flag`)\cr a selected item inside of the interaction_item column which will be used
-#'   to select the specific ANCOVA results. if the interaction is not needed, the default option is `FALSE`.
+#' @param interaction_y (`string` or `flag`)\cr a selected item inside of the `interaction_item` variable which will be
+#'   used to select the specific ANCOVA results. if the interaction is not needed, the default option is `FALSE`.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("summarize_ancova")`
 #'   to see available statistics for this function.
 #'

@@ -3,6 +3,7 @@
 \name{count_values}
 \alias{count_values}
 \alias{s_count_values}
+\alias{s_count_values.character}
 \alias{s_count_values.factor}
 \alias{s_count_values.logical}
 \alias{a_count_values}
@@ -30,6 +31,8 @@ s_count_values(
   .N_row,
   denom = c("n", "N_row", "N_col")
 )
+
+\method{s_count_values}{character}(x, values = "Y", na.rm = TRUE, ...)
 
 \method{s_count_values}{factor}(x, values = "Y", ...)
 
@@ -122,6 +125,8 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 
 \item \code{s_count_values()}: S3 generic function to count values.
 
+\item \code{s_count_values(character)}: Method for \code{character} class.
+
 \item \code{s_count_values(factor)}: Method for \code{factor} class. This makes an automatic
 conversion to \code{character} and then forwards to the method for characters.
 
@@ -144,6 +149,10 @@ otherwise they are hidden.
 basic_table() \%>\%
   count_values("Species", values = "setosa") \%>\%
   build_table(iris)
+
+# `s_count_values.character`
+s_count_values(x = c("a", "b", "a"), values = "a")
+s_count_values(x = c("a", "b", "a", NA, NA), values = "b", na.rm = FALSE)
 
 # `s_count_values.factor`
 s_count_values(x = factor(c("a", "b", "a")), values = "a")

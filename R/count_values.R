@@ -41,7 +41,7 @@ s_count_values <- function(x,
   UseMethod("s_count_values", x)
 }
 
-#' @describeIn count_values_funs Method for `character` class.
+#' @describeIn count_values Method for `character` class.
 #'
 #' @method s_count_values character
 #'
