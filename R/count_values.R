@@ -2,8 +2,8 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The analyze function [count_values()] creates a layout element to generate a table of counts of a
-#' specific value within a variable of interest.
+#' The analyze function [count_values()] creates a layout element to generate a table of counts of
+#' specific values within a variable of interest.
 #'
 #' This function analyzes one or more variables of interest supplied as a vector to `vars`. Values to
 #' count for variable(s) in `vars` can be given as a vector via the `values` argument. One row of
@@ -20,11 +20,11 @@
 #' * For `count_values()`, variable labels are shown when there is more than one element in `vars`,
 #'   otherwise they are hidden.
 #'
-#' @name count_values_funs
+#' @name count_values
 #' @order 1
 NULL
 
-#' @describeIn count_values_funs S3 generic function to count values.
+#' @describeIn count_values S3 generic function to count values.
 #'
 #' @inheritParams s_summary.logical
 #'
@@ -66,7 +66,7 @@ s_count_values.character <- function(x,
   s_summary(is_in_values, ...)
 }
 
-#' @describeIn count_values_funs Method for `factor` class. This makes an automatic
+#' @describeIn count_values Method for `factor` class. This makes an automatic
 #'   conversion to `character` and then forwards to the method for characters.
 #'
 #' @method s_count_values factor
@@ -82,7 +82,7 @@ s_count_values.factor <- function(x,
   s_count_values(as.character(x), values = as.character(values), ...)
 }
 
-#' @describeIn count_values_funs Method for `logical` class.
+#' @describeIn count_values Method for `logical` class.
 #'
 #' @method s_count_values logical
 #'
@@ -96,7 +96,7 @@ s_count_values.logical <- function(x, values = TRUE, ...) {
   s_count_values(as.character(x), values = as.character(values), ...)
 }
 
-#' @describeIn count_values_funs Formatted analysis function which is used as `afun`
+#' @describeIn count_values Formatted analysis function which is used as `afun`
 #'   in `count_values()`.
 #'
 #' @return
@@ -112,7 +112,7 @@ a_count_values <- make_afun(
   .formats = c(count_fraction = "xx (xx.xx%)", count = "xx")
 )
 
-#' @describeIn count_values_funs Layout-creating function which can take statistics function arguments
+#' @describeIn count_values Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @return
