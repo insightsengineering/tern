@@ -5,7 +5,7 @@
 \alias{estimate_incidence_rate}
 \alias{s_incidence_rate}
 \alias{a_incidence_rate}
-\title{Estimate incidence rates}
+\title{Incidence rate estimation}
 \usage{
 estimate_incidence_rate(
   lyt,

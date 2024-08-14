@@ -1,4 +1,4 @@
-#' Estimate incidence rates
+#' Incidence rate estimation
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
