@@ -1,9 +1,10 @@
-#' Estimation of proportions per level of factor
+#' Estimate proportions of each level of a variable
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Estimate the proportion along with confidence interval of a proportion
-#' regarding the level of a factor.
+#' The analyze function [estimate_multinomial_response()] creates a layout element to estimate the proportion and
+#' proportion confidence interval for each level of a factor variable. The primary analysis variable, `var`, should
+#' be a factor variable, the values of which will be used as labels within the output table.
 #'
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_multinomial_response")`

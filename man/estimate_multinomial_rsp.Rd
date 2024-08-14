@@ -5,7 +5,7 @@
 \alias{estimate_multinomial_response}
 \alias{s_length_proportion}
 \alias{a_length_proportion}
-\title{Estimation of proportions per level of factor}
+\title{Estimate proportions of each level of a variable}
 \usage{
 estimate_multinomial_response(
   lyt,
@@ -78,8 +78,9 @@ the statistics from \code{s_length_proportion()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Estimate the proportion along with confidence interval of a proportion
-regarding the level of a factor.
+The analyze function \code{\link[=estimate_multinomial_response]{estimate_multinomial_response()}} creates a layout element to estimate the proportion and
+proportion confidence interval for each level of a factor variable. The primary analysis variable, \code{var}, should
+be a factor variable, the values of which will be used as labels within the output table.
 }
 \section{Functions}{
 \itemize{
