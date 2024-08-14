@@ -1,8 +1,11 @@
-#' Estimation of proportions
+#' Proportion estimation
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Estimate the proportion of responders within a studied population.
+#' The analysis function [`estimate_proportion()`] creates a layout element to estimate the proportion of responders
+#' within a studied population. See the `method` parameter for options of methods to use when constructing the
+#' confidence interval of the proportion. Additionally, a stratification variable can be supplied via the `strata`
+#' element of the `variables` argument.
 #'
 #' @inheritParams prop_strat_wilson
 #' @inheritParams argument_convention
@@ -15,11 +18,11 @@
 #'
 #' @seealso [h_proportions]
 #'
-#' @name estimate_proportions
+#' @name estimate_proportion
 #' @order 1
 NULL
 
-#' @describeIn estimate_proportions Statistics function estimating a
+#' @describeIn estimate_proportion Statistics function estimating a
 #'   proportion along with its confidence interval.
 #'
 #' @param df (`logical` or `data.frame`)\cr if only a logical vector is used,
@@ -128,7 +131,7 @@ s_proportion <- function(df,
   )
 }
 
-#' @describeIn estimate_proportions Formatted analysis function which is used as `afun`
+#' @describeIn estimate_proportion Formatted analysis function which is used as `afun`
 #'   in `estimate_proportion()`.
 #'
 #' @return
@@ -140,7 +143,7 @@ a_proportion <- make_afun(
   .formats = c(n_prop = "xx (xx.x%)", prop_ci = "(xx.x, xx.x)")
 )
 
-#' @describeIn estimate_proportions Layout-creating function which can take statistics function arguments
+#' @describeIn estimate_proportion Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @return
@@ -214,11 +217,11 @@ estimate_proportion <- function(lyt,
 #' Functions to calculate different proportion confidence intervals for use in [estimate_proportion()].
 #'
 #' @inheritParams argument_convention
-#' @inheritParams estimate_proportions
+#' @inheritParams estimate_proportion
 #'
 #' @return Confidence interval of a proportion.
 #'
-#' @seealso [estimate_proportions], descriptive function [d_proportion()],
+#' @seealso [estimate_proportion], descriptive function [d_proportion()],
 #'  and helper functions [strata_normal_quantile()] and [update_weights_strat_wilson()].
 #'
 #' @name h_proportions

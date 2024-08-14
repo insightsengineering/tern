@@ -119,6 +119,6 @@ prop_jeffreys(rsp, conf_level = 0.95)
 \insertRef{Yan2010-jt}{tern}
 }
 \seealso{
-\link{estimate_proportions}, descriptive function \code{\link[=d_proportion]{d_proportion()}},
+\link{estimate_proportion}, descriptive function \code{\link[=d_proportion]{d_proportion()}},
 and helper functions \code{\link[=strata_normal_quantile]{strata_normal_quantile()}} and \code{\link[=update_weights_strat_wilson]{update_weights_strat_wilson()}}.
 }
