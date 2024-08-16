@@ -2,7 +2,7 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The analysis function [`estimate_proportion()`] creates a layout element to estimate the proportion of responders
+#' The analyze function [estimate_proportion()] creates a layout element to estimate the proportion of responders
 #' within a studied population. The primary analysis variable, `vars`, indicates whether a response has occurred for
 #' each record. See the `method` parameter for options of methods to use when constructing the confidence interval of
 #' the proportion. Additionally, a stratification variable can be supplied via the `strata` element of the `variables`

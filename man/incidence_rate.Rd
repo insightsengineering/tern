@@ -112,7 +112,7 @@ the statistics from \code{s_incidence_rate()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-The analysis function \code{\link[=estimate_incidence_rate]{estimate_incidence_rate()}} creates a layout element to estimate an event rate adjusted for
+The analyze function \code{\link[=estimate_incidence_rate]{estimate_incidence_rate()}} creates a layout element to estimate an event rate adjusted for
 person-years at risk, otherwise known as incidence rate. The primary analysis variable specified via \code{vars} is
 the person-years at risk. In addition to this variable, the \code{n_events} variable for number of events observed (where
 a value of 1 means an event was observed and 0 means that no event was observed) must also be specified.

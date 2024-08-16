@@ -2,7 +2,7 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The analysis function [estimate_incidence_rate()] creates a layout element to estimate an event rate adjusted for
+#' The analyze function [estimate_incidence_rate()] creates a layout element to estimate an event rate adjusted for
 #' person-years at risk, otherwise known as incidence rate. The primary analysis variable specified via `vars` is
 #' the person-years at risk. In addition to this variable, the `n_events` variable for number of events observed (where
 #' a value of 1 means an event was observed and 0 means that no event was observed) must also be specified.
