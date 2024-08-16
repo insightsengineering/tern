@@ -3,9 +3,10 @@
 #' @description `r lifecycle::badge("stable")`
 #'
 #' The analysis function [`estimate_proportion()`] creates a layout element to estimate the proportion of responders
-#' within a studied population. See the `method` parameter for options of methods to use when constructing the
-#' confidence interval of the proportion. Additionally, a stratification variable can be supplied via the `strata`
-#' element of the `variables` argument.
+#' within a studied population. The primary analysis variable, `vars`, indicates whether a response has occurred for
+#' each record. See the `method` parameter for options of methods to use when constructing the confidence interval of
+#' the proportion. Additionally, a stratification variable can be supplied via the `strata` element of the `variables`
+#' argument.
 #'
 #' @inheritParams prop_strat_wilson
 #' @inheritParams argument_convention
@@ -155,7 +156,7 @@ a_proportion <- make_afun(
 #' dta_test <- data.frame(
 #'   USUBJID = paste0("S", 1:12),
 #'   ARM     = rep(LETTERS[1:3], each = 4),
-#'   AVAL    = c(A = c(1, 1, 1, 1), B = c(0, 0, 1, 1), C = c(0, 0, 0, 0))
+#'   AVAL    = rep(LETTERS[1:3], each = 4)
 #' )
 #'
 #' basic_table() %>%
