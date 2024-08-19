@@ -154,6 +154,11 @@ custom groups of grades to analyze via the \code{grade_groups} parameter. The \c
 remove single grades from the analysis so that \emph{only} grade groups are analyzed.
 
 If there are multiple grades recorded for one patient only the highest grade level is counted.
+
+The summarize function \code{\link[=summarize_occurrences_by_grade]{summarize_occurrences_by_grade()}} performs the same function as
+\code{\link[=count_occurrences_by_grade]{count_occurrences_by_grade()}} except it creates content rows, not data rows, to summarize the current table
+row/column context and operates on the level of the latest row split or the root of the table if no row splits have
+occurred.
 }
 \section{Functions}{
 \itemize{

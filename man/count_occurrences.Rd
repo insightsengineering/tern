@@ -161,6 +161,10 @@ each unique value (or level) of the variable(s). This variable (or variables) mu
 non-numeric. The \code{id} variable is used to indicate unique subject identifiers (defaults to \code{USUBJID}).
 
 If there are multiple occurrences of the same value recorded for a patient, the value is only counted once.
+
+The summarize function \code{\link[=summarize_occurrences]{summarize_occurrences()}} performs the same function as \code{\link[=count_occurrences]{count_occurrences()}} except it
+creates content rows, not data rows, to summarize the current table row/column context and operates on the level of
+the latest row split or the root of the table if no row splits have occurred.
 }
 \section{Functions}{
 \itemize{

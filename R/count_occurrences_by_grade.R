@@ -11,6 +11,11 @@
 #'
 #' If there are multiple grades recorded for one patient only the highest grade level is counted.
 #'
+#' The summarize function [summarize_occurrences_by_grade()] performs the same function as
+#' [count_occurrences_by_grade()] except it creates content rows, not data rows, to summarize the current table
+#' row/column context and operates on the level of the latest row split or the root of the table if no row splits have
+#' occurred.
+#'
 #' @inheritParams argument_convention
 #' @param grade_groups (named `list` of `character`)\cr list containing groupings of grades.
 #' @param remove_single (`flag`)\cr `TRUE` to not include the elements of one-element grade groups

@@ -10,6 +10,10 @@
 #'
 #' If there are multiple occurrences of the same value recorded for a patient, the value is only counted once.
 #'
+#' The summarize function [summarize_occurrences()] performs the same function as [count_occurrences()] except it
+#' creates content rows, not data rows, to summarize the current table row/column context and operates on the level of
+#' the latest row split or the root of the table if no row splits have occurred.
+#'
 #' @inheritParams argument_convention
 #' @param drop (`flag`)\cr whether non-appearing occurrence levels should be dropped from the resulting table.
 #'   Note that in that case the remaining occurrence levels in the table are sorted alphabetically.
