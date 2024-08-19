@@ -5,7 +5,7 @@
 \alias{analyze_num_patients}
 \alias{s_num_patients}
 \alias{s_num_patients_content}
-\title{Count the number of patients}
+\title{Count number of patients}
 \usage{
 analyze_num_patients(
   lyt,

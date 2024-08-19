@@ -1,4 +1,4 @@
-#' Count the number of patients
+#' Count number of patients
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
