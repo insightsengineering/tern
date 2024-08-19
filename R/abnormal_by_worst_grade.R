@@ -2,9 +2,8 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The analyze function [count_abnormal_by_worst_grade()] creates a layout element to generate a table of
-#' counts of patients by highest (worst) analysis toxicity grade post-baseline for each direction, categorized
-#' by parameter value.
+#' The analyze function [count_abnormal_by_worst_grade()] creates a layout element to count patients by highest (worst)
+#' analysis toxicity grade post-baseline for each direction, categorized by parameter value.
 #'
 #' This function analyzes primary analysis variable `var` which indicates toxicity grades. Additional
 #' analysis variables that can be supplied as a list via the `variables` parameter are `id` (defaults to

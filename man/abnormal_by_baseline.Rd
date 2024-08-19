@@ -92,8 +92,8 @@ the statistics from \code{s_count_abnormal_by_baseline()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-The analyze function \code{\link[=count_abnormal_by_baseline]{count_abnormal_by_baseline()}} creates a layout element to generate a table of counts
-of patients with abnormal analysis range values, categorized by baseline status.
+The analyze function \code{\link[=count_abnormal_by_baseline]{count_abnormal_by_baseline()}} creates a layout element to count patients with abnormal
+analysis range values, categorized by baseline status.
 
 This function analyzes primary analysis variable \code{var} which indicates abnormal range results. Additional
 analysis variables that can be supplied as a list via the \code{variables} parameter are \code{id} (defaults to

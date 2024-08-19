@@ -2,8 +2,8 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The analyze function [count_patients_with_flags()] creates a layout element to generate a table of counts of
-#' patients for which user-specified flags are present.
+#' The analyze function [count_patients_with_flags()] creates a layout element to calculate counts of patients for
+#' which user-specified flags are present.
 #'
 #' This function analyzes primary analysis variable `var` which indicates unique subject identifiers. Flags
 #' variables to analyze are specified by the user via the `flag_variables` argument, and must either take value

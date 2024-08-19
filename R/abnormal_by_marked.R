@@ -2,9 +2,8 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The analyze function [count_abnormal_by_marked()] creates a layout element to generate a table of counts
-#' of patients with marked laboratory abnormalities for each direction of abnormality, categorized by
-#' parameter value.
+#' The analyze function [count_abnormal_by_marked()] creates a layout element to count patients with marked laboratory
+#' abnormalities for each direction of abnormality, categorized by parameter value.
 #'
 #' This function analyzes primary analysis variable `var` which indicates whether a single, replicated,
 #' or last marked laboratory abnormality was observed. Levels of `var` to include for each marked lab

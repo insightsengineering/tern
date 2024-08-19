@@ -2,8 +2,8 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The analyze function creates a layout element to generate a table of cumulative
-#' counts of patients with number of missed doses at least equal to user-specified threshold values.
+#' The analyze function creates a layout element to calculate cumulative counts of patients with number of missed
+#' doses at least equal to user-specified threshold values.
 #'
 #' This function analyzes numeric variable `vars`, a variable with numbers of missed doses,
 #' against the threshold values supplied to the `thresholds` argument as a numeric vector. This function

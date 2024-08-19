@@ -96,8 +96,8 @@ the statistics from \code{s_count_abnormal()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-The analyze function \code{\link[=count_abnormal]{count_abnormal()}} creates a layout element to generate a table of counts
-of patients with abnormal analysis range values in each direction.
+The analyze function \code{\link[=count_abnormal]{count_abnormal()}} creates a layout element to count patients with abnormal analysis range
+values in each direction.
 
 This function analyzes primary analysis variable \code{var} which indicates abnormal range results.
 Additional analysis variables that can be supplied as a list via the \code{variables} parameter are

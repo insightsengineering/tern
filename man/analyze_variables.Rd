@@ -234,11 +234,11 @@ denominator is zero. Note that \code{NA}s in \code{x} are never counted or leadi
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-The analyze function \code{\link[=analyze_vars]{analyze_vars()}} creates a layout element to generate a summary of one or more variables,
-using the S3 generic function \code{\link[=s_summary]{s_summary()}} to calculate a list of summary statistics. A list of all available
-statistics for numeric variables can be viewed by running \code{get_stats("analyze_vars_numeric")} and for non-numeric
-variables by running \code{get_stats("analyze_vars_counts")}. Use the \code{.stats} parameter to specify the statistics to
-include in your output summary table.
+The analyze function \code{\link[=analyze_vars]{analyze_vars()}} creates a layout element to summarize one or more variables, using the S3
+generic function \code{\link[=s_summary]{s_summary()}} to calculate a list of summary statistics. A list of all available statistics for
+numeric variables can be viewed by running \code{get_stats("analyze_vars_numeric")} and for non-numeric variables by
+running \code{get_stats("analyze_vars_counts")}. Use the \code{.stats} parameter to specify the statistics to include in your
+output summary table.
 }
 \details{
 \strong{Automatic digit formatting:} The number of digits to display can be automatically determined from the analyzed

@@ -2,8 +2,7 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The analyze function [count_occurrences()] creates a layout element to generate a table of
-#' occurrence counts for patients.
+#' The analyze function [count_occurrences()] creates a layout element to calculate occurrence counts for patients.
 #'
 #' This function analyzes the variable(s) supplied to `vars` and returns a table of occurrence counts for
 #' each unique value (or level) of the variable(s). This variable (or variables) must be

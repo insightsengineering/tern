@@ -2,9 +2,9 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The analyze function [estimate_multinomial_response()] creates a layout element to estimate the proportion and
-#' proportion confidence interval for each level of a factor variable. The primary analysis variable, `var`, should
-#' be a factor variable, the values of which will be used as labels within the output table.
+#' The analyze & summarize function [estimate_multinomial_response()] creates a layout element to estimate the
+#' proportion and proportion confidence interval for each level of a factor variable. The primary analysis variable,
+#' `var`, should be a factor variable, the values of which will be used as labels within the output table.
 #'
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_multinomial_response")`

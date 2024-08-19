@@ -111,8 +111,8 @@ the statistics from \code{s_count_patients_with_event()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-The analyze function \code{\link[=count_patients_with_event]{count_patients_with_event()}} creates a layout element to generate a table of patient
-counts for a user-specified set of events.
+The analyze function \code{\link[=count_patients_with_event]{count_patients_with_event()}} creates a layout element to calculate patient counts for a
+user-specified set of events.
 
 This function analyzes primary analysis variable \code{vars} which indicates unique subject identifiers. Events
 are defined by the user as a named vector via the \code{filters} argument, where each name corresponds to a

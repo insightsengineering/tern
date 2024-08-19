@@ -91,9 +91,8 @@ formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-The analyze function \code{\link[=count_abnormal_lab_worsen_by_baseline]{count_abnormal_lab_worsen_by_baseline()}} creates a layout element to generate a table of
-counts of patients with analysis toxicity grades which have worsened from baseline, categorized by highest
-(worst) grade post-baseline.
+The analyze function \code{\link[=count_abnormal_lab_worsen_by_baseline]{count_abnormal_lab_worsen_by_baseline()}} creates a layout element to count patients with
+analysis toxicity grades which have worsened from baseline, categorized by highest (worst) grade post-baseline.
 
 This function analyzes primary analysis variable \code{var} which indicates analysis toxicity grades. Additional
 analysis variables that can be supplied as a list via the \code{variables} parameter are \code{id} (defaults to \code{USUBJID}),

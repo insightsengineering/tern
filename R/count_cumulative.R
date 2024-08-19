@@ -2,9 +2,9 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The analyze function [count_cumulative()] creates a layout element to generate a table of cumulative
-#' counts of values in a numeric variable that are less than, less or equal to, greater than, or greater or
-#' equal to user-specified threshold values.
+#' The analyze function [count_cumulative()] creates a layout element to calculate cumulative counts of values in a
+#' numeric variable that are less than, less or equal to, greater than, or greater or equal to user-specified
+#' threshold values.
 #'
 #' This function analyzes numeric variable `vars` against the threshold values supplied to the `thresholds`
 #' argument as a numeric vector. Whether counts should include the threshold values, and whether to count

@@ -1,4 +1,4 @@
-#' Analyze functions on columns
+#' Analyze functions in columns
 #'
 #' @description
 #' These functions are wrappers of [rtables::analyze_colvars()] which apply corresponding `tern`

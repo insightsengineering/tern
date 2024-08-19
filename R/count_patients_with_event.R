@@ -2,8 +2,8 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The analyze function [count_patients_with_event()] creates a layout element to generate a table of patient
-#' counts for a user-specified set of events.
+#' The analyze function [count_patients_with_event()] creates a layout element to calculate patient counts for a
+#' user-specified set of events.
 #'
 #' This function analyzes primary analysis variable `vars` which indicates unique subject identifiers. Events
 #' are defined by the user as a named vector via the `filters` argument, where each name corresponds to a

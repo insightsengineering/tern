@@ -91,9 +91,8 @@ the statistics from \code{s_count_abnormal_by_marked()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-The analyze function \code{\link[=count_abnormal_by_marked]{count_abnormal_by_marked()}} creates a layout element to generate a table of counts
-of patients with marked laboratory abnormalities for each direction of abnormality, categorized by
-parameter value.
+The analyze function \code{\link[=count_abnormal_by_marked]{count_abnormal_by_marked()}} creates a layout element to count patients with marked laboratory
+abnormalities for each direction of abnormality, categorized by parameter value.
 
 This function analyzes primary analysis variable \code{var} which indicates whether a single, replicated,
 or last marked laboratory abnormality was observed. Levels of \code{var} to include for each marked lab

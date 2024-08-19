@@ -2,9 +2,8 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The analyze function [count_abnormal_lab_worsen_by_baseline()] creates a layout element to generate a table of
-#' counts of patients with analysis toxicity grades which have worsened from baseline, categorized by highest
-#' (worst) grade post-baseline.
+#' The analyze function [count_abnormal_lab_worsen_by_baseline()] creates a layout element to count patients with
+#' analysis toxicity grades which have worsened from baseline, categorized by highest (worst) grade post-baseline.
 #'
 #' This function analyzes primary analysis variable `var` which indicates analysis toxicity grades. Additional
 #' analysis variables that can be supplied as a list via the `variables` parameter are `id` (defaults to `USUBJID`),

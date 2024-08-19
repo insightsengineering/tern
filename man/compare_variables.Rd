@@ -113,12 +113,11 @@ the statistics from \code{s_compare()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-The analyze function \code{\link[=compare_vars]{compare_vars()}} creates a layout element to generate a summary and comparison of one or more
-variables, using the S3 generic function \code{\link[=s_summary]{s_summary()}} to calculate a list of summary statistics. A list of all
-available statistics for numeric variables can be viewed by running
-\code{get_stats("analyze_vars_numeric", add_pval = TRUE)} and for non-numeric variables by running
-\code{get_stats("analyze_vars_counts", add_pval = TRUE)}. Use the \code{.stats} parameter to specify the statistics to include
-in your output summary table.
+The analyze function \code{\link[=compare_vars]{compare_vars()}} creates a layout element to summarize and compare one or more variables, using
+the S3 generic function \code{\link[=s_summary]{s_summary()}} to calculate a list of summary statistics. A list of all available statistics
+for numeric variables can be viewed by running \code{get_stats("analyze_vars_numeric", add_pval = TRUE)} and for
+non-numeric variables by running \code{get_stats("analyze_vars_counts", add_pval = TRUE)}. Use the \code{.stats} parameter to
+specify the statistics to include in your output summary table.
 
 Prior to using this function in your table layout you must use \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}} to create a column
 split on the variable to be used in comparisons, and specify a reference group via the \code{ref_group} parameter.

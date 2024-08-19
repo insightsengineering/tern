@@ -154,8 +154,7 @@ containing the statistics from \code{s_count_occurrences()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-The analyze function \code{\link[=count_occurrences]{count_occurrences()}} creates a layout element to generate a table of
-occurrence counts for patients.
+The analyze function \code{\link[=count_occurrences]{count_occurrences()}} creates a layout element to calculate occurrence counts for patients.
 
 This function analyzes the variable(s) supplied to \code{vars} and returns a table of occurrence counts for
 each unique value (or level) of the variable(s). This variable (or variables) must be

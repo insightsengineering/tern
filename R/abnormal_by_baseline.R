@@ -2,8 +2,8 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The analyze function [count_abnormal_by_baseline()] creates a layout element to generate a table of counts
-#' of patients with abnormal analysis range values, categorized by baseline status.
+#' The analyze function [count_abnormal_by_baseline()] creates a layout element to count patients with abnormal
+#' analysis range values, categorized by baseline status.
 #'
 #' This function analyzes primary analysis variable `var` which indicates abnormal range results. Additional
 #' analysis variables that can be supplied as a list via the `variables` parameter are `id` (defaults to

@@ -2,8 +2,7 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The analyze function [count_occurrences_by_grade()] creates a layout element to generate a table of
-#' occurrence counts by grade.
+#' The analyze function [count_occurrences_by_grade()] creates a layout element to calculate occurrence counts by grade.
 #'
 #' This function analyzes primary analysis variable `var` which indicates toxicity grades. The `id` variable
 #' is used to indicate unique subject identifiers (defaults to `USUBJID`). The user can also supply a list of

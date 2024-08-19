@@ -104,9 +104,9 @@ component, each component containing a vector for the count and fraction.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-The analyze function \code{\link[=count_cumulative]{count_cumulative()}} creates a layout element to generate a table of cumulative
-counts of values in a numeric variable that are less than, less or equal to, greater than, or greater or
-equal to user-specified threshold values.
+The analyze function \code{\link[=count_cumulative]{count_cumulative()}} creates a layout element to calculate cumulative counts of values in a
+numeric variable that are less than, less or equal to, greater than, or greater or equal to user-specified
+threshold values.
 
 This function analyzes numeric variable \code{vars} against the threshold values supplied to the \code{thresholds}
 argument as a numeric vector. Whether counts should include the threshold values, and whether to count

@@ -146,8 +146,7 @@ grade level grouping.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-The analyze function \code{\link[=count_occurrences_by_grade]{count_occurrences_by_grade()}} creates a layout element to generate a table of
-occurrence counts by grade.
+The analyze function \code{\link[=count_occurrences_by_grade]{count_occurrences_by_grade()}} creates a layout element to calculate occurrence counts by grade.
 
 This function analyzes primary analysis variable \code{var} which indicates toxicity grades. The \code{id} variable
 is used to indicate unique subject identifiers (defaults to \code{USUBJID}). The user can also supply a list of

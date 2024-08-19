@@ -89,8 +89,8 @@ the statistics from \code{s_count_missed_doses()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-The analyze function creates a layout element to generate a table of cumulative
-counts of patients with number of missed doses at least equal to user-specified threshold values.
+The analyze function creates a layout element to calculate cumulative counts of patients with number of missed
+doses at least equal to user-specified threshold values.
 
 This function analyzes numeric variable \code{vars}, a variable with numbers of missed doses,
 against the threshold values supplied to the \code{thresholds} argument as a numeric vector. This function

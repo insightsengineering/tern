@@ -2,8 +2,8 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The analyze function [count_values()] creates a layout element to generate a table of counts of
-#' specific values within a variable of interest.
+#' The analyze function [count_values()] creates a layout element to calculate counts of specific values within a
+#' variable of interest.
 #'
 #' This function analyzes one or more variables of interest supplied as a vector to `vars`. Values to
 #' count for variable(s) in `vars` can be given as a vector via the `values` argument. One row of
