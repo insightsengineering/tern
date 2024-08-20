@@ -15,9 +15,9 @@
 * Fixed bug in `decorate_grob` that did not handle well empty strings or `NULL` values for title and footers.
 * Fixed bug in `g_km` that caused an error when multiple records in the data had estimates at max time.
 
-
 ### Miscellaneous
 * Began deprecation of the confusing functions `summary_formats` and `summary_labels`.
+* Enhanced documented descriptions of analyze and summarize functions.
 
 # tern 0.9.5
 
