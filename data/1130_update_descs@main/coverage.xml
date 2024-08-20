@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.947202596906626" branch-rate="0" lines-covered="9921" lines-valid="10474" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-08-20 14:40:13.569489">
+<coverage line-rate="0.947202596906626" branch-rate="0" lines-covered="9921" lines-valid="10474" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-08-20 14:53:15.400532">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
@@ -2041,10 +2041,10 @@
           <methods>
             <method name="control_coxph" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="20" hits="60" branch="false"/>
-                <line number="21" hits="59" branch="false"/>
-                <line number="22" hits="59" branch="false"/>
-                <line number="24" hits="58" branch="false"/>
+                <line number="20" hits="50" branch="false"/>
+                <line number="21" hits="49" branch="false"/>
+                <line number="22" hits="49" branch="false"/>
+                <line number="24" hits="48" branch="false"/>
               </lines>
             </method>
             <method name="control_surv_time" signature="" line-rate="1" branch-rate="0" complexity="0">
@@ -2068,10 +2068,10 @@
             </method>
           </methods>
           <lines>
-            <line number="20" hits="60" branch="false"/>
-            <line number="21" hits="59" branch="false"/>
-            <line number="22" hits="59" branch="false"/>
-            <line number="24" hits="58" branch="false"/>
+            <line number="20" hits="50" branch="false"/>
+            <line number="21" hits="49" branch="false"/>
+            <line number="22" hits="49" branch="false"/>
+            <line number="24" hits="48" branch="false"/>
             <line number="45" hits="229" branch="false"/>
             <line number="46" hits="228" branch="false"/>
             <line number="47" hits="227" branch="false"/>
@@ -21102,11 +21102,11 @@
             </method>
             <method name="assert_proportion_value" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="156" hits="10590" branch="false"/>
-                <line number="157" hits="10578" branch="false"/>
-                <line number="158" hits="10578" branch="false"/>
-                <line number="159" hits="6048" branch="false"/>
-                <line number="160" hits="6046" branch="false"/>
+                <line number="156" hits="10580" branch="false"/>
+                <line number="157" hits="10568" branch="false"/>
+                <line number="158" hits="10568" branch="false"/>
+                <line number="159" hits="6038" branch="false"/>
+                <line number="160" hits="6036" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -21174,11 +21174,11 @@
             <line number="137" hits="6" branch="false"/>
             <line number="139" hits="225" branch="false"/>
             <line number="142" hits="227" branch="false"/>
-            <line number="156" hits="10590" branch="false"/>
-            <line number="157" hits="10578" branch="false"/>
-            <line number="158" hits="10578" branch="false"/>
-            <line number="159" hits="6048" branch="false"/>
-            <line number="160" hits="6046" branch="false"/>
+            <line number="156" hits="10580" branch="false"/>
+            <line number="157" hits="10568" branch="false"/>
+            <line number="158" hits="10568" branch="false"/>
+            <line number="159" hits="6038" branch="false"/>
+            <line number="160" hits="6036" branch="false"/>
           </lines>
         </class>
         <class name="utils_default_stats_formats_labels.R" filename="R/utils_default_stats_formats_labels.R" line-rate="0.991935483870968" branch-rate="0" complexity="0">
