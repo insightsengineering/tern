@@ -118,7 +118,7 @@ the statistics from \code{s_proportion_diff()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-The analysis function \code{\link[=estimate_prop_diff]{estimate_prop_diff()}} creates a layout element to estimate the difference in proportion of
+The analysis function \code{\link[=estimate_proportion_diff]{estimate_proportion_diff()}} creates a layout element to estimate the difference in proportion of
 responders within a studied population. The primary analysis variable, \code{vars}, is a logical variable indicating
 whether a response has occurred for each record. See the \code{method} parameter for options of methods to use when
 constructing the confidence interval of the proportion difference. A stratification variable can be supplied via the

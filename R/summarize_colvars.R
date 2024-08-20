@@ -4,7 +4,7 @@
 #'
 #' The analyze function [summarize_colvars()] uses the statistics function [s_summary()] to analyze variables that are
 #' arranged in columns. The variables to analyze should be specified in the table layout via column splits (see
-#' [split_cols_by()] and [split_cols_by_mutlivar()]) prior to using [summarize_colvars()].
+#' [split_cols_by()] and [split_cols_by_multivar()]) prior to using [summarize_colvars()].
 #'
 #' The function is a minimal wrapper for [rtables::analyze_colvars()], a function typically used to apply different
 #' analysis methods in rows for each column variable. To use the analysis methods as column labels, please refer to

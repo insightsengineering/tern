@@ -2,7 +2,7 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The analysis function [estimate_prop_diff()] creates a layout element to estimate the difference in proportion of
+#' The analysis function [estimate_proportion_diff()] creates a layout element to estimate the difference in proportion of
 #' responders within a studied population. The primary analysis variable, `vars`, is a logical variable indicating
 #' whether a response has occurred for each record. See the `method` parameter for options of methods to use when
 #' constructing the confidence interval of the proportion difference. A stratification variable can be supplied via the
