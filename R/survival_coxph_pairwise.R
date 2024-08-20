@@ -190,7 +190,7 @@ coxph_pairwise <- function(lyt,
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = NULL) {
-  extra_args <- list(...)
+  extra_args <- list(strata = strata, control = control, ...)
 
   afun <- make_afun(
     a_coxph_pairwise,
