@@ -71,7 +71,7 @@ Config/Needs/verdepcheck: insightsengineering/rtables, tidymodels/broom,
     cran/car, mllg/checkmate, wilkelab/cowplot, tidyverse/dplyr,
     rvlenth/emmeans, tidyverse/forcats, insightsengineering/formatters,
     tidyverse/ggplot2, r-lib/gtable, r-lib/lifecycle, tidyverse/magrittr,
-    GeoBosh/Rdpack, r-lib/rlang, r-lib/scales, tidyverse/tibble,
+    GeoBosh/Rdpack, r-lib/rlang, r-lib/scales, therneau/survival, tidyverse/tibble,
     tidyverse/tidyr, yihui/knitr, deepayan/lattice, tidyverse/lubridate,
     insightsengineering/nestcolor, rstudio/rmarkdown, tidyverse/stringr,
     r-lib/svglite, r-lib/testthat, r-lib/withr
