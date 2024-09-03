@@ -3,6 +3,9 @@ adlb <- tern_ex_adlb %>%
   slice(1:36)
 
 testthat::test_that("h_g_ipp works correctly", {
+  require("nestcolor", quietly = TRUE)
+  skip_if_not_installed("nestcolor")
+
   testthat::expect_silent(h_g_ipp(
     df = adlb,
     xvar = "AVISIT",
