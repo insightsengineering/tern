@@ -223,8 +223,9 @@ tabulate_rsp_subgroups <- function(lyt,
   if ("pval" %in% vars && !"pval" %in% names(df$or)) {
     warning(
       'The "pval" statistic has been selected but is not present in "df" so it will not be included in the output ',
-      'table. To include the "pval" statistic, please specify strata and a p-value test when generating "df" via ',
-      'the "variables" and "method" arguments to `extract_rsp_subgroups()`, respectively.'
+      'table. To include the "pval" statistic, please specify a p-value test when generating "df" via ',
+      'the "method" argument to `extract_rsp_subgroups()`. If method = "cmh", strata must also be specified via the ',
+      '"variables" argument to `extract_rsp_subgroups()`.'
     )
   }
 
