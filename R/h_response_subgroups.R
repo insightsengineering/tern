@@ -175,7 +175,7 @@ h_proportion_subgroups_df <- function(variables,
 #' )
 #'
 #' @export
-h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, method = NULL) {
+h_odds_ratio_df <- function(rsp, arm, strata_data = NULL, conf_level = 0.95, method = "chisq") {
   assert_valid_factor(arm, n.levels = 2, len = length(rsp))
 
   df_rsp <- data.frame(
@@ -323,7 +323,7 @@ h_odds_ratio_subgroups_df <- function(variables,
                                       data,
                                       groups_lists = list(),
                                       conf_level = 0.95,
-                                      method = NULL,
+                                      method = "chisq",
                                       label_all = "All Patients") {
   if ("strat" %in% names(variables)) {
     warning(

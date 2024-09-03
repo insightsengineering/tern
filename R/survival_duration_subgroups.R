@@ -228,6 +228,13 @@ tabulate_survival_subgroups <- function(lyt,
   checkmate::assert_list(riskdiff, null.ok = TRUE)
   checkmate::assert_true(any(c("n_tot", "n_tot_events") %in% vars))
   checkmate::assert_true(all(c("hr", "ci") %in% vars))
+  if ("pval" %in% vars && !"pval" %in% names(df$hr)) {
+    warning(
+      'The "pval" statistic has been selected but is not present in "df" so it will not be included in the output ',
+      'table. To include the "pval" statistic, please specify strata and a p-value test when generating "df" via ',
+      'the "variables" and "method" arguments to `extract_rsp_subgroups()`, respectively.'
+    )
+  }
 
   if (lifecycle::is_present(label_all)) {
     lifecycle::deprecate_warn(
