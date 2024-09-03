@@ -4,6 +4,7 @@
 * Reworking of `summarize_glm_count()` documentation and all its associated functions to better describe the results and the functions' purpose.
 * Added the `.formats` argument to `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` to allow users to specify formats.
 * Added the `riskdiff` argument to `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` to allow users to add a risk difference table column, and function `control_riskdiff` to specify settings for the risk difference column.
+* Added `n_rate` statistic as a non-default option to `estimate_incidence_rate` which returns both number of events observed and estimated incidence rate.
 
 ### Bug Fixes
 * Fixed a bug in `a_surv_time` that threw an error when split only has `"is_event"`.
