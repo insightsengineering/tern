@@ -211,7 +211,6 @@ testthat::test_that("h_odds_ratio_subgroups_df works as expected with groups_lis
       subgroups = c("SEX", "BMRKR2")
     ),
     data = adrs,
-    method = NULL,
     groups_lists = list(
       BMRKR2 = list(
         "low" = "LOW",
