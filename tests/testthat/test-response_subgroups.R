@@ -110,8 +110,7 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected with valid inp
   df <- extract_rsp_subgroups(
     variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
     data = adrs,
-    conf_level = 0.95,
-    method = "chisq"
+    conf_level = 0.95
   )
 
   result <- basic_table() %>%
@@ -124,14 +123,50 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected with valid inp
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("tabulate_rsp_subgroups pval statistic works as expected", {
+  adrs <- adrs_200
+
+  df <- extract_rsp_subgroups(
+    variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
+    data = adrs,
+    method = "fisher",
+    conf_level = 0.95
+  )
+
+  result <- basic_table() %>%
+    tabulate_rsp_subgroups(
+      df = df,
+      vars = c("n", "prop", "n_tot", "or", "ci", "pval")
+    )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  df <- extract_rsp_subgroups(
+    variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
+    data = adrs,
+    method = NULL,
+    conf_level = 0.95
+  )
+
+  # warning when no pval in df
+  expect_warning(
+    basic_table() %>%
+      tabulate_rsp_subgroups(
+        df = df,
+        vars = c("n", "prop", "n_tot", "or", "ci", "pval")
+      ),
+    "please specify a p-value test"
+  )
+})
+
 testthat::test_that("tabulate_rsp_subgroups correctly calculates column indices", {
   adrs <- adrs_200
 
   df <- extract_rsp_subgroups(
     variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
     data = adrs,
-    conf_level = 0.95,
-    method = "chisq"
+    conf_level = 0.95
   )
 
   # Case with both OR and response table parts.
@@ -177,6 +212,7 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected with valid inp
   df <- extract_rsp_subgroups(
     variables = list(rsp = "rsp", arm = "arm", subgroups = "var1"),
     data = adrs,
+    method = NULL,
     conf_level = 0.95
   )
 
@@ -193,7 +229,6 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected with NULL subg
   df <- extract_rsp_subgroups(
     variables = list(rsp = "rsp", arm = "ARM"),
     data = adrs,
-    method = "chisq",
     conf_level = 0.95
   )
 
@@ -213,7 +248,6 @@ testthat::test_that("tabulate_rsp_subgroups functions as expected when 0 obs in 
   suppressWarnings(testthat::expect_warning(df <- extract_rsp_subgroups(
     variables = list(rsp = "rsp", arm = "ARM", subgroups = "RACE"),
     data = adrs,
-    method = "chisq",
     conf_level = 0.95
   )))
 
@@ -232,8 +266,7 @@ testthat::test_that("d_rsp_subgroups_colvars functions as expected with valid in
 
   result <- d_rsp_subgroups_colvars(
     vars = vars,
-    conf_level = 0.9,
-    method = "p-value (Chi-Squared Test)"
+    conf_level = 0.9
   )
 
   res <- testthat::expect_silent(result)
@@ -246,8 +279,7 @@ testthat::test_that("tabulate_rsp_subgroups .formats argument works as expected"
   df <- extract_rsp_subgroups(
     variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
     data = adrs,
-    conf_level = 0.95,
-    method = "chisq"
+    conf_level = 0.95
   )
 
   result <- basic_table() %>%
@@ -267,8 +299,7 @@ testthat::test_that("tabulate_rsp_subgroups na_str argument works as expected", 
   df <- extract_rsp_subgroups(
     variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
     data = adrs,
-    conf_level = 0.95,
-    method = "chisq"
+    conf_level = 0.95
   )
   df$or$or[2:5] <- NA
 
@@ -289,8 +320,7 @@ testthat::test_that("tabulate_rsp_subgroups riskdiff argument works as expected"
   df <- extract_rsp_subgroups(
     variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
     data = adrs,
-    conf_level = 0.95,
-    method = "chisq"
+    conf_level = 0.95
   )
 
   result <- basic_table() %>%

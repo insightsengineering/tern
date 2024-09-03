@@ -28,18 +28,24 @@
       10 analysis
       
       $or
-        arm n_tot         or       lcl        ucl conf_level     subgroup     var
-      1       100  2.1354167 0.8112648   5.620858       0.95 All Patients     ALL
-      2        54 12.6315770 1.4840381 107.515254       0.95            F     SEX
-      3        46  0.7142857 0.1889048   2.700853       0.95            M     SEX
-      4        51  2.1388889 0.5395114   8.479609       0.95           S1 STRATA2
-      5        49  2.1111111 0.5405387   8.245089       0.95           S2 STRATA2
-                      var_label row_type
-      1            All Patients  content
-      2                     Sex analysis
-      3                     Sex analysis
-      4 Stratification Factor 2 analysis
-      5 Stratification Factor 2 analysis
+        arm n_tot         or       lcl        ucl conf_level        pval
+      1       100  2.1354167 0.8112648   5.620858       0.95 0.120095384
+      2        54 12.6315770 1.4840381 107.515254       0.95 0.005549886
+      3        46  0.7142857 0.1889048   2.700853       0.95 0.619306535
+      4        51  2.1388889 0.5395114   8.479609       0.95 0.273514643
+      5        49  2.1111111 0.5405387   8.245089       0.95 0.277129278
+                        pval_label     subgroup     var               var_label
+      1 p-value (Chi-Squared Test) All Patients     ALL            All Patients
+      2 p-value (Chi-Squared Test)            F     SEX                     Sex
+      3 p-value (Chi-Squared Test)            M     SEX                     Sex
+      4 p-value (Chi-Squared Test)           S1 STRATA2 Stratification Factor 2
+      5 p-value (Chi-Squared Test)           S2 STRATA2 Stratification Factor 2
+        row_type
+      1  content
+      2 analysis
+      3 analysis
+      4 analysis
+      5 analysis
       
 
 # extract_rsp_subgroups functions as expected with NULL subgroups
@@ -53,10 +59,10 @@
       2  A: Drug X 49    41 0.8367347 All Patients ALL All Patients  content
       
       $or
-        arm n_tot       or       lcl      ucl conf_level     subgroup var
-      1       100 2.135417 0.8112648 5.620858       0.95 All Patients ALL
-           var_label row_type
-      1 All Patients  content
+        arm n_tot       or       lcl      ucl conf_level      pval
+      1       100 2.135417 0.8112648 5.620858       0.95 0.1200954
+                        pval_label     subgroup var    var_label row_type
+      1 p-value (Chi-Squared Test) All Patients ALL All Patients  content
       
 
 # extract_rsp_subgroups works as expected with groups_lists
@@ -149,6 +155,22 @@
       Stratification Factor 2                                                                                                            
         S1                        73      34      70.6%       39      87.2%          2.83      (0.86, 9.35)              0.0801          
         S2                        69      39      66.7%       30      83.3%          2.50      (0.78, 8.04)              0.1181          
+
+# tabulate_rsp_subgroups pval statistic works as expected
+
+    Code
+      res
+    Output
+                                             B: Placebo           A: Drug X                                                                 
+      Baseline Risk Factors     Total n   n    Response (%)   n    Response (%)   Odds Ratio      95% CI       p-value (Fisher's Exact Test)
+      ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+      All Patients                142     73      68.5%       69      85.5%          2.71      (1.18, 6.24)               0.0181            
+      Sex                                                                                                                                   
+        F                         78      40      62.5%       38      94.7%         10.80      (2.27, 51.45)              0.0007            
+        M                         64      33      75.8%       31      74.2%          0.92      (0.30, 2.85)               1.0000            
+      Stratification Factor 2                                                                                                               
+        S1                        73      34      70.6%       39      87.2%          2.83      (0.86, 9.35)               0.0916            
+        S2                        69      39      66.7%       30      83.3%          2.50      (0.78, 8.04)               0.1681            
 
 # tabulate_rsp_subgroups correctly calculates column indices
 
