@@ -43,7 +43,7 @@
 #'   for more information.
 #' @param lyt (`PreDataTableLayouts`)\cr layout that analyses will be added to.
 #' @param method (`string` or `NULL`)\cr specifies the test used to calculate the p-value for the difference between
-#'   two proportions. For options, see [test_proportion_diff()]. Defaults to `"chisq"`. If `NULL`, no test is performed.
+#'   two proportions. For options, see [test_proportion_diff()]. Default is `NULL` so no test is performed.
 #' @param na.rm (`flag`)\cr whether `NA` values should be removed from `x` prior to analysis.
 #' @param na_str (`string`)\cr string used to replace all `NA` or empty values in the output.
 #' @param nested (`flag`)\cr whether this layout instruction should be applied within the existing layout structure _if

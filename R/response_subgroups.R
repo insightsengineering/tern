@@ -74,6 +74,8 @@ NULL
 #'
 #' @inheritParams argument_convention
 #' @inheritParams response_subgroups
+#' @param method (`string` or `NULL`)\cr specifies the test used to calculate the p-value for the difference between
+#'   two proportions. For options, see [test_proportion_diff()]. Defaults to `"chisq"`. If `NULL`, no test is performed.
 #' @param label_all (`string`)\cr label for the total population analysis.
 #'
 #' @return A named list of two elements:
@@ -411,7 +413,7 @@ tabulate_rsp_subgroups <- function(lyt,
 #' @export
 d_rsp_subgroups_colvars <- function(vars,
                                     conf_level = NULL,
-                                    method = "p-value (Chi-Squared Test)") {
+                                    method = NULL) {
   checkmate::assert_character(vars)
   checkmate::assert_subset(c("n_tot", "or", "ci"), vars)
   checkmate::assert_subset(

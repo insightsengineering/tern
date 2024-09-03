@@ -4,11 +4,7 @@
 \alias{d_rsp_subgroups_colvars}
 \title{Labels for column variables in binary response by subgroup table}
 \usage{
-d_rsp_subgroups_colvars(
-  vars,
-  conf_level = NULL,
-  method = "p-value (Chi-Squared Test)"
-)
+d_rsp_subgroups_colvars(vars, conf_level = NULL, method = NULL)
 }
 \arguments{
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
@@ -16,7 +12,7 @@ d_rsp_subgroups_colvars(
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
 \item{method}{(\code{string} or \code{NULL})\cr specifies the test used to calculate the p-value for the difference between
-two proportions. For options, see \code{\link[=test_proportion_diff]{test_proportion_diff()}}. Defaults to \code{"chisq"}. If \code{NULL}, no test is performed.}
+two proportions. For options, see \code{\link[=test_proportion_diff]{test_proportion_diff()}}. Default is \code{NULL} so no test is performed.}
 }
 \value{
 A \code{list} of variables to tabulate and their labels.
