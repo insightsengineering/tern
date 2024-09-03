@@ -62,11 +62,13 @@ install.packages("tern")
 or you can install the latest development version directly from GitHub by running the following:
 
 ```r
-if (!require("remotes")) install.packages("remotes")
-remotes::install_github("insightsengineering/tern")
+# install.packages("pak")
+pak::pak("insightsengineering/tern")
 ```
 
-Note that it is recommended you [create and use a `GITHUB_PAT`](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) if installing from GitHub.
+## Usage
+
+To understand how to use this package, please refer to the [Introduction to `tern`](https://insightsengineering.github.io/tern/latest-tag/articles/tern.html) article, which provides multiple examples of code implementation.
 
 See package vignettes `browseVignettes(package = "tern")` for usage of this package.
 
