@@ -266,6 +266,7 @@ testthat::test_that("d_rsp_subgroups_colvars functions as expected with valid in
 
   result <- d_rsp_subgroups_colvars(
     vars = vars,
+    method = "p-value (Chi-Squared Test)",
     conf_level = 0.9
   )
 

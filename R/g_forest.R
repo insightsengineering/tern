@@ -71,6 +71,7 @@
 #' formatters::var_labels(adrs) <- c(adrs_labels, "Response")
 #' df <- extract_rsp_subgroups(
 #'   variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
+#'   method = NULL,
 #'   data = adrs
 #' )
 #' # Full commonly used response table.
