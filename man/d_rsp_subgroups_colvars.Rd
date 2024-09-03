@@ -4,7 +4,11 @@
 \alias{d_rsp_subgroups_colvars}
 \title{Labels for column variables in binary response by subgroup table}
 \usage{
-d_rsp_subgroups_colvars(vars, conf_level = NULL, method = "chisq")
+d_rsp_subgroups_colvars(
+  vars,
+  conf_level = NULL,
+  method = "p-value (Chi-Squared Test)"
+)
 }
 \arguments{
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}

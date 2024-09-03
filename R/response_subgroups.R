@@ -410,7 +410,7 @@ tabulate_rsp_subgroups <- function(lyt,
 #' @export
 d_rsp_subgroups_colvars <- function(vars,
                                     conf_level = NULL,
-                                    method = "chisq") {
+                                    method = "p-value (Chi-Squared Test)") {
   checkmate::assert_character(vars)
   checkmate::assert_subset(c("n_tot", "or", "ci"), vars)
   checkmate::assert_subset(
