@@ -74,8 +74,6 @@ NULL
 #'
 #' @inheritParams argument_convention
 #' @inheritParams response_subgroups
-#' @param method (`string` or `NULL`)\cr specifies the test used to calculate the p-value for the difference between
-#'   two proportions. For options, see [test_proportion_diff()]. Defaults to `"chisq"`. If `NULL`, no test is performed.
 #' @param label_all (`string`)\cr label for the total population analysis.
 #'
 #' @return A named list of two elements:
@@ -91,7 +89,7 @@ extract_rsp_subgroups <- function(variables,
                                   data,
                                   groups_lists = list(),
                                   conf_level = 0.95,
-                                  method = "chisq",
+                                  method = NULL,
                                   label_all = "All Patients") {
   if ("strat" %in% names(variables)) {
     warning(

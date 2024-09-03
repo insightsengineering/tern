@@ -4,7 +4,6 @@
 * Reworking of `summarize_glm_count()` documentation and all its associated functions to better describe the results and the functions' purpose.
 * Added the `.formats` argument to `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` to allow users to specify formats.
 * Added the `riskdiff` argument to `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` to allow users to add a risk difference table column, and function `control_riskdiff` to specify settings for the risk difference column.
-* Added `"chisq"` as default `method` parameter value to `extract_rsp_subgroups`.
 * Added warning to `tabulate_rsp_subgroups` when `pval` statistic is selected but `df` has not been correctly generated to add p-values to the output table.
 
 ### Bug Fixes
