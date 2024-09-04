@@ -382,7 +382,7 @@ tern_default_stats <- list(
   count_patients_with_flags = c("n", "count", "count_fraction", "count_fraction_fixed_dp", "n_blq"),
   count_values = c("n", "count", "count_fraction", "count_fraction_fixed_dp", "n_blq"),
   coxph_pairwise = c("pvalue", "hr", "hr_ci", "n_tot", "n_tot_events"),
-  estimate_incidence_rate = c("person_years", "n_events", "rate", "rate_ci"),
+  estimate_incidence_rate = c("person_years", "n_events", "rate", "rate_ci", "n_unique", "n_rate"),
   estimate_multinomial_response = c("n_prop", "prop_ci"),
   estimate_odds_ratio = c("or_ci", "n_tot"),
   estimate_proportion = c("n_prop", "prop_ci"),

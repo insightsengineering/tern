@@ -11,9 +11,12 @@ estimate_incidence_rate(
   lyt,
   vars,
   n_events,
+  id_var = "USUBJID",
   control = control_incidence_rate(),
   na_str = default_na_str(),
   nested = TRUE,
+  summarize = FALSE,
+  label_fmt = "\%s - \%.labels",
   ...,
   show_labels = "hidden",
   table_names = vars,
@@ -27,16 +30,26 @@ s_incidence_rate(
   df,
   .var,
   n_events,
-  is_event,
+  is_event = lifecycle::deprecated(),
+  id_var = "USUBJID",
   control = control_incidence_rate()
 )
 
 a_incidence_rate(
   df,
+  labelstr = "",
   .var,
+  .df_row,
   n_events,
-  is_event,
-  control = control_incidence_rate()
+  id_var = "USUBJID",
+  control = control_incidence_rate(),
+  .stats = NULL,
+  .formats = c(person_years = "xx.x", n_events = "xx", rate = "xx.xx", rate_ci =
+    "(xx.xx, xx.xx)", n_unique = "xx", n_rate = "xx (xx.x)"),
+  .labels = NULL,
+  .indent_mods = NULL,
+  na_str = default_na_str(),
+  label_fmt = "\%s - \%.labels"
 )
 }
 \arguments{
@@ -44,7 +57,9 @@ a_incidence_rate(
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{n_events}{(\code{integer(1)})\cr number of events observed.}
+\item{n_events}{(\code{string})\cr name of integer variable indicating whether an event has been observed (1) or not (0).}
+
+\item{id_var}{(\code{string})\cr name of variable used as patient identifier if \code{"n_unique"} is included in \code{.stats}.}
 
 \item{control}{(\code{list})\cr parameters for estimation details, specified by using
 the helper function \code{\link[=control_incidence_rate]{control_incidence_rate()}}. Possible parameter options are:
@@ -87,6 +102,12 @@ unmodified default behavior. Can be negative.}
 by a statistics function.}
 
 \item{is_event}{(\code{flag})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
+
+\item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
+(must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
+for more information.}
+
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 }
 \value{
 \itemize{
@@ -102,6 +123,8 @@ the statistics from \code{s_incidence_rate()} to the table layout.
 \item \code{n_events}: Total number of events observed.
 \item \code{rate}: Estimated incidence rate.
 \item \code{rate_ci}: Confidence interval for the incidence rate.
+\item \code{n_unique}: Total number of patients with at least one event observed.
+\item \code{n_rate}: Total number of events observed & estimated incidence rate.
 }
 }
 
@@ -136,8 +159,7 @@ df <- data.frame(
   AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
   ARM = factor(c("A", "A", "A", "B", "B", "B"))
 ) \%>\%
-  mutate(is_event = CNSR == 0) \%>\%
-  mutate(n_events = as.integer(is_event))
+  mutate(n_events = 1 - CNSR)
 
 basic_table() \%>\%
   split_cols_by("ARM") \%>\%
