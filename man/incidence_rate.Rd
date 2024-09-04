@@ -78,6 +78,13 @@ indicating time unit for data input.
 possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
+\item{summarize}{(\code{flag})\cr whether the function should act as an analyze function (\code{summarize = FALSE}), or a
+summarize function (\code{summarize = TRUE}). Defaults to \code{FALSE}.}
+
+\item{label_fmt}{(\code{string})\cr how labels should be formatted after a row split occurs if \code{summarize = TRUE}. The
+string should use \code{"\%s"} to represent row split levels, and \code{"\%.labels"} to represent labels supplied to the
+\code{.labels} argument. Defaults to \code{"\%s - \%.labels"}.}
+
 \item{...}{additional arguments for the lower level functions.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}

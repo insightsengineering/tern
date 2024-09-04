@@ -18,6 +18,11 @@
 #' @param n_events (`string`)\cr name of integer variable indicating whether an event has been observed (1) or not (0).
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_incidence_rate")`
 #'   to see available statistics for this function.
+#' @param summarize (`flag`)\cr whether the function should act as an analyze function (`summarize = FALSE`), or a
+#'   summarize function (`summarize = TRUE`). Defaults to `FALSE`.
+#' @param label_fmt (`string`)\cr how labels should be formatted after a row split occurs if `summarize = TRUE`. The
+#'   string should use `"%s"` to represent row split levels, and `"%.labels"` to represent labels supplied to the
+#'   `.labels` argument. Defaults to `"%s - %.labels"`.
 #'
 #' @seealso [control_incidence_rate()] and helper functions [h_incidence_rate].
 #'
@@ -53,6 +58,8 @@ s_incidence_rate <- function(df,
 
   assert_df_with_variables(df, list(tte = .var, n_events = n_events))
   checkmate::assert_string(.var)
+  checkmate::assert_string(n_events)
+  checkmate::assert_string(id_var)
   checkmate::assert_numeric(df[[.var]], any.missing = FALSE)
   checkmate::assert_integerish(df[[n_events]], any.missing = FALSE)
 
@@ -113,6 +120,8 @@ a_incidence_rate <- function(df,
                              .indent_mods = NULL,
                              na_str = default_na_str(),
                              label_fmt = "%s - %.labels") {
+  checkmate::assert_string(label_fmt)
+
   x_stats <- s_incidence_rate(
     df = df, .var = .var, n_events = n_events, id_var = id_var, control = control
   )
