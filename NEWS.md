@@ -4,6 +4,8 @@
 * Reworking of `summarize_glm_count()` documentation and all its associated functions to better describe the results and the functions' purpose.
 * Added the `.formats` argument to `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` to allow users to specify formats.
 * Added the `riskdiff` argument to `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` to allow users to add a risk difference table column, and function `control_riskdiff` to specify settings for the risk difference column.
+* Added `n_unique` statistic as a non-default option to `estimate_incidence_rate` which returns total number of patients with at least one event observed.
+* Refactored `estimate_incidence_rate` to work as both an analyze function and a summarize function, controlled by the added `summarize` parameter. When `summarize = TRUE`, labels can be fine-tuned via the new `label_fmt` argument to the same function.
 
 ### Bug Fixes
 * Fixed a bug in `a_surv_time` that threw an error when split only has `"is_event"`.
@@ -15,9 +17,9 @@
 * Fixed bug in `decorate_grob` that did not handle well empty strings or `NULL` values for title and footers.
 * Fixed bug in `g_km` that caused an error when multiple records in the data had estimates at max time.
 
-
 ### Miscellaneous
 * Began deprecation of the confusing functions `summary_formats` and `summary_labels`.
+* Moved incidence rate helper functions into a separate `h_incidence_rate.R` file.
 
 # tern 0.9.5
 
