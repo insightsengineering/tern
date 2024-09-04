@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.947222752433671" branch-rate="0" lines-covered="9925" lines-valid="10478" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-09-04 17:44:28.316528">
+<coverage line-rate="0.947222752433671" branch-rate="0" lines-covered="9925" lines-valid="10478" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2024-09-04 19:06:57.839255">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
@@ -21325,22 +21325,22 @@
             </method>
             <method name="summary_formats" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="516" hits="1" branch="false"/>
                 <line number="517" hits="1" branch="false"/>
                 <line number="518" hits="1" branch="false"/>
                 <line number="519" hits="1" branch="false"/>
                 <line number="520" hits="1" branch="false"/>
                 <line number="521" hits="1" branch="false"/>
-                <line number="522" hits="1" branch="false"/>
               </lines>
             </method>
             <method name="summary_labels" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
+                <line number="539" hits="1" branch="false"/>
                 <line number="540" hits="1" branch="false"/>
                 <line number="541" hits="1" branch="false"/>
                 <line number="542" hits="1" branch="false"/>
                 <line number="543" hits="1" branch="false"/>
                 <line number="544" hits="1" branch="false"/>
-                <line number="545" hits="1" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -21457,18 +21457,18 @@
             <line number="350" hits="1" branch="false"/>
             <line number="351" hits="1" branch="false"/>
             <line number="354" hits="19" branch="false"/>
+            <line number="516" hits="1" branch="false"/>
             <line number="517" hits="1" branch="false"/>
             <line number="518" hits="1" branch="false"/>
             <line number="519" hits="1" branch="false"/>
             <line number="520" hits="1" branch="false"/>
             <line number="521" hits="1" branch="false"/>
-            <line number="522" hits="1" branch="false"/>
+            <line number="539" hits="1" branch="false"/>
             <line number="540" hits="1" branch="false"/>
             <line number="541" hits="1" branch="false"/>
             <line number="542" hits="1" branch="false"/>
             <line number="543" hits="1" branch="false"/>
             <line number="544" hits="1" branch="false"/>
-            <line number="545" hits="1" branch="false"/>
           </lines>
         </class>
         <class name="utils_factor.R" filename="R/utils_factor.R" line-rate="0.981651376146789" branch-rate="0" complexity="0">
