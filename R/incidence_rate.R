@@ -33,6 +33,7 @@ NULL
 #'   - `n_events`: Total number of events observed.
 #'   - `rate`: Estimated incidence rate.
 #'   - `rate_ci`: Confidence interval for the incidence rate.
+#'   - `n_rate`: Total number of events observed & estimated incidence rate.
 #'
 #' @keywords internal
 s_incidence_rate <- function(df,

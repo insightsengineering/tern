@@ -102,6 +102,7 @@ the statistics from \code{s_incidence_rate()} to the table layout.
 \item \code{n_events}: Total number of events observed.
 \item \code{rate}: Estimated incidence rate.
 \item \code{rate_ci}: Confidence interval for the incidence rate.
+\item \code{n_rate}: Total number of events observed & estimated incidence rate.
 }
 }
 
