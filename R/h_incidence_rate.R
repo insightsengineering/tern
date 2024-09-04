@@ -121,10 +121,10 @@ h_incidence_rate <- function(person_years,
                              control = control_incidence_rate()) {
   alpha <- 1 - control$conf_level
   est <- switch(control$conf_type,
-                normal = h_incidence_rate_normal(person_years, n_events, alpha),
-                normal_log = h_incidence_rate_normal_log(person_years, n_events, alpha),
-                exact = h_incidence_rate_exact(person_years, n_events, alpha),
-                byar = h_incidence_rate_byar(person_years, n_events, alpha)
+    normal = h_incidence_rate_normal(person_years, n_events, alpha),
+    normal_log = h_incidence_rate_normal_log(person_years, n_events, alpha),
+    exact = h_incidence_rate_exact(person_years, n_events, alpha),
+    byar = h_incidence_rate_byar(person_years, n_events, alpha)
   )
 
   num_pt_year <- control$num_pt_year
