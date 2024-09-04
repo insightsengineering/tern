@@ -6,7 +6,6 @@
 #' as incidence rate. Primary analysis variable is the person-years at risk.
 #'
 #' @inheritParams argument_convention
-#' @param id_var (`string`)\cr name of variable used as patient identifier if `"n_unique"` is included in `.stats`.
 #' @param control (`list`)\cr parameters for estimation details, specified by using
 #'   the helper function [control_incidence_rate()]. Possible parameter options are:
 #'   * `conf_level` (`proportion`)\cr confidence level for the estimated incidence rate.
@@ -16,6 +15,8 @@
 #'     indicating time unit for data input.
 #'   * `num_pt_year` (`numeric`)\cr time unit for desired output (in person-years).
 #' @param n_events (`string`)\cr name of integer variable indicating whether an event has been observed (1) or not (0).
+#' @param id_var (`string`)\cr name of variable used as patient identifier if `"n_unique"` is included in `.stats`.
+#'   Defaults to `"USUBJID"`.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_incidence_rate")`
 #'   to see available statistics for this function.
 #' @param summarize (`flag`)\cr whether the function should act as an analyze function (`summarize = FALSE`), or a
@@ -93,8 +94,7 @@ s_incidence_rate <- function(df,
   )
 }
 
-#' @describeIn incidence_rate Formatted analysis function which is used as `afun`
-#'   in `estimate_incidence_rate()`.
+#' @describeIn incidence_rate Formatted analysis function which is used as `afun` in `estimate_incidence_rate()`.
 #'
 #' @return
 #' * `a_incidence_rate()` returns the corresponding list with formatted [rtables::CellValue()].

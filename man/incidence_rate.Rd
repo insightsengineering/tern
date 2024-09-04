@@ -59,7 +59,8 @@ a_incidence_rate(
 
 \item{n_events}{(\code{string})\cr name of integer variable indicating whether an event has been observed (1) or not (0).}
 
-\item{id_var}{(\code{string})\cr name of variable used as patient identifier if \code{"n_unique"} is included in \code{.stats}.}
+\item{id_var}{(\code{string})\cr name of variable used as patient identifier if \code{"n_unique"} is included in \code{.stats}.
+Defaults to \code{"USUBJID"}.}
 
 \item{control}{(\code{list})\cr parameters for estimation details, specified by using
 the helper function \code{\link[=control_incidence_rate]{control_incidence_rate()}}. Possible parameter options are:
@@ -153,8 +154,7 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 \item \code{s_incidence_rate()}: Statistics function which estimates the incidence rate and the
 associated confidence interval.
 
-\item \code{a_incidence_rate()}: Formatted analysis function which is used as \code{afun}
-in \code{estimate_incidence_rate()}.
+\item \code{a_incidence_rate()}: Formatted analysis function which is used as \code{afun} in \code{estimate_incidence_rate()}.
 
 }}
 \examples{
