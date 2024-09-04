@@ -158,19 +158,17 @@ associated confidence interval.
 
 }}
 \examples{
-library(dplyr)
-
 df <- data.frame(
   USUBJID = as.character(seq(6)),
   CNSR = c(0, 1, 1, 0, 0, 0),
   AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
-  ARM = factor(c("A", "A", "A", "B", "B", "B"))
-) \%>\%
-  mutate(n_events = 1 - CNSR)
+  ARM = factor(c("A", "A", "A", "B", "B", "B")),
+  STRATA1 = factor(c("X", "Y", "Y", "X", "X", "Y"))
+)
+df$n_events <- 1 - df$CNSR
 
-basic_table() \%>\%
+basic_table(show_colcounts = TRUE) \%>\%
   split_cols_by("ARM") \%>\%
-  add_colcounts() \%>\%
   estimate_incidence_rate(
     vars = "AVAL",
     n_events = "n_events",
@@ -180,6 +178,32 @@ basic_table() \%>\%
     )
   ) \%>\%
   build_table(df)
+
+# summarize = TRUE
+basic_table(show_colcounts = TRUE) \%>\%
+  split_cols_by("ARM") \%>\%
+  split_rows_by("STRATA1", child_labels = "visible") \%>\%
+  estimate_incidence_rate(
+    vars = "AVAL",
+    n_events = "n_events",
+    .stats = c("n_unique", "n_rate"),
+    summarize = TRUE,
+    label_fmt = "\%.labels"
+  ) \%>\%
+  build_table(df)
+
+s_incidence_rate(
+  df,
+  .var = "AVAL",
+  n_events = "n_events"
+)
+
+a_incidence_rate(
+  df,
+  .var = "AVAL",
+  .df_row = df,
+  n_events = "n_events"
+)
 
 }
 \seealso{
