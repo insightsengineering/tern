@@ -437,7 +437,6 @@ tern_default_formats <- c(
   min = "xx.x",
   max = "xx.x",
   median_range = "xx.x (xx.x - xx.x)",
-  n_rate = "xx (xx.x)",
   cv = "xx.x",
   geom_mean = "xx.x",
   geom_mean_ci = "(xx.xx, xx.xx)",
