@@ -52,18 +52,98 @@
       [1] "Number of adverse events observed (AE rate per 100 patient-years)"
       
 
-# estimate_incidence_rate works as expected with healthy input
+# a_incidence_rate works with default arguments
 
     Code
       res
     Output
-                                                                                A                 B       
-                                                                              (N=3)             (N=3)     
-      ————————————————————————————————————————————————————————————————————————————————————————————————————
-      Total patient-years at risk                                              3.8               5.2      
-      Number of adverse events observed                                         1                 3       
-      AE rate per 100 patient-years                                           26.20             57.23     
-      90% CI                                                              (5.06, 135.73)   (22.14, 147.94)
-      Total number of patients with at least one adverse event                  1                 3       
-      Number of adverse events observed (AE rate per 100 patient-years)      1 (26.2)         3 (57.2)    
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+            row_name formatted_cell indent_mod
+      1 person_years          108.7          0
+      2     n_events              4          0
+      3         rate           3.68          0
+      4      rate_ci   (0.07, 7.29)          0
+      5     n_unique              4          0
+      6       n_rate        4 (3.7)          0
+                                                                row_label
+      1                                       Total patient-years at risk
+      2                                 Number of adverse events observed
+      3                                     AE rate per 100 patient-years
+      4                                                            95% CI
+      5          Total number of patients with at least one adverse event
+      6 Number of adverse events observed (AE rate per 100 patient-years)
+
+# a_incidence_rate works with customized arguments
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+        row_name formatted_cell indent_mod
+      1   n_rate   4.00 (44.16)          3
+      2 n_unique           4.00          0
+                                                       row_label
+      1         Total number of applicable adverse events (rate)
+      2 Total number of patients with at least one adverse event
+
+# estimate_incidence_rate works as expected with default input
+
+    Code
+      res
+    Output
+                                                A               B       
+                                              (N=3)           (N=3)     
+      ——————————————————————————————————————————————————————————————————
+      Total patient-years at risk             45.8             62.9     
+      Number of adverse events observed         1               3       
+      AE rate per 100 patient-years           2.18             4.77     
+      95% CI                              (-2.10, 6.46)   (-0.63, 10.17)
+
+# estimate_incidence_rate works as expected with custom input
+
+    Code
+      res
+    Output
+                                                                      A              B      
+                                                                    (N=3)          (N=3)    
+      ——————————————————————————————————————————————————————————————————————————————————————
+            Total number of applicable adverse events (rate)     1.00 (26.20)   3.00 (57.23)
+      Total number of patients with at least one adverse event       1.00           3.00    
+
+# estimate_incidence_rate works with default arguments with summarize = TRUE
+
+    Code
+      res
+    Output
+                                                    A                B       
+                                                  (N=3)            (N=3)     
+      ———————————————————————————————————————————————————————————————————————
+      X - Total patient-years at risk              10.1             39.5     
+      X - Number of adverse events observed         1                2       
+      X - AE rate per 100 patient-years            9.90             5.06     
+      X - 95% CI                              (-9.50, 29.31)   (-1.95, 12.08)
+      Y - Total patient-years at risk              35.7             23.4     
+      Y - Number of adverse events observed         0                1       
+      Y - AE rate per 100 patient-years            0.00             4.27     
+      Y - 95% CI                               (0.00, 0.00)    (-4.10, 12.65)
+
+# estimate_incidence_rate works with custom arguments with summarize = TRUE
+
+    Code
+      res
+    Output
+                                                                               A         B   
+                                                                             (N=3)     (N=3) 
+      ———————————————————————————————————————————————————————————————————————————————————————
+      Total patient-years at risk                                            45.8      62.9  
+      Number of adverse events observed                                        1         3   
+      AE rate per 100 patient-years                                          2.18      4.77  
+      X                                                                                      
+        Total number of patients with at least one adverse event               1         2   
+        Number of adverse events observed (AE rate per 100 patient-years)   1 (9.9)   2 (5.1)
+      Y                                                                                      
+        Total number of patients with at least one adverse event               0         1   
+        Number of adverse events observed (AE rate per 100 patient-years)   0 (0.0)   1 (4.3)
 

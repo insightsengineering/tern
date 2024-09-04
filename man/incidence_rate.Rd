@@ -20,7 +20,7 @@ estimate_incidence_rate(
   ...,
   show_labels = "hidden",
   table_names = vars,
-  .stats = NULL,
+  .stats = c("person_years", "n_events", "rate", "rate_ci"),
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL

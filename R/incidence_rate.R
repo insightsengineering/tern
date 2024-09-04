@@ -153,8 +153,12 @@ a_incidence_rate <- function(df,
   if (is.null(unlist(x_stats))) {
     return(NULL)
   }
-  if (is.null(.formats)) .formats <- formals()$.formats %>% eval()
-  if (is.null(.labels)) .labels <- sapply(x_stats, \(x) attributes(x)$label)
+
+  # Fill in with defaults
+  formats_def <- formals()$.formats %>% eval()
+  .formats <- c(.formats, formats_def)[!duplicated(names(c(.formats, formats_def)))]
+  labels_def <- sapply(x_stats, \(x) attributes(x)$label)
+  .labels <- c(.labels, labels_def)[!duplicated(names(c(.labels, labels_def)))]
   if (nzchar(labelstr) > 0) {
     .labels <- sapply(.labels, \(x) gsub("%.labels", x, gsub("%s", labelstr, label_fmt)))
   }
@@ -166,9 +170,6 @@ a_incidence_rate <- function(df,
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
   x_stats <- x_stats[.stats]
-
-  # Auto format handling
-  .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
 
   in_rows(
     .list = x_stats,
@@ -227,7 +228,7 @@ estimate_incidence_rate <- function(lyt,
                                     ...,
                                     show_labels = "hidden",
                                     table_names = vars,
-                                    .stats = NULL,
+                                    .stats = c("person_years", "n_events", "rate", "rate_ci"),
                                     .formats = NULL,
                                     .labels = NULL,
                                     .indent_mods = NULL) {
