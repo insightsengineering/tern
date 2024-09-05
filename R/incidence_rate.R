@@ -33,6 +33,7 @@ NULL
 #'   - `n_events`: Total number of events observed.
 #'   - `rate`: Estimated incidence rate.
 #'   - `rate_ci`: Confidence interval for the incidence rate.
+#'   - `n_rate`: Total number of events observed & estimated incidence rate.
 #'
 #' @keywords internal
 s_incidence_rate <- function(df,
@@ -77,7 +78,11 @@ s_incidence_rate <- function(df,
     person_years = formatters::with_label(person_years, "Total patient-years at risk"),
     n_events = formatters::with_label(n_events, "Number of adverse events observed"),
     rate = formatters::with_label(result$rate, paste("AE rate per", num_pt_year, "patient-years")),
-    rate_ci = formatters::with_label(result$rate_ci, f_conf_level(conf_level))
+    rate_ci = formatters::with_label(result$rate_ci, f_conf_level(conf_level)),
+    n_rate = formatters::with_label(
+      c(n_events, result$rate),
+      paste("Number of adverse events observed (AE rate per", num_pt_year, "patient-years)")
+    )
   )
 }
 
@@ -94,7 +99,8 @@ a_incidence_rate <- make_afun(
     "person_years" = "xx.x",
     "n_events" = "xx",
     "rate" = "xx.xx",
-    "rate_ci" = "(xx.xx, xx.xx)"
+    "rate_ci" = "(xx.xx, xx.xx)",
+    "n_rate" = "xx (xx.x)"
   )
 )
 
@@ -142,7 +148,7 @@ estimate_incidence_rate <- function(lyt,
                                     ...,
                                     show_labels = "hidden",
                                     table_names = vars,
-                                    .stats = NULL,
+                                    .stats = c("person_years", "n_events", "rate", "rate_ci"),
                                     .formats = NULL,
                                     .labels = NULL,
                                     .indent_mods = NULL) {
