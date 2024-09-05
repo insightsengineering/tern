@@ -11,8 +11,9 @@
 #'
 #' @inheritParams split_cols_by_groups
 #' @inheritParams argument_convention
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_odds_ratio")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("estimate_odds_ratio"))``
 #'
 #' @note
 #' * This function uses logistic regression for unstratified analyses, and conditional logistic regression for

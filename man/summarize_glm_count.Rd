@@ -86,8 +86,9 @@ underneath analyses, which is not allowed.}
 \item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
 times, to avoid warnings from \code{rtables}.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("summarize_glm_count")}
-to see available statistics for this function.}
+\item{.stats}{(\code{character})\cr statistics to select for the table.
+
+Options are: \verb{"n", "rate", "rate_ci", "rate_ratio", "rate_ratio_ci", "pval"}}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}

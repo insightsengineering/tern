@@ -17,8 +17,9 @@
 #'     indicating time unit for data input.
 #'   * `num_pt_year` (`numeric`)\cr time unit for desired output (in person-years).
 #' @param n_events (`integer(1)`)\cr number of events observed.
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_incidence_rate")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("estimate_incidence_rate"))``
 #'
 #' @seealso [control_incidence_rate()] and helper functions [h_incidence_rate].
 #'

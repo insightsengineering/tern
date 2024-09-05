@@ -17,8 +17,9 @@
 #' @inheritParams argument_convention
 #' @param interaction_y (`string` or `flag`)\cr a selected item inside of the `interaction_item` variable which will be
 #'   used to select the specific ANCOVA results. if the interaction is not needed, the default option is `FALSE`.
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("summarize_ancova")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("summarize_ancova"))``
 #'
 #' @name summarize_ancova
 #' @order 1

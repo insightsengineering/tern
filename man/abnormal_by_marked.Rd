@@ -53,8 +53,9 @@ underneath analyses, which is not allowed.}
 
 \item{...}{additional arguments for the lower level functions.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("abnormal_by_marked")}
-to see available statistics for this function.}
+\item{.stats}{(\code{character})\cr statistics to select for the table.
+
+Options are: \verb{"count_fraction", "count_fraction_fixed_dp"}}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
