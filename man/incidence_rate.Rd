@@ -192,12 +192,6 @@ basic_table(show_colcounts = TRUE) \%>\%
   ) \%>\%
   build_table(df)
 
-s_incidence_rate(
-  df,
-  .var = "AVAL",
-  n_events = "n_events"
-)
-
 a_incidence_rate(
   df,
   .var = "AVAL",

@@ -53,13 +53,6 @@ NULL
 #'   - `n_unique`: Total number of patients with at least one event observed.
 #'   - `n_rate`: Total number of events observed & estimated incidence rate.
 #'
-#' @examples
-#' s_incidence_rate(
-#'   df,
-#'   .var = "AVAL",
-#'   n_events = "n_events"
-#' )
-#'
 #' @keywords internal
 s_incidence_rate <- function(df,
                              .var,
