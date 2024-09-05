@@ -28,12 +28,12 @@ h_incidence_rate(person_years, n_events, control = control_incidence_rate())
 \item{control}{(\code{list})\cr parameters for estimation details, specified by using
 the helper function \code{\link[=control_incidence_rate]{control_incidence_rate()}}. Possible parameter options are:
 \itemize{
-\item \code{conf_level}: (\code{proportion})\cr confidence level for the estimated incidence rate.
-\item \code{conf_type}: (\code{string})\cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
+\item \code{conf_level} (\code{proportion})\cr confidence level for the estimated incidence rate.
+\item \code{conf_type} (\code{string})\cr \code{normal} (default), \code{normal_log}, \code{exact}, or \code{byar}
 for confidence interval type.
-\item \code{input_time_unit}: (\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
+\item \code{input_time_unit} (\code{string})\cr \code{day}, \code{week}, \code{month}, or \code{year} (default)
 indicating time unit for data input.
-\item \code{num_pt_year}: (\code{numeric})\cr time unit for desired output (in person-years).
+\item \code{num_pt_year} (\code{numeric})\cr time unit for desired output (in person-years).
 }}
 }
 \value{

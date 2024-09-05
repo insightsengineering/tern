@@ -106,7 +106,10 @@ describing the method used. The p-value tests the null hypothesis that proportio
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Various tests were implemented to test the difference between two proportions.
+The analyze function \code{\link[=test_proportion_diff]{test_proportion_diff()}} creates a layout element to test the difference between two
+proportions. The primary analysis variable, \code{vars}, indicates whether a response has occurred for each record. See
+the \code{method} parameter for options of methods to use to calculate the p-value. Additionally, a stratification
+variable can be supplied via the \code{strata} element of the \code{variables} argument.
 }
 \section{Functions}{
 \itemize{

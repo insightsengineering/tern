@@ -1,10 +1,12 @@
-#' Summarize numeric variables in columns
+#' Analyze numeric variables in columns
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#' Layout-creating function which can be used for creating column-wise summary tables.
-#' This function sets the analysis methods as column labels and is a wrapper for
-#' [rtables::analyze_colvars()]. It was designed principally for PK tables.
+#' The layout-creating function [analyze_vars_in_cols()] creates a layout element to generate a column-wise
+#' analysis table.
+#'
+#' This function sets the analysis methods as column labels and is a wrapper for [rtables::analyze_colvars()].
+#' It was designed principally for PK tables.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams rtables::analyze_colvars
@@ -35,16 +37,13 @@
 #' Adding this function to an `rtable` layout will summarize the given variables, arrange the output
 #' in columns, and add it to the table layout.
 #'
-#' @note This is an experimental implementation of [rtables::summarize_row_groups()] and
-#'   [rtables::analyze_colvars()] that may be subjected to changes as `rtables` extends its
-#'   support to more complex analysis pipelines on the column space. For the same reasons,
-#'   we encourage to read the examples carefully and file issues for cases that differ from
-#'   them.
-#'
-#'   Here `labelstr` behaves differently than usual. If it is not defined (default as `NULL`),
-#'   row labels are assigned automatically to the split values in case of `rtables::analyze_colvars`
-#'   (`do_summarize_row_groups = FALSE`, the default), and to the group label for
-#'   `do_summarize_row_groups = TRUE`.
+#' @note
+#' * This is an experimental implementation of [rtables::summarize_row_groups()] and [rtables::analyze_colvars()]
+#'   that may be subjected to changes as `rtables` extends its support to more complex analysis pipelines in the
+#'   column space. We encourage users to read the examples carefully and file issues for different use cases.
+#' * In this function, `labelstr` behaves atypically. If `labelstr = NULL` (the default), row labels are assigned
+#'   automatically as the split values if `do_summarize_row_groups = FALSE` (the default), and as the group label
+#'   if `do_summarize_row_groups = TRUE`.
 #'
 #' @seealso [analyze_vars()], [rtables::analyze_colvars()].
 #'

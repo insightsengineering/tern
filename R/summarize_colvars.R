@@ -2,14 +2,16 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' This analyze function uses the S3 generic function [s_summary()] to summarize different variables
-#' that are arranged in columns. Additional standard formatting arguments are available. It is a
-#' minimal wrapper for [rtables::analyze_colvars()]. The latter function is meant to add different
-#' analysis methods for each column variables as different rows. To have the analysis methods as
-#' column labels, please refer to [analyze_vars_in_cols()].
+#' The analyze function [summarize_colvars()] uses the statistics function [s_summary()] to analyze variables that are
+#' arranged in columns. The variables to analyze should be specified in the table layout via column splits (see
+#' [split_cols_by()] and [split_cols_by_multivar()]) prior to using [summarize_colvars()].
+#'
+#' The function is a minimal wrapper for [rtables::analyze_colvars()], a function typically used to apply different
+#' analysis methods in rows for each column variable. To use the analysis methods as column labels, please refer to
+#' the [analyze_vars_in_cols()] function.
 #'
 #' @inheritParams argument_convention
-#' @param ... arguments passed to `s_summary()`.
+#' @param ... arguments passed to [s_summary()].
 #' @param .indent_mods (named `vector` of `integer`)\cr indent modifiers for the labels. Each element of the vector
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.

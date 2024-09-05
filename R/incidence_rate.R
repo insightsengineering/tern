@@ -1,9 +1,11 @@
-#' Incidence rate
+#' Incidence rate estimation
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Estimate the event rate adjusted for person-years at risk, otherwise known
-#' as incidence rate. Primary analysis variable is the person-years at risk.
+#' The analyze function [estimate_incidence_rate()] creates a layout element to estimate an event rate adjusted for
+#' person-years at risk, otherwise known as incidence rate. The primary analysis variable specified via `vars` is
+#' the person-years at risk. In addition to this variable, the `n_events` variable for number of events observed (where
+#' a value of 1 means an event was observed and 0 means that no event was observed) must also be specified.
 #'
 #' @inheritParams argument_convention
 #' @param control (`list`)\cr parameters for estimation details, specified by using

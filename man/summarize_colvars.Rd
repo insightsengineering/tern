@@ -17,7 +17,7 @@ summarize_colvars(
 \arguments{
 \item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
-\item{...}{arguments passed to \code{s_summary()}.}
+\item{...}{arguments passed to \code{\link[=s_summary]{s_summary()}}.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
@@ -40,11 +40,13 @@ in columns, and add it to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-This analyze function uses the S3 generic function \code{\link[=s_summary]{s_summary()}} to summarize different variables
-that are arranged in columns. Additional standard formatting arguments are available. It is a
-minimal wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}. The latter function is meant to add different
-analysis methods for each column variables as different rows. To have the analysis methods as
-column labels, please refer to \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}}.
+The analyze function \code{\link[=summarize_colvars]{summarize_colvars()}} uses the statistics function \code{\link[=s_summary]{s_summary()}} to analyze variables that are
+arranged in columns. The variables to analyze should be specified in the table layout via column splits (see
+\code{\link[=split_cols_by]{split_cols_by()}} and \code{\link[=split_cols_by_multivar]{split_cols_by_multivar()}}) prior to using \code{\link[=summarize_colvars]{summarize_colvars()}}.
+
+The function is a minimal wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}, a function typically used to apply different
+analysis methods in rows for each column variable. To use the analysis methods as column labels, please refer to
+the \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}} function.
 }
 \examples{
 dta_test <- data.frame(

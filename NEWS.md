@@ -1,9 +1,11 @@
-# tern 0.9.5.9017
+# tern 0.9.5.9020
 ### Enhancements
 * Added `errorbar_width` and `linetype` parameters to `g_lineplot`.
 * Reworking of `summarize_glm_count()` documentation and all its associated functions to better describe the results and the functions' purpose.
 * Added the `.formats` argument to `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` to allow users to specify formats.
 * Added the `riskdiff` argument to `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` to allow users to add a risk difference table column, and function `control_riskdiff` to specify settings for the risk difference column.
+* Added warning to `tabulate_rsp_subgroups` when `pval` statistic is selected but `df` has not been correctly generated to add p-values to the output table.
+* Added `n_rate` statistic as a non-default option to `estimate_incidence_rate` which returns both number of events observed and estimated incidence rate.
 * Added `n_unique` statistic as a non-default option to `estimate_incidence_rate` which returns total number of patients with at least one event observed.
 * Refactored `estimate_incidence_rate` to work as both an analyze function and a summarize function, controlled by the added `summarize` parameter. When `summarize = TRUE`, labels can be fine-tuned via the new `label_fmt` argument to the same function.
 
@@ -19,6 +21,7 @@
 
 ### Miscellaneous
 * Began deprecation of the confusing functions `summary_formats` and `summary_labels`.
+* Enhanced general descriptions of analyze and summarize functions throughout package documentation.
 * Moved incidence rate helper functions into a separate `h_incidence_rate.R` file.
 
 # tern 0.9.5

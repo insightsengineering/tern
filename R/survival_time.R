@@ -2,8 +2,10 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Summarize median survival time and CIs, percentiles of survival times, survival
-#' time range of censored/event patients.
+#' The analyze function [surv_time()] creates a layout element to analyze survival time by calculating survival time
+#' median, median confidence interval, quantiles, and range (for all, censored, or event patients). The primary
+#' analysis variable `vars` is the time variable and the secondary analysis variable `is_event` indicates whether or
+#' not an event has occurred.
 #'
 #' @inheritParams argument_convention
 #' @param control (`list`)\cr parameters for comparison details, specified by using the helper function

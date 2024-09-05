@@ -1,20 +1,31 @@
-#' Patient counts with abnormal range values by baseline status
+#' Count patients with abnormal analysis range values by baseline status
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Primary analysis variable `.var` indicates the abnormal range result (`character` or `factor`), and additional
-#' analysis variables are `id` (`character` or `factor`) and `baseline` (`character` or `factor`). For each
-#' direction specified in `abnormal` (e.g. high or low) we condition on baseline range result and count
-#' patients in the numerator and denominator as follows:
-#'   * `Not <Abnormal>`
-#'     * `denom`: the number of patients without abnormality at baseline (excluding those with missing baseline)
-#'     * `num`:  the number of patients in `denom` who also have at least one abnormality post-baseline
-#'   * `<Abnormal>`
-#'     * `denom`: the number of patients with abnormality at baseline
-#'     * `num`: the number of patients in `denom` who also have at least one abnormality post-baseline
+#' The analyze function [count_abnormal_by_baseline()] creates a layout element to count patients with abnormal
+#' analysis range values, categorized by baseline status.
+#'
+#' This function analyzes primary analysis variable `var` which indicates abnormal range results. Additional
+#' analysis variables that can be supplied as a list via the `variables` parameter are `id` (defaults to
+#' `USUBJID`), a variable to indicate unique subject identifiers, and `baseline` (defaults to `BNRIND`), a
+#' variable to indicate baseline reference ranges.
+#'
+#' For each direction specified via the `abnormal` parameter (e.g. High or Low), we condition on baseline
+#' range result and count patients in the numerator and denominator as follows for each of the following
+#' categories:
+#'   * `Not <abnormality>`
+#'     * `num`:  The number of patients without abnormality at baseline (excluding those with missing baseline)
+#'       and with at least one abnormality post-baseline.
+#'     * `denom`: The number of patients without abnormality at baseline (excluding those with missing baseline).
+#'   * `<Abnormality>`
+#'     * `num`: The number of patients with abnormality as baseline and at least one abnormality post-baseline.
+#'     * `denom`: The number of patients with abnormality at baseline.
 #'   * `Total`
-#'     * `denom`: the number of patients with at least one valid measurement post-baseline
-#'     * `num`: the number of patients in `denom` who also have at least one abnormality post-baseline
+#'     * `num`: The number of patients with at least one post-baseline record and at least one abnormality
+#'       post-baseline.
+#'     * `denom`: The number of patients with at least one post-baseline record.
+#'
+#' This function assumes that `df` has been filtered to only include post-baseline records.
 #'
 #' @inheritParams argument_convention
 #' @param abnormal (`character`)\cr values identifying the abnormal range level(s) in `.var`.
@@ -23,8 +34,8 @@
 #'
 #' @note
 #' * `df` should be filtered to include only post-baseline records.
-#' * If the baseline variable or analysis variable contains `NA`, it is expected that `NA` has been
-#'   conveyed to `na_level` appropriately beforehand with [df_explicit_na()] or [explicit_na()].
+#' * If the baseline variable or analysis variable contains `NA` records, it is expected that `df` has been
+#'   pre-processed using [df_explicit_na()] or [explicit_na()].
 #'
 #' @seealso Relevant description function [d_count_abnormal_by_baseline()].
 #'

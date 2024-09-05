@@ -6,6 +6,7 @@
 #' to add an analysis to a given table layout:
 #'
 #' * [analyze_num_patients()]
+#' * [analyze_vars()]
 #' * [compare_vars()]
 #' * [count_abnormal()]
 #' * [count_abnormal_by_baseline()]
@@ -32,14 +33,13 @@
 #'   leverage `analyze_colvars` to have the context split in rows and the analysis
 #'   methods in columns.
 #' * [summarize_change()]
-#' * [analyze_vars()]
 #' * [surv_time()]
 #' * [surv_timepoint()]
 #' * [test_proportion_diff()]
 #'
 #' @seealso
-#'   * [summarize_functions] for functions which are wrappers for [rtables::summarize_row_groups()].
 #'   * [analyze_colvars_functions] for functions that are wrappers for [rtables::analyze_colvars()].
+#'   * [summarize_functions] for functions which are wrappers for [rtables::summarize_row_groups()].
 #'
 #' @name analyze_functions
 NULL

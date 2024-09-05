@@ -1,9 +1,22 @@
-#' Count patients and sum exposure across all patients in columns
+#' Count number of patients and sum exposure across all patients in columns
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Counting the number of patients and summing analysis value (i.e exposure values) across all patients
-#' when a column table layout is required.
+#' The analyze function [analyze_patients_exposure_in_cols()] creates a layout element to count total numbers of
+#' patients and sum an analysis value (i.e. exposure) across all patients in columns.
+#'
+#' The primary analysis variable `ex_var` is the exposure variable used to calculate the `sum_exposure` statistic. The
+#' `id` variable is used to uniquely identify patients in the data such that only unique patients are counted in the
+#' `n_patients` statistic, and the `var` variable is used to create a row split if needed. The percentage returned as
+#' part of the `n_patients` statistic is the proportion of all records that correspond to a unique patient.
+#'
+#' The summarize function [summarize_patients_exposure_in_cols()] performs the same function as
+#' [analyze_patients_exposure_in_cols()] except it creates content rows, not data rows, to summarize the current table
+#' row/column context and operates on the level of the latest row split or the root of the table if no row splits have
+#' occurred.
+#'
+#' If a column split has not yet been performed in the table, `col_split` must be set to `TRUE` for the first call of
+#' [analyze_patients_exposure_in_cols()] or [summarize_patients_exposure_in_cols()].
 #'
 #' @inheritParams argument_convention
 #' @param ex_var (`string`)\cr name of the variable in `df` containing exposure values.

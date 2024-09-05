@@ -2,7 +2,12 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Summarize patients' survival rate and difference of survival rates between groups at a time point.
+#' The analyze function [surv_timepoint()] creates a layout element to analyze patient survival rates and difference
+#' of survival rates between groups at a given time point. The primary analysis variable `vars` is the time variable.
+#' Other required inputs are `time_point`, the numeric time point of interest, and `is_event`, a variable that
+#' indicates whether or not an event has occurred. The `method` argument is used to specify whether you want to analyze
+#' survival estimations (`"surv"`), difference in survival with the control (`"surv_diff"`), or both of these
+#' (`"both"`).
 #'
 #' @inheritParams argument_convention
 #' @inheritParams s_surv_time
@@ -12,9 +17,8 @@
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for survival rate.
 #'   * `conf_type` (`string`)\cr confidence interval type. Options are "plain" (default), "log", "log-log",
 #'     see more in [survival::survfit()]. Note option "none" is no longer supported.
-#'   * `time_point` (`numeric(1)`)\cr survival time point of interest.
-#' @param method (`string`)\cr `surv` (survival estimations),
-#'   `surv_diff` (difference in survival with the control), or `both`.
+#' @param method (`string`)\cr `"surv"` (survival estimations), `"surv_diff"` (difference in survival with the
+#'   control), or `"both"`.
 #' @param table_names_suffix (`string`)\cr optional suffix for the `table_names` used for the `rtables` to
 #'   avoid warnings from duplicate table names.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("surv_timepoint")`

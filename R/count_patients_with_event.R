@@ -2,7 +2,14 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The primary analysis variable `.var` denotes the unique patient identifier.
+#' The analyze function [count_patients_with_event()] creates a layout element to calculate patient counts for a
+#' user-specified set of events.
+#'
+#' This function analyzes primary analysis variable `vars` which indicates unique subject identifiers. Events
+#' are defined by the user as a named vector via the `filters` argument, where each name corresponds to a
+#' variable and each value is the value(s) that that variable takes for the event.
+#'
+#' If there are multiple records with the same event recorded for a patient, only one occurrence is counted.
 #'
 #' @inheritParams argument_convention
 #' @param filters (`character`)\cr a character vector specifying the column names and flag variables

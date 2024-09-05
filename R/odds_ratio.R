@@ -2,23 +2,25 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Compares bivariate responses between two groups in terms of odds ratios
-#' along with a confidence interval.
+#' The analyze function [estimate_odds_ratio()] creates a layout element to compare bivariate responses between
+#' two groups by estimating an odds ratio and its confidence interval.
+#'
+#' The primary analysis variable specified by `vars` is the group variable. Additional variables can be included in the
+#' analysis via the `variables` argument, which accepts `arm`, an arm variable, and `strata`, a stratification variable.
+#' If more than two arm levels are present, they can be combined into two groups using the `groups_list` argument.
 #'
 #' @inheritParams split_cols_by_groups
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_odds_ratio")`
 #'   to see available statistics for this function.
 #'
-#' @details This function uses either logistic regression for unstratified
-#'   analyses, or conditional logistic regression for stratified analyses.
-#'   The Wald confidence interval with the specified confidence level is
-#'   calculated.
-#'
-#' @note For stratified analyses, there is currently no implementation for conditional
-#'   likelihood confidence intervals, therefore the likelihood confidence interval is not
-#'   yet available as an option. Besides, when `rsp` contains only responders or non-responders,
-#'   then the result values will be `NA`, because no odds ratio estimation is possible.
+#' @note
+#' * This function uses logistic regression for unstratified analyses, and conditional logistic regression for
+#'   stratified analyses. The Wald confidence interval is calculated with the specified confidence level.
+#' * For stratified analyses, there is currently no implementation for conditional likelihood confidence intervals,
+#'   therefore the likelihood confidence interval is not available as an option.
+#' * When `vars` contains only responders or non-responders no odds ratio estimation is possible so the returned
+#'   values will be `NA`.
 #'
 #' @seealso Relevant helper function [h_odds_ratio()].
 #'

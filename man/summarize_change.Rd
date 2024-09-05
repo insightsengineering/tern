@@ -4,7 +4,7 @@
 \alias{summarize_change}
 \alias{s_change_from_baseline}
 \alias{a_change_from_baseline}
-\title{Summarize the change from baseline or absolute baseline values}
+\title{Summarize change from baseline values or absolute baseline values}
 \usage{
 summarize_change(
   lyt,
@@ -78,9 +78,13 @@ the statistics from \code{s_change_from_baseline()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-The primary analysis variable \code{.var} indicates the numerical change from baseline results,
-and additional required secondary analysis variables are \code{value} and \code{baseline_flag}.
-Depending on the baseline flag, either the absolute baseline values (at baseline)
+The analyze function \code{\link[=summarize_change]{summarize_change()}} creates a layout element to summarize the change from baseline or absolute
+baseline values. The primary analysis variable \code{vars} indicates the numerical change from baseline results.
+
+Required secondary analysis variables \code{value} and \code{baseline_flag} can be supplied to the function via
+the \code{variables} argument. The \code{value} element should be the name of the analysis value variable, and the
+\code{baseline_flag} element should be the name of the flag variable that indicates whether or not records contain
+baseline values. Depending on the baseline flag given, either the absolute baseline values (at baseline)
 or the change from baseline values (post-baseline) are then summarized.
 }
 \section{Functions}{

@@ -5,7 +5,7 @@
 \alias{summarize_occurrences_by_grade}
 \alias{s_count_occurrences_by_grade}
 \alias{a_count_occurrences_by_grade}
-\title{Occurrence counts by grade}
+\title{Count occurrences by grade}
 \usage{
 count_occurrences_by_grade(
   lyt,
@@ -146,9 +146,19 @@ grade level grouping.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Functions for analyzing frequencies and fractions of occurrences by grade for patients
-with occurrence data. Multiple occurrences within one individual are counted once at the
-greatest intensity/highest grade level.
+The analyze function \code{\link[=count_occurrences_by_grade]{count_occurrences_by_grade()}} creates a layout element to calculate occurrence counts by grade.
+
+This function analyzes primary analysis variable \code{var} which indicates toxicity grades. The \code{id} variable
+is used to indicate unique subject identifiers (defaults to \code{USUBJID}). The user can also supply a list of
+custom groups of grades to analyze via the \code{grade_groups} parameter. The \code{remove_single}  argument will
+remove single grades from the analysis so that \emph{only} grade groups are analyzed.
+
+If there are multiple grades recorded for one patient only the highest grade level is counted.
+
+The summarize function \code{\link[=summarize_occurrences_by_grade]{summarize_occurrences_by_grade()}} performs the same function as
+\code{\link[=count_occurrences_by_grade]{count_occurrences_by_grade()}} except it creates content rows, not data rows, to summarize the current table
+row/column context and operates on the level of the latest row split or the root of the table if no row splits have
+occurred.
 }
 \section{Functions}{
 \itemize{

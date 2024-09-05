@@ -32,11 +32,11 @@ control_analyze_vars <- function(conf_level = 0.95,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The analyze function [analyze_vars()] generates a summary of one or more variables, using the S3 generic function
-#' [s_summary()] to calculate a list of summary statistics. A list of all available statistics for numeric
-#' variables can be viewed by running `get_stats("analyze_vars_numeric")` and for non-numeric variables by running
-#' `get_stats("analyze_vars_counts")`. Use the `.stats` parameter to specify the statistics to include in your output
-#' summary table.
+#' The analyze function [analyze_vars()] creates a layout element to summarize one or more variables, using the S3
+#' generic function [s_summary()] to calculate a list of summary statistics. A list of all available statistics for
+#' numeric variables can be viewed by running `get_stats("analyze_vars_numeric")` and for non-numeric variables by
+#' running `get_stats("analyze_vars_counts")`. Use the `.stats` parameter to specify the statistics to include in your
+#' output summary table.
 #'
 #' @details
 #' **Automatic digit formatting:** The number of digits to display can be automatically determined from the analyzed

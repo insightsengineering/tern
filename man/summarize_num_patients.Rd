@@ -5,7 +5,7 @@
 \alias{analyze_num_patients}
 \alias{s_num_patients}
 \alias{s_num_patients_content}
-\title{Number of patients}
+\title{Count number of patients}
 \usage{
 analyze_num_patients(
   lyt,
@@ -64,10 +64,10 @@ s_num_patients_content(
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
-\item{required}{(\code{character} or \code{NULL})\cr optional, name of a variable that is required to be non-missing.}
+\item{required}{(\code{character} or \code{NULL})\cr name of a variable that is required to be non-missing.}
 
-\item{count_by}{(\code{vector})\cr optional vector of any type to be combined with \code{x} when counting \code{nonunique}
-records.}
+\item{count_by}{(\code{character} or \code{NULL})\cr name of a variable to be combined with \code{vars} when counting
+\code{nonunique} records.}
 
 \item{unique_count_suffix}{(\code{flag})\cr whether the \code{"(n)"} suffix should be added to \code{unique_count} labels.
 Defaults to \code{TRUE}.}
@@ -140,7 +140,16 @@ the statistics from \code{s_num_patients_content()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Count the number of unique and non-unique patients in a column (variable).
+The analyze function \code{\link[=analyze_num_patients]{analyze_num_patients()}} creates a layout element to count total numbers of unique or
+non-unique patients. The primary analysis variable \code{vars} is used to uniquely identify patients.
+
+The \code{count_by} variable can be used to identify non-unique patients such that the number of patients with a unique
+combination of values in \code{vars} and \code{count_by} will be returned instead as the \code{nonunique} statistic. The \code{required}
+variable can be used to specify a variable required to be non-missing for the record to be included in the counts.
+
+The summarize function \code{\link[=summarize_num_patients]{summarize_num_patients()}} performs the same function as \code{\link[=analyze_num_patients]{analyze_num_patients()}} except it
+creates content rows, not data rows, to summarize the current table row/column context and operates on the level of
+the latest row split or the root of the table if no row splits have occurred.
 }
 \details{
 In general, functions that starts with \verb{analyze*} are expected to
@@ -174,13 +183,24 @@ As opposed to \code{\link[=summarize_num_patients]{summarize_num_patients()}}, t
 df <- data.frame(
   USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
   ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
-  AGE = c(10, 15, 10, 17, 8, 11, 11, 19, 17)
+  AGE = c(10, 15, 10, 17, 8, 11, 11, 19, 17),
+  SEX = c("M", "M", "M", "F", "F", "F", "M", "F", "M")
 )
 
+# analyze_num_patients
 tbl <- basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   add_colcounts() \%>\%
   analyze_num_patients("USUBJID", .stats = c("unique")) \%>\%
+  build_table(df)
+
+tbl
+
+# summarize_num_patients
+tbl <- basic_table() \%>\%
+  split_cols_by("ARM") \%>\%
+  split_rows_by("SEX") \%>\%
+  summarize_num_patients("USUBJID", .stats = "unique_count") \%>\%
   build_table(df)
 
 tbl
