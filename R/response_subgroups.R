@@ -2,7 +2,12 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Tabulate statistics such as response rate and odds ratio for population subgroups.
+#' The [tabulate_rsp_subgroups()] function creates a layout element to tabulate binary response by subgroup, returning
+#' statistics including response rate and odds ratio for each population subgroup. The table is created from `df`, a
+#' list of data frames returned by [extract_rsp_subgroups()], with the statistics to include specified via the `vars`
+#' parameter.
+#'
+#' A forest plot can be created from the resulting table using the [g_forest()] function.
 #'
 #' @inheritParams extract_rsp_subgroups
 #' @inheritParams argument_convention
@@ -164,7 +169,7 @@ a_response_subgroups <- function(.formats = list(
 #'   summarizing binary response by subgroup. This function is a wrapper for [rtables::analyze_colvars()]
 #'   and [rtables::summarize_row_groups()].
 #'
-#' @param df (`list`)\cr of data frames containing all analysis variables. List should be
+#' @param df (`list`)\cr a list of data frames containing all analysis variables. List should be
 #'   created using [extract_rsp_subgroups()].
 #' @param vars (`character`)\cr the names of statistics to be reported among:
 #'   * `n`: Total number of observations per group.

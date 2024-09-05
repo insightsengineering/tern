@@ -1,9 +1,11 @@
-#' Incidence rate
+#' Incidence rate estimation
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Estimate the event rate adjusted for person-years at risk, otherwise known
-#' as incidence rate. Primary analysis variable is the person-years at risk.
+#' The analyze function [estimate_incidence_rate()] creates a layout element to estimate an event rate adjusted for
+#' person-years at risk, otherwise known as incidence rate. The primary analysis variable specified via `vars` is
+#' the person-years at risk. In addition to this variable, the `n_events` variable for number of events observed (where
+#' a value of 1 means an event was observed and 0 means that no event was observed) must also be specified.
 #'
 #' @inheritParams argument_convention
 #' @param control (`list`)\cr parameters for estimation details, specified by using
@@ -178,17 +180,9 @@ estimate_incidence_rate <- function(lyt,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param control (`list`)\cr parameters for estimation details, specified by using
-#'   the helper function [control_incidence_rate()]. Possible parameter options are:
-#'   * `conf_level`: (`proportion`)\cr confidence level for the estimated incidence rate.
-#'   * `conf_type`: (`string`)\cr `normal` (default), `normal_log`, `exact`, or `byar`
-#'     for confidence interval type.
-#'   * `input_time_unit`: (`string`)\cr `day`, `week`, `month`, or `year` (default)
-#'     indicating time unit for data input.
-#'   * `num_pt_year`: (`numeric`)\cr time unit for desired output (in person-years).
+#' @inheritParams incidence_rate
 #' @param person_years (`numeric(1)`)\cr total person-years at risk.
 #' @param alpha (`numeric(1)`)\cr two-sided alpha-level for confidence interval.
-#' @param n_events (`integer(1)`)\cr number of events observed.
 #'
 #' @return Estimated incidence rate, `rate`, and associated confidence interval, `rate_ci`.
 #'

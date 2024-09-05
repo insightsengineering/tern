@@ -2,12 +2,21 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Comparison with a reference group for different `x` objects.
+#' The analyze function [compare_vars()] creates a layout element to summarize and compare one or more variables, using
+#' the S3 generic function [s_summary()] to calculate a list of summary statistics. A list of all available statistics
+#' for numeric variables can be viewed by running `get_stats("analyze_vars_numeric", add_pval = TRUE)` and for
+#' non-numeric variables by running `get_stats("analyze_vars_counts", add_pval = TRUE)`. Use the `.stats` parameter to
+#' specify the statistics to include in your output summary table.
+#'
+#' Prior to using this function in your table layout you must use [rtables::split_cols_by()] to create a column
+#' split on the variable to be used in comparisons, and specify a reference group via the `ref_group` parameter.
+#' Comparisons can be performed for each group (column) against the specified reference group by including the p-value
+#' statistic.
 #'
 #' @inheritParams argument_convention
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("analyze_vars_numeric")` to see
-#'   statistics available for numeric variables, and `get_stats("analyze_vars_counts")` for statistics available
-#'   for non-numeric variables.
+#' @param .stats (`character`)\cr statistics to select for the table. Run
+#'   `get_stats("analyze_vars_numeric", add_pval = TRUE)` to see statistics available for numeric variables, and
+#'   `get_stats("analyze_vars_counts", add_pval = TRUE)` for statistics available for non-numeric variables.
 #'
 #' @note
 #' * For factor variables, `denom` for factor proportions can only be `n` since the purpose is to compare proportions

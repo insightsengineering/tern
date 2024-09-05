@@ -5,7 +5,7 @@
 \alias{count_abnormal_by_worst_grade}
 \alias{s_count_abnormal_by_worst_grade}
 \alias{a_count_abnormal_by_worst_grade}
-\title{Patient counts with the most extreme post-baseline toxicity grade per direction of abnormality}
+\title{Count patients by most extreme post-baseline toxicity grade per direction of abnormality}
 \usage{
 count_abnormal_by_worst_grade(
   lyt,
@@ -85,20 +85,31 @@ the statistics from \code{s_count_abnormal_by_worst_grade()} to the table layout
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Primary analysis variable \code{.var} indicates the toxicity grade (\code{factor}), and additional
-analysis variables are \code{id} (\code{character} or \code{factor}), \code{param} (\code{factor}) and \code{grade_dir} (\code{factor}).
-The pre-processing steps are crucial when using this function.
-For a certain direction (e.g. high or low) this function counts
-patients in the denominator as number of patients with at least one valid measurement during treatment,
-and patients in the numerator as follows:
+The analyze function \code{\link[=count_abnormal_by_worst_grade]{count_abnormal_by_worst_grade()}} creates a layout element to count patients by highest (worst)
+analysis toxicity grade post-baseline for each direction, categorized by parameter value.
+
+This function analyzes primary analysis variable \code{var} which indicates toxicity grades. Additional
+analysis variables that can be supplied as a list via the \code{variables} parameter are \code{id} (defaults to
+\code{USUBJID}), a variable to indicate unique subject identifiers, \code{param} (defaults to \code{PARAM}), a variable
+to indicate parameter values, and \code{grade_dir} (defaults to \code{GRADE_DIR}), a variable to indicate directions
+(e.g. High or Low) for each toxicity grade supplied in \code{var}.
+
+For each combination of \code{param} and \code{grade_dir} levels, patient counts by worst
+grade are calculated as follows:
 \itemize{
-\item \code{1} to \code{4}: Numerator is number of patients with worst grades 1-4 respectively;
-\item \code{Any}: Numerator is number of patients with at least one abnormality, which means grade is different from 0.
+\item \code{1} to \code{4}: The number of patients with worst grades 1-4, respectively.
+\item \code{Any}: The number of patients with at least one abnormality (i.e. grade is not 0).
 }
+
+Fractions are calculated by dividing the above counts by the number of patients with at least one
+valid measurement recorded during treatment.
 
 Pre-processing is crucial when using this function and can be done automatically using the
 \code{\link[=h_adlb_abnormal_by_worst_grade]{h_adlb_abnormal_by_worst_grade()}} helper function. See the description of this function for details on the
 necessary pre-processing steps.
+
+Prior to using this function in your table layout you must use \code{\link[rtables:split_rows_by]{rtables::split_rows_by()}} to create two row
+splits, one on variable \code{param} and one on variable \code{grade_dir}.
 }
 \section{Functions}{
 \itemize{

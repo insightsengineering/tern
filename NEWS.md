@@ -19,6 +19,7 @@
 
 ### Miscellaneous
 * Began deprecation of the confusing functions `summary_formats` and `summary_labels`.
+* Enhanced general descriptions of analyze and summarize functions throughout package documentation.
 
 # tern 0.9.5
 

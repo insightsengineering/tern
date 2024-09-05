@@ -5,7 +5,7 @@
 \alias{summarize_occurrences}
 \alias{s_count_occurrences}
 \alias{a_count_occurrences}
-\title{Occurrence counts}
+\title{Count occurrences}
 \usage{
 count_occurrences(
   lyt,
@@ -154,10 +154,17 @@ containing the statistics from \code{s_count_occurrences()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Functions for analyzing frequencies and fractions of occurrences for patients with occurrence
-data. Primary analysis variables are the dictionary terms. All occurrences are counted for total
-counts. Multiple occurrences within patient at the lowest term level displayed in the table are
-counted only once.
+The analyze function \code{\link[=count_occurrences]{count_occurrences()}} creates a layout element to calculate occurrence counts for patients.
+
+This function analyzes the variable(s) supplied to \code{vars} and returns a table of occurrence counts for
+each unique value (or level) of the variable(s). This variable (or variables) must be
+non-numeric. The \code{id} variable is used to indicate unique subject identifiers (defaults to \code{USUBJID}).
+
+If there are multiple occurrences of the same value recorded for a patient, the value is only counted once.
+
+The summarize function \code{\link[=summarize_occurrences]{summarize_occurrences()}} performs the same function as \code{\link[=count_occurrences]{count_occurrences()}} except it
+creates content rows, not data rows, to summarize the current table row/column context and operates on the level of
+the latest row split or the root of the table if no row splits have occurred.
 }
 \section{Functions}{
 \itemize{

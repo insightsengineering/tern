@@ -1,8 +1,12 @@
-#' Pairwise Cox-PH model
+#' Analyze a pairwise Cox-PH model
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Summarize p-value, HR and CIs from stratified or unstratified Cox-PH model.
+#' The analyze function [coxph_pairwise()] creates a layout element to analyze a pairwise Cox-PH model.
+#'
+#' This function can return statistics including p-value, hazard ratio (HR), and HR confidence intervals from both
+#' stratified and unstratified Cox-PH models. The variable(s) to be analyzed is specified via the `vars` argument and
+#' any stratification factors via the `strata` argument.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams s_surv_time
@@ -10,10 +14,11 @@
 #' @param strat `r lifecycle::badge("deprecated")` Please use the `strata` argument instead.
 #' @param control (`list`)\cr parameters for comparison details, specified by using the helper function
 #'   [control_coxph()]. Some possible parameter options are:
-#'   * `pval_method` (`string`)\cr p-value method for testing hazard ratio = 1. Default method is `"log-rank"` which
-#'     comes from [survival::survdiff()], can also be set to `"wald"` or `"likelihood"` (from [survival::coxph()]).
+#'   * `pval_method` (`string`)\cr p-value method for testing the null hypothesis that hazard ratio = 1. Default
+#'     method is `"log-rank"` which comes from [survival::survdiff()], can also be set to `"wald"` or `"likelihood"`
+#'     (from [survival::coxph()]).
 #'   * `ties` (`string`)\cr specifying the method for tie handling. Default is `"efron"`,
-#'     can also be set to `"breslow"` or `"exact"`. See more in [survival::coxph()]
+#'     can also be set to `"breslow"` or `"exact"`. See more in [survival::coxph()].
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("coxph_pairwise")`
 #'   to see available statistics for this function.
@@ -22,11 +27,11 @@
 #' @order 1
 NULL
 
-#' @describeIn survival_coxph_pairwise Statistics function which analyzes HR, CIs of HR and p-value of a `coxph` model.
+#' @describeIn survival_coxph_pairwise Statistics function which analyzes HR, CIs of HR, and p-value of a Cox-PH model.
 #'
 #' @return
 #' * `s_coxph_pairwise()` returns the statistics:
-#'   * `pvalue`: p-value to test HR = 1.
+#'   * `pvalue`: p-value to test the null hypothesis that hazard ratio = 1.
 #'   * `hr`: Hazard ratio.
 #'   * `hr_ci`: Confidence interval for hazard ratio.
 #'   * `n_tot`: Total number of observations.
@@ -173,6 +178,8 @@ a_coxph_pairwise <- make_afun(
 #' @order 2
 coxph_pairwise <- function(lyt,
                            vars,
+                           strata = NULL,
+                           control = control_coxph(),
                            na_str = default_na_str(),
                            nested = TRUE,
                            ...,
@@ -183,7 +190,7 @@ coxph_pairwise <- function(lyt,
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = NULL) {
-  extra_args <- list(...)
+  extra_args <- list(strata = strata, control = control, ...)
 
   afun <- make_afun(
     a_coxph_pairwise,

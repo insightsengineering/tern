@@ -125,8 +125,10 @@ the statistics from \code{s_surv_time()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Summarize median survival time and CIs, percentiles of survival times, survival
-time range of censored/event patients.
+The analyze function \code{\link[=surv_time]{surv_time()}} creates a layout element to analyze survival time by calculating survival time
+median, median confidence interval, quantiles, and range (for all, censored, or event patients). The primary
+analysis variable \code{vars} is the time variable and the secondary analysis variable \code{is_event} indicates whether or
+not an event has occurred.
 }
 \section{Functions}{
 \itemize{

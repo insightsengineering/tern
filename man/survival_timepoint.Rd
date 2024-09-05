@@ -85,11 +85,10 @@ a_surv_timepoint_diff(
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for survival rate.
 \item \code{conf_type} (\code{string})\cr confidence interval type. Options are "plain" (default), "log", "log-log",
 see more in \code{\link[survival:survfit]{survival::survfit()}}. Note option "none" is no longer supported.
-\item \code{time_point} (\code{numeric(1)})\cr survival time point of interest.
 }}
 
-\item{method}{(\code{string})\cr \code{surv} (survival estimations),
-\code{surv_diff} (difference in survival with the control), or \code{both}.}
+\item{method}{(\code{string})\cr \code{"surv"} (survival estimations), \code{"surv_diff"} (difference in survival with the
+control), or \code{"both"}.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
@@ -165,7 +164,12 @@ the value of \code{method}.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Summarize patients' survival rate and difference of survival rates between groups at a time point.
+The analyze function \code{\link[=surv_timepoint]{surv_timepoint()}} creates a layout element to analyze patient survival rates and difference
+of survival rates between groups at a given time point. The primary analysis variable \code{vars} is the time variable.
+Other required inputs are \code{time_point}, the numeric time point of interest, and \code{is_event}, a variable that
+indicates whether or not an event has occurred. The \code{method} argument is used to specify whether you want to analyze
+survival estimations (\code{"surv"}), difference in survival with the control (\code{"surv_diff"}), or both of these
+(\code{"both"}).
 }
 \section{Functions}{
 \itemize{

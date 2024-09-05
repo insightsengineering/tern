@@ -2,7 +2,12 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Tabulate statistics such as median survival time and hazard ratio for population subgroups.
+#' The [tabulate_survival_subgroups()] function creates a layout element to tabulate survival duration by subgroup,
+#' returning statistics including median survival time and hazard ratio for each population subgroup. The table is
+#' created from `df`, a list of data frames returned by [extract_survival_subgroups()], with the statistics to include
+#' specified via the `vars` parameter.
+#'
+#' A forest plot can be created from the resulting table using the [g_forest()] function.
 #'
 #' @inheritParams argument_convention
 #' @inheritParams survival_coxph_pairwise

@@ -5,7 +5,7 @@
 \alias{analyze_patients_exposure_in_cols}
 \alias{s_count_patients_sum_exposure}
 \alias{a_count_patients_sum_exposure}
-\title{Count patients and sum exposure across all patients in columns}
+\title{Count number of patients and sum exposure across all patients in columns}
 \usage{
 analyze_patients_exposure_in_cols(
   lyt,
@@ -132,8 +132,21 @@ columns, to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Counting the number of patients and summing analysis value (i.e exposure values) across all patients
-when a column table layout is required.
+The analyze function \code{\link[=analyze_patients_exposure_in_cols]{analyze_patients_exposure_in_cols()}} creates a layout element to count total numbers of
+patients and sum an analysis value (i.e. exposure) across all patients in columns.
+
+The primary analysis variable \code{ex_var} is the exposure variable used to calculate the \code{sum_exposure} statistic. The
+\code{id} variable is used to uniquely identify patients in the data such that only unique patients are counted in the
+\code{n_patients} statistic, and the \code{var} variable is used to create a row split if needed. The percentage returned as
+part of the \code{n_patients} statistic is the proportion of all records that correspond to a unique patient.
+
+The summarize function \code{\link[=summarize_patients_exposure_in_cols]{summarize_patients_exposure_in_cols()}} performs the same function as
+\code{\link[=analyze_patients_exposure_in_cols]{analyze_patients_exposure_in_cols()}} except it creates content rows, not data rows, to summarize the current table
+row/column context and operates on the level of the latest row split or the root of the table if no row splits have
+occurred.
+
+If a column split has not yet been performed in the table, \code{col_split} must be set to \code{TRUE} for the first call of
+\code{\link[=analyze_patients_exposure_in_cols]{analyze_patients_exposure_in_cols()}} or \code{\link[=summarize_patients_exposure_in_cols]{summarize_patients_exposure_in_cols()}}.
 }
 \section{Functions}{
 \itemize{
