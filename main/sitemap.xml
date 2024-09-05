@@ -64,7 +64,7 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/count_patients_events_in_cols.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/count_patients_with_event.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/count_patients_with_flags.html</loc></url>
-<url><loc>https://insightsengineering.github.io/tern/reference/count_values_funs.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern/reference/count_values.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/cox_regression.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/cox_regression_inter.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/cut_quantile_bins.html</loc></url>
@@ -92,7 +92,7 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/empty_vector_if_na.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/estimate_coef.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/estimate_multinomial_rsp.html</loc></url>
-<url><loc>https://insightsengineering.github.io/tern/reference/estimate_proportions.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern/reference/estimate_proportion.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/ex_data.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/explicit_na.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/extract_by_name.html</loc></url>
