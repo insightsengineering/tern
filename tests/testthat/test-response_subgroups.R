@@ -307,3 +307,24 @@ testthat::test_that("tabulate_rsp_subgroups riskdiff argument works as expected"
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("tabulate_rsp_subgroups pval statistic warning works as expected", {
+  adrs <- adrs_200
+
+  df <- extract_rsp_subgroups(
+    variables = list(rsp = "rsp", arm = "ARM", subgroups = c("SEX", "STRATA2")),
+    data = adrs,
+    method = NULL,
+    conf_level = 0.95
+  )
+
+  # warning when no pval in df
+  expect_warning(
+    basic_table() %>%
+      tabulate_rsp_subgroups(
+        df = df,
+        vars = c("n", "prop", "n_tot", "or", "ci", "pval")
+      ),
+    "please specify a p-value test"
+  )
+})
