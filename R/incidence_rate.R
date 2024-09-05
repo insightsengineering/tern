@@ -117,7 +117,7 @@ s_incidence_rate <- function(df,
 #'   n_events = "n_events"
 #' )
 #'
-#' @keywords internal
+#' @export
 a_incidence_rate <- function(df,
                              labelstr = "",
                              .var,
