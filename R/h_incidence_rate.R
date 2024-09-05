@@ -22,6 +22,28 @@
 NULL
 
 #' @describeIn h_incidence_rate Helper function to estimate the incidence rate and
+#'   associated confidence interval.
+#'
+#' @keywords internal
+h_incidence_rate <- function(person_years,
+                             n_events,
+                             control = control_incidence_rate()) {
+  alpha <- 1 - control$conf_level
+  est <- switch(control$conf_type,
+    normal = h_incidence_rate_normal(person_years, n_events, alpha),
+    normal_log = h_incidence_rate_normal_log(person_years, n_events, alpha),
+    exact = h_incidence_rate_exact(person_years, n_events, alpha),
+    byar = h_incidence_rate_byar(person_years, n_events, alpha)
+  )
+
+  num_pt_year <- control$num_pt_year
+  list(
+    rate = est$rate * num_pt_year,
+    rate_ci = est$rate_ci * num_pt_year
+  )
+}
+
+#' @describeIn h_incidence_rate Helper function to estimate the incidence rate and
 #'   associated confidence interval based on the normal approximation for the
 #'   incidence rate. Unit is one person-year.
 #'
@@ -107,29 +129,7 @@ h_incidence_rate_byar <- function(person_years,
   seg_2 <- 1 - 1 / (9 * (n_events + 0.5))
   seg_3 <- stats::qnorm(1 - alpha / 2) * sqrt(1 / (n_events + 0.5)) / 3
   lcl <- seg_1 * ((seg_2 - seg_3)^3) / person_years
-  ucl <- seg_1 * ((seg_2 + seg_3) ^ 3) / person_years # styler: off
+  ucl <- seg_1 * ((seg_2 + seg_3)^3) / person_years
 
   list(rate = est, rate_ci = c(lcl, ucl))
-}
-
-#' @describeIn h_incidence_rate Helper function to estimate the incidence rate and
-#'   associated confidence interval.
-#'
-#' @keywords internal
-h_incidence_rate <- function(person_years,
-                             n_events,
-                             control = control_incidence_rate()) {
-  alpha <- 1 - control$conf_level
-  est <- switch(control$conf_type,
-    normal = h_incidence_rate_normal(person_years, n_events, alpha),
-    normal_log = h_incidence_rate_normal_log(person_years, n_events, alpha),
-    exact = h_incidence_rate_exact(person_years, n_events, alpha),
-    byar = h_incidence_rate_byar(person_years, n_events, alpha)
-  )
-
-  num_pt_year <- control$num_pt_year
-  list(
-    rate = est$rate * num_pt_year,
-    rate_ci = est$rate_ci * num_pt_year
-  )
 }
