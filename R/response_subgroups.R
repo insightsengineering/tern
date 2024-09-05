@@ -225,6 +225,14 @@ tabulate_rsp_subgroups <- function(lyt,
                                    )) {
   checkmate::assert_list(riskdiff, null.ok = TRUE)
   checkmate::assert_true(all(c("n_tot", "or", "ci") %in% vars))
+  if ("pval" %in% vars && !"pval" %in% names(df$or)) {
+    warning(
+      'The "pval" statistic has been selected but is not present in "df" so it will not be included in the output ',
+      'table. To include the "pval" statistic, please specify a p-value test when generating "df" via ',
+      'the "method" argument to `extract_rsp_subgroups()`. If method = "cmh", strata must also be specified via the ',
+      '"variables" argument to `extract_rsp_subgroups()`.'
+    )
+  }
 
   # Create "ci" column from "lcl" and "ucl"
   df$or$ci <- combine_vectors(df$or$lcl, df$or$ucl)

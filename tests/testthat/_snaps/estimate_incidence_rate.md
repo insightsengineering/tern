@@ -101,6 +101,11 @@
       attr(,"label")
       [1] "90% CI"
       
+      $n_rate
+      [1]  4.00000 44.15823
+      attr(,"label")
+      [1] "Number of adverse events observed (AE rate per 100 patient-years)"
+      
 
 # estimate_incidence_rate works as expected with healthy input
 
@@ -114,4 +119,16 @@
       Number of adverse events observed         1                 3       
       AE rate per 100 patient-years           26.20             57.23     
       90% CI                              (5.06, 135.73)   (22.14, 147.94)
+
+# estimate_incidence_rate `n_rate` statistic works as expected
+
+    Code
+      res
+    Output
+                                                                             A         B   
+                                                                           (N=3)     (N=3) 
+      —————————————————————————————————————————————————————————————————————————————————————
+      Number of adverse events observed                                      1         3   
+      AE rate per 100 patient-years                                        2.18      4.77  
+      Number of adverse events observed (AE rate per 100 patient-years)   1 (2.2)   3 (4.8)
 
