@@ -18,7 +18,6 @@ to add summary rows to a given table layout:
 \item \code{\link[=summarize_occurrences_by_grade]{summarize_occurrences_by_grade()}}
 \item \code{\link[=summarize_patients_events_in_cols]{summarize_patients_events_in_cols()}}
 \item \code{\link[=summarize_patients_exposure_in_cols]{summarize_patients_exposure_in_cols()}}
-\item \code{\link[=tabulate_rsp_subgroups]{tabulate_rsp_subgroups()}}
 }
 
 Additionally, the \code{\link[=summarize_coxreg]{summarize_coxreg()}} function utilizes \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}

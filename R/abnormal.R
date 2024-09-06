@@ -1,13 +1,21 @@
-#' Patient counts with abnormal range values
+#' Count patients with abnormal range values
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Primary analysis variable `.var` indicates the abnormal range result (`character` or `factor`)
-#' and additional analysis variables are `id` (`character` or `factor`) and `baseline` (`character` or
-#' `factor`). For each direction specified in `abnormal` (e.g. high or low) count patients in the
-#' numerator and denominator as follows:
-#'   * `num` : The number of patients with this abnormality recorded while on treatment.
-#'   * `denom`: The number of patients with at least one post-baseline assessment.
+#' The analyze function [count_abnormal()] creates a layout element to count patients with abnormal analysis range
+#' values in each direction.
+#'
+#' This function analyzes primary analysis variable `var` which indicates abnormal range results.
+#' Additional analysis variables that can be supplied as a list via the `variables` parameter are
+#' `id` (defaults to `USUBJID`), a variable to indicate unique subject identifiers, and `baseline`
+#' (defaults to `BNRIND`), a variable to indicate baseline reference ranges.
+#'
+#' For each direction specified via the `abnormal` parameter (e.g. High or Low), a fraction of
+#' patient counts is returned, with numerator and denominator calculated as follows:
+#'   * `num`: The number of patients with this abnormality recorded while on treatment.
+#'   * `denom`: The total number of patients with at least one post-baseline assessment.
+#'
+#' This function assumes that `df` has been filtered to only include post-baseline records.
 #'
 #' @inheritParams argument_convention
 #' @param abnormal (named `list`)\cr list identifying the abnormal range level(s) in `var`. Defaults to
@@ -19,11 +27,12 @@
 #'   to see available statistics for this function.
 #'
 #' @note
-#' * `count_abnormal()` only works with a single variable containing multiple abnormal levels.
-#' * `df` should be filtered to include only post-baseline records.
-#' * the denominator includes patients that might have other abnormal levels at baseline,
-#'   and patients with missing baseline. Patients with these abnormalities at
-#'   baseline can be optionally excluded from numerator and denominator.
+#' * `count_abnormal()` only considers a single variable that contains multiple abnormal levels.
+#' * `df` should be filtered to only include post-baseline records.
+#' * The denominator includes patients that may have other abnormal levels at baseline,
+#'   and patients missing baseline records. Patients with these abnormalities at
+#'   baseline can be optionally excluded from numerator and denominator via the
+#'   `exclude_base_abn` parameter.
 #'
 #' @name abnormal
 #' @include formatting_functions.R

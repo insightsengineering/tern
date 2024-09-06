@@ -5,7 +5,7 @@
 \alias{estimate_incidence_rate}
 \alias{s_incidence_rate}
 \alias{a_incidence_rate}
-\title{Incidence rate}
+\title{Incidence rate estimation}
 \usage{
 estimate_incidence_rate(
   lyt,
@@ -17,7 +17,7 @@ estimate_incidence_rate(
   ...,
   show_labels = "hidden",
   table_names = vars,
-  .stats = NULL,
+  .stats = c("person_years", "n_events", "rate", "rate_ci"),
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL
@@ -102,6 +102,7 @@ the statistics from \code{s_incidence_rate()} to the table layout.
 \item \code{n_events}: Total number of events observed.
 \item \code{rate}: Estimated incidence rate.
 \item \code{rate_ci}: Confidence interval for the incidence rate.
+\item \code{n_rate}: Total number of events observed & estimated incidence rate.
 }
 }
 
@@ -112,8 +113,10 @@ the statistics from \code{s_incidence_rate()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Estimate the event rate adjusted for person-years at risk, otherwise known
-as incidence rate. Primary analysis variable is the person-years at risk.
+The analyze function \code{\link[=estimate_incidence_rate]{estimate_incidence_rate()}} creates a layout element to estimate an event rate adjusted for
+person-years at risk, otherwise known as incidence rate. The primary analysis variable specified via \code{vars} is
+the person-years at risk. In addition to this variable, the \code{n_events} variable for number of events observed (where
+a value of 1 means an event was observed and 0 means that no event was observed) must also be specified.
 }
 \section{Functions}{
 \itemize{

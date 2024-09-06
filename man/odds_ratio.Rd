@@ -112,14 +112,12 @@ the statistics from \code{s_odds_ratio()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Compares bivariate responses between two groups in terms of odds ratios
-along with a confidence interval.
-}
-\details{
-This function uses either logistic regression for unstratified
-analyses, or conditional logistic regression for stratified analyses.
-The Wald confidence interval with the specified confidence level is
-calculated.
+The analyze function \code{\link[=estimate_odds_ratio]{estimate_odds_ratio()}} creates a layout element to compare bivariate responses between
+two groups by estimating an odds ratio and its confidence interval.
+
+The primary analysis variable specified by \code{vars} is the group variable. Additional variables can be included in the
+analysis via the \code{variables} argument, which accepts \code{arm}, an arm variable, and \code{strata}, a stratification variable.
+If more than two arm levels are present, they can be combined into two groups using the \code{groups_list} argument.
 }
 \section{Functions}{
 \itemize{
@@ -134,10 +132,14 @@ variable names must be passed if a stratified analysis is required.
 
 }}
 \note{
-For stratified analyses, there is currently no implementation for conditional
-likelihood confidence intervals, therefore the likelihood confidence interval is not
-yet available as an option. Besides, when \code{rsp} contains only responders or non-responders,
-then the result values will be \code{NA}, because no odds ratio estimation is possible.
+\itemize{
+\item This function uses logistic regression for unstratified analyses, and conditional logistic regression for
+stratified analyses. The Wald confidence interval is calculated with the specified confidence level.
+\item For stratified analyses, there is currently no implementation for conditional likelihood confidence intervals,
+therefore the likelihood confidence interval is not available as an option.
+\item When \code{vars} contains only responders or non-responders no odds ratio estimation is possible so the returned
+values will be \code{NA}.
+}
 }
 \examples{
 set.seed(12)

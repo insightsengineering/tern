@@ -118,7 +118,14 @@ flag as a list of statistics \code{n}, \code{count}, \code{count_fraction}, and 
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-The primary analysis variable \code{.var} denotes the unique patient identifier.
+The analyze function \code{\link[=count_patients_with_flags]{count_patients_with_flags()}} creates a layout element to calculate counts of patients for
+which user-specified flags are present.
+
+This function analyzes primary analysis variable \code{var} which indicates unique subject identifiers. Flags
+variables to analyze are specified by the user via the \code{flag_variables} argument, and must either take value
+\code{TRUE} (flag present) or \code{FALSE} (flag absent) for each record.
+
+If there are multiple records with the same flag present for a patient, only one occurrence is counted.
 }
 \section{Functions}{
 \itemize{

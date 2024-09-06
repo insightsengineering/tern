@@ -109,3 +109,27 @@ testthat::test_that("estimate_incidence_rate works as expected with healthy inpu
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("estimate_incidence_rate `n_rate` statistic works as expected", {
+  df <- data.frame(
+    USUBJID = as.character(seq(6)),
+    CNSR = c(0, 1, 1, 0, 0, 0),
+    AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
+    ARM = factor(c("A", "A", "A", "B", "B", "B"))
+  ) %>%
+    dplyr::mutate(is_event = CNSR == 0) %>%
+    dplyr::mutate(n_events = as.integer(is_event))
+
+  result <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    add_colcounts() %>%
+    estimate_incidence_rate(
+      vars = "AVAL",
+      n_events = "n_events",
+      .stats = c("n_events", "rate", "n_rate")
+    ) %>%
+    build_table(df)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})

@@ -48,7 +48,7 @@ levels that belong to it in the character vectors that are elements of the list.
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
 \item{method}{(\code{string} or \code{NULL})\cr specifies the test used to calculate the p-value for the difference between
-two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL} so no test is performed.}
+two proportions. For options, see \code{\link[=test_proportion_diff]{test_proportion_diff()}}. Default is \code{NULL} so no test is performed.}
 }
 \value{
 \itemize{

@@ -12,7 +12,6 @@
 #' * [summarize_occurrences_by_grade()]
 #' * [summarize_patients_events_in_cols()]
 #' * [summarize_patients_exposure_in_cols()]
-#' * [tabulate_rsp_subgroups()]
 #'
 #' Additionally, the [summarize_coxreg()] function utilizes [`rtables::summarize_row_groups()`]
 #' (in combination with several other `rtables` functions like [rtables::analyze_colvars()]) to

@@ -53,8 +53,12 @@ An \code{rtables} table summarizing biomarker effects on survival by subgroup.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Tabulate the estimated effects of multiple continuous biomarker variables
-across population subgroups.
+The \code{\link[=tabulate_survival_biomarkers]{tabulate_survival_biomarkers()}} function creates a layout element to tabulate the estimated effects of multiple
+continuous biomarker variables on survival across subgroups, returning statistics including median survival time and
+hazard ratio for each population subgroup. The table is created from \code{df}, a list of data frames returned by
+\code{\link[=extract_survival_biomarkers]{extract_survival_biomarkers()}}, with the statistics to include specified via the \code{vars} parameter.
+
+A forest plot can be created from the resulting table using the \code{\link[=g_forest]{g_forest()}} function.
 }
 \details{
 These functions create a layout starting from a data frame which contains

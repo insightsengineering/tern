@@ -2,7 +2,10 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Various tests were implemented to test the difference between two proportions.
+#' The analyze function [test_proportion_diff()] creates a layout element to test the difference between two
+#' proportions. The primary analysis variable, `vars`, indicates whether a response has occurred for each record. See
+#' the `method` parameter for options of methods to use to calculate the p-value. Additionally, a stratification
+#' variable can be supplied via the `strata` element of the `variables` argument.
 #'
 #' @inheritParams argument_convention
 #' @param method (`string`)\cr one of `chisq`, `cmh`, `fisher`, or `schouten`; specifies the test used

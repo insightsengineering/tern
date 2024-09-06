@@ -71,9 +71,9 @@ times, to avoid warnings from \code{rtables}.}
 \item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
 defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("analyze_vars_numeric")} to see
-statistics available for numeric variables, and \code{get_stats("analyze_vars_counts")} for statistics available
-for non-numeric variables.}
+\item{.stats}{(\code{character})\cr statistics to select for the table. Run
+\code{get_stats("analyze_vars_numeric", add_pval = TRUE)} to see statistics available for numeric variables, and
+\code{get_stats("analyze_vars_counts", add_pval = TRUE)} for statistics available for non-numeric variables.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
@@ -113,7 +113,16 @@ the statistics from \code{s_compare()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Comparison with a reference group for different \code{x} objects.
+The analyze function \code{\link[=compare_vars]{compare_vars()}} creates a layout element to summarize and compare one or more variables, using
+the S3 generic function \code{\link[=s_summary]{s_summary()}} to calculate a list of summary statistics. A list of all available statistics
+for numeric variables can be viewed by running \code{get_stats("analyze_vars_numeric", add_pval = TRUE)} and for
+non-numeric variables by running \code{get_stats("analyze_vars_counts", add_pval = TRUE)}. Use the \code{.stats} parameter to
+specify the statistics to include in your output summary table.
+
+Prior to using this function in your table layout you must use \code{\link[rtables:split_cols_by]{rtables::split_cols_by()}} to create a column
+split on the variable to be used in comparisons, and specify a reference group via the \code{ref_group} parameter.
+Comparisons can be performed for each group (column) against the specified reference group by including the p-value
+statistic.
 }
 \section{Functions}{
 \itemize{

@@ -2,7 +2,14 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The primary analysis variable `.var` denotes the unique patient identifier.
+#' The analyze function [count_patients_with_flags()] creates a layout element to calculate counts of patients for
+#' which user-specified flags are present.
+#'
+#' This function analyzes primary analysis variable `var` which indicates unique subject identifiers. Flags
+#' variables to analyze are specified by the user via the `flag_variables` argument, and must either take value
+#' `TRUE` (flag present) or `FALSE` (flag absent) for each record.
+#'
+#' If there are multiple records with the same flag present for a patient, only one occurrence is counted.
 #'
 #' @inheritParams argument_convention
 #' @param flag_variables (`character`)\cr a vector specifying the names of `logical` variables from analysis dataset

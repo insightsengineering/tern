@@ -2,8 +2,12 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Tabulate the estimated effects of multiple continuous biomarker variables
-#' across population subgroups.
+#' The [tabulate_survival_biomarkers()] function creates a layout element to tabulate the estimated effects of multiple
+#' continuous biomarker variables on survival across subgroups, returning statistics including median survival time and
+#' hazard ratio for each population subgroup. The table is created from `df`, a list of data frames returned by
+#' [extract_survival_biomarkers()], with the statistics to include specified via the `vars` parameter.
+#'
+#' A forest plot can be created from the resulting table using the [g_forest()] function.
 #'
 #' @inheritParams fit_coxreg_multivar
 #' @inheritParams survival_duration_subgroups
