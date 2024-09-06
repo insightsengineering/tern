@@ -107,6 +107,15 @@ h_surv_to_coxreg_variables <- function(variables, biomarker) {
 h_coxreg_mult_cont_df <- function(variables,
                                   data,
                                   control = control_coxreg()) {
+  if ("strat" %in% names(variables)) {
+    warning(
+      "Warning: the `strat` element name of the `variables` list argument to `h_coxreg_mult_cont_df() ",
+      "was deprecated in tern 0.9.4.\n  ",
+      "Please use the name `strata` instead of `strat` in the `variables` argument."
+    )
+    variables[["strata"]] <- variables[["strat"]]
+  }
+
   assert_df_with_variables(data, variables)
   checkmate::assert_list(control, names = "named")
   checkmate::assert_character(variables$biomarkers, min.len = 1, any.missing = FALSE)

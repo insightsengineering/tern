@@ -13,14 +13,19 @@ g_forest(
   xlim = c(0.1, 10),
   logx = TRUE,
   x_at = c(0.1, 1, 10),
+  width_row_names = lifecycle::deprecated(),
   width_columns = NULL,
+  width_forest = lifecycle::deprecated(),
   lbl_col_padding = 0,
   rel_width_forest = 0.25,
   font_size = 12,
   col_symbol_size = attr(tbl, "col_symbol_size"),
   col = getOption("ggplot2.discrete.colour")[1],
   ggtheme = NULL,
-  as_list = FALSE
+  as_list = FALSE,
+  gp = lifecycle::deprecated(),
+  draw = lifecycle::deprecated(),
+  newpage = lifecycle::deprecated()
 )
 }
 \arguments{
@@ -48,9 +53,13 @@ If \code{vline = NULL} then \code{forest_header} is not printed. By default trie
 
 \item{x_at}{(\code{numeric})\cr x-tick locations, if \code{NULL}, \code{x_at} is set to \code{vline} and both \code{xlim} values.}
 
+\item{width_row_names}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{lbl_col_padding} argument instead.}
+
 \item{width_columns}{(\code{numeric})\cr a vector of column widths. Each element's position in
 \code{colwidths} corresponds to the column of \code{tbl} in the same position. If \code{NULL}, column widths are calculated
 according to maximum number of characters per column.}
+
+\item{width_forest}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{rel_width_forest} argument instead.}
 
 \item{lbl_col_padding}{(\code{numeric})\cr additional padding to use when calculating spacing between
 the first (label) column and the second column of \code{tbl}. If \code{colwidths} is specified,
@@ -73,6 +82,15 @@ By default tries to get this from \code{tbl} attribute \code{col_symbol_size}, o
 \item{as_list}{(\code{flag})\cr whether the two \code{ggplot} objects should be returned as a list. If \code{TRUE}, a named list
 with two elements, \code{table} and \code{plot}, will be returned. If \code{FALSE} (default) the table and forest plot are
 printed side-by-side via \code{\link[cowplot:plot_grid]{cowplot::plot_grid()}}.}
+
+\item{gp}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{g_forest} is now generated as a \code{ggplot} object. This argument
+is no longer used.}
+
+\item{draw}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{g_forest} is now generated as a \code{ggplot} object. This argument
+is no longer used.}
+
+\item{newpage}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{g_forest} is now generated as a \code{ggplot} object. This argument
+is no longer used.}
 }
 \value{
 \code{ggplot} forest plot and table.

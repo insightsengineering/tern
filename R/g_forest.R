@@ -24,9 +24,11 @@
 #' @param xlim (`numeric(2)`)\cr limits for x axis.
 #' @param logx (`flag`)\cr show the x-values on logarithm scale.
 #' @param x_at (`numeric`)\cr x-tick locations, if `NULL`, `x_at` is set to `vline` and both `xlim` values.
+#' @param width_row_names `r lifecycle::badge("deprecated")` Please use the `lbl_col_padding` argument instead.
 #' @param width_columns (`numeric`)\cr a vector of column widths. Each element's position in
 #'   `colwidths` corresponds to the column of `tbl` in the same position. If `NULL`, column widths are calculated
 #'   according to maximum number of characters per column.
+#' @param width_forest `r lifecycle::badge("deprecated")` Please use the `rel_width_forest` argument instead.
 #' @param rel_width_forest (`proportion`)\cr proportion of total width to allocate to the forest plot. Relative
 #'   width of table is then `1 - rel_width_forest`. If `as_list = TRUE`, this parameter is ignored.
 #' @param font_size (`numeric(1)`)\cr font size.
@@ -39,6 +41,12 @@
 #' @param as_list (`flag`)\cr whether the two `ggplot` objects should be returned as a list. If `TRUE`, a named list
 #'   with two elements, `table` and `plot`, will be returned. If `FALSE` (default) the table and forest plot are
 #'   printed side-by-side via [cowplot::plot_grid()].
+#' @param gp `r lifecycle::badge("deprecated")` `g_forest` is now generated as a `ggplot` object. This argument
+#'   is no longer used.
+#' @param draw `r lifecycle::badge("deprecated")` `g_forest` is now generated as a `ggplot` object. This argument
+#'   is no longer used.
+#' @param newpage `r lifecycle::badge("deprecated")` `g_forest` is now generated as a `ggplot` object. This argument
+#'   is no longer used.
 #'
 #' @return `ggplot` forest plot and table.
 #'
@@ -158,14 +166,54 @@ g_forest <- function(tbl,
                      xlim = c(0.1, 10),
                      logx = TRUE,
                      x_at = c(0.1, 1, 10),
+                     width_row_names = lifecycle::deprecated(),
                      width_columns = NULL,
+                     width_forest = lifecycle::deprecated(),
                      lbl_col_padding = 0,
                      rel_width_forest = 0.25,
                      font_size = 12,
                      col_symbol_size = attr(tbl, "col_symbol_size"),
                      col = getOption("ggplot2.discrete.colour")[1],
                      ggtheme = NULL,
-                     as_list = FALSE) {
+                     as_list = FALSE,
+                     gp = lifecycle::deprecated(),
+                     draw = lifecycle::deprecated(),
+                     newpage = lifecycle::deprecated()) {
+  # Deprecated argument warnings
+  if (lifecycle::is_present(width_row_names)) {
+    lifecycle::deprecate_warn(
+      "0.9.4", "g_forest(width_row_names)", "g_forest(lbl_col_padding)",
+      details = "The width of the row label column can be adjusted via the `lbl_col_padding` parameter."
+    )
+  }
+  if (lifecycle::is_present(width_forest)) {
+    lifecycle::deprecate_warn(
+      "0.9.4", "g_forest(width_forest)", "g_forest(rel_width_forest)",
+      details = "Relative width of the forest plot (as a proportion) can be set via the `rel_width_forest` parameter."
+    )
+  }
+  if (lifecycle::is_present(gp)) {
+    lifecycle::deprecate_warn(
+      "0.9.4", "g_forest(gp)", "g_forest(ggtheme)",
+      details = paste(
+        "`g_forest` is now generated as a `ggplot` object.",
+        "Additional display settings should be supplied via the `ggtheme` parameter."
+      )
+    )
+  }
+  if (lifecycle::is_present(draw)) {
+    lifecycle::deprecate_warn(
+      "0.9.4", "g_forest(draw)",
+      details = "`g_forest` now generates `ggplot` objects. This parameter has no effect."
+    )
+  }
+  if (lifecycle::is_present(newpage)) {
+    lifecycle::deprecate_warn(
+      "0.9.4", "g_forest(newpage)",
+      details = "`g_forest` now generates `ggplot` objects. This parameter has no effect."
+    )
+  }
+
   checkmate::assert_class(tbl, "VTableTree")
   checkmate::assert_number(col_x, lower = 0, upper = ncol(tbl), null.ok = TRUE)
   checkmate::assert_number(col_ci, lower = 0, upper = ncol(tbl), null.ok = TRUE)

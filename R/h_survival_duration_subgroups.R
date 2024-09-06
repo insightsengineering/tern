@@ -332,6 +332,15 @@ h_coxph_subgroups_df <- function(variables,
                                  groups_lists = list(),
                                  control = control_coxph(),
                                  label_all = "All Patients") {
+  if ("strat" %in% names(variables)) {
+    warning(
+      "Warning: the `strat` element name of the `variables` list argument to `h_coxph_subgroups_df() ",
+      "was deprecated in tern 0.9.4.\n  ",
+      "Please use the name `strata` instead of `strat` in the `variables` argument."
+    )
+    variables[["strata"]] <- variables[["strat"]]
+  }
+
   checkmate::assert_character(variables$tte)
   checkmate::assert_character(variables$is_event)
   checkmate::assert_character(variables$arm)

@@ -46,6 +46,14 @@ NULL
 #'
 #' @export
 h_rsp_to_logistic_variables <- function(variables, biomarker) {
+  if ("strat" %in% names(variables)) {
+    warning(
+      "Warning: the `strat` element name of the `variables` list argument to `h_rsp_to_logistic_variables() ",
+      "was deprecated in tern 0.9.4.\n  ",
+      "Please use the name `strata` instead of `strat` in the `variables` argument."
+    )
+    variables[["strata"]] <- variables[["strat"]]
+  }
   checkmate::assert_list(variables)
   checkmate::assert_string(variables$rsp)
   checkmate::assert_string(biomarker)
@@ -95,6 +103,14 @@ h_rsp_to_logistic_variables <- function(variables, biomarker) {
 h_logistic_mult_cont_df <- function(variables,
                                     data,
                                     control = control_logistic()) {
+  if ("strat" %in% names(variables)) {
+    warning(
+      "Warning: the `strat` element name of the `variables` list argument to `h_logistic_mult_cont_df() ",
+      "was deprecated in tern 0.9.4.\n  ",
+      "Please use the name `strata` instead of `strat` in the `variables` argument."
+    )
+    variables[["strata"]] <- variables[["strat"]]
+  }
   assert_df_with_variables(data, variables)
 
   checkmate::assert_character(variables$biomarkers, min.len = 1, any.missing = FALSE)
