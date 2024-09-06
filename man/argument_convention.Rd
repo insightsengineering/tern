@@ -51,8 +51,6 @@ that constitute the split. A custom label can be set for this level via the \cod
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{draw}{(\code{flag})\cr whether the plot should be drawn.}
-
 \item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
 list, which specifies the new group levels via the names and the
 levels that belong to it in the character vectors that are elements of the list.}
@@ -79,9 +77,6 @@ two proportions. For options, see \code{\link[=test_proportion_diff]{test_propor
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
 possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
-
-\item{newpage}{(\code{flag})\cr whether the plot should be drawn on a new page.
-Only considered if \code{draw = TRUE} is used.}
 
 \item{prune_zero_rows}{(\code{flag})\cr whether to prune all zero rows.}
 

@@ -20,6 +20,7 @@
 ### Miscellaneous
 * Began deprecation of the confusing functions `summary_formats` and `summary_labels`.
 * Enhanced general descriptions of analyze and summarize functions throughout package documentation.
+* Finalized deprecation of the `strata` and `cohort_id` arguments to `g_lineplot`.
 
 # tern 0.9.5
 
