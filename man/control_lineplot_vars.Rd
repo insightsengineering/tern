@@ -28,10 +28,6 @@ control_lineplot_vars(
 \item{y_unit}{(\code{string} or \code{NA})\cr y-axis unit variable name.}
 
 \item{subject_var}{(\code{string} or \code{NA})\cr subject variable name.}
-
-\item{strata}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} use the \code{group_var} parameter instead.}
-
-\item{cohort_id}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} use the \code{subject_var} parameter instead.}
 }
 \value{
 A named character vector of variable names.

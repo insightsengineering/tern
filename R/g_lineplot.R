@@ -548,9 +548,7 @@ h_format_row <- function(x, format, labels = NULL) {
 #' @param x (`string`)\cr x-variable name.
 #' @param y (`string`)\cr y-variable name.
 #' @param group_var (`string` or `NA`)\cr group variable name.
-#' @param strata `r lifecycle::badge("deprecated")` use the `group_var` parameter instead.
 #' @param subject_var (`string` or `NA`)\cr subject variable name.
-#' @param cohort_id `r lifecycle::badge("deprecated")` use the `subject_var` parameter instead.
 #' @param facet_var (`string` or `NA`)\cr faceting variable name.
 #' @param paramcd (`string` or `NA`)\cr parameter code variable name.
 #' @param y_unit (`string` or `NA`)\cr y-axis unit variable name.
