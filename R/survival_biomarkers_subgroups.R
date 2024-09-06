@@ -113,15 +113,6 @@ extract_survival_biomarkers <- function(variables,
                                         groups_lists = list(),
                                         control = control_coxreg(),
                                         label_all = "All Patients") {
-  if ("strat" %in% names(variables)) {
-    warning(
-      "Warning: the `strat` element name of the `variables` list argument to `extract_survival_biomarkers() ",
-      "was deprecated in tern 0.9.3.\n  ",
-      "Please use the name `strata` instead of `strat` in the `variables` argument."
-    )
-    variables[["strata"]] <- variables[["strat"]]
-  }
-
   checkmate::assert_list(variables)
   checkmate::assert_character(variables$subgroups, null.ok = TRUE)
   checkmate::assert_string(label_all)

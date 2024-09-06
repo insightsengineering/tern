@@ -11,9 +11,7 @@ control_lineplot_vars(
   facet_var = NA,
   paramcd = "PARAMCD",
   y_unit = "AVALU",
-  subject_var = "USUBJID",
-  strata = lifecycle::deprecated(),
-  cohort_id = lifecycle::deprecated()
+  subject_var = "USUBJID"
 )
 }
 \arguments{

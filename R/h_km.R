@@ -185,15 +185,6 @@ h_tbl_coxph_pairwise <- function(df,
                                  ref_group_coxph = NULL,
                                  control_coxph_pw = control_coxph(),
                                  annot_coxph_ref_lbls = FALSE) {
-  if ("strat" %in% names(variables)) {
-    warning(
-      "Warning: the `strat` element name of the `variables` list argument to `h_tbl_coxph_pairwise() ",
-      "was deprecated in tern 0.9.3.\n  ",
-      "Please use the name `strata` instead of `strat` in the `variables` argument."
-    )
-    variables[["strata"]] <- variables[["strat"]]
-  }
-
   assert_df_with_variables(df, variables)
   checkmate::assert_choice(ref_group_coxph, levels(df[[variables$arm]]), null.ok = TRUE)
   checkmate::assert_flag(annot_coxph_ref_lbls)

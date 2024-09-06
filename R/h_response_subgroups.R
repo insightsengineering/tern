@@ -325,15 +325,6 @@ h_odds_ratio_subgroups_df <- function(variables,
                                       conf_level = 0.95,
                                       method = NULL,
                                       label_all = "All Patients") {
-  if ("strat" %in% names(variables)) {
-    warning(
-      "Warning: the `strat` element name of the `variables` list argument to `h_odds_ratio_subgroups_df() ",
-      "was deprecated in tern 0.9.3.\n  ",
-      "Please use the name `strata` instead of `strat` in the `variables` argument."
-    )
-    variables[["strata"]] <- variables[["strat"]]
-  }
-
   checkmate::assert_character(variables$rsp)
   checkmate::assert_character(variables$arm)
   checkmate::assert_character(variables$subgroups, null.ok = TRUE)

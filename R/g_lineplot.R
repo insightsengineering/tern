@@ -568,19 +568,7 @@ control_lineplot_vars <- function(x = "AVISIT",
                                   facet_var = NA,
                                   paramcd = "PARAMCD",
                                   y_unit = "AVALU",
-                                  subject_var = "USUBJID",
-                                  strata = lifecycle::deprecated(),
-                                  cohort_id = lifecycle::deprecated()) {
-  if (lifecycle::is_present(strata)) {
-    lifecycle::deprecate_warn("0.9.2", "control_lineplot_vars(strata)", "control_lineplot_vars(group_var)")
-    group_var <- strata
-  }
-
-  if (lifecycle::is_present(cohort_id)) {
-    lifecycle::deprecate_warn("0.9.2", "control_lineplot_vars(cohort_id)", "control_lineplot_vars(subject_id)")
-    subject_id <- cohort_id
-  }
-
+                                  subject_var = "USUBJID") {
   checkmate::assert_string(x)
   checkmate::assert_string(y)
   checkmate::assert_string(group_var, na.ok = TRUE, null.ok = TRUE)

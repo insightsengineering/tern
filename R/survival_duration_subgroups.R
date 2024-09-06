@@ -120,15 +120,6 @@ extract_survival_subgroups <- function(variables,
                                        groups_lists = list(),
                                        control = control_coxph(),
                                        label_all = "All Patients") {
-  if ("strat" %in% names(variables)) {
-    warning(
-      "Warning: the `strat` element name of the `variables` list argument to `extract_survival_subgroups() ",
-      "was deprecated in tern 0.9.3.\n  ",
-      "Please use the name `strata` instead of `strat` in the `variables` argument."
-    )
-    variables[["strata"]] <- variables[["strat"]]
-  }
-
   df_survtime <- h_survtime_subgroups_df(
     variables,
     data,

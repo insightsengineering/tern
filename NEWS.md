@@ -20,6 +20,11 @@
 ### Miscellaneous
 * Began deprecation of the confusing functions `summary_formats` and `summary_labels`.
 * Enhanced general descriptions of analyze and summarize functions throughout package documentation.
+* Finalized deprecation of the following arguments:
+  - `width_row_names`, `width_forest`, `gp`, `draw`, and `newpage` from `g_forest`
+  - `strata` and `cohort_id` from `g_lineplot`
+  - `strat` from `s_coxph_pairwise`
+  - the `strat` element of the `variables` argument to `h_tbl_coxph_pairwise`, `h_rsp_to_logistic_variables`, `h_odds_ratio_subgroups_df`, `h_coxreg_mult_cont_df`, `h_coxph_subgroups_df`, and the `extract_*` functions.
 
 # tern 0.9.5
 

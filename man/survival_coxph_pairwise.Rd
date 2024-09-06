@@ -31,7 +31,6 @@ s_coxph_pairwise(
   .var,
   is_event,
   strata = NULL,
-  strat = lifecycle::deprecated(),
   control = control_coxph()
 )
 
@@ -42,7 +41,6 @@ a_coxph_pairwise(
   .var,
   is_event,
   strata = NULL,
-  strat = lifecycle::deprecated(),
   control = control_coxph()
 )
 }
@@ -100,8 +98,6 @@ unmodified default behavior. Can be negative.}
 by a statistics function.}
 
 \item{is_event}{(\code{flag})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
-
-\item{strat}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{strata} argument instead.}
 }
 \value{
 \itemize{

@@ -11,7 +11,6 @@
 #' @inheritParams argument_convention
 #' @inheritParams s_surv_time
 #' @param strata (`character` or `NULL`)\cr variable names indicating stratification factors.
-#' @param strat `r lifecycle::badge("deprecated")` Please use the `strata` argument instead.
 #' @param control (`list`)\cr parameters for comparison details, specified by using the helper function
 #'   [control_coxph()]. Some possible parameter options are:
 #'   * `pval_method` (`string`)\cr p-value method for testing the null hypothesis that hazard ratio = 1. Default
@@ -44,13 +43,7 @@ s_coxph_pairwise <- function(df,
                              .var,
                              is_event,
                              strata = NULL,
-                             strat = lifecycle::deprecated(),
                              control = control_coxph()) {
-  if (lifecycle::is_present(strat)) {
-    lifecycle::deprecate_warn("0.9.3", "s_coxph_pairwise(strat)", "s_coxph_pairwise(strata)")
-    strata <- strat
-  }
-
   checkmate::assert_string(.var)
   checkmate::assert_numeric(df[[.var]])
   checkmate::assert_logical(df[[is_event]])
