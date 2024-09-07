@@ -319,10 +319,17 @@ split_text_grob <- function(text,
     horizontal_npc_width_no_gp <- grid::convertWidth(
       grid::grobWidth(
         grid::textGrob(
-          paste0(text, collapse = "\n"))), "npc", valueOnly = TRUE)
+          paste0(text, collapse = "\n")
+        )
+      ), "npc",
+      valueOnly = TRUE
+    )
     horizontal_npc_width_with_gp <- grid::convertWidth(grid::grobWidth(
       grid::textGrob(
-        paste0(text, collapse = "\n"), gp = gp)), "npc", valueOnly = TRUE)
+        paste0(text, collapse = "\n"),
+        gp = gp
+      )
+    ), "npc", valueOnly = TRUE)
 
     # Adapting width to the input gpar (it is normalized so does not matter what is text)
     width <- width * horizontal_npc_width_no_gp / horizontal_npc_width_with_gp

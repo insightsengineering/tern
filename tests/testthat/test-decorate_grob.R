@@ -152,12 +152,13 @@ testthat::test_that("Wrapping works consistently", {
     collapse = " "
   )
   subtitles <- c("something\nwith\\n", "", "and such")
-  out <- split_text_grob(c(titles, subtitles),  x = 0, y = 1,
-                         just = c("left", "top"),
-                         width = grid::unit(11.63, "inches") - grid::unit(1.5, "cm"),
-                         vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1),
-                         gp = grid::gpar()
-                         )
+  out <- split_text_grob(c(titles, subtitles),
+    x = 0, y = 1,
+    just = c("left", "top"),
+    width = grid::unit(11.63, "inches") - grid::unit(1.5, "cm"),
+    vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1),
+    gp = grid::gpar()
+  )
 
   expect_equal(
     nchar(strsplit(out$label, "\n")[[1]]),
