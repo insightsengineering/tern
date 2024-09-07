@@ -1,4 +1,4 @@
-# tern 0.9.5.9020
+# tern 0.9.5.9021
 ### Enhancements
 * Added `errorbar_width` and `linetype` parameters to `g_lineplot`.
 * Reworking of `summarize_glm_count()` documentation and all its associated functions to better describe the results and the functions' purpose.
@@ -21,6 +21,7 @@
 ### Miscellaneous
 * Began deprecation of the confusing functions `summary_formats` and `summary_labels`.
 * Enhanced general descriptions of analyze and summarize functions throughout package documentation.
+* Finalized deprecation of the `strata` and `cohort_id` arguments to `g_lineplot`.
 
 # tern 0.9.5
 
