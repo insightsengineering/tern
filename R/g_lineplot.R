@@ -548,9 +548,7 @@ h_format_row <- function(x, format, labels = NULL) {
 #' @param x (`string`)\cr x-variable name.
 #' @param y (`string`)\cr y-variable name.
 #' @param group_var (`string` or `NA`)\cr group variable name.
-#' @param strata `r lifecycle::badge("deprecated")` use the `group_var` parameter instead.
 #' @param subject_var (`string` or `NA`)\cr subject variable name.
-#' @param cohort_id `r lifecycle::badge("deprecated")` use the `subject_var` parameter instead.
 #' @param facet_var (`string` or `NA`)\cr faceting variable name.
 #' @param paramcd (`string` or `NA`)\cr parameter code variable name.
 #' @param y_unit (`string` or `NA`)\cr y-axis unit variable name.
@@ -568,19 +566,7 @@ control_lineplot_vars <- function(x = "AVISIT",
                                   facet_var = NA,
                                   paramcd = "PARAMCD",
                                   y_unit = "AVALU",
-                                  subject_var = "USUBJID",
-                                  strata = lifecycle::deprecated(),
-                                  cohort_id = lifecycle::deprecated()) {
-  if (lifecycle::is_present(strata)) {
-    lifecycle::deprecate_warn("0.9.2", "control_lineplot_vars(strata)", "control_lineplot_vars(group_var)")
-    group_var <- strata
-  }
-
-  if (lifecycle::is_present(cohort_id)) {
-    lifecycle::deprecate_warn("0.9.2", "control_lineplot_vars(cohort_id)", "control_lineplot_vars(subject_id)")
-    subject_id <- cohort_id
-  }
-
+                                  subject_var = "USUBJID") {
   checkmate::assert_string(x)
   checkmate::assert_string(y)
   checkmate::assert_string(group_var, na.ok = TRUE, null.ok = TRUE)

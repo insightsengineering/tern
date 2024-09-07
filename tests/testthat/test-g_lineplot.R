@@ -138,9 +138,6 @@ testthat::test_that("g_lineplot xticks, xlim, and ylim arguments work", {
 
 testthat::test_that("control_lineplot_vars works", {
   testthat::expect_silent(control_lineplot_vars(group_var = NA))
-
-  # Deprecation warnings work
-  lifecycle::expect_deprecated(lifecycle::expect_deprecated(control_lineplot_vars(strata = NA, cohort_id = NA)))
 })
 
 testthat::test_that("g_lineplot works with no strata (group_var) and allows points when only one strata is provided", {
