@@ -142,3 +142,25 @@ testthat::test_that("Edge cases work for titles and footers in split_text_grob",
     split_text_grob(c("", "a a"))
   )
 })
+
+testthat::test_that("Wrapping works consistently", {
+  g <- ggplot2::ggplot(iris) +
+    ggplot2::geom_point(aes(x = Sepal.Length, y = Sepal.Width))
+
+  titles <- paste(
+    rep("issues come in long pairs", 10),
+    collapse = " "
+  )
+  subtitles <- c("something\nwith\\n", "", "and such")
+  out <- split_text_grob(c(titles, subtitles),  x = 0, y = 1,
+                         just = c("left", "top"),
+                         width = grid::unit(11.63, "inches") - grid::unit(1.5, "cm"),
+                         vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1),
+                         gp = grid::gpar()
+                         )
+
+  expect_equal(
+    nchar(strsplit(out$label, "\n")[[1]]),
+    c(149, 109, 9, 4, 0, 0, 8)
+  )
+})

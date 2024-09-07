@@ -48,7 +48,7 @@ to_string_matrix <- function(x, widths = NULL, max_width = NULL,
 
   # Producing the matrix to test
   if (with_spaces) {
-    out <- strsplit(toString(tx, widths = widths, tf_wrap = tf_wrap, max_width = max_width, hsep = hsep), "\\n")[[1]]
+    out <- strsplit(toString(tx, widths = widths, tf_wrap = tf_wrap, max_width = max_width, hsep = hsep), "\n")[[1]]
   } else {
     out <- tx$strings
   }
