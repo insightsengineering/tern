@@ -345,16 +345,16 @@ labels_use_control <- function(labels_default, control, labels_custom = NULL) {
     )
   }
   if ("quantiles" %in% names(control) && "quantiles_ci_1" %in% names(labels_default) &&
-      !"quantiles_ci_1" %in% names(labels_custom)) { # nolint
+    !"quantiles_ci_1" %in% names(labels_custom)) { # nolint
     labels_default["quantiles_ci_1"] <- gsub(
-      "[0-9]+%-ile", paste0(control[["quantiles"]][1] * 100,"%-ile",""),
+      "[0-9]+%-ile", paste0(control[["quantiles"]][1] * 100, "%-ile", ""),
       labels_default["quantiles_ci_1"]
     )
   }
   if ("quantiles" %in% names(control) && "quantiles_ci_2" %in% names(labels_default) &&
-      !"quantiles_ci_2" %in% names(labels_custom)) { # nolint
+    !"quantiles_ci_2" %in% names(labels_custom)) { # nolint
     labels_default["quantiles_ci_2"] <- gsub(
-      "[0-9]+%-ile", paste0(control[["quantiles"]][2] * 100,"%-ile",""),
+      "[0-9]+%-ile", paste0(control[["quantiles"]][2] * 100, "%-ile", ""),
       labels_default["quantiles_ci_2"]
     )
   }
