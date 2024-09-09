@@ -81,9 +81,11 @@ s_surv_time <- function(df,
   srv_qt_ci <- lapply(quantiles, function(x) {
     name <- as.character(100 * x)
 
-    c(srv_qt_tab_pre[[paste0("quantile.", name)]],
+    c(
+      srv_qt_tab_pre[[paste0("quantile.", name)]],
       srv_qt_tab_pre[[paste0("lower.", name)]],
-      srv_qt_tab_pre[[paste0("upper.", name)]])
+      srv_qt_tab_pre[[paste0("upper.", name)]]
+    )
   })
 
   list(
@@ -107,7 +109,6 @@ s_surv_time <- function(df,
     quantiles_ci_2 = formatters::with_label(
       unname(srv_qt_ci[[2]]), paste0(quantiles[2] * 100, "%-ile with ", f_conf_level(conf_level))
     )
-
   )
 }
 
@@ -144,13 +145,17 @@ a_surv_time <- function(df,
   rng_censor_upr <- x_stats[["range_censor"]][2]
 
   # Use method-specific defaults
-  fmts <- c(median_ci = "(xx.x, xx.x)", quantiles = "xx.x, xx.x", range = "xx.x to xx.x",
-            median_ci_1_line = "xx.x (xx.x - xx.x)",
-            quantiles_ci_1 = "xx.x (xx.x - xx.x)", quantiles_ci_2 = "xx.x (xx.x - xx.x)")
-  lbls <- c(median_ci = "95% CI", range = "Range", range_censor = "Range (censored)", range_event = "Range (event)",
-            median_ci_1_line = "Median 95% CI",
-            quantiles_ci_1 = "25%-ile with 95% CI",
-            quantiles_ci_2 = "75%-ile with 95% CI")
+  fmts <- c(
+    median_ci = "(xx.x, xx.x)", quantiles = "xx.x, xx.x", range = "xx.x to xx.x",
+    median_ci_1_line = "xx.x (xx.x - xx.x)",
+    quantiles_ci_1 = "xx.x (xx.x - xx.x)", quantiles_ci_2 = "xx.x (xx.x - xx.x)"
+  )
+  lbls <- c(
+    median_ci = "95% CI", range = "Range", range_censor = "Range (censored)", range_event = "Range (event)",
+    median_ci_1_line = "Median 95% CI",
+    quantiles_ci_1 = "25%-ile with 95% CI",
+    quantiles_ci_2 = "75%-ile with 95% CI"
+  )
   lbls_custom <- .labels
   .formats <- c(.formats, fmts[setdiff(names(fmts), names(.formats))])
   .labels <- c(.labels, lbls[setdiff(names(lbls), names(lbls_custom))])

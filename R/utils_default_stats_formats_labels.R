@@ -345,14 +345,14 @@ labels_use_control <- function(labels_default, control, labels_custom = NULL) {
     )
   }
   if ("quantiles" %in% names(control) && "quantiles_ci_1" %in% names(labels_default) &&
-      !"quantiles_ci_1" %in% names(labels_custom)) { # nolint
+    !"quantiles_ci_1" %in% names(labels_custom)) { # nolint
     labels_default["quantiles_ci_1"] <- gsub(
       "[0-9]+%-ile", paste0(control[["quantiles"]][1] * 100, "%-ile", ""),
       labels_default["quantiles_ci_1"]
     )
   }
   if ("quantiles" %in% names(control) && "quantiles_ci_2" %in% names(labels_default) &&
-      !"quantiles_ci_2" %in% names(labels_custom)) { # nolint
+    !"quantiles_ci_2" %in% names(labels_custom)) { # nolint
     labels_default["quantiles_ci_2"] <- gsub(
       "[0-9]+%-ile", paste0(control[["quantiles"]][2] * 100, "%-ile", ""),
       labels_default["quantiles_ci_2"]
@@ -536,7 +536,7 @@ tern_default_labels <- c(
 #' @export
 summary_formats <- function(type = "numeric", include_pval = FALSE) {
   lifecycle::deprecate_warn(
-    "0.9.5.9005", "summary_formats()",
+    "0.9.6", "summary_formats()",
     details = 'Use get_formats_from_stats(get_stats("analyze_vars_numeric", add_pval = include_pval)) instead'
   )
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
@@ -559,7 +559,7 @@ summary_formats <- function(type = "numeric", include_pval = FALSE) {
 #' @export
 summary_labels <- function(type = "numeric", include_pval = FALSE) {
   lifecycle::deprecate_warn(
-    "0.9.5.9005", "summary_formats()",
+    "0.9.6", "summary_formats()",
     details = 'Use get_labels_from_stats(get_stats("analyze_vars_numeric", add_pval = include_pval)) instead'
   )
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
