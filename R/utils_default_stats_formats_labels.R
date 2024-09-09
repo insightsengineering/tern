@@ -344,6 +344,20 @@ labels_use_control <- function(labels_default, control, labels_custom = NULL) {
       labels_default["quantiles"]
     )
   }
+  if ("quantiles" %in% names(control) && "quantiles_ci_1" %in% names(labels_default) &&
+      !"quantiles_ci_1" %in% names(labels_custom)) { # nolint
+    labels_default["quantiles_ci_1"] <- gsub(
+      "[0-9]+%-ile", paste0(control[["quantiles"]][1] * 100,"%-ile",""),
+      labels_default["quantiles_ci_1"]
+    )
+  }
+  if ("quantiles" %in% names(control) && "quantiles_ci_2" %in% names(labels_default) &&
+      !"quantiles_ci_2" %in% names(labels_custom)) { # nolint
+    labels_default["quantiles_ci_2"] <- gsub(
+      "[0-9]+%-ile", paste0(control[["quantiles"]][2] * 100,"%-ile",""),
+      labels_default["quantiles_ci_2"]
+    )
+  }
   if ("test_mean" %in% names(control) && "mean_pval" %in% names(labels_default) &&
     !"mean_pval" %in% names(labels_custom)) { # nolint
     labels_default["mean_pval"] <- gsub(
@@ -392,7 +406,7 @@ tern_default_stats <- list(
   summarize_glm_count = c("n", "rate", "rate_ci", "rate_ratio", "rate_ratio_ci", "pval"),
   summarize_num_patients = c("unique", "nonunique", "unique_count"),
   summarize_patients_events_in_cols = c("unique", "all"),
-  surv_time = c("median", "median_ci", "quantiles", "range_censor", "range_event", "range"),
+  surv_time = c("median", "median_ci", "median_ci_1_line", "quantiles", "quantiles_ci_1", "quantiles_ci_2", "range_censor", "range_event", "range"),
   surv_timepoint = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci", "rate_diff", "rate_diff_ci", "ztest_pval"),
   tabulate_rsp_biomarkers = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
   tabulate_rsp_subgroups = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval"),
@@ -431,7 +445,10 @@ tern_default_formats <- c(
   median = "xx.x",
   mad = "xx.x",
   median_ci = "(xx.xx, xx.xx)",
+  median_ci_1_line = "xx.xx (xx.xx, xx.xx)",
   quantiles = "xx.x - xx.x",
+  quantiles_ci_1 = "xx.xx (xx.xx, xx.xx)",
+  quantiles_ci_2 = "xx.xx (xx.xx, xx.xx)",
   iqr = "xx.x",
   range = "xx.x - xx.x",
   min = "xx.x",
@@ -480,7 +497,10 @@ tern_default_labels <- c(
   median = "Median",
   mad = "Median Absolute Deviation",
   median_ci = "Median 95% CI",
+  median_ci_1_line = "Median 95% CI",
   quantiles = "25% and 75%-ile",
+  quantiles_ci_1 = "25%-ile 95% CI",
+  quantiles_ci_2 = "75%-ile 95% CI",
   iqr = "IQR",
   range = "Min - Max",
   min = "Minimum",
