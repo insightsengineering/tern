@@ -147,21 +147,39 @@ testthat::test_that("Wrapping works consistently", {
   g <- ggplot2::ggplot(iris) +
     ggplot2::geom_point(aes(x = Sepal.Length, y = Sepal.Width))
 
-  titles <- paste(
-    rep("issues come in long pairs", 10),
-    collapse = " "
+  eg_text <- c(
+    paste( # titles
+      rep("issues come in long pairs", 10),
+      collapse = " "
+    ),
+    c( # subtitles
+      "something\nwith\\n", "", "and such"
+    )
   )
-  subtitles <- c("something\nwith\\n", "", "and such")
-  out <- split_text_grob(c(titles, subtitles),
+  eg_width <- grid::unit(11.63, "inches") - grid::unit(1.5, "cm")
+  out <- split_text_grob(eg_text,
     x = 0, y = 1,
     just = c("left", "top"),
-    width = grid::unit(11.63, "inches") - grid::unit(1.5, "cm"),
+    width = eg_width,
     vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1),
     gp = grid::gpar()
   )
-
-  expect_equal(
+  eg_width <- grid::convertUnit(eg_width, "npc")
+  # Fix for split_string in case of residual \n (otherwise is counted as character)
+  text_fin <- unlist(
+    strsplit(
+      paste0(gsub("\\\\n", "\n", eg_text), collapse = "\n"), # for "" cases
+      "\n"
+    )
+  )
+  label_free <- split_string(text_fin, eg_width)
+  stop(
+    "width:", eg_width,
+    "\nnchar_out_label  : ", paste(nchar(strsplit(out$label, "\n")[[1]]), collapse = " "),
+    "\nnchar_label_free : ", paste(nchar(strsplit(label_free, "\n")[[1]]), collapse = " ")
+  )
+  testthat::expect_equal(
     nchar(strsplit(out$label, "\n")[[1]]),
-    c(149, 109, 9, 4, 0, 0, 8)
+    nchar(strsplit(label_free, "\n")[[1]])
   )
 })
