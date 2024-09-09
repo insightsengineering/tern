@@ -76,14 +76,14 @@ s_surv_time <- function(df,
   range_event <- range_noinf(df[[.var]][df[[is_event]]], na.rm = TRUE)
   range <- range_noinf(df[[.var]], na.rm = TRUE)
 
-  names(quantiles) <- as.character(100*quantiles)
+  names(quantiles) <- as.character(100 * quantiles)
   srv_qt_tab_pre <- unlist(srv_qt_tab_pre)
-  srv_qt_ci <- lapply(quantiles, function(x){
-    name <- as.character(100*x)
+  srv_qt_ci <- lapply(quantiles, function(x) {
+    name <- as.character(100 * x)
 
-    c(srv_qt_tab_pre[[paste0("quantile.",name)]],
-      srv_qt_tab_pre[[paste0("lower.",name)]],
-      srv_qt_tab_pre[[paste0("upper.",name)]])
+    c(srv_qt_tab_pre[[paste0("quantile.", name)]],
+      srv_qt_tab_pre[[paste0("lower.", name)]],
+      srv_qt_tab_pre[[paste0("upper.", name)]])
   })
 
   list(
@@ -97,8 +97,10 @@ s_surv_time <- function(df,
     range_censor = formatters::with_label(range_censor, "Range (censored)"),
     range_event = formatters::with_label(range_event, "Range (event)"),
     range = formatters::with_label(range, "Range"),
-    median_ci_1_line = formatters::with_label(c(unname(srv_tab["median"]),unname(srv_tab[paste0(srv_fit$conf.int, c("LCL", "UCL"))])),
-                                              paste0("Median ",f_conf_level(conf_level))),
+    median_ci_1_line = formatters::with_label(
+      c(unname(srv_tab["median"]),
+        unname(srv_tab[paste0(srv_fit$conf.int, c("LCL", "UCL"))])),
+        paste0("Median ", f_conf_level(conf_level))),
     quantiles_ci_1 = formatters::with_label(
       unname(srv_qt_ci[[1]]), paste0(quantiles[1] * 100, "%-ile with ", f_conf_level(conf_level))
     ),
@@ -235,7 +237,6 @@ surv_time <- function(lyt,
     var_labels = var_labels,
     show_labels = show_labels,
     table_names = table_names,
-    #na_str = na_str,
     nested = nested,
     extra_args = extra_args
   )
