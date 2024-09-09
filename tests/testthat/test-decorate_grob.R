@@ -144,9 +144,11 @@ testthat::test_that("Edge cases work for titles and footers in split_text_grob",
 })
 
 testthat::test_that("Wrapping works consistently", {
+  # ggplot
   g <- ggplot2::ggplot(iris) +
     ggplot2::geom_point(aes(x = Sepal.Length, y = Sepal.Width))
 
+  # decoration text
   eg_text <- c(
     paste( # titles
       rep("issues come in long pairs", 10),
@@ -156,7 +158,10 @@ testthat::test_that("Wrapping works consistently", {
       "something\nwith\\n", "", "and such"
     )
   )
+  # example width (it is default for A4 with 1.5cm margin)
   eg_width <- grid::unit(11.63, "inches") - grid::unit(1.5, "cm")
+
+  # Main call to text grob split
   out <- split_text_grob(eg_text,
     x = 0, y = 1,
     just = c("left", "top"),
@@ -164,22 +169,35 @@ testthat::test_that("Wrapping works consistently", {
     vp = grid::viewport(layout.pos.row = 1, layout.pos.col = 1),
     gp = grid::gpar()
   )
+
+  # This is what (roughly w/o font correction from gpar) happens inside the split
   eg_width <- grid::convertUnit(eg_width, "npc")
   # Fix for split_string in case of residual \n (otherwise is counted as character)
-  text_fin <- unlist(
-    strsplit(
-      paste0(gsub("\\\\n", "\n", eg_text), collapse = "\n"), # for "" cases
-      "\n"
+  text_fin <- split_string( # copied fnc (NOT formatters')
+    unlist(
+      strsplit(
+        paste0(gsub("\\\\n", "\n", eg_text), collapse = "\n"), # for "" cases
+        "\n"
+      )
+    ),
+    eg_width
+  )
+
+  # number of characters
+  nchar_lab_extracted <- nchar(strsplit(out$label, "\n")[[1]])
+  nchar_lab_test <- nchar(strsplit(text_fin, "\n")[[1]])
+  exp_nchar_lab <- c(144, 114, 9, 4, 0, 0, 8)
+
+  # Force informative error
+  if (!checkmate::check_set_equal(nchar_lab_extracted, exp_nchar_lab)) {
+    stop(
+      "width:", eg_width,
+      "\nnchar_out_label  : ", paste(nchar_lab_extracted, collapse = " "),
+      "\nnchar_label_free : ", paste(nchar_lab_test, collapse = " ")
     )
-  )
-  label_free <- split_string(text_fin, eg_width)
-  stop(
-    "width:", eg_width,
-    "\nnchar_out_label  : ", paste(nchar(strsplit(out$label, "\n")[[1]]), collapse = " "),
-    "\nnchar_label_free : ", paste(nchar(strsplit(label_free, "\n")[[1]]), collapse = " ")
-  )
-  testthat::expect_equal(
-    nchar(strsplit(out$label, "\n")[[1]]),
-    nchar(strsplit(label_free, "\n")[[1]])
-  )
+  }
+
+  # Default passing tests
+  testthat::expect_equal(nchar_lab_extracted, nchar_lab_test)
+  testthat::expect_equal(nchar_lab_extracted, exp_nchar_lab)
 })
