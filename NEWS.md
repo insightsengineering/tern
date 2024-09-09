@@ -16,6 +16,7 @@
 * Fixed bug for linear scaling factor (`scale` parameter) being applied to response but not to rate in `h_glm_count` while all distributions have logarithmic link function.
 * Fixed bug in `decorate_grob` that did not handle well empty strings or `NULL` values for title and footers.
 * Fixed bug in `g_km` that caused an error when multiple records in the data had estimates at max time.
+* Fixed issue with wrong wrapping due to different `\n` and vector behavior that did not cope well with `split_string()`.
 
 ### Miscellaneous
 * Began deprecation of the confusing functions `summary_formats` and `summary_labels`.
