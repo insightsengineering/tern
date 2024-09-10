@@ -141,6 +141,7 @@ the value of \code{method}.
 \item \code{event_free_rate}: Event-free rate (\%).
 \item \code{rate_se}: Standard error of event free rate.
 \item \code{rate_ci}: Confidence interval for event free rate.
+\item \code{event_free_rate_long}: Event-free rate (\%) with Confidence interval.
 }
 }
 
@@ -153,6 +154,7 @@ the value of \code{method}.
 \itemize{
 \item \code{rate_diff}: Event-free rate difference between two groups.
 \item \code{rate_diff_ci}: Confidence interval for the difference.
+\item \code{rate_diff_long}: Event-free rate difference and confidence interval between two groups.
 \item \code{ztest_pval}: p-value to test the difference is 0.
 }
 }
