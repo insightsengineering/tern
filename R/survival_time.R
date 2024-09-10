@@ -43,7 +43,10 @@ NULL
 #' * `s_surv_time()` returns the statistics:
 #'   * `median`: Median survival time.
 #'   * `median_ci`: Confidence interval for median time.
+#'   * `median_long`: Median with Confidence interval for median time.
 #'   * `quantiles`: Survival time for two specified quantiles.
+#'   * `quantiles_lower`: quantile with confidence interval for the first specified quantile.
+#'   * `quantiles_upper`: quantile with confidence interval for the second specified quantile.
 #'   * `range_censor`: Survival time range for censored observations.
 #'   * `range_event`: Survival time range for observations with events.
 #'   * `range`: Survival time range for all observations.
@@ -99,15 +102,15 @@ s_surv_time <- function(df,
     range_censor = formatters::with_label(range_censor, "Range (censored)"),
     range_event = formatters::with_label(range_event, "Range (event)"),
     range = formatters::with_label(range, "Range"),
-    median_ci_1_line = formatters::with_label(
+    median_long = formatters::with_label(
       c(unname(srv_tab["median"]),
         unname(srv_tab[paste0(srv_fit$conf.int, c("LCL", "UCL"))])),
-        paste0("Median ", f_conf_level(conf_level))),
-    quantiles_ci_1 = formatters::with_label(
-      unname(srv_qt_ci[[1]]), paste0(quantiles[1] * 100, "%-ile with ", f_conf_level(conf_level))
+        paste0("Median (", f_conf_level(conf_level), ")")),
+    quantiles_lower = formatters::with_label(
+      unname(srv_qt_ci[[1]]), paste0(quantiles[1] * 100, "%-ile (", f_conf_level(conf_level), ")")
     ),
-    quantiles_ci_2 = formatters::with_label(
-      unname(srv_qt_ci[[2]]), paste0(quantiles[2] * 100, "%-ile with ", f_conf_level(conf_level))
+    quantiles_upper = formatters::with_label(
+      unname(srv_qt_ci[[2]]), paste0(quantiles[2] * 100, "%-ile (", f_conf_level(conf_level), ")")
     )
   )
 }
@@ -147,14 +150,14 @@ a_surv_time <- function(df,
   # Use method-specific defaults
   fmts <- c(
     median_ci = "(xx.x, xx.x)", quantiles = "xx.x, xx.x", range = "xx.x to xx.x",
-    median_ci_1_line = "xx.x (xx.x - xx.x)",
-    quantiles_ci_1 = "xx.x (xx.x - xx.x)", quantiles_ci_2 = "xx.x (xx.x - xx.x)"
+    median_long = "xx.x (xx.x - xx.x)",
+    quantiles_lower = "xx.x (xx.x - xx.x)", quantiles_upper = "xx.x (xx.x - xx.x)"
   )
   lbls <- c(
     median_ci = "95% CI", range = "Range", range_censor = "Range (censored)", range_event = "Range (event)",
-    median_ci_1_line = "Median 95% CI",
-    quantiles_ci_1 = "25%-ile with 95% CI",
-    quantiles_ci_2 = "75%-ile with 95% CI"
+    median_long = "Median (95% CI)",
+    quantiles_lower = "25%-ile (95% CI)",
+    quantiles_upper = "75%-ile (95% CI)"
   )
   lbls_custom <- .labels
   .formats <- c(.formats, fmts[setdiff(names(fmts), names(.formats))])
@@ -188,7 +191,6 @@ a_surv_time <- function(df,
     .names = .labels,
     .labels = .labels,
     .indent_mods = .indent_mods,
-    .format_na_strs = na_str,
     .cell_footnotes = cell_fns
   )
 }
@@ -231,7 +233,7 @@ surv_time <- function(lyt,
                       .labels = NULL,
                       .indent_mods = c(median_ci = 1L)) {
   extra_args <- list(
-    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str,
+    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods,
     is_event = is_event, control = control, ref_fn_censor = ref_fn_censor, ...
   )
 
@@ -242,6 +244,7 @@ surv_time <- function(lyt,
     var_labels = var_labels,
     show_labels = show_labels,
     table_names = table_names,
+    na_str = na_str,
     nested = nested,
     extra_args = extra_args
   )

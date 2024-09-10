@@ -1,5 +1,9 @@
 # tern 0.9.5.9021
 ### Enhancements
+* Added `median_long`, `quantiles_lower` and `quantiles_upper` to `s_surv_time` which includes estimate and confidence interval in one statistic.
+* Added `hr_long` to `s_coxph_pairwise` which includes estimate and confidence interval in one statistic.
+* Added `event_free_rate_long` to `s_surv_timepoint` which includes estimate and confidence interval in one statistic.
+* Added `rate_diff_long` to `s_surv_timepoint_diff` which includes estimate and confidence interval in one statistic.
 * Added `errorbar_width` and `linetype` parameters to `g_lineplot`.
 * Reworking of `summarize_glm_count()` documentation and all its associated functions to better describe the results and the functions' purpose.
 * Added the `.formats` argument to `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` to allow users to specify formats.
