@@ -81,7 +81,8 @@ s_surv_timepoint <- function(df,
     rate_se = formatters::with_label(rate_se * 100, "Standard Error of Event Free Rate"),
     rate_ci = formatters::with_label(rate_ci * 100, f_conf_level(conf_level)),
     event_free_rate_long = formatters::with_label(
-      event_free_rate_long * 100, paste0("Event Free Rate (", f_conf_level(conf_level), ")"))
+      event_free_rate_long * 100, paste0("Event Free Rate (", f_conf_level(conf_level), ")")
+    )
   )
 }
 
@@ -131,7 +132,8 @@ s_surv_timepoint_diff <- function(df,
         rate_diff = formatters::with_label("", "Difference in Event Free Rate"),
         rate_diff_ci = formatters::with_label("", f_conf_level(control$conf_level)),
         rate_diff_long = formatters::with_label(
-          "", paste0("Difference in Event Free Rate", f_conf_level(control$conf_level))),
+          "", paste0("Difference in Event Free Rate", f_conf_level(control$conf_level))
+        ),
         ztest_pval = formatters::with_label("", "p-value (Z-test)")
       )
     )
@@ -159,7 +161,8 @@ s_surv_timepoint_diff <- function(df,
     rate_diff = formatters::with_label(rate_diff, "Difference in Event Free Rate"),
     rate_diff_ci = formatters::with_label(rate_diff_ci, f_conf_level(control$conf_level)),
     rate_diff_long = formatters::with_label(
-      rate_diff_long, paste0("Difference in Event Free Rate", f_conf_level(control$conf_level))),
+      rate_diff_long, paste0("Difference in Event Free Rate", f_conf_level(control$conf_level))
+    ),
     ztest_pval = formatters::with_label(ztest_pval, "p-value (Z-test)")
   )
 }

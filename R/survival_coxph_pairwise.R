@@ -114,7 +114,8 @@ s_coxph_pairwise <- function(df,
     hr_ci = formatters::with_label(unname(sum_cox$conf.int[1, 3:4]), f_conf_level(conf_level)),
     hr_long = formatters::with_label(
       c(sum_cox$conf.int[1, 1], unname(sum_cox$conf.int[1, 3:4])),
-      paste0("Hazard Ratio (", f_conf_level(conf_level), ")")),
+      paste0("Hazard Ratio (", f_conf_level(conf_level), ")")
+    ),
     n_tot = formatters::with_label(sum_cox$n, "Total n"),
     n_tot_events = formatters::with_label(sum_cox$nevent, "Total events")
   )

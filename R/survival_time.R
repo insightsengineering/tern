@@ -103,9 +103,12 @@ s_surv_time <- function(df,
     range_event = formatters::with_label(range_event, "Range (event)"),
     range = formatters::with_label(range, "Range"),
     median_long = formatters::with_label(
-      c(unname(srv_tab["median"]),
-        unname(srv_tab[paste0(srv_fit$conf.int, c("LCL", "UCL"))])),
-        paste0("Median (", f_conf_level(conf_level), ")")),
+      c(
+        unname(srv_tab["median"]),
+        unname(srv_tab[paste0(srv_fit$conf.int, c("LCL", "UCL"))])
+      ),
+      paste0("Median (", f_conf_level(conf_level), ")")
+    ),
     quantiles_lower = formatters::with_label(
       unname(srv_qt_ci[[1]]), paste0(quantiles[1] * 100, "%-ile (", f_conf_level(conf_level), ")")
     ),
