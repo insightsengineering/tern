@@ -43,7 +43,7 @@ NULL
 #' * `s_surv_time()` returns the statistics:
 #'   * `median`: Median survival time.
 #'   * `median_ci`: Confidence interval for median time.
-#'   * `median_long`: Median with Confidence interval for median time.
+#'   * `median_long`: Median with confidence interval for median time.
 #'   * `quantiles`: Survival time for two specified quantiles.
 #'   * `quantiles_lower`: quantile with confidence interval for the first specified quantile.
 #'   * `quantiles_upper`: quantile with confidence interval for the second specified quantile.
