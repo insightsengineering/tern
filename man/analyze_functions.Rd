@@ -8,6 +8,7 @@ These functions are wrappers of \code{\link[rtables:analyze]{rtables::analyze()}
 to add an analysis to a given table layout:
 \itemize{
 \item \code{\link[=analyze_num_patients]{analyze_num_patients()}}
+\item \code{\link[=analyze_vars]{analyze_vars()}}
 \item \code{\link[=compare_vars]{compare_vars()}}
 \item \code{\link[=count_abnormal]{count_abnormal()}}
 \item \code{\link[=count_abnormal_by_baseline]{count_abnormal_by_baseline()}}
@@ -34,7 +35,6 @@ variables that are split into different columns. In comparison, \link{analyze_co
 leverage \code{analyze_colvars} to have the context split in rows and the analysis
 methods in columns.
 \item \code{\link[=summarize_change]{summarize_change()}}
-\item \code{\link[=analyze_vars]{analyze_vars()}}
 \item \code{\link[=surv_time]{surv_time()}}
 \item \code{\link[=surv_timepoint]{surv_timepoint()}}
 \item \code{\link[=test_proportion_diff]{test_proportion_diff()}}
@@ -42,7 +42,7 @@ methods in columns.
 }
 \seealso{
 \itemize{
-\item \link{summarize_functions} for functions which are wrappers for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 \item \link{analyze_colvars_functions} for functions that are wrappers for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
+\item \link{summarize_functions} for functions which are wrappers for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
 }
 }

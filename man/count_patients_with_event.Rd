@@ -111,7 +111,14 @@ the statistics from \code{s_count_patients_with_event()} to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-The primary analysis variable \code{.var} denotes the unique patient identifier.
+The analyze function \code{\link[=count_patients_with_event]{count_patients_with_event()}} creates a layout element to calculate patient counts for a
+user-specified set of events.
+
+This function analyzes primary analysis variable \code{vars} which indicates unique subject identifiers. Events
+are defined by the user as a named vector via the \code{filters} argument, where each name corresponds to a
+variable and each value is the value(s) that that variable takes for the event.
+
+If there are multiple records with the same event recorded for a patient, only one occurrence is counted.
 }
 \section{Functions}{
 \itemize{

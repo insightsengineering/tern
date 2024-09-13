@@ -2,8 +2,12 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Tabulate the estimated effects of multiple continuous biomarker variables
-#' on a binary response endpoint across population subgroups.
+#' The [tabulate_rsp_biomarkers()] function creates a layout element to tabulate the estimated biomarker effects on a
+#' binary response endpoint across subgroups, returning statistics including response rate and odds ratio for each
+#' population subgroup. The table is created from `df`, a list of data frames returned by [extract_rsp_biomarkers()],
+#' with the statistics to include specified via the `vars` parameter.
+#'
+#' A forest plot can be created from the resulting table using the [g_forest()] function.
 #'
 #' @inheritParams argument_convention
 #' @param df (`data.frame`)\cr containing all analysis variables, as returned by
@@ -191,7 +195,7 @@ extract_rsp_biomarkers <- function(variables,
   if ("strat" %in% names(variables)) {
     warning(
       "Warning: the `strat` element name of the `variables` list argument to `extract_rsp_biomarkers() ",
-      "was deprecated in tern 0.9.3.\n  ",
+      "was deprecated in tern 0.9.4.\n  ",
       "Please use the name `strata` instead of `strat` in the `variables` argument."
     )
     variables[["strata"]] <- variables[["strat"]]

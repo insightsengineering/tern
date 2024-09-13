@@ -1,12 +1,22 @@
-#' Number of patients
+#' Count number of patients
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Count the number of unique and non-unique patients in a column (variable).
+#' The analyze function [analyze_num_patients()] creates a layout element to count total numbers of unique or
+#' non-unique patients. The primary analysis variable `vars` is used to uniquely identify patients.
+#'
+#' The `count_by` variable can be used to identify non-unique patients such that the number of patients with a unique
+#' combination of values in `vars` and `count_by` will be returned instead as the `nonunique` statistic. The `required`
+#' variable can be used to specify a variable required to be non-missing for the record to be included in the counts.
+#'
+#' The summarize function [summarize_num_patients()] performs the same function as [analyze_num_patients()] except it
+#' creates content rows, not data rows, to summarize the current table row/column context and operates on the level of
+#' the latest row split or the root of the table if no row splits have occurred.
 #'
 #' @inheritParams argument_convention
-#' @param count_by (`vector`)\cr optional vector of any type to be combined with `x` when counting `nonunique`
-#'   records.
+#' @param required (`character` or `NULL`)\cr name of a variable that is required to be non-missing.
+#' @param count_by (`character` or `NULL`)\cr name of a variable to be combined with `vars` when counting
+#'   `nonunique` records.
 #' @param unique_count_suffix (`flag`)\cr whether the `"(n)"` suffix should be added to `unique_count` labels.
 #'   Defaults to `TRUE`.
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("summarize_num_patients")`
@@ -68,8 +78,6 @@ s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_su
 #' @describeIn summarize_num_patients Statistics function which counts the number of unique patients
 #'   in a column (variable), the corresponding percentage taken with respect to the total number of
 #'   patients, and the number of non-unique patients in the column.
-#'
-#' @param required (`character` or `NULL`)\cr optional, name of a variable that is required to be non-missing.
 #'
 #' @return
 #' * `s_num_patients_content()` returns the same values as `s_num_patients()`.
@@ -135,6 +143,16 @@ c_num_patients <- make_afun(
 #' * `summarize_num_patients()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
 #'   the statistics from `s_num_patients_content()` to the table layout.
+#'
+#' @examples
+#' # summarize_num_patients
+#' tbl <- basic_table() %>%
+#'   split_cols_by("ARM") %>%
+#'   split_rows_by("SEX") %>%
+#'   summarize_num_patients("USUBJID", .stats = "unique_count") %>%
+#'   build_table(df)
+#'
+#' tbl
 #'
 #' @export
 #' @order 3
@@ -209,9 +227,11 @@ summarize_num_patients <- function(lyt,
 #' df <- data.frame(
 #'   USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
 #'   ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
-#'   AGE = c(10, 15, 10, 17, 8, 11, 11, 19, 17)
+#'   AGE = c(10, 15, 10, 17, 8, 11, 11, 19, 17),
+#'   SEX = c("M", "M", "M", "F", "F", "F", "M", "F", "M")
 #' )
 #'
+#' # analyze_num_patients
 #' tbl <- basic_table() %>%
 #'   split_cols_by("ARM") %>%
 #'   add_colcounts() %>%

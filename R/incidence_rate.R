@@ -1,9 +1,11 @@
-#' Incidence rate
+#' Incidence rate estimation
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Estimate the event rate adjusted for person-years at risk, otherwise known
-#' as incidence rate. Primary analysis variable is the person-years at risk.
+#' The analyze function [estimate_incidence_rate()] creates a layout element to estimate an event rate adjusted for
+#' person-years at risk, otherwise known as incidence rate. The primary analysis variable specified via `vars` is
+#' the person-years at risk. In addition to this variable, the `n_events` variable for number of events observed (where
+#' a value of 1 means an event was observed and 0 means that no event was observed) must also be specified.
 #'
 #' @inheritParams argument_convention
 #' @param control (`list`)\cr parameters for estimation details, specified by using
@@ -33,6 +35,7 @@ NULL
 #'   - `n_events`: Total number of events observed.
 #'   - `rate`: Estimated incidence rate.
 #'   - `rate_ci`: Confidence interval for the incidence rate.
+#'   - `n_rate`: Total number of events observed & estimated incidence rate.
 #'
 #' @keywords internal
 s_incidence_rate <- function(df,
@@ -77,7 +80,11 @@ s_incidence_rate <- function(df,
     person_years = formatters::with_label(person_years, "Total patient-years at risk"),
     n_events = formatters::with_label(n_events, "Number of adverse events observed"),
     rate = formatters::with_label(result$rate, paste("AE rate per", num_pt_year, "patient-years")),
-    rate_ci = formatters::with_label(result$rate_ci, f_conf_level(conf_level))
+    rate_ci = formatters::with_label(result$rate_ci, f_conf_level(conf_level)),
+    n_rate = formatters::with_label(
+      c(n_events, result$rate),
+      paste("Number of adverse events observed (AE rate per", num_pt_year, "patient-years)")
+    )
   )
 }
 
@@ -94,7 +101,8 @@ a_incidence_rate <- make_afun(
     "person_years" = "xx.x",
     "n_events" = "xx",
     "rate" = "xx.xx",
-    "rate_ci" = "(xx.xx, xx.xx)"
+    "rate_ci" = "(xx.xx, xx.xx)",
+    "n_rate" = "xx (xx.x)"
   )
 )
 
@@ -142,7 +150,7 @@ estimate_incidence_rate <- function(lyt,
                                     ...,
                                     show_labels = "hidden",
                                     table_names = vars,
-                                    .stats = NULL,
+                                    .stats = c("person_years", "n_events", "rate", "rate_ci"),
                                     .formats = NULL,
                                     .labels = NULL,
                                     .indent_mods = NULL) {
@@ -172,17 +180,9 @@ estimate_incidence_rate <- function(lyt,
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' @param control (`list`)\cr parameters for estimation details, specified by using
-#'   the helper function [control_incidence_rate()]. Possible parameter options are:
-#'   * `conf_level`: (`proportion`)\cr confidence level for the estimated incidence rate.
-#'   * `conf_type`: (`string`)\cr `normal` (default), `normal_log`, `exact`, or `byar`
-#'     for confidence interval type.
-#'   * `input_time_unit`: (`string`)\cr `day`, `week`, `month`, or `year` (default)
-#'     indicating time unit for data input.
-#'   * `num_pt_year`: (`numeric`)\cr time unit for desired output (in person-years).
+#' @inheritParams incidence_rate
 #' @param person_years (`numeric(1)`)\cr total person-years at risk.
 #' @param alpha (`numeric(1)`)\cr two-sided alpha-level for confidence interval.
-#' @param n_events (`integer(1)`)\cr number of events observed.
 #'
 #' @return Estimated incidence rate, `rate`, and associated confidence interval, `rate_ci`.
 #'

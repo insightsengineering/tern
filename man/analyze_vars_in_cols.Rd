@@ -2,7 +2,7 @@
 % Please edit documentation in R/analyze_vars_in_cols.R
 \name{analyze_vars_in_cols}
 \alias{analyze_vars_in_cols}
-\title{Summarize numeric variables in columns}
+\title{Analyze numeric variables in columns}
 \usage{
 analyze_vars_in_cols(
   lyt,
@@ -85,21 +85,21 @@ in columns, and add it to the table layout.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Layout-creating function which can be used for creating column-wise summary tables.
-This function sets the analysis methods as column labels and is a wrapper for
-\code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}. It was designed principally for PK tables.
+The layout-creating function \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}} creates a layout element to generate a column-wise
+analysis table.
+
+This function sets the analysis methods as column labels and is a wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}.
+It was designed principally for PK tables.
 }
 \note{
-This is an experimental implementation of \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}} and
-\code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}} that may be subjected to changes as \code{rtables} extends its
-support to more complex analysis pipelines on the column space. For the same reasons,
-we encourage to read the examples carefully and file issues for cases that differ from
-them.
-
-Here \code{labelstr} behaves differently than usual. If it is not defined (default as \code{NULL}),
-row labels are assigned automatically to the split values in case of \code{rtables::analyze_colvars}
-(\code{do_summarize_row_groups = FALSE}, the default), and to the group label for
-\code{do_summarize_row_groups = TRUE}.
+\itemize{
+\item This is an experimental implementation of \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}} and \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}
+that may be subjected to changes as \code{rtables} extends its support to more complex analysis pipelines in the
+column space. We encourage users to read the examples carefully and file issues for different use cases.
+\item In this function, \code{labelstr} behaves atypically. If \code{labelstr = NULL} (the default), row labels are assigned
+automatically as the split values if \code{do_summarize_row_groups = FALSE} (the default), and as the group label
+if \code{do_summarize_row_groups = TRUE}.
+}
 }
 \examples{
 library(dplyr)

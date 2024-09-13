@@ -328,7 +328,7 @@ h_odds_ratio_subgroups_df <- function(variables,
   if ("strat" %in% names(variables)) {
     warning(
       "Warning: the `strat` element name of the `variables` list argument to `h_odds_ratio_subgroups_df() ",
-      "was deprecated in tern 0.9.3.\n  ",
+      "was deprecated in tern 0.9.4.\n  ",
       "Please use the name `strata` instead of `strat` in the `variables` argument."
     )
     variables[["strata"]] <- variables[["strat"]]

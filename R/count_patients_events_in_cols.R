@@ -1,9 +1,15 @@
-#' Count patients and events in columns
+#' Count patient events in columns
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Counting the number of unique patients and the total number of all and specific events
-#' when a column table layout is required.
+#' The summarize function [summarize_patients_events_in_cols()] creates a layout element to summarize patient
+#' event counts in columns.
+#'
+#' This function analyzes the elements (events) supplied via the `filters_list` parameter and returns a row
+#' with counts of number of patients for each event as well as the total numbers of patients and events.
+#' The `id` variable is used to indicate unique subject identifiers (defaults to `USUBJID`).
+#'
+#' If there are multiple occurrences of the same event recorded for a patient, the event is only counted once.
 #'
 #' @inheritParams argument_convention
 #' @param filters_list (named `list` of `character`)\cr list where each element in this list describes one

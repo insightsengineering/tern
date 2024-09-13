@@ -31,7 +31,6 @@
 #' @param conf_level (`proportion`)\cr confidence level of the interval.
 #' @param data (`data.frame`)\cr the dataset containing the variables to summarize.
 #' @param df (`data.frame`)\cr data set containing all analysis variables.
-#' @param draw (`flag`)\cr whether the plot should be drawn.
 #' @param groups_lists (named `list` of `list`)\cr optionally contains for each `subgroups` variable a
 #'   list, which specifies the new group levels via the names and the
 #'   levels that belong to it in the character vectors that are elements of the list.
@@ -43,14 +42,12 @@
 #'   for more information.
 #' @param lyt (`PreDataTableLayouts`)\cr layout that analyses will be added to.
 #' @param method (`string` or `NULL`)\cr specifies the test used to calculate the p-value for the difference between
-#'   two proportions. For options, see [s_test_proportion_diff()]. Default is `NULL` so no test is performed.
+#'   two proportions. For options, see [test_proportion_diff()]. Default is `NULL` so no test is performed.
 #' @param na.rm (`flag`)\cr whether `NA` values should be removed from `x` prior to analysis.
 #' @param na_str (`string`)\cr string used to replace all `NA` or empty values in the output.
 #' @param nested (`flag`)\cr whether this layout instruction should be applied within the existing layout structure _if
 #'   possible (`TRUE`, the default) or as a new top-level element (`FALSE`). Ignored if it would nest a split.
 #'   underneath analyses, which is not allowed.
-#' @param newpage (`flag`)\cr whether the plot should be drawn on a new page.
-#'   Only considered if `draw = TRUE` is used.
 #' @param prune_zero_rows (`flag`)\cr whether to prune all zero rows.
 #' @param riskdiff (`flag`)\cr whether a risk difference column is present. When set to `TRUE`, [add_riskdiff()] must be
 #'   used as `split_fun` in the prior column split of the table layout, specifying which columns should be compared.
@@ -71,7 +68,6 @@
 #'   If `NULL` (default), the default scale range is used.
 #' @param ylim (`numeric(2)`)\cr vector containing lower and upper limits for the y-axis, respectively.
 #'   If `NULL` (default), the default scale range is used.
-#'
 #'
 #' @details Although this function just returns `NULL` it has two uses, for
 #'   the `tern` users it provides a documentation of arguments that are

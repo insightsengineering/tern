@@ -4,7 +4,7 @@
 \alias{summarize_ancova}
 \alias{s_ancova}
 \alias{a_ancova}
-\title{Summary for analysis of covariance (ANCOVA).}
+\title{Summarize analysis of covariance (ANCOVA) results}
 \usage{
 summarize_ancova(
   lyt,
@@ -64,8 +64,8 @@ interaction terms indicated by \code{"X1 * X2"}.
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
-\item{interaction_y}{(\code{string} or \code{flag})\cr a selected item inside of the interaction_item column which will be used
-to select the specific ANCOVA results. if the interaction is not needed, the default option is \code{FALSE}.}
+\item{interaction_y}{(\code{string} or \code{flag})\cr a selected item inside of the \code{interaction_item} variable which will be
+used to select the specific ANCOVA results. if the interaction is not needed, the default option is \code{FALSE}.}
 
 \item{interaction_item}{(\code{string} or \code{NULL})\cr name of the variable that should have interactions
 with arm. if the interaction is not needed, the default option is \code{NULL}.}
@@ -134,8 +134,16 @@ to the reference group.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Summarize results of ANCOVA. This can be used to analyze multiple endpoints and/or
-multiple timepoints within the same response variable \code{.var}.
+The analyze function \code{\link[=summarize_ancova]{summarize_ancova()}} creates a layout element to summarize ANCOVA results.
+
+This function can be used to analyze multiple endpoints and/or multiple timepoints within the response variable(s)
+specified as \code{vars}.
+
+Additional variables for the analysis, namely an arm (grouping) variable and covariate variables, can be defined
+via the \code{variables} argument. See below for more details on how to specify \code{variables}. An interaction term can
+be implemented in the model if needed. The interaction variable that should interact with the arm variable is
+specified via the \code{interaction_term} parameter, and the specific value of \code{interaction_term} for which to extract
+the ANCOVA results via the \code{interaction_y} parameter.
 }
 \section{Functions}{
 \itemize{

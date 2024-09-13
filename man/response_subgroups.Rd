@@ -29,7 +29,7 @@ a_response_subgroups(
 \arguments{
 \item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
-\item{df}{(\code{list})\cr of data frames containing all analysis variables. List should be
+\item{df}{(\code{list})\cr a list of data frames containing all analysis variables. List should be
 created using \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}.}
 
 \item{vars}{(\code{character})\cr the names of statistics to be reported among:
@@ -70,7 +70,12 @@ An \code{rtables} table summarizing binary response by subgroup.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Tabulate statistics such as response rate and odds ratio for population subgroups.
+The \code{\link[=tabulate_rsp_subgroups]{tabulate_rsp_subgroups()}} function creates a layout element to tabulate binary response by subgroup, returning
+statistics including response rate and odds ratio for each population subgroup. The table is created from \code{df}, a
+list of data frames returned by \code{\link[=extract_rsp_subgroups]{extract_rsp_subgroups()}}, with the statistics to include specified via the \code{vars}
+parameter.
+
+A forest plot can be created from the resulting table using the \code{\link[=g_forest]{g_forest()}} function.
 }
 \details{
 These functions create a layout starting from a data frame which contains

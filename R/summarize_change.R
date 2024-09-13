@@ -1,10 +1,14 @@
-#' Summarize the change from baseline or absolute baseline values
+#' Summarize change from baseline values or absolute baseline values
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' The primary analysis variable `.var` indicates the numerical change from baseline results,
-#' and additional required secondary analysis variables are `value` and `baseline_flag`.
-#' Depending on the baseline flag, either the absolute baseline values (at baseline)
+#' The analyze function [summarize_change()] creates a layout element to summarize the change from baseline or absolute
+#' baseline values. The primary analysis variable `vars` indicates the numerical change from baseline results.
+#'
+#' Required secondary analysis variables `value` and `baseline_flag` can be supplied to the function via
+#' the `variables` argument. The `value` element should be the name of the analysis value variable, and the
+#' `baseline_flag` element should be the name of the flag variable that indicates whether or not records contain
+#' baseline values. Depending on the baseline flag given, either the absolute baseline values (at baseline)
 #' or the change from baseline values (post-baseline) are then summarized.
 #'
 #' @inheritParams argument_convention

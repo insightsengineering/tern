@@ -51,8 +51,6 @@ that constitute the split. A custom label can be set for this level via the \cod
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{draw}{(\code{flag})\cr whether the plot should be drawn.}
-
 \item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a
 list, which specifies the new group levels via the names and the
 levels that belong to it in the character vectors that are elements of the list.}
@@ -70,7 +68,7 @@ for more information.}
 \item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{method}{(\code{string} or \code{NULL})\cr specifies the test used to calculate the p-value for the difference between
-two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_proportion_diff()}}. Default is \code{NULL} so no test is performed.}
+two proportions. For options, see \code{\link[=test_proportion_diff]{test_proportion_diff()}}. Default is \code{NULL} so no test is performed.}
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
@@ -79,9 +77,6 @@ two proportions. For options, see \code{\link[=s_test_proportion_diff]{s_test_pr
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
 possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
-
-\item{newpage}{(\code{flag})\cr whether the plot should be drawn on a new page.
-Only considered if \code{draw = TRUE} is used.}
 
 \item{prune_zero_rows}{(\code{flag})\cr whether to prune all zero rows.}
 
