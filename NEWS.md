@@ -8,7 +8,6 @@
 * Added `n_rate` statistic as a non-default option to `estimate_incidence_rate` which returns both number of events observed and estimated incidence rate.
 * Added `fraction` statistic to the `analyze_var_count` method group.
 
-
 ### Bug Fixes
 * Fixed a bug in `a_surv_time` that threw an error when split only has `"is_event"`.
 * Added defaults for `d_count_cumulative` parameters as described in the documentation.
