@@ -310,6 +310,10 @@ s_summary.factor <- function(x,
       c(x, ifelse(dn > 0, x / dn, 0))
     }
   )
+  y$fraction <- lapply(
+    y$count,
+    function(count) c("num" = count, "denom" = dn)
+  )
 
   y$n_blq <- sum(grepl("BLQ|LTR|<[1-9]|<PCLLOQ", x))
 

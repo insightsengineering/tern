@@ -628,6 +628,20 @@
       [1] 4.0000000 0.4444444
       
       
+      $fraction
+      $fraction$Female
+        num denom 
+          2     9 
+      
+      $fraction$Male
+        num denom 
+          3     9 
+      
+      $fraction$Unknown
+        num denom 
+          4     9 
+      
+      
       $n_blq
       [1] 0
       
@@ -668,6 +682,24 @@
       [1] 1.0000000 0.1428571
       
       
+      $fraction
+      $fraction$Female
+        num denom 
+          2     7 
+      
+      $fraction$Male
+        num denom 
+          2     7 
+      
+      $fraction$Unknown
+        num denom 
+          2     7 
+      
+      $fraction$`NA`
+        num denom 
+          1     7 
+      
+      
       $n_blq
       [1] 0
       
@@ -700,6 +732,20 @@
       
       $count_fraction$Unknown
       [1] 4.0000000 0.4444444
+      
+      
+      $fraction
+      $fraction$Female
+        num denom 
+          2     9 
+      
+      $fraction$Male
+        num denom 
+          3     9 
+      
+      $fraction$Unknown
+        num denom 
+          4     9 
       
       
       $n_blq
@@ -736,6 +782,20 @@
       [1] 0 0
       
       
+      $fraction
+      $fraction$a
+        num denom 
+          0     0 
+      
+      $fraction$b
+        num denom 
+          0     0 
+      
+      $fraction$c
+        num denom 
+          0     0 
+      
+      
       $n_blq
       [1] 0
       
@@ -770,6 +830,20 @@
       [1] 4.0 0.2
       
       
+      $fraction
+      $fraction$Female
+        num denom 
+          2    20 
+      
+      $fraction$Male
+        num denom 
+          3    20 
+      
+      $fraction$Unknown
+        num denom 
+          4    20 
+      
+      
       $n_blq
       [1] 0
       
@@ -802,6 +876,20 @@
       
       $count_fraction$Unknown
       [1] 4.0000000 0.1333333
+      
+      
+      $fraction
+      $fraction$Female
+        num denom 
+          2    30 
+      
+      $fraction$Male
+        num denom 
+          3    30 
+      
+      $fraction$Unknown
+        num denom 
+          4    30 
       
       
       $n_blq
@@ -842,6 +930,24 @@
       
       $count_fraction$`NA`
       [1] 1.0 0.1
+      
+      
+      $fraction
+      $fraction$Female
+        num denom 
+          2    10 
+      
+      $fraction$Male
+        num denom 
+          3    10 
+      
+      $fraction$Unknown
+        num denom 
+          4    10 
+      
+      $fraction$`NA`
+        num denom 
+          1    10 
       
       
       $n_blq
@@ -971,7 +1077,10 @@
       8         a      3 (60.0%)          0         a
       9         b      1 (20.0%)          0         b
       10        c      1 (20.0%)          0         c
-      11    n_blq              0          0     n_blq
+      11        a    3/5 (60.0%)          0         a
+      12        b    1/5 (20.0%)          0         b
+      13        c    1/5 (20.0%)          0         c
+      14    n_blq              0          0     n_blq
 
 ---
 
@@ -991,7 +1100,10 @@
       8         A      2 (50.0%)          0         A
       9         B      1 (25.0%)          0         B
       10        C      1 (25.0%)          0         C
-      11    n_blq              0          0     n_blq
+      11        A    2/4 (50.0%)          0         A
+      12        B    1/4 (25.0%)          0         B
+      13        C    1/4 (25.0%)          0         C
+      14    n_blq              0          0     n_blq
 
 ---
 
@@ -1005,7 +1117,8 @@
       2          count              3          0          count
       3 count_fraction        3 (60%)          0 count_fraction
       4 count_fraction      3 (60.0%)          0 count_fraction
-      5          n_blq              0          0          n_blq
+      5       fraction                         0       fraction
+      6          n_blq              0          0          n_blq
 
 # a_summary works with custom input.
 
@@ -1039,7 +1152,11 @@
       11                 b      1 (20.0%)          0                 b
       12                 c      1 (20.0%)          0                 c
       13                NA      1 (20.0%)          0                NA
-      14             n_blq              0          0             n_blq
+      14                 a    2/5 (40.0%)          0                 a
+      15                 b    1/5 (20.0%)          0                 b
+      16                 c    1/5 (20.0%)          0                 c
+      17                NA    1/5 (20.0%)          0                NA
+      18             n_blq              0          0             n_blq
 
 # a_summary works with healthy input when compare = TRUE.
 
@@ -1093,8 +1210,11 @@
       8                           a      3 (60.0%)          0                          a
       9                           b      1 (20.0%)          0                          b
       10                          c      1 (20.0%)          0                          c
-      11                      n_blq              0          0                      n_blq
-      12 p-value (chi-squared test)         0.9560          0 p-value (chi-squared test)
+      11                          a    3/5 (60.0%)          0                          a
+      12                          b    1/5 (20.0%)          0                          b
+      13                          c    1/5 (20.0%)          0                          c
+      14                      n_blq              0          0                      n_blq
+      15 p-value (chi-squared test)         0.9560          0 p-value (chi-squared test)
 
 ---
 
@@ -1114,8 +1234,11 @@
       8                           A      2 (50.0%)          0                          A
       9                           B      1 (25.0%)          0                          B
       10                          C      1 (25.0%)          0                          C
-      11                      n_blq              0          0                      n_blq
-      12 p-value (chi-squared test)         0.9074          0 p-value (chi-squared test)
+      11                          A    2/4 (50.0%)          0                          A
+      12                          B    1/4 (25.0%)          0                          B
+      13                          C    1/4 (25.0%)          0                          C
+      14                      n_blq              0          0                      n_blq
+      15 p-value (chi-squared test)         0.9074          0 p-value (chi-squared test)
 
 ---
 
@@ -1129,8 +1252,9 @@
       2                      count              3          0                      count
       3             count_fraction        3 (60%)          0             count_fraction
       4             count_fraction      3 (60.0%)          0             count_fraction
-      5                      n_blq              0          0                      n_blq
-      6 p-value (chi-squared test)         0.8091          0 p-value (chi-squared test)
+      5                   fraction                         0                   fraction
+      6                      n_blq              0          0                      n_blq
+      7 p-value (chi-squared test)         0.8091          0 p-value (chi-squared test)
 
 # a_summary works with custom input when compare = TRUE.
 
@@ -1164,8 +1288,12 @@
       11                          b      1 (20.0%)          0                          b
       12                          c      1 (20.0%)          0                          c
       13                         NA      1 (20.0%)          0                         NA
-      14                      n_blq              0          0                      n_blq
-      15 p-value (chi-squared test)         0.8254          0 p-value (chi-squared test)
+      14                          a    2/5 (40.0%)          0                          a
+      15                          b    1/5 (20.0%)          0                          b
+      16                          c    1/5 (20.0%)          0                          c
+      17                         NA    1/5 (20.0%)          0                         NA
+      18                      n_blq              0          0                      n_blq
+      19 p-value (chi-squared test)         0.8254          0 p-value (chi-squared test)
 
 # `analyze_vars` works with healthy input, default `na.rm = TRUE`.
 
