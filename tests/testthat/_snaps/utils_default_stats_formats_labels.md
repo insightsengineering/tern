@@ -20,7 +20,7 @@
     Output
       [1] "n"                       "count"                  
       [3] "count_fraction"          "count_fraction_fixed_dp"
-      [5] "n_blq"                  
+      [5] "fraction"                "n_blq"                  
 
 ---
 
@@ -138,6 +138,8 @@
                                "n"                      "count" 
                     count_fraction      count_fraction_fixed_dp 
                   "count_fraction"             "count_fraction" 
-                             n_blq                  pval_counts 
-                           "n_blq" "p-value (chi-squared test)" 
+                          fraction                        n_blq 
+                        "fraction"                      "n_blq" 
+                       pval_counts 
+      "p-value (chi-squared test)" 
 

@@ -21,8 +21,8 @@
     Code
       res
     Output
-      [1] "n"              "count"          "count_fraction" "n_blq"         
-      [5] "pval_counts"   
+      [1] "n"              "count"          "count_fraction" "fraction"      
+      [5] "n_blq"          "pval_counts"   
 
 ---
 
@@ -73,6 +73,20 @@
       
       $count_fraction$c
       [1] 1.0 0.2
+      
+      
+      $fraction
+      $fraction$a
+        num denom 
+          3     5 
+      
+      $fraction$b
+        num denom 
+          1     5 
+      
+      $fraction$c
+        num denom 
+          1     5 
       
       
       $n_blq

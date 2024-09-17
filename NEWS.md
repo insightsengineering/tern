@@ -6,6 +6,8 @@
 * Added the `riskdiff` argument to `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` to allow users to add a risk difference table column, and function `control_riskdiff` to specify settings for the risk difference column.
 * Added warning to `tabulate_rsp_subgroups` when `pval` statistic is selected but `df` has not been correctly generated to add p-values to the output table.
 * Added `n_rate` statistic as a non-default option to `estimate_incidence_rate` which returns both number of events observed and estimated incidence rate.
+* Added `fraction` statistic to the `analyze_var_count` method group.
+
 
 ### Bug Fixes
 * Fixed a bug in `a_surv_time` that threw an error when split only has `"is_event"`.
