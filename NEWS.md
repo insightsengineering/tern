@@ -1,4 +1,4 @@
-# tern 0.9.5.9022
+# tern 0.9.5.9026
 ### Enhancements
 * Added `errorbar_width` and `linetype` parameters to `g_lineplot`.
 * Reworking of `summarize_glm_count()` documentation and all its associated functions to better describe the results and the functions' purpose.
@@ -8,6 +8,7 @@
 * Added `n_rate` statistic as a non-default option to `estimate_incidence_rate` which returns both number of events observed and estimated incidence rate.
 * Added `n_unique` statistic as a non-default option to `estimate_incidence_rate` which returns total number of patients with at least one event observed.
 * Refactored `estimate_incidence_rate` to work as both an analyze function and a summarize function, controlled by the added `summarize` parameter. When `summarize = TRUE`, labels can be fine-tuned via the new `label_fmt` argument to the same function.
+* Added `fraction` statistic to the `analyze_var_count` method group.
 
 ### Bug Fixes
 * Fixed a bug in `a_surv_time` that threw an error when split only has `"is_event"`.

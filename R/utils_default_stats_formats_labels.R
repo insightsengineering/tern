@@ -368,7 +368,7 @@ tern_default_stats <- list(
   abnormal_by_worst_grade = c("count_fraction", "count_fraction_fixed_dp"),
   abnormal_by_worst_grade_worsen = c("fraction"),
   analyze_patients_exposure_in_cols = c("n_patients", "sum_exposure"),
-  analyze_vars_counts = c("n", "count", "count_fraction", "count_fraction_fixed_dp", "n_blq"),
+  analyze_vars_counts = c("n", "count", "count_fraction", "count_fraction_fixed_dp", "fraction", "n_blq"),
   analyze_vars_numeric = c(
     "n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci", "mean_sei", "mean_sdi", "mean_pval",
     "median", "mad", "median_ci", "quantiles", "iqr", "range", "min", "max", "median_range", "cv",
