@@ -63,7 +63,8 @@ Suggests:
     testthat (>= 3.1.9),
     withr (>= 2.0.0)
 VignetteBuilder:
-    knitr
+    knitr,
+    rmarkdown
 RdMacros:
     lifecycle,
     Rdpack
