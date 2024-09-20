@@ -69,7 +69,7 @@ data visualizations helper functions:
 - ...
 
 
-The reference of `tern` functions is available on [the tern website functions reference](https://insightsengineering.github.io/tern/main/reference/index.html).
+The reference of `tern` functions is available on [the tern website functions reference](https://insightsengineering.github.io/tern/latest-tag/reference/index.html).
 
 ---------
 
@@ -82,7 +82,7 @@ The table layout is materialized with the `rtables::build_table` function and th
 The `tern` analytical functions are wrappers around the `rtables::analyze` function; they offer various methods useful from the perspective of clinical trials and other statistical projects.
 
 Examples of the `tern` analytical functions are `count_occurrences`, `summarize_ancova` and `analyze_vars`.
-As there is no one prefix to identify all `tern` analytical functions it is recommended to use the reference subsection on [the tern website](https://insightsengineering.github.io/tern/main/reference/index.html).
+As there is no one prefix to identify all `tern` analytical functions it is recommended to use the reference subsection on [the tern website](https://insightsengineering.github.io/tern/latest-tag/reference/index.html).
 
 In the `rtables` code below we first describe the two tables and assign the descriptions to the variables `lyt` and `lyt2`. We then built the tables using the actual data with `rtables::build_table`. The description of a table is called a table **layout**. The **analyze instruction** adds to the layout that the `ARM` variable should be analyzed with the `mean` analysis function and the result should be rounded to 1 decimal place.
 Hence, a **layout** is “pre-data”; that is, it’s a description of **how to build a table once we get data**.
