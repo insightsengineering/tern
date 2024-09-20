@@ -6,6 +6,8 @@
 * Added the `riskdiff` argument to `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` to allow users to add a risk difference table column, and function `control_riskdiff` to specify settings for the risk difference column.
 * Added warning to `tabulate_rsp_subgroups` when `pval` statistic is selected but `df` has not been correctly generated to add p-values to the output table.
 * Added `n_rate` statistic as a non-default option to `estimate_incidence_rate` which returns both number of events observed and estimated incidence rate.
+* Added `n_unique` statistic as a non-default option to `estimate_incidence_rate` which returns total number of patients with at least one event observed.
+* Refactored `estimate_incidence_rate` to work as both an analyze function and a summarize function, controlled by the added `summarize` parameter. When `summarize = TRUE`, labels can be fine-tuned via the new `label_fmt` argument to the same function.
 * Added `fraction` statistic to the `analyze_var_count` method group.
 
 ### Bug Fixes
@@ -23,6 +25,7 @@
 * Began deprecation of the confusing functions `summary_formats` and `summary_labels`.
 * Enhanced general descriptions of analyze and summarize functions throughout package documentation.
 * Finalized deprecation of the `strata` and `cohort_id` arguments to `g_lineplot`.
+* Moved incidence rate helper functions into a separate `h_incidence_rate.R` file.
 
 # tern 0.9.5
 
