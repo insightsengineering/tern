@@ -63,10 +63,12 @@ s_incidence_rate <- function(df,
                              id_var = "USUBJID",
                              control = control_incidence_rate()) {
   if (lifecycle::is_present(is_event)) {
+    checkmate::assert_string(is_event)
     lifecycle::deprecate_warn(
       "0.9.6", "s_incidence_rate(is_event)", "s_incidence_rate(n_events)"
     )
-    n_events <- as.numeric(is_event)
+    n_events <- is_event
+    df[[n_events]] <- as.numeric(df[[is_event]])
   }
 
   assert_df_with_variables(df, list(tte = .var, n_events = n_events))
