@@ -76,7 +76,7 @@ s_incidence_rate <- function(df,
   checkmate::assert_numeric(df[[.var]], any.missing = FALSE)
   checkmate::assert_integerish(df[[n_events]], any.missing = FALSE)
 
-  n_unique <- n_available(unique(df[[id_var]][df$n_events == 1]))
+  n_unique <- n_available(unique(df[[id_var]][df[[n_events]] == 1]))
   input_time_unit <- control$input_time_unit
   num_pt_year <- control$num_pt_year
   conf_level <- control$conf_level
