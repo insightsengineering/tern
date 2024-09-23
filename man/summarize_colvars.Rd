@@ -42,7 +42,7 @@ in columns, and add it to the table layout.
 
 The analyze function \code{\link[=summarize_colvars]{summarize_colvars()}} uses the statistics function \code{\link[=s_summary]{s_summary()}} to analyze variables that are
 arranged in columns. The variables to analyze should be specified in the table layout via column splits (see
-\code{\link[=split_cols_by]{split_cols_by()}} and \code{\link[=split_cols_by_multivar]{split_cols_by_multivar()}}) prior to using \code{\link[=summarize_colvars]{summarize_colvars()}}.
+\code{\link[rtables:split_cols_by]{rtables::split_cols_by()}} and \code{\link[rtables:split_cols_by_multivar]{rtables::split_cols_by_multivar()}}) prior to using \code{\link[=summarize_colvars]{summarize_colvars()}}.
 
 The function is a minimal wrapper for \code{\link[rtables:analyze_colvars]{rtables::analyze_colvars()}}, a function typically used to apply different
 analysis methods in rows for each column variable. To use the analysis methods as column labels, please refer to

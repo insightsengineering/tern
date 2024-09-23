@@ -170,7 +170,7 @@ afun_riskdiff <- function(df,
 #'
 #' @inheritParams add_riskdiff
 #' @param format (`string` or `function`)\cr the format label (string) or formatting function to apply to the risk
-#'   difference statistic. See the `3d` string options in [list_valid_format_labels()] for possible format strings.
+#'   difference statistic. See the `3d` string options in [formatters::list_valid_format_labels()] for possible format strings.
 #'   Defaults to `"xx.x (xx.x - xx.x)"`.
 #'
 #' @return A `list` of items with names corresponding to the arguments.
