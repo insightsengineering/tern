@@ -5,7 +5,6 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="tern">
 <title>Introduction to tern • tern</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
@@ -15,26 +14,21 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to tern">
-<meta property="og:description" content="tern">
-<meta property="og:image" content="https://insightsengineering.github.io/tern/logo.png">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--><link rel="stylesheet" href="../consent.css">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to tern">
+<link rel="stylesheet" href="../consent.css">
 <script src="../consent.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.6</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,23 +37,18 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="active nav-item">
-  <a class="nav-link" href="../articles/tern.html">Get started</a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
+<li class="active nav-item"><a class="nav-link" href="../articles/tern.html">Get started</a></li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a>
-    <a class="dropdown-item" href="../articles/tables.html">Tabulation</a>
-    <a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a></li>
+    <li><a class="dropdown-item" href="../articles/tables.html">Tabulation</a></li>
+    <li><a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a></li>
+  </ul>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
+<li class="nav-item dropdown">
 <!-- start dropdown for versions --> <li class="nav-item dropdown">
         <a href="#" class="nav-link dropdown-toggle"
           data-bs-toggle="dropdown" role="button"
@@ -77,6 +66,7 @@
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc2">v0.8.2-rc2</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.2-rc1">v0.8.2-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.5">v0.9.5</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.4">v0.9.4</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.3">v0.9.3</a>
@@ -90,29 +80,23 @@
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.8.0">v0.8.0</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a> </div></li>
 <!-- end dropdown for versions -->
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-reports">Reports</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-reports">
-    <a class="dropdown-item" href="../coverage-report/">Coverage report</a>
-    <a class="dropdown-item" href="../unit-test-report/">Unit test report</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-reports" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Reports</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-reports">
+<li><a class="dropdown-item" href="../coverage-report/">Coverage report</a></li>
+    <li><a class="dropdown-item" href="../unit-test-report/">Unit test report</a></li>
+    <li><a class="dropdown-item" href="../unit-test-report-non-cran/">Non-CRAN unit test report</a></li>
+  </ul>
 </li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/insightsengineering/tern">
-    <span class="fa fa-github"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/insightsengineering/tern"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article">
 
@@ -125,7 +109,7 @@
             
             <h4 data-toc-skip class="date">2022-03-09</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/HEAD/vignettes/tern.Rmd" class="external-link"><code>vignettes/tern.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.6/vignettes/tern.Rmd" class="external-link"><code>vignettes/tern.Rmd</code></a></small>
       <div class="d-none name"><code>tern.Rmd</code></div>
     </div>
 
@@ -142,7 +126,7 @@ trials and other statistical analysis. The main focus is on the clinical
 trial reporting tables but the graphs related to the clinical trials are
 also valuable. The core functionality for tabulation is built on top of
 the more general purpose <code>rtables</code> package.</p>
-<p><a href="https://insightsengineering.github.io/rtables/main/articles/introduction.html" class="external-link"><strong>It
+<p><a href="https://insightsengineering.github.io/rtables/latest-tag/articles/rtables.html" class="external-link"><strong>It
 is strongly recommended that you start by reading the “Introduction to
 <code>rtables</code>” vignette to get familiar with the concept of
 <code>rtables</code>.</strong></a></p>
@@ -184,7 +168,7 @@ functions:</p>
 titles, footnotes, page number, etc.</li>
 <li>…</li>
 </ul>
-<p>The reference of <code>tern</code> functions is available on <a href="https://insightsengineering.github.io/tern/main/reference/index.html">the
+<p>The reference of <code>tern</code> functions is available on <a href="https://insightsengineering.github.io/tern/latest-tag/reference/index.html">the
 tern website functions reference</a>.</p>
 <hr>
 </div>
@@ -205,7 +189,7 @@ projects.</p>
 <code>count_occurrences</code>, <code>summarize_ancova</code> and
 <code>analyze_vars</code>. As there is no one prefix to identify all
 <code>tern</code> analytical functions it is recommended to use the
-reference subsection on <a href="https://insightsengineering.github.io/tern/main/reference/index.html">the
+reference subsection on <a href="https://insightsengineering.github.io/tern/latest-tag/reference/index.html">the
 tern website</a>.</p>
 <p>In the <code>rtables</code> code below we first describe the two
 tables and assign the descriptions to the variables <code>lyt</code> and
@@ -251,9 +235,8 @@ and the result should be rounded to 1 decimal place. Hence, a
 <span><span class="co">#&gt; END OF INDUCTION                                          </span></span>
 <span><span class="co">#&gt;   mean                1.7         2.1            1.6      </span></span>
 <span><span class="co">#&gt; FOLLOW UP                                                 </span></span>
-<span><span class="co">#&gt;   mean                2.2         2.9            2.0</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">rtables</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt2</span>, df <span class="op">=</span> <span class="va">adrs</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   mean                2.2         2.9            2.0</span></span>
+<span><span class="fu">rtables</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">lyt2</span>, df <span class="op">=</span> <span class="va">adrs</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                     A: Drug X      B: Placebo    C: Combination</span></span>
 <span><span class="co">#&gt; ———————————————————————————————————————————————————————————————</span></span>
 <span><span class="co">#&gt; SCREENING                                                      </span></span>
@@ -291,23 +274,23 @@ in the <code>Tabulation</code> vignette.</strong></p>
 trial reporting. The <code>tern</code> plot functions return
 <code>ggplot2</code> or <code>gTree</code> objects, the latter is
 returned when a table is attached to the plot.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu">formatters</span><span class="fu">::</span><span class="va"><a href="https://insightsengineering.github.io/formatters/latest-tag/reference/cdisc_data.html" class="external-link">ex_adsl</a></span></span>
 <span><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="fu">formatters</span><span class="fu">::</span><span class="va"><a href="https://insightsengineering.github.io/formatters/latest-tag/reference/cdisc_data.html" class="external-link">ex_adlb</a></span></span>
 <span><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adlb</span>, <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"ALT"</span>, <span class="va">AVISIT</span> <span class="op">!=</span> <span class="st">"SCREENING"</span><span class="op">)</span></span></code></pre></div>
 <p>The optional <code>nestcolor</code> package can be loaded in to apply
 the standardized NEST color palette to all <code>tern</code> plots.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://insightsengineering.github.io/nestcolor/" class="external-link">nestcolor</a></span><span class="op">)</span></span></code></pre></div>
 <p>Line plot without a table generated by the <code>g_lineplot</code>
 function.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Mean with CI</span></span>
 <span><span class="fu"><a href="../reference/g_lineplot.html">g_lineplot</a></span><span class="op">(</span><span class="va">adlb</span>, <span class="va">adsl</span>, subtitle <span class="op">=</span> <span class="st">"Laboratory Test:"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="tern_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 <p>Line plot with a table generated by the <code>g_lineplot</code>
 function.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Mean with CI, table and customized confidence level</span></span>
 <span><span class="fu"><a href="../reference/g_lineplot.html">g_lineplot</a></span><span class="op">(</span></span>
 <span>  <span class="va">adlb</span>,</span>
@@ -347,7 +330,7 @@ reporting context.</p>
 <p><strong>For more information please explore <a href="https://insightsengineering.github.io/tern/main/">the tern
 website</a>.</strong></p>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
@@ -359,9 +342,9 @@ website</a>.</strong></p>
 <script type="text/javascript" src="../analytics.js"></script></footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>
