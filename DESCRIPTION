@@ -1,6 +1,6 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.9.5.9027
+Version: 0.9.6
 Date: 2024-09-20
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
@@ -34,7 +34,7 @@ Imports:
     dplyr (>= 1.0.0),
     emmeans (>= 1.10.4),
     forcats (>= 1.0.0),
-    formatters (>= 0.5.9),
+    formatters (>= 0.5.8),
     ggplot2 (>= 3.5.0),
     grid,
     gridExtra (>= 2.0.0),
