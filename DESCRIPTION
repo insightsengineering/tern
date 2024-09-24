@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.9.5.9022
-Date: 2024-09-09
+Version: 0.9.6
+Date: 2024-09-20
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = "aut"),
@@ -63,7 +63,8 @@ Suggests:
     testthat (>= 3.1.9),
     withr (>= 2.0.0)
 VignetteBuilder:
-    knitr
+    knitr,
+    rmarkdown
 RdMacros:
     lifecycle,
     Rdpack
@@ -130,6 +131,7 @@ Collate:
     'h_adsl_adlb_merge_using_worst_flag.R'
     'h_biomarkers_subgroups.R'
     'h_cox_regression.R'
+    'h_incidence_rate.R'
     'h_km.R'
     'h_logistic_regression.R'
     'h_map_for_count_abnormal.R'
