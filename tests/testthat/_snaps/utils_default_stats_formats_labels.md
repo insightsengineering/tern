@@ -27,11 +27,13 @@
     Code
       res
     Output
-       [1] "n"            "sum"          "mean"         "sd"           "se"          
-       [6] "mean_sd"      "mean_se"      "mean_ci"      "mean_sei"     "mean_sdi"    
-      [11] "mean_pval"    "median"       "mad"          "median_ci"    "quantiles"   
-      [16] "iqr"          "range"        "min"          "max"          "median_range"
-      [21] "cv"           "geom_mean"    "geom_mean_ci" "geom_cv"     
+       [1] "n"              "sum"            "mean"           "sd"            
+       [5] "se"             "mean_sd"        "mean_se"        "mean_ci"       
+       [9] "mean_sei"       "mean_sdi"       "mean_pval"      "median"        
+      [13] "mad"            "median_ci"      "quantiles"      "iqr"           
+      [17] "range"          "min"            "max"            "median_range"  
+      [21] "cv"             "geom_mean"      "geom_mean_ci"   "geom_cv"       
+      [25] "median_long"    "mean_long"      "geom_mean_long"
 
 # get_labels_from_stats works as expected
 
@@ -82,22 +84,24 @@
     Code
       res
     Output
-                         n                  sum                 mean 
-                     "xx."               "xx.x"               "xx.x" 
-                        sd                   se              mean_sd 
-                    "xx.x"               "xx.x"        "xx.x (xx.x)" 
-                   mean_se              mean_ci             mean_sei 
-             "xx.x (xx.x)"     "(xx.xx, xx.xx)"     "(xx.xx, xx.xx)" 
-                  mean_sdi            mean_pval               median 
-          "(xx.xx, xx.xx)" "x.xxxx | (<0.0001)"               "xx.x" 
-                       mad            median_ci            quantiles 
-                    "xx.x"     "(xx.xx, xx.xx)"        "xx.x - xx.x" 
-                       iqr                range                  min 
-                    "xx.x"        "xx.x - xx.x"               "xx.x" 
-                       max         median_range                   cv 
-                    "xx.x" "xx.x (xx.x - xx.x)"               "xx.x" 
-                 geom_mean         geom_mean_ci              geom_cv 
-                    "xx.x"     "(xx.xx, xx.xx)"               "xx.x" 
+                            n                     sum                    mean 
+                        "xx."                  "xx.x"                  "xx.x" 
+                           sd                      se                 mean_sd 
+                       "xx.x"                  "xx.x"           "xx.x (xx.x)" 
+                      mean_se                 mean_ci                mean_sei 
+                "xx.x (xx.x)"        "(xx.xx, xx.xx)"        "(xx.xx, xx.xx)" 
+                     mean_sdi               mean_pval                  median 
+             "(xx.xx, xx.xx)"    "x.xxxx | (<0.0001)"                  "xx.x" 
+                          mad               median_ci               quantiles 
+                       "xx.x"        "(xx.xx, xx.xx)"           "xx.x - xx.x" 
+                          iqr                   range                     min 
+                       "xx.x"           "xx.x - xx.x"                  "xx.x" 
+                          max            median_range                      cv 
+                       "xx.x"    "xx.x (xx.x - xx.x)"                  "xx.x" 
+                    geom_mean            geom_mean_ci                 geom_cv 
+                       "xx.x"        "(xx.xx, xx.xx)"                  "xx.x" 
+                  median_long               mean_long          geom_mean_long 
+      "xx.xx (xx.xx - xx.xx)" "xx.xx (xx.xx - xx.xx)" "xx.xx (xx.xx - xx.xx)" 
 
 # summary_labels works as expected
 
@@ -128,6 +132,10 @@
                            "CV (%)"              "Geometric Mean" 
                        geom_mean_ci                       geom_cv 
             "Geometric Mean 95% CI"         "CV % Geometric Mean" 
+                        median_long                     mean_long 
+                  "Median (95% CI)"               "Mean (95% CI)" 
+                     geom_mean_long 
+          "Geometric Mean (95% CI)" 
 
 ---
 

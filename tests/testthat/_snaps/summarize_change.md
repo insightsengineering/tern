@@ -49,6 +49,12 @@
       attr(,"label")
       [1] "Mean -/+ 1xSD"
       
+      $mean_long
+             mean mean_ci_lwr mean_ci_upr 
+               NA          NA          NA 
+      attr(,"label")
+      [1] "Mean (95% CI)"
+      
       $mean_pval
       p_value 
            NA 
@@ -70,6 +76,12 @@
       [1] NA
       attr(,"label")
       [1] "Median 95% CI"
+      
+      $median_long
+             median median_ci_lwr median_ci_upr 
+                 NA            NA            NA 
+      attr(,"label")
+      [1] "Median (95% CI)"
       
       $quantiles
       quantile_0.25 quantile_0.75 
@@ -116,6 +128,12 @@
       $geom_cv
       geom_cv 
            NA 
+      
+      $geom_mean_long
+        geom_mean mean_ci_lwr mean_ci_upr 
+              NaN          NA          NA 
+      attr(,"label")
+      [1] "Geometric Mean (95% CI)"
       
 
 # s_change_from_baseline handles NA in baseline values
@@ -169,6 +187,12 @@
       attr(,"label")
       [1] "Mean -/+ 1xSD"
       
+      $mean_long
+             mean mean_ci_lwr mean_ci_upr 
+         3.000000   -4.452413   10.452413 
+      attr(,"label")
+      [1] "Mean (95% CI)"
+      
       $mean_pval
         p_value 
       0.2254033 
@@ -190,6 +214,12 @@
       [1] NA
       attr(,"label")
       [1] "Median 95% CI"
+      
+      $median_long
+             median median_ci_lwr median_ci_upr 
+                  3            NA            NA 
+      attr(,"label")
+      [1] "Median (95% CI)"
       
       $quantiles
       quantile_0.25 quantile_0.75 
@@ -236,6 +266,12 @@
       $geom_cv
       geom_cv 
            NA 
+      
+      $geom_mean_long
+        geom_mean mean_ci_lwr mean_ci_upr 
+               NA          NA          NA 
+      attr(,"label")
+      [1] "Geometric Mean (95% CI)"
       
 
 # s_change_from_baseline handles baseline substitution
@@ -290,6 +326,12 @@
       attr(,"label")
       [1] "Mean -/+ 1xSD"
       
+      $`FALSE`$mean_long
+             mean mean_ci_lwr mean_ci_upr 
+         1.500000   -4.853102    7.853102 
+      attr(,"label")
+      [1] "Mean (95% CI)"
+      
       $`FALSE`$mean_pval
         p_value 
       0.2048328 
@@ -311,6 +353,12 @@
       [1] NA
       attr(,"label")
       [1] "Median 95% CI"
+      
+      $`FALSE`$median_long
+             median median_ci_lwr median_ci_upr 
+                1.5            NA            NA 
+      attr(,"label")
+      [1] "Median (95% CI)"
       
       $`FALSE`$quantiles
       quantile_0.25 quantile_0.75 
@@ -357,6 +405,12 @@
       $`FALSE`$geom_cv
        geom_cv 
       52.10922 
+      
+      $`FALSE`$geom_mean_long
+         geom_mean  mean_ci_lwr  mean_ci_upr 
+        1.41421356   0.01729978 115.60839614 
+      attr(,"label")
+      [1] "Geometric Mean (95% CI)"
       
       
       $`TRUE`
@@ -406,6 +460,12 @@
       attr(,"label")
       [1] "Mean -/+ 1xSD"
       
+      $`TRUE`$mean_long
+             mean mean_ci_lwr mean_ci_upr 
+          2.50000   -16.55931    21.55931 
+      attr(,"label")
+      [1] "Mean (95% CI)"
+      
       $`TRUE`$mean_pval
         p_value 
       0.3440417 
@@ -427,6 +487,12 @@
       [1] NA
       attr(,"label")
       [1] "Median 95% CI"
+      
+      $`TRUE`$median_long
+             median median_ci_lwr median_ci_upr 
+                2.5            NA            NA 
+      attr(,"label")
+      [1] "Median (95% CI)"
       
       $`TRUE`$quantiles
       quantile_0.25 quantile_0.75 
@@ -473,6 +539,12 @@
       $`TRUE`$geom_cv
        geom_cv 
       127.0458 
+      
+      $`TRUE`$geom_mean_long
+         geom_mean  mean_ci_lwr  mean_ci_upr 
+      2.000000e+00 2.992824e-04 1.336530e+04 
+      attr(,"label")
+      [1] "Geometric Mean (95% CI)"
       
       
 
