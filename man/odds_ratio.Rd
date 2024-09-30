@@ -18,6 +18,7 @@ estimate_odds_ratio(
   ...,
   show_labels = "hidden",
   table_names = vars,
+  var_labels = vars,
   .stats = "or_ci",
   .formats = NULL,
   .labels = NULL,
@@ -70,6 +71,8 @@ underneath analyses, which is not allowed.}
 
 \item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
 times, to avoid warnings from \code{rtables}.}
+
+\item{var_labels}{(\code{character})\cr variable labels.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("estimate_odds_ratio")}
 to see available statistics for this function.}
