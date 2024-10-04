@@ -167,8 +167,6 @@ a_odds_ratio <- make_afun(
 #' @describeIn odds_ratio Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @param ... arguments passed to `s_odds_ratio()`.
-#'
 #' @return
 #' * `estimate_odds_ratio()` returns a layout object suitable for passing to further layouting functions,
 #'   or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted rows containing
