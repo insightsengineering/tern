@@ -8,13 +8,16 @@
 \usage{
 or_glm(data, conf_level)
 
-or_clogit(data, conf_level)
+or_clogit(data, conf_level, method = "exact")
 }
 \arguments{
 \item{data}{(\code{data.frame})\cr data frame containing at least the variables \code{rsp} and \code{grp}, and optionally
 \code{strata} for \code{\link[=or_clogit]{or_clogit()}}.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
+\item{method}{(\code{string})\cr whether to use the correct (\code{"exact"}) calculation in the conditional likelihood or one
+of the approximations. See \code{\link[survival:clogit]{survival::clogit()}} for details.}
 }
 \value{
 A named \code{list} of elements \code{or_ci} and \code{n_tot}.
