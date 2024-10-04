@@ -98,8 +98,6 @@ by a statistics function.}
 \item{.in_ref_col}{(\code{flag})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
 \item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
-
-\item{...}{arguments passed to \code{s_odds_ratio()}.}
 }
 \value{
 \itemize{
