@@ -13,6 +13,8 @@
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_odds_ratio")`
 #'   to see available statistics for this function.
+#' @param method (`string`)\cr whether to use the correct (`"exact"`) calculation in the conditional likelihood or one
+#'   of the approximations. See [survival::clogit()] for details.
 #'
 #' @note
 #' * This function uses logistic regression for unstratified analyses, and conditional logistic regression for
@@ -64,7 +66,8 @@ s_odds_ratio <- function(df,
                          .df_row,
                          variables = list(arm = NULL, strata = NULL),
                          conf_level = 0.95,
-                         groups_list = NULL) {
+                         groups_list = NULL,
+                         method = "exact") {
   y <- list(or_ci = "", n_tot = "")
 
   if (!.in_ref_col) {
@@ -83,6 +86,7 @@ s_odds_ratio <- function(df,
       y <- or_glm(data, conf_level = conf_level)
     } else {
       assert_df_with_variables(.df_row, c(list(rsp = .var), variables))
+      checkmate::assert_subset(method, c("exact", "approximate", "efron", "breslow"), empty.ok = FALSE)
 
       # The group variable prepared for clogit must be synchronised with combination groups definition.
       if (is.null(groups_list)) {
@@ -118,7 +122,7 @@ s_odds_ratio <- function(df,
         grp = grp,
         strata = interaction(.df_row[variables$strata])
       )
-      y_all <- or_clogit(data, conf_level = conf_level)
+      y_all <- or_clogit(data, conf_level = conf_level, method = method)
       checkmate::assert_string(trt_grp)
       checkmate::assert_subset(trt_grp, names(y_all$or_ci))
       y$or_ci <- y_all$or_ci[[trt_grp]]
@@ -193,7 +197,7 @@ estimate_odds_ratio <- function(lyt,
                                 groups_list = NULL,
                                 na_str = default_na_str(),
                                 nested = TRUE,
-                                ...,
+                                method = "exact",
                                 show_labels = "hidden",
                                 table_names = vars,
                                 var_labels = vars,
@@ -201,7 +205,7 @@ estimate_odds_ratio <- function(lyt,
                                 .formats = NULL,
                                 .labels = NULL,
                                 .indent_mods = NULL) {
-  extra_args <- list(variables = variables, conf_level = conf_level, groups_list = groups_list, ...)
+  extra_args <- list(variables = variables, conf_level = conf_level, groups_list = groups_list, method = method)
 
   afun <- make_afun(
     a_odds_ratio,
@@ -230,6 +234,7 @@ estimate_odds_ratio <- function(lyt,
 #'
 #' Functions to calculate odds ratios in [estimate_odds_ratio()].
 #'
+#' @inheritParams odds_ratio
 #' @inheritParams argument_convention
 #' @param data (`data.frame`)\cr data frame containing at least the variables `rsp` and `grp`, and optionally
 #'   `strata` for [or_clogit()].
@@ -300,19 +305,20 @@ or_glm <- function(data, conf_level) {
 #' or_clogit(data, conf_level = 0.95)
 #'
 #' @export
-or_clogit <- function(data, conf_level) {
+or_clogit <- function(data, conf_level, method = "exact") {
   checkmate::assert_logical(data$rsp)
   assert_proportion_value(conf_level)
   assert_df_with_variables(data, list(rsp = "rsp", grp = "grp", strata = "strata"))
   checkmate::assert_multi_class(data$grp, classes = c("factor", "character"))
   checkmate::assert_multi_class(data$strata, classes = c("factor", "character"))
+  checkmate::assert_subset(method, c("exact", "approximate", "efron", "breslow"), empty.ok = FALSE)
 
   data$grp <- as_factor_keep_attributes(data$grp)
   data$strata <- as_factor_keep_attributes(data$strata)
 
   # Deviation from convention: `survival::strata` must be simply `strata`.
   formula <- stats::as.formula("rsp ~ grp + strata(strata)")
-  model_fit <- clogit_with_tryCatch(formula = formula, data = data)
+  model_fit <- clogit_with_tryCatch(formula = formula, data = data, method = method)
 
   # Create a list with one set of OR estimates and CI per coefficient, i.e.
   # comparison of one group vs. the reference group.
