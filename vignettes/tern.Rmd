@@ -23,10 +23,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Introduction to tern
-
----------
-
 This vignette shows the general purpose and syntax of the `tern` R package.
 The `tern` R package contains analytical functions for creating tables and graphs useful for clinical trials and other statistical analysis.
 The main focus is on the clinical trial reporting tables but the graphs related to the clinical trials are also valuable.
