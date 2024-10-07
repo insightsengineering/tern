@@ -161,6 +161,7 @@ testthat::test_that("estimate_odds_ratio works with strata and combined groups",
 })
 
 testthat::test_that("s_odds_ratio method argument works", {
+  set.seed(1)
   nex <- 2000 # Number of example rows
   dta <- data.frame(
     "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
@@ -182,6 +183,18 @@ testthat::test_that("s_odds_ratio method argument works", {
   )
 
   testthat::expect_false(all(is.na(res$or_ci)))
+
+  # warning works
+  expect_warning(
+    s_odds_ratio(
+      df = subset(dta, grp == "A"),
+      .var = "rsp",
+      .ref_group = subset(dta, grp == "B"),
+      .in_ref_col = FALSE,
+      .df_row = dta,
+      variables = list(arm = "grp", strata = "strata")
+    )
+  )
 })
 
 testthat::test_that("estimate_odds_ratio method argument works", {
