@@ -130,6 +130,13 @@ s_odds_ratio <- function(df,
     }
   }
 
+  if (is.na(y$or_ci$est)) {
+    message(
+      'Unable to compute the odds ratio estimate. Please try re-running the function with ',
+      'parameter `method` set to "approximate".'
+    )
+  }
+
   y$or_ci <- formatters::with_label(
     x = y$or_ci,
     label = paste0("Odds Ratio (", 100 * conf_level, "% CI)")
