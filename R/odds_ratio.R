@@ -130,9 +130,9 @@ s_odds_ratio <- function(df,
     }
   }
 
-  if (is.na(y$or_ci[["est"]]) && method != "approximate") {
-    warning(
-      'Unable to compute the odds ratio estimate. Please try re-running the function with ',
+  if (is.na(y$or_ci$est)) {
+    message(
+      "Unable to compute the odds ratio estimate. Please try re-running the function with ",
       'parameter `method` set to "approximate".'
     )
   }
