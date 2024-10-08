@@ -111,7 +111,10 @@ the statistics from \code{s_surv_time()} to the table layout.
 \itemize{
 \item \code{median}: Median survival time.
 \item \code{median_ci}: Confidence interval for median time.
+\item \code{median_long}: Median with confidence interval for median time.
 \item \code{quantiles}: Survival time for two specified quantiles.
+\item \code{quantiles_lower}: quantile with confidence interval for the first specified quantile.
+\item \code{quantiles_upper}: quantile with confidence interval for the second specified quantile.
 \item \code{range_censor}: Survival time range for censored observations.
 \item \code{range_event}: Survival time range for observations with events.
 \item \code{range}: Survival time range for all observations.
