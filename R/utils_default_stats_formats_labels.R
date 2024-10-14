@@ -387,8 +387,8 @@ tern_default_stats <- list(
     "n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci", "mean_sei", "mean_sdi", "mean_pval",
     "median", "mad", "median_ci", "quantiles", "iqr", "range", "min", "max", "median_range", "cv",
     "geom_mean", "geom_mean_ci", "geom_cv",
-    "median_long",
-    "mean_long", "geom_mean_long"
+    "median_ci_3d",
+    "mean_ci_3d", "geom_mean_ci_3d"
   ),
   count_cumulative = c("count_fraction", "count_fraction_fixed_dp"),
   count_missed_doses = c("n", "count_fraction", "count_fraction_fixed_dp"),
@@ -409,12 +409,12 @@ tern_default_stats <- list(
   summarize_num_patients = c("unique", "nonunique", "unique_count"),
   summarize_patients_events_in_cols = c("unique", "all"),
   surv_time = c(
-    "median", "median_ci", "median_long", "quantiles",
+    "median", "median_ci", "median_ci_3d", "quantiles",
     "quantiles_lower", "quantiles_upper", "range_censor", "range_event", "range"
   ),
   surv_timepoint = c(
     "pt_at_risk", "event_free_rate", "rate_se", "rate_ci", "rate_diff", "rate_diff_ci", "ztest_pval",
-    "event_free_rate_long"
+    "event_free_rate_3d"
   ),
   tabulate_rsp_biomarkers = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
   tabulate_rsp_subgroups = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval"),
@@ -450,11 +450,11 @@ tern_default_formats <- c(
   mean_sei = "(xx.xx, xx.xx)",
   mean_sdi = "(xx.xx, xx.xx)",
   mean_pval = "x.xxxx | (<0.0001)",
-  mean_long = "xx.xx (xx.xx - xx.xx)",
+  mean_ci_3d = "xx.xx (xx.xx - xx.xx)",
   median = "xx.x",
   mad = "xx.x",
   median_ci = "(xx.xx, xx.xx)",
-  median_long = "xx.xx (xx.xx - xx.xx)",
+  median_ci_3d = "xx.xx (xx.xx - xx.xx)",
   quantiles = "xx.x - xx.x",
   quantiles_lower = "xx.xx (xx.xx - xx.xx)",
   quantiles_upper = "xx.xx (xx.xx - xx.xx)",
@@ -466,7 +466,7 @@ tern_default_formats <- c(
   cv = "xx.x",
   geom_mean = "xx.x",
   geom_mean_ci = "(xx.xx, xx.xx)",
-  geom_mean_long = "xx.xx (xx.xx - xx.xx)",
+  geom_mean_ci_3d = "xx.xx (xx.xx - xx.xx)",
   geom_cv = "xx.x",
   pval = "x.xxxx | (<0.0001)",
   pval_counts = "x.xxxx | (<0.0001)",
@@ -504,11 +504,11 @@ tern_default_labels <- c(
   mean_sei = "Mean -/+ 1xSE",
   mean_sdi = "Mean -/+ 1xSD",
   mean_pval = "Mean p-value (H0: mean = 0)",
-  mean_long = "Mean (95% CI)",
+  mean_ci_3d = "Mean (95% CI)",
   median = "Median",
   mad = "Median Absolute Deviation",
   median_ci = "Median 95% CI",
-  median_long = "Median (95% CI)",
+  median_ci_3d = "Median (95% CI)",
   quantiles = "25% and 75%-ile",
   quantiles_lower = "25%-ile (95% CI)",
   quantiles_upper = "75%-ile (95% CI)",
@@ -520,7 +520,7 @@ tern_default_labels <- c(
   cv = "CV (%)",
   geom_mean = "Geometric Mean",
   geom_mean_ci = "Geometric Mean 95% CI",
-  geom_mean_long = "Geometric Mean (95% CI)",
+  geom_mean_ci_3d = "Geometric Mean (95% CI)",
   geom_cv = "CV % Geometric Mean",
   pval = "p-value (t-test)", # Default for numeric
   pval_counts = "p-value (chi-squared test)", # Default for counts

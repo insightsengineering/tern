@@ -65,7 +65,7 @@ s_coxph_pairwise <- function(df,
         pvalue = formatters::with_label("", paste0("p-value (", pval_method, ")")),
         hr = formatters::with_label("", "Hazard Ratio"),
         hr_ci = formatters::with_label("", f_conf_level(conf_level)),
-        hr_long = formatters::with_label("", paste0("Hazard Ratio (", f_conf_level(conf_level), ")")),
+        hr_ci_3d = formatters::with_label("", paste0("Hazard Ratio (", f_conf_level(conf_level), ")")),
         n_tot = formatters::with_label("", "Total n"),
         n_tot_events = formatters::with_label("", "Total events")
       )
@@ -112,7 +112,7 @@ s_coxph_pairwise <- function(df,
     pvalue = formatters::with_label(unname(pval), paste0("p-value (", pval_method, ")")),
     hr = formatters::with_label(sum_cox$conf.int[1, 1], "Hazard Ratio"),
     hr_ci = formatters::with_label(unname(sum_cox$conf.int[1, 3:4]), f_conf_level(conf_level)),
-    hr_long = formatters::with_label(
+    hr_ci_3d = formatters::with_label(
       c(sum_cox$conf.int[1, 1], unname(sum_cox$conf.int[1, 3:4])),
       paste0("Hazard Ratio (", f_conf_level(conf_level), ")")
     ),
@@ -129,12 +129,12 @@ s_coxph_pairwise <- function(df,
 #' @keywords internal
 a_coxph_pairwise <- make_afun(
   s_coxph_pairwise,
-  .indent_mods = c(pvalue = 0L, hr = 0L, hr_ci = 1L, n_tot = 0L, n_tot_events = 0L, hr_long = 0L),
+  .indent_mods = c(pvalue = 0L, hr = 0L, hr_ci = 1L, n_tot = 0L, n_tot_events = 0L, hr_ci_3d = 0L),
   .formats = c(
     pvalue = "x.xxxx | (<0.0001)",
     hr = "xx.xx",
     hr_ci = "(xx.xx, xx.xx)",
-    hr_long = "xx.xx (xx.xx - xx.xx)",
+    hr_ci_3d = "xx.xx (xx.xx - xx.xx)",
     n_tot = "xx.xx",
     n_tot_events = "xx.xx"
   )

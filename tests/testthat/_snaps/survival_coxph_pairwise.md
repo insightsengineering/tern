@@ -18,7 +18,7 @@
       attr(,"label")
       [1] "95% CI"
       
-      $hr_long
+      $hr_ci_3d
       [1] 0.7108557 0.4779138 1.0573368
       attr(,"label")
       [1] "Hazard Ratio (95% CI)"
@@ -54,7 +54,7 @@
       attr(,"label")
       [1] "90% CI"
       
-      $hr_long
+      $hr_ci_3d
       [1] 0.7108557 0.5094153 0.9919525
       attr(,"label")
       [1] "Hazard Ratio (90% CI)"
@@ -90,7 +90,7 @@
       attr(,"label")
       [1] "95% CI"
       
-      $hr_long
+      $hr_ci_3d
       [1] 0.6251817 0.4014842 0.9735181
       attr(,"label")
       [1] "Hazard Ratio (95% CI)"
@@ -126,7 +126,7 @@
       attr(,"label")
       [1] "90% CI"
       
-      $hr_long
+      $hr_ci_3d
       [1] 0.6251817 0.4311132 0.9066115
       attr(,"label")
       [1] "Hazard Ratio (90% CI)"

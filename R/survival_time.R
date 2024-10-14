@@ -43,7 +43,7 @@ NULL
 #' * `s_surv_time()` returns the statistics:
 #'   * `median`: Median survival time.
 #'   * `median_ci`: Confidence interval for median time.
-#'   * `median_long`: Median with confidence interval for median time.
+#'   * `median_ci_3d`: Median with confidence interval for median time.
 #'   * `quantiles`: Survival time for two specified quantiles.
 #'   * `quantiles_lower`: quantile with confidence interval for the first specified quantile.
 #'   * `quantiles_upper`: quantile with confidence interval for the second specified quantile.
@@ -102,7 +102,7 @@ s_surv_time <- function(df,
     range_censor = formatters::with_label(range_censor, "Range (censored)"),
     range_event = formatters::with_label(range_event, "Range (event)"),
     range = formatters::with_label(range, "Range"),
-    median_long = formatters::with_label(
+    median_ci_3d = formatters::with_label(
       c(
         unname(srv_tab["median"]),
         unname(srv_tab[paste0(srv_fit$conf.int, c("LCL", "UCL"))])
@@ -153,12 +153,12 @@ a_surv_time <- function(df,
   # Use method-specific defaults
   fmts <- c(
     median_ci = "(xx.x, xx.x)", quantiles = "xx.x, xx.x", range = "xx.x to xx.x",
-    median_long = "xx.x (xx.x - xx.x)",
+    median_ci_3d = "xx.x (xx.x - xx.x)",
     quantiles_lower = "xx.x (xx.x - xx.x)", quantiles_upper = "xx.x (xx.x - xx.x)"
   )
   lbls <- c(
     median_ci = "95% CI", range = "Range", range_censor = "Range (censored)", range_event = "Range (event)",
-    median_long = "Median (95% CI)",
+    median_ci_3d = "Median (95% CI)",
     quantiles_lower = "25%-ile (95% CI)",
     quantiles_upper = "75%-ile (95% CI)"
   )

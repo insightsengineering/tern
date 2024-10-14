@@ -23,7 +23,7 @@
       attr(,"label")
       [1] "95% CI"
       
-      $event_free_rate_long
+      $event_free_rate_3d
       [1] 82.19178 73.41549 90.96807
       attr(,"label")
       [1] "Event Free Rate (95% CI)"
@@ -54,7 +54,7 @@
       attr(,"label")
       [1] "99% CI"
       
-      $event_free_rate_long
+      $event_free_rate_3d
       [1] 75.49797 62.15793 91.70097
       attr(,"label")
       [1] "Event Free Rate (99% CI)"
@@ -85,7 +85,7 @@
       attr(,"label")
       [1] "95% CI"
       
-      $event_free_rate_long
+      $event_free_rate_3d
       [1] NA NA NA
       attr(,"label")
       [1] "Event Free Rate (95% CI)"
@@ -130,7 +130,7 @@
       attr(,"label")
       [1] "95% CI"
       
-      $rate_diff_long
+      $rate_diff_ci_3d
       [1]  4.269100 -7.767371 16.305570
       attr(,"label")
       [1] "Difference in Event Free Rate95% CI"
@@ -156,7 +156,7 @@
       attr(,"label")
       [1] "90% CI"
       
-      $rate_diff_long
+      $rate_diff_ci_3d
       [1]  9.640872 -1.404177 20.685921
       attr(,"label")
       [1] "Difference in Event Free Rate90% CI"

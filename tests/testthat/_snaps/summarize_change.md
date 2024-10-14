@@ -49,7 +49,7 @@
       attr(,"label")
       [1] "Mean -/+ 1xSD"
       
-      $mean_long
+      $mean_ci_3d
              mean mean_ci_lwr mean_ci_upr 
                NA          NA          NA 
       attr(,"label")
@@ -77,7 +77,7 @@
       attr(,"label")
       [1] "Median 95% CI"
       
-      $median_long
+      $median_ci_3d
              median median_ci_lwr median_ci_upr 
                  NA            NA            NA 
       attr(,"label")
@@ -129,7 +129,7 @@
       geom_cv 
            NA 
       
-      $geom_mean_long
+      $geom_mean_ci_3d
         geom_mean mean_ci_lwr mean_ci_upr 
               NaN          NA          NA 
       attr(,"label")
@@ -187,7 +187,7 @@
       attr(,"label")
       [1] "Mean -/+ 1xSD"
       
-      $mean_long
+      $mean_ci_3d
              mean mean_ci_lwr mean_ci_upr 
          3.000000   -4.452413   10.452413 
       attr(,"label")
@@ -215,7 +215,7 @@
       attr(,"label")
       [1] "Median 95% CI"
       
-      $median_long
+      $median_ci_3d
              median median_ci_lwr median_ci_upr 
                   3            NA            NA 
       attr(,"label")
@@ -267,7 +267,7 @@
       geom_cv 
            NA 
       
-      $geom_mean_long
+      $geom_mean_ci_3d
         geom_mean mean_ci_lwr mean_ci_upr 
                NA          NA          NA 
       attr(,"label")
@@ -326,7 +326,7 @@
       attr(,"label")
       [1] "Mean -/+ 1xSD"
       
-      $`FALSE`$mean_long
+      $`FALSE`$mean_ci_3d
              mean mean_ci_lwr mean_ci_upr 
          1.500000   -4.853102    7.853102 
       attr(,"label")
@@ -354,7 +354,7 @@
       attr(,"label")
       [1] "Median 95% CI"
       
-      $`FALSE`$median_long
+      $`FALSE`$median_ci_3d
              median median_ci_lwr median_ci_upr 
                 1.5            NA            NA 
       attr(,"label")
@@ -406,7 +406,7 @@
        geom_cv 
       52.10922 
       
-      $`FALSE`$geom_mean_long
+      $`FALSE`$geom_mean_ci_3d
          geom_mean  mean_ci_lwr  mean_ci_upr 
         1.41421356   0.01729978 115.60839614 
       attr(,"label")
@@ -460,7 +460,7 @@
       attr(,"label")
       [1] "Mean -/+ 1xSD"
       
-      $`TRUE`$mean_long
+      $`TRUE`$mean_ci_3d
              mean mean_ci_lwr mean_ci_upr 
           2.50000   -16.55931    21.55931 
       attr(,"label")
@@ -488,7 +488,7 @@
       attr(,"label")
       [1] "Median 95% CI"
       
-      $`TRUE`$median_long
+      $`TRUE`$median_ci_3d
              median median_ci_lwr median_ci_upr 
                 2.5            NA            NA 
       attr(,"label")
@@ -540,7 +540,7 @@
        geom_cv 
       127.0458 
       
-      $`TRUE`$geom_mean_long
+      $`TRUE`$geom_mean_ci_3d
          geom_mean  mean_ci_lwr  mean_ci_upr 
       2.000000e+00 2.992824e-04 1.336530e+04 
       attr(,"label")

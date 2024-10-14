@@ -39,7 +39,7 @@ NULL
 #'   * `event_free_rate`: Event-free rate (%).
 #'   * `rate_se`: Standard error of event free rate.
 #'   * `rate_ci`: Confidence interval for event free rate.
-#'   * `event_free_rate_long`: Event-free rate (%) with Confidence interval.
+#'   * `event_free_rate_3d`: Event-free rate (%) with Confidence interval.
 #'
 #' @keywords internal
 s_surv_timepoint <- function(df,
@@ -74,14 +74,14 @@ s_surv_timepoint <- function(df,
     rate_se <- df_srv_fit$std.err
     rate_ci <- c(df_srv_fit$lower, df_srv_fit$upper)
   }
-  event_free_rate_long <- c(event_free_rate, rate_ci)
+  event_free_rate_3d <- c(event_free_rate, rate_ci)
   list(
     pt_at_risk = formatters::with_label(pt_at_risk, "Patients remaining at risk"),
     event_free_rate = formatters::with_label(event_free_rate * 100, "Event Free Rate (%)"),
     rate_se = formatters::with_label(rate_se * 100, "Standard Error of Event Free Rate"),
     rate_ci = formatters::with_label(rate_ci * 100, f_conf_level(conf_level)),
-    event_free_rate_long = formatters::with_label(
-      event_free_rate_long * 100, paste0("Event Free Rate (", f_conf_level(conf_level), ")")
+    event_free_rate_3d = formatters::with_label(
+      event_free_rate_3d * 100, paste0("Event Free Rate (", f_conf_level(conf_level), ")")
     )
   )
 }
@@ -115,7 +115,7 @@ a_surv_timepoint <- make_afun(
 #' * `s_surv_timepoint_diff()` returns the statistics:
 #'   * `rate_diff`: Event-free rate difference between two groups.
 #'   * `rate_diff_ci`: Confidence interval for the difference.
-#'   * `rate_diff_long`: Event-free rate difference and confidence interval between two groups.
+#'   * `rate_diff_ci_3d`: Event-free rate difference and confidence interval between two groups.
 #'   * `ztest_pval`: p-value to test the difference is 0.
 #'
 #' @keywords internal
@@ -131,7 +131,7 @@ s_surv_timepoint_diff <- function(df,
       list(
         rate_diff = formatters::with_label("", "Difference in Event Free Rate"),
         rate_diff_ci = formatters::with_label("", f_conf_level(control$conf_level)),
-        rate_diff_long = formatters::with_label(
+        rate_diff_ci_3d = formatters::with_label(
           "", paste0("Difference in Event Free Rate", f_conf_level(control$conf_level))
         ),
         ztest_pval = formatters::with_label("", "p-value (Z-test)")
@@ -151,7 +151,7 @@ s_surv_timepoint_diff <- function(df,
 
   qs <- c(-1, 1) * stats::qnorm(1 - (1 - control$conf_level) / 2)
   rate_diff_ci <- rate_diff + qs * se_diff
-  rate_diff_long <- c(rate_diff, rate_diff_ci)
+  rate_diff_ci_3d <- c(rate_diff, rate_diff_ci)
   ztest_pval <- if (is.na(rate_diff)) {
     NA
   } else {
@@ -160,8 +160,8 @@ s_surv_timepoint_diff <- function(df,
   list(
     rate_diff = formatters::with_label(rate_diff, "Difference in Event Free Rate"),
     rate_diff_ci = formatters::with_label(rate_diff_ci, f_conf_level(control$conf_level)),
-    rate_diff_long = formatters::with_label(
-      rate_diff_long, paste0("Difference in Event Free Rate", f_conf_level(control$conf_level))
+    rate_diff_ci_3d = formatters::with_label(
+      rate_diff_ci_3d, paste0("Difference in Event Free Rate", f_conf_level(control$conf_level))
     ),
     ztest_pval = formatters::with_label(ztest_pval, "p-value (Z-test)")
   )
@@ -179,7 +179,7 @@ a_surv_timepoint_diff <- make_afun(
   .formats = c(
     rate_diff = "xx.xx",
     rate_diff_ci = "(xx.xx, xx.xx)",
-    rate_diff_long = format_xx("xx.xx (xx.xx, xx.xx)"),
+    rate_diff_ci_3d = format_xx("xx.xx (xx.xx, xx.xx)"),
     ztest_pval = "x.xxxx | (<0.0001)"
   )
 )
@@ -273,8 +273,8 @@ surv_timepoint <- function(lyt,
   extra_args <- list(time_point = time_point, is_event = is_event, control = control, ...)
 
   f <- list(
-    surv = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci", "event_free_rate_long"),
-    surv_diff = c("rate_diff", "rate_diff_ci", "ztest_pval", "rate_diff_long")
+    surv = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci", "event_free_rate_3d"),
+    surv_diff = c("rate_diff", "rate_diff_ci", "ztest_pval", "rate_diff_ci_3d")
   )
   .stats <- h_split_param(.stats, .stats, f = f)
   .formats <- h_split_param(.formats, names(.formats), f = f)

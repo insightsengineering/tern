@@ -33,7 +33,7 @@
       attr(,"label")
       [1] "Range"
       
-      $median_long
+      $median_ci_3d
       [1] 23.91143 18.25878 32.85945
       attr(,"label")
       [1] "Median (95% CI)"
@@ -84,7 +84,7 @@
       attr(,"label")
       [1] "Range"
       
-      $median_long
+      $median_ci_3d
       [1] 23.91143 13.59124 37.97055
       attr(,"label")
       [1] "Median (99% CI)"

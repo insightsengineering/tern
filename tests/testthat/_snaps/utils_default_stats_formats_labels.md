@@ -33,7 +33,7 @@
       [13] "mad"            "median_ci"      "quantiles"      "iqr"           
       [17] "range"          "min"            "max"            "median_range"  
       [21] "cv"             "geom_mean"      "geom_mean_ci"   "geom_cv"       
-      [25] "median_long"    "mean_long"      "geom_mean_long"
+      [25] "median_ci_3d"    "mean_ci_3d"      "geom_mean_ci_3d"
 
 # get_labels_from_stats works as expected
 
@@ -100,7 +100,7 @@
                        "xx.x"    "xx.x (xx.x - xx.x)"                  "xx.x" 
                     geom_mean            geom_mean_ci                 geom_cv 
                        "xx.x"        "(xx.xx, xx.xx)"                  "xx.x" 
-                  median_long               mean_long          geom_mean_long 
+                  median_ci_3d               mean_ci_3d          geom_mean_ci_3d 
       "xx.xx (xx.xx - xx.xx)" "xx.xx (xx.xx - xx.xx)" "xx.xx (xx.xx - xx.xx)" 
 
 # summary_labels works as expected
@@ -132,9 +132,9 @@
                            "CV (%)"              "Geometric Mean" 
                        geom_mean_ci                       geom_cv 
             "Geometric Mean 95% CI"         "CV % Geometric Mean" 
-                        median_long                     mean_long 
+                        median_ci_3d                     mean_ci_3d 
                   "Median (95% CI)"               "Mean (95% CI)" 
-                     geom_mean_long 
+                     geom_mean_ci_3d 
           "Geometric Mean (95% CI)" 
 
 ---
