@@ -244,6 +244,83 @@ format_xx <- function(str) {
   return(rtable_format)
 }
 
+#' Alternative format XX function :a formatting function with fixed decimal precision
+#'
+#' Translate a string where x and dots are interpreted as number place
+#' holders, and others as formatting elements.
+#'
+#' @param str (`string`)\cr template.
+#'
+#' @return An `rtables` formatting function.
+#'
+#' @examples
+#' test <- list(c(1.658, 0.5761), c(1e1, 785.6))
+#'
+#' z <- format_xx_fixed_dp("xx (xx.x)")
+#' sapply(test, z)
+#'
+#' z <- format_xx_fixed_dp("xx.x - xx.x")
+#' sapply(test, z)
+#'
+#' z <- format_xx_fixed_dp("xx.x, incl. xx.x% NE")
+#' sapply(test, z)
+#' @seealso [format_xx]
+#' @export
+format_xx_fixed_dp <- function(str, na_str) {
+  # Find position in the string.
+  if (grepl(pattern = "xxx.", x = str, fixed = TRUE)) {
+    stop("Error: format_xx_fixed_dp do not use xxx. in input str, replace by xx. instead")
+  }
+  if (!grepl(pattern = "xx", x = str, fixed = TRUE)) {
+    stop("Error: format_xx_fixed_dp: input str should contain xx")
+  }
+  positions <- gregexpr(pattern = "xx\\.?x*", text = str,
+                        perl = TRUE)
+  x_positions <- regmatches(x = str, m = positions)[[1]]
+  ### str is splitted into pieces as xx. xx xx.xxx
+  ### xx is no rounding
+  ### xx. rounding to integer (is treated same as rounding to 0 decimal)
+  ### xx.x rounding to 1 decimal, etc
+
+  no_round <- function(x){
+    if (is.na(x)) { return(na_str)
+    } else return(x)
+  }
+  roundfunc <- round
+
+  # Roundings depends on the number of x behind [.].
+  roundings <- lapply(
+    X = x_positions,
+    function(x) {
+      if (x == "xx"){
+        rounding <- no_round
+      } else {
+        y <- strsplit(split = "\\.", x = x)[[1]]
+        digits <- ifelse(length(y) > 1, nchar(y[2]), 0)
+
+        rounding <- function(x) {
+          if (is.na(x)) { return(na_str)
+          } else format(roundfunc(x,digits = digits),
+                        nsmall = digits)
+        }
+      }
+
+      return(rounding)
+    }
+
+  )
+
+  rtable_format <- function(x, output) {
+    values <- Map(y = x, fun = roundings, function(y, fun) fun(y))
+    regmatches(x = str, m = positions)[[1]] <- values
+    return(str)
+  }
+
+  return(rtable_format)
+
+}
+
+
 #' Format numeric values by significant figures
 #'
 #' Format numeric values to print with a specified number of significant figures.
