@@ -29,7 +29,7 @@ s_count_values(
   na.rm = TRUE,
   .N_col,
   .N_row,
-  denom = c("n", "N_row", "N_col")
+  denom = c("n", "N_col", "N_row")
 )
 
 \method{s_count_values}{character}(x, values = "Y", na.rm = TRUE, ...)
@@ -44,7 +44,7 @@ a_count_values(
   na.rm = TRUE,
   .N_col,
   .N_row,
-  denom = c("n", "N_row", "N_col")
+  denom = c("n", "N_col", "N_row")
 )
 }
 \arguments{

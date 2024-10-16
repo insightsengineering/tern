@@ -272,7 +272,7 @@ s_summary.numeric <- function(x,
 #' @export
 s_summary.factor <- function(x,
                              na.rm = TRUE, # nolint
-                             denom = c("n", "N_row", "N_col"),
+                             denom = c("n", "N_col", "N_row"),
                              .N_row, # nolint
                              .N_col, # nolint
                              ...) {
@@ -337,7 +337,7 @@ s_summary.factor <- function(x,
 #' @export
 s_summary.character <- function(x,
                                 na.rm = TRUE, # nolint
-                                denom = c("n", "N_row", "N_col"),
+                                denom = c("n", "N_col", "N_row"),
                                 .N_row, # nolint
                                 .N_col, # nolint
                                 verbose = TRUE,
@@ -391,7 +391,7 @@ s_summary.character <- function(x,
 #' @export
 s_summary.logical <- function(x,
                               na.rm = TRUE, # nolint
-                              denom = c("n", "N_row", "N_col"),
+                              denom = c("n", "N_col", "N_row"),
                               .N_row, # nolint
                               .N_col, # nolint
                               ...) {

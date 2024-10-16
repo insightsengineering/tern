@@ -151,7 +151,7 @@ s_count_occurrences <- function(df,
 a_count_occurrences <- function(df,
                                 labelstr = "",
                                 id = "USUBJID",
-                                denom = c("N_col", "n"),
+                                denom = c("N_col", "n", "N_row"),
                                 drop = TRUE,
                                 .N_col, # nolint
                                 .N_row, # nolint
