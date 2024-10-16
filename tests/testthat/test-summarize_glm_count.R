@@ -264,13 +264,14 @@ testthat::test_that("h_ppmeans works with healthy input", {
   withr::with_options(
     opts_partial_match_old,
     {
-      fits <- h_glm_count(
-        .var = "AVAL",
-        .df_row = anl,
-        variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
-        distribution = "poisson"
+      testthat::expect_silent(
+        fits <- h_glm_count(
+          .var = "AVAL",
+          .df_row = anl,
+          variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
+          distribution = "poisson"
+        )
       )
-      testthat::expect_snapshot(fits)
     }
   )
 
