@@ -28,7 +28,8 @@ testthat::test_that("s_count_missed_doses works as expected", {
   result <- s_count_missed_doses(
     x = c(0, 1, 0, 2, 3, 4, 0, 2),
     thresholds = c(2, 5),
-    .N_col = 10
+    .N_col = 10,
+    .N_row = 10
   )
 
   res <- testthat::expect_silent(result)

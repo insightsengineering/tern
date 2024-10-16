@@ -278,13 +278,6 @@ s_summary.factor <- function(x,
                              ...) {
   assert_valid_factor(x)
 
-  denom <- match.arg(denom) %>%
-    switch(
-      n = length(x),
-      N_row = .N_row,
-      N_col = .N_col
-    )
-
   if (na.rm) {
     x <- x[!is.na(x)] %>% fct_discard("<Missing>")
   } else {
@@ -296,6 +289,14 @@ s_summary.factor <- function(x,
   y$n <- length(x)
 
   y$count <- as.list(table(x, useNA = "ifany"))
+
+  denom <- match.arg(denom) %>%
+    switch(
+      n = length(x),
+      N_row = .N_row,
+      N_col = .N_col
+    )
+
   y$count_fraction <- lapply(
     y$count,
     function(x) {
