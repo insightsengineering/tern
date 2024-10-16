@@ -77,7 +77,10 @@ h_count_cumulative <- function(x,
     length(x[is_keep & x > threshold])
   }
 
-  result <- c(count = count, fraction = count / .N_col)
+  result <- c(
+    count = count,
+    fraction = if (count == 0 && .N_col == 0) c(0, 0) else c(count, count / .N_col)
+  )
   result
 }
 

@@ -210,7 +210,17 @@ s_count_occurrences_by_grade <- function(df,
     l_count <- h_append_grade_groups(grade_groups, l_count, remove_single, only_grade_groups)
   }
 
-  l_count_fraction <- lapply(l_count, function(i, denom) c(i, i / denom), denom = denom)
+  l_count_fraction <- lapply(
+    l_count,
+    function(i, denom) {
+      if (i == 0 && denom == 0) {
+        c(0, 0)
+      } else {
+        c(i, i / denom)
+      }
+    },
+    denom = denom
+  )
 
   list(
     count_fraction = l_count_fraction
