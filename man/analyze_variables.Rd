@@ -30,7 +30,16 @@ analyze_vars(
 
 s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
 
-\method{s_summary}{numeric}(x, na.rm = TRUE, control = control_analyze_vars(), ...)
+\method{s_summary}{numeric}(
+  x,
+  na.rm = TRUE,
+  denom,
+  .N_row,
+  .N_col,
+  .var,
+  control = control_analyze_vars(),
+  ...
+)
 
 \method{s_summary}{factor}(
   x,

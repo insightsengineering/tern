@@ -150,6 +150,10 @@ s_summary <- function(x,
 #' @export
 s_summary.numeric <- function(x,
                               na.rm = TRUE, # nolint
+                              denom,
+                              .N_row, # nolint
+                              .N_col, # nolint
+                              .var,
                               control = control_analyze_vars(),
                               ...) {
   checkmate::assert_numeric(x)

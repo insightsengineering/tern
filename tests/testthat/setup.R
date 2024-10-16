@@ -1,5 +1,6 @@
 # Extra libraries (suggested) for tests
 library(dplyr)
+library(nestcolor)
 
 # skip_if_too_deep
 skip_if_too_deep <- function(depth) {
