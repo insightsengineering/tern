@@ -56,6 +56,7 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
   denom = c("n", "N_col", "N_row"),
   .N_row,
   .N_col,
+  .var,
   verbose = TRUE,
   ...
 )

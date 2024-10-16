@@ -344,6 +344,7 @@ s_summary.character <- function(x,
                                 denom = c("n", "N_col", "N_row"),
                                 .N_row, # nolint
                                 .N_col, # nolint
+                                .var,
                                 verbose = TRUE,
                                 ...) {
   if (na.rm) {
