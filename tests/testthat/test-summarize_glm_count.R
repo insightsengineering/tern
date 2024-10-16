@@ -264,6 +264,7 @@ testthat::test_that("h_ppmeans works with healthy input", {
   withr::with_options(
     opts_partial_match_old,
     {
+      # XXX h_glm_count(poisson) fails snapshot diff in integration tests
       testthat::expect_silent(
         fits <- h_glm_count(
           .var = "AVAL",
