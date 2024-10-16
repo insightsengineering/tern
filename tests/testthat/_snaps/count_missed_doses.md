@@ -73,6 +73,6 @@
       y                                               
         Missed Doses                                  
           n                            0         4    
-          At least 3 missed doses     NA      4 (100%)
-          At least 7 missed doses     NA      1 (25%) 
+          At least 3 missed doses      0      4 (100%)
+          At least 7 missed doses      0      1 (25%) 
 
