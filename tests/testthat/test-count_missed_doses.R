@@ -55,3 +55,26 @@ testthat::test_that("count_missed_doses works as expected", {
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("count_missed_doses works with denom argument specified", {
+  set.seed(1)
+  df <- data.frame(
+    a = c(sample(1:10, 10), NA),
+    type = factor(sample(c("x", "y"), 11, replace = TRUE)),
+    grp = factor(c(rep("A", 5), rep("B", 6)), levels = c("A", "B"))
+  )
+
+  result <- basic_table() %>%
+    split_cols_by("grp") %>%
+    split_rows_by("type") %>%
+    count_missed_doses(
+      "a",
+      thresholds = c(3, 7),
+      var_labels = "Missed Doses",
+      denom = "n"
+    ) %>%
+    build_table(df)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})

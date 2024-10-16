@@ -400,3 +400,19 @@
         MODERATE    7 (3.5%)     9 (5.1%)       6 (3.7%)           -1.6 (-5.7 - 2.5)      
         SEVERE     17 (8.4%)    23 (13.0%)     22 (13.6%)          -4.6 (-10.8 - 1.7)     
 
+# count_occurrences_by_grade works with denom argument specified
+
+    Code
+      res
+    Output
+                      A           B    
+      —————————————————————————————————
+      LOW                              
+        MILD          0       1 (100%) 
+        MODERATE      0           0    
+        SEVERE     2 (100%)       0    
+      HIGH                             
+        MILD          0       1 (50.0%)
+        MODERATE   1 (100%)   1 (50.0%)
+        SEVERE        0           0    
+
