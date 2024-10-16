@@ -261,12 +261,13 @@ s_count_occurrences_by_grade(
   grade_groups = list("ANY" = levels(df$AETOXGR))
 )
 
-#  We need to ungroup `count_fraction` first so that the `rtables` formatting
+# We need to ungroup `count_fraction` first so that the `rtables` formatting
 # function `format_count_fraction()` can be applied correctly.
 afun <- make_afun(a_count_occurrences_by_grade, .ungroup_stats = "count_fraction")
 afun(
   df,
   .N_col = 10L,
+  .N_row = 10L,
   .var = "AETOXGR",
   id = "USUBJID",
   grade_groups = list("ANY" = levels(df$AETOXGR))

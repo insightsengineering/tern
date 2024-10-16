@@ -79,7 +79,7 @@ h_count_cumulative <- function(x,
 
   result <- c(
     count = count,
-    fraction = if (count == 0 && .N_col == 0) c(0, 0) else c(count, count / .N_col)
+    fraction = if (count == 0 && .N_col == 0) 0 else count / .N_col
   )
   result
 }
