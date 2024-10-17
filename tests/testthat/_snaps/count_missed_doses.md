@@ -58,3 +58,21 @@
         At least 3 missed doses   3 (60%)   5 (83.3%)
         At least 7 missed doses   2 (40%)   2 (33.3%)
 
+# count_missed_doses works with denom argument specified
+
+    Code
+      res
+    Output
+                                       A         B    
+      ————————————————————————————————————————————————
+      x                                               
+        Missed Doses                                  
+          n                            5         1    
+          At least 3 missed doses   3 (60%)   1 (100%)
+          At least 7 missed doses   2 (40%)   1 (100%)
+      y                                               
+        Missed Doses                                  
+          n                            0         4    
+          At least 3 missed doses      0      4 (100%)
+          At least 7 missed doses      0      1 (25%) 
+

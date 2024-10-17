@@ -165,7 +165,7 @@ testthat::test_that("a_summary work with healthy input.", {
   res_out <- testthat::expect_silent(result)
 
   # numeric input - a_summary
-  result <- a_summary(x = x, .N_col = 10, .N_row = 20, .var = "bla")
+  result <- a_summary(x = x, .N_col = 10, .N_row = 10, .var = "bla")
   res <- testthat::expect_silent(result)
   testthat::expect_identical(res_out, res)
   testthat::expect_snapshot(res)
