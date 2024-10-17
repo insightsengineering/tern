@@ -48,6 +48,7 @@ control_analyze_vars <- function(conf_level = 0.95,
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
 #'   Options for numeric variables are: ``r shQuote(get_stats("analyze_vars_numeric"))``
+#'
 #'   Options for non-numeric variables are: ``r shQuote(get_stats("analyze_vars_counts"))``
 #'
 #' @name analyze_variables

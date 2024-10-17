@@ -17,6 +17,7 @@
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
 #'   Options for numeric variables are: ``r shQuote(get_stats("analyze_vars_numeric", add_pval = TRUE))``
+#'
 #'   Options for non-numeric variables are: ``r shQuote(get_stats("analyze_vars_counts", add_pval = TRUE))``
 #'
 #' @note
