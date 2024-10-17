@@ -87,7 +87,7 @@ times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
-Options are: \verb{"n", "lsmean", "lsmean_diff", "lsmean_diff_ci", "pval"}}
+Options are: \verb{'n', 'lsmean', 'lsmean_diff', 'lsmean_diff_ci', 'pval'}}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}

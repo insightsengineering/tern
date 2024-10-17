@@ -47,7 +47,7 @@ that corresponding table cells will stay blank.}
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
 In addition to any statistics added using \code{filters_list}, statistic options are:
-\verb{"unique", "all"}}
+\verb{'unique', 'all'}}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 

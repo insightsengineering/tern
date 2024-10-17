@@ -78,7 +78,7 @@ times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
-Options are: \verb{"median", "median_ci", "quantiles", "range_censor", "range_event", "range"}}
+Options are: \verb{'median', 'median_ci', 'quantiles', 'range_censor', 'range_event', 'range'}}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}

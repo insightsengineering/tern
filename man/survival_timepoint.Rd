@@ -107,7 +107,7 @@ avoid warnings from duplicate table names.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
-Options are: \verb{"pt_at_risk", "event_free_rate", "rate_se", "rate_ci", "rate_diff", "rate_diff_ci", "ztest_pval"}}
+Options are: \verb{'pt_at_risk', 'event_free_rate', 'rate_se', 'rate_ci', 'rate_diff', 'rate_diff_ci', 'ztest_pval'}}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}

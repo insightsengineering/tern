@@ -96,7 +96,7 @@ times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
-Options are: \verb{"count", "count_fraction", "count_fraction_fixed_dp", "fraction"}}
+Options are: \verb{'count', 'count_fraction', 'count_fraction_fixed_dp', 'fraction'}}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
