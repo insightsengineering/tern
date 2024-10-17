@@ -182,19 +182,19 @@ g_forest <- function(tbl,
   # Deprecated argument warnings
   if (lifecycle::is_present(width_row_names)) {
     lifecycle::deprecate_warn(
-      "0.9.3", "g_forest(width_row_names)", "g_forest(lbl_col_padding)",
+      "0.9.4", "g_forest(width_row_names)", "g_forest(lbl_col_padding)",
       details = "The width of the row label column can be adjusted via the `lbl_col_padding` parameter."
     )
   }
   if (lifecycle::is_present(width_forest)) {
     lifecycle::deprecate_warn(
-      "0.9.3", "g_forest(width_forest)", "g_forest(rel_width_forest)",
+      "0.9.4", "g_forest(width_forest)", "g_forest(rel_width_forest)",
       details = "Relative width of the forest plot (as a proportion) can be set via the `rel_width_forest` parameter."
     )
   }
   if (lifecycle::is_present(gp)) {
     lifecycle::deprecate_warn(
-      "0.9.3", "g_forest(gp)", "g_forest(ggtheme)",
+      "0.9.4", "g_forest(gp)", "g_forest(ggtheme)",
       details = paste(
         "`g_forest` is now generated as a `ggplot` object.",
         "Additional display settings should be supplied via the `ggtheme` parameter."
@@ -203,13 +203,13 @@ g_forest <- function(tbl,
   }
   if (lifecycle::is_present(draw)) {
     lifecycle::deprecate_warn(
-      "0.9.3", "g_forest(draw)",
+      "0.9.4", "g_forest(draw)",
       details = "`g_forest` now generates `ggplot` objects. This parameter has no effect."
     )
   }
   if (lifecycle::is_present(newpage)) {
     lifecycle::deprecate_warn(
-      "0.9.3", "g_forest(newpage)",
+      "0.9.4", "g_forest(newpage)",
       details = "`g_forest` now generates `ggplot` objects. This parameter has no effect."
     )
   }

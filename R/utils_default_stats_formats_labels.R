@@ -368,7 +368,7 @@ tern_default_stats <- list(
   abnormal_by_worst_grade = c("count_fraction", "count_fraction_fixed_dp"),
   abnormal_by_worst_grade_worsen = c("fraction"),
   analyze_patients_exposure_in_cols = c("n_patients", "sum_exposure"),
-  analyze_vars_counts = c("n", "count", "count_fraction", "count_fraction_fixed_dp", "n_blq"),
+  analyze_vars_counts = c("n", "count", "count_fraction", "count_fraction_fixed_dp", "fraction", "n_blq"),
   analyze_vars_numeric = c(
     "n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci", "mean_sei", "mean_sdi", "mean_pval",
     "median", "mad", "median_ci", "quantiles", "iqr", "range", "min", "max", "median_range", "cv",
@@ -382,7 +382,7 @@ tern_default_stats <- list(
   count_patients_with_flags = c("n", "count", "count_fraction", "count_fraction_fixed_dp", "n_blq"),
   count_values = c("n", "count", "count_fraction", "count_fraction_fixed_dp", "n_blq"),
   coxph_pairwise = c("pvalue", "hr", "hr_ci", "n_tot", "n_tot_events"),
-  estimate_incidence_rate = c("person_years", "n_events", "rate", "rate_ci", "n_rate"),
+  estimate_incidence_rate = c("person_years", "n_events", "rate", "rate_ci", "n_unique", "n_rate"),
   estimate_multinomial_response = c("n_prop", "prop_ci"),
   estimate_odds_ratio = c("or_ci", "n_tot"),
   estimate_proportion = c("n_prop", "prop_ci"),
@@ -514,7 +514,7 @@ tern_default_labels <- c(
 #' @export
 summary_formats <- function(type = "numeric", include_pval = FALSE) {
   lifecycle::deprecate_warn(
-    "0.9.5.9005", "summary_formats()",
+    "0.9.6", "summary_formats()",
     details = 'Use get_formats_from_stats(get_stats("analyze_vars_numeric", add_pval = include_pval)) instead'
   )
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
@@ -537,7 +537,7 @@ summary_formats <- function(type = "numeric", include_pval = FALSE) {
 #' @export
 summary_labels <- function(type = "numeric", include_pval = FALSE) {
   lifecycle::deprecate_warn(
-    "0.9.5.9005", "summary_formats()",
+    "0.9.6", "summary_formats()",
     details = 'Use get_labels_from_stats(get_stats("analyze_vars_numeric", add_pval = include_pval)) instead'
   )
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")

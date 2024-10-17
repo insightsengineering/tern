@@ -74,7 +74,7 @@ defined by this split instruction, or \code{NA_character_} (the default) for no 
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
 Options for numeric variables are: \verb{"n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci", "mean_sei", "mean_sdi", "mean_pval", "median", "mad", "median_ci", "quantiles", "iqr", "range", "min", "max", "median_range", "cv", "geom_mean", "geom_mean_ci", "geom_cv", "pval"}
-Options for non-numeric variables are: \verb{"n", "count", "count_fraction", "count_fraction_fixed_dp", "n_blq", "pval_counts"}}
+Options for non-numeric variables are: \verb{"n", "count", "count_fraction", "count_fraction_fixed_dp", "fraction", "n_blq", "pval_counts"}}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}

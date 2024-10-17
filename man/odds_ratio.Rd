@@ -15,9 +15,10 @@ estimate_odds_ratio(
   groups_list = NULL,
   na_str = default_na_str(),
   nested = TRUE,
-  ...,
+  method = "exact",
   show_labels = "hidden",
   table_names = vars,
+  var_labels = vars,
   .stats = "or_ci",
   .formats = NULL,
   .labels = NULL,
@@ -32,7 +33,8 @@ s_odds_ratio(
   .df_row,
   variables = list(arm = NULL, strata = NULL),
   conf_level = 0.95,
-  groups_list = NULL
+  groups_list = NULL,
+  method = "exact"
 )
 
 a_odds_ratio(
@@ -43,7 +45,8 @@ a_odds_ratio(
   .df_row,
   variables = list(arm = NULL, strata = NULL),
   conf_level = 0.95,
-  groups_list = NULL
+  groups_list = NULL,
+  method = "exact"
 )
 }
 \arguments{
@@ -64,12 +67,15 @@ levels that belong to it in the character vectors that are elements of the list.
 possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
-\item{...}{arguments passed to \code{s_odds_ratio()}.}
+\item{method}{(\code{string})\cr whether to use the correct (\code{"exact"}) calculation in the conditional likelihood or one
+of the approximations. See \code{\link[survival:clogit]{survival::clogit()}} for details.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
 times, to avoid warnings from \code{rtables}.}
+
+\item{var_labels}{(\code{character})\cr variable labels.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 

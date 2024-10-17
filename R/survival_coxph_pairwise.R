@@ -48,7 +48,7 @@ s_coxph_pairwise <- function(df,
                              strat = lifecycle::deprecated(),
                              control = control_coxph()) {
   if (lifecycle::is_present(strat)) {
-    lifecycle::deprecate_warn("0.9.3", "s_coxph_pairwise(strat)", "s_coxph_pairwise(strata)")
+    lifecycle::deprecate_warn("0.9.4", "s_coxph_pairwise(strat)", "s_coxph_pairwise(strata)")
     strata <- strat
   }
 

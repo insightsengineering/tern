@@ -1,25 +1,38 @@
-# tern 0.9.5.9020
+# tern 0.9.6.9005
+
+### Bug Fixes
+* Fixed bug in `a_summary()` causing non-unique `row_name` values to occur when multiple statistics are selected for count variables.
+
+# tern 0.9.6
+
 ### Enhancements
 * Added `errorbar_width` and `linetype` parameters to `g_lineplot`.
-* Reworking of `summarize_glm_count()` documentation and all its associated functions to better describe the results and the functions' purpose.
 * Added the `.formats` argument to `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` to allow users to specify formats.
 * Added the `riskdiff` argument to `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` to allow users to add a risk difference table column, and function `control_riskdiff` to specify settings for the risk difference column.
 * Added warning to `tabulate_rsp_subgroups` when `pval` statistic is selected but `df` has not been correctly generated to add p-values to the output table.
 * Added `n_rate` statistic as a non-default option to `estimate_incidence_rate` which returns both number of events observed and estimated incidence rate.
+* Added `n_unique` statistic as a non-default option to `estimate_incidence_rate` which returns total number of patients with at least one event observed.
+* Refactored `estimate_incidence_rate` to work as both an analyze function and a summarize function, controlled by the added `summarize` parameter. When `summarize = TRUE`, labels can be fine-tuned via the new `label_fmt` argument to the same function.
+* Added `fraction` statistic to the `analyze_var_count` method group.
+* Improved `summarize_glm_count()` documentation and all its associated functions to better describe the results and the functions' purpose.
+* Added `method` argument to `s_odds_ratio()` and `estimate_odds_ratio()` to control whether exact or approximate conditional likelihood calculations are used. 
 
 ### Bug Fixes
-* Fixed a bug in `a_surv_time` that threw an error when split only has `"is_event"`.
 * Added defaults for `d_count_cumulative` parameters as described in the documentation.
-* Empty levels on `g_lineplot` x-axis are not shown in either plots.
+* Fixed a bug of empty levels on `g_lineplot` x-axis were not shown in either plots.
+* Fixed a bug in `a_surv_time` that threw an error when split only has `"is_event"`.
 * Fixed disappearing line in `g_lineplot` when using only one group or strata level.
 * Fixed defaults for formats and labels in `get_formats_from_stats` and `get_labels_from_stats`.
 * Fixed bug for linear scaling factor (`scale` parameter) being applied to response but not to rate in `h_glm_count` while all distributions have logarithmic link function.
 * Fixed bug in `decorate_grob` that did not handle well empty strings or `NULL` values for title and footers.
 * Fixed bug in `g_km` that caused an error when multiple records in the data had estimates at max time.
+* Fixed issue with wrong wrapping due to different `\n` and vector behavior that did not cope well with `split_string()`.
 
 ### Miscellaneous
 * Began deprecation of the confusing functions `summary_formats` and `summary_labels`.
 * Enhanced general descriptions of analyze and summarize functions throughout package documentation.
+* Finalized deprecation of the `strata` and `cohort_id` arguments to `g_lineplot`.
+* Moved incidence rate helper functions into a separate `h_incidence_rate.R` file.
 
 # tern 0.9.5
 
