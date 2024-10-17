@@ -407,11 +407,11 @@
     Output
                       A           B    
       —————————————————————————————————
-      LOW                              
+      LOW          2 (100%)   1 (100%) 
         MILD          0       1 (100%) 
         MODERATE      0           0    
         SEVERE     2 (100%)       0    
-      HIGH                             
+      HIGH         1 (100%)   2 (100%) 
         MILD          0       1 (50.0%)
         MODERATE   1 (100%)   1 (50.0%)
         SEVERE        0           0    

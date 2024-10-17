@@ -114,6 +114,7 @@ testthat::test_that("count_cumulative works with denom argument specified", {
   result <- basic_table() %>%
     split_cols_by("grp") %>%
     split_rows_by("type") %>%
+    summarize_row_groups(format = "xx.") %>%
     count_cumulative(
       vars = "a",
       thresholds = c(3, 7),
