@@ -11,8 +11,9 @@
 #'
 #' @inheritParams argument_convention
 #' @param values (`character`)\cr specific values that should be counted.
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_values")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("count_values"))``
 #'
 #' @note
 #' * For `factor` variables, `s_count_values` checks whether `values` are all included in the levels of `x`

@@ -27,8 +27,9 @@
 #' splits, one on variable `param` and one on variable `grade_dir`.
 #'
 #' @inheritParams argument_convention
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("abnormal_by_worst_grade")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("abnormal_by_worst_grade"))``
 #'
 #' @seealso [h_adlb_abnormal_by_worst_grade()] which pre-processes ADLB data frames to be used in
 #'   [count_abnormal_by_worst_grade()].

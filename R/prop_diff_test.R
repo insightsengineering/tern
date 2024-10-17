@@ -10,8 +10,9 @@
 #' @inheritParams argument_convention
 #' @param method (`string`)\cr one of `chisq`, `cmh`, `fisher`, or `schouten`; specifies the test used
 #'   to calculate the p-value.
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("test_proportion_diff")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("test_proportion_diff"))``
 #'
 #' @seealso [h_prop_diff_test]
 #'

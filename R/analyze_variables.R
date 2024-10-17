@@ -45,9 +45,11 @@ control_analyze_vars <- function(conf_level = 0.95,
 #' columns) will be considered (`.df_row[[.var]]`, see [`rtables::additional_fun_params`]) and not the whole dataset.
 #'
 #' @inheritParams argument_convention
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("analyze_vars_numeric")` to see
-#'   statistics available for numeric variables, and `get_stats("analyze_vars_counts")` for statistics available
-#'   for non-numeric variables.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options for numeric variables are: ``r shQuote(get_stats("analyze_vars_numeric"))``
+#'
+#'   Options for non-numeric variables are: ``r shQuote(get_stats("analyze_vars_counts"))``
 #'
 #' @name analyze_variables
 #' @order 1

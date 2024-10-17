@@ -7,8 +7,9 @@
 #' `var`, should be a factor variable, the values of which will be used as labels within the output table.
 #'
 #' @inheritParams argument_convention
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_multinomial_response")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("estimate_multinomial_response"))``
 #'
 #' @seealso Relevant description function [d_onco_rsp_label()].
 #'

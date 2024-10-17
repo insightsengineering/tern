@@ -24,8 +24,9 @@
 #' @param only_grade_groups (`flag`)\cr whether only the specified grade groups should be
 #'   included, with individual grade rows removed (`TRUE`), or all grades and grade groups
 #'   should be displayed (`FALSE`).
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_occurrences_by_grade")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("count_occurrences_by_grade"))``
 #'
 #' @seealso Relevant helper function [h_append_grade_groups()].
 #'

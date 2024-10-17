@@ -12,8 +12,9 @@
 #' @inheritParams s_count_cumulative
 #' @inheritParams argument_convention
 #' @param thresholds (`numeric`)\cr minimum number of missed doses the patients had.
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_missed_doses")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("count_missed_doses"))``
 #'
 #' @seealso
 #' * Relevant description function [d_count_missed_doses()] which generates labels for [count_missed_doses()].

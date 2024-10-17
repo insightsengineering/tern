@@ -42,8 +42,9 @@ underneath analyses, which is not allowed.}
 \item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
 times, to avoid warnings from \code{rtables}.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table. Run \verb{get_stats("analyze_vars_numeric)}
-to see available statistics for this function.}
+\item{.stats}{(\code{character})\cr statistics to select for the table.
+
+Options are: \verb{'n', 'sum', 'mean', 'sd', 'se', 'mean_sd', 'mean_se', 'mean_ci', 'mean_sei', 'mean_sdi', 'mean_pval', 'median', 'mad', 'median_ci', 'quantiles', 'iqr', 'range', 'min', 'max', 'median_range', 'cv', 'geom_mean', 'geom_mean_ci', 'geom_cv'}}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
