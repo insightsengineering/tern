@@ -30,6 +30,10 @@
 #' @param col_by (`factor`)\cr defining column groups.
 #' @param conf_level (`proportion`)\cr confidence level of the interval.
 #' @param data (`data.frame`)\cr the dataset containing the variables to summarize.
+#' @param denom (`string`)\cr choice of denominator for proportion. Options are:
+#'   * `n`: number of values in this row and column intersection.
+#'   * `N_row`: total number of values in this row across columns.
+#'   * `N_col`: total number of values in this column across rows.
 #' @param df (`data.frame`)\cr data set containing all analysis variables.
 #' @param groups_lists (named `list` of `list`)\cr optionally contains for each `subgroups` variable a
 #'   list, which specifies the new group levels via the names and the
