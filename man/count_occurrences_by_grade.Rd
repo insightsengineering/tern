@@ -66,6 +66,7 @@ a_count_occurrences_by_grade(
   denom = c("N_col", "n", "N_row"),
   .N_col,
   .N_row,
+  .df_row,
   .var = NULL,
   .stats = NULL,
   .formats = NULL,
@@ -139,6 +140,8 @@ passed by \code{rtables}.}
 \item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
+
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 }
 \value{
 \itemize{

@@ -139,7 +139,7 @@ testthat::test_that("a_count_occurrences_by_grade works with healthy input.", {
   options("width" = 100)
 
   result <- a_count_occurrences_by_grade(
-    df = raw_data, .N_col = 10, .N_row = 10,
+    df = raw_data, .N_col = 10, .N_row = 10, .df_row = raw_data,
     .stats = get_stats("count_occurrences_by_grade"),
     .var = "AETOXGR", id = "USUBJID"
   )
@@ -151,7 +151,7 @@ testthat::test_that("a_count_occurrences_by_grade works with custom input.", {
   options("width" = 100)
 
   result <- a_count_occurrences_by_grade(
-    df = raw_data, .N_col = 10, .N_row = 10,
+    df = raw_data, .N_col = 10, .N_row = 10, .df_row = raw_data,
     .stats = "count_fraction",
     .formats = c(count_fraction = "xx (xx%)"),
     .labels = list("1" = "Level: 1", "2" = "LVL 2", "count_fraction.3" = "Count of 3", "4" = "Missing 4"),

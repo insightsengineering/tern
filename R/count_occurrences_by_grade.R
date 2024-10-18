@@ -253,6 +253,7 @@ a_count_occurrences_by_grade <- function(df,
                                          denom = c("N_col", "n", "N_row"),
                                          .N_col, # nolint
                                          .N_row, # nolint
+                                         .df_row,
                                          .var = NULL,
                                          .stats = NULL,
                                          .formats = NULL,
