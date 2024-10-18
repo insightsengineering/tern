@@ -21,6 +21,7 @@ navbar:
     github:
       icon: fa-github
       href: https://github.com/insightsengineering/tern
+      aria-label: GitHub
 
 reference:
   - title: Overview Pages
@@ -30,13 +31,6 @@ reference:
       - analyze_colvars_functions
       - summarize_functions
       - formatting_functions
-
-  - title: Control Functions
-    desc: These functions capture options in lists and take care of defaults
-          (and checks where applicable). They avoid cluttering of function
-          signatures with long lists of single arguments.
-    contents:
-      - starts_with("control_")
 
   - title: Analysis Functions
     desc: |
@@ -61,6 +55,7 @@ reference:
       - compare_vars
       - starts_with("count_", internal = TRUE)
       - starts_with("estimate_", internal = TRUE)
+      - s_bland_altman
       - starts_with("summarize_", internal = TRUE)
       - starts_with("surv_", internal = TRUE)
       - starts_with("tabulate_", internal = TRUE)
@@ -69,6 +64,30 @@ reference:
       - -analyze_functions
       - -estimate_coef
       - -summarize_functions
+
+  - title: Model-Specific Functions
+    desc: These functions help with fitting or extracting results from specific
+          models.
+    contents:
+      - estimate_coef
+      - starts_with("extract_")
+      - starts_with("fit_")
+      - get_smooths
+      - starts_with("logistic_")
+      - starts_with("tidy.")
+      - univariate
+
+  - title: Graphs
+    desc: These function create graphical type output.
+    contents:
+      - starts_with("g_")
+
+  - title: Control Functions
+    desc: These functions capture options in lists and take care of defaults
+          (and checks where applicable). They avoid cluttering of function
+          signatures with long lists of single arguments.
+    contents:
+      - starts_with("control_")
 
   - title: Analysis Helper Functions
     desc: These functions are useful in defining an analysis.
@@ -87,23 +106,6 @@ reference:
       - -starts_with("h_row_")
       - -h_xticks
       - -prop_diff
-
-  - title: Model-Specific Functions
-    desc: These functions help with fitting or extracting results from specific
-          models.
-    contents:
-      - estimate_coef
-      - starts_with("extract_")
-      - starts_with("fit_")
-      - get_smooths
-      - starts_with("logistic_")
-      - starts_with("tidy.")
-      - univariate
-
-  - title: Graphs
-    desc: These function create graphical type output.
-    contents:
-      - starts_with("g_")
 
   - title: rtables Helper Functions
     desc: These functions help to work with the `rtables` package and may be

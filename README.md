@@ -33,6 +33,7 @@ Data visualizations:
 -   STEP graphs ([`g_step`](https://insightsengineering.github.io/tern/latest-tag/reference/g_step.html))
 -   Individual patient plots ([`g_ipp`](https://insightsengineering.github.io/tern/latest-tag/reference/g_ipp.html))
 -   Waterfall plots ([`g_waterfall`](https://insightsengineering.github.io/tern/latest-tag/reference/g_waterfall.html))
+-   Bland-Altman plots ([`g_bland_altman`](https://insightsengineering.github.io/tern/latest-tag/reference/g_bland_altman.html))
 
 Statistical model fit summaries:
 
@@ -80,7 +81,7 @@ See package vignettes `browseVignettes(package = "tern")` for usage of this pack
 
 ## Acknowledgment
 
-This package is a result of a joint efforts by many developers and stakeholders. We would like to thank everyone who has contributed so far!
+This package is the result of the joint efforts by many developers and stakeholders. We would like to thank everyone who has contributed so far!
 
 ## Stargazers and Forkers
 

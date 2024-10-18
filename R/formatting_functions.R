@@ -1,7 +1,5 @@
 #' Formatting functions
 #'
-#' @description `r lifecycle::badge("stable")`
-#'
 #' See below for the list of formatting functions created in `tern` to work with `rtables`.
 #'
 #' Other available formats can be listed via [`formatters::list_valid_format_labels()`]. Additional

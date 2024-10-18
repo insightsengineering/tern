@@ -2,29 +2,32 @@
 #'
 #' @description `r lifecycle::badge("experimental")`
 #'
-#' Functions that use the Bland-Altman method to assess the agreement between two numerical vectors.
+#' Statistics function that uses the Bland-Altman method to assess the agreement between two numerical vectors
+#' and calculates a variety of statistics.
 #'
 #' @inheritParams argument_convention
 #' @param y (`numeric`)\cr vector of numbers we want to analyze, to be compared with `x`.
 #'
-#' @name bland_altman
-NULL
-
-#' @describeIn bland_altman Statistics function that compares two numeric vectors using the Bland-Altman method
-#'   and calculates a variety of statistics.
-#'
 #' @return
-#' * `s_bland_altman()` returns a named list of the following elements: `df`, `difference_mean`, `ci_mean`,
-#'   `difference_sd`, `difference_se`, `upper_agreement_limit`, `lower_agreement_limit`, `agreement_limit_se`,
-#'   `upper_agreement_limit_ci`, `lower_agreement_limit_ci`, `t_value`, and `n`.
+#' A named list of the following elements:
+#'   * `df`
+#'   * `difference_mean`
+#'   * `ci_mean`
+#'   * `difference_sd`
+#'   * `difference_se`
+#'   * `upper_agreement_limit`
+#'   * `lower_agreement_limit`
+#'   * `agreement_limit_se`
+#'   * `upper_agreement_limit_ci`
+#'   * `lower_agreement_limit_ci`
+#'   * `t_value`
+#'   * `n`
 #'
 #' @examples
 #' x <- seq(1, 60, 5)
 #' y <- seq(5, 50, 4)
-#' conf_level <- 0.9
 #'
-#' # Derive statistics that are needed for Bland-Altman plot
-#' s_bland_altman(x, y, conf_level = conf_level)
+#' s_bland_altman(x, y, conf_level = 0.9)
 #'
 #' @export
 s_bland_altman <- function(x, y, conf_level = 0.95) {
@@ -75,16 +78,24 @@ s_bland_altman <- function(x, y, conf_level = 0.95) {
   )
 }
 
-#' @describeIn bland_altman Graphing function that produces a Bland-Altman plot.
+#' Bland-Altman plot
 #'
-#' @return
-#' * `g_bland_altman()` returns a `ggplot` Bland-Altman plot.
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' Graphing function that produces a Bland-Altman plot.
+#'
+#' @inheritParams s_bland_altman
+#'
+#' @return A `ggplot` Bland-Altman plot.
 #'
 #' @examples
-#' # Create a Bland-Altman plot
-#' g_bland_altman(x = x, y = y, conf_level = conf_level)
+#' x <- seq(1, 60, 5)
+#' y <- seq(5, 50, 4)
+#'
+#' g_bland_altman(x = x, y = y, conf_level = 0.9)
 #'
 #' @export
+#' @aliases bland_altman
 g_bland_altman <- function(x, y, conf_level = 0.95) {
   result_tem <- s_bland_altman(x, y, conf_level = conf_level)
   xpos <- max(result_tem$df$average) * 0.9 + min(result_tem$df$average) * 0.1

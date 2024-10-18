@@ -4,10 +4,9 @@
 \alias{formatting_functions}
 \title{Formatting functions}
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-
 See below for the list of formatting functions created in \code{tern} to work with \code{rtables}.
-
+}
+\details{
 Other available formats can be listed via \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}}. Additional
 custom formats can be created via the \code{\link[formatters:sprintf_format]{formatters::sprintf_format()}} function.
 }
