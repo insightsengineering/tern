@@ -11,8 +11,9 @@
 #'
 #' @inheritParams split_cols_by_groups
 #' @inheritParams argument_convention
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_odds_ratio")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("estimate_odds_ratio"))``
 #' @param method (`string`)\cr whether to use the correct (`"exact"`) calculation in the conditional likelihood or one
 #'   of the approximations. See [survival::clogit()] for details.
 #'

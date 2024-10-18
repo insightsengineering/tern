@@ -28,8 +28,9 @@
 #'   * `id` (`string`)\cr subject variable name.
 #'   * `baseline_var` (`string`)\cr name of the data column containing baseline toxicity variable.
 #'   * `direction_var` (`string`)\cr see `direction_var` for more details.
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("abnormal_by_worst_grade_worsen")`
-#'   to see all available statistics.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("abnormal_by_worst_grade_worsen"))``
 #'
 #' @seealso Relevant helper functions [h_adlb_worsen()] and [h_worsen_counter()] which are used within
 #' [s_count_abnormal_lab_worsen_by_baseline()] to process input data.

@@ -19,9 +19,10 @@
 #'   that corresponding table cells will stay blank.
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty then this will
 #'   be used as label.
-#' @param .stats (`character`)\cr statistics to select for the table. Run
-#'   `get_stats("summarize_patients_events_in_cols")` to see available statistics for this function, in addition
-#'   to any added using `filters_list`.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   In addition to any statistics added using `filters_list`, statistic options are:
+#'   ``r shQuote(get_stats("summarize_patients_events_in_cols"))``
 #'
 #' @name count_patients_events_in_cols
 #' @order 1

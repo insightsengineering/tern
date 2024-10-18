@@ -14,9 +14,11 @@
 #' statistic.
 #'
 #' @inheritParams argument_convention
-#' @param .stats (`character`)\cr statistics to select for the table. Run
-#'   `get_stats("analyze_vars_numeric", add_pval = TRUE)` to see statistics available for numeric variables, and
-#'   `get_stats("analyze_vars_counts", add_pval = TRUE)` for statistics available for non-numeric variables.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options for numeric variables are: ``r shQuote(get_stats("analyze_vars_numeric", add_pval = TRUE))``
+#'
+#'   Options for non-numeric variables are: ``r shQuote(get_stats("analyze_vars_counts", add_pval = TRUE))``
 #'
 #' @note
 #' * For factor variables, `denom` for factor proportions can only be `n` since the purpose is to compare proportions

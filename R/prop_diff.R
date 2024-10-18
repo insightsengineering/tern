@@ -12,8 +12,9 @@
 #' @inheritParams prop_diff_strat_nc
 #' @inheritParams argument_convention
 #' @param method (`string`)\cr the method used for the confidence interval estimation.
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_proportion_diff")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("estimate_proportion_diff"))``
 #'
 #' @seealso [d_proportion_diff()]
 #'

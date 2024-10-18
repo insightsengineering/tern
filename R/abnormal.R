@@ -23,8 +23,9 @@
 #'   for example, `abnormal = list(Low = c("LOW", "LOW LOW"), High = c("HIGH", "HIGH HIGH"))`.
 #' @param exclude_base_abn (`flag`)\cr whether to exclude subjects with baseline abnormality
 #'   from numerator and denominator.
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("abnormal")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("abnormal"))``
 #'
 #' @note
 #' * `count_abnormal()` only considers a single variable that contains multiple abnormal levels.

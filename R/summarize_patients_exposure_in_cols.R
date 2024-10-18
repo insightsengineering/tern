@@ -21,8 +21,9 @@
 #' @inheritParams argument_convention
 #' @param ex_var (`string`)\cr name of the variable in `df` containing exposure values.
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty, this will be used as label.
-#' @param .stats (`character`)\cr statistics to select for the table. Run
-#'   `get_stats("analyze_patients_exposure_in_cols")` to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("analyze_patients_exposure_in_cols"))``
 #'
 #' @name summarize_patients_exposure_in_cols
 #' @order 1

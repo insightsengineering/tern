@@ -15,8 +15,9 @@
 #' @param flag_variables (`character`)\cr a vector specifying the names of `logical` variables from analysis dataset
 #'   used for counting the number of unique identifiers.
 #' @param flag_labels (`character`)\cr vector of labels to use for flag variables.
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_patients_with_flags")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("count_patients_with_flags"))``
 #'
 #' @seealso [count_patients_with_event]
 #'
