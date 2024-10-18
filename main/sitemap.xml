@@ -34,7 +34,6 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/as_factor_keep_attributes.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/assertions.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/bins_percent_labels.html</loc></url>
-<url><loc>https://insightsengineering.github.io/tern/reference/bland_altman.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/c_label_n.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/c_label_n_alt.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/cfun_by_flag.html</loc></url>
@@ -123,6 +122,7 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/format_sigfig.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/format_xx.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/formatting_functions.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern/reference/g_bland_altman.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/g_forest.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/g_ipp.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/g_km.html</loc></url>
@@ -194,6 +194,7 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/response_subgroups.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/rtable2gg.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/rtables_access.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern/reference/s_bland_altman.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/s_cox_multivariate.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/sas_na.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/score_occurrences.html</loc></url>
