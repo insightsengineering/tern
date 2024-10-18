@@ -1,5 +1,8 @@
 # tern 0.9.6.9006
 
+### Enhancements
+* Refactored `a_count_occurrences_by_grade()` to no longer use `make_afun()`.
+
 ### Bug Fixes
 * Fixed bug in `a_summary()` causing non-unique `row_name` values to occur when multiple statistics are selected for count variables.
 
