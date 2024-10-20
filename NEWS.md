@@ -1,4 +1,4 @@
-# tern 0.9.6.9006
+# tern 0.9.6.9007
 
 ### Bug Fixes
 * Fixed bug in `a_summary()` causing non-unique `row_name` values to occur when multiple statistics are selected for count variables.
