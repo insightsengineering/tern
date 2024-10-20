@@ -14,8 +14,9 @@
 #' @inheritParams h_count_cumulative
 #' @inheritParams argument_convention
 #' @param thresholds (`numeric`)\cr vector of cutoff values for the counts.
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_cumulative")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("count_cumulative"))``
 #'
 #' @seealso Relevant helper function [h_count_cumulative()], and descriptive function [d_count_cumulative()].
 #'

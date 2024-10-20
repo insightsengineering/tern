@@ -29,8 +29,9 @@
 #'
 #' @inheritParams argument_convention
 #' @param abnormal (`character`)\cr values identifying the abnormal range level(s) in `.var`.
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("abnormal_by_baseline")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("abnormal_by_baseline"))``
 #'
 #' @note
 #' * `df` should be filtered to include only post-baseline records.

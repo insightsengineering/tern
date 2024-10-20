@@ -80,8 +80,9 @@ column split has been done already earlier in the layout pipe.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table. Run
-\code{get_stats("analyze_patients_exposure_in_cols")} to see available statistics for this function.}
+\item{.stats}{(\code{character})\cr statistics to select for the table.
+
+Options are: \verb{'n_patients', 'sum_exposure'}}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 

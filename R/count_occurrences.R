@@ -17,8 +17,9 @@
 #' @inheritParams argument_convention
 #' @param drop (`flag`)\cr whether non-appearing occurrence levels should be dropped from the resulting table.
 #'   Note that in that case the remaining occurrence levels in the table are sorted alphabetically.
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_occurrences")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("count_occurrences"))``
 #'
 #' @note By default, occurrences which don't appear in a given row split are dropped from the table and
 #'   the occurrences in the table are sorted alphabetically per row split. Therefore, the corresponding layout

@@ -10,12 +10,13 @@
 #'
 #' @inheritParams prop_strat_wilson
 #' @inheritParams argument_convention
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("estimate_proportion")`
-#'   to see available statistics for this function.
 #' @param method (`string`)\cr the method used to construct the confidence interval
 #'   for proportion of successful outcomes; one of `waldcc`, `wald`, `clopper-pearson`,
 #'   `wilson`, `wilsonc`, `strat_wilson`, `strat_wilsonc`, `agresti-coull` or `jeffreys`.
 #' @param long (`flag`)\cr whether a long description is required.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("estimate_proportion"))``
 #'
 #' @seealso [h_proportions]
 #'

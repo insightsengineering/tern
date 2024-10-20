@@ -78,8 +78,9 @@ Defaults to \code{TRUE}.}
 possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("summarize_num_patients")}
-to see available statistics for this function.}
+\item{.stats}{(\code{character})\cr statistics to select for the table.
+
+Options are: \verb{'unique', 'nonunique', 'unique_count'}}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
