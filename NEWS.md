@@ -1,5 +1,9 @@
 # tern 0.9.6.9007
 
+### Enhancements
+* Added `rel_height_plot` parameter to `g_lineplot()` to control the line plot height relative to annotation table height.
+* Updated the `table_font_size` parameter of `g_lineplot()` to control the size of all text in the annotation table, including labels.
+
 ### Bug Fixes
 * Fixed bug in `a_summary()` causing non-unique `row_name` values to occur when multiple statistics are selected for count variables.
 
