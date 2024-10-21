@@ -23,7 +23,9 @@ testthat::test_that("g_lineplot works with custom settings and statistics table"
       x_lab = "Time",
       y_lab = "Lab Test",
       subtitle = "Laboratory Test:",
-      caption = "caption"
+      caption = "caption",
+      table_font_size = 5.5,
+      rel_height_plot = 0.35
     )
   ))
 
