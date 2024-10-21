@@ -72,6 +72,8 @@
 #' @param col (`character`)\cr color(s). See `?ggplot2::aes_colour_fill_alpha` for example values.
 #' @param linetype (`character`)\cr line type(s). See `?ggplot2::aes_linetype_size_shape` for example values.
 #' @param errorbar_width (`numeric(1)`)\cr width of the error bars.
+#' @param rel_height_plot (`proportion`)\cr proportion of total figure height to allocate to the line plot.
+#'   Relative height of annotation table is then `1 - rel_height_plot`. If `table = NULL`, this parameter is ignored.
 #'
 #' @return A `ggplot` line plot (and statistics table if applicable).
 #'
@@ -163,7 +165,8 @@ g_lineplot <- function(df,
                        errorbar_width = 0.45,
                        newpage = lifecycle::deprecated(),
                        col = NULL,
-                       linetype = NULL) {
+                       linetype = NULL,
+                       rel_height_plot = 0.5) {
   checkmate::assert_character(variables, any.missing = TRUE)
   checkmate::assert_character(mid, null.ok = TRUE)
   checkmate::assert_character(interval, null.ok = TRUE)
@@ -175,6 +178,7 @@ g_lineplot <- function(df,
   checkmate::assert_number(errorbar_width, lower = 0)
   checkmate::assert_string(title, null.ok = TRUE)
   checkmate::assert_string(subtitle, null.ok = TRUE)
+  assert_proportion_value(rel_height_plot)
 
   if (!is.null(table)) {
     table_format <- get_formats_from_stats(table)
@@ -475,7 +479,14 @@ g_lineplot <- function(df,
     }
 
     # align plot and table
-    cowplot::plot_grid(p, tbl, ncol = 1, align = "v", axis = "tblr")
+    cowplot::plot_grid(
+      p,
+      tbl,
+      ncol = 1,
+      align = "v",
+      axis = "tblr",
+      rel_heights = c(rel_height_plot, 1 - rel_height_plot)
+    )
   } else {
     p
   }
