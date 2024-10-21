@@ -38,7 +38,8 @@ g_lineplot(
   errorbar_width = 0.45,
   newpage = lifecycle::deprecated(),
   col = NULL,
-  linetype = NULL
+  linetype = NULL,
+  rel_height_plot = 0.5
 )
 }
 \arguments{
@@ -149,6 +150,9 @@ appended to the plot. Names of \code{table_labels} must match the names of stati
 \item{col}{(\code{character})\cr color(s). See \code{?ggplot2::aes_colour_fill_alpha} for example values.}
 
 \item{linetype}{(\code{character})\cr line type(s). See \code{?ggplot2::aes_linetype_size_shape} for example values.}
+
+\item{rel_height_plot}{(\code{proportion})\cr proportion of total figure height to allocate to the line plot.
+Relative height of annotation table is then \code{1 - rel_height_plot}. If \code{table = NULL}, this parameter is ignored.}
 }
 \value{
 A \code{ggplot} line plot (and statistics table if applicable).
