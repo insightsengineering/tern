@@ -39,7 +39,8 @@ g_lineplot(
   newpage = lifecycle::deprecated(),
   col = NULL,
   linetype = NULL,
-  rel_height_plot = 0.5
+  rel_height_plot = 0.5,
+  as_list = FALSE
 )
 }
 \arguments{
@@ -153,6 +154,10 @@ appended to the plot. Names of \code{table_labels} must match the names of stati
 
 \item{rel_height_plot}{(\code{proportion})\cr proportion of total figure height to allocate to the line plot.
 Relative height of annotation table is then \code{1 - rel_height_plot}. If \code{table = NULL}, this parameter is ignored.}
+
+\item{as_list}{(\code{flag})\cr whether the two \code{ggplot} objects should be returned as a list when \code{table} is not \code{NULL}.
+If \code{TRUE}, a named list with two elements, \code{plot} and \code{table}, will be returned. If \code{FALSE} (default) the
+annotation table is printed below the plot via \code{\link[cowplot:plot_grid]{cowplot::plot_grid()}}.}
 }
 \value{
 A \code{ggplot} line plot (and statistics table if applicable).
@@ -160,7 +165,7 @@ A \code{ggplot} line plot (and statistics table if applicable).
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
-Line plot with the optional table.
+Line plot with optional table.
 }
 \examples{
 library(nestcolor)

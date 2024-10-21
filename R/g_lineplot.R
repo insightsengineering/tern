@@ -2,7 +2,7 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Line plot with the optional table.
+#' Line plot with optional table.
 #'
 #' @inheritParams argument_convention
 #' @param alt_counts_df (`data.frame` or `NULL`)\cr data set that will be used (only)
@@ -74,6 +74,9 @@
 #' @param errorbar_width (`numeric(1)`)\cr width of the error bars.
 #' @param rel_height_plot (`proportion`)\cr proportion of total figure height to allocate to the line plot.
 #'   Relative height of annotation table is then `1 - rel_height_plot`. If `table = NULL`, this parameter is ignored.
+#' @param as_list (`flag`)\cr whether the two `ggplot` objects should be returned as a list when `table` is not `NULL`.
+#'   If `TRUE`, a named list with two elements, `plot` and `table`, will be returned. If `FALSE` (default) the
+#'   annotation table is printed below the plot via [cowplot::plot_grid()].
 #'
 #' @return A `ggplot` line plot (and statistics table if applicable).
 #'
@@ -166,7 +169,8 @@ g_lineplot <- function(df,
                        newpage = lifecycle::deprecated(),
                        col = NULL,
                        linetype = NULL,
-                       rel_height_plot = 0.5) {
+                       rel_height_plot = 0.5,
+                       as_list = FALSE) {
   checkmate::assert_character(variables, any.missing = TRUE)
   checkmate::assert_character(mid, null.ok = TRUE)
   checkmate::assert_character(interval, null.ok = TRUE)
@@ -179,6 +183,7 @@ g_lineplot <- function(df,
   checkmate::assert_string(title, null.ok = TRUE)
   checkmate::assert_string(subtitle, null.ok = TRUE)
   assert_proportion_value(rel_height_plot)
+  checkmate::assert_logical(as_list)
 
   if (!is.null(table)) {
     table_format <- get_formats_from_stats(table)
@@ -484,15 +489,19 @@ g_lineplot <- function(df,
       tbl <- tbl + ggplot2::facet_wrap(facets = group_var, ncol = 1)
     }
 
-    # align plot and table
-    cowplot::plot_grid(
-      p,
-      tbl,
-      ncol = 1,
-      align = "v",
-      axis = "tblr",
-      rel_heights = c(rel_height_plot, 1 - rel_height_plot)
-    )
+    if (!as_list) {
+      # align plot and table
+      cowplot::plot_grid(
+        p,
+        tbl,
+        ncol = 1,
+        align = "v",
+        axis = "tblr",
+        rel_heights = c(rel_height_plot, 1 - rel_height_plot)
+      )
+    } else {
+      list(plot = p, table = tbl)
+    }
   } else {
     p
   }
