@@ -467,9 +467,15 @@ g_lineplot <- function(df,
         axis.ticks = ggplot2::element_blank(),
         axis.title = ggplot2::element_blank(),
         axis.text.x = ggplot2::element_blank(),
-        axis.text.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 5)),
+        axis.text.y = ggplot2::element_text(
+          size = table_font_size * ggplot2::.pt,
+          margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 5)
+        ),
         strip.text = ggplot2::element_text(hjust = 0),
-        strip.text.x = ggplot2::element_text(margin = ggplot2::margin(1.5, 0, 1.5, 0, "pt")),
+        strip.text.x = ggplot2::element_text(
+          size = table_font_size * ggplot2::.pt,
+          margin = ggplot2::margin(1.5, 0, 1.5, 0, "pt")
+        ),
         strip.background = ggplot2::element_rect(fill = "grey95", color = NA),
         legend.position = "none"
       )
