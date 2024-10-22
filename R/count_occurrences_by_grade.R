@@ -16,6 +16,7 @@
 #' row/column context and operates on the level of the latest row split or the root of the table if no row splits have
 #' occurred.
 #'
+#' @inheritParams count_occurrences
 #' @inheritParams argument_convention
 #' @param grade_groups (named `list` of `character`)\cr list containing groupings of grades.
 #' @param remove_single (`flag`)\cr `TRUE` to not include the elements of one-element grade groups
@@ -149,14 +150,23 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE, only
 #' @export
 s_count_occurrences_by_grade <- function(df,
                                          .var,
+                                         .N_row, # nolint
                                          .N_col, # nolint
                                          id = "USUBJID",
                                          grade_groups = list(),
                                          remove_single = TRUE,
                                          only_grade_groups = FALSE,
+                                         denom = c("N_col", "n", "N_row"),
                                          labelstr = "") {
   assert_valid_factor(df[[.var]])
   assert_df_with_variables(df, list(grade = .var, id = id))
+
+  denom <- match.arg(denom) %>%
+    switch(
+      n = nlevels(factor(df[[id]])),
+      N_row = .N_row,
+      N_col = .N_col
+    )
 
   if (nrow(df) < 1) {
     grade_levels <- levels(df[[.var]])
@@ -201,7 +211,17 @@ s_count_occurrences_by_grade <- function(df,
     l_count <- h_append_grade_groups(grade_groups, l_count, remove_single, only_grade_groups)
   }
 
-  l_count_fraction <- lapply(l_count, function(i, denom) c(i, i / denom), denom = .N_col)
+  l_count_fraction <- lapply(
+    l_count,
+    function(i, denom) {
+      if (i == 0 && denom == 0) {
+        c(0, 0)
+      } else {
+        c(i, i / denom)
+      }
+    },
+    denom = denom
+  )
 
   list(
     count_fraction = l_count_fraction
@@ -215,12 +235,13 @@ s_count_occurrences_by_grade <- function(df,
 #' * `a_count_occurrences_by_grade()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
-#' #  We need to ungroup `count_fraction` first so that the `rtables` formatting
+#' # We need to ungroup `count_fraction` first so that the `rtables` formatting
 #' # function `format_count_fraction()` can be applied correctly.
 #' afun <- make_afun(a_count_occurrences_by_grade, .ungroup_stats = "count_fraction")
 #' afun(
 #'   df,
 #'   .N_col = 10L,
+#'   .N_row = 10L,
 #'   .var = "AETOXGR",
 #'   id = "USUBJID",
 #'   grade_groups = list("ANY" = levels(df$AETOXGR))

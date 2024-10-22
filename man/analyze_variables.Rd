@@ -44,7 +44,7 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
 \method{s_summary}{factor}(
   x,
   na.rm = TRUE,
-  denom = c("n", "N_row", "N_col"),
+  denom = c("n", "N_col", "N_row"),
   .N_row,
   .N_col,
   ...
@@ -53,7 +53,7 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
 \method{s_summary}{character}(
   x,
   na.rm = TRUE,
-  denom = c("n", "N_row", "N_col"),
+  denom = c("n", "N_col", "N_row"),
   .N_row,
   .N_col,
   .var,
@@ -64,7 +64,7 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
 \method{s_summary}{logical}(
   x,
   na.rm = TRUE,
-  denom = c("n", "N_row", "N_col"),
+  denom = c("n", "N_col", "N_row"),
   .N_row,
   .N_col,
   ...

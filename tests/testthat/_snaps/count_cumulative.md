@@ -76,3 +76,19 @@
         > 3   3 (60%)   4 (66.7%)
         > 7   1 (20%)   2 (33.3%)
 
+# count_cumulative works with denom argument specified
+
+    Code
+      res
+    Output
+                   A         B    
+      ————————————————————————————
+      x            5         2    
+        a                         
+          > 3   3 (60%)   1 (100%)
+          > 7   1 (20%)   1 (100%)
+      y            0         4    
+        a                         
+          > 3      0      3 (75%) 
+          > 7      0      1 (25%) 
+

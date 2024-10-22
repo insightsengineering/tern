@@ -414,3 +414,18 @@ testthat::test_that("count_occurrences_by_grade works as expected with risk diff
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("count_occurrences_by_grade works with denom argument specified", {
+  df <- raw_data
+  df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
+
+  result <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    split_rows_by("BMRKR") %>%
+    summarize_occurrences_by_grade(var = "BMRKR", denom = "n") %>%
+    count_occurrences_by_grade(var = "AESEV", denom = "n") %>%
+    build_table(df, alt_counts_df = df_adsl)
+
+  res <- testthat::expect_silent(result[-c(2, 6)])
+  testthat::expect_snapshot(res)
+})

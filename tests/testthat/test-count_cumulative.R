@@ -102,3 +102,29 @@ testthat::test_that("count_cumulative works with customized arguments", {
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("count_cumulative works with denom argument specified", {
+  set.seed(1, kind = "Mersenne-Twister")
+  df <- data.frame(
+    a = c(sample(1:10, 10), NA),
+    type = factor(sample(c("x", "y"), 11, replace = TRUE)),
+    grp = factor(c(rep("A", 5), rep("B", 6)), levels = c("A", "B"))
+  )
+
+  result <- basic_table() %>%
+    split_cols_by("grp") %>%
+    split_rows_by("type") %>%
+    summarize_row_groups(format = "xx.") %>%
+    count_cumulative(
+      vars = "a",
+      thresholds = c(3, 7),
+      lower_tail = FALSE,
+      include_eq = FALSE,
+      na.rm = FALSE,
+      denom = "n"
+    ) %>%
+    build_table(df)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})

@@ -248,9 +248,9 @@
                      A           B         D  
                    (N=3)       (N=3)     (N=0)
       ————————————————————————————————————————
-      MILD           0       2 (66.7%)    NA  
-      MODERATE   1 (33.3%)   1 (33.3%)    NA  
-      SEVERE     2 (66.7%)       0        NA  
+      MILD           0       2 (66.7%)     0  
+      MODERATE   1 (33.3%)   1 (33.3%)     0  
+      SEVERE     2 (66.7%)       0         0  
 
 # count_occurrences_by_grade label works when more than one variables are analyzed
 
@@ -322,17 +322,17 @@
     Code
       res
     Output
-                         A               B             D     
-                      (N=10)          (N=10)         (N=0)   
-      ———————————————————————————————————————————————————————
-      LOW                                                    
-        MILD       0.00 (0.00%)    1.00 (10.00%)   0.00 (NA%)
-        MODERATE   0.00 (0.00%)    0.00 (0.00%)    0.00 (NA%)
-        SEVERE     2.00 (20.00%)   0.00 (0.00%)    0.00 (NA%)
-      HIGH                                                   
-        MILD       0.00 (0.00%)    1.00 (10.00%)   0.00 (NA%)
-        MODERATE   1.00 (10.00%)   1.00 (10.00%)   0.00 (NA%)
-        SEVERE     0.00 (0.00%)    0.00 (0.00%)    0.00 (NA%)
+                         A               B              D      
+                      (N=10)          (N=10)          (N=0)    
+      —————————————————————————————————————————————————————————
+      LOW                                                      
+        MILD       0.00 (0.00%)    1.00 (10.00%)   0.00 (0.00%)
+        MODERATE   0.00 (0.00%)    0.00 (0.00%)    0.00 (0.00%)
+        SEVERE     2.00 (20.00%)   0.00 (0.00%)    0.00 (0.00%)
+      HIGH                                                     
+        MILD       0.00 (0.00%)    1.00 (10.00%)   0.00 (0.00%)
+        MODERATE   1.00 (10.00%)   1.00 (10.00%)   0.00 (0.00%)
+        SEVERE     0.00 (0.00%)    0.00 (0.00%)    0.00 (0.00%)
 
 # summarize_occurrences_by_grade works with custom arguments for grade
 
@@ -399,4 +399,20 @@
         MILD        1 (0.5%)     2 (1.1%)          0               -0.6 (-2.5 - 1.2)      
         MODERATE    7 (3.5%)     9 (5.1%)       6 (3.7%)           -1.6 (-5.7 - 2.5)      
         SEVERE     17 (8.4%)    23 (13.0%)     22 (13.6%)          -4.6 (-10.8 - 1.7)     
+
+# count_occurrences_by_grade works with denom argument specified
+
+    Code
+      res
+    Output
+                      A           B    
+      —————————————————————————————————
+      LOW          2 (100%)   1 (100%) 
+        MILD          0       1 (100%) 
+        MODERATE      0           0    
+        SEVERE     2 (100%)       0    
+      HIGH         1 (100%)   2 (100%) 
+        MILD          0       1 (50.0%)
+        MODERATE   1 (100%)   1 (50.0%)
+        SEVERE        0           0    
 

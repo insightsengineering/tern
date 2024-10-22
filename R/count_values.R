@@ -38,7 +38,7 @@ s_count_values <- function(x,
                            na.rm = TRUE, # nolint
                            .N_col, # nolint
                            .N_row, # nolint
-                           denom = c("n", "N_row", "N_col")) {
+                           denom = c("n", "N_col", "N_row")) {
   UseMethod("s_count_values", x)
 }
 
