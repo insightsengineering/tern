@@ -135,6 +135,34 @@ testthat::test_that("s_count_occurrences_by_grade works with valid input for int
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("a_count_occurrences_by_grade works with healthy input.", {
+  options("width" = 100)
+
+  result <- a_count_occurrences_by_grade(
+    df = raw_data, .N_col = 10, .N_row = 10, .df_row = raw_data,
+    .stats = get_stats("count_occurrences_by_grade"),
+    .var = "AETOXGR", id = "USUBJID"
+  )
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("a_count_occurrences_by_grade works with custom input.", {
+  options("width" = 100)
+
+  result <- a_count_occurrences_by_grade(
+    df = raw_data, .N_col = 10, .N_row = 10, .df_row = raw_data,
+    .stats = "count_fraction",
+    .formats = c(count_fraction = "xx (xx%)"),
+    .labels = list("1" = "Level: 1", "2" = "LVL 2", "count_fraction.3" = "Count of 3", "4" = "Missing 4"),
+    .indent_mods = list("1" = 1L, "2" = 2L, "count_fraction.4" = 3L),
+    .var = "AETOXGR", id = "USUBJID"
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("count_occurrences_by_grade works with default arguments for intensity", {
   df <- raw_data
   df_adsl <- unique(df[c("ARM", "ARM_EMPTY", "USUBJID")])
@@ -427,5 +455,40 @@ testthat::test_that("count_occurrences_by_grade works with denom argument specif
     build_table(df, alt_counts_df = df_adsl)
 
   res <- testthat::expect_silent(result[-c(2, 6)])
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("summarize_occurrences works as expected with risk difference column", {
+  tern_ex_adae$AESEV <- factor(tern_ex_adae$AESEV)
+
+  # Default parameters
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+    split_rows_by("SEX", child_labels = "visible") %>%
+    summarize_occurrences_by_grade(
+      var = "AESEV",
+      riskdiff = TRUE
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  # Grade groups, custom id var
+  grade_groups <- list("-Any-" = levels(tern_ex_adae$AESEV))
+
+  result <- basic_table(show_colcounts = TRUE) %>%
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+    split_rows_by("SEX", child_labels = "visible") %>%
+    summarize_occurrences_by_grade(
+      var = "AESEV",
+      riskdiff = TRUE,
+      .indent_mods = 1L,
+      grade_groups = grade_groups,
+      id = "SITEID"
+    ) %>%
+    build_table(tern_ex_adae)
+
+  res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
