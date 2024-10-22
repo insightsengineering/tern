@@ -9,12 +9,12 @@ try_car_anova(mod, test.statistic)
 \arguments{
 \item{mod}{\code{lm}, \code{aov}, \code{glm}, \code{multinom}, \code{polr}
     \code{mlm}, \code{coxph}, \code{coxme}, \code{lme}, \code{mer}, \code{merMod}, \code{svyglm}, \code{svycoxph},
-    \code{rlm}, or other suitable model object.}
+    \code{rlm}, \code{clm}, \code{clmm}, or other suitable model object.}
 
 \item{test.statistic}{for a generalized linear model, whether to calculate
     \code{"LR"} (likelihood-ratio), \code{"Wald"}, or \code{"F"} tests; for a Cox
     or Cox mixed-effects model, whether to calculate \code{"LR"} (partial-likelihood ratio) or
-    \code{"Wald"} tests; in the default case or for linear mixed models fit by
+    \code{"Wald"} tests (with \code{"LR"} tests unavailable for Cox models using the \code{tt} argument); in the default case or for linear mixed models fit by
     \code{lmer}, whether to calculate Wald \code{"Chisq"} or Kenward-Roger
     \code{"F"} tests with Satterthwaite degrees of freedom (\emph{warning:} the KR F-tests
     can be very time-consuming).
