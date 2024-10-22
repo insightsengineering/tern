@@ -3,6 +3,7 @@
 ### Enhancements
 * Added the `denom` parameter to `s_count_cumulative()`, `s_count_missed_doses()`, and `s_count_occurrences_by_grade()`.
 * Added `"N_row"` as an optional input to `denom` in `s_count_occurrences()`.
+* Refactored `a_count_occurrences_by_grade()` to no longer use `make_afun()`.
 
 ### Bug Fixes
 * Fixed bug in `a_summary()` causing non-unique `row_name` values to occur when multiple statistics are selected for count variables.
