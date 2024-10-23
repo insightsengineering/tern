@@ -49,12 +49,6 @@
       attr(,"label")
       [1] "Mean -/+ 1xSD"
       
-      $mean_ci_3d
-             mean mean_ci_lwr mean_ci_upr 
-               NA          NA          NA 
-      attr(,"label")
-      [1] "Mean (95% CI)"
-      
       $mean_pval
       p_value 
            NA 
@@ -76,12 +70,6 @@
       [1] NA
       attr(,"label")
       [1] "Median 95% CI"
-      
-      $median_ci_3d
-             median median_ci_lwr median_ci_upr 
-                 NA            NA            NA 
-      attr(,"label")
-      [1] "Median (95% CI)"
       
       $quantiles
       quantile_0.25 quantile_0.75 
@@ -128,12 +116,6 @@
       $geom_cv
       geom_cv 
            NA 
-      
-      $geom_mean_ci_3d
-        geom_mean mean_ci_lwr mean_ci_upr 
-              NaN          NA          NA 
-      attr(,"label")
-      [1] "Geometric Mean (95% CI)"
       
 
 # s_summary handles NA
@@ -187,12 +169,6 @@
       attr(,"label")
       [1] "Mean -/+ 1xSD"
       
-      $mean_ci_3d
-             mean mean_ci_lwr mean_ci_upr 
-                1          NA          NA 
-      attr(,"label")
-      [1] "Mean (95% CI)"
-      
       $mean_pval
       p_value 
            NA 
@@ -214,12 +190,6 @@
       [1] NA
       attr(,"label")
       [1] "Median 95% CI"
-      
-      $median_ci_3d
-             median median_ci_lwr median_ci_upr 
-                  1            NA            NA 
-      attr(,"label")
-      [1] "Median (95% CI)"
       
       $quantiles
       quantile_0.25 quantile_0.75 
@@ -266,12 +236,6 @@
       $geom_cv
       geom_cv 
            NA 
-      
-      $geom_mean_ci_3d
-        geom_mean mean_ci_lwr mean_ci_upr 
-                1          NA          NA 
-      attr(,"label")
-      [1] "Geometric Mean (95% CI)"
       
 
 ---
@@ -325,12 +289,6 @@
       attr(,"label")
       [1] "Mean -/+ 1xSD"
       
-      $mean_ci_3d
-             mean mean_ci_lwr mean_ci_upr 
-               NA          NA          NA 
-      attr(,"label")
-      [1] "Mean (95% CI)"
-      
       $mean_pval
       p_value 
            NA 
@@ -352,12 +310,6 @@
       [1] NA
       attr(,"label")
       [1] "Median 95% CI"
-      
-      $median_ci_3d
-             median median_ci_lwr median_ci_upr 
-                 NA            NA            NA 
-      attr(,"label")
-      [1] "Median (95% CI)"
       
       $quantiles
       quantile_0.25 quantile_0.75 
@@ -404,12 +356,6 @@
       $geom_cv
       geom_cv 
            NA 
-      
-      $geom_mean_ci_3d
-        geom_mean mean_ci_lwr mean_ci_upr 
-               NA          NA          NA 
-      attr(,"label")
-      [1] "Geometric Mean (95% CI)"
       
 
 # s_summary returns right results for n = 2
@@ -463,12 +409,6 @@
       attr(,"label")
       [1] "Mean -/+ 1xSD"
       
-      $mean_ci_3d
-             mean mean_ci_lwr mean_ci_upr 
-         1.500000   -4.853102    7.853102 
-      attr(,"label")
-      [1] "Mean (95% CI)"
-      
       $mean_pval
         p_value 
       0.2048328 
@@ -490,12 +430,6 @@
       [1] NA
       attr(,"label")
       [1] "Median 95% CI"
-      
-      $median_ci_3d
-             median median_ci_lwr median_ci_upr 
-                1.5            NA            NA 
-      attr(,"label")
-      [1] "Median (95% CI)"
       
       $quantiles
       quantile_0.25 quantile_0.75 
@@ -542,12 +476,6 @@
       $geom_cv
        geom_cv 
       52.10922 
-      
-      $geom_mean_ci_3d
-         geom_mean  mean_ci_lwr  mean_ci_upr 
-        1.41421356   0.01729978 115.60839614 
-      attr(,"label")
-      [1] "Geometric Mean (95% CI)"
       
 
 # s_summary returns right results for n = 8
@@ -601,12 +529,6 @@
       attr(,"label")
       [1] "Mean -/+ 1xSD"
       
-      $mean_ci_3d
-             mean mean_ci_lwr mean_ci_upr 
-         6.000000    3.318768    8.681232 
-      attr(,"label")
-      [1] "Mean (95% CI)"
-      
       $mean_pval
           p_value 
       0.001133783 
@@ -628,12 +550,6 @@
       [1] 0.9921875
       attr(,"label")
       [1] "Median 95% CI"
-      
-      $median_ci_3d
-             median median_ci_lwr median_ci_upr 
-                6.5           1.0          10.0 
-      attr(,"label")
-      [1] "Median (95% CI)"
       
       $quantiles
       quantile_0.25 quantile_0.75 
@@ -680,12 +596,6 @@
       $geom_cv
        geom_cv 
       96.61307 
-      
-      $geom_mean_ci_3d
-        geom_mean mean_ci_lwr mean_ci_upr 
-         4.842534    2.456211    9.547283 
-      attr(,"label")
-      [1] "Geometric Mean (95% CI)"
       
 
 # s_summary works with factors
@@ -1123,34 +1033,31 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-                            row_name      formatted_cell indent_mod                   row_label
-      1                            n                  10          0                           n
-      2                          Sum                 1.3          0                         Sum
-      3                         Mean                 0.1          0                        Mean
-      4                           SD                 0.8          0                          SD
-      5                           SE                 0.2          0                          SE
-      6                    Mean (SD)           0.1 (0.8)          0                   Mean (SD)
-      7                    Mean (SE)           0.1 (0.2)          0                   Mean (SE)
-      8                  Mean 95% CI       (-0.43, 0.69)          0                 Mean 95% CI
-      9                Mean -/+ 1xSE       (-0.11, 0.38)          0               Mean -/+ 1xSE
-      10               Mean -/+ 1xSD       (-0.65, 0.91)          0               Mean -/+ 1xSD
-      11 Mean p-value (H0: mean = 0)              0.6052          0 Mean p-value (H0: mean = 0)
-      12                      Median                 0.3          0                      Median
-      13   Median Absolute Deviation                -0.0          0   Median Absolute Deviation
-      14               Median 95% CI       (-0.82, 0.74)          0               Median 95% CI
-      15             25% and 75%-ile          -0.6 - 0.6          0             25% and 75%-ile
-      16                         IQR                 1.2          0                         IQR
-      17                   Min - Max          -0.8 - 1.6          0                   Min - Max
-      18                     Minimum                -0.8          0                     Minimum
-      19                     Maximum                 1.6          0                     Maximum
-      20          Median (Min - Max)    0.3 (-0.8 - 1.6)          0          Median (Min - Max)
-      21                      CV (%)               590.4          0                      CV (%)
-      22              Geometric Mean                  NA          0              Geometric Mean
-      23       Geometric Mean 95% CI                  NA          0       Geometric Mean 95% CI
-      24         CV % Geometric Mean                  NA          0         CV % Geometric Mean
-      25             Median (95% CI) 0.26 (-0.82 - 0.74)          0             Median (95% CI)
-      26               Mean (95% CI) 0.13 (-0.43 - 0.69)          0               Mean (95% CI)
-      27     Geometric Mean (95% CI)                  NA          0     Geometric Mean (95% CI)
+             row_name   formatted_cell indent_mod                   row_label
+      1             n               10          0                           n
+      2           sum              1.3          0                         Sum
+      3          mean              0.1          0                        Mean
+      4            sd              0.8          0                          SD
+      5            se              0.2          0                          SE
+      6       mean_sd        0.1 (0.8)          0                   Mean (SD)
+      7       mean_se        0.1 (0.2)          0                   Mean (SE)
+      8       mean_ci    (-0.43, 0.69)          0                 Mean 95% CI
+      9      mean_sei    (-0.11, 0.38)          0               Mean -/+ 1xSE
+      10     mean_sdi    (-0.65, 0.91)          0               Mean -/+ 1xSD
+      11    mean_pval           0.6052          0 Mean p-value (H0: mean = 0)
+      12       median              0.3          0                      Median
+      13          mad             -0.0          0   Median Absolute Deviation
+      14    median_ci    (-0.82, 0.74)          0               Median 95% CI
+      15    quantiles       -0.6 - 0.6          0             25% and 75%-ile
+      16          iqr              1.2          0                         IQR
+      17        range       -0.8 - 1.6          0                   Min - Max
+      18          min             -0.8          0                     Minimum
+      19          max              1.6          0                     Maximum
+      20 median_range 0.3 (-0.8 - 1.6)          0          Median (Min - Max)
+      21           cv            590.4          0                      CV (%)
+      22    geom_mean               NA          0              Geometric Mean
+      23 geom_mean_ci               NA          0       Geometric Mean 95% CI
+      24      geom_cv               NA          0         CV % Geometric Mean
 
 ---
 
@@ -1159,21 +1066,21 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-         row_name formatted_cell indent_mod row_label
-      1         n              5          0         n
-      2         a              3          0         a
-      3         b              1          0         b
-      4         c              1          0         c
-      5         a        3 (60%)          0         a
-      6         b        1 (20%)          0         b
-      7         c        1 (20%)          0         c
-      8         a      3 (60.0%)          0         a
-      9         b      1 (20.0%)          0         b
-      10        c      1 (20.0%)          0         c
-      11        a    3/5 (60.0%)          0         a
-      12        b    1/5 (20.0%)          0         b
-      13        c    1/5 (20.0%)          0         c
-      14    n_blq              0          0     n_blq
+                          row_name formatted_cell indent_mod row_label
+      1                          n              5          0         n
+      2                    count.a              3          0         a
+      3                    count.b              1          0         b
+      4                    count.c              1          0         c
+      5           count_fraction.a        3 (60%)          0         a
+      6           count_fraction.b        1 (20%)          0         b
+      7           count_fraction.c        1 (20%)          0         c
+      8  count_fraction_fixed_dp.a      3 (60.0%)          0         a
+      9  count_fraction_fixed_dp.b      1 (20.0%)          0         b
+      10 count_fraction_fixed_dp.c      1 (20.0%)          0         c
+      11                fraction.a    3/5 (60.0%)          0         a
+      12                fraction.b    1/5 (20.0%)          0         b
+      13                fraction.c    1/5 (20.0%)          0         c
+      14                     n_blq              0          0     n_blq
 
 ---
 
@@ -1182,21 +1089,21 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-         row_name formatted_cell indent_mod row_label
-      1         n              4          0         n
-      2         A              2          0         A
-      3         B              1          0         B
-      4         C              1          0         C
-      5         A        2 (50%)          0         A
-      6         B        1 (25%)          0         B
-      7         C        1 (25%)          0         C
-      8         A      2 (50.0%)          0         A
-      9         B      1 (25.0%)          0         B
-      10        C      1 (25.0%)          0         C
-      11        A    2/4 (50.0%)          0         A
-      12        B    1/4 (25.0%)          0         B
-      13        C    1/4 (25.0%)          0         C
-      14    n_blq              0          0     n_blq
+                          row_name formatted_cell indent_mod row_label
+      1                          n              4          0         n
+      2                    count.A              2          0         A
+      3                    count.B              1          0         B
+      4                    count.C              1          0         C
+      5           count_fraction.A        2 (50%)          0         A
+      6           count_fraction.B        1 (25%)          0         B
+      7           count_fraction.C        1 (25%)          0         C
+      8  count_fraction_fixed_dp.A      2 (50.0%)          0         A
+      9  count_fraction_fixed_dp.B      1 (25.0%)          0         B
+      10 count_fraction_fixed_dp.C      1 (25.0%)          0         C
+      11                fraction.A    2/4 (50.0%)          0         A
+      12                fraction.B    1/4 (25.0%)          0         B
+      13                fraction.C    1/4 (25.0%)          0         C
+      14                     n_blq              0          0     n_blq
 
 ---
 
@@ -1205,13 +1112,13 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-              row_name formatted_cell indent_mod      row_label
-      1              n              5          0              n
-      2          count              3          0          count
-      3 count_fraction        3 (60%)          0 count_fraction
-      4 count_fraction      3 (60.0%)          0 count_fraction
-      5       fraction                         0       fraction
-      6          n_blq              0          0          n_blq
+                       row_name formatted_cell indent_mod      row_label
+      1                       n              5          0              n
+      2                   count              3          0          count
+      3          count_fraction        3 (60%)          0 count_fraction
+      4 count_fraction_fixed_dp      3 (60.0%)          0 count_fraction
+      5                fraction                         0       fraction
+      6                   n_blq              0          0          n_blq
 
 # a_summary works with custom input.
 
@@ -1220,9 +1127,9 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-             row_name formatted_cell indent_mod     row_label
-      1      std. dev              1          3      std. dev
-      2 Median 95% CI   -0.62 - 1.12          3 Median 95% CI
+         row_name formatted_cell indent_mod     row_label
+      1        sd              1          3      std. dev
+      2 median_ci   -0.62 - 1.12          3 Median 95% CI
 
 ---
 
@@ -1231,25 +1138,25 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-                  row_name formatted_cell indent_mod         row_label
-      1  number of records           5.00         -1 number of records
-      2                  a              2          5                 a
-      3                  b              1          5                 b
-      4                  c              1          5                 c
-      5                 NA              1          5                NA
-      6                  a        2 (40%)          0                 a
-      7                  b        1 (20%)          0                 b
-      8                  c        1 (20%)          0                 c
-      9                 NA        1 (20%)          0                NA
-      10                 a      2 (40.0%)          0                 a
-      11                 b      1 (20.0%)          0                 b
-      12                 c      1 (20.0%)          0                 c
-      13                NA      1 (20.0%)          0                NA
-      14                 a    2/5 (40.0%)          0                 a
-      15                 b    1/5 (20.0%)          0                 b
-      16                 c    1/5 (20.0%)          0                 c
-      17                NA    1/5 (20.0%)          0                NA
-      18             n_blq              0          0             n_blq
+                           row_name formatted_cell indent_mod         row_label
+      1                           n           5.00         -1 number of records
+      2                     count.a              2          5                 a
+      3                     count.b              1          5                 b
+      4                     count.c              1          5                 c
+      5                    count.NA              1          5                NA
+      6            count_fraction.a        2 (40%)          0                 a
+      7            count_fraction.b        1 (20%)          0                 b
+      8            count_fraction.c        1 (20%)          0                 c
+      9           count_fraction.NA        1 (20%)          0                NA
+      10  count_fraction_fixed_dp.a      2 (40.0%)          0                 a
+      11  count_fraction_fixed_dp.b      1 (20.0%)          0                 b
+      12  count_fraction_fixed_dp.c      1 (20.0%)          0                 c
+      13 count_fraction_fixed_dp.NA      1 (20.0%)          0                NA
+      14                 fraction.a    2/5 (40.0%)          0                 a
+      15                 fraction.b    1/5 (20.0%)          0                 b
+      16                 fraction.c    1/5 (20.0%)          0                 c
+      17                fraction.NA    1/5 (20.0%)          0                NA
+      18                      n_blq              0          0             n_blq
 
 # a_summary works with healthy input when compare = TRUE.
 
@@ -1258,83 +1165,32 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-                            row_name     formatted_cell indent_mod                   row_label
-      1                            n                 10          0                           n
-      2                          Sum               51.3          0                         Sum
-      3                         Mean                5.1          0                        Mean
-      4                           SD                0.8          0                          SD
-      5                           SE                0.2          0                          SE
-      6                    Mean (SD)          5.1 (0.8)          0                   Mean (SD)
-      7                    Mean (SE)          5.1 (0.2)          0                   Mean (SE)
-      8                  Mean 95% CI       (4.57, 5.69)          0                 Mean 95% CI
-      9                Mean -/+ 1xSE       (4.89, 5.38)          0               Mean -/+ 1xSE
-      10               Mean -/+ 1xSD       (4.35, 5.91)          0               Mean -/+ 1xSD
-      11 Mean p-value (H0: mean = 0)            <0.0001          0 Mean p-value (H0: mean = 0)
-      12                      Median                5.3          0                      Median
-      13   Median Absolute Deviation               -0.0          0   Median Absolute Deviation
-      14               Median 95% CI       (4.18, 5.74)          0               Median 95% CI
-      15             25% and 75%-ile          4.4 - 5.6          0             25% and 75%-ile
-      16                         IQR                1.2          0                         IQR
-      17                   Min - Max          4.2 - 6.6          0                   Min - Max
-      18                     Minimum                4.2          0                     Minimum
-      19                     Maximum                6.6          0                     Maximum
-      20          Median (Min - Max)    5.3 (4.2 - 6.6)          0          Median (Min - Max)
-      21                      CV (%)               15.2          0                      CV (%)
-      22              Geometric Mean                5.1          0              Geometric Mean
-      23       Geometric Mean 95% CI       (4.56, 5.66)          0       Geometric Mean 95% CI
-      24         CV % Geometric Mean               15.2          0         CV % Geometric Mean
-      25             Median (95% CI) 5.26 (4.18 - 5.74)          0             Median (95% CI)
-      26               Mean (95% CI) 5.13 (4.57 - 5.69)          0               Mean (95% CI)
-      27     Geometric Mean (95% CI) 5.08 (4.56 - 5.66)          0     Geometric Mean (95% CI)
-      28            p-value (t-test)            <0.0001          0            p-value (t-test)
-
----
-
-    Code
-      res
-    Output
-      RowsVerticalSection (in_rows) object print method:
-      ----------------------------
-                           row_name formatted_cell indent_mod                  row_label
-      1                           n              5          0                          n
-      2                           a              3          0                          a
-      3                           b              1          0                          b
-      4                           c              1          0                          c
-      5                           a        3 (60%)          0                          a
-      6                           b        1 (20%)          0                          b
-      7                           c        1 (20%)          0                          c
-      8                           a      3 (60.0%)          0                          a
-      9                           b      1 (20.0%)          0                          b
-      10                          c      1 (20.0%)          0                          c
-      11                          a    3/5 (60.0%)          0                          a
-      12                          b    1/5 (20.0%)          0                          b
-      13                          c    1/5 (20.0%)          0                          c
-      14                      n_blq              0          0                      n_blq
-      15 p-value (chi-squared test)         0.9560          0 p-value (chi-squared test)
-
----
-
-    Code
-      res
-    Output
-      RowsVerticalSection (in_rows) object print method:
-      ----------------------------
-                           row_name formatted_cell indent_mod                  row_label
-      1                           n              4          0                          n
-      2                           A              2          0                          A
-      3                           B              1          0                          B
-      4                           C              1          0                          C
-      5                           A        2 (50%)          0                          A
-      6                           B        1 (25%)          0                          B
-      7                           C        1 (25%)          0                          C
-      8                           A      2 (50.0%)          0                          A
-      9                           B      1 (25.0%)          0                          B
-      10                          C      1 (25.0%)          0                          C
-      11                          A    2/4 (50.0%)          0                          A
-      12                          B    1/4 (25.0%)          0                          B
-      13                          C    1/4 (25.0%)          0                          C
-      14                      n_blq              0          0                      n_blq
-      15 p-value (chi-squared test)         0.9074          0 p-value (chi-squared test)
+             row_name  formatted_cell indent_mod                   row_label
+      1             n              10          0                           n
+      2           sum            51.3          0                         Sum
+      3          mean             5.1          0                        Mean
+      4            sd             0.8          0                          SD
+      5            se             0.2          0                          SE
+      6       mean_sd       5.1 (0.8)          0                   Mean (SD)
+      7       mean_se       5.1 (0.2)          0                   Mean (SE)
+      8       mean_ci    (4.57, 5.69)          0                 Mean 95% CI
+      9      mean_sei    (4.89, 5.38)          0               Mean -/+ 1xSE
+      10     mean_sdi    (4.35, 5.91)          0               Mean -/+ 1xSD
+      11    mean_pval         <0.0001          0 Mean p-value (H0: mean = 0)
+      12       median             5.3          0                      Median
+      13          mad            -0.0          0   Median Absolute Deviation
+      14    median_ci    (4.18, 5.74)          0               Median 95% CI
+      15    quantiles       4.4 - 5.6          0             25% and 75%-ile
+      16          iqr             1.2          0                         IQR
+      17        range       4.2 - 6.6          0                   Min - Max
+      18          min             4.2          0                     Minimum
+      19          max             6.6          0                     Maximum
+      20 median_range 5.3 (4.2 - 6.6)          0          Median (Min - Max)
+      21           cv            15.2          0                      CV (%)
+      22    geom_mean             5.1          0              Geometric Mean
+      23 geom_mean_ci    (4.56, 5.66)          0       Geometric Mean 95% CI
+      24      geom_cv            15.2          0         CV % Geometric Mean
+      25         pval         <0.0001          0            p-value (t-test)
 
 ---
 
@@ -1345,12 +1201,60 @@
       ----------------------------
                           row_name formatted_cell indent_mod                  row_label
       1                          n              5          0                          n
-      2                      count              3          0                      count
-      3             count_fraction        3 (60%)          0             count_fraction
-      4             count_fraction      3 (60.0%)          0             count_fraction
-      5                   fraction                         0                   fraction
-      6                      n_blq              0          0                      n_blq
-      7 p-value (chi-squared test)         0.8091          0 p-value (chi-squared test)
+      2                    count.a              3          0                          a
+      3                    count.b              1          0                          b
+      4                    count.c              1          0                          c
+      5           count_fraction.a        3 (60%)          0                          a
+      6           count_fraction.b        1 (20%)          0                          b
+      7           count_fraction.c        1 (20%)          0                          c
+      8  count_fraction_fixed_dp.a      3 (60.0%)          0                          a
+      9  count_fraction_fixed_dp.b      1 (20.0%)          0                          b
+      10 count_fraction_fixed_dp.c      1 (20.0%)          0                          c
+      11                fraction.a    3/5 (60.0%)          0                          a
+      12                fraction.b    1/5 (20.0%)          0                          b
+      13                fraction.c    1/5 (20.0%)          0                          c
+      14                     n_blq              0          0                      n_blq
+      15               pval_counts         0.9560          0 p-value (chi-squared test)
+
+---
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+                          row_name formatted_cell indent_mod                  row_label
+      1                          n              4          0                          n
+      2                    count.A              2          0                          A
+      3                    count.B              1          0                          B
+      4                    count.C              1          0                          C
+      5           count_fraction.A        2 (50%)          0                          A
+      6           count_fraction.B        1 (25%)          0                          B
+      7           count_fraction.C        1 (25%)          0                          C
+      8  count_fraction_fixed_dp.A      2 (50.0%)          0                          A
+      9  count_fraction_fixed_dp.B      1 (25.0%)          0                          B
+      10 count_fraction_fixed_dp.C      1 (25.0%)          0                          C
+      11                fraction.A    2/4 (50.0%)          0                          A
+      12                fraction.B    1/4 (25.0%)          0                          B
+      13                fraction.C    1/4 (25.0%)          0                          C
+      14                     n_blq              0          0                      n_blq
+      15               pval_counts         0.9074          0 p-value (chi-squared test)
+
+---
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+                       row_name formatted_cell indent_mod                  row_label
+      1                       n              5          0                          n
+      2                   count              3          0                      count
+      3          count_fraction        3 (60%)          0             count_fraction
+      4 count_fraction_fixed_dp      3 (60.0%)          0             count_fraction
+      5                fraction                         0                   fraction
+      6                   n_blq              0          0                      n_blq
+      7             pval_counts         0.8091          0 p-value (chi-squared test)
 
 # a_summary works with custom input when compare = TRUE.
 
@@ -1359,9 +1263,9 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-             row_name formatted_cell indent_mod     row_label
-      1        pvalue        <0.0001          3        pvalue
-      2 Median 95% CI   -0.41 - 1.10          3 Median 95% CI
+         row_name formatted_cell indent_mod     row_label
+      1      pval        <0.0001          3        pvalue
+      2 median_ci   -0.41 - 1.10          3 Median 95% CI
 
 ---
 
@@ -1371,25 +1275,25 @@
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
                            row_name formatted_cell indent_mod                  row_label
-      1           number of records           5.00         -1          number of records
-      2                           a              2          5                          a
-      3                           b              1          5                          b
-      4                           c              1          5                          c
-      5                          NA              1          5                         NA
-      6                           a        2 (40%)          0                          a
-      7                           b        1 (20%)          0                          b
-      8                           c        1 (20%)          0                          c
-      9                          NA        1 (20%)          0                         NA
-      10                          a      2 (40.0%)          0                          a
-      11                          b      1 (20.0%)          0                          b
-      12                          c      1 (20.0%)          0                          c
-      13                         NA      1 (20.0%)          0                         NA
-      14                          a    2/5 (40.0%)          0                          a
-      15                          b    1/5 (20.0%)          0                          b
-      16                          c    1/5 (20.0%)          0                          c
-      17                         NA    1/5 (20.0%)          0                         NA
+      1                           n           5.00         -1          number of records
+      2                     count.a              2          5                          a
+      3                     count.b              1          5                          b
+      4                     count.c              1          5                          c
+      5                    count.NA              1          5                         NA
+      6            count_fraction.a        2 (40%)          0                          a
+      7            count_fraction.b        1 (20%)          0                          b
+      8            count_fraction.c        1 (20%)          0                          c
+      9           count_fraction.NA        1 (20%)          0                         NA
+      10  count_fraction_fixed_dp.a      2 (40.0%)          0                          a
+      11  count_fraction_fixed_dp.b      1 (20.0%)          0                          b
+      12  count_fraction_fixed_dp.c      1 (20.0%)          0                          c
+      13 count_fraction_fixed_dp.NA      1 (20.0%)          0                         NA
+      14                 fraction.a    2/5 (40.0%)          0                          a
+      15                 fraction.b    1/5 (20.0%)          0                          b
+      16                 fraction.c    1/5 (20.0%)          0                          c
+      17                fraction.NA    1/5 (20.0%)          0                         NA
       18                      n_blq              0          0                      n_blq
-      19 p-value (chi-squared test)         0.8254          0 p-value (chi-squared test)
+      19                pval_counts         0.8254          0 p-value (chi-squared test)
 
 # `analyze_vars` works with healthy input, default `na.rm = TRUE`.
 
