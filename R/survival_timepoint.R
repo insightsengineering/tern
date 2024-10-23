@@ -21,11 +21,12 @@
 #'   control), or `"both"`.
 #' @param table_names_suffix (`string`)\cr optional suffix for the `table_names` used for the `rtables` to
 #'   avoid warnings from duplicate table names.
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("surv_timepoint")`
-#'   to see available statistics for this function.
 #' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Each element of the vector
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("surv_timepoint"))``
 #'
 #' @name survival_timepoint
 #' @order 1

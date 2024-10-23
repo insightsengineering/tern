@@ -1,4 +1,7 @@
-# tern 0.9.6.9001
+# tern 0.9.6.9007
+
+### Bug Fixes
+* Fixed bug in `a_summary()` causing non-unique `row_name` values to occur when multiple statistics are selected for count variables.
 
 # tern 0.9.6
 
@@ -16,6 +19,7 @@
 * Refactored `estimate_incidence_rate` to work as both an analyze function and a summarize function, controlled by the added `summarize` parameter. When `summarize = TRUE`, labels can be fine-tuned via the new `label_fmt` argument to the same function.
 * Added `fraction` statistic to the `analyze_var_count` method group.
 * Improved `summarize_glm_count()` documentation and all its associated functions to better describe the results and the functions' purpose.
+* Added `method` argument to `s_odds_ratio()` and `estimate_odds_ratio()` to control whether exact or approximate conditional likelihood calculations are used. 
 
 ### Bug Fixes
 * Added defaults for `d_count_cumulative` parameters as described in the documentation.

@@ -179,3 +179,70 @@ testthat::test_that("estimate_odds_ratio works with strata and combined groups",
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("s_odds_ratio method argument works", {
+  set.seed(1)
+  nex <- 2000 # Number of example rows
+  dta <- data.frame(
+    "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
+    "grp" = sample(c("A", "B"), nex, TRUE),
+    "f1" = sample(c("a1", "a2"), nex, TRUE),
+    "f2" = sample(c("x", "y", "z"), nex, TRUE),
+    strata = factor(sample(c("C", "D"), nex, TRUE)),
+    stringsAsFactors = TRUE
+  )
+
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    res <- s_odds_ratio(
+      df = subset(dta, grp == "A"),
+      .var = "rsp",
+      .ref_group = subset(dta, grp == "B"),
+      .in_ref_col = FALSE,
+      .df_row = dta,
+      variables = list(arm = "grp", strata = "strata"),
+      method = "approximate"
+    )
+  )
+
+  testthat::expect_false(all(is.na(res$or_ci)))
+
+  # warning works
+  expect_warning(
+    s_odds_ratio(
+      df = subset(dta, grp == "A"),
+      .var = "rsp",
+      .ref_group = subset(dta, grp == "B"),
+      .in_ref_col = FALSE,
+      .df_row = dta,
+      variables = list(arm = "grp", strata = "strata")
+    )
+  )
+})
+
+testthat::test_that("estimate_odds_ratio method argument works", {
+  nex <- 2000 # Number of example rows
+  set.seed(12)
+  dta <- data.frame(
+    "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
+    "grp" = sample(c("A", "B"), nex, TRUE),
+    "f1" = sample(c("a1", "a2"), nex, TRUE),
+    "f2" = sample(c("x", "y", "z"), nex, TRUE),
+    strata = factor(sample(c("C", "D"), nex, TRUE)),
+    stringsAsFactors = TRUE
+  )
+
+  lyt <- basic_table() %>%
+    split_cols_by(var = "grp", ref_group = "B") %>%
+    estimate_odds_ratio(vars = "rsp", variables = list(arm = "grp", strata = "strata"), method = "approximate")
+
+  # https://github.com/therneau/survival/issues/240
+  withr::with_options(
+    opts_partial_match_old,
+    result <- build_table(lyt, df = dta)
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})

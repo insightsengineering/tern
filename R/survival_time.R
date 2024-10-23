@@ -16,11 +16,12 @@
 #'   * `quantiles` (`numeric`)\cr vector of length two to specify the quantiles of survival time.
 #' @param ref_fn_censor (`flag`)\cr whether referential footnotes indicating censored observations should be printed
 #'   when the `range` statistic is included.
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("surv_time")`
-#'   to see available statistics for this function.
 #' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Each element of the vector
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("surv_time"))``
 #'
 #' @examples
 #' library(dplyr)

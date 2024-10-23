@@ -19,8 +19,9 @@
 #'   `nonunique` records.
 #' @param unique_count_suffix (`flag`)\cr whether the `"(n)"` suffix should be added to `unique_count` labels.
 #'   Defaults to `TRUE`.
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("summarize_num_patients")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("summarize_num_patients"))``
 #'
 #' @name summarize_num_patients
 #' @order 1

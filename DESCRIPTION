@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.9.6.9001
-Date: 2024-09-30
+Version: 0.9.6.9007
+Date: 2024-10-20
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = "aut"),
@@ -48,7 +48,7 @@ Imports:
     rlang (>= 1.1.0),
     scales (>= 1.2.0),
     stats,
-    survival (>= 3.2-13),
+    survival (>= 3.6-4),
     tibble (>= 2.0.0),
     tidyr (>= 0.8.3),
     utils
