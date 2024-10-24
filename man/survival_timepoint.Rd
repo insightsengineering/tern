@@ -107,7 +107,7 @@ avoid warnings from duplicate table names.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
-Options are: \verb{'pt_at_risk', 'event_free_rate', 'rate_se', 'rate_ci', 'rate_diff', 'rate_diff_ci', 'ztest_pval'}}
+Options are: \verb{'pt_at_risk', 'event_free_rate', 'rate_se', 'rate_ci', 'rate_diff', 'rate_diff_ci', 'ztest_pval', 'event_free_rate_3d'}}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
@@ -142,6 +142,7 @@ the value of \code{method}.
 \item \code{event_free_rate}: Event-free rate (\%).
 \item \code{rate_se}: Standard error of event free rate.
 \item \code{rate_ci}: Confidence interval for event free rate.
+\item \code{event_free_rate_3d}: Event-free rate (\%) with Confidence interval.
 }
 }
 
@@ -154,6 +155,7 @@ the value of \code{method}.
 \itemize{
 \item \code{rate_diff}: Event-free rate difference between two groups.
 \item \code{rate_diff_ci}: Confidence interval for the difference.
+\item \code{rate_diff_ci_3d}: Event-free rate difference and confidence interval between two groups.
 \item \code{ztest_pval}: p-value to test the difference is 0.
 }
 }

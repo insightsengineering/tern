@@ -291,4 +291,5 @@ testthat::test_that("default na_str works properly", {
     analyze_vars(vars = "VAR", .stats = c("n", "mean")) %>%
     build_table(dt)
   testthat::expect_identical(matrix_form(tbl)$strings[-1, 2], c("0", "<no-value>"))
+  set_default_na_str(NULL)
 })
