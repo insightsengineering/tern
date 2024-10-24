@@ -23,7 +23,9 @@ testthat::test_that("g_lineplot works with custom settings and statistics table"
       x_lab = "Time",
       y_lab = "Lab Test",
       subtitle = "Laboratory Test:",
-      caption = "caption"
+      caption = "caption",
+      table_font_size = 5.5,
+      rel_height_plot = 0.35
     )
   ))
 
@@ -229,4 +231,21 @@ testthat::test_that("NA values are removed also from the table plot", {
       )
     )
   )
+})
+
+testthat::test_that("g_lineplot as_list argument works", {
+  testthat::expect_silent(g_lineplot_list <- withr::with_options(
+    opts_partial_match_old,
+    g_lineplot(
+      adlb,
+      adsl,
+      table = c("n", "mean", "mean_ci"),
+      as_list = TRUE
+    )
+  ))
+  g_lineplot_plot_only <- g_lineplot_list$plot
+  g_lineplot_table_only <- g_lineplot_list$table
+
+  expect_snapshot_ggplot("g_lineplot_plot_only", g_lineplot_plot_only, width = 10, height = 4)
+  expect_snapshot_ggplot("g_lineplot_table_only", g_lineplot_table_only, width = 9, height = 3)
 })
