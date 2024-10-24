@@ -4,7 +4,7 @@ testthat::test_that("s_count_occurrences functions as expected with valid input 
     MHDECOD = c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3")
   )
 
-  result <- s_count_occurrences(df = df, .N_col = 4L, .df_row = df)
+  result <- s_count_occurrences(df = df, .N_col = 4L, .N_row = 4L, .df_row = df)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -18,7 +18,7 @@ testthat::test_that("s_count_occurrences drops non appearing levels by default",
       levels = c("MH1", "MH2", "MH3", "MHX")
     )
   )
-  result <- s_count_occurrences(df = df, .N_col = 4L, .df_row = df)
+  result <- s_count_occurrences(df = df, .N_col = 4L, .N_row = 4L, .df_row = df)
   testthat::expect_false("MHX" %in% c(names(result$count), names(result$count_fraction), names(result$fraction)))
 })
 
@@ -30,7 +30,7 @@ testthat::test_that("s_count_occurrences keeps non appearing levels if requested
       levels = c("MH1", "MH2", "MH3", "MHX")
     )
   )
-  result <- s_count_occurrences(df = df, .N_col = 4L, .df_row = df, drop = FALSE)
+  result <- s_count_occurrences(df = df, .N_col = 4L, .N_row = 4L, .df_row = df, drop = FALSE)
   testthat::expect_true("MHX" %in% names(result$count))
   testthat::expect_true("MHX" %in% names(result$count_fraction))
   testthat::expect_true("MHX" %in% names(result$fraction))
@@ -48,6 +48,7 @@ testthat::test_that("s_count_occurrences fails when it receives empty .df_row an
   testthat::expect_error(s_count_occurrences(
     df = df_sub,
     .N_col = 4L,
+    .N_row = 4L,
     .df_row = df_sub,
     drop = TRUE
   ))
@@ -59,7 +60,7 @@ testthat::test_that("s_count_occurrences functions as expected when requesting d
     MHDECOD = c("MH1", "MH2", "MH1", "MH1", "MH1", "MH3")
   )
 
-  result <- s_count_occurrences(df = df, denom = "n", .N_col = 4L, .df_row = df)
+  result <- s_count_occurrences(df = df, denom = "n", .N_col = 4L, .N_row = 4L, .df_row = df)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -74,7 +75,7 @@ testthat::test_that("a_count_occurrences works with healthy input.", {
     x = factor(c("a", "a", "b", "c", "a"))
   )
   result <- a_count_occurrences(
-    df = df, .N_col = 10, .stats = get_stats("count_occurrences"), .var = "x", id = "id", .df_row = df
+    df = df, .N_col = 10, .N_row = 10, .stats = get_stats("count_occurrences"), .var = "x", id = "id", .df_row = df
   )
   res_out <- testthat::expect_silent(result)
 
@@ -84,7 +85,7 @@ testthat::test_that("a_count_occurrences works with healthy input.", {
     x = c("a", "a", "b", "c", "a")
   )
   result <- a_count_occurrences(
-    df = df, .N_col = 10, .stats = get_stats("count_occurrences"), .var = "x", id = "id", .df_row = df
+    df = df, .N_col = 10, .N_row = 10, .stats = get_stats("count_occurrences"), .var = "x", id = "id", .df_row = df
   )
   res_out <- testthat::expect_silent(result)
 })
@@ -98,7 +99,7 @@ testthat::test_that("a_count_occurrences works with custom input.", {
   )
 
   result <- a_count_occurrences(
-    df = df, .df_row = df, .var = "x", id = "id", .N_col = 5,
+    df = df, .df_row = df, .var = "x", id = "id", .N_col = 5, .N_row = 5,
     .stats = c("count", "count_fraction"), drop = FALSE,
     .formats = c(count_fraction = "xx (xx%)"),
     .labels = c(a = "Level: a", b = "LVL B", count.c = "Count of c", d = "Missing D"),

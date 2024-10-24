@@ -49,6 +49,13 @@ that constitute the split. A custom label can be set for this level via the \cod
 
 \item{data}{(\code{data.frame})\cr the dataset containing the variables to summarize.}
 
+\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
+\itemize{
+\item \code{n}: number of values in this row and column intersection.
+\item \code{N_row}: total number of values in this row across columns.
+\item \code{N_col}: total number of values in this column across rows.
+}}
+
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
 \item{groups_lists}{(named \code{list} of \code{list})\cr optionally contains for each \code{subgroups} variable a

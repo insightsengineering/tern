@@ -78,7 +78,10 @@ h_count_cumulative <- function(x,
     length(x[is_keep & x > threshold])
   }
 
-  result <- c(count = count, fraction = count / .N_col)
+  result <- c(
+    count = count,
+    fraction = if (count == 0 && .N_col == 0) 0 else count / .N_col
+  )
   result
 }
 
@@ -112,11 +115,20 @@ s_count_cumulative <- function(x,
                                lower_tail = TRUE,
                                include_eq = TRUE,
                                .N_col, # nolint
+                               .N_row, # nolint
+                               denom = c("N_col", "n", "N_row"),
                                ...) {
   checkmate::assert_numeric(thresholds, min.len = 1, any.missing = FALSE)
 
+  denom <- match.arg(denom) %>%
+    switch(
+      n = length(x),
+      N_row = .N_row,
+      N_col = .N_col
+    )
+
   count_fraction_list <- Map(function(thres) {
-    result <- h_count_cumulative(x, thres, lower_tail, include_eq, .N_col = .N_col, ...)
+    result <- h_count_cumulative(x, thres, lower_tail, include_eq, .N_col = denom, ...)
     label <- d_count_cumulative(thres, lower_tail, include_eq)
     formatters::with_label(result, label)
   }, thresholds)

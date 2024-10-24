@@ -41,8 +41,9 @@ summarize_occurrences(
 
 s_count_occurrences(
   df,
-  denom = c("N_col", "n"),
+  denom = c("N_col", "n", "N_row"),
   .N_col,
+  .N_row,
   .df_row,
   drop = TRUE,
   .var = "MHDECOD",
@@ -53,9 +54,10 @@ a_count_occurrences(
   df,
   labelstr = "",
   id = "USUBJID",
-  denom = c("N_col", "n"),
+  denom = c("N_col", "n", "N_row"),
   drop = TRUE,
   .N_col,
+  .N_row,
   .var = NULL,
   .df_row = NULL,
   .stats = NULL,
@@ -108,14 +110,18 @@ unmodified default behavior. Can be negative.}
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{denom}{(\code{string})\cr choice of denominator for patient proportions. Can be:
+\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
 \itemize{
-\item \code{N_col}: total number of patients in this column across rows
-\item \code{n}: number of patients with any occurrences
+\item \code{N_col}: total number of patients in this column across rows.
+\item \code{n}: number of patients with any occurrences.
+\item \code{N_row}: total number of patients in this row across columns.
 }}
 
 \item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
+
+\item{.N_row}{(\code{integer(1)})\cr row-wise N (row group count) for the group of observations being analyzed
+(i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
 
 \item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
@@ -233,6 +239,7 @@ basic_table() \%>\%
 s_count_occurrences(
   df,
   .N_col = 4L,
+  .N_row = 4L,
   .df_row = df,
   .var = "MHDECOD",
   id = "USUBJID"

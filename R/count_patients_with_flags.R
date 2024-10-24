@@ -58,7 +58,7 @@ s_count_patients_with_flags <- function(df,
                                         flag_labels = NULL,
                                         .N_col, # nolint
                                         .N_row, # nolint
-                                        denom = c("n", "N_row", "N_col")) {
+                                        denom = c("n", "N_col", "N_row")) {
   checkmate::assert_character(flag_variables)
   if (!is.null(flag_labels)) {
     checkmate::assert_character(flag_labels, len = length(flag_variables), any.missing = FALSE)

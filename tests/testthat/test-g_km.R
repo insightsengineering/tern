@@ -1,3 +1,5 @@
+library(nestcolor)
+
 df <- tern_ex_adtte %>%
   filter(PARAMCD == "OS") %>%
   mutate(is_event = CNSR == 0)

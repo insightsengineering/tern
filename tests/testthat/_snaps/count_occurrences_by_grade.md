@@ -228,6 +228,39 @@
       
       
 
+# a_count_occurrences_by_grade works with healthy input.
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+         row_name formatted_cell indent_mod row_label
+      1         1        2 (20%)          0         1
+      2         2        2 (20%)          0         2
+      3         3        2 (20%)          0         3
+      4         4              0          0         4
+      5         5              0          0         5
+      6         1      2 (20.0%)          0         1
+      7         2      2 (20.0%)          0         2
+      8         3      2 (20.0%)          0         3
+      9         4              0          0         4
+      10        5              0          0         5
+
+# a_count_occurrences_by_grade works with custom input.
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+          row_name formatted_cell indent_mod  row_label
+      1   Level: 1        2 (20%)          1   Level: 1
+      2      LVL 2        2 (20%)          2      LVL 2
+      3 Count of 3        2 (20%)          0 Count of 3
+      4  Missing 4         0 (0%)          3  Missing 4
+      5          5         0 (0%)          0          5
+
 # count_occurrences_by_grade works with default arguments for intensity
 
     Code
@@ -248,9 +281,9 @@
                      A           B         D  
                    (N=3)       (N=3)     (N=0)
       ————————————————————————————————————————
-      MILD           0       2 (66.7%)    NA  
-      MODERATE   1 (33.3%)   1 (33.3%)    NA  
-      SEVERE     2 (66.7%)       0        NA  
+      MILD           0       2 (66.7%)     0  
+      MODERATE   1 (33.3%)   1 (33.3%)     0  
+      SEVERE     2 (66.7%)       0         0  
 
 # count_occurrences_by_grade label works when more than one variables are analyzed
 
@@ -322,17 +355,17 @@
     Code
       res
     Output
-                         A               B             D     
-                      (N=10)          (N=10)         (N=0)   
-      ———————————————————————————————————————————————————————
-      LOW                                                    
-        MILD       0.00 (0.00%)    1.00 (10.00%)   0.00 (NA%)
-        MODERATE   0.00 (0.00%)    0.00 (0.00%)    0.00 (NA%)
-        SEVERE     2.00 (20.00%)   0.00 (0.00%)    0.00 (NA%)
-      HIGH                                                   
-        MILD       0.00 (0.00%)    1.00 (10.00%)   0.00 (NA%)
-        MODERATE   1.00 (10.00%)   1.00 (10.00%)   0.00 (NA%)
-        SEVERE     0.00 (0.00%)    0.00 (0.00%)    0.00 (NA%)
+                         A               B              D      
+                      (N=10)          (N=10)          (N=0)    
+      —————————————————————————————————————————————————————————
+      LOW                                                      
+        MILD       0.00 (0.00%)    1.00 (10.00%)   0.00 (0.00%)
+        MODERATE   0.00 (0.00%)    0.00 (0.00%)    0.00 (0.00%)
+        SEVERE     2.00 (20.00%)   0.00 (0.00%)    0.00 (0.00%)
+      HIGH                                                     
+        MILD       0.00 (0.00%)    1.00 (10.00%)   0.00 (0.00%)
+        MODERATE   1.00 (10.00%)   1.00 (10.00%)   0.00 (0.00%)
+        SEVERE     0.00 (0.00%)    0.00 (0.00%)    0.00 (0.00%)
 
 # summarize_occurrences_by_grade works with custom arguments for grade
 
@@ -399,4 +432,56 @@
         MILD        1 (0.5%)     2 (1.1%)          0               -0.6 (-2.5 - 1.2)      
         MODERATE    7 (3.5%)     9 (5.1%)       6 (3.7%)           -1.6 (-5.7 - 2.5)      
         SEVERE     17 (8.4%)    23 (13.0%)     22 (13.6%)          -4.6 (-10.8 - 1.7)     
+
+# count_occurrences_by_grade works with denom argument specified
+
+    Code
+      res
+    Output
+                      A           B    
+      —————————————————————————————————
+      LOW          2 (100%)   1 (100%) 
+        MILD          0       1 (100%) 
+        MODERATE      0           0    
+        SEVERE     2 (100%)       0    
+      HIGH         1 (100%)   2 (100%) 
+        MILD          0       1 (50.0%)
+        MODERATE   1 (100%)   1 (50.0%)
+        SEVERE        0           0    
+
+# summarize_occurrences works as expected with risk difference column
+
+    Code
+      res
+    Output
+                   A: Drug X    B: Placebo   C: Combination   Risk Difference (%) (95% CI)
+                    (N=202)      (N=177)        (N=162)                 (N=379)           
+      ————————————————————————————————————————————————————————————————————————————————————
+      F                                                                                   
+        MILD        3 (1.5%)     4 (2.3%)       1 (0.6%)           -0.8 (-3.5 - 2.0)      
+        MODERATE    8 (4.0%)     6 (3.4%)       6 (3.7%)            0.6 (-3.2 - 4.4)      
+        SEVERE     22 (10.9%)   21 (11.9%)     20 (12.3%)          -1.0 (-7.4 - 5.4)      
+      M                                                                                   
+        MILD        3 (1.5%)        0           1 (0.6%)            1.5 (-0.2 - 3.2)      
+        MODERATE   11 (5.4%)     9 (5.1%)       8 (4.9%)            0.4 (-4.1 - 4.9)      
+        SEVERE     12 (5.9%)    17 (9.6%)      12 (7.4%)           -3.7 (-9.1 - 1.8)      
+
+---
+
+    Code
+      res
+    Output
+                     A: Drug X   B: Placebo   C: Combination   Risk Difference (%) (95% CI)
+                      (N=202)     (N=177)        (N=162)                 (N=379)           
+      —————————————————————————————————————————————————————————————————————————————————————
+      F                                                                                    
+          -Any-      20 (9.9%)   19 (10.7%)     19 (11.7%)          -0.8 (-7.0 - 5.3)      
+          MILD       2 (1.0%)     2 (1.1%)          0               -0.1 (-2.2 - 1.9)      
+          MODERATE   4 (2.0%)     3 (1.7%)       3 (1.9%)            0.3 (-2.4 - 3.0)      
+          SEVERE     14 (6.9%)   14 (7.9%)      16 (9.9%)           -1.0 (-6.3 - 4.3)      
+      M                                                                                    
+          -Any-      14 (6.9%)   21 (11.9%)     17 (10.5%)          -4.9 (-10.8 - 1.0)     
+          MILD       1 (0.5%)        0           1 (0.6%)            0.5 (-0.5 - 1.5)      
+          MODERATE   4 (2.0%)     7 (4.0%)       5 (3.1%)           -2.0 (-5.4 - 1.5)      
+          SEVERE     9 (4.5%)    14 (7.9%)      11 (6.8%)           -3.5 (-8.3 - 1.4)      
 
