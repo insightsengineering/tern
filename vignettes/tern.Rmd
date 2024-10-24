@@ -133,7 +133,7 @@ adlb <- formatters::ex_adlb
 adlb <- dplyr::filter(adlb, PARAMCD == "ALT", AVISIT != "SCREENING")
 ```
 
-The optional `nestcolor` package can be loaded in to apply the standardized NEST color palette to all `tern` plots.
+The `nestcolor` package can be loaded in to apply the standardized NEST color palette to all `tern` plots.
 
 ```{r}
 library(nestcolor)
