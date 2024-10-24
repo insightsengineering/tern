@@ -33,6 +33,7 @@ repos:
           - magrittr
           - MASS
           - methods
+          - nestcolor
           - Rdpack
           - rlang
           - scales
