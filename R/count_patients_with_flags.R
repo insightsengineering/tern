@@ -137,9 +137,6 @@ a_count_patients_with_flags <- function(df,
 
   # Fill in with formatting defaults if needed
   .stats <- get_stats("count_patients_with_flags", stats_in = .stats)
-  if (length(.formats) == 1 && is.null(names(.formats))) {
-    .formats <- rep(.formats, length(.stats)) %>% setNames(.stats)
-  }
   .formats <- get_formats_from_stats(.stats, .formats)
 
   # label formatting
