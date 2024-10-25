@@ -34,6 +34,31 @@
       [1] 0
       
 
+# a_count_patients_with_event works with healthy input.
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+                       row_name formatted_cell indent_mod      row_label
+      1                       n              3          0              n
+      2                   count              1          0          count
+      3          count_fraction      1 (33.3%)          0 count_fraction
+      4 count_fraction_fixed_dp      1 (33.3%)          0 count_fraction
+      5                   n_blq              0          0          n_blq
+
+# a_count_patients_with_event works with custom input.
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+              row_name formatted_cell indent_mod row_label
+      1 count_fraction     1 (33.33%)          1 New label
+      2              n              3          3         n
+
 # count_patients_with_event works as expected
 
     Code
