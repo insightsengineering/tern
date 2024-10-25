@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.9.6.9008
-Date: 2024-10-24
+Version: 0.9.6.9009
+Date: 2024-10-25
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = "aut"),
@@ -44,6 +44,7 @@ Imports:
     magrittr (>= 1.5),
     MASS (>= 7.3-60),
     methods,
+    nestcolor (>= 0.1.1),
     Rdpack (>= 2.4),
     rlang (>= 1.1.0),
     scales (>= 1.2.0),
@@ -56,7 +57,6 @@ Suggests:
     knitr (>= 1.42),
     lattice (>= 0.18-4),
     lubridate (>= 1.7.9),
-    nestcolor (>= 0.1.1),
     rmarkdown (>= 2.23),
     stringr (>= 1.4.1),
     svglite (>= 2.1.2),
