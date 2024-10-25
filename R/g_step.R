@@ -18,7 +18,6 @@
 #' @seealso Custom tidy method [tidy.step()].
 #'
 #' @examples
-#' library(nestcolor)
 #' library(survival)
 #' lung$sex <- factor(lung$sex)
 #'

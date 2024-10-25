@@ -106,7 +106,6 @@ table and forest plot are printed side-by-side.
 \examples{
 library(dplyr)
 library(forcats)
-library(nestcolor)
 
 adrs <- tern_ex_adrs
 n_records <- 20

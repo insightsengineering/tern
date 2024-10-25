@@ -195,7 +195,6 @@ per group.
 }
 \examples{
 library(dplyr)
-library(nestcolor)
 
 df <- tern_ex_adtte \%>\%
   filter(PARAMCD == "OS") \%>\%
