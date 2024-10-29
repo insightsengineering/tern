@@ -1,4 +1,4 @@
-# tern 0.9.6.9010
+# tern 0.9.6.9011
 
 ### Enhancements
 * Added the `denom` parameter to `s_count_cumulative()`, `s_count_missed_doses()`, and `s_count_occurrences_by_grade()`.
