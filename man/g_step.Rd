@@ -35,7 +35,6 @@ Based on the STEP results, creates a \code{ggplot} graph showing the estimated H
 along the continuous biomarker value subgroups.
 }
 \examples{
-library(nestcolor)
 library(survival)
 lung$sex <- factor(lung$sex)
 

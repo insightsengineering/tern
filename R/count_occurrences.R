@@ -51,9 +51,10 @@ NULL
 #' @describeIn count_occurrences Statistics function which counts number of patients that report an
 #' occurrence.
 #'
-#' @param denom (`string`)\cr choice of denominator for patient proportions. Can be:
-#'   - `N_col`: total number of patients in this column across rows
-#'   - `n`: number of patients with any occurrences
+#' @param denom (`string`)\cr choice of denominator for proportion. Options are:
+#'   * `N_col`: total number of patients in this column across rows.
+#'   * `n`: number of patients with any occurrences.
+#'   * `N_row`: total number of patients in this row across columns.
 #'
 #' @return
 #' * `s_count_occurrences()` returns a list with:
@@ -66,6 +67,7 @@ NULL
 #' s_count_occurrences(
 #'   df,
 #'   .N_col = 4L,
+#'   .N_row = 4L,
 #'   .df_row = df,
 #'   .var = "MHDECOD",
 #'   id = "USUBJID"
@@ -73,8 +75,9 @@ NULL
 #'
 #' @export
 s_count_occurrences <- function(df,
-                                denom = c("N_col", "n"),
+                                denom = c("N_col", "n", "N_row"),
                                 .N_col, # nolint
+                                .N_row, # nolint
                                 .df_row,
                                 drop = TRUE,
                                 .var = "MHDECOD",
@@ -84,7 +87,6 @@ s_count_occurrences <- function(df,
   checkmate::assert_count(.N_col)
   checkmate::assert_multi_class(df[[.var]], classes = c("factor", "character"))
   checkmate::assert_multi_class(df[[id]], classes = c("factor", "character"))
-  denom <- match.arg(denom)
 
   occurrences <- if (drop) {
     # Note that we don't try to preserve original level order here since a) that would required
@@ -101,10 +103,12 @@ s_count_occurrences <- function(df,
     df[[.var]]
   }
   ids <- factor(df[[id]])
-  dn <- switch(denom,
-    n = nlevels(ids),
-    N_col = .N_col
-  )
+  denom <- match.arg(denom) %>%
+    switch(
+      n = nlevels(ids),
+      N_row = .N_row,
+      N_col = .N_col
+    )
   has_occurrence_per_id <- table(occurrences, ids) > 0
   n_ids_per_occurrence <- as.list(rowSums(has_occurrence_per_id))
   list(
@@ -118,12 +122,12 @@ s_count_occurrences <- function(df,
           c(i, i / denom)
         }
       },
-      denom = dn
+      denom = denom
     ),
     fraction = lapply(
       n_ids_per_occurrence,
       function(i, denom) c("num" = i, "denom" = denom),
-      denom = dn
+      denom = denom
     )
   )
 }
@@ -147,9 +151,10 @@ s_count_occurrences <- function(df,
 a_count_occurrences <- function(df,
                                 labelstr = "",
                                 id = "USUBJID",
-                                denom = c("N_col", "n"),
+                                denom = c("N_col", "n", "N_row"),
                                 drop = TRUE,
                                 .N_col, # nolint
+                                .N_row, # nolint
                                 .var = NULL,
                                 .df_row = NULL,
                                 .stats = NULL,
@@ -159,7 +164,7 @@ a_count_occurrences <- function(df,
                                 na_str = default_na_str()) {
   denom <- match.arg(denom)
   x_stats <- s_count_occurrences(
-    df = df, denom = denom, .N_col = .N_col, .df_row = .df_row, drop = drop, .var = .var, id = id
+    df = df, denom = denom, .N_col = .N_col, .N_row = .N_row, .df_row = .df_row, drop = drop, .var = .var, id = id
   )
   if (is.null(unlist(x_stats))) {
     return(NULL)
