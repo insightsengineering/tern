@@ -77,7 +77,6 @@ values over time.
 }}
 \examples{
 library(dplyr)
-library(nestcolor)
 
 # Select a small sample of data to plot.
 adlb <- tern_ex_adlb \%>\%

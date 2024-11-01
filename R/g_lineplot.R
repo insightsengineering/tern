@@ -81,7 +81,6 @@
 #' @return A `ggplot` line plot (and statistics table if applicable).
 #'
 #' @examples
-#' library(nestcolor)
 #'
 #' adsl <- tern_ex_adsl
 #' adlb <- tern_ex_adlb %>% dplyr::filter(ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")

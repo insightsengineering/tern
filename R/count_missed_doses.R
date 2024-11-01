@@ -58,13 +58,17 @@ d_count_missed_doses <- function(thresholds) {
 #' @keywords internal
 s_count_missed_doses <- function(x,
                                  thresholds,
-                                 .N_col) { # nolint
+                                 .N_col, # nolint
+                                 .N_row, # nolint
+                                 denom = c("N_col", "n", "N_row")) {
   stat <- s_count_cumulative(
     x = x,
     thresholds = thresholds,
     lower_tail = FALSE,
     include_eq = TRUE,
-    .N_col = .N_col
+    .N_col = .N_col,
+    .N_row = .N_row,
+    denom = denom
   )
   labels <- d_count_missed_doses(thresholds)
   for (i in seq_along(stat$count_fraction)) {

@@ -30,7 +30,7 @@ s_count_patients_with_flags(
   flag_labels = NULL,
   .N_col,
   .N_row,
-  denom = c("n", "N_row", "N_col")
+  denom = c("n", "N_col", "N_row")
 )
 
 a_count_patients_with_flags(
@@ -40,7 +40,7 @@ a_count_patients_with_flags(
   flag_labels = NULL,
   .N_col,
   .N_row,
-  denom = c("n", "N_row", "N_col")
+  denom = c("n", "N_col", "N_row")
 )
 }
 \arguments{

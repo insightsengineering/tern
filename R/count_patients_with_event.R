@@ -65,7 +65,7 @@ s_count_patients_with_event <- function(df,
                                         filters,
                                         .N_col, # nolint
                                         .N_row, # nolint
-                                        denom = c("n", "N_row", "N_col")) {
+                                        denom = c("n", "N_col", "N_row")) {
   col_names <- names(filters)
   filter_values <- filters
 

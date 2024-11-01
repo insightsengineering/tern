@@ -21,8 +21,8 @@ count_occurrences_by_grade(
   nested = TRUE,
   ...,
   table_names = var,
-  .stats = NULL,
-  .formats = NULL,
+  .stats = "count_fraction",
+  .formats = list(count_fraction = format_count_fraction_fixed_dp),
   .indent_mods = NULL,
   .labels = NULL
 )
@@ -34,10 +34,11 @@ summarize_occurrences_by_grade(
   grade_groups = list(),
   remove_single = TRUE,
   only_grade_groups = FALSE,
+  riskdiff = FALSE,
   na_str = default_na_str(),
   ...,
-  .stats = NULL,
-  .formats = NULL,
+  .stats = "count_fraction",
+  .formats = list(count_fraction = format_count_fraction_fixed_dp),
   .indent_mods = NULL,
   .labels = NULL
 )
@@ -45,23 +46,33 @@ summarize_occurrences_by_grade(
 s_count_occurrences_by_grade(
   df,
   .var,
+  .N_row,
   .N_col,
   id = "USUBJID",
   grade_groups = list(),
   remove_single = TRUE,
   only_grade_groups = FALSE,
+  denom = c("N_col", "n", "N_row"),
   labelstr = ""
 )
 
 a_count_occurrences_by_grade(
   df,
-  .var,
-  .N_col,
+  labelstr = "",
   id = "USUBJID",
   grade_groups = list(),
   remove_single = TRUE,
   only_grade_groups = FALSE,
-  labelstr = ""
+  denom = c("N_col", "n", "N_row"),
+  .N_col,
+  .N_row,
+  .df_row,
+  .var = NULL,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL,
+  na_str = default_na_str()
 )
 }
 \arguments{
@@ -115,12 +126,24 @@ unmodified default behavior. Can be negative.}
 \item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
+\item{.N_row}{(\code{integer(1)})\cr row-wise N (row group count) for the group of observations being analyzed
+(i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
+
 \item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
+
+\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
+\itemize{
+\item \code{N_col}: total number of patients in this column across rows.
+\item \code{n}: number of patients with any occurrences.
+\item \code{N_row}: total number of patients in this row across columns.
+}}
 
 \item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
+
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 }
 \value{
 \itemize{
@@ -248,12 +271,10 @@ s_count_occurrences_by_grade(
   grade_groups = list("ANY" = levels(df$AETOXGR))
 )
 
-#  We need to ungroup `count_fraction` first so that the `rtables` formatting
-# function `format_count_fraction()` can be applied correctly.
-afun <- make_afun(a_count_occurrences_by_grade, .ungroup_stats = "count_fraction")
-afun(
+a_count_occurrences_by_grade(
   df,
   .N_col = 10L,
+  .N_row = 10L,
   .var = "AETOXGR",
   id = "USUBJID",
   grade_groups = list("ANY" = levels(df$AETOXGR))
