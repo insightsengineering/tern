@@ -3,7 +3,7 @@
 ### Enhancements
 * Added the `denom` parameter to `s_count_cumulative()`, `s_count_missed_doses()`, and `s_count_occurrences_by_grade()`.
 * Added `"N_row"` as an optional input to `denom` in `s_count_occurrences()`.
-* Refactored `a_count_occurrences_by_grade()` to no longer use `make_afun()`.
+* Refactored `a_count_occurrences_by_grade()`, `a_count_patients_with_event()`, and `a_count_patients_with_flags()` to no longer use `make_afun()`.
 
 ### Enhancements
 * Added `rel_height_plot` parameter to `g_lineplot()` to control the line plot height relative to annotation table height.

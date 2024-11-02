@@ -88,6 +88,59 @@ testthat::test_that("s_count_patients_with_flags custom variable label behaviour
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("a_count_patients_with_flags works with healthy input.", {
+  options("width" = 100)
+
+  adae_local <- tern_ex_adae %>%
+    dplyr::mutate(
+      SER = AESER == "Y",
+      REL = AEREL == "Y",
+      CTC35 = AETOXGR %in% c("3", "4", "5"),
+      CTC45 = AETOXGR %in% c("4", "5")
+    )
+  aesi_vars <- c("SER", "REL", "CTC35", "CTC45")
+  labels <- c("Serious AE", "Related AE", "Grade 3-5 AE", "Grade 4/5 AE")
+
+  result <- a_count_patients_with_flags(
+    adae_local,
+    .var = "USUBJID",
+    flag_variables = aesi_vars, flag_labels = labels,
+    .N_col = 10, .N_row = 10, .df_row = raw_data,
+    .stats = get_stats("count_patients_with_flags")
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("a_count_patients_with_flags works with custom input.", {
+  options("width" = 100)
+
+  adae_local <- tern_ex_adae %>%
+    dplyr::mutate(
+      SER = AESER == "Y",
+      REL = AEREL == "Y",
+      CTC35 = AETOXGR %in% c("3", "4", "5"),
+      CTC45 = AETOXGR %in% c("4", "5")
+    )
+  aesi_vars <- c("SER", "REL", "CTC35", "CTC45")
+  labels <- c("Serious AE", "Related AE", "Grade 3-5 AE", "Grade 4/5 AE")
+
+  result <- a_count_patients_with_flags(
+    adae_local,
+    .var = "USUBJID",
+    flag_variables = aesi_vars, flag_labels = labels,
+    .N_col = 10, .N_row = 10, .df_row = raw_data,
+    .stats = "count_fraction",
+    .formats = c(count_fraction = "xx (xx.xx%)"),
+    .labels = list("count_fraction.SER" = "New label"),
+    .indent_mods = list("count_fraction" = 1L, "SER" = 2L, "count_fraction.REL" = 3L)
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("count_patients_with_flags works as expected", {
   test_data <- tibble::tibble(
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),

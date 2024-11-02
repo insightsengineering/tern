@@ -14,7 +14,8 @@
 #' @inheritParams argument_convention
 #' @param flag_variables (`character`)\cr a vector specifying the names of `logical` variables from analysis dataset
 #'   used for counting the number of unique identifiers.
-#' @param flag_labels (`character`)\cr vector of labels to use for flag variables.
+#' @param flag_labels (`character`)\cr vector of labels to use for flag variables. If any labels are also specified via
+#'   the `.labels` parameter, the `.labels` values will take precedence and replace these labels.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
 #'   Options are: ``r shQuote(get_stats("count_patients_with_flags"))``
@@ -101,16 +102,7 @@ s_count_patients_with_flags <- function(df,
 #' * `a_count_patients_with_flags()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
-#' #  We need to ungroup `count_fraction` first so that the `rtables` formatting
-#' # function `format_count_fraction()` can be applied correctly.
-#'
-#' # `a_count_patients_with_flags()`
-#'
-#' afun <- make_afun(a_count_patients_with_flags,
-#'   .stats = "count_fraction",
-#'   .ungroup_stats = "count_fraction"
-#' )
-#' afun(
+#' a_count_patients_with_flags(
 #'   adae,
 #'   .N_col = 10L,
 #'   .N_row = 10L,
@@ -119,10 +111,78 @@ s_count_patients_with_flags <- function(df,
 #' )
 #'
 #' @export
-a_count_patients_with_flags <- make_afun(
-  s_count_patients_with_flags,
-  .formats = c("count_fraction" = format_count_fraction_fixed_dp)
-)
+a_count_patients_with_flags <- function(df,
+                                        labelstr = "",
+                                        flag_variables,
+                                        flag_labels = NULL,
+                                        denom = c("n", "N_col", "N_row"),
+                                        .N_col, # nolint
+                                        .N_row, # nolint
+                                        .df_row,
+                                        .var = NULL,
+                                        .stats = NULL,
+                                        .formats = NULL,
+                                        .labels = NULL,
+                                        .indent_mods = NULL,
+                                        na_str = default_na_str()) {
+  x_stats <- s_count_patients_with_flags(
+    df = df, .var = .var, flag_variables = flag_variables, flag_labels = flag_labels,
+    .N_col = .N_col, .N_row = .N_row, denom = denom
+  )
+
+  if (is.null(unlist(x_stats))) {
+    return(NULL)
+  }
+  x_lvls <- names(x_stats[[1]])
+
+  # Fill in with formatting defaults if needed
+  .stats <- get_stats("count_patients_with_flags", stats_in = .stats)
+  .formats <- get_formats_from_stats(.stats, .formats)
+
+  # label formatting
+  x_nms <- paste(rep(.stats, each = length(flag_variables)), flag_variables, sep = ".")
+  new_lbls <- if (!is.null(.labels)) .labels[names(.labels) %in% x_nms] else NULL
+  .labels <- get_labels_from_stats(.stats, .labels, row_nms = x_lvls) %>% setNames(x_nms)
+  if (!is.null(new_lbls)) {
+    which_lbls <- which(names(new_lbls) %in% names(.labels))
+    .labels[which_lbls] <- new_lbls
+  }
+
+  # indent mod formatting
+  indent_stat_def <- if (any(.stats %in% names(.indent_mods))) {
+    .indent_mods[.stats[.stats %in% names(.indent_mods)]]
+  } else {
+    NULL
+  }
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, row_nms = flag_variables)
+  .indent_mods <- sapply(names(.indent_mods), function(x) {
+    if (.indent_mods[x] == 0 && !is.null(length(indent_stat_def))) {
+      idx <- which(names(indent_stat_def) == gsub("\\..*", "", x))
+      if (length(idx) > 0) .indent_mods[[x]] <- indent_stat_def[[idx]]
+    }
+    .indent_mods[x]
+  })
+
+  if ("count_fraction_fixed_dp" %in% .stats) x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
+  x_stats <- x_stats[.stats]
+
+  # Ungroup statistics with values for each level of x
+  x_ungrp <- ungroup_stats(x_stats, .formats, .labels, list())
+  x_stats <- x_ungrp[["x"]] %>% setNames(x_nms)
+  .formats <- x_ungrp[[".formats"]] %>% setNames(x_nms)
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
+
+  in_rows(
+    .list = x_stats,
+    .formats = .formats,
+    .names = names(.labels),
+    .labels = unlist(.labels),
+    .indent_mods = .indent_mods,
+    .format_na_strs = na_str
+  )
+}
 
 #' @describeIn count_patients_with_flags Layout-creating function which can take statistics function
 #'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
@@ -133,11 +193,9 @@ a_count_patients_with_flags <- make_afun(
 #'   the statistics from `s_count_patients_with_flags()` to the table layout.
 #'
 #' @examples
-#' library(dplyr)
-#'
 #' # Add labelled flag variables to analysis dataset.
 #' adae <- tern_ex_adae %>%
-#'   mutate(
+#'   dplyr::mutate(
 #'     fl1 = TRUE %>% with_label("Total AEs"),
 #'     fl2 = (TRTEMFL == "Y") %>%
 #'       with_label("Total number of patients with at least one adverse event"),
@@ -147,9 +205,7 @@ a_count_patients_with_flags <- make_afun(
 #'       with_label("Total number of patients with related fatal AEs")
 #'   )
 #'
-#' # `count_patients_with_flags()`
-#'
-#' lyt2 <- basic_table() %>%
+#' lyt <- basic_table() %>%
 #'   split_cols_by("ARM") %>%
 #'   add_colcounts() %>%
 #'   count_patients_with_flags(
@@ -158,7 +214,7 @@ a_count_patients_with_flags <- make_afun(
 #'     denom = "N_col"
 #'   )
 #'
-#' build_table(lyt2, adae, alt_counts_df = tern_ex_adsl)
+#' build_table(lyt, adae, alt_counts_df = tern_ex_adsl)
 #'
 #' @export
 #' @order 2
@@ -174,42 +230,36 @@ count_patients_with_flags <- function(lyt,
                                       ...,
                                       table_names = paste0("tbl_flags_", var),
                                       .stats = "count_fraction",
-                                      .formats = NULL,
-                                      .indent_mods = NULL) {
+                                      .formats = list(count_fraction = format_count_fraction_fixed_dp),
+                                      .indent_mods = NULL,
+                                      .labels = NULL) {
   checkmate::assert_flag(riskdiff)
-
+  extra_args <- list(
+    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
+  )
   s_args <- list(flag_variables = flag_variables, flag_labels = flag_labels, ...)
 
-  afun <- make_afun(
-    a_count_patients_with_flags,
-    .stats = .stats,
-    .formats = .formats,
-    .indent_mods = .indent_mods,
-    .ungroup_stats = .stats
-  )
-
-  extra_args <- if (isFALSE(riskdiff)) {
-    s_args
+  if (isFALSE(riskdiff)) {
+    extra_args <- c(extra_args, s_args)
   } else {
-    list(
-      afun = list("s_count_patients_with_flags" = afun),
-      .stats = .stats,
-      .indent_mods = .indent_mods,
-      s_args = s_args
+    extra_args <- c(
+      extra_args,
+      list(
+        afun = list("s_count_patients_with_flags" = a_count_patients_with_flags),
+        s_args = s_args
+      )
     )
   }
 
-  lyt <- analyze(
+  analyze(
     lyt = lyt,
     vars = var,
+    afun = ifelse(isFALSE(riskdiff), a_count_patients_with_flags, afun_riskdiff),
     var_labels = var_labels,
     show_labels = show_labels,
-    afun = ifelse(isFALSE(riskdiff), afun, afun_riskdiff),
     table_names = table_names,
     na_str = na_str,
     nested = nested,
     extra_args = extra_args
   )
-
-  lyt
 }
