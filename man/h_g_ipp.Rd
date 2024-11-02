@@ -60,7 +60,6 @@ Function that generates a simple line plot displaying parameter trends over time
 }
 \examples{
 library(dplyr)
-library(nestcolor)
 
 # Select a small sample of data to plot.
 adlb <- tern_ex_adlb \%>\%
