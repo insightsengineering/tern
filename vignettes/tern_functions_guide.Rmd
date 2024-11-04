@@ -1,0 +1,123 @@
+---
+title: "Understanding `tern` functions"
+date: "2024-11-04"
+output:
+    rmarkdown::html_document:
+        theme: "spacelab"
+        highlight: "kate"
+        toc: true
+        toc_float: true
+vignette: >
+    %\VignetteIndexEntry{Understanding `tern` functions}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+editor_options:
+    markdown: 
+        wrap: 72
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Understanding `tern` functions
+
+Every function in the `tern` package is designed to have a certain structure that can cooperate well with every user's need, while maintaining a consistent and predictable behavior. This document will guide you through an example function in the package, explaining the purpose of many of its building blocks and how they can be used.
+
+As we recently worked on it we will consider `summarize_change()` as an example. This function is used to calculate the change from a baseline value for a given variable. A realistic example can be found in [LBT03](https://insightsengineering.github.io/tlg-catalog/stable/tables/lab-results/lbt03.html) from the TLG-catalog.
+
+`summarize_change()` is the main function that is available to the user. You can find lists of these functions in `?tern::analyze_functions`. All of these are build around `rtables::analyze()` function, which is the core analysis function in `rtables`. All these wrapper functions call specific analysis functions (always written as `a_*`) that are meant to handle the statistic functions (always written as `s_*`) and format the results with the `rtables::in_row()` function. We can summarize this structure as follows:
+
+`summarize_change()` (1)-> `a_change_from_baseline()` (2)-> [`s_change_from_baseline()` + `rtables::in_row()`]
+
+The main questions that may arise are:
+
+1. Handling of `NA`.
+2. Handling of formats.
+3. Additional statistics (WIP).
+
+Data set and library loading.
+```{r}
+library(dplyr)
+
+## Fabricate dataset
+dta_test <- data.frame(
+  USUBJID = rep(1:6, each = 3),
+  AVISIT = rep(paste0("V", 1:3), 6),
+  ARM = rep(LETTERS[1:3], rep(6, 3)),
+  AVAL = c(9:1, rep(NA, 9))
+) %>%
+  mutate(ABLFLL = AVISIT == "V1") %>%
+  group_by(USUBJID) %>%
+  mutate(
+    BLVAL = AVAL[ABLFLL],
+    CHG = AVAL - BLVAL
+  ) %>%
+  ungroup()
+```
+
+Classic use of `summarize_change()`.
+```{r}
+fix_layout <- basic_table() %>%
+  split_cols_by("ARM") %>%
+  split_rows_by("AVISIT")
+
+
+# na_rm = TRUE
+fix_layout %>%
+  summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL")) %>%
+  build_table(dta_test) %>%
+  print()
+
+# na_rm = FALSE
+fix_layout %>%
+  summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL"), na_rm = FALSE) %>%
+  build_table(dta_test) %>%
+  print()
+
+# changing the NA string (it is done on all levels)
+fix_layout %>%
+  summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL"), na_str = "my_na") %>%
+  build_table(dta_test) %>%
+  print()
+
+```
+
+`.formats`, `.labels`, and `.indent_mods` depend on the names of `.stats`. Here is how you can change the default formatting.
+
+```{r}
+# changing n count format and label and indentation
+fix_layout %>%
+  summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL"), 
+                   .stats = c("n", "mean"), # reducing the number of stats for visual appreciation
+                   .formats = c(n = "xx.xx"),
+                   .labels = c(n = "NnNn"),
+                   .indent_mods = c(n = 5), na_str = "nA") %>%
+  build_table(dta_test) %>%
+  print()
+```
+What if I want something special for the format?
+
+```{r}
+# changing n count format and label and indentation
+fix_layout %>%
+  summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL"), 
+                   .stats = c("n", "mean"), # reducing the number of stats for visual appreciation
+                   .formats = c(n = function(x, ...) as.character(x * 100))) %>% # Note you need ...!!!
+  build_table(dta_test) %>%
+  print()
+```
+
+Adding a custom statistic (WIP)
+
+
+## For Developers
+
+In all of these layers there are specific parameters that need to be available, and, while `rtables` has multiple way to handle formatting and `NA` values, we had to decide how to correctly handle these and additional extra arguments. We follow the following scheme:
+
+Level 1: `summarize_change()`: all parameters without a starting dot `.*` are used or added to `extra_args`. Specifically, here we solve `NA` values by using `inclNAs` option in `rtables::analyze()`. This will add to `...` `na.rm = inclNAs`. Also `na_str` is here set. We may want to be statistic dependend in the future, but we still need to think how to accomplish that. We add the `rtables::additional_fun_params` to the analysis function so to make them available as `...` in the next level.
+
+Level 2: `a_change_from_baseline()`: all parameters starting with a dot `.` are used. Mainly `.stats`, `.formats`, `.labels`, and `.indent_mods` are used. We also add `extra_afun_params` to the `...` list for the statistical function. Notice the handling for additional parameters in the `do.call()` function.

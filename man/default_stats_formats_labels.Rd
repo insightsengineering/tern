@@ -120,6 +120,9 @@ seen in \code{\link[=analyze_vars]{analyze_vars()}}. See notes to understand why
 }
 \details{
 Current choices for \code{type} are \code{counts} and \code{numeric} for \code{\link[=analyze_vars]{analyze_vars()}} and affect \code{get_stats()}.
+
+\verb{summary_*} quick getter for labels or formats uses \code{get_stats} and \code{get_labels_from_stats} or \code{get_formats_from_stats}
+respectively to retrieve relevant information.
 }
 \section{Functions}{
 \itemize{
@@ -142,11 +145,11 @@ It defaults to 0L for all values.
 
 \item \code{tern_default_labels}: Named \code{character} vector of default labels for \code{tern}.
 
-\item \code{summary_formats()}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+\item \code{summary_formats()}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 Quick function to retrieve default formats for summary statistics:
 \code{\link[=analyze_vars]{analyze_vars()}} and \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}} principally.
 
-\item \code{summary_labels()}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+\item \code{summary_labels()}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 Quick function to retrieve default labels for summary statistics.
 Returns labels of descriptive statistics which are understood by \code{rtables}. Similar to \code{summary_formats}.
 

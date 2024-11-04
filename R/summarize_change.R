@@ -34,7 +34,6 @@ s_change_from_baseline <- function(df, ...) {
   args_list <- list(...)
   .var <- args_list[[".var"]]
   variables <- args_list[["variables"]]
-  na.rm <- args_list[["na.rm"]]
 
   checkmate::assert_numeric(df[[variables$value]])
   checkmate::assert_numeric(df[[.var]])
@@ -60,17 +59,11 @@ s_change_from_baseline <- function(df, ...) {
 #'
 #' @keywords internal
 a_change_from_baseline <- function(df,
-                                   # .ref_group = NULL,
-                                   # .in_ref_col = FALSE,
-                                   # variables, # comes from ...
-                                   # na.rm = TRUE, # comes from ...
                                    ...,
                                    .stats = NULL,
                                    .formats = NULL,
                                    .labels = NULL,
-                                   .indent_mods = NULL,
-                                   na_str = default_na_str()) {
-
+                                   .indent_mods = NULL) {
   # Adding automatically extra parameters to the statistic function (see ?rtables::additional_fun_params)
   extra_afun_params <- names(get_additional_analysis_fun_parameters(add_alt_df = FALSE))
   x_stats <- do.call(
@@ -85,9 +78,8 @@ a_change_from_baseline <- function(df,
   # Fill in with formatting defaults if needed
   .stats <- get_stats("analyze_vars_numeric", stats_in = .stats)
   .formats <- get_formats_from_stats(.stats, .formats)
+  .labels <- get_labels_from_stats(.stats, .labels)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
-
-  lbls <- get_labels_from_stats(.stats, .labels)
 
   # Auto format handling
   .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
@@ -97,8 +89,8 @@ a_change_from_baseline <- function(df,
     .formats = .formats,
     .names = names(.labels),
     .labels = .labels,
-    .indent_mods = .indent_mods,
-    .format_na_strs = na_str
+    .indent_mods = .indent_mods
+    # .format_na_strs = na_str # set above level
   )
 }
 #' @describeIn summarize_change Layout-creating function which can take statistics function arguments
@@ -178,7 +170,7 @@ summarize_change <- function(lyt,
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
 
   # Adding additional arguments to the analysis function (depends on the specific call)
-  extra_args <- c(extra_args, "variables" = list(variables), "na.rm" = na_rm, ...)
+  extra_args <- c(extra_args, "variables" = list(variables), ...)
 
   # Adding all additional information from layout to analysis functions (see ?rtables::additional_fun_params)
   formals(a_change_from_baseline) <- c(
@@ -195,45 +187,9 @@ summarize_change <- function(lyt,
     na_str = na_str,
     nested = nested,
     extra_args = extra_args,
-    inclNAs = TRUE,
+    inclNAs = na_rm, # adds na.rm = TRUE to the analysis function
     show_labels = show_labels,
     table_names = table_names,
     section_div = section_div
   )
-}
-
-retrieve_extra_afun_params <- function(extra_afun_params) {
-  out <- list()
-  for (extra_param in extra_afun_params) {
-    out <- c(out, list(get(extra_param, envir = parent.frame())))
-  }
-  setNames(out, extra_afun_params)
-}
-
-# @param ... additional arguments for the lower level functions. Important additional parameters, useful to
-#   modify behavior of analysis and summary functions are listed in [rtables::additional_fun_params].
-get_additional_analysis_fun_parameters <- function(add_alt_df = FALSE) {
-  out_list <- list(
-    .N_col = integer(),
-    .N_total = integer(),
-    .N_row = integer(),
-    .df_row = data.frame(),
-    .var = character(),
-    .ref_group = character(),
-    .ref_full = vector(mode = "numeric"),
-    .in_ref_col = logical(),
-    .spl_context = data.frame(),
-    .all_col_exprs = vector(mode = "expression"),
-    .all_col_counts = vector(mode = "integer")
-  )
-
-  if (isTRUE(add_alt_df)) {
-    out_list <- c(
-      out_list,
-      .alt_df_row = data.frame(),
-      .alt_df = data.frame(),
-    )
-  }
-
-  out_list
 }
