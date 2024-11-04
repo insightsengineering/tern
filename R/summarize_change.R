@@ -29,11 +29,13 @@ NULL
 #'   an error will be thrown.
 #'
 #' @keywords internal
-s_change_from_baseline <- function(df,
-                                   .var,
-                                   variables,
-                                   na.rm = TRUE, # nolint
-                                   ...) {
+s_change_from_baseline <- function(df, ...) {
+  # s_summary should get na.rm
+  args_list <- list(...)
+  .var <- args_list[[".var"]]
+  variables <- args_list[["variables"]]
+  na.rm <- args_list[["na.rm"]]
+
   checkmate::assert_numeric(df[[variables$value]])
   checkmate::assert_numeric(df[[.var]])
   checkmate::assert_logical(df[[variables$baseline_flag]])
@@ -48,7 +50,7 @@ s_change_from_baseline <- function(df,
   if (is.logical(combined) && identical(length(combined), 0L)) {
     combined <- numeric(0)
   }
-  s_summary(combined, na.rm = na.rm, ...)
+  s_summary(combined, ...)
 }
 
 #' @describeIn summarize_change Formatted analysis function which is used as `afun` in `summarize_change()`.
@@ -57,26 +59,48 @@ s_change_from_baseline <- function(df,
 #' * `a_change_from_baseline()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @keywords internal
-a_change_from_baseline <- make_afun(
-  s_change_from_baseline,
-  .formats = c(
-    n = "xx",
-    mean_sd = "xx.xx (xx.xx)",
-    mean_se = "xx.xx (xx.xx)",
-    median = "xx.xx",
-    range = "xx.xx - xx.xx",
-    mean_ci = "(xx.xx, xx.xx)",
-    median_ci = "(xx.xx, xx.xx)",
-    mean_pval = "xx.xx"
-  ),
-  .labels = c(
-    mean_sd = "Mean (SD)",
-    mean_se = "Mean (SE)",
-    median = "Median",
-    range = "Min - Max"
-  )
-)
+a_change_from_baseline <- function(df,
+                                   # .ref_group = NULL,
+                                   # .in_ref_col = FALSE,
+                                   # variables, # comes from ...
+                                   # na.rm = TRUE, # comes from ...
+                                   ...,
+                                   .stats = NULL,
+                                   .formats = NULL,
+                                   .labels = NULL,
+                                   .indent_mods = NULL,
+                                   na_str = default_na_str()) {
 
+  # Adding automatically extra parameters to the statistic function (see ?rtables::additional_fun_params)
+  extra_afun_params <- names(get_additional_analysis_fun_parameters(add_alt_df = FALSE))
+  x_stats <- do.call(
+    s_change_from_baseline,
+    args = c(
+      df = list(df),
+      retrieve_extra_afun_params(extra_afun_params),
+      list(...)
+    )
+  )
+
+  # Fill in with formatting defaults if needed
+  .stats <- get_stats("analyze_vars_numeric", stats_in = .stats)
+  .formats <- get_formats_from_stats(.stats, .formats)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
+
+  lbls <- get_labels_from_stats(.stats, .labels)
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
+
+  in_rows(
+    .list = x_stats[.stats],
+    .formats = .formats,
+    .names = names(.labels),
+    .labels = .labels,
+    .indent_mods = .indent_mods,
+    .format_na_strs = na_str
+  )
+}
 #' @describeIn summarize_change Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
@@ -119,31 +143,97 @@ a_change_from_baseline <- make_afun(
 summarize_change <- function(lyt,
                              vars,
                              variables,
+                             var_labels = vars,
                              na_str = default_na_str(),
+                             na_rm = TRUE,
                              nested = TRUE,
-                             ...,
+                             show_labels = "default",
                              table_names = vars,
+                             section_div = NA_character_,
+                             ...,
                              .stats = c("n", "mean_sd", "median", "range"),
-                             .formats = NULL,
-                             .labels = NULL,
+                             .formats = c(
+                               n = "xx",
+                               mean_sd = "xx.xx (xx.xx)",
+                               mean_se = "xx.xx (xx.xx)",
+                               median = "xx.xx",
+                               range = "xx.xx - xx.xx",
+                               mean_ci = "(xx.xx, xx.xx)",
+                               median_ci = "(xx.xx, xx.xx)",
+                               mean_pval = "xx.xx"
+                             ),
+                             .labels = c(
+                               mean_sd = "Mean (SD)",
+                               mean_se = "Mean (SE)",
+                               median = "Median",
+                               range = "Min - Max"
+                             ),
                              .indent_mods = NULL) {
-  extra_args <- list(variables = variables, ...)
+  checkmate::assert_string(vars)
 
-  afun <- make_afun(
-    a_change_from_baseline,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods
+  # Extra args must contain .stats,.formats, .labels, .indent_mods - firsta analysis level
+  extra_args <- list(".stats" = .stats)
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Adding additional arguments to the analysis function (depends on the specific call)
+  extra_args <- c(extra_args, "variables" = list(variables), "na.rm" = na_rm, ...)
+
+  # Adding all additional information from layout to analysis functions (see ?rtables::additional_fun_params)
+  formals(a_change_from_baseline) <- c(
+    formals(a_change_from_baseline),
+    get_additional_analysis_fun_parameters()
   )
 
+  # Main analysis call - Nothing with .* -> these should be dedicated to the analysis function
   analyze(
-    lyt,
-    vars,
-    afun = afun,
+    lyt = lyt,
+    vars = vars,
+    var_labels = var_labels,
+    afun = a_change_from_baseline,
     na_str = na_str,
     nested = nested,
     extra_args = extra_args,
-    table_names = table_names
+    inclNAs = TRUE,
+    show_labels = show_labels,
+    table_names = table_names,
+    section_div = section_div
   )
+}
+
+retrieve_extra_afun_params <- function(extra_afun_params) {
+  out <- list()
+  for (extra_param in extra_afun_params) {
+    out <- c(out, list(get(extra_param, envir = parent.frame())))
+  }
+  setNames(out, extra_afun_params)
+}
+
+# @param ... additional arguments for the lower level functions. Important additional parameters, useful to
+#   modify behavior of analysis and summary functions are listed in [rtables::additional_fun_params].
+get_additional_analysis_fun_parameters <- function(add_alt_df = FALSE) {
+  out_list <- list(
+    .N_col = integer(),
+    .N_total = integer(),
+    .N_row = integer(),
+    .df_row = data.frame(),
+    .var = character(),
+    .ref_group = character(),
+    .ref_full = vector(mode = "numeric"),
+    .in_ref_col = logical(),
+    .spl_context = data.frame(),
+    .all_col_exprs = vector(mode = "expression"),
+    .all_col_counts = vector(mode = "integer")
+  )
+
+  if (isTRUE(add_alt_df)) {
+    out_list <- c(
+      out_list,
+      .alt_df_row = data.frame(),
+      .alt_df = data.frame(),
+    )
+  }
+
+  out_list
 }

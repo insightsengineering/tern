@@ -496,9 +496,7 @@ tern_default_labels <- c(
   rate_ratio = "Adjusted Rate Ratio"
 )
 
-# To deprecate ---------
-
-#' @describeIn default_stats_formats_labels `r lifecycle::badge("deprecated")`
+#' @describeIn default_stats_formats_labels `r lifecycle::badge("stable")`
 #'   Quick function to retrieve default formats for summary statistics:
 #'   [analyze_vars()] and [analyze_vars_in_cols()] principally.
 #'
@@ -513,19 +511,19 @@ tern_default_labels <- c(
 #'
 #' @export
 summary_formats <- function(type = "numeric", include_pval = FALSE) {
-  lifecycle::deprecate_warn(
-    "0.9.6", "summary_formats()",
-    details = 'Use get_formats_from_stats(get_stats("analyze_vars_numeric", add_pval = include_pval)) instead'
-  )
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
   get_formats_from_stats(get_stats(met_grp, add_pval = include_pval))
 }
 
-#' @describeIn default_stats_formats_labels `r lifecycle::badge("deprecated")`
+#' @describeIn default_stats_formats_labels `r lifecycle::badge("stable")`
 #'   Quick function to retrieve default labels for summary statistics.
 #'   Returns labels of descriptive statistics which are understood by `rtables`. Similar to `summary_formats`.
 #'
 #' @param include_pval (`flag`)\cr same as the `add_pval` argument in [get_stats()].
+#'
+#' @details
+#' `summary_*` quick getter for labels or formats uses `get_stats` and `get_labels_from_stats` or `get_formats_from_stats`
+#' respectively to retrieve relevant information.
 #'
 #' @return
 #' * `summary_labels` returns a named `vector` of default statistic labels for the given data type.
@@ -536,10 +534,6 @@ summary_formats <- function(type = "numeric", include_pval = FALSE) {
 #'
 #' @export
 summary_labels <- function(type = "numeric", include_pval = FALSE) {
-  lifecycle::deprecate_warn(
-    "0.9.6", "summary_formats()",
-    details = 'Use get_labels_from_stats(get_stats("analyze_vars_numeric", add_pval = include_pval)) instead'
-  )
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
   get_labels_from_stats(get_stats(met_grp, add_pval = include_pval))
 }

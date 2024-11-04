@@ -10,6 +10,9 @@
 * Updated the `table_font_size` parameter of `g_lineplot()` to control the size of all text in the annotation table, including labels.
 * Added `as_list` parameter to `g_lineplot()` to allow users to return the line plot and annotation table elements as a list instead of stacked for more complex customization.
 
+### Miscellaneous
+* Reverted deprecation of quick getters for `summary_formats` and `summary_labels`. Added disclaimer about underlying use of `get_stats`.
+
 ### Bug Fixes
 * Fixed bug in `a_summary()` causing non-unique `row_name` values to occur when multiple statistics are selected for count variables.
 
