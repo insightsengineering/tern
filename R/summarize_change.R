@@ -107,7 +107,7 @@ a_change_from_baseline <- function(df,
 #' @examples
 #' library(dplyr)
 #'
-#' ## Fabricate dataset
+#' # Fabricate dataset
 #' dta_test <- data.frame(
 #'   USUBJID = rep(1:6, each = 3),
 #'   AVISIT = rep(paste0("V", 1:3), 6),
