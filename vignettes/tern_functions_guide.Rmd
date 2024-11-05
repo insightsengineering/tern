@@ -84,7 +84,6 @@ fix_layout %>%
   summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL"), na_str = "my_na") %>%
   build_table(dta_test) %>%
   print()
-
 ```
 
 `.formats`, `.labels`, and `.indent_mods` depend on the names of `.stats`. Here is how you can change the default formatting.
@@ -92,11 +91,13 @@ fix_layout %>%
 ```{r}
 # changing n count format and label and indentation
 fix_layout %>%
-  summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL"), 
-                   .stats = c("n", "mean"), # reducing the number of stats for visual appreciation
-                   .formats = c(n = "xx.xx"),
-                   .labels = c(n = "NnNn"),
-                   .indent_mods = c(n = 5), na_str = "nA") %>%
+  summarize_change("CHG",
+    variables = list(value = "AVAL", baseline_flag = "ABLFLL"),
+    .stats = c("n", "mean"), # reducing the number of stats for visual appreciation
+    .formats = c(n = "xx.xx"),
+    .labels = c(n = "NnNn"),
+    .indent_mods = c(n = 5), na_str = "nA"
+  ) %>%
   build_table(dta_test) %>%
   print()
 ```
@@ -105,9 +106,11 @@ What if I want something special for the format?
 ```{r}
 # changing n count format and label and indentation
 fix_layout %>%
-  summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL"), 
-                   .stats = c("n", "mean"), # reducing the number of stats for visual appreciation
-                   .formats = c(n = function(x, ...) as.character(x * 100))) %>% # Note you need ...!!!
+  summarize_change("CHG",
+    variables = list(value = "AVAL", baseline_flag = "ABLFLL"),
+    .stats = c("n", "mean"), # reducing the number of stats for visual appreciation
+    .formats = c(n = function(x, ...) as.character(x * 100))
+  ) %>% # Note you need ...!!!
   build_table(dta_test) %>%
   print()
 ```
