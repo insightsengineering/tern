@@ -64,7 +64,6 @@ a_change_from_baseline <- function(df,
                                    .formats = NULL,
                                    .labels = NULL,
                                    .indent_mods = NULL) {
-
   # Check if there are user-defined functions
   default_and_custom_stats_list <- .split_default_from_custom_stats(.stats)
   .stats <- default_and_custom_stats_list$default_stats

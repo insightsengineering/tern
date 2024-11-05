@@ -126,5 +126,4 @@ testthat::test_that("summarize_change works with custom statistical functions", 
       .stats = c("n", "my_stat" = function(df, ...) mean(df$AVISIT, na.rm = TRUE))
     ) %>%
     build_table(dta_test)
-
 })

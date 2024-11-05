@@ -119,9 +119,11 @@ Adding a custom statistic:
 ```{r}
 # changing n count format and label and indentation
 fix_layout %>%
-  summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL"), 
-                   .stats = c("n", "mean", "arg" = function(x, ...) mean(x)),
-                   .formats = c(n = function(x, ...) as.character(x * 100))) %>% # Note you need ...!!!
+  summarize_change("CHG",
+    variables = list(value = "AVAL", baseline_flag = "ABLFLL"),
+    .stats = c("n", "mean", "arg" = function(x, ...) mean(x)),
+    .formats = c(n = function(x, ...) as.character(x * 100))
+  ) %>% # Note you need ...!!!
   build_table(dta_test) %>%
   print()
 ```
