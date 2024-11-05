@@ -77,3 +77,54 @@ testthat::test_that("summarize_change works as expected", {
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+
+testthat::test_that("summarize_change works with custom statistical functions", {
+  dta_test <- data.frame(
+    USUBJID = rep(1:6, each = 3),
+    AVISIT = rep(paste0("V", 1:3), 6),
+    AVAL = c(9:1, rep(NA, 9))
+  ) %>%
+    dplyr::mutate(
+      ABLFLL = AVISIT == "V1"
+    ) %>%
+    dplyr::group_by(USUBJID) %>%
+    dplyr::mutate(
+      BLVAL = AVAL[ABLFLL],
+      CHG = AVAL - BLVAL
+    ) %>%
+    dplyr::ungroup()
+
+  testthat::expect_error(
+    basic_table() %>%
+      split_rows_by("AVISIT") %>%
+      summarize_change(
+        "CHG",
+        variables = list(value = "AVAL", baseline_flag = "ABLFLL"),
+        .stats = c("n", "my_stat" = function(x) mean(x))
+      ) %>%
+      build_table(dta_test),
+    "custom function has x as first parameter, while the default function has df"
+  )
+  testthat::expect_error(
+    basic_table() %>%
+      split_rows_by("AVISIT") %>%
+      summarize_change(
+        "CHG",
+        variables = list(value = "AVAL", baseline_flag = "ABLFLL"),
+        .stats = c("n", "my_stat" = function(df) mean(df$AVAL))
+      ) %>%
+      build_table(dta_test),
+    "The custom statistical function needs to have "
+  )
+
+  result <- basic_table() %>%
+    split_rows_by("AVISIT") %>%
+    summarize_change(
+      "CHG",
+      variables = list(value = "AVAL", baseline_flag = "ABLFLL"),
+      .stats = c("n", "my_stat" = function(df, ...) mean(df$AVISIT, na.rm = TRUE))
+    ) %>%
+    build_table(dta_test)
+
+})

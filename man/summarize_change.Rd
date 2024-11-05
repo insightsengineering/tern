@@ -35,8 +35,7 @@ a_change_from_baseline(
   .stats = NULL,
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL,
-  na_str = default_na_str()
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -125,7 +124,7 @@ an error will be thrown.
 \examples{
 library(dplyr)
 
-## Fabricate dataset
+# Fabricate dataset
 dta_test <- data.frame(
   USUBJID = rep(1:6, each = 3),
   AVISIT = rep(paste0("V", 1:3), 6),

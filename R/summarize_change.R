@@ -64,11 +64,18 @@ a_change_from_baseline <- function(df,
                                    .formats = NULL,
                                    .labels = NULL,
                                    .indent_mods = NULL) {
+
+  # Check if there are user-defined functions
+  default_and_custom_stats_list <- .split_default_from_custom_stats(.stats)
+  .stats <- default_and_custom_stats_list$default_stats
+  custom_stat_functions <- default_and_custom_stats_list$custom_stats
+
   # Adding automatically extra parameters to the statistic function (see ?rtables::additional_fun_params)
   extra_afun_params <- names(get_additional_analysis_fun_parameters(add_alt_df = FALSE))
-  x_stats <- do.call(
-    s_change_from_baseline,
-    args = c(
+  x_stats <- .apply_stat_functions(
+    default_stat_fnc = s_change_from_baseline,
+    custom_stat_fnc_list = custom_stat_functions,
+    args_list = c(
       df = list(df),
       retrieve_extra_afun_params(extra_afun_params),
       list(...)
@@ -93,6 +100,7 @@ a_change_from_baseline <- function(df,
     # .format_na_strs = na_str # set above level
   )
 }
+
 #' @describeIn summarize_change Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
@@ -161,9 +169,7 @@ summarize_change <- function(lyt,
                                range = "Min - Max"
                              ),
                              .indent_mods = NULL) {
-  checkmate::assert_string(vars)
-
-  # Extra args must contain .stats,.formats, .labels, .indent_mods - firsta analysis level
+  # Extra args must contain .stats, .formats, .labels, .indent_mods - sent to the analysis level
   extra_args <- list(".stats" = .stats)
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels

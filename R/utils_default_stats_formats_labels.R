@@ -121,6 +121,56 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
   out
 }
 
+# Utility function used to separate custom stats (user-defined functions) from defaults
+.split_default_from_custom_stats <- function(stats_in) {
+  out <- list(default_stats = NULL, custom_stats = NULL)
+  if (is.list(stats_in)) {
+    is_custom_fnc <- sapply(stats_in, is.function)
+    out[["custom_stats"]] <- stats_in[is_custom_fnc]
+    out[["default_stats"]] <- unlist(stats_in[!is_custom_fnc])
+  } else {
+    out[["default_stats"]] <- stats_in
+  }
+
+  out
+}
+
+# Utility function to apply statistical functions
+.apply_stat_functions <- function(default_stat_fnc, custom_stat_fnc_list, args_list) {
+  # Default checks
+  checkmate::assert_function(default_stat_fnc)
+  checkmate::assert_list(custom_stat_fnc_list, types = "function", null.ok = TRUE)
+  checkmate::assert_list(args_list)
+
+  # Checking custom stats have same formals
+  if (!is.null(custom_stat_fnc_list)) {
+    fundamental_call_to_data <- names(formals(default_stat_fnc))[[1]]
+    for (fnc in custom_stat_fnc_list) {
+      if (!identical(names(formals(fnc))[[1]], fundamental_call_to_data)) {
+        stop(
+          "The first parameter of a custom statistical function needs to be the same (it can be `df` or `x`) ",
+          "as the default statistical function. In this case your custom function has ", names(formals(fnc))[[1]],
+          " as first parameter, while the default function has ", fundamental_call_to_data, "."
+        )
+      }
+      if (!any(names(formals(fnc)) == "...")) {
+        stop(
+          "The custom statistical function needs to have `...` as a parameter to accept additional arguments. ",
+          "In this case your custom function does not have `...`."
+        )
+      }
+    }
+  }
+
+  # Merging
+  stat_fnc_list <- c(default_stat_fnc, custom_stat_fnc_list)
+
+  # Applying
+  out <- unlist(lapply(stat_fnc_list, function(fnc) do.call(fnc, args = args_list)), recursive = FALSE)
+
+  out
+}
+
 #' @describeIn default_stats_formats_labels Get formats corresponding to a list of statistics.
 #'   To check available defaults see `tern::tern_default_formats` list.
 #'
