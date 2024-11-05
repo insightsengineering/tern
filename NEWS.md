@@ -8,13 +8,13 @@
 * Updated the `table_font_size` parameter of `g_lineplot()` to control the size of all text in the annotation table, including labels.
 * Added `as_list` parameter to `g_lineplot()` to allow users to return the line plot and annotation table elements as a list instead of stacked for more complex customization.
 * Refactored `summarize_change()` to work without `make_afun()` and access all additional function parameter.
-* Added vignette "Unerstanding `tern` functions" for future reference.
+* Added vignette "Understanding `tern` functions" for future reference.
 
 ### Bug Fixes
 * Fixed bug in `a_summary()` causing non-unique `row_name` values to occur when multiple statistics are selected for count variables.
 
 ### Miscellaneous
-* Reverted deprecation of quick getters for `summary_formats()` and `summary_labels()`. Added disclaimer about underlying use of `get_stats`.
+* Reverted deprecation of quick get functions `summary_formats()` and `summary_labels()`. Added disclaimer about underlying use of `get_stats`.
 * Corrected handling of extra arguments and `NA` for `summarize_change()`.
 
 # tern 0.9.6

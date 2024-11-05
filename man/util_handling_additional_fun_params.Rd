@@ -3,12 +3,12 @@
 \name{util_handling_additional_fun_params}
 \alias{util_handling_additional_fun_params}
 \alias{retrieve_extra_afun_params}
-\alias{get_additional_analysis_fun_parameters}
+\alias{get_additional_afun_params}
 \title{Utilities to handle extra arguments in analysis functions}
 \usage{
 retrieve_extra_afun_params(extra_afun_params)
 
-get_additional_analysis_fun_parameters(add_alt_df = FALSE)
+get_additional_afun_params(add_alt_df = FALSE)
 }
 \arguments{
 \item{extra_afun_params}{(\code{list})\cr list of additional parameters (\code{character}) to be
@@ -38,7 +38,7 @@ will get them through argument matching.
 \itemize{
 \item \code{retrieve_extra_afun_params()}: Retrieve additional parameters from the environment.
 
-\item \code{get_additional_analysis_fun_parameters()}: Curated list of additional parameters for
+\item \code{get_additional_afun_params()}: Curated list of additional parameters for
 analysis functions. Please check \link[rtables:additional_fun_params]{rtables::additional_fun_params} for precise descriptions.
 
 }}

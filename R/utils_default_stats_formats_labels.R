@@ -573,7 +573,7 @@ summary_formats <- function(type = "numeric", include_pval = FALSE) {
 #' @param include_pval (`flag`)\cr same as the `add_pval` argument in [get_stats()].
 #'
 #' @details
-#' `summary_*` quick getter for labels or formats uses `get_stats` and `get_labels_from_stats` or
+#' `summary_*` quick get functions for labels or formats uses `get_stats` and `get_labels_from_stats` or
 #' `get_formats_from_stats` respectively to retrieve relevant information.
 #'
 #' @return

@@ -27,7 +27,7 @@ knitr::opts_chunk$set(
 
 Every function in the `tern` package is designed to have a certain structure that can cooperate well with every user's need, while maintaining a consistent and predictable behavior. This document will guide you through an example function in the package, explaining the purpose of many of its building blocks and how they can be used.
 
-As we recently worked on it we will consider `summarize_change()` as an example. This function is used to calculate the change from a baseline value for a given variable. A realistic example can be found in [LBT03](https://insightsengineering.github.io/tlg-catalog/stable/tables/lab-results/lbt03.html) from the TLG-catalog.
+As we recently worked on it we will consider `summarize_change()` as an example. This function is used to calculate the change from a baseline value for a given variable. A realistic example can be found in [`LBT03`](https://insightsengineering.github.io/tlg-catalog/stable/tables/lab-results/lbt03.html) from the TLG-catalog.
 
 `summarize_change()` is the main function that is available to the user. You can find lists of these functions in `?tern::analyze_functions`. All of these are build around `rtables::analyze()` function, which is the core analysis function in `rtables`. All these wrapper functions call specific analysis functions (always written as `a_*`) that are meant to handle the statistic functions (always written as `s_*`) and format the results with the `rtables::in_row()` function. We can summarize this structure as follows:
 
@@ -37,7 +37,7 @@ The main questions that may arise are:
 
 1. Handling of `NA`.
 2. Handling of formats.
-3. Additional statistics (WIP).
+3. Additional statistics.
 
 Data set and library loading.
 ```{r}
@@ -67,13 +67,13 @@ fix_layout <- basic_table() %>%
   split_rows_by("AVISIT")
 
 
-# NA: na_rm = TRUE
+# Dealing with NAs: na_rm = TRUE
 fix_layout %>%
   summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL")) %>%
   build_table(dta_test) %>%
   print()
 
-# NA: na_rm = FALSE
+# Dealing with NAs: na_rm = FALSE
 fix_layout %>%
   summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL"), na_rm = FALSE) %>%
   build_table(dta_test) %>%
@@ -137,6 +137,6 @@ fix_layout %>%
 
 In all of these layers there are specific parameters that need to be available, and, while `rtables` has multiple way to handle formatting and `NA` values, we had to decide how to correctly handle these and additional extra arguments. We follow the following scheme:
 
-Level 1: `summarize_change()`: all parameters without a starting dot `.*` are used or added to `extra_args`. Specifically, here we solve `NA` values by using `inclNAs` option in `rtables::analyze()`. This will add to `...` `na.rm = inclNAs`. Also `na_str` is here set. We may want to be statistic dependend in the future, but we still need to think how to accomplish that. We add the `rtables::additional_fun_params` to the analysis function so to make them available as `...` in the next level.
+Level 1: `summarize_change()`: all parameters without a starting dot `.*` are used or added to `extra_args`. Specifically, here we solve `NA` values by using `inclNAs` option in `rtables::analyze()`. This will add to `...` `na.rm = inclNAs`. Also `na_str` is here set. We may want to be statistic dependent in the future, but we still need to think how to accomplish that. We add the `rtables::additional_fun_params` to the analysis function so to make them available as `...` in the next level.
 
 Level 2: `a_change_from_baseline()`: all parameters starting with a dot `.` are used. Mainly `.stats`, `.formats`, `.labels`, and `.indent_mods` are used. We also add `extra_afun_params` to the `...` list for the statistical function. Notice the handling for additional parameters in the `do.call()` function.

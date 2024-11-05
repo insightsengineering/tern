@@ -121,8 +121,8 @@ seen in \code{\link[=analyze_vars]{analyze_vars()}}. See notes to understand why
 \details{
 Current choices for \code{type} are \code{counts} and \code{numeric} for \code{\link[=analyze_vars]{analyze_vars()}} and affect \code{get_stats()}.
 
-\verb{summary_*} quick getter for labels or formats uses \code{get_stats} and \code{get_labels_from_stats} or \code{get_formats_from_stats}
-respectively to retrieve relevant information.
+\verb{summary_*} quick get functions for labels or formats uses \code{get_stats} and \code{get_labels_from_stats} or
+\code{get_formats_from_stats} respectively to retrieve relevant information.
 }
 \section{Functions}{
 \itemize{
