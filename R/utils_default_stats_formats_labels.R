@@ -126,6 +126,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
   out <- list(default_stats = NULL, custom_stats = NULL)
   if (is.list(stats_in)) {
     is_custom_fnc <- sapply(stats_in, is.function)
+    checkmate::assert_list(stats_in[is_custom_fnc], types = "function", names = "named")
     out[["custom_stats"]] <- stats_in[is_custom_fnc]
     out[["default_stats"]] <- unlist(stats_in[!is_custom_fnc])
   } else {
@@ -139,7 +140,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
 .apply_stat_functions <- function(default_stat_fnc, custom_stat_fnc_list, args_list) {
   # Default checks
   checkmate::assert_function(default_stat_fnc)
-  checkmate::assert_list(custom_stat_fnc_list, types = "function", null.ok = TRUE)
+  checkmate::assert_list(custom_stat_fnc_list, types = "function", null.ok = TRUE, names = "named")
   checkmate::assert_list(args_list)
 
   # Checking custom stats have same formals

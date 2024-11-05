@@ -123,7 +123,15 @@ testthat::test_that("summarize_change works with custom statistical functions", 
     summarize_change(
       "CHG",
       variables = list(value = "AVAL", baseline_flag = "ABLFLL"),
-      .stats = c("n", "my_stat" = function(df, ...) mean(df$AVISIT, na.rm = TRUE))
+      .stats = c("n", "my_stat" = function(df, ...) {
+        a <- mean(df$AVAL, na.rm = TRUE)
+        b <- list(...)$.N_row
+        a / b
+      }),
+      .formats = c("my_stat" = function(x, ...) sprintf("%.2f", x))
     ) %>%
     build_table(dta_test)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })

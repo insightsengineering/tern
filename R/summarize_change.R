@@ -70,7 +70,7 @@ a_change_from_baseline <- function(df,
   custom_stat_functions <- default_and_custom_stats_list$custom_stats
 
   # Adding automatically extra parameters to the statistic function (see ?rtables::additional_fun_params)
-  extra_afun_params <- names(get_additional_analysis_fun_parameters(add_alt_df = FALSE))
+  extra_afun_params <- names(list(...)$.additional_fun_parameters)
   x_stats <- .apply_stat_functions(
     default_stat_fnc = s_change_from_baseline,
     custom_stat_fnc_list = custom_stat_functions,
@@ -82,7 +82,10 @@ a_change_from_baseline <- function(df,
   )
 
   # Fill in with formatting defaults if needed
-  .stats <- get_stats("analyze_vars_numeric", stats_in = .stats)
+  .stats <- c(
+    get_stats("analyze_vars_numeric", stats_in = .stats),
+    names(custom_stat_functions) # Additional stats from custom functions
+  )
   .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- get_labels_from_stats(.stats, .labels)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
@@ -177,9 +180,10 @@ summarize_change <- function(lyt,
   extra_args <- c(extra_args, "variables" = list(variables), ...)
 
   # Adding all additional information from layout to analysis functions (see ?rtables::additional_fun_params)
+  extra_args[[".additional_fun_parameters"]] <- get_additional_analysis_fun_parameters(add_alt_df = FALSE)
   formals(a_change_from_baseline) <- c(
     formals(a_change_from_baseline),
-    get_additional_analysis_fun_parameters()
+    extra_args[[".additional_fun_parameters"]]
   )
 
   # Main analysis call - Nothing with .* -> these should be dedicated to the analysis function
