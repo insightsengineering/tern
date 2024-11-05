@@ -507,7 +507,7 @@ retrieve_extra_afun_params <- function(extra_afun_params) {
 #' * `get_additional_analysis_fun_parameters` returns a list of additional parameters.
 #'
 #' @keywords internal
-get_additional_analysis_fun_parameters <- function(add_alt_df = FALSE) {
+get_additional_afun_params <- function(add_alt_df = FALSE) {
   out_list <- list(
     .N_col = integer(),
     .N_total = integer(),

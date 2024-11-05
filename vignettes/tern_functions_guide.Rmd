@@ -67,13 +67,13 @@ fix_layout <- basic_table() %>%
   split_rows_by("AVISIT")
 
 
-# na_rm = TRUE
+# NA: na_rm = TRUE
 fix_layout %>%
   summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL")) %>%
   build_table(dta_test) %>%
   print()
 
-# na_rm = FALSE
+# NA: na_rm = FALSE
 fix_layout %>%
   summarize_change("CHG", variables = list(value = "AVAL", baseline_flag = "ABLFLL"), na_rm = FALSE) %>%
   build_table(dta_test) %>%

@@ -122,7 +122,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
 }
 
 # Utility function used to separate custom stats (user-defined functions) from defaults
-.split_default_from_custom_stats <- function(stats_in) {
+.split_std_from_custom_stats <- function(stats_in) {
   out <- list(default_stats = NULL, custom_stats = NULL)
   if (is.list(stats_in)) {
     is_custom_fnc <- sapply(stats_in, is.function)
@@ -572,8 +572,8 @@ summary_formats <- function(type = "numeric", include_pval = FALSE) {
 #' @param include_pval (`flag`)\cr same as the `add_pval` argument in [get_stats()].
 #'
 #' @details
-#' `summary_*` quick getter for labels or formats uses `get_stats` and `get_labels_from_stats` or `get_formats_from_stats`
-#' respectively to retrieve relevant information.
+#' `summary_*` quick getter for labels or formats uses `get_stats` and `get_labels_from_stats` or
+#' `get_formats_from_stats` respectively to retrieve relevant information.
 #'
 #' @return
 #' * `summary_labels` returns a named `vector` of default statistic labels for the given data type.

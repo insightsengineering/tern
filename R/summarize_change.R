@@ -96,7 +96,6 @@ a_change_from_baseline <- function(df,
     .names = names(.labels),
     .labels = .labels,
     .indent_mods = .indent_mods
-    # .format_na_strs = na_str # set above level
   )
 }
 
