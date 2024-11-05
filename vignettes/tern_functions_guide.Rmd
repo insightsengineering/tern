@@ -42,6 +42,7 @@ The main questions that may arise are:
 Data set and library loading.
 ```{r}
 library(dplyr)
+library(tern)
 
 ## Fabricate dataset
 dta_test <- data.frame(
