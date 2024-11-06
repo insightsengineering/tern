@@ -212,11 +212,11 @@ testthat::test_that("summary_formats works as expected", {
 })
 
 testthat::test_that("summary_labels works as expected", {
-  testthat::expect_warning(result <- summary_labels())
+  result <- summary_labels()
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
-  testthat::expect_warning(result <- summary_labels(type = "counts", include_pval = TRUE))
+  result <- summary_labels(type = "counts", include_pval = TRUE)
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
