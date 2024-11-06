@@ -504,7 +504,7 @@ retrieve_extra_afun_params <- function(extra_afun_params) {
 #'   analysis functions. Please check [rtables::additional_fun_params] for precise descriptions.
 #'
 #' @return
-#' * `get_additional_analysis_fun_parameters` returns a list of additional parameters.
+#' * `get_additional_afun_params` returns a list of additional parameters.
 #'
 #' @keywords internal
 get_additional_afun_params <- function(add_alt_df = FALSE) {

@@ -23,7 +23,7 @@ parameters.}
 }
 
 \itemize{
-\item \code{get_additional_analysis_fun_parameters} returns a list of additional parameters.
+\item \code{get_additional_afun_params} returns a list of additional parameters.
 }
 }
 \description{

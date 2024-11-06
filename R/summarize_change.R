@@ -65,7 +65,7 @@ a_change_from_baseline <- function(df,
                                    .labels = NULL,
                                    .indent_mods = NULL) {
   # Check if there are user-defined functions
-  default_and_custom_stats_list <- .split_default_from_custom_stats(.stats)
+  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
   .stats <- default_and_custom_stats_list$default_stats
   custom_stat_functions <- default_and_custom_stats_list$custom_stats
 
@@ -180,7 +180,7 @@ summarize_change <- function(lyt,
   extra_args <- c(extra_args, "variables" = list(variables), ...)
 
   # Adding all additional information from layout to analysis functions (see ?rtables::additional_fun_params)
-  extra_args[[".additional_fun_parameters"]] <- get_additional_analysis_fun_parameters(add_alt_df = FALSE)
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
   formals(a_change_from_baseline) <- c(
     formals(a_change_from_baseline),
     extra_args[[".additional_fun_parameters"]]
