@@ -155,7 +155,7 @@ a_count_patients_with_flags <- function(df,
     NULL
   }
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, row_nms = flag_variables)
-  if (length(names(.indent_mods)) > 1) {
+  if (!is.null(names(.indent_mods))) {
     .indent_mods <- sapply(names(.indent_mods), function(x) {
       if (.indent_mods[x] == 0 && !is.null(length(indent_stat_def))) {
         idx <- which(names(indent_stat_def) == gsub("\\..*", "", x))
