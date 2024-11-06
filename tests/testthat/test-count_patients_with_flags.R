@@ -386,3 +386,45 @@ testthat::test_that("count_patients_with_flags works as expected with risk diffe
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("count_patients_with_flags works with single indent mod value", {
+  test_data <- tibble::tibble(
+    SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
+    ARM = factor(c("A", "A", "A", "A", "A", "A", "B", "B", "B"), levels = c("A", "B")),
+    TRTEMFL = c("Y", "", "", "NA", "", "", "Y", "", ""),
+    AEOUT = c("", "", "", "", "", "", "FATAL", "", "FATAL")
+  ) %>%
+    dplyr::mutate(
+      flag1 = TRTEMFL == "Y",
+      flag2 = TRTEMFL == "Y" & AEOUT == "FATAL",
+    )
+  labels <- c(
+    "A",
+    "B",
+    "C",
+    "D",
+    "Total number of patients with at least one adverse event",
+    "Total number of patients with fatal AEs"
+  )
+  formatters::var_labels(test_data) <- labels
+
+  test_adsl_like <- tibble::tibble(
+    SUBJID = as.character(1001:1010),
+    ARM = factor(c("A", "A", "B", "B", "A", "A", "A", "B", "B", "A"), levels = c("A", "B")),
+    stringsAsFactors = FALSE
+  )
+
+  lyt <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    add_colcounts() %>%
+    count_patients_with_flags(
+      "SUBJID",
+      flag_variables = formatters::var_labels(test_data[, c("flag1", "flag2")]),
+      denom = "N_col",
+      .indent_mods = 3L
+    )
+  result <- build_table(lyt, df = test_data, alt_counts_df = test_adsl_like)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})

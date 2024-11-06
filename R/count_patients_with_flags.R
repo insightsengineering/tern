@@ -155,13 +155,15 @@ a_count_patients_with_flags <- function(df,
     NULL
   }
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, row_nms = flag_variables)
-  .indent_mods <- sapply(names(.indent_mods), function(x) {
-    if (.indent_mods[x] == 0 && !is.null(length(indent_stat_def))) {
-      idx <- which(names(indent_stat_def) == gsub("\\..*", "", x))
-      if (length(idx) > 0) .indent_mods[[x]] <- indent_stat_def[[idx]]
-    }
-    .indent_mods[x]
-  })
+  if (!is.null(names(.indent_mods))) {
+    .indent_mods <- sapply(names(.indent_mods), function(x) {
+      if (.indent_mods[x] == 0 && !is.null(length(indent_stat_def))) {
+        idx <- which(names(indent_stat_def) == gsub("\\..*", "", x))
+        if (length(idx) > 0) .indent_mods[[x]] <- indent_stat_def[[idx]]
+      }
+      .indent_mods[x]
+    })
+  }
 
   if ("count_fraction_fixed_dp" %in% .stats) x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
   x_stats <- x_stats[.stats]
