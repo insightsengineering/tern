@@ -467,3 +467,14 @@
       SAE                      53 (26.2%)   49 (27.7%)     39 (24.1%)          -1.4 (-10.4 - 7.5)     
       SAE with fatal outcome   50 (24.8%)   47 (26.6%)     42 (25.9%)          -1.8 (-10.6 - 7.0)     
 
+# count_patients_with_flags works with single indent mod value
+
+    Code
+      res
+    Output
+                                                                           A           B    
+                                                                         (N=6)       (N=4)  
+      ——————————————————————————————————————————————————————————————————————————————————————
+            Total number of patients with at least one adverse event   1 (16.7%)   1 (25.0%)
+            Total number of patients with fatal AEs                        0       1 (25.0%)
+
