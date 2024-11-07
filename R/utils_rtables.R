@@ -467,3 +467,68 @@ set_default_na_str <- function(na_str) {
   checkmate::assert_character(na_str, len = 1, null.ok = TRUE)
   options("tern_default_na_str" = na_str)
 }
+
+
+#' Utilities to handle extra arguments in analysis functions
+#'
+#' @description `r lifecycle::badge("stable")`
+#' Important additional parameters, useful to modify behavior of analysis and summary
+#' functions are listed in [rtables::additional_fun_params]. With these utility functions
+#' we can retrieve a curated list of these parameters from the environment, and pass them
+#' to the analysis functions with dedicated `...`; notice that the final `s_*` function
+#' will get them through argument matching.
+#'
+#' @param extra_afun_params (`list`)\cr list of additional parameters (`character`) to be
+#'   retrieved from the environment. Curated list is present in [rtables::additional_fun_params].
+#' @param add_alt_df (`logical`)\cr if `TRUE`, the function will also add `.alt_df` and `.alt_df_row`
+#'   parameters.
+#'
+#' @name util_handling_additional_fun_params
+NULL
+
+#' @describeIn util_handling_additional_fun_params Retrieve additional parameters from the environment.
+#'
+#' @return
+#' * `retrieve_extra_afun_params` returns a list of the values of the parameters in the environment.
+#'
+#' @keywords internal
+retrieve_extra_afun_params <- function(extra_afun_params) {
+  out <- list()
+  for (extra_param in extra_afun_params) {
+    out <- c(out, list(get(extra_param, envir = parent.frame())))
+  }
+  setNames(out, extra_afun_params)
+}
+
+#' @describeIn util_handling_additional_fun_params Curated list of additional parameters for
+#'   analysis functions. Please check [rtables::additional_fun_params] for precise descriptions.
+#'
+#' @return
+#' * `get_additional_afun_params` returns a list of additional parameters.
+#'
+#' @keywords internal
+get_additional_afun_params <- function(add_alt_df = FALSE) {
+  out_list <- list(
+    .N_col = integer(),
+    .N_total = integer(),
+    .N_row = integer(),
+    .df_row = data.frame(),
+    .var = character(),
+    .ref_group = character(),
+    .ref_full = vector(mode = "numeric"),
+    .in_ref_col = logical(),
+    .spl_context = data.frame(),
+    .all_col_exprs = vector(mode = "expression"),
+    .all_col_counts = vector(mode = "integer")
+  )
+
+  if (isTRUE(add_alt_df)) {
+    out_list <- c(
+      out_list,
+      .alt_df_row = data.frame(),
+      .alt_df = data.frame()
+    )
+  }
+
+  out_list
+}
