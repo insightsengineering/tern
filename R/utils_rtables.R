@@ -526,7 +526,7 @@ get_additional_afun_params <- function(add_alt_df = FALSE) {
     out_list <- c(
       out_list,
       .alt_df_row = data.frame(),
-      .alt_df = data.frame(),
+      .alt_df = data.frame()
     )
   }
 
