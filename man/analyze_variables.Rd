@@ -37,14 +37,14 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
   .N_row,
   .N_col,
   .var,
-  control = control_analyze_vars(),
+  control = control_summarize_vars(),
   ...
 )
 
 \method{s_summary}{factor}(
   x,
   na.rm = TRUE,
-  denom = c("n", "N_col", "N_row"),
+  denom = c("n", "N_row", "N_col"),
   .N_row,
   .N_col,
   ...
@@ -53,7 +53,7 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
 \method{s_summary}{character}(
   x,
   na.rm = TRUE,
-  denom = c("n", "N_col", "N_row"),
+  denom = c("n", "N_row", "N_col"),
   .N_row,
   .N_col,
   .var,
@@ -64,29 +64,13 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
 \method{s_summary}{logical}(
   x,
   na.rm = TRUE,
-  denom = c("n", "N_col", "N_row"),
+  denom = c("n", "N_row", "N_col"),
   .N_row,
   .N_col,
   ...
 )
 
-a_summary(
-  x,
-  .N_col,
-  .N_row,
-  .var = NULL,
-  .df_row = NULL,
-  .ref_group = NULL,
-  .in_ref_col = FALSE,
-  compare = FALSE,
-  .stats = NULL,
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = NULL,
-  na.rm = TRUE,
-  na_str = default_na_str(),
-  ...
-)
+a_summary(x, ..., .N_row, .N_col, .var)
 }
 \arguments{
 \item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
@@ -158,12 +142,6 @@ See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 
 \item{verbose}{(\code{flag})\cr defaults to \code{TRUE}, which prints out warnings and messages. It is mainly used
 to print out information about factor casting.}
-
-\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
-
-\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
-
-\item{.in_ref_col}{(\code{flag})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
 \item{compare}{(\code{flag})\cr whether comparison statistics should be analyzed instead of summary statistics
 (\code{compare = TRUE} adds \code{pval} statistic comparing against reference group).}
