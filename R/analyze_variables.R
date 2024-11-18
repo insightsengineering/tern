@@ -239,7 +239,8 @@ s_summary.numeric <- function(x,
   y$geom_cv <- c("geom_cv" = sqrt(exp(stats::sd(log(x_no_negative_vals), na.rm = FALSE) ^ 2) - 1) * 100) # styler: off
 
   geom_mean_ci_3d <- c(y$geom_mean, y$geom_mean_ci)
-  y$geom_mean_ci_3d <- formatters::with_label(geom_mean_ci_3d, paste0("Geometric Mean (", f_conf_level(control$conf_level), ")"))
+  y$geom_mean_ci_3d <- formatters::with_label(geom_mean_ci_3d,
+                                              paste0("Geometric Mean (", f_conf_level(control$conf_level), ")"))
 
   y
 }
