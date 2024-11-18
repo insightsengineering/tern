@@ -1,17 +1,21 @@
-# tern 0.9.6.9012
+# tern 0.9.6.9015
 
 ### Enhancements
 * Added the `denom` parameter to `s_count_cumulative()`, `s_count_missed_doses()`, and `s_count_occurrences_by_grade()`.
 * Added `"N_row"` as an optional input to `denom` in `s_count_occurrences()`.
-* Refactored `a_count_occurrences_by_grade()` to no longer use `make_afun()`.
-
-### Enhancements
+* Refactored `a_count_occurrences_by_grade()`, `a_count_patients_with_event()`, and `a_count_patients_with_flags()` to no longer use `make_afun()`.
 * Added `rel_height_plot` parameter to `g_lineplot()` to control the line plot height relative to annotation table height.
 * Updated the `table_font_size` parameter of `g_lineplot()` to control the size of all text in the annotation table, including labels.
 * Added `as_list` parameter to `g_lineplot()` to allow users to return the line plot and annotation table elements as a list instead of stacked for more complex customization.
+* Refactored `summarize_change()` to work without `make_afun()` and access all additional function parameter.
+* Added vignette "Understanding `tern` functions" for future reference.
 
 ### Bug Fixes
 * Fixed bug in `a_summary()` causing non-unique `row_name` values to occur when multiple statistics are selected for count variables.
+
+### Miscellaneous
+* Reverted deprecation of quick get functions `summary_formats()` and `summary_labels()`. Added disclaimer about underlying use of `get_stats`.
+* Corrected handling of extra arguments and `NA` for `summarize_change()`.
 
 # tern 0.9.6
 

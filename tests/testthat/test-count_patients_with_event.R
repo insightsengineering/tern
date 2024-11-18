@@ -31,6 +31,51 @@ testthat::test_that("s_count_patients_with_event handles multiple columns", {
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("a_count_patients_with_event works with healthy input.", {
+  test_data <- data.frame(
+    SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
+    ARM = c("A", "A", "A", "A", "A", "A", "B", "B", "B"),
+    TRTEMFL = c("Y", "", "", "NA", "", "", "Y", "", ""),
+    AEOUT = c("", "", "", "", "", "", "FATAL", "", "FATAL"),
+    stringsAsFactors = FALSE
+  )
+
+  result <- a_count_patients_with_event(
+    test_data,
+    .var = "SUBJID",
+    filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL"),
+    .N_col = 10, .N_row = 10, .df_row = test_data,
+    .stats = get_stats("count_patients_with_event")
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("a_count_patients_with_event works with custom input.", {
+  test_data <- data.frame(
+    SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
+    ARM = c("A", "A", "A", "A", "A", "A", "B", "B", "B"),
+    TRTEMFL = c("Y", "", "", "NA", "", "", "Y", "", ""),
+    AEOUT = c("", "", "", "", "", "", "FATAL", "", "FATAL"),
+    stringsAsFactors = FALSE
+  )
+
+  result <- a_count_patients_with_event(
+    test_data,
+    .var = "SUBJID",
+    filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL"),
+    .N_col = 10, .N_row = 10, .df_row = test_data,
+    .stats = c("count_fraction", "n"),
+    .formats = c(count_fraction = "xx (xx.xx%)"),
+    .labels = list("count_fraction" = "New label"),
+    .indent_mods = list("count_fraction" = 1L, "n" = 3L)
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("count_patients_with_event works as expected", {
   test_data <- data.frame(
     SUBJID = c("1001", "1001", "1001", "1002", "1002", "1002", "1003", "1003", "1003"),
