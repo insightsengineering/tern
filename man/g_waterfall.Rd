@@ -42,7 +42,6 @@ This basic waterfall plot visualizes a quantity \code{height} ordered by value w
 }
 \examples{
 library(dplyr)
-library(nestcolor)
 
 g_waterfall(height = c(3, 5, -1), id = letters[1:3])
 

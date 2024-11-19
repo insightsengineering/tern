@@ -25,9 +25,21 @@ count_missed_doses(
 
 s_count_nonmissing(x)
 
-s_count_missed_doses(x, thresholds, .N_col)
+s_count_missed_doses(
+  x,
+  thresholds,
+  .N_col,
+  .N_row,
+  denom = c("N_col", "n", "N_row")
+)
 
-a_count_missed_doses(x, thresholds, .N_col)
+a_count_missed_doses(
+  x,
+  thresholds,
+  .N_col,
+  .N_row,
+  denom = c("N_col", "n", "N_row")
+)
 }
 \arguments{
 \item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
@@ -51,8 +63,9 @@ underneath analyses, which is not allowed.}
 \item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
 times, to avoid warnings from \code{rtables}.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("count_missed_doses")}
-to see available statistics for this function.}
+\item{.stats}{(\code{character})\cr statistics to select for the table.
+
+Options are: \verb{'n', 'count_fraction', 'count_fraction_fixed_dp'}}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
@@ -66,6 +79,16 @@ unmodified default behavior. Can be negative.}
 
 \item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
+
+\item{.N_row}{(\code{integer(1)})\cr row-wise N (row group count) for the group of observations being analyzed
+(i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
+
+\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
+\itemize{
+\item \code{n}: number of values in this row and column intersection.
+\item \code{N_row}: total number of values in this row across columns.
+\item \code{N_col}: total number of values in this column across rows.
+}}
 }
 \value{
 \itemize{

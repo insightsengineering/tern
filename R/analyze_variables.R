@@ -45,9 +45,11 @@ control_analyze_vars <- function(conf_level = 0.95,
 #' columns) will be considered (`.df_row[[.var]]`, see [`rtables::additional_fun_params`]) and not the whole dataset.
 #'
 #' @inheritParams argument_convention
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("analyze_vars_numeric")` to see
-#'   statistics available for numeric variables, and `get_stats("analyze_vars_counts")` for statistics available
-#'   for non-numeric variables.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options for numeric variables are: ``r shQuote(get_stats("analyze_vars_numeric"))``
+#'
+#'   Options for non-numeric variables are: ``r shQuote(get_stats("analyze_vars_counts"))``
 #'
 #' @name analyze_variables
 #' @order 1
@@ -236,11 +238,6 @@ s_summary.numeric <- function(x,
 
 #' @describeIn analyze_variables Method for `factor` class.
 #'
-#' @param denom (`string`)\cr choice of denominator for factor proportions. Options are:
-#'   * `n`: number of values in this row and column intersection.
-#'   * `N_row`: total number of values in this row across columns.
-#'   * `N_col`: total number of values in this column across rows.
-#'
 #' @return
 #'   * If `x` is of class `factor` or converted from `character`, returns a `list` with named `numeric` items:
 #'     * `n`: The [length()] of `x`.
@@ -281,12 +278,11 @@ s_summary.numeric <- function(x,
 #' @export
 s_summary.factor <- function(x,
                              na.rm = TRUE, # nolint
-                             denom = c("n", "N_row", "N_col"),
+                             denom = c("n", "N_col", "N_row"),
                              .N_row, # nolint
                              .N_col, # nolint
                              ...) {
   assert_valid_factor(x)
-  denom <- match.arg(denom)
 
   if (na.rm) {
     x <- x[!is.na(x)] %>% fct_discard("<Missing>")
@@ -299,20 +295,23 @@ s_summary.factor <- function(x,
   y$n <- length(x)
 
   y$count <- as.list(table(x, useNA = "ifany"))
-  dn <- switch(denom,
-    n = length(x),
-    N_row = .N_row,
-    N_col = .N_col
-  )
+
+  denom <- match.arg(denom) %>%
+    switch(
+      n = length(x),
+      N_row = .N_row,
+      N_col = .N_col
+    )
+
   y$count_fraction <- lapply(
     y$count,
     function(x) {
-      c(x, ifelse(dn > 0, x / dn, 0))
+      c(x, ifelse(denom > 0, x / denom, 0))
     }
   )
   y$fraction <- lapply(
     y$count,
-    function(count) c("num" = count, "denom" = dn)
+    function(count) c("num" = count, "denom" = denom)
   )
 
   y$n_blq <- sum(grepl("BLQ|LTR|<[1-9]|<PCLLOQ", x))
@@ -344,7 +343,7 @@ s_summary.factor <- function(x,
 #' @export
 s_summary.character <- function(x,
                                 na.rm = TRUE, # nolint
-                                denom = c("n", "N_row", "N_col"),
+                                denom = c("n", "N_col", "N_row"),
                                 .N_row, # nolint
                                 .N_col, # nolint
                                 .var,
@@ -367,11 +366,6 @@ s_summary.character <- function(x,
 }
 
 #' @describeIn analyze_variables Method for `logical` class.
-#'
-#' @param denom (`string`)\cr choice of denominator for proportion. Options are:
-#'   * `n`: number of values in this row and column intersection.
-#'   * `N_row`: total number of values in this row across columns.
-#'   * `N_col`: total number of values in this column across rows.
 #'
 #' @return
 #'   * If `x` is of class `logical`, returns a `list` with named `numeric` items:
@@ -404,22 +398,22 @@ s_summary.character <- function(x,
 #' @export
 s_summary.logical <- function(x,
                               na.rm = TRUE, # nolint
-                              denom = c("n", "N_row", "N_col"),
+                              denom = c("n", "N_col", "N_row"),
                               .N_row, # nolint
                               .N_col, # nolint
                               ...) {
-  denom <- match.arg(denom)
   if (na.rm) x <- x[!is.na(x)]
   y <- list()
   y$n <- length(x)
   count <- sum(x, na.rm = TRUE)
-  dn <- switch(denom,
-    n = length(x),
-    N_row = .N_row,
-    N_col = .N_col
-  )
+  denom <- match.arg(denom) %>%
+    switch(
+      n = length(x),
+      N_row = .N_row,
+      N_col = .N_col
+    )
   y$count <- count
-  y$count_fraction <- c(count, ifelse(dn > 0, count / dn, 0))
+  y$count_fraction <- c(count, ifelse(denom > 0, count / denom, 0))
   y$n_blq <- 0L
   y
 }

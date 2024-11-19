@@ -10,19 +10,33 @@ summarize_change(
   lyt,
   vars,
   variables,
+  var_labels = vars,
   na_str = default_na_str(),
+  na_rm = TRUE,
   nested = TRUE,
-  ...,
+  show_labels = "default",
   table_names = vars,
+  section_div = NA_character_,
+  ...,
   .stats = c("n", "mean_sd", "median", "range"),
+  .formats = c(n = "xx", mean_sd = "xx.xx (xx.xx)", mean_se = "xx.xx (xx.xx)", median =
+    "xx.xx", range = "xx.xx - xx.xx", mean_ci = "(xx.xx, xx.xx)", median_ci =
+    "(xx.xx, xx.xx)", mean_pval = "xx.xx"),
+  .labels = c(mean_sd = "Mean (SD)", mean_se = "Mean (SE)", median = "Median", range =
+    "Min - Max"),
+  .indent_mods = NULL
+)
+
+s_change_from_baseline(df, ...)
+
+a_change_from_baseline(
+  df,
+  ...,
+  .stats = NULL,
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL
 )
-
-s_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
-
-a_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
 }
 \arguments{
 \item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
@@ -31,19 +45,27 @@ a_change_from_baseline(df, .var, variables, na.rm = TRUE, ...)
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
+\item{var_labels}{(\code{character})\cr variable labels.}
+
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
 possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
-\item{...}{additional arguments for the lower level functions.}
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
 times, to avoid warnings from \code{rtables}.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table. Run \verb{get_stats("analyze_vars_numeric)}
-to see available statistics for this function.}
+\item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
+defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
+
+\item{...}{additional arguments for the lower level functions.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table.
+
+Options are: \verb{'n', 'sum', 'mean', 'sd', 'se', 'mean_sd', 'mean_se', 'mean_ci', 'mean_sei', 'mean_sdi', 'mean_pval', 'median', 'mad', 'median_ci', 'quantiles', 'iqr', 'range', 'min', 'max', 'median_range', 'cv', 'geom_mean', 'geom_mean_ci', 'geom_cv'}}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
@@ -54,11 +76,6 @@ information on the \code{"auto"} setting.}
 unmodified default behavior. Can be negative.}
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
-
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
-
-\item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 }
 \value{
 \itemize{
@@ -107,7 +124,7 @@ an error will be thrown.
 \examples{
 library(dplyr)
 
-## Fabricate dataset
+# Fabricate dataset
 dta_test <- data.frame(
   USUBJID = rep(1:6, each = 3),
   AVISIT = rep(paste0("V", 1:3), 6),

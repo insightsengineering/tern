@@ -499,3 +499,20 @@
         Median          -2.00    
         Min - Max   -2.00 - -2.00
 
+# summarize_change works with custom statistical functions
+
+    Code
+      res
+    Output
+                  all obs
+      ———————————————————
+      V1                 
+        n            3   
+        my_stat    1.00  
+      V2                 
+        n            3   
+        my_stat    0.83  
+      V3                 
+        n            3   
+        my_stat    0.67  
+

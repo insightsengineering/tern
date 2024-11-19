@@ -12,8 +12,9 @@
 #' @inheritParams s_count_cumulative
 #' @inheritParams argument_convention
 #' @param thresholds (`numeric`)\cr minimum number of missed doses the patients had.
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_missed_doses")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
+#'
+#'   Options are: ``r shQuote(get_stats("count_missed_doses"))``
 #'
 #' @seealso
 #' * Relevant description function [d_count_missed_doses()] which generates labels for [count_missed_doses()].
@@ -57,13 +58,17 @@ d_count_missed_doses <- function(thresholds) {
 #' @keywords internal
 s_count_missed_doses <- function(x,
                                  thresholds,
-                                 .N_col) { # nolint
+                                 .N_col, # nolint
+                                 .N_row, # nolint
+                                 denom = c("N_col", "n", "N_row")) {
   stat <- s_count_cumulative(
     x = x,
     thresholds = thresholds,
     lower_tail = FALSE,
     include_eq = TRUE,
-    .N_col = .N_col
+    .N_col = .N_col,
+    .N_row = .N_row,
+    denom = denom
   )
   labels <- d_count_missed_doses(thresholds)
   for (i in seq_along(stat$count_fraction)) {

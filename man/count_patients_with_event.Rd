@@ -16,7 +16,7 @@ count_patients_with_event(
   ...,
   table_names = vars,
   .stats = "count_fraction",
-  .formats = NULL,
+  .formats = list(count_fraction = format_count_fraction_fixed_dp),
   .labels = NULL,
   .indent_mods = NULL
 )
@@ -27,16 +27,23 @@ s_count_patients_with_event(
   filters,
   .N_col,
   .N_row,
-  denom = c("n", "N_row", "N_col")
+  denom = c("n", "N_col", "N_row")
 )
 
 a_count_patients_with_event(
   df,
-  .var,
+  labelstr = "",
   filters,
+  denom = c("n", "N_col", "N_row"),
   .N_col,
   .N_row,
-  denom = c("n", "N_row", "N_col")
+  .df_row,
+  .var = NULL,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL,
+  na_str = default_na_str()
 )
 }
 \arguments{
@@ -65,8 +72,9 @@ underneath analyses, which is not allowed.}
 \item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
 times, to avoid warnings from \code{rtables}.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("count_patients_with_event")}
-to see available statistics for this function.}
+\item{.stats}{(\code{character})\cr statistics to select for the table.
+
+Options are: \verb{'n', 'count', 'count_fraction', 'count_fraction_fixed_dp', 'n_blq'}}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
@@ -92,6 +100,12 @@ passed by \code{rtables}.}
 \item \code{N_row}: total number of values in this row across columns.
 \item \code{N_col}: total number of values in this column across rows.
 }}
+
+\item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
+(must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
+for more information.}
+
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 }
 \value{
 \itemize{
@@ -133,8 +147,6 @@ in \code{count_patients_with_event()}.
 
 }}
 \examples{
-# `count_patients_with_event()`
-
 lyt <- basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   add_colcounts() \%>\%
@@ -166,8 +178,6 @@ lyt <- basic_table() \%>\%
 
 build_table(lyt, tern_ex_adae, alt_counts_df = tern_ex_adsl)
 
-# `s_count_patients_with_event()`
-
 s_count_patients_with_event(
   tern_ex_adae,
   .var = "SUBJID",
@@ -188,8 +198,6 @@ s_count_patients_with_event(
   .N_col = 456
 )
 
-# `a_count_patients_with_event()`
-
 a_count_patients_with_event(
   tern_ex_adae,
   .var = "SUBJID",
@@ -200,5 +208,5 @@ a_count_patients_with_event(
 
 }
 \seealso{
-\link{count_patients_with_flags}
+\code{\link[=count_patients_with_flags]{count_patients_with_flags()}}
 }

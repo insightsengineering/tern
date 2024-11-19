@@ -19,8 +19,9 @@ count_patients_with_flags(
   ...,
   table_names = paste0("tbl_flags_", var),
   .stats = "count_fraction",
-  .formats = NULL,
-  .indent_mods = NULL
+  .formats = list(count_fraction = format_count_fraction_fixed_dp),
+  .indent_mods = NULL,
+  .labels = NULL
 )
 
 s_count_patients_with_flags(
@@ -30,17 +31,24 @@ s_count_patients_with_flags(
   flag_labels = NULL,
   .N_col,
   .N_row,
-  denom = c("n", "N_row", "N_col")
+  denom = c("n", "N_col", "N_row")
 )
 
 a_count_patients_with_flags(
   df,
-  .var,
+  labelstr = "",
   flag_variables,
   flag_labels = NULL,
+  denom = c("n", "N_col", "N_row"),
   .N_col,
   .N_row,
-  denom = c("n", "N_row", "N_col")
+  .df_row,
+  .var = NULL,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL,
+  na_str = default_na_str()
 )
 }
 \arguments{
@@ -52,7 +60,8 @@ by a statistics function.}
 \item{flag_variables}{(\code{character})\cr a vector specifying the names of \code{logical} variables from analysis dataset
 used for counting the number of unique identifiers.}
 
-\item{flag_labels}{(\code{character})\cr vector of labels to use for flag variables.}
+\item{flag_labels}{(\code{character})\cr vector of labels to use for flag variables. If any labels are also specified via
+the \code{.labels} parameter, the \code{.labels} values will take precedence and replace these labels.}
 
 \item{var_labels}{(\code{character})\cr variable labels.}
 
@@ -73,14 +82,17 @@ underneath analyses, which is not allowed.}
 \item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
 times, to avoid warnings from \code{rtables}.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table. Run \code{get_stats("count_patients_with_flags")}
-to see available statistics for this function.}
+\item{.stats}{(\code{character})\cr statistics to select for the table.
+
+Options are: \verb{'n', 'count', 'count_fraction', 'count_fraction_fixed_dp', 'n_blq'}}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
@@ -98,6 +110,12 @@ passed by \code{rtables}.}
 \item \code{N_row}: total number of values in this row across columns.
 \item \code{N_col}: total number of values in this column across rows.
 }}
+
+\item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
+(must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
+for more information.}
+
+\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 }
 \value{
 \itemize{
@@ -146,11 +164,9 @@ labeled, variable names will be used instead. Alternatively, a named \code{vecto
 the label to use for this variable.
 }
 \examples{
-library(dplyr)
-
 # Add labelled flag variables to analysis dataset.
 adae <- tern_ex_adae \%>\%
-  mutate(
+  dplyr::mutate(
     fl1 = TRUE \%>\% with_label("Total AEs"),
     fl2 = (TRTEMFL == "Y") \%>\%
       with_label("Total number of patients with at least one adverse event"),
@@ -160,9 +176,7 @@ adae <- tern_ex_adae \%>\%
       with_label("Total number of patients with related fatal AEs")
   )
 
-# `count_patients_with_flags()`
-
-lyt2 <- basic_table() \%>\%
+lyt <- basic_table() \%>\%
   split_cols_by("ARM") \%>\%
   add_colcounts() \%>\%
   count_patients_with_flags(
@@ -171,7 +185,7 @@ lyt2 <- basic_table() \%>\%
     denom = "N_col"
   )
 
-build_table(lyt2, adae, alt_counts_df = tern_ex_adsl)
+build_table(lyt, adae, alt_counts_df = tern_ex_adsl)
 
 # `s_count_patients_with_flags()`
 
@@ -183,16 +197,7 @@ s_count_patients_with_flags(
   .N_col = 1000
 )
 
-#  We need to ungroup `count_fraction` first so that the `rtables` formatting
-# function `format_count_fraction()` can be applied correctly.
-
-# `a_count_patients_with_flags()`
-
-afun <- make_afun(a_count_patients_with_flags,
-  .stats = "count_fraction",
-  .ungroup_stats = "count_fraction"
-)
-afun(
+a_count_patients_with_flags(
   adae,
   .N_col = 10L,
   .N_row = 10L,

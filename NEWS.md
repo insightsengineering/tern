@@ -1,7 +1,21 @@
-# tern 0.9.6.9005
+# tern 0.9.6.9015
+
+### Enhancements
+* Added the `denom` parameter to `s_count_cumulative()`, `s_count_missed_doses()`, and `s_count_occurrences_by_grade()`.
+* Added `"N_row"` as an optional input to `denom` in `s_count_occurrences()`.
+* Refactored `a_count_occurrences_by_grade()`, `a_count_patients_with_event()`, and `a_count_patients_with_flags()` to no longer use `make_afun()`.
+* Added `rel_height_plot` parameter to `g_lineplot()` to control the line plot height relative to annotation table height.
+* Updated the `table_font_size` parameter of `g_lineplot()` to control the size of all text in the annotation table, including labels.
+* Added `as_list` parameter to `g_lineplot()` to allow users to return the line plot and annotation table elements as a list instead of stacked for more complex customization.
+* Refactored `summarize_change()` to work without `make_afun()` and access all additional function parameter.
+* Added vignette "Understanding `tern` functions" for future reference.
 
 ### Bug Fixes
 * Fixed bug in `a_summary()` causing non-unique `row_name` values to occur when multiple statistics are selected for count variables.
+
+### Miscellaneous
+* Reverted deprecation of quick get functions `summary_formats()` and `summary_labels()`. Added disclaimer about underlying use of `get_stats`.
+* Corrected handling of extra arguments and `NA` for `summarize_change()`.
 
 # tern 0.9.6
 
@@ -15,7 +29,7 @@
 * Refactored `estimate_incidence_rate` to work as both an analyze function and a summarize function, controlled by the added `summarize` parameter. When `summarize = TRUE`, labels can be fine-tuned via the new `label_fmt` argument to the same function.
 * Added `fraction` statistic to the `analyze_var_count` method group.
 * Improved `summarize_glm_count()` documentation and all its associated functions to better describe the results and the functions' purpose.
-* Added `method` argument to `s_odds_ratio()` and `estimate_odds_ratio()` to control whether exact or approximate conditional likelihood calculations are used. 
+* Added `method` argument to `s_odds_ratio()` and `estimate_odds_ratio()` to control whether exact or approximate conditional likelihood calculations are used.
 
 ### Bug Fixes
 * Added defaults for `d_count_cumulative` parameters as described in the documentation.
@@ -72,7 +86,7 @@
 ### Miscellaneous
 * Added function `expect_snapshot_ggplot` to test setup file to process plot snapshot tests and allow plot dimensions to be set.
 * Adapted to argument renames introduced in `ggplot2` 3.5.0.
-* Renamed `individual_patient_plot.R` to `g_ipp.R`. 
+* Renamed `individual_patient_plot.R` to `g_ipp.R`.
 * Removed all instances of deprecated parameters `time_unit_input`, `time_unit_output`, `na_level` and `indent_mod`.
 * Removed deprecated functions `summarize_vars`, `control_summarize_vars`, `a_compare`, `create_afun_summary`, `create_afun_compare`, and `summary_custom`.
 * Removed `vdiffr` package from Suggests in DESCRIPTION file.

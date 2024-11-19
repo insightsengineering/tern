@@ -310,6 +310,48 @@
       
       
 
+# a_count_patients_with_flags works with healthy input.
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+                              row_name formatted_cell indent_mod    row_label
+      1                          n.SER            164          0   Serious AE
+      2                          n.REL            164          0   Related AE
+      3                        n.CTC35            164          0 Grade 3-5 AE
+      4                        n.CTC45            164          0 Grade 4/5 AE
+      5                      count.SER            128          0   Serious AE
+      6                      count.REL            137          0   Related AE
+      7                    count.CTC35            134          0 Grade 3-5 AE
+      8                    count.CTC45            104          0 Grade 4/5 AE
+      9             count_fraction.SER      128 (78%)          0   Serious AE
+      10            count_fraction.REL    137 (83.5%)          0   Related AE
+      11          count_fraction.CTC35    134 (81.7%)          0 Grade 3-5 AE
+      12          count_fraction.CTC45    104 (63.4%)          0 Grade 4/5 AE
+      13   count_fraction_fixed_dp.SER    128 (78.0%)          0   Serious AE
+      14   count_fraction_fixed_dp.REL    137 (83.5%)          0   Related AE
+      15 count_fraction_fixed_dp.CTC35    134 (81.7%)          0 Grade 3-5 AE
+      16 count_fraction_fixed_dp.CTC45    104 (63.4%)          0 Grade 4/5 AE
+      17                     n_blq.SER              0          0   Serious AE
+      18                     n_blq.REL              0          0   Related AE
+      19                   n_blq.CTC35              0          0 Grade 3-5 AE
+      20                   n_blq.CTC45              0          0 Grade 4/5 AE
+
+# a_count_patients_with_flags works with custom input.
+
+    Code
+      res
+    Output
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+                    row_name formatted_cell indent_mod    row_label
+      1   count_fraction.SER   128 (78.05%)          2    New label
+      2   count_fraction.REL   137 (83.54%)          3   Related AE
+      3 count_fraction.CTC35   134 (81.71%)          1 Grade 3-5 AE
+      4 count_fraction.CTC45   104 (63.41%)          1 Grade 4/5 AE
+
 # count_patients_with_flags works as expected
 
     Code
@@ -424,4 +466,15 @@
       SAE with fatal outcome       50           47             42              -1.8 (-10.6 - 7.0)     
       SAE                      53 (26.2%)   49 (27.7%)     39 (24.1%)          -1.4 (-10.4 - 7.5)     
       SAE with fatal outcome   50 (24.8%)   47 (26.6%)     42 (25.9%)          -1.8 (-10.6 - 7.0)     
+
+# count_patients_with_flags works with single indent mod value
+
+    Code
+      res
+    Output
+                                                                           A           B    
+                                                                         (N=6)       (N=4)  
+      ——————————————————————————————————————————————————————————————————————————————————————
+            Total number of patients with at least one adverse event   1 (16.7%)   1 (25.0%)
+            Total number of patients with fatal AEs                        0       1 (25.0%)
 

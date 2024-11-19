@@ -258,7 +258,7 @@
 </defs>
 <g clip-path='url(#cpNjcuNzJ8NzE0LjUyfDQ4MC4wMHw0OTEuNDM=)'>
 <rect x='67.72' y='480.00' width='646.80' height='11.43' style='stroke-width: 1.07; stroke: none; fill: #F2F2F2;' />
-<text x='67.72' y='488.87' style='font-size: 8.80px;fill: #1A1A1A; font-family: "Arial";' textLength='60.65px' lengthAdjust='spacingAndGlyphs'>C: Combination</text>
+<text x='67.72' y='488.77' style='font-size: 8.54px;fill: #1A1A1A; font-family: "Arial";' textLength='58.80px' lengthAdjust='spacingAndGlyphs'>C: Combination</text>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -269,7 +269,7 @@
 </defs>
 <g clip-path='url(#cpNjcuNzJ8NzE0LjUyfDM4Ni43NHwzOTguMTc=)'>
 <rect x='67.72' y='386.74' width='646.80' height='11.43' style='stroke-width: 1.07; stroke: none; fill: #F2F2F2;' />
-<text x='67.72' y='395.61' style='font-size: 8.80px;fill: #1A1A1A; font-family: "Arial";' textLength='42.57px' lengthAdjust='spacingAndGlyphs'>B: Placebo</text>
+<text x='67.72' y='395.51' style='font-size: 8.54px;fill: #1A1A1A; font-family: "Arial";' textLength='41.26px' lengthAdjust='spacingAndGlyphs'>B: Placebo</text>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -280,17 +280,17 @@
 </defs>
 <g clip-path='url(#cpNjcuNzJ8NzE0LjUyfDI5My40OHwzMDQuOTE=)'>
 <rect x='67.72' y='293.48' width='646.80' height='11.43' style='stroke-width: 1.07; stroke: none; fill: #F2F2F2;' />
-<text x='67.72' y='302.34' style='font-size: 8.80px;fill: #1A1A1A; font-family: "Arial";' textLength='38.15px' lengthAdjust='spacingAndGlyphs'>A: Drug X</text>
+<text x='67.72' y='302.25' style='font-size: 8.54px;fill: #1A1A1A; font-family: "Arial";' textLength='36.98px' lengthAdjust='spacingAndGlyphs'>A: Drug X</text>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
-<text x='64.98' y='370.09' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Arial";' textLength='53.33px' lengthAdjust='spacingAndGlyphs'>Mean 80% CI</text>
-<text x='64.98' y='346.24' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Arial";' textLength='22.02px' lengthAdjust='spacingAndGlyphs'>Mean</text>
-<text x='64.98' y='322.38' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Arial";' textLength='4.90px' lengthAdjust='spacingAndGlyphs'>n</text>
-<text x='64.98' y='463.35' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Arial";' textLength='53.33px' lengthAdjust='spacingAndGlyphs'>Mean 80% CI</text>
-<text x='64.98' y='439.50' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Arial";' textLength='22.02px' lengthAdjust='spacingAndGlyphs'>Mean</text>
-<text x='64.98' y='415.64' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Arial";' textLength='4.90px' lengthAdjust='spacingAndGlyphs'>n</text>
-<text x='64.98' y='556.62' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Arial";' textLength='53.33px' lengthAdjust='spacingAndGlyphs'>Mean 80% CI</text>
-<text x='64.98' y='532.76' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Arial";' textLength='22.02px' lengthAdjust='spacingAndGlyphs'>Mean</text>
-<text x='64.98' y='508.90' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Arial";' textLength='4.90px' lengthAdjust='spacingAndGlyphs'>n</text>
+<text x='64.98' y='370.00' text-anchor='end' style='font-size: 8.54px;fill: #4D4D4D; font-family: "Arial";' textLength='51.69px' lengthAdjust='spacingAndGlyphs'>Mean 80% CI</text>
+<text x='64.98' y='346.14' text-anchor='end' style='font-size: 8.54px;fill: #4D4D4D; font-family: "Arial";' textLength='21.34px' lengthAdjust='spacingAndGlyphs'>Mean</text>
+<text x='64.98' y='322.28' text-anchor='end' style='font-size: 8.54px;fill: #4D4D4D; font-family: "Arial";' textLength='4.74px' lengthAdjust='spacingAndGlyphs'>n</text>
+<text x='64.98' y='463.26' text-anchor='end' style='font-size: 8.54px;fill: #4D4D4D; font-family: "Arial";' textLength='51.69px' lengthAdjust='spacingAndGlyphs'>Mean 80% CI</text>
+<text x='64.98' y='439.40' text-anchor='end' style='font-size: 8.54px;fill: #4D4D4D; font-family: "Arial";' textLength='21.34px' lengthAdjust='spacingAndGlyphs'>Mean</text>
+<text x='64.98' y='415.54' text-anchor='end' style='font-size: 8.54px;fill: #4D4D4D; font-family: "Arial";' textLength='4.74px' lengthAdjust='spacingAndGlyphs'>n</text>
+<text x='64.98' y='556.52' text-anchor='end' style='font-size: 8.54px;fill: #4D4D4D; font-family: "Arial";' textLength='51.69px' lengthAdjust='spacingAndGlyphs'>Mean 80% CI</text>
+<text x='64.98' y='532.66' text-anchor='end' style='font-size: 8.54px;fill: #4D4D4D; font-family: "Arial";' textLength='21.34px' lengthAdjust='spacingAndGlyphs'>Mean</text>
+<text x='64.98' y='508.80' text-anchor='end' style='font-size: 8.54px;fill: #4D4D4D; font-family: "Arial";' textLength='4.74px' lengthAdjust='spacingAndGlyphs'>n</text>
 </g>
 </svg>

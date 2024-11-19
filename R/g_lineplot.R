@@ -2,7 +2,7 @@
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Line plot with the optional table.
+#' Line plot with optional table.
 #'
 #' @inheritParams argument_convention
 #' @param alt_counts_df (`data.frame` or `NULL`)\cr data set that will be used (only)
@@ -72,11 +72,15 @@
 #' @param col (`character`)\cr color(s). See `?ggplot2::aes_colour_fill_alpha` for example values.
 #' @param linetype (`character`)\cr line type(s). See `?ggplot2::aes_linetype_size_shape` for example values.
 #' @param errorbar_width (`numeric(1)`)\cr width of the error bars.
+#' @param rel_height_plot (`proportion`)\cr proportion of total figure height to allocate to the line plot.
+#'   Relative height of annotation table is then `1 - rel_height_plot`. If `table = NULL`, this parameter is ignored.
+#' @param as_list (`flag`)\cr whether the two `ggplot` objects should be returned as a list when `table` is not `NULL`.
+#'   If `TRUE`, a named list with two elements, `plot` and `table`, will be returned. If `FALSE` (default) the
+#'   annotation table is printed below the plot via [cowplot::plot_grid()].
 #'
 #' @return A `ggplot` line plot (and statistics table if applicable).
 #'
 #' @examples
-#' library(nestcolor)
 #'
 #' adsl <- tern_ex_adsl
 #' adlb <- tern_ex_adlb %>% dplyr::filter(ANL01FL == "Y", PARAMCD == "ALT", AVISIT != "SCREENING")
@@ -163,7 +167,9 @@ g_lineplot <- function(df,
                        errorbar_width = 0.45,
                        newpage = lifecycle::deprecated(),
                        col = NULL,
-                       linetype = NULL) {
+                       linetype = NULL,
+                       rel_height_plot = 0.5,
+                       as_list = FALSE) {
   checkmate::assert_character(variables, any.missing = TRUE)
   checkmate::assert_character(mid, null.ok = TRUE)
   checkmate::assert_character(interval, null.ok = TRUE)
@@ -175,6 +181,8 @@ g_lineplot <- function(df,
   checkmate::assert_number(errorbar_width, lower = 0)
   checkmate::assert_string(title, null.ok = TRUE)
   checkmate::assert_string(subtitle, null.ok = TRUE)
+  assert_proportion_value(rel_height_plot)
+  checkmate::assert_logical(as_list)
 
   if (!is.null(table)) {
     table_format <- get_formats_from_stats(table)
@@ -463,9 +471,15 @@ g_lineplot <- function(df,
         axis.ticks = ggplot2::element_blank(),
         axis.title = ggplot2::element_blank(),
         axis.text.x = ggplot2::element_blank(),
-        axis.text.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 5)),
+        axis.text.y = ggplot2::element_text(
+          size = table_font_size * ggplot2::.pt,
+          margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 5)
+        ),
         strip.text = ggplot2::element_text(hjust = 0),
-        strip.text.x = ggplot2::element_text(margin = ggplot2::margin(1.5, 0, 1.5, 0, "pt")),
+        strip.text.x = ggplot2::element_text(
+          size = table_font_size * ggplot2::.pt,
+          margin = ggplot2::margin(1.5, 0, 1.5, 0, "pt")
+        ),
         strip.background = ggplot2::element_rect(fill = "grey95", color = NA),
         legend.position = "none"
       )
@@ -474,8 +488,19 @@ g_lineplot <- function(df,
       tbl <- tbl + ggplot2::facet_wrap(facets = group_var, ncol = 1)
     }
 
-    # align plot and table
-    cowplot::plot_grid(p, tbl, ncol = 1, align = "v", axis = "tblr")
+    if (!as_list) {
+      # align plot and table
+      cowplot::plot_grid(
+        p,
+        tbl,
+        ncol = 1,
+        align = "v",
+        axis = "tblr",
+        rel_heights = c(rel_height_plot, 1 - rel_height_plot)
+      )
+    } else {
+      list(plot = p, table = tbl)
+    }
   } else {
     p
   }

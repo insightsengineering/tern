@@ -47,7 +47,6 @@ NULL
 #'
 #' @examples
 #' library(dplyr)
-#' library(nestcolor)
 #'
 #' # Select a small sample of data to plot.
 #' adlb <- tern_ex_adlb %>%
@@ -155,7 +154,6 @@ h_g_ipp <- function(df,
 #'
 #' @examples
 #' library(dplyr)
-#' library(nestcolor)
 #'
 #' # Select a small sample of data to plot.
 #' adlb <- tern_ex_adlb %>%

@@ -17,10 +17,11 @@
 #'   Multiple column names and flags are accepted in this format
 #'   `c("column_name1" = "flag1", "column_name2" = "flag2")`.
 #'   Note that only equality is being accepted as condition.
-#' @param .stats (`character`)\cr statistics to select for the table. Run `get_stats("count_patients_with_event")`
-#'   to see available statistics for this function.
+#' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#' @seealso [count_patients_with_flags]
+#'   Options are: ``r shQuote(get_stats("count_patients_with_event"))``
+#'
+#' @seealso [count_patients_with_flags()]
 #'
 #' @name count_patients_with_event
 #' @order 1
@@ -36,8 +37,6 @@ NULL
 #' * `s_count_patients_with_event()` returns the count and fraction of unique identifiers with the defined event.
 #'
 #' @examples
-#' # `s_count_patients_with_event()`
-#'
 #' s_count_patients_with_event(
 #'   tern_ex_adae,
 #'   .var = "SUBJID",
@@ -64,7 +63,7 @@ s_count_patients_with_event <- function(df,
                                         filters,
                                         .N_col, # nolint
                                         .N_row, # nolint
-                                        denom = c("n", "N_row", "N_col")) {
+                                        denom = c("n", "N_col", "N_row")) {
   col_names <- names(filters)
   filter_values <- filters
 
@@ -94,8 +93,6 @@ s_count_patients_with_event <- function(df,
 #' * `a_count_patients_with_event()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @examples
-#' # `a_count_patients_with_event()`
-#'
 #' a_count_patients_with_event(
 #'   tern_ex_adae,
 #'   .var = "SUBJID",
@@ -105,10 +102,48 @@ s_count_patients_with_event <- function(df,
 #' )
 #'
 #' @export
-a_count_patients_with_event <- make_afun(
-  s_count_patients_with_event,
-  .formats = c(count_fraction = format_count_fraction_fixed_dp)
-)
+a_count_patients_with_event <- function(df,
+                                        labelstr = "",
+                                        filters,
+                                        denom = c("n", "N_col", "N_row"),
+                                        .N_col, # nolint
+                                        .N_row, # nolint
+                                        .df_row,
+                                        .var = NULL,
+                                        .stats = NULL,
+                                        .formats = NULL,
+                                        .labels = NULL,
+                                        .indent_mods = NULL,
+                                        na_str = default_na_str()) {
+  x_stats <- s_count_patients_with_event(
+    df = df, .var = .var, filters = filters, .N_col = .N_col, .N_row = .N_row, denom = denom
+  )
+
+  if (is.null(unlist(x_stats))) {
+    return(NULL)
+  }
+
+  # Fill in with formatting defaults if needed
+  .stats <- get_stats("count_patients_with_event", stats_in = .stats)
+  .formats <- get_formats_from_stats(.stats, .formats)
+  .labels <- get_labels_from_stats(.stats, .labels)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
+
+  if ("count_fraction_fixed_dp" %in% .stats) x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
+  x_stats <- x_stats[.stats]
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
+
+  in_rows(
+    .list = x_stats,
+    .formats = .formats,
+    .names = names(.labels),
+    .labels = unlist(.labels),
+    .indent_mods = .indent_mods,
+    .format_na_strs = na_str
+  )
+}
 
 #' @describeIn count_patients_with_event Layout-creating function which can take statistics function
 #'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
@@ -119,8 +154,6 @@ a_count_patients_with_event <- make_afun(
 #'   the statistics from `s_count_patients_with_event()` to the table layout.
 #'
 #' @examples
-#' # `count_patients_with_event()`
-#'
 #' lyt <- basic_table() %>%
 #'   split_cols_by("ARM") %>%
 #'   add_colcounts() %>%
@@ -163,40 +196,35 @@ count_patients_with_event <- function(lyt,
                                       ...,
                                       table_names = vars,
                                       .stats = "count_fraction",
-                                      .formats = NULL,
+                                      .formats = list(count_fraction = format_count_fraction_fixed_dp),
                                       .labels = NULL,
                                       .indent_mods = NULL) {
   checkmate::assert_flag(riskdiff)
-
+  extra_args <- list(
+    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
+  )
   s_args <- list(filters = filters, ...)
 
-  afun <- make_afun(
-    a_count_patients_with_event,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods
-  )
-
-  extra_args <- if (isFALSE(riskdiff)) {
-    s_args
+  if (isFALSE(riskdiff)) {
+    extra_args <- c(extra_args, s_args)
   } else {
-    list(
-      afun = list("s_count_patients_with_event" = afun),
-      .stats = .stats,
-      .indent_mods = .indent_mods,
-      s_args = s_args
+    extra_args <- c(
+      extra_args,
+      list(
+        afun = list("s_count_patients_with_event" = a_count_patients_with_event),
+        s_args = s_args
+      )
     )
   }
 
   analyze(
-    lyt,
-    vars,
-    afun = ifelse(isFALSE(riskdiff), afun, afun_riskdiff),
+    lyt = lyt,
+    vars = vars,
+    afun = ifelse(isFALSE(riskdiff), a_count_patients_with_event, afun_riskdiff),
+    show_labels = ifelse(length(vars) > 1, "visible", "hidden"),
+    table_names = table_names,
     na_str = na_str,
     nested = nested,
-    extra_args = extra_args,
-    show_labels = ifelse(length(vars) > 1, "visible", "hidden"),
-    table_names = table_names
+    extra_args = extra_args
   )
 }
