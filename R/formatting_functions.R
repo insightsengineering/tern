@@ -272,17 +272,22 @@ format_xx_fixed_dp <- function(str, na_str) {
   if (!grepl(pattern = "xx", x = str, fixed = TRUE)) {
     stop("Error: format_xx_fixed_dp: input str should contain xx")
   }
-  positions <- gregexpr(pattern = "xx\\.?x*", text = str,
-                        perl = TRUE)
+  positions <- gregexpr(
+    pattern = "xx\\.?x*", text = str,
+    perl = TRUE
+  )
   x_positions <- regmatches(x = str, m = positions)[[1]]
   ### str is splitted into pieces as xx. xx xx.xxx
   ### xx is no rounding
   ### xx. rounding to integer (is treated same as rounding to 0 decimal)
   ### xx.x rounding to 1 decimal, etc
 
-  no_round <- function(x){
-    if (is.na(x)) { return(na_str)
-    } else return(x)
+  no_round <- function(x) {
+    if (is.na(x)) {
+      return(na_str)
+    } else {
+      return(x)
+    }
   }
   roundfunc <- round
 
@@ -290,22 +295,25 @@ format_xx_fixed_dp <- function(str, na_str) {
   roundings <- lapply(
     X = x_positions,
     function(x) {
-      if (x == "xx"){
+      if (x == "xx") {
         rounding <- no_round
       } else {
         y <- strsplit(split = "\\.", x = x)[[1]]
         digits <- ifelse(length(y) > 1, nchar(y[2]), 0)
 
         rounding <- function(x) {
-          if (is.na(x)) { return(na_str)
-          } else format(roundfunc(x,digits = digits),
-                        nsmall = digits)
+          if (is.na(x)) {
+            return(na_str)
+          } else {
+            format(roundfunc(x, digits = digits),
+              nsmall = digits
+            )
+          }
         }
       }
 
       return(rounding)
     }
-
   )
 
   rtable_format <- function(x, output) {
@@ -315,7 +323,6 @@ format_xx_fixed_dp <- function(str, na_str) {
   }
 
   return(rtable_format)
-
 }
 
 
