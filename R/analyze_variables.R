@@ -711,7 +711,7 @@ a_summary <- function(x,
 #' fmts_df_var = "variant2",
 #' formatting_function = "format_xx_fixed_dp",
 #' d = "decimal",
-#' d_cap = 0)
+#' d_cap = 3)
 #' basic_table() %>%
 #'   split_rows_by("by") %>%
 #'   analyze_vars(
