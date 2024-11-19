@@ -55,6 +55,7 @@ h_format_threshold(1000)
 }
 \seealso{
 Other formatting functions: 
+\code{\link{custom_stats_formats}},
 \code{\link{format_auto}()},
 \code{\link{format_count_fraction}()},
 \code{\link{format_count_fraction_fixed_dp}()},

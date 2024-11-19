@@ -55,6 +55,7 @@ xx.dx will be translated into xx.x for d=0, xx.xx for d=1, and xx.xxx for d=2
 }
 \details{
 Currently only available for usage within \code{a_summary}, \code{analyze_vars}, and hope to extend to at least \code{a_ancova} and \code{summarize_ancova}.
+Question to Roche: is there an intention to refactor a_ancova and summarize_ancova to not use make_afun, but same approach of in_rows as in a_summary?
 }
 \section{Functions}{
 \itemize{

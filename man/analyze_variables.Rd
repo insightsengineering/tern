@@ -25,7 +25,8 @@ analyze_vars(
   .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL
+  .indent_mods = NULL,
+  fmt_specs = default_fmt_specs
 )
 
 s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
@@ -85,6 +86,7 @@ a_summary(
   .indent_mods = NULL,
   na.rm = TRUE,
   na_str = default_na_str(),
+  fmt_specs = default_fmt_specs,
   ...
 )
 }
@@ -356,6 +358,59 @@ basic_table() \%>\%
   ) \%>\%
   build_table(dt)
 
+# custom format
+our_fmt_specs_variant <- list(
+  fmts_df = tern_formats_custom_df(),
+  fmts_df_var = "variant2",
+  formatting_function = "format_xx_fixed_dp",
+  d = 0
+)
+
+dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4))
+basic_table() \%>\%
+  analyze_vars(
+    vars = "VAR",
+    .stats = c("n", "mean", "mean_sd", "range"),
+    .formats = c("mean" = "xx.dxx"),
+    fmt_specs = our_fmt_specs_variant,
+  ) \%>\%
+  build_table(dt)
+
+# custom format
+our_fmt_specs_variant2 <- list(
+  fmts_df = tern_formats_custom_df(),
+  fmts_df_var = "variant2",
+  formatting_function = "format_xx_fixed_dp",
+  d = "decimal"
+)
+dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4), decimal = 2)
+basic_table() \%>\%
+  analyze_vars(
+    vars = "VAR",
+    .stats = c("n", "mean", "mean_sd", "range"),
+    .formats = c("mean" = "xx.dxxxxxx"),
+    fmt_specs = our_fmt_specs_variant2,
+  ) \%>\%
+  build_table(dt)
+
+# custom format
+dt2 <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4, 0.002, 0.004, 0.006), decimal = c(rep(2, 4), rep(1, 4)), by = c(rep("by1", 4), rep("by2", 4)))
+our_fmt_specs_variant2 <- list(
+  fmts_df = tern_formats_custom_df(),
+  fmts_df_var = "variant2",
+  formatting_function = "format_xx_fixed_dp",
+  d = "decimal",
+  d_cap = 3
+)
+basic_table() \%>\%
+  split_rows_by("by") \%>\%
+  analyze_vars(
+    vars = "VAR",
+    .stats = c("n", "mean", "mean_sd", "range"),
+    fmt_specs = our_fmt_specs_variant2
+  ) \%>\%
+  build_table(dt2)
+
 # `s_summary.numeric`
 
 ## Basic usage: empty numeric returns NA-filled items.
@@ -450,5 +505,49 @@ a_summary(
 
 a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
 a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
+a_summary(
+  rnorm(10, 5, 1),
+  .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE,
+  .stats = "mean",
+  fmts_df_var = "variant1",
+  d = 2
+)
 
+x1 <- rnorm(10, 5, 1)
+xref <- rnorm(20, -5, 1)
+
+a_summary(
+  x1,
+  .ref_group = xref, .var = "bla", compare = TRUE,
+  .stats = c("mean", "sd"),
+  .formats = c("mean" = format_xx("xx.xxx"), "sd" = format_xx("xx.x"))
+)
+a_summary(
+  x1,
+  .ref_group = xref, .var = "bla", compare = TRUE,
+  .stats = "mean_sd",
+  fmt_specs = list(
+    fmts_df_var = "variant2",
+    d = 1,
+    formatting_function = "format_xx"
+  )
+)
+a_summary(
+  x1,
+  .ref_group = xref, .var = "bla", compare = TRUE,
+  .stats = c("mean", "mean_sd", "mean_pval")
+)
+
+our_fmt_specs_variant <- list(
+  fmts_df = tern_formats_custom_df(),
+  fmts_df_var = "default",
+  formatting_function = "format_xx_fixed_dp",
+  d = 0
+)
+a_summary(
+  x1, .ref_group = xref, .var = "bla", compare = TRUE,
+  .stats = c("mean", "mean_sd", "mean_pval"),
+  .formats = c("mean_sd" = "xx.d (xx.dxxxx)"),
+  fmt_specs = our_fmt_specs_variant
+)
 }

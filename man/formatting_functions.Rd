@@ -12,6 +12,7 @@ custom formats can be created via the \code{\link[formatters:sprintf_format]{for
 }
 \seealso{
 Other formatting functions: 
+\code{\link{custom_stats_formats}},
 \code{\link{extreme_format}},
 \code{\link{format_auto}()},
 \code{\link{format_count_fraction}()},
