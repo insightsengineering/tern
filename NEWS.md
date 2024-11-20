@@ -20,6 +20,11 @@
 # tern 0.9.6
 
 ### Enhancements
+* Added `median_ci_3d` to `s_summary` which includes estimate and confidence interval in one statistic.
+* Added `median_ci_3d`, `quantiles_lower` and `quantiles_upper` to `s_surv_time` which includes estimate and confidence interval in one statistic.
+* Added `hr_ci_3d` to `s_coxph_pairwise` which includes estimate and confidence interval in one statistic.
+* Added `event_free_rate_3d` to `s_surv_timepoint` which includes estimate and confidence interval in one statistic.
+* Added `rate_diff_ci_3d` to `s_surv_timepoint_diff` which includes estimate and confidence interval in one statistic.
 * Added `errorbar_width` and `linetype` parameters to `g_lineplot`.
 * Added the `.formats` argument to `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` to allow users to specify formats.
 * Added the `riskdiff` argument to `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` to allow users to add a risk difference table column, and function `control_riskdiff` to specify settings for the risk difference column.

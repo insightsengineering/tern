@@ -3,11 +3,13 @@
     Code
       res
     Output
-       [1] "n"            "sum"          "mean"         "sd"           "se"          
-       [6] "mean_sd"      "mean_se"      "mean_ci"      "mean_sei"     "mean_sdi"    
-      [11] "mean_pval"    "median"       "mad"          "median_ci"    "quantiles"   
-      [16] "iqr"          "range"        "min"          "max"          "median_range"
-      [21] "cv"           "geom_mean"    "geom_mean_ci" "geom_cv"      "pval"        
+       [1] "n"               "sum"             "mean"            "sd"             
+       [5] "se"              "mean_sd"         "mean_se"         "mean_ci"        
+       [9] "mean_sei"        "mean_sdi"        "mean_ci_3d"      "mean_pval"      
+      [13] "median"          "mad"             "median_ci"       "median_ci_3d"   
+      [17] "quantiles"       "iqr"             "range"           "min"            
+      [21] "max"             "median_range"    "cv"              "geom_mean"      
+      [25] "geom_mean_ci"    "geom_cv"         "geom_mean_ci_3d" "pval"           
 
 # s_compare for numeric does not give p-value when not at least 2 values in each group
 
