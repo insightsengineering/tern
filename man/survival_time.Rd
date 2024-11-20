@@ -78,7 +78,7 @@ times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
-Options are: \verb{'median', 'median_ci', 'quantiles', 'range_censor', 'range_event', 'range'}}
+Options are: \verb{'median', 'median_ci', 'median_ci_3d', 'quantiles', 'quantiles_lower', 'quantiles_upper', 'range_censor', 'range_event', 'range'}}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
@@ -112,7 +112,10 @@ the statistics from \code{s_surv_time()} to the table layout.
 \itemize{
 \item \code{median}: Median survival time.
 \item \code{median_ci}: Confidence interval for median time.
+\item \code{median_ci_3d}: Median with confidence interval for median time.
 \item \code{quantiles}: Survival time for two specified quantiles.
+\item \code{quantiles_lower}: quantile with confidence interval for the first specified quantile.
+\item \code{quantiles_upper}: quantile with confidence interval for the second specified quantile.
 \item \code{range_censor}: Survival time range for censored observations.
 \item \code{range_event}: Survival time range for observations with events.
 \item \code{range}: Survival time range for all observations.

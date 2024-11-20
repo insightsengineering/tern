@@ -190,6 +190,8 @@ s_summary.numeric <- function(x,
   mean_sdi <- y$mean[[1]] + c(-1, 1) * stats::sd(x, na.rm = FALSE)
   names(mean_sdi) <- c("mean_sdi_lwr", "mean_sdi_upr")
   y$mean_sdi <- formatters::with_label(mean_sdi, "Mean -/+ 1xSD")
+  mean_ci_3d <- c(y$mean, y$mean_ci)
+  y$mean_ci_3d <- formatters::with_label(mean_ci_3d, paste0("Mean (", f_conf_level(control$conf_level), ")"))
 
   mean_pval <- stat_mean_pval(x, test_mean = control$test_mean, na.rm = FALSE, n_min = 2)
   y$mean_pval <- formatters::with_label(mean_pval, paste("Mean", f_pval(control$test_mean)))
@@ -200,6 +202,9 @@ s_summary.numeric <- function(x,
 
   median_ci <- stat_median_ci(x, conf_level = control$conf_level, na.rm = FALSE, gg_helper = FALSE)
   y$median_ci <- formatters::with_label(median_ci, paste("Median", f_conf_level(control$conf_level)))
+
+  median_ci_3d <- c(y$median, median_ci)
+  y$median_ci_3d <- formatters::with_label(median_ci_3d, paste0("Median (", f_conf_level(control$conf_level), ")"))
 
   q <- control$quantiles
   if (any(is.na(x))) {
@@ -232,6 +237,12 @@ s_summary.numeric <- function(x,
   y$geom_mean_ci <- formatters::with_label(geom_mean_ci, paste("Geometric Mean", f_conf_level(control$conf_level)))
 
   y$geom_cv <- c("geom_cv" = sqrt(exp(stats::sd(log(x_no_negative_vals), na.rm = FALSE) ^ 2) - 1) * 100) # styler: off
+
+  geom_mean_ci_3d <- c(y$geom_mean, y$geom_mean_ci)
+  y$geom_mean_ci_3d <- formatters::with_label(
+    geom_mean_ci_3d,
+    paste0("Geometric Mean (", f_conf_level(control$conf_level), ")")
+  )
 
   y
 }
