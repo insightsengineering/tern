@@ -336,7 +336,6 @@ h_glm_poisson <- function(.var,
                           weights) {
   arm <- variables$arm
   covariates <- variables$covariates
-  offset <- .df_row[[variables$offset]]
 
   formula <- stats::as.formula(paste0(
     .var, " ~ ",
@@ -346,12 +345,21 @@ h_glm_poisson <- function(.var,
     arm
   ))
 
-  glm_fit <- stats::glm(
-    formula = formula,
-    offset = offset,
-    data = .df_row,
-    family = stats::poisson(link = "log")
-  )
+  if (is.null(variables$offset)){
+    glm_fit <- stats::glm(
+      formula = formula,
+      data = .df_row,
+      family = stats::poisson(link = "log")
+    )
+  } else {
+    offset <- .df_row[[variables$offset]]
+    glm_fit <- stats::glm(
+      formula = formula,
+      offset = offset,
+      data = .df_row,
+      family = stats::poisson(link = "log")
+    )
+  }
 
   emmeans_fit <- emmeans::emmeans(
     glm_fit,
@@ -380,7 +388,6 @@ h_glm_quasipoisson <- function(.var,
                                weights) {
   arm <- variables$arm
   covariates <- variables$covariates
-  offset <- .df_row[[variables$offset]]
 
   formula <- stats::as.formula(paste0(
     .var, " ~ ",
@@ -390,13 +397,21 @@ h_glm_quasipoisson <- function(.var,
     arm
   ))
 
-  glm_fit <- stats::glm(
-    formula = formula,
-    offset = offset,
-    data = .df_row,
-    family = stats::quasipoisson(link = "log")
-  )
-
+  if (is.null(variables$offset)) {
+    glm_fit <- stats::glm(
+      formula = formula,
+      data = .df_row,
+      family = stats::quasipoisson(link = "log")
+    )
+  } else {
+    offset <- .df_row[[variables$offset]]
+    glm_fit <- stats::glm(
+      formula = formula,
+      offset = offset,
+      data = .df_row,
+      family = stats::quasipoisson(link = "log")
+    )
+  }
   emmeans_fit <- emmeans::emmeans(
     glm_fit,
     specs = arm,
@@ -422,6 +437,7 @@ h_glm_negbin <- function(.var,
                          .df_row,
                          variables,
                          weights) {
+  print(variables)
   arm <- variables$arm
   covariates <- variables$covariates
   formula <- stats::as.formula(paste0(
@@ -447,7 +463,7 @@ h_glm_negbin <- function(.var,
       .var,
       arm, paste0(covariates, collapse = " + "), offset
     )
-    # print(formula_txt)
+    print(formula_txt)
     formula <- stats::as.formula(
       formula_txt
     )
