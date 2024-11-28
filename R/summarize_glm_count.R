@@ -437,7 +437,6 @@ h_glm_negbin <- function(.var,
                          .df_row,
                          variables,
                          weights) {
-  print(variables)
   arm <- variables$arm
   covariates <- variables$covariates
   formula <- stats::as.formula(paste0(
@@ -463,7 +462,6 @@ h_glm_negbin <- function(.var,
       .var,
       arm, paste0(covariates, collapse = " + "), offset
     )
-    print(formula_txt)
     formula <- stats::as.formula(
       formula_txt
     )
