@@ -345,7 +345,7 @@ h_glm_poisson <- function(.var,
     arm
   ))
 
-  if (is.null(variables$offset)){
+  if (is.null(variables$offset)) {
     glm_fit <- stats::glm(
       formula = formula,
       data = .df_row,
