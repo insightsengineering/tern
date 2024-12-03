@@ -18,7 +18,7 @@ testthat::test_that("h_glm_poisson glm-fit works with healthy input", {
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("h_glm_poisson emmeans-fit works with healthy input", {
+testthat::test_that("h_glm_poisson emmeans-fit works with healthy input no offset", {
   anl <- tern_ex_adtte %>%
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
@@ -26,7 +26,7 @@ testthat::test_that("h_glm_poisson emmeans-fit works with healthy input", {
   result <- h_glm_count(
     .var = "AVAL",
     .df_row = anl,
-    variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = NULL),
+    variables = list(arm = "ARMCD", covariates = NULL),
     distribution = "poisson"
   )
   mat1 <- as.data.frame(broom::tidy(result$emmeans_fit))
@@ -144,7 +144,7 @@ testthat::test_that("h_glm_quasipoisson fails wrong inputs", {
   )
 })
 
-testthat::test_that("h_glm_negbin glm-fit works with healthy input", {
+testthat::test_that("h_glm_negbin glm-fit works with healthy input with offset", {
   anl <- tern_ex_adtte %>%
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
@@ -164,7 +164,7 @@ testthat::test_that("h_glm_negbin glm-fit works with healthy input", {
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("h_glm_negbin emmeans-fit works with healthy input", {
+testthat::test_that("h_glm_negbin emmeans-fit works with healthy input no offset", {
   anl <- tern_ex_adtte %>%
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
@@ -172,7 +172,7 @@ testthat::test_that("h_glm_negbin emmeans-fit works with healthy input", {
   result <- h_glm_negbin(
     .var = "AVAL",
     .df_row = anl,
-    variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = c("REGION1"))
+    variables = list(arm = "ARM", covariates = c("REGION1"))
   )
   mat1 <- as.data.frame(broom::tidy(result$emmeans_fit))
 

@@ -202,6 +202,20 @@ lyt <- basic_table() \%>\%
       rate = "Rate", rate_ci = "Rate CI", rate_ratio = "Rate Ratio",
       rate_ratio_ci = "Rate Ratio CI", pval = "p value"
     )
+  ) \%>\%
+  summarize_glm_count(
+    vars = "AVAL",
+    variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = c("REGION1")),
+    conf_level = 0.95,
+    distribution = "negbin",
+    rate_mean_method = "emmeans",
+    var_labels = "Adjusted (NB) exacerbation rate (per year)",
+    table_names = "adjNB",
+    .stats = c("rate", "rate_ci", "rate_ratio", "rate_ratio_ci", "pval"),
+    .labels = c(
+      rate = "Rate", rate_ci = "Rate CI", rate_ratio = "Rate Ratio",
+      rate_ratio_ci = "Rate Ratio CI", pval = "p value"
+    )
   )
 
 build_table(lyt = lyt, df = anl)
