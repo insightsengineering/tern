@@ -44,6 +44,7 @@ format_auto(no_sc_x, "range")(x = no_sc_x)
 }
 \seealso{
 Other formatting functions: 
+\code{\link{custom_stats_formats}},
 \code{\link{extreme_format}},
 \code{\link{format_count_fraction}()},
 \code{\link{format_count_fraction_fixed_dp}()},

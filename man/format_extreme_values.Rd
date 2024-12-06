@@ -27,6 +27,7 @@ format_fun(x = 0.009)
 }
 \seealso{
 Other formatting functions: 
+\code{\link{custom_stats_formats}},
 \code{\link{extreme_format}},
 \code{\link{format_auto}()},
 \code{\link{format_count_fraction}()},

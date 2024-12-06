@@ -30,6 +30,7 @@ format_fun(x = c(0, 0))
 }
 \seealso{
 Other formatting functions: 
+\code{\link{custom_stats_formats}},
 \code{\link{extreme_format}},
 \code{\link{format_auto}()},
 \code{\link{format_count_fraction}()},
