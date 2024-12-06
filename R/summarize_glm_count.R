@@ -84,6 +84,20 @@ NULL
 #'       rate = "Rate", rate_ci = "Rate CI", rate_ratio = "Rate Ratio",
 #'       rate_ratio_ci = "Rate Ratio CI", pval = "p value"
 #'     )
+#'   ) %>%
+#'   summarize_glm_count(
+#'     vars = "AVAL",
+#'     variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = c("REGION1")),
+#'     conf_level = 0.95,
+#'     distribution = "negbin",
+#'     rate_mean_method = "emmeans",
+#'     var_labels = "Adjusted (NB) exacerbation rate (per year)",
+#'     table_names = "adjNB",
+#'     .stats = c("rate", "rate_ci", "rate_ratio", "rate_ratio_ci", "pval"),
+#'     .labels = c(
+#'       rate = "Rate", rate_ci = "Rate CI", rate_ratio = "Rate Ratio",
+#'       rate_ratio_ci = "Rate Ratio CI", pval = "p value"
+#'     )
 #'   )
 #'
 #' build_table(lyt = lyt, df = anl)
@@ -322,7 +336,6 @@ h_glm_poisson <- function(.var,
                           weights) {
   arm <- variables$arm
   covariates <- variables$covariates
-  offset <- .df_row[[variables$offset]]
 
   formula <- stats::as.formula(paste0(
     .var, " ~ ",
@@ -332,12 +345,21 @@ h_glm_poisson <- function(.var,
     arm
   ))
 
-  glm_fit <- stats::glm(
-    formula = formula,
-    offset = offset,
-    data = .df_row,
-    family = stats::poisson(link = "log")
-  )
+  if (is.null(variables$offset)) {
+    glm_fit <- stats::glm(
+      formula = formula,
+      data = .df_row,
+      family = stats::poisson(link = "log")
+    )
+  } else {
+    offset <- .df_row[[variables$offset]]
+    glm_fit <- stats::glm(
+      formula = formula,
+      offset = offset,
+      data = .df_row,
+      family = stats::poisson(link = "log")
+    )
+  }
 
   emmeans_fit <- emmeans::emmeans(
     glm_fit,
@@ -366,7 +388,6 @@ h_glm_quasipoisson <- function(.var,
                                weights) {
   arm <- variables$arm
   covariates <- variables$covariates
-  offset <- .df_row[[variables$offset]]
 
   formula <- stats::as.formula(paste0(
     .var, " ~ ",
@@ -376,13 +397,21 @@ h_glm_quasipoisson <- function(.var,
     arm
   ))
 
-  glm_fit <- stats::glm(
-    formula = formula,
-    offset = offset,
-    data = .df_row,
-    family = stats::quasipoisson(link = "log")
-  )
-
+  if (is.null(variables$offset)) {
+    glm_fit <- stats::glm(
+      formula = formula,
+      data = .df_row,
+      family = stats::quasipoisson(link = "log")
+    )
+  } else {
+    offset <- .df_row[[variables$offset]]
+    glm_fit <- stats::glm(
+      formula = formula,
+      offset = offset,
+      data = .df_row,
+      family = stats::quasipoisson(link = "log")
+    )
+  }
   emmeans_fit <- emmeans::emmeans(
     glm_fit,
     specs = arm,
@@ -410,7 +439,6 @@ h_glm_negbin <- function(.var,
                          weights) {
   arm <- variables$arm
   covariates <- variables$covariates
-
   formula <- stats::as.formula(paste0(
     .var, " ~ ",
     " + ",
@@ -418,6 +446,26 @@ h_glm_negbin <- function(.var,
     " + ",
     arm
   ))
+
+  if (is.null(variables$offset)) {
+    formula <- stats::as.formula(paste0(
+      .var, " ~ ",
+      " + ",
+      paste(covariates, collapse = " + "),
+      " + ",
+      arm
+    ))
+  } else {
+    offset <- variables$offset
+    formula_txt <- sprintf(
+      "%s ~ %s + %s + offset(%s)",
+      .var,
+      arm, paste0(covariates, collapse = " + "), offset
+    )
+    formula <- stats::as.formula(
+      formula_txt
+    )
+  }
 
   glm_fit <- MASS::glm.nb(
     formula = formula,

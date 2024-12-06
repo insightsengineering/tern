@@ -8,15 +8,15 @@
       2  0.10946932 0.09613709  1.1386793  2.548369e-01     ARMB: Placebo
       3 -0.04371457 0.10265030 -0.4258591  6.702105e-01 ARMC: Combination
 
-# h_glm_poisson emmeans-fit works with healthy input
+# h_glm_poisson emmeans-fit works with healthy input no offset
 
     Code
       res
     Output
-        ARMCD     rate std.error  df null statistic       p.value
-      1 ARM A 8.206105 0.5773795 Inf    1  29.91594 1.220818e-196
-      2 ARM B 9.155436 0.5997925 Inf    1  33.80055 1.935734e-250
-      3 ARM C 7.855107 0.5871181 Inf    1  27.57650 2.129731e-167
+        ARMCD     rate std.error  df null statistic      p.value
+      1 ARM A 2.927536 0.2059807 Inf    1  15.26670 1.274641e-52
+      2 ARM B 3.191781 0.2091005 Inf    1  17.71547 3.185540e-70
+      3 ARM C 3.086207 0.2306739 Inf    1  15.07747 2.278432e-51
 
 # h_glm_poisson glm-fit works with healthy input with covariates
 
@@ -68,22 +68,22 @@
       2     B: Placebo 14.11838  5.392442 Inf    1  6.931571 4.161914e-12
       3 C: Combination 10.59153  4.074355 Inf    1  6.135104 8.510352e-10
 
-# h_glm_negbin glm-fit works with healthy input
+# h_glm_negbin glm-fit works with healthy input with offset
 
     Code
       res
     Output
-           Estimate        SE    z_value           Pr                coefs
-      1 1.005041594 0.1992268 5.04471149 4.542062e-07          (Intercept)
-      2 0.007741431 0.1919877 0.04032253 9.678360e-01          REGION1Asia
-      3 0.317703043 0.2360653 1.34582686 1.783584e-01       REGION1Eurasia
-      4 0.591541717 0.4058327 1.45759983 1.449509e-01        REGION1Europe
-      5 0.117240049 0.2196300 0.53380718 5.934749e-01 REGION1North America
-      6 0.139971334 0.2348685 0.59595610 5.512046e-01 REGION1South America
-      7 0.113082781 0.1056295 1.07056107 2.843668e-01        ARMB: Placebo
-      8 0.026817451 0.1131811 0.23694292 8.127011e-01    ARMC: Combination
+          Estimate        SE   z_value           Pr                coefs
+      1 2.56211826 0.3969418 6.4546439 1.084737e-10          (Intercept)
+      2 0.12359121 0.2085554 0.5926060 5.534448e-01        ARMB: Placebo
+      3 0.05569230 0.2247874 0.2477554 8.043237e-01    ARMC: Combination
+      4 0.05684153 0.3845557 0.1478109 8.824920e-01          REGION1Asia
+      5 1.84806287 0.4849801 3.8105953 1.386326e-04       REGION1Eurasia
+      6 2.04520468 0.9029032 2.2651428 2.350392e-02        REGION1Europe
+      7 0.44720215 0.4417735 1.0122884 3.114002e-01 REGION1North America
+      8 1.21153294 0.4690914 2.5827223 9.802419e-03 REGION1South America
 
-# h_glm_negbin emmeans-fit works with healthy input
+# h_glm_negbin emmeans-fit works with healthy input no offset
 
     Code
       res
@@ -189,12 +189,12 @@
       [1] 73
       
       $rate
-      [1] 3.720373
+      [1] 37.35687
       attr(,"label")
       [1] "Adjusted Rate"
       
       $rate_ci
-      [1] 3.048181 4.540799
+      [1] 24.59065 56.75067
       attr(,"label")
       [1] "95% CI"
       
@@ -257,27 +257,27 @@
       [1] 73
       
       $rate
-      [1] 3.720373
+      [1] 37.35687
       attr(,"label")
       [1] "Adjusted Rate"
       
       $rate_ci
-      [1] 3.048181 4.540799
+      [1] 24.59065 56.75067
       attr(,"label")
       [1] "95% CI"
       
       $rate_ratio
-      [1] 0.8930767 0.9173508
+      [1] 0.8837410 0.9343549
       attr(,"label")
       [1] "Adjusted Rate Ratio"
       
       $rate_ratio_ci
-      [1] 0.7260672 0.7381034 1.0985017 1.1401282
+      [1] 0.5872220 0.6062612 1.3299880 1.4400049
       attr(,"label")
       [1] "95% CI"
       
       $pval
-      [1] 0.2843668 0.4367453
+      [1] 0.5534448 0.7583367
       attr(,"label")
       [1] "p-value"
       
@@ -322,5 +322,5 @@
         7                                       8 (10.96%)     2 (2.90%)      0 (0.00%)   
         10                                       0 (0.00%)     0 (0.00%)      1 (1.72%)   
       Unadjusted exacerbation rate (per year)                                             
-        Rate                                      3.1918        2.9275          3.0862    
+        Rate                                      18.6539       21.8760        22.6006    
 
