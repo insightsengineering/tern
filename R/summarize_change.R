@@ -64,6 +64,8 @@ a_change_from_baseline <- function(df,
                                    .formats = NULL,
                                    .labels = NULL,
                                    .indent_mods = NULL) {
+  dots_extra_args <- list(...)
+
   # Check if there are user-defined functions
   default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
   .stats <- default_and_custom_stats_list$default_stats
@@ -71,7 +73,7 @@ a_change_from_baseline <- function(df,
 
   # Adding automatically extra parameters to the statistic function (see ?rtables::additional_fun_params)
   extra_afun_params <- retrieve_extra_afun_params(
-    names(list(...)$.additional_fun_parameters)
+    names(dots_extra_args$.additional_fun_parameters)
   )
   x_stats <- .apply_stat_functions(
     default_stat_fnc = s_change_from_baseline,
@@ -79,7 +81,7 @@ a_change_from_baseline <- function(df,
     args_list = c(
       df = list(df),
       extra_afun_params,
-      list(...)
+      dots_extra_args
     )
   )
 

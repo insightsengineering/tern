@@ -16,12 +16,12 @@ analyze_vars(
   vars,
   var_labels = vars,
   na_str = default_na_str(),
+  na_rm = TRUE,
   nested = TRUE,
-  ...,
-  na.rm = TRUE,
   show_labels = "default",
   table_names = vars,
   section_div = NA_character_,
+  ...,
   .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
   .formats = NULL,
   .labels = NULL,
@@ -101,10 +101,6 @@ a_summary(
 possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
-\item{...}{arguments passed to \code{s_summary()}.}
-
-\item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
-
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
@@ -112,6 +108,8 @@ times, to avoid warnings from \code{rtables}.}
 
 \item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
 defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
+
+\item{...}{arguments passed to \code{s_summary()}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
@@ -129,6 +127,8 @@ should be a name-value pair with name corresponding to a statistic specified in 
 for that statistic's row label.}
 
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
+
+\item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
 \item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
 \itemize{

@@ -28,6 +28,20 @@ control_analyze_vars <- function(conf_level = 0.95,
   list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type, test_mean = test_mean)
 }
 
+# Helper function to fix numeric or counts pval if necessary
+.correct_num_or_counts_pval <- function(type, .stats) {
+  if (type == "numeric") {
+    if (!is.null(.stats) && any(grepl("^pval", .stats))) {
+      .stats[grepl("^pval", .stats)] <- "pval" # tmp fix xxx
+    }
+  } else {
+    if (!is.null(.stats) && any(grepl("^pval", .stats))) {
+      .stats[grepl("^pval", .stats)] <- "pval_counts" # tmp fix xxx
+    }
+  }
+  .stats
+}
+
 #' Analyze variables
 #'
 #' @description `r lifecycle::badge("stable")`
@@ -466,62 +480,71 @@ s_summary.logical <- function(x,
 #'
 #' @export
 a_summary <- function(x,
-                      .N_col, # nolint
-                      .N_row, # nolint
-                      .var = NULL,
-                      .df_row = NULL,
-                      .ref_group = NULL,
-                      .in_ref_col = FALSE,
                       compare = FALSE,
+                      ...,
                       .stats = NULL,
                       .formats = NULL,
                       .labels = NULL,
-                      .indent_mods = NULL,
-                      na.rm = TRUE, # nolint
-                      na_str = default_na_str(),
-                      ...) {
-  extra_args <- list(...)
-  if (is.numeric(x)) {
-    type <- "numeric"
-    if (!is.null(.stats) && any(grepl("^pval", .stats))) {
-      .stats[grepl("^pval", .stats)] <- "pval" # tmp fix xxx
-    }
-  } else {
-    type <- "counts"
-    if (!is.null(.stats) && any(grepl("^pval", .stats))) {
-      .stats[grepl("^pval", .stats)] <- "pval_counts" # tmp fix xxx
-    }
-  }
+                      .indent_mods = NULL) {
+  browser()
+  dots_extra_args <- list(...)
+
+  # Check if there are user-defined functions
+  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
+  .stats <- default_and_custom_stats_list$default_stats
+  custom_stat_functions <- default_and_custom_stats_list$custom_stats
+
+  # Correction of the pval indication if it is numeric or counts
+  type <- if (is.numeric(x)) "numeric" else "counts"
+  .stats <- .correct_num_or_counts_pval(type, .stats)
+
+  # Adding automatically extra parameters to the statistic function (see ?rtables::additional_fun_params)
+  extra_afun_params <- retrieve_extra_afun_params(
+    names(dots_extra_args$.additional_fun_parameters)
+  )
 
   # If one col has NA vals, must add NA row to other cols (using placeholder lvl `fill-na-level`)
-  if (any(is.na(.df_row[[.var]])) && !any(is.na(x)) && !na.rm) levels(x) <- c(levels(x), "fill-na-level")
+  if (any(is.na(dots_extra_args$.df_row[[dots_extra_args$.var]])) &&
+      !any(is.na(x)) &&
+      !na.rm) {
+    levels(x) <- c(levels(x), "fill-na-level")
+  }
 
   x_stats <- if (!compare) {
-    s_summary(x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, ...)
+    .apply_stat_functions(
+      default_stat_fnc = s_summary,
+      custom_stat_fnc_list = custom_stat_functions,
+      args_list = c(
+        x = list(x),
+        extra_afun_params,
+        dots_extra_args
+      )
+    )
   } else {
-    s_compare(
-      x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, .ref_group = .ref_group, .in_ref_col = .in_ref_col, ...
+    .apply_stat_functions(
+      default_stat_fnc = s_compare,
+      custom_stat_fnc_list = custom_stat_functions,
+      args_list = c(
+        x = list(x),
+        extra_afun_params,
+        dots_extra_args
+      )
     )
   }
 
   # Fill in with formatting defaults if needed
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
-  .stats <- get_stats(met_grp, stats_in = .stats, add_pval = compare)
-  .formats <- get_formats_from_stats(.stats, .formats)
-  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
+  .stats <- c(
+    get_stats(met_grp, stats_in = .stats, add_pval = compare),
+    names(custom_stat_functions) # Additional stats from custom functions
+  )
 
-  lbls <- get_labels_from_stats(.stats, .labels)
-  # Check for custom labels from control_analyze_vars
-  .labels <- if ("control" %in% names(extra_args)) {
-    lbls %>% labels_use_control(extra_args[["control"]], .labels)
-  } else {
-    lbls
+  if ("count_fraction_fixed_dp" %in% .stats) { # why??
+    x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
   }
-
-  if ("count_fraction_fixed_dp" %in% .stats) x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
   x_stats <- x_stats[.stats]
 
-  if (is.factor(x) || is.character(x)) {
+  if (is.factor(x) || is.character(x)) { # Fix to recheck
     # Ungroup statistics with values for each level of x
     x_ungrp <- ungroup_stats(x_stats, .formats, .labels, .indent_mods)
     x_stats <- x_ungrp[["x"]]
@@ -530,16 +553,34 @@ a_summary <- function(x,
     .indent_mods <- x_ungrp[[".indent_mods"]]
   }
 
+  # Formats checks
+  .formats <- get_formats_from_stats(.stats, .formats)
+
   # Auto format handling
-  .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
+  .formats <- apply_auto_formatting(
+    .formats,
+    x_stats,
+    extra_afun_params$.df_row,
+    extra_afun_params$.var
+  )
+
+  # Indentation checks
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
+
+  # Check for custom labels from control_analyze_vars
+  lbls <- get_labels_from_stats(.stats, .labels)
+  .labels <- if ("control" %in% names(dots_extra_args)) {
+    labels_use_control(lbls, dots_extra_args[["control"]], .labels)
+  } else {
+    lbls
+  }
 
   in_rows(
     .list = x_stats,
     .formats = .formats,
     .names = names(.labels),
     .labels = .labels,
-    .indent_mods = .indent_mods,
-    .format_na_strs = na_str
+    .indent_mods = .indent_mods
   )
 }
 
@@ -621,20 +662,27 @@ analyze_vars <- function(lyt,
                          vars,
                          var_labels = vars,
                          na_str = default_na_str(),
+                         na_rm = TRUE,
                          nested = TRUE,
-                         ...,
-                         na.rm = TRUE, # nolint
                          show_labels = "default",
                          table_names = vars,
                          section_div = NA_character_,
+                         ...,
                          .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
                          .formats = NULL,
                          .labels = NULL,
                          .indent_mods = NULL) {
-  extra_args <- list(.stats = .stats, na.rm = na.rm, na_str = na_str, ...)
+  extra_args <- list(".stats" = .stats)
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Adding all additional information from layout to analysis functions (see ?rtables::additional_fun_params)
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_summary) <- c(
+    formals(a_summary),
+    extra_args[[".additional_fun_parameters"]]
+  )
 
   analyze(
     lyt = lyt,
@@ -642,9 +690,9 @@ analyze_vars <- function(lyt,
     var_labels = var_labels,
     afun = a_summary,
     na_str = na_str,
+    inclNAs = na_rm, # adds na.rm = TRUE to the analysis function
     nested = nested,
     extra_args = extra_args,
-    inclNAs = TRUE,
     show_labels = show_labels,
     table_names = table_names,
     section_div = section_div
