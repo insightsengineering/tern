@@ -486,7 +486,6 @@ a_summary <- function(x,
                       .formats = NULL,
                       .labels = NULL,
                       .indent_mods = NULL) {
-  browser()
   dots_extra_args <- list(...)
 
   # Check if there are user-defined functions
@@ -544,13 +543,12 @@ a_summary <- function(x,
   }
   x_stats <- x_stats[.stats]
 
-  if (is.factor(x) || is.character(x)) { # Fix to recheck
-    # Ungroup statistics with values for each level of x
-    x_ungrp <- ungroup_stats(x_stats, .formats, .labels, .indent_mods)
-    x_stats <- x_ungrp[["x"]]
-    .formats <- x_ungrp[[".formats"]]
-    .labels <- gsub("fill-na-level", "NA", x_ungrp[[".labels"]])
-    .indent_mods <- x_ungrp[[".indent_mods"]]
+  # Check for custom labels from control_analyze_vars
+  lbls <- get_labels_from_stats(.stats, .labels)
+  .labels <- if ("control" %in% names(dots_extra_args)) {
+    labels_use_control(lbls, dots_extra_args[["control"]], .labels)
+  } else {
+    lbls
   }
 
   # Formats checks
@@ -566,19 +564,23 @@ a_summary <- function(x,
 
   # Indentation checks
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
+  browser()
 
-  # Check for custom labels from control_analyze_vars
-  lbls <- get_labels_from_stats(.stats, .labels)
-  .labels <- if ("control" %in% names(dots_extra_args)) {
-    labels_use_control(lbls, dots_extra_args[["control"]], .labels)
-  } else {
-    lbls
+  if (is.factor(x) || is.character(x)) { # Fix to recheck
+    # Ungroup statistics with values for each level of x
+    x_ungrp <- ungroup_stats(x_stats, .formats, .labels, .indent_mods)
+    x_stats <- x_ungrp[["x"]]
+    .formats <- x_ungrp[[".formats"]]
+    .labels <- gsub("fill-na-level", "NA", x_ungrp[[".labels"]])
+    .indent_mods <- x_ungrp[[".indent_mods"]]
   }
+
 
   in_rows(
     .list = x_stats,
     .formats = .formats,
     .names = names(.labels),
+    # .stat_names = list(c("a", "b")),
     .labels = .labels,
     .indent_mods = .indent_mods
   )
