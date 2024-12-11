@@ -228,9 +228,9 @@ being standard behavior in R.
 \item If \code{x} is an empty \code{factor}, a list is still returned for \code{counts} with one element
 per factor level. If there are no levels in \code{x}, the function fails.
 \item If factor variables contain \code{NA}, these \code{NA} values are excluded by default. To include \code{NA} values
-set \code{na.rm = FALSE} and missing values will be displayed as an \code{NA} level. Alternatively, an explicit
+set \code{na_rm = FALSE} and missing values will be displayed as an \code{NA} level. Alternatively, an explicit
 factor level can be defined for \code{NA} values during pre-processing via \code{\link[=df_explicit_na]{df_explicit_na()}} - the
-default \code{na_level} (\code{"<Missing>"}) will also be excluded when \code{na.rm} is set to \code{TRUE}.
+default \code{na_level} (\code{"<Missing>"}) will also be excluded when \code{na_rm} is set to \code{TRUE}.
 }
 
 \itemize{
@@ -281,7 +281,7 @@ build_table(l, df = dta_test)
 l <- basic_table() \%>\%
   split_cols_by(var = "ARM") \%>\%
   split_rows_by(var = "AVISIT") \%>\%
-  analyze_vars(vars = "AVAL", na.rm = FALSE)
+  analyze_vars(vars = "AVAL", na_rm = FALSE)
 
 build_table(l, df = dta_test)
 
@@ -290,7 +290,7 @@ dta_test$AVISIT <- NA_character_
 dta_test <- df_explicit_na(dta_test)
 l <- basic_table() \%>\%
   split_cols_by(var = "ARM") \%>\%
-  analyze_vars(vars = "AVISIT", na.rm = FALSE)
+  analyze_vars(vars = "AVISIT", na_rm = FALSE)
 
 build_table(l, df = dta_test)
 
@@ -311,17 +311,17 @@ s_summary(numeric())
 
 ## Management of NA values.
 x <- c(NA_real_, 1)
-s_summary(x, na.rm = TRUE)
-s_summary(x, na.rm = FALSE)
+s_summary(x, na_rm = TRUE)
+s_summary(x, na_rm = FALSE)
 
 x <- c(NA_real_, 1, 2)
-s_summary(x, stats = NULL)
+s_summary(x)
 
 ## Benefits in `rtables` contructions:
 dta_test <- data.frame(
-  Group = rep(LETTERS[1:3], each = 2),
-  sub_group = rep(letters[1:2], each = 3),
-  x = 1:6
+  Group = rep(LETTERS[seq(3)], each = 2),
+  sub_group = rep(letters[seq(2)], each = 3),
+  x = seq(6)
 )
 
 ## The summary obtained in with `rtables`:
@@ -346,8 +346,8 @@ s_summary(factor(levels = c("a", "b", "c")))
 ## Management of NA values.
 x <- factor(c(NA, "Female"))
 x <- explicit_na(x)
-s_summary(x, na.rm = TRUE)
-s_summary(x, na.rm = FALSE)
+s_summary(x, na_rm = TRUE)
+s_summary(x, na_rm = FALSE)
 
 ## Different denominators.
 x <- factor(c("a", "a", "b", "c", "a"))
@@ -358,7 +358,7 @@ s_summary(x, denom = "N_col", .N_col = 20L)
 
 ## Basic usage:
 s_summary(c("a", "a", "b", "c", "a"), verbose = FALSE)
-s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE, verbose = FALSE)
+s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na_rm = FALSE, verbose = FALSE)
 
 # `s_summary.logical`
 
@@ -370,8 +370,8 @@ s_summary(as.logical(c()))
 
 ## Management of NA values.
 x <- c(NA, TRUE, FALSE)
-s_summary(x, na.rm = TRUE)
-s_summary(x, na.rm = FALSE)
+s_summary(x, na_rm = TRUE)
+s_summary(x, na_rm = FALSE)
 
 ## Different denominators.
 x <- c(TRUE, FALSE, TRUE, TRUE)

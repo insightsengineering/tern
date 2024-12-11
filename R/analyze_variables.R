@@ -158,6 +158,7 @@ s_summary <- function(x, denom, control, ...) {
 #'
 #' @export
 s_summary.numeric <- function(x, control = control_analyze_vars(), ...) {
+  checkmate::assert_numeric(x)
   args_list <- list(...)
   .N_row <- args_list[[".N_row"]]
   .N_col <- args_list[[".N_col"]]
@@ -291,6 +292,7 @@ s_summary.numeric <- function(x, control = control_analyze_vars(), ...) {
 #'
 #' @export
 s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
+  assert_valid_factor(x)
   args_list <- list(...)
   .N_row <- args_list[[".N_row"]]
   .N_col <- args_list[[".N_col"]]
@@ -304,9 +306,9 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 
   y <- list()
 
-  y$n <- length(x)
+  y$n <-  list("n" = c("n" = length(x))) # all list of a list
 
-  y$count <- as.list(table(x, useNA = "ifany"))
+  y$count <- lapply(as.list(table(x, useNA = "ifany")), setNames, nm = "count")
 
   denom <- match.arg(denom) %>%
     switch(
@@ -318,15 +320,15 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
   y$count_fraction <- lapply(
     y$count,
     function(x) {
-      c(x, ifelse(denom > 0, x / denom, 0))
+      c(x, "p" = ifelse(denom > 0, x / denom, 0))
     }
   )
   y$fraction <- lapply(
     y$count,
-    function(count) c("num" = count, "denom" = denom)
+    function(count) c("num" = unname(count), "denom" = denom)
   )
 
-  y$n_blq <- sum(grepl("BLQ|LTR|<[1-9]|<PCLLOQ", x))
+  y$n_blq <- list("n_blq" = c("n_blq" = sum(grepl("BLQ|LTR|<[1-9]|<PCLLOQ", x))))
 
   y
 }
@@ -398,6 +400,7 @@ s_summary.character <- function(x, verbose = TRUE, ...) {
 #'
 #' @export
 s_summary.logical <- function(x, denom = c("n", "N_col", "N_row"), ...) {
+  checkmate::assert_logical(x)
   args_list <- list(...)
   .N_row <- args_list[[".N_row"]]
   .N_col <- args_list[[".N_col"]]
@@ -408,17 +411,17 @@ s_summary.logical <- function(x, denom = c("n", "N_col", "N_row"), ...) {
   }
 
   y <- list()
-  y$n <- length(x)
-  count <- sum(x, na.rm = TRUE)
+  y$n <- c("n" = length(x))
   denom <- match.arg(denom) %>%
     switch(
       n = length(x),
       N_row = .N_row,
       N_col = .N_col
     )
-  y$count <- count
-  y$count_fraction <- c(count, ifelse(denom > 0, count / denom, 0))
-  y$n_blq <- 0L
+  y$count <- c("count" = sum(x, na.rm = TRUE))
+  y$count_fraction <- c(y$count, "fraction" = ifelse(denom > 0, y$count / denom, 0))
+  y$fraction <- c("num" = unname(y$count), "denom" = denom)
+  y$n_blq <- c("n_blq" = 0L)
 
   y
 }
@@ -475,7 +478,7 @@ a_summary <- function(x,
   custom_stat_functions <- default_and_custom_stats_list$custom_stats
 
   # Correction of the pval indication if it is numeric or counts
-  type <- if (is.numeric(x)) "numeric" else "counts"
+  type <- ifelse(is.numeric(x), "numeric", "counts")
   .stats <- .correct_num_or_counts_pval(type, .stats)
 
   # Adding automatically extra parameters to the statistic function (see ?rtables::additional_fun_params)
@@ -519,7 +522,7 @@ a_summary <- function(x,
     names(custom_stat_functions) # Additional stats from custom functions
   )
 
-  if ("count_fraction_fixed_dp" %in% .stats) { # why??
+  if ("count_fraction_fixed_dp" %in% .stats) { # only difference in formats
     x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
   }
   x_stats <- x_stats[.stats]
@@ -546,22 +549,25 @@ a_summary <- function(x,
   # Indentation checks
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
-  # Get and check statistical names from defaults
-  .stat_names <- get_stat_names(x_stats, .stat_names_in) # note is x_stats
-
-  if (is.factor(x) || is.character(x)) { # Fix to recheck
+  if (type == "counts" && !is.logical(x)) {
     # Ungroup statistics with values for each level of x
     x_ungrp <- ungroup_stats(x_stats, .formats, .labels, .indent_mods)
     x_stats <- x_ungrp[["x"]]
     .formats <- x_ungrp[[".formats"]]
     .labels <- gsub("fill-na-level", "NA", x_ungrp[[".labels"]])
+    row_names <- .labels
     .indent_mods <- x_ungrp[[".indent_mods"]]
+  } else {
+    row_names <- names(.labels)
   }
+
+  # Get and check statistical names from defaults
+  .stat_names <- get_stat_names(x_stats, .stat_names_in) # note is x_stats
 
   in_rows(
     .list = x_stats,
     .formats = .formats,
-    .names = names(.labels),
+    .names = .labels,
     .stat_names = .stat_names,
     .labels = .labels,
     .indent_mods = .indent_mods
