@@ -505,8 +505,8 @@ a_summary <- function(x,
 
   # If one col has NA vals, must add NA row to other cols (using placeholder lvl `fill-na-level`)
   if (any(is.na(dots_extra_args$.df_row[[dots_extra_args$.var]])) &&
-      !any(is.na(x)) &&
-      !na.rm) {
+    !any(is.na(x)) &&
+    !na.rm) {
     levels(x) <- c(levels(x), "fill-na-level")
   }
 

@@ -231,5 +231,5 @@ testthat::test_that("get_and_check_stats_names works fine", {
   testthat::expect_error(
     out <- get_and_check_stats_names(stat_results, list("n" = c("1", "2"))),
     "The number of stat names for n"
-    )
+  )
 })

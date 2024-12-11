@@ -159,13 +159,15 @@ get_and_check_stats_names <- function(stat_results, stat_names_in = NULL) {
   }
 
   # Check for number of stat names per stat output
-  for (ii in seq_along(stat_results)){
+  for (ii in seq_along(stat_results)) {
     internal_groups_stat_length <- lapply(stat_results[[ii]], length)
     for (jj in seq_along(internal_groups_stat_length)) {
       if (internal_groups_stat_length[[jj]] != length(out[[ii]])) {
-        stop("The number of stat names for ", names(stat_results)[ii],
-             "(", internal_groups_stat_length[[jj]], ")",
-             " is not equal to the number of statistical outputs.")
+        stop(
+          "The number of stat names for ", names(stat_results)[ii],
+          "(", internal_groups_stat_length[[jj]], ")",
+          " is not equal to the number of statistical outputs."
+        )
       }
     }
   }
