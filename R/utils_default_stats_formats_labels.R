@@ -59,7 +59,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
     method_groups[method_groups == "analyze_vars"] <- "analyze_vars_numeric"
   }
 
-  type_tmp <- ifelse(any(grepl("counts", method_groups)), "counts", "numeric") # for pval checks
+  type_tmp <- ifelse(any(grepl("counts$", method_groups)), "counts", "numeric") # for pval checks
 
   # Defaults for loop
   out <- NULL
@@ -67,7 +67,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
   # Loop for multiple method groups
   for (mgi in method_groups) {
     if (mgi %in% names(tern_default_stats)) {
-      out_tmp <- names(tern_default_stats[[mgi]]) # The values are the stat_names (can be multiple)
+      out_tmp <- tern_default_stats[[mgi]]
     } else {
       stop("The selected method group (", mgi, ") has no default statistical method.")
     }
@@ -123,20 +123,20 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
 
 
 #' @describeIn default_stats_formats_labels Get statistical NAMES available for a given method
-#'   group (analyze function). To check available defaults see `tern::tern_default_stats` list.
-#'
+#'   group (analyze function). To check available defaults see `tern::tern_default_stat_names` list.
+#' @param stat_results (`list`)\cr list of statistical results. It should be used close to the end of
+#'   a statistical function. See examples for a structure with two statistical results and two groups.
 #' @param stat_names_in (`character`)\cr custom modification of statistical values.
 #'
 #' @return
-#' * `get_stats()` returns a `character` vector of statistical methods.
+#' * `get_and_check_stats_names()` returns a named list of`character` vectors, indicating the names of
+#'    statistical outputs.
 #'
 #' @examples
+#' stat_results <- list("n" = list("M" = 1, "F" = 2), "count_fraction" = list("M" = c(1, 0.2), "F" = c(2, 0.1)))
+#' get_and_check_stats_names(stat_results)
+#' get_and_check_stats_names(stat_results, list("n" = "argh"))
 #'
-# stat_results <- list("n" = list("M" = 1, "F" = 2), "count_fraction" = list("M" = c(1, 0.2), "F" = c(2, 0.1)))
-# get_and_check_stats_names(method_groups = "analyze_vars_numeric",
-#                          stat_results = stat_results, stat_names_in = list("n" = "asdsada"))
-# method_groups <- met_grp
-
 #' @export
 get_and_check_stats_names <- function(stat_results, stat_names_in = NULL) {
   checkmate::assert_character(names(stat_results), min.len = 1)
@@ -160,9 +160,13 @@ get_and_check_stats_names <- function(stat_results, stat_names_in = NULL) {
 
   # Check for number of stat names per stat output
   for (ii in seq_along(stat_results)){
-    if (length(out[[ii]]) != length(stat_results[[ii]])) {
-      stop("The number of stat names for ", names(stat_results)[ii],
-           " is not equal to the number of statistical outputs.")
+    internal_groups_stat_length <- lapply(stat_results[[ii]], length)
+    for (jj in seq_along(internal_groups_stat_length)) {
+      if (internal_groups_stat_length[[jj]] != length(out[[ii]])) {
+        stop("The number of stat names for ", names(stat_results)[ii],
+             "(", internal_groups_stat_length[[jj]], ")",
+             " is not equal to the number of statistical outputs.")
+      }
     }
   }
 
@@ -482,6 +486,7 @@ labels_use_control <- function(labels_default, control, labels_custom = NULL) {
   labels_default
 }
 
+# tern_default_stats -----------------------------------------------------------
 #' @describeIn default_stats_formats_labels Named list of available statistics by method group for `tern`.
 #'
 #' @format
@@ -537,6 +542,7 @@ tern_default_stats <- list(
   test_proportion_diff = c("pval")
 )
 
+# tern_default_stat_names ------------------------------------------------------
 #' @describeIn default_stats_formats_labels Named list of available statistic NAMES.
 #'
 #' @format
@@ -623,6 +629,7 @@ tern_default_stat_names <- list(
   "or" = "or"
 )
 
+# tern_default_formats ---------------------------------------------------------
 #' @describeIn default_stats_formats_labels Named vector of default formats for `tern`.
 #'
 #' @format
@@ -678,6 +685,7 @@ tern_default_formats <- c(
   rate_ratio_ci = "(xx.xxxx, xx.xxxx)"
 )
 
+# tern_default_labels ----------------------------------------------------------
 #' @describeIn default_stats_formats_labels Named `character` vector of default labels for `tern`.
 #'
 #' @format

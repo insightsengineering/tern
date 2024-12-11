@@ -483,6 +483,7 @@ a_summary <- function(x,
                       compare = FALSE,
                       ...,
                       .stats = NULL,
+                      .stat_names_in = NULL,
                       .formats = NULL,
                       .labels = NULL,
                       .indent_mods = NULL) {
@@ -564,7 +565,9 @@ a_summary <- function(x,
 
   # Indentation checks
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
-  browser()
+
+  # Get and check statistical names from defaults
+  .stat_names <- get_and_check_stats_names(x_stats, .stat_names_in) # note is x_stats
 
   if (is.factor(x) || is.character(x)) { # Fix to recheck
     # Ungroup statistics with values for each level of x
@@ -575,12 +578,11 @@ a_summary <- function(x,
     .indent_mods <- x_ungrp[[".indent_mods"]]
   }
 
-
   in_rows(
     .list = x_stats,
     .formats = .formats,
     .names = names(.labels),
-    # .stat_names = list(c("a", "b")),
+    .stat_names = .stat_names,
     .labels = .labels,
     .indent_mods = .indent_mods
   )
@@ -671,10 +673,12 @@ analyze_vars <- function(lyt,
                          section_div = NA_character_,
                          ...,
                          .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
+                         .stat_names_in = NULL,
                          .formats = NULL,
                          .labels = NULL,
                          .indent_mods = NULL) {
   extra_args <- list(".stats" = .stats)
+  if (!is.null(.stat_names_in)) extra_args[[".stat_names_in"]] <- .stat_names_in
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods

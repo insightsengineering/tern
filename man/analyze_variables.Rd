@@ -23,6 +23,7 @@ analyze_vars(
   section_div = NA_character_,
   ...,
   .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
+  .stat_names_in = NULL,
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL
@@ -72,20 +73,13 @@ s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
 
 a_summary(
   x,
-  .N_col,
-  .N_row,
-  .var = NULL,
-  .df_row = NULL,
-  .ref_group = NULL,
-  .in_ref_col = FALSE,
   compare = FALSE,
+  ...,
   .stats = NULL,
+  .stat_names_in = NULL,
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL,
-  na.rm = TRUE,
-  na_str = default_na_str(),
-  ...
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -116,6 +110,9 @@ defined by this split instruction, or \code{NA_character_} (the default) for no 
 Options for numeric variables are: \verb{'n', 'sum', 'mean', 'sd', 'se', 'mean_sd', 'mean_se', 'mean_ci', 'mean_sei', 'mean_sdi', 'mean_pval', 'median', 'mad', 'median_ci', 'quantiles', 'iqr', 'range', 'min', 'max', 'median_range', 'cv', 'geom_mean', 'geom_mean_ci', 'geom_cv', 'median_ci_3d', 'mean_ci_3d', 'geom_mean_ci_3d'}
 
 Options for non-numeric variables are: \verb{'n', 'count', 'count_fraction', 'count_fraction_fixed_dp', 'fraction', 'n_blq'}}
+
+\item{.stat_names_in}{(\code{character})\cr names of the statistics that are passed directly to name single statinstics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
@@ -158,12 +155,6 @@ See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 
 \item{verbose}{(\code{flag})\cr defaults to \code{TRUE}, which prints out warnings and messages. It is mainly used
 to print out information about factor casting.}
-
-\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
-
-\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
-
-\item{.in_ref_col}{(\code{flag})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
 
 \item{compare}{(\code{flag})\cr whether comparison statistics should be analyzed instead of summary statistics
 (\code{compare = TRUE} adds \code{pval} statistic comparing against reference group).}

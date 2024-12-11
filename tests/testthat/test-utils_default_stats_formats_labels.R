@@ -217,3 +217,19 @@ testthat::test_that("summary_labels works as expected", {
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("get_and_check_stats_names works fine", {
+  stat_results <- list("n" = list("M" = 1, "F" = 2), "count_fraction" = list("M" = c(1, 0.2), "F" = c(2, 0.1)))
+  out <- get_and_check_stats_names(stat_results)
+
+  testthat::expect_equal(out[1], list("n" = "n"))
+  testthat::expect_equal(out[2], list("count_fraction" = c("n", "p")))
+
+  out <- get_and_check_stats_names(stat_results, list("n" = "argh"))
+  testthat::expect_equal(out[1], list("n" = "argh"))
+
+  testthat::expect_error(
+    out <- get_and_check_stats_names(stat_results, list("n" = c("1", "2"))),
+    "The number of stat names for n"
+    )
+})
