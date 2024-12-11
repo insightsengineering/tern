@@ -30,7 +30,6 @@ NULL
 #'
 #' @keywords internal
 s_change_from_baseline <- function(df, ...) {
-  # s_summary should get na.rm
   args_list <- list(...)
   .var <- args_list[[".var"]]
   variables <- args_list[["variables"]]
@@ -180,7 +179,7 @@ summarize_change <- function(lyt,
                              ),
                              .indent_mods = NULL) {
   # Extra args must contain .stats, .formats, .labels, .indent_mods - sent to the analysis level
-  extra_args <- list(".stats" = .stats)
+  extra_args <- list(".stats" = .stats, "na_rm" = na_rm)
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
@@ -204,7 +203,7 @@ summarize_change <- function(lyt,
     na_str = na_str,
     nested = nested,
     extra_args = extra_args,
-    inclNAs = na_rm, # adds na.rm = TRUE to the analysis function
+    inclNAs = na_rm,
     show_labels = show_labels,
     table_names = table_names,
     section_div = section_div

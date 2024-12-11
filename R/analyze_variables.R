@@ -75,14 +75,7 @@ NULL
 #' * `s_summary()` returns different statistics depending on the class of `x`.
 #'
 #' @export
-s_summary <- function(x,
-                      na.rm = TRUE, # nolint
-                      denom,
-                      .N_row, # nolint
-                      .N_col, # nolint
-                      .var,
-                      ...) {
-  checkmate::assert_flag(na.rm)
+s_summary <- function(x, denom, control, ...) {
   UseMethod("s_summary", x)
 }
 
@@ -139,17 +132,17 @@ s_summary <- function(x,
 #'
 #' ## Management of NA values.
 #' x <- c(NA_real_, 1)
-#' s_summary(x, na.rm = TRUE)
-#' s_summary(x, na.rm = FALSE)
+#' s_summary(x, na_rm = TRUE)
+#' s_summary(x, na_rm = FALSE)
 #'
 #' x <- c(NA_real_, 1, 2)
-#' s_summary(x, stats = NULL)
+#' s_summary(x)
 #'
 #' ## Benefits in `rtables` contructions:
 #' dta_test <- data.frame(
-#'   Group = rep(LETTERS[1:3], each = 2),
-#'   sub_group = rep(letters[1:2], each = 3),
-#'   x = 1:6
+#'   Group = rep(LETTERS[seq(3)], each = 2),
+#'   sub_group = rep(letters[seq(2)], each = 3),
+#'   x = seq(6)
 #' )
 #'
 #' ## The summary obtained in with `rtables`:
@@ -164,17 +157,13 @@ s_summary <- function(x,
 #' lapply(X, function(x) s_summary(x$x))
 #'
 #' @export
-s_summary.numeric <- function(x,
-                              na.rm = TRUE, # nolint
-                              denom,
-                              .N_row, # nolint
-                              .N_col, # nolint
-                              .var,
-                              control = control_analyze_vars(),
-                              ...) {
-  checkmate::assert_numeric(x)
+s_summary.numeric <- function(x, control = control_analyze_vars(), ...) {
+  args_list <- list(...)
+  .N_row <- args_list[[".N_row"]]
+  .N_col <- args_list[[".N_col"]]
+  na_rm <- args_list[["na_rm"]]
 
-  if (na.rm) {
+  if (na_rm %||% TRUE) {
     x <- x[!is.na(x)]
   }
 
@@ -274,9 +263,9 @@ s_summary.numeric <- function(x,
 #' * If `x` is an empty `factor`, a list is still returned for `counts` with one element
 #'   per factor level. If there are no levels in `x`, the function fails.
 #' * If factor variables contain `NA`, these `NA` values are excluded by default. To include `NA` values
-#'   set `na.rm = FALSE` and missing values will be displayed as an `NA` level. Alternatively, an explicit
+#'   set `na_rm = FALSE` and missing values will be displayed as an `NA` level. Alternatively, an explicit
 #'   factor level can be defined for `NA` values during pre-processing via [df_explicit_na()] - the
-#'   default `na_level` (`"<Missing>"`) will also be excluded when `na.rm` is set to `TRUE`.
+#'   default `na_level` (`"<Missing>"`) will also be excluded when `na_rm` is set to `TRUE`.
 #'
 #' @method s_summary factor
 #'
@@ -292,8 +281,8 @@ s_summary.numeric <- function(x,
 #' ## Management of NA values.
 #' x <- factor(c(NA, "Female"))
 #' x <- explicit_na(x)
-#' s_summary(x, na.rm = TRUE)
-#' s_summary(x, na.rm = FALSE)
+#' s_summary(x, na_rm = TRUE)
+#' s_summary(x, na_rm = FALSE)
 #'
 #' ## Different denominators.
 #' x <- factor(c("a", "a", "b", "c", "a"))
@@ -301,15 +290,13 @@ s_summary.numeric <- function(x,
 #' s_summary(x, denom = "N_col", .N_col = 20L)
 #'
 #' @export
-s_summary.factor <- function(x,
-                             na.rm = TRUE, # nolint
-                             denom = c("n", "N_col", "N_row"),
-                             .N_row, # nolint
-                             .N_col, # nolint
-                             ...) {
-  assert_valid_factor(x)
+s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
+  args_list <- list(...)
+  .N_row <- args_list[[".N_row"]]
+  .N_col <- args_list[[".N_col"]]
+  na_rm <- args_list[["na_rm"]]
 
-  if (na.rm) {
+  if (na_rm %||% TRUE) {
     x <- x[!is.na(x)] %>% fct_discard("<Missing>")
   } else {
     x <- x %>% explicit_na(label = "NA")
@@ -362,32 +349,21 @@ s_summary.factor <- function(x,
 #' # `s_summary.character`
 #'
 #' ## Basic usage:
-#' s_summary(c("a", "a", "b", "c", "a"), .var = "x", verbose = FALSE)
-#' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE, verbose = FALSE)
+#' s_summary(c("a", "a", "b", "c", "a"), verbose = FALSE)
+#' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na_rm = FALSE, verbose = FALSE)
 #'
 #' @export
-s_summary.character <- function(x,
-                                na.rm = TRUE, # nolint
-                                denom = c("n", "N_col", "N_row"),
-                                .N_row, # nolint
-                                .N_col, # nolint
-                                .var,
-                                verbose = TRUE,
-                                ...) {
-  if (na.rm) {
+s_summary.character <- function(x, verbose = TRUE, ...) {
+  args_list <- list(...)
+  na_rm <- args_list[["na_rm"]]
+
+  if (na_rm %||% TRUE) {
     y <- as_factor_keep_attributes(x, verbose = verbose)
   } else {
     y <- as_factor_keep_attributes(x, verbose = verbose, na_level = "NA")
   }
 
-  s_summary(
-    x = y,
-    na.rm = na.rm,
-    denom = denom,
-    .N_row = .N_row,
-    .N_col = .N_col,
-    ...
-  )
+  s_summary(x = y, ...)
 }
 
 #' @describeIn analyze_variables Method for `logical` class.
@@ -412,8 +388,8 @@ s_summary.character <- function(x,
 #'
 #' ## Management of NA values.
 #' x <- c(NA, TRUE, FALSE)
-#' s_summary(x, na.rm = TRUE)
-#' s_summary(x, na.rm = FALSE)
+#' s_summary(x, na_rm = TRUE)
+#' s_summary(x, na_rm = FALSE)
 #'
 #' ## Different denominators.
 #' x <- c(TRUE, FALSE, TRUE, TRUE)
@@ -421,13 +397,16 @@ s_summary.character <- function(x,
 #' s_summary(x, denom = "N_col", .N_col = 20L)
 #'
 #' @export
-s_summary.logical <- function(x,
-                              na.rm = TRUE, # nolint
-                              denom = c("n", "N_col", "N_row"),
-                              .N_row, # nolint
-                              .N_col, # nolint
-                              ...) {
-  if (na.rm) x <- x[!is.na(x)]
+s_summary.logical <- function(x, denom = c("n", "N_col", "N_row"), ...) {
+  args_list <- list(...)
+  .N_row <- args_list[[".N_row"]]
+  .N_col <- args_list[[".N_col"]]
+  na_rm <- args_list[["na_rm"]]
+
+  if (na_rm %||% TRUE) {
+    x <- x[!is.na(x)]
+  }
+
   y <- list()
   y$n <- length(x)
   count <- sum(x, na.rm = TRUE)
@@ -440,6 +419,7 @@ s_summary.logical <- function(x,
   y$count <- count
   y$count_fraction <- c(count, ifelse(denom > 0, count / denom, 0))
   y$n_blq <- 0L
+
   y
 }
 
@@ -506,7 +486,7 @@ a_summary <- function(x,
   # If one col has NA vals, must add NA row to other cols (using placeholder lvl `fill-na-level`)
   if (any(is.na(dots_extra_args$.df_row[[dots_extra_args$.var]])) &&
     !any(is.na(x)) &&
-    !na.rm) {
+    !dots_extra_args$na_rm) {
     levels(x) <- c(levels(x), "fill-na-level")
   }
 
@@ -637,7 +617,7 @@ a_summary <- function(x,
 #' l <- basic_table() %>%
 #'   split_cols_by(var = "ARM") %>%
 #'   split_rows_by(var = "AVISIT") %>%
-#'   analyze_vars(vars = "AVAL", na.rm = FALSE)
+#'   analyze_vars(vars = "AVAL", na_rm = FALSE)
 #'
 #' build_table(l, df = dta_test)
 #'
@@ -646,7 +626,7 @@ a_summary <- function(x,
 #' dta_test <- df_explicit_na(dta_test)
 #' l <- basic_table() %>%
 #'   split_cols_by(var = "ARM") %>%
-#'   analyze_vars(vars = "AVISIT", na.rm = FALSE)
+#'   analyze_vars(vars = "AVISIT", na_rm = FALSE)
 #'
 #' build_table(l, df = dta_test)
 #'
@@ -677,7 +657,7 @@ analyze_vars <- function(lyt,
                          .formats = NULL,
                          .labels = NULL,
                          .indent_mods = NULL) {
-  extra_args <- list(".stats" = .stats)
+  extra_args <- list(".stats" = .stats, "na_rm" = na_rm)
   if (!is.null(.stat_names_in)) extra_args[[".stat_names_in"]] <- .stat_names_in
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
@@ -696,7 +676,7 @@ analyze_vars <- function(lyt,
     var_labels = var_labels,
     afun = a_summary,
     na_str = na_str,
-    inclNAs = na_rm, # adds na.rm = TRUE to the analysis function
+    inclNAs = na_rm,
     nested = nested,
     extra_args = extra_args,
     show_labels = show_labels,

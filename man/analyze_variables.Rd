@@ -29,47 +29,15 @@ analyze_vars(
   .indent_mods = NULL
 )
 
-s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
+s_summary(x, denom, control, ...)
 
-\method{s_summary}{numeric}(
-  x,
-  na.rm = TRUE,
-  denom,
-  .N_row,
-  .N_col,
-  .var,
-  control = control_analyze_vars(),
-  ...
-)
+\method{s_summary}{numeric}(x, control = control_analyze_vars(), ...)
 
-\method{s_summary}{factor}(
-  x,
-  na.rm = TRUE,
-  denom = c("n", "N_col", "N_row"),
-  .N_row,
-  .N_col,
-  ...
-)
+\method{s_summary}{factor}(x, denom = c("n", "N_col", "N_row"), ...)
 
-\method{s_summary}{character}(
-  x,
-  na.rm = TRUE,
-  denom = c("n", "N_col", "N_row"),
-  .N_row,
-  .N_col,
-  .var,
-  verbose = TRUE,
-  ...
-)
+\method{s_summary}{character}(x, verbose = TRUE, ...)
 
-\method{s_summary}{logical}(
-  x,
-  na.rm = TRUE,
-  denom = c("n", "N_col", "N_row"),
-  .N_row,
-  .N_col,
-  ...
-)
+\method{s_summary}{logical}(x, denom = c("n", "N_col", "N_row"), ...)
 
 a_summary(
   x,
@@ -125,23 +93,12 @@ for that statistic's row label.}
 
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
-
 \item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
 \itemize{
 \item \code{n}: number of values in this row and column intersection.
 \item \code{N_row}: total number of values in this row across columns.
 \item \code{N_col}: total number of values in this column across rows.
 }}
-
-\item{.N_row}{(\code{integer(1)})\cr row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
-
-\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
-passed by \code{rtables}.}
-
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
 
 \item{control}{(\code{list})\cr parameters for descriptive statistics details, specified by using
 the helper function \code{\link[=control_analyze_vars]{control_analyze_vars()}}. Some possible parameter options are:
@@ -400,7 +357,7 @@ s_summary(x, denom = "N_col", .N_col = 20L)
 # `s_summary.character`
 
 ## Basic usage:
-s_summary(c("a", "a", "b", "c", "a"), .var = "x", verbose = FALSE)
+s_summary(c("a", "a", "b", "c", "a"), verbose = FALSE)
 s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE, verbose = FALSE)
 
 # `s_summary.logical`

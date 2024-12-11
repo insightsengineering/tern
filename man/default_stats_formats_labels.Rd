@@ -4,12 +4,11 @@
 \name{default_stats_formats_labels}
 \alias{default_stats_formats_labels}
 \alias{get_stats}
-\alias{get_and_check_stats_names}
+\alias{get_stat_names}
 \alias{get_formats_from_stats}
 \alias{get_labels_from_stats}
 \alias{get_indents_from_stats}
 \alias{tern_default_stats}
-\alias{tern_default_stat_names}
 \alias{tern_default_formats}
 \alias{tern_default_labels}
 \alias{summary_formats}
@@ -19,11 +18,6 @@
 \itemize{
 \item \code{tern_default_stats} is a named list of available statistics, with each element
 named for their corresponding statistical method group.
-}
-
-\itemize{
-\item \code{tern_default_stats} is a named list of available statistic names, with each element
-named for their corresponding statistical global name.
 }
 
 \itemize{
@@ -43,7 +37,7 @@ get_stats(
   add_pval = FALSE
 )
 
-get_and_check_stats_names(stat_results, stat_names_in = NULL)
+get_stat_names(stat_results, stat_names_in = NULL)
 
 get_formats_from_stats(stats, formats_in = NULL)
 
@@ -52,8 +46,6 @@ get_labels_from_stats(stats, labels_in = NULL, row_nms = NULL)
 get_indents_from_stats(stats, indents_in = NULL, row_nms = NULL)
 
 tern_default_stats
-
-tern_default_stat_names
 
 tern_default_formats
 
@@ -103,7 +95,7 @@ variable names if rows correspond to different variables instead of levels. Defa
 }
 
 \itemize{
-\item \code{get_and_check_stats_names()} returns a named list of\code{character} vectors, indicating the names of
+\item \code{get_stat_names()} returns a named list of\code{character} vectors, indicating the names of
 statistical outputs.
 }
 
@@ -150,8 +142,8 @@ Current choices for \code{type} are \code{counts} and \code{numeric} for \code{\
 \item \code{get_stats()}: Get statistics available for a given method
 group (analyze function). To check available defaults see \code{tern::tern_default_stats} list.
 
-\item \code{get_and_check_stats_names()}: Get statistical NAMES available for a given method
-group (analyze function). To check available defaults see \code{tern::tern_default_stat_names} list.
+\item \code{get_stat_names()}: Get statistical NAMES available for a given method
+group (analyze function). Please use the \verb{s_*} functions to get the statistical names.
 
 \item \code{get_formats_from_stats()}: Get formats corresponding to a list of statistics.
 To check available defaults see \code{tern::tern_default_formats} list.
@@ -164,8 +156,6 @@ the statistics name will be used as label.
 It defaults to 0L for all values.
 
 \item \code{tern_default_stats}: Named list of available statistics by method group for \code{tern}.
-
-\item \code{tern_default_stat_names}: Named list of available statistic NAMES.
 
 \item \code{tern_default_formats}: Named vector of default formats for \code{tern}.
 
@@ -204,8 +194,8 @@ all_cnt_occ <- get_stats("count_occurrences")
 get_stats(c("count_occurrences", "analyze_vars_counts"))
 
 stat_results <- list("n" = list("M" = 1, "F" = 2), "count_fraction" = list("M" = c(1, 0.2), "F" = c(2, 0.1)))
-get_and_check_stats_names(stat_results)
-get_and_check_stats_names(stat_results, list("n" = "argh"))
+get_stat_names(stat_results)
+get_stat_names(stat_results, list("n" = "argh"))
 
 # Defaults formats
 get_formats_from_stats(num_stats)
