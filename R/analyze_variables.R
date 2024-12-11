@@ -567,7 +567,7 @@ a_summary <- function(x,
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
   # Get and check statistical names from defaults
-  .stat_names <- get_and_check_stats_names(x_stats, .stat_names_in) # note is x_stats
+  .stat_names <- get_stat_names(x_stats, .stat_names_in) # note is x_stats
 
   if (is.factor(x) || is.character(x)) { # Fix to recheck
     # Ungroup statistics with values for each level of x

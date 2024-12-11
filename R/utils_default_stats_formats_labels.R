@@ -123,54 +123,41 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
 
 
 #' @describeIn default_stats_formats_labels Get statistical NAMES available for a given method
-#'   group (analyze function). To check available defaults see `tern::tern_default_stat_names` list.
+#'   group (analyze function). Please use the `s_*` functions to get the statistical names.
 #' @param stat_results (`list`)\cr list of statistical results. It should be used close to the end of
 #'   a statistical function. See examples for a structure with two statistical results and two groups.
 #' @param stat_names_in (`character`)\cr custom modification of statistical values.
 #'
 #' @return
-#' * `get_and_check_stats_names()` returns a named list of`character` vectors, indicating the names of
+#' * `get_stat_names()` returns a named list of`character` vectors, indicating the names of
 #'    statistical outputs.
 #'
 #' @examples
 #' stat_results <- list("n" = list("M" = 1, "F" = 2), "count_fraction" = list("M" = c(1, 0.2), "F" = c(2, 0.1)))
-#' get_and_check_stats_names(stat_results)
-#' get_and_check_stats_names(stat_results, list("n" = "argh"))
+#' get_stat_names(stat_results)
+#' get_stat_names(stat_results, list("n" = "argh"))
 #'
 #' @export
-get_and_check_stats_names <- function(stat_results, stat_names_in = NULL) {
+get_stat_names <- function(stat_results, stat_names_in = NULL) {
   checkmate::assert_character(names(stat_results), min.len = 1)
   checkmate::assert_list(stat_names_in, null.ok = TRUE)
 
-  # Extract global defaults
-  which_sts_nm <- match(names(stat_results), names(tern_default_stat_names))
-
-  # Select only needed stat_names from stats
-  ret <- vector("list", length = length(stat_results)) # Returning a list is simpler
-  ret[!is.na(which_sts_nm)] <- tern_default_stat_names[which_sts_nm[!is.na(which_sts_nm)]]
-
-  out <- setNames(ret, names(stat_results))
+  stat_nms_from_stats <- lapply(stat_results, function(si) {
+    nm <- names(si)
+    if (is.null(nm)) {
+      nm <- rep(NA_character_, length(si)) # no statistical names
+    }
+    return(nm)
+  })
 
   # Modify some with custom stat names
   if (!is.null(stat_names_in)) {
     # Stats is the main
-    common_names <- intersect(names(out), names(stat_names_in))
-    out[common_names] <- stat_names_in[common_names]
+    common_names <- intersect(names(stat_nms_from_stats), names(stat_names_in))
+    stat_nms_from_stats[common_names] <- stat_names_in[common_names]
   }
 
-  # Check for number of stat names per stat output
-  for (ii in seq_along(stat_results)){
-    internal_groups_stat_length <- lapply(stat_results[[ii]], length)
-    for (jj in seq_along(internal_groups_stat_length)) {
-      if (internal_groups_stat_length[[jj]] != length(out[[ii]])) {
-        stop("The number of stat names for ", names(stat_results)[ii],
-             "(", internal_groups_stat_length[[jj]], ")",
-             " is not equal to the number of statistical outputs.")
-      }
-    }
-  }
-
-  out
+  stat_nms_from_stats
 }
 
 # Utility function used to separate custom stats (user-defined functions) from defaults
@@ -540,93 +527,6 @@ tern_default_stats <- list(
   tabulate_survival_biomarkers = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
   tabulate_survival_subgroups = c("n_tot_events", "n_events", "n_tot", "n", "median", "hr", "ci", "pval"),
   test_proportion_diff = c("pval")
-)
-
-# tern_default_stat_names ------------------------------------------------------
-#' @describeIn default_stats_formats_labels Named list of available statistic NAMES.
-#'
-#' @format
-#' * `tern_default_stats` is a named list of available statistic names, with each element
-#'   named for their corresponding statistical global name.
-#'
-#' @export
-tern_default_stat_names <- list(
-  "fraction" = "p",
-  "count_fraction" = c("n", "p"),
-  "count_fraction_fixed_dp" = c("n", "p"),
-  "n_patients" = "n",
-  "sum_exposure" = "sum",
-  "n" = "n",
-  "count" = "count",
-  "n_blq" = "n_blq",
-  "sum" = "sum",
-  "mean" = "mean",
-  "sd" = "sd",
-  "se" = "se",
-  "mean_sd" = c("mean", "sd"),
-  "mean_se" = c("mean", "se"),
-  "mean_ci" = c("mean", "ci_low", "ci_high"),
-  "mean_sei" = c("mean", "se_low", "se_high"),
-  "mean_sdi" = c("mean", "sd_low", "sd_high"),
-  "mean_pval" = c("mean", "pval"),
-  "median" = "median",
-  "mad" = "mad",
-  "median_ci" = c("median", "ci_low", "ci_high"),
-  "quantiles" = "quantiles",
-  "iqr" = "iqr",
-  "range" = c("min", "max"),
-  "min" = "min",
-  "max" = "max",
-  "median_range" = c("median", "min", "max"),
-  "cv" = "cv",
-  "geom_mean" = "geom_mean",
-  "geom_mean_ci" = c("geom_mean", "ci_low", "ci_high"),
-  "geom_cv" = "geom_cv",
-  "median_ci_3d" = c("median", "ci_low", "ci_high"),
-  "mean_ci_3d" = c("mean", "ci_low", "ci_high"),
-  "geom_mean_ci_3d" = c("geom_mean", "ci_low", "ci_high"),
-  "pvalue" = "pval",
-  "hr" = "hr",
-  "hr_ci" = c("hr", "ci_low", "ci_high"),
-  "n_tot" = "n_tot",
-  "n_tot_events" = "n_tot_events",
-  "person_years" = "person_years",
-  "n_events" = "n_events",
-  "rate" = "rate",
-  "rate_ci" = c("rate_ci_low", "rate_ci_high"),
-  "n_unique" = "n_unique",
-  "n_rate" = "n_rate",
-  "n_prop" = "n_prop",
-  "prop_ci" = c("prop_ci_low", "prop_ci_high"),
-  "or_ci" = c("or_ci_low", "or_ci_high"),
-  "diff" = "diff",
-  "diff_ci" = c("diff_ci_low", "diff_ci_high"),
-  "lsmean" = "lsmean",
-  "lsmean_diff" = "lsmean_diff",
-  "lsmean_diff_ci" = c("lsmean_diff_ci_low", "lsmean_diff_ci_high"),
-  "pval" = "pval",
-  "ci" = c("ci_low", "ci_high"),
-  "pval_inter" = "pval_inter",
-  "rate_ratio" = "rate_ratio",
-  "rate_ratio_ci" = c("rate_ratio_ci_low", "rate_ratio_ci_high"),
-  "unique" = "unique",
-  "nonunique" = "nonunique",
-  "unique_count" = "unique_count",
-  "all" = "all",
-  "quantiles_lower" = "quantiles_lower",
-  "quantiles_upper" = "quantiles_upper",
-  "range_censor" = c("range_censor_low", "range_censor_high"),
-  "range_event" = c("range_event_low", "range_event_high"),
-  "pt_at_risk" = "pt_at_risk",
-  "event_free_rate" = "event_free_rate",
-  "rate_se" = "rate_se",
-  "rate_diff" = "rate_diff",
-  "rate_diff_ci" = c("rate_diff_ci_low", "rate_diff_ci_high"),
-  "ztest_pval" = "ztest_pval",
-  "event_free_rate_3d" = c("event_free_rate", "event_free_rate_ci_low", "event_free_rate_ci_high"),
-  "n_rsp" = "n_rsp",
-  "prop" = "prop",
-  "or" = "or"
 )
 
 # tern_default_formats ---------------------------------------------------------
