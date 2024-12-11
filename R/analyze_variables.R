@@ -28,6 +28,20 @@ control_analyze_vars <- function(conf_level = 0.95,
   list(conf_level = conf_level, quantiles = quantiles, quantile_type = quantile_type, test_mean = test_mean)
 }
 
+# Helper function to fix numeric or counts pval if necessary
+.correct_num_or_counts_pval <- function(type, .stats) {
+  if (type == "numeric") {
+    if (!is.null(.stats) && any(grepl("^pval", .stats))) {
+      .stats[grepl("^pval", .stats)] <- "pval" # tmp fix xxx
+    }
+  } else {
+    if (!is.null(.stats) && any(grepl("^pval", .stats))) {
+      .stats[grepl("^pval", .stats)] <- "pval_counts" # tmp fix xxx
+    }
+  }
+  .stats
+}
+
 #' Analyze variables
 #'
 #' @description `r lifecycle::badge("stable")`
@@ -61,14 +75,7 @@ NULL
 #' * `s_summary()` returns different statistics depending on the class of `x`.
 #'
 #' @export
-s_summary <- function(x,
-                      na.rm = TRUE, # nolint
-                      denom,
-                      .N_row, # nolint
-                      .N_col, # nolint
-                      .var,
-                      ...) {
-  checkmate::assert_flag(na.rm)
+s_summary <- function(x, denom, control, ...) {
   UseMethod("s_summary", x)
 }
 
@@ -125,17 +132,17 @@ s_summary <- function(x,
 #'
 #' ## Management of NA values.
 #' x <- c(NA_real_, 1)
-#' s_summary(x, na.rm = TRUE)
-#' s_summary(x, na.rm = FALSE)
+#' s_summary(x, na_rm = TRUE)
+#' s_summary(x, na_rm = FALSE)
 #'
 #' x <- c(NA_real_, 1, 2)
-#' s_summary(x, stats = NULL)
+#' s_summary(x)
 #'
 #' ## Benefits in `rtables` contructions:
 #' dta_test <- data.frame(
-#'   Group = rep(LETTERS[1:3], each = 2),
-#'   sub_group = rep(letters[1:2], each = 3),
-#'   x = 1:6
+#'   Group = rep(LETTERS[seq(3)], each = 2),
+#'   sub_group = rep(letters[seq(2)], each = 3),
+#'   x = seq(6)
 #' )
 #'
 #' ## The summary obtained in with `rtables`:
@@ -150,17 +157,14 @@ s_summary <- function(x,
 #' lapply(X, function(x) s_summary(x$x))
 #'
 #' @export
-s_summary.numeric <- function(x,
-                              na.rm = TRUE, # nolint
-                              denom,
-                              .N_row, # nolint
-                              .N_col, # nolint
-                              .var,
-                              control = control_analyze_vars(),
-                              ...) {
+s_summary.numeric <- function(x, control = control_analyze_vars(), ...) {
   checkmate::assert_numeric(x)
+  args_list <- list(...)
+  .N_row <- args_list[[".N_row"]]
+  .N_col <- args_list[[".N_col"]]
+  na_rm <- args_list[["na_rm"]]
 
-  if (na.rm) {
+  if (na_rm %||% TRUE) {
     x <- x[!is.na(x)]
   }
 
@@ -260,9 +264,9 @@ s_summary.numeric <- function(x,
 #' * If `x` is an empty `factor`, a list is still returned for `counts` with one element
 #'   per factor level. If there are no levels in `x`, the function fails.
 #' * If factor variables contain `NA`, these `NA` values are excluded by default. To include `NA` values
-#'   set `na.rm = FALSE` and missing values will be displayed as an `NA` level. Alternatively, an explicit
+#'   set `na_rm = FALSE` and missing values will be displayed as an `NA` level. Alternatively, an explicit
 #'   factor level can be defined for `NA` values during pre-processing via [df_explicit_na()] - the
-#'   default `na_level` (`"<Missing>"`) will also be excluded when `na.rm` is set to `TRUE`.
+#'   default `na_level` (`"<Missing>"`) will also be excluded when `na_rm` is set to `TRUE`.
 #'
 #' @method s_summary factor
 #'
@@ -278,8 +282,8 @@ s_summary.numeric <- function(x,
 #' ## Management of NA values.
 #' x <- factor(c(NA, "Female"))
 #' x <- explicit_na(x)
-#' s_summary(x, na.rm = TRUE)
-#' s_summary(x, na.rm = FALSE)
+#' s_summary(x, na_rm = TRUE)
+#' s_summary(x, na_rm = FALSE)
 #'
 #' ## Different denominators.
 #' x <- factor(c("a", "a", "b", "c", "a"))
@@ -287,15 +291,14 @@ s_summary.numeric <- function(x,
 #' s_summary(x, denom = "N_col", .N_col = 20L)
 #'
 #' @export
-s_summary.factor <- function(x,
-                             na.rm = TRUE, # nolint
-                             denom = c("n", "N_col", "N_row"),
-                             .N_row, # nolint
-                             .N_col, # nolint
-                             ...) {
+s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
   assert_valid_factor(x)
+  args_list <- list(...)
+  .N_row <- args_list[[".N_row"]]
+  .N_col <- args_list[[".N_col"]]
+  na_rm <- args_list[["na_rm"]]
 
-  if (na.rm) {
+  if (na_rm %||% TRUE) {
     x <- x[!is.na(x)] %>% fct_discard("<Missing>")
   } else {
     x <- x %>% explicit_na(label = "NA")
@@ -303,9 +306,9 @@ s_summary.factor <- function(x,
 
   y <- list()
 
-  y$n <- length(x)
+  y$n <-  list("n" = c("n" = length(x))) # all list of a list
 
-  y$count <- as.list(table(x, useNA = "ifany"))
+  y$count <- lapply(as.list(table(x, useNA = "ifany")), setNames, nm = "count")
 
   denom <- match.arg(denom) %>%
     switch(
@@ -317,15 +320,15 @@ s_summary.factor <- function(x,
   y$count_fraction <- lapply(
     y$count,
     function(x) {
-      c(x, ifelse(denom > 0, x / denom, 0))
+      c(x, "p" = ifelse(denom > 0, x / denom, 0))
     }
   )
   y$fraction <- lapply(
     y$count,
-    function(count) c("num" = count, "denom" = denom)
+    function(count) c("num" = unname(count), "denom" = denom)
   )
 
-  y$n_blq <- sum(grepl("BLQ|LTR|<[1-9]|<PCLLOQ", x))
+  y$n_blq <- list("n_blq" = c("n_blq" = sum(grepl("BLQ|LTR|<[1-9]|<PCLLOQ", x))))
 
   y
 }
@@ -348,32 +351,21 @@ s_summary.factor <- function(x,
 #' # `s_summary.character`
 #'
 #' ## Basic usage:
-#' s_summary(c("a", "a", "b", "c", "a"), .var = "x", verbose = FALSE)
-#' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE, verbose = FALSE)
+#' s_summary(c("a", "a", "b", "c", "a"), verbose = FALSE)
+#' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na_rm = FALSE, verbose = FALSE)
 #'
 #' @export
-s_summary.character <- function(x,
-                                na.rm = TRUE, # nolint
-                                denom = c("n", "N_col", "N_row"),
-                                .N_row, # nolint
-                                .N_col, # nolint
-                                .var,
-                                verbose = TRUE,
-                                ...) {
-  if (na.rm) {
+s_summary.character <- function(x, verbose = TRUE, ...) {
+  args_list <- list(...)
+  na_rm <- args_list[["na_rm"]]
+
+  if (na_rm %||% TRUE) {
     y <- as_factor_keep_attributes(x, verbose = verbose)
   } else {
     y <- as_factor_keep_attributes(x, verbose = verbose, na_level = "NA")
   }
 
-  s_summary(
-    x = y,
-    na.rm = na.rm,
-    denom = denom,
-    .N_row = .N_row,
-    .N_col = .N_col,
-    ...
-  )
+  s_summary(x = y, ...)
 }
 
 #' @describeIn analyze_variables Method for `logical` class.
@@ -398,8 +390,8 @@ s_summary.character <- function(x,
 #'
 #' ## Management of NA values.
 #' x <- c(NA, TRUE, FALSE)
-#' s_summary(x, na.rm = TRUE)
-#' s_summary(x, na.rm = FALSE)
+#' s_summary(x, na_rm = TRUE)
+#' s_summary(x, na_rm = FALSE)
 #'
 #' ## Different denominators.
 #' x <- c(TRUE, FALSE, TRUE, TRUE)
@@ -407,25 +399,30 @@ s_summary.character <- function(x,
 #' s_summary(x, denom = "N_col", .N_col = 20L)
 #'
 #' @export
-s_summary.logical <- function(x,
-                              na.rm = TRUE, # nolint
-                              denom = c("n", "N_col", "N_row"),
-                              .N_row, # nolint
-                              .N_col, # nolint
-                              ...) {
-  if (na.rm) x <- x[!is.na(x)]
+s_summary.logical <- function(x, denom = c("n", "N_col", "N_row"), ...) {
+  checkmate::assert_logical(x)
+  args_list <- list(...)
+  .N_row <- args_list[[".N_row"]]
+  .N_col <- args_list[[".N_col"]]
+  na_rm <- args_list[["na_rm"]]
+
+  if (na_rm %||% TRUE) {
+    x <- x[!is.na(x)]
+  }
+
   y <- list()
-  y$n <- length(x)
-  count <- sum(x, na.rm = TRUE)
+  y$n <- c("n" = length(x))
   denom <- match.arg(denom) %>%
     switch(
       n = length(x),
       N_row = .N_row,
       N_col = .N_col
     )
-  y$count <- count
-  y$count_fraction <- c(count, ifelse(denom > 0, count / denom, 0))
-  y$n_blq <- 0L
+  y$count <- c("count" = sum(x, na.rm = TRUE))
+  y$count_fraction <- c(y$count, "fraction" = ifelse(denom > 0, y$count / denom, 0))
+  y$fraction <- c("num" = unname(y$count), "denom" = denom)
+  y$n_blq <- c("n_blq" = 0L)
+
   y
 }
 
@@ -466,80 +463,114 @@ s_summary.logical <- function(x,
 #'
 #' @export
 a_summary <- function(x,
-                      .N_col, # nolint
-                      .N_row, # nolint
-                      .var = NULL,
-                      .df_row = NULL,
-                      .ref_group = NULL,
-                      .in_ref_col = FALSE,
                       compare = FALSE,
+                      ...,
                       .stats = NULL,
+                      .stat_names_in = NULL,
                       .formats = NULL,
                       .labels = NULL,
-                      .indent_mods = NULL,
-                      na.rm = TRUE, # nolint
-                      na_str = default_na_str(),
-                      ...) {
-  extra_args <- list(...)
-  if (is.numeric(x)) {
-    type <- "numeric"
-    if (!is.null(.stats) && any(grepl("^pval", .stats))) {
-      .stats[grepl("^pval", .stats)] <- "pval" # tmp fix xxx
-    }
-  } else {
-    type <- "counts"
-    if (!is.null(.stats) && any(grepl("^pval", .stats))) {
-      .stats[grepl("^pval", .stats)] <- "pval_counts" # tmp fix xxx
-    }
-  }
+                      .indent_mods = NULL) {
+  dots_extra_args <- list(...)
+
+  # Check if there are user-defined functions
+  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
+  .stats <- default_and_custom_stats_list$default_stats
+  custom_stat_functions <- default_and_custom_stats_list$custom_stats
+
+  # Correction of the pval indication if it is numeric or counts
+  type <- ifelse(is.numeric(x), "numeric", "counts")
+  .stats <- .correct_num_or_counts_pval(type, .stats)
+
+  # Adding automatically extra parameters to the statistic function (see ?rtables::additional_fun_params)
+  extra_afun_params <- retrieve_extra_afun_params(
+    names(dots_extra_args$.additional_fun_parameters)
+  )
 
   # If one col has NA vals, must add NA row to other cols (using placeholder lvl `fill-na-level`)
-  if (any(is.na(.df_row[[.var]])) && !any(is.na(x)) && !na.rm) levels(x) <- c(levels(x), "fill-na-level")
+  if (any(is.na(dots_extra_args$.df_row[[dots_extra_args$.var]])) &&
+    !any(is.na(x)) &&
+    !dots_extra_args$na_rm) {
+    levels(x) <- c(levels(x), "fill-na-level")
+  }
 
   x_stats <- if (!compare) {
-    s_summary(x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, ...)
+    .apply_stat_functions(
+      default_stat_fnc = s_summary,
+      custom_stat_fnc_list = custom_stat_functions,
+      args_list = c(
+        x = list(x),
+        extra_afun_params,
+        dots_extra_args
+      )
+    )
   } else {
-    s_compare(
-      x = x, .N_col = .N_col, .N_row = .N_row, na.rm = na.rm, .ref_group = .ref_group, .in_ref_col = .in_ref_col, ...
+    .apply_stat_functions(
+      default_stat_fnc = s_compare,
+      custom_stat_fnc_list = custom_stat_functions,
+      args_list = c(
+        x = list(x),
+        extra_afun_params,
+        dots_extra_args
+      )
     )
   }
 
   # Fill in with formatting defaults if needed
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
-  .stats <- get_stats(met_grp, stats_in = .stats, add_pval = compare)
-  .formats <- get_formats_from_stats(.stats, .formats)
-  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
+  .stats <- c(
+    get_stats(met_grp, stats_in = .stats, add_pval = compare),
+    names(custom_stat_functions) # Additional stats from custom functions
+  )
 
-  lbls <- get_labels_from_stats(.stats, .labels)
+  if ("count_fraction_fixed_dp" %in% .stats) { # only difference in formats
+    x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
+  }
+  x_stats <- x_stats[.stats]
+
   # Check for custom labels from control_analyze_vars
-  .labels <- if ("control" %in% names(extra_args)) {
-    lbls %>% labels_use_control(extra_args[["control"]], .labels)
+  lbls <- get_labels_from_stats(.stats, .labels)
+  .labels <- if ("control" %in% names(dots_extra_args)) {
+    labels_use_control(lbls, dots_extra_args[["control"]], .labels)
   } else {
     lbls
   }
 
-  if ("count_fraction_fixed_dp" %in% .stats) x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
-  x_stats <- x_stats[.stats]
+  # Formats checks
+  .formats <- get_formats_from_stats(.stats, .formats)
 
-  if (is.factor(x) || is.character(x)) {
+  # Auto format handling
+  .formats <- apply_auto_formatting(
+    .formats,
+    x_stats,
+    extra_afun_params$.df_row,
+    extra_afun_params$.var
+  )
+
+  # Indentation checks
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
+
+  if (type == "counts" && !is.logical(x)) {
     # Ungroup statistics with values for each level of x
     x_ungrp <- ungroup_stats(x_stats, .formats, .labels, .indent_mods)
     x_stats <- x_ungrp[["x"]]
     .formats <- x_ungrp[[".formats"]]
     .labels <- gsub("fill-na-level", "NA", x_ungrp[[".labels"]])
+    row_names <- .labels
     .indent_mods <- x_ungrp[[".indent_mods"]]
+  } else {
+    row_names <- names(.labels)
   }
 
-  # Auto format handling
-  .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
+  # Get and check statistical names from defaults
+  .stat_names <- get_stat_names(x_stats, .stat_names_in) # note is x_stats
 
   in_rows(
     .list = x_stats,
     .formats = .formats,
-    .names = names(.labels),
+    .names = .labels,
+    .stat_names = .stat_names,
     .labels = .labels,
-    .indent_mods = .indent_mods,
-    .format_na_strs = na_str
+    .indent_mods = .indent_mods
   )
 }
 
@@ -592,7 +623,7 @@ a_summary <- function(x,
 #' l <- basic_table() %>%
 #'   split_cols_by(var = "ARM") %>%
 #'   split_rows_by(var = "AVISIT") %>%
-#'   analyze_vars(vars = "AVAL", na.rm = FALSE)
+#'   analyze_vars(vars = "AVAL", na_rm = FALSE)
 #'
 #' build_table(l, df = dta_test)
 #'
@@ -601,7 +632,7 @@ a_summary <- function(x,
 #' dta_test <- df_explicit_na(dta_test)
 #' l <- basic_table() %>%
 #'   split_cols_by(var = "ARM") %>%
-#'   analyze_vars(vars = "AVISIT", na.rm = FALSE)
+#'   analyze_vars(vars = "AVISIT", na_rm = FALSE)
 #'
 #' build_table(l, df = dta_test)
 #'
@@ -621,20 +652,29 @@ analyze_vars <- function(lyt,
                          vars,
                          var_labels = vars,
                          na_str = default_na_str(),
+                         na_rm = TRUE,
                          nested = TRUE,
-                         ...,
-                         na.rm = TRUE, # nolint
                          show_labels = "default",
                          table_names = vars,
                          section_div = NA_character_,
+                         ...,
                          .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
+                         .stat_names_in = NULL,
                          .formats = NULL,
                          .labels = NULL,
                          .indent_mods = NULL) {
-  extra_args <- list(.stats = .stats, na.rm = na.rm, na_str = na_str, ...)
+  extra_args <- list(".stats" = .stats, "na_rm" = na_rm)
+  if (!is.null(.stat_names_in)) extra_args[[".stat_names_in"]] <- .stat_names_in
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Adding all additional information from layout to analysis functions (see ?rtables::additional_fun_params)
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_summary) <- c(
+    formals(a_summary),
+    extra_args[[".additional_fun_parameters"]]
+  )
 
   analyze(
     lyt = lyt,
@@ -642,9 +682,9 @@ analyze_vars <- function(lyt,
     var_labels = var_labels,
     afun = a_summary,
     na_str = na_str,
+    inclNAs = na_rm,
     nested = nested,
     extra_args = extra_args,
-    inclNAs = TRUE,
     show_labels = show_labels,
     table_names = table_names,
     section_div = section_div

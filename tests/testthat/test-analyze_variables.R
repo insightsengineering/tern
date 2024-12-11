@@ -10,14 +10,14 @@ testthat::test_that("s_summary return NA for x length 0L", {
 testthat::test_that("s_summary handles NA", {
   x <- c(NA_real_, 1)
 
-  # With `na.rm = TRUE`.
+  # With `na_rm = TRUE`.
   result <- s_summary(x)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
-  # With `na.rm = FALSE`.
-  result <- s_summary(x, na.rm = FALSE)
+  # With `na_rm = FALSE`.
+  result <- s_summary(x, na_rm = FALSE)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -56,7 +56,7 @@ testthat::test_that("s_summary fails with factors that have no levels or have em
 
 testthat::test_that("s_summary works when factors have NA levels", {
   x <- factor(c("Female", "Male", "Female", "Male", "Unknown", "Unknown", NA))
-  result <- s_summary(x, na.rm = FALSE)
+  result <- s_summary(x, na_rm = FALSE)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -107,7 +107,7 @@ testthat::test_that("s_summary works with characters by converting to character"
 testthat::test_that("s_summary works with characters by converting to character and handling empty strings", {
   x <- c("Female", "Male", "Female", "Male", "Male", "", "Unknown", "Unknown", "Unknown", "Unknown")
 
-  testthat::expect_warning(result <- s_summary(x, .var = "foo", na.rm = FALSE, denom = "N_row", .N_row = 10))
+  testthat::expect_warning(result <- s_summary(x, .var = "foo", na_rm = FALSE, denom = "N_row", .N_row = 10))
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -146,7 +146,7 @@ testthat::test_that("s_summary works with logical vectors and by default removes
 testthat::test_that("s_summary works with logical vectors and by if requested does not remove NA from n", {
   x <- c(TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, NA, NA)
 
-  result <- s_summary(x, na.rm = FALSE)
+  result <- s_summary(x, na_rm = FALSE)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -160,7 +160,7 @@ testthat::test_that("a_summary work with healthy input.", {
   x <- rnorm(10)
   result <- a_summary(
     x = x, .N_col = 10, .N_row = 20, .var = "bla", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
-    compare = FALSE, .stats = get_stats("analyze_vars_numeric"), na.rm = TRUE, na_str = default_na_str()
+    compare = FALSE, .stats = get_stats("analyze_vars_numeric"), na_rm = TRUE, na_str = default_na_str()
   )
   res_out <- testthat::expect_silent(result)
 
@@ -175,7 +175,7 @@ testthat::test_that("a_summary work with healthy input.", {
   result <- a_summary(
     x = x, .N_col = 10, .N_row = 10, .var = "bla", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
     compare = FALSE, .stats = get_stats("analyze_vars_counts"),
-    na.rm = TRUE, na_str = default_na_str()
+    na_rm = TRUE, na_str = default_na_str()
   )
   res_out <- testthat::expect_silent(result)
 
@@ -190,7 +190,7 @@ testthat::test_that("a_summary work with healthy input.", {
   result <- a_summary(
     x = x, .N_col = 10, .N_row = 10, .var = "x", .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
     compare = FALSE, .stats = get_stats("analyze_vars_counts"),
-    na.rm = TRUE, na_str = default_na_str(),
+    na_rm = TRUE, na_str = default_na_str(),
     verbose = FALSE
   )
   res_out <- testthat::expect_silent(result)
@@ -206,7 +206,7 @@ testthat::test_that("a_summary work with healthy input.", {
   result <- a_summary(
     x = x, .N_col = 10, .N_row = 10, .var = NULL, .df_row = NULL, .ref_group = NULL, .in_ref_col = FALSE,
     compare = FALSE, .stats = get_stats("analyze_vars_counts"),
-    na.rm = TRUE, na_str = default_na_str()
+    na_rm = TRUE, na_str = default_na_str()
   )
   res_out <- testthat::expect_silent(result)
 
@@ -221,7 +221,7 @@ testthat::test_that("a_summary works with custom input.", {
   options("width" = 100)
   result <- a_summary(
     rnorm(10),
-    .N_col = 10, .N_row = 20, control_analyze_vars(conf_level = 0.90), .stats = c("sd", "median_ci"),
+    .N_col = 10, .N_row = 20, control = control_analyze_vars(conf_level = 0.90), .stats = c("sd", "median_ci"),
     .formats = c(sd = "xx.", median_ci = "xx.xx - xx.xx"), .labels = c(sd = "std. dev"), .indent_mods = 3L
   )
   res <- testthat::expect_silent(result)
@@ -230,7 +230,7 @@ testthat::test_that("a_summary works with custom input.", {
   result <- a_summary(
     factor(c("a", "a", "b", "c", NA)),
     .N_row = 10, .N_col = 10, .formats = c(n = "xx.xx"),
-    .labels = c(n = "number of records"), .indent_mods = c(n = -1L, count = 5L), na.rm = FALSE
+    .labels = c(n = "number of records"), .indent_mods = c(n = -1L, count = 5L), na_rm = FALSE
   )
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -240,25 +240,26 @@ testthat::test_that("a_summary works with healthy input when compare = TRUE.", {
   options("width" = 100)
   # numeric input
   set.seed(1)
-  result <- a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
+  result <- a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla",
+                      .in_ref_col = FALSE, compare = TRUE)
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # factor input
   result <- a_summary(
     factor(c("a", "a", "b", "c", "a")),
-    .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
+    .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE, .in_ref_col = FALSE
   )
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # character input
-  result <- a_summary(c("A", "B", "A", "C"), .ref_group = c("B", "A", "C"), .var = "x", compare = TRUE, verbose = FALSE)
+  result <- a_summary(c("A", "B", "A", "C"), .ref_group = c("B", "A", "C"), .var = "x", .in_ref_col = FALSE, compare = TRUE, verbose = FALSE)
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # logical input
-  result <- a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .ref_group = c(TRUE, FALSE), compare = TRUE)
+  result <- a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .ref_group = c(TRUE, FALSE), compare = TRUE, .in_ref_col = FALSE)
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
@@ -269,7 +270,7 @@ testthat::test_that("a_summary works with custom input when compare = TRUE.", {
     rnorm(10),
     .ref_group = rnorm(20, -5, 1), .N_col = 10, .N_row = 20, control_analyze_vars(conf_level = 0.90),
     .stats = c("pval", "median_ci"), .formats = c(median_ci = "xx.xx - xx.xx"), .labels = c(pval = "pvalue"),
-    .indent_mods = 3L, compare = TRUE
+    .indent_mods = 3L, compare = TRUE, .in_ref_col = FALSE
   )
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -278,13 +279,13 @@ testthat::test_that("a_summary works with custom input when compare = TRUE.", {
     factor(c("a", "a", "b", "c", NA)),
     .ref_group = factor(c("a", "a", "b", "c")), .N_row = 10, .N_col = 10,
     .formats = c(n = "xx.xx"), .labels = c(n = "number of records"), .indent_mods = c(n = -1L, count = 5L),
-    na.rm = FALSE, compare = TRUE
+    na_rm = FALSE, compare = TRUE, .in_ref_col = FALSE
   )
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("`analyze_vars` works with healthy input, default `na.rm = TRUE`.", {
+testthat::test_that("`analyze_vars` works with healthy input, default `na_rm = TRUE`.", {
   dta_test <- data.frame(AVAL = c(1:4, NA, NA))
 
   l <- basic_table() %>%
@@ -310,11 +311,11 @@ testthat::test_that("`analyze_vars` works with healthy input, and control functi
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("`analyze_vars` works with healthy input, alternative `na.rm = FALSE`", {
+testthat::test_that("`analyze_vars` works with healthy input, alternative `na_rm = FALSE`", {
   dta_test <- data.frame(AVAL = c(1:4, NA, NA))
 
   l <- basic_table() %>%
-    analyze_vars(vars = "AVAL", na.rm = FALSE)
+    analyze_vars(vars = "AVAL", na_rm = FALSE)
   result <- build_table(l, df = dta_test)
 
   res <- testthat::expect_silent(result)
@@ -332,11 +333,11 @@ testthat::test_that("`analyze_vars` works with healthy factor input", {
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("`analyze_vars` works with healthy factor input, alternative `na.rm = FALSE`", {
+testthat::test_that("`analyze_vars` works with healthy factor input, alternative `na_rm = FALSE`", {
   dta <- data.frame(foo = factor(c("a", NA, "b", "a", NA)))
 
   result <- basic_table() %>%
-    analyze_vars(vars = "foo", na.rm = FALSE) %>%
+    analyze_vars(vars = "foo", na_rm = FALSE) %>%
     build_table(dta)
 
   res <- testthat::expect_silent(result)
@@ -345,7 +346,7 @@ testthat::test_that("`analyze_vars` works with healthy factor input, alternative
   dta <- df_explicit_na(dta)
 
   result <- basic_table() %>%
-    analyze_vars(vars = "foo", na.rm = FALSE) %>%
+    analyze_vars(vars = "foo", na_rm = FALSE) %>%
     build_table(dta)
 
   res <- testthat::expect_silent(result)
@@ -437,11 +438,11 @@ testthat::test_that("`analyze_vars` works with logical input", {
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("`analyze_vars` works with healthy logical input, alternative `na.rm = FALSE`", {
+testthat::test_that("`analyze_vars` works with healthy logical input, alternative `na_rm = FALSE`", {
   dta <- data.frame(foo = factor(c(TRUE, NA, FALSE, TRUE, NA)))
 
   result <- basic_table() %>%
-    analyze_vars(vars = "foo", na.rm = FALSE) %>%
+    analyze_vars(vars = "foo", na_rm = FALSE) %>%
     build_table(dta)
 
   res <- testthat::expect_silent(result)
@@ -450,7 +451,7 @@ testthat::test_that("`analyze_vars` works with healthy logical input, alternativ
   dta <- df_explicit_na(dta)
 
   result <- basic_table() %>%
-    analyze_vars(vars = "foo", na.rm = FALSE) %>%
+    analyze_vars(vars = "foo", na_rm = FALSE) %>%
     build_table(dta)
 
   res <- testthat::expect_silent(result)

@@ -1391,7 +1391,7 @@
       18                      n_blq              0          0                      n_blq
       19                pval_counts         0.8254          0 p-value (chi-squared test)
 
-# `analyze_vars` works with healthy input, default `na.rm = TRUE`.
+# `analyze_vars` works with healthy input, default `na_rm = TRUE`.
 
     Code
       res
@@ -1416,17 +1416,17 @@
       Mean 90% CI       (3.30, 6.70)
       10% and 90%-ile    1.0 - 9.0  
 
-# `analyze_vars` works with healthy input, alternative `na.rm = FALSE`
+# `analyze_vars` works with healthy input, alternative `na_rm = FALSE`
 
     Code
       res
     Output
-                  all obs
-      ———————————————————
-      n              6   
-      Mean (SD)     NA   
-      Median        NA   
-      Min - Max     NA   
+                   all obs 
+      —————————————————————
+      n               4    
+      Mean (SD)   2.5 (1.3)
+      Median         2.5   
+      Min - Max   1.0 - 4.0
 
 # `analyze_vars` works with healthy factor input
 
@@ -1439,17 +1439,16 @@
       a   2 (66.7%)
       b   1 (33.3%)
 
-# `analyze_vars` works with healthy factor input, alternative `na.rm = FALSE`
+# `analyze_vars` works with healthy factor input, alternative `na_rm = FALSE`
 
     Code
       res
     Output
-           all obs
-      ————————————
-      n       5   
-      a    2 (40%)
-      b    1 (20%)
-      NA   2 (40%)
+           all obs 
+      —————————————
+      n       3    
+      a   2 (66.7%)
+      b   1 (33.3%)
 
 ---
 
@@ -1598,17 +1597,16 @@
       n                   5   
       count_fraction   3 (60%)
 
-# `analyze_vars` works with healthy logical input, alternative `na.rm = FALSE`
+# `analyze_vars` works with healthy logical input, alternative `na_rm = FALSE`
 
     Code
       res
     Output
-              all obs
-      ———————————————
-      n          5   
-      FALSE   1 (20%)
-      TRUE    2 (40%)
-      NA      2 (40%)
+               all obs 
+      —————————————————
+      n           3    
+      FALSE   1 (33.3%)
+      TRUE    2 (66.7%)
 
 ---
 

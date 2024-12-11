@@ -30,7 +30,6 @@ NULL
 #'
 #' @keywords internal
 s_change_from_baseline <- function(df, ...) {
-  # s_summary should get na.rm
   args_list <- list(...)
   .var <- args_list[[".var"]]
   variables <- args_list[["variables"]]
@@ -64,6 +63,8 @@ a_change_from_baseline <- function(df,
                                    .formats = NULL,
                                    .labels = NULL,
                                    .indent_mods = NULL) {
+  dots_extra_args <- list(...)
+
   # Check if there are user-defined functions
   default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
   .stats <- default_and_custom_stats_list$default_stats
@@ -71,7 +72,7 @@ a_change_from_baseline <- function(df,
 
   # Adding automatically extra parameters to the statistic function (see ?rtables::additional_fun_params)
   extra_afun_params <- retrieve_extra_afun_params(
-    names(list(...)$.additional_fun_parameters)
+    names(dots_extra_args$.additional_fun_parameters)
   )
   x_stats <- .apply_stat_functions(
     default_stat_fnc = s_change_from_baseline,
@@ -79,7 +80,7 @@ a_change_from_baseline <- function(df,
     args_list = c(
       df = list(df),
       extra_afun_params,
-      list(...)
+      dots_extra_args
     )
   )
 
@@ -178,7 +179,7 @@ summarize_change <- function(lyt,
                              ),
                              .indent_mods = NULL) {
   # Extra args must contain .stats, .formats, .labels, .indent_mods - sent to the analysis level
-  extra_args <- list(".stats" = .stats)
+  extra_args <- list(".stats" = .stats, "na_rm" = na_rm)
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
@@ -202,7 +203,7 @@ summarize_change <- function(lyt,
     na_str = na_str,
     nested = nested,
     extra_args = extra_args,
-    inclNAs = na_rm, # adds na.rm = TRUE to the analysis function
+    inclNAs = na_rm,
     show_labels = show_labels,
     table_names = table_names,
     section_div = section_div
