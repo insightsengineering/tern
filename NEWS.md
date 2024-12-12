@@ -9,6 +9,9 @@
 * Added `as_list` parameter to `g_lineplot()` to allow users to return the line plot and annotation table elements as a list instead of stacked for more complex customization.
 * Refactored `summarize_change()` to work without `make_afun()` and access all additional function parameter.
 * Added vignette "Understanding `tern` functions" for future reference.
+* Refactored `analyze_vars()` and `a_summary()` to take all options from `?rtables::additional_fun_params`.
+* Added to `analyze_vars()` statistical names that are used by `rtables::as_result_df()`.
+* Merged `compare_vars()` into `analyze_vars()` as overlap was significant.
 
 ### Bug Fixes
 * Fixed bug in `a_summary()` causing non-unique `row_name` values to occur when multiple statistics are selected for count variables.

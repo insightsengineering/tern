@@ -694,28 +694,37 @@
       res
     Output
       $n
-      [1] 9
+      $n$n
+      n 
+      9 
+      
       
       $count
       $count$Female
-      [1] 2
+      count 
+          2 
       
       $count$Male
-      [1] 3
+      count 
+          3 
       
       $count$Unknown
-      [1] 4
+      count 
+          4 
       
       
       $count_fraction
       $count_fraction$Female
-      [1] 2.0000000 0.2222222
+          count         p 
+      2.0000000 0.2222222 
       
       $count_fraction$Male
-      [1] 3.0000000 0.3333333
+          count         p 
+      3.0000000 0.3333333 
       
       $count_fraction$Unknown
-      [1] 4.0000000 0.4444444
+          count         p 
+      4.0000000 0.4444444 
       
       
       $fraction
@@ -733,7 +742,10 @@
       
       
       $n_blq
-      [1] 0
+      $n_blq$n_blq
+      n_blq 
+          0 
+      
       
 
 # s_summary works when factors have NA levels
@@ -742,34 +754,45 @@
       res
     Output
       $n
-      [1] 7
+      $n$n
+      n 
+      7 
+      
       
       $count
       $count$Female
-      [1] 2
+      count 
+          2 
       
       $count$Male
-      [1] 2
+      count 
+          2 
       
       $count$Unknown
-      [1] 2
+      count 
+          2 
       
       $count$`NA`
-      [1] 1
+      count 
+          1 
       
       
       $count_fraction
       $count_fraction$Female
-      [1] 2.0000000 0.2857143
+          count         p 
+      2.0000000 0.2857143 
       
       $count_fraction$Male
-      [1] 2.0000000 0.2857143
+          count         p 
+      2.0000000 0.2857143 
       
       $count_fraction$Unknown
-      [1] 2.0000000 0.2857143
+          count         p 
+      2.0000000 0.2857143 
       
       $count_fraction$`NA`
-      [1] 1.0000000 0.1428571
+          count         p 
+      1.0000000 0.1428571 
       
       
       $fraction
@@ -791,7 +814,10 @@
       
       
       $n_blq
-      [1] 0
+      $n_blq$n_blq
+      n_blq 
+          0 
+      
       
 
 # s_summary works with factors with NA values handled and correctly removes them by default
@@ -800,28 +826,37 @@
       res
     Output
       $n
-      [1] 9
+      $n$n
+      n 
+      9 
+      
       
       $count
       $count$Female
-      [1] 2
+      count 
+          2 
       
       $count$Male
-      [1] 3
+      count 
+          3 
       
       $count$Unknown
-      [1] 4
+      count 
+          4 
       
       
       $count_fraction
       $count_fraction$Female
-      [1] 2.0000000 0.2222222
+          count         p 
+      2.0000000 0.2222222 
       
       $count_fraction$Male
-      [1] 3.0000000 0.3333333
+          count         p 
+      3.0000000 0.3333333 
       
       $count_fraction$Unknown
-      [1] 4.0000000 0.4444444
+          count         p 
+      4.0000000 0.4444444 
       
       
       $fraction
@@ -839,7 +874,10 @@
       
       
       $n_blq
-      [1] 0
+      $n_blq$n_blq
+      n_blq 
+          0 
+      
       
 
 # s_summary works with length 0 factors that have levels
@@ -848,28 +886,37 @@
       res
     Output
       $n
-      [1] 0
+      $n$n
+      n 
+      0 
+      
       
       $count
       $count$a
-      [1] 0
+      count 
+          0 
       
       $count$b
-      [1] 0
+      count 
+          0 
       
       $count$c
-      [1] 0
+      count 
+          0 
       
       
       $count_fraction
       $count_fraction$a
-      [1] 0 0
+      count     p 
+          0     0 
       
       $count_fraction$b
-      [1] 0 0
+      count     p 
+          0     0 
       
       $count_fraction$c
-      [1] 0 0
+      count     p 
+          0     0 
       
       
       $fraction
@@ -887,7 +934,10 @@
       
       
       $n_blq
-      [1] 0
+      $n_blq$n_blq
+      n_blq 
+          0 
+      
       
 
 # s_summary works with factors and different denominator choices
@@ -896,28 +946,37 @@
       res
     Output
       $n
-      [1] 9
+      $n$n
+      n 
+      9 
+      
       
       $count
       $count$Female
-      [1] 2
+      count 
+          2 
       
       $count$Male
-      [1] 3
+      count 
+          3 
       
       $count$Unknown
-      [1] 4
+      count 
+          4 
       
       
       $count_fraction
       $count_fraction$Female
-      [1] 2.0 0.1
+      count     p 
+        2.0   0.1 
       
       $count_fraction$Male
-      [1] 3.00 0.15
+      count     p 
+       3.00  0.15 
       
       $count_fraction$Unknown
-      [1] 4.0 0.2
+      count     p 
+        4.0   0.2 
       
       
       $fraction
@@ -935,7 +994,10 @@
       
       
       $n_blq
-      [1] 0
+      $n_blq$n_blq
+      n_blq 
+          0 
+      
       
 
 ---
@@ -944,28 +1006,37 @@
       res
     Output
       $n
-      [1] 9
+      $n$n
+      n 
+      9 
+      
       
       $count
       $count$Female
-      [1] 2
+      count 
+          2 
       
       $count$Male
-      [1] 3
+      count 
+          3 
       
       $count$Unknown
-      [1] 4
+      count 
+          4 
       
       
       $count_fraction
       $count_fraction$Female
-      [1] 2.00000000 0.06666667
+           count          p 
+      2.00000000 0.06666667 
       
       $count_fraction$Male
-      [1] 3.0 0.1
+      count     p 
+        3.0   0.1 
       
       $count_fraction$Unknown
-      [1] 4.0000000 0.1333333
+          count         p 
+      4.0000000 0.1333333 
       
       
       $fraction
@@ -983,7 +1054,10 @@
       
       
       $n_blq
-      [1] 0
+      $n_blq$n_blq
+      n_blq 
+          0 
+      
       
 
 # s_summary works with characters by converting to character and handling empty strings
@@ -992,34 +1066,45 @@
       res
     Output
       $n
-      [1] 10
+      $n$n
+       n 
+      10 
+      
       
       $count
       $count$Female
-      [1] 2
+      count 
+          2 
       
       $count$Male
-      [1] 3
+      count 
+          3 
       
       $count$Unknown
-      [1] 4
+      count 
+          4 
       
       $count$`NA`
-      [1] 1
+      count 
+          1 
       
       
       $count_fraction
       $count_fraction$Female
-      [1] 2.0 0.2
+      count     p 
+        2.0   0.2 
       
       $count_fraction$Male
-      [1] 3.0 0.3
+      count     p 
+        3.0   0.3 
       
       $count_fraction$Unknown
-      [1] 4.0 0.4
+      count     p 
+        4.0   0.4 
       
       $count_fraction$`NA`
-      [1] 1.0 0.1
+      count     p 
+        1.0   0.1 
       
       
       $fraction
@@ -1041,7 +1126,10 @@
       
       
       $n_blq
-      [1] 0
+      $n_blq$n_blq
+      n_blq 
+          0 
+      
       
 
 # s_summary works with logical vectors
@@ -1050,16 +1138,24 @@
       res
     Output
       $n
-      [1] 6
+      n 
+      6 
       
       $count
-      [1] 4
+      count 
+          4 
       
       $count_fraction
-      [1] 4.0000000 0.6666667
+          count  fraction 
+      4.0000000 0.6666667 
+      
+      $fraction
+        num denom 
+          4     6 
       
       $n_blq
-      [1] 0
+      n_blq 
+          0 
       
 
 # s_summary works with length 0 logical vectors
@@ -1068,16 +1164,24 @@
       res
     Output
       $n
-      [1] 0
+      n 
+      0 
       
       $count
-      [1] 0
+      count 
+          0 
       
       $count_fraction
-      [1] 0 0
+         count fraction 
+             0        0 
+      
+      $fraction
+        num denom 
+          0     0 
       
       $n_blq
-      [1] 0
+      n_blq 
+          0 
       
 
 # s_summary works with logical vectors and by default removes NA
@@ -1086,16 +1190,24 @@
       res
     Output
       $n
-      [1] 6
+      n 
+      6 
       
       $count
-      [1] 4
+      count 
+          4 
       
       $count_fraction
-      [1] 4.0000000 0.6666667
+          count  fraction 
+      4.0000000 0.6666667 
+      
+      $fraction
+        num denom 
+          4     6 
       
       $n_blq
-      [1] 0
+      n_blq 
+          0 
       
 
 # s_summary works with logical vectors and by if requested does not remove NA from n
@@ -1104,16 +1216,24 @@
       res
     Output
       $n
-      [1] 8
+      n 
+      8 
       
       $count
-      [1] 4
+      count 
+          4 
       
       $count_fraction
-      [1] 4.0 0.5
+         count fraction 
+           4.0      0.5 
+      
+      $fraction
+        num denom 
+          4     8 
       
       $n_blq
-      [1] 0
+      n_blq 
+          0 
       
 
 # a_summary work with healthy input.
@@ -1160,7 +1280,7 @@
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
                           row_name formatted_cell indent_mod row_label
-      1                          n              5          0         n
+      1                        n.n              5          0         n
       2                    count.a              3          0         a
       3                    count.b              1          0         b
       4                    count.c              1          0         c
@@ -1173,7 +1293,7 @@
       11                fraction.a    3/5 (60.0%)          0         a
       12                fraction.b    1/5 (20.0%)          0         b
       13                fraction.c    1/5 (20.0%)          0         c
-      14                     n_blq              0          0     n_blq
+      14               n_blq.n_blq              0          0     n_blq
 
 ---
 
@@ -1183,7 +1303,7 @@
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
                           row_name formatted_cell indent_mod row_label
-      1                          n              4          0         n
+      1                        n.n              4          0         n
       2                    count.A              2          0         A
       3                    count.B              1          0         B
       4                    count.C              1          0         C
@@ -1196,7 +1316,7 @@
       11                fraction.A    2/4 (50.0%)          0         A
       12                fraction.B    1/4 (25.0%)          0         B
       13                fraction.C    1/4 (25.0%)          0         C
-      14                     n_blq              0          0     n_blq
+      14               n_blq.n_blq              0          0     n_blq
 
 ---
 
@@ -1210,7 +1330,7 @@
       2                   count              3          0          count
       3          count_fraction        3 (60%)          0 count_fraction
       4 count_fraction_fixed_dp      3 (60.0%)          0 count_fraction
-      5                fraction                         0       fraction
+      5                fraction    3/5 (60.0%)          0       fraction
       6                   n_blq              0          0          n_blq
 
 # a_summary works with custom input.
@@ -1222,7 +1342,7 @@
       ----------------------------
          row_name formatted_cell indent_mod     row_label
       1        sd              1          3      std. dev
-      2 median_ci   -0.62 - 1.12          3 Median 95% CI
+      2 median_ci   -0.62 - 1.12          3 Median 90% CI
 
 ---
 
@@ -1231,27 +1351,27 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-                           row_name formatted_cell indent_mod         row_label
-      1                           n           5.00         -1 number of records
-      2                     count.a              2          5                 a
-      3                     count.b              1          5                 b
-      4                     count.c              1          5                 c
-      5                    count.NA              1          5                NA
-      6            count_fraction.a        2 (40%)          0                 a
-      7            count_fraction.b        1 (20%)          0                 b
-      8            count_fraction.c        1 (20%)          0                 c
-      9           count_fraction.NA        1 (20%)          0                NA
-      10  count_fraction_fixed_dp.a      2 (40.0%)          0                 a
-      11  count_fraction_fixed_dp.b      1 (20.0%)          0                 b
-      12  count_fraction_fixed_dp.c      1 (20.0%)          0                 c
-      13 count_fraction_fixed_dp.NA      1 (20.0%)          0                NA
-      14                 fraction.a    2/5 (40.0%)          0                 a
-      15                 fraction.b    1/5 (20.0%)          0                 b
-      16                 fraction.c    1/5 (20.0%)          0                 c
-      17                fraction.NA    1/5 (20.0%)          0                NA
-      18                      n_blq              0          0             n_blq
+                           row_name formatted_cell indent_mod row_label
+      1                         n.n           5.00         -1         n
+      2                     count.a              2          5         a
+      3                     count.b              1          5         b
+      4                     count.c              1          5         c
+      5                    count.NA              1          5        NA
+      6            count_fraction.a        2 (40%)          0         a
+      7            count_fraction.b        1 (20%)          0         b
+      8            count_fraction.c        1 (20%)          0         c
+      9           count_fraction.NA        1 (20%)          0        NA
+      10  count_fraction_fixed_dp.a      2 (40.0%)          0         a
+      11  count_fraction_fixed_dp.b      1 (20.0%)          0         b
+      12  count_fraction_fixed_dp.c      1 (20.0%)          0         c
+      13 count_fraction_fixed_dp.NA      1 (20.0%)          0        NA
+      14                 fraction.a    2/5 (40.0%)          0         a
+      15                 fraction.b    1/5 (20.0%)          0         b
+      16                 fraction.c    1/5 (20.0%)          0         c
+      17                fraction.NA    1/5 (20.0%)          0        NA
+      18                n_blq.n_blq              0          0     n_blq
 
-# a_summary works with healthy input when compare = TRUE.
+# a_summary works with healthy input when compare_with_ref_group = TRUE.
 
     Code
       res
@@ -1260,32 +1380,32 @@
       ----------------------------
                 row_name     formatted_cell indent_mod                   row_label
       1                n                 10          0                           n
-      2              sum               51.3          0                         Sum
-      3             mean                5.1          0                        Mean
-      4               sd                0.8          0                          SD
-      5               se                0.2          0                          SE
-      6          mean_sd          5.1 (0.8)          0                   Mean (SD)
-      7          mean_se          5.1 (0.2)          0                   Mean (SE)
-      8          mean_ci       (4.57, 5.69)          0                 Mean 95% CI
-      9         mean_sei       (4.89, 5.38)          0               Mean -/+ 1xSE
-      10        mean_sdi       (4.35, 5.91)          0               Mean -/+ 1xSD
+      2              sum               48.7          0                         Sum
+      3             mean                4.9          0                        Mean
+      4               sd                1.0          0                          SD
+      5               se                0.3          0                          SE
+      6          mean_sd          4.9 (1.0)          0                   Mean (SD)
+      7          mean_se          4.9 (0.3)          0                   Mean (SE)
+      8          mean_ci       (4.18, 5.55)          0                 Mean 95% CI
+      9         mean_sei       (4.56, 5.17)          0               Mean -/+ 1xSE
+      10        mean_sdi       (3.91, 5.82)          0               Mean -/+ 1xSD
       11       mean_pval            <0.0001          0 Mean p-value (H0: mean = 0)
-      12          median                5.3          0                      Median
-      13             mad               -0.0          0   Median Absolute Deviation
-      14       median_ci       (4.18, 5.74)          0               Median 95% CI
-      15       quantiles          4.4 - 5.6          0             25% and 75%-ile
-      16             iqr                1.2          0                         IQR
-      17           range          4.2 - 6.6          0                   Min - Max
-      18             min                4.2          0                     Minimum
-      19             max                6.6          0                     Maximum
-      20    median_range    5.3 (4.2 - 6.6)          0          Median (Min - Max)
-      21              cv               15.2          0                      CV (%)
-      22       geom_mean                5.1          0              Geometric Mean
-      23    geom_mean_ci       (4.56, 5.66)          0       Geometric Mean 95% CI
-      24         geom_cv               15.2          0         CV % Geometric Mean
-      25    median_ci_3d 5.26 (4.18 - 5.74)          0             Median (95% CI)
-      26      mean_ci_3d 5.13 (4.57 - 5.69)          0               Mean (95% CI)
-      27 geom_mean_ci_3d 5.08 (4.56 - 5.66)          0     Geometric Mean (95% CI)
+      12          median                5.0          0                      Median
+      13             mad                0.0          0   Median Absolute Deviation
+      14       median_ci       (3.53, 5.78)          0               Median 95% CI
+      15       quantiles          4.5 - 5.6          0             25% and 75%-ile
+      16             iqr                1.1          0                         IQR
+      17           range          3.0 - 5.9          0                   Min - Max
+      18             min                3.0          0                     Minimum
+      19             max                5.9          0                     Maximum
+      20    median_range    5.0 (3.0 - 5.9)          0          Median (Min - Max)
+      21              cv               19.6          0                      CV (%)
+      22       geom_mean                4.8          0              Geometric Mean
+      23    geom_mean_ci       (4.07, 5.58)          0       Geometric Mean 95% CI
+      24         geom_cv               22.3          0         CV % Geometric Mean
+      25    median_ci_3d 5.01 (3.53 - 5.78)          0             Median (95% CI)
+      26      mean_ci_3d 4.87 (4.18 - 5.55)          0               Mean (95% CI)
+      27 geom_mean_ci_3d 4.77 (4.07 - 5.58)          0     Geometric Mean (95% CI)
       28            pval            <0.0001          0            p-value (t-test)
 
 ---
@@ -1296,7 +1416,7 @@
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
                           row_name formatted_cell indent_mod                  row_label
-      1                          n              5          0                          n
+      1                        n.n              5          0                          n
       2                    count.a              3          0                          a
       3                    count.b              1          0                          b
       4                    count.c              1          0                          c
@@ -1309,7 +1429,7 @@
       11                fraction.a    3/5 (60.0%)          0                          a
       12                fraction.b    1/5 (20.0%)          0                          b
       13                fraction.c    1/5 (20.0%)          0                          c
-      14                     n_blq              0          0                      n_blq
+      14               n_blq.n_blq              0          0                      n_blq
       15               pval_counts         0.9560          0 p-value (chi-squared test)
 
 ---
@@ -1320,7 +1440,7 @@
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
                           row_name formatted_cell indent_mod                  row_label
-      1                          n              4          0                          n
+      1                        n.n              4          0                          n
       2                    count.A              2          0                          A
       3                    count.B              1          0                          B
       4                    count.C              1          0                          C
@@ -1333,7 +1453,7 @@
       11                fraction.A    2/4 (50.0%)          0                          A
       12                fraction.B    1/4 (25.0%)          0                          B
       13                fraction.C    1/4 (25.0%)          0                          C
-      14                     n_blq              0          0                      n_blq
+      14               n_blq.n_blq              0          0                      n_blq
       15               pval_counts         0.9074          0 p-value (chi-squared test)
 
 ---
@@ -1348,11 +1468,11 @@
       2                   count              3          0                      count
       3          count_fraction        3 (60%)          0             count_fraction
       4 count_fraction_fixed_dp      3 (60.0%)          0             count_fraction
-      5                fraction                         0                   fraction
+      5                fraction    3/5 (60.0%)          0                   fraction
       6                   n_blq              0          0                      n_blq
       7             pval_counts         0.8091          0 p-value (chi-squared test)
 
-# a_summary works with custom input when compare = TRUE.
+# a_summary works with custom input when compare_with_ref_group = TRUE.
 
     Code
       res
@@ -1361,7 +1481,7 @@
       ----------------------------
          row_name formatted_cell indent_mod     row_label
       1      pval        <0.0001          3        pvalue
-      2 median_ci   -0.41 - 1.10          3 Median 95% CI
+      2 median_ci   -1.04 - 1.43          3 Median 95% CI
 
 ---
 
@@ -1371,7 +1491,7 @@
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
                            row_name formatted_cell indent_mod                  row_label
-      1                           n           5.00         -1          number of records
+      1                         n.n           5.00         -1                          n
       2                     count.a              2          5                          a
       3                     count.b              1          5                          b
       4                     count.c              1          5                          c
@@ -1388,7 +1508,7 @@
       15                 fraction.b    1/5 (20.0%)          0                          b
       16                 fraction.c    1/5 (20.0%)          0                          c
       17                fraction.NA    1/5 (20.0%)          0                         NA
-      18                      n_blq              0          0                      n_blq
+      18                n_blq.n_blq              0          0                      n_blq
       19                pval_counts         0.8254          0 p-value (chi-squared test)
 
 # `analyze_vars` works with healthy input, default `na_rm = TRUE`.
@@ -1413,8 +1533,8 @@
       n                      9      
       Mean (SD)          5.0 (2.7)  
       Mean (SE)          5.0 (0.9)  
-      Mean 90% CI       (3.30, 6.70)
-      10% and 90%-ile    1.0 - 9.0  
+      Mean 95% CI       (2.89, 7.11)
+      25% and 75%-ile    3.0 - 7.0  
 
 # `analyze_vars` works with healthy input, alternative `na_rm = FALSE`
 

@@ -74,6 +74,9 @@ a_change_from_baseline <- function(df,
   extra_afun_params <- retrieve_extra_afun_params(
     names(dots_extra_args$.additional_fun_parameters)
   )
+  dots_extra_args$.additional_fun_parameters <- NULL # After extraction we do not need them anymore
+
+  # Main stats calculations
   x_stats <- .apply_stat_functions(
     default_stat_fnc = s_change_from_baseline,
     custom_stat_fnc_list = custom_stat_functions,
@@ -179,13 +182,13 @@ summarize_change <- function(lyt,
                              ),
                              .indent_mods = NULL) {
   # Extra args must contain .stats, .formats, .labels, .indent_mods - sent to the analysis level
-  extra_args <- list(".stats" = .stats, "na_rm" = na_rm)
+  extra_args <- list(".stats" = .stats)
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
 
   # Adding additional arguments to the analysis function (depends on the specific call)
-  extra_args <- c(extra_args, "variables" = list(variables), ...)
+  extra_args <- c(extra_args, "na_rm" = na_rm, "variables" = list(variables), ...)
 
   # Adding all additional information from layout to analysis functions (see ?rtables::additional_fun_params)
   extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)

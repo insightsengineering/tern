@@ -3,7 +3,8 @@ testthat::test_that("s_compare works for numeric", {
     stats::rnorm(10, 5, 1),
     .ref_group = stats::rnorm(5, -5, 1),
     .in_ref_col = FALSE
-  ))
+    )
+  )
 
   res <- testthat::expect_silent(names(result))
   testthat::expect_snapshot(res)
@@ -40,7 +41,7 @@ testthat::test_that("s_compare for factor handles explicit NAs as expected", {
     x = x,
     .ref_group = y,
     .in_ref_col = FALSE,
-    na.rm = TRUE
+    na_rm = TRUE
   ))
 
   res <- testthat::expect_silent(result_without_na$pval_counts)
@@ -50,7 +51,7 @@ testthat::test_that("s_compare for factor handles explicit NAs as expected", {
     x = x,
     .ref_group = y,
     .in_ref_col = FALSE,
-    na.rm = FALSE
+    na_rm = FALSE
   ))
 
   res <- testthat::expect_silent(result_with_na$pval_counts)
@@ -81,7 +82,7 @@ testthat::test_that("s_compare for logical works as expected", {
 testthat::test_that("s_compare for logical handles NAs as FALSE if not removed", {
   x <- c(NA, TRUE, FALSE)
   y <- c(NA, NA, NA, NA, FALSE)
-  result <- testthat::expect_silent(s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE))
+  result <- testthat::expect_silent(s_compare(x, .ref_group = y, .in_ref_col = FALSE, na_rm = FALSE))
   expected <- s_compare(
     x = replace(x, is.na(x), FALSE),
     .ref_group = replace(y, is.na(y), FALSE),
