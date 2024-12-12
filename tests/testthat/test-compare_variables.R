@@ -3,8 +3,7 @@ testthat::test_that("s_compare works for numeric", {
     stats::rnorm(10, 5, 1),
     .ref_group = stats::rnorm(5, -5, 1),
     .in_ref_col = FALSE
-    )
-  )
+  ))
 
   res <- testthat::expect_silent(names(result))
   testthat::expect_snapshot(res)

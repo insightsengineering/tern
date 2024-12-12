@@ -227,9 +227,4 @@ testthat::test_that("get_stat_names works fine", {
 
   out <- get_stat_names(stat_results, list("n" = "argh"))
   testthat::expect_equal(out[1], list("n" = "argh"))
-
-  # testthat::expect_error(
-  #   out <- get_stat_names(stat_results, list("n" = c("1", "2"))),
-  #   "The number of stat names for n"
-  #   )
 })

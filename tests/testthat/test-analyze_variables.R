@@ -230,7 +230,8 @@ testthat::test_that("a_summary works with custom input.", {
   testthat::expect_snapshot(res)
 
   result <- a_summary(
-    factor(c("a", "a", "b", "c", NA)), compare_with_ref_group = FALSE,
+    factor(c("a", "a", "b", "c", NA)),
+    compare_with_ref_group = FALSE,
     .N_row = 10, .N_col = 10, .formats = c(n = "xx.xx"),
     .labels = c(n = "number of records"), .indent_mods = c(n = -1L, count = 5L), na_rm = FALSE
   )
@@ -242,8 +243,10 @@ testthat::test_that("a_summary works with healthy input when compare_with_ref_gr
   options("width" = 100)
   # numeric input
   set.seed(1)
-  result <- a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla",
-                      compare_with_ref_group = TRUE, .in_ref_col = FALSE)
+  result <- a_summary(rnorm(10, 5, 1),
+    .ref_group = rnorm(20, -5, 1), .var = "bla",
+    compare_with_ref_group = TRUE, .in_ref_col = FALSE
+  )
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
@@ -257,13 +260,19 @@ testthat::test_that("a_summary works with healthy input when compare_with_ref_gr
   testthat::expect_snapshot(res)
 
   # character input
-  result <- a_summary(c("A", "B", "A", "C"), .ref_group = c("B", "A", "C"),
-                      .var = "x", compare_with_ref_group = TRUE, .in_ref_col = FALSE, verbose = FALSE)
+  result <- a_summary(c("A", "B", "A", "C"),
+    .ref_group = c("B", "A", "C"),
+    .var = "x", compare_with_ref_group = TRUE, .in_ref_col = FALSE,
+    verbose = FALSE
+  )
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # logical input
-  result <- a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .ref_group = c(TRUE, FALSE), compare_with_ref_group = TRUE, .in_ref_col = FALSE)
+  result <- a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE),
+    .ref_group = c(TRUE, FALSE), compare_with_ref_group = TRUE,
+    .in_ref_col = FALSE
+  )
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })

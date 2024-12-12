@@ -222,7 +222,6 @@ compare_vars <- function(lyt,
                          .formats = NULL,
                          .labels = NULL,
                          .indent_mods = NULL) {
-
   analyze_vars(
     lyt = lyt,
     compare_with_ref_group = TRUE,

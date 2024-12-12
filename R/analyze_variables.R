@@ -160,8 +160,8 @@ s_summary <- function(x, denom, control, ...) {
 s_summary.numeric <- function(x, control = control_analyze_vars(), ...) {
   checkmate::assert_numeric(x)
   args_list <- list(...)
-  .N_row <- args_list[[".N_row"]]
-  .N_col <- args_list[[".N_col"]]
+  .N_row <- args_list[[".N_row"]] # nolint
+  .N_col <- args_list[[".N_col"]] # nolint
   na_rm <- args_list[["na_rm"]] %||% TRUE
   compare_with_ref_group <- args_list[["compare_with_ref_group"]]
 
@@ -308,8 +308,8 @@ s_summary.numeric <- function(x, control = control_analyze_vars(), ...) {
 s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
   assert_valid_factor(x)
   args_list <- list(...)
-  .N_row <- args_list[[".N_row"]]
-  .N_col <- args_list[[".N_col"]]
+  .N_row <- args_list[[".N_row"]] # nolint
+  .N_col <- args_list[[".N_col"]] # nolint
   na_rm <- args_list[["na_rm"]] %||% TRUE
   verbose <- args_list[["verbose"]] %||% TRUE
   compare_with_ref_group <- args_list[["compare_with_ref_group"]]
@@ -322,7 +322,7 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 
   y <- list()
 
-  y$n <-  list("n" = c("n" = length(x))) # all list of a list
+  y$n <- list("n" = c("n" = length(x))) # all list of a list
 
   y$count <- lapply(as.list(table(x, useNA = "ifany")), setNames, nm = "count")
 
@@ -446,8 +446,8 @@ s_summary.character <- function(x, ...) {
 s_summary.logical <- function(x, denom = c("n", "N_col", "N_row"), ...) {
   checkmate::assert_logical(x)
   args_list <- list(...)
-  .N_row <- args_list[[".N_row"]]
-  .N_col <- args_list[[".N_col"]]
+  .N_row <- args_list[[".N_row"]] # nolint
+  .N_col <- args_list[[".N_col"]] # nolint
   na_rm <- args_list[["na_rm"]] %||% TRUE
   compare_with_ref_group <- args_list[["compare_with_ref_group"]]
 
@@ -497,14 +497,16 @@ s_summary.logical <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 #' @describeIn analyze_variables Formatted analysis function which is used as `afun` in `analyze_vars()` and
 #'   `compare_vars()` and as `cfun` in `summarize_colvars()`.
 #'
-#' @param compare_with_ref_group (`flag`)\cr whether comparison statistics should be analyzed instead of summary statistics
-#'   (`compare_with_ref_group = TRUE` adds `pval` statistic comparing against reference group).
+#' @param compare_with_ref_group (`flag`)\cr whether comparison statistics should be analyzed instead of summary
+#'   statistics (`compare_with_ref_group = TRUE` adds `pval` statistic comparing
+#'   against reference group).
 #'
 #' @return
 #' * `a_summary()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @note
-#' * To use for comparison (with additional p-value statistic), parameter `compare_with_ref_group` must be set to `TRUE`.
+#' * To use for comparison (with additional p-value statistic), parameter
+#'   `compare_with_ref_group` must be set to `TRUE`.
 #' * Ensure that either all `NA` values are converted to an explicit `NA` level or all `NA` values are left as is.
 #'
 #' @examples
@@ -529,7 +531,8 @@ s_summary.logical <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 #' )
 #'
 #' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
-#' a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare_with_ref_group = TRUE,
+#' a_summary(rnorm(10, 5, 1),
+#'   .ref_group = rnorm(20, -5, 1), .var = "bla", compare_with_ref_group = TRUE,
 #'   .in_ref_col = FALSE
 #' )
 #'
@@ -559,19 +562,17 @@ a_summary <- function(x,
   dots_extra_args$.additional_fun_parameters <- NULL # After extraction we do not need them anymore
 
   # If one col has NA vals, must add NA row to other cols (using placeholder lvl `fill-na-level`)
-  if (any(is.na(dots_extra_args$.df_row[[dots_extra_args$.var]])) &&
-    !any(is.na(x)) &&
-    !dots_extra_args$na_rm) {
+  if (any(is.na(dots_extra_args$.df_row[[dots_extra_args$.var]])) && !any(is.na(x)) && !dots_extra_args$na_rm) {
     levels(x) <- c(levels(x), "fill-na-level")
   }
 
   # Check if compare_with_ref_group is TRUE but no ref col is set
   if (isTRUE(dots_extra_args$compare_with_ref_group) &&
-      all(
-        length(dots_extra_args[[".ref_group"]]) == 0,  # only used for testing
-        length(extra_afun_params[[".ref_group"]]) == 0
-      )
-    ) {
+    all(
+      length(dots_extra_args[[".ref_group"]]) == 0, # only used for testing
+      length(extra_afun_params[[".ref_group"]]) == 0
+    )
+  ) {
     stop(
       "For comparison (compare_with_ref_group = TRUE), the reference group must be specified.",
       "\nSee split_fun in spit_cols_by()."
@@ -593,8 +594,9 @@ a_summary <- function(x,
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
   .stats <- c(
     get_stats(met_grp,
-              stats_in = .stats,
-              add_pval = dots_extra_args$compare_with_ref_group %||% FALSE),
+      stats_in = .stats,
+      add_pval = dots_extra_args$compare_with_ref_group %||% FALSE
+    ),
     names(custom_stat_functions) # Additional stats from custom functions
   )
 
@@ -726,13 +728,13 @@ analyze_vars <- function(lyt,
                          vars,
                          var_labels = vars,
                          na_str = default_na_str(),
-                         na_rm = TRUE,
                          nested = TRUE,
                          show_labels = "default",
                          table_names = vars,
                          section_div = NA_character_,
-                         compare_with_ref_group = FALSE,
                          ...,
+                         na_rm = TRUE,
+                         compare_with_ref_group = FALSE,
                          .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
                          .stat_names_in = NULL,
                          .formats = NULL,
@@ -745,8 +747,10 @@ analyze_vars <- function(lyt,
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
 
   # Adding additional arguments to the analysis function (depends on the specific call)
-  extra_args <- c(extra_args, "na_rm" = na_rm,
-                  "compare_with_ref_group" = compare_with_ref_group, ...)
+  extra_args <- c(extra_args,
+    "na_rm" = na_rm,
+    "compare_with_ref_group" = compare_with_ref_group, ...
+  )
 
   # Adding all additional information from layout to analysis functions (see ?rtables::additional_fun_params)
   extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)

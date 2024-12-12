@@ -16,13 +16,13 @@ analyze_vars(
   vars,
   var_labels = vars,
   na_str = default_na_str(),
-  na_rm = TRUE,
   nested = TRUE,
   show_labels = "default",
   table_names = vars,
   section_div = NA_character_,
-  compare_with_ref_group = FALSE,
   ...,
+  na_rm = TRUE,
+  compare_with_ref_group = FALSE,
   .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
   .stat_names_in = NULL,
   .formats = NULL,
@@ -71,10 +71,11 @@ times, to avoid warnings from \code{rtables}.}
 \item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
 defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
 
-\item{compare_with_ref_group}{(\code{flag})\cr whether comparison statistics should be analyzed instead of summary statistics
-(\code{compare_with_ref_group = TRUE} adds \code{pval} statistic comparing against reference group).}
-
 \item{...}{arguments passed to \code{s_summary()}.}
+
+\item{compare_with_ref_group}{(\code{flag})\cr whether comparison statistics should be analyzed instead of summary
+statistics (\code{compare_with_ref_group = TRUE} adds \code{pval} statistic comparing
+against reference group).}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
@@ -241,7 +242,8 @@ created from character variables before passing the dataset to \code{\link[rtabl
 }
 
 \itemize{
-\item To use for comparison (with additional p-value statistic), parameter \code{compare_with_ref_group} must be set to \code{TRUE}.
+\item To use for comparison (with additional p-value statistic), parameter
+\code{compare_with_ref_group} must be set to \code{TRUE}.
 \item Ensure that either all \code{NA} values are converted to an explicit \code{NA} level or all \code{NA} values are left as is.
 }
 }
@@ -399,7 +401,8 @@ a_summary(
 )
 
 a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
-a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare_with_ref_group = TRUE,
+a_summary(rnorm(10, 5, 1),
+  .ref_group = rnorm(20, -5, 1), .var = "bla", compare_with_ref_group = TRUE,
   .in_ref_col = FALSE
 )
 
