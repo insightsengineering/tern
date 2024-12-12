@@ -517,17 +517,21 @@ s_summary.logical <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 #' a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
 #' a_summary(
 #'   c("A", "B", "A", "C"),
-#'   .ref_group = c("B", "A", "C"), .var = "x", compare_with_ref_group = TRUE, verbose = FALSE
+#'   .ref_group = c("B", "A", "C"), .var = "x", compare_with_ref_group = TRUE, verbose = FALSE,
+#'   .in_ref_col = FALSE
 #' )
 #'
 #' a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
 #' a_summary(
 #'   c(TRUE, FALSE, FALSE, TRUE, TRUE),
-#'   .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare_with_ref_group = TRUE
+#'   .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare_with_ref_group = TRUE,
+#'   .in_ref_col = FALSE
 #' )
 #'
 #' a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
-#' a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare_with_ref_group = TRUE)
+#' a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare_with_ref_group = TRUE,
+#'   .in_ref_col = FALSE
+#' )
 #'
 #' @export
 a_summary <- function(x,
@@ -588,7 +592,9 @@ a_summary <- function(x,
   # Fill in with formatting defaults if needed
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
   .stats <- c(
-    get_stats(met_grp, stats_in = .stats, add_pval = dots_extra_args$compare_with_ref_group),
+    get_stats(met_grp,
+              stats_in = .stats,
+              add_pval = dots_extra_args$compare_with_ref_group %||% FALSE),
     names(custom_stat_functions) # Additional stats from custom functions
   )
 
