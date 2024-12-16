@@ -534,3 +534,53 @@ testthat::test_that("analyze_vars works correctly with auto formats", {
   result <- testthat::expect_silent(res)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("analyze_vars works well with additional stat names (.stat_names_in)", {
+  dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4))
+  res <- basic_table() %>%
+    analyze_vars(
+      vars = "VAR",
+      .stats = c("n", "mean", "mean_sd", "range"),
+      .stat_names_in = list("n" = "CoUnT"),
+      .formats = c("mean_sd" = "auto", "range" = "auto")
+    ) %>%
+    build_table(dt) %>%
+    as_result_df(make_ard = TRUE)
+
+  testthat::expect_equal(res$stat_name, c("CoUnT", "mean", "mean", "sd", "min", "max"))
+})
+
+testthat::test_that("analyze_vars works well with additional stat names (.stat_names_in) and stats (custom fnc)", {
+  dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4), "VAR2" = letters[seq(5)])
+  res <- basic_table() %>%
+    analyze_vars(
+      vars = c("VAR", "VAR2"),
+      .stats = c("n", "mean",
+        "a" = function(x, ...) {
+          return(0)
+        },
+        "v" = function(x, ...) {
+          return(0)
+        }
+      ),
+      .stat_names_in = list("n" = "CoUnT", "v" = "something"),
+      .formats = c("mean" = "auto", "v" = "xx.xx"),
+      verbose = FALSE # now it works
+    ) %>%
+    build_table(dt)
+
+  res2 <- res %>%
+    as_result_df(make_ard = TRUE)
+
+  # stat_names are correctly assigned
+  testthat::expect_equal(
+    res2$stat_name,
+    c("CoUnT", "mean", NA, "something", "n", NA, "something")
+  )
+
+  # format for v is correctly printed (added external statistic)
+  testthat::expect_equal(
+    as_result_df(res, data_format = "strings")[nrow(res2), ncol(res2)],
+    c("0.00") # i.e. x.xx
+  )
+})

@@ -266,21 +266,6 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
   }
 
   out
-
-  # Select only needed formats from stats
-  ret <- vector("list", length = length(stats)) # Returning a list is simpler
-  ret[!is.na(which_fmt)] <- tern_default_formats[which_fmt[!is.na(which_fmt)]]
-
-  out <- setNames(ret, stats)
-
-  # Modify some with custom formats
-  if (!is.null(formats_in)) {
-    # Stats is the main
-    common_names <- intersect(names(out), names(formats_in))
-    out[common_names] <- formats_in[common_names]
-  }
-
-  out
 }
 
 #' @describeIn default_stats_formats_labels Get labels corresponding to a list of statistics.

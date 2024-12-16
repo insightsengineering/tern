@@ -12,6 +12,7 @@
 * Refactored `analyze_vars()` and `a_summary()` to take all options from `?rtables::additional_fun_params`.
 * Added to `analyze_vars()` statistical names that are used by `rtables::as_result_df()`.
 * Merged `compare_vars()` into `analyze_vars()` as overlap was significant.
+* Added the possibility to integrate custom statistical functions to default ones in `analyze_vars()`.
 
 ### Bug Fixes
 * Fixed bug in `a_summary()` causing non-unique `row_name` values to occur when multiple statistics are selected for count variables.
