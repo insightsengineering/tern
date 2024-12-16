@@ -59,15 +59,15 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
     method_groups[method_groups == "analyze_vars"] <- "analyze_vars_numeric"
   }
 
-  type_tmp <- ifelse(any(grepl("counts", method_groups)), "counts", "numeric") # for pval checks
+  type_tmp <- ifelse(any(grepl("counts$", method_groups)), "counts", "numeric") # for pval checks
 
   # Defaults for loop
   out <- NULL
 
   # Loop for multiple method groups
   for (mgi in method_groups) {
-    out_tmp <- if (mgi %in% names(tern_default_stats)) {
-      tern_default_stats[[mgi]]
+    if (mgi %in% names(tern_default_stats)) {
+      out_tmp <- tern_default_stats[[mgi]]
     } else {
       stop("The selected method group (", mgi, ") has no default statistical method.")
     }
@@ -119,6 +119,45 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
   }
 
   out
+}
+
+
+#' @describeIn default_stats_formats_labels Get statistical NAMES available for a given method
+#'   group (analyze function). Please use the `s_*` functions to get the statistical names.
+#' @param stat_results (`list`)\cr list of statistical results. It should be used close to the end of
+#'   a statistical function. See examples for a structure with two statistical results and two groups.
+#' @param stat_names_in (`character`)\cr custom modification of statistical values.
+#'
+#' @return
+#' * `get_stat_names()` returns a named list of`character` vectors, indicating the names of
+#'    statistical outputs.
+#'
+#' @examples
+#' stat_results <- list("n" = list("M" = 1, "F" = 2), "count_fraction" = list("M" = c(1, 0.2), "F" = c(2, 0.1)))
+#' get_stat_names(stat_results)
+#' get_stat_names(stat_results, list("n" = "argh"))
+#'
+#' @export
+get_stat_names <- function(stat_results, stat_names_in = NULL) {
+  checkmate::assert_character(names(stat_results), min.len = 1)
+  checkmate::assert_list(stat_names_in, null.ok = TRUE)
+
+  stat_nms_from_stats <- lapply(stat_results, function(si) {
+    nm <- names(si)
+    if (is.null(nm)) {
+      nm <- rep(NA_character_, length(si)) # no statistical names
+    }
+    return(nm)
+  })
+
+  # Modify some with custom stat names
+  if (!is.null(stat_names_in)) {
+    # Stats is the main
+    common_names <- intersect(names(stat_nms_from_stats), names(stat_names_in))
+    stat_nms_from_stats[common_names] <- stat_names_in[common_names]
+  }
+
+  stat_nms_from_stats
 }
 
 # Utility function used to separate custom stats (user-defined functions) from defaults
@@ -419,6 +458,7 @@ labels_use_control <- function(labels_default, control, labels_custom = NULL) {
   labels_default
 }
 
+# tern_default_stats -----------------------------------------------------------
 #' @describeIn default_stats_formats_labels Named list of available statistics by method group for `tern`.
 #'
 #' @format
@@ -474,6 +514,7 @@ tern_default_stats <- list(
   test_proportion_diff = c("pval")
 )
 
+# tern_default_formats ---------------------------------------------------------
 #' @describeIn default_stats_formats_labels Named vector of default formats for `tern`.
 #'
 #' @format
@@ -529,6 +570,7 @@ tern_default_formats <- c(
   rate_ratio_ci = "(xx.xxxx, xx.xxxx)"
 )
 
+# tern_default_labels ----------------------------------------------------------
 #' @describeIn default_stats_formats_labels Named `character` vector of default labels for `tern`.
 #'
 #' @format

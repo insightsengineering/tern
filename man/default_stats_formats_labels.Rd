@@ -4,6 +4,7 @@
 \name{default_stats_formats_labels}
 \alias{default_stats_formats_labels}
 \alias{get_stats}
+\alias{get_stat_names}
 \alias{get_formats_from_stats}
 \alias{get_labels_from_stats}
 \alias{get_indents_from_stats}
@@ -36,6 +37,8 @@ get_stats(
   add_pval = FALSE
 )
 
+get_stat_names(stat_results, stat_names_in = NULL)
+
 get_formats_from_stats(stats, formats_in = NULL)
 
 get_labels_from_stats(stats, labels_in = NULL, row_nms = NULL)
@@ -62,6 +65,11 @@ method group.}
 \item{add_pval}{(\code{flag})\cr should \code{"pval"} (or \code{"pval_counts"} if \code{method_groups} contains
 \code{"analyze_vars_counts"}) be added to the statistical methods?}
 
+\item{stat_results}{(\code{list})\cr list of statistical results. It should be used close to the end of
+a statistical function. See examples for a structure with two statistical results and two groups.}
+
+\item{stat_names_in}{(\code{character})\cr custom modification of statistical values.}
+
 \item{stats}{(\code{character})\cr statistical methods to get defaults for.}
 
 \item{formats_in}{(named \code{vector})\cr inserted formats to replace defaults. It can be a
@@ -84,6 +92,11 @@ variable names if rows correspond to different variables instead of levels. Defa
 \value{
 \itemize{
 \item \code{get_stats()} returns a \code{character} vector of statistical methods.
+}
+
+\itemize{
+\item \code{get_stat_names()} returns a named list of\code{character} vectors, indicating the names of
+statistical outputs.
 }
 
 \itemize{
@@ -128,6 +141,9 @@ Current choices for \code{type} are \code{counts} and \code{numeric} for \code{\
 \itemize{
 \item \code{get_stats()}: Get statistics available for a given method
 group (analyze function). To check available defaults see \code{tern::tern_default_stats} list.
+
+\item \code{get_stat_names()}: Get statistical NAMES available for a given method
+group (analyze function). Please use the \verb{s_*} functions to get the statistical names.
 
 \item \code{get_formats_from_stats()}: Get formats corresponding to a list of statistics.
 To check available defaults see \code{tern::tern_default_formats} list.
@@ -176,6 +192,10 @@ all_cnt_occ <- get_stats("count_occurrences")
 
 # Multiple
 get_stats(c("count_occurrences", "analyze_vars_counts"))
+
+stat_results <- list("n" = list("M" = 1, "F" = 2), "count_fraction" = list("M" = c(1, 0.2), "F" = c(2, 0.1)))
+get_stat_names(stat_results)
+get_stat_names(stat_results, list("n" = "argh"))
 
 # Defaults formats
 get_formats_from_stats(num_stats)
