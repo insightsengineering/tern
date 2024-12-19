@@ -552,7 +552,7 @@ a_summary <- function(x,
   custom_stat_functions <- default_and_custom_stats_list$custom_stats
 
   # Correction of the pval indication if it is numeric or counts
-  type <- ifelse(is.numeric(x), "numeric", "counts")
+  type <- ifelse(is.numeric(x), "numeric", "counts") # counts is "categorical"
   .stats <- .correct_num_or_counts_pval(type, .stats)
 
   # Adding automatically extra parameters to the statistic function (see ?rtables::additional_fun_params)
@@ -605,14 +605,6 @@ a_summary <- function(x,
   }
   x_stats <- x_stats[.stats]
 
-  # Check for custom labels from control_analyze_vars
-  lbls <- get_labels_from_stats(.stats, .labels)
-  .labels <- if ("control" %in% names(dots_extra_args)) {
-    labels_use_control(lbls, dots_extra_args[["control"]], .labels)
-  } else {
-    lbls
-  }
-
   # Formats checks
   .formats <- get_formats_from_stats(.stats, .formats)
 
@@ -627,13 +619,28 @@ a_summary <- function(x,
   # Indentation checks
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
-  if (type == "counts" && !is.logical(x)) {
+  # Check for custom labels from control_analyze_vars
+  if (is.character(x) || is.factor(x)){
+    levels_per_stats <- lapply(x_stats, names)
+  } else {
+    levels_per_stats <- NULL
+  }
+  lbls <- get_labels_from_stats(.stats, .labels, levels_per_stats)
+  if ("control" %in% names(dots_extra_args)) {
+    lbls <- labels_use_control(lbls, dots_extra_args[["control"]], .labels)
+  }
+  .labels <- unname(.unlist_keep_nulls(lbls))
+
+  if (is.character(x) || is.factor(x)) {
     # Ungroup statistics with values for each level of x
-    x_ungrp <- ungroup_stats(x_stats, .formats, .labels, .indent_mods)
+    x_ungrp <- ungroup_stats(x_stats, .formats, .indent_mods)
     x_stats <- x_ungrp[["x"]]
     .formats <- x_ungrp[[".formats"]]
-    .labels <- gsub("fill-na-level", "NA", x_ungrp[[".labels"]])
     .indent_mods <- x_ungrp[[".indent_mods"]]
+    .labels <- gsub("fill-na-level", "NA", .labels)
+    row_nms <- names(.labels)
+  } else {
+    row_nms <- names(lbls)
   }
 
   # Get and check statistical names from defaults
@@ -642,11 +649,17 @@ a_summary <- function(x,
   in_rows(
     .list = x_stats,
     .formats = .formats,
-    .names = names(.labels),
+    .names = row_nms,
     .stat_names = .stat_names,
     .labels = .labels,
     .indent_mods = .indent_mods
   )
+}
+
+# Custom unlist function to retain NULL as "NULL" or NA
+.unlist_keep_nulls <- function(lst, null_placeholder = "NULL") {
+  lapply(lst, function(x) if (is.null(x)) null_placeholder else x) |>
+    unlist()
 }
 
 #' @describeIn analyze_variables Layout-creating function which can take statistics function arguments

@@ -228,3 +228,23 @@ testthat::test_that("get_stat_names works fine", {
   out <- get_stat_names(stat_results, list("n" = "argh"))
   testthat::expect_equal(out[1], list("n" = "argh"))
 })
+
+testthat::test_that("get_labels_from_stats works fine for cases with levels", {
+  x_stats <- list(
+    n = list(
+      n = c(n = 5)
+    ),
+    count_fraction = list(
+      a = c(count = 1.0, p = 0.2),
+      b = c(count = 1.0, p = 0.2),
+      c = c(count = 1.0, p = 0.2),
+      d = c(count = 1.0, p = 0.2),
+      e = c(count = 1.0, p = 0.2)
+    ),
+    a_zero = 0
+  )
+  .stats <- names(x_stats)
+  .labels <- list("n" = "N=", "a" = "AAAA", "a_zero" = "A_ZERO")
+
+  out <- get_labels_from_stats(.stats, .labels, levels_per_stats = lapply(x_stats, names))
+})

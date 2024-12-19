@@ -1351,25 +1351,25 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-                           row_name formatted_cell indent_mod row_label
-      1                         n.n           5.00         -1         n
-      2                     count.a              2          5         a
-      3                     count.b              1          5         b
-      4                     count.c              1          5         c
-      5                    count.NA              1          5        NA
-      6            count_fraction.a        2 (40%)          0         a
-      7            count_fraction.b        1 (20%)          0         b
-      8            count_fraction.c        1 (20%)          0         c
-      9           count_fraction.NA        1 (20%)          0        NA
-      10  count_fraction_fixed_dp.a      2 (40.0%)          0         a
-      11  count_fraction_fixed_dp.b      1 (20.0%)          0         b
-      12  count_fraction_fixed_dp.c      1 (20.0%)          0         c
-      13 count_fraction_fixed_dp.NA      1 (20.0%)          0        NA
-      14                 fraction.a    2/5 (40.0%)          0         a
-      15                 fraction.b    1/5 (20.0%)          0         b
-      16                 fraction.c    1/5 (20.0%)          0         c
-      17                fraction.NA    1/5 (20.0%)          0        NA
-      18                n_blq.n_blq              0          0     n_blq
+                           row_name formatted_cell indent_mod         row_label
+      1                         n.n           5.00         -1 number of records
+      2                     count.a              2          5                 a
+      3                     count.b              1          5                 b
+      4                     count.c              1          5                 c
+      5                    count.NA              1          5                NA
+      6            count_fraction.a        2 (40%)          0                 a
+      7            count_fraction.b        1 (20%)          0                 b
+      8            count_fraction.c        1 (20%)          0                 c
+      9           count_fraction.NA        1 (20%)          0                NA
+      10  count_fraction_fixed_dp.a      2 (40.0%)          0                 a
+      11  count_fraction_fixed_dp.b      1 (20.0%)          0                 b
+      12  count_fraction_fixed_dp.c      1 (20.0%)          0                 c
+      13 count_fraction_fixed_dp.NA      1 (20.0%)          0                NA
+      14                 fraction.a    2/5 (40.0%)          0                 a
+      15                 fraction.b    1/5 (20.0%)          0                 b
+      16                 fraction.c    1/5 (20.0%)          0                 c
+      17                fraction.NA    1/5 (20.0%)          0                NA
+      18                n_blq.n_blq              0          0             n_blq
 
 # a_summary works with healthy input when compare_with_ref_group = TRUE.
 
@@ -1491,7 +1491,7 @@
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
                            row_name formatted_cell indent_mod                  row_label
-      1                         n.n           5.00         -1                          n
+      1                         n.n           5.00         -1          number of records
       2                     count.a              2          5                          a
       3                     count.b              1          5                          b
       4                     count.c              1          5                          c

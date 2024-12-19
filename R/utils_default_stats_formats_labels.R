@@ -295,9 +295,9 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 #' get_labels_from_stats(all_cnt_occ, labels_in = list("fraction" = c("Some more fractions")))
 #'
 #' @export
-get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL) {
+get_labels_from_stats <- function(stats, labels_in = NULL, levels_per_stats = NULL) {
   checkmate::assert_character(stats, min.len = 1)
-  checkmate::assert_character(row_nms, null.ok = TRUE)
+  checkmate::assert_list(levels_per_stats, null.ok = TRUE)
   # It may be a list
   if (checkmate::test_list(labels_in, null.ok = TRUE)) {
     checkmate::assert_list(labels_in, null.ok = TRUE)
@@ -306,13 +306,39 @@ get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL) {
     checkmate::assert_character(labels_in, null.ok = TRUE)
   }
 
-  if (!is.null(row_nms)) {
-    ret <- rep(row_nms, length(stats))
-    out <- setNames(ret, paste(rep(stats, each = length(row_nms)), ret, sep = "."))
+  # Default for stats with sublevels (for factors or chrs) are the labels
+  if (!is.null(levels_per_stats)) {
+    out <- levels_per_stats
+    for (stat_i in seq_along(levels_per_stats)) {
+      common_stat_names <- intersect(names(levels_per_stats), names(labels_in))
+      nm_of_levs <- levels_per_stats[[stat_i]]
+      if (is.null(nm_of_levs)) {
+        nm_of_levs <- "a single NULL level"
+      }
+      for (lev_i in seq_along(nm_of_levs)) {
+        # If there are no further names push it down to lowest level
+        if (is.null(levels_per_stats[[stat_i]])) {
+          lev_val <- names(levels_per_stats[stat_i])
+          out[[stat_i]] <- lev_val
+        } else {
+          lev_val <- levels_per_stats[[stat_i]][[lev_i]]
+        }
 
-    if (!is.null(labels_in)) {
-      lvl_lbls <- intersect(names(labels_in), row_nms)
-      for (i in lvl_lbls) out[paste(stats, i, sep = ".")] <- labels_in[[i]]
+        # Add default if it is a stat at last level
+        if (lev_val %in% names(tern_default_labels)) {
+          out[[stat_i]][[lev_i]] <- tern_default_labels[[lev_val]]
+        }
+
+        # If a stat was added to the labels
+        if (names(levels_per_stats[stat_i]) %in% names(labels_in)) {
+          out[[stat_i]][[lev_i]] <- labels_in[[names(levels_per_stats[stat_i])]]
+        }
+
+        # If a stat level was added to the labels
+        if (lev_val %in% names(labels_in)) {
+          out[[stat_i]][[lev_i]] <- labels_in[[lev_val]]
+        }
+      }
     }
   } else {
     which_lbl <- match(stats, names(tern_default_labels))
@@ -321,13 +347,13 @@ get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL) {
     ret[!is.na(which_lbl)] <- tern_default_labels[which_lbl[!is.na(which_lbl)]]
 
     out <- setNames(ret, stats)
-  }
 
-  # Modify some with custom labels
-  if (!is.null(labels_in)) {
-    # Stats is the main
-    common_names <- intersect(names(out), names(labels_in))
-    out[common_names] <- labels_in[common_names]
+    # Modify some with custom labels
+    if (!is.null(labels_in)) {
+      # Stats is the main
+      common_names <- intersect(names(out), names(labels_in))
+      out[common_names] <- labels_in[common_names]
+    }
   }
 
   out

@@ -584,3 +584,35 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
     c("0.00") # i.e. x.xx
   )
 })
+testthat::test_that("analyze_vars works well with additional stat names (.stat_names_in) and stats (custom fnc)", {
+  dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4), "VAR2" = letters[seq(5)])
+  res <- basic_table() %>%
+    analyze_vars(
+      vars = c("VAR", "VAR2"),
+      .stats = c("n", "mean", "count_fraction",
+        "a_zero" = function(x, ...) {
+          return(0)
+        }),
+      .stat_names_in = list("n" = "CoUnT", "v" = "something"),
+      .formats = c("mean" = "auto", "v" = "xx.xx"),
+      .labels = list("n" = "N=", "a" = "AAAA", "a_zero" = "A_ZERO"),
+      verbose = FALSE # now it works
+    ) %>%
+    build_table(dt)
+
+  testthat::expect_equal(
+    matrix_form(res)$strings[, 1],
+    c("", "VAR", "N=", "Mean", "A_ZERO", "VAR2", "N=", "AAAA", "b", "c", "d", "e", "A_ZERO")
+  )
+
+  res2 <- res %>%
+    as_result_df(make_ard = TRUE)
+
+  # stat_names are correctly assigned
+  cols_int <- names(res2) %in% c("variable", "variable_level", "variable_label", "stat_name", "stat")
+  testthat::expect_equal(
+    unlist(res2[nrow(res2), cols_int, drop = TRUE], use.names = FALSE),
+    c("VAR2", "a_zero", "A_ZERO", NA, 0)
+  )
+})
+
