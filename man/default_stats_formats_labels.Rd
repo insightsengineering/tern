@@ -41,7 +41,7 @@ get_stat_names(stat_results, stat_names_in = NULL)
 
 get_formats_from_stats(stats, formats_in = NULL)
 
-get_labels_from_stats(stats, labels_in = NULL, row_nms = NULL)
+get_labels_from_stats(stats, labels_in = NULL, levels_per_stats = NULL)
 
 get_indents_from_stats(stats, indents_in = NULL, row_nms = NULL)
 
@@ -77,13 +77,13 @@ character vector from \code{\link[formatters:list_formats]{formatters::list_vali
 
 \item{labels_in}{(named \code{character})\cr inserted labels to replace defaults.}
 
+\item{indents_in}{(named \code{vector})\cr inserted indent modifiers to replace defaults (default is \code{0L}).}
+
 \item{row_nms}{(\code{character})\cr row names. Levels of a \code{factor} or \code{character} variable, each
 of which the statistics in \code{.stats} will be calculated for. If this parameter is set, these
 variable levels will be used as the defaults, and the names of the given custom values should
 correspond to levels (or have format \code{statistic.level}) instead of statistics. Can also be
 variable names if rows correspond to different variables instead of levels. Defaults to \code{NULL}.}
-
-\item{indents_in}{(named \code{vector})\cr inserted indent modifiers to replace defaults (default is \code{0L}).}
 
 \item{type}{(\code{string})\cr \code{"numeric"} or \code{"counts"}.}
 
