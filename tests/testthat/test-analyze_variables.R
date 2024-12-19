@@ -592,7 +592,8 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
       .stats = c("n", "mean", "count_fraction",
         "a_zero" = function(x, ...) {
           return(0)
-        }),
+        }
+      ),
       .stat_names_in = list("n" = "CoUnT", "v" = "something"),
       .formats = c("mean" = "auto", "v" = "xx.xx"),
       .labels = list("n" = "N=", "a" = "AAAA", "a_zero" = "A_ZERO"),
@@ -615,4 +616,3 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
     c("VAR2", "a_zero", "A_ZERO", NA, 0)
   )
 })
-

@@ -620,7 +620,7 @@ a_summary <- function(x,
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
   # Check for custom labels from control_analyze_vars
-  if (is.character(x) || is.factor(x)){
+  if (is.character(x) || is.factor(x)) {
     levels_per_stats <- lapply(x_stats, names)
   } else {
     levels_per_stats <- NULL
