@@ -270,7 +270,6 @@ a_count_occurrences_by_grade <- function(df,
   if (is.null(unlist(x_stats))) {
     return(NULL)
   }
-  x_lvls <- names(x_stats[[1]])
 
   # Fill in with formatting defaults if needed
   .stats <- get_stats("count_occurrences_by_grade", stats_in = .stats)
@@ -278,14 +277,16 @@ a_count_occurrences_by_grade <- function(df,
     .formats <- rep(.formats, length(.stats)) %>% setNames(.stats)
   }
   .formats <- get_formats_from_stats(.stats, .formats)
-  .labels <- get_labels_from_stats(.stats, .labels, row_nms = x_lvls)
-  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, row_nms = x_lvls)
+  .labels <- unlist(get_labels_from_stats(.stats, .labels, lapply(x_stats, names)))
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, row_nms = names(x_stats[[1]]))
 
-  if ("count_fraction_fixed_dp" %in% .stats) x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
+  if ("count_fraction_fixed_dp" %in% .stats) {
+    x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
+  }
   x_stats <- x_stats[.stats]
 
   # Ungroup statistics with values for each level of x
-  x_ungrp <- ungroup_stats(x_stats, .formats, .labels, list())
+  x_ungrp <- ungroup_stats(x_stats, .formats, list())
   x_stats <- x_ungrp[["x"]]
   .formats <- x_ungrp[[".formats"]]
 
