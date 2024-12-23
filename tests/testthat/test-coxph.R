@@ -45,8 +45,8 @@ testthat::test_that("estimate_coef works correctly", {
 })
 
 testthat::test_that("try_car_anova works correctly", {
-  testthat::skip_if(packageVersion("survival") >= "3.8.3",
-    message = "Skip test is version is greater than 3.8.3, breaking change"
+  testthat::skip_if(packageVersion("survival") >= "3.8-3",
+    message = "Skip test is version is greater than 3.8-3, breaking change"
   )
 
   mod <- survival::coxph(
