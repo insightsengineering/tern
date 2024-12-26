@@ -174,7 +174,7 @@ a_count_occurrences <- function(df,
   # Fill in with formatting defaults if needed
   .stats <- get_stats("count_occurrences", stats_in = .stats)
   .formats <- get_formats_from_stats(.stats, .formats)
-  .labels <- get_labels_from_stats(.stats, .labels, row_nms = x_lvls)
+  .labels <- .unlist_keep_nulls(get_labels_from_stats(.stats, .labels, levels_per_stats = lapply(x_stats, names)))
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, row_nms = x_lvls)
 
   if ("count_fraction_fixed_dp" %in% .stats) x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]

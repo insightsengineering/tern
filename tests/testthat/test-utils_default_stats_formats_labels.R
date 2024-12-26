@@ -141,10 +141,10 @@ testthat::test_that("get_labels_from_stats works as expected", {
 })
 
 testthat::test_that("get_labels_from_stats with labels in works when adding levels to stats", {
-  labels_custom <- c("c" = "Lvl c:", "a" = "CF: A", "count" = "COUNT")
+  labels_custom <- c("c" = "Lvl c:", "a" = "CF: A", "count" = "COUNT", "count_fraction.b" = "notB")
   levels_per_stats <- list(
     count = c("a", "b", "c"),
-    count_fraction =  c("a", "b", "c")
+    count_fraction = c("a", "b", "c")
   )
 
   # with levels_per_stats
@@ -156,10 +156,9 @@ testthat::test_that("get_labels_from_stats with labels in works when adding leve
     ),
     list(
       count = c("a" = "CF: A", "b" = "COUNT", "c" = "Lvl c:"),
-      count_fraction =  c("a" = "CF: A", "b" = "b", "c" = "Lvl c:")
+      count_fraction = c("a" = "CF: A", "b" = "notB", "c" = "Lvl c:")
     )
   )
-
 })
 
 
@@ -251,11 +250,14 @@ testthat::test_that("summary_labels works as expected", {
 })
 
 testthat::test_that("get_stat_names works fine", {
-  stat_results <- list("n" = list("M" = 1, "F" = 2), "count_fraction" = list("M" = c(1, 0.2), "F" = c(2, 0.1)))
-  out <- get_stat_names(stat_results)
+  stat_results <- list(
+    "n" = list("M" = c(n = 1), "F" = c(n = 2)),
+    "count_fraction" = list("M" = c(n = 1, p = 0.2), "F" = c(n = 2, p = 0.1))
+  )
+  out <- get_stat_names(.unlist_keep_nulls(stat_results))
 
-  testthat::expect_equal(out[1], list("n" = "n"))
-  testthat::expect_equal(out[2], list("count_fraction" = c("n", "p")))
+  testthat::expect_equal(out[1], list("n.M" = "n"))
+  testthat::expect_equal(out[4], list("count_fraction.F" = c("n", "p")))
 
   out <- get_stat_names(stat_results, list("n" = "argh"))
   testthat::expect_equal(out[1], list("n" = "argh"))

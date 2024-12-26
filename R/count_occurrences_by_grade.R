@@ -277,7 +277,7 @@ a_count_occurrences_by_grade <- function(df,
     .formats <- rep(.formats, length(.stats)) %>% setNames(.stats)
   }
   .formats <- get_formats_from_stats(.stats, .formats)
-  .labels <- unlist(get_labels_from_stats(.stats, .labels, lapply(x_stats, names)))
+  .labels <- .unlist_keep_nulls(get_labels_from_stats(.stats, .labels, lapply(x_stats, names)))
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, row_nms = names(x_stats[[1]]))
 
   if ("count_fraction_fixed_dp" %in% .stats) {

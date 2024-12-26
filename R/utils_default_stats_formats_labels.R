@@ -273,11 +273,12 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 #'   the statistics name will be used as label.
 #'
 #' @param labels_in (named `character`)\cr inserted labels to replace defaults.
-#' @param row_nms (`character`)\cr row names. Levels of a `factor` or `character` variable, each
+#' @param levels_per_stats (named `list` of `character` or `NULL`)\cr Levels of a `factor` or `character` variable, each
 #'   of which the statistics in `.stats` will be calculated for. If this parameter is set, these
 #'   variable levels will be used as the defaults, and the names of the given custom values should
 #'   correspond to levels (or have format `statistic.level`) instead of statistics. Can also be
 #'   variable names if rows correspond to different variables instead of levels. Defaults to `NULL`.
+#' @param row_nms (`character`)\cr See `levels_per_stats`. Deprecation cycle started.
 #'
 #' @return
 #' * `get_labels_from_stats()` returns a named `character` vector of labels (if present in either
@@ -309,7 +310,7 @@ get_labels_from_stats <- function(stats, labels_in = NULL, levels_per_stats = NU
   # Default for stats with sublevels (for factors or chrs) are the labels
   if (!is.null(levels_per_stats)) {
     out <- .adjust_stats_desc_by_in_def(levels_per_stats, labels_in, tern_default_labels)
-  # numeric case, where there are not other levels (list of stats)
+    # numeric case, where there are not other levels (list of stats)
   } else {
     which_lbl <- match(stats, names(tern_default_labels))
 
@@ -427,6 +428,16 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
         out[[stat_i]][[lev_i]] <- user_in[[lev_val]]
       }
 
+      # If stat_i.lev_val is added to labels_in
+      composite_stat_lev_nm <- paste(
+        names(levels_per_stats[stat_i]),
+        lev_val,
+        sep = "."
+      )
+      if (composite_stat_lev_nm %in% names(user_in)) {
+        out[[stat_i]][[lev_i]] <- user_in[[composite_stat_lev_nm]]
+      }
+
       # Used by the unlist (to avoid count_fraction1, count_fraction2, etc.)
       names(out[[stat_i]])[lev_i] <- lev_val
     }
@@ -436,9 +447,9 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
 }
 
 # Custom unlist function to retain NULL as "NULL" or NA
-.unlist_keep_nulls <- function(lst, null_placeholder = "NULL") {
-  lapply(lst, function(x) if (is.null(x)) null_placeholder else x) |>
-    unlist()
+.unlist_keep_nulls <- function(lst, null_placeholder = "NULL", recursive = FALSE) {
+  lapply(lst, function(x) if (is.null(x)) null_placeholder else x) %>%
+    unlist(recursive = recursive)
 }
 
 

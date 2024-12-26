@@ -142,7 +142,10 @@ a_count_patients_with_flags <- function(df,
   # label formatting
   x_nms <- paste(rep(.stats, each = length(flag_variables)), flag_variables, sep = ".")
   new_lbls <- if (!is.null(.labels)) .labels[names(.labels) %in% x_nms] else NULL
-  .labels <- get_labels_from_stats(.stats, .labels, row_nms = x_lvls) %>% setNames(x_nms)
+  .labels <- .unlist_keep_nulls(get_labels_from_stats(.stats, .labels,
+    levels_per_stats = lapply(x_stats, names)
+  )) %>%
+    setNames(x_nms)
   if (!is.null(new_lbls)) {
     which_lbls <- which(names(new_lbls) %in% names(.labels))
     .labels[which_lbls] <- new_lbls

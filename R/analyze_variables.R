@@ -611,7 +611,6 @@ a_summary <- function(x,
     levels_per_stats <- NULL
   }
 
-
   # Formats checks
   .formats <- get_formats_from_stats(.stats, .formats)
 
