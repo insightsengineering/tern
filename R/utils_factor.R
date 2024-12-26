@@ -282,42 +282,38 @@ fct_collapse_only <- function(.f, ..., .na_level = "<Missing>") {
 #' Ungroups grouped non-numeric statistics within input vectors `.formats`, `.labels`, and `.indent_mods`.
 #'
 #' @inheritParams argument_convention
-#' @param x  (named `list` of `numeric`)\cr list of numeric statistics containing the statistics to ungroup.
+#' @param stat_out  (named `list` of `numeric`)\cr list of numeric statistics containing the statistics to ungroup.
 #'
-#' @return A `list` with modified elements `x`, `.formats`, `.labels`, and `.indent_mods`.
+#' @return A `list` with modified elements `stat_out`, `.formats`, `.labels`, `.levels`, and `.indent_mods`.
 #'
 #' @seealso [a_summary()] which uses this function internally.
 #'
 #' @keywords internal
-ungroup_stats <- function(x,
+ungroup_stats <- function(stat_out,
                           .formats,
-                          .labels,
                           .indent_mods) {
-  checkmate::assert_list(x)
-  empty_pval <- "pval" %in% names(x) && length(x[["pval"]]) == 0
-  empty_pval_counts <- "pval_counts" %in% names(x) && length(x[["pval_counts"]]) == 0
-  x <- unlist(x, recursive = FALSE)
+  checkmate::assert_list(stat_out)
+  empty_pval <- "pval" %in% names(stat_out) && length(stat_out[["pval"]]) == 0
+  empty_pval_counts <- "pval_counts" %in% names(stat_out) && length(stat_out[["pval_counts"]]) == 0
+  stat_out <- unlist(stat_out, recursive = FALSE)
 
   # If p-value is empty it is removed by unlist and needs to be re-added
-  if (empty_pval) x[["pval"]] <- character()
-  if (empty_pval_counts) x[["pval_counts"]] <- character()
-  .stats <- names(x)
+  if (empty_pval) stat_out[["pval"]] <- character()
+  if (empty_pval_counts) stat_out[["pval_counts"]] <- character()
+  .stats <- sapply(regmatches(names(stat_out), regexpr("\\.", names(stat_out)), invert = TRUE), function(xi) xi[[1]])
 
   # Ungroup stats
   .formats <- lapply(.stats, function(x) {
     .formats[[if (!grepl("\\.", x)) x else regmatches(x, regexpr("\\.", x), invert = TRUE)[[1]][1]]]
   })
+
   .indent_mods <- sapply(.stats, function(x) {
     .indent_mods[[if (!grepl("\\.", x)) x else regmatches(x, regexpr("\\.", x), invert = TRUE)[[1]][1]]]
   })
-  .labels <- sapply(.stats, function(x) {
-    if (!grepl("\\.", x)) .labels[[x]] else regmatches(x, regexpr("\\.", x), invert = TRUE)[[1]][2]
-  })
 
   list(
-    x = x,
+    x = stat_out,
     .formats = .formats,
-    .labels = .labels,
     .indent_mods = .indent_mods
   )
 }

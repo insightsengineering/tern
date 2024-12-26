@@ -36,9 +36,8 @@ NULL
 s_count_values <- function(x,
                            values,
                            na.rm = TRUE, # nolint
-                           .N_col, # nolint
-                           .N_row, # nolint
-                           denom = c("n", "N_col", "N_row")) {
+                           denom = c("n", "N_col", "N_row"),
+                           ...) {
   UseMethod("s_count_values", x)
 }
 
@@ -64,7 +63,7 @@ s_count_values.character <- function(x,
 
   is_in_values <- x %in% values
 
-  s_summary(is_in_values, ...)
+  s_summary(is_in_values, na_rm = na.rm, ...)
 }
 
 #' @describeIn count_values Method for `factor` class. This makes an automatic

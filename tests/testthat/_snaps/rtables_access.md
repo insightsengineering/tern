@@ -78,8 +78,8 @@
     Code
       res
     Output
-          B: Placebo C: Combination 
-          0.20000000     0.03225806 
+          B: Placebo.p C: Combination.p 
+            0.20000000       0.03225806 
 
 # h_col_counts works as expected
 

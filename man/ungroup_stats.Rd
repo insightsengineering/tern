@@ -4,21 +4,19 @@
 \alias{ungroup_stats}
 \title{Ungroup non-numeric statistics}
 \usage{
-ungroup_stats(x, .formats, .labels, .indent_mods)
+ungroup_stats(stat_out, .formats, .indent_mods)
 }
 \arguments{
-\item{x}{(named \code{list} of \code{numeric})\cr list of numeric statistics containing the statistics to ungroup.}
+\item{stat_out}{(named \code{list} of \code{numeric})\cr list of numeric statistics containing the statistics to ungroup.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
 }
 \value{
-A \code{list} with modified elements \code{x}, \code{.formats}, \code{.labels}, and \code{.indent_mods}.
+A \code{list} with modified elements \code{stat_out}, \code{.formats}, \code{.labels}, \code{.levels}, and \code{.indent_mods}.
 }
 \description{
 Ungroups grouped non-numeric statistics within input vectors \code{.formats}, \code{.labels}, and \code{.indent_mods}.

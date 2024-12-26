@@ -232,7 +232,9 @@ analyze_vars_in_cols <- function(lyt,
             sep = "_"
           )
           if (use_cache) {
-            if (is.null(cache_env[[var_row_val]])) cache_env[[var_row_val]] <- s_summary(u, ...)
+            if (is.null(cache_env[[var_row_val]])) {
+              cache_env[[var_row_val]] <- s_summary(u, ...)
+            }
             x_stats <- cache_env[[var_row_val]]
           } else {
             x_stats <- s_summary(u, ...)

@@ -4,16 +4,28 @@
       res
     Output
       $n
-      [1] 3
+      n 
+      3 
       
       $count
-      [1] 2
+      count 
+          2 
       
       $count_fraction
-      [1] 2.0000000 0.6666667
+          count  fraction 
+      2.0000000 0.6666667 
+      
+      $count_fraction_fixed_dp
+          count  fraction 
+      2.0000000 0.6666667 
+      
+      $fraction
+        num denom 
+          2     3 
       
       $n_blq
-      [1] 0
+      n_blq 
+          0 
       
 
 ---
@@ -22,16 +34,28 @@
       res
     Output
       $n
-      [1] 3
+      n 
+      3 
       
       $count
-      [1] 0
+      count 
+          0 
       
       $count_fraction
-      [1] 0 0
+         count fraction 
+             0        0 
+      
+      $count_fraction_fixed_dp
+         count fraction 
+             0        0 
+      
+      $fraction
+        num denom 
+          0     3 
       
       $n_blq
-      [1] 0
+      n_blq 
+          0 
       
 
 # s_count_values works for character input with NAs
@@ -40,16 +64,28 @@
       res
     Output
       $n
-      [1] 5
+      n 
+      5 
       
       $count
-      [1] 2
+      count 
+          2 
       
       $count_fraction
-      [1] 2.0 0.4
+         count fraction 
+           2.0      0.4 
+      
+      $count_fraction_fixed_dp
+         count fraction 
+           2.0      0.4 
+      
+      $fraction
+        num denom 
+          2     5 
       
       $n_blq
-      [1] 0
+      n_blq 
+          0 
       
 
 ---
@@ -58,16 +94,28 @@
       res
     Output
       $n
-      [1] 6
+      n 
+      6 
       
       $count
-      [1] 1
+      count 
+          1 
       
       $count_fraction
-      [1] 1.0000000 0.1666667
+          count  fraction 
+      1.0000000 0.1666667 
+      
+      $count_fraction_fixed_dp
+          count  fraction 
+      1.0000000 0.1666667 
+      
+      $fraction
+        num denom 
+          1     6 
       
       $n_blq
-      [1] 0
+      n_blq 
+          0 
       
 
 # s_count_values can pass options to s_summary's logical method
@@ -76,16 +124,28 @@
       res
     Output
       $n
-      [1] 3
+      n 
+      3 
       
       $count
-      [1] 2
+      count 
+          2 
       
       $count_fraction
-      [1] 2.0 0.2
+         count fraction 
+           2.0      0.2 
+      
+      $count_fraction_fixed_dp
+         count fraction 
+           2.0      0.2 
+      
+      $fraction
+        num denom 
+          2    10 
       
       $n_blq
-      [1] 0
+      n_blq 
+          0 
       
 
 # s_count_values for factor gives same result as for character
@@ -94,16 +154,28 @@
       res
     Output
       $n
-      [1] 3
+      n 
+      3 
       
       $count
-      [1] 2
+      count 
+          2 
       
       $count_fraction
-      [1] 2.0 0.2
+         count fraction 
+           2.0      0.2 
+      
+      $count_fraction_fixed_dp
+         count fraction 
+           2.0      0.2 
+      
+      $fraction
+        num denom 
+          2    10 
       
       $n_blq
-      [1] 0
+      n_blq 
+          0 
       
 
 # s_count_values for factor gives the same result as for character for values not in factor level
@@ -112,16 +184,28 @@
       res
     Output
       $n
-      [1] 3
+      n 
+      3 
       
       $count
-      [1] 0
+      count 
+          0 
       
       $count_fraction
-      [1] 0 0
+         count fraction 
+             0        0 
+      
+      $count_fraction_fixed_dp
+         count fraction 
+             0        0 
+      
+      $fraction
+        num denom 
+          0     3 
       
       $n_blq
-      [1] 0
+      n_blq 
+          0 
       
 
 # count_values works as expected with a single value
@@ -160,16 +244,28 @@
       res
     Output
       $n
-      [1] 3
+      n 
+      3 
       
       $count
-      [1] 2
+      count 
+          2 
       
       $count_fraction
-      [1] 2.0000000 0.6666667
+          count  fraction 
+      2.0000000 0.6666667 
+      
+      $count_fraction_fixed_dp
+          count  fraction 
+      2.0000000 0.6666667 
+      
+      $fraction
+        num denom 
+          2     3 
       
       $n_blq
-      [1] 0
+      n_blq 
+          0 
       
 
 # s_count_values for logical vector with NA
@@ -178,15 +274,27 @@
       res
     Output
       $n
-      [1] 3
+      n 
+      3 
       
       $count
-      [1] 2
+      count 
+          2 
       
       $count_fraction
-      [1] 2.0000000 0.6666667
+          count  fraction 
+      2.0000000 0.6666667 
+      
+      $count_fraction_fixed_dp
+          count  fraction 
+      2.0000000 0.6666667 
+      
+      $fraction
+        num denom 
+          2     3 
       
       $n_blq
-      [1] 0
+      n_blq 
+          0 
       
 
