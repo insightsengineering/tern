@@ -104,7 +104,6 @@ afun_riskdiff <- function(df,
       "split function within `split_cols_by`. See ?add_riskdiff for details."
     )
   }
-  browser()
   checkmate::assert_list(afun, len = 1, types = "function")
   checkmate::assert_named(afun)
   afun_args <- list(
@@ -128,6 +127,7 @@ afun_riskdiff <- function(df,
       arm_spl_x <- arm_x
       arm_spl_y <- arm_y
     }
+
     N_col_x <- .all_col_counts[[arm_spl_x]] # nolint
     N_col_y <- .all_col_counts[[arm_spl_y]] # nolint
     cur_var <- tail(.spl_context$cur_col_split[[1]], 1)
@@ -141,7 +141,7 @@ afun_riskdiff <- function(df,
     stat <- ifelse("count_fraction" %in% names(s_x), "count_fraction", "unique")
     if ("flag_variables" %in% names(s_args)) {
       var_nms <- s_args$flag_variables
-    } else if (!is.null(names(s_x[[stat]]))) {
+    } else if (is.list(s_x[[stat]]) && !is.null(names(s_x[[stat]]))) {
       var_nms <- names(s_x[[stat]])
     } else {
       var_nms <- ""

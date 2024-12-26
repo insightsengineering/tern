@@ -50,8 +50,8 @@ testthat::test_that("s_count_patients_with_flags custom variable label behaviour
     adae_local,
     .var = "USUBJID",
     flag_variables = aesi_vars,
-    .N_col = ncol(test_data),
-    .N_row = nrow(test_data)
+    .N_col = ncol(adae_local),
+    .N_row = nrow(adae_local)
   )
 
   res <- testthat::expect_silent(result)
