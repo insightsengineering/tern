@@ -77,6 +77,23 @@
       [1] 0 0
       
       
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$`1`
+      [1] 2.0 0.2
+      
+      $count_fraction_fixed_dp$`2`
+      [1] 2.0 0.2
+      
+      $count_fraction_fixed_dp$`3`
+      [1] 2.0 0.2
+      
+      $count_fraction_fixed_dp$`4`
+      [1] 0 0
+      
+      $count_fraction_fixed_dp$`5`
+      [1] 0 0
+      
+      
 
 ---
 
@@ -97,6 +114,23 @@
       [1] 0 0
       
       $count_fraction$`5`
+      [1] 0 0
+      
+      
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$`1`
+      [1] 0 0
+      
+      $count_fraction_fixed_dp$`2`
+      [1] 0 0
+      
+      $count_fraction_fixed_dp$`3`
+      [1] 0 0
+      
+      $count_fraction_fixed_dp$`4`
+      [1] 0 0
+      
+      $count_fraction_fixed_dp$`5`
       [1] 0 0
       
       
@@ -123,6 +157,26 @@
       [1] 0 0
       
       $count_fraction$Missing
+      [1] 1.0 0.1
+      
+      
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$`1`
+      [1] 2.0 0.2
+      
+      $count_fraction_fixed_dp$`2`
+      [1] 2.0 0.2
+      
+      $count_fraction_fixed_dp$`3`
+      [1] 1.0 0.1
+      
+      $count_fraction_fixed_dp$`4`
+      [1] 0 0
+      
+      $count_fraction_fixed_dp$`5`
+      [1] 0 0
+      
+      $count_fraction_fixed_dp$Missing
       [1] 1.0 0.1
       
       
@@ -158,6 +212,32 @@
       [1] 0 0
       
       
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$`Any Grade`
+      [1] 6.0 0.6
+      
+      $count_fraction_fixed_dp$`Grade 1-2`
+      [1] 4.0 0.4
+      
+      $count_fraction_fixed_dp$`1`
+      [1] 2.0 0.2
+      
+      $count_fraction_fixed_dp$`2`
+      [1] 2.0 0.2
+      
+      $count_fraction_fixed_dp$`Grade 3-4`
+      [1] 2.0 0.2
+      
+      $count_fraction_fixed_dp$`3`
+      [1] 2.0 0.2
+      
+      $count_fraction_fixed_dp$`4`
+      [1] 0 0
+      
+      $count_fraction_fixed_dp$`5`
+      [1] 0 0
+      
+      
 
 ---
 
@@ -190,6 +270,32 @@
       [1] 0 0
       
       
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$`Any Grade`
+      [1] 0 0
+      
+      $count_fraction_fixed_dp$`Grade 1-2`
+      [1] 0 0
+      
+      $count_fraction_fixed_dp$`1`
+      [1] 0 0
+      
+      $count_fraction_fixed_dp$`2`
+      [1] 0 0
+      
+      $count_fraction_fixed_dp$`Grade 3-4`
+      [1] 0 0
+      
+      $count_fraction_fixed_dp$`3`
+      [1] 0 0
+      
+      $count_fraction_fixed_dp$`4`
+      [1] 0 0
+      
+      $count_fraction_fixed_dp$`5`
+      [1] 0 0
+      
+      
 
 ---
 
@@ -204,6 +310,17 @@
       [1] 4.0 0.4
       
       $count_fraction$`Grade 3-4`
+      [1] 2.0 0.2
+      
+      
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$`Any Grade`
+      [1] 6.0 0.6
+      
+      $count_fraction_fixed_dp$`Grade 1-2`
+      [1] 4.0 0.4
+      
+      $count_fraction_fixed_dp$`Grade 3-4`
       [1] 2.0 0.2
       
       
@@ -224,6 +341,20 @@
       [1] 2.0 0.2
       
       $count_fraction$SEVERE
+      [1] 2.0 0.2
+      
+      
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$`Any Intensity`
+      [1] 6.0 0.6
+      
+      $count_fraction_fixed_dp$MILD
+      [1] 2.0 0.2
+      
+      $count_fraction_fixed_dp$MODERATE
+      [1] 2.0 0.2
+      
+      $count_fraction_fixed_dp$SEVERE
       [1] 2.0 0.2
       
       
@@ -254,12 +385,17 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-          row_name formatted_cell indent_mod  row_label
-      1   Level: 1        2 (20%)          1   Level: 1
-      2      LVL 2        2 (20%)          2      LVL 2
-      3 Count of 3        2 (20%)          0 Count of 3
-      4  Missing 4         0 (0%)          3  Missing 4
-      5          5         0 (0%)          0          5
+           row_name formatted_cell indent_mod  row_label
+      1    Level: 1        2 (20%)          1   Level: 1
+      2       LVL 2        2 (20%)          2      LVL 2
+      3  Count of 3        2 (20%)          0 Count of 3
+      4   Missing 4         0 (0%)          3  Missing 4
+      5           5         0 (0%)          0          5
+      6    Level: 1        2 (20%)          1   Level: 1
+      7       LVL 2        2 (20%)          2      LVL 2
+      8  Count of 3        2 (20%)          0 Count of 3
+      9   Missing 4         0 (0%)          3  Missing 4
+      10          5         0 (0%)          0          5
 
 # count_occurrences_by_grade works with default arguments for intensity
 

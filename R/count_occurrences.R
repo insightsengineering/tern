@@ -111,19 +111,22 @@ s_count_occurrences <- function(df,
     )
   has_occurrence_per_id <- table(occurrences, ids) > 0
   n_ids_per_occurrence <- as.list(rowSums(has_occurrence_per_id))
+  cur_count_fraction <- lapply(
+    n_ids_per_occurrence,
+    function(i, denom) {
+      if (i == 0 && denom == 0) {
+        c(0, 0)
+      } else {
+        c(i, i / denom)
+      }
+    },
+    denom = denom
+  )
+
   list(
     count = n_ids_per_occurrence,
-    count_fraction = lapply(
-      n_ids_per_occurrence,
-      function(i, denom) {
-        if (i == 0 && denom == 0) {
-          c(0, 0)
-        } else {
-          c(i, i / denom)
-        }
-      },
-      denom = denom
-    ),
+    count_fraction = cur_count_fraction,
+    count_fraction_fixed_dp = cur_count_fraction,
     fraction = lapply(
       n_ids_per_occurrence,
       function(i, denom) c("num" = i, "denom" = denom),
@@ -169,19 +172,17 @@ a_count_occurrences <- function(df,
   if (is.null(unlist(x_stats))) {
     return(NULL)
   }
-  x_lvls <- names(x_stats[[1]])
 
   # Fill in with formatting defaults if needed
   .stats <- get_stats("count_occurrences", stats_in = .stats)
   .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- .unlist_keep_nulls(get_labels_from_stats(.stats, .labels, levels_per_stats = lapply(x_stats, names)))
-  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, row_nms = x_lvls)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, row_nms = names(x_stats[[1]]))
 
-  if ("count_fraction_fixed_dp" %in% .stats) x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
   x_stats <- x_stats[.stats]
 
   # Ungroup statistics with values for each level of x
-  x_ungrp <- ungroup_stats(x_stats, .formats, list(), list())
+  x_ungrp <- ungroup_stats(x_stats, .formats, list())
   x_stats <- x_ungrp[["x"]]
   .formats <- x_ungrp[[".formats"]]
 

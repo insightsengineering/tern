@@ -23,8 +23,10 @@
     Code
       res
     Output
-      [1] "n"              "count"          "count_fraction" "fraction"      
-      [5] "n_blq"          "pval_counts"   
+      [1] "n"                       "count"                  
+      [3] "count_fraction"          "count_fraction_fixed_dp"
+      [5] "fraction"                "n_blq"                  
+      [7] "pval_counts"            
 
 ---
 
@@ -82,6 +84,20 @@
         1.0   0.2 
       
       $count_fraction$c
+      count     p 
+        1.0   0.2 
+      
+      
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$a
+      count     p 
+        3.0   0.6 
+      
+      $count_fraction_fixed_dp$b
+      count     p 
+        1.0   0.2 
+      
+      $count_fraction_fixed_dp$c
       count     p 
         1.0   0.2 
       

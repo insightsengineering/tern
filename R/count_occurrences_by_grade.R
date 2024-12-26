@@ -224,7 +224,8 @@ s_count_occurrences_by_grade <- function(df,
   )
 
   list(
-    count_fraction = l_count_fraction
+    count_fraction = l_count_fraction,
+    count_fraction_fixed_dp = l_count_fraction
   )
 }
 
@@ -280,9 +281,6 @@ a_count_occurrences_by_grade <- function(df,
   .labels <- .unlist_keep_nulls(get_labels_from_stats(.stats, .labels, lapply(x_stats, names)))
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, row_nms = names(x_stats[[1]]))
 
-  if ("count_fraction_fixed_dp" %in% .stats) {
-    x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
-  }
   x_stats <- x_stats[.stats]
 
   # Ungroup statistics with values for each level of x
@@ -296,8 +294,8 @@ a_count_occurrences_by_grade <- function(df,
   in_rows(
     .list = x_stats,
     .formats = .formats,
-    .names = unlist(.labels),
-    .labels = unlist(.labels),
+    .names = .labels,
+    .labels = .labels,
     .indent_mods = .indent_mods,
     .format_na_strs = na_str
   )
