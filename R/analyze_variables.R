@@ -339,6 +339,9 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
       c(x, "p" = ifelse(denom > 0, x / denom, 0))
     }
   )
+
+  y$count_fraction_fixed_dp <- y$count_fraction
+
   y$fraction <- lapply(
     y$count,
     function(count) c("num" = unname(count), "denom" = denom)
@@ -465,6 +468,7 @@ s_summary.logical <- function(x, denom = c("n", "N_col", "N_row"), ...) {
     )
   y$count <- c("count" = sum(x, na.rm = TRUE))
   y$count_fraction <- c(y$count, "fraction" = ifelse(denom > 0, y$count / denom, 0))
+  y$count_fraction_fixed_dp <- y$count_fraction
   y$fraction <- c("num" = unname(y$count), "denom" = denom)
   y$n_blq <- c("n_blq" = 0L)
 
@@ -590,7 +594,7 @@ a_summary <- function(x,
     )
   )
 
-  # Fill in with formatting defaults if needed
+  # Fill in with stats defaults if needed
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
   .stats <- c(
     get_stats(met_grp,
@@ -600,10 +604,13 @@ a_summary <- function(x,
     names(custom_stat_functions) # Additional stats from custom functions
   )
 
-  if ("count_fraction_fixed_dp" %in% .stats) { # only difference in formats
-    x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
-  }
   x_stats <- x_stats[.stats]
+  if (is.character(x) || is.factor(x)) {
+    levels_per_stats <- lapply(x_stats, names) # if there is a count is table() with levels
+  } else {
+    levels_per_stats <- NULL
+  }
+
 
   # Formats checks
   .formats <- get_formats_from_stats(.stats, .formats)
@@ -619,17 +626,14 @@ a_summary <- function(x,
   # Indentation checks
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
-  # Check for custom labels from control_analyze_vars
-  if (is.character(x) || is.factor(x)) {
-    levels_per_stats <- lapply(x_stats, names)
-  } else {
-    levels_per_stats <- NULL
-  }
+  # Labels assignments
   lbls <- get_labels_from_stats(.stats, .labels, levels_per_stats)
-  if ("control" %in% names(dots_extra_args)) {
-    lbls <- labels_use_control(lbls, dots_extra_args[["control"]], .labels)
+  # Check for custom labels from control_analyze_vars
+  .labels <- if ("control" %in% names(dots_extra_args)) {
+    labels_use_control(lbls, dots_extra_args[["control"]], .labels)
+  } else {
+    lbls
   }
-  .labels <- unname(.unlist_keep_nulls(lbls))
 
   if (is.character(x) || is.factor(x)) {
     # Ungroup statistics with values for each level of x
@@ -637,10 +641,8 @@ a_summary <- function(x,
     x_stats <- x_ungrp[["x"]]
     .formats <- x_ungrp[[".formats"]]
     .indent_mods <- x_ungrp[[".indent_mods"]]
+    .labels <- .unlist_keep_nulls(.labels)
     .labels <- gsub("fill-na-level", "NA", .labels)
-    row_nms <- names(.labels)
-  } else {
-    row_nms <- names(lbls)
   }
 
   # Get and check statistical names from defaults
@@ -649,17 +651,11 @@ a_summary <- function(x,
   in_rows(
     .list = x_stats,
     .formats = .formats,
-    .names = row_nms,
+    .names = names(.labels),
     .stat_names = .stat_names,
     .labels = .labels,
     .indent_mods = .indent_mods
   )
-}
-
-# Custom unlist function to retain NULL as "NULL" or NA
-.unlist_keep_nulls <- function(lst, null_placeholder = "NULL") {
-  lapply(lst, function(x) if (is.null(x)) null_placeholder else x) |>
-    unlist()
 }
 
 #' @describeIn analyze_variables Layout-creating function which can take statistics function arguments
@@ -753,17 +749,20 @@ analyze_vars <- function(lyt,
                          .formats = NULL,
                          .labels = NULL,
                          .indent_mods = NULL) {
-  extra_args <- list(".stats" = .stats)
+  # Depending on main functions
+  extra_args <- list(
+    "na_rm" = na_rm,
+    "compare_with_ref_group" = compare_with_ref_group,
+    ...
+  )
+
+  # Needed defaults
+  if (!is.null(.stats)) extra_args[[".stats"]] <- .stats
   if (!is.null(.stat_names_in)) extra_args[[".stat_names_in"]] <- .stat_names_in
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
 
-  # Adding additional arguments to the analysis function (depends on the specific call)
-  extra_args <- c(extra_args,
-    "na_rm" = na_rm,
-    "compare_with_ref_group" = compare_with_ref_group, ...
-  )
 
   # Adding all additional information from layout to analysis functions (see ?rtables::additional_fun_params)
   extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
@@ -772,6 +771,7 @@ analyze_vars <- function(lyt,
     extra_args[[".additional_fun_parameters"]]
   )
 
+  # Main {rtables} structural call
   analyze(
     lyt = lyt,
     vars = vars,

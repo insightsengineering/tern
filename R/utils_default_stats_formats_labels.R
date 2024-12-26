@@ -308,38 +308,8 @@ get_labels_from_stats <- function(stats, labels_in = NULL, levels_per_stats = NU
 
   # Default for stats with sublevels (for factors or chrs) are the labels
   if (!is.null(levels_per_stats)) {
-    out <- levels_per_stats
-    for (stat_i in seq_along(levels_per_stats)) {
-      common_stat_names <- intersect(names(levels_per_stats), names(labels_in))
-      nm_of_levs <- levels_per_stats[[stat_i]]
-      if (is.null(nm_of_levs)) {
-        nm_of_levs <- "a single NULL level"
-      }
-      for (lev_i in seq_along(nm_of_levs)) {
-        # If there are no further names push it down to lowest level
-        if (is.null(levels_per_stats[[stat_i]])) {
-          lev_val <- names(levels_per_stats[stat_i])
-          out[[stat_i]] <- lev_val
-        } else {
-          lev_val <- levels_per_stats[[stat_i]][[lev_i]]
-        }
-
-        # Add default if it is a stat at last level
-        if (lev_val %in% names(tern_default_labels)) {
-          out[[stat_i]][[lev_i]] <- tern_default_labels[[lev_val]]
-        }
-
-        # If a stat was added to the labels
-        if (names(levels_per_stats[stat_i]) %in% names(labels_in)) {
-          out[[stat_i]][[lev_i]] <- labels_in[[names(levels_per_stats[stat_i])]]
-        }
-
-        # If a stat level was added to the labels
-        if (lev_val %in% names(labels_in)) {
-          out[[stat_i]][[lev_i]] <- labels_in[[lev_val]]
-        }
-      }
-    }
+    out <- .adjust_stats_desc_by_in_def(levels_per_stats, labels_in, tern_default_labels)
+  # numeric case, where there are not other levels (list of stats)
   } else {
     which_lbl <- match(stats, names(tern_default_labels))
 
@@ -352,7 +322,7 @@ get_labels_from_stats <- function(stats, labels_in = NULL, levels_per_stats = NU
     if (!is.null(labels_in)) {
       # Stats is the main
       common_names <- intersect(names(out), names(labels_in))
-      out[common_names] <- labels_in[common_names]
+      out[common_names] <- unlist(labels_in[common_names], recursive = FALSE)
     }
   }
 
@@ -415,6 +385,62 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
 
   out
 }
+
+# Function to loop over each stat and levels to set correct values
+.adjust_stats_desc_by_in_def <- function(levels_per_stats, user_in, tern_defaults) {
+  out <- levels_per_stats
+
+  # Seq over the stats levels (can be also flat (stat$NULL))
+  for (stat_i in seq_along(levels_per_stats)) {
+    # If you want to change all factor levels at once by statistic
+    common_stat_names <- intersect(names(levels_per_stats), names(user_in))
+
+    # Levels for each statistic
+    nm_of_levs <- levels_per_stats[[stat_i]]
+    # Special case in which only stat$NULL
+    if (is.null(nm_of_levs)) {
+      nm_of_levs <- "a single NULL level"
+    }
+
+    # Loop over levels for each statistic
+    for (lev_i in seq_along(nm_of_levs)) {
+      # If there are no further names (stat$NULL) push label (stat) down to lowest level
+      if (is.null(levels_per_stats[[stat_i]])) {
+        lev_val <- names(levels_per_stats[stat_i])
+        out[[stat_i]] <- lev_val
+      } else {
+        lev_val <- levels_per_stats[[stat_i]][[lev_i]]
+      }
+
+      # Add default if it is a stat at last level
+      if (lev_val %in% names(tern_defaults)) {
+        out[[stat_i]][[lev_i]] <- tern_defaults[[lev_val]]
+      }
+
+      # If a general stat was added to the custom labels
+      if (names(levels_per_stats[stat_i]) %in% names(user_in)) {
+        out[[stat_i]][[lev_i]] <- user_in[[names(levels_per_stats[stat_i])]]
+      }
+
+      # If a stat level (e.g. if it is counts levels from table) was added to the custom labels
+      if (lev_val %in% names(user_in)) {
+        out[[stat_i]][[lev_i]] <- user_in[[lev_val]]
+      }
+
+      # Used by the unlist (to avoid count_fraction1, count_fraction2, etc.)
+      names(out[[stat_i]])[lev_i] <- lev_val
+    }
+  }
+
+  out
+}
+
+# Custom unlist function to retain NULL as "NULL" or NA
+.unlist_keep_nulls <- function(lst, null_placeholder = "NULL") {
+  lapply(lst, function(x) if (is.null(x)) null_placeholder else x) |>
+    unlist()
+}
+
 
 #' Update labels according to control specifications
 #'
@@ -611,7 +637,7 @@ tern_default_labels <- c(
   n = "n",
   count = "count",
   count_fraction = "count_fraction",
-  count_fraction_fixed_dp = "count_fraction",
+  count_fraction_fixed_dp = "count_fraction_fixed_dp",
   n_blq = "n_blq",
   sum = "Sum",
   mean = "Mean",

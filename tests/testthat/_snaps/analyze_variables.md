@@ -727,6 +727,20 @@
       4.0000000 0.4444444 
       
       
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$Female
+          count         p 
+      2.0000000 0.2222222 
+      
+      $count_fraction_fixed_dp$Male
+          count         p 
+      3.0000000 0.3333333 
+      
+      $count_fraction_fixed_dp$Unknown
+          count         p 
+      4.0000000 0.4444444 
+      
+      
       $fraction
       $fraction$Female
         num denom 
@@ -795,6 +809,24 @@
       1.0000000 0.1428571 
       
       
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$Female
+          count         p 
+      2.0000000 0.2857143 
+      
+      $count_fraction_fixed_dp$Male
+          count         p 
+      2.0000000 0.2857143 
+      
+      $count_fraction_fixed_dp$Unknown
+          count         p 
+      2.0000000 0.2857143 
+      
+      $count_fraction_fixed_dp$`NA`
+          count         p 
+      1.0000000 0.1428571 
+      
+      
       $fraction
       $fraction$Female
         num denom 
@@ -859,6 +891,20 @@
       4.0000000 0.4444444 
       
       
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$Female
+          count         p 
+      2.0000000 0.2222222 
+      
+      $count_fraction_fixed_dp$Male
+          count         p 
+      3.0000000 0.3333333 
+      
+      $count_fraction_fixed_dp$Unknown
+          count         p 
+      4.0000000 0.4444444 
+      
+      
       $fraction
       $fraction$Female
         num denom 
@@ -915,6 +961,20 @@
           0     0 
       
       $count_fraction$c
+      count     p 
+          0     0 
+      
+      
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$a
+      count     p 
+          0     0 
+      
+      $count_fraction_fixed_dp$b
+      count     p 
+          0     0 
+      
+      $count_fraction_fixed_dp$c
       count     p 
           0     0 
       
@@ -979,6 +1039,20 @@
         4.0   0.2 
       
       
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$Female
+      count     p 
+        2.0   0.1 
+      
+      $count_fraction_fixed_dp$Male
+      count     p 
+       3.00  0.15 
+      
+      $count_fraction_fixed_dp$Unknown
+      count     p 
+        4.0   0.2 
+      
+      
       $fraction
       $fraction$Female
         num denom 
@@ -1035,6 +1109,20 @@
         3.0   0.1 
       
       $count_fraction$Unknown
+          count         p 
+      4.0000000 0.1333333 
+      
+      
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$Female
+           count          p 
+      2.00000000 0.06666667 
+      
+      $count_fraction_fixed_dp$Male
+      count     p 
+        3.0   0.1 
+      
+      $count_fraction_fixed_dp$Unknown
           count         p 
       4.0000000 0.1333333 
       
@@ -1107,6 +1195,24 @@
         1.0   0.1 
       
       
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$Female
+      count     p 
+        2.0   0.2 
+      
+      $count_fraction_fixed_dp$Male
+      count     p 
+        3.0   0.3 
+      
+      $count_fraction_fixed_dp$Unknown
+      count     p 
+        4.0   0.4 
+      
+      $count_fraction_fixed_dp$`NA`
+      count     p 
+        1.0   0.1 
+      
+      
       $fraction
       $fraction$Female
         num denom 
@@ -1149,6 +1255,10 @@
           count  fraction 
       4.0000000 0.6666667 
       
+      $count_fraction_fixed_dp
+          count  fraction 
+      4.0000000 0.6666667 
+      
       $fraction
         num denom 
           4     6 
@@ -1172,6 +1282,10 @@
           0 
       
       $count_fraction
+         count fraction 
+             0        0 
+      
+      $count_fraction_fixed_dp
          count fraction 
              0        0 
       
@@ -1201,6 +1315,10 @@
           count  fraction 
       4.0000000 0.6666667 
       
+      $count_fraction_fixed_dp
+          count  fraction 
+      4.0000000 0.6666667 
+      
       $fraction
         num denom 
           4     6 
@@ -1224,6 +1342,10 @@
           4 
       
       $count_fraction
+         count fraction 
+           4.0      0.5 
+      
+      $count_fraction_fixed_dp
          count fraction 
            4.0      0.5 
       
@@ -1325,13 +1447,13 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-                       row_name formatted_cell indent_mod      row_label
-      1                       n              5          0              n
-      2                   count              3          0          count
-      3          count_fraction        3 (60%)          0 count_fraction
-      4 count_fraction_fixed_dp      3 (60.0%)          0 count_fraction
-      5                fraction    3/5 (60.0%)          0       fraction
-      6                   n_blq              0          0          n_blq
+                       row_name formatted_cell indent_mod               row_label
+      1                       n              5          0                       n
+      2                   count              3          0                   count
+      3          count_fraction        3 (60%)          0          count_fraction
+      4 count_fraction_fixed_dp      3 (60.0%)          0 count_fraction_fixed_dp
+      5                fraction    3/5 (60.0%)          0                fraction
+      6                   n_blq              0          0                   n_blq
 
 # a_summary works with custom input.
 
@@ -1430,7 +1552,7 @@
       12                fraction.b    1/5 (20.0%)          0                          b
       13                fraction.c    1/5 (20.0%)          0                          c
       14               n_blq.n_blq              0          0                      n_blq
-      15               pval_counts         0.9560          0 p-value (chi-squared test)
+      15   pval_counts.pval_counts         0.9560          0 p-value (chi-squared test)
 
 ---
 
@@ -1454,7 +1576,7 @@
       12                fraction.B    1/4 (25.0%)          0                          B
       13                fraction.C    1/4 (25.0%)          0                          C
       14               n_blq.n_blq              0          0                      n_blq
-      15               pval_counts         0.9074          0 p-value (chi-squared test)
+      15   pval_counts.pval_counts         0.9074          0 p-value (chi-squared test)
 
 ---
 
@@ -1467,7 +1589,7 @@
       1                       n              5          0                          n
       2                   count              3          0                      count
       3          count_fraction        3 (60%)          0             count_fraction
-      4 count_fraction_fixed_dp      3 (60.0%)          0             count_fraction
+      4 count_fraction_fixed_dp      3 (60.0%)          0    count_fraction_fixed_dp
       5                fraction    3/5 (60.0%)          0                   fraction
       6                   n_blq              0          0                      n_blq
       7             pval_counts         0.8091          0 p-value (chi-squared test)
@@ -1509,7 +1631,7 @@
       16                 fraction.c    1/5 (20.0%)          0                          c
       17                fraction.NA    1/5 (20.0%)          0                         NA
       18                n_blq.n_blq              0          0                      n_blq
-      19                pval_counts         0.8254          0 p-value (chi-squared test)
+      19    pval_counts.pval_counts         0.8254          0 p-value (chi-squared test)
 
 # `analyze_vars` works with healthy input, default `na_rm = TRUE`.
 
@@ -1533,8 +1655,8 @@
       n                      9      
       Mean (SD)          5.0 (2.7)  
       Mean (SE)          5.0 (0.9)  
-      Mean 95% CI       (2.89, 7.11)
-      25% and 75%-ile    3.0 - 7.0  
+      Mean 90% CI       (3.30, 6.70)
+      10% and 90%-ile    1.0 - 9.0  
 
 # `analyze_vars` works with healthy input, alternative `na_rm = FALSE`
 

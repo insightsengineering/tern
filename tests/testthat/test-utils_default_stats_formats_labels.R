@@ -138,17 +138,62 @@ testthat::test_that("get_labels_from_stats works as expected", {
     ),
     stats_to_do
   )
+})
 
-  # with row_nms
-  testthat::expect_identical(
+testthat::test_that("get_labels_from_stats with labels in works when adding levels to stats", {
+  labels_custom <- c("c" = "Lvl c:", "a" = "CF: A", "count" = "COUNT")
+  levels_per_stats <- list(
+    count = c("a", "b", "c"),
+    count_fraction =  c("a", "b", "c")
+  )
+
+  # with levels_per_stats
+  testthat::expect_equal(
     get_labels_from_stats(
       stats = c("count", "count_fraction"),
-      labels_in = c("c" = "Lvl c:", "count_fraction.a" = "CF: A", "count.b" = "Count of b"),
-      row_nms = c("a", "b", "c")
+      labels_in = labels_custom,
+      levels_per_stats = levels_per_stats
     ),
+    list(
+      count = c("a" = "CF: A", "b" = "COUNT", "c" = "Lvl c:"),
+      count_fraction =  c("a" = "CF: A", "b" = "b", "c" = "Lvl c:")
+    )
+  )
+
+})
+
+
+testthat::test_that("get_labels_from_stats works fine for cases with levels", {
+  x_stats <- list(
+    n = list(
+      n = c(n = 5)
+    ),
+    count_fraction = list(
+      a = c(count = 1.0, p = 0.2),
+      b = c(count = 1.0, p = 0.2),
+      c = c(count = 1.0, p = 0.2),
+      d = c(count = 1.0, p = 0.2),
+      e = c(count = 1.0, p = 0.2)
+    ),
+    a_zero = 0,
+    a_null = NULL
+  )
+  .stats <- names(x_stats)
+  .labels <- list("n" = "N=", "a" = "AAAA", "a_zero" = "A_ZERO")
+
+  out <- get_labels_from_stats(.stats, .labels, levels_per_stats = lapply(x_stats, names))
+
+  testthat::expect_equal(
+    .unlist_keep_nulls(out),
     c(
-      count.a = "a", count.b = "Count of b", count.c = "Lvl c:",
-      count_fraction.a = "CF: A", count_fraction.b = "b", count_fraction.c = "Lvl c:"
+      n.n = "N=",
+      count_fraction.a = "AAAA",
+      count_fraction.b = "b",
+      count_fraction.c = "c",
+      count_fraction.d = "d",
+      count_fraction.e = "e",
+      a_zero.a_zero = "A_ZERO",
+      a_null.a_null = "a_null"
     )
   )
 })
@@ -168,19 +213,6 @@ testthat::test_that("get_indents_from_stats works as expected", {
       indents_in = stats_to_do
     ),
     c(stats_to_do, n = 0L)
-  )
-
-  # with row_nms
-  testthat::expect_identical(
-    get_indents_from_stats(
-      stats = c("count", "count_fraction"),
-      indents_in = c("c" = 3L, "count_fraction.a" = 1L, "count.b" = 2L),
-      row_nms = c("a", "b", "c")
-    ),
-    c(
-      count.a = 0L, count.b = 2L, count.c = 3L,
-      count_fraction.a = 1L, count_fraction.b = 0L, count_fraction.c = 3L
-    )
   )
 })
 
@@ -227,24 +259,4 @@ testthat::test_that("get_stat_names works fine", {
 
   out <- get_stat_names(stat_results, list("n" = "argh"))
   testthat::expect_equal(out[1], list("n" = "argh"))
-})
-
-testthat::test_that("get_labels_from_stats works fine for cases with levels", {
-  x_stats <- list(
-    n = list(
-      n = c(n = 5)
-    ),
-    count_fraction = list(
-      a = c(count = 1.0, p = 0.2),
-      b = c(count = 1.0, p = 0.2),
-      c = c(count = 1.0, p = 0.2),
-      d = c(count = 1.0, p = 0.2),
-      e = c(count = 1.0, p = 0.2)
-    ),
-    a_zero = 0
-  )
-  .stats <- names(x_stats)
-  .labels <- list("n" = "N=", "a" = "AAAA", "a_zero" = "A_ZERO")
-
-  out <- get_labels_from_stats(.stats, .labels, levels_per_stats = lapply(x_stats, names))
 })
