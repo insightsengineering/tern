@@ -23,14 +23,7 @@ count_values(
   .indent_mods = NULL
 )
 
-s_count_values(
-  x,
-  values,
-  na.rm = TRUE,
-  .N_col,
-  .N_row,
-  denom = c("n", "N_col", "N_row")
-)
+s_count_values(x, values, na.rm = TRUE, denom = c("n", "N_col", "N_row"), ...)
 
 \method{s_count_values}{character}(x, values = "Y", na.rm = TRUE, ...)
 
@@ -38,14 +31,7 @@ s_count_values(
 
 \method{s_count_values}{logical}(x, values = TRUE, ...)
 
-a_count_values(
-  x,
-  values,
-  na.rm = TRUE,
-  .N_col,
-  .N_row,
-  denom = c("n", "N_col", "N_row")
-)
+a_count_values(x, values, na.rm = TRUE, denom = c("n", "N_col", "N_row"), ...)
 }
 \arguments{
 \item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
@@ -80,12 +66,6 @@ unmodified default behavior. Can be negative.}
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
-
-\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
-passed by \code{rtables}.}
-
-\item{.N_row}{(\code{integer(1)})\cr row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
 
 \item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
 \itemize{
