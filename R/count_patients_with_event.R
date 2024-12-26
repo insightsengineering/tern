@@ -129,7 +129,6 @@ a_count_patients_with_event <- function(df,
   .labels <- get_labels_from_stats(.stats, .labels)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
-  if ("count_fraction_fixed_dp" %in% .stats) x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
   x_stats <- x_stats[.stats]
 
   # Auto format handling
@@ -139,7 +138,7 @@ a_count_patients_with_event <- function(df,
     .list = x_stats,
     .formats = .formats,
     .names = names(.labels),
-    .labels = unlist(.labels),
+    .labels = .labels,
     .indent_mods = .indent_mods,
     .format_na_strs = na_str
   )

@@ -14,12 +14,14 @@
       [1] "counts"
       
       $serious
-      [1] 7
+      count 
+          7 
       attr(,"label")
       [1] "counts"
       
       $fatal
-      [1] 4
+      count 
+          4 
       attr(,"label")
       [1] "counts"
       
@@ -45,7 +47,8 @@
       [1] "counts"
       
       $fatal
-      [1] 4
+      count 
+          4 
       attr(,"label")
       [1] "counts"
       

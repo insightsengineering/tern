@@ -7,7 +7,9 @@ testthat::test_that("s_count_patients_with_flags handles NA", {
   result <- s_count_patients_with_flags(
     test_data,
     .var = "SUBJID",
-    flag_variables = "TRTEMFL"
+    flag_variables = "TRTEMFL",
+    .N_col = ncol(test_data),
+    .N_row = nrow(test_data)
   )
 
   res <- testthat::expect_silent(result)
@@ -24,7 +26,9 @@ testthat::test_that("s_count_patients_with_flags handles multiple columns", {
   result <- s_count_patients_with_flags(
     test_data,
     .var = "SUBJID",
-    flag_variables = c("TRTEMFL", "AEOUTFL")
+    flag_variables = c("TRTEMFL", "AEOUTFL"),
+    .N_col = ncol(test_data),
+    .N_row = nrow(test_data)
   )
 
   res <- testthat::expect_silent(result)
@@ -45,7 +49,9 @@ testthat::test_that("s_count_patients_with_flags custom variable label behaviour
   result <- s_count_patients_with_flags(
     adae_local,
     .var = "USUBJID",
-    flag_variables = aesi_vars
+    flag_variables = aesi_vars,
+    .N_col = ncol(test_data),
+    .N_row = nrow(test_data)
   )
 
   res <- testthat::expect_silent(result)
@@ -60,7 +66,9 @@ testthat::test_that("s_count_patients_with_flags custom variable label behaviour
   result <- s_count_patients_with_flags(
     adae_local,
     .var = "USUBJID",
-    flag_variables = aesi_vars
+    flag_variables = aesi_vars,
+    .N_col = ncol(test_data),
+    .N_row = nrow(test_data)
   )
 
   res <- testthat::expect_silent(result)
@@ -71,7 +79,9 @@ testthat::test_that("s_count_patients_with_flags custom variable label behaviour
     adae_local,
     .var = "USUBJID",
     flag_variables = aesi_vars,
-    flag_labels = c("Category 1", "Category 2", "Category 3", "Category 4")
+    flag_labels = c("Category 1", "Category 2", "Category 3", "Category 4"),
+    .N_col = ncol(test_data),
+    .N_row = nrow(test_data)
   )
 
   res <- testthat::expect_silent(result)
@@ -81,7 +91,9 @@ testthat::test_that("s_count_patients_with_flags custom variable label behaviour
   result <- s_count_patients_with_flags(
     adae_local,
     .var = "USUBJID",
-    flag_variables = formatters::var_labels(adae_local[, aesi_vars])
+    flag_variables = formatters::var_labels(adae_local[, aesi_vars]),
+    .N_col = ncol(test_data),
+    .N_row = nrow(test_data)
   )
 
   res <- testthat::expect_silent(result)

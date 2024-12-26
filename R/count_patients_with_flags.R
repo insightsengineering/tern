@@ -79,8 +79,8 @@ s_count_patients_with_flags <- function(df,
     position_satisfy_flags <- Reduce(intersect, tmp)
     id_satisfy_flags <- as.character(unique(df[position_satisfy_flags, ][[.var]]))
     s_count_values(
-      as.character(unique(df[[.var]])),
-      id_satisfy_flags,
+      x = as.character(unique(df[[.var]])),
+      values = id_satisfy_flags,
       denom = denom,
       .N_col = .N_col,
       .N_row = .N_row
@@ -88,9 +88,9 @@ s_count_patients_with_flags <- function(df,
   })
   colnames(temp) <- flag_names
   temp <- data.frame(t(temp))
-  result <- temp %>% as.list()
+  result <- as.list(temp)
   if (length(flag_variables) == 1) {
-    for (i in 1:3) names(result[[i]]) <- flag_names[1]
+    for (i in seq(3)) names(result[[i]]) <- flag_names[1]
   }
   result
 }
@@ -133,10 +133,11 @@ a_count_patients_with_flags <- function(df,
   if (is.null(unlist(x_stats))) {
     return(NULL)
   }
-  x_lvls <- names(x_stats[[1]])
 
   # Fill in with formatting defaults if needed
   .stats <- get_stats("count_patients_with_flags", stats_in = .stats)
+  x_stats <- x_stats[.stats]
+
   .formats <- get_formats_from_stats(.stats, .formats)
 
   # label formatting
@@ -146,33 +147,13 @@ a_count_patients_with_flags <- function(df,
     levels_per_stats = lapply(x_stats, names)
   )) %>%
     setNames(x_nms)
-  if (!is.null(new_lbls)) {
-    which_lbls <- which(names(new_lbls) %in% names(.labels))
-    .labels[which_lbls] <- new_lbls
-  }
 
   # indent mod formatting
-  indent_stat_def <- if (any(.stats %in% names(.indent_mods))) {
-    .indent_mods[.stats[.stats %in% names(.indent_mods)]]
-  } else {
-    NULL
-  }
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, row_nms = flag_variables)
-  if (!is.null(names(.indent_mods))) {
-    .indent_mods <- sapply(names(.indent_mods), function(x) {
-      if (.indent_mods[x] == 0 && !is.null(length(indent_stat_def))) {
-        idx <- which(names(indent_stat_def) == gsub("\\..*", "", x))
-        if (length(idx) > 0) .indent_mods[[x]] <- indent_stat_def[[idx]]
-      }
-      .indent_mods[x]
-    })
-  }
 
-  if ("count_fraction_fixed_dp" %in% .stats) x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
-  x_stats <- x_stats[.stats]
 
   # Ungroup statistics with values for each level of x
-  x_ungrp <- ungroup_stats(x_stats, .formats, .labels, list())
+  x_ungrp <- ungroup_stats(x_stats, .formats, list())
   x_stats <- x_ungrp[["x"]] %>% setNames(x_nms)
   .formats <- x_ungrp[[".formats"]] %>% setNames(x_nms)
 
@@ -183,7 +164,7 @@ a_count_patients_with_flags <- function(df,
     .list = x_stats,
     .formats = .formats,
     .names = names(.labels),
-    .labels = unlist(.labels),
+    .labels = .labels,
     .indent_mods = .indent_mods,
     .format_na_strs = na_str
   )

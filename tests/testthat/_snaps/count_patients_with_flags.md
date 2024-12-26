@@ -5,22 +5,38 @@
     Output
       $n
       $n$TRTEMFL
-      [1] 2
+      n 
+      2 
       
       
       $count
       $count$TRTEMFL
-      [1] 2
+      count 
+          2 
       
       
       $count_fraction
       $count_fraction$TRTEMFL
-      [1] 2 1
+         count fraction 
+             2        1 
+      
+      
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp[[1]]
+         count fraction 
+             2        1 
+      
+      
+      $fraction
+      $fraction[[1]]
+        num denom 
+          2     2 
       
       
       $n_blq
       $n_blq[[1]]
-      [1] 0
+      n_blq 
+          0 
       
       
 
@@ -31,34 +47,62 @@
     Output
       $n
       $n$TRTEMFL
-      [1] 3
+      n 
+      3 
       
       $n$AEOUTFL
-      [1] 3
+      n 
+      3 
       
       
       $count
       $count$TRTEMFL
-      [1] 3
+      count 
+          3 
       
       $count$AEOUTFL
-      [1] 1
+      count 
+          1 
       
       
       $count_fraction
       $count_fraction$TRTEMFL
-      [1] 3 1
+         count fraction 
+             3        1 
       
       $count_fraction$AEOUTFL
-      [1] 1.0000000 0.3333333
+          count  fraction 
+      1.0000000 0.3333333 
+      
+      
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$TRTEMFL
+         count fraction 
+             3        1 
+      
+      $count_fraction_fixed_dp$AEOUTFL
+          count  fraction 
+      1.0000000 0.3333333 
+      
+      
+      $fraction
+      $fraction$TRTEMFL
+        num denom 
+          3     3 
+      
+      $fraction$AEOUTFL
+        num denom 
+          1     3 
       
       
       $n_blq
       $n_blq$TRTEMFL
-      [1] 0
+      n_blq 
+          0 
       
       $n_blq$AEOUTFL
-      [1] 0
+      n_blq 
+          0 
       
       
 
@@ -69,58 +113,110 @@
     Output
       $n
       $n$SER
-      [1] 164
+        n 
+      164 
       
       $n$REL
-      [1] 164
+        n 
+      164 
       
       $n$CTC35
-      [1] 164
+        n 
+      164 
       
       $n$CTC45
-      [1] 164
+        n 
+      164 
       
       
       $count
       $count$SER
-      [1] 128
+      count 
+        128 
       
       $count$REL
-      [1] 137
+      count 
+        137 
       
       $count$CTC35
-      [1] 134
+      count 
+        134 
       
       $count$CTC45
-      [1] 104
+      count 
+        104 
       
       
       $count_fraction
       $count_fraction$SER
-      [1] 128.0000000   0.7804878
+            count    fraction 
+      128.0000000   0.7804878 
       
       $count_fraction$REL
-      [1] 137.0000000   0.8353659
+            count    fraction 
+      137.0000000   0.8353659 
       
       $count_fraction$CTC35
-      [1] 134.0000000   0.8170732
+            count    fraction 
+      134.0000000   0.8170732 
       
       $count_fraction$CTC45
-      [1] 104.0000000   0.6341463
+            count    fraction 
+      104.0000000   0.6341463 
+      
+      
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$SER
+            count    fraction 
+      128.0000000   0.7804878 
+      
+      $count_fraction_fixed_dp$REL
+            count    fraction 
+      137.0000000   0.8353659 
+      
+      $count_fraction_fixed_dp$CTC35
+            count    fraction 
+      134.0000000   0.8170732 
+      
+      $count_fraction_fixed_dp$CTC45
+            count    fraction 
+      104.0000000   0.6341463 
+      
+      
+      $fraction
+      $fraction$SER
+        num denom 
+        128   164 
+      
+      $fraction$REL
+        num denom 
+        137   164 
+      
+      $fraction$CTC35
+        num denom 
+        134   164 
+      
+      $fraction$CTC45
+        num denom 
+        104   164 
       
       
       $n_blq
       $n_blq$SER
-      [1] 0
+      n_blq 
+          0 
       
       $n_blq$REL
-      [1] 0
+      n_blq 
+          0 
       
       $n_blq$CTC35
-      [1] 0
+      n_blq 
+          0 
       
       $n_blq$CTC45
-      [1] 0
+      n_blq 
+          0 
       
       
 
@@ -131,58 +227,110 @@
     Output
       $n
       $n$`Serious AE`
-      [1] 164
+        n 
+      164 
       
       $n$`Related AE`
-      [1] 164
+        n 
+      164 
       
       $n$`Grade 3-5 AE`
-      [1] 164
+        n 
+      164 
       
       $n$`Grade 4/5 AE`
-      [1] 164
+        n 
+      164 
       
       
       $count
       $count$`Serious AE`
-      [1] 128
+      count 
+        128 
       
       $count$`Related AE`
-      [1] 137
+      count 
+        137 
       
       $count$`Grade 3-5 AE`
-      [1] 134
+      count 
+        134 
       
       $count$`Grade 4/5 AE`
-      [1] 104
+      count 
+        104 
       
       
       $count_fraction
       $count_fraction$`Serious AE`
-      [1] 128.0000000   0.7804878
+            count    fraction 
+      128.0000000   0.7804878 
       
       $count_fraction$`Related AE`
-      [1] 137.0000000   0.8353659
+            count    fraction 
+      137.0000000   0.8353659 
       
       $count_fraction$`Grade 3-5 AE`
-      [1] 134.0000000   0.8170732
+            count    fraction 
+      134.0000000   0.8170732 
       
       $count_fraction$`Grade 4/5 AE`
-      [1] 104.0000000   0.6341463
+            count    fraction 
+      104.0000000   0.6341463 
+      
+      
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$`Serious AE`
+            count    fraction 
+      128.0000000   0.7804878 
+      
+      $count_fraction_fixed_dp$`Related AE`
+            count    fraction 
+      137.0000000   0.8353659 
+      
+      $count_fraction_fixed_dp$`Grade 3-5 AE`
+            count    fraction 
+      134.0000000   0.8170732 
+      
+      $count_fraction_fixed_dp$`Grade 4/5 AE`
+            count    fraction 
+      104.0000000   0.6341463 
+      
+      
+      $fraction
+      $fraction$`Serious AE`
+        num denom 
+        128   164 
+      
+      $fraction$`Related AE`
+        num denom 
+        137   164 
+      
+      $fraction$`Grade 3-5 AE`
+        num denom 
+        134   164 
+      
+      $fraction$`Grade 4/5 AE`
+        num denom 
+        104   164 
       
       
       $n_blq
       $n_blq$`Serious AE`
-      [1] 0
+      n_blq 
+          0 
       
       $n_blq$`Related AE`
-      [1] 0
+      n_blq 
+          0 
       
       $n_blq$`Grade 3-5 AE`
-      [1] 0
+      n_blq 
+          0 
       
       $n_blq$`Grade 4/5 AE`
-      [1] 0
+      n_blq 
+          0 
       
       
 
@@ -193,58 +341,110 @@
     Output
       $n
       $n$`Category 1`
-      [1] 164
+        n 
+      164 
       
       $n$`Category 2`
-      [1] 164
+        n 
+      164 
       
       $n$`Category 3`
-      [1] 164
+        n 
+      164 
       
       $n$`Category 4`
-      [1] 164
+        n 
+      164 
       
       
       $count
       $count$`Category 1`
-      [1] 128
+      count 
+        128 
       
       $count$`Category 2`
-      [1] 137
+      count 
+        137 
       
       $count$`Category 3`
-      [1] 134
+      count 
+        134 
       
       $count$`Category 4`
-      [1] 104
+      count 
+        104 
       
       
       $count_fraction
       $count_fraction$`Category 1`
-      [1] 128.0000000   0.7804878
+            count    fraction 
+      128.0000000   0.7804878 
       
       $count_fraction$`Category 2`
-      [1] 137.0000000   0.8353659
+            count    fraction 
+      137.0000000   0.8353659 
       
       $count_fraction$`Category 3`
-      [1] 134.0000000   0.8170732
+            count    fraction 
+      134.0000000   0.8170732 
       
       $count_fraction$`Category 4`
-      [1] 104.0000000   0.6341463
+            count    fraction 
+      104.0000000   0.6341463 
+      
+      
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$`Category 1`
+            count    fraction 
+      128.0000000   0.7804878 
+      
+      $count_fraction_fixed_dp$`Category 2`
+            count    fraction 
+      137.0000000   0.8353659 
+      
+      $count_fraction_fixed_dp$`Category 3`
+            count    fraction 
+      134.0000000   0.8170732 
+      
+      $count_fraction_fixed_dp$`Category 4`
+            count    fraction 
+      104.0000000   0.6341463 
+      
+      
+      $fraction
+      $fraction$`Category 1`
+        num denom 
+        128   164 
+      
+      $fraction$`Category 2`
+        num denom 
+        137   164 
+      
+      $fraction$`Category 3`
+        num denom 
+        134   164 
+      
+      $fraction$`Category 4`
+        num denom 
+        104   164 
       
       
       $n_blq
       $n_blq$`Category 1`
-      [1] 0
+      n_blq 
+          0 
       
       $n_blq$`Category 2`
-      [1] 0
+      n_blq 
+          0 
       
       $n_blq$`Category 3`
-      [1] 0
+      n_blq 
+          0 
       
       $n_blq$`Category 4`
-      [1] 0
+      n_blq 
+          0 
       
       
 
@@ -255,58 +455,110 @@
     Output
       $n
       $n$`Serious AE`
-      [1] 164
+        n 
+      164 
       
       $n$`Related AE`
-      [1] 164
+        n 
+      164 
       
       $n$`Grade 3-5 AE`
-      [1] 164
+        n 
+      164 
       
       $n$`Grade 4/5 AE`
-      [1] 164
+        n 
+      164 
       
       
       $count
       $count$`Serious AE`
-      [1] 128
+      count 
+        128 
       
       $count$`Related AE`
-      [1] 137
+      count 
+        137 
       
       $count$`Grade 3-5 AE`
-      [1] 134
+      count 
+        134 
       
       $count$`Grade 4/5 AE`
-      [1] 104
+      count 
+        104 
       
       
       $count_fraction
       $count_fraction$`Serious AE`
-      [1] 128.0000000   0.7804878
+            count    fraction 
+      128.0000000   0.7804878 
       
       $count_fraction$`Related AE`
-      [1] 137.0000000   0.8353659
+            count    fraction 
+      137.0000000   0.8353659 
       
       $count_fraction$`Grade 3-5 AE`
-      [1] 134.0000000   0.8170732
+            count    fraction 
+      134.0000000   0.8170732 
       
       $count_fraction$`Grade 4/5 AE`
-      [1] 104.0000000   0.6341463
+            count    fraction 
+      104.0000000   0.6341463 
+      
+      
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$`Serious AE`
+            count    fraction 
+      128.0000000   0.7804878 
+      
+      $count_fraction_fixed_dp$`Related AE`
+            count    fraction 
+      137.0000000   0.8353659 
+      
+      $count_fraction_fixed_dp$`Grade 3-5 AE`
+            count    fraction 
+      134.0000000   0.8170732 
+      
+      $count_fraction_fixed_dp$`Grade 4/5 AE`
+            count    fraction 
+      104.0000000   0.6341463 
+      
+      
+      $fraction
+      $fraction$`Serious AE`
+        num denom 
+        128   164 
+      
+      $fraction$`Related AE`
+        num denom 
+        137   164 
+      
+      $fraction$`Grade 3-5 AE`
+        num denom 
+        134   164 
+      
+      $fraction$`Grade 4/5 AE`
+        num denom 
+        104   164 
       
       
       $n_blq
       $n_blq$`Serious AE`
-      [1] 0
+      n_blq 
+          0 
       
       $n_blq$`Related AE`
-      [1] 0
+      n_blq 
+          0 
       
       $n_blq$`Grade 3-5 AE`
-      [1] 0
+      n_blq 
+          0 
       
       $n_blq$`Grade 4/5 AE`
-      [1] 0
+      n_blq 
+          0 
       
       
 
@@ -347,10 +599,10 @@
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
                     row_name formatted_cell indent_mod    row_label
-      1   count_fraction.SER   128 (78.05%)          2    New label
+      1   count_fraction.SER   128 (78.05%)          2   Serious AE
       2   count_fraction.REL   137 (83.54%)          3   Related AE
-      3 count_fraction.CTC35   134 (81.71%)          1 Grade 3-5 AE
-      4 count_fraction.CTC45   104 (63.41%)          1 Grade 4/5 AE
+      3 count_fraction.CTC35   134 (81.71%)          0 Grade 3-5 AE
+      4 count_fraction.CTC45   104 (63.41%)          0 Grade 4/5 AE
 
 # count_patients_with_flags works as expected
 
