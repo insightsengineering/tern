@@ -28,6 +28,7 @@ format_fraction_fixed_dp(x = c(num = 0L, denom = 3L))
 }
 \seealso{
 Other formatting functions: 
+\code{\link{custom_stats_formats}},
 \code{\link{extreme_format}},
 \code{\link{format_auto}()},
 \code{\link{format_count_fraction}()},
