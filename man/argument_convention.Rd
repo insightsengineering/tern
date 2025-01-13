@@ -37,7 +37,7 @@ that is passed by \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
-\item{.stat_names_in}{(\code{character})\cr names of the statistics that are passed directly to name single statinstics
+\item{.stat_names_in}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
 (\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
