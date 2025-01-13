@@ -383,7 +383,7 @@ s_summary(x, denom = "N_col", .N_col = 20L)
 a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
 a_summary(
   factor(c("a", "a", "b", "c", "a")),
-  .ref_group = factor(c("a", "a", "b", "c")), compare_with_ref_group = TRUE
+  .ref_group = factor(c("a", "a", "b", "c")), compare_with_ref_group = TRUE, .in_ref_col = TRUE
 )
 
 a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
