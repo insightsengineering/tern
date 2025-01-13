@@ -7,9 +7,7 @@ testthat::test_that("s_count_patients_with_event handles NA", {
   result <- s_count_patients_with_event(
     test_data,
     .var = "SUBJID",
-    filters = c("TRTEMFL" = "Y"),
-    .N_col = ncol(test_data),
-    .N_row = nrow(test_data)
+    filters = c("TRTEMFL" = "Y")
   )
 
   res <- testthat::expect_silent(result)
@@ -26,9 +24,7 @@ testthat::test_that("s_count_patients_with_event handles multiple columns", {
   result <- s_count_patients_with_event(
     test_data,
     .var = "SUBJID",
-    filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL"),
-    .N_col = ncol(test_data),
-    .N_row = nrow(test_data)
+    filters = c("TRTEMFL" = "Y", "AEOUT" = "FATAL")
   )
 
   res <- testthat::expect_silent(result)
@@ -163,9 +159,7 @@ testthat::test_that("s_count_patients_with_event works with factor filters", {
   result <- s_count_patients_with_event(
     test_data,
     .var = "SUBJID",
-    filters = c("AEOUT" = "FATAL"),
-    .N_col = ncol(test_data),
-    .N_row = nrow(test_data)
+    filters = c("AEOUT" = "FATAL")
   )
 
   res <- testthat::expect_silent(result)

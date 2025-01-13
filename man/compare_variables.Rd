@@ -67,7 +67,7 @@ Options for numeric variables are: \verb{'n', 'sum', 'mean', 'sd', 'se', 'mean_s
 
 Options for non-numeric variables are: \verb{'n', 'count', 'count_fraction', 'count_fraction_fixed_dp', 'fraction', 'n_blq', 'pval_counts'}}
 
-\item{.stat_names_in}{(\code{character})\cr names of the statistics that are passed directly to name single statinstics
+\item{.stat_names_in}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
 (\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more

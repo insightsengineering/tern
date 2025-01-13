@@ -83,7 +83,7 @@ Options for numeric variables are: \verb{'n', 'sum', 'mean', 'sd', 'se', 'mean_s
 
 Options for non-numeric variables are: \verb{'n', 'count', 'count_fraction', 'count_fraction_fixed_dp', 'fraction', 'n_blq'}}
 
-\item{.stat_names_in}{(\code{character})\cr names of the statistics that are passed directly to name single statinstics
+\item{.stat_names_in}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
 (\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
@@ -383,7 +383,7 @@ s_summary(x, denom = "N_col", .N_col = 20L)
 a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
 a_summary(
   factor(c("a", "a", "b", "c", "a")),
-  .ref_group = factor(c("a", "a", "b", "c")), compare_with_ref_group = TRUE
+  .ref_group = factor(c("a", "a", "b", "c")), compare_with_ref_group = TRUE, .in_ref_col = TRUE
 )
 
 a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)

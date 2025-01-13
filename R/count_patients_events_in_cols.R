@@ -74,7 +74,7 @@ s_count_patients_and_multiple_events <- function(df, # nolint
   events <- Map(
     function(filters) {
       formatters::with_label(
-        s_count_patients_with_event(df = df, .var = ".row_index", filters = filters, .N_col = 1, .N_row = 1)$count,
+        s_count_patients_with_event(df = df, .var = ".row_index", filters = filters)$count,
         row_label
       )
     },

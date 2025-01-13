@@ -27,16 +27,17 @@ s_count_patients_with_event(
   filters,
   .N_col,
   .N_row,
-  denom = c("n", "N_col", "N_row")
+  denom = c("n", "N_col", "N_row"),
+  ...
 )
 
 a_count_patients_with_event(
   df,
   labelstr = "",
   filters,
-  denom = c("n", "N_col", "N_row"),
   .N_col,
   .N_row,
+  denom = c("n", "N_col", "N_row"),
   .df_row,
   .var = NULL,
   .stats = NULL,
