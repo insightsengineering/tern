@@ -27,8 +27,7 @@ s_count_patients_with_event(
   filters,
   .N_col,
   .N_row,
-  denom = c("n", "N_col", "N_row"),
-  ...
+  denom = c("n", "N_col", "N_row")
 )
 
 a_count_patients_with_event(
