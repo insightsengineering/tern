@@ -1464,7 +1464,7 @@
       ----------------------------
          row_name formatted_cell indent_mod     row_label
       1        sd              1          3      std. dev
-      2 median_ci   -0.62 - 1.12          3 Median 90% CI
+      2 median_ci   -0.82 - 0.74          3 Median 90% CI
 
 ---
 
@@ -1603,7 +1603,7 @@
       ----------------------------
          row_name formatted_cell indent_mod     row_label
       1      pval        <0.0001          3        pvalue
-      2 median_ci   -1.04 - 1.43          3 Median 95% CI
+      2 median_ci   -1.47 - 0.78          3 Median 95% CI
 
 ---
 

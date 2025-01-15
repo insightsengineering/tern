@@ -220,6 +220,8 @@ testthat::test_that("a_summary work with healthy input.", {
 
 testthat::test_that("a_summary works with custom input.", {
   options("width" = 100)
+
+  set.seed(1)
   result <- a_summary(
     rnorm(10),
     .N_col = 10, .N_row = 20, compare_with_ref_group = FALSE,
@@ -279,6 +281,8 @@ testthat::test_that("a_summary works with healthy input when compare_with_ref_gr
 
 testthat::test_that("a_summary works with custom input when compare_with_ref_group = TRUE.", {
   options("width" = 100)
+
+  set.seed(1)
   result <- a_summary(
     rnorm(10),
     .ref_group = rnorm(20, -5, 1), .N_col = 10, .N_row = 20, control_analyze_vars(conf_level = 0.90),
