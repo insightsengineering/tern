@@ -40,7 +40,7 @@ NULL
 #' s_count_patients_with_event(
 #'   tern_ex_adae,
 #'   .var = "SUBJID",
-#'   filters = c("TRTEMFL" = "Y")
+#'   filters = c("TRTEMFL" = "Y"),
 #' )
 #'
 #' s_count_patients_with_event(
@@ -61,8 +61,8 @@ NULL
 s_count_patients_with_event <- function(df,
                                         .var,
                                         filters,
-                                        .N_col, # nolint
-                                        .N_row, # nolint
+                                        .N_col = ncol(df), # nolint
+                                        .N_row = nrow(df), # nolint
                                         denom = c("n", "N_col", "N_row")) {
   col_names <- names(filters)
   filter_values <- filters

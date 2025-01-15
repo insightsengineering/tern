@@ -25,8 +25,8 @@ s_count_patients_with_event(
   df,
   .var,
   filters,
-  .N_col,
-  .N_row,
+  .N_col = ncol(df),
+  .N_row = nrow(df),
   denom = c("n", "N_col", "N_row")
 )
 
@@ -181,7 +181,7 @@ build_table(lyt, tern_ex_adae, alt_counts_df = tern_ex_adsl)
 s_count_patients_with_event(
   tern_ex_adae,
   .var = "SUBJID",
-  filters = c("TRTEMFL" = "Y")
+  filters = c("TRTEMFL" = "Y"),
 )
 
 s_count_patients_with_event(
