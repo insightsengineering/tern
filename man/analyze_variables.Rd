@@ -73,10 +73,12 @@ defined by this split instruction, or \code{NA_character_} (the default) for no 
 
 \item{...}{additional arguments passed to \code{s_summary()}, including:
 \itemize{
-\item \code{denom}: See parameter description below.
-\item \code{.N_row}: Row-wise N (row group count) for the group of observations being analyzed (i.e. with no column-based
-subsetting).
-\item \code{.N_col}: Column-wise N (column count) for the full column being tabulated within.
+\item \code{denom}: (\code{string}) See parameter description below.
+\item \code{.N_row}: (\code{numeric(1)}) Row-wise N (row group count) for the group of observations being analyzed (i.e. with no
+column-based subsetting).
+\item \code{.N_col}: (\code{numeric(1)}) Column-wise N (column count) for the full column being tabulated within.
+\item \code{verbose}: (\code{flag}) Whether additional warnings and messages should be printed. Mainly used to print out
+information about factor casting. Defaults to \code{TRUE}. Used for \code{character}/\code{factor} variables only.
 }}
 
 \item{na_rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
@@ -121,9 +123,6 @@ the helper function \code{\link[=control_analyze_vars]{control_analyze_vars()}}.
 See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 \item \code{test_mean} (\code{numeric(1)})\cr value to test against the mean under the null hypothesis when calculating p-value.
 }}
-
-\item{verbose}{(\code{flag})\cr whether additional warnings and messages should be printed. Mainly used to print out
-information about factor casting. Defaults to \code{TRUE}.}
 }
 \value{
 \itemize{
