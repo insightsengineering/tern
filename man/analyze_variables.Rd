@@ -30,13 +30,13 @@ analyze_vars(
   .indent_mods = NULL
 )
 
-s_summary(x, denom, control, ...)
+s_summary(x, ...)
 
 \method{s_summary}{numeric}(x, control = control_analyze_vars(), ...)
 
 \method{s_summary}{factor}(x, denom = c("n", "N_col", "N_row"), ...)
 
-\method{s_summary}{character}(x, ...)
+\method{s_summary}{character}(x, denom = c("n", "N_col", "N_row"), ...)
 
 \method{s_summary}{logical}(x, denom = c("n", "N_col", "N_row"), ...)
 
@@ -107,13 +107,6 @@ for that statistic's row label.}
 
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
-\itemize{
-\item \code{n}: number of values in this row and column intersection.
-\item \code{N_row}: total number of values in this row across columns.
-\item \code{N_col}: total number of values in this column across rows.
-}}
-
 \item{control}{(\code{list})\cr parameters for descriptive statistics details, specified by using
 the helper function \code{\link[=control_analyze_vars]{control_analyze_vars()}}. Some possible parameter options are:
 \itemize{
@@ -122,6 +115,13 @@ the helper function \code{\link[=control_analyze_vars]{control_analyze_vars()}}.
 \item \code{quantile_type} (\code{numeric(1)})\cr between 1 and 9 selecting quantile algorithms to be used.
 See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 \item \code{test_mean} (\code{numeric(1)})\cr value to test against the mean under the null hypothesis when calculating p-value.
+}}
+
+\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
+\itemize{
+\item \code{n}: number of values in this row and column intersection.
+\item \code{N_row}: total number of values in this row across columns.
+\item \code{N_col}: total number of values in this column across rows.
 }}
 }
 \value{

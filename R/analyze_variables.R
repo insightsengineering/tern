@@ -75,7 +75,7 @@ NULL
 #' * `s_summary()` returns different statistics depending on the class of `x`.
 #'
 #' @export
-s_summary <- function(x, denom, control, ...) {
+s_summary <- function(x, ...) {
   UseMethod("s_summary", x)
 }
 
@@ -398,7 +398,7 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 #' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na_rm = FALSE, verbose = FALSE)
 #'
 #' @export
-s_summary.character <- function(x, ...) {
+s_summary.character <- function(x, denom = c("n", "N_col", "N_row"), ...) {
   args_list <- list(...)
   na_rm <- args_list[["na_rm"]] %||% TRUE
   verbose <- args_list[["verbose"]] %||% TRUE
@@ -409,7 +409,7 @@ s_summary.character <- function(x, ...) {
     y <- as_factor_keep_attributes(x, verbose = verbose, na_level = "NA")
   }
 
-  s_summary(x = y, ...)
+  s_summary(x = y, denom = denom, ...)
 }
 
 #' @describeIn analyze_variables Method for `logical` class.
