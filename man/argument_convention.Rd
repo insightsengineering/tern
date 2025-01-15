@@ -82,6 +82,8 @@ two proportions. For options, see \code{\link[=test_proportion_diff]{test_propor
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
+\item{na_rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
+
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if

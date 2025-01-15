@@ -382,8 +382,8 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 #' @describeIn analyze_variables Method for `character` class. This makes an automatic
 #'   conversion to factor (with a warning) and then forwards to the method for factors.
 #'
-#' @param verbose (`flag`)\cr defaults to `TRUE`, which prints out warnings and messages. It is mainly used
-#'   to print out information about factor casting.
+#' @param verbose (`flag`)\cr whether additional warnings and messages should be printed. Mainly used to print out
+#'   information about factor casting. Defaults to `TRUE`.
 #'
 #' @note
 #' * Automatic conversion of character to factor does not guarantee that the table
@@ -660,7 +660,11 @@ a_summary <- function(x,
 #' @describeIn analyze_variables Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @param ... arguments passed to `s_summary()`.
+#' @param ... additional arguments passed to `s_summary()`, including:
+#'   * `denom`: See parameter description below.
+#'   * `.N_row`: Row-wise N (row group count) for the group of observations being analyzed (i.e. with no column-based
+#'     subsetting).
+#'   * `.N_col`: Column-wise N (column count) for the full column being tabulated within.
 #' @param compare_with_ref_group (logical)\cr whether to compare the variable with a reference group.
 #' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Each element of the vector
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation

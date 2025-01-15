@@ -71,7 +71,15 @@ times, to avoid warnings from \code{rtables}.}
 \item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
 defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
 
-\item{...}{arguments passed to \code{s_summary()}.}
+\item{...}{additional arguments passed to \code{s_summary()}, including:
+\itemize{
+\item \code{denom}: See parameter description below.
+\item \code{.N_row}: Row-wise N (row group count) for the group of observations being analyzed (i.e. with no column-based
+subsetting).
+\item \code{.N_col}: Column-wise N (column count) for the full column being tabulated within.
+}}
+
+\item{na_rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
 \item{compare_with_ref_group}{(\code{flag})\cr whether comparison statistics should be analyzed instead of summary
 statistics (\code{compare_with_ref_group = TRUE} adds \code{pval} statistic comparing
@@ -114,8 +122,8 @@ See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 \item \code{test_mean} (\code{numeric(1)})\cr value to test against the mean under the null hypothesis when calculating p-value.
 }}
 
-\item{verbose}{(\code{flag})\cr defaults to \code{TRUE}, which prints out warnings and messages. It is mainly used
-to print out information about factor casting.}
+\item{verbose}{(\code{flag})\cr whether additional warnings and messages should be printed. Mainly used to print out
+information about factor casting. Defaults to \code{TRUE}.}
 }
 \value{
 \itemize{

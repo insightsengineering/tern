@@ -53,6 +53,8 @@ underneath analyses, which is not allowed.}
 
 \item{...}{arguments passed to \code{s_compare()}.}
 
+\item{na_rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
+
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
