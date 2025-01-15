@@ -25,7 +25,7 @@ URL: https://insightsengineering.github.io/tern/,
 BugReports: https://github.com/insightsengineering/tern/issues
 Depends:
     R (>= 3.6),
-    rtables (>= 0.6.8)
+    rtables (>= 0.6.11)
 Imports:
     broom (>= 0.5.4),
     car (>= 3.0-13),
@@ -34,7 +34,7 @@ Imports:
     dplyr (>= 1.0.0),
     emmeans (>= 1.10.4),
     forcats (>= 1.0.0),
-    formatters (>= 0.5.8),
+    formatters (>= 0.5.10),
     ggplot2 (>= 3.5.0),
     grid,
     gridExtra (>= 2.0.0),
