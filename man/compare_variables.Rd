@@ -51,7 +51,18 @@ s_compare(x, ...)
 possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
-\item{...}{arguments passed to \code{s_compare()}.}
+\item{...}{additional arguments passed to \code{s_compare()}, including:
+\itemize{
+\item \code{denom}: (\code{string}) choice of denominator. Options are \code{c("n", "N_col", "N_row")}. For factor variables, can
+only be \code{"n"} (number of values in this row and column intersection).
+\item \code{.N_row}: (\code{numeric(1)}) Row-wise N (row group count) for the group of observations being analyzed (i.e. with no
+column-based subsetting).
+\item \code{.N_col}: (\code{numeric(1)}) Column-wise N (column count) for the full column being tabulated within.
+\item \code{verbose}: (\code{flag}) Whether additional warnings and messages should be printed. Mainly used to print out
+information about factor casting. Defaults to \code{TRUE}. Used for \code{character}/\code{factor} variables only.
+}}
+
+\item{na_rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
@@ -80,12 +91,6 @@ should be a name-value pair with name corresponding to a statistic specified in 
 for that statistic's row label.}
 
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
-
-\item{denom}{(\code{string})\cr choice of denominator for factor proportions,
-can only be \code{n} (number of values in this row and column intersection).}
-
-\item{verbose}{(\code{flag})\cr whether warnings and messages should be printed. Mainly used
-to print out information about factor casting. Defaults to \code{TRUE}.}
 }
 \value{
 \itemize{

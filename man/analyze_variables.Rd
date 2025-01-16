@@ -30,13 +30,13 @@ analyze_vars(
   .indent_mods = NULL
 )
 
-s_summary(x, denom, control, ...)
+s_summary(x, ...)
 
 \method{s_summary}{numeric}(x, control = control_analyze_vars(), ...)
 
 \method{s_summary}{factor}(x, denom = c("n", "N_col", "N_row"), ...)
 
-\method{s_summary}{character}(x, ...)
+\method{s_summary}{character}(x, denom = c("n", "N_col", "N_row"), ...)
 
 \method{s_summary}{logical}(x, denom = c("n", "N_col", "N_row"), ...)
 
@@ -71,7 +71,17 @@ times, to avoid warnings from \code{rtables}.}
 \item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
 defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
 
-\item{...}{arguments passed to \code{s_summary()}.}
+\item{...}{additional arguments passed to \code{s_summary()}, including:
+\itemize{
+\item \code{denom}: (\code{string}) See parameter description below.
+\item \code{.N_row}: (\code{numeric(1)}) Row-wise N (row group count) for the group of observations being analyzed (i.e. with no
+column-based subsetting).
+\item \code{.N_col}: (\code{numeric(1)}) Column-wise N (column count) for the full column being tabulated within.
+\item \code{verbose}: (\code{flag}) Whether additional warnings and messages should be printed. Mainly used to print out
+information about factor casting. Defaults to \code{TRUE}. Used for \code{character}/\code{factor} variables only.
+}}
+
+\item{na_rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
 \item{compare_with_ref_group}{(\code{flag})\cr whether comparison statistics should be analyzed instead of summary
 statistics (\code{compare_with_ref_group = TRUE} adds \code{pval} statistic comparing
@@ -97,13 +107,6 @@ for that statistic's row label.}
 
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
-\itemize{
-\item \code{n}: number of values in this row and column intersection.
-\item \code{N_row}: total number of values in this row across columns.
-\item \code{N_col}: total number of values in this column across rows.
-}}
-
 \item{control}{(\code{list})\cr parameters for descriptive statistics details, specified by using
 the helper function \code{\link[=control_analyze_vars]{control_analyze_vars()}}. Some possible parameter options are:
 \itemize{
@@ -114,8 +117,12 @@ See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 \item \code{test_mean} (\code{numeric(1)})\cr value to test against the mean under the null hypothesis when calculating p-value.
 }}
 
-\item{verbose}{(\code{flag})\cr defaults to \code{TRUE}, which prints out warnings and messages. It is mainly used
-to print out information about factor casting.}
+\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
+\itemize{
+\item \code{n}: number of values in this row and column intersection.
+\item \code{N_row}: total number of values in this row across columns.
+\item \code{N_col}: total number of values in this column across rows.
+}}
 }
 \value{
 \itemize{

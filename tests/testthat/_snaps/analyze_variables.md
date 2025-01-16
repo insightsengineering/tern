@@ -1464,7 +1464,7 @@
       ----------------------------
          row_name formatted_cell indent_mod     row_label
       1        sd              1          3      std. dev
-      2 median_ci   -0.62 - 1.12          3 Median 90% CI
+      2 median_ci   -0.82 - 0.74          3 Median 90% CI
 
 ---
 
@@ -1603,7 +1603,7 @@
       ----------------------------
          row_name formatted_cell indent_mod     row_label
       1      pval        <0.0001          3        pvalue
-      2 median_ci   -1.04 - 1.43          3 Median 95% CI
+      2 median_ci   -1.47 - 0.78          3 Median 95% CI
 
 ---
 
@@ -1663,12 +1663,12 @@
     Code
       res
     Output
-                   all obs 
-      —————————————————————
-      n               4    
-      Mean (SD)   2.5 (1.3)
-      Median         2.5   
-      Min - Max   1.0 - 4.0
+                  all obs
+      ———————————————————
+      n              6   
+      Mean (SD)     NA   
+      Median        NA   
+      Min - Max     NA   
 
 # `analyze_vars` works with healthy factor input
 
@@ -1686,11 +1686,12 @@
     Code
       res
     Output
-           all obs 
-      —————————————
-      n       3    
-      a   2 (66.7%)
-      b   1 (33.3%)
+           all obs
+      ————————————
+      n       5   
+      a    2 (40%)
+      b    1 (20%)
+      NA   2 (40%)
 
 ---
 
@@ -1844,11 +1845,12 @@
     Code
       res
     Output
-               all obs 
-      —————————————————
-      n           3    
-      FALSE   1 (33.3%)
-      TRUE    2 (66.7%)
+              all obs
+      ———————————————
+      n          5   
+      FALSE   1 (20%)
+      TRUE    2 (40%)
+      NA      2 (40%)
 
 ---
 

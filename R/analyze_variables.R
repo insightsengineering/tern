@@ -75,7 +75,7 @@ NULL
 #' * `s_summary()` returns different statistics depending on the class of `x`.
 #'
 #' @export
-s_summary <- function(x, denom, control, ...) {
+s_summary <- function(x, ...) {
   UseMethod("s_summary", x)
 }
 
@@ -382,9 +382,6 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 #' @describeIn analyze_variables Method for `character` class. This makes an automatic
 #'   conversion to factor (with a warning) and then forwards to the method for factors.
 #'
-#' @param verbose (`flag`)\cr defaults to `TRUE`, which prints out warnings and messages. It is mainly used
-#'   to print out information about factor casting.
-#'
 #' @note
 #' * Automatic conversion of character to factor does not guarantee that the table
 #'   can be generated correctly. In particular for sparse tables this very likely can fail.
@@ -401,7 +398,7 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 #' s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na_rm = FALSE, verbose = FALSE)
 #'
 #' @export
-s_summary.character <- function(x, ...) {
+s_summary.character <- function(x, denom = c("n", "N_col", "N_row"), ...) {
   args_list <- list(...)
   na_rm <- args_list[["na_rm"]] %||% TRUE
   verbose <- args_list[["verbose"]] %||% TRUE
@@ -412,7 +409,7 @@ s_summary.character <- function(x, ...) {
     y <- as_factor_keep_attributes(x, verbose = verbose, na_level = "NA")
   }
 
-  s_summary(x = y, ...)
+  s_summary(x = y, denom = denom, ...)
 }
 
 #' @describeIn analyze_variables Method for `logical` class.
@@ -660,7 +657,13 @@ a_summary <- function(x,
 #' @describeIn analyze_variables Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @param ... arguments passed to `s_summary()`.
+#' @param ... additional arguments passed to `s_summary()`, including:
+#'   * `denom`: (`string`) See parameter description below.
+#'   * `.N_row`: (`numeric(1)`) Row-wise N (row group count) for the group of observations being analyzed (i.e. with no
+#'     column-based subsetting).
+#'   * `.N_col`: (`numeric(1)`) Column-wise N (column count) for the full column being tabulated within.
+#'   * `verbose`: (`flag`) Whether additional warnings and messages should be printed. Mainly used to print out
+#'     information about factor casting. Defaults to `TRUE`. Used for `character`/`factor` variables only.
 #' @param compare_with_ref_group (logical)\cr whether to compare the variable with a reference group.
 #' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Each element of the vector
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
@@ -777,7 +780,7 @@ analyze_vars <- function(lyt,
     var_labels = var_labels,
     afun = a_summary,
     na_str = na_str,
-    inclNAs = na_rm,
+    inclNAs = !na_rm,
     nested = nested,
     extra_args = extra_args,
     show_labels = show_labels,

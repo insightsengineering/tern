@@ -195,7 +195,10 @@ all_cnt_occ <- get_stats("count_occurrences")
 # Multiple
 get_stats(c("count_occurrences", "analyze_vars_counts"))
 
-stat_results <- list("n" = list("M" = 1, "F" = 2), "count_fraction" = list("M" = c(1, 0.2), "F" = c(2, 0.1)))
+stat_results <- list(
+  "n" = list("M" = 1, "F" = 2),
+  "count_fraction" = list("M" = c(1, 0.2), "F" = c(2, 0.1))
+)
 get_stat_names(stat_results)
 get_stat_names(stat_results, list("n" = "argh"))
 

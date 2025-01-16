@@ -133,7 +133,10 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
 #'    statistical outputs.
 #'
 #' @examples
-#' stat_results <- list("n" = list("M" = 1, "F" = 2), "count_fraction" = list("M" = c(1, 0.2), "F" = c(2, 0.1)))
+#' stat_results <- list(
+#'   "n" = list("M" = 1, "F" = 2),
+#'   "count_fraction" = list("M" = c(1, 0.2), "F" = c(2, 0.1))
+#' )
 #' get_stat_names(stat_results)
 #' get_stat_names(stat_results, list("n" = "argh"))
 #'
