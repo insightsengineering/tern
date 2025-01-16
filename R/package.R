@@ -11,7 +11,7 @@
 #' @importFrom methods new
 #' @importFrom nestcolor theme_nest
 #' @importFrom Rdpack reprompt
-#' @importFrom rlang .data
+#' @importFrom rlang .data %||%
 #' @importFrom survival coxph strata Surv
 #' @importFrom stats pchisq setNames complete.cases qnorm qt sd
 NULL
