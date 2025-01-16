@@ -7,7 +7,7 @@
 * Added `rel_height_plot` parameter to `g_lineplot()` to control the line plot height relative to annotation table height.
 * Updated the `table_font_size` parameter of `g_lineplot()` to control the size of all text in the annotation table, including labels.
 * Added `as_list` parameter to `g_lineplot()` to allow users to return the line plot and annotation table elements as a list instead of stacked for more complex customization.
-* Refactored `summarize_change()` to work without `make_afun()` and access all additional function parameter.
+* Refactored `summarize_change()` and `count_values()` to work without `make_afun()`.
 * Added vignette "Understanding `tern` functions" for future reference.
 * Refactored `analyze_vars()` and `a_summary()` to take all options from `?rtables::additional_fun_params`.
 * Added to `analyze_vars()` statistical names that are used by `rtables::as_result_df()`.

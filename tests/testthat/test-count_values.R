@@ -117,3 +117,12 @@ testthat::test_that("count_values works as expected with multiple values and var
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("count_values works with denom specified", {
+  result <- basic_table() %>%
+    count_values("Species", values = "setosa", denom = "N_col") %>%
+    build_table(iris)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})

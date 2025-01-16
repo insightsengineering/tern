@@ -298,3 +298,12 @@
           0 
       
 
+# count_values works with denom specified
+
+    Code
+      res
+    Output
+                 all obs  
+      ————————————————————
+      setosa   50 (33.33%)
+
