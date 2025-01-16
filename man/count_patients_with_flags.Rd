@@ -29,8 +29,8 @@ s_count_patients_with_flags(
   .var,
   flag_variables,
   flag_labels = NULL,
-  .N_col,
-  .N_row,
+  .N_col = ncol(df),
+  .N_row = nrow(df),
   denom = c("n", "N_col", "N_row")
 )
 
@@ -40,8 +40,8 @@ a_count_patients_with_flags(
   flag_variables,
   flag_labels = NULL,
   denom = c("n", "N_col", "N_row"),
-  .N_col,
-  .N_row,
+  .N_col = ncol(df),
+  .N_row = nrow(df),
   .df_row,
   .var = NULL,
   .stats = NULL,

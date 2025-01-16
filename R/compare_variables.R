@@ -50,8 +50,6 @@ NULL
 #'
 #' @export
 s_compare <- function(x,
-                      .ref_group,
-                      .in_ref_col,
                       ...) {
   UseMethod("s_compare", x)
 }
@@ -74,30 +72,12 @@ s_compare <- function(x,
 #' s_compare(numeric(), .ref_group = numeric(), .in_ref_col = FALSE)
 #'
 #' @export
-s_compare.numeric <- function(x,
-                              .ref_group,
-                              .in_ref_col,
-                              ...) {
-  checkmate::assert_numeric(x)
-  checkmate::assert_numeric(.ref_group)
-  checkmate::assert_flag(.in_ref_col)
-
-  y <- s_summary.numeric(x = x, ...)
-
-  y$pval <- if (!.in_ref_col && n_available(x) > 1 && n_available(.ref_group) > 1) {
-    stats::t.test(x, .ref_group)$p.value
-  } else {
-    character()
-  }
-
-  y
+s_compare.numeric <- function(x, ...) {
+  s_summary.numeric(x = x, compare_with_ref_group = TRUE, ...)
 }
 
 #' @describeIn compare_variables Method for `factor` class. This uses the chi-squared test
 #'   to calculate the p-value.
-#'
-#' @param denom (`string`)\cr choice of denominator for factor proportions,
-#'   can only be `n` (number of values in this row and column intersection).
 #'
 #' @method s_compare factor
 #'
@@ -112,55 +92,20 @@ s_compare.numeric <- function(x,
 #' ## Management of NA values.
 #' x <- explicit_na(factor(c("a", "a", "b", "c", "a", NA, NA)))
 #' y <- explicit_na(factor(c("a", "b", "c", NA)))
-#' s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
-#' s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
+#' s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na_rm = TRUE)
+#' s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na_rm = FALSE)
 #'
 #' @export
-s_compare.factor <- function(x,
-                             .ref_group,
-                             .in_ref_col,
-                             denom = "n",
-                             na.rm = TRUE, # nolint
-                             ...) {
-  checkmate::assert_flag(.in_ref_col)
-  assert_valid_factor(x)
-  assert_valid_factor(.ref_group)
-  denom <- match.arg(denom)
-
-  y <- s_summary.factor(
+s_compare.factor <- function(x, ...) {
+  s_summary.factor(
     x = x,
-    denom = denom,
-    na.rm = na.rm,
+    compare_with_ref_group = TRUE,
     ...
   )
-
-  if (na.rm) {
-    x <- x[!is.na(x)] %>% fct_discard("<Missing>")
-    .ref_group <- .ref_group[!is.na(.ref_group)] %>% fct_discard("<Missing>")
-  } else {
-    x <- x %>% explicit_na(label = "NA")
-    .ref_group <- .ref_group %>% explicit_na(label = "NA")
-  }
-
-  if ("NA" %in% levels(x)) levels(.ref_group) <- c(levels(.ref_group), "NA")
-  checkmate::assert_factor(x, levels = levels(.ref_group), min.levels = 2)
-
-  y$pval_counts <- if (!.in_ref_col && length(x) > 0 && length(.ref_group) > 0) {
-    tab <- rbind(table(x), table(.ref_group))
-    res <- suppressWarnings(stats::chisq.test(tab))
-    res$p.value
-  } else {
-    character()
-  }
-
-  y
 }
 
 #' @describeIn compare_variables Method for `character` class. This makes an automatic
 #'   conversion to `factor` (with a warning) and then forwards to the method for factors.
-#'
-#' @param verbose (`flag`)\cr whether warnings and messages should be printed. Mainly used
-#'   to print out information about factor casting. Defaults to `TRUE`.
 #'
 #' @method s_compare character
 #'
@@ -185,22 +130,10 @@ s_compare.factor <- function(x,
 #' )
 #'
 #' @export
-s_compare.character <- function(x,
-                                .ref_group,
-                                .in_ref_col,
-                                denom = "n",
-                                na.rm = TRUE, # nolint
-                                .var,
-                                verbose = TRUE,
-                                ...) {
-  x <- as_factor_keep_attributes(x, verbose = verbose)
-  .ref_group <- as_factor_keep_attributes(.ref_group, verbose = verbose)
-  s_compare(
-    x = x,
-    .ref_group = .ref_group,
-    .in_ref_col = .in_ref_col,
-    denom = denom,
-    na.rm = na.rm,
+s_compare.character <- function(x, ...) {
+  s_summary.character(
+    x,
+    compare_with_ref_group = TRUE,
     ...
   )
 }
@@ -221,49 +154,29 @@ s_compare.character <- function(x,
 #' ## Management of NA values.
 #' x <- c(NA, TRUE, FALSE)
 #' y <- c(NA, NA, NA, NA, FALSE)
-#' s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
-#' s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
+#' s_compare(x, .ref_group = y, .in_ref_col = FALSE, na_rm = TRUE)
+#' s_compare(x, .ref_group = y, .in_ref_col = FALSE, na_rm = FALSE)
 #'
 #' @export
-s_compare.logical <- function(x,
-                              .ref_group,
-                              .in_ref_col,
-                              na.rm = TRUE, # nolint
-                              denom = "n",
-                              ...) {
-  denom <- match.arg(denom)
-
-  y <- s_summary.logical(
+s_compare.logical <- function(x, ...) {
+  s_summary.logical(
     x = x,
-    na.rm = na.rm,
-    denom = denom,
+    compare_with_ref_group = TRUE,
     ...
   )
-
-  if (na.rm) {
-    x <- stats::na.omit(x)
-    .ref_group <- stats::na.omit(.ref_group)
-  } else {
-    x[is.na(x)] <- FALSE
-    .ref_group[is.na(.ref_group)] <- FALSE
-  }
-
-  y$pval_counts <- if (!.in_ref_col && length(x) > 0 && length(.ref_group) > 0) {
-    x <- factor(x, levels = c(TRUE, FALSE))
-    .ref_group <- factor(.ref_group, levels = c(TRUE, FALSE))
-    tbl <- rbind(table(x), table(.ref_group))
-    suppressWarnings(prop_chisq(tbl))
-  } else {
-    character()
-  }
-
-  y
 }
 
 #' @describeIn compare_variables Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @param ... arguments passed to `s_compare()`.
+#' @param ... additional arguments passed to `s_compare()`, including:
+#'   * `denom`: (`string`) choice of denominator. Options are `c("n", "N_col", "N_row")`. For factor variables, can
+#'     only be `"n"` (number of values in this row and column intersection).
+#'   * `.N_row`: (`numeric(1)`) Row-wise N (row group count) for the group of observations being analyzed (i.e. with no
+#'     column-based subsetting).
+#'   * `.N_col`: (`numeric(1)`) Column-wise N (column count) for the full column being tabulated within.
+#'   * `verbose`: (`flag`) Whether additional warnings and messages should be printed. Mainly used to print out
+#'     information about factor casting. Defaults to `TRUE`. Used for `character`/`factor` variables only.
 #' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Each element of the vector
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.
@@ -301,31 +214,31 @@ compare_vars <- function(lyt,
                          na_str = default_na_str(),
                          nested = TRUE,
                          ...,
-                         na.rm = TRUE, # nolint
+                         na_rm = TRUE,
                          show_labels = "default",
                          table_names = vars,
                          section_div = NA_character_,
                          .stats = c("n", "mean_sd", "count_fraction", "pval"),
+                         .stat_names_in = NULL,
                          .formats = NULL,
                          .labels = NULL,
                          .indent_mods = NULL) {
-  extra_args <- list(.stats = .stats, na.rm = na.rm, na_str = na_str, compare = TRUE, ...)
-
-  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
-  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
-  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
-
-  analyze(
+  analyze_vars(
     lyt = lyt,
+    compare_with_ref_group = TRUE,
     vars = vars,
     var_labels = var_labels,
-    afun = a_summary,
     na_str = na_str,
     nested = nested,
-    extra_args = extra_args,
-    inclNAs = TRUE,
+    na_rm = na_rm,
     show_labels = show_labels,
     table_names = table_names,
-    section_div = section_div
+    section_div = section_div,
+    .stats = .stats,
+    .stat_names_in = .stat_names_in,
+    .formats = .formats,
+    .labels = .labels,
+    .indent_mods = .indent_mods,
+    ...
   )
 }

@@ -23,6 +23,8 @@
 #' @param .spl_context (`data.frame`)\cr gives information about ancestor split states
 #'   that is passed by `rtables`.
 #' @param .stats (`character`)\cr statistics to select for the table.
+#' @param .stat_names_in (`character`)\cr names of the statistics that are passed directly to name single statistics
+#'   (`.stats`). This option is visible when producing [rtables::as_result_df()] with `make_ard = TRUE`.
 #' @param .var (`string`)\cr single variable name that is passed by `rtables` when requested
 #'   by a statistics function.
 #' @param add_total_level (`flag`)\cr adds a "total" level after the others which includes all the levels
@@ -48,6 +50,7 @@
 #' @param method (`string` or `NULL`)\cr specifies the test used to calculate the p-value for the difference between
 #'   two proportions. For options, see [test_proportion_diff()]. Default is `NULL` so no test is performed.
 #' @param na.rm (`flag`)\cr whether `NA` values should be removed from `x` prior to analysis.
+#' @param na_rm (`flag`)\cr whether `NA` values should be removed from `x` prior to analysis.
 #' @param na_str (`string`)\cr string used to replace all `NA` or empty values in the output.
 #' @param nested (`flag`)\cr whether this layout instruction should be applied within the existing layout structure _if
 #'   possible (`TRUE`, the default) or as a new top-level element (`FALSE`). Ignored if it would nest a split.

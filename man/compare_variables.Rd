@@ -17,34 +17,26 @@ compare_vars(
   na_str = default_na_str(),
   nested = TRUE,
   ...,
-  na.rm = TRUE,
+  na_rm = TRUE,
   show_labels = "default",
   table_names = vars,
   section_div = NA_character_,
   .stats = c("n", "mean_sd", "count_fraction", "pval"),
+  .stat_names_in = NULL,
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL
 )
 
-s_compare(x, .ref_group, .in_ref_col, ...)
+s_compare(x, ...)
 
-\method{s_compare}{numeric}(x, .ref_group, .in_ref_col, ...)
+\method{s_compare}{numeric}(x, ...)
 
-\method{s_compare}{factor}(x, .ref_group, .in_ref_col, denom = "n", na.rm = TRUE, ...)
+\method{s_compare}{factor}(x, ...)
 
-\method{s_compare}{character}(
-  x,
-  .ref_group,
-  .in_ref_col,
-  denom = "n",
-  na.rm = TRUE,
-  .var,
-  verbose = TRUE,
-  ...
-)
+\method{s_compare}{character}(x, ...)
 
-\method{s_compare}{logical}(x, .ref_group, .in_ref_col, na.rm = TRUE, denom = "n", ...)
+\method{s_compare}{logical}(x, ...)
 }
 \arguments{
 \item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
@@ -59,9 +51,18 @@ s_compare(x, .ref_group, .in_ref_col, ...)
 possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
-\item{...}{arguments passed to \code{s_compare()}.}
+\item{...}{additional arguments passed to \code{s_compare()}, including:
+\itemize{
+\item \code{denom}: (\code{string}) choice of denominator. Options are \code{c("n", "N_col", "N_row")}. For factor variables, can
+only be \code{"n"} (number of values in this row and column intersection).
+\item \code{.N_row}: (\code{numeric(1)}) Row-wise N (row group count) for the group of observations being analyzed (i.e. with no
+column-based subsetting).
+\item \code{.N_col}: (\code{numeric(1)}) Column-wise N (column count) for the full column being tabulated within.
+\item \code{verbose}: (\code{flag}) Whether additional warnings and messages should be printed. Mainly used to print out
+information about factor casting. Defaults to \code{TRUE}. Used for \code{character}/\code{factor} variables only.
+}}
 
-\item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
+\item{na_rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
@@ -77,6 +78,9 @@ Options for numeric variables are: \verb{'n', 'sum', 'mean', 'sd', 'se', 'mean_s
 
 Options for non-numeric variables are: \verb{'n', 'count', 'count_fraction', 'count_fraction_fixed_dp', 'fraction', 'n_blq', 'pval_counts'}}
 
+\item{.stat_names_in}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
+
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
 
@@ -87,19 +91,6 @@ should be a name-value pair with name corresponding to a statistic specified in 
 for that statistic's row label.}
 
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
-
-\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
-
-\item{.in_ref_col}{(\code{flag})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
-
-\item{denom}{(\code{string})\cr choice of denominator for factor proportions,
-can only be \code{n} (number of values in this row and column intersection).}
-
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
-
-\item{verbose}{(\code{flag})\cr whether warnings and messages should be printed. Mainly used
-to print out information about factor casting. Defaults to \code{TRUE}.}
 }
 \value{
 \itemize{
@@ -204,8 +195,8 @@ s_compare(x = x, .ref_group = y, .in_ref_col = FALSE)
 ## Management of NA values.
 x <- explicit_na(factor(c("a", "a", "b", "c", "a", NA, NA)))
 y <- explicit_na(factor(c("a", "b", "c", NA)))
-s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
-s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
+s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na_rm = TRUE)
+s_compare(x = x, .ref_group = y, .in_ref_col = FALSE, na_rm = FALSE)
 
 # `s_compare.character`
 
@@ -236,8 +227,8 @@ s_compare(x, .ref_group = y, .in_ref_col = FALSE)
 ## Management of NA values.
 x <- c(NA, TRUE, FALSE)
 y <- c(NA, NA, NA, NA, FALSE)
-s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = TRUE)
-s_compare(x, .ref_group = y, .in_ref_col = FALSE, na.rm = FALSE)
+s_compare(x, .ref_group = y, .in_ref_col = FALSE, na_rm = TRUE)
+s_compare(x, .ref_group = y, .in_ref_col = FALSE, na_rm = FALSE)
 
 }
 \seealso{

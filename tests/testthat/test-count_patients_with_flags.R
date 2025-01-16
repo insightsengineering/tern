@@ -7,7 +7,9 @@ testthat::test_that("s_count_patients_with_flags handles NA", {
   result <- s_count_patients_with_flags(
     test_data,
     .var = "SUBJID",
-    flag_variables = "TRTEMFL"
+    flag_variables = "TRTEMFL",
+    .N_col = ncol(test_data),
+    .N_row = nrow(test_data)
   )
 
   res <- testthat::expect_silent(result)
@@ -24,7 +26,9 @@ testthat::test_that("s_count_patients_with_flags handles multiple columns", {
   result <- s_count_patients_with_flags(
     test_data,
     .var = "SUBJID",
-    flag_variables = c("TRTEMFL", "AEOUTFL")
+    flag_variables = c("TRTEMFL", "AEOUTFL"),
+    .N_col = ncol(test_data),
+    .N_row = nrow(test_data)
   )
 
   res <- testthat::expect_silent(result)
@@ -32,7 +36,7 @@ testthat::test_that("s_count_patients_with_flags handles multiple columns", {
 })
 
 testthat::test_that("s_count_patients_with_flags custom variable label behaviour works", {
-  adae_local <- tern_ex_adae %>%
+  test_data <- tern_ex_adae %>%
     dplyr::mutate(
       SER = AESER == "Y",
       REL = AEREL == "Y",
@@ -43,9 +47,11 @@ testthat::test_that("s_count_patients_with_flags custom variable label behaviour
 
   # No variable labels (variable names used)
   result <- s_count_patients_with_flags(
-    adae_local,
+    test_data,
     .var = "USUBJID",
-    flag_variables = aesi_vars
+    flag_variables = aesi_vars,
+    .N_col = ncol(test_data),
+    .N_row = nrow(test_data)
   )
 
   res <- testthat::expect_silent(result)
@@ -53,14 +59,16 @@ testthat::test_that("s_count_patients_with_flags custom variable label behaviour
 
   labels <- c("Serious AE", "Related AE", "Grade 3-5 AE", "Grade 4/5 AE")
   for (i in seq_along(aesi_vars)) {
-    attr(adae_local[[aesi_vars[i]]], "label") <- labels[i]
+    attr(test_data[[aesi_vars[i]]], "label") <- labels[i]
   }
 
   # Variable labels from df
   result <- s_count_patients_with_flags(
-    adae_local,
+    test_data,
     .var = "USUBJID",
-    flag_variables = aesi_vars
+    flag_variables = aesi_vars,
+    .N_col = ncol(test_data),
+    .N_row = nrow(test_data)
   )
 
   res <- testthat::expect_silent(result)
@@ -68,10 +76,12 @@ testthat::test_that("s_count_patients_with_flags custom variable label behaviour
 
   # Custom labels via flag_labels argument
   result <- s_count_patients_with_flags(
-    adae_local,
+    test_data,
     .var = "USUBJID",
     flag_variables = aesi_vars,
-    flag_labels = c("Category 1", "Category 2", "Category 3", "Category 4")
+    flag_labels = c("Category 1", "Category 2", "Category 3", "Category 4"),
+    .N_col = ncol(test_data),
+    .N_row = nrow(test_data)
   )
 
   res <- testthat::expect_silent(result)
@@ -79,9 +89,11 @@ testthat::test_that("s_count_patients_with_flags custom variable label behaviour
 
   # Labels supplied within flag_variables argument
   result <- s_count_patients_with_flags(
-    adae_local,
+    test_data,
     .var = "USUBJID",
-    flag_variables = formatters::var_labels(adae_local[, aesi_vars])
+    flag_variables = formatters::var_labels(test_data[, aesi_vars]),
+    .N_col = ncol(test_data),
+    .N_row = nrow(test_data)
   )
 
   res <- testthat::expect_silent(result)

@@ -4,6 +4,7 @@
 \name{default_stats_formats_labels}
 \alias{default_stats_formats_labels}
 \alias{get_stats}
+\alias{get_stat_names}
 \alias{get_formats_from_stats}
 \alias{get_labels_from_stats}
 \alias{get_indents_from_stats}
@@ -36,9 +37,11 @@ get_stats(
   add_pval = FALSE
 )
 
+get_stat_names(stat_results, stat_names_in = NULL)
+
 get_formats_from_stats(stats, formats_in = NULL)
 
-get_labels_from_stats(stats, labels_in = NULL, row_nms = NULL)
+get_labels_from_stats(stats, labels_in = NULL, levels_per_stats = NULL)
 
 get_indents_from_stats(stats, indents_in = NULL, row_nms = NULL)
 
@@ -62,6 +65,11 @@ method group.}
 \item{add_pval}{(\code{flag})\cr should \code{"pval"} (or \code{"pval_counts"} if \code{method_groups} contains
 \code{"analyze_vars_counts"}) be added to the statistical methods?}
 
+\item{stat_results}{(\code{list})\cr list of statistical results. It should be used close to the end of
+a statistical function. See examples for a structure with two statistical results and two groups.}
+
+\item{stat_names_in}{(\code{character})\cr custom modification of statistical values.}
+
 \item{stats}{(\code{character})\cr statistical methods to get defaults for.}
 
 \item{formats_in}{(named \code{vector})\cr inserted formats to replace defaults. It can be a
@@ -69,13 +77,15 @@ character vector from \code{\link[formatters:list_formats]{formatters::list_vali
 
 \item{labels_in}{(named \code{character})\cr inserted labels to replace defaults.}
 
-\item{row_nms}{(\code{character})\cr row names. Levels of a \code{factor} or \code{character} variable, each
+\item{levels_per_stats}{(named \code{list} of \code{character} or \code{NULL})\cr Levels of a \code{factor} or \code{character} variable, each
 of which the statistics in \code{.stats} will be calculated for. If this parameter is set, these
 variable levels will be used as the defaults, and the names of the given custom values should
 correspond to levels (or have format \code{statistic.level}) instead of statistics. Can also be
 variable names if rows correspond to different variables instead of levels. Defaults to \code{NULL}.}
 
 \item{indents_in}{(named \code{vector})\cr inserted indent modifiers to replace defaults (default is \code{0L}).}
+
+\item{row_nms}{(\code{character})\cr See \code{levels_per_stats}. Deprecation cycle started.}
 
 \item{type}{(\code{string})\cr \code{"numeric"} or \code{"counts"}.}
 
@@ -84,6 +94,11 @@ variable names if rows correspond to different variables instead of levels. Defa
 \value{
 \itemize{
 \item \code{get_stats()} returns a \code{character} vector of statistical methods.
+}
+
+\itemize{
+\item \code{get_stat_names()} returns a named list of\code{character} vectors, indicating the names of
+statistical outputs.
 }
 
 \itemize{
@@ -128,6 +143,9 @@ Current choices for \code{type} are \code{counts} and \code{numeric} for \code{\
 \itemize{
 \item \code{get_stats()}: Get statistics available for a given method
 group (analyze function). To check available defaults see \code{tern::tern_default_stats} list.
+
+\item \code{get_stat_names()}: Get statistical NAMES available for a given method
+group (analyze function). Please use the \verb{s_*} functions to get the statistical names.
 
 \item \code{get_formats_from_stats()}: Get formats corresponding to a list of statistics.
 To check available defaults see \code{tern::tern_default_formats} list.
@@ -176,6 +194,13 @@ all_cnt_occ <- get_stats("count_occurrences")
 
 # Multiple
 get_stats(c("count_occurrences", "analyze_vars_counts"))
+
+stat_results <- list(
+  "n" = list("M" = 1, "F" = 2),
+  "count_fraction" = list("M" = c(1, 0.2), "F" = c(2, 0.1))
+)
+get_stat_names(stat_results)
+get_stat_names(stat_results, list("n" = "argh"))
 
 # Defaults formats
 get_formats_from_stats(num_stats)

@@ -22,9 +22,10 @@ skip_if_too_deep <- function(depth) {
 }
 
 # expect_snapshot_ggplot - set custom plot dimensions
-expect_snapshot_ggplot <- function(title, fig, width = NA, height = NA) {
+expect_snapshot_ggplot <- function(title, fig, width = NA, height = NA, no_plot_snapshots = TRUE) {
   testthat::skip_on_ci()
   testthat::skip_if_not_installed("svglite")
+  testthat::skip_if(no_plot_snapshots)
 
   name <- paste0(title, ".svg")
   path <- tempdir()

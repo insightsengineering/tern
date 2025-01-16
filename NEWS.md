@@ -9,6 +9,11 @@
 * Added `as_list` parameter to `g_lineplot()` to allow users to return the line plot and annotation table elements as a list instead of stacked for more complex customization.
 * Refactored `summarize_change()` to work without `make_afun()` and access all additional function parameter.
 * Added vignette "Understanding `tern` functions" for future reference.
+* Refactored `analyze_vars()` and `a_summary()` to take all options from `?rtables::additional_fun_params`.
+* Added to `analyze_vars()` statistical names that are used by `rtables::as_result_df()`.
+* Merged `compare_vars()` into `analyze_vars()` as overlap was significant.
+* Added the possibility to integrate custom statistical functions to default ones in `analyze_vars()`.
+* Reworked `get_labels_from_stats()` to use a named list of levels for each statistic instead of row names.
 
 ### Bug Fixes
 * Fixed bug in `a_summary()` causing non-unique `row_name` values to occur when multiple statistics are selected for count variables.
@@ -16,6 +21,7 @@
 ### Miscellaneous
 * Reverted deprecation of quick get functions `summary_formats()` and `summary_labels()`. Added disclaimer about underlying use of `get_stats`.
 * Corrected handling of extra arguments and `NA` for `summarize_change()`.
+* Removed `count_fraction_fixed_dp` exception by assigning it to the result of `count_fraction` with a different format output.
 
 # tern 0.9.6
 

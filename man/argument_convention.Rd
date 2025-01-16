@@ -37,6 +37,9 @@ that is passed by \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
+\item{.stat_names_in}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
+
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
 
@@ -78,6 +81,8 @@ for more information.}
 two proportions. For options, see \code{\link[=test_proportion_diff]{test_proportion_diff()}}. Default is \code{NULL} so no test is performed.}
 
 \item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
+
+\item{na_rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 

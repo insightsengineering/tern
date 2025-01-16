@@ -40,7 +40,7 @@ NULL
 #' s_count_patients_with_event(
 #'   tern_ex_adae,
 #'   .var = "SUBJID",
-#'   filters = c("TRTEMFL" = "Y")
+#'   filters = c("TRTEMFL" = "Y"),
 #' )
 #'
 #' s_count_patients_with_event(
@@ -61,8 +61,8 @@ NULL
 s_count_patients_with_event <- function(df,
                                         .var,
                                         filters,
-                                        .N_col, # nolint
-                                        .N_row, # nolint
+                                        .N_col = ncol(df), # nolint
+                                        .N_row = nrow(df), # nolint
                                         denom = c("n", "N_col", "N_row")) {
   col_names <- names(filters)
   filter_values <- filters
@@ -105,9 +105,9 @@ s_count_patients_with_event <- function(df,
 a_count_patients_with_event <- function(df,
                                         labelstr = "",
                                         filters,
-                                        denom = c("n", "N_col", "N_row"),
                                         .N_col, # nolint
                                         .N_row, # nolint
+                                        denom = c("n", "N_col", "N_row"),
                                         .df_row,
                                         .var = NULL,
                                         .stats = NULL,
@@ -116,7 +116,7 @@ a_count_patients_with_event <- function(df,
                                         .indent_mods = NULL,
                                         na_str = default_na_str()) {
   x_stats <- s_count_patients_with_event(
-    df = df, .var = .var, filters = filters, .N_col = .N_col, .N_row = .N_row, denom = denom
+    df = df, .var = .var, filters = filters, .N_col, .N_row, denom = denom
   )
 
   if (is.null(unlist(x_stats))) {
@@ -129,7 +129,6 @@ a_count_patients_with_event <- function(df,
   .labels <- get_labels_from_stats(.stats, .labels)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
-  if ("count_fraction_fixed_dp" %in% .stats) x_stats[["count_fraction_fixed_dp"]] <- x_stats[["count_fraction"]]
   x_stats <- x_stats[.stats]
 
   # Auto format handling
@@ -139,7 +138,7 @@ a_count_patients_with_event <- function(df,
     .list = x_stats,
     .formats = .formats,
     .names = names(.labels),
-    .labels = unlist(.labels),
+    .labels = .labels,
     .indent_mods = .indent_mods,
     .format_na_strs = na_str
   )

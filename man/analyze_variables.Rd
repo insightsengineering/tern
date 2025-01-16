@@ -17,75 +17,37 @@ analyze_vars(
   var_labels = vars,
   na_str = default_na_str(),
   nested = TRUE,
-  ...,
-  na.rm = TRUE,
   show_labels = "default",
   table_names = vars,
   section_div = NA_character_,
+  ...,
+  na_rm = TRUE,
+  compare_with_ref_group = FALSE,
   .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
+  .stat_names_in = NULL,
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL
 )
 
-s_summary(x, na.rm = TRUE, denom, .N_row, .N_col, .var, ...)
+s_summary(x, ...)
 
-\method{s_summary}{numeric}(
-  x,
-  na.rm = TRUE,
-  denom,
-  .N_row,
-  .N_col,
-  .var,
-  control = control_analyze_vars(),
-  ...
-)
+\method{s_summary}{numeric}(x, control = control_analyze_vars(), ...)
 
-\method{s_summary}{factor}(
-  x,
-  na.rm = TRUE,
-  denom = c("n", "N_col", "N_row"),
-  .N_row,
-  .N_col,
-  ...
-)
+\method{s_summary}{factor}(x, denom = c("n", "N_col", "N_row"), ...)
 
-\method{s_summary}{character}(
-  x,
-  na.rm = TRUE,
-  denom = c("n", "N_col", "N_row"),
-  .N_row,
-  .N_col,
-  .var,
-  verbose = TRUE,
-  ...
-)
+\method{s_summary}{character}(x, denom = c("n", "N_col", "N_row"), ...)
 
-\method{s_summary}{logical}(
-  x,
-  na.rm = TRUE,
-  denom = c("n", "N_col", "N_row"),
-  .N_row,
-  .N_col,
-  ...
-)
+\method{s_summary}{logical}(x, denom = c("n", "N_col", "N_row"), ...)
 
 a_summary(
   x,
-  .N_col,
-  .N_row,
-  .var = NULL,
-  .df_row = NULL,
-  .ref_group = NULL,
-  .in_ref_col = FALSE,
-  compare = FALSE,
+  ...,
   .stats = NULL,
+  .stat_names_in = NULL,
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL,
-  na.rm = TRUE,
-  na_str = default_na_str(),
-  ...
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -101,10 +63,6 @@ a_summary(
 possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
-\item{...}{arguments passed to \code{s_summary()}.}
-
-\item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
-
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
@@ -113,11 +71,30 @@ times, to avoid warnings from \code{rtables}.}
 \item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
 defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
 
+\item{...}{additional arguments passed to \code{s_summary()}, including:
+\itemize{
+\item \code{denom}: (\code{string}) See parameter description below.
+\item \code{.N_row}: (\code{numeric(1)}) Row-wise N (row group count) for the group of observations being analyzed (i.e. with no
+column-based subsetting).
+\item \code{.N_col}: (\code{numeric(1)}) Column-wise N (column count) for the full column being tabulated within.
+\item \code{verbose}: (\code{flag}) Whether additional warnings and messages should be printed. Mainly used to print out
+information about factor casting. Defaults to \code{TRUE}. Used for \code{character}/\code{factor} variables only.
+}}
+
+\item{na_rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
+
+\item{compare_with_ref_group}{(\code{flag})\cr whether comparison statistics should be analyzed instead of summary
+statistics (\code{compare_with_ref_group = TRUE} adds \code{pval} statistic comparing
+against reference group).}
+
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
 Options for numeric variables are: \verb{'n', 'sum', 'mean', 'sd', 'se', 'mean_sd', 'mean_se', 'mean_ci', 'mean_sei', 'mean_sdi', 'mean_pval', 'median', 'mad', 'median_ci', 'quantiles', 'iqr', 'range', 'min', 'max', 'median_range', 'cv', 'geom_mean', 'geom_mean_ci', 'geom_cv', 'median_ci_3d', 'mean_ci_3d', 'geom_mean_ci_3d'}
 
 Options for non-numeric variables are: \verb{'n', 'count', 'count_fraction', 'count_fraction_fixed_dp', 'fraction', 'n_blq'}}
+
+\item{.stat_names_in}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
@@ -130,22 +107,6 @@ for that statistic's row label.}
 
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
-\itemize{
-\item \code{n}: number of values in this row and column intersection.
-\item \code{N_row}: total number of values in this row across columns.
-\item \code{N_col}: total number of values in this column across rows.
-}}
-
-\item{.N_row}{(\code{integer(1)})\cr row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
-
-\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
-passed by \code{rtables}.}
-
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
-
 \item{control}{(\code{list})\cr parameters for descriptive statistics details, specified by using
 the helper function \code{\link[=control_analyze_vars]{control_analyze_vars()}}. Some possible parameter options are:
 \itemize{
@@ -156,17 +117,12 @@ See more about \code{type} in \code{\link[stats:quantile]{stats::quantile()}}.
 \item \code{test_mean} (\code{numeric(1)})\cr value to test against the mean under the null hypothesis when calculating p-value.
 }}
 
-\item{verbose}{(\code{flag})\cr defaults to \code{TRUE}, which prints out warnings and messages. It is mainly used
-to print out information about factor casting.}
-
-\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
-
-\item{.ref_group}{(\code{data.frame} or \code{vector})\cr the data corresponding to the reference group.}
-
-\item{.in_ref_col}{(\code{flag})\cr \code{TRUE} when working with the reference level, \code{FALSE} otherwise.}
-
-\item{compare}{(\code{flag})\cr whether comparison statistics should be analyzed instead of summary statistics
-(\code{compare = TRUE} adds \code{pval} statistic comparing against reference group).}
+\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
+\itemize{
+\item \code{n}: number of values in this row and column intersection.
+\item \code{N_row}: total number of values in this row across columns.
+\item \code{N_col}: total number of values in this column across rows.
+}}
 }
 \value{
 \itemize{
@@ -240,7 +196,7 @@ The analyze function \code{\link[=analyze_vars]{analyze_vars()}} creates a layou
 generic function \code{\link[=s_summary]{s_summary()}} to calculate a list of summary statistics. A list of all available statistics for
 numeric variables can be viewed by running \code{get_stats("analyze_vars_numeric")} and for non-numeric variables by
 running \code{get_stats("analyze_vars_counts")}. Use the \code{.stats} parameter to specify the statistics to include in your
-output summary table.
+output summary table. Use \code{compare_with_ref_group = TRUE} to compare the variable with reference groups.
 }
 \details{
 \strong{Automatic digit formatting:} The number of digits to display can be automatically determined from the analyzed
@@ -280,9 +236,9 @@ being standard behavior in R.
 \item If \code{x} is an empty \code{factor}, a list is still returned for \code{counts} with one element
 per factor level. If there are no levels in \code{x}, the function fails.
 \item If factor variables contain \code{NA}, these \code{NA} values are excluded by default. To include \code{NA} values
-set \code{na.rm = FALSE} and missing values will be displayed as an \code{NA} level. Alternatively, an explicit
+set \code{na_rm = FALSE} and missing values will be displayed as an \code{NA} level. Alternatively, an explicit
 factor level can be defined for \code{NA} values during pre-processing via \code{\link[=df_explicit_na]{df_explicit_na()}} - the
-default \code{na_level} (\code{"<Missing>"}) will also be excluded when \code{na.rm} is set to \code{TRUE}.
+default \code{na_level} (\code{"<Missing>"}) will also be excluded when \code{na_rm} is set to \code{TRUE}.
 }
 
 \itemize{
@@ -293,7 +249,8 @@ created from character variables before passing the dataset to \code{\link[rtabl
 }
 
 \itemize{
-\item To use for comparison (with additional p-value statistic), parameter \code{compare} must be set to \code{TRUE}.
+\item To use for comparison (with additional p-value statistic), parameter
+\code{compare_with_ref_group} must be set to \code{TRUE}.
 \item Ensure that either all \code{NA} values are converted to an explicit \code{NA} level or all \code{NA} values are left as is.
 }
 }
@@ -333,7 +290,7 @@ build_table(l, df = dta_test)
 l <- basic_table() \%>\%
   split_cols_by(var = "ARM") \%>\%
   split_rows_by(var = "AVISIT") \%>\%
-  analyze_vars(vars = "AVAL", na.rm = FALSE)
+  analyze_vars(vars = "AVAL", na_rm = FALSE)
 
 build_table(l, df = dta_test)
 
@@ -342,7 +299,7 @@ dta_test$AVISIT <- NA_character_
 dta_test <- df_explicit_na(dta_test)
 l <- basic_table() \%>\%
   split_cols_by(var = "ARM") \%>\%
-  analyze_vars(vars = "AVISIT", na.rm = FALSE)
+  analyze_vars(vars = "AVISIT", na_rm = FALSE)
 
 build_table(l, df = dta_test)
 
@@ -363,17 +320,17 @@ s_summary(numeric())
 
 ## Management of NA values.
 x <- c(NA_real_, 1)
-s_summary(x, na.rm = TRUE)
-s_summary(x, na.rm = FALSE)
+s_summary(x, na_rm = TRUE)
+s_summary(x, na_rm = FALSE)
 
 x <- c(NA_real_, 1, 2)
-s_summary(x, stats = NULL)
+s_summary(x)
 
 ## Benefits in `rtables` contructions:
 dta_test <- data.frame(
-  Group = rep(LETTERS[1:3], each = 2),
-  sub_group = rep(letters[1:2], each = 3),
-  x = 1:6
+  Group = rep(LETTERS[seq(3)], each = 2),
+  sub_group = rep(letters[seq(2)], each = 3),
+  x = seq(6)
 )
 
 ## The summary obtained in with `rtables`:
@@ -398,8 +355,8 @@ s_summary(factor(levels = c("a", "b", "c")))
 ## Management of NA values.
 x <- factor(c(NA, "Female"))
 x <- explicit_na(x)
-s_summary(x, na.rm = TRUE)
-s_summary(x, na.rm = FALSE)
+s_summary(x, na_rm = TRUE)
+s_summary(x, na_rm = FALSE)
 
 ## Different denominators.
 x <- factor(c("a", "a", "b", "c", "a"))
@@ -409,8 +366,8 @@ s_summary(x, denom = "N_col", .N_col = 20L)
 # `s_summary.character`
 
 ## Basic usage:
-s_summary(c("a", "a", "b", "c", "a"), .var = "x", verbose = FALSE)
-s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na.rm = FALSE, verbose = FALSE)
+s_summary(c("a", "a", "b", "c", "a"), verbose = FALSE)
+s_summary(c("a", "a", "b", "c", "a", ""), .var = "x", na_rm = FALSE, verbose = FALSE)
 
 # `s_summary.logical`
 
@@ -422,8 +379,8 @@ s_summary(as.logical(c()))
 
 ## Management of NA values.
 x <- c(NA, TRUE, FALSE)
-s_summary(x, na.rm = TRUE)
-s_summary(x, na.rm = FALSE)
+s_summary(x, na_rm = TRUE)
+s_summary(x, na_rm = FALSE)
 
 ## Different denominators.
 x <- c(TRUE, FALSE, TRUE, TRUE)
@@ -433,22 +390,27 @@ s_summary(x, denom = "N_col", .N_col = 20L)
 a_summary(factor(c("a", "a", "b", "c", "a")), .N_row = 10, .N_col = 10)
 a_summary(
   factor(c("a", "a", "b", "c", "a")),
-  .ref_group = factor(c("a", "a", "b", "c")), compare = TRUE
+  .ref_group = factor(c("a", "a", "b", "c")), compare_with_ref_group = TRUE, .in_ref_col = TRUE
 )
 
 a_summary(c("A", "B", "A", "C"), .var = "x", .N_col = 10, .N_row = 10, verbose = FALSE)
 a_summary(
   c("A", "B", "A", "C"),
-  .ref_group = c("B", "A", "C"), .var = "x", compare = TRUE, verbose = FALSE
+  .ref_group = c("B", "A", "C"), .var = "x", compare_with_ref_group = TRUE, verbose = FALSE,
+  .in_ref_col = FALSE
 )
 
 a_summary(c(TRUE, FALSE, FALSE, TRUE, TRUE), .N_row = 10, .N_col = 10)
 a_summary(
   c(TRUE, FALSE, FALSE, TRUE, TRUE),
-  .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare = TRUE
+  .ref_group = c(TRUE, FALSE), .in_ref_col = TRUE, compare_with_ref_group = TRUE,
+  .in_ref_col = FALSE
 )
 
 a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
-a_summary(rnorm(10, 5, 1), .ref_group = rnorm(20, -5, 1), .var = "bla", compare = TRUE)
+a_summary(rnorm(10, 5, 1),
+  .ref_group = rnorm(20, -5, 1), .var = "bla", compare_with_ref_group = TRUE,
+  .in_ref_col = FALSE
+)
 
 }

@@ -25,6 +25,17 @@
       [1] 1.00 0.25
       
       
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$MH1
+      [1] 3.00 0.75
+      
+      $count_fraction_fixed_dp$MH2
+      [1] 1.00 0.25
+      
+      $count_fraction_fixed_dp$MH3
+      [1] 1.00 0.25
+      
+      
       $fraction
       $fraction$MH1
         num denom 
@@ -67,6 +78,17 @@
       [1] 1.0000000 0.3333333
       
       
+      $count_fraction_fixed_dp
+      $count_fraction_fixed_dp$MH1
+      [1] 3 1
+      
+      $count_fraction_fixed_dp$MH2
+      [1] 1.0000000 0.3333333
+      
+      $count_fraction_fixed_dp$MH3
+      [1] 1.0000000 0.3333333
+      
+      
       $fraction
       $fraction$MH1
         num denom 
@@ -89,15 +111,23 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-          row_name formatted_cell indent_mod  row_label
-      1   Level: a              3          1   Level: a
-      2      LVL B              1          2      LVL B
-      3 Count of c              1          0 Count of c
-      4  Missing D              0          3  Missing D
-      5   Level: a        3 (60%)          1   Level: a
-      6      LVL B        1 (20%)          2      LVL B
-      7          c        1 (20%)          0          c
-      8  Missing D         0 (0%)          0  Missing D
+           row_name formatted_cell indent_mod  row_label
+      1    Level: a              3          1   Level: a
+      2       LVL B              1          2      LVL B
+      3  Count of c              1          0 Count of c
+      4   Missing D              0          3  Missing D
+      5    Level: a        3 (60%)          1   Level: a
+      6       LVL B        1 (20%)          2      LVL B
+      7           c        1 (20%)          0          c
+      8   Missing D         0 (0%)          0  Missing D
+      9    Level: a              3          1   Level: a
+      10      LVL B              1          2      LVL B
+      11          c              1          0          c
+      12  Missing D              0          3  Missing D
+      13   Level: a        3 (60%)          1   Level: a
+      14      LVL B        1 (20%)          2      LVL B
+      15          c        1 (20%)          0          c
+      16  Missing D         0 (0%)          0  Missing D
 
 # count_occurrences functions as expected with valid input and default arguments
 

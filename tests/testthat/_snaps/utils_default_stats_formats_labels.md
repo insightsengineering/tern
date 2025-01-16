@@ -40,10 +40,10 @@
     Code
       res
     Output
-                        count          count_fraction count_fraction_fixed_dp 
-                      "count"        "count_fraction"        "count_fraction" 
-                     fraction 
-                   "fraction" 
+                          count            count_fraction   count_fraction_fixed_dp 
+                        "count"          "count_fraction" "count_fraction_fixed_dp" 
+                       fraction 
+                     "fraction" 
 
 # get_indents_from_stats works as expected
 
@@ -145,7 +145,7 @@
                                  n                        count 
                                "n"                      "count" 
                     count_fraction      count_fraction_fixed_dp 
-                  "count_fraction"             "count_fraction" 
+                  "count_fraction"    "count_fraction_fixed_dp" 
                           fraction                        n_blq 
                         "fraction"                      "n_blq" 
                        pval_counts 

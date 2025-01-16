@@ -59,15 +59,15 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
     method_groups[method_groups == "analyze_vars"] <- "analyze_vars_numeric"
   }
 
-  type_tmp <- ifelse(any(grepl("counts", method_groups)), "counts", "numeric") # for pval checks
+  type_tmp <- ifelse(any(grepl("counts$", method_groups)), "counts", "numeric") # for pval checks
 
   # Defaults for loop
   out <- NULL
 
   # Loop for multiple method groups
   for (mgi in method_groups) {
-    out_tmp <- if (mgi %in% names(tern_default_stats)) {
-      tern_default_stats[[mgi]]
+    if (mgi %in% names(tern_default_stats)) {
+      out_tmp <- tern_default_stats[[mgi]]
     } else {
       stop("The selected method group (", mgi, ") has no default statistical method.")
     }
@@ -119,6 +119,48 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
   }
 
   out
+}
+
+
+#' @describeIn default_stats_formats_labels Get statistical NAMES available for a given method
+#'   group (analyze function). Please use the `s_*` functions to get the statistical names.
+#' @param stat_results (`list`)\cr list of statistical results. It should be used close to the end of
+#'   a statistical function. See examples for a structure with two statistical results and two groups.
+#' @param stat_names_in (`character`)\cr custom modification of statistical values.
+#'
+#' @return
+#' * `get_stat_names()` returns a named list of`character` vectors, indicating the names of
+#'    statistical outputs.
+#'
+#' @examples
+#' stat_results <- list(
+#'   "n" = list("M" = 1, "F" = 2),
+#'   "count_fraction" = list("M" = c(1, 0.2), "F" = c(2, 0.1))
+#' )
+#' get_stat_names(stat_results)
+#' get_stat_names(stat_results, list("n" = "argh"))
+#'
+#' @export
+get_stat_names <- function(stat_results, stat_names_in = NULL) {
+  checkmate::assert_character(names(stat_results), min.len = 1)
+  checkmate::assert_list(stat_names_in, null.ok = TRUE)
+
+  stat_nms_from_stats <- lapply(stat_results, function(si) {
+    nm <- names(si)
+    if (is.null(nm)) {
+      nm <- rep(NA_character_, length(si)) # no statistical names
+    }
+    return(nm)
+  })
+
+  # Modify some with custom stat names
+  if (!is.null(stat_names_in)) {
+    # Stats is the main
+    common_names <- intersect(names(stat_nms_from_stats), names(stat_names_in))
+    stat_nms_from_stats[common_names] <- stat_names_in[common_names]
+  }
+
+  stat_nms_from_stats
 }
 
 # Utility function used to separate custom stats (user-defined functions) from defaults
@@ -234,11 +276,12 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 #'   the statistics name will be used as label.
 #'
 #' @param labels_in (named `character`)\cr inserted labels to replace defaults.
-#' @param row_nms (`character`)\cr row names. Levels of a `factor` or `character` variable, each
+#' @param levels_per_stats (named `list` of `character` or `NULL`)\cr Levels of a `factor` or `character` variable, each
 #'   of which the statistics in `.stats` will be calculated for. If this parameter is set, these
 #'   variable levels will be used as the defaults, and the names of the given custom values should
 #'   correspond to levels (or have format `statistic.level`) instead of statistics. Can also be
 #'   variable names if rows correspond to different variables instead of levels. Defaults to `NULL`.
+#' @param row_nms (`character`)\cr See `levels_per_stats`. Deprecation cycle started.
 #'
 #' @return
 #' * `get_labels_from_stats()` returns a named `character` vector of labels (if present in either
@@ -256,9 +299,9 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 #' get_labels_from_stats(all_cnt_occ, labels_in = list("fraction" = c("Some more fractions")))
 #'
 #' @export
-get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL) {
+get_labels_from_stats <- function(stats, labels_in = NULL, levels_per_stats = NULL) {
   checkmate::assert_character(stats, min.len = 1)
-  checkmate::assert_character(row_nms, null.ok = TRUE)
+  checkmate::assert_list(levels_per_stats, null.ok = TRUE)
   # It may be a list
   if (checkmate::test_list(labels_in, null.ok = TRUE)) {
     checkmate::assert_list(labels_in, null.ok = TRUE)
@@ -267,14 +310,10 @@ get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL) {
     checkmate::assert_character(labels_in, null.ok = TRUE)
   }
 
-  if (!is.null(row_nms)) {
-    ret <- rep(row_nms, length(stats))
-    out <- setNames(ret, paste(rep(stats, each = length(row_nms)), ret, sep = "."))
-
-    if (!is.null(labels_in)) {
-      lvl_lbls <- intersect(names(labels_in), row_nms)
-      for (i in lvl_lbls) out[paste(stats, i, sep = ".")] <- labels_in[[i]]
-    }
+  # Default for stats with sublevels (for factors or chrs) are the labels
+  if (!is.null(levels_per_stats)) {
+    out <- .adjust_stats_desc_by_in_def(levels_per_stats, labels_in, tern_default_labels)
+    # numeric case, where there are not other levels (list of stats)
   } else {
     which_lbl <- match(stats, names(tern_default_labels))
 
@@ -282,13 +321,13 @@ get_labels_from_stats <- function(stats, labels_in = NULL, row_nms = NULL) {
     ret[!is.na(which_lbl)] <- tern_default_labels[which_lbl[!is.na(which_lbl)]]
 
     out <- setNames(ret, stats)
-  }
 
-  # Modify some with custom labels
-  if (!is.null(labels_in)) {
-    # Stats is the main
-    common_names <- intersect(names(out), names(labels_in))
-    out[common_names] <- labels_in[common_names]
+    # Modify some with custom labels
+    if (!is.null(labels_in)) {
+      # Stats is the main
+      common_names <- intersect(names(out), names(labels_in))
+      out[common_names] <- unlist(labels_in[common_names], recursive = FALSE)
+    }
   }
 
   out
@@ -350,6 +389,72 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
 
   out
 }
+
+# Function to loop over each stat and levels to set correct values
+.adjust_stats_desc_by_in_def <- function(levels_per_stats, user_in, tern_defaults) {
+  out <- levels_per_stats
+
+  # Seq over the stats levels (can be also flat (stat$NULL))
+  for (stat_i in seq_along(levels_per_stats)) {
+    # If you want to change all factor levels at once by statistic
+    common_stat_names <- intersect(names(levels_per_stats), names(user_in))
+
+    # Levels for each statistic
+    nm_of_levs <- levels_per_stats[[stat_i]]
+    # Special case in which only stat$NULL
+    if (is.null(nm_of_levs)) {
+      nm_of_levs <- "a single NULL level"
+    }
+
+    # Loop over levels for each statistic
+    for (lev_i in seq_along(nm_of_levs)) {
+      # If there are no further names (stat$NULL) push label (stat) down to lowest level
+      if (is.null(levels_per_stats[[stat_i]])) {
+        lev_val <- names(levels_per_stats[stat_i])
+        out[[stat_i]] <- lev_val
+      } else {
+        lev_val <- levels_per_stats[[stat_i]][[lev_i]]
+      }
+
+      # Add default if it is a stat at last level
+      if (lev_val %in% names(tern_defaults)) {
+        out[[stat_i]][[lev_i]] <- tern_defaults[[lev_val]]
+      }
+
+      # If a general stat was added to the custom labels
+      if (names(levels_per_stats[stat_i]) %in% names(user_in)) {
+        out[[stat_i]][[lev_i]] <- user_in[[names(levels_per_stats[stat_i])]]
+      }
+
+      # If a stat level (e.g. if it is counts levels from table) was added to the custom labels
+      if (lev_val %in% names(user_in)) {
+        out[[stat_i]][[lev_i]] <- user_in[[lev_val]]
+      }
+
+      # If stat_i.lev_val is added to labels_in
+      composite_stat_lev_nm <- paste(
+        names(levels_per_stats[stat_i]),
+        lev_val,
+        sep = "."
+      )
+      if (composite_stat_lev_nm %in% names(user_in)) {
+        out[[stat_i]][[lev_i]] <- user_in[[composite_stat_lev_nm]]
+      }
+
+      # Used by the unlist (to avoid count_fraction1, count_fraction2, etc.)
+      names(out[[stat_i]])[lev_i] <- lev_val
+    }
+  }
+
+  out
+}
+
+# Custom unlist function to retain NULL as "NULL" or NA
+.unlist_keep_nulls <- function(lst, null_placeholder = "NULL", recursive = FALSE) {
+  lapply(lst, function(x) if (is.null(x)) null_placeholder else x) %>%
+    unlist(recursive = recursive)
+}
+
 
 #' Update labels according to control specifications
 #'
@@ -419,6 +524,7 @@ labels_use_control <- function(labels_default, control, labels_custom = NULL) {
   labels_default
 }
 
+# tern_default_stats -----------------------------------------------------------
 #' @describeIn default_stats_formats_labels Named list of available statistics by method group for `tern`.
 #'
 #' @format
@@ -474,6 +580,7 @@ tern_default_stats <- list(
   test_proportion_diff = c("pval")
 )
 
+# tern_default_formats ---------------------------------------------------------
 #' @describeIn default_stats_formats_labels Named vector of default formats for `tern`.
 #'
 #' @format
@@ -529,6 +636,7 @@ tern_default_formats <- c(
   rate_ratio_ci = "(xx.xxxx, xx.xxxx)"
 )
 
+# tern_default_labels ----------------------------------------------------------
 #' @describeIn default_stats_formats_labels Named `character` vector of default labels for `tern`.
 #'
 #' @format
@@ -543,7 +651,7 @@ tern_default_labels <- c(
   n = "n",
   count = "count",
   count_fraction = "count_fraction",
-  count_fraction_fixed_dp = "count_fraction",
+  count_fraction_fixed_dp = "count_fraction_fixed_dp",
   n_blq = "n_blq",
   sum = "Sum",
   mean = "Mean",
