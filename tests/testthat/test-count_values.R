@@ -125,4 +125,34 @@ testthat::test_that("count_values works with denom specified", {
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
+
+  # Some more test cases
+  case1 <- testthat::expect_silent(
+    basic_table(show_colcounts = TRUE) %>%
+      split_cols_by("ACTARM") %>%
+      count_values("AESER", values = "Y") %>%
+      build_table(df = tern_ex_adae))
+  testthat::expect_snapshot(case1)
+
+  case2 <- testthat::expect_silent(
+    basic_table(show_colcounts = TRUE) %>%
+      split_cols_by("ACTARM") %>%
+      count_values("AESER", values = "Y", denom = "N_col") %>%
+      build_table(df = tern_ex_adae, alt_counts_df = tern_ex_adsl))
+  testthat::expect_snapshot(case2)
+
+  case3 <- testthat::expect_silent(
+    basic_table(show_colcounts = TRUE) %>%
+      split_cols_by("ACTARM") %>%
+      count_values("AESER", values = "Y", denom = "N_row") %>%
+      build_table(df = tern_ex_adae, alt_counts_df = tern_ex_adsl))
+  testthat::expect_snapshot(case3)
+
+  # case 4 should be the same as case 1 for the rows
+  case4 <- testthat::expect_silent(
+    basic_table(show_colcounts = TRUE) %>%
+      split_cols_by("ACTARM") %>%
+      count_values("AESER", values = "Y", denom = "n") %>%
+      build_table(df = tern_ex_adae, alt_counts_df = tern_ex_adsl))
+  testthat::expect_snapshot(case4)
 })
