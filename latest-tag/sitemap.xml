@@ -9,6 +9,7 @@
 <url><loc>https://insightsengineering.github.io/tern/articles/tables.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/articles/tern.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/articles/tern_formats.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern/articles/tern_functions_guide.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/authors.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/index.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/news/index.html</loc></url>
@@ -34,7 +35,6 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/as_factor_keep_attributes.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/assertions.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/bins_percent_labels.html</loc></url>
-<url><loc>https://insightsengineering.github.io/tern/reference/bland_altman.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/c_label_n.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/c_label_n_alt.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/cfun_by_flag.html</loc></url>
@@ -123,6 +123,7 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/format_sigfig.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/format_xx.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/formatting_functions.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern/reference/g_bland_altman.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/g_forest.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/g_ipp.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/g_km.html</loc></url>
@@ -194,6 +195,7 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/response_subgroups.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/rtable2gg.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/rtables_access.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern/reference/s_bland_altman.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/s_cox_multivariate.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/sas_na.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/score_occurrences.html</loc></url>
@@ -230,6 +232,7 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/univariate.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/unlist_and_blank_na.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/update_weights_strat_wilson.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern/reference/util_handling_additional_fun_params.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/utils_split_funs.html</loc></url>
 </urlset>
 

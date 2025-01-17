@@ -46,7 +46,7 @@ or the change from baseline values (post-baseline) are then summarized.">
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.7</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,11 +63,11 @@ or the change from baseline values (post-baseline) are then summarized.">
 <li><a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a></li>
     <li><a class="dropdown-item" href="../articles/tables.html">Tabulation</a></li>
     <li><a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a></li>
+    <li><a class="dropdown-item" href="../articles/tern_functions_guide.html">Understanding `tern` functions</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
 <li class="nav-item dropdown">
-
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-reports" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Reports</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-reports">
 <li><a class="dropdown-item" href="../coverage-report/">Coverage report</a></li>
@@ -75,12 +75,13 @@ or the change from baseline values (post-baseline) are then summarized.">
     <li><a class="dropdown-item" href="../unit-test-report-non-cran/">Non-CRAN unit test report</a></li>
   </ul>
 </li>
-      <li class="nav-item dropdown">
+      <div><li class="nav-item dropdown">
     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-versions">Versions</a>
     <div class="dropdown-menu" aria-labelledby="dropdown-versions">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.7">v0.9.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.5">v0.9.5</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.4">v0.9.4</a>
@@ -105,13 +106,13 @@ or the change from baseline values (post-baseline) are then summarized.">
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a>
 </div>
-</li>
+</li></div>
 </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/insightsengineering/tern"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/insightsengineering/tern" aria-label="GitHub"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
@@ -121,7 +122,7 @@ or the change from baseline values (post-baseline) are then summarized.">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Summarize change from baseline values or absolute baseline values</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.6/R/summarize_change.R" class="external-link"><code>R/summarize_change.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.7/R/summarize_change.R" class="external-link"><code>R/summarize_change.R</code></a></small>
       <div class="d-none name"><code>summarize_change.Rd</code></div>
     </div>
 
@@ -143,19 +144,33 @@ or the change from baseline values (post-baseline) are then summarized.</p>
 <span>  <span class="va">lyt</span>,</span>
 <span>  <span class="va">vars</span>,</span>
 <span>  <span class="va">variables</span>,</span>
+<span>  var_labels <span class="op">=</span> <span class="va">vars</span>,</span>
 <span>  na_str <span class="op">=</span> <span class="fu"><a href="default_na_str.html">default_na_str</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  na_rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  <span class="va">...</span>,</span>
+<span>  show_labels <span class="op">=</span> <span class="st">"default"</span>,</span>
 <span>  table_names <span class="op">=</span> <span class="va">vars</span>,</span>
+<span>  section_div <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
+<span>  <span class="va">...</span>,</span>
 <span>  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean_sd"</span>, <span class="st">"median"</span>, <span class="st">"range"</span><span class="op">)</span>,</span>
-<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>n <span class="op">=</span> <span class="st">"xx"</span>, mean_sd <span class="op">=</span> <span class="st">"xx.xx (xx.xx)"</span>, mean_se <span class="op">=</span> <span class="st">"xx.xx (xx.xx)"</span>, median <span class="op">=</span></span>
+<span>    <span class="st">"xx.xx"</span>, range <span class="op">=</span> <span class="st">"xx.xx - xx.xx"</span>, mean_ci <span class="op">=</span> <span class="st">"(xx.xx, xx.xx)"</span>, median_ci <span class="op">=</span></span>
+<span>    <span class="st">"(xx.xx, xx.xx)"</span>, mean_pval <span class="op">=</span> <span class="st">"xx.xx"</span><span class="op">)</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>mean_sd <span class="op">=</span> <span class="st">"Mean (SD)"</span>, mean_se <span class="op">=</span> <span class="st">"Mean (SE)"</span>, median <span class="op">=</span> <span class="st">"Median"</span>, range <span class="op">=</span></span>
+<span>    <span class="st">"Min - Max"</span><span class="op">)</span>,</span>
 <span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">s_change_from_baseline</span><span class="op">(</span><span class="va">df</span>, <span class="va">.var</span>, <span class="va">variables</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">s_change_from_baseline</span><span class="op">(</span><span class="va">df</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">a_change_from_baseline</span><span class="op">(</span><span class="va">df</span>, <span class="va">.var</span>, <span class="va">variables</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">a_change_from_baseline</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -179,9 +194,19 @@ or the change from baseline values (post-baseline) are then summarized.</p>
 <dd><p>(named <code>list</code> of <code>string</code>)<br> list of additional analysis variables.</p></dd>
 
 
+<dt id="arg-var-labels">var_labels<a class="anchor" aria-label="anchor" href="#arg-var-labels"></a>
+</dt>
+<dd><p>(<code>character</code>)<br> variable labels.</p></dd>
+
+
 <dt id="arg-na-str">na_str<a class="anchor" aria-label="anchor" href="#arg-na-str"></a>
 </dt>
 <dd><p>(<code>string</code>)<br> string used to replace all <code>NA</code> or empty values in the output.</p></dd>
+
+
+<dt id="arg-na-rm">na_rm<a class="anchor" aria-label="anchor" href="#arg-na-rm"></a>
+</dt>
+<dd><p>(<code>flag</code>)<br> whether <code>NA</code> values should be removed from <code>x</code> prior to analysis.</p></dd>
 
 
 <dt id="arg-nested">nested<a class="anchor" aria-label="anchor" href="#arg-nested"></a>
@@ -191,9 +216,9 @@ possible (<code>TRUE</code>, the default) or as a new top-level element (<code>F
 underneath analyses, which is not allowed.</p></dd>
 
 
-<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a>
+<dt id="arg-show-labels">show_labels<a class="anchor" aria-label="anchor" href="#arg-show-labels"></a>
 </dt>
-<dd><p>additional arguments for the lower level functions.</p></dd>
+<dd><p>(<code>string</code>)<br> label visibility: one of "default", "visible" and "hidden".</p></dd>
 
 
 <dt id="arg-table-names">table_names<a class="anchor" aria-label="anchor" href="#arg-table-names"></a>
@@ -202,10 +227,23 @@ underneath analyses, which is not allowed.</p></dd>
 times, to avoid warnings from <code>rtables</code>.</p></dd>
 
 
+<dt id="arg-section-div">section_div<a class="anchor" aria-label="anchor" href="#arg-section-div"></a>
+</dt>
+<dd><p>(<code>string</code>)<br> string which should be repeated as a section divider after each group
+defined by this split instruction, or <code>NA_character_</code> (the default) for no section divider.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a>
+</dt>
+<dd><p>additional arguments for the lower level functions.</p></dd>
+
+
 <dt id="arg--stats">.stats<a class="anchor" aria-label="anchor" href="#arg--stats"></a>
 </dt>
-<dd><p>(<code>character</code>)<br> statistics to select for the table. Run <code>get_stats("analyze_vars_numeric)</code>
-to see available statistics for this function.</p></dd>
+<dd>
+<p>(<code>character</code>)<br> statistics to select for the table.</p>
+<p>Options are: <code>'n', 'sum', 'mean', 'sd', 'se', 'mean_sd', 'mean_se', 'mean_ci', 'mean_sei', 'mean_sdi', 'mean_pval', 'median', 'mad', 'median_ci', 'quantiles', 'iqr', 'range', 'min', 'max', 'median_range', 'cv', 'geom_mean', 'geom_mean_ci', 'geom_cv', 'median_ci_3d', 'mean_ci_3d', 'geom_mean_ci_3d'</code></p>
+</dd>
 
 
 <dt id="arg--formats">.formats<a class="anchor" aria-label="anchor" href="#arg--formats"></a>
@@ -228,17 +266,6 @@ unmodified default behavior. Can be negative.</p></dd>
 <dt id="arg-df">df<a class="anchor" aria-label="anchor" href="#arg-df"></a>
 </dt>
 <dd><p>(<code>data.frame</code>)<br> data set containing all analysis variables.</p></dd>
-
-
-<dt id="arg--var">.var<a class="anchor" aria-label="anchor" href="#arg--var"></a>
-</dt>
-<dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
-by a statistics function.</p></dd>
-
-
-<dt id="arg-na-rm">na.rm<a class="anchor" aria-label="anchor" href="#arg-na-rm"></a>
-</dt>
-<dd><p>(<code>flag</code>)<br> whether <code>NA</code> values should be removed from <code>x</code> prior to analysis.</p></dd>
 
 </dl>
 </div>
@@ -283,7 +310,7 @@ an error will be thrown.</p>
 </h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Fabricate dataset</span></span></span>
+<span class="r-in"><span><span class="co"># Fabricate dataset</span></span></span>
 <span class="r-in"><span><span class="va">dta_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  USUBJID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  AVISIT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"V"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>, <span class="fl">6</span><span class="op">)</span>,</span></span>

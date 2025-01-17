@@ -44,7 +44,7 @@ If there are multiple records with the same flag present for a patient, only one
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.7</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,11 +61,11 @@ If there are multiple records with the same flag present for a patient, only one
 <li><a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a></li>
     <li><a class="dropdown-item" href="../articles/tables.html">Tabulation</a></li>
     <li><a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a></li>
+    <li><a class="dropdown-item" href="../articles/tern_functions_guide.html">Understanding `tern` functions</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
 <li class="nav-item dropdown">
-
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-reports" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Reports</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-reports">
 <li><a class="dropdown-item" href="../coverage-report/">Coverage report</a></li>
@@ -73,12 +73,13 @@ If there are multiple records with the same flag present for a patient, only one
     <li><a class="dropdown-item" href="../unit-test-report-non-cran/">Non-CRAN unit test report</a></li>
   </ul>
 </li>
-      <li class="nav-item dropdown">
+      <div><li class="nav-item dropdown">
     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-versions">Versions</a>
     <div class="dropdown-menu" aria-labelledby="dropdown-versions">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.7">v0.9.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.5">v0.9.5</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.4">v0.9.4</a>
@@ -103,13 +104,13 @@ If there are multiple records with the same flag present for a patient, only one
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a>
 </div>
-</li>
+</li></div>
 </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/insightsengineering/tern"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/insightsengineering/tern" aria-label="GitHub"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
@@ -119,7 +120,7 @@ If there are multiple records with the same flag present for a patient, only one
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Count the number of patients with particular flags</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.6/R/count_patients_with_flags.R" class="external-link"><code>R/count_patients_with_flags.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.7/R/count_patients_with_flags.R" class="external-link"><code>R/count_patients_with_flags.R</code></a></small>
       <div class="d-none name"><code>count_patients_with_flags.Rd</code></div>
     </div>
 
@@ -149,8 +150,9 @@ variables to analyze are specified by the user via the <code>flag_variables</cod
 <span>  <span class="va">...</span>,</span>
 <span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"tbl_flags_"</span>, <span class="va">var</span><span class="op">)</span>,</span>
 <span>  .stats <span class="op">=</span> <span class="st">"count_fraction"</span>,</span>
-<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>count_fraction <span class="op">=</span> <span class="va">format_count_fraction_fixed_dp</span><span class="op">)</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">s_count_patients_with_flags</span><span class="op">(</span></span>
@@ -158,19 +160,26 @@ variables to analyze are specified by the user via the <code>flag_variables</cod
 <span>  <span class="va">.var</span>,</span>
 <span>  <span class="va">flag_variables</span>,</span>
 <span>  flag_labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  <span class="va">.N_col</span>,</span>
-<span>  <span class="va">.N_row</span>,</span>
-<span>  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_row"</span>, <span class="st">"N_col"</span><span class="op">)</span></span>
+<span>  .N_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,</span>
+<span>  .N_row <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,</span>
+<span>  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_col"</span>, <span class="st">"N_row"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">a_count_patients_with_flags</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
-<span>  <span class="va">.var</span>,</span>
+<span>  labelstr <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  <span class="va">flag_variables</span>,</span>
 <span>  flag_labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  <span class="va">.N_col</span>,</span>
-<span>  <span class="va">.N_row</span>,</span>
-<span>  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_row"</span>, <span class="st">"N_col"</span><span class="op">)</span></span>
+<span>  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"N_col"</span>, <span class="st">"N_row"</span><span class="op">)</span>,</span>
+<span>  .N_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,</span>
+<span>  .N_row <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,</span>
+<span>  <span class="va">.df_row</span>,</span>
+<span>  .var <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  na_str <span class="op">=</span> <span class="fu"><a href="default_na_str.html">default_na_str</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -199,7 +208,8 @@ used for counting the number of unique identifiers.</p></dd>
 
 <dt id="arg-flag-labels">flag_labels<a class="anchor" aria-label="anchor" href="#arg-flag-labels"></a>
 </dt>
-<dd><p>(<code>character</code>)<br> vector of labels to use for flag variables.</p></dd>
+<dd><p>(<code>character</code>)<br> vector of labels to use for flag variables. If any labels are also specified via
+the <code>.labels</code> parameter, the <code>.labels</code> values will take precedence and replace these labels.</p></dd>
 
 
 <dt id="arg-var-labels">var_labels<a class="anchor" aria-label="anchor" href="#arg-var-labels"></a>
@@ -244,8 +254,10 @@ times, to avoid warnings from <code>rtables</code>.</p></dd>
 
 <dt id="arg--stats">.stats<a class="anchor" aria-label="anchor" href="#arg--stats"></a>
 </dt>
-<dd><p>(<code>character</code>)<br> statistics to select for the table. Run <code>get_stats("count_patients_with_flags")</code>
-to see available statistics for this function.</p></dd>
+<dd>
+<p>(<code>character</code>)<br> statistics to select for the table.</p>
+<p>Options are: <code>'n', 'count', 'count_fraction', 'count_fraction_fixed_dp', 'n_blq'</code></p>
+</dd>
 
 
 <dt id="arg--formats">.formats<a class="anchor" aria-label="anchor" href="#arg--formats"></a>
@@ -258,6 +270,11 @@ information on the <code>"auto"</code> setting.</p></dd>
 </dt>
 <dd><p>(named <code>integer</code>)<br> indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.</p></dd>
+
+
+<dt id="arg--labels">.labels<a class="anchor" aria-label="anchor" href="#arg--labels"></a>
+</dt>
+<dd><p>(named <code>character</code>)<br> labels for the statistics (without indent).</p></dd>
 
 
 <dt id="arg-df">df<a class="anchor" aria-label="anchor" href="#arg-df"></a>
@@ -292,6 +309,18 @@ passed by <code>rtables</code>.</p></dd>
 <li><p><code>N_col</code>: total number of values in this column across rows.</p></li>
 </ul>
 </dd>
+
+
+<dt id="arg-labelstr">labelstr<a class="anchor" aria-label="anchor" href="#arg-labelstr"></a>
+</dt>
+<dd><p>(<code>string</code>)<br> label of the level of the parent split currently being summarized
+(must be present as second argument in Content Row Functions). See <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>
+for more information.</p></dd>
+
+
+<dt id="arg--df-row">.df_row<a class="anchor" aria-label="anchor" href="#arg--df-row"></a>
+</dt>
+<dd><p>(<code>data.frame</code>)<br> data frame across all of the columns for the given row split.</p></dd>
 
 </dl>
 </div>
@@ -342,11 +371,9 @@ the label to use for this variable.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a>
 </h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Add labelled flag variables to analysis dataset.</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Add labelled flag variables to analysis dataset.</span></span></span>
 <span class="r-in"><span><span class="va">adae</span> <span class="op">&lt;-</span> <span class="va">tern_ex_adae</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    fl1 <span class="op">=</span> <span class="cn">TRUE</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">with_label</span><span class="op">(</span><span class="st">"Total AEs"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    fl2 <span class="op">=</span> <span class="op">(</span><span class="va">TRTEMFL</span> <span class="op">==</span> <span class="st">"Y"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>      <span class="fu">with_label</span><span class="op">(</span><span class="st">"Total number of patients with at least one adverse event"</span><span class="op">)</span>,</span></span>
@@ -356,9 +383,7 @@ the label to use for this variable.</p>
 <span class="r-in"><span>      <span class="fu">with_label</span><span class="op">(</span><span class="st">"Total number of patients with related fatal AEs"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># `count_patients_with_flags()`</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">lyt2</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu">basic_table</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">split_cols_by</span><span class="op">(</span><span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">add_colcounts</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">count_patients_with_flags</span><span class="op">(</span></span></span>
@@ -367,7 +392,7 @@ the label to use for this variable.</p>
 <span class="r-in"><span>    denom <span class="op">=</span> <span class="st">"N_col"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">build_table</span><span class="op">(</span><span class="va">lyt2</span>, <span class="va">adae</span>, alt_counts_df <span class="op">=</span> <span class="va">tern_ex_adsl</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">build_table</span><span class="op">(</span><span class="va">lyt</span>, <span class="va">adae</span>, alt_counts_df <span class="op">=</span> <span class="va">tern_ex_adsl</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                            A: Drug X    B: Placebo   C: Combination</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                              (N=69)       (N=73)         (N=58)    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————————————————————————————</span>
@@ -387,71 +412,114 @@ the label to use for this variable.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n$`Total AEs`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 164 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n$`Total number of patients with at least one adverse event`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 164 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n$`Total number of patients with fatal AEs`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 164 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n$`Total number of patients with related fatal AEs`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   n </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 164 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$`Total AEs`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   164 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$`Total number of patients with at least one adverse event`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   164 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$`Total number of patients with fatal AEs`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    79 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$`Total number of patients with related fatal AEs`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    79 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`Total AEs`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 164.000   0.164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    count fraction </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  164.000    0.164 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`Total number of patients with at least one adverse event`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 164.000   0.164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    count fraction </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  164.000    0.164 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`Total number of patients with fatal AEs`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 79.000  0.079</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    count fraction </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   79.000    0.079 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`Total number of patients with related fatal AEs`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 79.000  0.079</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    count fraction </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   79.000    0.079 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$`Total AEs`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    count fraction </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  164.000    0.164 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$`Total number of patients with at least one adverse event`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    count fraction </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  164.000    0.164 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$`Total number of patients with fatal AEs`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    count fraction </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   79.000    0.079 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$`Total number of patients with related fatal AEs`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    count fraction </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   79.000    0.079 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$`Total AEs`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   164  1000 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$`Total number of patients with at least one adverse event`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   164  1000 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$`Total number of patients with fatal AEs`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    79  1000 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$`Total number of patients with related fatal AEs`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    79  1000 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq$`Total AEs`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n_blq </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq$`Total number of patients with at least one adverse event`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n_blq </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq$`Total number of patients with fatal AEs`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n_blq </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq$`Total number of patients with related fatal AEs`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n_blq </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">#  We need to ungroup `count_fraction` first so that the `rtables` formatting</span></span></span>
-<span class="r-in"><span><span class="co"># function `format_count_fraction()` can be applied correctly.</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># `a_count_patients_with_flags()`</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu">make_afun</span><span class="op">(</span><span class="va">a_count_patients_with_flags</span>,</span></span>
-<span class="r-in"><span>  .stats <span class="op">=</span> <span class="st">"count_fraction"</span>,</span></span>
-<span class="r-in"><span>  .ungroup_stats <span class="op">=</span> <span class="st">"count_fraction"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">afun</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="fu">a_count_patients_with_flags</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">adae</span>,</span></span>
 <span class="r-in"><span>  .N_col <span class="op">=</span> <span class="fl">10L</span>,</span></span>
 <span class="r-in"><span>  .N_row <span class="op">=</span> <span class="fl">10L</span>,</span></span>
@@ -460,16 +528,48 @@ the label to use for this variable.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                   row_name formatted_cell</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                                                Total AEs     164 (100%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Total number of patients with at least one adverse event     164 (100%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                  Total number of patients with fatal AEs     79 (48.2%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4          Total number of patients with related fatal AEs     79 (48.2%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   indent_mod                                                row_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          0                                                Total AEs</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          0 Total number of patients with at least one adverse event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          0                  Total number of patients with fatal AEs</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4          0          Total number of patients with related fatal AEs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       row_name formatted_cell indent_mod</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                        n.fl1            164          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                        n.fl2            164          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                        n.fl3            164          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                        n.fl4            164          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                    count.fl1            164          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                    count.fl2            164          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                    count.fl3             79          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                    count.fl4             79          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9           count_fraction.fl1     164 (100%)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10          count_fraction.fl2     164 (100%)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11          count_fraction.fl3     79 (48.2%)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12          count_fraction.fl4     79 (48.2%)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 count_fraction_fixed_dp.fl1     164 (100%)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 count_fraction_fixed_dp.fl2     164 (100%)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 count_fraction_fixed_dp.fl3     79 (48.2%)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 count_fraction_fixed_dp.fl4     79 (48.2%)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17                   n_blq.fl1              0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18                   n_blq.fl2              0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19                   n_blq.fl3              0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20                   n_blq.fl4              0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                   row_label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                                                 Total AEs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  Total number of patients with at least one adverse event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                   Total number of patients with fatal AEs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4           Total number of patients with related fatal AEs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                                                 Total AEs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  Total number of patients with at least one adverse event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                   Total number of patients with fatal AEs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8           Total number of patients with related fatal AEs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                                                 Total AEs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 Total number of patients with at least one adverse event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11                  Total number of patients with fatal AEs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12          Total number of patients with related fatal AEs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                                                Total AEs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 Total number of patients with at least one adverse event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15                  Total number of patients with fatal AEs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16          Total number of patients with related fatal AEs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17                                                Total AEs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 Total number of patients with at least one adverse event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19                  Total number of patients with fatal AEs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20          Total number of patients with related fatal AEs</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

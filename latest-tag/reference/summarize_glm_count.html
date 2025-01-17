@@ -42,7 +42,7 @@ covariates.">
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.7</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,11 +59,11 @@ covariates.">
 <li><a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a></li>
     <li><a class="dropdown-item" href="../articles/tables.html">Tabulation</a></li>
     <li><a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a></li>
+    <li><a class="dropdown-item" href="../articles/tern_functions_guide.html">Understanding `tern` functions</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
 <li class="nav-item dropdown">
-
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-reports" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Reports</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-reports">
 <li><a class="dropdown-item" href="../coverage-report/">Coverage report</a></li>
@@ -71,12 +71,13 @@ covariates.">
     <li><a class="dropdown-item" href="../unit-test-report-non-cran/">Non-CRAN unit test report</a></li>
   </ul>
 </li>
-      <li class="nav-item dropdown">
+      <div><li class="nav-item dropdown">
     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-versions">Versions</a>
     <div class="dropdown-menu" aria-labelledby="dropdown-versions">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.7">v0.9.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.5">v0.9.5</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.4">v0.9.4</a>
@@ -101,13 +102,13 @@ covariates.">
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a>
 </div>
-</li>
+</li></div>
 </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/insightsengineering/tern"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/insightsengineering/tern" aria-label="GitHub"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
@@ -117,7 +118,7 @@ covariates.">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Summarize Poisson negative binomial regression</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.6/R/summarize_glm_count.R" class="external-link"><code>R/summarize_glm_count.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.7/R/summarize_glm_count.R" class="external-link"><code>R/summarize_glm_count.R</code></a></small>
       <div class="d-none name"><code>summarize_glm_count.Rd</code></div>
     </div>
 
@@ -266,8 +267,10 @@ times, to avoid warnings from <code>rtables</code>.</p></dd>
 
 <dt id="arg--stats">.stats<a class="anchor" aria-label="anchor" href="#arg--stats"></a>
 </dt>
-<dd><p>(<code>character</code>)<br> statistics to select for the table. Run <code>get_stats("summarize_glm_count")</code>
-to see available statistics for this function.</p></dd>
+<dd>
+<p>(<code>character</code>)<br> statistics to select for the table.</p>
+<p>Options are: <code>'n', 'rate', 'rate_ci', 'rate_ratio', 'rate_ratio_ci', 'pval'</code></p>
+</dd>
 
 
 <dt id="arg--formats">.formats<a class="anchor" aria-label="anchor" href="#arg--formats"></a>
@@ -407,30 +410,50 @@ of the investigated Poisson model.</p></li>
 <span class="r-in"><span>      rate <span class="op">=</span> <span class="st">"Rate"</span>, rate_ci <span class="op">=</span> <span class="st">"Rate CI"</span>, rate_ratio <span class="op">=</span> <span class="st">"Rate Ratio"</span>,</span></span>
 <span class="r-in"><span>      rate_ratio_ci <span class="op">=</span> <span class="st">"Rate Ratio CI"</span>, pval <span class="op">=</span> <span class="st">"p value"</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">summarize_glm_count</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    vars <span class="op">=</span> <span class="st">"AVAL"</span>,</span></span>
+<span class="r-in"><span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arm <span class="op">=</span> <span class="st">"ARM"</span>, offset <span class="op">=</span> <span class="st">"lgTMATRSK"</span>, covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"REGION1"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>    distribution <span class="op">=</span> <span class="st">"negbin"</span>,</span></span>
+<span class="r-in"><span>    rate_mean_method <span class="op">=</span> <span class="st">"emmeans"</span>,</span></span>
+<span class="r-in"><span>    var_labels <span class="op">=</span> <span class="st">"Adjusted (NB) exacerbation rate (per year)"</span>,</span></span>
+<span class="r-in"><span>    table_names <span class="op">=</span> <span class="st">"adjNB"</span>,</span></span>
+<span class="r-in"><span>    .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rate"</span>, <span class="st">"rate_ci"</span>, <span class="st">"rate_ratio"</span>, <span class="st">"rate_ratio_ci"</span>, <span class="st">"pval"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      rate <span class="op">=</span> <span class="st">"Rate"</span>, rate_ci <span class="op">=</span> <span class="st">"Rate CI"</span>, rate_ratio <span class="op">=</span> <span class="st">"Rate Ratio"</span>,</span></span>
+<span class="r-in"><span>      rate_ratio_ci <span class="op">=</span> <span class="st">"Rate Ratio CI"</span>, pval <span class="op">=</span> <span class="st">"p value"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">build_table</span><span class="op">(</span>lyt <span class="op">=</span> <span class="va">lyt</span>, df <span class="op">=</span> <span class="va">anl</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                 A: Drug X          B: Placebo       C: Combination </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                   (N=69)             (N=73)             (N=58)     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————————————————————————————————————</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of exacerbations per patient                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0                                             3 (4.35%)          8 (10.96%)         6 (10.34%)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1                                            11 (15.94%)         9 (12.33%)         6 (10.34%)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2                                            18 (26.09%)        15 (20.55%)         9 (15.52%)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3                                            14 (20.29%)        11 (15.07%)        15 (25.86%)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4                                            10 (14.49%)         9 (12.33%)         9 (15.52%)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5                                             7 (10.14%)         9 (12.33%)         8 (13.79%)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   6                                             4 (5.80%)          4 (5.48%)          4 (6.90%)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   7                                             2 (2.90%)          8 (10.96%)         0 (0.00%)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   10                                            0 (0.00%)          0 (0.00%)          1 (1.72%)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Adjusted (P) exacerbation rate (per year)                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Rate                                            8.2061             9.1554             7.8551     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Adjusted (QP) exacerbation rate (per year)                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Rate                                            3.1214             3.4860             2.6152     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Rate CI                                  (1.7307, 5.6294)   (1.9833, 6.1272)   (1.3661, 5.0065)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Rate Ratio                                      0.8954                                0.7502     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Rate Ratio CI                            (0.3975, 2.0170)                      (0.3067, 1.8348)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     p value                                       0.7897                                0.5288     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                  A: Drug X            B: Placebo         C: Combination  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                    (N=69)               (N=73)               (N=58)      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> —————————————————————————————————————————————————————————————————————————————————————————————————————————</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of exacerbations per patient                                                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0                                              3 (4.35%)            8 (10.96%)           6 (10.34%)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1                                             11 (15.94%)           9 (12.33%)           6 (10.34%)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2                                             18 (26.09%)          15 (20.55%)           9 (15.52%)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3                                             14 (20.29%)          11 (15.07%)          15 (25.86%)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4                                             10 (14.49%)           9 (12.33%)           9 (15.52%)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5                                              7 (10.14%)           9 (12.33%)           8 (13.79%)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   6                                              4 (5.80%)            4 (5.48%)            4 (6.90%)     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   7                                              2 (2.90%)            8 (10.96%)           0 (0.00%)     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   10                                             0 (0.00%)            0 (0.00%)            1 (1.72%)     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Adjusted (P) exacerbation rate (per year)                                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Rate                                             8.2061               9.1554               7.8551      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Adjusted (QP) exacerbation rate (per year)                                                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Rate                                             3.1214               3.4860               2.6152      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Rate CI                                   (1.7307, 5.6294)     (1.9833, 6.1272)     (1.3661, 5.0065) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Rate Ratio                                       0.8954                                    0.7502      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Rate Ratio CI                             (0.3975, 2.0170)                          (0.3067, 1.8348) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     p value                                        0.7897                                    0.5288      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Adjusted (NB) exacerbation rate (per year)                                                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Rate                                            33.0138              37.3569              34.9046      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Rate CI                                  (21.6999, 50.2266)   (24.5906, 56.7507)   (23.0925, 52.7587)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Rate Ratio                                       0.8837                                    0.9344      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Rate Ratio CI                             (0.5872, 1.3300)                          (0.6063, 1.4400) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     p value                                        0.5534                                    0.7583      </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

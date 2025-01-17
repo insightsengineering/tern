@@ -52,7 +52,7 @@ occurred.">
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.7</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,11 +69,11 @@ occurred.">
 <li><a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a></li>
     <li><a class="dropdown-item" href="../articles/tables.html">Tabulation</a></li>
     <li><a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a></li>
+    <li><a class="dropdown-item" href="../articles/tern_functions_guide.html">Understanding `tern` functions</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
 <li class="nav-item dropdown">
-
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-reports" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Reports</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-reports">
 <li><a class="dropdown-item" href="../coverage-report/">Coverage report</a></li>
@@ -81,12 +81,13 @@ occurred.">
     <li><a class="dropdown-item" href="../unit-test-report-non-cran/">Non-CRAN unit test report</a></li>
   </ul>
 </li>
-      <li class="nav-item dropdown">
+      <div><li class="nav-item dropdown">
     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-versions">Versions</a>
     <div class="dropdown-menu" aria-labelledby="dropdown-versions">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.7">v0.9.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.5">v0.9.5</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.4">v0.9.4</a>
@@ -111,13 +112,13 @@ occurred.">
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a>
 </div>
-</li>
+</li></div>
 </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/insightsengineering/tern"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/insightsengineering/tern" aria-label="GitHub"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
@@ -127,7 +128,7 @@ occurred.">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Count occurrences by grade</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.6/R/count_occurrences_by_grade.R" class="external-link"><code>R/count_occurrences_by_grade.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.7/R/count_occurrences_by_grade.R" class="external-link"><code>R/count_occurrences_by_grade.R</code></a></small>
       <div class="d-none name"><code>count_occurrences_by_grade.Rd</code></div>
     </div>
 
@@ -162,8 +163,8 @@ occurred.</p>
 <span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  table_names <span class="op">=</span> <span class="va">var</span>,</span>
-<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="st">"count_fraction"</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>count_fraction <span class="op">=</span> <span class="va">format_count_fraction_fixed_dp</span><span class="op">)</span>,</span>
 <span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .labels <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
@@ -175,10 +176,11 @@ occurred.</p>
 <span>  grade_groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  remove_single <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  only_grade_groups <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  riskdiff <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  na_str <span class="op">=</span> <span class="fu"><a href="default_na_str.html">default_na_str</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span>,</span>
-<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="st">"count_fraction"</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>count_fraction <span class="op">=</span> <span class="va">format_count_fraction_fixed_dp</span><span class="op">)</span>,</span>
 <span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .labels <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
@@ -186,23 +188,33 @@ occurred.</p>
 <span><span class="fu">s_count_occurrences_by_grade</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
 <span>  <span class="va">.var</span>,</span>
+<span>  <span class="va">.N_row</span>,</span>
 <span>  <span class="va">.N_col</span>,</span>
 <span>  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
 <span>  grade_groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  remove_single <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  only_grade_groups <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"N_col"</span>, <span class="st">"n"</span>, <span class="st">"N_row"</span><span class="op">)</span>,</span>
 <span>  labelstr <span class="op">=</span> <span class="st">""</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">a_count_occurrences_by_grade</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
-<span>  <span class="va">.var</span>,</span>
-<span>  <span class="va">.N_col</span>,</span>
+<span>  labelstr <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
 <span>  grade_groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  remove_single <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  only_grade_groups <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  labelstr <span class="op">=</span> <span class="st">""</span></span>
+<span>  denom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"N_col"</span>, <span class="st">"n"</span>, <span class="st">"N_row"</span><span class="op">)</span>,</span>
+<span>  <span class="va">.N_col</span>,</span>
+<span>  <span class="va">.N_row</span>,</span>
+<span>  <span class="va">.df_row</span>,</span>
+<span>  .var <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  na_str <span class="op">=</span> <span class="fu"><a href="default_na_str.html">default_na_str</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -283,8 +295,10 @@ times, to avoid warnings from <code>rtables</code>.</p></dd>
 
 <dt id="arg--stats">.stats<a class="anchor" aria-label="anchor" href="#arg--stats"></a>
 </dt>
-<dd><p>(<code>character</code>)<br> statistics to select for the table. Run <code>get_stats("count_occurrences_by_grade")</code>
-to see available statistics for this function.</p></dd>
+<dd>
+<p>(<code>character</code>)<br> statistics to select for the table.</p>
+<p>Options are: <code>'count_fraction', 'count_fraction_fixed_dp'</code></p>
+</dd>
 
 
 <dt id="arg--formats">.formats<a class="anchor" aria-label="anchor" href="#arg--formats"></a>
@@ -315,10 +329,28 @@ unmodified default behavior. Can be negative.</p></dd>
 by a statistics function.</p></dd>
 
 
+<dt id="arg--n-row">.N_row<a class="anchor" aria-label="anchor" href="#arg--n-row"></a>
+</dt>
+<dd><p>(<code>integer(1)</code>)<br> row-wise N (row group count) for the group of observations being analyzed
+(i.e. with no column-based subsetting) that is typically passed by <code>rtables</code>.</p></dd>
+
+
 <dt id="arg--n-col">.N_col<a class="anchor" aria-label="anchor" href="#arg--n-col"></a>
 </dt>
 <dd><p>(<code>integer(1)</code>)<br> column-wise N (column count) for the full column being analyzed that is typically
 passed by <code>rtables</code>.</p></dd>
+
+
+<dt id="arg-denom">denom<a class="anchor" aria-label="anchor" href="#arg-denom"></a>
+</dt>
+<dd>
+<p>(<code>string</code>)<br> choice of denominator for proportion. Options are:</p>
+<ul>
+<li><p><code>N_col</code>: total number of patients in this column across rows.</p></li>
+<li><p><code>n</code>: number of patients with any occurrences.</p></li>
+<li><p><code>N_row</code>: total number of patients in this row across columns.</p></li>
+</ul>
+</dd>
 
 
 <dt id="arg-labelstr">labelstr<a class="anchor" aria-label="anchor" href="#arg-labelstr"></a>
@@ -326,6 +358,11 @@ passed by <code>rtables</code>.</p></dd>
 <dd><p>(<code>string</code>)<br> label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>
 for more information.</p></dd>
+
+
+<dt id="arg--df-row">.df_row<a class="anchor" aria-label="anchor" href="#arg--df-row"></a>
+</dt>
+<dd><p>(<code>data.frame</code>)<br> data frame across all of the columns for the given row split.</p></dd>
 
 </dl>
 </div>
@@ -509,26 +546,50 @@ in <code>count_occurrences_by_grade()</code>.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$ANY</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.0 0.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$`1`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0 0.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$`2`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.0 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$`3`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.0 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$`4`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0 0.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$`5`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">#  We need to ungroup `count_fraction` first so that the `rtables` formatting</span></span></span>
-<span class="r-in"><span><span class="co"># function `format_count_fraction()` can be applied correctly.</span></span></span>
-<span class="r-in"><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu">make_afun</span><span class="op">(</span><span class="va">a_count_occurrences_by_grade</span>, .ungroup_stats <span class="op">=</span> <span class="st">"count_fraction"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">afun</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="fu">a_count_occurrences_by_grade</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">df</span>,</span></span>
 <span class="r-in"><span>  .N_col <span class="op">=</span> <span class="fl">10L</span>,</span></span>
+<span class="r-in"><span>  .N_row <span class="op">=</span> <span class="fl">10L</span>,</span></span>
 <span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"AETOXGR"</span>,</span></span>
 <span class="r-in"><span>  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span></span>
 <span class="r-in"><span>  grade_groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"ANY"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">AETOXGR</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   row_name formatted_cell indent_mod row_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      ANY      6 (60.0%)          0       ANY</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1      1 (10.0%)          0         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        2      2 (20.0%)          0         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        3      2 (20.0%)          0         3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        4      1 (10.0%)          0         4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        5              0          0         5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    row_name formatted_cell indent_mod row_label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       ANY        6 (60%)          0       ANY</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         1        1 (10%)          0         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         2        2 (20%)          0         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4         3        2 (20%)          0         3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5         4        1 (10%)          0         4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6         5              0          0         5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7       ANY      6 (60.0%)          0       ANY</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8         1      1 (10.0%)          0         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9         2      2 (20.0%)          0         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10        3      2 (20.0%)          0         3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11        4      1 (10.0%)          0         4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12        5              0          0         5</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

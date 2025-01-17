@@ -50,7 +50,7 @@ statistic.'>
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.7</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,11 +67,11 @@ statistic.'>
 <li><a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a></li>
     <li><a class="dropdown-item" href="../articles/tables.html">Tabulation</a></li>
     <li><a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a></li>
+    <li><a class="dropdown-item" href="../articles/tern_functions_guide.html">Understanding `tern` functions</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
 <li class="nav-item dropdown">
-
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-reports" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Reports</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-reports">
 <li><a class="dropdown-item" href="../coverage-report/">Coverage report</a></li>
@@ -79,12 +79,13 @@ statistic.'>
     <li><a class="dropdown-item" href="../unit-test-report-non-cran/">Non-CRAN unit test report</a></li>
   </ul>
 </li>
-      <li class="nav-item dropdown">
+      <div><li class="nav-item dropdown">
     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-versions">Versions</a>
     <div class="dropdown-menu" aria-labelledby="dropdown-versions">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.7">v0.9.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.5">v0.9.5</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.4">v0.9.4</a>
@@ -109,13 +110,13 @@ statistic.'>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a>
 </div>
-</li>
+</li></div>
 </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/insightsengineering/tern"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/insightsengineering/tern" aria-label="GitHub"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
@@ -125,7 +126,7 @@ statistic.'>
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Compare variables between groups</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.6/R/compare_variables.R" class="external-link"><code>R/compare_variables.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.7/R/compare_variables.R" class="external-link"><code>R/compare_variables.R</code></a></small>
       <div class="d-none name"><code>compare_variables.Rd</code></div>
     </div>
 
@@ -152,38 +153,30 @@ statistic.</p>
 <span>  na_str <span class="op">=</span> <span class="fu"><a href="default_na_str.html">default_na_str</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span>,</span>
-<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  na_rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  show_labels <span class="op">=</span> <span class="st">"default"</span>,</span>
 <span>  table_names <span class="op">=</span> <span class="va">vars</span>,</span>
 <span>  section_div <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
 <span>  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean_sd"</span>, <span class="st">"count_fraction"</span>, <span class="st">"pval"</span><span class="op">)</span>,</span>
+<span>  .stat_names_in <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">s_compare</span><span class="op">(</span><span class="va">x</span>, <span class="va">.ref_group</span>, <span class="va">.in_ref_col</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">s_compare</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'numeric'</span></span>
-<span><span class="fu">s_compare</span><span class="op">(</span><span class="va">x</span>, <span class="va">.ref_group</span>, <span class="va">.in_ref_col</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">s_compare</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'factor'</span></span>
-<span><span class="fu">s_compare</span><span class="op">(</span><span class="va">x</span>, <span class="va">.ref_group</span>, <span class="va">.in_ref_col</span>, denom <span class="op">=</span> <span class="st">"n"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">s_compare</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'character'</span></span>
-<span><span class="fu">s_compare</span><span class="op">(</span></span>
-<span>  <span class="va">x</span>,</span>
-<span>  <span class="va">.ref_group</span>,</span>
-<span>  <span class="va">.in_ref_col</span>,</span>
-<span>  denom <span class="op">=</span> <span class="st">"n"</span>,</span>
-<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  <span class="va">.var</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">s_compare</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'logical'</span></span>
-<span><span class="fu">s_compare</span><span class="op">(</span><span class="va">x</span>, <span class="va">.ref_group</span>, <span class="va">.in_ref_col</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, denom <span class="op">=</span> <span class="st">"n"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">s_compare</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -221,10 +214,21 @@ underneath analyses, which is not allowed.</p></dd>
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a>
 </dt>
-<dd><p>arguments passed to <code>s_compare()</code>.</p></dd>
+<dd>
+<p>additional arguments passed to <code>s_compare()</code>, including:</p>
+<ul>
+<li><p><code>denom</code>: (<code>string</code>) choice of denominator. Options are <code>c("n", "N_col", "N_row")</code>. For factor variables, can
+only be <code>"n"</code> (number of values in this row and column intersection).</p></li>
+<li><p><code>.N_row</code>: (<code>numeric(1)</code>) Row-wise N (row group count) for the group of observations being analyzed (i.e. with no
+column-based subsetting).</p></li>
+<li><p><code>.N_col</code>: (<code>numeric(1)</code>) Column-wise N (column count) for the full column being tabulated within.</p></li>
+<li><p><code>verbose</code>: (<code>flag</code>) Whether additional warnings and messages should be printed. Mainly used to print out
+information about factor casting. Defaults to <code>TRUE</code>. Used for <code>character</code>/<code>factor</code> variables only.</p></li>
+</ul>
+</dd>
 
 
-<dt id="arg-na-rm">na.rm<a class="anchor" aria-label="anchor" href="#arg-na-rm"></a>
+<dt id="arg-na-rm">na_rm<a class="anchor" aria-label="anchor" href="#arg-na-rm"></a>
 </dt>
 <dd><p>(<code>flag</code>)<br> whether <code>NA</code> values should be removed from <code>x</code> prior to analysis.</p></dd>
 
@@ -248,9 +252,17 @@ defined by this split instruction, or <code>NA_character_</code> (the default) f
 
 <dt id="arg--stats">.stats<a class="anchor" aria-label="anchor" href="#arg--stats"></a>
 </dt>
-<dd><p>(<code>character</code>)<br> statistics to select for the table. Run
-<code>get_stats("analyze_vars_numeric", add_pval = TRUE)</code> to see statistics available for numeric variables, and
-<code>get_stats("analyze_vars_counts", add_pval = TRUE)</code> for statistics available for non-numeric variables.</p></dd>
+<dd>
+<p>(<code>character</code>)<br> statistics to select for the table.</p>
+<p>Options for numeric variables are: <code>'n', 'sum', 'mean', 'sd', 'se', 'mean_sd', 'mean_se', 'mean_ci', 'mean_sei', 'mean_sdi', 'mean_pval', 'median', 'mad', 'median_ci', 'quantiles', 'iqr', 'range', 'min', 'max', 'median_range', 'cv', 'geom_mean', 'geom_mean_ci', 'geom_cv', 'median_ci_3d', 'mean_ci_3d', 'geom_mean_ci_3d', 'pval'</code></p>
+<p>Options for non-numeric variables are: <code>'n', 'count', 'count_fraction', 'count_fraction_fixed_dp', 'fraction', 'n_blq', 'pval_counts'</code></p>
+</dd>
+
+
+<dt id="arg--stat-names-in">.stat_names_in<a class="anchor" aria-label="anchor" href="#arg--stat-names-in"></a>
+</dt>
+<dd><p>(<code>character</code>)<br> names of the statistics that are passed directly to name single statistics
+(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
 
 
 <dt id="arg--formats">.formats<a class="anchor" aria-label="anchor" href="#arg--formats"></a>
@@ -274,34 +286,6 @@ for that statistic's row label.</p></dd>
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a>
 </dt>
 <dd><p>(<code>numeric</code>)<br> vector of numbers we want to analyze.</p></dd>
-
-
-<dt id="arg--ref-group">.ref_group<a class="anchor" aria-label="anchor" href="#arg--ref-group"></a>
-</dt>
-<dd><p>(<code>data.frame</code> or <code>vector</code>)<br> the data corresponding to the reference group.</p></dd>
-
-
-<dt id="arg--in-ref-col">.in_ref_col<a class="anchor" aria-label="anchor" href="#arg--in-ref-col"></a>
-</dt>
-<dd><p>(<code>flag</code>)<br><code>TRUE</code> when working with the reference level, <code>FALSE</code> otherwise.</p></dd>
-
-
-<dt id="arg-denom">denom<a class="anchor" aria-label="anchor" href="#arg-denom"></a>
-</dt>
-<dd><p>(<code>string</code>)<br> choice of denominator for factor proportions,
-can only be <code>n</code> (number of values in this row and column intersection).</p></dd>
-
-
-<dt id="arg--var">.var<a class="anchor" aria-label="anchor" href="#arg--var"></a>
-</dt>
-<dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
-by a statistics function.</p></dd>
-
-
-<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a>
-</dt>
-<dd><p>(<code>flag</code>)<br> whether warnings and messages should be printed. Mainly used
-to print out information about factor casting. Defaults to <code>TRUE</code>.</p></dd>
 
 </dl>
 </div>
@@ -450,6 +434,12 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean -/+ 1xSD"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $mean_ci_3d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        mean mean_ci_lwr mean_ci_upr </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5.127191    4.250078    6.004304 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean (95% CI)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      p_value </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3.353908e-07 </span>
@@ -471,6 +461,12 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9785156</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Median 95% CI"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $median_ci_3d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        median median_ci_lwr median_ci_upr </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      5.024369      4.638779      5.862086 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Median (95% CI)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $quantiles</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> quantile_0.25 quantile_0.75 </span>
@@ -517,6 +513,12 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  geom_cv </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 26.26258 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_ci_3d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   geom_mean mean_ci_lwr mean_ci_upr </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4.985435    4.144463    5.997052 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Geometric Mean (95% CI)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.25779e-08</span>
@@ -570,6 +572,12 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean -/+ 1xSD"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $mean_ci_3d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        mean mean_ci_lwr mean_ci_upr </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5.071578    4.280513    5.862643 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean (95% CI)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      p_value </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1.511204e-07 </span>
@@ -591,6 +599,12 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9785156</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Median 95% CI"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $median_ci_3d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        median median_ci_lwr median_ci_upr </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      5.260423      3.529264      6.318293 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Median (95% CI)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $quantiles</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> quantile_0.25 quantile_0.75 </span>
@@ -637,6 +651,12 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  geom_cv </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 23.97201 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_ci_3d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   geom_mean mean_ci_lwr mean_ci_upr </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4.952266    4.181833    5.864639 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Geometric Mean (95% CI)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
@@ -690,6 +710,12 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean -/+ 1xSD"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $mean_ci_3d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        mean mean_ci_lwr mean_ci_upr </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          NA          NA          NA </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Mean (95% CI)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mean_pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> p_value </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      NA </span>
@@ -711,6 +737,12 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Median 95% CI"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $median_ci_3d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        median median_ci_lwr median_ci_upr </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            NA            NA            NA </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Median (95% CI)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $quantiles</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> quantile_0.25 quantile_0.75 </span>
@@ -758,6 +790,12 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> geom_cv </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      NA </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_ci_3d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   geom_mean mean_ci_lwr mean_ci_upr </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         NaN          NA          NA </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Geometric Mean (95% CI)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -769,28 +807,51 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">s_compare</span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, .ref_group <span class="op">=</span> <span class="va">y</span>, .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $n$n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.0 0.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.6 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
@@ -808,7 +869,10 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq$n_blq</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n_blq </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval_counts</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.7659283</span>
@@ -817,30 +881,53 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-in"><span><span class="co">## Management of NA values.</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="explicit_na.html">explicit_na</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"a"</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="explicit_na.html">explicit_na</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">s_compare</span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, .ref_group <span class="op">=</span> <span class="va">y</span>, .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">s_compare</span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, .ref_group <span class="op">=</span> <span class="va">y</span>, .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>, na_rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $n$n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.0 0.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.6 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
@@ -858,41 +945,73 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq$n_blq</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n_blq </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval_counts</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.7659283</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="fu">s_compare</span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, .ref_group <span class="op">=</span> <span class="va">y</span>, .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">s_compare</span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, .ref_group <span class="op">=</span> <span class="va">y</span>, .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>, na_rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $n$n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$`&lt;Missing&gt;`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.0000000 0.4285714</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3.0000000 0.4285714 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0000000 0.1428571</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1428571 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0000000 0.1428571</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1428571 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`&lt;Missing&gt;`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.0000000 0.2857143</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.0000000 0.2857143 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3.0000000 0.4285714 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1428571 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1428571 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$`&lt;Missing&gt;`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.0000000 0.2857143 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
@@ -914,7 +1033,10 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq$n_blq</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n_blq </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval_counts</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9063036</span>
@@ -927,28 +1049,51 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">s_compare</span><span class="op">(</span><span class="va">x</span>, .ref_group <span class="op">=</span> <span class="va">y</span>, .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>, .var <span class="op">=</span> <span class="st">"x"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $n$n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.0 0.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.6 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
@@ -966,7 +1111,10 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq$n_blq</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n_blq </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval_counts</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.7659283</span>
@@ -980,28 +1128,51 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"x"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $n$n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.0 0.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.6 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
@@ -1019,7 +1190,10 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq$n_blq</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n_blq </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval_counts</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.7659283</span>
@@ -1029,59 +1203,75 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-in"><span>  na.rm <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $n$n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count$`&lt;Missing&gt;`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.0 0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.6 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0000000 0.1666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0000000 0.1666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`&lt;Missing&gt;`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0000000 0.1666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     3     6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3     5 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1     6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1     5 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1     6 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$`&lt;Missing&gt;`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1     6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1     5 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq$n_blq</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n_blq </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval_counts</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.005768471</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.7659283</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `s_compare.logical`</span></span></span>
@@ -1091,16 +1281,28 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">s_compare</span><span class="op">(</span><span class="va">x</span>, .ref_group <span class="op">=</span> <span class="va">y</span>, .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.00 0.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    count fraction </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3.00     0.75 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    count fraction </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3.00     0.75 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3     4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n_blq </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval_counts</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2702894</span>
@@ -1109,34 +1311,58 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-in"><span><span class="co">## Management of NA values.</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">s_compare</span><span class="op">(</span><span class="va">x</span>, .ref_group <span class="op">=</span> <span class="va">y</span>, .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">s_compare</span><span class="op">(</span><span class="va">x</span>, .ref_group <span class="op">=</span> <span class="va">y</span>, .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>, na_rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0 0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    count fraction </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1.0      0.5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    count fraction </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1.0      0.5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1     2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n_blq </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval_counts</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3864762</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="fu">s_compare</span><span class="op">(</span><span class="va">x</span>, .ref_group <span class="op">=</span> <span class="va">y</span>, .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">s_compare</span><span class="op">(</span><span class="va">x</span>, .ref_group <span class="op">=</span> <span class="va">y</span>, .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>, na_rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0000000 0.3333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count  fraction </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.3333333 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count  fraction </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.3333333 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1     3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n_blq </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval_counts</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1675463</span>

@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.7</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,11 +46,11 @@
 <li><a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a></li>
     <li><a class="dropdown-item" href="../articles/tables.html">Tabulation</a></li>
     <li><a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a></li>
+    <li><a class="dropdown-item" href="../articles/tern_functions_guide.html">Understanding `tern` functions</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
 <li class="nav-item dropdown">
-
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-reports" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Reports</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-reports">
 <li><a class="dropdown-item" href="../coverage-report/">Coverage report</a></li>
@@ -58,12 +58,13 @@
     <li><a class="dropdown-item" href="../unit-test-report-non-cran/">Non-CRAN unit test report</a></li>
   </ul>
 </li>
-      <li class="nav-item dropdown">
+      <div><li class="nav-item dropdown">
     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-versions">Versions</a>
     <div class="dropdown-menu" aria-labelledby="dropdown-versions">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.7">v0.9.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.5">v0.9.5</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.4">v0.9.4</a>
@@ -88,13 +89,13 @@
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a>
 </div>
-</li>
+</li></div>
 </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/insightsengineering/tern"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/insightsengineering/tern" aria-label="GitHub"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
@@ -111,16 +112,12 @@
             
             <h4 data-toc-skip class="date">2022-03-09</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.6/vignettes/tern.Rmd" class="external-link"><code>vignettes/tern.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.7/vignettes/tern.Rmd" class="external-link"><code>vignettes/tern.Rmd</code></a></small>
       <div class="d-none name"><code>tern.Rmd</code></div>
     </div>
 
     
     
-<div class="section level2">
-<h2 id="introduction-to-tern">Introduction to tern<a class="anchor" aria-label="anchor" href="#introduction-to-tern"></a>
-</h2>
-<hr>
 <p>This vignette shows the general purpose and syntax of the
 <code>tern</code> R package. The <code>tern</code> R package contains
 analytical functions for creating tables and graphs useful for clinical
@@ -133,7 +130,6 @@ is strongly recommended that you start by reading the “Introduction to
 <code>rtables</code>” vignette to get familiar with the concept of
 <code>rtables</code>.</strong></a></p>
 <hr>
-</div>
 <div class="section level2">
 <h2 id="common-clinical-trials-analyses">Common Clinical Trials Analyses<a class="anchor" aria-label="anchor" href="#common-clinical-trials-analyses"></a>
 </h2>
@@ -206,16 +202,16 @@ and the result should be rounded to 1 decimal place. Hence, a
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://insightsengineering.github.io/tern/">tern</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
-<p>Defining the table layout with a pure <code>rtables</code> code.</p>
+<p>Defining the table layout with a pure <code>rtables</code> code:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create table layout pure rtables</span></span>
 <span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu">rtables</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">rtables</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">rtables</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">rtables</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze.html" class="external-link">analyze</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span>, <span class="va">mean</span>, format <span class="op">=</span> <span class="st">"xx.x"</span><span class="op">)</span></span></code></pre></div>
-<p>Below the only <code>tern</code> function is
+<p>Below, the only <code>tern</code> function used is
 <code>analyze_vars</code> which replaces the
-<code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze.html" class="external-link">rtables::analyze</a></code> function above.</p>
+<code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze.html" class="external-link">rtables::analyze</a></code> function used above.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create table layout with tern analyze_vars analyze function</span></span>
 <span><span class="va">lyt2</span> <span class="op">&lt;-</span> <span class="fu">rtables</span><span class="fu">::</span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -268,68 +264,61 @@ call.</p>
 in the <code>Tabulation</code> vignette.</strong></p>
 </div>
 <div class="section level2">
-<h2 id="clinical-trials-visualizations">Clinical Trials Visualizations<a class="anchor" aria-label="anchor" href="#clinical-trials-visualizations"></a>
+<h2 id="clinical-trial-visualizations">Clinical Trial Visualizations<a class="anchor" aria-label="anchor" href="#clinical-trial-visualizations"></a>
 </h2>
 <p>Clinical trial related plots complement the rich palette of
 <code>tern</code> tabulation analysis functions. Thus the
 <code>tern</code> package delivers a full-featured tool for clinical
-trial reporting. The <code>tern</code> plot functions return
-<code>ggplot2</code> or <code>gTree</code> objects, the latter is
-returned when a table is attached to the plot.</p>
+trial reporting. The <code>tern</code> plot functions return graphs as
+<code>ggplot2</code> objects.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu">formatters</span><span class="fu">::</span><span class="va"><a href="https://insightsengineering.github.io/formatters/latest-tag/reference/cdisc_data.html" class="external-link">ex_adsl</a></span></span>
 <span><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="fu">formatters</span><span class="fu">::</span><span class="va"><a href="https://insightsengineering.github.io/formatters/latest-tag/reference/cdisc_data.html" class="external-link">ex_adlb</a></span></span>
 <span><span class="va">adlb</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">adlb</span>, <span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"ALT"</span>, <span class="va">AVISIT</span> <span class="op">!=</span> <span class="st">"SCREENING"</span><span class="op">)</span></span></code></pre></div>
-<p>The optional <code>nestcolor</code> package can be loaded in to apply
-the standardized NEST color palette to all <code>tern</code> plots.</p>
+<p>The <code>nestcolor</code> package can be loaded in to apply the
+standardized NEST color palette to all <code>tern</code> plots.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://insightsengineering.github.io/nestcolor/" class="external-link">nestcolor</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/insightsengineering/nestcolor/" class="external-link">nestcolor</a></span><span class="op">)</span></span></code></pre></div>
 <p>Line plot without a table generated by the <code>g_lineplot</code>
 function.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Mean with CI</span></span>
 <span><span class="fu"><a href="../reference/g_lineplot.html">g_lineplot</a></span><span class="op">(</span><span class="va">adlb</span>, <span class="va">adsl</span>, subtitle <span class="op">=</span> <span class="st">"Laboratory Test:"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="tern_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+<p><img src="tern_files/figure-html/unnamed-chunk-8-1.png" alt="Basic line plot" width="700"></p>
 <p>Line plot with a table generated by the <code>g_lineplot</code>
 function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Mean with CI, table and customized confidence level</span></span>
+<code class="sourceCode R"><span><span class="co"># Mean with CI, table, and customized confidence level</span></span>
 <span><span class="fu"><a href="../reference/g_lineplot.html">g_lineplot</a></span><span class="op">(</span></span>
 <span>  <span class="va">adlb</span>,</span>
 <span>  <span class="va">adsl</span>,</span>
 <span>  table <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean"</span>, <span class="st">"mean_ci"</span><span class="op">)</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"Plot of Mean and 80% Confidence Limits by Visit"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="tern_files/figure-html/unnamed-chunk-9-1.png" width="768"></p>
-<p>The first plot is a <code>ggplot2</code> object and the second plot
-is a <code>gTree</code> object, as the latter contains the table. The
-second plot has to be properly resized to get a clear and readable table
-content.</p>
-<p>The <code>tern</code> functions used for plot generation are mostly
-<code>g_</code> prefixed. All <code>tern</code> plot functions are
-listed on <a href="https://insightsengineering.github.io/tern/main/reference/index.html">the
+<p><img src="tern_files/figure-html/unnamed-chunk-9-1.png" alt="Line plot with table" width="768"></p>
+<p>All <code>tern</code> functions used for plot generation are
+<code>g_</code> prefixed and are listed on <a href="https://insightsengineering.github.io/tern/latest-tag/reference/index.html#graphs">the
 tern website functions reference</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="interactive-apps">Interactive Apps<a class="anchor" aria-label="anchor" href="#interactive-apps"></a>
 </h2>
-<p>Most of <code>tern</code> outputs could be easily accommodated into
-<code>shiny</code> apps. We recommend applying <code>tern</code> outputs
-into <code>teal</code> apps. The <a href="https://insightsengineering.github.io/teal/main/" class="external-link"><code>teal</code>
-package</a> is a shiny-based interactive exploration framework for
-analyzing data. <code>teal</code> shiny apps with <code>tern</code>
-outputs are available in the <a href="https://insightsengineering.github.io/teal.modules.clinical/main/" class="external-link"><code>teal.modules.clinical</code>
+<p>Most <code>tern</code> outputs can be easily converted into
+<code>shiny</code> apps. We recommend building apps using the <a href="https://insightsengineering.github.io/teal/latest-tag/" class="external-link"><code>teal</code>
+package</a>, a shiny-based interactive exploration framework for
+analyzing data. A variety of pre-made <code>teal</code> shiny apps for
+<code>tern</code> outputs are available in the <a href="https://insightsengineering.github.io/teal.modules.clinical/latest-tag/" class="external-link"><code>teal.modules.clinical</code>
 package</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h2>
 <p>In summary, <code>tern</code> contains many additional functions for
-creating tables, listing and graphs used in clinical trials and other
-statistical analyses. The design of the package gives users a lot of
-flexibility to meet the analysis needs in a regulatory or exploratory
-reporting context.</p>
-<p><strong>For more information please explore <a href="https://insightsengineering.github.io/tern/main/">the tern
+creating tables, listings, and graphs used in clinical trials and other
+statistical analyses. The design of the package gives users the
+flexibility to meet the analysis needs in both regulatory and
+exploratory reporting contexts.</p>
+<p><strong>For more information please explore <a href="https://insightsengineering.github.io/tern/latest-tag/">the tern
 website</a>.</strong></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -30,7 +30,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.7</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,11 +47,11 @@
 <li><a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a></li>
     <li><a class="dropdown-item" href="../articles/tables.html">Tabulation</a></li>
     <li><a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a></li>
+    <li><a class="dropdown-item" href="../articles/tern_functions_guide.html">Understanding `tern` functions</a></li>
   </ul>
 </li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
 <li class="nav-item dropdown">
-
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-reports" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Reports</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-reports">
 <li><a class="dropdown-item" href="../coverage-report/">Coverage report</a></li>
@@ -59,12 +59,13 @@
     <li><a class="dropdown-item" href="../unit-test-report-non-cran/">Non-CRAN unit test report</a></li>
   </ul>
 </li>
-      <li class="nav-item dropdown">
+      <div><li class="nav-item dropdown">
     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-versions">Versions</a>
     <div class="dropdown-menu" aria-labelledby="dropdown-versions">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.7">v0.9.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.5">v0.9.5</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.4">v0.9.4</a>
@@ -89,13 +90,13 @@
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a>
 </div>
-</li>
+</li></div>
 </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/insightsengineering/tern"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/insightsengineering/tern" aria-label="GitHub"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
@@ -105,16 +106,61 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.6/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.7/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.9.7" id="tern-097">tern 0.9.7<a class="anchor" aria-label="anchor" href="#tern-097"></a>
+</h2>
+<div class="section level4">
+<h4 id="enhancements-0-9-7">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-9-7"></a>
+</h4>
+<ul>
+<li>Added the <code>denom</code> parameter to <code><a href="../reference/count_cumulative.html">s_count_cumulative()</a></code>, <code><a href="../reference/count_missed_doses.html">s_count_missed_doses()</a></code>, and <code><a href="../reference/count_occurrences_by_grade.html">s_count_occurrences_by_grade()</a></code>.</li>
+<li>Added <code>"N_row"</code> as an optional input to <code>denom</code> in <code><a href="../reference/count_occurrences.html">s_count_occurrences()</a></code>.</li>
+<li>Added <code>rel_height_plot</code> parameter to <code><a href="../reference/g_lineplot.html">g_lineplot()</a></code> to control the line plot height relative to annotation table height.</li>
+<li>Added <code>as_list</code> parameter to <code><a href="../reference/g_lineplot.html">g_lineplot()</a></code> to allow users to return the line plot and annotation table elements as a list instead of stacked for more complex customization.</li>
+<li>Added vignette “Understanding <code>tern</code> functions” for future reference.</li>
+<li>Added to <code><a href="../reference/analyze_variables.html">analyze_vars()</a></code> statistical names that are used by <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code>.</li>
+<li>Added the possibility to integrate custom statistical functions to default ones in <code><a href="../reference/analyze_variables.html">analyze_vars()</a></code>.</li>
+<li>Refactored <code><a href="../reference/analyze_variables.html">analyze_vars()</a></code> and <code><a href="../reference/analyze_variables.html">a_summary()</a></code> to take all options from <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/additional_fun_params.html" class="external-link">?rtables::additional_fun_params</a></code>.</li>
+<li>Refactored <code><a href="../reference/summarize_change.html">summarize_change()</a></code> and <code><a href="../reference/count_values.html">count_values()</a></code> to work without <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/make_afun.html" class="external-link">make_afun()</a></code>.</li>
+<li>Refactored <code><a href="../reference/count_occurrences_by_grade.html">a_count_occurrences_by_grade()</a></code>, <code><a href="../reference/count_patients_with_event.html">a_count_patients_with_event()</a></code>, and <code><a href="../reference/count_patients_with_flags.html">a_count_patients_with_flags()</a></code> to no longer use <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/make_afun.html" class="external-link">make_afun()</a></code>.</li>
+<li>Refactored <code><a href="../reference/default_stats_formats_labels.html">get_labels_from_stats()</a></code> to use a named list of levels for each statistic instead of row names.</li>
+<li>Updated the <code>table_font_size</code> parameter of <code><a href="../reference/g_lineplot.html">g_lineplot()</a></code> to control the size of all text in the annotation table, including labels.</li>
+<li>Merged <code><a href="../reference/compare_variables.html">compare_vars()</a></code> into <code><a href="../reference/analyze_variables.html">analyze_vars()</a></code> as overlap was significant.</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="bug-fixes-0-9-7">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-9-7"></a>
+</h4>
+<ul>
+<li>Fixed bug in <code><a href="../reference/analyze_variables.html">a_summary()</a></code> causing non-unique <code>row_name</code> values to occur when multiple statistics are selected for count variables.</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="miscellaneous-0-9-7">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-9-7"></a>
+</h4>
+<ul>
+<li>Reverted deprecation of quick get functions <code><a href="../reference/default_stats_formats_labels.html">summary_formats()</a></code> and <code><a href="../reference/default_stats_formats_labels.html">summary_labels()</a></code>. Added disclaimer about underlying use of <code>get_stats</code>.</li>
+<li>Corrected handling of extra arguments and <code>NA</code> for <code><a href="../reference/summarize_change.html">summarize_change()</a></code>.</li>
+<li>Removed <code>count_fraction_fixed_dp</code> exception by assigning it to the result of <code>count_fraction</code> with a different format output.</li>
+</ul>
+</div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.9.6" id="tern-096">tern 0.9.6<a class="anchor" aria-label="anchor" href="#tern-096"></a>
 </h2>
+<p class="text-muted">CRAN release: 2024-09-24</p>
 <div class="section level4">
 <h4 id="enhancements-0-9-6">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-9-6"></a>
 </h4>
 <ul>
+<li>Added <code>median_ci_3d</code> to <code>s_summary</code> which includes estimate and confidence interval in one statistic.</li>
+<li>Added <code>median_ci_3d</code>, <code>quantiles_lower</code> and <code>quantiles_upper</code> to <code>s_surv_time</code> which includes estimate and confidence interval in one statistic.</li>
+<li>Added <code>hr_ci_3d</code> to <code>s_coxph_pairwise</code> which includes estimate and confidence interval in one statistic.</li>
+<li>Added <code>event_free_rate_3d</code> to <code>s_surv_timepoint</code> which includes estimate and confidence interval in one statistic.</li>
+<li>Added <code>rate_diff_ci_3d</code> to <code>s_surv_timepoint_diff</code> which includes estimate and confidence interval in one statistic.</li>
 <li>Added <code>errorbar_width</code> and <code>linetype</code> parameters to <code>g_lineplot</code>.</li>
 <li>Added the <code>.formats</code> argument to <code>tabulate_rsp_subgroups</code> and <code>tabulate_survival_subgroups</code> to allow users to specify formats.</li>
 <li>Added the <code>riskdiff</code> argument to <code>tabulate_rsp_subgroups</code> and <code>tabulate_survival_subgroups</code> to allow users to add a risk difference table column, and function <code>control_riskdiff</code> to specify settings for the risk difference column.</li>
@@ -124,6 +170,7 @@
 <li>Refactored <code>estimate_incidence_rate</code> to work as both an analyze function and a summarize function, controlled by the added <code>summarize</code> parameter. When <code>summarize = TRUE</code>, labels can be fine-tuned via the new <code>label_fmt</code> argument to the same function.</li>
 <li>Added <code>fraction</code> statistic to the <code>analyze_var_count</code> method group.</li>
 <li>Improved <code><a href="../reference/summarize_glm_count.html">summarize_glm_count()</a></code> documentation and all its associated functions to better describe the results and the functions’ purpose.</li>
+<li>Added <code>method</code> argument to <code><a href="../reference/odds_ratio.html">s_odds_ratio()</a></code> and <code><a href="../reference/odds_ratio.html">estimate_odds_ratio()</a></code> to control whether exact or approximate conditional likelihood calculations are used.</li>
 </ul>
 </div>
 <div class="section level4">
@@ -692,7 +739,7 @@
 <li>Added deprecated badge to <code>g_mmrm</code>.</li>
 <li>Removed internal function calls in examples (<code>tern:::</code>) and added <code>dontrun</code> to internal function examples.</li>
 <li>Removed warnings and messages to console occurring in examples and tests.</li>
-<li>Deprecated functions <code>color_palette</code> and <code>h_set_nest_theme</code> in favor of <code><a href="https://insightsengineering.github.io/nestcolor/v0.1.2/latest-tag/reference/color_palette.html" class="external-link">nestcolor::color_palette</a></code> and <code><a href="https://insightsengineering.github.io/nestcolor/v0.1.2/latest-tag/reference/theme_nest.html" class="external-link">nestcolor::theme_nest</a></code>, respectively.</li>
+<li>Deprecated functions <code>color_palette</code> and <code>h_set_nest_theme</code> in favor of <code><a href="https://rdrr.io/pkg/nestcolor/man/color_palette.html" class="external-link">nestcolor::color_palette</a></code> and <code><a href="https://rdrr.io/pkg/nestcolor/man/theme_nest.html" class="external-link">nestcolor::theme_nest</a></code>, respectively.</li>
 <li>Removed deprecated functions: <code>color_palette</code>, <code>color_palette_core</code>, <code>h_set_nest_theme</code>, <code>s_cox_univariate</code>.</li>
 <li>Removed deprecated MMRM functions: <code>fit_mmrm</code>, <code>g_mmrm_diagnostic</code>, <code>g_mmrm_lsmeans</code>, <code>as.rtable.mmrm</code>, <code>h_mmrm_fixed</code>, <code>h_mmrm_cov</code>, <code>h_mmrm_diagnostic</code>, <code>tidy.mmrm</code>, <code>s_mmrm_lsmeans</code>, <code>s_mmrm_lsmeans_single</code>, <code>summarize_lsmeans</code>.</li>
 <li>Renamed functions <code>arm</code> to <code>study_arm</code> and <code>extract</code> to <code>extract_by_name</code>.</li>

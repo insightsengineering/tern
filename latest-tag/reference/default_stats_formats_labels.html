@@ -40,7 +40,7 @@ seen in analyze_vars(). See notes to understand why this is experimental.">
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.7</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,11 +57,11 @@ seen in analyze_vars(). See notes to understand why this is experimental.">
 <li><a class="dropdown-item" href="../articles/missing_values.html">Missing Values in Tern</a></li>
     <li><a class="dropdown-item" href="../articles/tables.html">Tabulation</a></li>
     <li><a class="dropdown-item" href="../articles/tern_formats.html">Formatting Functions</a></li>
+    <li><a class="dropdown-item" href="../articles/tern_functions_guide.html">Understanding `tern` functions</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
 <li class="nav-item dropdown">
-
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-reports" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Reports</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-reports">
 <li><a class="dropdown-item" href="../coverage-report/">Coverage report</a></li>
@@ -69,12 +69,13 @@ seen in analyze_vars(). See notes to understand why this is experimental.">
     <li><a class="dropdown-item" href="../unit-test-report-non-cran/">Non-CRAN unit test report</a></li>
   </ul>
 </li>
-      <li class="nav-item dropdown">
+      <div><li class="nav-item dropdown">
     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-versions">Versions</a>
     <div class="dropdown-menu" aria-labelledby="dropdown-versions">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.7">v0.9.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.5">v0.9.5</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.4">v0.9.4</a>
@@ -99,13 +100,13 @@ seen in analyze_vars(). See notes to understand why this is experimental.">
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.10">v0.7.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.7.9">v0.7.9</a>
 </div>
-</li>
+</li></div>
 </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/insightsengineering/tern"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/insightsengineering/tern" aria-label="GitHub"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
@@ -115,7 +116,7 @@ seen in analyze_vars(). See notes to understand why this is experimental.">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Get default statistical methods and their associated formats, labels, and indent modifiers</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.6/R/utils_default_stats_formats_labels.R" class="external-link"><code>R/utils_default_stats_formats_labels.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.7/R/utils_default_stats_formats_labels.R" class="external-link"><code>R/utils_default_stats_formats_labels.R</code></a></small>
       <div class="d-none name"><code>default_stats_formats_labels.Rd</code></div>
     </div>
 
@@ -136,9 +137,11 @@ seen in <code><a href="analyze_variables.html">analyze_vars()</a></code>. See no
 <span>  add_pval <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">get_stat_names</span><span class="op">(</span><span class="va">stat_results</span>, stat_names_in <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">get_formats_from_stats</span><span class="op">(</span><span class="va">stats</span>, formats_in <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">get_labels_from_stats</span><span class="op">(</span><span class="va">stats</span>, labels_in <span class="op">=</span> <span class="cn">NULL</span>, row_nms <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="fu">get_labels_from_stats</span><span class="op">(</span><span class="va">stats</span>, labels_in <span class="op">=</span> <span class="cn">NULL</span>, levels_per_stats <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">get_indents_from_stats</span><span class="op">(</span><span class="va">stats</span>, indents_in <span class="op">=</span> <span class="cn">NULL</span>, row_nms <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
@@ -194,6 +197,17 @@ method group.</p></dd>
 <code>"analyze_vars_counts"</code>) be added to the statistical methods?</p></dd>
 
 
+<dt id="arg-stat-results">stat_results<a class="anchor" aria-label="anchor" href="#arg-stat-results"></a>
+</dt>
+<dd><p>(<code>list</code>)<br> list of statistical results. It should be used close to the end of
+a statistical function. See examples for a structure with two statistical results and two groups.</p></dd>
+
+
+<dt id="arg-stat-names-in">stat_names_in<a class="anchor" aria-label="anchor" href="#arg-stat-names-in"></a>
+</dt>
+<dd><p>(<code>character</code>)<br> custom modification of statistical values.</p></dd>
+
+
 <dt id="arg-stats">stats<a class="anchor" aria-label="anchor" href="#arg-stats"></a>
 </dt>
 <dd><p>(<code>character</code>)<br> statistical methods to get defaults for.</p></dd>
@@ -210,9 +224,9 @@ character vector from <code><a href="https://insightsengineering.github.io/forma
 <dd><p>(named <code>character</code>)<br> inserted labels to replace defaults.</p></dd>
 
 
-<dt id="arg-row-nms">row_nms<a class="anchor" aria-label="anchor" href="#arg-row-nms"></a>
+<dt id="arg-levels-per-stats">levels_per_stats<a class="anchor" aria-label="anchor" href="#arg-levels-per-stats"></a>
 </dt>
-<dd><p>(<code>character</code>)<br> row names. Levels of a <code>factor</code> or <code>character</code> variable, each
+<dd><p>(named <code>list</code> of <code>character</code> or <code>NULL</code>)<br> Levels of a <code>factor</code> or <code>character</code> variable, each
 of which the statistics in <code>.stats</code> will be calculated for. If this parameter is set, these
 variable levels will be used as the defaults, and the names of the given custom values should
 correspond to levels (or have format <code>statistic.level</code>) instead of statistics. Can also be
@@ -222,6 +236,11 @@ variable names if rows correspond to different variables instead of levels. Defa
 <dt id="arg-indents-in">indents_in<a class="anchor" aria-label="anchor" href="#arg-indents-in"></a>
 </dt>
 <dd><p>(named <code>vector</code>)<br> inserted indent modifiers to replace defaults (default is <code>0L</code>).</p></dd>
+
+
+<dt id="arg-row-nms">row_nms<a class="anchor" aria-label="anchor" href="#arg-row-nms"></a>
+</dt>
+<dd><p>(<code>character</code>)<br> See <code>levels_per_stats</code>. Deprecation cycle started.</p></dd>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a>
@@ -241,6 +260,10 @@ variable names if rows correspond to different variables instead of levels. Defa
 
 <ul>
 <li><p><code>get_stats()</code> returns a <code>character</code> vector of statistical methods.</p></li>
+</ul>
+<ul>
+<li><p><code>get_stat_names()</code> returns a named list of<code>character</code> vectors, indicating the names of
+statistical outputs.</p></li>
 </ul>
 <ul>
 <li><p><code>get_formats_from_stats()</code> returns a named vector of formats (if present in either
@@ -266,6 +289,8 @@ or a named numeric vector of indent modifiers (if present, otherwise <code>NULL<
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a>
 </h2>
     <p>Current choices for <code>type</code> are <code>counts</code> and <code>numeric</code> for <code><a href="analyze_variables.html">analyze_vars()</a></code> and affect <code>get_stats()</code>.</p>
+<p><code>summary_*</code> quick get functions for labels or formats uses <code>get_stats</code> and <code>get_labels_from_stats</code> or
+<code>get_formats_from_stats</code> respectively to retrieve relevant information.</p>
     </div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
@@ -274,6 +299,8 @@ or a named numeric vector of indent modifiers (if present, otherwise <code>NULL<
 <ul>
 <li><p><code>get_stats()</code>: Get statistics available for a given method
 group (analyze function). To check available defaults see <code>tern::tern_default_stats</code> list.</p></li>
+<li><p><code>get_stat_names()</code>: Get statistical NAMES available for a given method
+group (analyze function). Please use the <code>s_*</code> functions to get the statistical names.</p></li>
 <li><p><code>get_formats_from_stats()</code>: Get formats corresponding to a list of statistics.
 To check available defaults see <code>tern::tern_default_formats</code> list.</p></li>
 <li><p><code>get_labels_from_stats()</code>: Get labels corresponding to a list of statistics.
@@ -284,10 +311,10 @@ It defaults to 0L for all values.</p></li>
 <li><p><code>tern_default_stats</code>: Named list of available statistics by method group for <code>tern</code>.</p></li>
 <li><p><code>tern_default_formats</code>: Named vector of default formats for <code>tern</code>.</p></li>
 <li><p><code>tern_default_labels</code>: Named <code>character</code> vector of default labels for <code>tern</code>.</p></li>
-<li><p><code>summary_formats()</code>: <a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a>
+<li><p><code>summary_formats()</code>: <a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="figures/lifecycle-stable.svg" alt="[Stable]"></a>
 Quick function to retrieve default formats for summary statistics:
 <code><a href="analyze_variables.html">analyze_vars()</a></code> and <code><a href="analyze_vars_in_cols.html">analyze_vars_in_cols()</a></code> principally.</p></li>
-<li><p><code>summary_labels()</code>: <a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a>
+<li><p><code>summary_labels()</code>: <a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="figures/lifecycle-stable.svg" alt="[Stable]"></a>
 Quick function to retrieve default labels for summary statistics.
 Returns labels of descriptive statistics which are understood by <code>rtables</code>. Similar to <code>summary_formats</code>.</p></li>
 </ul>
@@ -326,6 +353,25 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "count"                   "count_fraction"         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "count_fraction_fixed_dp" "fraction"               </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [5] "n"                       "n_blq"                  </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">stat_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"n"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"M"</span> <span class="op">=</span> <span class="fl">1</span>, <span class="st">"F"</span> <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"count_fraction"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"M"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.2</span><span class="op">)</span>, <span class="st">"F"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">get_stat_names</span><span class="op">(</span><span class="va">stat_results</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "M" "F"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "M" "F"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu">get_stat_names</span><span class="op">(</span><span class="va">stat_results</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"n"</span> <span class="op">=</span> <span class="st">"argh"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "argh"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "M" "F"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Defaults formats</span></span></span>
 <span class="r-in"><span><span class="fu">get_formats_from_stats</span><span class="op">(</span><span class="va">num_stats</span><span class="op">)</span></span></span>
@@ -400,6 +446,15 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "xx.x"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $median_ci_3d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "xx.xx (xx.xx - xx.xx)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $mean_ci_3d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "xx.xx (xx.xx - xx.xx)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_ci_3d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "xx.xx (xx.xx - xx.xx)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">get_formats_from_stats</span><span class="op">(</span><span class="va">cnt_stats</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
@@ -684,39 +739,35 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      "CV (%)"              "Geometric Mean" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  geom_mean_ci                       geom_cv </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       "Geometric Mean 95% CI"         "CV % Geometric Mean" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  median_ci_3d                    mean_ci_3d </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "Median (95% CI)"               "Mean (95% CI)" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               geom_mean_ci_3d </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "Geometric Mean (95% CI)" </span>
 <span class="r-in"><span><span class="fu">get_labels_from_stats</span><span class="op">(</span><span class="va">cnt_stats</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       n                   count          count_fraction </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     "n"                 "count"        "count_fraction" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> count_fraction_fixed_dp                fraction                   n_blq </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        "count_fraction"              "fraction"                 "n_blq" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         n                     count            count_fraction </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       "n"                   "count"          "count_fraction" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   count_fraction_fixed_dp                  fraction                     n_blq </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> "count_fraction_fixed_dp"                "fraction"                   "n_blq" </span>
 <span class="r-in"><span><span class="fu">get_labels_from_stats</span><span class="op">(</span><span class="va">only_pval</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               pval </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "p-value (t-test)" </span>
 <span class="r-in"><span><span class="fu">get_labels_from_stats</span><span class="op">(</span><span class="va">all_cnt_occ</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   count          count_fraction count_fraction_fixed_dp </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "count"        "count_fraction"        "count_fraction" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                fraction </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              "fraction" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     count            count_fraction   count_fraction_fixed_dp </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   "count"          "count_fraction" "count_fraction_fixed_dp" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  fraction </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                "fraction" </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Addition of customs</span></span></span>
 <span class="r-in"><span><span class="fu">get_labels_from_stats</span><span class="op">(</span><span class="va">all_cnt_occ</span>, labels_in <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fraction"</span> <span class="op">=</span> <span class="st">"Fraction"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   count          count_fraction count_fraction_fixed_dp </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "count"        "count_fraction"        "count_fraction" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                fraction </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              "Fraction" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     count            count_fraction   count_fraction_fixed_dp </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   "count"          "count_fraction" "count_fraction_fixed_dp" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  fraction </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                "Fraction" </span>
 <span class="r-in"><span><span class="fu">get_labels_from_stats</span><span class="op">(</span><span class="va">all_cnt_occ</span>, labels_in <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"fraction"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Some more fractions"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "count"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "count_fraction"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "count_fraction"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Some more fractions"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     count            count_fraction   count_fraction_fixed_dp </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   "count"          "count_fraction" "count_fraction_fixed_dp" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  fraction </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "Some more fractions" </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">get_indents_from_stats</span><span class="op">(</span><span class="va">all_cnt_occ</span>, indents_in <span class="op">=</span> <span class="fl">3L</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3 3 3 3</span>
@@ -763,9 +814,6 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">summary_formats</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`summary_formats()` was deprecated in tern 0.9.6.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use get_formats_from_stats(get_stats("analyze_vars_numeric", add_pval =</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   include_pval)) instead</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "xx."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -837,6 +885,15 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "xx.x"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $median_ci_3d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "xx.xx (xx.xx - xx.xx)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $mean_ci_3d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "xx.xx (xx.xx - xx.xx)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_ci_3d</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "xx.xx (xx.xx - xx.xx)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">summary_formats</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"counts"</span>, include_pval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
@@ -918,9 +975,6 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">summary_labels</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`summary_formats()` was deprecated in tern 0.9.6.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use get_labels_from_stats(get_stats("analyze_vars_numeric", add_pval =</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   include_pval)) instead</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                             n                           sum </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                           "n"                         "Sum" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          mean                            sd </span>
@@ -945,11 +999,15 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      "CV (%)"              "Geometric Mean" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  geom_mean_ci                       geom_cv </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       "Geometric Mean 95% CI"         "CV % Geometric Mean" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  median_ci_3d                    mean_ci_3d </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "Median (95% CI)"               "Mean (95% CI)" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               geom_mean_ci_3d </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "Geometric Mean (95% CI)" </span>
 <span class="r-in"><span><span class="fu">summary_labels</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"counts"</span>, include_pval <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                            n                        count </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          "n"                      "count" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               count_fraction      count_fraction_fixed_dp </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             "count_fraction"             "count_fraction" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "count_fraction"    "count_fraction_fixed_dp" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                     fraction                        n_blq </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   "fraction"                      "n_blq" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  pval_counts </span>
