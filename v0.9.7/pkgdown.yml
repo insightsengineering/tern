@@ -1,0 +1,13 @@
+pandoc: '3.4'
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles:
+  missing_values: missing_values.html
+  tables: tables.html
+  tern_formats: tern_formats.html
+  tern_functions_guide: tern_functions_guide.html
+  tern: tern.html
+last_built: 2025-01-17T08:42Z
+urls:
+  reference: https://insightsengineering.github.io/tern/reference
+  article: https://insightsengineering.github.io/tern/articles
