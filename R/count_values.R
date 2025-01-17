@@ -107,10 +107,61 @@ s_count_values.logical <- function(x, values = TRUE, ...) {
 #' a_count_values(x = factor(c("a", "b", "a")), values = "a", .N_col = 10, .N_row = 10)
 #'
 #' @export
-a_count_values <- make_afun(
-  s_count_values,
-  .formats = c(count_fraction = "xx (xx.xx%)", count = "xx")
-)
+a_count_values <- function(x,
+                           ...,
+                           .stats = NULL,
+                           .formats = NULL,
+                           .labels = NULL,
+                           .indent_mods = NULL) {
+  dots_extra_args <- list(...)
+
+  # Check for user-defined functions
+  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
+  .stats <- default_and_custom_stats_list$default_stats
+  custom_stat_functions <- default_and_custom_stats_list$custom_stats
+
+  # Add extra parameters to the s_* function
+  extra_afun_params <- retrieve_extra_afun_params(
+    names(dots_extra_args$.additional_fun_parameters)
+  )
+  dots_extra_args$.additional_fun_parameters <- NULL
+
+  # Main statistic calculations
+  x_stats <- .apply_stat_functions(
+    default_stat_fnc = s_count_values,
+    custom_stat_fnc_list = custom_stat_functions,
+    args_list = c(
+      x = list(x),
+      extra_afun_params,
+      dots_extra_args
+    )
+  )
+
+  # Fill in formatting defaults
+  .stats <- c(
+    get_stats("analyze_vars_counts", stats_in = .stats),
+    names(custom_stat_functions) # Additional stats from custom functions
+  )
+  .formats <- get_formats_from_stats(.stats, .formats)
+  .labels <- get_labels_from_stats(.stats, .labels)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(
+    .formats,
+    x_stats,
+    extra_afun_params$.df_row,
+    extra_afun_params$.var
+  )
+
+  in_rows(
+    .list = x_stats[.stats],
+    .formats = .formats,
+    .names = names(.labels),
+    .labels = .labels,
+    .indent_mods = .indent_mods
+  )
+}
 
 #' @describeIn count_values Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
@@ -132,26 +183,31 @@ count_values <- function(lyt,
                          vars,
                          values,
                          na_str = default_na_str(),
+                         na_rm = TRUE,
                          nested = TRUE,
                          ...,
                          table_names = vars,
                          .stats = "count_fraction",
-                         .formats = NULL,
+                         .formats = c(count_fraction = "xx (xx.xx%)", count = "xx"),
                          .labels = c(count_fraction = paste(values, collapse = ", ")),
                          .indent_mods = NULL) {
-  extra_args <- list(values = values, ...)
+  # Process extra args
+  extra_args <- list(".stats" = .stats)
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
 
-  afun <- make_afun(
-    a_count_values,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods
-  )
+  # Add additional arguments to the analysis function
+  extra_args <- c(extra_args, "na_rm" = na_rm, "values" = list(values), ...)
+
+  # Adding additional info from layout to analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_count_values) <- c(formals(a_count_values), extra_args[[".additional_fun_parameters"]])
+
   analyze(
     lyt,
     vars,
-    afun = afun,
+    afun = a_count_values,
     na_str = na_str,
     nested = nested,
     extra_args = extra_args,
