@@ -9,7 +9,7 @@
 * Added to `analyze_vars()` statistical names that are used by `rtables::as_result_df()`.
 * Added the possibility to integrate custom statistical functions to default ones in `analyze_vars()`.
 * Refactored `analyze_vars()` and `a_summary()` to take all options from `?rtables::additional_fun_params`.
-* Refactored `summarize_change()` to work without `make_afun()` and access all additional function parameter.
+* Refactored `summarize_change()` and `count_values()` to work without `make_afun()`.
 * Refactored `a_count_occurrences_by_grade()`, `a_count_patients_with_event()`, and `a_count_patients_with_flags()` to no longer use `make_afun()`.
 * Refactored `get_labels_from_stats()` to use a named list of levels for each statistic instead of row names.
 * Updated the `table_font_size` parameter of `g_lineplot()` to control the size of all text in the annotation table, including labels.

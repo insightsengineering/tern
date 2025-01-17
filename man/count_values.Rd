@@ -14,11 +14,12 @@ count_values(
   vars,
   values,
   na_str = default_na_str(),
+  na_rm = TRUE,
   nested = TRUE,
   ...,
   table_names = vars,
   .stats = "count_fraction",
-  .formats = NULL,
+  .formats = c(count_fraction = "xx (xx.xx\%)", count = "xx"),
   .labels = c(count_fraction = paste(values, collapse = ", ")),
   .indent_mods = NULL
 )
@@ -31,7 +32,14 @@ s_count_values(x, values, na.rm = TRUE, denom = c("n", "N_col", "N_row"), ...)
 
 \method{s_count_values}{logical}(x, values = TRUE, ...)
 
-a_count_values(x, values, na.rm = TRUE, denom = c("n", "N_col", "N_row"), ...)
+a_count_values(
+  x,
+  ...,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
 }
 \arguments{
 \item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
@@ -41,6 +49,8 @@ a_count_values(x, values, na.rm = TRUE, denom = c("n", "N_col", "N_row"), ...)
 \item{values}{(\code{character})\cr specific values that should be counted.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{na_rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
 possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.

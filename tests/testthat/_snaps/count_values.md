@@ -298,3 +298,52 @@
           0 
       
 
+# count_values works with denom specified
+
+    Code
+      res
+    Output
+                 all obs  
+      ————————————————————
+      setosa   50 (33.33%)
+
+---
+
+    Code
+      case1
+    Output
+           A: Drug X    B: Placebo    C: Combination
+            (N=202)       (N=177)        (N=162)    
+      ——————————————————————————————————————————————
+      Y   80 (39.60%)   69 (38.98%)    65 (40.12%)  
+
+---
+
+    Code
+      case2
+    Output
+           A: Drug X     B: Placebo    C: Combination
+             (N=69)        (N=73)          (N=58)    
+      ———————————————————————————————————————————————
+      Y   80 (115.94%)   69 (94.52%)    65 (112.07%) 
+
+---
+
+    Code
+      case3
+    Output
+           A: Drug X    B: Placebo    C: Combination
+            (N=69)        (N=73)          (N=58)    
+      ——————————————————————————————————————————————
+      Y   80 (14.79%)   69 (12.75%)    65 (12.01%)  
+
+---
+
+    Code
+      case4
+    Output
+           A: Drug X    B: Placebo    C: Combination
+            (N=69)        (N=73)          (N=58)    
+      ——————————————————————————————————————————————
+      Y   80 (39.60%)   69 (38.98%)    65 (40.12%)  
+
