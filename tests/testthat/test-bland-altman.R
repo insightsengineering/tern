@@ -95,10 +95,10 @@ testthat::test_that("g_bland_altman works with default settings", {
   )
   conf_level <- 0.9
 
-  withr::with_options(
+  testthat::expect_silent(g_bland_altman_res <- withr::with_options(
     opts_partial_match_old,
-    g_bland_altman <- g_bland_altman(x, y, conf_level = conf_level)
-  )
+    g_bland_altman(x, y, conf_level = conf_level)
+  ))
 
-  expect_snapshot_ggplot(title = "g_bland_altman", fig = g_bland_altman, width = 10, height = 8)
+  expect_snapshot_ggplot(title = "g_bland_altman", fig = g_bland_altman_res, width = 10, height = 8)
 })
