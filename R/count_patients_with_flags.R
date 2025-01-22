@@ -129,7 +129,7 @@ a_count_patients_with_flags <- function(df,
     df = df, .var = .var, flag_variables = flag_variables, flag_labels = flag_labels,
     .N_col = .N_col, .N_row = .N_row, denom = denom
   )
-  if (is.null(names(flag_variables))) flag_variables <- var_labels(df, fill = TRUE)[flag_variables]
+  if (is.null(names(flag_variables))) flag_variables <- formatters::var_labels(df, fill = TRUE)[flag_variables]
   if (is.null(flag_labels)) flag_labels <- flag_variables
 
   if (is.null(unlist(x_stats))) {
