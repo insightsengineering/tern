@@ -1,5 +1,8 @@
 # tern 0.9.7.9000
 
+### Bug Fixes
+* Fixed bug in `a_count_patients_with_flags()` preventing select custom label and indentation specification formats from being applied.
+
 # tern 0.9.7
 
 ### Enhancements
