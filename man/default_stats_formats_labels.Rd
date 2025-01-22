@@ -77,8 +77,8 @@ character vector from \code{\link[formatters:list_formats]{formatters::list_vali
 
 \item{labels_in}{(named \code{character})\cr inserted labels to replace defaults.}
 
-\item{levels_per_stats}{(named \code{list} of \code{character} or \code{NULL})\cr Levels of a \code{factor} or \code{character} variable, each
-of which the statistics in \code{.stats} will be calculated for. If this parameter is set, these
+\item{levels_per_stats}{(named \code{list}/\code{vector} of \code{character} or \code{NULL})\cr Levels of a \code{factor} or \code{character}
+variable, each of which the statistics in \code{.stats} will be calculated for. If this parameter is set, these
 variable levels will be used as the defaults, and the names of the given custom values should
 correspond to levels (or have format \code{statistic.level}) instead of statistics. Can also be
 variable names if rows correspond to different variables instead of levels. Defaults to \code{NULL}.}

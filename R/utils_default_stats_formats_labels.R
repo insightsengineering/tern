@@ -276,8 +276,8 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 #'   the statistics name will be used as label.
 #'
 #' @param labels_in (named `character`)\cr inserted labels to replace defaults.
-#' @param levels_per_stats (named `list` of `character` or `NULL`)\cr Levels of a `factor` or `character` variable, each
-#'   of which the statistics in `.stats` will be calculated for. If this parameter is set, these
+#' @param levels_per_stats (named `list`/`vector` of `character` or `NULL`)\cr Levels of a `factor` or `character`
+#'   variable, each of which the statistics in `.stats` will be calculated for. If this parameter is set, these
 #'   variable levels will be used as the defaults, and the names of the given custom values should
 #'   correspond to levels (or have format `statistic.level`) instead of statistics. Can also be
 #'   variable names if rows correspond to different variables instead of levels. Defaults to `NULL`.
@@ -301,7 +301,6 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 #' @export
 get_labels_from_stats <- function(stats, labels_in = NULL, levels_per_stats = NULL) {
   checkmate::assert_character(stats, min.len = 1)
-  checkmate::assert_list(levels_per_stats, null.ok = TRUE)
   # It may be a list
   if (checkmate::test_list(labels_in, null.ok = TRUE)) {
     checkmate::assert_list(labels_in, null.ok = TRUE)
@@ -312,6 +311,9 @@ get_labels_from_stats <- function(stats, labels_in = NULL, levels_per_stats = NU
 
   # Default for stats with sublevels (for factors or chrs) are the labels
   if (!is.null(levels_per_stats)) {
+    if (is.null(names(levels_per_stats))) {
+      names(levels_per_stats) <- levels_per_stats
+    }
     out <- .adjust_stats_desc_by_in_def(levels_per_stats, labels_in, tern_default_labels)
     # numeric case, where there are not other levels (list of stats)
   } else {
@@ -362,29 +364,46 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
     checkmate::assert_integerish(indents_in, null.ok = TRUE)
   }
 
+  # Single indentation level for all rows
   if (is.null(names(indents_in)) && length(indents_in) == 1) {
     out <- rep(indents_in, length(stats) * if (!is.null(row_nms)) length(row_nms) else 1)
     return(out)
   }
 
-  if (!is.null(row_nms)) {
-    ret <- rep(0L, length(stats) * length(row_nms))
-    out <- setNames(ret, paste(rep(stats, each = length(row_nms)), rep(row_nms, length(stats)), sep = "."))
-
-    if (!is.null(indents_in)) {
-      lvl_lbls <- intersect(names(indents_in), row_nms)
-      for (i in lvl_lbls) out[paste(stats, i, sep = ".")] <- indents_in[[i]]
-    }
+  # Apply default indentation
+  if (is.null(row_nms)) {
+    out <- setNames(rep(0L, length(stats)), stats)
   } else {
-    ret <- rep(0L, length(stats))
-    out <- setNames(ret, stats)
+    all_nms <- paste(rep(stats, each = length(row_nms)), rep(row_nms, length(stats)), sep = ".")
+    out <- setNames(rep(0L, length(stats) * length(row_nms)), stats)
   }
 
-  # Modify some with custom labels
+  # Modify with custom indentation
   if (!is.null(indents_in)) {
-    # Stats is the main
-    common_names <- intersect(names(out), names(indents_in))
-    out[common_names] <- indents_in[common_names]
+    if (is.null(row_nms)) { # One row per statistic
+      common_names <- intersect(names(out), names(indents_in))
+      out[common_names] <- indents_in[common_names]
+    } else if (!is.null(row_nms)) { # One row per combination of variable level and statistic
+      out <- sapply(
+        all_nms,
+        function(x) {
+          if (x %in% names(indents_in)) {
+            indents_in[[x]]
+          } else {
+            stat_lvl <- regmatches(x, regexpr("[.]", x), invert = TRUE)[[1]]
+            stat <- stat_lvl[1]
+            lvl <- stat_lvl[2]
+            if (lvl %in% names(indents_in)) {
+              indents_in[[lvl]]
+            } else if (stat %in% names(indents_in)) {
+              indents_in[[stat]]
+            } else {
+              0
+            }
+          }
+        }
+      )
+    }
   }
 
   out
