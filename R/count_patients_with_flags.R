@@ -132,7 +132,9 @@ a_count_patients_with_flags <- function(df,
   if (is.null(names(flag_variables))) flag_variables <- var_labels(df, fill = TRUE)[flag_variables]
   if (is.null(flag_labels)) flag_labels <- flag_variables
 
-  if (is.null(unlist(x_stats))) return(NULL)
+  if (is.null(unlist(x_stats))) {
+    return(NULL)
+  }
 
   # Fill in with formatting defaults if needed
   .stats <- get_stats("count_patients_with_flags", stats_in = .stats)
