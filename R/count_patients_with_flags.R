@@ -129,28 +129,21 @@ a_count_patients_with_flags <- function(df,
     df = df, .var = .var, flag_variables = flag_variables, flag_labels = flag_labels,
     .N_col = .N_col, .N_row = .N_row, denom = denom
   )
+  if (is.null(names(flag_variables))) flag_variables <- var_labels(df, fill = TRUE)[flag_variables]
+  if (is.null(flag_labels)) flag_labels <- flag_variables
 
-  if (is.null(unlist(x_stats))) {
-    return(NULL)
-  }
+  if (is.null(unlist(x_stats))) return(NULL)
 
   # Fill in with formatting defaults if needed
   .stats <- get_stats("count_patients_with_flags", stats_in = .stats)
-  x_stats <- x_stats[.stats]
-
   .formats <- get_formats_from_stats(.stats, .formats)
-
-  # label formatting
-  x_nms <- paste(rep(.stats, each = length(flag_variables)), flag_variables, sep = ".")
-  new_lbls <- if (!is.null(.labels)) .labels[names(.labels) %in% x_nms] else NULL
-  .labels <- .unlist_keep_nulls(get_labels_from_stats(.stats, .labels,
-    levels_per_stats = lapply(x_stats, names)
-  )) %>%
-    setNames(x_nms)
-
-  # indent mod formatting
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, row_nms = flag_variables)
+  x_nms <- paste(rep(.stats, each = length(flag_variables)), names(flag_variables), sep = ".")
+  .labels <- .unlist_keep_nulls(
+    get_labels_from_stats(.stats, .labels, levels_per_stats = rep(flag_labels, length(.stats)) %>% setNames(x_nms))
+  )
 
+  x_stats <- x_stats[.stats]
 
   # Ungroup statistics with values for each level of x
   x_ungrp <- ungroup_stats(x_stats, .formats, list())

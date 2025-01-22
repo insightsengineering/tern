@@ -599,10 +599,10 @@
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
                     row_name formatted_cell indent_mod    row_label
-      1   count_fraction.SER   128 (78.05%)          2   Serious AE
+      1   count_fraction.SER   128 (78.05%)          2    New label
       2   count_fraction.REL   137 (83.54%)          3   Related AE
-      3 count_fraction.CTC35   134 (81.71%)          0 Grade 3-5 AE
-      4 count_fraction.CTC45   104 (63.41%)          0 Grade 4/5 AE
+      3 count_fraction.CTC35   134 (81.71%)          1 Grade 3-5 AE
+      4 count_fraction.CTC45   104 (63.41%)          1 Grade 4/5 AE
 
 # count_patients_with_flags works as expected
 
