@@ -107,7 +107,7 @@ testthat::test_that("get_labels_from_stats works as expected", {
   res <- testthat::expect_silent(get_labels_from_stats(sts))
   testthat::expect_snapshot(res)
 
-  testthat::expect_identical(get_labels_from_stats(c("nothing", "n"))[["nothing"]], "nothing")
+  testthat::expect_identical(get_labels_from_stats(c("nothing", "n"))[["nothing"]], NA_character_)
 
   testthat::expect_identical(
     get_labels_from_stats(c("nothing", "unique"))[["unique"]],
@@ -141,7 +141,7 @@ testthat::test_that("get_labels_from_stats works as expected", {
 })
 
 testthat::test_that("get_labels_from_stats with labels in works when adding levels to stats", {
-  labels_custom <- c("c" = "Lvl c:", "a" = "CF: A", "count" = "COUNT", "count_fraction.b" = "notB")
+  labels_custom <- c("c" = "Lvl c:", "a" = "any A", "count" = "COUNT", "count_fraction.b" = "CF: B")
   levels_per_stats <- list(
     count = c("a", "b", "c"),
     count_fraction = c("a", "b", "c")
@@ -154,13 +154,12 @@ testthat::test_that("get_labels_from_stats with labels in works when adding leve
       labels_in = labels_custom,
       levels_per_stats = levels_per_stats
     ),
-    list(
-      count = c("a" = "CF: A", "b" = "COUNT", "c" = "Lvl c:"),
-      count_fraction = c("a" = "CF: A", "b" = "notB", "c" = "Lvl c:")
+    c(
+      "count.a" = "any A", "count.b" = "COUNT", "count.c" = "Lvl c:",
+      "count_fraction.a" = "any A", "count_fraction.b" = "CF: B", "count_fraction.c" = "Lvl c:"
     )
   )
 })
-
 
 testthat::test_that("get_labels_from_stats works fine for cases with levels", {
   x_stats <- list(

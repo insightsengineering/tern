@@ -314,6 +314,8 @@ get_labels_from_stats <- function(stats, labels_in = NULL, levels_per_stats = NU
     if (is.null(names(levels_per_stats))) {
       names(levels_per_stats) <- levels_per_stats
     }
+  } else {
+    levels_per_stats <- rep(NA_character_, length(stats)) %>% setNames(stats)
   }
 
   # Apply custom indentation
@@ -372,8 +374,13 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
 # Function to loop over each stat and levels to set correct values
 # levels_per_stats - every combo of statistic & level must be represented
 # tern_defaults - one per statistic (names are statistic names)
+# Order of precedence by info present in name: level and stat > level > stat > other defaults
 .adjust_stats_desc_by_in_def <- function(levels_per_stats, user_in, tern_defaults) {
-  browser()
+  if (is.list(levels_per_stats)) {
+    null_stats <- sapply(levels_per_stats, is.null)
+    levels_per_stats[null_stats] <- names(levels_per_stats[null_stats])
+    levels_per_stats <- lapply(levels_per_stats, function(x) x %>% setNames(x)) %>% unlist()
+  }
   out <- levels_per_stats
   single_stats <- any(names(out) %in% names(tern_defaults))
 
@@ -392,7 +399,7 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
           } else if (stat %in% names(user_in)) {
             user_in[[stat]]
           } else { # fill in gaps with tern defaults
-            if (is.null(out[[x]])) tern_defaults[[stat]] else out[[x]]
+            if (is.null(out[[x]]) | is.na(out[[x]])) tern_defaults[[stat]] else out[[x]]
           }
         }
       }
@@ -403,7 +410,7 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
       out[common_stats] <- user_in[common_stats]
     }
     # fill in gaps with tern defaults
-    common_stats <- intersect(names(out[is.null(out)]), names(tern_defaults))
+    common_stats <- intersect(names(out[is.null(out) | is.na(out)]), names(tern_defaults))
     out[common_stats] <- tern_defaults[common_stats]
   }
 
