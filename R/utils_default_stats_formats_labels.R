@@ -319,7 +319,7 @@ get_labels_from_stats <- function(stats, labels_in = NULL, levels_per_stats = NU
   no_label <- sapply(out, is.na) %>% suppressWarnings()
   out[no_label] <- names(out[no_label])
 
-  out %>% unlist()
+  out
 }
 
 #' @describeIn default_stats_formats_labels Format indent modifiers for a given vector/list of statistics.
@@ -367,7 +367,7 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
 
   # Apply custom indentation
   out <- .adjust_stats_desc_by_in_def(def_indent, indents_in, NULL)
-  out %>% unlist()
+  out
 }
 
 # Function to loop over each stat and levels to set correct values

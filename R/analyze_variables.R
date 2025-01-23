@@ -634,14 +634,10 @@ a_summary <- function(x,
     lbls
   }
 
+  # Unlist stats and labels with rows for each statistic and level of x
   if (is.character(x) || is.factor(x)) {
-    # Ungroup statistics with values for each level of x
-    x_ungrp <- ungroup_stats(x_stats, .formats, .indent_mods)
-    x_stats <- x_ungrp[["x"]]
-    .formats <- x_ungrp[[".formats"]]
-    .indent_mods <- x_ungrp[[".indent_mods"]]
-    .labels <- .unlist_keep_nulls(.labels)
-    .labels <- gsub("fill-na-level", "NA", .labels)
+    x_stats <- x_stats %>% .unlist_keep_nulls()
+    .labels <- .labels %>% .unlist_keep_nulls()
   }
 
   # Get and check statistical names from defaults
