@@ -260,7 +260,7 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 
   # Set missing formats to NULL
   null_stats <- sapply(out, is.na) %>% suppressWarnings()
-  out[null_stats] <- NULL
+  out[null_stats] <- list(NULL)
 
   out
 }
@@ -306,7 +306,7 @@ get_labels_from_stats <- function(stats, labels_in = NULL, levels_per_stats = NU
   # Apply default labels for each row
   if (!is.null(levels_per_stats)) {
     if (is.null(names(levels_per_stats))) {
-      names(levels_per_stats) <- levels_per_stats
+      levels_per_stats <- rep(NA_character_, length(levels_per_stats)) %>% setNames(levels_per_stats)
     }
   } else {
     levels_per_stats <- rep(NA_character_, length(stats)) %>% setNames(stats)
@@ -314,7 +314,12 @@ get_labels_from_stats <- function(stats, labels_in = NULL, levels_per_stats = NU
 
   # Apply custom labels
   out <- .adjust_stats_desc_by_in_def(levels_per_stats, labels_in, tern_default_labels)
-  out
+
+  # Set missing labels to stat name
+  no_label <- sapply(out, is.na) %>% suppressWarnings()
+  out[no_label] <- names(out[no_label])
+
+  out %>% unlist()
 }
 
 #' @describeIn default_stats_formats_labels Format indent modifiers for a given vector/list of statistics.
@@ -362,7 +367,7 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
 
   # Apply custom indentation
   out <- .adjust_stats_desc_by_in_def(def_indent, indents_in, NULL)
-  out
+  out %>% unlist()
 }
 
 # Function to loop over each stat and levels to set correct values
@@ -370,13 +375,15 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
 # tern_defaults - one per statistic (names are statistic names)
 # Order of precedence by info present in name: level and stat > level > stat > other defaults
 .adjust_stats_desc_by_in_def <- function(levels_per_stats, user_in, tern_defaults) {
+  single_stats <- any(names(levels_per_stats) %in% names(tern_defaults))
   if (is.list(levels_per_stats)) {
+    if (any(names(levels_per_stats) %in% names(tern_defaults))) single_stats <- FALSE
     null_stats <- sapply(levels_per_stats, is.null)
-    levels_per_stats[null_stats] <- names(levels_per_stats[null_stats])
+    levels_per_stats[null_stats] <- ""
     levels_per_stats <- lapply(levels_per_stats, function(x) x %>% setNames(x)) %>% unlist()
+    levels_per_stats[names(which(null_stats))] <- NA_character_
   }
   out <- levels_per_stats
-  single_stats <- any(names(out) %in% names(tern_defaults))
 
   if (!single_stats) { # One row per combination of variable level and statistic
     out <- sapply(
@@ -393,7 +400,11 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
           } else if (stat %in% names(user_in)) {
             user_in[[stat]]
           } else { # fill in gaps with tern defaults
-            if (is.null(out[[x]]) | is.na(out[[x]])) tern_defaults[[stat]] else out[[x]]
+            if ((is.null(out[[x]]) | is.na(out[[x]]))) {
+              if (stat %in% names(tern_defaults)) tern_defaults[[stat]] else x
+            } else {
+              out[[x]]
+            }
           }
         }
       }
@@ -407,58 +418,6 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
     common_stats <- intersect(names(out[is.null(out) | is.na(out)]), names(tern_defaults))
     out[common_stats] <- tern_defaults[common_stats]
   }
-
-  # # Seq over the stats levels (can be also flat (stat$NULL))
-  # for (stat_i in seq_along(levels_per_stats)) {
-  #   # If you want to change all factor levels at once by statistic
-  #   common_stat_names <- intersect(names(levels_per_stats), names(user_in))
-  #
-  #   # Levels for each statistic
-  #   nm_of_levs <- levels_per_stats[[stat_i]]
-  #   # Special case in which only stat$NULL
-  #   if (is.null(nm_of_levs)) {
-  #     nm_of_levs <- "a single NULL level"
-  #   }
-  #
-  #   # Loop over levels for each statistic
-  #   for (lev_i in seq_along(nm_of_levs)) {
-  #     # If there are no further names (stat$NULL) push label (stat) down to lowest level
-  #     if (is.null(levels_per_stats[[stat_i]])) {
-  #       lev_val <- names(levels_per_stats[stat_i])
-  #       out[[stat_i]] <- lev_val
-  #     } else {
-  #       lev_val <- levels_per_stats[[stat_i]][[lev_i]]
-  #     }
-  #
-  #     # Add default if it is a stat at last level
-  #     if (lev_val %in% names(tern_defaults)) {
-  #       out[[stat_i]][[lev_i]] <- tern_defaults[[lev_val]]
-  #     }
-  #
-  #     # If a general stat was added to the custom labels
-  #     if (names(levels_per_stats[stat_i]) %in% names(user_in)) {
-  #       out[[stat_i]][[lev_i]] <- user_in[[names(levels_per_stats[stat_i])]]
-  #     }
-  #
-  #     # If a stat level (e.g. if it is counts levels from table) was added to the custom labels
-  #     if (lev_val %in% names(user_in)) {
-  #       out[[stat_i]][[lev_i]] <- user_in[[lev_val]]
-  #     }
-  #
-  #     # If stat_i.lev_val is added to labels_in
-  #     composite_stat_lev_nm <- paste(
-  #       names(levels_per_stats[stat_i]),
-  #       lev_val,
-  #       sep = "."
-  #     )
-  #     if (composite_stat_lev_nm %in% names(user_in)) {
-  #       out[[stat_i]][[lev_i]] <- user_in[[composite_stat_lev_nm]]
-  #     }
-  #
-  #     # Used by the unlist (to avoid count_fraction1, count_fraction2, etc.)
-  #     names(out[[stat_i]])[lev_i] <- lev_val
-  #   }
-  # }
 
   out
 }

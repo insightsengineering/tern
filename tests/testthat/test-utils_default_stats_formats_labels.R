@@ -74,7 +74,7 @@ testthat::test_that("get_formats_from_stats works as expected", {
   testthat::expect_equal(res[[1]], "xx.")
 
   testthat::expect_null(get_formats_from_stats(c("nothing", "n"))[["nothing"]])
-  testthat::expect_identical(get_labels_from_stats(c("nothing", "n"))[["nothing"]], NA_character_)
+  testthat::expect_identical(get_labels_from_stats(c("nothing", "n"))[["nothing"]], "nothing")
 
   # list check
   stats_to_do <- c("not_a_stat" = function(x) as.character(x), "mean" = "xx.")
@@ -108,7 +108,7 @@ testthat::test_that("get_labels_from_stats works as expected", {
   res <- testthat::expect_silent(get_labels_from_stats(sts))
   testthat::expect_snapshot(res)
 
-  testthat::expect_identical(get_labels_from_stats(c("nothing", "n"))[["nothing"]], NA_character_)
+  testthat::expect_identical(get_labels_from_stats(c("nothing", "n"))[["nothing"]], "nothing")
 
   testthat::expect_identical(
     get_labels_from_stats(c("nothing", "unique"))[["unique"]],
@@ -191,8 +191,8 @@ testthat::test_that("get_labels_from_stats works fine for cases with levels", {
       count_fraction.c = "c",
       count_fraction.d = "d",
       count_fraction.e = "e",
-      a_zero.a_zero = "A_ZERO",
-      a_null.a_null = "a_null"
+      a_zero = "A_ZERO",
+      a_null = "a_null"
     )
   )
 })

@@ -617,6 +617,6 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
   cols_int <- names(res2) %in% c("variable", "variable_level", "variable_label", "stat_name", "stat")
   testthat::expect_equal(
     unlist(res2[nrow(res2), cols_int, drop = TRUE], use.names = FALSE),
-    c("VAR2", "a_zero.a_zero", "A_ZERO", NA, 0)
+    c("VAR2", "a_zero", "A_ZERO", NA, 0)
   )
 })

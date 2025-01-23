@@ -602,10 +602,13 @@ a_summary <- function(x,
   )
 
   x_stats <- x_stats[.stats]
+
   if (is.character(x) || is.factor(x)) {
     levels_per_stats <- lapply(x_stats, names) # if there is a count is table() with levels
+    rep_lbl <- sapply(names(levels_per_stats), function(x) levels_per_stats[x] == x)
+    levels_per_stats[rep_lbl] <- list(NULL)
   } else {
-    levels_per_stats <- NULL
+    levels_per_stats <- names(x_stats)
   }
 
   # Formats checks
