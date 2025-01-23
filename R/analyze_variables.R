@@ -576,7 +576,7 @@ a_summary <- function(x,
   ) {
     stop(
       "For comparison (compare_with_ref_group = TRUE), the reference group must be specified.",
-      "\nSee split_fun in spit_cols_by()."
+      "\nSee ref_group in split_cols_by()."
     )
   }
 
