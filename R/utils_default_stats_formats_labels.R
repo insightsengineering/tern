@@ -221,7 +221,7 @@ get_stat_names <- function(stat_results, stat_names_in = NULL) {
 #'   character vector from [formatters::list_valid_format_labels()] or a custom format function.
 #'
 #' @return
-#' * `get_formats_from_stats()` returns a named vector of formats (if present in either
+#' * `get_formats_from_stats()` returns a named list of formats (if present in either
 #'   `tern_default_formats` or `formats_in`, otherwise `NULL`). Values can be taken from
 #'   [formatters::list_valid_format_labels()] or a custom function (e.g. [formatting_functions]).
 #'
@@ -252,21 +252,15 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
     checkmate::assert_character(formats_in, null.ok = TRUE)
   }
 
-  # Extract global defaults
-  which_fmt <- match(stats, names(tern_default_formats))
+  # Add dummy formats for each row
+  formats_stats <- rep(NA_character_, length(stats)) %>% setNames(stats)
 
-  # Select only needed formats from stats
-  ret <- vector("list", length = length(stats)) # Returning a list is simpler
-  ret[!is.na(which_fmt)] <- tern_default_formats[which_fmt[!is.na(which_fmt)]]
+  # Apply custom formats
+  out <- .adjust_stats_desc_by_in_def(formats_stats, formats_in, tern_default_formats)
 
-  out <- setNames(ret, stats)
-
-  # Modify some with custom formats
-  if (!is.null(formats_in)) {
-    # Stats is the main
-    common_names <- intersect(names(out), names(formats_in))
-    out[common_names] <- formats_in[common_names]
-  }
+  # Set missing formats to NULL
+  null_stats <- sapply(out, is.na) %>% suppressWarnings()
+  out[null_stats] <- NULL
 
   out
 }
@@ -318,7 +312,7 @@ get_labels_from_stats <- function(stats, labels_in = NULL, levels_per_stats = NU
     levels_per_stats <- rep(NA_character_, length(stats)) %>% setNames(stats)
   }
 
-  # Apply custom indentation
+  # Apply custom labels
   out <- .adjust_stats_desc_by_in_def(levels_per_stats, labels_in, tern_default_labels)
   out
 }

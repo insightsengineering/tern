@@ -74,6 +74,7 @@ testthat::test_that("get_formats_from_stats works as expected", {
   testthat::expect_equal(res[[1]], "xx.")
 
   testthat::expect_null(get_formats_from_stats(c("nothing", "n"))[["nothing"]])
+  testthat::expect_identical(get_labels_from_stats(c("nothing", "n"))[["nothing"]], NA_character_)
 
   # list check
   stats_to_do <- c("not_a_stat" = function(x) as.character(x), "mean" = "xx.")
