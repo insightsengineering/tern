@@ -172,8 +172,8 @@ a_incidence_rate <- function(df,
   in_rows(
     .list = x_stats,
     .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods,
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls(),
     .format_na_strs = na_str
   )
 }

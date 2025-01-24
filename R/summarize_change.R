@@ -108,8 +108,8 @@ a_change_from_baseline <- function(df,
     .list = x_stats[.stats],
     .formats = .formats,
     .names = names(.labels),
-    .labels = .labels,
-    .indent_mods = .indent_mods
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
   )
 }
 

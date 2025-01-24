@@ -140,17 +140,19 @@ a_count_patients_with_flags <- function(df,
   # Fill in with formatting defaults if needed
   .stats <- get_stats("count_patients_with_flags", stats_in = .stats)
   levels_per_stats <- rep(list(names(flag_variables)), length(.stats)) %>% setNames(.stats)
-  .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats = levels_per_stats)
-  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats = levels_per_stats)
+  .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
   .labels <- get_labels_from_stats(
-    .stats, .labels, levels_per_stats = levels_per_stats,
-    labels_default = flag_labels %>% setNames(names(flag_variables))
+    .stats, .labels, levels_per_stats,
+    flag_labels %>% setNames(names(flag_variables))
   )
 
   x_stats <- x_stats[.stats]
 
   # Unlist stats
-  x_stats <- x_stats %>% .unlist_keep_nulls() %>% setNames(names(.formats))
+  x_stats <- x_stats %>%
+    .unlist_keep_nulls() %>%
+    setNames(names(.formats))
 
   # Auto format handling
   .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)

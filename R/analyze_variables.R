@@ -562,11 +562,6 @@ a_summary <- function(x,
   )
   dots_extra_args$.additional_fun_parameters <- NULL # After extraction we do not need them anymore
 
-  # If one col has NA vals, must add NA row to other cols (using placeholder lvl `fill-na-level`)
-  if (any(is.na(dots_extra_args$.df_row[[dots_extra_args$.var]])) && !any(is.na(x)) && !dots_extra_args$na_rm) {
-    levels(x) <- c(levels(x), "fill-na-level")
-  }
-
   # Check if compare_with_ref_group is TRUE but no ref col is set
   if (isTRUE(dots_extra_args$compare_with_ref_group) &&
     all(
@@ -607,7 +602,9 @@ a_summary <- function(x,
   if (is_char) {
     levels_per_stats <- lapply(x_stats, names)
   } else {
-    levels_per_stats <- names(x_stats) %>% as.list() %>% setNames(names(x_stats))
+    levels_per_stats <- names(x_stats) %>%
+      as.list() %>%
+      setNames(names(x_stats))
   }
 
   # Fill in formats with custom input and defaults
@@ -626,6 +623,11 @@ a_summary <- function(x,
       x_stats[single_stats] <- x_stats[single_stats] %>%
         .unlist_keep_nulls(recursive = TRUE) %>%
         setNames(names(x_stats[single_stats]))
+    }
+
+    # Keep pval_counts stat if present from comparisons and empty
+    if ("pval_counts" %in% names(x_stats) && length(x_stats[["pval_counts"]]) == 0) {
+      x_stats[["pval_counts"]] <- list(NULL) %>% setNames("pval_counts")
     }
 
     # Unlist stats

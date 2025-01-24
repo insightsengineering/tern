@@ -186,12 +186,12 @@ g_lineplot <- function(df,
 
   if (!is.null(table)) {
     table_format <- get_formats_from_stats(table)
-    table_labels <- get_labels_from_stats(table)
+    table_labels <- get_labels_from_stats(table) %>% .unlist_keep_nulls()
   }
 
   extra_args <- list(...)
   if ("control" %in% names(extra_args)) {
-    if (!is.null(table) && all(table_labels == get_labels_from_stats(table))) {
+    if (!is.null(table) && all(table_labels == .unlist_keep_nulls(get_labels_from_stats(table)))) {
       table_labels <- table_labels %>% labels_use_control(extra_args[["control"]])
     }
   }

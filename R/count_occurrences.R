@@ -181,7 +181,7 @@ a_count_occurrences <- function(df,
   .labels <- get_labels_from_stats(.stats, .labels, levels_per_stats)
   .indent_mods <- get_indents_from_stats(
     .stats, .indent_mods, levels_per_stats,
-    indents_default = rep(0L, length(levels_per_stats[[1]])) %>% as.list() %>% setNames(levels_per_stats[[1]])
+    rep(0L, length(levels_per_stats[[1]])) %>% as.list() %>% setNames(levels_per_stats[[1]])
   )
 
   # Unlist stats

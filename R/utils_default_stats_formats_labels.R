@@ -8,6 +8,8 @@
 #' seen in [analyze_vars()]. See notes to understand why this is experimental.
 #'
 #' @param stats (`character`)\cr statistical methods to get defaults for.
+#' @param tern_defaults (`list` or `vector`)\cr defaults to use to fill in missing values if no user input is given.
+#'   Must be of the same type as the values that are being filled in (e.g. indentation must be integers).
 #'
 #' @details
 #' Current choices for `type` are `counts` and `numeric` for [analyze_vars()] and affect `get_stats()`.
@@ -245,7 +247,7 @@ get_stat_names <- function(stat_results, stat_names_in = NULL) {
 get_formats_from_stats <- function(stats,
                                    formats_in = NULL,
                                    levels_per_stats = NULL,
-                                   formats_default = tern_default_formats) {
+                                   tern_defaults = tern_default_formats) {
   checkmate::assert_character(stats, min.len = 1)
   # It may be a list if there is a function in the formats
   if (checkmate::test_list(formats_in, null.ok = TRUE)) {
@@ -260,7 +262,7 @@ get_formats_from_stats <- function(stats,
   if (is.null(levels_per_stats)) levels_per_stats <- as.list(stats) %>% setNames(stats)
 
   # Apply custom formats
-  out <- .adjust_stats_desc_by_in_def(levels_per_stats, formats_in, formats_default)
+  out <- .fill_in_vals_by_stats(levels_per_stats, formats_in, tern_defaults)
 
   # Default to NULL if no format
   out[names(out) == out] <- list(NULL)
@@ -299,7 +301,7 @@ get_formats_from_stats <- function(stats,
 get_labels_from_stats <- function(stats,
                                   labels_in = NULL,
                                   levels_per_stats = NULL,
-                                  labels_default = tern_default_labels) {
+                                  tern_defaults = tern_default_labels) {
   checkmate::assert_character(stats, min.len = 1)
   # It may be a list
   if (checkmate::test_list(labels_in, null.ok = TRUE)) {
@@ -314,7 +316,7 @@ get_labels_from_stats <- function(stats,
   if (is.null(levels_per_stats)) levels_per_stats <- as.list(stats) %>% setNames(stats)
 
   # Apply custom labels
-  out <- .adjust_stats_desc_by_in_def(levels_per_stats, labels_in, labels_default)
+  out <- .fill_in_vals_by_stats(levels_per_stats, labels_in, tern_defaults)
   out
 }
 
@@ -339,7 +341,9 @@ get_labels_from_stats <- function(stats,
 get_indents_from_stats <- function(stats,
                                    indents_in = NULL,
                                    levels_per_stats = NULL,
-                                   indents_default = rep(0L, length(stats)) %>% as.list() %>% setNames(stats)) {
+                                   tern_defaults = rep(0L, length(stats)) %>%
+                                     as.list() %>%
+                                     setNames(stats)) {
   checkmate::assert_character(stats, min.len = 1)
   # It may be a list
   if (checkmate::test_list(indents_in, null.ok = TRUE)) {
@@ -360,7 +364,7 @@ get_indents_from_stats <- function(stats,
   }
 
   # Apply custom indentation
-  out <- .adjust_stats_desc_by_in_def(levels_per_stats, indents_in, indents_default)
+  out <- .fill_in_vals_by_stats(levels_per_stats, indents_in, tern_defaults)
   out
 }
 
@@ -368,7 +372,7 @@ get_indents_from_stats <- function(stats,
 # levels_per_stats - every combo of statistic & level must be represented
 # tern_defaults - one per statistic - if rows have custom defaults add these to tern_defaults
 # Order of precedence by info present in name: level and stat > level > stat > other defaults
-.adjust_stats_desc_by_in_def <- function(levels_per_stats, user_in, tern_defaults) {
+.fill_in_vals_by_stats <- function(levels_per_stats, user_in, tern_defaults) {
   out <- list()
 
   for (stat_i in names(levels_per_stats)) {
@@ -376,11 +380,11 @@ get_indents_from_stats <- function(stats,
     all_lvls <- levels_per_stats[[stat_i]]
 
     if ((length(all_lvls) == 1 && all_lvls == stat_i) || is.null(all_lvls)) { # One row per statistic
-      out[[stat_i]] <- if (stat_i %in% names(user_in)) {   # 1. Check for stat_i in user input
+      out[[stat_i]] <- if (stat_i %in% names(user_in)) { # 1. Check for stat_i in user input
         user_in[[stat_i]]
-      } else if (stat_i %in% names(tern_defaults)) {       # 2. Check for stat_i in tern defaults
+      } else if (stat_i %in% names(tern_defaults)) { # 2. Check for stat_i in tern defaults
         tern_defaults[[stat_i]]
-      } else {                                             # 3. Otherwise stat_i
+      } else { # 3. Otherwise stat_i
         stat_i
       }
     } else { # One row per combination of variable level and statistic
@@ -391,15 +395,15 @@ get_indents_from_stats <- function(stats,
 
         out[[row_nm]] <- if (row_nm %in% names(user_in)) { # 1. Check for stat_i.lev_i in user input
           user_in[[row_nm]]
-        } else if (lev_i %in% names(user_in)) {            # 2. Check for lev_i in user input
+        } else if (lev_i %in% names(user_in)) { # 2. Check for lev_i in user input
           user_in[[lev_i]]
-        } else if (stat_i %in% names(user_in)) {           # 3. Check for stat_i in user input
+        } else if (stat_i %in% names(user_in)) { # 3. Check for stat_i in user input
           user_in[[stat_i]]
-        } else if (lev_i %in% names(tern_defaults)) {      # 4. Check for lev_i in tern defaults (only used for labels)
+        } else if (lev_i %in% names(tern_defaults)) { # 4. Check for lev_i in tern defaults (only used for labels)
           tern_defaults[[lev_i]]
-        } else if (stat_i %in% names(tern_defaults)) {     # 5. Check for stat_i in tern defaults
+        } else if (stat_i %in% names(tern_defaults)) { # 5. Check for stat_i in tern defaults
           tern_defaults[[stat_i]]
-        } else {                                           # 6. Otherwise lev_i
+        } else { # 6. Otherwise lev_i
           lev_i
         }
       }

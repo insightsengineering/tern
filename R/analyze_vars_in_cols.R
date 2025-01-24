@@ -174,7 +174,7 @@ analyze_vars_in_cols <- function(lyt,
   met_grps <- paste0("analyze_vars", c("_numeric", "_counts"))
   .stats <- get_stats(met_grps, stats_in = .stats)
   formats_v <- get_formats_from_stats(stats = .stats, formats_in = .formats)
-  labels_v <- get_labels_from_stats(stats = .stats, labels_in = .labels)
+  labels_v <- get_labels_from_stats(stats = .stats, labels_in = .labels) %>% .unlist_keep_nulls()
   if ("control" %in% names(extra_args)) labels_v <- labels_v %>% labels_use_control(extra_args[["control"]], .labels)
 
   # Check for vars in the case that one or more are used

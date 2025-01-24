@@ -146,6 +146,8 @@ a_count_values <- function(x,
   .labels <- get_labels_from_stats(.stats, .labels)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
+  x_stats <- x_stats[.stats]
+
   # Auto format handling
   .formats <- apply_auto_formatting(
     .formats,
@@ -155,11 +157,11 @@ a_count_values <- function(x,
   )
 
   in_rows(
-    .list = x_stats[.stats],
+    .list = x_stats,
     .formats = .formats,
     .names = names(.labels),
-    .labels = .labels,
-    .indent_mods = .indent_mods
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
   )
 }
 
