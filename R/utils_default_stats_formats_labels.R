@@ -605,13 +605,9 @@ tern_default_formats <- c(
 #'
 #' @export
 tern_default_labels <- c(
-  fraction = "fraction",
   unique = "Number of patients with at least one event",
   nonunique = "Number of events",
   n = "n",
-  count = "count",
-  count_fraction = "count_fraction",
-  count_fraction_fixed_dp = "count_fraction_fixed_dp",
   n_blq = "n_blq",
   sum = "Sum",
   mean = "Mean",
