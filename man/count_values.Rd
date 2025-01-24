@@ -19,6 +19,7 @@ count_values(
   ...,
   table_names = vars,
   .stats = "count_fraction",
+  .stat_names_in = NULL,
   .formats = c(count_fraction = "xx (xx.xx\%)", count = "xx"),
   .labels = c(count_fraction = paste(values, collapse = ", ")),
   .indent_mods = NULL
@@ -36,6 +37,7 @@ a_count_values(
   x,
   ...,
   .stats = NULL,
+  .stat_names_in = NULL,
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL
@@ -64,6 +66,9 @@ times, to avoid warnings from \code{rtables}.}
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
 Options are: \verb{'n', 'count', 'count_fraction', 'count_fraction_fixed_dp', 'n_blq'}}
+
+\item{.stat_names_in}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}

@@ -56,9 +56,9 @@ get_labels_from_stats(
 get_indents_from_stats(
   stats,
   indents_in = NULL,
-  row_nms = lifecycle::deprecated(),
   levels_per_stats = NULL,
-  tern_defaults = as.list(rep(0L, length(stats))) \%>\% setNames(stats)
+  tern_defaults = as.list(rep(0L, length(stats))) \%>\% setNames(stats),
+  row_nms = lifecycle::deprecated()
 )
 
 tern_default_stats

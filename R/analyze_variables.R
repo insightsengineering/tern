@@ -607,31 +607,21 @@ a_summary <- function(x,
       setNames(names(x_stats))
   }
 
-  # Fill in formats with custom input and defaults
+  # Fill in formats/indents/labels with custom input and defaults
   .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
-
-  # Fill in indents with custom input and defaults
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
-
-  # Fill in labels with custom input and defaults
   lbls <- get_labels_from_stats(.stats, .labels, levels_per_stats)
 
   if (is_char) {
-    # Identify and remove repeated names for single row stats
-    single_stats <- !x_stats %>% sapply(function(y) all(names(y) %in% c(levels(as.factor(x)), "NA")))
-    if (any(single_stats)) {
-      x_stats[single_stats] <- x_stats[single_stats] %>%
-        .unlist_keep_nulls(recursive = TRUE) %>%
-        setNames(names(x_stats[single_stats]))
-    }
-
     # Keep pval_counts stat if present from comparisons and empty
     if ("pval_counts" %in% names(x_stats) && length(x_stats[["pval_counts"]]) == 0) {
       x_stats[["pval_counts"]] <- list(NULL) %>% setNames("pval_counts")
     }
 
     # Unlist stats
-    x_stats <- x_stats %>% .unlist_keep_nulls()
+    x_stats <- x_stats %>%
+      .unlist_keep_nulls() %>%
+      setNames(names(.formats))
   }
 
   # Check for custom labels from control_analyze_vars

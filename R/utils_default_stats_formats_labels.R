@@ -338,9 +338,9 @@ get_labels_from_stats <- function(stats,
 #' @export
 get_indents_from_stats <- function(stats,
                                    indents_in = NULL,
-                                   row_nms = lifecycle::deprecated(),
                                    levels_per_stats = NULL,
-                                   tern_defaults = as.list(rep(0L, length(stats))) %>% setNames(stats)) {
+                                   tern_defaults = as.list(rep(0L, length(stats))) %>% setNames(stats),
+                                   row_nms = lifecycle::deprecated()) {
   checkmate::assert_character(stats, min.len = 1)
   # It may be a list
   if (checkmate::test_list(indents_in, null.ok = TRUE)) {
