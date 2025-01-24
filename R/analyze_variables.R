@@ -603,16 +603,41 @@ a_summary <- function(x,
 
   x_stats <- x_stats[.stats]
 
-  if (is.character(x) || is.factor(x)) {
-    levels_per_stats <- lapply(x_stats, names) # if there is a count is table() with levels
-    rep_lbl <- sapply(names(levels_per_stats), function(x) levels_per_stats[x] == x)
-    levels_per_stats[rep_lbl] <- list(NULL)
+  is_char <- is.character(x) || is.factor(x)
+  if (is_char) {
+    levels_per_stats <- lapply(x_stats, names)
   } else {
-    levels_per_stats <- names(x_stats)
+    levels_per_stats <- names(x_stats) %>% as.list() %>% setNames(names(x_stats))
   }
 
-  # Formats checks
-  .formats <- get_formats_from_stats(.stats, .formats)
+  # Fill in formats with custom input and defaults
+  .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
+
+  # Fill in indents with custom input and defaults
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
+
+  # Fill in labels with custom input and defaults
+  lbls <- get_labels_from_stats(.stats, .labels, levels_per_stats)
+
+  if (is_char) {
+    # Identify and remove repeated names for single row stats
+    single_stats <- !x_stats %>% sapply(function(y) all(names(y) %in% c(levels(as.factor(x)), "NA")))
+    if (any(single_stats)) {
+      x_stats[single_stats] <- x_stats[single_stats] %>%
+        .unlist_keep_nulls(recursive = TRUE) %>%
+        setNames(names(x_stats[single_stats]))
+    }
+
+    # Unlist stats
+    x_stats <- x_stats %>% .unlist_keep_nulls()
+  }
+
+  # Check for custom labels from control_analyze_vars
+  .labels <- if ("control" %in% names(dots_extra_args)) {
+    labels_use_control(lbls, dots_extra_args[["control"]], .labels)
+  } else {
+    lbls
+  }
 
   # Auto format handling
   .formats <- apply_auto_formatting(
@@ -622,24 +647,6 @@ a_summary <- function(x,
     extra_afun_params$.var
   )
 
-  # Indentation checks
-  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
-
-  # Labels assignments
-  lbls <- get_labels_from_stats(.stats, .labels, levels_per_stats)
-  # Check for custom labels from control_analyze_vars
-  .labels <- if ("control" %in% names(dots_extra_args)) {
-    labels_use_control(lbls, dots_extra_args[["control"]], .labels)
-  } else {
-    lbls
-  }
-
-  # Unlist stats and labels with rows for each statistic and level of x
-  if (is.character(x) || is.factor(x)) {
-    x_stats <- x_stats %>% .unlist_keep_nulls()
-    .labels <- .labels %>% .unlist_keep_nulls()
-  }
-
   # Get and check statistical names from defaults
   .stat_names <- get_stat_names(x_stats, .stat_names_in) # note is x_stats
 
@@ -648,8 +655,8 @@ a_summary <- function(x,
     .formats = .formats,
     .names = names(.labels),
     .stat_names = .stat_names,
-    .labels = .labels,
-    .indent_mods = .indent_mods
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
   )
 }
 

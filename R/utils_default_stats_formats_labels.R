@@ -242,7 +242,10 @@ get_stat_names <- function(stat_results, stat_names_in = NULL) {
 #' @seealso [formatting_functions]
 #'
 #' @export
-get_formats_from_stats <- function(stats, formats_in = NULL) {
+get_formats_from_stats <- function(stats,
+                                   formats_in = NULL,
+                                   levels_per_stats = NULL,
+                                   formats_default = tern_default_formats) {
   checkmate::assert_character(stats, min.len = 1)
   # It may be a list if there is a function in the formats
   if (checkmate::test_list(formats_in, null.ok = TRUE)) {
@@ -251,16 +254,16 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
   } else {
     checkmate::assert_character(formats_in, null.ok = TRUE)
   }
+  checkmate::assert_list(levels_per_stats, null.ok = TRUE)
 
-  # Add dummy formats for each row
-  formats_stats <- rep(NA_character_, length(stats)) %>% setNames(stats)
+  # If levels_per_stats not given, assume one row per statistic
+  if (is.null(levels_per_stats)) levels_per_stats <- as.list(stats) %>% setNames(stats)
 
   # Apply custom formats
-  out <- .adjust_stats_desc_by_in_def(formats_stats, formats_in, tern_default_formats)
+  out <- .adjust_stats_desc_by_in_def(levels_per_stats, formats_in, formats_default)
 
-  # Set missing formats to NULL
-  null_stats <- sapply(out, is.na) %>% suppressWarnings()
-  out[null_stats] <- list(NULL)
+  # Default to NULL if no format
+  out[names(out) == out] <- list(NULL)
 
   out
 }
@@ -293,7 +296,10 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 #' get_labels_from_stats(all_cnt_occ, labels_in = list("fraction" = c("Some more fractions")))
 #'
 #' @export
-get_labels_from_stats <- function(stats, labels_in = NULL, levels_per_stats = NULL) {
+get_labels_from_stats <- function(stats,
+                                  labels_in = NULL,
+                                  levels_per_stats = NULL,
+                                  labels_default = tern_default_labels) {
   checkmate::assert_character(stats, min.len = 1)
   # It may be a list
   if (checkmate::test_list(labels_in, null.ok = TRUE)) {
@@ -302,23 +308,13 @@ get_labels_from_stats <- function(stats, labels_in = NULL, levels_per_stats = NU
   } else {
     checkmate::assert_character(labels_in, null.ok = TRUE)
   }
+  checkmate::assert_list(levels_per_stats, null.ok = TRUE)
 
-  # Apply default labels for each row
-  if (!is.null(levels_per_stats)) {
-    if (is.null(names(levels_per_stats))) {
-      levels_per_stats <- rep(NA_character_, length(levels_per_stats)) %>% setNames(levels_per_stats)
-    }
-  } else {
-    levels_per_stats <- rep(NA_character_, length(stats)) %>% setNames(stats)
-  }
+  # If levels_per_stats not given, assume one row per statistic
+  if (is.null(levels_per_stats)) levels_per_stats <- as.list(stats) %>% setNames(stats)
 
   # Apply custom labels
-  out <- .adjust_stats_desc_by_in_def(levels_per_stats, labels_in, tern_default_labels)
-
-  # Set missing labels to stat name
-  no_label <- sapply(out, is.na) %>% suppressWarnings()
-  out[no_label] <- names(out[no_label])
-
+  out <- .adjust_stats_desc_by_in_def(levels_per_stats, labels_in, labels_default)
   out
 }
 
@@ -340,9 +336,11 @@ get_labels_from_stats <- function(stats, labels_in = NULL, levels_per_stats = NU
 #' )
 #'
 #' @export
-get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
+get_indents_from_stats <- function(stats,
+                                   indents_in = NULL,
+                                   levels_per_stats = NULL,
+                                   indents_default = rep(0L, length(stats)) %>% as.list() %>% setNames(stats)) {
   checkmate::assert_character(stats, min.len = 1)
-  checkmate::assert_character(row_nms, null.ok = TRUE)
   # It may be a list
   if (checkmate::test_list(indents_in, null.ok = TRUE)) {
     checkmate::assert_list(indents_in, null.ok = TRUE)
@@ -350,73 +348,62 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
   } else {
     checkmate::assert_integerish(indents_in, null.ok = TRUE)
   }
+  checkmate::assert_list(levels_per_stats, null.ok = TRUE)
+
+  # If levels_per_stats not given, assume one row per statistic
+  if (is.null(levels_per_stats)) levels_per_stats <- as.list(stats) %>% setNames(stats)
 
   # Single indentation level for all rows
   if (is.null(names(indents_in)) && length(indents_in) == 1) {
-    out <- rep(indents_in, length(stats) * if (!is.null(row_nms)) length(row_nms) else 1)
+    out <- rep(indents_in, if (!is.null(levels_per_stats)) length(levels_per_stats %>% unlist()) else 1)
     return(out)
   }
 
-  # Get default indentation
-  all_nms <- if (is.null(row_nms)) {
-    stats
-  } else {
-    paste(rep(stats, each = length(row_nms)), rep(row_nms, length(stats)), sep = ".")
-  }
-  def_indent <- rep(0L, length(all_nms)) %>% setNames(all_nms)
-
   # Apply custom indentation
-  out <- .adjust_stats_desc_by_in_def(def_indent, indents_in, NULL)
+  out <- .adjust_stats_desc_by_in_def(levels_per_stats, indents_in, indents_default)
   out
 }
 
 # Function to loop over each stat and levels to set correct values
 # levels_per_stats - every combo of statistic & level must be represented
-# tern_defaults - one per statistic (names are statistic names)
+# tern_defaults - one per statistic - if rows have custom defaults add these to tern_defaults
 # Order of precedence by info present in name: level and stat > level > stat > other defaults
 .adjust_stats_desc_by_in_def <- function(levels_per_stats, user_in, tern_defaults) {
-  single_stats <- any(names(levels_per_stats) %in% names(tern_defaults))
-  if (is.list(levels_per_stats)) {
-    if (any(names(levels_per_stats) %in% names(tern_defaults))) single_stats <- FALSE
-    null_stats <- sapply(levels_per_stats, is.null)
-    levels_per_stats[null_stats] <- ""
-    levels_per_stats <- lapply(levels_per_stats, function(x) x %>% setNames(x)) %>% unlist()
-    levels_per_stats[names(which(null_stats))] <- NA_character_
-  }
-  out <- levels_per_stats
+  out <- list()
 
-  if (!single_stats) { # One row per combination of variable level and statistic
-    out <- sapply(
-      names(levels_per_stats),
-      function(x) {
-        if (x %in% names(user_in)) {
-          user_in[[x]]
-        } else {
-          stat_lvl <- regmatches(x, regexpr("[.]", x), invert = TRUE)[[1]]
-          stat <- stat_lvl[1]
-          lvl <- stat_lvl[2]
-          if (lvl %in% names(user_in)) {
-            user_in[[lvl]]
-          } else if (stat %in% names(user_in)) {
-            user_in[[stat]]
-          } else { # fill in gaps with tern defaults
-            if ((is.null(out[[x]]) | is.na(out[[x]]))) {
-              if (stat %in% names(tern_defaults)) tern_defaults[[stat]] else x
-            } else {
-              out[[x]]
-            }
-          }
+  for (stat_i in names(levels_per_stats)) {
+    # Get all levels of the statistic
+    all_lvls <- levels_per_stats[[stat_i]]
+
+    if ((length(all_lvls) == 1 && all_lvls == stat_i) || is.null(all_lvls)) { # One row per statistic
+      out[[stat_i]] <- if (stat_i %in% names(user_in)) {   # 1. Check for stat_i in user input
+        user_in[[stat_i]]
+      } else if (stat_i %in% names(tern_defaults)) {       # 2. Check for stat_i in tern defaults
+        tern_defaults[[stat_i]]
+      } else {                                             # 3. Otherwise stat_i
+        stat_i
+      }
+    } else { # One row per combination of variable level and statistic
+      # Loop over levels for each statistic
+      for (lev_i in all_lvls) {
+        # Construct row name (stat_i.lev_i)
+        row_nm <- paste(stat_i, lev_i, sep = ".")
+
+        out[[row_nm]] <- if (row_nm %in% names(user_in)) { # 1. Check for stat_i.lev_i in user input
+          user_in[[row_nm]]
+        } else if (lev_i %in% names(user_in)) {            # 2. Check for lev_i in user input
+          user_in[[lev_i]]
+        } else if (stat_i %in% names(user_in)) {           # 3. Check for stat_i in user input
+          user_in[[stat_i]]
+        } else if (lev_i %in% names(tern_defaults)) {      # 4. Check for lev_i in tern defaults (only used for labels)
+          tern_defaults[[lev_i]]
+        } else if (stat_i %in% names(tern_defaults)) {     # 5. Check for stat_i in tern defaults
+          tern_defaults[[stat_i]]
+        } else {                                           # 6. Otherwise lev_i
+          lev_i
         }
       }
-    )
-  } else { # One row per statistic
-    if (!is.null(user_in)) {
-      common_stats <- intersect(names(out), names(user_in))
-      out[common_stats] <- user_in[common_stats]
     }
-    # fill in gaps with tern defaults
-    common_stats <- intersect(names(out[is.null(out) | is.na(out)]), names(tern_defaults))
-    out[common_stats] <- tern_defaults[common_stats]
   }
 
   out
