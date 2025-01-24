@@ -283,7 +283,7 @@ get_formats_from_stats <- function(stats,
 #' @param row_nms (`character`)\cr See `levels_per_stats`. Deprecation cycle started.
 #'
 #' @return
-#' * `get_labels_from_stats()` returns a named `character` vector of labels (if present in either
+#' * `get_labels_from_stats()` returns a named `list` of labels (if present in either
 #'   `tern_default_labels` or `labels_in`, otherwise `NULL`).
 #'
 #' @examples
@@ -327,14 +327,14 @@ get_labels_from_stats <- function(stats,
 #'
 #' @return
 #' * `get_indents_from_stats()` returns a single indent modifier value to apply to all rows
-#'   or a named numeric vector of indent modifiers (if present, otherwise `NULL`).
+#'   or a named `list` of numeric indent modifiers (if present, otherwise `NULL`).
 #'
 #' @examples
 #' get_indents_from_stats(all_cnt_occ, indents_in = 3L)
 #' get_indents_from_stats(all_cnt_occ, indents_in = list(count = 2L, count_fraction = 5L))
 #' get_indents_from_stats(
 #'   all_cnt_occ,
-#'   indents_in = list(a = 2L, count.a = 1L, count.b = 5L), row_nms = c("a", "b")
+#'   indents_in = list(a = 2L, count.a = 1L, count.b = 5L)
 #' )
 #'
 #' @export
@@ -418,7 +418,6 @@ get_indents_from_stats <- function(stats,
   lapply(lst, function(x) if (is.null(x)) null_placeholder else x) %>%
     unlist(recursive = recursive)
 }
-
 
 #' Update labels according to control specifications
 #'

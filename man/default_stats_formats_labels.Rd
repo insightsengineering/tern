@@ -39,11 +39,26 @@ get_stats(
 
 get_stat_names(stat_results, stat_names_in = NULL)
 
-get_formats_from_stats(stats, formats_in = NULL)
+get_formats_from_stats(
+  stats,
+  formats_in = NULL,
+  levels_per_stats = NULL,
+  tern_defaults = tern_default_formats
+)
 
-get_labels_from_stats(stats, labels_in = NULL, levels_per_stats = NULL)
+get_labels_from_stats(
+  stats,
+  labels_in = NULL,
+  levels_per_stats = NULL,
+  tern_defaults = tern_default_labels
+)
 
-get_indents_from_stats(stats, indents_in = NULL, row_nms = NULL)
+get_indents_from_stats(
+  stats,
+  indents_in = NULL,
+  levels_per_stats = NULL,
+  tern_defaults = rep(0L, length(stats)) \%>\% as.list() \%>\% setNames(stats)
+)
 
 tern_default_stats
 
@@ -75,21 +90,24 @@ a statistical function. See examples for a structure with two statistical result
 \item{formats_in}{(named \code{vector})\cr inserted formats to replace defaults. It can be a
 character vector from \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or a custom format function.}
 
-\item{labels_in}{(named \code{character})\cr inserted labels to replace defaults.}
-
 \item{levels_per_stats}{(named \code{list}/\code{vector} of \code{character} or \code{NULL})\cr Levels of a \code{factor} or \code{character}
 variable, each of which the statistics in \code{.stats} will be calculated for. If this parameter is set, these
 variable levels will be used as the defaults, and the names of the given custom values should
 correspond to levels (or have format \code{statistic.level}) instead of statistics. Can also be
 variable names if rows correspond to different variables instead of levels. Defaults to \code{NULL}.}
 
-\item{indents_in}{(named \code{vector})\cr inserted indent modifiers to replace defaults (default is \code{0L}).}
+\item{tern_defaults}{(\code{list} or \code{vector})\cr defaults to use to fill in missing values if no user input is given.
+Must be of the same type as the values that are being filled in (e.g. indentation must be integers).}
 
-\item{row_nms}{(\code{character})\cr See \code{levels_per_stats}. Deprecation cycle started.}
+\item{labels_in}{(named \code{character})\cr inserted labels to replace defaults.}
+
+\item{indents_in}{(named \code{vector})\cr inserted indent modifiers to replace defaults (default is \code{0L}).}
 
 \item{type}{(\code{string})\cr \code{"numeric"} or \code{"counts"}.}
 
 \item{include_pval}{(\code{flag})\cr same as the \code{add_pval} argument in \code{\link[=get_stats]{get_stats()}}.}
+
+\item{row_nms}{(\code{character})\cr See \code{levels_per_stats}. Deprecation cycle started.}
 }
 \value{
 \itemize{
@@ -102,19 +120,19 @@ statistical outputs.
 }
 
 \itemize{
-\item \code{get_formats_from_stats()} returns a named vector of formats (if present in either
+\item \code{get_formats_from_stats()} returns a named list of formats (if present in either
 \code{tern_default_formats} or \code{formats_in}, otherwise \code{NULL}). Values can be taken from
 \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or a custom function (e.g. \link{formatting_functions}).
 }
 
 \itemize{
-\item \code{get_labels_from_stats()} returns a named \code{character} vector of labels (if present in either
+\item \code{get_labels_from_stats()} returns a named \code{list} of labels (if present in either
 \code{tern_default_labels} or \code{labels_in}, otherwise \code{NULL}).
 }
 
 \itemize{
 \item \code{get_indents_from_stats()} returns a single indent modifier value to apply to all rows
-or a named numeric vector of indent modifiers (if present, otherwise \code{NULL}).
+or a named \code{list} of numeric indent modifiers (if present, otherwise \code{NULL}).
 }
 
 \itemize{
@@ -226,7 +244,7 @@ get_indents_from_stats(all_cnt_occ, indents_in = 3L)
 get_indents_from_stats(all_cnt_occ, indents_in = list(count = 2L, count_fraction = 5L))
 get_indents_from_stats(
   all_cnt_occ,
-  indents_in = list(a = 2L, count.a = 1L, count.b = 5L), row_nms = c("a", "b")
+  indents_in = list(a = 2L, count.a = 1L, count.b = 5L)
 )
 
 summary_formats()
