@@ -175,16 +175,17 @@ a_count_occurrences <- function(df,
 
   # Fill in with formatting defaults if needed
   .stats <- get_stats("count_occurrences", stats_in = .stats)
-  .formats <- get_formats_from_stats(.stats, .formats)
-  .labels <- .unlist_keep_nulls(get_labels_from_stats(.stats, .labels, levels_per_stats = lapply(x_stats, names)))
-  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, row_nms = names(x_stats[[1]]))
-
   x_stats <- x_stats[.stats]
+  levels_per_stats <- lapply(x_stats, names)
+  .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
+  .labels <- get_labels_from_stats(.stats, .labels, levels_per_stats)
+  .indent_mods <- get_indents_from_stats(
+    .stats, .indent_mods, levels_per_stats,
+    indents_default = rep(0L, length(levels_per_stats[[1]])) %>% as.list() %>% setNames(levels_per_stats[[1]])
+  )
 
-  # Ungroup statistics with values for each level of x
-  x_ungrp <- ungroup_stats(x_stats, .formats, list())
-  x_stats <- x_ungrp[["x"]]
-  .formats <- x_ungrp[[".formats"]]
+  # Unlist stats
+  x_stats <- x_stats %>% .unlist_keep_nulls()
 
   # Auto format handling
   .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
@@ -192,9 +193,9 @@ a_count_occurrences <- function(df,
   in_rows(
     .list = x_stats,
     .formats = .formats,
-    .names = .labels,
-    .labels = .labels,
-    .indent_mods = .indent_mods,
+    .names = .labels %>% .unlist_keep_nulls(),
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls(),
     .format_na_strs = na_str
   )
 }
