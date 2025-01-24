@@ -121,6 +121,7 @@ a_count_patients_with_flags <- function(df,
                                         .df_row,
                                         .var = NULL,
                                         .stats = NULL,
+                                        .stat_names_in = NULL,
                                         .formats = NULL,
                                         .labels = NULL,
                                         .indent_mods = NULL,
@@ -138,29 +139,32 @@ a_count_patients_with_flags <- function(df,
 
   # Fill in with formatting defaults if needed
   .stats <- get_stats("count_patients_with_flags", stats_in = .stats)
-  .formats <- get_formats_from_stats(.stats, .formats)
-  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, row_nms = flag_variables)
-  x_nms <- paste(rep(.stats, each = length(flag_variables)), names(flag_variables), sep = ".")
-  .labels <- .unlist_keep_nulls(
-    get_labels_from_stats(.stats, .labels, levels_per_stats = rep(flag_labels, length(.stats)) %>% setNames(x_nms))
+  levels_per_stats <- rep(list(names(flag_variables)), length(.stats)) %>% setNames(.stats)
+  .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats = levels_per_stats)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats = levels_per_stats)
+  .labels <- get_labels_from_stats(
+    .stats, .labels, levels_per_stats = levels_per_stats,
+    labels_default = flag_labels %>% setNames(names(flag_variables))
   )
 
   x_stats <- x_stats[.stats]
 
-  # Ungroup statistics with values for each level of x
-  x_ungrp <- ungroup_stats(x_stats, .formats, list())
-  x_stats <- x_ungrp[["x"]] %>% setNames(x_nms)
-  .formats <- x_ungrp[[".formats"]] %>% setNames(x_nms)
+  # Unlist stats
+  x_stats <- x_stats %>% .unlist_keep_nulls() %>% setNames(names(.formats))
 
   # Auto format handling
   .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
+
+  # Get and check statistical names from defaults
+  .stat_names <- get_stat_names(x_stats, .stat_names_in)
 
   in_rows(
     .list = x_stats,
     .formats = .formats,
     .names = names(.labels),
-    .labels = .labels,
-    .indent_mods = .indent_mods,
+    .stat_names = .stat_names,
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls(),
     .format_na_strs = na_str
   )
 }
@@ -211,12 +215,14 @@ count_patients_with_flags <- function(lyt,
                                       ...,
                                       table_names = paste0("tbl_flags_", var),
                                       .stats = "count_fraction",
+                                      .stat_names_in = NULL,
                                       .formats = list(count_fraction = format_count_fraction_fixed_dp),
                                       .indent_mods = NULL,
                                       .labels = NULL) {
   checkmate::assert_flag(riskdiff)
   extra_args <- list(
-    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
+    .stats = .stats, .stat_names_in = .stat_names_in, .formats = .formats, .labels = .labels,
+    .indent_mods = .indent_mods, na_str = na_str
   )
   s_args <- list(flag_variables = flag_variables, flag_labels = flag_labels, ...)
 
