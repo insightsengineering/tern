@@ -137,7 +137,7 @@ testthat::test_that("get_labels_from_stats works as expected", {
         "catch_me" = "xx"
       )
     ),
-    stats_to_do
+    stats_to_do %>% as.list()
   )
 })
 
@@ -158,7 +158,7 @@ testthat::test_that("get_labels_from_stats with labels in works when adding leve
     c(
       "count.a" = "any A", "count.b" = "COUNT", "count.c" = "Lvl c:",
       "count_fraction.a" = "any A", "count_fraction.b" = "CF: B", "count_fraction.c" = "Lvl c:"
-    )
+    ) %>% as.list()
   )
 })
 
@@ -185,7 +185,7 @@ testthat::test_that("get_labels_from_stats works fine for cases with levels", {
   testthat::expect_equal(
     .unlist_keep_nulls(out),
     c(
-      n.n = "N=",
+      n = "N=",
       count_fraction.a = "AAAA",
       count_fraction.b = "b",
       count_fraction.c = "c",
@@ -211,7 +211,7 @@ testthat::test_that("get_indents_from_stats works as expected", {
     get_indents_from_stats(c(names(stats_to_do), "n"),
       indents_in = stats_to_do
     ),
-    c(stats_to_do, n = 0L)
+    c(stats_to_do, n = 0L) %>% as.list()
   )
 })
 

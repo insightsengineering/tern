@@ -579,7 +579,7 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
   # stat_names are correctly assigned
   testthat::expect_equal(
     res2$stat_name,
-    c("CoUnT", "mean", NA, "something", "n", NA, "something")
+    c("CoUnT", "mean", NA, "something", "CoUnT", NA, "something")
   )
 
   # format for v is correctly printed (added external statistic)
