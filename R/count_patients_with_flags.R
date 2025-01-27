@@ -121,7 +121,7 @@ a_count_patients_with_flags <- function(df,
                                         .df_row,
                                         .var = NULL,
                                         .stats = NULL,
-                                        .stat_names_in = NULL,
+                                        .stat_names = NULL,
                                         .formats = NULL,
                                         .labels = NULL,
                                         .indent_mods = NULL,
@@ -158,7 +158,7 @@ a_count_patients_with_flags <- function(df,
   .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
 
   # Get and check statistical names from defaults
-  .stat_names <- get_stat_names(x_stats, .stat_names_in)
+  .stat_names <- get_stat_names(x_stats, .stat_names)
 
   in_rows(
     .list = x_stats,
@@ -217,13 +217,13 @@ count_patients_with_flags <- function(lyt,
                                       ...,
                                       table_names = paste0("tbl_flags_", var),
                                       .stats = "count_fraction",
-                                      .stat_names_in = NULL,
+                                      .stat_names = NULL,
                                       .formats = list(count_fraction = format_count_fraction_fixed_dp),
                                       .indent_mods = NULL,
                                       .labels = NULL) {
   checkmate::assert_flag(riskdiff)
   extra_args <- list(
-    .stats = .stats, .stat_names_in = .stat_names_in, .formats = .formats, .labels = .labels,
+    .stats = .stats, .stat_names = .stat_names, .formats = .formats, .labels = .labels,
     .indent_mods = .indent_mods, na_str = na_str
   )
   s_args <- list(flag_variables = flag_variables, flag_labels = flag_labels, ...)

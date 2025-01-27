@@ -541,7 +541,7 @@ s_summary.logical <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 a_summary <- function(x,
                       ...,
                       .stats = NULL,
-                      .stat_names_in = NULL,
+                      .stat_names = NULL,
                       .formats = NULL,
                       .labels = NULL,
                       .indent_mods = NULL) {
@@ -640,7 +640,7 @@ a_summary <- function(x,
   )
 
   # Get and check statistical names from defaults
-  .stat_names <- get_stat_names(x_stats, .stat_names_in) # note is x_stats
+  .stat_names <- get_stat_names(x_stats, .stat_names) # note is x_stats
 
   in_rows(
     .list = x_stats,
@@ -745,7 +745,7 @@ analyze_vars <- function(lyt,
                          na_rm = TRUE,
                          compare_with_ref_group = FALSE,
                          .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
-                         .stat_names_in = NULL,
+                         .stat_names = NULL,
                          .formats = NULL,
                          .labels = NULL,
                          .indent_mods = NULL) {
@@ -758,7 +758,7 @@ analyze_vars <- function(lyt,
 
   # Needed defaults
   if (!is.null(.stats)) extra_args[[".stats"]] <- .stats
-  if (!is.null(.stat_names_in)) extra_args[[".stat_names_in"]] <- .stat_names_in
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods

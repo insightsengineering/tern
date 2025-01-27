@@ -19,7 +19,7 @@ count_patients_with_flags(
   ...,
   table_names = paste0("tbl_flags_", var),
   .stats = "count_fraction",
-  .stat_names_in = NULL,
+  .stat_names = NULL,
   .formats = list(count_fraction = format_count_fraction_fixed_dp),
   .indent_mods = NULL,
   .labels = NULL
@@ -46,7 +46,7 @@ a_count_patients_with_flags(
   .df_row,
   .var = NULL,
   .stats = NULL,
-  .stat_names_in = NULL,
+  .stat_names = NULL,
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL,
@@ -88,7 +88,7 @@ times, to avoid warnings from \code{rtables}.}
 
 Options are: \verb{'n', 'count', 'count_fraction', 'count_fraction_fixed_dp', 'n_blq'}}
 
-\item{.stat_names_in}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
 (\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more

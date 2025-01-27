@@ -110,7 +110,7 @@ s_count_values.logical <- function(x, values = TRUE, ...) {
 a_count_values <- function(x,
                            ...,
                            .stats = NULL,
-                           .stat_names_in = NULL,
+                           .stat_names = NULL,
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = NULL) {
@@ -158,7 +158,7 @@ a_count_values <- function(x,
   )
 
   # Get and check statistic names from defaults
-  .stat_names <- get_stat_names(x_stats, .stat_names_in)
+  .stat_names <- get_stat_names(x_stats, .stat_names)
 
   in_rows(
     .list = x_stats,
@@ -195,14 +195,14 @@ count_values <- function(lyt,
                          ...,
                          table_names = vars,
                          .stats = "count_fraction",
-                         .stat_names_in = NULL,
+                         .stat_names = NULL,
                          .formats = c(count_fraction = "xx (xx.xx%)", count = "xx"),
                          .labels = c(count_fraction = paste(values, collapse = ", ")),
                          .indent_mods = NULL) {
   # Process extra args
   extra_args <- list("na_rm" = na_rm, "values" = values, ...)
   if (!is.null(.stats)) extra_args[[".stats"]] <- .stats
-  if (!is.null(.stat_names_in)) extra_args[[".stat_names_in"]] <- .stat_names_in
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods

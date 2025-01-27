@@ -23,7 +23,7 @@
 #' @param .spl_context (`data.frame`)\cr gives information about ancestor split states
 #'   that is passed by `rtables`.
 #' @param .stats (`character`)\cr statistics to select for the table.
-#' @param .stat_names_in (`character`)\cr names of the statistics that are passed directly to name single statistics
+#' @param .stat_names (`character`)\cr names of the statistics that are passed directly to name single statistics
 #'   (`.stats`). This option is visible when producing [rtables::as_result_df()] with `make_ard = TRUE`.
 #' @param .var (`string`)\cr single variable name that is passed by `rtables` when requested
 #'   by a statistics function.

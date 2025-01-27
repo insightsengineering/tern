@@ -539,13 +539,13 @@ testthat::test_that("analyze_vars works correctly with auto formats", {
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("analyze_vars works well with additional stat names (.stat_names_in)", {
+testthat::test_that("analyze_vars works well with additional stat names (.stat_names)", {
   dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4))
   res <- basic_table() %>%
     analyze_vars(
       vars = "VAR",
       .stats = c("n", "mean", "mean_sd", "range"),
-      .stat_names_in = list("n" = "CoUnT"),
+      .stat_names = list("n" = "CoUnT"),
       .formats = c("mean_sd" = "auto", "range" = "auto")
     ) %>%
     build_table(dt) %>%
@@ -554,7 +554,7 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
   testthat::expect_equal(res$stat_name, c("CoUnT", "mean", "mean", "sd", "min", "max"))
 })
 
-testthat::test_that("analyze_vars works well with additional stat names (.stat_names_in) and stats (custom fnc)", {
+testthat::test_that("analyze_vars works well with additional stat names (.stat_names) and stats (custom fnc)", {
   dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4), "VAR2" = letters[seq(5)])
   res <- basic_table() %>%
     analyze_vars(
@@ -567,7 +567,7 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
           return(0)
         }
       ),
-      .stat_names_in = list("n" = "CoUnT", "v" = "something"),
+      .stat_names = list("n" = "CoUnT", "v" = "something"),
       .formats = c("mean" = "auto", "v" = "xx.xx"),
       verbose = FALSE # now it works
     ) %>%
@@ -588,7 +588,7 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
     c("0.00") # i.e. x.xx
   )
 })
-testthat::test_that("analyze_vars works well with additional stat names (.stat_names_in) and stats (custom fnc)", {
+testthat::test_that("analyze_vars works well with additional stat names (.stat_names) and stats (custom fnc)", {
   dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4), "VAR2" = letters[seq(5)])
   res <- basic_table() %>%
     analyze_vars(
@@ -598,7 +598,7 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
           return(0)
         }
       ),
-      .stat_names_in = list("n" = "CoUnT", "v" = "something"),
+      .stat_names = list("n" = "CoUnT", "v" = "something"),
       .formats = c("mean" = "auto", "v" = "xx.xx"),
       .labels = list("n" = "N=", "a" = "AAAA", "a_zero" = "A_ZERO"),
       verbose = FALSE # now it works
