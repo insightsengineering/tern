@@ -21,7 +21,7 @@
 #'   Defaults to `TRUE`.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("summarize_num_patients"))``
+#'   Options are: ``r shQuote(get_stats("summarize_num_patients"), type = "sh")``
 #'
 #' @name summarize_num_patients
 #' @order 1

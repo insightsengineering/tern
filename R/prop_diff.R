@@ -14,7 +14,7 @@
 #' @param method (`string`)\cr the method used for the confidence interval estimation.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("estimate_proportion_diff"))``
+#'   Options are: ``r shQuote(get_stats("estimate_proportion_diff"), type = "sh")``
 #'
 #' @seealso [d_proportion_diff()]
 #'

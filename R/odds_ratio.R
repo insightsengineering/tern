@@ -13,7 +13,7 @@
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("estimate_odds_ratio"))``
+#'   Options are: ``r shQuote(get_stats("estimate_odds_ratio"), type = "sh")``
 #' @param method (`string`)\cr whether to use the correct (`"exact"`) calculation in the conditional likelihood or one
 #'   of the approximations. See [survival::clogit()] for details.
 #'

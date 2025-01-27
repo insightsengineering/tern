@@ -16,7 +16,7 @@
 #' @param thresholds (`numeric`)\cr vector of cutoff values for the counts.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("count_cumulative"))``
+#'   Options are: ``r shQuote(get_stats("count_cumulative"), type = "sh")``
 #'
 #' @seealso Relevant helper function [h_count_cumulative()], and descriptive function [d_count_cumulative()].
 #'

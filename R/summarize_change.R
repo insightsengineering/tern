@@ -14,7 +14,7 @@
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("analyze_vars_numeric"))``
+#'   Options are: ``r shQuote(get_stats("analyze_vars_numeric"), type = "sh")``
 #'
 #' @name summarize_change
 #' @order 1

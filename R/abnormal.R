@@ -25,7 +25,7 @@
 #'   from numerator and denominator.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("abnormal"))``
+#'   Options are: ``r shQuote(get_stats("abnormal"), type = "sh")``
 #'
 #' @note
 #' * `count_abnormal()` only considers a single variable that contains multiple abnormal levels.

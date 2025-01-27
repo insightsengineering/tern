@@ -16,7 +16,7 @@
 #' @param scale (`numeric(1)`)\cr linear scaling factor for rate and confidence intervals. Defaults to `1`.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("summarize_glm_count"))``
+#'   Options are: ``r shQuote(get_stats("summarize_glm_count"), type = "sh")``
 #'
 #' @details
 #' `summarize_glm_count()` uses `s_glm_count()` to calculate the statistics for the table. This

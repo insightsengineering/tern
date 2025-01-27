@@ -31,7 +31,7 @@
 #' @param abnormal (`character`)\cr values identifying the abnormal range level(s) in `.var`.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("abnormal_by_baseline"))``
+#'   Options are: ``r shQuote(get_stats("abnormal_by_baseline"), type = "sh")``
 #'
 #' @note
 #' * `df` should be filtered to include only post-baseline records.

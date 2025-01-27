@@ -61,9 +61,9 @@ control_analyze_vars <- function(conf_level = 0.95,
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options for numeric variables are: ``r shQuote(get_stats("analyze_vars_numeric"))``
+#'   Options for numeric variables are: ``r shQuote(get_stats("analyze_vars_numeric"), type = "sh")``
 #'
-#'   Options for non-numeric variables are: ``r shQuote(get_stats("analyze_vars_counts"))``
+#'   Options for non-numeric variables are: ``r shQuote(get_stats("analyze_vars_counts"), type = "sh")``
 #'
 #' @name analyze_variables
 #' @order 1

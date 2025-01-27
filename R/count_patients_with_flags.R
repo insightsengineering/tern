@@ -18,7 +18,7 @@
 #'   the `.labels` parameter, the `.labels` values will take precedence and replace these labels.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("count_patients_with_flags"))``
+#'   Options are: ``r shQuote(get_stats("count_patients_with_flags"), type = "sh")``
 #'
 #' @seealso [count_patients_with_event]
 #'

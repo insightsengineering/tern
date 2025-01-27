@@ -19,7 +19,7 @@
 #'   Note that in that case the remaining occurrence levels in the table are sorted alphabetically.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("count_occurrences"))``
+#'   Options are: ``r shQuote(get_stats("count_occurrences"), type = "sh")``
 #'
 #' @note By default, occurrences which don't appear in a given row split are dropped from the table and
 #'   the occurrences in the table are sorted alphabetically per row split. Therefore, the corresponding layout

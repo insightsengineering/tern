@@ -30,7 +30,7 @@
 #'   * `direction_var` (`string`)\cr see `direction_var` for more details.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("abnormal_by_worst_grade_worsen"))``
+#'   Options are: ``r shQuote(get_stats("abnormal_by_worst_grade_worsen"), type = "sh")``
 #'
 #' @seealso Relevant helper functions [h_adlb_worsen()] and [h_worsen_counter()] which are used within
 #' [s_count_abnormal_lab_worsen_by_baseline()] to process input data.

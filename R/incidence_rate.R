@@ -21,7 +21,7 @@
 #'   Defaults to `"USUBJID"`.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("estimate_incidence_rate"))``
+#'   Options are: ``r shQuote(get_stats("estimate_incidence_rate"), type = "sh")``
 #' @param summarize (`flag`)\cr whether the function should act as an analyze function (`summarize = FALSE`), or a
 #'   summarize function (`summarize = TRUE`). Defaults to `FALSE`.
 #' @param label_fmt (`string`)\cr how labels should be formatted after a row split occurs if `summarize = TRUE`. The

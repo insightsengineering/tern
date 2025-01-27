@@ -23,7 +23,7 @@
 #' @param custom_label (`string` or `NULL`)\cr if provided and `labelstr` is empty, this will be used as label.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("analyze_patients_exposure_in_cols"))``
+#'   Options are: ``r shQuote(get_stats("analyze_patients_exposure_in_cols"), type = "sh")``
 #'
 #' @name summarize_patients_exposure_in_cols
 #' @order 1

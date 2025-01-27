@@ -19,7 +19,7 @@
 #'   Note that only equality is being accepted as condition.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("count_patients_with_event"))``
+#'   Options are: ``r shQuote(get_stats("count_patients_with_event"), type = "sh")``
 #'
 #' @seealso [count_patients_with_flags()]
 #'

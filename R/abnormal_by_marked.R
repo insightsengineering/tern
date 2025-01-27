@@ -30,7 +30,7 @@
 #'   and last or replicated.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("abnormal_by_marked"))``
+#'   Options are: ``r shQuote(get_stats("abnormal_by_marked"), type = "sh")``
 #'
 #' @note `Single, not last` and `Last or replicated` levels are mutually exclusive. If a patient has
 #'   abnormalities that meet both the `Single, not last` and `Last or replicated` criteria, then the

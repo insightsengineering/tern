@@ -27,7 +27,7 @@
 #'   should be displayed (`FALSE`).
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("count_occurrences_by_grade"))``
+#'   Options are: ``r shQuote(get_stats("count_occurrences_by_grade"), type = "sh")``
 #'
 #' @seealso Relevant helper function [h_append_grade_groups()].
 #'

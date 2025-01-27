@@ -9,7 +9,7 @@
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("estimate_multinomial_response"))``
+#'   Options are: ``r shQuote(get_stats("estimate_multinomial_response"), type = "sh")``
 #'
 #' @seealso Relevant description function [d_onco_rsp_label()].
 #'
