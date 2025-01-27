@@ -763,7 +763,6 @@ analyze_vars <- function(lyt,
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
 
-
   # Adding all additional information from layout to analysis functions (see ?rtables::additional_fun_params)
   extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
   formals(a_summary) <- c(
