@@ -40,20 +40,36 @@
     Code
       res
     Output
-                          count            count_fraction   count_fraction_fixed_dp 
-                        "count"          "count_fraction" "count_fraction_fixed_dp" 
-                       fraction 
-                     "fraction" 
+      $count
+      [1] "count"
+      
+      $count_fraction
+      [1] "count_fraction"
+      
+      $count_fraction_fixed_dp
+      [1] "count_fraction_fixed_dp"
+      
+      $fraction
+      [1] "fraction"
+      
 
 # get_indents_from_stats works as expected
 
     Code
       res
     Output
-                        count          count_fraction count_fraction_fixed_dp 
-                            0                       0                       0 
-                     fraction 
-                            0 
+      $count
+      [1] 0
+      
+      $count_fraction
+      [1] 0
+      
+      $count_fraction_fixed_dp
+      [1] 0
+      
+      $fraction
+      [1] 0
+      
 
 # labels_use_control works as expected
 
@@ -108,46 +124,112 @@
     Code
       res
     Output
-                                  n                           sum 
-                                "n"                         "Sum" 
-                               mean                            sd 
-                             "Mean"                          "SD" 
-                                 se                       mean_sd 
-                               "SE"                   "Mean (SD)" 
-                            mean_se                       mean_ci 
-                        "Mean (SE)"                 "Mean 95% CI" 
-                           mean_sei                      mean_sdi 
-                    "Mean -/+ 1xSE"               "Mean -/+ 1xSD" 
-                          mean_pval                        median 
-      "Mean p-value (H0: mean = 0)"                      "Median" 
-                                mad                     median_ci 
-        "Median Absolute Deviation"               "Median 95% CI" 
-                          quantiles                           iqr 
-                  "25% and 75%-ile"                         "IQR" 
-                              range                           min 
-                        "Min - Max"                     "Minimum" 
-                                max                  median_range 
-                          "Maximum"          "Median (Min - Max)" 
-                                 cv                     geom_mean 
-                           "CV (%)"              "Geometric Mean" 
-                       geom_mean_ci                       geom_cv 
-            "Geometric Mean 95% CI"         "CV % Geometric Mean" 
-                       median_ci_3d                    mean_ci_3d 
-                  "Median (95% CI)"               "Mean (95% CI)" 
-                    geom_mean_ci_3d 
-          "Geometric Mean (95% CI)" 
+      $n
+      [1] "n"
+      
+      $sum
+      [1] "Sum"
+      
+      $mean
+      [1] "Mean"
+      
+      $sd
+      [1] "SD"
+      
+      $se
+      [1] "SE"
+      
+      $mean_sd
+      [1] "Mean (SD)"
+      
+      $mean_se
+      [1] "Mean (SE)"
+      
+      $mean_ci
+      [1] "Mean 95% CI"
+      
+      $mean_sei
+      [1] "Mean -/+ 1xSE"
+      
+      $mean_sdi
+      [1] "Mean -/+ 1xSD"
+      
+      $mean_pval
+      [1] "Mean p-value (H0: mean = 0)"
+      
+      $median
+      [1] "Median"
+      
+      $mad
+      [1] "Median Absolute Deviation"
+      
+      $median_ci
+      [1] "Median 95% CI"
+      
+      $quantiles
+      [1] "25% and 75%-ile"
+      
+      $iqr
+      [1] "IQR"
+      
+      $range
+      [1] "Min - Max"
+      
+      $min
+      [1] "Minimum"
+      
+      $max
+      [1] "Maximum"
+      
+      $median_range
+      [1] "Median (Min - Max)"
+      
+      $cv
+      [1] "CV (%)"
+      
+      $geom_mean
+      [1] "Geometric Mean"
+      
+      $geom_mean_ci
+      [1] "Geometric Mean 95% CI"
+      
+      $geom_cv
+      [1] "CV % Geometric Mean"
+      
+      $median_ci_3d
+      [1] "Median (95% CI)"
+      
+      $mean_ci_3d
+      [1] "Mean (95% CI)"
+      
+      $geom_mean_ci_3d
+      [1] "Geometric Mean (95% CI)"
+      
 
 ---
 
     Code
       res
     Output
-                                 n                        count 
-                               "n"                      "count" 
-                    count_fraction      count_fraction_fixed_dp 
-                  "count_fraction"    "count_fraction_fixed_dp" 
-                          fraction                        n_blq 
-                        "fraction"                      "n_blq" 
-                       pval_counts 
-      "p-value (chi-squared test)" 
+      $n
+      [1] "n"
+      
+      $count
+      [1] "count"
+      
+      $count_fraction
+      [1] "count_fraction"
+      
+      $count_fraction_fixed_dp
+      [1] "count_fraction_fixed_dp"
+      
+      $fraction
+      [1] "fraction"
+      
+      $n_blq
+      [1] "n_blq"
+      
+      $pval_counts
+      [1] "p-value (chi-squared test)"
+      
 

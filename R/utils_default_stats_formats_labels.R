@@ -1,13 +1,21 @@
 #' Get default statistical methods and their associated formats, labels, and indent modifiers
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("experimental")`
 #'
 #' Utility functions to get valid statistic methods for different method groups
 #' (`.stats`) and their associated formats (`.formats`), labels (`.labels`), and indent modifiers
 #' (`.indent_mods`). This utility is used across `tern`, but some of its working principles can be
 #' seen in [analyze_vars()]. See notes to understand why this is experimental.
 #'
-#' @param stats (`character`)\cr statistical methods to get defaults for.
+#' @param stats (`character`)\cr statistical methods to return defaults for.
+#' @param levels_per_stats (named `list` of `character` or `NULL`)\cr named list where the name of each element is a
+#'   statistic from `stats` and each element is the levels of a `factor` or `character` variable (or variable name),
+#'   each corresponding to a single row, for which the named statistic should be calculated for. If a statistic is only
+#'   calculated once (one row), the element can be either `NULL` or the name of the statistic. Each list element will be
+#'   flattened such that the names of the list elements returned by the function have the format `statistic.level` (or
+#'   just `statistic` for statistics calculated for a single row). Defaults to `NULL`.
+#' @param tern_defaults (`list` or `vector`)\cr defaults to use to fill in missing values if no user input is given.
+#'   Must be of the same type as the values that are being filled in (e.g. indentation must be integers).
 #'
 #' @details
 #' Current choices for `type` are `counts` and `numeric` for [analyze_vars()] and affect `get_stats()`.
@@ -121,8 +129,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
   out
 }
 
-
-#' @describeIn default_stats_formats_labels Get statistical NAMES available for a given method
+#' @describeIn default_stats_formats_labels Get statistical *names* available for a given method
 #'   group (analyze function). Please use the `s_*` functions to get the statistical names.
 #' @param stat_results (`list`)\cr list of statistical results. It should be used close to the end of
 #'   a statistical function. See examples for a structure with two statistical results and two groups.
@@ -215,15 +222,14 @@ get_stat_names <- function(stat_results, stat_names_in = NULL) {
 }
 
 #' @describeIn default_stats_formats_labels Get formats corresponding to a list of statistics.
-#'   To check available defaults see `tern::tern_default_formats` list.
+#'   To check available defaults see list `tern::tern_default_formats`.
 #'
-#' @param formats_in (named `vector`)\cr inserted formats to replace defaults. It can be a
-#'   character vector from [formatters::list_valid_format_labels()] or a custom format function.
+#' @param formats_in (named `vector`)\cr custom formats to use instead of defaults. Can be a character vector with
+#'   values from [formatters::list_valid_format_labels()] or custom format functions. Defaults to `NULL` for any rows
+#'   with no value is provided.
 #'
 #' @return
-#' * `get_formats_from_stats()` returns a named vector of formats (if present in either
-#'   `tern_default_formats` or `formats_in`, otherwise `NULL`). Values can be taken from
-#'   [formatters::list_valid_format_labels()] or a custom function (e.g. [formatting_functions]).
+#' * `get_formats_from_stats()` returns a named list of formats as strings or functions.
 #'
 #' @note Formats in `tern` and `rtables` can be functions that take in the table cell value and
 #'   return a string. This is well documented in `vignette("custom_appearance", package = "rtables")`.
@@ -242,7 +248,10 @@ get_stat_names <- function(stat_results, stat_names_in = NULL) {
 #' @seealso [formatting_functions]
 #'
 #' @export
-get_formats_from_stats <- function(stats, formats_in = NULL) {
+get_formats_from_stats <- function(stats,
+                                   formats_in = NULL,
+                                   levels_per_stats = NULL,
+                                   tern_defaults = tern_default_formats) {
   checkmate::assert_character(stats, min.len = 1)
   # It may be a list if there is a function in the formats
   if (checkmate::test_list(formats_in, null.ok = TRUE)) {
@@ -251,41 +260,28 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
   } else {
     checkmate::assert_character(formats_in, null.ok = TRUE)
   }
+  checkmate::assert_list(levels_per_stats, null.ok = TRUE)
 
-  # Extract global defaults
-  which_fmt <- match(stats, names(tern_default_formats))
+  # If levels_per_stats not given, assume one row per statistic
+  if (is.null(levels_per_stats)) levels_per_stats <- as.list(stats) %>% setNames(stats)
 
-  # Select only needed formats from stats
-  ret <- vector("list", length = length(stats)) # Returning a list is simpler
-  ret[!is.na(which_fmt)] <- tern_default_formats[which_fmt[!is.na(which_fmt)]]
+  # Apply custom formats
+  out <- .fill_in_vals_by_stats(levels_per_stats, formats_in, tern_defaults)
 
-  out <- setNames(ret, stats)
-
-  # Modify some with custom formats
-  if (!is.null(formats_in)) {
-    # Stats is the main
-    common_names <- intersect(names(out), names(formats_in))
-    out[common_names] <- formats_in[common_names]
-  }
+  # Default to NULL if no format
+  out[names(out) == out] <- list(NULL)
 
   out
 }
 
 #' @describeIn default_stats_formats_labels Get labels corresponding to a list of statistics.
-#'   To check for available defaults see `tern::tern_default_labels` list. If not available there,
-#'   the statistics name will be used as label.
+#'   To check for available defaults see list `tern::tern_default_labels`.
 #'
-#' @param labels_in (named `character`)\cr inserted labels to replace defaults.
-#' @param levels_per_stats (named `list` of `character` or `NULL`)\cr Levels of a `factor` or `character` variable, each
-#'   of which the statistics in `.stats` will be calculated for. If this parameter is set, these
-#'   variable levels will be used as the defaults, and the names of the given custom values should
-#'   correspond to levels (or have format `statistic.level`) instead of statistics. Can also be
-#'   variable names if rows correspond to different variables instead of levels. Defaults to `NULL`.
-#' @param row_nms (`character`)\cr See `levels_per_stats`. Deprecation cycle started.
+#' @param labels_in (named `character`)\cr custom labels to use instead of defaults. If no value is provided, the
+#'   variable level (if rows correspond to levels of a variable) or statistic name will be used as label.
 #'
 #' @return
-#' * `get_labels_from_stats()` returns a named `character` vector of labels (if present in either
-#'   `tern_default_labels` or `labels_in`, otherwise `NULL`).
+#' * `get_labels_from_stats()` returns a named list of labels as strings.
 #'
 #' @examples
 #' # Defaults labels
@@ -299,9 +295,11 @@ get_formats_from_stats <- function(stats, formats_in = NULL) {
 #' get_labels_from_stats(all_cnt_occ, labels_in = list("fraction" = c("Some more fractions")))
 #'
 #' @export
-get_labels_from_stats <- function(stats, labels_in = NULL, levels_per_stats = NULL) {
+get_labels_from_stats <- function(stats,
+                                  labels_in = NULL,
+                                  levels_per_stats = NULL,
+                                  tern_defaults = tern_default_labels) {
   checkmate::assert_character(stats, min.len = 1)
-  checkmate::assert_list(levels_per_stats, null.ok = TRUE)
   # It may be a list
   if (checkmate::test_list(labels_in, null.ok = TRUE)) {
     checkmate::assert_list(labels_in, null.ok = TRUE)
@@ -309,51 +307,41 @@ get_labels_from_stats <- function(stats, labels_in = NULL, levels_per_stats = NU
   } else {
     checkmate::assert_character(labels_in, null.ok = TRUE)
   }
+  checkmate::assert_list(levels_per_stats, null.ok = TRUE)
 
-  # Default for stats with sublevels (for factors or chrs) are the labels
-  if (!is.null(levels_per_stats)) {
-    out <- .adjust_stats_desc_by_in_def(levels_per_stats, labels_in, tern_default_labels)
-    # numeric case, where there are not other levels (list of stats)
-  } else {
-    which_lbl <- match(stats, names(tern_default_labels))
+  # If levels_per_stats not given, assume one row per statistic
+  if (is.null(levels_per_stats)) levels_per_stats <- as.list(stats) %>% setNames(stats)
 
-    ret <- stats # The default
-    ret[!is.na(which_lbl)] <- tern_default_labels[which_lbl[!is.na(which_lbl)]]
-
-    out <- setNames(ret, stats)
-
-    # Modify some with custom labels
-    if (!is.null(labels_in)) {
-      # Stats is the main
-      common_names <- intersect(names(out), names(labels_in))
-      out[common_names] <- unlist(labels_in[common_names], recursive = FALSE)
-    }
-  }
-
+  # Apply custom labels
+  out <- .fill_in_vals_by_stats(levels_per_stats, labels_in, tern_defaults)
   out
 }
 
-#' @describeIn default_stats_formats_labels Format indent modifiers for a given vector/list of statistics.
-#'   It defaults to 0L for all values.
+#' @describeIn default_stats_formats_labels Get row indent modifiers corresponding to a list of statistics/rows.
 #'
-#' @param indents_in (named `vector`)\cr inserted indent modifiers to replace defaults (default is `0L`).
+#' @param indents_in (named `integer`)\cr custom row indent modifiers to use instead of defaults. Defaults to `0L` for
+#'   all values.
+#' @param row_nms `r lifecycle::badge("deprecated")` Deprecation cycle started. See the `levels_per_stats` parameter
+#'   for details.
 #'
 #' @return
-#' * `get_indents_from_stats()` returns a single indent modifier value to apply to all rows
-#'   or a named numeric vector of indent modifiers (if present, otherwise `NULL`).
+#' * `get_indents_from_stats()` returns a named list of indentation modifiers as integers.
 #'
 #' @examples
 #' get_indents_from_stats(all_cnt_occ, indents_in = 3L)
 #' get_indents_from_stats(all_cnt_occ, indents_in = list(count = 2L, count_fraction = 5L))
 #' get_indents_from_stats(
 #'   all_cnt_occ,
-#'   indents_in = list(a = 2L, count.a = 1L, count.b = 5L), row_nms = c("a", "b")
+#'   indents_in = list(a = 2L, count.a = 1L, count.b = 5L)
 #' )
 #'
 #' @export
-get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
+get_indents_from_stats <- function(stats,
+                                   indents_in = NULL,
+                                   levels_per_stats = NULL,
+                                   tern_defaults = as.list(rep(0L, length(stats))) %>% setNames(stats),
+                                   row_nms = lifecycle::deprecated()) {
   checkmate::assert_character(stats, min.len = 1)
-  checkmate::assert_character(row_nms, null.ok = TRUE)
   # It may be a list
   if (checkmate::test_list(indents_in, null.ok = TRUE)) {
     checkmate::assert_list(indents_in, null.ok = TRUE)
@@ -361,88 +349,58 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
   } else {
     checkmate::assert_integerish(indents_in, null.ok = TRUE)
   }
+  checkmate::assert_list(levels_per_stats, null.ok = TRUE)
 
+  # If levels_per_stats not given, assume one row per statistic
+  if (is.null(levels_per_stats)) levels_per_stats <- as.list(stats) %>% setNames(stats)
+
+  # Single indentation level for all rows
   if (is.null(names(indents_in)) && length(indents_in) == 1) {
-    out <- rep(indents_in, length(stats) * if (!is.null(row_nms)) length(row_nms) else 1)
+    out <- rep(indents_in, length(levels_per_stats %>% unlist()))
     return(out)
   }
 
-  if (!is.null(row_nms)) {
-    ret <- rep(0L, length(stats) * length(row_nms))
-    out <- setNames(ret, paste(rep(stats, each = length(row_nms)), rep(row_nms, length(stats)), sep = "."))
-
-    if (!is.null(indents_in)) {
-      lvl_lbls <- intersect(names(indents_in), row_nms)
-      for (i in lvl_lbls) out[paste(stats, i, sep = ".")] <- indents_in[[i]]
-    }
-  } else {
-    ret <- rep(0L, length(stats))
-    out <- setNames(ret, stats)
-  }
-
-  # Modify some with custom labels
-  if (!is.null(indents_in)) {
-    # Stats is the main
-    common_names <- intersect(names(out), names(indents_in))
-    out[common_names] <- indents_in[common_names]
-  }
-
+  # Apply custom indentation
+  out <- .fill_in_vals_by_stats(levels_per_stats, indents_in, tern_defaults)
   out
 }
 
 # Function to loop over each stat and levels to set correct values
-.adjust_stats_desc_by_in_def <- function(levels_per_stats, user_in, tern_defaults) {
-  out <- levels_per_stats
+.fill_in_vals_by_stats <- function(levels_per_stats, user_in, tern_defaults) {
+  out <- list()
 
-  # Seq over the stats levels (can be also flat (stat$NULL))
-  for (stat_i in seq_along(levels_per_stats)) {
-    # If you want to change all factor levels at once by statistic
-    common_stat_names <- intersect(names(levels_per_stats), names(user_in))
+  for (stat_i in names(levels_per_stats)) {
+    # Get all levels of the statistic
+    all_lvls <- levels_per_stats[[stat_i]]
 
-    # Levels for each statistic
-    nm_of_levs <- levels_per_stats[[stat_i]]
-    # Special case in which only stat$NULL
-    if (is.null(nm_of_levs)) {
-      nm_of_levs <- "a single NULL level"
-    }
-
-    # Loop over levels for each statistic
-    for (lev_i in seq_along(nm_of_levs)) {
-      # If there are no further names (stat$NULL) push label (stat) down to lowest level
-      if (is.null(levels_per_stats[[stat_i]])) {
-        lev_val <- names(levels_per_stats[stat_i])
-        out[[stat_i]] <- lev_val
-      } else {
-        lev_val <- levels_per_stats[[stat_i]][[lev_i]]
+    if ((length(all_lvls) == 1 && all_lvls == stat_i) || is.null(all_lvls)) { # One row per statistic
+      out[[stat_i]] <- if (stat_i %in% names(user_in)) { # 1. Check for stat_i in user input
+        user_in[[stat_i]]
+      } else if (stat_i %in% names(tern_defaults)) { # 2. Check for stat_i in tern defaults
+        tern_defaults[[stat_i]]
+      } else { # 3. Otherwise stat_i
+        stat_i
       }
+    } else { # One row per combination of variable level and statistic
+      # Loop over levels for each statistic
+      for (lev_i in all_lvls) {
+        # Construct row name (stat_i.lev_i)
+        row_nm <- paste(stat_i, lev_i, sep = ".")
 
-      # Add default if it is a stat at last level
-      if (lev_val %in% names(tern_defaults)) {
-        out[[stat_i]][[lev_i]] <- tern_defaults[[lev_val]]
+        out[[row_nm]] <- if (row_nm %in% names(user_in)) { # 1. Check for stat_i.lev_i in user input
+          user_in[[row_nm]]
+        } else if (lev_i %in% names(user_in)) { # 2. Check for lev_i in user input
+          user_in[[lev_i]]
+        } else if (stat_i %in% names(user_in)) { # 3. Check for stat_i in user input
+          user_in[[stat_i]]
+        } else if (lev_i %in% names(tern_defaults)) { # 4. Check for lev_i in tern defaults (only used for labels)
+          tern_defaults[[lev_i]]
+        } else if (stat_i %in% names(tern_defaults)) { # 5. Check for stat_i in tern defaults
+          tern_defaults[[stat_i]]
+        } else { # 6. Otherwise lev_i
+          lev_i
+        }
       }
-
-      # If a general stat was added to the custom labels
-      if (names(levels_per_stats[stat_i]) %in% names(user_in)) {
-        out[[stat_i]][[lev_i]] <- user_in[[names(levels_per_stats[stat_i])]]
-      }
-
-      # If a stat level (e.g. if it is counts levels from table) was added to the custom labels
-      if (lev_val %in% names(user_in)) {
-        out[[stat_i]][[lev_i]] <- user_in[[lev_val]]
-      }
-
-      # If stat_i.lev_val is added to labels_in
-      composite_stat_lev_nm <- paste(
-        names(levels_per_stats[stat_i]),
-        lev_val,
-        sep = "."
-      )
-      if (composite_stat_lev_nm %in% names(user_in)) {
-        out[[stat_i]][[lev_i]] <- user_in[[composite_stat_lev_nm]]
-      }
-
-      # Used by the unlist (to avoid count_fraction1, count_fraction2, etc.)
-      names(out[[stat_i]])[lev_i] <- lev_val
     }
   }
 
@@ -454,7 +412,6 @@ get_indents_from_stats <- function(stats, indents_in = NULL, row_nms = NULL) {
   lapply(lst, function(x) if (is.null(x)) null_placeholder else x) %>%
     unlist(recursive = recursive)
 }
-
 
 #' Update labels according to control specifications
 #'
@@ -645,13 +602,9 @@ tern_default_formats <- c(
 #'
 #' @export
 tern_default_labels <- c(
-  fraction = "fraction",
   unique = "Number of patients with at least one event",
   nonunique = "Number of events",
   n = "n",
-  count = "count",
-  count_fraction = "count_fraction",
-  count_fraction_fixed_dp = "count_fraction_fixed_dp",
   n_blq = "n_blq",
   sum = "Sum",
   mean = "Mean",
@@ -687,8 +640,7 @@ tern_default_labels <- c(
   rate_ratio = "Adjusted Rate Ratio"
 )
 
-#' @describeIn default_stats_formats_labels `r lifecycle::badge("stable")`
-#'   Quick function to retrieve default formats for summary statistics:
+#' @describeIn default_stats_formats_labels Quick function to retrieve default formats for summary statistics:
 #'   [analyze_vars()] and [analyze_vars_in_cols()] principally.
 #'
 #' @param type (`string`)\cr `"numeric"` or `"counts"`.
@@ -706,8 +658,7 @@ summary_formats <- function(type = "numeric", include_pval = FALSE) {
   get_formats_from_stats(get_stats(met_grp, add_pval = include_pval))
 }
 
-#' @describeIn default_stats_formats_labels `r lifecycle::badge("stable")`
-#'   Quick function to retrieve default labels for summary statistics.
+#' @describeIn default_stats_formats_labels Quick function to retrieve default labels for summary statistics.
 #'   Returns labels of descriptive statistics which are understood by `rtables`. Similar to `summary_formats`.
 #'
 #' @param include_pval (`flag`)\cr same as the `add_pval` argument in [get_stats()].

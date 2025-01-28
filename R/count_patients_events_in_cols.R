@@ -22,7 +22,7 @@
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
 #'   In addition to any statistics added using `filters_list`, statistic options are:
-#'   ``r shQuote(get_stats("summarize_patients_events_in_cols"))``
+#'   ``r shQuote(get_stats("summarize_patients_events_in_cols"), type = "sh")``
 #'
 #' @name count_patients_events_in_cols
 #' @order 1

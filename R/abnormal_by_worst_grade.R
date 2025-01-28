@@ -29,7 +29,7 @@
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("abnormal_by_worst_grade"))``
+#'   Options are: ``r shQuote(get_stats("abnormal_by_worst_grade"), type = "sh")``
 #'
 #' @seealso [h_adlb_abnormal_by_worst_grade()] which pre-processes ADLB data frames to be used in
 #'   [count_abnormal_by_worst_grade()].

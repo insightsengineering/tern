@@ -19,7 +19,7 @@
 #'   used to select the specific ANCOVA results. if the interaction is not needed, the default option is `FALSE`.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("summarize_ancova"))``
+#'   Options are: ``r shQuote(get_stats("summarize_ancova"), type = "sh")``
 #'
 #' @name summarize_ancova
 #' @order 1

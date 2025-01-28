@@ -1402,7 +1402,7 @@
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
                           row_name formatted_cell indent_mod row_label
-      1                        n.n              5          0         n
+      1                          n              5          0         n
       2                    count.a              3          0         a
       3                    count.b              1          0         b
       4                    count.c              1          0         c
@@ -1415,7 +1415,7 @@
       11                fraction.a    3/5 (60.0%)          0         a
       12                fraction.b    1/5 (20.0%)          0         b
       13                fraction.c    1/5 (20.0%)          0         c
-      14               n_blq.n_blq              0          0     n_blq
+      14                     n_blq              0          0     n_blq
 
 ---
 
@@ -1425,7 +1425,7 @@
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
                           row_name formatted_cell indent_mod row_label
-      1                        n.n              4          0         n
+      1                          n              4          0         n
       2                    count.A              2          0         A
       3                    count.B              1          0         B
       4                    count.C              1          0         C
@@ -1438,7 +1438,7 @@
       11                fraction.A    2/4 (50.0%)          0         A
       12                fraction.B    1/4 (25.0%)          0         B
       13                fraction.C    1/4 (25.0%)          0         C
-      14               n_blq.n_blq              0          0     n_blq
+      14                     n_blq              0          0     n_blq
 
 ---
 
@@ -1474,7 +1474,7 @@
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
                            row_name formatted_cell indent_mod         row_label
-      1                         n.n           5.00         -1 number of records
+      1                           n           5.00         -1 number of records
       2                     count.a              2          5                 a
       3                     count.b              1          5                 b
       4                     count.c              1          5                 c
@@ -1491,7 +1491,7 @@
       15                 fraction.b    1/5 (20.0%)          0                 b
       16                 fraction.c    1/5 (20.0%)          0                 c
       17                fraction.NA    1/5 (20.0%)          0                NA
-      18                n_blq.n_blq              0          0             n_blq
+      18                      n_blq              0          0             n_blq
 
 # a_summary works with healthy input when compare_with_ref_group = TRUE.
 
@@ -1538,7 +1538,7 @@
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
                           row_name formatted_cell indent_mod                  row_label
-      1                        n.n              5          0                          n
+      1                          n              5          0                          n
       2                    count.a              3          0                          a
       3                    count.b              1          0                          b
       4                    count.c              1          0                          c
@@ -1551,8 +1551,8 @@
       11                fraction.a    3/5 (60.0%)          0                          a
       12                fraction.b    1/5 (20.0%)          0                          b
       13                fraction.c    1/5 (20.0%)          0                          c
-      14               n_blq.n_blq              0          0                      n_blq
-      15   pval_counts.pval_counts         0.9560          0 p-value (chi-squared test)
+      14                     n_blq              0          0                      n_blq
+      15               pval_counts         0.9560          0 p-value (chi-squared test)
 
 ---
 
@@ -1562,7 +1562,7 @@
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
                           row_name formatted_cell indent_mod                  row_label
-      1                        n.n              4          0                          n
+      1                          n              4          0                          n
       2                    count.A              2          0                          A
       3                    count.B              1          0                          B
       4                    count.C              1          0                          C
@@ -1575,8 +1575,8 @@
       11                fraction.A    2/4 (50.0%)          0                          A
       12                fraction.B    1/4 (25.0%)          0                          B
       13                fraction.C    1/4 (25.0%)          0                          C
-      14               n_blq.n_blq              0          0                      n_blq
-      15   pval_counts.pval_counts         0.9074          0 p-value (chi-squared test)
+      14                     n_blq              0          0                      n_blq
+      15               pval_counts         0.9074          0 p-value (chi-squared test)
 
 ---
 
@@ -1613,7 +1613,7 @@
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
                            row_name formatted_cell indent_mod                  row_label
-      1                         n.n           5.00         -1          number of records
+      1                           n           5.00         -1          number of records
       2                     count.a              2          5                          a
       3                     count.b              1          5                          b
       4                     count.c              1          5                          c
@@ -1630,8 +1630,8 @@
       15                 fraction.b    1/5 (20.0%)          0                          b
       16                 fraction.c    1/5 (20.0%)          0                          c
       17                fraction.NA    1/5 (20.0%)          0                         NA
-      18                n_blq.n_blq              0          0                      n_blq
-      19    pval_counts.pval_counts         0.8254          0 p-value (chi-squared test)
+      18                      n_blq              0          0                      n_blq
+      19                pval_counts         0.8254          0 p-value (chi-squared test)
 
 # `analyze_vars` works with healthy input, default `na_rm = TRUE`.
 

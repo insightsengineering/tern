@@ -14,7 +14,7 @@
 #' @param thresholds (`numeric`)\cr minimum number of missed doses the patients had.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("count_missed_doses"))``
+#'   Options are: ``r shQuote(get_stats("count_missed_doses"), type = "sh")``
 #'
 #' @seealso
 #' * Relevant description function [d_count_missed_doses()] which generates labels for [count_missed_doses()].

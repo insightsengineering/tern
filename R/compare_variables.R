@@ -16,9 +16,9 @@
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options for numeric variables are: ``r shQuote(get_stats("analyze_vars_numeric", add_pval = TRUE))``
+#'  Options for numeric variables are: ``r shQuote(get_stats("analyze_vars_numeric", add_pval = TRUE), type = "sh")``
 #'
-#'   Options for non-numeric variables are: ``r shQuote(get_stats("analyze_vars_counts", add_pval = TRUE))``
+#'  Options for non-numeric variables are: ``r shQuote(get_stats("analyze_vars_counts", add_pval = TRUE), type = "sh")``
 #'
 #' @note
 #' * For factor variables, `denom` for factor proportions can only be `n` since the purpose is to compare proportions
@@ -219,7 +219,7 @@ compare_vars <- function(lyt,
                          table_names = vars,
                          section_div = NA_character_,
                          .stats = c("n", "mean_sd", "count_fraction", "pval"),
-                         .stat_names_in = NULL,
+                         .stat_names = NULL,
                          .formats = NULL,
                          .labels = NULL,
                          .indent_mods = NULL) {
@@ -235,7 +235,7 @@ compare_vars <- function(lyt,
     table_names = table_names,
     section_div = section_div,
     .stats = .stats,
-    .stat_names_in = .stat_names_in,
+    .stat_names = .stat_names,
     .formats = .formats,
     .labels = .labels,
     .indent_mods = .indent_mods,

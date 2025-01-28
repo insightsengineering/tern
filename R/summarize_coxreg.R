@@ -7,7 +7,7 @@
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("summarize_coxreg"))``
+#'   Options are: ``r shQuote(get_stats("summarize_coxreg"), type = "sh")``
 #'
 #' @details Cox models are the most commonly used methods to estimate the magnitude of
 #'   the effect in survival analysis. It assumes proportional hazards: the ratio

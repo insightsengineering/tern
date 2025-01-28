@@ -385,17 +385,12 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-           row_name formatted_cell indent_mod  row_label
-      1    Level: 1        2 (20%)          1   Level: 1
-      2       LVL 2        2 (20%)          2      LVL 2
-      3  Count of 3        2 (20%)          0 Count of 3
-      4   Missing 4         0 (0%)          3  Missing 4
-      5           5         0 (0%)          0          5
-      6    Level: 1        2 (20%)          1   Level: 1
-      7       LVL 2        2 (20%)          2      LVL 2
-      8  Count of 3        2 (20%)          0 Count of 3
-      9   Missing 4         0 (0%)          3  Missing 4
-      10          5         0 (0%)          0          5
+          row_name formatted_cell indent_mod  row_label
+      1   Level: 1        2 (20%)          1   Level: 1
+      2      LVL 2        2 (20%)          2      LVL 2
+      3 Count of 3        2 (20%)          0 Count of 3
+      4  Missing 4         0 (0%)          3  Missing 4
+      5          5         0 (0%)          0          5
 
 # count_occurrences_by_grade works with default arguments for intensity
 
@@ -445,29 +440,29 @@
     Code
       res
     Output
-                        A                B       
-                      (N=3)            (N=3)     
-      ———————————————————————————————————————————
-      -Any-       3.00 (100.00%)   3.00 (100.00%)
-      Grade 1-2   1.00 (33.33%)    3.00 (100.00%)
-      1            0.00 (0.00%)    2.00 (66.67%) 
-      2           1.00 (33.33%)    1.00 (33.33%) 
-      Grade 3-5   2.00 (66.67%)     0.00 (0.00%) 
-      3           2.00 (66.67%)     0.00 (0.00%) 
-      4            0.00 (0.00%)     0.00 (0.00%) 
-      5            0.00 (0.00%)     0.00 (0.00%) 
+                      A           B    
+                    (N=3)       (N=3)  
+      —————————————————————————————————
+      -Any-       3 (100%)    3 (100%) 
+      Grade 1-2   1 (33.3%)   3 (100%) 
+      1               0       2 (66.7%)
+      2           1 (33.3%)   1 (33.3%)
+      Grade 3-5   2 (66.7%)       0    
+      3           2 (66.7%)       0    
+      4               0           0    
+      5               0           0    
 
 ---
 
     Code
       res
     Output
-                        A                B       
-                      (N=3)            (N=3)     
-      ———————————————————————————————————————————
-      -Any-       3.00 (100.00%)   3.00 (100.00%)
-      Grade 1-2   1.00 (33.33%)    3.00 (100.00%)
-      Grade 3-5   2.00 (66.67%)     0.00 (0.00%) 
+                      A          B    
+                    (N=3)      (N=3)  
+      ————————————————————————————————
+      -Any-       3 (100%)    3 (100%)
+      Grade 1-2   1 (33.3%)   3 (100%)
+      Grade 3-5   2 (66.7%)      0    
 
 # summarize_occurrences_by_grade works with default arguments for intensity
 

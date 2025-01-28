@@ -16,7 +16,7 @@
 #' @param long (`flag`)\cr whether a long description is required.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("estimate_proportion"))``
+#'   Options are: ``r shQuote(get_stats("estimate_proportion"), type = "sh")``
 #'
 #' @seealso [h_proportions]
 #'

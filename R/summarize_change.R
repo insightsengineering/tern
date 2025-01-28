@@ -14,7 +14,7 @@
 #' @inheritParams argument_convention
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("analyze_vars_numeric"))``
+#'   Options are: ``r shQuote(get_stats("analyze_vars_numeric"), type = "sh")``
 #'
 #' @name summarize_change
 #' @order 1
@@ -108,8 +108,8 @@ a_change_from_baseline <- function(df,
     .list = x_stats[.stats],
     .formats = .formats,
     .names = names(.labels),
-    .labels = .labels,
-    .indent_mods = .indent_mods
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
   )
 }
 

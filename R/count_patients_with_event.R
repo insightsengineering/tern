@@ -19,7 +19,7 @@
 #'   Note that only equality is being accepted as condition.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("count_patients_with_event"))``
+#'   Options are: ``r shQuote(get_stats("count_patients_with_event"), type = "sh")``
 #'
 #' @seealso [count_patients_with_flags()]
 #'
@@ -138,8 +138,8 @@ a_count_patients_with_event <- function(df,
     .list = x_stats,
     .formats = .formats,
     .names = names(.labels),
-    .labels = .labels,
-    .indent_mods = .indent_mods,
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls(),
     .format_na_strs = na_str
   )
 }

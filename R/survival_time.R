@@ -21,7 +21,7 @@
 #'   for that statistic's row label.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("surv_time"))``
+#'   Options are: ``r shQuote(get_stats("surv_time"), type = "sh")``
 #'
 #' @examples
 #' library(dplyr)

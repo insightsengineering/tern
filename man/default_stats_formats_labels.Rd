@@ -39,11 +39,27 @@ get_stats(
 
 get_stat_names(stat_results, stat_names_in = NULL)
 
-get_formats_from_stats(stats, formats_in = NULL)
+get_formats_from_stats(
+  stats,
+  formats_in = NULL,
+  levels_per_stats = NULL,
+  tern_defaults = tern_default_formats
+)
 
-get_labels_from_stats(stats, labels_in = NULL, levels_per_stats = NULL)
+get_labels_from_stats(
+  stats,
+  labels_in = NULL,
+  levels_per_stats = NULL,
+  tern_defaults = tern_default_labels
+)
 
-get_indents_from_stats(stats, indents_in = NULL, row_nms = NULL)
+get_indents_from_stats(
+  stats,
+  indents_in = NULL,
+  levels_per_stats = NULL,
+  tern_defaults = as.list(rep(0L, length(stats))) \%>\% setNames(stats),
+  row_nms = lifecycle::deprecated()
+)
 
 tern_default_stats
 
@@ -70,22 +86,30 @@ a statistical function. See examples for a structure with two statistical result
 
 \item{stat_names_in}{(\code{character})\cr custom modification of statistical values.}
 
-\item{stats}{(\code{character})\cr statistical methods to get defaults for.}
+\item{stats}{(\code{character})\cr statistical methods to return defaults for.}
 
-\item{formats_in}{(named \code{vector})\cr inserted formats to replace defaults. It can be a
-character vector from \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or a custom format function.}
+\item{formats_in}{(named \code{vector})\cr custom formats to use instead of defaults. Can be a character vector with
+values from \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or custom format functions. Defaults to \code{NULL} for any rows
+with no value is provided.}
 
-\item{labels_in}{(named \code{character})\cr inserted labels to replace defaults.}
+\item{levels_per_stats}{(named \code{list} of \code{character} or \code{NULL})\cr named list where the name of each element is a
+statistic from \code{stats} and each element is the levels of a \code{factor} or \code{character} variable (or variable name),
+each corresponding to a single row, for which the named statistic should be calculated for. If a statistic is only
+calculated once (one row), the element can be either \code{NULL} or the name of the statistic. Each list element will be
+flattened such that the names of the list elements returned by the function have the format \code{statistic.level} (or
+just \code{statistic} for statistics calculated for a single row). Defaults to \code{NULL}.}
 
-\item{levels_per_stats}{(named \code{list} of \code{character} or \code{NULL})\cr Levels of a \code{factor} or \code{character} variable, each
-of which the statistics in \code{.stats} will be calculated for. If this parameter is set, these
-variable levels will be used as the defaults, and the names of the given custom values should
-correspond to levels (or have format \code{statistic.level}) instead of statistics. Can also be
-variable names if rows correspond to different variables instead of levels. Defaults to \code{NULL}.}
+\item{tern_defaults}{(\code{list} or \code{vector})\cr defaults to use to fill in missing values if no user input is given.
+Must be of the same type as the values that are being filled in (e.g. indentation must be integers).}
 
-\item{indents_in}{(named \code{vector})\cr inserted indent modifiers to replace defaults (default is \code{0L}).}
+\item{labels_in}{(named \code{character})\cr custom labels to use instead of defaults. If no value is provided, the
+variable level (if rows correspond to levels of a variable) or statistic name will be used as label.}
 
-\item{row_nms}{(\code{character})\cr See \code{levels_per_stats}. Deprecation cycle started.}
+\item{indents_in}{(named \code{integer})\cr custom row indent modifiers to use instead of defaults. Defaults to \code{0L} for
+all values.}
+
+\item{row_nms}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Deprecation cycle started. See the \code{levels_per_stats} parameter
+for details.}
 
 \item{type}{(\code{string})\cr \code{"numeric"} or \code{"counts"}.}
 
@@ -102,19 +126,15 @@ statistical outputs.
 }
 
 \itemize{
-\item \code{get_formats_from_stats()} returns a named vector of formats (if present in either
-\code{tern_default_formats} or \code{formats_in}, otherwise \code{NULL}). Values can be taken from
-\code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or a custom function (e.g. \link{formatting_functions}).
+\item \code{get_formats_from_stats()} returns a named list of formats as strings or functions.
 }
 
 \itemize{
-\item \code{get_labels_from_stats()} returns a named \code{character} vector of labels (if present in either
-\code{tern_default_labels} or \code{labels_in}, otherwise \code{NULL}).
+\item \code{get_labels_from_stats()} returns a named list of labels as strings.
 }
 
 \itemize{
-\item \code{get_indents_from_stats()} returns a single indent modifier value to apply to all rows
-or a named numeric vector of indent modifiers (if present, otherwise \code{NULL}).
+\item \code{get_indents_from_stats()} returns a named list of indentation modifiers as integers.
 }
 
 \itemize{
@@ -126,7 +146,7 @@ or a named numeric vector of indent modifiers (if present, otherwise \code{NULL}
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Utility functions to get valid statistic methods for different method groups
 (\code{.stats}) and their associated formats (\code{.formats}), labels (\code{.labels}), and indent modifiers
@@ -144,18 +164,16 @@ Current choices for \code{type} are \code{counts} and \code{numeric} for \code{\
 \item \code{get_stats()}: Get statistics available for a given method
 group (analyze function). To check available defaults see \code{tern::tern_default_stats} list.
 
-\item \code{get_stat_names()}: Get statistical NAMES available for a given method
+\item \code{get_stat_names()}: Get statistical \emph{names} available for a given method
 group (analyze function). Please use the \verb{s_*} functions to get the statistical names.
 
 \item \code{get_formats_from_stats()}: Get formats corresponding to a list of statistics.
-To check available defaults see \code{tern::tern_default_formats} list.
+To check available defaults see list \code{tern::tern_default_formats}.
 
 \item \code{get_labels_from_stats()}: Get labels corresponding to a list of statistics.
-To check for available defaults see \code{tern::tern_default_labels} list. If not available there,
-the statistics name will be used as label.
+To check for available defaults see list \code{tern::tern_default_labels}.
 
-\item \code{get_indents_from_stats()}: Format indent modifiers for a given vector/list of statistics.
-It defaults to 0L for all values.
+\item \code{get_indents_from_stats()}: Get row indent modifiers corresponding to a list of statistics/rows.
 
 \item \code{tern_default_stats}: Named list of available statistics by method group for \code{tern}.
 
@@ -163,12 +181,10 @@ It defaults to 0L for all values.
 
 \item \code{tern_default_labels}: Named \code{character} vector of default labels for \code{tern}.
 
-\item \code{summary_formats()}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-Quick function to retrieve default formats for summary statistics:
+\item \code{summary_formats()}: Quick function to retrieve default formats for summary statistics:
 \code{\link[=analyze_vars]{analyze_vars()}} and \code{\link[=analyze_vars_in_cols]{analyze_vars_in_cols()}} principally.
 
-\item \code{summary_labels()}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-Quick function to retrieve default labels for summary statistics.
+\item \code{summary_labels()}: Quick function to retrieve default labels for summary statistics.
 Returns labels of descriptive statistics which are understood by \code{rtables}. Similar to \code{summary_formats}.
 
 }}
@@ -226,7 +242,7 @@ get_indents_from_stats(all_cnt_occ, indents_in = 3L)
 get_indents_from_stats(all_cnt_occ, indents_in = list(count = 2L, count_fraction = 5L))
 get_indents_from_stats(
   all_cnt_occ,
-  indents_in = list(a = 2L, count.a = 1L, count.b = 5L), row_nms = c("a", "b")
+  indents_in = list(a = 2L, count.a = 1L, count.b = 5L)
 )
 
 summary_formats()

@@ -74,6 +74,7 @@ testthat::test_that("get_formats_from_stats works as expected", {
   testthat::expect_equal(res[[1]], "xx.")
 
   testthat::expect_null(get_formats_from_stats(c("nothing", "n"))[["nothing"]])
+  testthat::expect_identical(get_labels_from_stats(c("nothing", "n"))[["nothing"]], "nothing")
 
   # list check
   stats_to_do <- c("not_a_stat" = function(x) as.character(x), "mean" = "xx.")
@@ -136,12 +137,12 @@ testthat::test_that("get_labels_from_stats works as expected", {
         "catch_me" = "xx"
       )
     ),
-    stats_to_do
+    stats_to_do %>% as.list()
   )
 })
 
 testthat::test_that("get_labels_from_stats with labels in works when adding levels to stats", {
-  labels_custom <- c("c" = "Lvl c:", "a" = "CF: A", "count" = "COUNT", "count_fraction.b" = "notB")
+  labels_custom <- c("c" = "Lvl c:", "a" = "any A", "count" = "COUNT", "count_fraction.b" = "CF: B")
   levels_per_stats <- list(
     count = c("a", "b", "c"),
     count_fraction = c("a", "b", "c")
@@ -154,13 +155,12 @@ testthat::test_that("get_labels_from_stats with labels in works when adding leve
       labels_in = labels_custom,
       levels_per_stats = levels_per_stats
     ),
-    list(
-      count = c("a" = "CF: A", "b" = "COUNT", "c" = "Lvl c:"),
-      count_fraction = c("a" = "CF: A", "b" = "notB", "c" = "Lvl c:")
-    )
+    c(
+      "count.a" = "any A", "count.b" = "COUNT", "count.c" = "Lvl c:",
+      "count_fraction.a" = "any A", "count_fraction.b" = "CF: B", "count_fraction.c" = "Lvl c:"
+    ) %>% as.list()
   )
 })
-
 
 testthat::test_that("get_labels_from_stats works fine for cases with levels", {
   x_stats <- list(
@@ -185,14 +185,14 @@ testthat::test_that("get_labels_from_stats works fine for cases with levels", {
   testthat::expect_equal(
     .unlist_keep_nulls(out),
     c(
-      n.n = "N=",
+      n = "N=",
       count_fraction.a = "AAAA",
       count_fraction.b = "b",
       count_fraction.c = "c",
       count_fraction.d = "d",
       count_fraction.e = "e",
-      a_zero.a_zero = "A_ZERO",
-      a_null.a_null = "a_null"
+      a_zero = "A_ZERO",
+      a_null = "a_null"
     )
   )
 })
@@ -211,7 +211,7 @@ testthat::test_that("get_indents_from_stats works as expected", {
     get_indents_from_stats(c(names(stats_to_do), "n"),
       indents_in = stats_to_do
     ),
-    c(stats_to_do, n = 0L)
+    c(stats_to_do, n = 0L) %>% as.list()
   )
 })
 

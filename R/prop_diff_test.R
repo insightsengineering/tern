@@ -12,7 +12,7 @@
 #'   to calculate the p-value.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("test_proportion_diff"))``
+#'   Options are: ``r shQuote(get_stats("test_proportion_diff"), type = "sh")``
 #'
 #' @seealso [h_prop_diff_test]
 #'

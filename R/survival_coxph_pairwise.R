@@ -22,7 +22,7 @@
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
-#'   Options are: ``r shQuote(get_stats("coxph_pairwise"))``
+#'   Options are: ``r shQuote(get_stats("coxph_pairwise"), type = "sh")``
 #'
 #' @name survival_coxph_pairwise
 #' @order 1
