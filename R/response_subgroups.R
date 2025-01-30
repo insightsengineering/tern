@@ -276,7 +276,8 @@ tabulate_rsp_subgroups <- function(lyt,
           x = as.list(.data[[arm_cols[1]]]),
           y = as.list(.data[[arm_cols[2]]]),
           N_x = .data[[arm_cols[3]]],
-          N_y = .data[[arm_cols[4]]]
+          N_y = .data[[arm_cols[4]]],
+          pct = riskdiff$pct
         )
       ) %>%
       dplyr::select(-dplyr::all_of(arm_cols))
