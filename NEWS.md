@@ -2,6 +2,7 @@
 
 ### Bug Fixes
 * Fixed bug in `a_count_patients_with_flags()` preventing select custom label and indentation specification formats from being applied.
+* Fixed bug in `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` preventing the `pct` option from having an effect when adding a risk difference column.
 
 # tern 0.9.7
 
