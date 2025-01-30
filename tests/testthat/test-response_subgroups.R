@@ -306,6 +306,22 @@ testthat::test_that("tabulate_rsp_subgroups riskdiff argument works as expected"
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
+
+  # pct works
+  result <- basic_table() %>%
+    tabulate_rsp_subgroups(
+      df = df,
+      vars = c("n", "prop", "n_tot", "or", "ci", "pval"),
+      riskdiff = control_riskdiff(
+        arm_x = levels(df$prop$arm)[1],
+        arm_y = levels(df$prop$arm)[2],
+        col_label = "Prop. Diff\n(95% CI)",
+        pct = FALSE
+      )
+    )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
 
 testthat::test_that("tabulate_rsp_subgroups pval statistic warning works as expected", {

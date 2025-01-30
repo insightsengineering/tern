@@ -286,4 +286,18 @@ testthat::test_that("tabulate_survival_subgroups riskdiff argument works as expe
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
+
+  # pct works
+  result <- basic_table() %>%
+    tabulate_survival_subgroups(
+      df,
+      time_unit = adtte$AVALU[1],
+      riskdiff = control_riskdiff(
+        col_label = "Prop. Diff\n(95% CI)",
+        pct = FALSE
+      )
+    )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
 })
