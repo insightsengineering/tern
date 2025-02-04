@@ -73,7 +73,7 @@ s_proportion_diff <- function(df,
       "permitted. Please choose a different method."
     ))
   }
-  y <- list(diff = "", diff_ci = "")
+  y <- list(diff = character(), diff_ci = character())
 
   if (!.in_ref_col) {
     rsp <- c(.ref_group[[.var]], df[[.var]])
@@ -215,9 +215,7 @@ a_proportion_diff <- function(df,
 
   # Get and check statistical names from defaults
   .stat_names <- get_stat_names(x_stats, .stat_names) # note is x_stats
-
-  # Empty result when no statistics are calculated (reference group)
-  x_stats <- lapply(x_stats, function(xi) if(!nzchar(xi)) NULL else xi)
+  .stat_names <- paste0(.stat_names, "_", dots_extra_args$method)
 
   in_rows(
     .list = x_stats,
