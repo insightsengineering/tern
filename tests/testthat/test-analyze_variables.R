@@ -584,12 +584,10 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
 
   # format for v is correctly printed (added external statistic)
   testthat::expect_equal(
-    as_result_df(res, data_format = "strings")[nrow(res2), ncol(res2)],
+    as_result_df(res, data_format = "strings")[["all obs"]][nrow(res2)],
     c("0.00") # i.e. x.xx
   )
-})
-testthat::test_that("analyze_vars works well with additional stat names (.stat_names) and stats (custom fnc)", {
-  dt <- data.frame("VAR" = c(0.001, 0.2, 0.0011000, 3, 4), "VAR2" = letters[seq(5)])
+
   res <- basic_table() %>%
     analyze_vars(
       vars = c("VAR", "VAR2"),
