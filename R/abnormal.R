@@ -103,23 +103,15 @@ a_count_abnormal <- function(df,
                              .formats = NULL,
                              .labels = NULL,
                              .indent_mods = NULL) {
+  # Check for additional parameters to the s_* function
   dots_extra_args <- list(...)
-
-  # Check for user-defined functions
-  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
-  .stats <- default_and_custom_stats_list$default_stats
-  custom_stat_functions <- default_and_custom_stats_list$custom_stats
-
-  # Add extra parameters to the s_* function
-  extra_afun_params <- retrieve_extra_afun_params(
-    names(dots_extra_args$.additional_fun_parameters)
-  )
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
   dots_extra_args$.additional_fun_parameters <- NULL
 
-  # Main statistic calculations
+  # Apply s_* function
   x_stats <- .apply_stat_functions(
     default_stat_fnc = s_count_abnormal,
-    custom_stat_fnc_list = custom_stat_functions,
+    custom_stat_fnc_list = NULL,
     args_list = c(
       df = list(df),
       extra_afun_params,
@@ -128,35 +120,23 @@ a_count_abnormal <- function(df,
   )
 
   # Fill in formatting defaults
-  .stats <- c(
-    get_stats("abnormal", stats_in = .stats),
-    names(custom_stat_functions) # Additional stats from custom functions
-  )
-  .formats <- get_formats_from_stats(.stats, .formats)
-  .labels <- .unlist_keep_nulls(get_labels_from_stats(.stats, .labels, levels_per_stats = lapply(x_stats, names)))
-  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, row_nms = names(x_stats[[1]]))
+  .stats <- get_stats("abnormal", stats_in = .stats)
+  levels_per_stats <- lapply(x_stats, names)
+  .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
+  .labels <- get_labels_from_stats(.stats, .labels, levels_per_stats)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
 
   x_stats <- x_stats[.stats]
 
-  # Ungroup statistics with values for each level of x
-  x_ungrp <- ungroup_stats(x_stats, .formats, list())
-  x_stats <- x_ungrp[["x"]]
-  .formats <- x_ungrp[[".formats"]]
-
   # Auto format handling
-  .formats <- apply_auto_formatting(
-    .formats,
-    x_stats,
-    extra_afun_params$.df_row,
-    extra_afun_params$.var
-  )
+  .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
 
   in_rows(
-    .list = x_stats,
+    .list = x_stats %>% .unlist_keep_nulls(),
     .formats = .formats,
-    .names = .labels,
-    .labels = .labels,
-    .indent_mods = .indent_mods
+    .names = .labels %>% .unlist_keep_nulls(),
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
   )
 }
 
