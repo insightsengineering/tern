@@ -156,12 +156,12 @@ a_count_abnormal_by_baseline <- function(df,
                                          .formats = NULL,
                                          .labels = NULL,
                                          .indent_mods = NULL) {
-  # Check for additional parameters to the s_* function
+  # Check for additional parameters to the statistics function
   dots_extra_args <- list(...)
   extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
   dots_extra_args$.additional_fun_parameters <- NULL
 
-  # Apply s_* function
+  # Apply statistics function
   x_stats <- .apply_stat_functions(
     default_stat_fnc = s_count_abnormal_by_baseline,
     custom_stat_fnc_list = NULL,

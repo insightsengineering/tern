@@ -14,8 +14,8 @@ count_abnormal_by_worst_grade(
   na_str = default_na_str(),
   nested = TRUE,
   ...,
-  .stats = NULL,
-  .formats = NULL,
+  .stats = "count_fraction",
+  .formats = list(count_fraction = format_count_fraction),
   .labels = NULL,
   .indent_mods = NULL
 )
@@ -24,14 +24,17 @@ s_count_abnormal_by_worst_grade(
   df,
   .var = "GRADE_ANL",
   .spl_context,
-  variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
+  variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR"),
+  ...
 )
 
 a_count_abnormal_by_worst_grade(
   df,
-  .var = "GRADE_ANL",
-  .spl_context,
-  variables = list(id = "USUBJID", param = "PARAM", grade_dir = "GRADE_DIR")
+  ...,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
