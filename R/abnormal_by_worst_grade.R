@@ -52,7 +52,8 @@ s_count_abnormal_by_worst_grade <- function(df, # nolint
                                               id = "USUBJID",
                                               param = "PARAM",
                                               grade_dir = "GRADE_DIR"
-                                            )) {
+                                            ),
+                                            ...) {
   checkmate::assert_string(.var)
   assert_valid_factor(df[[.var]])
   assert_valid_factor(df[[variables$param]])

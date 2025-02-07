@@ -51,7 +51,8 @@ s_count_abnormal_by_marked <- function(df,
                                        .var = "AVALCAT1",
                                        .spl_context,
                                        category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
-                                       variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir")) {
+                                       variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir"),
+                                       ...) {
   checkmate::assert_string(.var)
   checkmate::assert_list(variables)
   checkmate::assert_list(category)

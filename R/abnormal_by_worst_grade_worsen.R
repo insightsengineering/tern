@@ -305,7 +305,8 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
                                                       id = "USUBJID",
                                                       baseline_var = "BTOXGR",
                                                       direction_var = "GRADDR"
-                                                    )) {
+                                                    ),
+                                                    ...) {
   checkmate::assert_string(.var)
   checkmate::assert_set_equal(names(variables), c("id", "baseline_var", "direction_var"))
   checkmate::assert_string(variables$id)
