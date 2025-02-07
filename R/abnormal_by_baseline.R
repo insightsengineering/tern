@@ -44,32 +44,6 @@
 #' @order 1
 NULL
 
-#' Description function for `s_count_abnormal_by_baseline()`
-#'
-#' @description `r lifecycle::badge("stable")`
-#'
-#' Description function that produces the labels for [s_count_abnormal_by_baseline()].
-#'
-#' @inheritParams abnormal_by_baseline
-#'
-#' @return Abnormal category labels for [s_count_abnormal_by_baseline()].
-#'
-#' @examples
-#' d_count_abnormal_by_baseline("LOW")
-#'
-#' @export
-d_count_abnormal_by_baseline <- function(abnormal) {
-  not_abn_name <- paste("Not", tolower(abnormal))
-  abn_name <- paste0(toupper(substr(abnormal, 1, 1)), tolower(substring(abnormal, 2)))
-  total_name <- "Total"
-
-  list(
-    not_abnormal = not_abn_name,
-    abnormal = abn_name,
-    total = total_name
-  )
-}
-
 #' @describeIn abnormal_by_baseline Statistics function for a single `abnormal` level.
 #'
 #' @param na_str (`string`)\cr the explicit `na_level` argument you used in the pre-processing steps (maybe with
@@ -283,4 +257,30 @@ count_abnormal_by_baseline <- function(lyt,
   }
 
   lyt
+}
+
+#' Description function for `s_count_abnormal_by_baseline()`
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Description function that produces the labels for [s_count_abnormal_by_baseline()].
+#'
+#' @inheritParams abnormal_by_baseline
+#'
+#' @return Abnormal category labels for [s_count_abnormal_by_baseline()].
+#'
+#' @examples
+#' d_count_abnormal_by_baseline("LOW")
+#'
+#' @export
+d_count_abnormal_by_baseline <- function(abnormal) {
+  not_abn_name <- paste("Not", tolower(abnormal))
+  abn_name <- paste0(toupper(substr(abnormal, 1, 1)), tolower(substring(abnormal, 2)))
+  total_name <- "Total"
+
+  list(
+    not_abnormal = not_abn_name,
+    abnormal = abn_name,
+    total = total_name
+  )
 }
