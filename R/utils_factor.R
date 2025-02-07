@@ -1,14 +1,23 @@
-#' Combine factor levels
+#' Factor utilities
 #'
 #' @description `r lifecycle::badge("stable")`
 #'
-#' Combine specified old factor Levels in a single new level.
+#' A collection of utility functions for factors.
 #'
-#' @param x (`factor`)\cr factor variable.
+#' @param x (`factor`)\cr factor variable or object to convert (for `as_factor_keep_attributes`).
+#'
+#' @seealso [cut_quantile_bins()] for splitting numeric vectors into quantile bins.
+#'
+#' @name factor_utils
+NULL
+
+#' @describeIn factor_utils Combine specified old factor Levels in a single new level.
+#'
 #' @param levels (`character`)\cr level names to be combined.
 #' @param new_level (`string`)\cr name of new level.
 #'
-#' @return A `factor` with the new levels.
+#' @return
+#' * `combine_levels`: A `factor` with the new levels.
 #'
 #' @examples
 #' x <- factor(letters[1:5], levels = letters[5:1])
@@ -32,18 +41,23 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 
 #' Conversion of a vector to a factor
 #'
-#' Converts `x` to a factor and keeps its attributes. Warns appropriately such that the user
+#' @describeIn factor_utils Converts `x` to a factor and keeps its attributes. Warns appropriately such that the user
 #' can decide whether they prefer converting to factor manually (e.g. for full control of
 #' factor levels).
 #'
-#' @param x (`vector`)\cr object to convert.
 #' @param x_name (`string`)\cr name of `x`.
 #' @param na_level (`string`)\cr the explicit missing level which should be used when converting a character vector.
 #' @param verbose (`flag`)\cr defaults to `TRUE`. It prints out warnings and messages.
 #'
-#' @return A `factor` with same attributes (except class) as `x`. Does not modify `x` if already a `factor`.
+#' @return
+#' * `as_factor_keep_attributes`: A `factor` with same attributes (except class) as `x`. Does not modify `x` if already a `factor`.
 #'
-#' @keywords internal
+#' @examples
+#' a_chr_with_labels <- c("a", "b", NA)
+#' attr(a_chr_with_labels, "label") <- "A character vector with labels"
+#' as_factor_keep_attributes(a_chr_with_labels)
+#'
+#' @export
 as_factor_keep_attributes <- function(x,
                                       x_name = deparse(substitute(x)),
                                       na_level = "<Missing>",
@@ -132,7 +146,8 @@ bins_percent_labels <- function(probs,
 #' @param type (`integer(1)`)\cr type of quantiles to use, see [stats::quantile()] for details.
 #' @param ordered (`flag`)\cr should the result be an ordered factor.
 #'
-#' @return A `factor` variable with appropriately-labeled bins as levels.
+#' @return
+#' * `cut_quantile_bins`: A `factor` variable with appropriately-labeled bins as levels.
 #'
 #' @note Intervals are closed on the right side. That is, the first bin is the interval
 #'   `[-Inf, q1]` where `q1` is the first quantile, the second bin is then `(q1, q2]`, etc.,
@@ -192,16 +207,12 @@ cut_quantile_bins <- function(x,
   )
 }
 
-#' Discard specified levels of a factor
+#' @describeIn factor_utils This discards the observations as well as the levels specified from a factor.
 #'
-#' @description `r lifecycle::badge("stable")`
-#'
-#' This discards the observations as well as the levels specified from a factor.
-#'
-#' @param x (`factor`)\cr the original factor.
 #' @param discard (`character`)\cr levels to discard.
 #'
-#' @return A modified `factor` with observations as well as levels from `discard` dropped.
+#' @return
+#' * `fct_discard`: A modified `factor` with observations as well as levels from `discard` dropped.
 #'
 #' @examples
 #' fct_discard(factor(c("a", "b", "c")), "c")
@@ -215,18 +226,14 @@ fct_discard <- function(x, discard) {
   factor(new_obs, levels = new_levels)
 }
 
-#' Insertion of explicit missing values in a factor
-#'
-#' @description `r lifecycle::badge("stable")`
-#'
-#' This inserts explicit missing values in a factor based on a condition. Additionally,
+#' @describeIn factor_utils This inserts explicit missing values in a factor based on a condition. Additionally,
 #' existing `NA` values will be explicitly converted to given `na_level`.
 #'
-#' @param x (`factor`)\cr the original factor.
 #' @param condition (`logical`)\cr positions at which to insert missing values.
 #' @param na_level (`string`)\cr which level to use for missing values.
 #'
-#' @return A modified `factor` with inserted and existing `NA` converted to `na_level`.
+#' @return
+#' * `fct_explicit_na_if`: A modified `factor` with inserted and existing `NA` converted to `na_level`.
 #'
 #' @seealso [forcats::fct_na_value_to_level()] which is used internally.
 #'
@@ -242,11 +249,7 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
   forcats::fct_drop(x, only = na_level)
 }
 
-#' Collapse factor levels and keep only those new group levels
-#'
-#' @description `r lifecycle::badge("stable")`
-#'
-#' This collapses levels and only keeps those new group levels, in the order provided.
+#' @describeIn factor_utils This collapses levels and only keeps those new group levels, in the order provided.
 #' The returned factor has levels in the order given, with the possible missing level last (this will
 #' only be included if there are missing values).
 #'
@@ -256,7 +259,8 @@ fct_explicit_na_if <- function(x, condition, na_level = "<Missing>") {
 #' @param .na_level (`string`)\cr which level to use for other levels, which should be missing in the
 #'   new factor. Note that this level must not be contained in the new levels specified in `...`.
 #'
-#' @return A modified `factor` with collapsed levels. Values and levels which are not included
+#' @return
+#' * `fct_collapse_only`: A modified `factor` with collapsed levels. Values and levels which are not included
 #'   in the given `character` vector input will be set to the missing level `.na_level`.
 #'
 #' @note Any existing `NA`s in the input vector will not be replaced by the missing level. If needed,
