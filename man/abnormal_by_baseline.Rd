@@ -16,8 +16,8 @@ count_abnormal_by_baseline(
   nested = TRUE,
   ...,
   table_names = abnormal,
-  .stats = NULL,
-  .formats = NULL,
+  .stats = "fraction",
+  .formats = list(fraction = format_fraction),
   .labels = NULL,
   .indent_mods = NULL
 )
@@ -27,15 +27,17 @@ s_count_abnormal_by_baseline(
   .var,
   abnormal,
   na_str = "<Missing>",
-  variables = list(id = "USUBJID", baseline = "BNRIND")
+  variables = list(id = "USUBJID", baseline = "BNRIND"),
+  ...
 )
 
 a_count_abnormal_by_baseline(
   df,
-  .var,
-  abnormal,
-  na_str = "<Missing>",
-  variables = list(id = "USUBJID", baseline = "BNRIND")
+  ...,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{

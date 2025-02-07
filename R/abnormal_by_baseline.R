@@ -150,10 +150,50 @@ s_count_abnormal_by_baseline <- function(df,
 #' * `a_count_abnormal_by_baseline()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @keywords internal
-a_count_abnormal_by_baseline <- make_afun(
-  s_count_abnormal_by_baseline,
-  .formats = c(fraction = format_fraction)
-)
+a_count_abnormal_by_baseline <- function(df,
+                                         ...,
+                                         .stats = NULL,
+                                         .formats = NULL,
+                                         .labels = NULL,
+                                         .indent_mods = NULL) {
+  # Check for additional parameters to the s_* function
+  dots_extra_args <- list(...)
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
+  dots_extra_args$.additional_fun_parameters <- NULL
+
+  # Apply s_* function
+  x_stats <- .apply_stat_functions(
+    default_stat_fnc = s_count_abnormal_by_baseline,
+    custom_stat_fnc_list = NULL,
+    args_list = c(
+      df = list(df),
+      extra_afun_params,
+      dots_extra_args
+    )
+  )
+
+  # Fill in formatting defaults
+  .stats <- get_stats("abnormal_by_baseline", stats_in = .stats)
+  levels_per_stats <- lapply(x_stats, names)
+  .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
+  .labels <- get_labels_from_stats(
+    .stats, .labels, levels_per_stats, d_count_abnormal_by_baseline(dots_extra_args$abnormal)
+  )
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
+
+  x_stats <- x_stats[.stats]
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
+
+  in_rows(
+    .list = x_stats %>% .unlist_keep_nulls(),
+    .formats = .formats,
+    .names = .labels %>% .unlist_keep_nulls(),
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+  )
+}
 
 #' @describeIn abnormal_by_baseline Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
@@ -203,37 +243,48 @@ count_abnormal_by_baseline <- function(lyt,
                                        nested = TRUE,
                                        ...,
                                        table_names = abnormal,
-                                       .stats = NULL,
-                                       .formats = NULL,
+                                       .stats = "fraction",
+                                       .formats = list(fraction = format_fraction),
                                        .labels = NULL,
                                        .indent_mods = NULL) {
   checkmate::assert_character(abnormal, len = length(table_names), names = "named")
   checkmate::assert_string(var)
 
-  extra_args <- list(abnormal = abnormal, variables = variables, na_str = na_str, ...)
+  # Process standard extra arguments
+  extra_args <- list(".stats" = .stats)
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
 
-  afun <- make_afun(
-    a_count_abnormal_by_baseline,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods,
-    .ungroup_stats = "fraction"
+  # Process additional arguments to the statistic function
+  extra_args <- c(
+    extra_args,
+    "variables" = list(variables),
+    ...
   )
+
+  # Append additional info from layout to the analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_count_abnormal_by_baseline) <- c(
+    formals(a_count_abnormal_by_baseline), extra_args[[".additional_fun_parameters"]]
+  )
+
+  # Add a new table section with label for each value in abnormal
   for (i in seq_along(abnormal)) {
     extra_args[["abnormal"]] <- abnormal[i]
 
     lyt <- analyze(
       lyt = lyt,
       vars = var,
-      var_labels = names(abnormal[i]),
-      afun = afun,
+      afun = a_count_abnormal_by_baseline,
+      var_labels = names(abnormal)[i],
       na_str = na_str,
       nested = nested,
-      table_names = table_names[i],
       extra_args = extra_args,
-      show_labels = "visible"
+      show_labels = "visible",
+      table_names = table_names[i]
     )
   }
+
   lyt
 }

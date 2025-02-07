@@ -17,8 +17,8 @@ count_abnormal(
   nested = TRUE,
   ...,
   table_names = var,
-  .stats = NULL,
-  .formats = NULL,
+  .stats = "fraction",
+  .formats = list(fraction = format_fraction),
   .labels = NULL,
   .indent_mods = NULL
 )
@@ -28,15 +28,17 @@ s_count_abnormal(
   .var,
   abnormal = list(Low = "LOW", High = "HIGH"),
   variables = list(id = "USUBJID", baseline = "BNRIND"),
-  exclude_base_abn = FALSE
+  exclude_base_abn = FALSE,
+  ...
 )
 
 a_count_abnormal(
   df,
-  .var,
-  abnormal = list(Low = "LOW", High = "HIGH"),
-  variables = list(id = "USUBJID", baseline = "BNRIND"),
-  exclude_base_abn = FALSE
+  ...,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
