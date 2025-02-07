@@ -111,6 +111,7 @@ s_count_abnormal_by_marked <- function(df,
 a_count_abnormal_by_marked <- function(df,
                                        ...,
                                        .stats = NULL,
+                                       .stat_names = NULL,
                                        .formats = NULL,
                                        .labels = NULL,
                                        .indent_mods = NULL) {
@@ -142,10 +143,14 @@ a_count_abnormal_by_marked <- function(df,
   # Auto format handling
   .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
 
+  # Get and check statistical names
+  .stat_names <- get_stat_names(x_stats, .stat_names)
+
   in_rows(
     .list = x_stats %>% .unlist_keep_nulls(),
     .formats = .formats,
     .names = .labels %>% .unlist_keep_nulls(),
+    .stat_names = .stat_names,
     .labels = .labels %>% .unlist_keep_nulls(),
     .indent_mods = .indent_mods %>% .unlist_keep_nulls()
   )
@@ -258,6 +263,7 @@ count_abnormal_by_marked <- function(lyt,
                                      nested = TRUE,
                                      ...,
                                      .stats = "count_fraction",
+                                     .stat_names = NULL,
                                      .formats = list(count_fraction = format_count_fraction),
                                      .labels = NULL,
                                      .indent_mods = NULL) {
@@ -265,6 +271,7 @@ count_abnormal_by_marked <- function(lyt,
 
   # Process standard extra arguments
   extra_args <- list(".stats" = .stats)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
