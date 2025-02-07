@@ -26,7 +26,8 @@ s_count_abnormal_by_marked(
   .var = "AVALCAT1",
   .spl_context,
   category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
-  variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir")
+  variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir"),
+  ...
 )
 
 a_count_abnormal_by_marked(
@@ -34,7 +35,8 @@ a_count_abnormal_by_marked(
   .var = "AVALCAT1",
   .spl_context,
   category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
-  variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir")
+  variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir"),
+  ...
 )
 }
 \arguments{

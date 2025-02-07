@@ -257,11 +257,7 @@ count_abnormal_by_baseline <- function(lyt,
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
 
   # Process additional arguments to the statistic function
-  extra_args <- c(
-    extra_args,
-    "variables" = list(variables),
-    ...
-  )
+  extra_args <- c(extra_args, "variables" = list(variables), ...)
 
   # Append additional info from layout to the analysis function
   extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
