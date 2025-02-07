@@ -17,8 +17,9 @@ count_abnormal(
   nested = TRUE,
   ...,
   table_names = var,
-  .stats = NULL,
-  .formats = NULL,
+  .stats = "fraction",
+  .stat_names = NULL,
+  .formats = list(fraction = format_fraction),
   .labels = NULL,
   .indent_mods = NULL
 )
@@ -28,15 +29,18 @@ s_count_abnormal(
   .var,
   abnormal = list(Low = "LOW", High = "HIGH"),
   variables = list(id = "USUBJID", baseline = "BNRIND"),
-  exclude_base_abn = FALSE
+  exclude_base_abn = FALSE,
+  ...
 )
 
 a_count_abnormal(
   df,
-  .var,
-  abnormal = list(Low = "LOW", High = "HIGH"),
-  variables = list(id = "USUBJID", baseline = "BNRIND"),
-  exclude_base_abn = FALSE
+  ...,
+  .stats = NULL,
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -65,6 +69,9 @@ times, to avoid warnings from \code{rtables}.}
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
 Options are: \code{'fraction'}}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}

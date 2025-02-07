@@ -51,7 +51,8 @@ s_count_abnormal_by_marked <- function(df,
                                        .var = "AVALCAT1",
                                        .spl_context,
                                        category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
-                                       variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir")) {
+                                       variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir"),
+                                       ...) {
   checkmate::assert_string(.var)
   checkmate::assert_list(variables)
   checkmate::assert_list(category)
@@ -107,10 +108,53 @@ s_count_abnormal_by_marked <- function(df,
 #' * `a_count_abnormal_by_marked()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @keywords internal
-a_count_abnormal_by_marked <- make_afun(
-  s_count_abnormal_by_marked,
-  .formats = c(count_fraction = format_count_fraction)
-)
+a_count_abnormal_by_marked <- function(df,
+                                       ...,
+                                       .stats = NULL,
+                                       .stat_names = NULL,
+                                       .formats = NULL,
+                                       .labels = NULL,
+                                       .indent_mods = NULL) {
+  # Check for additional parameters to the statistics function
+  dots_extra_args <- list(...)
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
+  dots_extra_args$.additional_fun_parameters <- NULL
+
+  # Apply statistics function
+  x_stats <- .apply_stat_functions(
+    default_stat_fnc = s_count_abnormal_by_marked,
+    custom_stat_fnc_list = NULL,
+    args_list = c(
+      df = list(df),
+      extra_afun_params,
+      dots_extra_args
+    )
+  )
+
+  # Fill in formatting defaults
+  .stats <- get_stats("abnormal_by_marked", stats_in = .stats)
+  levels_per_stats <- lapply(x_stats, names)
+  .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
+  .labels <- get_labels_from_stats(.stats, .labels, levels_per_stats)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
+
+  x_stats <- x_stats[.stats]
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
+
+  # Get and check statistical names
+  .stat_names <- get_stat_names(x_stats, .stat_names)
+
+  in_rows(
+    .list = x_stats %>% .unlist_keep_nulls(),
+    .formats = .formats,
+    .names = .labels %>% .unlist_keep_nulls(),
+    .stat_names = .stat_names,
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+  )
+}
 
 #' @describeIn abnormal_by_marked Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
@@ -218,31 +262,36 @@ count_abnormal_by_marked <- function(lyt,
                                      na_str = default_na_str(),
                                      nested = TRUE,
                                      ...,
-                                     .stats = NULL,
-                                     .formats = NULL,
+                                     .stats = "count_fraction",
+                                     .stat_names = NULL,
+                                     .formats = list(count_fraction = format_count_fraction),
                                      .labels = NULL,
                                      .indent_mods = NULL) {
   checkmate::assert_string(var)
 
-  extra_args <- list(category = category, variables = variables, ...)
+  # Process standard extra arguments
+  extra_args <- list(".stats" = .stats)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
 
-  afun <- make_afun(
-    a_count_abnormal_by_marked,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods,
-    .ungroup_stats = "count_fraction"
+  # Process additional arguments to the statistic function
+  extra_args <- c(extra_args, "category" = list(category), "variables" = list(variables), ...)
+
+  # Append additional info from layout to the analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_count_abnormal_by_marked) <- c(
+    formals(a_count_abnormal_by_marked), extra_args[[".additional_fun_parameters"]]
   )
 
-  lyt <- analyze(
+  analyze(
     lyt = lyt,
     vars = var,
-    afun = afun,
+    afun = a_count_abnormal_by_marked,
     na_str = na_str,
     nested = nested,
-    show_labels = "hidden",
-    extra_args = extra_args
+    extra_args = extra_args,
+    show_labels = "hidden"
   )
-  lyt
 }

@@ -494,7 +494,7 @@ tern_default_stats <- list(
   abnormal_by_baseline = c("fraction"),
   abnormal_by_marked = c("count_fraction", "count_fraction_fixed_dp"),
   abnormal_by_worst_grade = c("count_fraction", "count_fraction_fixed_dp"),
-  abnormal_by_worst_grade_worsen = c("fraction"),
+  abnormal_lab_worsen_by_baseline = c("fraction"),
   analyze_patients_exposure_in_cols = c("n_patients", "sum_exposure"),
   analyze_vars_counts = c("n", "count", "count_fraction", "count_fraction_fixed_dp", "fraction", "n_blq"),
   analyze_vars_numeric = c(
