@@ -300,7 +300,7 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
 #'   "1", "2", "3", "4" and "Any".
 #'
 #' @keywords internal
-s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
+s_count_abnormal_lab_worsen_by_baseline <- function(df,
                                                     .var = "ATOXGR",
                                                     variables = list(
                                                       id = "USUBJID",
@@ -353,8 +353,7 @@ a_count_abnormal_lab_worsen_by_baseline <- function(df,
   .stats <- get_stats("abnormal_lab_worsen_by_baseline", stats_in = .stats)
   levels_per_stats <- lapply(x_stats, names)
   .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
-  .labels <- get_labels_from_stats(.stats, .labels, levels_per_stats#, d_count_abnormal_by_baseline(dots_extra_args$abnormal)
-  )
+  .labels <- get_labels_from_stats(.stats, .labels, levels_per_stats)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
 
   x_stats <- x_stats[.stats]

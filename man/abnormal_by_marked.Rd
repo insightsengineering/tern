@@ -15,8 +15,8 @@ count_abnormal_by_marked(
   na_str = default_na_str(),
   nested = TRUE,
   ...,
-  .stats = NULL,
-  .formats = NULL,
+  .stats = "count_fraction",
+  .formats = list(count_fraction = format_count_fraction),
   .labels = NULL,
   .indent_mods = NULL
 )
@@ -32,11 +32,11 @@ s_count_abnormal_by_marked(
 
 a_count_abnormal_by_marked(
   df,
-  .var = "AVALCAT1",
-  .spl_context,
-  category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
-  variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir"),
-  ...
+  ...,
+  .stats = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
