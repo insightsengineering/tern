@@ -29,6 +29,7 @@
 #'   * `baseline_var` (`string`)\cr name of the data column containing baseline toxicity variable.
 #'   * `direction_var` (`string`)\cr see `direction_var` for more details.
 #' @param .stats (`character`)\cr statistics to select for the table.
+#' @param table_names `r lifecycle::badge("deprecated")` this parameter has no effect.
 #'
 #'   Options are: ``r shQuote(get_stats("abnormal_by_worst_grade_worsen"), type = "sh")``
 #'
@@ -326,11 +327,49 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
 #'   formatted [rtables::CellValue()].
 #'
 #' @keywords internal
-a_count_abnormal_lab_worsen_by_baseline <- make_afun( # nolint
-  s_count_abnormal_lab_worsen_by_baseline,
-  .formats = c(fraction = format_fraction),
-  .ungroup_stats = "fraction"
-)
+a_count_abnormal_lab_worsen_by_baseline <- function(df,
+                                                    ...,
+                                                    .stats = NULL,
+                                                    .formats = NULL,
+                                                    .labels = NULL,
+                                                    .indent_mods = NULL) {
+  # Check for additional parameters to the s_* function
+  dots_extra_args <- list(...)
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
+  dots_extra_args$.additional_fun_parameters <- NULL
+
+  # Apply s_* function
+  x_stats <- .apply_stat_functions(
+    default_stat_fnc = s_count_abnormal_lab_worsen_by_baseline,
+    custom_stat_fnc_list = NULL,
+    args_list = c(
+      df = list(df),
+      extra_afun_params,
+      dots_extra_args
+    )
+  )
+
+  # Fill in formatting defaults
+  .stats <- get_stats("abnormal_lab_worsen_by_baseline", stats_in = .stats)
+  levels_per_stats <- lapply(x_stats, names)
+  .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
+  .labels <- get_labels_from_stats(.stats, .labels, levels_per_stats#, d_count_abnormal_by_baseline(dots_extra_args$abnormal)
+  )
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
+
+  x_stats <- x_stats[.stats]
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
+
+  in_rows(
+    .list = x_stats %>% .unlist_keep_nulls(),
+    .formats = .formats,
+    .names = .labels %>% .unlist_keep_nulls(),
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+  )
+}
 
 #' @describeIn abnormal_by_worst_grade_worsen Layout-creating function which can take statistics function
 #'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
@@ -379,7 +418,7 @@ a_count_abnormal_lab_worsen_by_baseline <- make_afun( # nolint
 #'
 #' @export
 #' @order 2
-count_abnormal_lab_worsen_by_baseline <- function(lyt, # nolint
+count_abnormal_lab_worsen_by_baseline <- function(lyt,
                                                   var,
                                                   variables = list(
                                                     id = "USUBJID",
@@ -389,32 +428,43 @@ count_abnormal_lab_worsen_by_baseline <- function(lyt, # nolint
                                                   na_str = default_na_str(),
                                                   nested = TRUE,
                                                   ...,
-                                                  table_names = NULL,
-                                                  .stats = NULL,
-                                                  .formats = NULL,
+                                                  table_names = lifecycle::deprecated(),
+                                                  .stats = "fraction",
+                                                  .formats = list(fraction = format_fraction),
                                                   .labels = NULL,
                                                   .indent_mods = NULL) {
   checkmate::assert_string(var)
 
-  extra_args <- list(variables = variables, ...)
+  # Deprecated argument warning
+  if (lifecycle::is_present(table_names)) {
+    lifecycle::deprecate_warn(
+      "0.9.8", "count_abnormal_lab_worsen_by_baseline(table_names)",
+      details = "The argument has no effect on the output."
+    )
+  }
 
-  afun <- make_afun(
-    a_count_abnormal_lab_worsen_by_baseline,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods
+  # Process standard extra arguments
+  extra_args <- list(".stats" = .stats)
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Process additional arguments to the statistic function
+  extra_args <- c(extra_args, "variables" = list(variables), ...)
+
+  # Append additional info from layout to the analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_count_abnormal_lab_worsen_by_baseline) <- c(
+    formals(a_count_abnormal_lab_worsen_by_baseline), extra_args[[".additional_fun_parameters"]]
   )
 
-  lyt <- analyze(
+  analyze(
     lyt = lyt,
     vars = var,
-    afun = afun,
+    afun = a_count_abnormal_lab_worsen_by_baseline,
     na_str = na_str,
     nested = nested,
     extra_args = extra_args,
     show_labels = "hidden"
   )
-
-  lyt
 }
