@@ -222,8 +222,8 @@ count_abnormal <- function(lyt,
   formals(a_count_abnormal) <- c(formals(a_count_abnormal), extra_args[[".additional_fun_parameters"]])
 
   analyze(
-    lyt,
-    var,
+    lyt = lyt,
+    vars = var,
     afun = a_count_abnormal,
     na_str = na_str,
     nested = nested,
