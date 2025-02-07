@@ -31,12 +31,12 @@
 #' @param .stats (`character`)\cr statistics to select for the table.
 #' @param table_names `r lifecycle::badge("deprecated")` this parameter has no effect.
 #'
-#'   Options are: ``r shQuote(get_stats("abnormal_by_worst_grade_worsen"), type = "sh")``
+#'   Options are: ``r shQuote(get_stats("abnormal_lab_worsen_by_baseline"), type = "sh")``
 #'
 #' @seealso Relevant helper functions [h_adlb_worsen()] and [h_worsen_counter()] which are used within
 #' [s_count_abnormal_lab_worsen_by_baseline()] to process input data.
 #'
-#' @name abnormal_by_worst_grade_worsen
+#' @name abnormal_lab_worsen_by_baseline
 #' @order 1
 NULL
 
@@ -65,7 +65,7 @@ NULL
 #'   low records are selected for the low direction, and the worst high record are selected
 #'   for the high direction.
 #'
-#' @seealso [abnormal_by_worst_grade_worsen]
+#' @seealso [abnormal_lab_worsen_by_baseline]
 #'
 #' @examples
 #' library(dplyr)
@@ -194,7 +194,7 @@ h_adlb_worsen <- function(adlb,
 #'   whose worst post-baseline lab grades are worse than their baseline grades, for
 #'   post-baseline worst grades "1", "2", "3", "4" and "Any".
 #'
-#' @seealso [abnormal_by_worst_grade_worsen]
+#' @seealso [abnormal_lab_worsen_by_baseline]
 #'
 #' @examples
 #' library(dplyr)
@@ -291,7 +291,7 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
   list(fraction = c(by_grade, list("Any" = c(num = num, denom = denom))))
 }
 
-#' @describeIn abnormal_by_worst_grade_worsen Statistics function for patients whose worst post-baseline
+#' @describeIn abnormal_lab_worsen_by_baseline Statistics function for patients whose worst post-baseline
 #'   lab grades are worse than their baseline grades.
 #'
 #' @return
@@ -319,7 +319,7 @@ s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
   h_worsen_counter(df, variables$id, .var, variables$baseline_var, variables$direction_var)
 }
 
-#' @describeIn abnormal_by_worst_grade_worsen Formatted analysis function which is used as `afun`
+#' @describeIn abnormal_lab_worsen_by_baseline Formatted analysis function which is used as `afun`
 #'   in `count_abnormal_lab_worsen_by_baseline()`.
 #'
 #' @return
@@ -371,7 +371,7 @@ a_count_abnormal_lab_worsen_by_baseline <- function(df,
   )
 }
 
-#' @describeIn abnormal_by_worst_grade_worsen Layout-creating function which can take statistics function
+#' @describeIn abnormal_lab_worsen_by_baseline Layout-creating function which can take statistics function
 #'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
 #' @return

@@ -89,7 +89,7 @@ Collate:
     'abnormal_by_baseline.R'
     'abnormal_by_marked.R'
     'abnormal_by_worst_grade.R'
-    'abnormal_by_worst_grade_worsen.R'
+    'abnormal_lab_worsen_by_baseline.R'
     'analyze_colvars_functions.R'
     'analyze_functions.R'
     'analyze_variables.R'
