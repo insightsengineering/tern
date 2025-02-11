@@ -359,7 +359,7 @@ g_lineplot <- function(df,
     }
 
     # lines - plotted only if there is a strata grouping (group_var)
-    if (grepl("l", mid_type, fixed = TRUE) && !is.null(strata_N)) { # nolint
+    if (grepl("l", mid_type, fixed = TRUE) && !is.null(strata_N)) {
       p <- p + ggplot2::geom_line(position = position, na.rm = TRUE)
     }
   }

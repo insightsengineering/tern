@@ -29,15 +29,200 @@
 #'   * `baseline_var` (`string`)\cr name of the data column containing baseline toxicity variable.
 #'   * `direction_var` (`string`)\cr see `direction_var` for more details.
 #' @param .stats (`character`)\cr statistics to select for the table.
+#' @param table_names `r lifecycle::badge("deprecated")` this parameter has no effect.
 #'
-#'   Options are: ``r shQuote(get_stats("abnormal_by_worst_grade_worsen"), type = "sh")``
+#'   Options are: ``r shQuote(get_stats("abnormal_lab_worsen_by_baseline"), type = "sh")``
 #'
 #' @seealso Relevant helper functions [h_adlb_worsen()] and [h_worsen_counter()] which are used within
 #' [s_count_abnormal_lab_worsen_by_baseline()] to process input data.
 #'
-#' @name abnormal_by_worst_grade_worsen
+#' @name abnormal_lab_worsen_by_baseline
 #' @order 1
 NULL
+
+#' @describeIn abnormal_lab_worsen_by_baseline Statistics function for patients whose worst post-baseline
+#'   lab grades are worse than their baseline grades.
+#'
+#' @return
+#' * `s_count_abnormal_lab_worsen_by_baseline()` returns the counts and fraction of patients whose worst
+#'   post-baseline lab grades are worse than their baseline grades, for post-baseline worst grades
+#'   "1", "2", "3", "4" and "Any".
+#'
+#' @keywords internal
+s_count_abnormal_lab_worsen_by_baseline <- function(df,
+                                                    .var = "ATOXGR",
+                                                    variables = list(
+                                                      id = "USUBJID",
+                                                      baseline_var = "BTOXGR",
+                                                      direction_var = "GRADDR"
+                                                    ),
+                                                    ...) {
+  checkmate::assert_string(.var)
+  checkmate::assert_set_equal(names(variables), c("id", "baseline_var", "direction_var"))
+  checkmate::assert_string(variables$id)
+  checkmate::assert_string(variables$baseline_var)
+  checkmate::assert_string(variables$direction_var)
+  assert_df_with_variables(df, c(aval = .var, variables[1:3]))
+  assert_list_of_variables(variables)
+
+  h_worsen_counter(df, variables$id, .var, variables$baseline_var, variables$direction_var)
+}
+
+#' @describeIn abnormal_lab_worsen_by_baseline Formatted analysis function which is used as `afun`
+#'   in `count_abnormal_lab_worsen_by_baseline()`.
+#'
+#' @return
+#' * `a_count_abnormal_lab_worsen_by_baseline()` returns the corresponding list with
+#'   formatted [rtables::CellValue()].
+#'
+#' @keywords internal
+a_count_abnormal_lab_worsen_by_baseline <- function(df,
+                                                    ...,
+                                                    .stats = NULL,
+                                                    .stat_names = NULL,
+                                                    .formats = NULL,
+                                                    .labels = NULL,
+                                                    .indent_mods = NULL) {
+  # Check for additional parameters to the statistics function
+  dots_extra_args <- list(...)
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
+  dots_extra_args$.additional_fun_parameters <- NULL
+
+  # Apply statistics function
+  x_stats <- .apply_stat_functions(
+    default_stat_fnc = s_count_abnormal_lab_worsen_by_baseline,
+    custom_stat_fnc_list = NULL,
+    args_list = c(
+      df = list(df),
+      extra_afun_params,
+      dots_extra_args
+    )
+  )
+
+  # Fill in formatting defaults
+  .stats <- get_stats("abnormal_lab_worsen_by_baseline", stats_in = .stats)
+  levels_per_stats <- lapply(x_stats, names)
+  .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
+  .labels <- get_labels_from_stats(.stats, .labels, levels_per_stats)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
+
+  x_stats <- x_stats[.stats]
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
+
+  # Get and check statistical names
+  .stat_names <- get_stat_names(x_stats, .stat_names)
+
+  in_rows(
+    .list = x_stats %>% .unlist_keep_nulls(),
+    .formats = .formats,
+    .names = .labels %>% .unlist_keep_nulls(),
+    .stat_names = .stat_names,
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+  )
+}
+
+#' @describeIn abnormal_lab_worsen_by_baseline Layout-creating function which can take statistics function
+#'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
+#'
+#' @return
+#' * `count_abnormal_lab_worsen_by_baseline()` returns a layout object suitable for passing to further layouting
+#'   functions, or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted
+#'   rows containing the statistics from `s_count_abnormal_lab_worsen_by_baseline()` to the table layout.
+#'
+#' @examples
+#' library(dplyr)
+#'
+#' # The direction variable, GRADDR, is based on metadata
+#' adlb <- tern_ex_adlb %>%
+#'   mutate(
+#'     GRADDR = case_when(
+#'       PARAMCD == "ALT" ~ "B",
+#'       PARAMCD == "CRP" ~ "L",
+#'       PARAMCD == "IGA" ~ "H"
+#'     )
+#'   ) %>%
+#'   filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
+#'
+#' df <- h_adlb_worsen(
+#'   adlb,
+#'   worst_flag_low = c("WGRLOFL" = "Y"),
+#'   worst_flag_high = c("WGRHIFL" = "Y"),
+#'   direction_var = "GRADDR"
+#' )
+#'
+#' basic_table() %>%
+#'   split_cols_by("ARMCD") %>%
+#'   add_colcounts() %>%
+#'   split_rows_by("PARAMCD") %>%
+#'   split_rows_by("GRADDR") %>%
+#'   count_abnormal_lab_worsen_by_baseline(
+#'     var = "ATOXGR",
+#'     variables = list(
+#'       id = "USUBJID",
+#'       baseline_var = "BTOXGR",
+#'       direction_var = "GRADDR"
+#'     )
+#'   ) %>%
+#'   append_topleft("Direction of Abnormality") %>%
+#'   build_table(df = df, alt_counts_df = tern_ex_adsl)
+#'
+#' @export
+#' @order 2
+count_abnormal_lab_worsen_by_baseline <- function(lyt,
+                                                  var,
+                                                  variables = list(
+                                                    id = "USUBJID",
+                                                    baseline_var = "BTOXGR",
+                                                    direction_var = "GRADDR"
+                                                  ),
+                                                  na_str = default_na_str(),
+                                                  nested = TRUE,
+                                                  ...,
+                                                  table_names = lifecycle::deprecated(),
+                                                  .stats = "fraction",
+                                                  .stat_names = NULL,
+                                                  .formats = list(fraction = format_fraction),
+                                                  .labels = NULL,
+                                                  .indent_mods = NULL) {
+  checkmate::assert_string(var)
+
+  # Deprecated argument warning
+  if (lifecycle::is_present(table_names)) {
+    lifecycle::deprecate_warn(
+      "0.9.8", "count_abnormal_lab_worsen_by_baseline(table_names)",
+      details = "The argument has no effect on the output."
+    )
+  }
+
+  # Process standard extra arguments
+  extra_args <- list(".stats" = .stats)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Process additional arguments to the statistic function
+  extra_args <- c(extra_args, "variables" = list(variables), ...)
+
+  # Append additional info from layout to the analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_count_abnormal_lab_worsen_by_baseline) <- c(
+    formals(a_count_abnormal_lab_worsen_by_baseline), extra_args[[".additional_fun_parameters"]]
+  )
+
+  analyze(
+    lyt = lyt,
+    vars = var,
+    afun = a_count_abnormal_lab_worsen_by_baseline,
+    na_str = na_str,
+    nested = nested,
+    extra_args = extra_args,
+    show_labels = "hidden"
+  )
+}
 
 #' Helper function to prepare ADLB with worst labs
 #'
@@ -64,7 +249,7 @@ NULL
 #'   low records are selected for the low direction, and the worst high record are selected
 #'   for the high direction.
 #'
-#' @seealso [abnormal_by_worst_grade_worsen]
+#' @seealso [abnormal_lab_worsen_by_baseline]
 #'
 #' @examples
 #' library(dplyr)
@@ -173,7 +358,7 @@ h_adlb_worsen <- function(adlb,
 
   # label
   formatters::var_labels(out) <- formatters::var_labels(adlb_f, fill = FALSE)
-  # NA
+
   out
 }
 
@@ -193,7 +378,7 @@ h_adlb_worsen <- function(adlb,
 #'   whose worst post-baseline lab grades are worse than their baseline grades, for
 #'   post-baseline worst grades "1", "2", "3", "4" and "Any".
 #'
-#' @seealso [abnormal_by_worst_grade_worsen]
+#' @seealso [abnormal_lab_worsen_by_baseline]
 #'
 #' @examples
 #' library(dplyr)
@@ -288,132 +473,4 @@ h_worsen_counter <- function(df, id, .var, baseline_var, direction_var) {
   num <- length(unique(df_temp[union(con1, con2), id, drop = TRUE]))
 
   list(fraction = c(by_grade, list("Any" = c(num = num, denom = denom))))
-}
-
-#' @describeIn abnormal_by_worst_grade_worsen Statistics function for patients whose worst post-baseline
-#'   lab grades are worse than their baseline grades.
-#'
-#' @return
-#' * `s_count_abnormal_lab_worsen_by_baseline()` returns the counts and fraction of patients whose worst
-#'   post-baseline lab grades are worse than their baseline grades, for post-baseline worst grades
-#'   "1", "2", "3", "4" and "Any".
-#'
-#' @keywords internal
-s_count_abnormal_lab_worsen_by_baseline <- function(df, # nolint
-                                                    .var = "ATOXGR",
-                                                    variables = list(
-                                                      id = "USUBJID",
-                                                      baseline_var = "BTOXGR",
-                                                      direction_var = "GRADDR"
-                                                    )) {
-  checkmate::assert_string(.var)
-  checkmate::assert_set_equal(names(variables), c("id", "baseline_var", "direction_var"))
-  checkmate::assert_string(variables$id)
-  checkmate::assert_string(variables$baseline_var)
-  checkmate::assert_string(variables$direction_var)
-  assert_df_with_variables(df, c(aval = .var, variables[1:3]))
-  assert_list_of_variables(variables)
-
-  h_worsen_counter(df, variables$id, .var, variables$baseline_var, variables$direction_var)
-}
-
-#' @describeIn abnormal_by_worst_grade_worsen Formatted analysis function which is used as `afun`
-#'   in `count_abnormal_lab_worsen_by_baseline()`.
-#'
-#' @return
-#' * `a_count_abnormal_lab_worsen_by_baseline()` returns the corresponding list with
-#'   formatted [rtables::CellValue()].
-#'
-#' @keywords internal
-a_count_abnormal_lab_worsen_by_baseline <- make_afun( # nolint
-  s_count_abnormal_lab_worsen_by_baseline,
-  .formats = c(fraction = format_fraction),
-  .ungroup_stats = "fraction"
-)
-
-#' @describeIn abnormal_by_worst_grade_worsen Layout-creating function which can take statistics function
-#'   arguments and additional format arguments. This function is a wrapper for [rtables::analyze()].
-#'
-#' @return
-#' * `count_abnormal_lab_worsen_by_baseline()` returns a layout object suitable for passing to further layouting
-#'   functions, or to [rtables::build_table()]. Adding this function to an `rtable` layout will add formatted
-#'   rows containing the statistics from `s_count_abnormal_lab_worsen_by_baseline()` to the table layout.
-#'
-#' @examples
-#' library(dplyr)
-#'
-#' # The direction variable, GRADDR, is based on metadata
-#' adlb <- tern_ex_adlb %>%
-#'   mutate(
-#'     GRADDR = case_when(
-#'       PARAMCD == "ALT" ~ "B",
-#'       PARAMCD == "CRP" ~ "L",
-#'       PARAMCD == "IGA" ~ "H"
-#'     )
-#'   ) %>%
-#'   filter(SAFFL == "Y" & ONTRTFL == "Y" & GRADDR != "")
-#'
-#' df <- h_adlb_worsen(
-#'   adlb,
-#'   worst_flag_low = c("WGRLOFL" = "Y"),
-#'   worst_flag_high = c("WGRHIFL" = "Y"),
-#'   direction_var = "GRADDR"
-#' )
-#'
-#' basic_table() %>%
-#'   split_cols_by("ARMCD") %>%
-#'   add_colcounts() %>%
-#'   split_rows_by("PARAMCD") %>%
-#'   split_rows_by("GRADDR") %>%
-#'   count_abnormal_lab_worsen_by_baseline(
-#'     var = "ATOXGR",
-#'     variables = list(
-#'       id = "USUBJID",
-#'       baseline_var = "BTOXGR",
-#'       direction_var = "GRADDR"
-#'     )
-#'   ) %>%
-#'   append_topleft("Direction of Abnormality") %>%
-#'   build_table(df = df, alt_counts_df = tern_ex_adsl)
-#'
-#' @export
-#' @order 2
-count_abnormal_lab_worsen_by_baseline <- function(lyt, # nolint
-                                                  var,
-                                                  variables = list(
-                                                    id = "USUBJID",
-                                                    baseline_var = "BTOXGR",
-                                                    direction_var = "GRADDR"
-                                                  ),
-                                                  na_str = default_na_str(),
-                                                  nested = TRUE,
-                                                  ...,
-                                                  table_names = NULL,
-                                                  .stats = NULL,
-                                                  .formats = NULL,
-                                                  .labels = NULL,
-                                                  .indent_mods = NULL) {
-  checkmate::assert_string(var)
-
-  extra_args <- list(variables = variables, ...)
-
-  afun <- make_afun(
-    a_count_abnormal_lab_worsen_by_baseline,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods
-  )
-
-  lyt <- analyze(
-    lyt = lyt,
-    vars = var,
-    afun = afun,
-    na_str = na_str,
-    nested = nested,
-    extra_args = extra_args,
-    show_labels = "hidden"
-  )
-
-  lyt
 }
