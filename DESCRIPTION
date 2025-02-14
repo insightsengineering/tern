@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.9.7.9003
-Date: 2025-01-31
+Version: 0.9.7.9004
+Date: 2025-02-11
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre")),
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@roche.com", role = "aut"),
@@ -89,7 +89,7 @@ Collate:
     'abnormal_by_baseline.R'
     'abnormal_by_marked.R'
     'abnormal_by_worst_grade.R'
-    'abnormal_by_worst_grade_worsen.R'
+    'abnormal_lab_worsen_by_baseline.R'
     'analyze_colvars_functions.R'
     'analyze_functions.R'
     'analyze_variables.R'

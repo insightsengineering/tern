@@ -15,8 +15,9 @@ count_abnormal_by_marked(
   na_str = default_na_str(),
   nested = TRUE,
   ...,
-  .stats = NULL,
-  .formats = NULL,
+  .stats = "count_fraction",
+  .stat_names = NULL,
+  .formats = list(count_fraction = format_count_fraction),
   .labels = NULL,
   .indent_mods = NULL
 )
@@ -26,15 +27,18 @@ s_count_abnormal_by_marked(
   .var = "AVALCAT1",
   .spl_context,
   category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
-  variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir")
+  variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir"),
+  ...
 )
 
 a_count_abnormal_by_marked(
   df,
-  .var = "AVALCAT1",
-  .spl_context,
-  category = list(single = "SINGLE", last_replicated = c("LAST", "REPLICATED")),
-  variables = list(id = "USUBJID", param = "PARAM", direction = "abn_dir")
+  ...,
+  .stats = NULL,
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -56,6 +60,9 @@ underneath analyses, which is not allowed.}
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
 Options are: \verb{'count_fraction', 'count_fraction_fixed_dp'}}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
