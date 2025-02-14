@@ -42,7 +42,7 @@
 #' )
 #'
 #' @export
-h_adsl_adlb_merge_using_worst_flag <- function(adsl, # nolint
+h_adsl_adlb_merge_using_worst_flag <- function(adsl,
                                                adlb,
                                                worst_flag = c("WGRHIFL" = "Y"),
                                                by_visit = FALSE,
