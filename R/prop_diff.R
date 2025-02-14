@@ -193,7 +193,10 @@ a_proportion_diff <- function(df,
   )
 
   # Fill in with stats defaults if needed
-  met_grp <- get_stats("estimate_proportion_diff", stats_in = .stats)
+  .stats <- c(
+    get_stats("estimate_proportion_diff", stats_in = .stats),
+    names(custom_stat_functions)
+  )
 
   x_stats <- x_stats[.stats]
 
