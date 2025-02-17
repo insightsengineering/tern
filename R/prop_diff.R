@@ -205,6 +205,7 @@ a_proportion_diff <- function(df,
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
   if (is.null(.labels)) {
     .labels <- sapply(x_stats, attr, "label")
+    .labels <- .labels[nzchar(.labels)]
   }
   .labels <- get_labels_from_stats(.stats, .labels)
 
