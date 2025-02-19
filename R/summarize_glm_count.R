@@ -121,7 +121,7 @@ summarize_glm_count <- function(lyt,
                                 .stat_names = NULL,
                                 .formats = NULL,
                                 .labels = NULL,
-                                .indent_mods = c(
+                                .indent_mods = list(
                                   "n" = 0L,
                                   "rate" = 0L,
                                   "rate_ci" = 1L,
