@@ -68,8 +68,9 @@ s_odds_ratio <- function(df,
                          variables = list(arm = NULL, strata = NULL),
                          conf_level = 0.95,
                          groups_list = NULL,
-                         method = "exact") {
-  y <- list(or_ci = "", n_tot = "")
+                         method = "exact",
+                         ...) {
+  y <- list(or_ci = as.list(NULL), n_tot = as.list(NULL))
 
   if (!.in_ref_col) {
     assert_proportion_value(conf_level)
@@ -166,11 +167,55 @@ s_odds_ratio <- function(df,
 #' )
 #'
 #' @export
-a_odds_ratio <- make_afun(
-  s_odds_ratio,
-  .formats = c(or_ci = "xx.xx (xx.xx - xx.xx)"),
-  .indent_mods = c(or_ci = 1L)
-)
+a_odds_ratio <- function(df,
+                         ...,
+                         .stats = NULL,
+                         .stat_names = NULL,
+                         .formats = NULL,
+                         .labels = NULL,
+                         .indent_mods = NULL) {
+  # Check for additional parameters to the statistics function
+  dots_extra_args <- list(...)
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
+  dots_extra_args$.additional_fun_parameters <- NULL
+
+  # Apply statistics function
+  x_stats <- .apply_stat_functions(
+    default_stat_fnc = s_odds_ratio,
+    custom_stat_fnc_list = NULL,
+    args_list = c(
+      df = list(df),
+      extra_afun_params,
+      dots_extra_args
+    )
+  )
+
+  # Fill in formatting defaults
+  .stats <- get_stats("estimate_odds_ratio", stats_in = .stats)
+  levels_per_stats <- as.list(.stats) %>% setNames(.stats)
+  x_stats <- x_stats[.stats]
+  .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
+  .labels <- get_labels_from_stats(
+    .stats, .labels, levels_per_stats,
+    tern_defaults = c(lapply(x_stats, attr, "label"), tern_default_labels)
+  )
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
+
+  # Get and check statistical names
+  .stat_names <- get_stat_names(x_stats, .stat_names)
+
+  in_rows(
+    .list = x_stats,
+    .formats = .formats,
+    .names = .labels %>% .unlist_keep_nulls(),
+    .stat_names = .stat_names,
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+  )
+}
 
 #' @describeIn odds_ratio Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
@@ -201,34 +246,44 @@ estimate_odds_ratio <- function(lyt,
                                 variables = list(arm = NULL, strata = NULL),
                                 conf_level = 0.95,
                                 groups_list = NULL,
+                                method = "exact",
                                 na_str = default_na_str(),
                                 nested = TRUE,
-                                method = "exact",
-                                show_labels = "hidden",
+                                ...,
                                 table_names = vars,
+                                show_labels = "hidden",
                                 var_labels = vars,
                                 .stats = "or_ci",
-                                .formats = NULL,
+                                .stat_names = NULL,
+                                .formats = list(or_ci = "xx.xx (xx.xx - xx.xx)"),
                                 .labels = NULL,
                                 .indent_mods = NULL) {
-  extra_args <- list(variables = variables, conf_level = conf_level, groups_list = groups_list, method = method)
+  # Process standard extra arguments
+  extra_args <- list(".stats" = .stats)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
 
-  afun <- make_afun(
-    a_odds_ratio,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods
+  # Process additional arguments to the statistic function
+  extra_args <- c(
+    extra_args,
+    variables = list(variables), conf_level = list(conf_level), groups_list = list(groups_list), method = list(method),
+    ...
   )
 
+  # Append additional info from layout to the analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_odds_ratio) <- c(formals(a_odds_ratio), extra_args[[".additional_fun_parameters"]])
+
   analyze(
-    lyt,
-    vars,
-    afun = afun,
-    var_labels = var_labels,
+    lyt = lyt,
+    vars = vars,
+    afun = a_odds_ratio,
     na_str = na_str,
     nested = nested,
     extra_args = extra_args,
+    var_labels = var_labels,
     show_labels = show_labels,
     table_names = table_names
   )
