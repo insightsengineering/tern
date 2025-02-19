@@ -1,7 +1,7 @@
 # tern 0.9.7.9004
 
 ### Enhancements
-* Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, and `count_abnormal_lab_worsen_by_baseline()` to work without `make_afun()`.
+* Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, `count_abnormal_lab_worsen_by_baseline()`, `summarize_ancova()`, and `summarize_glm_count()` to work without `make_afun()`.
 
 ### Bug Fixes
 * Fixed bug in `a_count_patients_with_flags()` preventing select custom label and indentation specification formats from being applied.
