@@ -3,6 +3,7 @@
 \name{summarize_glm_count}
 \alias{summarize_glm_count}
 \alias{s_glm_count}
+\alias{a_glm_count}
 \title{Summarize Poisson negative binomial regression}
 \usage{
 summarize_glm_count(
@@ -21,24 +22,36 @@ summarize_glm_count(
   show_labels = "visible",
   table_names = vars,
   .stats = get_stats("summarize_glm_count"),
+  .stat_names = NULL,
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = c(n = 0L, rate = 0L, rate_ci = 1L, rate_ratio = 0L, rate_ratio_ci = 1L,
-    pval = 1L)
+  .indent_mods = list(n = 0L, rate = 0L, rate_ci = 1L, rate_ratio = 0L, rate_ratio_ci =
+    1L, pval = 1L)
 )
 
 s_glm_count(
   df,
   .var,
   .df_row,
-  variables,
   .ref_group,
   .in_ref_col,
+  variables,
   distribution,
   conf_level,
   rate_mean_method,
   weights,
-  scale = 1
+  scale = 1,
+  ...
+)
+
+a_glm_count(
+  df,
+  ...,
+  .stats = NULL,
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -90,6 +103,9 @@ times, to avoid warnings from \code{rtables}.}
 
 Options are: \verb{'n', 'rate', 'rate_ci', 'rate_ratio', 'rate_ratio_ci', 'pval'}}
 
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
+
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
 
@@ -128,6 +144,10 @@ the statistics from \code{s_glm_count()} to the table layout.
 \item \code{pval}: p-value.
 }
 }
+
+\itemize{
+\item \code{a_glm_count()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -160,6 +180,8 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 
 \item \code{s_glm_count()}: Statistics function that produces a named list of results
 of the investigated Poisson model.
+
+\item \code{a_glm_count()}: Formatted analysis function which is used as \code{afun} in \code{summarize_glm_count()}.
 
 }}
 \examples{
