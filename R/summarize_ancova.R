@@ -220,7 +220,6 @@ a_ancova <- function(df,
   extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
   dots_extra_args$.additional_fun_parameters <- NULL
 
-  # browser()
   # Apply statistics function
   x_stats <- .apply_stat_functions(
     default_stat_fnc = s_ancova,
@@ -242,7 +241,6 @@ a_ancova <- function(df,
     tern_defaults = c(lapply(x_stats[names(x_stats) != "n"], attr, "label"), tern_default_labels)
   )
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
-
 
   # Auto format handling
   .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
