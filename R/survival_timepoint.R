@@ -47,7 +47,8 @@ s_surv_timepoint <- function(df,
                              .var,
                              time_point,
                              is_event,
-                             control = control_surv_timepoint()) {
+                             control = control_surv_timepoint(),
+                             ...) {
   checkmate::assert_string(.var)
   assert_df_with_variables(df, list(tte = .var, is_event = is_event))
   checkmate::assert_numeric(df[[.var]], min.len = 1, any.missing = FALSE)
@@ -87,29 +88,6 @@ s_surv_timepoint <- function(df,
   )
 }
 
-#' @describeIn survival_timepoint Formatted analysis function which is used as `afun` in `surv_timepoint()`
-#'   when `method = "surv"`.
-#'
-#' @return
-#' * `a_surv_timepoint()` returns the corresponding list with formatted [rtables::CellValue()].
-#'
-#' @keywords internal
-a_surv_timepoint <- make_afun(
-  s_surv_timepoint,
-  .indent_mods = c(
-    pt_at_risk = 0L,
-    event_free_rate = 0L,
-    rate_se = 1L,
-    rate_ci = 1L
-  ),
-  .formats = c(
-    pt_at_risk = "xx",
-    event_free_rate = "xx.xx",
-    rate_se = "xx.xx",
-    rate_ci = "(xx.xx, xx.xx)"
-  )
-)
-
 #' @describeIn survival_timepoint Statistics function which analyzes difference between two survival rates.
 #'
 #' @return
@@ -130,12 +108,12 @@ s_surv_timepoint_diff <- function(df,
   if (.in_ref_col) {
     return(
       list(
-        rate_diff = formatters::with_label("", "Difference in Event Free Rate"),
-        rate_diff_ci = formatters::with_label("", f_conf_level(control$conf_level)),
+        rate_diff = formatters::with_label(numeric(), "Difference in Event Free Rate"),
+        rate_diff_ci = formatters::with_label(numeric(), f_conf_level(control$conf_level)),
         rate_diff_ci_3d = formatters::with_label(
-          "", paste0("Difference in Event Free Rate", f_conf_level(control$conf_level))
+          numeric(), paste0("Difference in Event Free Rate", f_conf_level(control$conf_level))
         ),
-        ztest_pval = formatters::with_label("", "p-value (Z-test)")
+        ztest_pval = formatters::with_label(numeric(), "p-value (Z-test)")
       )
     )
   }
@@ -168,22 +146,60 @@ s_surv_timepoint_diff <- function(df,
   )
 }
 
-#' @describeIn survival_timepoint Formatted analysis function which is used as `afun` in `surv_timepoint()`
-#'   when `method = "surv_diff"`.
+#' @describeIn survival_timepoint Formatted analysis function which is used as `afun` in `surv_timepoint()`.
 #'
 #' @return
-#' * `a_surv_timepoint_diff()` returns the corresponding list with formatted [rtables::CellValue()].
+#' * `a_surv_timepoint()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @keywords internal
-a_surv_timepoint_diff <- make_afun(
-  s_surv_timepoint_diff,
-  .formats = c(
-    rate_diff = "xx.xx",
-    rate_diff_ci = "(xx.xx, xx.xx)",
-    rate_diff_ci_3d = format_xx("xx.xx (xx.xx, xx.xx)"),
-    ztest_pval = "x.xxxx | (<0.0001)"
+a_surv_timepoint <- function(df,
+                             ...,
+                             .stats = NULL,
+                             .stat_names = NULL,
+                             .formats = NULL,
+                             .labels = NULL,
+                             .indent_mods = NULL) {
+  # Check for additional parameters to the statistics function
+  dots_extra_args <- list(...)
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
+  dots_extra_args$.additional_fun_parameters <- NULL
+  method <- dots_extra_args$method
+
+  # Apply statistics function
+  x_stats <- .apply_stat_functions(
+    default_stat_fnc = if (method == "surv") s_surv_timepoint else s_surv_timepoint_diff,
+    custom_stat_fnc_list = NULL,
+    args_list = c(
+      df = list(df),
+      extra_afun_params,
+      dots_extra_args
+    )
   )
-)
+
+  # Fill in formatting defaults
+  .stats <- get_stats(if (method == "surv") "surv_timepoint" else "surv_timepoint_diff", stats_in = .stats)
+  x_stats <- x_stats[.stats]
+  .formats <- get_formats_from_stats(.stats, .formats)
+  .labels <- get_labels_from_stats(
+    .stats, .labels, tern_defaults = c(lapply(x_stats, attr, "label"), tern_default_labels)
+  )
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
+
+  # Get and check statistical names
+  .stat_names <- get_stat_names(x_stats, .stat_names)
+
+  in_rows(
+    .list = x_stats,
+    .formats = .formats,
+    .names = .labels %>% .unlist_keep_nulls(),
+    .stat_names = .stat_names,
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+  )
+}
 
 #' @describeIn survival_timepoint Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
@@ -261,7 +277,8 @@ surv_timepoint <- function(lyt,
                              "pt_at_risk", "event_free_rate", "rate_ci",
                              "rate_diff", "rate_diff_ci", "ztest_pval"
                            ),
-                           .formats = NULL,
+                           .stat_names = NULL,
+                           .formats = list(rate_ci = "(xx.xx, xx.xx)"),
                            .labels = NULL,
                            .indent_mods = if (method == "both") {
                              c(rate_diff = 1L, rate_diff_ci = 2L, ztest_pval = 2L)
@@ -271,65 +288,61 @@ surv_timepoint <- function(lyt,
   method <- match.arg(method)
   checkmate::assert_string(table_names_suffix)
 
-  extra_args <- list(time_point = time_point, is_event = is_event, control = control, ...)
+  # Process standard extra arguments
+  extra_args <- list(".stats" = .stats)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
 
-  f <- list(
-    surv = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci", "event_free_rate_3d"),
-    surv_diff = c("rate_diff", "rate_diff_ci", "ztest_pval", "rate_diff_ci_3d")
-  )
-  .stats <- h_split_param(.stats, .stats, f = f)
-  .formats <- h_split_param(.formats, names(.formats), f = f)
-  .labels <- h_split_param(.labels, names(.labels), f = f)
-  .indent_mods <- h_split_param(.indent_mods, names(.indent_mods), f = f)
-
-  afun_surv <- make_afun(
-    a_surv_timepoint,
-    .stats = .stats$surv,
-    .formats = .formats$surv,
-    .labels = .labels$surv,
-    .indent_mods = .indent_mods$surv
+  # Process additional arguments to the statistic function
+  extra_args <- c(
+    extra_args,
+    time_point = list(time_point), is_event = is_event, control = list(control),
+    ...
   )
 
-  afun_surv_diff <- make_afun(
-    a_surv_timepoint_diff,
-    .stats = .stats$surv_diff,
-    .formats = .formats$surv_diff,
-    .labels = .labels$surv_diff,
-    .indent_mods = .indent_mods$surv_diff
-  )
-
-  time_point <- extra_args$time_point
+  # Append additional info from layout to the analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_surv_timepoint) <- c(formals(a_surv_timepoint), extra_args[[".additional_fun_parameters"]])
 
   for (i in seq_along(time_point)) {
     extra_args[["time_point"]] <- time_point[i]
 
     if (method %in% c("surv", "both")) {
+      extra_args_i <- extra_args
+      extra_args_i[["method"]] <- "surv"
+
       lyt <- analyze(
-        lyt,
-        vars,
-        var_labels = paste(time_point[i], var_labels),
-        table_names = paste0("surv_", time_point[i], table_names_suffix),
-        show_labels = show_labels,
-        afun = afun_surv,
+        lyt = lyt,
+        vars = vars,
+        afun = a_surv_timepoint,
         na_str = na_str,
         nested = nested,
-        extra_args = extra_args
+        extra_args = extra_args_i,
+        var_labels = paste(time_point[i], var_labels),
+        show_labels = show_labels,
+        table_names = paste0("surv_", time_point[i], table_names_suffix)
       )
     }
 
     if (method %in% c("surv_diff", "both")) {
+      extra_args_i <- extra_args
+      extra_args_i[["method"]] <- "surv_diff"
+
       lyt <- analyze(
-        lyt,
-        vars,
-        var_labels = paste(time_point[i], var_labels),
-        table_names = paste0("surv_diff_", time_point[i], table_names_suffix),
-        show_labels = ifelse(method == "both", "hidden", show_labels),
-        afun = afun_surv_diff,
+        lyt = lyt,
+        vars = vars,
+        afun = a_surv_timepoint,
         na_str = na_str,
         nested = nested,
-        extra_args = extra_args
+        extra_args = extra_args_i,
+        var_labels = paste(time_point[i], var_labels),
+        show_labels = ifelse(method == "both", "hidden", show_labels),
+        table_names =  paste0("surv_diff_", time_point[i], table_names_suffix)
       )
     }
   }
+
   lyt
 }

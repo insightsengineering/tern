@@ -526,10 +526,8 @@ tern_default_stats <- list(
     "median", "median_ci", "median_ci_3d", "quantiles",
     "quantiles_lower", "quantiles_upper", "range_censor", "range_event", "range"
   ),
-  surv_timepoint = c(
-    "pt_at_risk", "event_free_rate", "rate_se", "rate_ci", "rate_diff", "rate_diff_ci", "ztest_pval",
-    "event_free_rate_3d"
-  ),
+  surv_timepoint = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci", "event_free_rate_3d"),
+  surv_timepoint_diff = c("rate_diff", "rate_diff_ci", "ztest_pval", "rate_diff_ci_3d"),
   tabulate_rsp_biomarkers = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
   tabulate_rsp_subgroups = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval"),
   tabulate_survival_biomarkers = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
@@ -603,7 +601,10 @@ tern_default_formats <- c(
   n_tot_events = "xx.xx",
   or_ci = "xx.xx (xx.xx - xx.xx)",
   n_prop = "xx (xx.x%)",
-  prop_ci = "(xx.x, xx.x)"
+  prop_ci = "(xx.x, xx.x)",
+  pt_at_risk = "xx",
+  event_free_rate = "xx.xx",
+  rate_se = "xx.xx"
 )
 
 # tern_default_labels ----------------------------------------------------------
