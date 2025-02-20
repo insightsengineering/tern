@@ -118,7 +118,7 @@ a_count_values <- function(x,
 
   # Check for user-defined functions
   default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
-  .stats <- default_and_custom_stats_list$default_stats
+  .stats <- default_and_custom_stats_list$all_stats
   custom_stat_functions <- default_and_custom_stats_list$custom_stats
 
   # Add extra parameters to the s_* function
@@ -139,8 +139,9 @@ a_count_values <- function(x,
   )
 
   # Fill in formatting defaults
-  .stats <- c(
-    get_stats("analyze_vars_counts", stats_in = .stats),
+  .stats <- get_stats("analyze_vars_counts",
+    stats_in = .stats,
+    custom_stats_in = names(custom_stat_functions)),
     names(custom_stat_functions) # Additional stats from custom functions
   )
   .formats <- get_formats_from_stats(.stats, .formats)

@@ -10,21 +10,24 @@
 estimate_proportion_diff(
   lyt,
   vars,
+  var_labels = vars,
+  na_str = default_na_str(),
+  nested = TRUE,
+  show_labels = "default",
+  table_names = vars,
+  section_div = NA_character_,
+  ...,
+  na_rm = TRUE,
   variables = list(strata = NULL),
   conf_level = 0.95,
   method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc", "strat_newcombe",
     "strat_newcombecc"),
   weights_method = "cmh",
-  na_str = default_na_str(),
-  nested = TRUE,
-  ...,
-  var_labels = vars,
-  show_labels = "hidden",
-  table_names = vars,
-  .stats = NULL,
-  .formats = NULL,
+  .stats = c("diff", "diff_ci"),
+  .stat_names = NULL,
+  .formats = c(diff = "xx.x", diff_ci = "(xx.x, xx.x)"),
   .labels = NULL,
-  .indent_mods = NULL
+  .indent_mods = c(diff = 0L, diff_ci = 1L)
 )
 
 s_proportion_diff(
@@ -36,25 +39,44 @@ s_proportion_diff(
   conf_level = 0.95,
   method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc", "strat_newcombe",
     "strat_newcombecc"),
-  weights_method = "cmh"
+  weights_method = "cmh",
+  ...
 )
 
 a_proportion_diff(
   df,
-  .var,
-  .ref_group,
-  .in_ref_col,
-  variables = list(strata = NULL),
-  conf_level = 0.95,
-  method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc", "strat_newcombe",
-    "strat_newcombecc"),
-  weights_method = "cmh"
+  ...,
+  .stats = NULL,
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
 \item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{var_labels}{(\code{character})\cr variable labels.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
+
+\item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
+defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
+
+\item{...}{additional arguments for the lower level functions.}
+
+\item{na_rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
@@ -65,24 +87,12 @@ a_proportion_diff(
 \item{weights_method}{(\code{string})\cr weights method. Can be either \code{"cmh"} or \code{"heuristic"}
 and directs the way weights are estimated.}
 
-\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
-
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
-possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
-underneath analyses, which is not allowed.}
-
-\item{...}{additional arguments for the lower level functions.}
-
-\item{var_labels}{(\code{character})\cr variable labels.}
-
-\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
-
-\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
-times, to avoid warnings from \code{rtables}.}
-
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
 Options are: \verb{'diff', 'diff_ci'}}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
@@ -183,6 +193,7 @@ s_proportion_diff(
 
 a_proportion_diff(
   df = subset(dta, grp == "A"),
+  .stats = c("diff"),
   .var = "rsp",
   .ref_group = subset(dta, grp == "B"),
   .in_ref_col = FALSE,
