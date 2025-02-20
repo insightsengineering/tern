@@ -181,7 +181,8 @@ a_surv_timepoint <- function(df,
   x_stats <- x_stats[.stats]
   .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- get_labels_from_stats(
-    .stats, .labels, tern_defaults = c(lapply(x_stats, attr, "label"), tern_default_labels)
+    .stats, .labels,
+    tern_defaults = c(lapply(x_stats, attr, "label"), tern_default_labels)
   )
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
@@ -339,7 +340,7 @@ surv_timepoint <- function(lyt,
         extra_args = extra_args_i,
         var_labels = paste(time_point[i], var_labels),
         show_labels = ifelse(method == "both", "hidden", show_labels),
-        table_names =  paste0("surv_diff_", time_point[i], table_names_suffix)
+        table_names = paste0("surv_diff_", time_point[i], table_names_suffix)
       )
     }
   }
