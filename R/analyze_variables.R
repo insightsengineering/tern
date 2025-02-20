@@ -549,7 +549,7 @@ a_summary <- function(x,
 
   # Check if there are user-defined functions
   default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
-  .stats <- default_and_custom_stats_list$default_stats
+  .stats <- default_and_custom_stats_list$all_stats # just the labels of stats
   custom_stat_functions <- default_and_custom_stats_list$custom_stats
 
   # Correction of the pval indication if it is numeric or counts
@@ -588,12 +588,11 @@ a_summary <- function(x,
 
   # Fill in with stats defaults if needed
   met_grp <- paste0(c("analyze_vars", type), collapse = "_")
-  .stats <- c(
-    get_stats(met_grp,
-      stats_in = .stats,
-      add_pval = dots_extra_args$compare_with_ref_group %||% FALSE
-    ),
-    names(custom_stat_functions) # Additional stats from custom functions
+  .stats <- get_stats(
+    met_grp,
+    stats_in = .stats,
+    custom_stats_in = names(custom_stat_functions),
+    add_pval = dots_extra_args$compare_with_ref_group %||% FALSE
   )
 
   x_stats <- x_stats[.stats]
