@@ -153,14 +153,12 @@ a_proportion <- function(df,
 
   # Fill in formatting defaults
   .stats <- get_stats("estimate_proportion", stats_in = .stats)
-  levels_per_stats <- as.list(.stats) %>% setNames(.stats)
   x_stats <- x_stats[.stats]
-  .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
+  .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- get_labels_from_stats(
-    .stats, .labels, levels_per_stats,
-    tern_defaults = c(lapply(x_stats, attr, "label"), tern_default_labels)
+    .stats, .labels, tern_defaults = c(lapply(x_stats, attr, "label"), tern_default_labels)
   )
-  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
   # Auto format handling
   .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
