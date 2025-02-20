@@ -119,6 +119,14 @@
       geom_mean 
             NaN 
       
+      $geom_sd
+      geom_sd 
+           NA 
+      
+      $geom_mean_sd
+      geom_mean.geom_mean     geom_sd.geom_sd 
+                      NaN                  NA 
+      
       $geom_mean_ci
       mean_ci_lwr mean_ci_upr 
                NA          NA 
@@ -256,6 +264,14 @@
       $geom_mean
       geom_mean 
              NA 
+      
+      $geom_sd
+      geom_sd 
+           NA 
+      
+      $geom_mean_sd
+      geom_mean.geom_mean     geom_sd.geom_sd 
+                       NA                  NA 
       
       $geom_mean_ci
       mean_ci_lwr mean_ci_upr 
@@ -396,6 +412,14 @@
       geom_mean 
        1.414214 
       
+      $`FALSE`$geom_sd
+       geom_sd 
+      1.632527 
+      
+      $`FALSE`$geom_mean_sd
+      geom_mean.geom_mean     geom_sd.geom_sd 
+                 1.414214            1.632527 
+      
       $`FALSE`$geom_mean_ci
        mean_ci_lwr  mean_ci_upr 
         0.01729978 115.60839614 
@@ -529,6 +553,14 @@
       $`TRUE`$geom_mean
       geom_mean 
               2 
+      
+      $`TRUE`$geom_sd
+       geom_sd 
+      2.665144 
+      
+      $`TRUE`$geom_mean_sd
+      geom_mean.geom_mean     geom_sd.geom_sd 
+                 2.000000            2.665144 
       
       $`TRUE`$geom_mean_ci
        mean_ci_lwr  mean_ci_upr 
