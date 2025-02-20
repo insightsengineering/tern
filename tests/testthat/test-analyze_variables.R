@@ -624,20 +624,20 @@ testthat::test_that("analyze_vars keeps the order of mixed custom fnc and defaul
   result <- basic_table() %>%
     analyze_vars(
       .stats = list("n",
-                    "another function" = function(x, ...) {
-                      return(0)
-                    },
-                    "geom_sd_custom" = function(x, ...) {
-                      x_no_negative_vals <- x
-                      x_no_negative_vals[x_no_negative_vals <= 0] <- NA
+        "another function" = function(x, ...) {
+          return(0)
+        },
+        "geom_sd_custom" = function(x, ...) {
+          x_no_negative_vals <- x
+          x_no_negative_vals[x_no_negative_vals <= 0] <- NA
 
-                      # exp(sd(log(x_no_negative_vals), na.rm = FALSE))
-                      geom_mean <- exp(mean(log(x_no_negative_vals), na.rm = FALSE))
-                      geom_sd <- exp(sd(log(x_no_negative_vals), na.rm = FALSE))
+          # exp(sd(log(x_no_negative_vals), na.rm = FALSE))
+          geom_mean <- exp(mean(log(x_no_negative_vals), na.rm = FALSE))
+          geom_sd <- exp(sd(log(x_no_negative_vals), na.rm = FALSE))
 
-                      rcell(c(geom_mean, geom_sd))
-                    },
-                    "geom_mean_sd"
+          rcell(c(geom_mean, geom_sd))
+        },
+        "geom_mean_sd"
       ),
       vars = "AGE",
       var_labels = "Age (yr)",
