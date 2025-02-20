@@ -87,7 +87,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
     stats_in_pval_value <- stats_in[grepl("^pval", stats_in)]
 
     # Must be only one value between choices
-    checkmate::assert_choice(stats_in_pval_value, c("pval", "pval_counts"))
+    checkmate::assert_choice(stats_in_pval_value, c("pval", "pval_counts", "pvalue"))
 
     # Mismatch with counts and numeric
     if (any(grepl("counts", method_groups)) && stats_in_pval_value != "pval_counts" ||
