@@ -298,23 +298,11 @@ summarize_ancova <- function(lyt,
                              ...,
                              show_labels = "visible",
                              table_names = vars,
-                             .stats = NULL,
+                             .stats = c("n", "lsmean", "lsmean_diff", "lsmean_diff_ci", "pval"),
                              .stat_names = NULL,
-                             .formats = list(
-                               "n" = "xx",
-                               "lsmean" = "xx.xx",
-                               "lsmean_diff" = "xx.xx",
-                               "lsmean_diff_ci" = "(xx.xx, xx.xx)",
-                               "pval" = "x.xxxx | (<0.0001)"
-                             ),
+                             .formats = NULL,
                              .labels = NULL,
-                             .indent_mods = list(
-                               "n" = 0L,
-                               "lsmean" = 0L,
-                               "lsmean_diff" = 0L,
-                               "lsmean_diff_ci" = 1L,
-                               "pval" = 1L
-                             )) {
+                             .indent_mods = list("lsmean_diff_ci" = 1L, "pval" = 1L)) {
   # Process standard extra arguments
   extra_args <- list(".stats" = .stats)
   if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names

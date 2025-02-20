@@ -117,18 +117,11 @@ summarize_glm_count <- function(lyt,
                                 ...,
                                 show_labels = "visible",
                                 table_names = vars,
-                                .stats = get_stats("summarize_glm_count"),
+                                .stats = c("n", "rate", "rate_ci", "rate_ratio", "rate_ratio_ci", "pval"),
                                 .stat_names = NULL,
                                 .formats = NULL,
                                 .labels = NULL,
-                                .indent_mods = list(
-                                  "n" = 0L,
-                                  "rate" = 0L,
-                                  "rate_ci" = 1L,
-                                  "rate_ratio" = 0L,
-                                  "rate_ratio_ci" = 1L,
-                                  "pval" = 1L
-                                )) {
+                                .indent_mods = list("rate_ci" = 1L, "rate_ratio_ci" = 1L, "pval" = 1L)) {
   checkmate::assert_choice(rate_mean_method, c("emmeans", "ppmeans"))
 
   # Process standard extra arguments
