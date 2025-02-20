@@ -215,9 +215,9 @@ estimate_proportion <- function(lyt,
                                 ...,
                                 show_labels = "hidden",
                                 table_names = vars,
-                                .stats = NULL,
+                                .stats = c("n_prop", "prop_ci"),
                                 .stat_names = NULL,
-                                .formats = list(n_prop = "xx (xx.x%)", prop_ci = "(xx.x, xx.x)"),
+                                .formats = NULL,
                                 .labels = NULL,
                                 .indent_mods = NULL) {
   # Process standard extra arguments

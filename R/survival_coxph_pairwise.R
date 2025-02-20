@@ -232,14 +232,7 @@ coxph_pairwise <- function(lyt,
                            table_names = vars,
                            .stats = c("pvalue", "hr", "hr_ci"),
                            .stat_names = NULL,
-                           .formats = list(
-                             pvalue = "x.xxxx | (<0.0001)",
-                             hr = "xx.xx",
-                             hr_ci = "(xx.xx, xx.xx)",
-                             hr_ci_3d = "xx.xx (xx.xx - xx.xx)",
-                             n_tot = "xx.xx",
-                             n_tot_events = "xx.xx"
-                           ),
+                           .formats = NULL,
                            .labels = NULL,
                            .indent_mods = NULL) {
   # Process standard extra arguments

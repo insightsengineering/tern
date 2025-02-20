@@ -196,7 +196,7 @@ estimate_multinomial_response <- function(lyt,
                                           table_names = var,
                                           .stats = "prop_ci",
                                           .stat_names = NULL,
-                                          .formats = list(n_prop = "xx (xx.x%)", prop_ci = "(xx.xx, xx.xx)"),
+                                          .formats = list(prop_ci = "(xx.xx, xx.xx)"),
                                           .labels = NULL,
                                           .indent_mods = NULL) {
   # Process standard extra arguments

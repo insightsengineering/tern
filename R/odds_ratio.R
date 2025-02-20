@@ -253,7 +253,7 @@ estimate_odds_ratio <- function(lyt,
                                 var_labels = vars,
                                 .stats = "or_ci",
                                 .stat_names = NULL,
-                                .formats = list(or_ci = "xx.xx (xx.xx - xx.xx)"),
+                                .formats = NULL,
                                 .labels = NULL,
                                 .indent_mods = NULL) {
   # Process standard extra arguments

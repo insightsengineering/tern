@@ -585,12 +585,25 @@ tern_default_formats <- c(
   geom_cv = "xx.x",
   pval = "x.xxxx | (<0.0001)",
   pval_counts = "x.xxxx | (<0.0001)",
+  pvalue = "x.xxxx | (<0.0001)",
   range_censor = "xx.x to xx.x",
   range_event = "xx.x to xx.x",
   rate = "xx.xxxx",
   rate_ci = "(xx.xxxx, xx.xxxx)",
   rate_ratio = "xx.xxxx",
-  rate_ratio_ci = "(xx.xxxx, xx.xxxx)"
+  rate_ratio_ci = "(xx.xxxx, xx.xxxx)",
+  rate_diff = "xx.xx",
+  rate_diff_ci = "(xx.xx, xx.xx)",
+  rate_diff_ci_3d = format_xx("xx.xx (xx.xx, xx.xx)"),
+  ztest_pval = "x.xxxx | (<0.0001)",
+  hr = "xx.xx",
+  hr_ci = "(xx.xx, xx.xx)",
+  hr_ci_3d = "xx.xx (xx.xx - xx.xx)",
+  n_tot = "xx.xx",
+  n_tot_events = "xx.xx",
+  or_ci = "xx.xx (xx.xx - xx.xx)",
+  n_prop = "xx (xx.x%)",
+  prop_ci = "(xx.x, xx.x)"
 )
 
 # tern_default_labels ----------------------------------------------------------
