@@ -236,7 +236,8 @@ a_ancova <- function(df,
   x_stats <- x_stats[.stats]
   .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- get_labels_from_stats(
-    .stats, .labels, tern_defaults = c(lapply(x_stats[names(x_stats) != "n"], attr, "label"), tern_default_labels)
+    .stats, .labels,
+    tern_defaults = c(lapply(x_stats[names(x_stats) != "n"], attr, "label"), tern_default_labels)
   )
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
