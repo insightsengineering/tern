@@ -66,7 +66,7 @@ d_onco_rsp_label <- function(x) {
     }
   )
 
-  return(factor(values_label, levels = c(intersect(desc, values_label), setdiff(values_label, desc))))
+  factor(values_label, levels = c(intersect(desc, values_label), setdiff(values_label, desc)))
 }
 
 #' @describeIn estimate_multinomial_rsp Statistics function which feeds the length of `x` as number
