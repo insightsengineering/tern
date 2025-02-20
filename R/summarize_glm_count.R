@@ -306,10 +306,9 @@ a_glm_count <- function(df,
 
   # Fill in formatting defaults
   .stats <- get_stats("summarize_glm_count", stats_in = .stats)
-  levels_per_stats <- as.list(.stats) %>% setNames(.stats)
-  .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
-  .labels <- get_labels_from_stats(.stats, .labels, levels_per_stats)
-  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
+  .formats <- get_formats_from_stats(.stats, .formats)
+  .labels <- get_labels_from_stats(.stats, .labels)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
   x_stats <- x_stats[.stats]
 
