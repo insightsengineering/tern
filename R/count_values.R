@@ -140,9 +140,9 @@ a_count_values <- function(x,
 
   # Fill in formatting defaults
   .stats <- get_stats(
-      "analyze_vars_counts",
-      stats_in = .stats,
-      custom_stats_in = names(custom_stat_functions),
+    "analyze_vars_counts",
+    stats_in = .stats,
+    custom_stats_in = names(custom_stat_functions),
   )
   .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- get_labels_from_stats(.stats, .labels)
