@@ -104,6 +104,7 @@ reference:
       - -h_g_ipp
       - -starts_with("h_grob_")
       - -starts_with("h_row_")
+      - -h_split_param
       - -h_xticks
       - -prop_diff
 
@@ -201,6 +202,7 @@ reference:
       - h_grob_tbl_at_risk
       - h_grob_y_annot
       - h_km_layout
+      - h_split_param
       - stack_grobs
       - arrange_grobs
       - draw_grob

@@ -10,6 +10,7 @@
 ### Miscellaneous
 * Removed internal function `ungroup_stats()` and replaced its usage with the `get_*_from_stats()` functions.
 * Began deprecation of the unused `table_names` argument to `count_abnormal_lab_worsen_by_baseline()`.
+* Began deprecation of the unused `h_split_param()` function.
 
 # tern 0.9.7
 
