@@ -631,7 +631,6 @@ testthat::test_that("analyze_vars keeps the order of mixed custom fnc and defaul
           x_no_negative_vals <- x
           x_no_negative_vals[x_no_negative_vals <= 0] <- NA
 
-          # exp(sd(log(x_no_negative_vals), na.rm = FALSE))
           geom_mean <- exp(mean(log(x_no_negative_vals), na.rm = FALSE))
           geom_sd <- exp(sd(log(x_no_negative_vals), na.rm = FALSE))
 
