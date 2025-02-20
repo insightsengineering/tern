@@ -21,7 +21,8 @@ estimate_proportion(
   ...,
   show_labels = "hidden",
   table_names = vars,
-  .stats = NULL,
+  .stats = c("n_prop", "prop_ci"),
+  .stat_names = NULL,
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL
@@ -36,19 +37,18 @@ s_proportion(
   weights = NULL,
   max_iterations = 50,
   variables = list(strata = NULL),
-  long = FALSE
+  long = FALSE,
+  ...
 )
 
 a_proportion(
   df,
-  .var,
-  conf_level = 0.95,
-  method = c("waldcc", "wald", "clopper-pearson", "wilson", "wilsonc", "strat_wilson",
-    "strat_wilsonc", "agresti-coull", "jeffreys"),
-  weights = NULL,
-  max_iterations = 50,
-  variables = list(strata = NULL),
-  long = FALSE
+  ...,
+  .stats = NULL,
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -89,6 +89,9 @@ times, to avoid warnings from \code{rtables}.}
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
 Options are: \verb{'n_prop', 'prop_ci'}}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
@@ -148,13 +151,14 @@ in \code{estimate_proportion()}.
 \examples{
 dta_test <- data.frame(
   USUBJID = paste0("S", 1:12),
-  ARM     = rep(LETTERS[1:3], each = 4),
-  AVAL    = rep(LETTERS[1:3], each = 4)
-)
+  ARM = rep(LETTERS[1:3], each = 4),
+  AVAL = rep(LETTERS[1:3], each = 4)
+) \%>\%
+  dplyr::mutate(is_rsp = AVAL == "A")
 
 basic_table() \%>\%
   split_cols_by("ARM") \%>\%
-  estimate_proportion(vars = "AVAL") \%>\%
+  estimate_proportion(vars = "is_rsp") \%>\%
   build_table(df = dta_test)
 
 # Case with only logical vector.

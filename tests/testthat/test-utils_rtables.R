@@ -209,13 +209,13 @@ testthat::test_that("h_split_param divides param values", {
   )
 
   .stats <- c("pt_at_risk", "rate_diff")
-  result <- h_split_param(.stats, .stats, f = f)
+  testthat::expect_warning(result <- h_split_param(.stats, .stats, f = f))
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   .formats <- c("pt_at_risk" = "xx", "event_free_rate" = "xxx")
-  result <- h_split_param(.formats, names(.formats), f = f)
+  testthat::expect_warning(result <- h_split_param(.formats, names(.formats), f = f))
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)

@@ -4,9 +4,8 @@
 \alias{survival_timepoint}
 \alias{surv_timepoint}
 \alias{s_surv_timepoint}
-\alias{a_surv_timepoint}
 \alias{s_surv_timepoint_diff}
-\alias{a_surv_timepoint_diff}
+\alias{a_surv_timepoint}
 \title{Survival time point analysis}
 \usage{
 surv_timepoint(
@@ -24,7 +23,8 @@ surv_timepoint(
   show_labels = "visible",
   .stats = c("pt_at_risk", "event_free_rate", "rate_ci", "rate_diff", "rate_diff_ci",
     "ztest_pval"),
-  .formats = NULL,
+  .stat_names = NULL,
+  .formats = list(rate_ci = "(xx.xx, xx.xx)"),
   .labels = NULL,
   .indent_mods = if (method == "both") {
      c(rate_diff = 1L, rate_diff_ci = 2L,
@@ -39,15 +39,8 @@ s_surv_timepoint(
   .var,
   time_point,
   is_event,
-  control = control_surv_timepoint()
-)
-
-a_surv_timepoint(
-  df,
-  .var,
-  time_point,
-  is_event,
-  control = control_surv_timepoint()
+  control = control_surv_timepoint(),
+  ...
 )
 
 s_surv_timepoint_diff(
@@ -60,14 +53,14 @@ s_surv_timepoint_diff(
   ...
 )
 
-a_surv_timepoint_diff(
+a_surv_timepoint(
   df,
-  .var,
-  .ref_group,
-  .in_ref_col,
-  time_point,
-  control = control_surv_timepoint(),
-  ...
+  ...,
+  .stats = NULL,
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -107,7 +100,10 @@ avoid warnings from duplicate table names.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
-Options are: \verb{'pt_at_risk', 'event_free_rate', 'rate_se', 'rate_ci', 'rate_diff', 'rate_diff_ci', 'ztest_pval', 'event_free_rate_3d'}}
+Options are: \verb{'pt_at_risk', 'event_free_rate', 'rate_se', 'rate_ci', 'event_free_rate_3d'}}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
@@ -147,10 +143,6 @@ the value of \code{method}.
 }
 
 \itemize{
-\item \code{a_surv_timepoint()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
-}
-
-\itemize{
 \item \code{s_surv_timepoint_diff()} returns the statistics:
 \itemize{
 \item \code{rate_diff}: Event-free rate difference between two groups.
@@ -161,7 +153,7 @@ the value of \code{method}.
 }
 
 \itemize{
-\item \code{a_surv_timepoint_diff()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+\item \code{a_surv_timepoint()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
 }
 }
 \description{
@@ -181,13 +173,9 @@ and additional format arguments. This function is a wrapper for \code{\link[rtab
 
 \item \code{s_surv_timepoint()}: Statistics function which analyzes survival rate.
 
-\item \code{a_surv_timepoint()}: Formatted analysis function which is used as \code{afun} in \code{surv_timepoint()}
-when \code{method = "surv"}.
-
 \item \code{s_surv_timepoint_diff()}: Statistics function which analyzes difference between two survival rates.
 
-\item \code{a_surv_timepoint_diff()}: Formatted analysis function which is used as \code{afun} in \code{surv_timepoint()}
-when \code{method = "surv_diff"}.
+\item \code{a_surv_timepoint()}: Formatted analysis function which is used as \code{afun} in \code{surv_timepoint()}.
 
 }}
 \examples{

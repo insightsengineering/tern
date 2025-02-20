@@ -19,6 +19,7 @@ coxph_pairwise(
   show_labels = "visible",
   table_names = vars,
   .stats = c("pvalue", "hr", "hr_ci"),
+  .stat_names = NULL,
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL
@@ -32,18 +33,18 @@ s_coxph_pairwise(
   is_event,
   strata = NULL,
   strat = lifecycle::deprecated(),
-  control = control_coxph()
+  control = control_coxph(),
+  ...
 )
 
 a_coxph_pairwise(
   df,
-  .ref_group,
-  .in_ref_col,
-  .var,
-  is_event,
-  strata = NULL,
-  strat = lifecycle::deprecated(),
-  control = control_coxph()
+  ...,
+  .stats = NULL,
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -82,6 +83,9 @@ times, to avoid warnings from \code{rtables}.}
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
 Options are: \verb{'pvalue', 'hr', 'hr_ci', 'n_tot', 'n_tot_events'}}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
