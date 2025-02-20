@@ -591,8 +591,8 @@ a_summary <- function(x,
   .stats <- get_stats(
     met_grp,
     stats_in = .stats,
-    add_pval = dots_extra_args$compare_with_ref_group %||% FALSE,
-    custom_stat_in = names(custom_stat_functions)
+    custom_stat_in = names(custom_stat_functions),
+    add_pval = dots_extra_args$compare_with_ref_group %||% FALSE
   )
 
   x_stats <- x_stats[.stats]

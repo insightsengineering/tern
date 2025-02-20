@@ -35,7 +35,7 @@ NULL
 #'   method group.
 #' @param stats_in (`character`)\cr statistics to retrieve for the selected method group. If custom statistical
 #'   functions are used, `stats_in` needs to have them in too.
-#' @param custom_stat_in (`character`)\cr custom statistics to add to the default statistics.
+#' @param custom_stats_in (`character`)\cr custom statistics to add to the default statistics.
 #' @param add_pval (`flag`)\cr should `"pval"` (or `"pval_counts"` if `method_groups` contains
 #'   `"analyze_vars_counts"`) be added to the statistical methods?
 #'
@@ -60,9 +60,10 @@ NULL
 #'
 #' @export
 get_stats <- function(method_groups = "analyze_vars_numeric",
-                      stats_in = NULL, custom_stat_in = NULL, add_pval = FALSE) {
+                      stats_in = NULL, custom_stats_in = NULL, add_pval = FALSE) {
   checkmate::assert_character(method_groups)
   checkmate::assert_character(stats_in, null.ok = TRUE)
+  checkmate::assert_character(custom_stats_in, null.ok = TRUE)
   checkmate::assert_flag(add_pval)
 
   # Default is still numeric
