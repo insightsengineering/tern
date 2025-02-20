@@ -75,7 +75,6 @@ s_proportion <- function(df,
                          variables = list(strata = NULL),
                          long = FALSE,
                          ...) {
-  # browser()
   method <- match.arg(method)
   checkmate::assert_flag(long)
   assert_proportion_value(conf_level)

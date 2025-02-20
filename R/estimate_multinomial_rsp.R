@@ -81,8 +81,8 @@ d_onco_rsp_label <- function(x) {
 #'
 #' @export
 s_length_proportion <- function(x,
-                                .N_col, # nolint
-                                ...) {
+                                ...,
+                                .N_col) { # nolint
   checkmate::assert_multi_class(x, classes = c("factor", "character"))
   checkmate::assert_vector(x, min.len = 0, max.len = .N_col)
   checkmate::assert_vector(unique(x), min.len = 0, max.len = 1)
@@ -104,13 +104,54 @@ s_length_proportion <- function(x,
 #' a_length_proportion(factor(character(0)), .N_col = 100)
 #'
 #' @export
-a_length_proportion <- make_afun(
-  s_length_proportion,
-  .formats = c(
-    n_prop = "xx (xx.x%)",
-    prop_ci = "(xx.xx, xx.xx)"
+a_length_proportion <- function(x,
+                                ...,
+                                .stats = NULL,
+                                .stat_names = NULL,
+                                .formats = NULL,
+                                .labels = NULL,
+                                .indent_mods = NULL) {
+  # Check for additional parameters to the statistics function
+  dots_extra_args <- list(...)
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
+  dots_extra_args$.additional_fun_parameters <- NULL
+
+  # Apply statistics function
+  x_stats <- .apply_stat_functions(
+    default_stat_fnc = s_length_proportion,
+    custom_stat_fnc_list = NULL,
+    args_list = c(
+      x = list(x),
+      extra_afun_params,
+      dots_extra_args
+    )
   )
-)
+
+  # Fill in formatting defaults
+  .stats <- get_stats("estimate_multinomial_response", stats_in = .stats)
+  x_stats <- x_stats[.stats]
+  .formats <- get_formats_from_stats(.stats, .formats)
+  .labels <- get_labels_from_stats(
+    .stats, .labels, tern_defaults = c(lapply(x_stats, attr, "label"), tern_default_labels)
+  )
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
+
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
+
+  # Get and check statistical names
+  .stat_names <- get_stat_names(x_stats, .stat_names)
+
+  in_rows(
+    .list = x_stats,
+    .formats = .formats,
+    .names = .labels %>% .unlist_keep_nulls(),
+    .stat_names = .stat_names,
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+  )
+}
 
 #' @describeIn estimate_multinomial_rsp Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()] and
@@ -154,29 +195,35 @@ estimate_multinomial_response <- function(lyt,
                                           show_labels = "hidden",
                                           table_names = var,
                                           .stats = "prop_ci",
-                                          .formats = NULL,
+                                          .stat_names = NULL,
+                                          .formats = list(n_prop = "xx (xx.x%)", prop_ci = "(xx.xx, xx.xx)"),
                                           .labels = NULL,
                                           .indent_mods = NULL) {
-  extra_args <- list(...)
+  # Process standard extra arguments
+  extra_args <- list(".stats" = .stats)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
 
-  afun <- make_afun(
-    a_length_proportion,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods
-  )
+  # Process additional arguments to the statistic function
+  extra_args <- c(extra_args, ...)
+
+  # Append additional info from layout to the analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_length_proportion) <- c(formals(a_length_proportion), extra_args[[".additional_fun_parameters"]])
+
   lyt <- split_rows_by(lyt, var = var)
   lyt <- summarize_row_groups(lyt, na_str = na_str)
 
   analyze(
-    lyt,
+    lyt = lyt,
     vars = var,
-    afun = afun,
-    show_labels = show_labels,
-    table_names = table_names,
+    afun = a_length_proportion,
     na_str = na_str,
     nested = nested,
-    extra_args = extra_args
+    extra_args = extra_args,
+    show_labels = show_labels,
+    table_names = table_names
   )
 }
