@@ -117,7 +117,15 @@
       
       $geom_mean
       geom_mean 
-            NaN 
+             NA 
+      
+      $geom_sd
+      geom_sd 
+           NA 
+      
+      $geom_mean_sd
+      geom_mean   geom_sd 
+             NA        NA 
       
       $geom_mean_ci
       mean_ci_lwr mean_ci_upr 
@@ -131,7 +139,7 @@
       
       $geom_mean_ci_3d
         geom_mean mean_ci_lwr mean_ci_upr 
-              NaN          NA          NA 
+               NA          NA          NA 
       attr(,"label")
       [1] "Geometric Mean (95% CI)"
       
@@ -256,6 +264,14 @@
       $geom_mean
       geom_mean 
               1 
+      
+      $geom_sd
+      geom_sd 
+           NA 
+      
+      $geom_mean_sd
+      geom_mean   geom_sd 
+              1        NA 
       
       $geom_mean_ci
       mean_ci_lwr mean_ci_upr 
@@ -395,6 +411,14 @@
       geom_mean 
              NA 
       
+      $geom_sd
+      geom_sd 
+           NA 
+      
+      $geom_mean_sd
+      geom_mean   geom_sd 
+             NA        NA 
+      
       $geom_mean_ci
       mean_ci_lwr mean_ci_upr 
                NA          NA 
@@ -533,6 +557,14 @@
       geom_mean 
        1.414214 
       
+      $geom_sd
+       geom_sd 
+      1.632527 
+      
+      $geom_mean_sd
+      geom_mean   geom_sd 
+       1.414214  1.632527 
+      
       $geom_mean_ci
        mean_ci_lwr  mean_ci_upr 
         0.01729978 115.60839614 
@@ -670,6 +702,14 @@
       $geom_mean
       geom_mean 
        4.842534 
+      
+      $geom_sd
+       geom_sd 
+      2.252326 
+      
+      $geom_mean_sd
+      geom_mean   geom_sd 
+       4.842534  2.252326 
       
       $geom_mean_ci
       mean_ci_lwr mean_ci_upr 
@@ -1388,11 +1428,13 @@
       20    median_range    0.3 (-0.8 - 1.6)          0          Median (Min - Max)
       21              cv               590.4          0                      CV (%)
       22       geom_mean                  NA          0              Geometric Mean
-      23    geom_mean_ci                  NA          0       Geometric Mean 95% CI
-      24         geom_cv                  NA          0         CV % Geometric Mean
-      25    median_ci_3d 0.26 (-0.82 - 0.74)          0             Median (95% CI)
-      26      mean_ci_3d 0.13 (-0.43 - 0.69)          0               Mean (95% CI)
-      27 geom_mean_ci_3d                  NA          0     Geometric Mean (95% CI)
+      23         geom_sd                  NA          0                Geometric SD
+      24    geom_mean_sd                  NA          0         Geometric Mean (SD)
+      25    geom_mean_ci                  NA          0       Geometric Mean 95% CI
+      26         geom_cv                  NA          0         CV % Geometric Mean
+      27    median_ci_3d 0.26 (-0.82 - 0.74)          0             Median (95% CI)
+      28      mean_ci_3d 0.13 (-0.43 - 0.69)          0               Mean (95% CI)
+      29 geom_mean_ci_3d                  NA          0     Geometric Mean (95% CI)
 
 ---
 
@@ -1523,12 +1565,14 @@
       20    median_range    5.0 (3.0 - 5.9)          0          Median (Min - Max)
       21              cv               19.6          0                      CV (%)
       22       geom_mean                4.8          0              Geometric Mean
-      23    geom_mean_ci       (4.07, 5.58)          0       Geometric Mean 95% CI
-      24         geom_cv               22.3          0         CV % Geometric Mean
-      25    median_ci_3d 5.01 (3.53 - 5.78)          0             Median (95% CI)
-      26      mean_ci_3d 4.87 (4.18 - 5.55)          0               Mean (95% CI)
-      27 geom_mean_ci_3d 4.77 (4.07 - 5.58)          0     Geometric Mean (95% CI)
-      28            pval            <0.0001          0            p-value (t-test)
+      23         geom_sd                1.2          0                Geometric SD
+      24    geom_mean_sd          4.8 (1.2)          0         Geometric Mean (SD)
+      25    geom_mean_ci       (4.07, 5.58)          0       Geometric Mean 95% CI
+      26         geom_cv               22.3          0         CV % Geometric Mean
+      27    median_ci_3d 5.01 (3.53 - 5.78)          0             Median (95% CI)
+      28      mean_ci_3d 4.87 (4.18 - 5.55)          0               Mean (95% CI)
+      29 geom_mean_ci_3d 4.77 (4.07 - 5.58)          0     Geometric Mean (95% CI)
+      30            pval            <0.0001          0            p-value (t-test)
 
 ---
 

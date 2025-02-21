@@ -32,8 +32,9 @@
        [9] "mean_sei"        "mean_sdi"        "mean_pval"       "median"         
       [13] "mad"             "median_ci"       "quantiles"       "iqr"            
       [17] "range"           "min"             "max"             "median_range"   
-      [21] "cv"              "geom_mean"       "geom_mean_ci"    "geom_cv"        
-      [25] "median_ci_3d"    "mean_ci_3d"      "geom_mean_ci_3d"
+      [21] "cv"              "geom_mean"       "geom_sd"         "geom_mean_sd"   
+      [25] "geom_mean_ci"    "geom_cv"         "median_ci_3d"    "mean_ci_3d"     
+      [29] "geom_mean_ci_3d"
 
 # get_labels_from_stats works as expected
 
@@ -114,10 +115,12 @@
                        "xx.x"           "xx.x - xx.x"                  "xx.x" 
                           max            median_range                      cv 
                        "xx.x"    "xx.x (xx.x - xx.x)"                  "xx.x" 
-                    geom_mean            geom_mean_ci                 geom_cv 
-                       "xx.x"        "(xx.xx, xx.xx)"                  "xx.x" 
-                 median_ci_3d              mean_ci_3d         geom_mean_ci_3d 
-      "xx.xx (xx.xx - xx.xx)" "xx.xx (xx.xx - xx.xx)" "xx.xx (xx.xx - xx.xx)" 
+                    geom_mean                 geom_sd            geom_mean_sd 
+                       "xx.x"                  "xx.x"           "xx.x (xx.x)" 
+                 geom_mean_ci                 geom_cv            median_ci_3d 
+             "(xx.xx, xx.xx)"                  "xx.x" "xx.xx (xx.xx - xx.xx)" 
+                   mean_ci_3d         geom_mean_ci_3d 
+      "xx.xx (xx.xx - xx.xx)" "xx.xx (xx.xx - xx.xx)" 
 
 # summary_labels works as expected
 
@@ -189,6 +192,12 @@
       
       $geom_mean
       [1] "Geometric Mean"
+      
+      $geom_sd
+      [1] "Geometric SD"
+      
+      $geom_mean_sd
+      [1] "Geometric Mean (SD)"
       
       $geom_mean_ci
       [1] "Geometric Mean 95% CI"
