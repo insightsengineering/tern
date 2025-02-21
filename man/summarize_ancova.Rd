@@ -19,34 +19,34 @@ summarize_ancova(
   ...,
   show_labels = "visible",
   table_names = vars,
-  .stats = NULL,
+  .stats = c("n", "lsmean", "lsmean_diff", "lsmean_diff_ci", "pval"),
+  .stat_names = NULL,
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL
+  .indent_mods = list(lsmean_diff_ci = 1L, pval = 1L)
 )
 
 s_ancova(
   df,
   .var,
   .df_row,
-  variables,
   .ref_group,
   .in_ref_col,
+  variables,
   conf_level,
   interaction_y = FALSE,
-  interaction_item = NULL
+  interaction_item = NULL,
+  ...
 )
 
 a_ancova(
   df,
-  .var,
-  .df_row,
-  variables,
-  .ref_group,
-  .in_ref_col,
-  conf_level,
-  interaction_y = FALSE,
-  interaction_item = NULL
+  ...,
+  .stats = NULL,
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -88,6 +88,9 @@ times, to avoid warnings from \code{rtables}.}
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
 Options are: \verb{'n', 'lsmean', 'lsmean_diff', 'lsmean_diff_ci', 'pval'}}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}

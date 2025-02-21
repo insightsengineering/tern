@@ -157,7 +157,7 @@ get_stat_names <- function(stat_results, stat_names_in = NULL) {
     if (is.null(nm)) {
       nm <- rep(NA_character_, length(si)) # no statistical names
     }
-    return(nm)
+    nm
   })
 
   # Modify some with custom stat names
@@ -590,7 +590,10 @@ tern_default_formats <- c(
   rate = "xx.xxxx",
   rate_ci = "(xx.xxxx, xx.xxxx)",
   rate_ratio = "xx.xxxx",
-  rate_ratio_ci = "(xx.xxxx, xx.xxxx)"
+  rate_ratio_ci = "(xx.xxxx, xx.xxxx)",
+  lsmean = "xx.xx",
+  lsmean_diff = "xx.xx",
+  lsmean_diff_ci = "(xx.xx, xx.xx)"
 )
 
 # tern_default_labels ----------------------------------------------------------
