@@ -266,6 +266,7 @@ a_count_occurrences_by_grade <- function(df,
     custom_stat_fnc_list = NULL,
     args_list = c(
       df = list(df),
+      labelstr = list(labelstr),
       extra_afun_params,
       dots_extra_args
     )

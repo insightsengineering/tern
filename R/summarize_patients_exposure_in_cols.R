@@ -121,6 +121,7 @@ a_count_patients_sum_exposure <- function(df,
         custom_stat_fnc_list = NULL,
         args_list = c(
           df = list(subset(df, get(var) == lvl)),
+          labelstr = list(labelstr),
           extra_afun_params,
           dots_extra_args
         )
@@ -135,6 +136,7 @@ a_count_patients_sum_exposure <- function(df,
       custom_stat_fnc_list = NULL,
       args_list = c(
         df = list(df),
+        labelstr = list(labelstr),
         extra_afun_params,
         dots_extra_args
       )
