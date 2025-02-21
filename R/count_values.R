@@ -114,23 +114,15 @@ a_count_values <- function(x,
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = NULL) {
+  # Check for additional parameters to the statistics function
   dots_extra_args <- list(...)
-
-  # Check for user-defined functions
-  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
-  .stats <- default_and_custom_stats_list$default_stats
-  custom_stat_functions <- default_and_custom_stats_list$custom_stats
-
-  # Add extra parameters to the s_* function
-  extra_afun_params <- retrieve_extra_afun_params(
-    names(dots_extra_args$.additional_fun_parameters)
-  )
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
   dots_extra_args$.additional_fun_parameters <- NULL
 
   # Main statistic calculations
   x_stats <- .apply_stat_functions(
     default_stat_fnc = s_count_values,
-    custom_stat_fnc_list = custom_stat_functions,
+    custom_stat_fnc_list = NULL,
     args_list = c(
       x = list(x),
       extra_afun_params,
@@ -139,10 +131,7 @@ a_count_values <- function(x,
   )
 
   # Fill in formatting defaults
-  .stats <- c(
-    get_stats("analyze_vars_counts", stats_in = .stats),
-    names(custom_stat_functions) # Additional stats from custom functions
-  )
+  .stats <- get_stats("analyze_vars_counts", stats_in = .stats)
   .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- get_labels_from_stats(.stats, .labels)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
@@ -150,14 +139,9 @@ a_count_values <- function(x,
   x_stats <- x_stats[.stats]
 
   # Auto format handling
-  .formats <- apply_auto_formatting(
-    .formats,
-    x_stats,
-    extra_afun_params$.df_row,
-    extra_afun_params$.var
-  )
+  .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
 
-  # Get and check statistic names from defaults
+  # Get and check statistical names
   .stat_names <- get_stat_names(x_stats, .stat_names)
 
   in_rows(
@@ -199,13 +183,19 @@ count_values <- function(lyt,
                          .formats = c(count_fraction = "xx (xx.xx%)", count = "xx"),
                          .labels = c(count_fraction = paste(values, collapse = ", ")),
                          .indent_mods = NULL) {
-  # Process extra args
-  extra_args <- list("na_rm" = na_rm, "values" = values, ...)
-  if (!is.null(.stats)) extra_args[[".stats"]] <- .stats
+  # Process standard extra arguments
+  extra_args <- list(".stats" = .stats)
   if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Process additional arguments to the statistic function
+  extra_args <- c(
+    extra_args,
+    na_rm = na_rm, values = list(values),
+    ...
+  )
 
   # Adding additional info from layout to analysis function
   extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
