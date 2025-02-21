@@ -594,7 +594,9 @@ tern_default_formats <- c(
   person_years = "xx.x",
   n_events = "xx",
   n_unique = "xx",
-  n_rate = "xx (xx.x)"
+  n_rate = "xx (xx.x)",
+  n_patients = "xx (xx.x%)",
+  sum_exposure = "xx"
 )
 
 # tern_default_labels ----------------------------------------------------------

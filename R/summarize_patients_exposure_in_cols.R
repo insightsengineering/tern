@@ -39,11 +39,12 @@ NULL
 #'
 #' @keywords internal
 s_count_patients_sum_exposure <- function(df,
-                                          ex_var = "AVAL",
-                                          id = "USUBJID",
                                           labelstr = "",
                                           .stats = c("n_patients", "sum_exposure"),
                                           .N_col, # nolint
+                                          ...,
+                                          ex_var = "AVAL",
+                                          id = "USUBJID",
                                           custom_label = NULL) {
   assert_df_with_variables(df, list(ex_var = ex_var, id = id))
   checkmate::assert_string(id)
@@ -87,69 +88,80 @@ s_count_patients_sum_exposure <- function(df,
 #' @return
 #' * `a_count_patients_sum_exposure()` returns formatted [rtables::CellValue()].
 #'
-#' @examples
-#' a_count_patients_sum_exposure(
-#'   df = df,
-#'   var = "SEX",
-#'   .N_col = nrow(df),
-#'   .stats = "n_patients"
-#' )
-#'
-#' @export
+#' @keywords internal
 a_count_patients_sum_exposure <- function(df,
-                                          var = NULL,
-                                          ex_var = "AVAL",
-                                          id = "USUBJID",
-                                          add_total_level = FALSE,
-                                          custom_label = NULL,
                                           labelstr = "",
-                                          .N_col, # nolint
-                                          .stats,
-                                          .formats = list(n_patients = "xx (xx.x%)", sum_exposure = "xx")) {
+                                          ...,
+                                          .stats = NULL,
+                                          .stat_names = NULL,
+                                          .formats = NULL,
+                                          .labels = NULL,
+                                          .indent_mods = NULL) {
+  checkmate::assert_character(.stats, len = 1)
+
+  # Check for additional parameters to the statistics function
+  dots_extra_args <- list(...)
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
+  dots_extra_args$.additional_fun_parameters <- NULL
+
+  add_total_level <- dots_extra_args$add_total_level
   checkmate::assert_flag(add_total_level)
 
+  var <- dots_extra_args$var
   if (!is.null(var)) {
     assert_df_with_variables(df, list(var = var))
     df[[var]] <- as.factor(df[[var]])
   }
 
-  y <- list()
-  if (is.null(var)) {
-    y[[.stats]] <- list(Total = s_count_patients_sum_exposure(
-      df = df,
-      ex_var = ex_var,
-      id = id,
-      labelstr = labelstr,
-      .N_col = .N_col,
-      .stats = .stats,
-      custom_label = custom_label
-    )[[.stats]])
-  } else {
+  x_stats <- list()
+  if (!is.null(var)) {
     for (lvl in levels(df[[var]])) {
-      y[[.stats]][[lvl]] <- s_count_patients_sum_exposure(
-        df = subset(df, get(var) == lvl),
-        ex_var = ex_var,
-        id = id,
-        labelstr = labelstr,
-        .N_col = .N_col,
-        .stats = .stats,
-        custom_label = lvl
-      )[[.stats]]
-    }
-    if (add_total_level) {
-      y[[.stats]][["Total"]] <- s_count_patients_sum_exposure(
-        df = df,
-        ex_var = ex_var,
-        id = id,
-        labelstr = labelstr,
-        .N_col = .N_col,
-        .stats = .stats,
-        custom_label = custom_label
-      )[[.stats]]
+      x_stats_i <- .apply_stat_functions(
+        default_stat_fnc = s_count_patients_sum_exposure,
+        custom_stat_fnc_list = NULL,
+        args_list = c(
+          df = list(subset(df, get(var) == lvl)),
+          extra_afun_params,
+          dots_extra_args
+        )
+      )
+      x_stats[[.stats]][[lvl]] <- x_stats_i[[.stats]]
     }
   }
 
-  in_rows(.list = y[[.stats]], .formats = .formats[[.stats]])
+  if (add_total_level) {
+    x_stats_total <- .apply_stat_functions(
+      default_stat_fnc = s_count_patients_sum_exposure,
+      custom_stat_fnc_list = NULL,
+      args_list = c(
+        df = list(df),
+        extra_afun_params,
+        dots_extra_args
+      )
+    )
+    x_stats[[.stats]][["Total"]] <- x_stats_total[[.stats]]
+  }
+
+  # Fill in formatting defaults
+  .stats <- get_stats("analyze_patients_exposure_in_cols", stats_in = .stats)
+  x_stats <- x_stats[.stats]
+  levels_per_stats <- lapply(x_stats, names)
+  .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
+  .labels <- get_labels_from_stats(.stats, .labels, levels_per_stats)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
+
+  # browser()
+  in_rows(
+    .list = x_stats %>% .unlist_keep_nulls(),
+    .formats = .formats,
+    .names = .labels %>% .unlist_keep_nulls(),
+    .stat_names = .stat_names,
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+  )
 }
 
 #' @describeIn summarize_patients_exposure_in_cols Layout-creating function which can take statistics
@@ -177,7 +189,7 @@ a_count_patients_sum_exposure <- function(df,
 #'
 #' @export
 #' @order 3
-summarize_patients_exposure_in_cols <- function(lyt, # nolint
+summarize_patients_exposure_in_cols <- function(lyt,
                                                 var,
                                                 ex_var = "AVAL",
                                                 id = "USUBJID",
@@ -187,15 +199,35 @@ summarize_patients_exposure_in_cols <- function(lyt, # nolint
                                                 na_str = default_na_str(),
                                                 ...,
                                                 .stats = c("n_patients", "sum_exposure"),
-                                                .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
+                                                .stat_names = NULL,
+                                                .formats = list(n_patients = "xx (xx.x%)", sum_exposure = "xx"),
+                                                .labels = list(n_patients = "Patients", sum_exposure = "Person time"),
                                                 .indent_mods = NULL) {
-  extra_args <- list(ex_var = ex_var, id = id, add_total_level = add_total_level, custom_label = custom_label, ...)
+  # Process standard extra arguments
+  extra_args <- list()
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Process additional arguments to the statistic function
+  extra_args <- c(
+    extra_args,
+    ex_var = ex_var, id = id, add_total_level = add_total_level, custom_label = custom_label,
+    ...
+  )
+
+  # Adding additional info from layout to analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_count_patients_sum_exposure) <- c(
+    formals(a_count_patients_sum_exposure), extra_args[[".additional_fun_parameters"]]
+  )
 
   if (col_split) {
     lyt <- split_cols_by_multivar(
       lyt = lyt,
       vars = rep(var, length(.stats)),
-      varlabels = .labels[.stats],
+      varlabels = unlist(.labels[.stats]),
       extra_args = list(.stats = .stats)
     )
   }
@@ -280,7 +312,7 @@ summarize_patients_exposure_in_cols <- function(lyt, # nolint
 #'
 #' @export
 #' @order 2
-analyze_patients_exposure_in_cols <- function(lyt, # nolint
+analyze_patients_exposure_in_cols <- function(lyt,
                                               var = NULL,
                                               ex_var = "AVAL",
                                               id = "USUBJID",
@@ -289,26 +321,44 @@ analyze_patients_exposure_in_cols <- function(lyt, # nolint
                                               col_split = TRUE,
                                               na_str = default_na_str(),
                                               .stats = c("n_patients", "sum_exposure"),
-                                              .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
-                                              .indent_mods = 0L,
+                                              .stat_names = NULL,
+                                              .formats = list(n_patients = "xx (xx.x%)", sum_exposure = "xx"),
+                                              .labels = list(n_patients = "Patients", sum_exposure = "Person time"),
+                                              .indent_mods = NULL,
                                               ...) {
-  extra_args <- list(
-    var = var, ex_var = ex_var, id = id, add_total_level = add_total_level, custom_label = custom_label, ...
+  # Process standard extra arguments
+  extra_args <- list()
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Process additional arguments to the statistic function
+  extra_args <- c(
+    extra_args,
+    var = var, ex_var = ex_var, id = id, add_total_level = add_total_level, custom_label = custom_label,
+    ...
+  )
+
+  # Adding additional info from layout to analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_count_patients_sum_exposure) <- c(
+    formals(a_count_patients_sum_exposure), extra_args[[".additional_fun_parameters"]]
   )
 
   if (col_split) {
     lyt <- split_cols_by_multivar(
       lyt = lyt,
       vars = rep(ex_var, length(.stats)),
-      varlabels = .labels[.stats],
+      varlabels = unlist(.labels[.stats]),
       extra_args = list(.stats = .stats)
     )
   }
-  lyt <- lyt %>% analyze_colvars(
+
+  analyze_colvars(
+    lyt = lyt,
     afun = a_count_patients_sum_exposure,
-    indent_mod = .indent_mods,
     na_str = na_str,
     extra_args = extra_args
   )
-  lyt
 }
