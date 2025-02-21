@@ -60,9 +60,10 @@ NULL
 #' @export
 s_count_patients_with_event <- function(df,
                                         .var,
-                                        filters,
                                         .N_col = ncol(df), # nolint
                                         .N_row = nrow(df), # nolint
+                                        ...,
+                                        filters,
                                         denom = c("n", "N_col", "N_row")) {
   col_names <- names(filters)
   filter_values <- filters
@@ -104,26 +105,29 @@ s_count_patients_with_event <- function(df,
 #' @export
 a_count_patients_with_event <- function(df,
                                         labelstr = "",
-                                        filters,
-                                        .N_col, # nolint
-                                        .N_row, # nolint
-                                        denom = c("n", "N_col", "N_row"),
-                                        .df_row,
-                                        .var = NULL,
+                                        ...,
                                         .stats = NULL,
+                                        .stat_names = NULL,
                                         .formats = NULL,
                                         .labels = NULL,
-                                        .indent_mods = NULL,
-                                        na_str = default_na_str()) {
-  x_stats <- s_count_patients_with_event(
-    df = df, .var = .var, filters = filters, .N_col, .N_row, denom = denom
+                                        .indent_mods = NULL) {
+  # Check for additional parameters to the statistics function
+  dots_extra_args <- list(...)
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
+  dots_extra_args$.additional_fun_parameters <- NULL
+
+  # Apply statistics function
+  x_stats <- .apply_stat_functions(
+    default_stat_fnc = s_count_patients_with_event,
+    custom_stat_fnc_list = NULL,
+    args_list = c(
+      df = list(df),
+      extra_afun_params,
+      dots_extra_args
+    )
   )
 
-  if (is.null(unlist(x_stats))) {
-    return(NULL)
-  }
-
-  # Fill in with formatting defaults if needed
+  # Fill in formatting defaults
   .stats <- get_stats("count_patients_with_event", stats_in = .stats)
   .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- get_labels_from_stats(.stats, .labels)
@@ -138,9 +142,9 @@ a_count_patients_with_event <- function(df,
     .list = x_stats,
     .formats = .formats,
     .names = names(.labels),
+    .stat_names = .stat_names,
     .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls(),
-    .format_na_strs = na_str
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
   )
 }
 
@@ -195,35 +199,40 @@ count_patients_with_event <- function(lyt,
                                       ...,
                                       table_names = vars,
                                       .stats = "count_fraction",
+                                      .stat_names = NULL,
                                       .formats = list(count_fraction = format_count_fraction_fixed_dp),
                                       .labels = NULL,
                                       .indent_mods = NULL) {
   checkmate::assert_flag(riskdiff)
-  extra_args <- list(
-    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
-  )
-  s_args <- list(filters = filters, ...)
+  afun <- if (isFALSE(riskdiff)) a_count_patients_with_event else afun_riskdiff
 
-  if (isFALSE(riskdiff)) {
-    extra_args <- c(extra_args, s_args)
-  } else {
-    extra_args <- c(
-      extra_args,
-      list(
-        afun = list("s_count_patients_with_event" = a_count_patients_with_event),
-        s_args = s_args
-      )
-    )
-  }
+  # Process standard extra arguments
+  extra_args <- list(".stats" = .stats)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Process additional arguments to the statistic function
+  extra_args <- c(
+    extra_args,
+    filters = list(filters),
+    if (!isFALSE(riskdiff)) list(afun = list("s_count_patients_with_event" = a_count_patients_with_event)),
+    ...
+  )
+
+  # Append additional info from layout to the analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(afun) <- c(formals(afun), extra_args[[".additional_fun_parameters"]])
 
   analyze(
     lyt = lyt,
     vars = vars,
-    afun = ifelse(isFALSE(riskdiff), a_count_patients_with_event, afun_riskdiff),
-    show_labels = ifelse(length(vars) > 1, "visible", "hidden"),
-    table_names = table_names,
+    afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = extra_args
+    extra_args = extra_args,
+    show_labels = ifelse(length(vars) > 1, "visible", "hidden"),
+    table_names = table_names
   )
 }
