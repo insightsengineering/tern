@@ -153,16 +153,16 @@ a_count_patients_with_flags <- function(df,
 
   x_stats <- x_stats[.stats]
 
-  # Unlist stats
-  x_stats <- x_stats %>%
-    .unlist_keep_nulls() %>%
-    setNames(names(.formats))
-
   # Auto format handling
   .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
 
   # Get and check statistical names
   .stat_names <- get_stat_names(x_stats, .stat_names)
+
+  # Unlist stats
+  x_stats <- x_stats %>%
+    .unlist_keep_nulls() %>%
+    setNames(names(.formats))
 
   in_rows(
     .list = x_stats,
