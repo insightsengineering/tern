@@ -590,7 +590,11 @@ tern_default_formats <- c(
   rate = "xx.xxxx",
   rate_ci = "(xx.xxxx, xx.xxxx)",
   rate_ratio = "xx.xxxx",
-  rate_ratio_ci = "(xx.xxxx, xx.xxxx)"
+  rate_ratio_ci = "(xx.xxxx, xx.xxxx)",
+  person_years = "xx.x",
+  n_events = "xx",
+  n_unique = "xx",
+  n_rate = "xx (xx.x)"
 )
 
 # tern_default_labels ----------------------------------------------------------
