@@ -85,19 +85,13 @@ add_riskdiff <- function(arm_x,
 #' @keywords internal
 afun_riskdiff <- function(df,
                           labelstr = "",
-                          .var,
-                          .N_col, # nolint
-                          .N_row, # nolint
-                          .df_row,
-                          .spl_context,
-                          .all_col_counts,
-                          .stats,
+                          afun,
+                          ...,
+                          .stats = NULL,
+                          .stat_names = NULL,
                           .formats = NULL,
                           .labels = NULL,
-                          .indent_mods = NULL,
-                          na_str = default_na_str(),
-                          afun,
-                          s_args = list()) {
+                          .indent_mods = NULL) {
   if (!any(grepl("riskdiff", names(.spl_context)))) {
     stop(
       "Please set up levels to use in risk difference calculations using the `add_riskdiff` ",
@@ -106,17 +100,18 @@ afun_riskdiff <- function(df,
   }
   checkmate::assert_list(afun, len = 1, types = "function")
   checkmate::assert_named(afun)
-  afun_args <- list(
-    .var = .var, .df_row = .df_row, .N_row = .N_row, denom = "N_col", labelstr = labelstr,
-    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
-  )
-  afun_args <- afun_args[intersect(names(afun_args), names(as.list(args(afun[[1]]))))]
-  if ("denom" %in% names(s_args)) afun_args[["denom"]] <- NULL
 
+  sfun <- names(afun)
+  dots_extra_args <- list(...)[intersect(names(list(...)), names(formals(sfun)))]
+  extra_args <- list(
+    .var = .var, .df_row = .df_row, .N_col = .N_col, .N_row = .N_row, .stats = .stats, .formats = .formats,
+    .labels = .labels, .indent_mods = .indent_mods
+  )
   cur_split <- tail(.spl_context$cur_col_split_val[[1]], 1)
+
   if (!grepl("^riskdiff", cur_split)) {
     # Apply basic afun (no risk difference) in all other columns
-    do.call(afun[[1]], args = c(list(df = df, .N_col = .N_col), afun_args, s_args))
+    do.call(afun[[1]], args = c(list(df = df, labelstr = labelstr), extra_args, dots_extra_args))
   } else {
     arm_x <- strsplit(cur_split, "_")[[1]][2]
     arm_y <- strsplit(cur_split, "_")[[1]][3]
@@ -127,15 +122,14 @@ afun_riskdiff <- function(df,
       arm_spl_x <- arm_x
       arm_spl_y <- arm_y
     }
-
     N_col_x <- .all_col_counts[[arm_spl_x]] # nolint
     N_col_y <- .all_col_counts[[arm_spl_y]] # nolint
     cur_var <- tail(.spl_context$cur_col_split[[1]], 1)
 
     # Apply statistics function to arm X and arm Y data
-    s_args <- c(s_args, afun_args[intersect(names(afun_args), names(as.list(args(names(afun)))))])
-    s_x <- do.call(names(afun), args = c(list(df = df[df[[cur_var]] == arm_x, ], .N_col = N_col_x), s_args))
-    s_y <- do.call(names(afun), args = c(list(df = df[df[[cur_var]] == arm_y, ], .N_col = N_col_y), s_args))
+    s_args <- c(dots_extra_args, extra_args[intersect(setdiff(names(extra_args), ".N_col"), names(formals(sfun)))])
+    s_x <- do.call(sfun, args = c(list(df = df[df[[cur_var]] == arm_x, ], .N_col = N_col_x), s_args))
+    s_y <- do.call(sfun, args = c(list(df = df[df[[cur_var]] == arm_y, ], .N_col = N_col_y), s_args))
 
     # Get statistic name and row names
     stat <- ifelse("count_fraction" %in% names(s_x), "count_fraction", "unique")
