@@ -149,15 +149,16 @@ h_append_grade_groups <- function(grade_groups, refs, remove_single = TRUE, only
 #'
 #' @export
 s_count_occurrences_by_grade <- function(df,
+                                         labelstr = "",
                                          .var,
                                          .N_row, # nolint
                                          .N_col, # nolint
+                                         ...,
                                          id = "USUBJID",
                                          grade_groups = list(),
                                          remove_single = TRUE,
                                          only_grade_groups = FALSE,
-                                         denom = c("N_col", "n", "N_row"),
-                                         labelstr = "") {
+                                         denom = c("N_col", "n", "N_row")) {
   assert_valid_factor(df[[.var]])
   assert_df_with_variables(df, list(grade = .var, id = id))
 
@@ -248,31 +249,29 @@ s_count_occurrences_by_grade <- function(df,
 #' @export
 a_count_occurrences_by_grade <- function(df,
                                          labelstr = "",
-                                         id = "USUBJID",
-                                         grade_groups = list(),
-                                         remove_single = TRUE,
-                                         only_grade_groups = FALSE,
-                                         denom = c("N_col", "n", "N_row"),
-                                         .N_col, # nolint
-                                         .N_row, # nolint
-                                         .df_row,
-                                         .var = NULL,
+                                         ...,
                                          .stats = NULL,
+                                         .stat_names = NULL,
                                          .formats = NULL,
                                          .labels = NULL,
-                                         .indent_mods = NULL,
-                                         na_str = default_na_str()) {
-  x_stats <- s_count_occurrences_by_grade(
-    df = df, .var = .var, .N_row = .N_row, .N_col = .N_col, id = id,
-    grade_groups = grade_groups, remove_single = remove_single, only_grade_groups = only_grade_groups,
-    denom = denom, labelstr = labelstr
+                                         .indent_mods = NULL) {
+  # Check for additional parameters to the statistics function
+  dots_extra_args <- list(...)
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
+  dots_extra_args$.additional_fun_parameters <- NULL
+
+  # Apply statistics function
+  x_stats <- .apply_stat_functions(
+    default_stat_fnc = s_count_occurrences_by_grade,
+    custom_stat_fnc_list = NULL,
+    args_list = c(
+      df = list(df),
+      extra_afun_params,
+      dots_extra_args
+    )
   )
 
-  if (is.null(unlist(x_stats))) {
-    return(NULL)
-  }
-
-  # Fill in with formatting defaults if needed
+  # Fill in formatting defaults
   .stats <- get_stats("count_occurrences_by_grade", stats_in = .stats)
   x_stats <- x_stats[.stats]
   levels_per_stats <- lapply(x_stats, names)
@@ -280,19 +279,16 @@ a_count_occurrences_by_grade <- function(df,
   .labels <- get_labels_from_stats(.stats, .labels, levels_per_stats)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
 
-  # Unlist stats
-  x_stats <- x_stats %>% .unlist_keep_nulls()
-
   # Auto format handling
   .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
 
   in_rows(
-    .list = x_stats,
+    .list = x_stats %>% .unlist_keep_nulls(),
     .formats = .formats,
     .names = .labels %>% .unlist_keep_nulls(),
+    .stat_names = .stat_names,
     .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls(),
-    .format_na_strs = na_str
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
   )
 }
 
@@ -365,39 +361,42 @@ count_occurrences_by_grade <- function(lyt,
                                        ...,
                                        table_names = var,
                                        .stats = "count_fraction",
+                                       .stat_names = NULL,
                                        .formats = list(count_fraction = format_count_fraction_fixed_dp),
                                        .indent_mods = NULL,
                                        .labels = NULL) {
   checkmate::assert_flag(riskdiff)
-  extra_args <- list(
-    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
-  )
-  s_args <- list(
-    id = id, grade_groups = grade_groups, remove_single = remove_single, only_grade_groups = only_grade_groups, ...
+  afun <- if (isFALSE(riskdiff)) a_count_occurrences_by_grade else afun_riskdiff
+
+  # Process standard extra arguments
+  extra_args <- list(".stats" = .stats)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Process additional arguments to the statistic function
+  extra_args <- c(
+    extra_args,
+    id = id, grade_groups = list(grade_groups), remove_single = remove_single, only_grade_groups = only_grade_groups,
+    if (!isFALSE(riskdiff)) list(afun = list("s_count_occurrences_by_grade" = a_count_occurrences_by_grade)),
+    ...
   )
 
-  if (isFALSE(riskdiff)) {
-    extra_args <- c(extra_args, s_args)
-  } else {
-    extra_args <- c(
-      extra_args,
-      list(
-        afun = list("s_count_occurrences_by_grade" = a_count_occurrences_by_grade),
-        s_args = s_args
-      )
-    )
-  }
+  # Append additional info from layout to the analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(afun) <- c(formals(afun), extra_args[[".additional_fun_parameters"]])
 
   analyze(
     lyt = lyt,
     vars = var,
-    afun = ifelse(isFALSE(riskdiff), a_count_occurrences_by_grade, afun_riskdiff),
-    var_labels = var_labels,
-    show_labels = show_labels,
-    table_names = table_names,
+    afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = extra_args
+    extra_args = extra_args,
+    var_labels = var_labels,
+    show_labels = show_labels,
+    table_names = table_names
   )
 }
 
@@ -441,33 +440,36 @@ summarize_occurrences_by_grade <- function(lyt,
                                            na_str = default_na_str(),
                                            ...,
                                            .stats = "count_fraction",
+                                           .stat_names = NULL,
                                            .formats = list(count_fraction = format_count_fraction_fixed_dp),
                                            .indent_mods = NULL,
                                            .labels = NULL) {
   checkmate::assert_flag(riskdiff)
-  extra_args <- list(
-    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
-  )
-  s_args <- list(
-    id = id, grade_groups = grade_groups, remove_single = remove_single, only_grade_groups = only_grade_groups, ...
+  afun <- if (isFALSE(riskdiff)) a_count_occurrences_by_grade else afun_riskdiff
+
+  # Process standard extra arguments
+  extra_args <- list(".stats" = .stats)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Process additional arguments to the statistic function
+  extra_args <- c(
+    extra_args,
+    id = id, grade_groups = list(grade_groups), remove_single = remove_single, only_grade_groups = only_grade_groups,
+    if (!isFALSE(riskdiff)) list(afun = list("s_count_occurrences_by_grade" = a_count_occurrences_by_grade)),
+    ...
   )
 
-  if (isFALSE(riskdiff)) {
-    extra_args <- c(extra_args, s_args)
-  } else {
-    extra_args <- c(
-      extra_args,
-      list(
-        afun = list("s_count_occurrences_by_grade" = a_count_occurrences_by_grade),
-        s_args = s_args
-      )
-    )
-  }
+  # Append additional info from layout to the analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(afun) <- c(formals(afun), extra_args[[".additional_fun_parameters"]])
 
   summarize_row_groups(
     lyt = lyt,
     var = var,
-    cfun = ifelse(isFALSE(riskdiff), a_count_occurrences_by_grade, afun_riskdiff),
+    cfun = afun,
     na_str = na_str,
     extra_args = extra_args
   )
