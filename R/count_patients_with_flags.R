@@ -225,6 +225,7 @@ count_patients_with_flags <- function(lyt,
                                       .indent_mods = NULL,
                                       .labels = NULL) {
   checkmate::assert_flag(riskdiff)
+  afun <- if (isFALSE(riskdiff)) a_count_patients_with_flags else afun_riskdiff
 
   # Process standard extra arguments
   extra_args <- list(".stats" = .stats)
@@ -237,18 +238,9 @@ count_patients_with_flags <- function(lyt,
   extra_args <- c(
     extra_args,
     flag_variables = list(flag_variables), flag_labels = list(flag_labels),
+    if (!isFALSE(riskdiff)) list(afun = list("s_count_patients_with_flags" = a_count_patients_with_flags)),
     ...
   )
-
-  if (isFALSE(riskdiff)) {
-    afun <- a_count_patients_with_flags
-  } else {
-    afun <- afun_riskdiff
-    extra_args <- c(
-      extra_args,
-      list(afun = list("s_count_patients_with_flags" = a_count_patients_with_flags))
-    )
-  }
 
   # Append additional info from layout to the analysis function
   extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)

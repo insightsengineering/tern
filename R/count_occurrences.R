@@ -238,6 +238,7 @@ count_occurrences <- function(lyt,
                               .labels = NULL,
                               .indent_mods = NULL) {
   checkmate::assert_flag(riskdiff)
+  afun <- if (isFALSE(riskdiff)) a_count_occurrences else afun_riskdiff
 
   # Process standard extra arguments
   extra_args <- list(".stats" = .stats)
@@ -250,18 +251,9 @@ count_occurrences <- function(lyt,
   extra_args <- c(
     extra_args,
     id = id, drop = drop,
+    if (!isFALSE(riskdiff)) list(afun = list("s_count_occurrences" = a_count_occurrences)),
     ...
   )
-
-  if (isFALSE(riskdiff)) {
-    afun <- a_count_occurrences
-  } else {
-    afun <- afun_riskdiff
-    extra_args <- c(
-      extra_args,
-      list(afun = list("s_count_occurrences" = a_count_occurrences))
-    )
-  }
 
   # Append additional info from layout to the analysis function
   extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
@@ -314,6 +306,7 @@ summarize_occurrences <- function(lyt,
                                   .indent_mods = NULL,
                                   .labels = NULL) {
   checkmate::assert_flag(riskdiff)
+  afun <- if (isFALSE(riskdiff)) a_count_occurrences else afun_riskdiff
 
   # Process standard extra arguments
   extra_args <- list(".stats" = .stats)
@@ -326,18 +319,9 @@ summarize_occurrences <- function(lyt,
   extra_args <- c(
     extra_args,
     id = id, drop = drop,
+    if (!isFALSE(riskdiff)) list(afun = list("s_count_occurrences" = a_count_occurrences)),
     ...
   )
-
-  if (isFALSE(riskdiff)) {
-    afun <- a_count_occurrences
-  } else {
-    afun <- afun_riskdiff
-    extra_args <- c(
-      extra_args,
-      list(afun = list("s_count_occurrences" = a_count_occurrences))
-    )
-  }
 
   # Append additional info from layout to the analysis function
   extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
