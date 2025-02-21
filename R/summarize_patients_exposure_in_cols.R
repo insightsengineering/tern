@@ -45,6 +45,7 @@ s_count_patients_sum_exposure <- function(df,
                                           ...,
                                           ex_var = "AVAL",
                                           id = "USUBJID",
+                                          var_level = NULL,
                                           custom_label = NULL) {
   assert_df_with_variables(df, list(ex_var = ex_var, id = id))
   checkmate::assert_string(id)
@@ -55,6 +56,8 @@ s_count_patients_sum_exposure <- function(df,
 
   row_label <- if (labelstr != "") {
     labelstr
+  } else if (!is.null(var_level)) {
+    var_level
   } else if (!is.null(custom_label)) {
     custom_label
   } else {
@@ -122,6 +125,7 @@ a_count_patients_sum_exposure <- function(df,
         args_list = c(
           df = list(subset(df, get(var) == lvl)),
           labelstr = list(labelstr),
+          var_level = lvl,
           extra_afun_params,
           dots_extra_args
         )
@@ -130,7 +134,7 @@ a_count_patients_sum_exposure <- function(df,
     }
   }
 
-  if (add_total_level) {
+  if (add_total_level || is.null(var)) {
     x_stats_total <- .apply_stat_functions(
       default_stat_fnc = s_count_patients_sum_exposure,
       custom_stat_fnc_list = NULL,
@@ -149,13 +153,15 @@ a_count_patients_sum_exposure <- function(df,
   x_stats <- x_stats[.stats]
   levels_per_stats <- lapply(x_stats, names)
   .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
-  .labels <- get_labels_from_stats(.stats, .labels, levels_per_stats)
+  .labels <- get_labels_from_stats(
+    .stats, .labels, levels_per_stats,
+    tern_defaults = c(lapply(x_stats[[1]], attr, "label"), tern_default_labels)
+  )
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
 
   # Auto format handling
   .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
 
-  # browser()
   in_rows(
     .list = x_stats %>% .unlist_keep_nulls(),
     .formats = .formats,
@@ -202,13 +208,15 @@ summarize_patients_exposure_in_cols <- function(lyt,
                                                 ...,
                                                 .stats = c("n_patients", "sum_exposure"),
                                                 .stat_names = NULL,
-                                                .formats = list(n_patients = "xx (xx.x%)", sum_exposure = "xx"),
-                                                .labels = list(n_patients = "Patients", sum_exposure = "Person time"),
+                                                .formats = NULL,
+                                                .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
                                                 .indent_mods = NULL) {
   # Process standard extra arguments
   extra_args <- list()
   if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  col_labels <- unlist(.labels[.stats])
+  .labels <- .labels[!names(.labels) %in% c("n_patients", "sum_exposure")]
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
 
@@ -229,7 +237,7 @@ summarize_patients_exposure_in_cols <- function(lyt,
     lyt <- split_cols_by_multivar(
       lyt = lyt,
       vars = rep(var, length(.stats)),
-      varlabels = unlist(.labels[.stats]),
+      varlabels = col_labels,
       extra_args = list(.stats = .stats)
     )
   }
@@ -324,14 +332,16 @@ analyze_patients_exposure_in_cols <- function(lyt,
                                               na_str = default_na_str(),
                                               .stats = c("n_patients", "sum_exposure"),
                                               .stat_names = NULL,
-                                              .formats = list(n_patients = "xx (xx.x%)", sum_exposure = "xx"),
-                                              .labels = list(n_patients = "Patients", sum_exposure = "Person time"),
+                                              .formats = NULL,
+                                              .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
                                               .indent_mods = NULL,
                                               ...) {
   # Process standard extra arguments
   extra_args <- list()
   if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  col_labels <- unlist(.labels[.stats])
+  .labels <- .labels[!names(.labels) %in% c("n_patients", "sum_exposure")]
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
 
@@ -352,7 +362,7 @@ analyze_patients_exposure_in_cols <- function(lyt,
     lyt <- split_cols_by_multivar(
       lyt = lyt,
       vars = rep(ex_var, length(.stats)),
-      varlabels = unlist(.labels[.stats]),
+      varlabels = col_labels,
       extra_args = list(.stats = .stats)
     )
   }
