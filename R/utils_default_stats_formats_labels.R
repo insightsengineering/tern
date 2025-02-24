@@ -601,7 +601,10 @@ tern_default_formats <- c(
   rate = "xx.xxxx",
   rate_ci = "(xx.xxxx, xx.xxxx)",
   rate_ratio = "xx.xxxx",
-  rate_ratio_ci = "(xx.xxxx, xx.xxxx)"
+  rate_ratio_ci = "(xx.xxxx, xx.xxxx)",
+  lsmean = "xx.xx",
+  lsmean_diff = "xx.xx",
+  lsmean_diff_ci = "(xx.xx, xx.xx)"
 )
 
 # tern_default_labels ----------------------------------------------------------
