@@ -148,11 +148,11 @@ a_count_patients_with_flags <- function(df,
 
   # Fill in formatting defaults
   .stats <- get_stats("count_patients_with_flags", stats_in = .stats, custom_stats_in = names(custom_stat_functions))
-  levels_per_stats <- rep(list(names(flag_variables)), length(.stats)) %>% setNames(.stats)
+  levels_per_stats <- rep(list(names(flag_variables)), length(.stats)) %>% stats::setNames(.stats)
   .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
   .labels <- get_labels_from_stats(
     .stats, .labels, levels_per_stats,
-    tern_defaults = flag_labels %>% setNames(names(flag_variables))
+    tern_defaults = flag_labels %>% stats::setNames(names(flag_variables))
   )
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
 
@@ -167,7 +167,7 @@ a_count_patients_with_flags <- function(df,
   # Unlist stats
   x_stats <- x_stats %>%
     .unlist_keep_nulls() %>%
-    setNames(names(.formats))
+    stats::setNames(names(.formats))
 
   in_rows(
     .list = x_stats,
