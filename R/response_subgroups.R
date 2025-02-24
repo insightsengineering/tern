@@ -129,40 +129,54 @@ extract_rsp_subgroups <- function(variables,
 #' * `a_response_subgroups()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @keywords internal
-a_response_subgroups <- function(.formats = list(
-                                   n = "xx", # nolint start
-                                   n_rsp = "xx",
-                                   prop = "xx.x%",
-                                   n_tot = "xx",
-                                   or = list(format_extreme_values(2L)),
-                                   ci = list(format_extreme_values_ci(2L)),
-                                   pval = "x.xxxx | (<0.0001)",
-                                   riskdiff = "xx.x (xx.x - xx.x)" # nolint end
-                                 ),
-                                 na_str = default_na_str()) {
-  checkmate::assert_list(.formats)
-  checkmate::assert_subset(
-    names(.formats),
-    c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval", "riskdiff")
-  )
+a_response_subgroups <- function(df,
+                                 labelstr = "",
+                                 ...,
+                                 .stats = NULL,
+                                 .stat_names = NULL,
+                                 .formats = NULL,
+                                 .labels = NULL,
+                                 .indent_mods = NULL) {
+  # Check for additional parameters to the statistics function
+  dots_extra_args <- list(...)
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
+  dots_extra_args$.additional_fun_parameters <- NULL
+  cur_stat <- extra_afun_params$.var %||% .stats
+  var_lvls <- as.character(df$subgroup)
 
-  afun_lst <- Map(
-    function(stat, fmt, na_str) {
-      function(df, labelstr = "", ...) {
-        in_rows(
-          .list = as.list(df[[stat]]),
-          .labels = as.character(df$subgroup),
-          .formats = fmt,
-          .format_na_strs = na_str
-        )
-      }
-    },
-    stat = names(.formats),
-    fmt = .formats,
-    na_str = na_str
-  )
+  # Main statistics taken from df
+  x_stats <- as.list(df)
 
-  afun_lst
+  # Fill in formatting defaults
+  .stats <- get_stats("tabulate_rsp_subgroups", stats_in = cur_stat)
+  levels_per_stats <- rep(list(var_lvls), length(.stats)) %>% setNames(.stats)
+  .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
+  .labels <- get_labels_from_stats(
+    .stats, .labels, levels_per_stats,
+    tern_defaults = as.list(var_lvls) %>% setNames(var_lvls)
+  )
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
+
+  x_stats <- lapply(
+    .stats,
+    function(x) x_stats[[x]] %>% stats::setNames(var_lvls)
+  ) %>%
+    stats::setNames(.stats)
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
+
+  # Get and check statistical names
+  .stat_names <- get_stat_names(x_stats, .stat_names)
+
+  in_rows(
+    .list = x_stats %>% .unlist_keep_nulls(),
+    .formats = .formats,
+    .names = names(.labels),
+    .stat_names = .stat_names,
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+  )
 }
 
 #' @describeIn response_subgroups Table-creating function which creates a table
@@ -218,11 +232,11 @@ tabulate_rsp_subgroups <- function(lyt,
                                    label_all = "All Patients",
                                    riskdiff = NULL,
                                    na_str = default_na_str(),
-                                   .formats = c(
-                                     n = "xx", n_rsp = "xx", prop = "xx.x%", n_tot = "xx",
-                                     or = list(format_extreme_values(2L)), ci = list(format_extreme_values_ci(2L)),
-                                     pval = "x.xxxx | (<0.0001)"
-                                   )) {
+                                   ...,
+                                   .stat_names = NULL,
+                                   .formats = NULL,
+                                   .labels = NULL,
+                                   .indent_mods = NULL) {
   checkmate::assert_list(riskdiff, null.ok = TRUE)
   checkmate::assert_true(all(c("n_tot", "or", "ci") %in% vars))
   if ("pval" %in% vars && !"pval" %in% names(df$or)) {
@@ -233,6 +247,13 @@ tabulate_rsp_subgroups <- function(lyt,
       '"variables" argument to `extract_rsp_subgroups()`.'
     )
   }
+
+  # Process standard extra arguments
+  extra_args <- list(".stats" = vars)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
 
   # Create "ci" column from "lcl" and "ucl"
   df$or$ci <- combine_vectors(df$or$lcl, df$or$ucl)
@@ -250,10 +271,16 @@ tabulate_rsp_subgroups <- function(lyt,
   colvars_prop <- list(vars = prop_vars, labels = colvars$labels[prop_vars])
   colvars_or <- list(vars = or_vars, labels = colvars$labels[or_vars])
 
-  extra_args <- list(groups_lists = groups_lists, conf_level = conf_level, method = method, label_all = label_all)
+  # Process additional arguments to the statistic function
+  extra_args <- c(
+    extra_args,
+    groups_lists = list(groups_lists), conf_level = conf_level, method = method, label_all = label_all,
+    ...
+  )
 
-  # Get analysis function for each statistic
-  afun_lst <- a_response_subgroups(.formats = c(.formats, riskdiff = riskdiff$format), na_str = na_str)
+  # Adding additional info from layout to analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_response_subgroups) <- c(formals(a_response_subgroups), extra_args[[".additional_fun_parameters"]])
 
   # Add risk difference column
   if (!is.null(riskdiff)) {
@@ -308,7 +335,7 @@ tabulate_rsp_subgroups <- function(lyt,
     )
     lyt_prop <- analyze_colvars(
       lyt = lyt_prop,
-      afun = afun_lst[names(colvars_prop$labels)],
+      afun = a_response_subgroups,
       na_str = na_str,
       extra_args = extra_args
     )
@@ -325,7 +352,7 @@ tabulate_rsp_subgroups <- function(lyt,
       lyt_prop <- split_rows_by(lyt = lyt_prop, var = "var_label", nested = TRUE)
       lyt_prop <- analyze_colvars(
         lyt = lyt_prop,
-        afun = afun_lst[names(colvars_prop$labels)],
+        afun = a_response_subgroups,
         na_str = na_str,
         inclNAs = TRUE,
         extra_args = extra_args
@@ -355,7 +382,7 @@ tabulate_rsp_subgroups <- function(lyt,
   )
   lyt_or <- analyze_colvars(
     lyt = lyt_or,
-    afun = afun_lst[names(colvars_or$labels)],
+    afun = a_response_subgroups,
     na_str = na_str,
     extra_args = extra_args
   ) %>%
@@ -373,7 +400,7 @@ tabulate_rsp_subgroups <- function(lyt,
     lyt_or <- split_rows_by(lyt = lyt_or, var = "var_label", nested = TRUE)
     lyt_or <- analyze_colvars(
       lyt = lyt_or,
-      afun = afun_lst[names(colvars_or$labels)],
+      afun = a_response_subgroups,
       na_str = na_str,
       inclNAs = TRUE,
       extra_args = extra_args

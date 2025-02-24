@@ -540,7 +540,7 @@ tern_default_stats <- list(
     "event_free_rate_3d"
   ),
   tabulate_rsp_biomarkers = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
-  tabulate_rsp_subgroups = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval"),
+  tabulate_rsp_subgroups = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval", "riskdiff"),
   tabulate_survival_biomarkers = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
   tabulate_survival_subgroups = c("n_tot_events", "n_events", "n_tot", "n", "median", "hr", "ci", "pval"),
   test_proportion_diff = c("pval")
@@ -555,6 +555,7 @@ tern_default_stats <- list(
 #'
 #' @export
 tern_default_formats <- c(
+  ci = list(format_extreme_values_ci(2L)),
   count = "xx.",
   count_fraction = format_count_fraction,
   count_fraction_fixed_dp = format_count_fraction_fixed_dp,
@@ -588,12 +589,15 @@ tern_default_formats <- c(
   n = "xx.",
   n_blq = "xx.",
   n_events = "xx",
+  n_patients = "xx (xx.x%)",
   n_rate = "xx (xx.x)",
   n_rsp = "xx",
+  n_tot = "xx",
   n_unique = "xx",
-  n_patients = "xx (xx.x%)",
   nonunique = "xx",
+  or = list(format_extreme_values(2L)),
   person_years = "xx.x",
+  prop = "xx.x%",
   pval = "x.xxxx | (<0.0001)",
   pval_counts = "x.xxxx | (<0.0001)",
   quantiles = "xx.x - xx.x",
@@ -606,6 +610,7 @@ tern_default_formats <- c(
   rate_ci = "(xx.xxxx, xx.xxxx)",
   rate_ratio = "xx.xxxx",
   rate_ratio_ci = "(xx.xxxx, xx.xxxx)",
+  riskdiff = "xx.x (xx.x - xx.x)",
   sd = "xx.x",
   se = "xx.x",
   sum = "xx.x",
