@@ -116,10 +116,15 @@ a_length_proportion <- function(x,
   extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
   dots_extra_args$.additional_fun_parameters <- NULL
 
+  # Check for user-defined functions
+  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
+  .stats <- default_and_custom_stats_list$default_stats
+  custom_stat_functions <- default_and_custom_stats_list$custom_stats
+
   # Apply statistics function
   x_stats <- .apply_stat_functions(
     default_stat_fnc = s_length_proportion,
-    custom_stat_fnc_list = NULL,
+    custom_stat_fnc_list = custom_stat_functions,
     args_list = c(
       x = list(x),
       extra_afun_params,
@@ -128,7 +133,7 @@ a_length_proportion <- function(x,
   )
 
   # Fill in formatting defaults
-  .stats <- get_stats("estimate_multinomial_response", stats_in = .stats)
+  .stats <- c(get_stats("estimate_multinomial_response", stats_in = .stats), names(custom_stat_functions))
   x_stats <- x_stats[.stats]
   .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- get_labels_from_stats(

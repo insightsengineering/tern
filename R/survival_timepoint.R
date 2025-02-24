@@ -165,10 +165,15 @@ a_surv_timepoint <- function(df,
   dots_extra_args$.additional_fun_parameters <- NULL
   method <- dots_extra_args$method
 
+  # Check for user-defined functions
+  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
+  .stats <- default_and_custom_stats_list$default_stats
+  custom_stat_functions <- default_and_custom_stats_list$custom_stats
+
   # Apply statistics function
   x_stats <- .apply_stat_functions(
     default_stat_fnc = if (method == "surv") s_surv_timepoint else s_surv_timepoint_diff,
-    custom_stat_fnc_list = NULL,
+    custom_stat_fnc_list = custom_stat_functions,
     args_list = c(
       df = list(df),
       extra_afun_params,
@@ -177,7 +182,10 @@ a_surv_timepoint <- function(df,
   )
 
   # Fill in formatting defaults
-  .stats <- get_stats(if (method == "surv") "surv_timepoint" else "surv_timepoint_diff", stats_in = .stats)
+  .stats <- c(
+    get_stats(if (method == "surv") "surv_timepoint" else "surv_timepoint_diff", stats_in = .stats),
+    names(custom_stat_functions)
+  )
   x_stats <- x_stats[.stats]
   .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- get_labels_from_stats(
