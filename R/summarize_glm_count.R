@@ -286,10 +286,15 @@ a_glm_count <- function(df,
   extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
   dots_extra_args$.additional_fun_parameters <- NULL
 
+  # Check for user-defined functions
+  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
+  .stats <- default_and_custom_stats_list$default_stats
+  custom_stat_functions <- default_and_custom_stats_list$custom_stats
+
   # Apply statistics function
   x_stats <- .apply_stat_functions(
     default_stat_fnc = s_glm_count,
-    custom_stat_fnc_list = NULL,
+    custom_stat_fnc_list = custom_stat_functions,
     args_list = c(
       df = list(df),
       extra_afun_params,
@@ -298,7 +303,7 @@ a_glm_count <- function(df,
   )
 
   # Fill in formatting defaults
-  .stats <- get_stats("summarize_glm_count", stats_in = .stats)
+  .stats <- c(get_stats("summarize_glm_count", stats_in = .stats), names(custom_stat_functions))
   .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- get_labels_from_stats(.stats, .labels)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
