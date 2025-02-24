@@ -56,7 +56,6 @@ s_num_patients <- function(x,
                            ...,
                            count_by = NULL,
                            unique_count_suffix = TRUE) {
-
   checkmate::assert_string(labelstr)
   checkmate::assert_count(.N_col)
   checkmate::assert_multi_class(x, classes = c("factor", "character"))

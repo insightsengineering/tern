@@ -1,8 +1,9 @@
 # tern 0.9.7.9008
 
 ### Enhancements
-* Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, `count_abnormal_lab_worsen_by_baseline()`, `summarize_ancova()`, and `summarize_glm_count()` to work without `make_afun()`.
+* Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, `count_abnormal_lab_worsen_by_baseline()`, `summarize_ancova()`, `summarize_glm_count()`, and `summarize_num_patients()` to work without `make_afun()`.
 * Added `geom_sd` and `geom_mean_sd` to `s_summary()` default available statistics.
+* Refactored `afun_riskdiff()`, `count_occurrences()`, `count_occurrences_by_grade()`, `count_patients_with_event()`, `count_patients_with_flags()`, `count_values()`, `estimate_incidence_rate()`, `summarize_change()`, `summarize_patients_exposure_in_cols()`, `tabulate_rsp_subgroups()`, and `tabulate_survival_subgroups()` to align with new analysis function style.
 
 ### Bug Fixes
 * Fixed bug in `a_count_patients_with_flags()` preventing select custom label and indentation specification formats from being applied.
@@ -14,6 +15,7 @@
 * Began deprecation of the unused `table_names` argument to `count_abnormal_lab_worsen_by_baseline()`.
 * Added warnings for `geom_mean` statistical output.
 * Began deprecation of the unused `label_all` parameter to `tabulate_rsp_subgroups()`, with redirection to the same parameter in `extract_rsp_subgroups()`.
+* Updated documentation to remove suggestions to use `make_afun()`.
 
 # tern 0.9.7
 
