@@ -190,7 +190,7 @@ a_count_occurrences <- function(df,
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
 
   # Auto format handling
-  .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
+  .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
 
   in_rows(
     .list = x_stats %>% .unlist_keep_nulls(),

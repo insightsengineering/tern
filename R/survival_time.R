@@ -176,7 +176,7 @@ a_surv_time <- function(df,
   x_stats <- x_stats[.stats]
 
   # Auto format handling
-  .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
+  .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
 
   cell_fns <- setNames(vector("list", length = length(x_stats)), .labels)
   if ("range" %in% names(x_stats) && ref_fn_censor) {
