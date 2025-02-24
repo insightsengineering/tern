@@ -34,6 +34,7 @@ named for their corresponding statistic.
 get_stats(
   method_groups = "analyze_vars_numeric",
   stats_in = NULL,
+  custom_stats_in = NULL,
   add_pval = FALSE
 )
 
@@ -76,7 +77,10 @@ summary_labels(type = "numeric", include_pval = FALSE)
 to retrieve default statistics for. A character vector can be used to specify more than one statistical
 method group.}
 
-\item{stats_in}{(\code{character})\cr statistics to retrieve for the selected method group.}
+\item{stats_in}{(\code{character})\cr statistics to retrieve for the selected method group. If custom statistical
+functions are used, \code{stats_in} needs to have them in too.}
+
+\item{custom_stats_in}{(\code{character})\cr custom statistics to add to the default statistics.}
 
 \item{add_pval}{(\code{flag})\cr should \code{"pval"} (or \code{"pval_counts"} if \code{method_groups} contains
 \code{"analyze_vars_counts"}) be added to the statistical methods?}

@@ -33,7 +33,9 @@ NULL
 #' @param method_groups (`character`)\cr indicates the statistical method group (`tern` analyze function)
 #'   to retrieve default statistics for. A character vector can be used to specify more than one statistical
 #'   method group.
-#' @param stats_in (`character`)\cr statistics to retrieve for the selected method group.
+#' @param stats_in (`character`)\cr statistics to retrieve for the selected method group. If custom statistical
+#'   functions are used, `stats_in` needs to have them in too.
+#' @param custom_stats_in (`character`)\cr custom statistics to add to the default statistics.
 #' @param add_pval (`flag`)\cr should `"pval"` (or `"pval_counts"` if `method_groups` contains
 #'   `"analyze_vars_counts"`) be added to the statistical methods?
 #'
@@ -57,9 +59,11 @@ NULL
 #' get_stats(c("count_occurrences", "analyze_vars_counts"))
 #'
 #' @export
-get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, add_pval = FALSE) {
+get_stats <- function(method_groups = "analyze_vars_numeric",
+                      stats_in = NULL, custom_stats_in = NULL, add_pval = FALSE) {
   checkmate::assert_character(method_groups)
   checkmate::assert_character(stats_in, null.ok = TRUE)
+  checkmate::assert_character(custom_stats_in, null.ok = TRUE)
   checkmate::assert_flag(add_pval)
 
   # Default is still numeric
@@ -81,6 +85,9 @@ get_stats <- function(method_groups = "analyze_vars_numeric", stats_in = NULL, a
     }
     out <- unique(c(out, out_tmp))
   }
+
+  # Add custom stats
+  out <- c(out, custom_stats_in)
 
   # If you added pval to the stats_in you certainly want it
   if (!is.null(stats_in) && any(grepl("^pval", stats_in))) {
@@ -157,7 +164,7 @@ get_stat_names <- function(stat_results, stat_names_in = NULL) {
     if (is.null(nm)) {
       nm <- rep(NA_character_, length(si)) # no statistical names
     }
-    return(nm)
+    nm
   })
 
   # Modify some with custom stat names
@@ -172,16 +179,18 @@ get_stat_names <- function(stat_results, stat_names_in = NULL) {
 
 # Utility function used to separate custom stats (user-defined functions) from defaults
 .split_std_from_custom_stats <- function(stats_in) {
-  out <- list(default_stats = NULL, custom_stats = NULL)
+  out <- list(default_stats = NULL, custom_stats = NULL, all_stats = NULL)
   if (is.list(stats_in)) {
     is_custom_fnc <- sapply(stats_in, is.function)
     checkmate::assert_list(stats_in[is_custom_fnc], types = "function", names = "named")
     out[["custom_stats"]] <- stats_in[is_custom_fnc]
     out[["default_stats"]] <- unlist(stats_in[!is_custom_fnc])
+    all_stats <- names(stats_in) # to keep the order
+    all_stats[!is_custom_fnc] <- out[["default_stats"]]
+    out[["all_stats"]] <- all_stats
   } else {
-    out[["default_stats"]] <- stats_in
+    out[["default_stats"]] <- out[["all_stats"]] <- stats_in
   }
-
   out
 }
 
@@ -500,7 +509,7 @@ tern_default_stats <- list(
   analyze_vars_numeric = c(
     "n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci", "mean_sei", "mean_sdi", "mean_pval",
     "median", "mad", "median_ci", "quantiles", "iqr", "range", "min", "max", "median_range", "cv",
-    "geom_mean", "geom_mean_ci", "geom_cv",
+    "geom_mean", "geom_sd", "geom_mean_sd", "geom_mean_ci", "geom_cv",
     "median_ci_3d",
     "mean_ci_3d", "geom_mean_ci_3d"
   ),
@@ -580,6 +589,8 @@ tern_default_formats <- c(
   median_range = "xx.x (xx.x - xx.x)",
   cv = "xx.x",
   geom_mean = "xx.x",
+  geom_sd = "xx.x",
+  geom_mean_sd = "xx.x (xx.x)",
   geom_mean_ci = "(xx.xx, xx.xx)",
   geom_mean_ci_3d = "xx.xx (xx.xx - xx.xx)",
   geom_cv = "xx.x",
@@ -631,6 +642,8 @@ tern_default_labels <- c(
   median_range = "Median (Min - Max)",
   cv = "CV (%)",
   geom_mean = "Geometric Mean",
+  geom_sd = "Geometric SD",
+  geom_mean_sd = "Geometric Mean (SD)",
   geom_mean_ci = "Geometric Mean 95% CI",
   geom_mean_ci_3d = "Geometric Mean (95% CI)",
   geom_cv = "CV % Geometric Mean",

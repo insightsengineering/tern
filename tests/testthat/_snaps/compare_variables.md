@@ -9,7 +9,8 @@
       [13] "median"          "mad"             "median_ci"       "median_ci_3d"   
       [17] "quantiles"       "iqr"             "range"           "min"            
       [21] "max"             "median_range"    "cv"              "geom_mean"      
-      [25] "geom_mean_ci"    "geom_cv"         "geom_mean_ci_3d" "pval"           
+      [25] "geom_sd"         "geom_mean_sd"    "geom_mean_ci"    "geom_cv"        
+      [29] "geom_mean_ci_3d" "pval"           
 
 # s_compare for numeric does not give p-value when not at least 2 values in each group
 
