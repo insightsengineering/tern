@@ -45,9 +45,8 @@ reference:
             from formatting, they do not take care of `rcell` type formatting
             themselves.
 
-          - **Formatted analysis functions** (denoted by `a_` prefix) have the
-            same arguments as the corresponding statistics functions, and can
-            be further customized by calling `rtables::make_afun()` on them.
+          - **Formatted analysis functions** (denoted by `a_` prefix) apply
+            formatting to results from their corresponding statistics functions.
             They are used as `afun` in `rtables::analyze()`.
 
     contents:
