@@ -116,12 +116,17 @@ a_count_patients_sum_exposure <- function(df,
     df[[var]] <- as.factor(df[[var]])
   }
 
+  # Check for user-defined functions
+  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
+  .stats <- default_and_custom_stats_list$all_stats
+  custom_stat_functions <- default_and_custom_stats_list$custom_stats
+
   x_stats <- list()
   if (!is.null(var)) {
     for (lvl in levels(df[[var]])) {
       x_stats_i <- .apply_stat_functions(
         default_stat_fnc = s_count_patients_sum_exposure,
-        custom_stat_fnc_list = NULL,
+        custom_stat_fnc_list = custom_stat_functions,
         args_list = c(
           df = list(subset(df, get(var) == lvl)),
           labelstr = list(labelstr),
@@ -137,7 +142,7 @@ a_count_patients_sum_exposure <- function(df,
   if (add_total_level || is.null(var)) {
     x_stats_total <- .apply_stat_functions(
       default_stat_fnc = s_count_patients_sum_exposure,
-      custom_stat_fnc_list = NULL,
+      custom_stat_fnc_list = custom_stat_functions,
       args_list = c(
         df = list(df),
         labelstr = list(labelstr),
@@ -149,7 +154,11 @@ a_count_patients_sum_exposure <- function(df,
   }
 
   # Fill in formatting defaults
-  .stats <- get_stats("analyze_patients_exposure_in_cols", stats_in = .stats)
+  .stats <- get_stats(
+    "analyze_patients_exposure_in_cols",
+    stats_in = .stats,
+    custom_stats_in = names(custom_stat_functions)
+  )
   x_stats <- x_stats[.stats]
   levels_per_stats <- lapply(x_stats, names)
   .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
