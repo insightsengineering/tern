@@ -675,7 +675,7 @@ testthat::test_that("analyze_vars warnings for geom_verbose work", {
       result2 <- basic_table() %>%
         analyze_vars("VAR2", .stats = "geom_mean_sd", geom_verbose = TRUE) %>%
         build_table(tmp_df),
-      "All values are negative or NA"
+      "Since all values are negative or NA"
     ),
     "Negative values were converted to NA"
   )
