@@ -229,7 +229,7 @@ tabulate_rsp_subgroups <- function(lyt,
                                    df,
                                    vars = c("n_tot", "n", "prop", "or", "ci"),
                                    groups_lists = list(),
-                                   label_all = "All Patients",
+                                   label_all = lifecycle::deprecated(),
                                    riskdiff = NULL,
                                    na_str = default_na_str(),
                                    ...,
@@ -245,6 +245,14 @@ tabulate_rsp_subgroups <- function(lyt,
       'table. To include the "pval" statistic, please specify a p-value test when generating "df" via ',
       'the "method" argument to `extract_rsp_subgroups()`. If method = "cmh", strata must also be specified via the ',
       '"variables" argument to `extract_rsp_subgroups()`.'
+    )
+  }
+
+  if (lifecycle::is_present(label_all)) {
+    lifecycle::deprecate_warn(
+      "0.9.8", "tabulate_rsp_subgroups(label_all)",
+      details =
+        "Please assign the `label_all` parameter within the `extract_rsp_subgroups()` function when creating `df`."
     )
   }
 
@@ -274,7 +282,7 @@ tabulate_rsp_subgroups <- function(lyt,
   # Process additional arguments to the statistic function
   extra_args <- c(
     extra_args,
-    groups_lists = list(groups_lists), conf_level = conf_level, method = method, label_all = label_all,
+    groups_lists = list(groups_lists), conf_level = conf_level, method = method,
     ...
   )
 
