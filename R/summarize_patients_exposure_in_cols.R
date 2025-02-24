@@ -45,8 +45,8 @@ s_count_patients_sum_exposure <- function(df,
                                           ...,
                                           ex_var = "AVAL",
                                           id = "USUBJID",
-                                          var_level = NULL,
-                                          custom_label = NULL) {
+                                          custom_label = NULL,
+                                          var_level = NULL) {
   assert_df_with_variables(df, list(ex_var = ex_var, id = id))
   checkmate::assert_string(id)
   checkmate::assert_string(labelstr)
