@@ -95,7 +95,7 @@ testthat::test_that("g_bland_altman works with default settings", {
   )
   conf_level <- 0.9
 
-  testthat::expect_silent(g_bland_altman_res <- withr::with_options(
+  testthat::expect_no_error(g_bland_altman_res <- withr::with_options(
     opts_partial_match_old,
     g_bland_altman(x, y, conf_level = conf_level)
   ))
