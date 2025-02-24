@@ -164,7 +164,7 @@ get_stat_names <- function(stat_results, stat_names_in = NULL) {
     if (is.null(nm)) {
       nm <- rep(NA_character_, length(si)) # no statistical names
     }
-    return(nm)
+    nm
   })
 
   # Modify some with custom stat names

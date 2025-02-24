@@ -561,10 +561,10 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
       vars = c("VAR", "VAR2"),
       .stats = c("n", "mean",
         "a" = function(x, ...) {
-          return(0)
+          0
         },
         "v" = function(x, ...) {
-          return(0)
+          0
         }
       ),
       .stat_names = list("n" = "CoUnT", "v" = "something"),
@@ -593,7 +593,7 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
       vars = c("VAR", "VAR2"),
       .stats = c("n", "mean", "count_fraction",
         "a_zero" = function(x, ...) {
-          return(0)
+          0
         }
       ),
       .stat_names = list("n" = "CoUnT", "v" = "something"),
@@ -625,7 +625,7 @@ testthat::test_that("analyze_vars keeps the order of mixed custom fnc and defaul
     analyze_vars(
       .stats = list("n",
         "another function" = function(x, ...) {
-          return(0)
+          0
         },
         "geom_sd_custom" = function(x, ...) {
           x_no_negative_vals <- x
