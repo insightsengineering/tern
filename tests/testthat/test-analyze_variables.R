@@ -561,10 +561,10 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
       vars = c("VAR", "VAR2"),
       .stats = c("n", "mean",
         "a" = function(x, ...) {
-          return(0)
+          0
         },
         "v" = function(x, ...) {
-          return(0)
+          0
         }
       ),
       .stat_names = list("n" = "CoUnT", "v" = "something"),
@@ -593,7 +593,7 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
       vars = c("VAR", "VAR2"),
       .stats = c("n", "mean", "count_fraction",
         "a_zero" = function(x, ...) {
-          return(0)
+          0
         }
       ),
       .stat_names = list("n" = "CoUnT", "v" = "something"),
@@ -617,4 +617,69 @@ testthat::test_that("analyze_vars works well with additional stat names (.stat_n
     unlist(res2[nrow(res2), cols_int, drop = TRUE], use.names = FALSE),
     c("VAR2", "a_zero", "A_ZERO", NA, 0)
   )
+})
+
+testthat::test_that("analyze_vars keeps the order of mixed custom fnc and defaults", {
+  # Regression test for custom function ordering
+  result <- basic_table() %>%
+    analyze_vars(
+      .stats = list("n",
+        "another function" = function(x, ...) {
+          0
+        },
+        "geom_sd_custom" = function(x, ...) {
+          x_no_negative_vals <- x
+          x_no_negative_vals[x_no_negative_vals <= 0] <- NA
+
+          geom_mean <- exp(mean(log(x_no_negative_vals), na.rm = FALSE))
+          geom_sd <- exp(sd(log(x_no_negative_vals), na.rm = FALSE))
+
+          rcell(c(geom_mean, geom_sd))
+        },
+        "geom_mean_sd"
+      ),
+      vars = "AGE",
+      var_labels = "Age (yr)",
+      .formats = c("another function" = "xx.xxx", geom_sd_custom = "xx.xx (xx.xx)")
+    ) %>%
+    build_table(tern_ex_adsl)
+
+  expect_identical(
+    strsplit(toString(matrix_form(result), hsep = "-"), "\n")[[1]],
+    c(
+      "                        all obs   ",
+      "----------------------------------",
+      "n                         200     ",
+      "another function         0.000    ",
+      "geom_sd_custom        34.65 (1.22)",
+      "Geometric Mean (SD)    34.7 (1.2) "
+    )
+  )
+})
+
+testthat::test_that("analyze_vars warnings for geom_verbose work", {
+  tmp_df <- data.frame("VAR1" = c(1, 2, 3, 0, -1, -2), "VAR2" = 0)
+  expect_warning(
+    result <- basic_table() %>%
+      analyze_vars("VAR1", .stats = "geom_mean_sd", geom_verbose = TRUE) %>%
+      build_table(tmp_df),
+    "Negative values were converted to NA"
+  )
+
+  # Do we expect output to be NA?
+  expect_true(all(is.na(cell_values(result)[[1]])))
+
+  # All NAs
+  expect_warning(
+    expect_warning(
+      result2 <- basic_table() %>%
+        analyze_vars("VAR2", .stats = "geom_mean_sd", geom_verbose = TRUE) %>%
+        build_table(tmp_df),
+      "Since all values are negative or NA"
+    ),
+    "Negative values were converted to NA"
+  )
+
+  # Do we expect output to be NA?
+  expect_true(all(is.na(cell_values(result2)[[1]])))
 })
