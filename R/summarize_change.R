@@ -69,7 +69,7 @@ a_change_from_baseline <- function(df,
   extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
   dots_extra_args$.additional_fun_parameters <- NULL
   default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
-  .stats <- default_and_custom_stats_list$default_stats
+  .stats <- default_and_custom_stats_list$all_stats # just the labels of stats
   custom_stat_functions <- default_and_custom_stats_list$custom_stats
 
   # Apply statistics function

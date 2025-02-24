@@ -111,12 +111,13 @@ h_ancova <- function(.var,
 s_ancova <- function(df,
                      .var,
                      .df_row,
-                     variables,
                      .ref_group,
                      .in_ref_col,
+                     variables,
                      conf_level,
                      interaction_y = FALSE,
-                     interaction_item = NULL) {
+                     interaction_item = NULL,
+                     ...) {
   emmeans_fit <- h_ancova(.var = .var, variables = variables, .df_row = .df_row, interaction_item = interaction_item)
 
   sum_fit <- summary(
@@ -207,18 +208,59 @@ s_ancova <- function(df,
 #' * `a_ancova()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @keywords internal
-a_ancova <- make_afun(
-  s_ancova,
-  .indent_mods = c("n" = 0L, "lsmean" = 0L, "lsmean_diff" = 0L, "lsmean_diff_ci" = 1L, "pval" = 1L),
-  .formats = c(
-    "n" = "xx",
-    "lsmean" = "xx.xx",
-    "lsmean_diff" = "xx.xx",
-    "lsmean_diff_ci" = "(xx.xx, xx.xx)",
-    "pval" = "x.xxxx | (<0.0001)"
-  ),
-  .null_ref_cells = FALSE
-)
+a_ancova <- function(df,
+                     ...,
+                     .stats = NULL,
+                     .stat_names = NULL,
+                     .formats = NULL,
+                     .labels = NULL,
+                     .indent_mods = NULL) {
+  # Check for additional parameters to the statistics function
+  dots_extra_args <- list(...)
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
+  dots_extra_args$.additional_fun_parameters <- NULL
+
+  # Check for user-defined functions
+  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
+  .stats <- default_and_custom_stats_list$default_stats
+  custom_stat_functions <- default_and_custom_stats_list$custom_stats
+
+  # Apply statistics function
+  x_stats <- .apply_stat_functions(
+    default_stat_fnc = s_ancova,
+    custom_stat_fnc_list = custom_stat_functions,
+    args_list = c(
+      df = list(df),
+      extra_afun_params,
+      dots_extra_args
+    )
+  )
+
+  # Fill in formatting defaults
+  .stats <- c(get_stats("summarize_ancova", stats_in = .stats), names(custom_stat_functions))
+  x_stats <- x_stats[.stats]
+  .formats <- get_formats_from_stats(.stats, .formats)
+  .labels <- get_labels_from_stats(
+    .stats, .labels,
+    tern_defaults = c(lapply(x_stats[names(x_stats) != "n"], attr, "label"), tern_default_labels)
+  )
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
+
+  # Get and check statistical names
+  .stat_names <- get_stat_names(x_stats, .stat_names)
+
+  in_rows(
+    .list = x_stats,
+    .formats = .formats,
+    .names = .labels %>% .unlist_keep_nulls(),
+    .stat_names = .stat_names,
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+  )
+}
 
 #' @describeIn summarize_ancova Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
@@ -261,34 +303,39 @@ summarize_ancova <- function(lyt,
                              ...,
                              show_labels = "visible",
                              table_names = vars,
-                             .stats = NULL,
+                             .stats = c("n", "lsmean", "lsmean_diff", "lsmean_diff_ci", "pval"),
+                             .stat_names = NULL,
                              .formats = NULL,
                              .labels = NULL,
-                             .indent_mods = NULL) {
-  extra_args <- list(
-    variables = variables, conf_level = conf_level, interaction_y = interaction_y,
-    interaction_item = interaction_item, ...
+                             .indent_mods = list("lsmean_diff_ci" = 1L, "pval" = 1L)) {
+  # Process standard extra arguments
+  extra_args <- list(".stats" = .stats)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Process additional arguments to the statistic function
+  extra_args <- c(
+    extra_args,
+    variables = list(variables), conf_level = list(conf_level), interaction_y = list(interaction_y),
+    interaction_item = list(interaction_item),
+    ...
   )
 
-  afun <- make_afun(
-    a_ancova,
-    interaction_y = interaction_y,
-    interaction_item = interaction_item,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods
-  )
+  # Append additional info from layout to the analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_ancova) <- c(formals(a_ancova), extra_args[[".additional_fun_parameters"]])
 
   analyze(
-    lyt,
-    vars,
-    var_labels = var_labels,
-    show_labels = show_labels,
-    table_names = table_names,
-    afun = afun,
+    lyt = lyt,
+    vars = vars,
+    afun = a_ancova,
     na_str = na_str,
     nested = nested,
-    extra_args = extra_args
+    extra_args = extra_args,
+    var_labels = var_labels,
+    show_labels = show_labels,
+    table_names = table_names
   )
 }

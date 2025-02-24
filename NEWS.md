@@ -1,15 +1,18 @@
-# tern 0.9.7.9004
+# tern 0.9.7.9008
 
 ### Enhancements
-* Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, and `count_abnormal_lab_worsen_by_baseline()` to work without `make_afun()`.
+* Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, `count_abnormal_lab_worsen_by_baseline()`, `summarize_ancova()`, and `summarize_glm_count()` to work without `make_afun()`.
+* Added `geom_sd` and `geom_mean_sd` to `s_summary()` default available statistics.
 
 ### Bug Fixes
 * Fixed bug in `a_count_patients_with_flags()` preventing select custom label and indentation specification formats from being applied.
 * Fixed bug in `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` preventing the `pct` option from having an effect when adding a risk difference column.
+* Fixed bug with the order of `.stats` when adding custom statistical functions.
 
 ### Miscellaneous
 * Removed internal function `ungroup_stats()` and replaced its usage with the `get_*_from_stats()` functions.
 * Began deprecation of the unused `table_names` argument to `count_abnormal_lab_worsen_by_baseline()`.
+* Added warnings for `geom_mean` statistical output.
 
 # tern 0.9.7
 
