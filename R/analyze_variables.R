@@ -247,7 +247,7 @@ s_summary.numeric <- function(x, control = control_analyze_vars(), ...) {
       warning("Negative values were converted to NA for calculation of the geometric mean.")
     }
     if (all(is.na(x_no_negative_vals))) {
-      warning("All values are negative or NA. The geometric mean is NA.")
+      warning("Since all values are negative or NA, the geometric mean is NA.")
     }
   }
   y$geom_mean <- c("geom_mean" = exp(mean(log(x_no_negative_vals), na.rm = FALSE)))
