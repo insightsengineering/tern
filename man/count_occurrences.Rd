@@ -20,6 +20,7 @@ count_occurrences(
   ...,
   table_names = vars,
   .stats = "count_fraction_fixed_dp",
+  .stat_names = NULL,
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL
@@ -34,6 +35,7 @@ summarize_occurrences(
   na_str = default_na_str(),
   ...,
   .stats = "count_fraction_fixed_dp",
+  .stat_names = NULL,
   .formats = NULL,
   .indent_mods = NULL,
   .labels = NULL
@@ -41,30 +43,25 @@ summarize_occurrences(
 
 s_count_occurrences(
   df,
-  denom = c("N_col", "n", "N_row"),
+  .var = "MHDECOD",
   .N_col,
   .N_row,
   .df_row,
+  ...,
   drop = TRUE,
-  .var = "MHDECOD",
-  id = "USUBJID"
+  id = "USUBJID",
+  denom = c("N_col", "n", "N_row")
 )
 
 a_count_occurrences(
   df,
   labelstr = "",
-  id = "USUBJID",
-  denom = c("N_col", "n", "N_row"),
-  drop = TRUE,
-  .N_col,
-  .N_row,
-  .var = NULL,
-  .df_row = NULL,
+  ...,
   .stats = NULL,
+  .stat_names = NULL,
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL,
-  na_str = default_na_str()
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -100,6 +97,9 @@ times, to avoid warnings from \code{rtables}.}
 
 Options are: \verb{'count', 'count_fraction', 'count_fraction_fixed_dp', 'fraction'}}
 
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
+
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
 
@@ -110,12 +110,8 @@ unmodified default behavior. Can be negative.}
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
-\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
-\itemize{
-\item \code{N_col}: total number of patients in this column across rows.
-\item \code{n}: number of patients with any occurrences.
-\item \code{N_row}: total number of patients in this row across columns.
-}}
+\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
+by a statistics function.}
 
 \item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
@@ -125,8 +121,12 @@ passed by \code{rtables}.}
 
 \item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 
-\item{.var, var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
+\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
+\itemize{
+\item \code{N_col}: total number of patients in this column across rows.
+\item \code{n}: number of patients with any occurrences.
+\item \code{N_row}: total number of patients in this row across columns.
+}}
 
 \item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}

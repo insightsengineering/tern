@@ -91,7 +91,7 @@ s_count_patients_sum_exposure <- function(df,
 #' @return
 #' * `a_count_patients_sum_exposure()` returns formatted [rtables::CellValue()].
 #'
-#' @keywords internal
+#' @export
 a_count_patients_sum_exposure <- function(df,
                                           labelstr = "",
                                           ...,

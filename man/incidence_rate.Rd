@@ -21,7 +21,8 @@ estimate_incidence_rate(
   show_labels = "hidden",
   table_names = vars,
   .stats = c("person_years", "n_events", "rate", "rate_ci"),
-  .formats = NULL,
+  .stat_names = NULL,
+  .formats = list(rate = "xx.xx", rate_ci = "(xx.xx, xx.xx)"),
   .labels = NULL,
   .indent_mods = NULL
 )
@@ -29,6 +30,7 @@ estimate_incidence_rate(
 s_incidence_rate(
   df,
   .var,
+  ...,
   n_events,
   is_event = lifecycle::deprecated(),
   id_var = "USUBJID",
@@ -38,18 +40,13 @@ s_incidence_rate(
 a_incidence_rate(
   df,
   labelstr = "",
-  .var,
-  .df_row,
-  n_events,
-  id_var = "USUBJID",
-  control = control_incidence_rate(),
+  label_fmt = "\%s - \%.labels",
+  ...,
   .stats = NULL,
-  .formats = c(person_years = "xx.x", n_events = "xx", rate = "xx.xx", rate_ci =
-    "(xx.xx, xx.xx)", n_unique = "xx", n_rate = "xx (xx.x)"),
+  .stat_names = NULL,
+  .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL,
-  na_str = default_na_str(),
-  label_fmt = "\%s - \%.labels"
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -97,6 +94,9 @@ times, to avoid warnings from \code{rtables}.}
 
 Options are: \verb{'person_years', 'n_events', 'rate', 'rate_ci', 'n_unique', 'n_rate'}}
 
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
+
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
 
@@ -115,8 +115,6 @@ by a statistics function.}
 \item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
-
-\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 }
 \value{
 \itemize{
