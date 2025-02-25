@@ -166,7 +166,20 @@ a_survival_subgroups <- function(df,
   extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
   dots_extra_args$.additional_fun_parameters <- NULL
   cur_stat <- extra_afun_params$.var %||% .stats
-  var_lvls <- as.character(df$subgroup)
+  var_lvls <- if ("biomarker" %in% names(dots_extra_args) && "biomarker" %in% names(df)) {
+    if ("overall" %in% names(dots_extra_args)) {
+      as.character(df$biomarker)
+    } else {
+      paste(as.character(df$biomarker), as.character(df$subgroup), sep = ".")
+    }
+  } else {
+    make.unique(as.character(df$subgroup))
+  }
+
+  # if empty, return NA
+  if (nrow(df) == 0) {
+    return(in_rows(.list = list(NA) %>% stats::setNames(cur_stat)))
+  }
 
   # Main statistics taken from df
   x_stats <- as.list(df)
@@ -177,7 +190,7 @@ a_survival_subgroups <- function(df,
   .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
   .labels <- get_labels_from_stats(
     .stats, .labels, levels_per_stats,
-    tern_defaults = as.list(var_lvls) %>% setNames(var_lvls)
+    tern_defaults = as.list(as.character(df$subgroup)) %>% setNames(var_lvls)
   )
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
 
