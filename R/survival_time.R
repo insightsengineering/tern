@@ -183,7 +183,7 @@ a_surv_time <- function(df,
 
   # Get cell footnotes
   cell_fns <- stats::setNames(vector("list", length = length(x_stats)), .labels)
-  if ("range" %in% names(x_stats) && dots_extra_args$ref_fn_censor) {
+  if ("range" %in% names(x_stats) && "ref_fn_censor" %in% names(dots_extra_args) && dots_extra_args$ref_fn_censor) {
     if (identical(x_stats[["range"]][1], rng_censor_lwr) && identical(x_stats[["range"]][2], rng_censor_upr)) {
       cell_fns[[.labels[["range"]]]] <- "Censored observations: range minimum & maximum"
     } else if (identical(x_stats[["range"]][1], rng_censor_lwr)) {
