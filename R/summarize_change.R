@@ -68,8 +68,10 @@ a_change_from_baseline <- function(df,
   dots_extra_args <- list(...)
   extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
   dots_extra_args$.additional_fun_parameters <- NULL
+
+  # Check for user-defined functions
   default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
-  .stats <- default_and_custom_stats_list$all_stats # just the labels of stats
+  .stats <- default_and_custom_stats_list$all_stats
   custom_stat_functions <- default_and_custom_stats_list$custom_stats
 
   # Apply statistics function
@@ -83,8 +85,8 @@ a_change_from_baseline <- function(df,
     )
   )
 
-  # Fill in with formatting defaults if needed
-  .stats <- c(get_stats("analyze_vars_numeric", stats_in = .stats), names(custom_stat_functions))
+  # Fill in with formatting defaults
+  .stats <- get_stats("analyze_vars_numeric", stats_in = .stats, custom_stats_in = names(custom_stat_functions))
   .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- get_labels_from_stats(.stats, .labels)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
@@ -196,7 +198,7 @@ summarize_change <- function(lyt,
     var_labels = var_labels,
     show_labels = show_labels,
     table_names = table_names,
-    inclNAs = na_rm,
+    inclNAs = !na_rm,
     section_div = section_div
   )
 }

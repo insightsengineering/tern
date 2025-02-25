@@ -171,6 +171,9 @@ a_count_patients_sum_exposure <- function(df,
   # Auto format handling
   .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
 
+  # Get and check statistical names
+  .stat_names <- get_stat_names(x_stats, .stat_names)
+
   in_rows(
     .list = x_stats %>% .unlist_keep_nulls(),
     .formats = .formats,
