@@ -174,8 +174,8 @@ h_logistic_mult_cont_df <- function(variables,
   }
 }
 
-#' @describeIn h_response_biomarkers_subgroups Prepares a single sub-table given a `df_sub` containing
-#'   the results for a single biomarker.
+#' @describeIn h_response_biomarkers_subgroups `r lifecycle::badge("deprecated")` Prepares a single sub-table given
+#'   a `df_sub` containing the results for a single biomarker.
 #'
 #' @param df (`data.frame`)\cr results for a single biomarker, as part of what is
 #'   returned by [extract_rsp_biomarkers()] (it needs a couple of columns which are
@@ -202,18 +202,25 @@ h_logistic_mult_cont_df <- function(variables,
 h_tab_rsp_one_biomarker <- function(df,
                                     vars,
                                     na_str = default_na_str(),
-                                    .indent_mods = 0L) {
-  afuns <- a_response_subgroups(na_str = na_str)[vars]
+                                    .indent_mods = 0L,
+                                    ...) {
+  lifecycle::deprecate_warn(
+    "0.9.8", "h_tab_rsp_one_biomarker()",
+    details = "This function is no longer used within `tern`."
+  )
+
   colvars <- d_rsp_subgroups_colvars(
     vars,
     conf_level = df$conf_level[1],
     method = df$pval_label[1]
   )
+
   h_tab_one_biomarker(
     df = df,
-    afuns = afuns,
+    afuns = a_response_subgroups,
     colvars = colvars,
     na_str = na_str,
-    .indent_mods = .indent_mods
+    .indent_mods = .indent_mods,
+    ...
   )
 }
