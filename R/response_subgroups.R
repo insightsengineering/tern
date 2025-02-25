@@ -142,20 +142,7 @@ a_response_subgroups <- function(df,
   extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
   dots_extra_args$.additional_fun_parameters <- NULL
   cur_stat <- extra_afun_params$.var %||% .stats
-  var_lvls <- if ("biomarker" %in% names(dots_extra_args)) {
-    if ("overall" %in% names(dots_extra_args)) {
-      as.character(df$biomarker)
-    } else {
-      paste(as.character(df$biomarker), as.character(df$subgroup), sep = ".")
-    }
-  } else {
-    as.character(df$subgroup)
-  }
-
-  # if empty, return NA
-  if (nrow(df) == 0) {
-    return(in_rows(.list = list(NA) %>% stats::setNames(cur_stat)))
-  }
+  var_lvls <- as.character(df$subgroup)
 
   # Main statistics taken from df
   x_stats <- as.list(df)
@@ -166,7 +153,7 @@ a_response_subgroups <- function(df,
   .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
   .labels <- get_labels_from_stats(
     .stats, .labels, levels_per_stats,
-    tern_defaults = as.list(as.character(df$subgroup)) %>% setNames(var_lvls)
+    tern_defaults = as.list(var_lvls) %>% setNames(var_lvls)
   )
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
 
@@ -175,8 +162,6 @@ a_response_subgroups <- function(df,
     function(x) x_stats[[x]] %>% stats::setNames(var_lvls)
   ) %>%
     stats::setNames(.stats)
-
-  .nms <- if ("biomarker" %in% names(dots_extra_args)) var_lvls else names(.labels)
 
   # Auto format handling
   .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
@@ -187,7 +172,7 @@ a_response_subgroups <- function(df,
   in_rows(
     .list = x_stats %>% .unlist_keep_nulls(),
     .formats = .formats,
-    .names = .nms,
+    .names = names(.labels),
     .stat_names = .stat_names,
     .labels = .labels %>% .unlist_keep_nulls(),
     .indent_mods = .indent_mods %>% .unlist_keep_nulls()
@@ -483,6 +468,11 @@ d_rsp_subgroups_colvars <- function(vars,
       varlabels,
       ci = paste0(100 * conf_level, "% CI")
     )
+
+    # The `lcl`` variable is just a placeholder available in the analysis data,
+    # it is not acutally used in the tabulation.
+    # Variables used in the tabulation are lcl and ucl, see `a_response_subgroups` for details.
+    colvars[colvars == "ci"] <- "lcl"
   }
 
   if ("pval" %in% colvars) {
