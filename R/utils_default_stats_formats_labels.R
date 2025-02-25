@@ -662,6 +662,8 @@ tern_default_labels <- c(
   quantiles_lower = "25%-ile (95% CI)",
   quantiles_upper = "75%-ile (95% CI)",
   range = "Min - Max",
+  range_censor = "Range (censored)",
+  range_event = "Range (event)",
   rate = "Adjusted Rate",
   rate_ratio = "Adjusted Rate Ratio",
   sd = "SD",
