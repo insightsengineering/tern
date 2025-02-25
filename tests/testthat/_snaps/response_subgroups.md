@@ -229,7 +229,7 @@
       res
     Output
       $vars
-      [1] "n"     "n_rsp" "prop"  "n_tot" "or"    "lcl"   "pval" 
+      [1] "n"     "n_rsp" "prop"  "n_tot" "or"    "ci"    "pval" 
       
       $labels
                                  n                        n_rsp 
