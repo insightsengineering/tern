@@ -119,10 +119,15 @@ a_count_values <- function(x,
   extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
   dots_extra_args$.additional_fun_parameters <- NULL
 
+  # Check for user-defined functions
+  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
+  .stats <- default_and_custom_stats_list$all_stats
+  custom_stat_functions <- default_and_custom_stats_list$custom_stats
+
   # Main statistic calculations
   x_stats <- .apply_stat_functions(
     default_stat_fnc = s_count_values,
-    custom_stat_fnc_list = NULL,
+    custom_stat_fnc_list = custom_stat_functions,
     args_list = c(
       x = list(x),
       extra_afun_params,
@@ -131,7 +136,7 @@ a_count_values <- function(x,
   )
 
   # Fill in formatting defaults
-  .stats <- get_stats("analyze_vars_counts", stats_in = .stats)
+  .stats <- get_stats("analyze_vars_counts", stats_in = .stats, custom_stats_in = names(custom_stat_functions))
   .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- get_labels_from_stats(.stats, .labels)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
