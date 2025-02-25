@@ -198,7 +198,7 @@
     Output
       $vars
       [1] "n"            "n_events"     "median"       "n_tot_events" "hr"          
-      [6] "lcl"          "pval"        
+      [6] "ci"           "pval"        
       
       $labels
                          n             n_events               median 

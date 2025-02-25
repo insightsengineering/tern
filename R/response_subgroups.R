@@ -142,14 +142,14 @@ a_response_subgroups <- function(df,
   extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
   dots_extra_args$.additional_fun_parameters <- NULL
   cur_stat <- extra_afun_params$.var %||% .stats
-  var_lvls <- if ("biomarker" %in% names(dots_extra_args)) {
+  var_lvls <- if ("biomarker" %in% names(dots_extra_args) && "biomarker" %in% names(df)) {
     if ("overall" %in% names(dots_extra_args)) {
       as.character(df$biomarker)
     } else {
       paste(as.character(df$biomarker), as.character(df$subgroup), sep = ".")
     }
   } else {
-    as.character(df$subgroup)
+    make.unique(as.character(df$subgroup))
   }
 
   # if empty, return NA

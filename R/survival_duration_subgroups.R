@@ -489,11 +489,6 @@ d_survival_subgroups_colvars <- function(vars,
 
   colvars <- vars
 
-  # The `lcl` variable is just a placeholder available in the analysis data,
-  # it is not acutally used in the tabulation.
-  # Variables used in the tabulation are lcl and ucl, see `a_survival_subgroups` for details.
-  colvars[colvars == "ci"] <- "lcl"
-
   list(
     vars = colvars,
     labels = varlabels[vars]
