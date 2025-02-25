@@ -153,40 +153,67 @@ extract_survival_subgroups <- function(variables,
 #' * `a_survival_subgroups()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @keywords internal
-a_survival_subgroups <- function(.formats = list( # nolint start
-                                   n = "xx",
-                                   n_events = "xx",
-                                   n_tot_events = "xx",
-                                   median = "xx.x",
-                                   n_tot = "xx",
-                                   hr = list(format_extreme_values(2L)),
-                                   ci = list(format_extreme_values_ci(2L)),
-                                   pval = "x.xxxx | (<0.0001)"
-                                 ),
-                                 na_str = default_na_str()) { # nolint end
-  checkmate::assert_list(.formats)
-  checkmate::assert_subset(
-    names(.formats),
-    c("n", "n_events", "median", "n_tot", "n_tot_events", "hr", "ci", "pval", "riskdiff")
-  )
+a_survival_subgroups <- function(df,
+                                 labelstr = "",
+                                 ...,
+                                 .stats = NULL,
+                                 .stat_names = NULL,
+                                 .formats = NULL,
+                                 .labels = NULL,
+                                 .indent_mods = NULL) {
+  # Check for additional parameters to the statistics function
+  dots_extra_args <- list(...)
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
+  dots_extra_args$.additional_fun_parameters <- NULL
+  cur_stat <- extra_afun_params$.var %||% .stats
+  var_lvls <- if ("biomarker" %in% names(dots_extra_args) && "biomarker" %in% names(df)) {
+    if ("overall" %in% names(dots_extra_args)) {
+      as.character(df$biomarker)
+    } else {
+      paste(as.character(df$biomarker), as.character(df$subgroup), sep = ".")
+    }
+  } else {
+    make.unique(as.character(df$subgroup))
+  }
 
-  afun_lst <- Map(
-    function(stat, fmt, na_str) {
-      function(df, labelstr = "", ...) {
-        in_rows(
-          .list = as.list(df[[stat]]),
-          .labels = as.character(df$subgroup),
-          .formats = fmt,
-          .format_na_strs = na_str
-        )
-      }
-    },
-    stat = names(.formats),
-    fmt = .formats,
-    na_str = na_str
-  )
+  # if empty, return NA
+  if (nrow(df) == 0) {
+    return(in_rows(.list = list(NA) %>% stats::setNames(cur_stat)))
+  }
 
-  afun_lst
+  # Main statistics taken from df
+  x_stats <- as.list(df)
+
+  # Fill in formatting defaults
+  .stats <- get_stats("tabulate_survival_subgroups", stats_in = cur_stat)
+  levels_per_stats <- rep(list(var_lvls), length(.stats)) %>% setNames(.stats)
+  .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
+  .labels <- get_labels_from_stats(
+    .stats, .labels, levels_per_stats,
+    tern_defaults = as.list(as.character(df$subgroup)) %>% setNames(var_lvls)
+  )
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
+
+  x_stats <- lapply(
+    .stats,
+    function(x) x_stats[[x]] %>% stats::setNames(var_lvls)
+  ) %>%
+    stats::setNames(.stats)
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
+
+  # Get and check statistical names
+  .stat_names <- get_stat_names(x_stats, .stat_names)
+
+  in_rows(
+    .list = x_stats %>% .unlist_keep_nulls(),
+    .formats = .formats,
+    .names = names(.labels),
+    .stat_names = .stat_names,
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+  )
 }
 
 #' @describeIn survival_duration_subgroups Table-creating function which creates a table
@@ -225,14 +252,22 @@ tabulate_survival_subgroups <- function(lyt,
                                         time_unit = NULL,
                                         riskdiff = NULL,
                                         na_str = default_na_str(),
-                                        .formats = c(
-                                          n = "xx", n_events = "xx", n_tot_events = "xx", median = "xx.x", n_tot = "xx",
-                                          hr = list(format_extreme_values(2L)), ci = list(format_extreme_values_ci(2L)),
-                                          pval = "x.xxxx | (<0.0001)"
-                                        )) {
+                                        ...,
+                                        .stat_names = NULL,
+                                        .formats = NULL,
+                                        .labels = NULL,
+                                        .indent_mods = NULL) {
   checkmate::assert_list(riskdiff, null.ok = TRUE)
   checkmate::assert_true(any(c("n_tot", "n_tot_events") %in% vars))
   checkmate::assert_true(all(c("hr", "ci") %in% vars))
+  if ("pval" %in% vars && !"pval" %in% names(df$hr)) {
+    warning(
+      'The "pval" statistic has been selected but is not present in "df" so it will not be included in the output ',
+      'table. To include the "pval" statistic, please specify a p-value test when generating "df" via ',
+      'the "method" argument to `extract_survival_subgroups()`. If method = "cmh", strata must also be specified via ',
+      'the "variables" argument to `extract_survival_subgroups()`.'
+    )
+  }
 
   if (lifecycle::is_present(label_all)) {
     lifecycle::deprecate_warn(
@@ -242,26 +277,35 @@ tabulate_survival_subgroups <- function(lyt,
     )
   }
 
+  # Process standard extra arguments
+  extra_args <- list(".stats" = vars)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
   # Create "ci" column from "lcl" and "ucl"
   df$hr$ci <- combine_vectors(df$hr$lcl, df$hr$ucl)
 
-  # Fill in missing formats with defaults
-  default_fmts <- eval(formals(tabulate_survival_subgroups)$.formats)
-  .formats <- c(.formats, default_fmts[vars[!vars %in% names(.formats)]])
-
   # Extract additional parameters from df
   conf_level <- df$hr$conf_level[1]
-  method <- df$hr$pval_label[1]
+  method <- if ("pval_label" %in% names(df$hr)) df$hr$pval_label[1] else NULL
   colvars <- d_survival_subgroups_colvars(vars, conf_level = conf_level, method = method, time_unit = time_unit)
   survtime_vars <- intersect(colvars$vars, c("n", "n_events", "median"))
   hr_vars <- intersect(names(colvars$labels), c("n_tot", "n_tot_events", "hr", "ci", "pval"))
   colvars_survtime <- list(vars = survtime_vars, labels = colvars$labels[survtime_vars])
   colvars_hr <- list(vars = hr_vars, labels = colvars$labels[hr_vars])
 
-  extra_args <- list(groups_lists = groups_lists, conf_level = conf_level, method = method)
+  # Process additional arguments to the statistic function
+  extra_args <- c(
+    extra_args,
+    groups_lists = list(groups_lists), conf_level = conf_level, method = method,
+    ...
+  )
 
-  # Get analysis function for each statistic
-  afun_lst <- a_survival_subgroups(.formats = c(.formats, riskdiff = riskdiff$format), na_str = na_str)
+  # Adding additional info from layout to analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_survival_subgroups) <- c(formals(a_survival_subgroups), extra_args[[".additional_fun_parameters"]])
 
   # Add risk difference column
   if (!is.null(riskdiff)) {
@@ -300,25 +344,25 @@ tabulate_survival_subgroups <- function(lyt,
   # Add columns from table_survtime (optional)
   if (length(colvars_survtime$vars) > 0) {
     lyt_survtime <- split_cols_by(lyt = lyt, var = "arm")
-    lyt_survtime <- split_rows_by(
-      lyt = lyt_survtime,
-      var = "row_type",
-      split_fun = keep_split_levels("content"),
-      nested = FALSE
-    )
-
-    # Add "All Patients" row
-    lyt_survtime <- summarize_row_groups(
-      lyt = lyt_survtime,
-      var = "var_label",
-      cfun = afun_lst[names(colvars_survtime$labels)],
-      na_str = na_str,
-      extra_args = extra_args
-    )
     lyt_survtime <- split_cols_by_multivar(
       lyt = lyt_survtime,
       vars = colvars_survtime$vars,
       varlabels = colvars_survtime$labels
+    )
+
+    # Add "All Patients" row
+    lyt_survtime <- split_rows_by(
+      lyt = lyt_survtime,
+      var = "row_type",
+      split_fun = keep_split_levels("content"),
+      nested = FALSE,
+      child_labels = "hidden"
+    )
+    lyt_survtime <- analyze_colvars(
+      lyt = lyt_survtime,
+      afun = a_survival_subgroups,
+      na_str = na_str,
+      extra_args = extra_args
     )
 
     # Add analysis rows
@@ -333,7 +377,7 @@ tabulate_survival_subgroups <- function(lyt,
       lyt_survtime <- split_rows_by(lyt = lyt_survtime, var = "var_label", nested = TRUE)
       lyt_survtime <- analyze_colvars(
         lyt = lyt_survtime,
-        afun = afun_lst[names(colvars_survtime$labels)],
+        afun = a_survival_subgroups,
         na_str = na_str,
         inclNAs = TRUE,
         extra_args = extra_args
@@ -345,25 +389,27 @@ tabulate_survival_subgroups <- function(lyt,
     table_survtime <- NULL
   }
 
-  # Add columns from table_hr ("n_tot_events" or "n_tot", "or" and "ci" required)
+  # Add columns from table_hr ("n_tot_events" or "n_tot", "hr" and "ci" required)
   lyt_hr <- split_cols_by(lyt = lyt, var = "arm")
-  lyt_hr <- split_rows_by(
-    lyt = lyt_hr,
-    var = "row_type",
-    split_fun = keep_split_levels("content"),
-    nested = FALSE
-  )
-  lyt_hr <- summarize_row_groups(
-    lyt = lyt_hr,
-    var = "var_label",
-    cfun = afun_lst[names(colvars_hr$labels)],
-    na_str = na_str,
-    extra_args = extra_args
-  )
   lyt_hr <- split_cols_by_multivar(
     lyt = lyt_hr,
     vars = colvars_hr$vars,
     varlabels = colvars_hr$labels
+  )
+
+  # Add "All Patients" row
+  lyt_hr <- split_rows_by(
+    lyt = lyt_hr,
+    var = "row_type",
+    split_fun = keep_split_levels("content"),
+    nested = FALSE,
+    child_labels = "hidden"
+  )
+  lyt_hr <- analyze_colvars(
+    lyt = lyt_hr,
+    afun = a_survival_subgroups,
+    na_str = na_str,
+    extra_args = extra_args
   ) %>%
     append_topleft("Baseline Risk Factors")
 
@@ -379,7 +425,7 @@ tabulate_survival_subgroups <- function(lyt,
     lyt_hr <- split_rows_by(lyt = lyt_hr, var = "var_label", nested = TRUE)
     lyt_hr <- analyze_colvars(
       lyt = lyt_hr,
-      afun = afun_lst[names(colvars_hr$labels)],
+      afun = a_survival_subgroups,
       na_str = na_str,
       inclNAs = TRUE,
       extra_args = extra_args
@@ -455,11 +501,6 @@ d_survival_subgroups_colvars <- function(vars,
   )
 
   colvars <- vars
-
-  # The `lcl` variable is just a placeholder available in the analysis data,
-  # it is not acutally used in the tabulation.
-  # Variables used in the tabulation are lcl and ucl, see `a_survival_subgroups` for details.
-  colvars[colvars == "ci"] <- "lcl"
 
   list(
     vars = colvars,
