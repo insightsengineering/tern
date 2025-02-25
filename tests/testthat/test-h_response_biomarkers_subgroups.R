@@ -110,12 +110,12 @@ testthat::test_that("h_tab_rsp_one_biomarker works as expected", {
     var = c("ALL", "ALL"),
     var_label = c("All patients", "All patients")
   )
-  testthat::expect_silent(
+  lifecycle::expect_deprecated(lifecycle::expect_deprecated(
     res <- h_tab_rsp_one_biomarker(
       df = df,
       vars = c("n_tot", "or", "ci")
     )
-  )
+  ))
 
   testthat::expect_snapshot(res)
 })

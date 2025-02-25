@@ -93,10 +93,12 @@ testthat::test_that("h_tab_surv_one_biomarker works as expected", {
     var = c("ALL", "ALL"),
     var_label = c("All patients", "All patients")
   )
-  result <- testthat::expect_silent(h_tab_surv_one_biomarker(
-    df = df,
-    vars = c("n_tot", "hr", "ci"),
-    time_unit = "months"
+  lifecycle::expect_deprecated(lifecycle::expect_deprecated(
+    result <- h_tab_surv_one_biomarker(
+      df = df,
+      vars = c("n_tot", "hr", "ci"),
+      time_unit = "months"
+    )
   ))
 
   res <- testthat::expect_silent(result)
