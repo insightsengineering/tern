@@ -11,7 +11,13 @@ h_rsp_to_logistic_variables(variables, biomarker)
 
 h_logistic_mult_cont_df(variables, data, control = control_logistic())
 
-h_tab_rsp_one_biomarker(df, vars, na_str = default_na_str(), .indent_mods = 0L)
+h_tab_rsp_one_biomarker(
+  df,
+  vars,
+  na_str = default_na_str(),
+  .indent_mods = 0L,
+  ...
+)
 }
 \arguments{
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
@@ -43,6 +49,8 @@ Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
+
+\item{...}{additional arguments for the lower level functions.}
 }
 \value{
 \itemize{
@@ -76,8 +84,8 @@ biomarkers in a given single data set.
 \code{rsp} and \code{biomarkers} (vector of continuous biomarker variables) and optionally \code{covariates}
 and \code{strata}.
 
-\item \code{h_tab_rsp_one_biomarker()}: Prepares a single sub-table given a \code{df_sub} containing
-the results for a single biomarker.
+\item \code{h_tab_rsp_one_biomarker()}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Prepares a single sub-table given
+a \code{df_sub} containing the results for a single biomarker.
 
 }}
 \examples{

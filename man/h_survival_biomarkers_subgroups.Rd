@@ -86,8 +86,8 @@ in a given single data set.
 \code{variables} corresponds to names of variables found in \code{data}, passed as a named list and requires elements
 \code{tte}, \code{is_event}, \code{biomarkers} (vector of continuous biomarker variables) and optionally \code{subgroups} and \code{strata}.
 
-\item \code{h_tab_surv_one_biomarker()}: Prepares a single sub-table given a \code{df_sub} containing
-the results for a single biomarker.
+\item \code{h_tab_surv_one_biomarker()}: \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Prepares a single sub-table given
+a \code{df_sub} containing the results for a single biomarker.
 
 }}
 \examples{
