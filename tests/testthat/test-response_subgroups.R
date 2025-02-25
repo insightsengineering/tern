@@ -93,13 +93,12 @@ testthat::test_that("a_response_subgroups functions as expected with valid input
     stringsAsFactors = FALSE
   )
 
-  result <- a_response_subgroups(
-    df,
-    .stats = c("prop", "pval"),
-    .formats = list(prop = "xx.xx", pval = "x.xxxx | (<0.0001)"),
-    .labels = list(prop.M = "M - proportion", "M" = "Male", "F" = "Female"),
-    .indent_mods = c("M" = 2L, "F" = 3L)
-  )
+  afun <- a_response_subgroups(.formats = list(prop = "xx.xx", pval = "x.xxxx | (<0.0001)"))
+
+  result <- basic_table() %>%
+    split_cols_by_multivar(c("prop", "pval")) %>%
+    analyze_colvars(afun) %>%
+    build_table(df)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
