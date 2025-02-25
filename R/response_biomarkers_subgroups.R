@@ -90,6 +90,10 @@ tabulate_rsp_biomarkers <- function(df,
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
 
+  # Create "ci" column from "lcl" and "ucl"
+  df$ci <- combine_vectors(df$lcl, df$ucl)
+
+  afuns <- a_response_subgroups
   colvars <- d_rsp_subgroups_colvars(
     vars,
     conf_level = df$conf_level[1],
@@ -102,9 +106,6 @@ tabulate_rsp_biomarkers <- function(df,
   # Adding additional info from layout to analysis function
   extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
   formals(a_response_subgroups) <- c(formals(a_response_subgroups), extra_args[[".additional_fun_parameters"]])
-
-  # Create "ci" column from "lcl" and "ucl"
-  df$ci <- combine_vectors(df$lcl, df$ucl)
 
   df_subs <- split(df, f = df$biomarker)
   tbls <- lapply(

@@ -76,13 +76,12 @@ testthat::test_that("a_survival_subgroups functions as expected with valid input
     stringsAsFactors = FALSE
   )
 
-  result <- a_survival_subgroups(
-    df,
-    .stats = c("hr", "pval"),
-    .formats = list(hr = "xx.xx", pval = "x.xxxx | (<0.0001)"),
-    .labels = list(hr.M = "M - HR", "M" = "Male", "F" = "Female"),
-    .indent_mods = c("M" = 2L, "F" = 3L)
-  )
+  afun <- a_survival_subgroups(.formats = list("hr" = "xx.xx", pval = "x.xxxx | (<0.0001)"))
+
+  result <- basic_table() %>%
+    split_cols_by_multivar(c("hr", "pval")) %>%
+    analyze_colvars(afun) %>%
+    build_table(df)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)

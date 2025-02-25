@@ -542,7 +542,7 @@ tern_default_stats <- list(
   tabulate_rsp_biomarkers = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
   tabulate_rsp_subgroups = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval", "riskdiff"),
   tabulate_survival_biomarkers = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
-  tabulate_survival_subgroups = c("n_tot_events", "n_events", "n_tot", "n", "median", "hr", "ci", "pval", "riskdiff"),
+  tabulate_survival_subgroups = c("n_tot_events", "n_events", "n_tot", "n", "median", "hr", "ci", "pval"),
   test_proportion_diff = c("pval")
 )
 
@@ -567,7 +567,6 @@ tern_default_formats <- c(
   geom_mean_ci_3d = "xx.xx (xx.xx - xx.xx)",
   geom_mean_sd = "xx.x (xx.x)",
   geom_sd = "xx.x",
-  hr = list(format_extreme_values(2L)),
   iqr = "xx.x",
   lsmean = "xx.xx",
   lsmean_diff = "xx.xx",
@@ -594,7 +593,6 @@ tern_default_formats <- c(
   n_rate = "xx (xx.x)",
   n_rsp = "xx",
   n_tot = "xx",
-  n_tot_events = "xx",
   n_unique = "xx",
   nonunique = "xx",
   or = list(format_extreme_values(2L)),

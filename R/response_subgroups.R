@@ -142,14 +142,14 @@ a_response_subgroups <- function(df,
   extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
   dots_extra_args$.additional_fun_parameters <- NULL
   cur_stat <- extra_afun_params$.var %||% .stats
-  var_lvls <- if ("biomarker" %in% names(dots_extra_args) && "biomarker" %in% names(df)) {
+  var_lvls <- if ("biomarker" %in% names(dots_extra_args)) {
     if ("overall" %in% names(dots_extra_args)) {
       as.character(df$biomarker)
     } else {
       paste(as.character(df$biomarker), as.character(df$subgroup), sep = ".")
     }
   } else {
-    make.unique(as.character(df$subgroup))
+    as.character(df$subgroup)
   }
 
   # if empty, return NA
@@ -244,7 +244,7 @@ tabulate_rsp_subgroups <- function(lyt,
                                    df,
                                    vars = c("n_tot", "n", "prop", "or", "ci"),
                                    groups_lists = list(),
-                                   label_all = lifecycle::deprecated(),
+                                   label_all = "All Patients",
                                    riskdiff = NULL,
                                    na_str = default_na_str(),
                                    ...,
@@ -263,14 +263,6 @@ tabulate_rsp_subgroups <- function(lyt,
     )
   }
 
-  if (lifecycle::is_present(label_all)) {
-    lifecycle::deprecate_warn(
-      "0.9.8", "tabulate_rsp_subgroups(label_all)",
-      details =
-        "Please assign the `label_all` parameter within the `extract_rsp_subgroups()` function when creating `df`."
-    )
-  }
-
   # Process standard extra arguments
   extra_args <- list(".stats" = vars)
   if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
@@ -280,6 +272,10 @@ tabulate_rsp_subgroups <- function(lyt,
 
   # Create "ci" column from "lcl" and "ucl"
   df$or$ci <- combine_vectors(df$or$lcl, df$or$ucl)
+
+  # Fill in missing formats with defaults
+  default_fmts <- eval(formals(tabulate_rsp_subgroups)$.formats)
+  .formats <- c(.formats, default_fmts[vars[!vars %in% names(.formats)]])
 
   # Extract additional parameters from df
   conf_level <- df$or$conf_level[1]
@@ -293,7 +289,7 @@ tabulate_rsp_subgroups <- function(lyt,
   # Process additional arguments to the statistic function
   extra_args <- c(
     extra_args,
-    groups_lists = list(groups_lists), conf_level = conf_level, method = method,
+    groups_lists = list(groups_lists), conf_level = conf_level, method = method, label_all = label_all,
     ...
   )
 

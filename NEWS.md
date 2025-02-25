@@ -14,7 +14,6 @@
 * Removed internal function `ungroup_stats()` and replaced its usage with the `get_*_from_stats()` functions.
 * Began deprecation of the unused `table_names` argument to `count_abnormal_lab_worsen_by_baseline()`.
 * Added warnings for `geom_mean` statistical output.
-* Began deprecation of the unused `label_all` parameter to `tabulate_rsp_subgroups()`, with redirection to the same parameter in `extract_rsp_subgroups()`.
 * Updated documentation to remove suggestions to use `make_afun()`.
 
 # tern 0.9.7

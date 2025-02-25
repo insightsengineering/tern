@@ -85,13 +85,10 @@
     Code
       res
     Output
-      RowsVerticalSection (in_rows) object print method:
-      ----------------------------
-        row_name formatted_cell indent_mod row_label
-      1     hr.M           0.12          2    M - HR
-      2     hr.F           0.57          3    Female
-      3   pval.M        <0.0001          2      Male
-      4   pval.F         1.3023          3    Female
+           hr     pval  
+      ——————————————————
+      M   0.12   <0.0001
+      F   0.57   1.3023 
 
 # tabulate_survival_subgroups functions as expected with valid input
 
@@ -198,7 +195,7 @@
     Output
       $vars
       [1] "n"            "n_events"     "median"       "n_tot_events" "hr"          
-      [6] "ci"           "pval"        
+      [6] "lcl"          "pval"        
       
       $labels
                          n             n_events               median 
