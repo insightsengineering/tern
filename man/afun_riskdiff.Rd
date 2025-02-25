@@ -41,9 +41,6 @@ information on the \code{"auto"} setting.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
-
-\item{s_args}{(named \code{list})\cr additional arguments to be passed to the statistics function and analysis
-function supplied in \code{afun}.}
 }
 \value{
 A list of formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.

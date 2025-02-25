@@ -71,8 +71,6 @@ add_riskdiff <- function(arm_x,
 #' @param afun (named `list`)\cr a named list containing one name-value pair where the name corresponds to
 #'   the name of the statistics function that should be used in calculations and the value is the corresponding
 #'   analysis function.
-#' @param s_args (named `list`)\cr additional arguments to be passed to the statistics function and analysis
-#'   function supplied in `afun`.
 #'
 #' @return A list of formatted [rtables::CellValue()].
 #'
