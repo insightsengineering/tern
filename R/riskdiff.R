@@ -85,19 +85,9 @@ add_riskdiff <- function(arm_x,
 #' @keywords internal
 afun_riskdiff <- function(df,
                           labelstr = "",
-                          .var,
-                          .N_col, # nolint
-                          .N_row, # nolint
-                          .df_row,
-                          .spl_context,
-                          .all_col_counts,
-                          .stats,
-                          .formats = NULL,
-                          .labels = NULL,
-                          .indent_mods = NULL,
-                          na_str = default_na_str(),
                           afun,
-                          s_args = list()) {
+                          s_args = list(),
+                          ...) {
   if (!any(grepl("riskdiff", names(.spl_context)))) {
     stop(
       "Please set up levels to use in risk difference calculations using the `add_riskdiff` ",
@@ -106,9 +96,10 @@ afun_riskdiff <- function(df,
   }
   checkmate::assert_list(afun, len = 1, types = "function")
   checkmate::assert_named(afun)
-  afun_args <- list(
-    .var = .var, .df_row = .df_row, .N_row = .N_row, denom = "N_col", labelstr = labelstr,
-    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
+  browser()
+  afun_args <- c(
+    .var = .var, list(.df_row = .df_row), .N_row = .N_row, denom = "N_col", labelstr = labelstr,
+    s_args
   )
   afun_args <- afun_args[intersect(names(afun_args), names(as.list(args(afun[[1]]))))]
   if ("denom" %in% names(s_args)) afun_args[["denom"]] <- NULL
@@ -116,7 +107,7 @@ afun_riskdiff <- function(df,
   cur_split <- tail(.spl_context$cur_col_split_val[[1]], 1)
   if (!grepl("^riskdiff", cur_split)) {
     # Apply basic afun (no risk difference) in all other columns
-    do.call(afun[[1]], args = c(list(df = df, .N_col = .N_col), afun_args, s_args))
+    do.call(afun[[1]], args = c(list(df = df, .var = .var, .N_col = .N_col, .spl_context = .spl_context), afun_args))
   } else {
     arm_x <- strsplit(cur_split, "_")[[1]][2]
     arm_y <- strsplit(cur_split, "_")[[1]][3]
@@ -156,9 +147,9 @@ afun_riskdiff <- function(df,
       N_col_x, N_col_y,
       list_names = var_nms,
       pct = pct
-    ), max(1, length(.stats)))
+    ), max(1, length(s_args$.stats)))
 
-    in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
+    in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = s_args$.indent_mods)
   }
 }
 

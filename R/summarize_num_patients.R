@@ -50,8 +50,7 @@ NULL
 #' )
 #'
 #' @export
-s_num_patients <- function(x, labelstr, .N_col, count_by = NULL, unique_count_suffix = TRUE) { # nolint
-
+s_num_patients <- function(x, labelstr = "", .N_col, count_by = NULL, unique_count_suffix = TRUE, ...) {
   checkmate::assert_string(labelstr)
   checkmate::assert_count(.N_col)
   checkmate::assert_multi_class(x, classes = c("factor", "character"))
@@ -105,7 +104,8 @@ s_num_patients_content <- function(df,
                                    .var,
                                    required = NULL,
                                    count_by = NULL,
-                                   unique_count_suffix = TRUE) {
+                                   unique_count_suffix = TRUE,
+                                   ...) {
   checkmate::assert_string(.var)
   checkmate::assert_data_frame(df)
   if (is.null(count_by)) {
@@ -119,23 +119,103 @@ s_num_patients_content <- function(df,
     df <- df[!is.na(df[[required]]), , drop = FALSE]
   }
 
-  x <- df[[.var]]
   y <- if (is.null(count_by)) NULL else df[[count_by]]
 
   s_num_patients(
-    x = x,
+    x = df[[.var]],
     labelstr = labelstr,
     .N_col = .N_col,
     count_by = y,
-    unique_count_suffix = unique_count_suffix
+    unique_count_suffix = unique_count_suffix,
+    ...
   )
 }
 
-c_num_patients <- make_afun(
-  s_num_patients_content,
-  .stats = c("unique", "nonunique", "unique_count"),
-  .formats = c(unique = format_count_fraction_fixed_dp, nonunique = "xx", unique_count = "xx")
-)
+#' @keywords internal
+a_num_patients <- function(df,
+                           labelstr = "",
+                           ...,
+                           .stats = NULL,
+                           .stat_names = NULL,
+                           .formats = NULL,
+                           .labels = NULL,
+                           .indent_mods = NULL) {
+  dots_extra_args <- list(...)
+
+  # Check if there are user-defined functions
+  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
+  .stats <- default_and_custom_stats_list$default_stats
+  custom_stat_functions <- default_and_custom_stats_list$custom_stats
+
+  # Adding automatically extra parameters to the statistic function (see ?rtables::additional_fun_params)
+  extra_afun_params <- retrieve_extra_afun_params(
+    names(dots_extra_args$.additional_fun_parameters)
+  )
+  dots_extra_args$.additional_fun_parameters <- NULL # After extraction we do not need them anymore
+
+  # Main statistical functions application
+  if (isTRUE(dots_extra_args$is_summary_content)) {
+    x_stats <- .apply_stat_functions(
+      default_stat_fnc = s_num_patients_content,
+      custom_stat_fnc_list = custom_stat_functions,
+      args_list = c(
+        df = list(df),
+        extra_afun_params,
+        dots_extra_args
+      )
+    )
+  } else {
+    x_stats <- .apply_stat_functions(
+      default_stat_fnc = s_num_patients,
+      custom_stat_fnc_list = custom_stat_functions,
+      args_list = c(
+        x = list(df[[extra_afun_params$.var]]),
+        extra_afun_params,
+        dots_extra_args
+      )
+    )
+  }
+
+  # Fill in with stats defaults if needed
+  .stats <- c(
+    get_stats("summarize_num_patients", stats_in = .stats),
+    names(custom_stat_functions)
+  )
+
+  x_stats <- x_stats[.stats]
+
+  # Fill in formats/indents/labels with custom input and defaults
+  .formats <- get_formats_from_stats(.stats, .formats)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
+  if (anyNA(.labels[names(x_stats)])) {
+    .labels <- setNames(.labels[names(x_stats)], names(x_stats))
+    attr_labels <- sapply(x_stats, attr, "label")
+    attr_labels <- attr_labels[nzchar(attr_labels)]
+    .labels[names(.labels) %in% names(attr_labels) & is.na(.labels)] <- attr_labels
+    .labels <- .labels[!is.na(.labels)]
+  }
+  .labels <- get_labels_from_stats(.stats, .labels)
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(
+    .formats,
+    x_stats,
+    extra_afun_params$.df_row,
+    extra_afun_params$.var
+  )
+
+  # Get and check statistical names from defaults
+  .stat_names <- get_stat_names(x_stats, .stat_names) # note is x_stats
+
+  in_rows(
+    .list = x_stats,
+    .formats = .formats,
+    .names = names(.labels),
+    .stat_names = .stat_names,
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+  )
+}
 
 #' @describeIn summarize_num_patients Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::summarize_row_groups()].
@@ -159,48 +239,62 @@ c_num_patients <- make_afun(
 #' @order 3
 summarize_num_patients <- function(lyt,
                                    var,
+                                   na_str = default_na_str(),
+                                   riskdiff = FALSE,
+                                   ...,
+                                   na_rm = TRUE,
                                    required = NULL,
                                    count_by = NULL,
                                    unique_count_suffix = TRUE,
-                                   na_str = default_na_str(),
-                                   .stats = NULL,
-                                   .formats = NULL,
+                                   .stats =  c("unique", "nonunique", "unique_count"),
+                                   .stat_names = NULL,
+                                   .formats = c(unique = format_count_fraction_fixed_dp, nonunique = "xx", unique_count = "xx"),
                                    .labels = c(
                                      unique = "Number of patients with at least one event",
                                      nonunique = "Number of events"
                                    ),
-                                   .indent_mods = 0L,
-                                   riskdiff = FALSE,
-                                   ...) {
+                                   .indent_mods = 0L) {
   checkmate::assert_flag(riskdiff)
 
-  if (is.null(.stats)) .stats <- c("unique", "nonunique", "unique_count")
-  if (length(.labels) > length(.stats)) .labels <- .labels[names(.labels) %in% .stats]
-
-  s_args <- list(required = required, count_by = count_by, unique_count_suffix = unique_count_suffix, ...)
-
-  cfun <- make_afun(
-    c_num_patients,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels
+  # Depending on main functions
+  extra_args <- list(
+    "na_rm" = na_rm,
+    "required" = required,
+    "count_by" = count_by,
+    "unique_count_suffix" = unique_count_suffix,
+    "is_summary_content" = TRUE, # flag for analysis function
+    ...
   )
 
+  # Needed defaults
+  if (!is.null(.stats)) extra_args[[".stats"]] <- .stats
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Riskdiff directive
+  cfun <- ifelse(isFALSE(riskdiff), a_num_patients, afun_riskdiff)
   extra_args <- if (isFALSE(riskdiff)) {
-    s_args
+    extra_args
   } else {
     list(
-      afun = list("s_num_patients_content" = cfun),
-      .stats = .stats,
-      .indent_mods = .indent_mods,
-      s_args = s_args
+      afun = list("s_num_patients_content" = a_num_patients),
+      s_args = extra_args
     )
   }
+
+  # Adding all additional information from layout to analysis functions (see ?rtables::additional_fun_params)
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(cfun) <- c(
+    formals(cfun),
+    extra_args[[".additional_fun_parameters"]]
+  )
 
   summarize_row_groups(
     lyt = lyt,
     var = var,
-    cfun = ifelse(isFALSE(riskdiff), cfun, afun_riskdiff),
+    cfun = cfun,
     na_str = na_str,
     extra_args = extra_args,
     indent_mod = .indent_mods
@@ -245,54 +339,74 @@ summarize_num_patients <- function(lyt,
 #' @order 2
 analyze_num_patients <- function(lyt,
                                  vars,
+                                 var_labels = vars,
+                                 riskdiff = FALSE,
+                                 na_str = default_na_str(),
+                                 nested = TRUE,
+                                 table_names = vars,
+                                 show_labels = c("default", "visible", "hidden"),
+                                 section_div = NA_character_,
+                                 ...,
+                                 na_rm = TRUE,
                                  required = NULL,
                                  count_by = NULL,
                                  unique_count_suffix = TRUE,
-                                 na_str = default_na_str(),
-                                 nested = TRUE,
-                                 .stats = NULL,
-                                 .formats = NULL,
+                                 .stats =  c("unique", "nonunique", "unique_count"),
+                                 .stat_names = NULL,
+                                 .formats = c(unique = format_count_fraction_fixed_dp, nonunique = "xx", unique_count = "xx"),
                                  .labels = c(
                                    unique = "Number of patients with at least one event",
                                    nonunique = "Number of events"
                                  ),
-                                 show_labels = c("default", "visible", "hidden"),
-                                 .indent_mods = 0L,
-                                 riskdiff = FALSE,
-                                 ...) {
+                                 .indent_mods = 0L) {
   checkmate::assert_flag(riskdiff)
 
-  if (is.null(.stats)) .stats <- c("unique", "nonunique", "unique_count")
-  if (length(.labels) > length(.stats)) .labels <- .labels[names(.labels) %in% .stats]
-
-  s_args <- list(required = required, count_by = count_by, unique_count_suffix = unique_count_suffix, ...)
-
-  afun <- make_afun(
-    c_num_patients,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels
+  # Depending on main functions
+  extra_args <- list(
+    "na_rm" = na_rm,
+    "required" = required,
+    "count_by" = count_by,
+    "unique_count_suffix" = unique_count_suffix,
+    ...
   )
 
+  # Needed defaults
+  if (!is.null(.stats)) extra_args[[".stats"]] <- .stats
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Riskdiff directive
+  afun <- ifelse(isFALSE(riskdiff), a_num_patients, afun_riskdiff)
   extra_args <- if (isFALSE(riskdiff)) {
-    s_args
+    extra_args
   } else {
     list(
-      afun = list("s_num_patients_content" = afun),
-      .stats = .stats,
-      .indent_mods = .indent_mods,
-      s_args = s_args
+      afun = list("s_num_patients_content" = a_num_patients),
+      s_args = extra_args
     )
   }
 
+  # Adding all additional information from layout to analysis functions (see ?rtables::additional_fun_params)
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(afun) <- c(
+    formals(afun),
+    extra_args[[".additional_fun_parameters"]]
+  )
+
+  # Main {rtables} structural call
   analyze(
-    afun = ifelse(isFALSE(riskdiff), afun, afun_riskdiff),
     lyt = lyt,
     vars = vars,
+    var_labels = var_labels,
+    afun = afun,
     na_str = na_str,
+    inclNAs = !na_rm,
     nested = nested,
     extra_args = extra_args,
     show_labels = show_labels,
-    indent_mod = .indent_mods
+    table_names = table_names,
+    section_div = section_div
   )
 }
