@@ -327,3 +327,30 @@
         17                                               0       1 (25.0%)   1 (11.1%)
         15                                           1 (20.0%)       0       1 (11.1%)
 
+# summarize_num_patients works as expected with risk difference column
+
+    Code
+      res
+    Output
+                                                     A: Drug X    B: Placebo   C: Combination   Risk Difference (%) (95% CI)
+                                                      (N=202)      (N=177)        (N=162)                 (N=379)           
+      ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+      cl D                                                                                                                  
+        Number of patients with at least one event   40 (19.8%)   40 (22.6%)     29 (17.9%)          -2.8 (-11.1 - 5.5)     
+      cl C                                                                                                                  
+        Number of patients with at least one event   31 (15.3%)   23 (13.0%)     25 (15.4%)           2.4 (-4.7 - 9.4)      
+      cl B                                                                                                                  
+        Number of patients with at least one event   39 (19.3%)   36 (20.3%)     31 (19.1%)          -1.0 (-9.1 - 7.0)      
+      cl A                                                                                                                  
+        Number of patients with at least one event   31 (15.3%)   24 (13.6%)     27 (16.7%)           1.8 (-5.3 - 8.9)      
+
+# analyze_num_patients works as expected with risk difference column
+
+    Code
+      res
+    Output
+                A: Drug X    B: Placebo   C: Combination   Risk Difference (%) (95% CI)
+                 (N=202)      (N=177)        (N=162)                 (N=379)           
+      —————————————————————————————————————————————————————————————————————————————————
+      Any SAE   59 (29.2%)   57 (32.2%)     48 (29.6%)          -3.0 (-12.3 - 6.3)     
+

@@ -153,28 +153,28 @@ a_num_patients <- function(df,
   )
   dots_extra_args$.additional_fun_parameters <- NULL # After extraction we do not need them anymore
 
+  # Is this a summary content row? (label row with data summary)
+  isc <- isTRUE(dots_extra_args$is_summary_content)
+  args_list <- c(
+    if(isc) {
+      list(df = df)
+    } else {
+      list(x = df[[extra_afun_params$.var]])
+    },
+    extra_afun_params,
+    dots_extra_args
+  )
+
   # Main statistical functions application
-  if (isTRUE(dots_extra_args$is_summary_content)) {
-    x_stats <- .apply_stat_functions(
-      default_stat_fnc = s_num_patients_content,
-      custom_stat_fnc_list = custom_stat_functions,
-      args_list = c(
-        df = list(df),
-        extra_afun_params,
-        dots_extra_args
-      )
-    )
-  } else {
-    x_stats <- .apply_stat_functions(
-      default_stat_fnc = s_num_patients,
-      custom_stat_fnc_list = custom_stat_functions,
-      args_list = c(
-        x = list(df[[extra_afun_params$.var]]),
-        extra_afun_params,
-        dots_extra_args
-      )
-    )
-  }
+  x_stats <- .apply_stat_functions(
+    default_stat_fnc = if (isc) {
+      s_num_patients_content
+    } else {
+      s_num_patients
+    },
+    custom_stat_fnc_list = custom_stat_functions,
+    args_list = args_list
+  )
 
   # Fill in with stats defaults if needed
   .stats <- c(
@@ -275,14 +275,6 @@ summarize_num_patients <- function(lyt,
 
   # Riskdiff directive
   cfun <- ifelse(isFALSE(riskdiff), a_num_patients, afun_riskdiff)
-  extra_args <- if (isFALSE(riskdiff)) {
-    extra_args
-  } else {
-    list(
-      afun = list("s_num_patients_content" = a_num_patients),
-      s_args = extra_args
-    )
-  }
 
   # Adding all additional information from layout to analysis functions (see ?rtables::additional_fun_params)
   extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
@@ -379,14 +371,6 @@ analyze_num_patients <- function(lyt,
 
   # Riskdiff directive
   afun <- ifelse(isFALSE(riskdiff), a_num_patients, afun_riskdiff)
-  extra_args <- if (isFALSE(riskdiff)) {
-    extra_args
-  } else {
-    list(
-      afun = list("s_num_patients_content" = a_num_patients),
-      s_args = extra_args
-    )
-  }
 
   # Adding all additional information from layout to analysis functions (see ?rtables::additional_fun_params)
   extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)

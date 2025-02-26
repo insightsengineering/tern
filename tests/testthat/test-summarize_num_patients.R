@@ -275,13 +275,24 @@ testthat::test_that("summarize_num_patients works as expected with risk differen
   # Multiple statistics
   result <- basic_table(show_colcounts = TRUE) %>%
     split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
-    split_rows_by("AESOC", child_labels = "visible") %>%
+    split_rows_by("AESOC", child_labels = "visible")
+
+  testthat::expect_error(
+    out <- result %>%
+      summarize_num_patients(
+        "USUBJID",
+        riskdiff = TRUE
+      ) %>%
+      build_table(tern_ex_adae),
+    "Risk difference calculations are supported only for count_fraction"
+  )
+  result <- result %>%
     summarize_num_patients(
       "USUBJID",
+      .stats = c("unique", "nonunique"),
       riskdiff = TRUE
     ) %>%
     build_table(tern_ex_adae)
-
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })

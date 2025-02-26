@@ -85,29 +85,71 @@ add_riskdiff <- function(arm_x,
 #' @keywords internal
 afun_riskdiff <- function(df,
                           labelstr = "",
-                          afun,
-                          s_args = list(),
-                          ...) {
+                          ...,
+                          .stats = NULL,
+                          .stat_names = NULL,
+                          .formats = NULL,
+                          .labels = NULL,
+                          .indent_mods = NULL) {
+  dots_extra_args <- list(...)
+
+  # Check if there are user-defined functions
+  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
+  .stats <- default_and_custom_stats_list$default_stats
+  custom_stat_functions <- default_and_custom_stats_list$custom_stats
+
+  # Adding automatically extra parameters to the statistic function (see ?rtables::additional_fun_params)
+  extra_afun_params <- retrieve_extra_afun_params(
+    names(dots_extra_args$.additional_fun_parameters)
+  )
+  dots_extra_args$.additional_fun_parameters <- NULL # After extraction we do not need them anymore
+
+  .spl_context <- extra_afun_params[[".spl_context"]]
+  .N_col <- extra_afun_params[[".N_col"]]
+  .all_col_counts <- extra_afun_params[[".all_col_counts"]]
+
+  # Checking if the user has set up the levels to use in risk difference calculations
   if (!any(grepl("riskdiff", names(.spl_context)))) {
     stop(
       "Please set up levels to use in risk difference calculations using the `add_riskdiff` ",
       "split function within `split_cols_by`. See ?add_riskdiff for details."
     )
   }
-  checkmate::assert_list(afun, len = 1, types = "function")
-  checkmate::assert_named(afun)
-  browser()
-  afun_args <- c(
-    .var = .var, list(.df_row = .df_row), .N_row = .N_row, denom = "N_col", labelstr = labelstr,
-    s_args
+
+  # Is this a summary content row? (label row with data summary)
+  isc <- isTRUE(dots_extra_args$is_summary_content)
+  args_list <- c(
+    if(isc) {
+      list(df = df)
+    } else {
+      list(x = df[[extra_afun_params$.var]])
+    },
+    extra_afun_params,
+    dots_extra_args
   )
-  afun_args <- afun_args[intersect(names(afun_args), names(as.list(args(afun[[1]]))))]
-  if ("denom" %in% names(s_args)) afun_args[["denom"]] <- NULL
+
+  dots_extra_args[["denom"]] <- NULL
 
   cur_split <- tail(.spl_context$cur_col_split_val[[1]], 1)
   if (!grepl("^riskdiff", cur_split)) {
     # Apply basic afun (no risk difference) in all other columns
-    do.call(afun[[1]], args = c(list(df = df, .var = .var, .N_col = .N_col, .spl_context = .spl_context), afun_args))
+    x_stats <- .apply_stat_functions(
+      default_stat_fnc = if (isc) {
+        s_num_patients_content
+      } else {
+        s_num_patients
+      },
+      custom_stat_fnc_list = custom_stat_functions,
+      args_list = args_list
+    )
+
+    # Fill in with stats defaults if needed
+    .stats <- c(
+      get_stats("summarize_num_patients", stats_in = .stats),
+      names(custom_stat_functions)
+    )
+
+    out_list <- x_stats[.stats]
   } else {
     arm_x <- strsplit(cur_split, "_")[[1]][2]
     arm_y <- strsplit(cur_split, "_")[[1]][3]
@@ -124,33 +166,99 @@ afun_riskdiff <- function(df,
     cur_var <- tail(.spl_context$cur_col_split[[1]], 1)
 
     # Apply statistics function to arm X and arm Y data
-    s_args <- c(s_args, afun_args[intersect(names(afun_args), names(as.list(args(names(afun)))))])
-    s_x <- do.call(names(afun), args = c(list(df = df[df[[cur_var]] == arm_x, ], .N_col = N_col_x), s_args))
-    s_y <- do.call(names(afun), args = c(list(df = df[df[[cur_var]] == arm_y, ], .N_col = N_col_y), s_args))
+    args_list[["x"]] <- NULL # It does not matter?
+    if (!("df" %in% names(args_list))) {
+      args_list <- c(list("df" = NULL), args_list)
+    }
+    args_list[["df"]] <- df[df[[cur_var]] == arm_x, ]
+    extra_afun_params[[".N_col"]] <- N_col_x
+    x_stats <- .apply_stat_functions(
+      default_stat_fnc = s_num_patients_content, # why content?
+      custom_stat_fnc_list = custom_stat_functions,
+      args_list = args_list
+    )
+    extra_afun_params[[".N_col"]] <- N_col_y
+    args_list[["df"]] <- df[df[[cur_var]] == arm_y, ]
+    y_stats <- .apply_stat_functions(
+      default_stat_fnc = s_num_patients_content, # why content?
+      custom_stat_fnc_list = custom_stat_functions,
+      args_list = args_list
+    )
 
-    # Get statistic name and row names
-    stat <- ifelse("count_fraction" %in% names(s_x), "count_fraction", "unique")
-    if ("flag_variables" %in% names(s_args)) {
-      var_nms <- s_args$flag_variables
-    } else if (is.list(s_x[[stat]]) && !is.null(names(s_x[[stat]]))) {
-      var_nms <- names(s_x[[stat]])
+    # Fill in with stats defaults if needed
+    .stats <- c(
+      get_stats("summarize_num_patients", stats_in = .stats),
+      names(custom_stat_functions)
+    )
+
+    # Forced types for risk differences
+    if (!any(names(x_stats) %in% c("count_fraction", "unique"))) {
+      stop("Risk difference calculations are supported only for count_fraction or unique statistics.")
+    }
+    .stats <- ifelse("count_fraction" %in% names(.stats), "count_fraction", "unique")
+    x_stats <- x_stats[.stats]
+    y_stats <- y_stats[.stats]
+    if ("flag_variables" %in% names(dots_extra_args)) {
+      var_nms <- dots_extra_args$flag_variables
+    } else if (is.list(x_stats) && !is.null(names(x_stats))) {
+      var_nms <- names(x_stats)
     } else {
       var_nms <- ""
-      s_x[[stat]] <- list(s_x[[stat]])
-      s_y[[stat]] <- list(s_y[[stat]])
+      x_stats <- list(x_stats)
+      y_stats <- list(y_stats)
     }
 
     # Calculate risk difference for each row, repeated if multiple statistics in table
     pct <- tail(strsplit(cur_split, "_")[[1]], 1) == "pct"
-    rd_ci <- rep(stat_propdiff_ci(
-      lapply(s_x[[stat]], `[`, 1), lapply(s_y[[stat]], `[`, 1),
-      N_col_x, N_col_y,
-      list_names = var_nms,
-      pct = pct
-    ), max(1, length(s_args$.stats)))
 
-    in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = s_args$.indent_mods)
+    x_first_value <- lapply(x_stats, `[`, 1)
+    y_second_value <- lapply(y_stats, `[`, 1)
+    out_list <- sapply(seq(.stats), function(stat_i) {
+      stat_propdiff_ci(
+        x_first_value[stat_i], y_second_value[stat_i],
+        N_col_x, N_col_y,
+        list_names = var_nms,
+        pct = pct
+      )
+    })
+
+    # It feels an imposition but here it is (TO ADD risk_diff_unique, etc)
+    .formats  <- lapply(out_list, function(x) "xx.x (xx.x - xx.x)")
+    # in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
   }
+
+
+  # Fill in formats/indents/labels with custom input and defaults
+  .formats <- get_formats_from_stats(.stats, .formats)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
+  if (anyNA(.labels[names(out_list)])) {
+    .labels <- setNames(.labels[names(out_list)], names(out_list))
+    attr_labels <- sapply(out_list, attr, "label")
+    attr_labels <- attr_labels[nzchar(attr_labels)]
+    .labels[names(.labels) %in% names(attr_labels) & is.na(.labels)] <- attr_labels
+    .labels <- .labels[!is.na(.labels)]
+  }
+  .labels <- get_labels_from_stats(.stats, .labels)
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(
+    .formats,
+    out_list,
+    extra_afun_params$.df_row,
+    extra_afun_params$.var
+  )
+
+  # Get and check statistical names from defaults
+  .stat_names <- get_stat_names(out_list, .stat_names)
+
+  in_rows(
+    .list = out_list,
+    .formats = .formats,
+    .names = names(.labels),
+    .stat_names = .stat_names,
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+  )
 }
 
 #' Control function for risk difference column
