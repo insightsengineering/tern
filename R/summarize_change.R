@@ -88,11 +88,7 @@ a_change_from_baseline <- function(df,
   )
 
   # Fill in with formatting defaults if needed
-  .stats <- get_stats(
-    "analyze_vars_numeric",
-    stats_in = .stats,
-    custom_stats_in = names(custom_stat_functions),
-  )
+  .stats <- get_stats("analyze_vars_numeric", stats_in = .stats, custom_stats_in = names(custom_stat_functions))
   .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- get_labels_from_stats(.stats, .labels)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
