@@ -87,7 +87,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric",
   }
 
   # Add custom stats
-  out <- c(out, custom_stat_in)
+  out <- c(out, custom_stats_in)
 
   # If you added pval to the stats_in you certainly want it
   if (!is.null(stats_in) && any(grepl("^pval", stats_in))) {
@@ -164,7 +164,7 @@ get_stat_names <- function(stat_results, stat_names_in = NULL) {
     if (is.null(nm)) {
       nm <- rep(NA_character_, length(si)) # no statistical names
     }
-    return(nm)
+    nm
   })
 
   # Modify some with custom stat names
@@ -509,7 +509,7 @@ tern_default_stats <- list(
   analyze_vars_numeric = c(
     "n", "sum", "mean", "sd", "se", "mean_sd", "mean_se", "mean_ci", "mean_sei", "mean_sdi", "mean_pval",
     "median", "mad", "median_ci", "quantiles", "iqr", "range", "min", "max", "median_range", "cv",
-    "geom_mean", "geom_mean_ci", "geom_cv",
+    "geom_mean", "geom_sd", "geom_mean_sd", "geom_mean_ci", "geom_cv",
     "median_ci_3d",
     "mean_ci_3d", "geom_mean_ci_3d"
   ),
@@ -589,6 +589,8 @@ tern_default_formats <- c(
   median_range = "xx.x (xx.x - xx.x)",
   cv = "xx.x",
   geom_mean = "xx.x",
+  geom_sd = "xx.x",
+  geom_mean_sd = "xx.x (xx.x)",
   geom_mean_ci = "(xx.xx, xx.xx)",
   geom_mean_ci_3d = "xx.xx (xx.xx - xx.xx)",
   geom_cv = "xx.x",
@@ -599,7 +601,10 @@ tern_default_formats <- c(
   rate = "xx.xxxx",
   rate_ci = "(xx.xxxx, xx.xxxx)",
   rate_ratio = "xx.xxxx",
-  rate_ratio_ci = "(xx.xxxx, xx.xxxx)"
+  rate_ratio_ci = "(xx.xxxx, xx.xxxx)",
+  lsmean = "xx.xx",
+  lsmean_diff = "xx.xx",
+  lsmean_diff_ci = "(xx.xx, xx.xx)"
 )
 
 # tern_default_labels ----------------------------------------------------------
@@ -640,6 +645,8 @@ tern_default_labels <- c(
   median_range = "Median (Min - Max)",
   cv = "CV (%)",
   geom_mean = "Geometric Mean",
+  geom_sd = "Geometric SD",
+  geom_mean_sd = "Geometric Mean (SD)",
   geom_mean_ci = "Geometric Mean 95% CI",
   geom_mean_ci_3d = "Geometric Mean (95% CI)",
   geom_cv = "CV % Geometric Mean",

@@ -234,10 +234,25 @@ s_summary.numeric <- function(x, control = control_analyze_vars(), ...) {
 
   y$cv <- c("cv" = unname(y$sd) / unname(y$mean) * 100)
 
-  # Convert negative values to NA for log calculation.
+  # Geometric Mean - Convert negative values to NA for log calculation.
+  geom_verbose <- args_list[["geom_verbose"]] %||% FALSE # Additional info if requested
+  checkmate::assert_flag(geom_verbose)
   x_no_negative_vals <- x
+  if (identical(x_no_negative_vals, numeric())) {
+    x_no_negative_vals <- NA
+  }
   x_no_negative_vals[x_no_negative_vals <= 0] <- NA
+  if (geom_verbose) {
+    if (any(x <= 0)) {
+      warning("Negative values were converted to NA for calculation of the geometric mean.")
+    }
+    if (all(is.na(x_no_negative_vals))) {
+      warning("Since all values are negative or NA, the geometric mean is NA.")
+    }
+  }
   y$geom_mean <- c("geom_mean" = exp(mean(log(x_no_negative_vals), na.rm = FALSE)))
+  y$geom_sd <- c("geom_sd" = geom_sd <- exp(sd(log(x_no_negative_vals), na.rm = FALSE)))
+  y$geom_mean_sd <- c(y$geom_mean, y$geom_sd)
   geom_mean_ci <- stat_mean_ci(x, conf_level = control$conf_level, na.rm = FALSE, gg_helper = FALSE, geom_mean = TRUE)
   y$geom_mean_ci <- formatters::with_label(geom_mean_ci, paste("Geometric Mean", f_conf_level(control$conf_level)))
 
@@ -591,7 +606,7 @@ a_summary <- function(x,
   .stats <- get_stats(
     met_grp,
     stats_in = .stats,
-    custom_stat_in = names(custom_stat_functions),
+    custom_stats_in = names(custom_stat_functions),
     add_pval = dots_extra_args$compare_with_ref_group %||% FALSE
   )
 
