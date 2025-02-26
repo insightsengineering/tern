@@ -1,4 +1,4 @@
-# tern 0.9.7.9008
+# tern 0.9.7.9009
 
 ### Enhancements
 * Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, `count_abnormal_lab_worsen_by_baseline()`, `summarize_ancova()`, and `summarize_glm_count()` to work without `make_afun()`.
