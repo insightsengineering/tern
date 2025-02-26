@@ -63,7 +63,7 @@ to_string_matrix <- function(x, widths = NULL, max_width = NULL,
   }
 
   # Return values
-  return(out)
+  out
 }
 
 #' Blank for missing input
@@ -235,7 +235,7 @@ labels_or_names <- function(x) {
   nams <- rlang::names2(x)
   label_is_null <- sapply(labs, is.null)
   result <- unlist(ifelse(label_is_null, nams, labs))
-  return(result)
+  result
 }
 
 #' Convert to `rtable`
@@ -295,7 +295,7 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) {
 
 #' Split parameters
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("deprecated")`
 #'
 #' It divides the data in the vector `param` into the groups defined by `f` based on specified `values`. It is relevant
 #' in `rtables` layers so as to distribute parameters `.stats` or' `.formats` into lists with items corresponding to
@@ -336,6 +336,8 @@ as.rtable.data.frame <- function(x, format = "xx.xx", ...) {
 h_split_param <- function(param,
                           value,
                           f) {
+  lifecycle::deprecate_warn("0.9.8", "h_split_param()")
+
   y <- lapply(f, function(x) param[value %in% x])
   lapply(y, function(x) if (length(x) == 0) NULL else x)
 }

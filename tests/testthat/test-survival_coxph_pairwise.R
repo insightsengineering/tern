@@ -209,3 +209,27 @@ testthat::test_that("s_coxph_pairwise gets p-value (log-rank) calculated by surv
 
   testthat::expect_equal(as.numeric(result$pvalue), log_rank_pvalue, tolerance = 1e-6)
 })
+
+testthat::test_that("coxph_pairwise works with NA values", {
+  adtte_f <- tern_ex_adtte %>%
+    dplyr::filter(PARAMCD == "OS") %>%
+    dplyr::mutate(is_event = FALSE)
+
+  testthat::expect_warning(testthat::expect_warning(
+    result <- basic_table() %>%
+      split_cols_by(
+        var = "ARMCD",
+        ref_group = "ARM A"
+      ) %>%
+      coxph_pairwise(
+        vars = "AVAL",
+        is_event = "is_event",
+        var_labels = c("Unstratified Analysis"),
+        strata = NULL,
+        na_str = "empty"
+      ) %>%
+      build_table(df = adtte_f)
+  ))
+
+  testthat::expect_snapshot(result)
+})

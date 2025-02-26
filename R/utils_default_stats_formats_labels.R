@@ -94,7 +94,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric",
     stats_in_pval_value <- stats_in[grepl("^pval", stats_in)]
 
     # Must be only one value between choices
-    checkmate::assert_choice(stats_in_pval_value, c("pval", "pval_counts"))
+    checkmate::assert_choice(stats_in_pval_value, c("pval", "pval_counts", "pvalue"))
 
     # Mismatch with counts and numeric
     if (any(grepl("counts", method_groups)) && stats_in_pval_value != "pval_counts" ||
@@ -535,10 +535,8 @@ tern_default_stats <- list(
     "median", "median_ci", "median_ci_3d", "quantiles",
     "quantiles_lower", "quantiles_upper", "range_censor", "range_event", "range"
   ),
-  surv_timepoint = c(
-    "pt_at_risk", "event_free_rate", "rate_se", "rate_ci", "rate_diff", "rate_diff_ci", "ztest_pval",
-    "event_free_rate_3d"
-  ),
+  surv_timepoint = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci", "event_free_rate_3d"),
+  surv_timepoint_diff = c("rate_diff", "rate_diff_ci", "ztest_pval", "rate_diff_ci_3d"),
   tabulate_rsp_biomarkers = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
   tabulate_rsp_subgroups = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval"),
   tabulate_survival_biomarkers = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
@@ -596,15 +594,31 @@ tern_default_formats <- c(
   geom_cv = "xx.x",
   pval = "x.xxxx | (<0.0001)",
   pval_counts = "x.xxxx | (<0.0001)",
+  pvalue = "x.xxxx | (<0.0001)",
   range_censor = "xx.x to xx.x",
   range_event = "xx.x to xx.x",
   rate = "xx.xxxx",
   rate_ci = "(xx.xxxx, xx.xxxx)",
   rate_ratio = "xx.xxxx",
   rate_ratio_ci = "(xx.xxxx, xx.xxxx)",
+  rate_diff = "xx.xx",
+  rate_diff_ci = "(xx.xx, xx.xx)",
+  rate_diff_ci_3d = format_xx("xx.xx (xx.xx, xx.xx)"),
   lsmean = "xx.xx",
   lsmean_diff = "xx.xx",
-  lsmean_diff_ci = "(xx.xx, xx.xx)"
+  lsmean_diff_ci = "(xx.xx, xx.xx)",
+  ztest_pval = "x.xxxx | (<0.0001)",
+  hr = "xx.xx",
+  hr_ci = "(xx.xx, xx.xx)",
+  hr_ci_3d = "xx.xx (xx.xx - xx.xx)",
+  n_tot = "xx.xx",
+  n_tot_events = "xx.xx",
+  or_ci = "xx.xx (xx.xx - xx.xx)",
+  n_prop = "xx (xx.x%)",
+  prop_ci = "(xx.x, xx.x)",
+  pt_at_risk = "xx",
+  event_free_rate = "xx.xx",
+  rate_se = "xx.xx"
 )
 
 # tern_default_labels ----------------------------------------------------------

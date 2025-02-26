@@ -189,3 +189,15 @@
         Hazard Ratio                    1.600            2.049     
         99% CI                      (0.894, 2.863)   (1.092, 3.844)
 
+# coxph_pairwise works with NA values
+
+    Code
+      result
+    Output
+                              ARM A   ARM B    ARM C 
+      ———————————————————————————————————————————————
+      Unstratified Analysis                          
+        p-value (log-rank)            1.0000   1.0000
+        Hazard Ratio                  empty    empty 
+        95% CI                        empty    empty 
+
