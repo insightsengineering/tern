@@ -117,7 +117,7 @@ testthat::test_that("a_count_patients_with_flags works with healthy input.", {
     adae_local,
     .var = "USUBJID",
     flag_variables = aesi_vars, flag_labels = labels,
-    .N_col = 10, .N_row = 10, .df_row = raw_data,
+    .N_col = 10, .N_row = 10, .df_row = adae_local,
     .stats = get_stats("count_patients_with_flags")
   )
 
@@ -142,7 +142,7 @@ testthat::test_that("a_count_patients_with_flags works with custom input.", {
     adae_local,
     .var = "USUBJID",
     flag_variables = aesi_vars, flag_labels = labels,
-    .N_col = 10, .N_row = 10, .df_row = raw_data,
+    .N_col = 10, .N_row = 10, .df_row = adae_local,
     .stats = "count_fraction",
     .formats = c(count_fraction = "xx (xx.xx%)"),
     .labels = list("count_fraction.SER" = "New label"),
@@ -377,7 +377,8 @@ testthat::test_that("count_patients_with_flags works as expected with risk diffe
     count_patients_with_flags(
       var = "USUBJID",
       flag_variables = c("SER", "SERFATAL"),
-      riskdiff = TRUE
+      riskdiff = TRUE,
+      denom = "N_col"
     ) %>%
     build_table(adae, alt_counts_df = tern_ex_adsl)
 
@@ -391,7 +392,8 @@ testthat::test_that("count_patients_with_flags works as expected with risk diffe
       var = "USUBJID",
       flag_variables = c("SER", "SERFATAL"),
       .stats = c("count", "count_fraction"),
-      riskdiff = TRUE
+      riskdiff = TRUE,
+      denom = "N_col"
     ) %>%
     build_table(adae)
 

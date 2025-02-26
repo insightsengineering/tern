@@ -17,8 +17,10 @@ analyze_patients_exposure_in_cols(
   col_split = TRUE,
   na_str = default_na_str(),
   .stats = c("n_patients", "sum_exposure"),
+  .stat_names = NULL,
+  .formats = NULL,
   .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
-  .indent_mods = 0L,
+  .indent_mods = NULL,
   ...
 )
 
@@ -33,31 +35,33 @@ summarize_patients_exposure_in_cols(
   na_str = default_na_str(),
   ...,
   .stats = c("n_patients", "sum_exposure"),
+  .stat_names = NULL,
+  .formats = NULL,
   .labels = c(n_patients = "Patients", sum_exposure = "Person time"),
   .indent_mods = NULL
 )
 
 s_count_patients_sum_exposure(
   df,
-  ex_var = "AVAL",
-  id = "USUBJID",
   labelstr = "",
   .stats = c("n_patients", "sum_exposure"),
   .N_col,
-  custom_label = NULL
+  ...,
+  ex_var = "AVAL",
+  id = "USUBJID",
+  custom_label = NULL,
+  var_level = NULL
 )
 
 a_count_patients_sum_exposure(
   df,
-  var = NULL,
-  ex_var = "AVAL",
-  id = "USUBJID",
-  add_total_level = FALSE,
-  custom_label = NULL,
   labelstr = "",
-  .N_col,
-  .stats,
-  .formats = list(n_patients = "xx (xx.x\%)", sum_exposure = "xx")
+  ...,
+  .stats = NULL,
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -84,6 +88,12 @@ column split has been done already earlier in the layout pipe.}
 
 Options are: \verb{'n_patients', 'sum_exposure'}}
 
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
+
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
@@ -99,9 +109,6 @@ for more information.}
 
 \item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
 passed by \code{rtables}.}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
-information on the \code{"auto"} setting.}
 }
 \value{
 \itemize{
@@ -236,13 +243,6 @@ lyt6 <- basic_table() \%>\%
 
 result6 <- build_table(lyt6, df = df, alt_counts_df = adsl)
 result6
-
-a_count_patients_sum_exposure(
-  df = df,
-  var = "SEX",
-  .N_col = nrow(df),
-  .stats = "n_patients"
-)
 
 }
 \keyword{internal}

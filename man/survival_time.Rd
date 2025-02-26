@@ -20,26 +20,25 @@ surv_time(
   show_labels = "visible",
   table_names = vars,
   .stats = c("median", "median_ci", "quantiles", "range"),
-  .formats = NULL,
-  .labels = NULL,
-  .indent_mods = c(median_ci = 1L)
+  .stat_names = NULL,
+  .formats = list(median_ci = "(xx.x, xx.x)", quantiles = "xx.x, xx.x", range =
+    "xx.x to xx.x", quantiles_lower = "xx.x (xx.x - xx.x)", quantiles_upper =
+    "xx.x (xx.x - xx.x)", median_ci_3d = "xx.x (xx.x - xx.x)"),
+  .labels = list(median_ci = "95\% CI", range = "Range"),
+  .indent_mods = list(median_ci = 1L)
 )
 
-s_surv_time(df, .var, is_event, control = control_surv_time())
+s_surv_time(df, .var, ..., is_event, control = control_surv_time())
 
 a_surv_time(
   df,
   labelstr = "",
-  .var = NULL,
-  .df_row = NULL,
-  is_event,
-  control = control_surv_time(),
-  ref_fn_censor = TRUE,
+  ...,
   .stats = NULL,
+  .stat_names = NULL,
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL,
-  na_str = default_na_str()
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -80,6 +79,9 @@ times, to avoid warnings from \code{rtables}.}
 
 Options are: \verb{'median', 'median_ci', 'median_ci_3d', 'quantiles', 'quantiles_lower', 'quantiles_upper', 'range_censor', 'range_event', 'range'}}
 
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
+
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
 
@@ -97,8 +99,6 @@ by a statistics function.}
 \item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
-
-\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 }
 \value{
 \itemize{

@@ -294,7 +294,8 @@ testthat::test_that("analyze_num_patients works as expected with risk difference
       vars = "USUBJID",
       .stats = "unique",
       .labels = c(unique = "Any SAE"),
-      riskdiff = TRUE
+      riskdiff = TRUE,
+      denom = "N_col"
     ) %>%
     build_table(tern_ex_adae)
 
@@ -307,7 +308,8 @@ testthat::test_that("analyze_num_patients works as expected with risk difference
     analyze_num_patients(
       vars = "USUBJID",
       .labels = c(unique = "Any SAE"),
-      riskdiff = TRUE
+      riskdiff = TRUE,
+      denom = "N_col"
     ) %>%
     build_table(tern_ex_adae)
 
