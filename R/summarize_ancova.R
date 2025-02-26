@@ -237,7 +237,7 @@ a_ancova <- function(df,
   )
 
   # Fill in formatting defaults
-  .stats <- c(get_stats("summarize_ancova", stats_in = .stats), names(custom_stat_functions))
+  .stats <- get_stats("summarize_ancova", stats_in = .stats, custom_stats_in = names(custom_stat_functions))
   x_stats <- x_stats[.stats]
   .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- get_labels_from_stats(
