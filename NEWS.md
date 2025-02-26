@@ -3,7 +3,7 @@
 ### Enhancements
 * Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, `count_abnormal_lab_worsen_by_baseline()`, `summarize_ancova()`, `summarize_glm_count()`, and `summarize_num_patients()` to work without `make_afun()`.
 * Added `geom_sd` and `geom_mean_sd` to `s_summary()` default available statistics.
-* Refactored `afun_riskdiff()`, `count_occurrences()`, `count_occurrences_by_grade()`, `count_patients_with_event()`, `count_patients_with_flags()`, `count_values()`, `estimate_incidence_rate()`, `summarize_change()`, `summarize_patients_exposure_in_cols()`, and `survival_time()`to align with new analysis function style.
+* Refactored `afun_riskdiff()`, `count_occurrences()`, `count_occurrences_by_grade()`, `count_patients_with_event()`, `count_patients_with_flags()`, `count_values()`, `estimate_incidence_rate()`, `summarize_change()`, `summarize_colvars()`, `summarize_patients_exposure_in_cols()`, and `survival_time()`to align with new analysis function style.
 
 ### Bug Fixes
 * Fixed bug in `a_count_patients_with_flags()` preventing select custom label and indentation specification formats from being applied.
