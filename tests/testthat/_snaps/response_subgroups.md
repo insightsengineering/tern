@@ -129,10 +129,13 @@
     Code
       res
     Output
-          prop    pval  
-      ——————————————————
-      M   0.12   <0.0001
-      F   0.57   0.9838 
+      RowsVerticalSection (in_rows) object print method:
+      ----------------------------
+        row_name formatted_cell indent_mod      row_label
+      1   prop.M           0.12          2 M - proportion
+      2   prop.F           0.57          3         Female
+      3   pval.M        <0.0001          2           Male
+      4   pval.F         0.9838          3         Female
 
 # tabulate_rsp_subgroups functions as expected with valid input
 
@@ -226,7 +229,7 @@
       res
     Output
       $vars
-      [1] "n"     "n_rsp" "prop"  "n_tot" "or"    "lcl"   "pval" 
+      [1] "n"     "n_rsp" "prop"  "n_tot" "or"    "ci"    "pval" 
       
       $labels
                                  n                        n_rsp 

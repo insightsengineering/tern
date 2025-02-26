@@ -1,9 +1,8 @@
 #' Helper function for tabulation of a single biomarker result
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::badge("deprecated")`
 #'
-#' Please see [h_tab_surv_one_biomarker()] and [h_tab_rsp_one_biomarker()], which use this function for examples.
-#' This function is a wrapper for [rtables::summarize_row_groups()].
+#' Please see [h_tab_surv_one_biomarker()] and [h_tab_rsp_one_biomarker()] which use this function for examples.
 #'
 #' @inheritParams argument_convention
 #' @param df (`data.frame`)\cr results for a single biomarker.
@@ -17,32 +16,38 @@ h_tab_one_biomarker <- function(df,
                                 afuns,
                                 colvars,
                                 na_str = default_na_str(),
-                                .indent_mods = 0L,
-                                ...) {
-  extra_args <- list(...)
+                                ...,
+                                .stats = NULL,
+                                .stat_names = NULL,
+                                .formats = NULL,
+                                .labels = NULL,
+                                .indent_mods = NULL) {
+  lifecycle::deprecate_warn(
+    "0.9.8", "h_tab_one_biomarker()",
+    details = "This function is no longer used within `tern`."
+  )
+
+  # Process standard extra arguments
+  extra_args <- list(".stats" = .stats)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Process additional arguments to the statistic function
+  extra_args <- c(extra_args, biomarker = TRUE, ...)
+
+  # Adding additional info from layout to analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(afuns) <- c(formals(afuns), extra_args[[".additional_fun_parameters"]])
 
   # Create "ci" column from "lcl" and "ucl"
   df$ci <- combine_vectors(df$lcl, df$ucl)
 
+  colvars$vars <- intersect(colvars$vars, names(df))
+  colvars$labels <- colvars$labels[colvars$vars]
+
   lyt <- basic_table()
-
-  # Row split by row type - only keep the content rows here.
-  lyt <- split_rows_by(
-    lyt = lyt,
-    var = "row_type",
-    split_fun = keep_split_levels("content"),
-    nested = FALSE
-  )
-
-  # Summarize rows with all patients.
-  lyt <- summarize_row_groups(
-    lyt = lyt,
-    var = "var_label",
-    cfun = afuns,
-    na_str = na_str,
-    indent_mod = .indent_mods,
-    extra_args = extra_args
-  )
 
   # Split cols by the multiple variables to populate into columns.
   lyt <- split_cols_by_multivar(
@@ -51,35 +56,44 @@ h_tab_one_biomarker <- function(df,
     varlabels = colvars$labels
   )
 
-  # If there is any subgroup variables, we extend the layout accordingly.
+  # Add "All Patients" row
+  lyt <- split_rows_by(
+    lyt = lyt,
+    var = "row_type",
+    split_fun = keep_split_levels("content"),
+    nested = TRUE,
+    child_labels = "hidden"
+  )
+  lyt <- analyze_colvars(
+    lyt = lyt,
+    afun = afuns,
+    na_str = na_str,
+    extra_args = c(extra_args)
+  )
+
+  # Add analysis rows
   if ("analysis" %in% df$row_type) {
-    # Now only continue with the subgroup rows.
     lyt <- split_rows_by(
       lyt = lyt,
       var = "row_type",
       split_fun = keep_split_levels("analysis"),
-      nested = FALSE,
+      nested = TRUE,
       child_labels = "hidden"
     )
-
-    # Split by the subgroup variable.
     lyt <- split_rows_by(
       lyt = lyt,
-      var = "var",
-      labels_var = "var_label",
+      var = "var_label",
       nested = TRUE,
-      child_labels = "visible",
-      indent_mod = .indent_mods * 2
+      indent_mod = 1L
     )
-
-    # Then analyze colvars for each subgroup.
-    lyt <- summarize_row_groups(
+    lyt <- analyze_colvars(
       lyt = lyt,
-      cfun = afuns,
-      var = "subgroup",
+      afun = afuns,
       na_str = na_str,
+      inclNAs = TRUE,
       extra_args = extra_args
     )
   }
+
   build_table(lyt, df = df)
 }

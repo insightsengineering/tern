@@ -13,7 +13,11 @@ tabulate_survival_biomarkers(
   label_all = lifecycle::deprecated(),
   time_unit = NULL,
   na_str = default_na_str(),
-  .indent_mods = 0L
+  ...,
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -43,6 +47,16 @@ levels that belong to it in the character vectors that are elements of the list.
 \item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{...}{additional arguments for the lower level functions.}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
@@ -149,5 +163,5 @@ g_forest(tab, xlim = c(0.8, 1.2))
 
 }
 \seealso{
-\code{\link[=h_tab_surv_one_biomarker]{h_tab_surv_one_biomarker()}} which is used internally, \code{\link[=extract_survival_biomarkers]{extract_survival_biomarkers()}}.
+\code{\link[=extract_survival_biomarkers]{extract_survival_biomarkers()}}
 }

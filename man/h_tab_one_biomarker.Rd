@@ -9,8 +9,12 @@ h_tab_one_biomarker(
   afuns,
   colvars,
   na_str = default_na_str(),
-  .indent_mods = 0L,
-  ...
+  ...,
+  .stats = NULL,
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -22,17 +26,26 @@ h_tab_one_biomarker(
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
+\item{...}{additional arguments for the lower level functions.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
-
-\item{...}{additional arguments for the lower level functions.}
 }
 \value{
 An \code{rtables} table object with statistics in columns.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-Please see \code{\link[=h_tab_surv_one_biomarker]{h_tab_surv_one_biomarker()}} and \code{\link[=h_tab_rsp_one_biomarker]{h_tab_rsp_one_biomarker()}}, which use this function for examples.
-This function is a wrapper for \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}.
+Please see \code{\link[=h_tab_surv_one_biomarker]{h_tab_surv_one_biomarker()}} and \code{\link[=h_tab_rsp_one_biomarker]{h_tab_rsp_one_biomarker()}} which use this function for examples.
 }
