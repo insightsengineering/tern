@@ -1,7 +1,7 @@
-# tern 0.9.7.9009
+# tern 0.9.7.9010
 
 ### Enhancements
-* Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, `count_abnormal_lab_worsen_by_baseline()`, `summarize_ancova()`, `summarize_glm_count()`, and `summarize_num_patients()` to work without `make_afun()`.
+* Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, `count_abnormal_lab_worsen_by_baseline()`, `coxph_pairwise()`, `estimate_multinomial_rsp()`, `estimate_proportion()`, `estimate_odds_ratio()`, `summarize_ancova()`, `summarize_glm_count()`, `summarize_num_patients()`, and `surv_timepoint()` to work without `make_afun()`.
 * Added `geom_sd` and `geom_mean_sd` to `s_summary()` default available statistics.
 * Refactored `afun_riskdiff()`, `count_occurrences()`, `count_occurrences_by_grade()`, `count_patients_with_event()`, `count_patients_with_flags()`, `count_values()`, `estimate_incidence_rate()`, `summarize_change()`, `summarize_colvars()`, `summarize_patients_exposure_in_cols()`, and `survival_time()`to align with new analysis function style.
 
@@ -14,6 +14,7 @@
 * Removed internal function `ungroup_stats()` and replaced its usage with the `get_*_from_stats()` functions.
 * Began deprecation of the unused `table_names` argument to `count_abnormal_lab_worsen_by_baseline()`.
 * Added warnings for `geom_mean` statistical output.
+* Began deprecation of the unused `h_split_param()` function.
 * Updated documentation to remove suggestions to use `make_afun()`.
 
 # tern 0.9.7

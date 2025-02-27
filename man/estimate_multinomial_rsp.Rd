@@ -16,14 +16,23 @@ estimate_multinomial_response(
   show_labels = "hidden",
   table_names = var,
   .stats = "prop_ci",
-  .formats = NULL,
+  .stat_names = NULL,
+  .formats = list(prop_ci = "(xx.xx, xx.xx)"),
   .labels = NULL,
   .indent_mods = NULL
 )
 
-s_length_proportion(x, .N_col, ...)
+s_length_proportion(x, ..., .N_col)
 
-a_length_proportion(x, .N_col, ...)
+a_length_proportion(
+  x,
+  ...,
+  .stats = NULL,
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
+)
 }
 \arguments{
 \item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
@@ -47,6 +56,9 @@ times, to avoid warnings from \code{rtables}.}
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
 Options are: \verb{'n_prop', 'prop_ci'}}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
