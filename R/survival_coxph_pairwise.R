@@ -46,7 +46,8 @@ s_coxph_pairwise <- function(df,
                              is_event,
                              strata = NULL,
                              strat = lifecycle::deprecated(),
-                             control = control_coxph()) {
+                             control = control_coxph(),
+                             ...) {
   if (lifecycle::is_present(strat)) {
     lifecycle::deprecate_warn("0.9.4", "s_coxph_pairwise(strat)", "s_coxph_pairwise(strata)")
     strata <- strat
@@ -63,12 +64,12 @@ s_coxph_pairwise <- function(df,
   if (.in_ref_col) {
     return(
       list(
-        pvalue = formatters::with_label("", paste0("p-value (", pval_method, ")")),
-        hr = formatters::with_label("", "Hazard Ratio"),
-        hr_ci = formatters::with_label("", f_conf_level(conf_level)),
-        hr_ci_3d = formatters::with_label("", paste0("Hazard Ratio (", f_conf_level(conf_level), ")")),
-        n_tot = formatters::with_label("", "Total n"),
-        n_tot_events = formatters::with_label("", "Total events")
+        pvalue = formatters::with_label(character(), paste0("p-value (", pval_method, ")")),
+        hr = formatters::with_label(character(), "Hazard Ratio"),
+        hr_ci = formatters::with_label(character(), f_conf_level(conf_level)),
+        hr_ci_3d = formatters::with_label(character(), paste0("Hazard Ratio (", f_conf_level(conf_level), ")")),
+        n_tot = formatters::with_label(character(), "Total n"),
+        n_tot_events = formatters::with_label(character(), "Total events")
       )
     )
   }
@@ -128,18 +129,63 @@ s_coxph_pairwise <- function(df,
 #' * `a_coxph_pairwise()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @keywords internal
-a_coxph_pairwise <- make_afun(
-  s_coxph_pairwise,
-  .indent_mods = c(pvalue = 0L, hr = 0L, hr_ci = 1L, n_tot = 0L, n_tot_events = 0L, hr_ci_3d = 0L),
-  .formats = c(
-    pvalue = "x.xxxx | (<0.0001)",
-    hr = "xx.xx",
-    hr_ci = "(xx.xx, xx.xx)",
-    hr_ci_3d = "xx.xx (xx.xx - xx.xx)",
-    n_tot = "xx.xx",
-    n_tot_events = "xx.xx"
+a_coxph_pairwise <- function(df,
+                             ...,
+                             .stats = NULL,
+                             .stat_names = NULL,
+                             .formats = NULL,
+                             .labels = NULL,
+                             .indent_mods = NULL) {
+  # Check for additional parameters to the statistics function
+  dots_extra_args <- list(...)
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
+  dots_extra_args$.additional_fun_parameters <- NULL
+
+  # Check for user-defined functions
+  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
+  .stats <- default_and_custom_stats_list$all_stats
+  custom_stat_functions <- default_and_custom_stats_list$custom_stats
+
+  # Apply statistics function
+  x_stats <- .apply_stat_functions(
+    default_stat_fnc = s_coxph_pairwise,
+    custom_stat_fnc_list = custom_stat_functions,
+    args_list = c(
+      df = list(df),
+      extra_afun_params,
+      dots_extra_args
+    )
   )
-)
+
+  # Fill in formatting defaults
+  .stats <- get_stats("coxph_pairwise",
+    stats_in = .stats,
+    custom_stats_in = names(custom_stat_functions)
+  )
+  x_stats <- x_stats[.stats]
+  .formats <- get_formats_from_stats(.stats, .formats)
+  .labels <- get_labels_from_stats(
+    .stats, .labels,
+    tern_defaults = c(lapply(x_stats, attr, "label"), tern_default_labels)
+  )
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
+
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
+
+  # Get and check statistical names
+  .stat_names <- get_stat_names(x_stats, .stat_names)
+
+  in_rows(
+    .list = x_stats,
+    .formats = .formats,
+    .names = .labels %>% .unlist_keep_nulls(),
+    .stat_names = .stat_names,
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+  )
+}
 
 #' @describeIn survival_coxph_pairwise Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
@@ -194,27 +240,37 @@ coxph_pairwise <- function(lyt,
                            show_labels = "visible",
                            table_names = vars,
                            .stats = c("pvalue", "hr", "hr_ci"),
+                           .stat_names = NULL,
                            .formats = NULL,
                            .labels = NULL,
                            .indent_mods = NULL) {
-  extra_args <- list(strata = strata, control = control, ...)
+  # Process standard extra arguments
+  extra_args <- list(".stats" = .stats)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
 
-  afun <- make_afun(
-    a_coxph_pairwise,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods
+  # Process additional arguments to the statistic function
+  extra_args <- c(
+    extra_args,
+    strata = list(strata), control = list(control),
+    ...
   )
+
+  # Append additional info from layout to the analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_coxph_pairwise) <- c(formals(a_coxph_pairwise), extra_args[[".additional_fun_parameters"]])
+
   analyze(
-    lyt,
-    vars,
-    var_labels = var_labels,
-    show_labels = show_labels,
-    table_names = table_names,
-    afun = afun,
+    lyt = lyt,
+    vars = vars,
+    afun = a_coxph_pairwise,
     na_str = na_str,
     nested = nested,
-    extra_args = extra_args
+    extra_args = extra_args,
+    var_labels = var_labels,
+    show_labels = show_labels,
+    table_names = table_names
   )
 }

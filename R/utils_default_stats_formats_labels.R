@@ -94,7 +94,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric",
     stats_in_pval_value <- stats_in[grepl("^pval", stats_in)]
 
     # Must be only one value between choices
-    checkmate::assert_choice(stats_in_pval_value, c("pval", "pval_counts"))
+    checkmate::assert_choice(stats_in_pval_value, c("pval", "pval_counts", "pvalue"))
 
     # Mismatch with counts and numeric
     if (any(grepl("counts", method_groups)) && stats_in_pval_value != "pval_counts" ||
@@ -535,10 +535,8 @@ tern_default_stats <- list(
     "median", "median_ci", "median_ci_3d", "quantiles",
     "quantiles_lower", "quantiles_upper", "range_censor", "range_event", "range"
   ),
-  surv_timepoint = c(
-    "pt_at_risk", "event_free_rate", "rate_se", "rate_ci", "rate_diff", "rate_diff_ci", "ztest_pval",
-    "event_free_rate_3d"
-  ),
+  surv_timepoint = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci", "event_free_rate_3d"),
+  surv_timepoint_diff = c("rate_diff", "rate_diff_ci", "ztest_pval", "rate_diff_ci_3d"),
   tabulate_rsp_biomarkers = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
   tabulate_rsp_subgroups = c("n", "n_rsp", "prop", "n_tot", "or", "ci", "pval", "riskdiff"),
   tabulate_survival_biomarkers = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
