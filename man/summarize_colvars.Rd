@@ -6,9 +6,10 @@
 \usage{
 summarize_colvars(
   lyt,
-  ...,
   na_str = default_na_str(),
+  ...,
   .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
+  .stat_names = NULL,
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL
@@ -17,11 +18,14 @@ summarize_colvars(
 \arguments{
 \item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
-\item{...}{arguments passed to \code{\link[=s_summary]{s_summary()}}.}
-
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
+\item{...}{arguments passed to \code{\link[=s_summary]{s_summary()}}.}
+
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}

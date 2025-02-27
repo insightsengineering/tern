@@ -72,11 +72,10 @@ The descriptions for each function type:
 - statistics function `s_*`. Statistics functions should do the computation of the numbers that are tabulated later.
 In order to separate computation from formatting, they should not take care of `rcell` type formatting themselves.
 - formatted analysis functions `a_*`.
-These have the same arguments as the corresponding statistics functions, and can be further customized by calling `rtables::make_afun()` on them.
+These apply formatting to results from their corresponding statistics functions.
 They are used as `afun` in `rtables::analyze()`.
-- **analyze functions `rtables::analyze(..., afun = make_afun(tern::a_*))`.
-Analyze functions are used in combination with the `rtables` layout functions, in the pipeline which creates the table.
-They are the last element of the chain.**
+- analyze functions `rtables::analyze(..., afun = tern::a_*)`.
+Analyze functions are used in combination with the `rtables` layout functions, in the pipeline which creates the table. They are the last element of the chain.
 
 We will use the native `rtables::analyze` function with the `tern` formatted analysis functions as a `afun` parameter.
 
@@ -87,25 +86,6 @@ l <- basic_table() %>%
     analyze(vars = "AVAL", afun = a_summary)
 
 build_table(l, df = adrs)
-```
-
-The `rtables::make_afun` function is helpful when somebody wants to attach some format to the formatted analysis function.
-
-```
-afun <- make_afun(
-    a_summary,
-    .stats = NULL,
-    .formats = c(median = "xx."),
-    .labels = c(median = "My median"),
-    .indent_mods = c(median = 1L)
-)
-
-l2 <- basic_table() %>%
-    split_cols_by(var = "ARM") %>%
-    split_rows_by(var = "AVISIT") %>%
-    analyze(vars = "AVAL", afun = afun)
-
-build_table(l2, df = adrs)
 ```
 
 ## Tabulation Examples

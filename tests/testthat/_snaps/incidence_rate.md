@@ -59,13 +59,13 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-            row_name formatted_cell indent_mod
-      1 person_years          108.7          0
-      2     n_events              4          0
-      3         rate           3.68          0
-      4      rate_ci   (0.07, 7.29)          0
-      5     n_unique              4          0
-      6       n_rate        4 (3.7)          0
+            row_name   formatted_cell indent_mod
+      1 person_years            108.7          0
+      2     n_events                4          0
+      3         rate           3.6799          0
+      4      rate_ci (0.0737, 7.2860)          0
+      5     n_unique                4          0
+      6       n_rate          4 (3.7)          0
                                                                 row_label
       1                                       Total patient-years at risk
       2                                 Number of adverse events observed

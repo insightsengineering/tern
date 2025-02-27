@@ -19,11 +19,10 @@ summarize_change(
   section_div = NA_character_,
   ...,
   .stats = c("n", "mean_sd", "median", "range"),
-  .formats = c(n = "xx", mean_sd = "xx.xx (xx.xx)", mean_se = "xx.xx (xx.xx)", median =
-    "xx.xx", range = "xx.xx - xx.xx", mean_ci = "(xx.xx, xx.xx)", median_ci =
-    "(xx.xx, xx.xx)", mean_pval = "xx.xx"),
-  .labels = c(mean_sd = "Mean (SD)", mean_se = "Mean (SE)", median = "Median", range =
-    "Min - Max"),
+  .stat_names = NULL,
+  .formats = c(mean_sd = "xx.xx (xx.xx)", mean_se = "xx.xx (xx.xx)", median = "xx.xx",
+    range = "xx.xx - xx.xx", mean_pval = "xx.xx"),
+  .labels = NULL,
   .indent_mods = NULL
 )
 
@@ -33,6 +32,7 @@ a_change_from_baseline(
   df,
   ...,
   .stats = NULL,
+  .stat_names = NULL,
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL
@@ -68,6 +68,9 @@ defined by this split instruction, or \code{NA_character_} (the default) for no 
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
 Options are: \verb{'n', 'sum', 'mean', 'sd', 'se', 'mean_sd', 'mean_se', 'mean_ci', 'mean_sei', 'mean_sdi', 'mean_pval', 'median', 'mad', 'median_ci', 'quantiles', 'iqr', 'range', 'min', 'max', 'median_range', 'cv', 'geom_mean', 'geom_sd', 'geom_mean_sd', 'geom_mean_ci', 'geom_cv', 'median_ci_3d', 'mean_ci_3d', 'geom_mean_ci_3d'}}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}

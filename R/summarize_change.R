@@ -60,23 +60,21 @@ s_change_from_baseline <- function(df, ...) {
 a_change_from_baseline <- function(df,
                                    ...,
                                    .stats = NULL,
+                                   .stat_names = NULL,
                                    .formats = NULL,
                                    .labels = NULL,
                                    .indent_mods = NULL) {
+  # Check for additional parameters to the statistics function
   dots_extra_args <- list(...)
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
+  dots_extra_args$.additional_fun_parameters <- NULL
 
-  # Check if there are user-defined functions
+  # Check for user-defined functions
   default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
-  .stats <- default_and_custom_stats_list$all_stats # just the labels of stats
+  .stats <- default_and_custom_stats_list$all_stats
   custom_stat_functions <- default_and_custom_stats_list$custom_stats
 
-  # Adding automatically extra parameters to the statistic function (see ?rtables::additional_fun_params)
-  extra_afun_params <- retrieve_extra_afun_params(
-    names(dots_extra_args$.additional_fun_parameters)
-  )
-  dots_extra_args$.additional_fun_parameters <- NULL # After extraction we do not need them anymore
-
-  # Main stats calculations
+  # Apply statistics function
   x_stats <- .apply_stat_functions(
     default_stat_fnc = s_change_from_baseline,
     custom_stat_fnc_list = custom_stat_functions,
@@ -87,24 +85,25 @@ a_change_from_baseline <- function(df,
     )
   )
 
-  # Fill in with formatting defaults if needed
+  # Fill in with formatting defaults
   .stats <- get_stats("analyze_vars_numeric", stats_in = .stats, custom_stats_in = names(custom_stat_functions))
   .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- get_labels_from_stats(.stats, .labels)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
+  x_stats <- x_stats[.stats]
+
   # Auto format handling
-  .formats <- apply_auto_formatting(
-    .formats,
-    x_stats,
-    extra_afun_params$.df_row,
-    extra_afun_params$.var
-  )
+  .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
+
+  # Get and check statistical names
+  .stat_names <- get_stat_names(x_stats, .stat_names)
 
   in_rows(
-    .list = x_stats[.stats],
+    .list = x_stats,
     .formats = .formats,
     .names = names(.labels),
+    .stat_names = .stat_names,
     .labels = .labels %>% .unlist_keep_nulls(),
     .indent_mods = .indent_mods %>% .unlist_keep_nulls()
   )
@@ -161,51 +160,45 @@ summarize_change <- function(lyt,
                              section_div = NA_character_,
                              ...,
                              .stats = c("n", "mean_sd", "median", "range"),
+                             .stat_names = NULL,
                              .formats = c(
-                               n = "xx",
                                mean_sd = "xx.xx (xx.xx)",
                                mean_se = "xx.xx (xx.xx)",
                                median = "xx.xx",
                                range = "xx.xx - xx.xx",
-                               mean_ci = "(xx.xx, xx.xx)",
-                               median_ci = "(xx.xx, xx.xx)",
                                mean_pval = "xx.xx"
                              ),
-                             .labels = c(
-                               mean_sd = "Mean (SD)",
-                               mean_se = "Mean (SE)",
-                               median = "Median",
-                               range = "Min - Max"
-                             ),
+                             .labels = NULL,
                              .indent_mods = NULL) {
-  # Extra args must contain .stats, .formats, .labels, .indent_mods - sent to the analysis level
+  # Process standard extra arguments
   extra_args <- list(".stats" = .stats)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
 
-  # Adding additional arguments to the analysis function (depends on the specific call)
-  extra_args <- c(extra_args, "na_rm" = na_rm, "variables" = list(variables), ...)
-
-  # Adding all additional information from layout to analysis functions (see ?rtables::additional_fun_params)
-  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
-  formals(a_change_from_baseline) <- c(
-    formals(a_change_from_baseline),
-    extra_args[[".additional_fun_parameters"]]
+  # Process additional arguments to the statistic function
+  extra_args <- c(
+    extra_args,
+    variables = list(variables),
+    ...
   )
 
-  # Main analysis call - Nothing with .* -> these should be dedicated to the analysis function
+  # Append additional info from layout to the analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_change_from_baseline) <- c(formals(a_change_from_baseline), extra_args[[".additional_fun_parameters"]])
+
   analyze(
     lyt = lyt,
     vars = vars,
-    var_labels = var_labels,
     afun = a_change_from_baseline,
     na_str = na_str,
     nested = nested,
     extra_args = extra_args,
-    inclNAs = na_rm,
+    var_labels = var_labels,
     show_labels = show_labels,
     table_names = table_names,
+    inclNAs = !na_rm,
     section_div = section_div
   )
 }
