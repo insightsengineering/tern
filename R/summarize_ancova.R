@@ -155,9 +155,9 @@ s_ancova <- function(df,
     list(
       n = length(y[!is.na(y)]),
       lsmean = formatters::with_label(sum_fit_level$emmean, "Adjusted Mean"),
-      lsmean_diff = formatters::with_label(character(), "Difference in Adjusted Means"),
-      lsmean_diff_ci = formatters::with_label(character(), f_conf_level(conf_level)),
-      pval = formatters::with_label(character(), "p-value")
+      lsmean_diff = formatters::with_label(numeric(), "Difference in Adjusted Means"),
+      lsmean_diff_ci = formatters::with_label(numeric(), f_conf_level(conf_level)),
+      pval = formatters::with_label(numeric(), "p-value")
     )
   } else {
     # Estimate the differences between the marginal means.

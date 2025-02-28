@@ -11,7 +11,6 @@ to add summary rows to a given table layout:
 \itemize{
 \item \code{\link[=add_rowcounts]{add_rowcounts()}}
 \item \code{\link[=estimate_multinomial_response]{estimate_multinomial_response()}} (with \code{\link[rtables:analyze]{rtables::analyze()}})
-\item \code{\link[=h_tab_one_biomarker]{h_tab_one_biomarker()}} (probably to deprecate)
 \item \code{\link[=logistic_summary_by_flag]{logistic_summary_by_flag()}}
 \item \code{\link[=summarize_num_patients]{summarize_num_patients()}}
 \item \code{\link[=summarize_occurrences]{summarize_occurrences()}}

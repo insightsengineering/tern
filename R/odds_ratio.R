@@ -70,7 +70,7 @@ s_odds_ratio <- function(df,
                          groups_list = NULL,
                          method = "exact",
                          ...) {
-  y <- list(or_ci = character(), n_tot = character())
+  y <- list(or_ci = numeric(), n_tot = numeric())
 
   if (!.in_ref_col) {
     assert_proportion_value(conf_level)

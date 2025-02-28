@@ -217,9 +217,9 @@ s_glm_count <- function(df,
         c(emmeans_smry_level$asymp.LCL * scale, emmeans_smry_level$asymp.UCL * scale),
         f_conf_level(conf_level)
       ),
-      rate_ratio = formatters::with_label(character(), "Adjusted Rate Ratio"),
-      rate_ratio_ci = formatters::with_label(character(), f_conf_level(conf_level)),
-      pval = formatters::with_label(character(), "p-value")
+      rate_ratio = formatters::with_label(numeric(), "Adjusted Rate Ratio"),
+      rate_ratio_ci = formatters::with_label(numeric(), f_conf_level(conf_level)),
+      pval = formatters::with_label(numeric(), "p-value")
     )
   } else {
     emmeans_contrasts <- emmeans::contrast(
