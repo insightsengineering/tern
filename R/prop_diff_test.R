@@ -32,9 +32,10 @@ s_test_proportion_diff <- function(df,
                                    .ref_group,
                                    .in_ref_col,
                                    variables = list(strata = NULL),
-                                   method = c("chisq", "schouten", "fisher", "cmh")) {
+                                   method = c("chisq", "schouten", "fisher", "cmh"),
+                                   ...) {
   method <- match.arg(method)
-  y <- list(pval = "")
+  y <- list(pval = character())
 
   if (!.in_ref_col) {
     assert_df_with_variables(df, list(rsp = .var))
@@ -103,11 +104,74 @@ d_test_proportion_diff <- function(method) {
 #' * `a_test_proportion_diff()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @keywords internal
-a_test_proportion_diff <- make_afun(
-  s_test_proportion_diff,
-  .formats = c(pval = "x.xxxx | (<0.0001)"),
-  .indent_mods = c(pval = 1L)
-)
+a_test_proportion_diff <- function(df,
+                                   ...,
+                                   .stats = NULL,
+                                   .stat_names = NULL,
+                                   .formats = NULL,
+                                   .labels = NULL,
+                                   .indent_mods = NULL) {
+  dots_extra_args <- list(...)
+
+  # Check if there are user-defined functions
+  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
+  .stats <- default_and_custom_stats_list$default_stats
+  custom_stat_functions <- default_and_custom_stats_list$custom_stats
+
+  # Adding automatically extra parameters to the statistic function (see ?rtables::additional_fun_params)
+  extra_afun_params <- retrieve_extra_afun_params(
+    names(dots_extra_args$.additional_fun_parameters)
+  )
+  dots_extra_args$.additional_fun_parameters <- NULL # After extraction we do not need them anymore
+
+  # Main statistical functions application
+  x_stats <- .apply_stat_functions(
+    default_stat_fnc = s_test_proportion_diff,
+    custom_stat_fnc_list = custom_stat_functions,
+    args_list = c(
+      df = list(df),
+      extra_afun_params,
+      dots_extra_args
+    )
+  )
+
+  # Fill in with stats defaults if needed
+  .stats <- c(
+    get_stats("test_proportion_diff", stats_in = .stats),
+    names(custom_stat_functions)
+  )
+
+  x_stats <- x_stats[.stats]
+
+  # Fill in formats/indents/labels with custom input and defaults
+  .formats <- get_formats_from_stats(.stats, .formats)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
+  if (is.null(.labels)) {
+    .labels <- sapply(x_stats, attr, "label")
+  }
+  .labels <- get_labels_from_stats(.stats, .labels)
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(
+    .formats,
+    x_stats,
+    extra_afun_params$.df_row,
+    extra_afun_params$.var
+  )
+
+  # Get and check statistical names from defaults
+  .stat_names <- get_stat_names(x_stats, .stat_names) # note is x_stats
+  .stat_names <- paste0(.stat_names, "_", dots_extra_args$method)
+
+  in_rows(
+    .list = x_stats,
+    .formats = .formats,
+    .names = names(.labels),
+    .stat_names = .stat_names,
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+  )
+}
 
 #' @describeIn prop_diff_test Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
@@ -138,37 +202,59 @@ a_test_proportion_diff <- make_afun(
 #' @order 2
 test_proportion_diff <- function(lyt,
                                  vars,
-                                 variables = list(strata = NULL),
-                                 method = c("chisq", "schouten", "fisher", "cmh"),
+                                 var_labels = vars,
                                  na_str = default_na_str(),
                                  nested = TRUE,
-                                 ...,
-                                 var_labels = vars,
                                  show_labels = "hidden",
                                  table_names = vars,
-                                 .stats = NULL,
-                                 .formats = NULL,
+                                 section_div = NA_character_,
+                                 ...,
+                                 na_rm = TRUE,
+                                 variables = list(strata = NULL),
+                                 # conf_level = 0.95,
+                                 method = c("chisq", "schouten", "fisher", "cmh"),
+                                 .stats = c("pval"),
+                                 # .stats = c("diff", "diff_ci"),
+                                 .stat_names = NULL,
+                                 .formats = c(pval = "x.xxxx | (<0.0001)"),
                                  .labels = NULL,
-                                 .indent_mods = NULL) {
-  extra_args <- list(variables = variables, method = method, ...)
-
-  afun <- make_afun(
-    a_test_proportion_diff,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods
+                                 .indent_mods = c(pval = 1L)) {
+  # Depending on main functions
+  extra_args <- list(
+    "na_rm" = na_rm,
+    "variables" = variables,
+    # "conf_level" = conf_level,
+    "method" = method,
+    ...
   )
+
+  # Needed defaults
+  if (!is.null(.stats)) extra_args[[".stats"]] <- .stats
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Adding all additional information from layout to analysis functions (see ?rtables::additional_fun_params)
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_test_proportion_diff) <- c(
+    formals(a_test_proportion_diff),
+    extra_args[[".additional_fun_parameters"]]
+  )
+
+  # Main {rtables} structural call
   analyze(
-    lyt,
-    vars,
-    afun = afun,
+    lyt = lyt,
+    vars = vars,
     var_labels = var_labels,
+    afun = a_test_proportion_diff,
     na_str = na_str,
+    inclNAs = !na_rm,
     nested = nested,
     extra_args = extra_args,
     show_labels = show_labels,
-    table_names = table_names
+    table_names = table_names,
+    section_div = section_div
   )
 }
 

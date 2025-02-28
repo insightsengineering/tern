@@ -4,6 +4,7 @@
 * Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, `count_abnormal_lab_worsen_by_baseline()`, `coxph_pairwise()`, `estimate_multinomial_rsp()`, `estimate_proportion()`, `estimate_odds_ratio()`, `summarize_ancova()`, `summarize_glm_count()`, and `surv_timepoint()` to work without `make_afun()`.
 * Added `geom_sd` and `geom_mean_sd` to `s_summary()` default available statistics.
 * Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, `count_abnormal_lab_worsen_by_baseline()` to work without `make_afun()`.
+* `as_factor_keep_attributes()` is now an exported function.
 
 ### Bug Fixes
 * Fixed bug in `a_count_patients_with_flags()` preventing select custom label and indentation specification formats from being applied.
@@ -15,6 +16,7 @@
 * Began deprecation of the unused `table_names` argument to `count_abnormal_lab_worsen_by_baseline()`.
 * Added warnings for `geom_mean` statistical output.
 * Began deprecation of the unused `h_split_param()` function.
+* Reorganized the utility documentation related to factors (`utils_factor.R`) into a single file.
 
 # tern 0.9.7
 
