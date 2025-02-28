@@ -7,16 +7,16 @@
 #' @inheritParams argument_convention
 #' @param df (`data.frame`)\cr results for a single biomarker. For `h_tab_rsp_one_biomarker()`, the results returned by
 #'   [extract_rsp_biomarkers()]. For `h_tab_surv_one_biomarker()`, the results returned by
-#'   [extract_survival_biomarkers()].#' @param afuns (named `list` of `function`)\cr analysis functions.
+#'   [extract_survival_biomarkers()].
 #' @param afuns (named `list` of `function`)\cr analysis functions.
 #' @param colvars (named `list`)\cr named list with elements `vars` (variables to tabulate) and `labels` (their labels).
 #'
 #' @return An `rtables` table object with statistics in columns.
 #'
-#' @name h_tab_one_biomarker
+#' @name h_biomarkers_subgroups
 NULL
 
-#' @describeIn h_tab_one_biomarker Helper function to calculate statistics in columns for one biomarker.
+#' @describeIn h_biomarkers_subgroups Helper function to calculate statistics in columns for one biomarker.
 #'
 #' @export
 h_tab_one_biomarker <- function(df,
@@ -105,7 +105,7 @@ h_tab_one_biomarker <- function(df,
   build_table(lyt, df = df)
 }
 
-#' @describeIn h_tab_one_biomarker Helper function that prepares a single response sub-table given the results for a
+#' @describeIn h_biomarkers_subgroups Helper function that prepares a single response sub-table given the results for a
 #'   single biomarker.
 #'
 #' @examples
@@ -169,7 +169,7 @@ h_tab_rsp_one_biomarker <- function(df,
   )
 }
 
-#' @describeIn h_tab_one_biomarker Helper function that prepares a single survival sub-table given the results for a
+#' @describeIn h_biomarkers_subgroups Helper function that prepares a single survival sub-table given the results for a
 #'   single biomarker.
 #'
 #' @examples
