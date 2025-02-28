@@ -141,7 +141,7 @@ a_response_subgroups <- function(df,
   dots_extra_args <- list(...)
   extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
   dots_extra_args$.additional_fun_parameters <- NULL
-  cur_stat <- extra_afun_params$.var %||% .stats
+  cur_col_stat <- extra_afun_params$.var %||% .stats
 
   # Uniquely name & label rows
   var_lvls <- if ("biomarker" %in% names(dots_extra_args) && "biomarker" %in% names(df)) {
@@ -156,14 +156,14 @@ a_response_subgroups <- function(df,
 
   # if empty, return NA
   if (nrow(df) == 0) {
-    return(in_rows(.list = list(NA) %>% stats::setNames(cur_stat)))
+    return(in_rows(.list = list(NA) %>% stats::setNames(cur_col_stat)))
   }
 
   # Main statistics taken from df
   x_stats <- as.list(df)
 
   # Fill in formatting defaults
-  .stats <- get_stats("tabulate_rsp_subgroups", stats_in = cur_stat)
+  .stats <- get_stats("tabulate_rsp_subgroups", stats_in = cur_col_stat)
   levels_per_stats <- rep(list(var_lvls), length(.stats)) %>% setNames(.stats)
   .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
   .labels <- get_labels_from_stats(
