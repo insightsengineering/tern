@@ -370,28 +370,18 @@ count_occurrences_by_grade <- function(lyt,
                                        .labels = NULL) {
   checkmate::assert_flag(riskdiff)
   extra_args <- list(
-    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
-  )
-  s_args <- list(
+    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str,
     id = id, grade_groups = grade_groups, remove_single = remove_single, only_grade_groups = only_grade_groups, ...
   )
 
-  if (isFALSE(riskdiff)) {
-    extra_args <- c(extra_args, s_args)
-  } else {
-    extra_args <- c(
-      extra_args,
-      list(
-        afun = list("s_count_occurrences_by_grade" = a_count_occurrences_by_grade),
-        s_args = s_args
-      )
-    )
-  }
+  # Riskdiff directive
+  afun <- ifelse(isFALSE(riskdiff), a_count_occurrences_by_grade, afun_riskdiff)
+  if (isTRUE(riskdiff)) extra_args[["sfun_local"]] <- s_count_occurrences_by_grade
 
   analyze(
     lyt = lyt,
     vars = var,
-    afun = ifelse(isFALSE(riskdiff), a_count_occurrences_by_grade, afun_riskdiff),
+    afun = afun,
     var_labels = var_labels,
     show_labels = show_labels,
     table_names = table_names,
@@ -446,28 +436,18 @@ summarize_occurrences_by_grade <- function(lyt,
                                            .labels = NULL) {
   checkmate::assert_flag(riskdiff)
   extra_args <- list(
-    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
-  )
-  s_args <- list(
+    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str,
     id = id, grade_groups = grade_groups, remove_single = remove_single, only_grade_groups = only_grade_groups, ...
   )
 
-  if (isFALSE(riskdiff)) {
-    extra_args <- c(extra_args, s_args)
-  } else {
-    extra_args <- c(
-      extra_args,
-      list(
-        afun = list("s_count_occurrences_by_grade" = a_count_occurrences_by_grade),
-        s_args = s_args
-      )
-    )
-  }
+  # Riskdiff directive
+  cfun <- ifelse(isFALSE(riskdiff), a_count_occurrences_by_grade, afun_riskdiff)
+  if (isTRUE(riskdiff)) extra_args[["sfun_local"]] <- s_count_occurrences_by_grade
 
   summarize_row_groups(
     lyt = lyt,
     var = var,
-    cfun = ifelse(isFALSE(riskdiff), a_count_occurrences_by_grade, afun_riskdiff),
+    cfun = cfun,
     na_str = na_str,
     extra_args = extra_args
   )

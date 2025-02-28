@@ -68,11 +68,6 @@ add_riskdiff <- function(arm_x,
 #' function utilizes the [stat_propdiff_ci()] function to perform risk difference calculations.
 #'
 #' @inheritParams argument_convention
-#' @param afun (named `list`)\cr a named list containing one name-value pair where the name corresponds to
-#'   the name of the statistics function that should be used in calculations and the value is the corresponding
-#'   analysis function.
-#' @param s_args (named `list`)\cr additional arguments to be passed to the statistics function and analysis
-#'   function supplied in `afun`.
 #'
 #' @return A list of formatted [rtables::CellValue()].
 #'
@@ -84,6 +79,7 @@ add_riskdiff <- function(arm_x,
 #'
 #' @keywords internal
 afun_riskdiff <- function(df,
+                          sfun_local,
                           labelstr = "",
                           ...,
                           .stats = NULL,
@@ -116,14 +112,17 @@ afun_riskdiff <- function(df,
     )
   }
 
-  # Is this a summary content row? (label row with data summary)
-  isc <- isTRUE(dots_extra_args$is_summary_content)
+  # Is it a df or x?
+  df_or_x_formal <- names(formals(sfun_local)[1])
+  main_arg <- if (df_or_x_formal == "df") {
+    list(df = df)
+  } else if (df_or_x_formal == "x") {
+    list(x = df[[extra_afun_params$.var]])
+  } else {
+    stop("The first argument of the analysis function must be a data frame or a vector.")
+  }
   args_list <- c(
-    if(isc) {
-      list(df = df)
-    } else {
-      list(x = df[[extra_afun_params$.var]])
-    },
+    main_arg,
     extra_afun_params,
     dots_extra_args
   )
@@ -134,11 +133,7 @@ afun_riskdiff <- function(df,
   if (!grepl("^riskdiff", cur_split)) {
     # Apply basic afun (no risk difference) in all other columns
     x_stats <- .apply_stat_functions(
-      default_stat_fnc = if (isc) {
-        s_num_patients_content
-      } else {
-        s_num_patients
-      },
+      default_stat_fnc = sfun_local,
       custom_stat_fnc_list = custom_stat_functions,
       args_list = args_list
     )
@@ -166,28 +161,37 @@ afun_riskdiff <- function(df,
     cur_var <- tail(.spl_context$cur_col_split[[1]], 1)
 
     # Apply statistics function to arm X and arm Y data
-    args_list[["x"]] <- NULL # It does not matter?
     if (!("df" %in% names(args_list))) {
       args_list <- c(list("df" = NULL), args_list)
     }
-    args_list[["df"]] <- df[df[[cur_var]] == arm_x, ]
+    if (df_or_x_formal == "x") {
+      args_list[["x"]] <- df[df[[cur_var]] == arm_x, ][[extra_afun_params$.var]]
+    } else {
+      args_list[["df"]] <- df[df[[cur_var]] == arm_x, ]
+    }
     extra_afun_params[[".N_col"]] <- N_col_x
     x_stats <- .apply_stat_functions(
-      default_stat_fnc = s_num_patients_content, # why content?
+      default_stat_fnc = sfun_local, # why content?
       custom_stat_fnc_list = custom_stat_functions,
       args_list = args_list
     )
     extra_afun_params[[".N_col"]] <- N_col_y
-    args_list[["df"]] <- df[df[[cur_var]] == arm_y, ]
+    if (df_or_x_formal == "x") {
+      args_list[["x"]] <- df[df[[cur_var]] == arm_y, ][[extra_afun_params$.var]]
+    } else {
+      args_list[["df"]] <- df[df[[cur_var]] == arm_y, ]
+    }
     y_stats <- .apply_stat_functions(
-      default_stat_fnc = s_num_patients_content, # why content?
+      default_stat_fnc = sfun_local, # why content?
       custom_stat_fnc_list = custom_stat_functions,
       args_list = args_list
     )
 
     # Fill in with stats defaults if needed
-    .stats <- get_stats("summarize_num_patients", stats_in = .stats,
-                        custom_stats_in = names(custom_stat_functions))
+    .stats <- get_stats("summarize_num_patients",
+      stats_in = .stats,
+      custom_stats_in = names(custom_stat_functions)
+    )
 
     # Forced types for risk differences
     if (!any(names(x_stats) %in% c("count_fraction", "unique"))) {
@@ -220,7 +224,7 @@ afun_riskdiff <- function(df,
     })
 
     # It feels an imposition but here it is (TO ADD risk_diff_unique, etc)
-    .formats  <- setNames(
+    .formats <- setNames(
       lapply(out_list, function(x) "xx.x (xx.x - xx.x)"),
       .stats
     )

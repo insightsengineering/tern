@@ -200,26 +200,18 @@ count_patients_with_event <- function(lyt,
                                       .indent_mods = NULL) {
   checkmate::assert_flag(riskdiff)
   extra_args <- list(
-    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
+    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str,
+    filters = filters, ...
   )
-  s_args <- list(filters = filters, ...)
 
-  if (isFALSE(riskdiff)) {
-    extra_args <- c(extra_args, s_args)
-  } else {
-    extra_args <- c(
-      extra_args,
-      list(
-        afun = list("s_count_patients_with_event" = a_count_patients_with_event),
-        s_args = s_args
-      )
-    )
-  }
+  # Riskdiff directive
+  afun <- ifelse(isFALSE(riskdiff), a_count_patients_with_event, afun_riskdiff)
+  if (isTRUE(riskdiff)) extra_args[["sfun_local"]] <- s_count_patients_with_event
 
   analyze(
     lyt = lyt,
     vars = vars,
-    afun = ifelse(isFALSE(riskdiff), a_count_patients_with_event, afun_riskdiff),
+    afun = afun,
     show_labels = ifelse(length(vars) > 1, "visible", "hidden"),
     table_names = table_names,
     na_str = na_str,
