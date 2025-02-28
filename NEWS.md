@@ -1,9 +1,9 @@
-# tern 0.9.7.9010
+# tern 0.9.7.9011
 
 ### Enhancements
 * Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, `count_abnormal_lab_worsen_by_baseline()`, `coxph_pairwise()`, `estimate_multinomial_rsp()`, `estimate_proportion()`, `estimate_odds_ratio()`, `summarize_ancova()`, `summarize_glm_count()`, and `surv_timepoint()` to work without `make_afun()`.
 * Added `geom_sd` and `geom_mean_sd` to `s_summary()` default available statistics.
-* Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, `count_abnormal_lab_worsen_by_baseline()` to work without `make_afun()`.
+* Refactored `h_tab_one_biomarker()`, `tabulate_rsp_subgroups()`, `tabulate_survival_subgroups()`, `tabulate_rsp_biomarkers()`, and `tabulate_survival_biomarkers()` to align with new analysis function style.
 * `as_factor_keep_attributes()` is now an exported function.
 
 ### Bug Fixes
@@ -16,6 +16,9 @@
 * Began deprecation of the unused `table_names` argument to `count_abnormal_lab_worsen_by_baseline()`.
 * Added warnings for `geom_mean` statistical output.
 * Began deprecation of the unused `h_split_param()` function.
+* Began deprecation of the unused `label_all` parameter to `tabulate_rsp_subgroups()`, with redirection to the same parameter in `extract_rsp_subgroups()`.
+* Began deprecation of the no longer used helper functions `h_tab_one_biomarker()`, `h_tab_rsp_one_biomarker()`, and `h_tab_surv_one_biomarker()`.
+* Moved helper functions `h_tab_rsp_one_biomarker()` and `h_tab_surv_one_biomarker()` into `h_biomarkers_subgroups.R`.
 * Reorganized the utility documentation related to factors (`utils_factor.R`) into a single file.
 
 # tern 0.9.7
