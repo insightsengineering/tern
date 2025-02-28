@@ -186,18 +186,16 @@ afun_riskdiff <- function(df,
     )
 
     # Fill in with stats defaults if needed
-    .stats <- c(
-      get_stats("summarize_num_patients", stats_in = .stats),
-      names(custom_stat_functions)
-    )
+    .stats <- get_stats("summarize_num_patients", stats_in = .stats,
+                        custom_stats_in = names(custom_stat_functions))
 
     # Forced types for risk differences
     if (!any(names(x_stats) %in% c("count_fraction", "unique"))) {
       stop("Risk difference calculations are supported only for count_fraction or unique statistics.")
     }
-    .stats <- ifelse("count_fraction" %in% names(.stats), "count_fraction", "unique")
-    x_stats <- x_stats[.stats]
-    y_stats <- y_stats[.stats]
+    stat_unique_or_count_fraction <- ifelse("count_fraction" %in% names(.stats), "count_fraction", "unique")
+    x_stats <- x_stats[stat_unique_or_count_fraction]
+    y_stats <- y_stats[stat_unique_or_count_fraction]
     if ("flag_variables" %in% names(dots_extra_args)) {
       var_nms <- dots_extra_args$flag_variables
     } else if (is.list(x_stats) && !is.null(names(x_stats))) {
@@ -210,10 +208,9 @@ afun_riskdiff <- function(df,
 
     # Calculate risk difference for each row, repeated if multiple statistics in table
     pct <- tail(strsplit(cur_split, "_")[[1]], 1) == "pct"
-
     x_first_value <- lapply(x_stats, `[`, 1)
     y_second_value <- lapply(y_stats, `[`, 1)
-    out_list <- sapply(seq(.stats), function(stat_i) {
+    out_list <- sapply(rep(1, length(seq(.stats))), function(stat_i) {
       stat_propdiff_ci(
         x_first_value[stat_i], y_second_value[stat_i],
         N_col_x, N_col_y,
@@ -223,10 +220,11 @@ afun_riskdiff <- function(df,
     })
 
     # It feels an imposition but here it is (TO ADD risk_diff_unique, etc)
-    .formats  <- lapply(out_list, function(x) "xx.x (xx.x - xx.x)")
-    # in_rows(.list = rd_ci, .formats = "xx.x (xx.x - xx.x)", .indent_mods = .indent_mods)
+    .formats  <- setNames(
+      lapply(out_list, function(x) "xx.x (xx.x - xx.x)"),
+      .stats
+    )
   }
-
 
   # Fill in formats/indents/labels with custom input and defaults
   .formats <- get_formats_from_stats(.stats, .formats)
