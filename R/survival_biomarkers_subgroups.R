@@ -176,7 +176,7 @@ extract_survival_biomarkers <- function(variables,
 #'   not start from an input layout `lyt`. This is because internally the table is
 #'   created by combining multiple subtables.
 #'
-#' @seealso [h_tab_surv_one_biomarker()] which is used internally, [extract_survival_biomarkers()].
+#' @seealso [extract_survival_biomarkers()]
 #'
 #' @examples
 #' ## Table with default columns.
@@ -203,7 +203,11 @@ tabulate_survival_biomarkers <- function(df,
                                          label_all = lifecycle::deprecated(),
                                          time_unit = NULL,
                                          na_str = default_na_str(),
-                                         .indent_mods = 0L) {
+                                         ...,
+                                         .stat_names = NULL,
+                                         .formats = NULL,
+                                         .labels = NULL,
+                                         .indent_mods = NULL) {
   if (lifecycle::is_present(label_all)) {
     lifecycle::deprecate_warn(
       "0.9.5", "tabulate_survival_biomarkers(label_all)",
@@ -219,23 +223,97 @@ tabulate_survival_biomarkers <- function(df,
   checkmate::assert_character(df$biomarker_label)
   checkmate::assert_subset(vars, get_stats("tabulate_survival_biomarkers"))
 
-  extra_args <- list(groups_lists = groups_lists, control = control)
+  # Process standard extra arguments
+  extra_args <- list(".stats" = vars)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  colvars <- d_survival_subgroups_colvars(
+    vars,
+    conf_level = df$conf_level[1],
+    method = df$pval_label[1],
+    time_unit = time_unit
+  )
+
+  # Process additional arguments to the statistic function
+  extra_args <- c(
+    extra_args,
+    groups_lists = list(groups_lists), control = list(control), biomarker = TRUE,
+    ...
+  )
+
+  # Adding additional info from layout to analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_survival_subgroups) <- c(formals(a_survival_subgroups), extra_args[[".additional_fun_parameters"]])
+
+  # Create "ci" column from "lcl" and "ucl"
+  df$ci <- combine_vectors(df$lcl, df$ucl)
 
   df_subs <- split(df, f = df$biomarker)
-  tabs <- lapply(df_subs, FUN = function(df_sub) {
-    tab_sub <- h_tab_surv_one_biomarker(
-      df = df_sub,
-      vars = vars,
-      time_unit = time_unit,
-      na_str = na_str,
-      .indent_mods = .indent_mods,
-      extra_args = extra_args
-    )
-    # Insert label row as first row in table.
-    label_at_path(tab_sub, path = row_paths(tab_sub)[[1]][1]) <- df_sub$biomarker_label[1]
-    tab_sub
-  })
-  result <- do.call(rbind, tabs)
+  tbls <- lapply(
+    df_subs,
+    function(df) {
+      lyt <- basic_table()
+
+      # Split cols by the multiple variables to populate into columns.
+      lyt <- split_cols_by_multivar(
+        lyt = lyt,
+        vars = colvars$vars,
+        varlabels = colvars$labels
+      )
+
+      # Row split by biomarker
+      lyt <- split_rows_by(
+        lyt = lyt,
+        var = "biomarker_label",
+        nested = FALSE
+      )
+
+      # Add "All Patients" row
+      lyt <- split_rows_by(
+        lyt = lyt,
+        var = "row_type",
+        split_fun = keep_split_levels("content"),
+        nested = TRUE,
+        child_labels = "hidden"
+      )
+      lyt <- analyze_colvars(
+        lyt = lyt,
+        afun = a_survival_subgroups,
+        na_str = na_str,
+        extra_args = c(extra_args, overall = TRUE)
+      )
+
+      # Add analysis rows
+      if ("analysis" %in% df$row_type) {
+        lyt <- split_rows_by(
+          lyt = lyt,
+          var = "row_type",
+          split_fun = keep_split_levels("analysis"),
+          nested = TRUE,
+          child_labels = "hidden"
+        )
+        lyt <- split_rows_by(
+          lyt = lyt,
+          var = "var_label",
+          nested = TRUE,
+          indent_mod = 1L
+        )
+        lyt <- analyze_colvars(
+          lyt = lyt,
+          afun = a_survival_subgroups,
+          na_str = na_str,
+          inclNAs = TRUE,
+          extra_args = extra_args
+        )
+      }
+      build_table(lyt, df = df)
+    }
+  )
+
+  result <- do.call(rbind, tbls)
 
   n_tot_ids <- grep("^n_tot", vars)
   hr_id <- match("hr", vars)

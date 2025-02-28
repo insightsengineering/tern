@@ -17,7 +17,7 @@
     Code
       res
     Output
-      character(0)
+      numeric(0)
 
 # s_compare for factor works in usual case
 
