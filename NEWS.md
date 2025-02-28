@@ -17,6 +17,7 @@
 * Began deprecation of the unused `h_split_param()` function.
 * Began deprecation of the unused `label_all` parameter to `tabulate_rsp_subgroups()`, with redirection to the same parameter in `extract_rsp_subgroups()`.
 * Began deprecation of the no longer used helper functions `h_tab_one_biomarker()`, `h_tab_rsp_one_biomarker()`, and `h_tab_surv_one_biomarker()`.
+* Moved helper functions `h_tab_rsp_one_biomarker()` and `h_tab_surv_one_biomarker()` into `h_biomarkers_subgroups.R`.
 
 # tern 0.9.7
 

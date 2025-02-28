@@ -1,15 +1,22 @@
-#' Helper function for tabulation of a single biomarker result
+## Deprecated ------------------------------------------------------------
+
+#' Helper functions for tabulation of a single biomarker result
 #'
 #' @description `r lifecycle::badge("deprecated")`
 #'
-#' Please see [h_tab_surv_one_biomarker()] and [h_tab_rsp_one_biomarker()] which use this function for examples.
-#'
 #' @inheritParams argument_convention
-#' @param df (`data.frame`)\cr results for a single biomarker.
+#' @param df (`data.frame`)\cr results for a single biomarker. For `h_tab_rsp_one_biomarker()`, the results returned by
+#'   [extract_rsp_biomarkers()]. For `h_tab_surv_one_biomarker()`, the results returned by
+#'   [extract_survival_biomarkers()].#' @param afuns (named `list` of `function`)\cr analysis functions.
 #' @param afuns (named `list` of `function`)\cr analysis functions.
 #' @param colvars (named `list`)\cr named list with elements `vars` (variables to tabulate) and `labels` (their labels).
 #'
 #' @return An `rtables` table object with statistics in columns.
+#'
+#' @name h_tab_one_biomarker
+NULL
+
+#' @describeIn h_tab_one_biomarker Helper function to calculate statistics in columns for one biomarker.
 #'
 #' @export
 h_tab_one_biomarker <- function(df,
@@ -96,4 +103,139 @@ h_tab_one_biomarker <- function(df,
   }
 
   build_table(lyt, df = df)
+}
+
+#' @describeIn h_tab_one_biomarker Helper function that prepares a single response sub-table given the results for a
+#'   single biomarker.
+#'
+#' @examples
+#' library(dplyr)
+#' library(forcats)
+#'
+#' adrs <- tern_ex_adrs
+#' adrs_labels <- formatters::var_labels(adrs)
+#'
+#' adrs_f <- adrs %>%
+#'   filter(PARAMCD == "BESRSPI") %>%
+#'   mutate(rsp = AVALC == "CR")
+#' formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
+#'
+#' # For a single population, separately estimate the effects of two biomarkers.
+#' df <- h_logistic_mult_cont_df(
+#'   variables = list(
+#'     rsp = "rsp",
+#'     biomarkers = c("BMRKR1", "AGE"),
+#'     covariates = "SEX"
+#'   ),
+#'   data = adrs_f
+#' )
+#'
+#' # Starting from above `df`, zoom in on one biomarker and add required columns.
+#' df1 <- df[1, ]
+#' df1$subgroup <- "All patients"
+#' df1$row_type <- "content"
+#' df1$var <- "ALL"
+#' df1$var_label <- "All patients"
+#'
+#' h_tab_rsp_one_biomarker(
+#'   df1,
+#'   vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval")
+#' )
+#'
+#' @export
+h_tab_rsp_one_biomarker <- function(df,
+                                    vars,
+                                    na_str = default_na_str(),
+                                    .indent_mods = 0L,
+                                    ...) {
+  lifecycle::deprecate_warn(
+    "0.9.8", "h_tab_rsp_one_biomarker()",
+    details = "This function is no longer used within `tern`."
+  )
+
+  colvars <- d_rsp_subgroups_colvars(
+    vars,
+    conf_level = df$conf_level[1],
+    method = df$pval_label[1]
+  )
+
+  h_tab_one_biomarker(
+    df = df,
+    afuns = a_response_subgroups,
+    colvars = colvars,
+    na_str = na_str,
+    .indent_mods = .indent_mods,
+    ...
+  )
+}
+
+#' @describeIn h_tab_one_biomarker Helper function that prepares a single survival sub-table given the results for a
+#'   single biomarker.
+#'
+#' @examples
+#' adtte <- tern_ex_adtte
+#'
+#' # Save variable labels before data processing steps.
+#' adtte_labels <- formatters::var_labels(adtte, fill = FALSE)
+#'
+#' adtte_f <- adtte %>%
+#'   filter(PARAMCD == "OS") %>%
+#'   mutate(
+#'     AVALU = as.character(AVALU),
+#'     is_event = CNSR == 0
+#'   )
+#' labels <- c("AVALU" = adtte_labels[["AVALU"]], "is_event" = "Event Flag")
+#' formatters::var_labels(adtte_f)[names(labels)] <- labels
+#'
+#' # For a single population, separately estimate the effects of two biomarkers.
+#' df <- h_coxreg_mult_cont_df(
+#'   variables = list(
+#'     tte = "AVAL",
+#'     is_event = "is_event",
+#'     biomarkers = c("BMRKR1", "AGE"),
+#'     covariates = "SEX",
+#'     strata = c("STRATA1", "STRATA2")
+#'   ),
+#'   data = adtte_f
+#' )
+#'
+#' # Starting from above `df`, zoom in on one biomarker and add required columns.
+#' df1 <- df[1, ]
+#' df1$subgroup <- "All patients"
+#' df1$row_type <- "content"
+#' df1$var <- "ALL"
+#' df1$var_label <- "All patients"
+#' h_tab_surv_one_biomarker(
+#'   df1,
+#'   vars = c("n_tot", "n_tot_events", "median", "hr", "ci", "pval"),
+#'   time_unit = "days"
+#' )
+#'
+#' @export
+h_tab_surv_one_biomarker <- function(df,
+                                     vars,
+                                     time_unit,
+                                     na_str = default_na_str(),
+                                     .indent_mods = 0L,
+                                     ...) {
+  lifecycle::deprecate_warn(
+    "0.9.8", "h_tab_surv_one_biomarker()",
+    details = "This function is no longer used within `tern`."
+  )
+
+  colvars <- d_survival_subgroups_colvars(
+    vars,
+    conf_level = df$conf_level[1],
+    method = df$pval_label[1],
+    time_unit = time_unit
+  )
+
+  h_tab_one_biomarker(
+    df = df,
+    afuns = a_survival_subgroups,
+    colvars = colvars,
+    na_str = na_str,
+    .indent_mods = .indent_mods,
+    ...
+  )
 }
