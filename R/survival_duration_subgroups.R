@@ -166,13 +166,15 @@ a_survival_subgroups <- function(df,
   extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
   dots_extra_args$.additional_fun_parameters <- NULL
   cur_stat <- extra_afun_params$.var %||% .stats
+
+  # Uniquely name & label rows
   var_lvls <- if ("biomarker" %in% names(dots_extra_args) && "biomarker" %in% names(df)) {
-    if ("overall" %in% names(dots_extra_args)) {
+    if ("overall" %in% names(dots_extra_args)) { # label rows for (nested) biomarker tables - e.g. "AGE", "BMRKR1"
       as.character(df$biomarker)
-    } else {
+    } else { # data rows for (nested) biomarker tables - e.g. "AGE.LOW", "BMRKR1.Total Patients"
       paste(as.character(df$biomarker), as.character(df$subgroup), sep = ".")
     }
-  } else {
+  } else { # data rows for non-biomarker tables - e.g. "Total Patients", "F", "M"
     make.unique(as.character(df$subgroup))
   }
 
@@ -190,6 +192,7 @@ a_survival_subgroups <- function(df,
   .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
   .labels <- get_labels_from_stats(
     .stats, .labels, levels_per_stats,
+    # default labels are pre-determined in extract_*() function
     tern_defaults = as.list(as.character(df$subgroup)) %>% setNames(var_lvls)
   )
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
