@@ -155,10 +155,10 @@ a_incidence_rate <- function(df,
   # Fill in with defaults
   formats_def <- formals()$.formats %>% eval()
   .formats <- c(.formats, formats_def)[!duplicated(names(c(.formats, formats_def)))]
-  labels_def <- sapply(x_stats, \(x) attributes(x)$label)
+  labels_def <- sapply(x_stats, function(x) attributes(x)$label)
   .labels <- c(.labels, labels_def)[!duplicated(names(c(.labels, labels_def)))]
   if (nzchar(labelstr) > 0) {
-    .labels <- sapply(.labels, \(x) gsub("%.labels", x, gsub("%s", labelstr, label_fmt)))
+    .labels <- sapply(.labels, function(x) gsub("%.labels", x, gsub("%s", labelstr, label_fmt)))
   }
 
   # Fill in with formatting defaults if needed
