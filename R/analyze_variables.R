@@ -271,7 +271,7 @@ s_summary.numeric <- function(x, control = control_analyze_vars(), ...) {
     checkmate::assert_numeric(.ref_group)
     checkmate::assert_flag(.in_ref_col)
 
-    y$pval <- character()
+    y$pval <- numeric()
     if (!.in_ref_col && n_available(x) > 1 && n_available(.ref_group) > 1) {
       y$pval <- stats::t.test(x, .ref_group)$p.value
     }
@@ -383,7 +383,7 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
     if ("NA" %in% levels(x)) levels(.ref_group) <- c(levels(.ref_group), "NA")
     checkmate::assert_factor(x, levels = levels(.ref_group), min.levels = 2)
 
-    y$pval_counts <- character()
+    y$pval_counts <- numeric()
     if (!.in_ref_col && length(x) > 0 && length(.ref_group) > 0) {
       tab <- rbind(table(x), table(.ref_group))
       res <- suppressWarnings(stats::chisq.test(tab))
@@ -498,7 +498,7 @@ s_summary.logical <- function(x, denom = c("n", "N_col", "N_row"), ...) {
       .ref_group[is.na(.ref_group)] <- FALSE
     }
 
-    y$pval_counts <- character()
+    y$pval_counts <- numeric()
     if (!.in_ref_col && length(x) > 0 && length(.ref_group) > 0) {
       x <- factor(x, levels = c(TRUE, FALSE))
       .ref_group <- factor(.ref_group, levels = c(TRUE, FALSE))

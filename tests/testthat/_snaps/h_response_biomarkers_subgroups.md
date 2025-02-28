@@ -52,13 +52,3 @@
       1 1.080400       0.95 0.6270504 p-value (Wald)
       2 1.045599       0.95 0.8260959 p-value (Wald)
 
-# h_tab_rsp_one_biomarker works as expected
-
-    Code
-      res
-    Output
-                     Total n   Odds Ratio      95% CI   
-      ——————————————————————————————————————————————————
-      All patients     48         0.99      (0.86, 1.15)
-      All patients     48         1.00      (0.95, 1.06)
-

@@ -11,19 +11,25 @@ tabulate_rsp_subgroups(
   df,
   vars = c("n_tot", "n", "prop", "or", "ci"),
   groups_lists = list(),
-  label_all = "All Patients",
+  label_all = lifecycle::deprecated(),
   riskdiff = NULL,
   na_str = default_na_str(),
-  .formats = c(n = "xx", n_rsp = "xx", prop = "xx.x\%", n_tot = "xx", or =
-    list(format_extreme_values(2L)), ci = list(format_extreme_values_ci(2L)), pval =
-    "x.xxxx | (<0.0001)")
+  ...,
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 
 a_response_subgroups(
-  .formats = list(n = "xx", n_rsp = "xx", prop = "xx.x\%", n_tot = "xx", or =
-    list(format_extreme_values(2L)), ci = list(format_extreme_values_ci(2L)), pval =
-    "x.xxxx | (<0.0001)", riskdiff = "xx.x (xx.x - xx.x)"),
-  na_str = default_na_str()
+  df,
+  labelstr = "",
+  ...,
+  .stats = NULL,
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -57,8 +63,24 @@ the second level as \code{arm_y}.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
 
+\item{...}{additional arguments for the lower level functions.}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
+
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
+
+\item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
+(must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
+for more information.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table.}
 }
 \value{
 An \code{rtables} table summarizing binary response by subgroup.

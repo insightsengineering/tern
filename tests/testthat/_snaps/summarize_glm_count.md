@@ -165,17 +165,17 @@
       [1] "95% CI"
       
       $rate_ratio
-      character(0)
+      numeric(0)
       attr(,"label")
       [1] "Adjusted Rate Ratio"
       
       $rate_ratio_ci
-      character(0)
+      numeric(0)
       attr(,"label")
       [1] "95% CI"
       
       $pval
-      character(0)
+      numeric(0)
       attr(,"label")
       [1] "p-value"
       
@@ -199,17 +199,17 @@
       [1] "95% CI"
       
       $rate_ratio
-      character(0)
+      numeric(0)
       attr(,"label")
       [1] "Adjusted Rate Ratio"
       
       $rate_ratio_ci
-      character(0)
+      numeric(0)
       attr(,"label")
       [1] "95% CI"
       
       $pval
-      character(0)
+      numeric(0)
       attr(,"label")
       [1] "p-value"
       

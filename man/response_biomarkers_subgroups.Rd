@@ -9,7 +9,11 @@ tabulate_rsp_biomarkers(
   df,
   vars = c("n_tot", "n_rsp", "prop", "or", "ci", "pval"),
   na_str = default_na_str(),
-  .indent_mods = 0L
+  ...,
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -28,6 +32,16 @@ Note, the statistics \code{n_tot}, \code{or} and \code{ci} are required.
 }}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{...}{additional arguments for the lower level functions.}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
@@ -92,5 +106,5 @@ g_forest(tab, xlim = c(0.7, 1.4))
 
 }
 \seealso{
-\code{\link[=h_tab_rsp_one_biomarker]{h_tab_rsp_one_biomarker()}} which is used internally, \code{\link[=extract_rsp_biomarkers]{extract_rsp_biomarkers()}}.
+\code{\link[=extract_rsp_biomarkers]{extract_rsp_biomarkers()}}
 }

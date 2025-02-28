@@ -5,7 +5,6 @@
 #'
 #' * [add_rowcounts()]
 #' * [estimate_multinomial_response()] (with [rtables::analyze()])
-#' * [h_tab_one_biomarker()] (probably to deprecate)
 #' * [logistic_summary_by_flag()]
 #' * [summarize_num_patients()]
 #' * [summarize_occurrences()]

@@ -43,13 +43,3 @@
       1       0.95   NA p-value (Wald)
       2       0.95   NA p-value (Wald)
 
-# h_tab_surv_one_biomarker works as expected
-
-    Code
-      res
-    Output
-                     Total n   Hazard Ratio   95% Wald CI 
-      ————————————————————————————————————————————————————
-      All patients     48          0.99       (0.86, 1.15)
-      All patients     48          1.00       (0.95, 1.06)
-

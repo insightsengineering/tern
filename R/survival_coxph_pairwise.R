@@ -64,12 +64,12 @@ s_coxph_pairwise <- function(df,
   if (.in_ref_col) {
     return(
       list(
-        pvalue = formatters::with_label(character(), paste0("p-value (", pval_method, ")")),
-        hr = formatters::with_label(character(), "Hazard Ratio"),
-        hr_ci = formatters::with_label(character(), f_conf_level(conf_level)),
-        hr_ci_3d = formatters::with_label(character(), paste0("Hazard Ratio (", f_conf_level(conf_level), ")")),
-        n_tot = formatters::with_label(character(), "Total n"),
-        n_tot_events = formatters::with_label(character(), "Total events")
+        pvalue = formatters::with_label(numeric(), paste0("p-value (", pval_method, ")")),
+        hr = formatters::with_label(numeric(), "Hazard Ratio"),
+        hr_ci = formatters::with_label(numeric(), f_conf_level(conf_level)),
+        hr_ci_3d = formatters::with_label(numeric(), paste0("Hazard Ratio (", f_conf_level(conf_level), ")")),
+        n_tot = formatters::with_label(numeric(), "Total n"),
+        n_tot_events = formatters::with_label(numeric(), "Total events")
       )
     )
   }

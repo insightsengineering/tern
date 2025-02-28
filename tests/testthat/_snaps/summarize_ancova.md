@@ -53,17 +53,17 @@
       [1] "Adjusted Mean"
       
       $lsmean_diff
-      character(0)
+      numeric(0)
       attr(,"label")
       [1] "Difference in Adjusted Means"
       
       $lsmean_diff_ci
-      character(0)
+      numeric(0)
       attr(,"label")
       [1] "95% CI"
       
       $pval
-      character(0)
+      numeric(0)
       attr(,"label")
       [1] "p-value"
       
