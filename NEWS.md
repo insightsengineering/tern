@@ -1,8 +1,9 @@
-# tern 0.9.7.9009
+# tern 0.9.7.9010
 
 ### Enhancements
-* Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, `count_abnormal_lab_worsen_by_baseline()`, `summarize_ancova()`, and `summarize_glm_count()` to work without `make_afun()`.
+* Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, `count_abnormal_lab_worsen_by_baseline()`, `coxph_pairwise()`, `estimate_multinomial_rsp()`, `estimate_proportion()`, `estimate_odds_ratio()`, `summarize_ancova()`, `summarize_glm_count()`, and `surv_timepoint()` to work without `make_afun()`.
 * Added `geom_sd` and `geom_mean_sd` to `s_summary()` default available statistics.
+* Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, `count_abnormal_lab_worsen_by_baseline()` to work without `make_afun()`.
 
 ### Bug Fixes
 * Fixed bug in `a_count_patients_with_flags()` preventing select custom label and indentation specification formats from being applied.
@@ -13,6 +14,7 @@
 * Removed internal function `ungroup_stats()` and replaced its usage with the `get_*_from_stats()` functions.
 * Began deprecation of the unused `table_names` argument to `count_abnormal_lab_worsen_by_baseline()`.
 * Added warnings for `geom_mean` statistical output.
+* Began deprecation of the unused `h_split_param()` function.
 
 # tern 0.9.7
 

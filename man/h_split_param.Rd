@@ -17,7 +17,7 @@ h_split_param(param, value, f)
 A named \code{list} with the same element names as \code{f}, each containing the elements specified in \code{.stats}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 It divides the data in the vector \code{param} into the groups defined by \code{f} based on specified \code{values}. It is relevant
 in \code{rtables} layers so as to distribute parameters \code{.stats} or' \code{.formats} into lists with items corresponding to

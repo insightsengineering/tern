@@ -272,7 +272,7 @@ testthat::test_that("`estimate_proportion` is compatible with `rtables`", {
       vars = "is_rsp",
       conf_level = 0.95,
       method = "wilson",
-      .formats = c("xx.xx (xx.xx%)", "(xx.xxxx, xx.xxxx)")
+      .formats = c(n_prop = "xx.xx (xx.xx%)", prop_ci = "(xx.xxxx, xx.xxxx)")
     ) %>%
     build_table(anl)
   result <- get_formatted_cells(result)
@@ -297,7 +297,7 @@ testthat::test_that("`estimate_proportion` and strat_wilson is compatible with `
       conf_level = 0.95,
       method = "strat_wilson",
       variables = list(strata = c("SEX", "REGION1")),
-      .formats = c("xx.xx (xx.xx%)", "(xx.xxxx, xx.xxxx)")
+      .formats = c(n_prop = "xx.xx (xx.xx%)", prop_ci = "(xx.xxxx, xx.xxxx)")
     ) %>%
     build_table(anl))
 
@@ -330,7 +330,7 @@ testthat::test_that(
         variables = list(strata = c("SEX", "STRATA1")),
         weights = rep(1 / n_ws, n_ws),
         max_iterations = 1,
-        .formats = c("xx.xx (xx.xx%)", "(xx.xxxx, xx.xxxx)")
+        .formats = c(n_prop = "xx.xx (xx.xx%)", prop_ci = "(xx.xxxx, xx.xxxx)")
       ) %>%
       build_table(anl) %>%
       get_formatted_cells()
