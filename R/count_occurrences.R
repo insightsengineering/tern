@@ -239,26 +239,18 @@ count_occurrences <- function(lyt,
   checkmate::assert_flag(riskdiff)
 
   extra_args <- list(
-    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
+    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str,
+    id = id, drop = drop, ...
   )
-  s_args <- list(id = id, drop = drop, ...)
 
-  if (isFALSE(riskdiff)) {
-    extra_args <- c(extra_args, s_args)
-  } else {
-    extra_args <- c(
-      extra_args,
-      list(
-        afun = list("s_count_occurrences" = a_count_occurrences),
-        s_args = s_args
-      )
-    )
-  }
+  # Riskdiff directive
+  afun <- ifelse(isFALSE(riskdiff), a_count_occurrences, afun_riskdiff)
+  if (isTRUE(riskdiff)) extra_args[["sfun_local"]] <- s_count_occurrences
 
   analyze(
     lyt = lyt,
     vars = vars,
-    afun = ifelse(isFALSE(riskdiff), a_count_occurrences, afun_riskdiff),
+    afun = afun,
     var_labels = var_labels,
     show_labels = show_labels,
     table_names = table_names,
@@ -303,26 +295,18 @@ summarize_occurrences <- function(lyt,
   checkmate::assert_flag(riskdiff)
 
   extra_args <- list(
-    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
+    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str,
+    id = id, drop = drop, ...
   )
-  s_args <- list(id = id, drop = drop, ...)
 
-  if (isFALSE(riskdiff)) {
-    extra_args <- c(extra_args, s_args)
-  } else {
-    extra_args <- c(
-      extra_args,
-      list(
-        afun = list("s_count_occurrences" = a_count_occurrences),
-        s_args = s_args
-      )
-    )
-  }
+  # Riskdiff directive
+  cfun <- ifelse(isFALSE(riskdiff), a_count_occurrences, afun_riskdiff)
+  if (isTRUE(riskdiff)) extra_args[["sfun_local"]] <- s_count_occurrences
 
   summarize_row_groups(
     lyt = lyt,
     var = var,
-    cfun = ifelse(isFALSE(riskdiff), a_count_occurrences, afun_riskdiff),
+    cfun = cfun,
     na_str = na_str,
     extra_args = extra_args
   )

@@ -226,24 +226,15 @@ count_patients_with_flags <- function(lyt,
     .stats = .stats, .stat_names = .stat_names, .formats = .formats, .labels = .labels,
     .indent_mods = .indent_mods, na_str = na_str
   )
-  s_args <- list(flag_variables = flag_variables, flag_labels = flag_labels, ...)
 
-  if (isFALSE(riskdiff)) {
-    extra_args <- c(extra_args, s_args)
-  } else {
-    extra_args <- c(
-      extra_args,
-      list(
-        afun = list("s_count_patients_with_flags" = a_count_patients_with_flags),
-        s_args = s_args
-      )
-    )
-  }
+  # Riskdiff directive
+  afun <- ifelse(isFALSE(riskdiff), a_count_patients_with_flags, afun_riskdiff)
+  if (isTRUE(riskdiff)) extra_args[["sfun_local"]] <- s_count_patients_with_flags
 
   analyze(
     lyt = lyt,
     vars = var,
-    afun = ifelse(isFALSE(riskdiff), a_count_patients_with_flags, afun_riskdiff),
+    afun = afun,
     var_labels = var_labels,
     show_labels = show_labels,
     table_names = table_names,

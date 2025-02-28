@@ -10,43 +10,53 @@
 analyze_num_patients(
   lyt,
   vars,
+  var_labels = vars,
+  riskdiff = FALSE,
+  na_str = default_na_str(),
+  nested = TRUE,
+  table_names = vars,
+  show_labels = c("default", "visible", "hidden"),
+  section_div = NA_character_,
+  ...,
+  na_rm = TRUE,
   required = NULL,
   count_by = NULL,
   unique_count_suffix = TRUE,
-  na_str = default_na_str(),
-  nested = TRUE,
-  .stats = NULL,
-  .formats = NULL,
+  .stats = c("unique", "nonunique", "unique_count"),
+  .stat_names = NULL,
+  .formats = c(unique = format_count_fraction_fixed_dp, nonunique = "xx", unique_count =
+    "xx"),
   .labels = c(unique = "Number of patients with at least one event", nonunique =
     "Number of events"),
-  show_labels = c("default", "visible", "hidden"),
-  .indent_mods = 0L,
-  riskdiff = FALSE,
-  ...
+  .indent_mods = 0L
 )
 
 summarize_num_patients(
   lyt,
   var,
+  na_str = default_na_str(),
+  riskdiff = FALSE,
+  ...,
+  na_rm = TRUE,
   required = NULL,
   count_by = NULL,
   unique_count_suffix = TRUE,
-  na_str = default_na_str(),
-  .stats = NULL,
-  .formats = NULL,
+  .stats = c("unique", "nonunique", "unique_count"),
+  .stat_names = NULL,
+  .formats = c(unique = format_count_fraction_fixed_dp, nonunique = "xx", unique_count =
+    "xx"),
   .labels = c(unique = "Number of patients with at least one event", nonunique =
     "Number of events"),
-  .indent_mods = 0L,
-  riskdiff = FALSE,
-  ...
+  .indent_mods = 0L
 )
 
 s_num_patients(
   x,
-  labelstr,
+  labelstr = "",
   .N_col,
   count_by = NULL,
-  unique_count_suffix = TRUE
+  unique_count_suffix = TRUE,
+  ...
 )
 
 s_num_patients_content(
@@ -56,13 +66,38 @@ s_num_patients_content(
   .var,
   required = NULL,
   count_by = NULL,
-  unique_count_suffix = TRUE
+  unique_count_suffix = TRUE,
+  ...
 )
 }
 \arguments{
 \item{lyt}{(\code{PreDataTableLayouts})\cr layout that analyses will be added to.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{var_labels}{(\code{character})\cr variable labels.}
+
+\item{riskdiff}{(\code{flag})\cr whether a risk difference column is present. When set to \code{TRUE}, \code{\link[=add_riskdiff]{add_riskdiff()}} must be
+used as \code{split_fun} in the prior column split of the table layout, specifying which columns should be compared.
+See \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} for details on risk difference calculation.}
+
+\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
+possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
+underneath analyses, which is not allowed.}
+
+\item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
+times, to avoid warnings from \code{rtables}.}
+
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
+
+\item{section_div}{(\code{string})\cr string which should be repeated as a section divider after each group
+defined by this split instruction, or \code{NA_character_} (the default) for no section divider.}
+
+\item{...}{additional arguments for the lower level functions.}
+
+\item{na_rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
 \item{required}{(\code{character} or \code{NULL})\cr name of a variable that is required to be non-missing.}
 
@@ -72,31 +107,20 @@ s_num_patients_content(
 \item{unique_count_suffix}{(\code{flag})\cr whether the \code{"(n)"} suffix should be added to \code{unique_count} labels.
 Defaults to \code{TRUE}.}
 
-\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
-
-\item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
-possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
-underneath analyses, which is not allowed.}
-
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
 Options are: \verb{'unique', 'nonunique', 'unique_count'}}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
 
 \item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
-\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
-
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
-
-\item{riskdiff}{(\code{flag})\cr whether a risk difference column is present. When set to \code{TRUE}, \code{\link[=add_riskdiff]{add_riskdiff()}} must be
-used as \code{split_fun} in the prior column split of the table layout, specifying which columns should be compared.
-See \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} for details on risk difference calculation.}
-
-\item{...}{additional arguments for the lower level functions.}
 
 \item{x}{(\code{character} or \code{factor})\cr vector of patient IDs.}
 
