@@ -161,7 +161,6 @@ a_test_proportion_diff <- function(df,
 
   # Get and check statistical names from defaults
   .stat_names <- get_stat_names(x_stats, .stat_names) # note is x_stats
-  .stat_names <- paste0(.stat_names, "_", dots_extra_args$method)
 
   in_rows(
     .list = x_stats,
@@ -211,10 +210,8 @@ test_proportion_diff <- function(lyt,
                                  ...,
                                  na_rm = TRUE,
                                  variables = list(strata = NULL),
-                                 # conf_level = 0.95,
                                  method = c("chisq", "schouten", "fisher", "cmh"),
                                  .stats = c("pval"),
-                                 # .stats = c("diff", "diff_ci"),
                                  .stat_names = NULL,
                                  .formats = c(pval = "x.xxxx | (<0.0001)"),
                                  .labels = NULL,
@@ -223,7 +220,6 @@ test_proportion_diff <- function(lyt,
   extra_args <- list(
     "na_rm" = na_rm,
     "variables" = variables,
-    # "conf_level" = conf_level,
     "method" = method,
     ...
   )

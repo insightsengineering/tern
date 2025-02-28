@@ -131,8 +131,8 @@ s_proportion_diff <- function(df,
       "cmh" = prop_diff_cmh(rsp, grp, strata, conf_level)[c("diff", "diff_ci")]
     )
 
-    y$diff <- y$diff * 100
-    y$diff_ci <- y$diff_ci * 100
+    y$diff <- setNames(y$diff * 100, paste0("diff_", method))
+    y$diff_ci <- setNames(y$diff_ci * 100, paste0("diff_ci_", method, c("_l", "_u")))
   }
 
   attr(y$diff, "label") <- "Difference in Response rate (%)"
@@ -197,7 +197,7 @@ a_proportion_diff <- function(df,
     get_stats("estimate_proportion_diff", stats_in = .stats),
     names(custom_stat_functions)
   )
-
+  browser()
   x_stats <- x_stats[.stats]
 
   # Fill in formats/indents/labels with custom input and defaults
@@ -219,7 +219,6 @@ a_proportion_diff <- function(df,
 
   # Get and check statistical names from defaults
   .stat_names <- get_stat_names(x_stats, .stat_names) # note is x_stats
-  .stat_names <- paste0(.stat_names, "_", dots_extra_args$method)
 
   in_rows(
     .list = x_stats,

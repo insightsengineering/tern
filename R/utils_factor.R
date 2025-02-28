@@ -50,7 +50,8 @@ combine_levels <- function(x, levels, new_level = paste(levels, collapse = "/"))
 #' @param verbose (`flag`)\cr defaults to `TRUE`. It prints out warnings and messages.
 #'
 #' @return
-#' * `as_factor_keep_attributes`: A `factor` with same attributes (except class) as `x`. Does not modify `x` if already a `factor`.
+#' * `as_factor_keep_attributes`: A `factor` with same attributes (except class) as `x`.
+#'   Does not modify `x` if already a `factor`.
 #'
 #' @examples
 #' a_chr_with_labels <- c("a", "b", NA)

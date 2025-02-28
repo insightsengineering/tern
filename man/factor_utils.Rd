@@ -55,7 +55,8 @@ new factor. Note that this level must not be contained in the new levels specifi
 }
 
 \itemize{
-\item \code{as_factor_keep_attributes}: A \code{factor} with same attributes (except class) as \code{x}. Does not modify \code{x} if already a \code{factor}.
+\item \code{as_factor_keep_attributes}: A \code{factor} with same attributes (except class) as \code{x}.
+Does not modify \code{x} if already a \code{factor}.
 }
 
 \itemize{
