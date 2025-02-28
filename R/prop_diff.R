@@ -197,7 +197,7 @@ a_proportion_diff <- function(df,
     get_stats("estimate_proportion_diff", stats_in = .stats),
     names(custom_stat_functions)
   )
-  browser()
+
   x_stats <- x_stats[.stats]
 
   # Fill in formats/indents/labels with custom input and defaults
