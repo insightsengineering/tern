@@ -6,47 +6,31 @@
 \usage{
 afun_riskdiff(
   df,
+  sfun_local,
   labelstr = "",
-  .var,
-  .N_col,
-  .N_row,
-  .df_row,
-  .spl_context,
-  .all_col_counts,
-  .stats,
+  ...,
+  .stats = NULL,
+  .stat_names = NULL,
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL,
-  na_str = default_na_str(),
-  afun,
-  s_args = list()
+  .indent_mods = NULL
 )
 }
 \arguments{
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 
+\item{sfun_local}{(\code{function})\cr statistics function to apply to each column.}
+
 \item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
 
-\item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
-by a statistics function.}
-
-\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
-passed by \code{rtables}.}
-
-\item{.N_row}{(\code{integer(1)})\cr row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
-
-\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
-
-\item{.spl_context}{(\code{data.frame})\cr gives information about ancestor split states
-that is passed by \code{rtables}.}
-
-\item{.all_col_counts}{(\code{integer})\cr vector where each value represents a global count for a column. Values are
-taken from \code{alt_counts_df} if specified (see \code{\link[rtables:build_table]{rtables::build_table()}}).}
+\item{...}{additional arguments for the lower level functions.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
@@ -55,15 +39,6 @@ information on the \code{"auto"} setting.}
 
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
-
-\item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
-
-\item{afun}{(named \code{list})\cr a named list containing one name-value pair where the name corresponds to
-the name of the statistics function that should be used in calculations and the value is the corresponding
-analysis function.}
-
-\item{s_args}{(named \code{list})\cr additional arguments to be passed to the statistics function and analysis
-function supplied in \code{afun}.}
 }
 \value{
 A list of formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.

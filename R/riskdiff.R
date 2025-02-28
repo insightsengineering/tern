@@ -68,6 +68,7 @@ add_riskdiff <- function(arm_x,
 #' function utilizes the [stat_propdiff_ci()] function to perform risk difference calculations.
 #'
 #' @inheritParams argument_convention
+#' @param sfun_local (`function`)\cr statistics function to apply to each column.
 #'
 #' @return A list of formatted [rtables::CellValue()].
 #'
