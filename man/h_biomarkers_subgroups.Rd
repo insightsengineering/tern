@@ -64,6 +64,8 @@ information on the \code{"auto"} setting.}
 unmodified default behavior. Can be negative.}
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
+
+\item{time_unit}{(\code{string})\cr label with unit of median survival time. Default \code{NULL} skips displaying unit.}
 }
 \value{
 An \code{rtables} table object with statistics in columns.

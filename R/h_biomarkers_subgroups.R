@@ -5,6 +5,7 @@
 #' @description `r lifecycle::badge("deprecated")`
 #'
 #' @inheritParams argument_convention
+#' @inheritParams survival_duration_subgroups
 #' @param df (`data.frame`)\cr results for a single biomarker. For `h_tab_rsp_one_biomarker()`, the results returned by
 #'   [extract_rsp_biomarkers()]. For `h_tab_surv_one_biomarker()`, the results returned by
 #'   [extract_survival_biomarkers()].
