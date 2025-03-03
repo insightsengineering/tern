@@ -13,7 +13,7 @@ estimate_proportion_diff(
   var_labels = vars,
   na_str = default_na_str(),
   nested = TRUE,
-  show_labels = "default",
+  show_labels = "hidden",
   table_names = vars,
   section_div = NA_character_,
   ...,
