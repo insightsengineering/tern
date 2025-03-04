@@ -115,7 +115,7 @@ a_test_proportion_diff <- function(df,
 
   # Check if there are user-defined functions
   default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
-  .stats <- default_and_custom_stats_list$default_stats
+  .stats <- default_and_custom_stats_list$all_stats
   custom_stat_functions <- default_and_custom_stats_list$custom_stats
 
   # Adding automatically extra parameters to the statistic function (see ?rtables::additional_fun_params)
@@ -136,9 +136,9 @@ a_test_proportion_diff <- function(df,
   )
 
   # Fill in with stats defaults if needed
-  .stats <- c(
-    get_stats("test_proportion_diff", stats_in = .stats),
-    names(custom_stat_functions)
+  .stats <- get_stats("test_proportion_diff",
+    stats_in = .stats,
+    custom_stats_in = names(custom_stat_functions)
   )
 
   x_stats <- x_stats[.stats]
@@ -148,6 +148,7 @@ a_test_proportion_diff <- function(df,
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
   if (is.null(.labels)) {
     .labels <- sapply(x_stats, attr, "label")
+    .labels <- .labels[nzchar(.labels) & !sapply(.labels, is.null) & !is.na(.labels)]
   }
   .labels <- get_labels_from_stats(.stats, .labels)
 

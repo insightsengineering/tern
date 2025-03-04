@@ -20,6 +20,7 @@
 * Began deprecation of the no longer used helper functions `h_tab_one_biomarker()`, `h_tab_rsp_one_biomarker()`, and `h_tab_surv_one_biomarker()`.
 * Moved helper functions `h_tab_rsp_one_biomarker()` and `h_tab_surv_one_biomarker()` into `h_biomarkers_subgroups.R`.
 * Reorganized the utility documentation related to factors (`utils_factor.R`) into a single file.
+* Removed `s_count_nonmissing()` as it is a non-repeated small and internal function.
 
 # tern 0.9.7
 

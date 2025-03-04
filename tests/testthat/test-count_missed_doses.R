@@ -1,22 +1,3 @@
-testthat::test_that("s_count_nonmissing works with numeric input", {
-  set.seed(1)
-  x <- c(sample(1:10, 10), NA)
-
-  result <- s_count_nonmissing(x = x)
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-})
-
-testthat::test_that("s_count_nonmissing also works with character input", {
-  x <- c("a", "b", NA, "c", "d")
-
-  result <- s_count_nonmissing(x = x)
-
-  res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
-})
-
 testthat::test_that("d_count_missed_doses works as expected", {
   result <- d_count_missed_doses(c(1, 5))
 

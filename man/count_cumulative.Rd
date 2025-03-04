@@ -10,15 +10,17 @@ count_cumulative(
   lyt,
   vars,
   thresholds,
-  lower_tail = TRUE,
-  include_eq = TRUE,
   var_labels = vars,
   show_labels = "visible",
   na_str = default_na_str(),
   nested = TRUE,
-  ...,
   table_names = vars,
+  ...,
+  na_rm = TRUE,
+  lower_tail = TRUE,
+  include_eq = TRUE,
   .stats = NULL,
+  .stat_names = NULL,
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL
@@ -29,21 +31,21 @@ s_count_cumulative(
   thresholds,
   lower_tail = TRUE,
   include_eq = TRUE,
+  denom = c("N_col", "n", "N_row"),
   .N_col,
   .N_row,
-  denom = c("N_col", "n", "N_row"),
+  na_rm = TRUE,
   ...
 )
 
 a_count_cumulative(
   x,
-  thresholds,
-  lower_tail = TRUE,
-  include_eq = TRUE,
-  .N_col,
-  .N_row,
-  denom = c("N_col", "n", "N_row"),
-  ...
+  ...,
+  .stats = NULL,
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -52,11 +54,6 @@ a_count_cumulative(
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
 \item{thresholds}{(\code{numeric})\cr vector of cutoff values for the counts.}
-
-\item{lower_tail}{(\code{flag})\cr whether to count lower tail, default is \code{TRUE}.}
-
-\item{include_eq}{(\code{flag})\cr whether to include value equal to the \code{threshold} in
-count, default is \code{TRUE}.}
 
 \item{var_labels}{(\code{character})\cr variable labels.}
 
@@ -68,14 +65,24 @@ count, default is \code{TRUE}.}
 possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
-\item{...}{additional arguments for the lower level functions.}
-
 \item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
 times, to avoid warnings from \code{rtables}.}
 
+\item{...}{additional arguments for the lower level functions.}
+
+\item{na_rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
+
+\item{lower_tail}{(\code{flag})\cr whether to count lower tail, default is \code{TRUE}.}
+
+\item{include_eq}{(\code{flag})\cr whether to include value equal to the \code{threshold} in
+count, default is \code{TRUE}.}
+
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
-Options are: \verb{'count_fraction', 'count_fraction_fixed_dp'}}
+Options are: \code{'count_fraction'}}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
@@ -87,18 +94,18 @@ unmodified default behavior. Can be negative.}
 
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
-\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
-passed by \code{rtables}.}
-
-\item{.N_row}{(\code{integer(1)})\cr row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
-
 \item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
 \itemize{
 \item \code{n}: number of values in this row and column intersection.
 \item \code{N_row}: total number of values in this row across columns.
 \item \code{N_col}: total number of values in this column across rows.
 }}
+
+\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
+passed by \code{rtables}.}
+
+\item{.N_row}{(\code{integer(1)})\cr row-wise N (row group count) for the group of observations being analyzed
+(i.e. with no column-based subsetting) that is typically passed by \code{rtables}.}
 }
 \value{
 \itemize{

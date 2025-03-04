@@ -1,21 +1,3 @@
-# s_count_nonmissing works with numeric input
-
-    Code
-      res
-    Output
-      $n
-      [1] 10
-      
-
-# s_count_nonmissing also works with character input
-
-    Code
-      res
-    Output
-      $n
-      [1] 4
-      
-
 # d_count_missed_doses works as expected
 
     Code

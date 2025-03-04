@@ -5,7 +5,7 @@ testthat::test_that("h_count_cumulative works with healthy input and default arg
   result <- h_count_cumulative(
     x = x,
     threshold = 5,
-    .N_col = length(x)
+    denom = length(x)
   )
 
   res <- testthat::expect_silent(result)
@@ -22,8 +22,8 @@ testthat::test_that("h_count_cumulative works with customized arguments", {
     threshold = 5,
     lower_tail = FALSE,
     include_eq = FALSE,
-    na.rm = FALSE,
-    .N_col = length(x)
+    na_rm = FALSE,
+    denom = length(x)
   )
 
   res <- testthat::expect_silent(result)
@@ -54,7 +54,8 @@ testthat::test_that("s_count_cumulative works with customized arguments", {
     thresholds = c(4, 7),
     lower_tail = FALSE,
     include_eq = FALSE,
-    na.rm = FALSE,
+    na_rm = FALSE,
+    denom = "N_col",
     .N_col = length(x)
   )
 

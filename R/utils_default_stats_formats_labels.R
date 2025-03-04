@@ -513,8 +513,8 @@ tern_default_stats <- list(
     "median_ci_3d",
     "mean_ci_3d", "geom_mean_ci_3d"
   ),
-  count_cumulative = c("count_fraction", "count_fraction_fixed_dp"),
-  count_missed_doses = c("n", "count_fraction", "count_fraction_fixed_dp"),
+  count_cumulative = c("count_fraction"),
+  count_missed_doses = c("n", "count_fraction"),
   count_occurrences = c("count", "count_fraction", "count_fraction_fixed_dp", "fraction"),
   count_occurrences_by_grade = c("count_fraction", "count_fraction_fixed_dp"),
   count_patients_with_event = c("n", "count", "count_fraction", "count_fraction_fixed_dp", "n_blq"),
