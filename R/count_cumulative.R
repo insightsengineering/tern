@@ -115,8 +115,8 @@ s_count_cumulative <- function(x,
                                lower_tail = TRUE,
                                include_eq = TRUE,
                                denom = c("N_col", "n", "N_row"),
-                               .N_col,
-                               .N_row,
+                               .N_col, # nolint
+                               .N_row, # nolint
                                na_rm = TRUE,
                                ...) {
   checkmate::assert_numeric(thresholds, min.len = 1, any.missing = FALSE)
