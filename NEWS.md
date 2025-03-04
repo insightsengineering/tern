@@ -5,6 +5,7 @@
 * Added `geom_sd` and `geom_mean_sd` to `s_summary()` default available statistics.
 * Refactored `h_tab_one_biomarker()`, `tabulate_rsp_subgroups()`, `tabulate_survival_subgroups()`, `tabulate_rsp_biomarkers()`, and `tabulate_survival_biomarkers()` to align with new analysis function style.
 * `as_factor_keep_attributes()` is now an exported function.
+* Refactored `count_cumulative()`, `count_missed_doses()`, `estimate_proportion_diff()`, and `test_proportion_diff()` to work without `make_afun()`.
 
 ### Bug Fixes
 * Fixed bug in `a_count_patients_with_flags()` preventing select custom label and indentation specification formats from being applied.
