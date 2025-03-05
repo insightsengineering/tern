@@ -654,7 +654,7 @@ a_summary <- function(x,
   )
 
   # Get and check statistical names from defaults
-  .stat_names <- get_stat_names(x_stats, .stat_names) # note is x_stats
+  .stat_names <- get_stat_names(x_stats, .stat_names)
 
   in_rows(
     .list = x_stats,

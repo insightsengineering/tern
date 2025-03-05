@@ -19,6 +19,12 @@ NULL
 # Resolve missing global definitions:
 utils::globalVariables(c(
   ".",
+  ".all_col_counts",
+  ".df_row",
+  ".N_col",
+  ".N_row",
+  ".spl_context",
+  ".var",
   "x",
   "average",
   "difference",

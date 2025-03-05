@@ -63,16 +63,23 @@
 #'
 #' @export
 summarize_colvars <- function(lyt,
-                              ...,
                               na_str = default_na_str(),
+                              ...,
                               .stats = c("n", "mean_sd", "median", "range", "count_fraction"),
+                              .stat_names = NULL,
                               .formats = NULL,
                               .labels = NULL,
                               .indent_mods = NULL) {
-  extra_args <- list(.stats = .stats, na_str = na_str, ...)
+  # Process standard extra arguments
+  extra_args <- list(".stats" = .stats)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
   if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Adding additional info from layout to analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_summary) <- c(formals(a_summary), extra_args[[".additional_fun_parameters"]])
 
   analyze_colvars(
     lyt,

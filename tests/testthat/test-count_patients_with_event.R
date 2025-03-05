@@ -180,7 +180,8 @@ testthat::test_that("count_patients_with_flags works as expected with risk diffe
       vars = "USUBJID",
       filters = c("TRTEMFL" = "Y"),
       .labels = c(count_fraction = "Total number of patients with at least one adverse event"),
-      riskdiff = TRUE
+      riskdiff = TRUE,
+      denom = "N_col"
     ) %>%
     build_table(tern_ex_adae, alt_counts_df = tern_ex_adsl)
 
@@ -194,7 +195,8 @@ testthat::test_that("count_patients_with_flags works as expected with risk diffe
       vars = "USUBJID",
       filters = c("TRTEMFL" = "Y"),
       .stats = c("count", "count_fraction"),
-      riskdiff = TRUE
+      riskdiff = TRUE,
+      denom = "N_col"
     ) %>%
     build_table(tern_ex_adae)
 

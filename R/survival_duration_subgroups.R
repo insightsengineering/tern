@@ -201,7 +201,8 @@ a_survival_subgroups <- function(df,
     .stats,
     function(x) x_stats[[x]] %>% stats::setNames(var_lvls)
   ) %>%
-    stats::setNames(.stats)
+    stats::setNames(.stats) %>%
+    .unlist_keep_nulls()
 
   # Auto format handling
   .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
@@ -210,7 +211,7 @@ a_survival_subgroups <- function(df,
   .stat_names <- get_stat_names(x_stats, .stat_names)
 
   in_rows(
-    .list = x_stats %>% .unlist_keep_nulls(),
+    .list = x_stats,
     .formats = .formats,
     .names = names(.labels),
     .stat_names = .stat_names,

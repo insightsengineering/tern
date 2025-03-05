@@ -49,7 +49,9 @@ testthat::test_that("a_surv_time works with default arguments", {
     adtte_f,
     .df_row = df,
     .var = "AVAL",
-    is_event = "is_event"
+    is_event = "is_event",
+    control = control_surv_time(),
+    ref_fn_censor = TRUE
   )
 
   res <- testthat::expect_silent(result)
@@ -72,9 +74,9 @@ testthat::test_that("a_surv_time works with customized arguments", {
     control = control_surv_time(
       conf_level = 0.99, conf_type = "log-log", quantiles = c(0.2, 0.8)
     ),
-    .df_row = adtte_f,
+    ref_fn_censor = TRUE,
     .stats = c("median_ci", "quantiles", "range"),
-    .formats = c(median_ci = "auto", quantiles = "xx.xx / xx.xx"),
+    .formats = c(median_ci = "xx.xx / xx.xx", quantiles = "xx.xx / xx.xx"),
     .labels = c(median_ci = "median conf int"),
     .indent_mods = c(median_ci = 3L)
   )
@@ -121,6 +123,7 @@ testthat::test_that("surv_time works with customized arguments", {
       var_labels = "Survival Time (Months)",
       is_event = "is_event",
       .stats = get_stats("surv_time"),
+      .formats = list(median_ci = "auto"),
       control = control_surv_time(conf_level = 0.9, conf_type = "log", quantiles = c(0.4, 0.6))
     ) %>%
     build_table(df = adtte_f)
@@ -162,7 +165,15 @@ testthat::test_that("a_surv_time works when `is_event` only has TRUE observation
   )
 
   testthat::expect_silent(
-    tern::a_surv_time(anl, .var = "AVAL", is_event = "is_event")
+    tern::a_surv_time(
+      anl,
+      .var = "AVAL",
+      is_event = "is_event",
+      control = control_surv_time(
+        conf_level = 0.99, conf_type = "log-log", quantiles = c(0.2, 0.8)
+      ),
+      ref_fn_censor = TRUE
+    )
   )
 })
 
@@ -174,6 +185,14 @@ testthat::test_that("a_surv_time works when `is_event` only has FALSE observatio
   )
 
   testthat::expect_silent(
-    tern::a_surv_time(anl, .var = "AVAL", is_event = "is_event")
+    tern::a_surv_time(
+      anl,
+      .var = "AVAL",
+      is_event = "is_event",
+      control = control_surv_time(
+        conf_level = 0.99, conf_type = "log-log", quantiles = c(0.2, 0.8)
+      ),
+      ref_fn_censor = TRUE
+    )
   )
 })

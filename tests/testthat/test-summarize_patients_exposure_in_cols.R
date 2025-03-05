@@ -28,7 +28,8 @@ testthat::test_that("a_count_patients_sum_exposure works as expected", {
     df = anl_local,
     var = "SEX",
     .N_col = nrow(adsl_local),
-    .stats = "n_patients"
+    .stats = "n_patients",
+    add_total_level = FALSE
   )
 
   res <- testthat::expect_silent(result)
