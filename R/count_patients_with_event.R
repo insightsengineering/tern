@@ -60,9 +60,10 @@ NULL
 #' @export
 s_count_patients_with_event <- function(df,
                                         .var,
-                                        filters,
                                         .N_col = ncol(df), # nolint
                                         .N_row = nrow(df), # nolint
+                                        ...,
+                                        filters,
                                         denom = c("n", "N_col", "N_row")) {
   col_names <- names(filters)
   filter_values <- filters
@@ -104,27 +105,35 @@ s_count_patients_with_event <- function(df,
 #' @export
 a_count_patients_with_event <- function(df,
                                         labelstr = "",
-                                        filters,
-                                        .N_col, # nolint
-                                        .N_row, # nolint
-                                        denom = c("n", "N_col", "N_row"),
-                                        .df_row,
-                                        .var = NULL,
+                                        ...,
                                         .stats = NULL,
+                                        .stat_names = NULL,
                                         .formats = NULL,
                                         .labels = NULL,
-                                        .indent_mods = NULL,
-                                        na_str = default_na_str()) {
-  x_stats <- s_count_patients_with_event(
-    df = df, .var = .var, filters = filters, .N_col, .N_row, denom = denom
+                                        .indent_mods = NULL) {
+  # Check for additional parameters to the statistics function
+  dots_extra_args <- list(...)
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
+  dots_extra_args$.additional_fun_parameters <- NULL
+
+  # Check for user-defined functions
+  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
+  .stats <- default_and_custom_stats_list$all_stats
+  custom_stat_functions <- default_and_custom_stats_list$custom_stats
+
+  # Apply statistics function
+  x_stats <- .apply_stat_functions(
+    default_stat_fnc = s_count_patients_with_event,
+    custom_stat_fnc_list = custom_stat_functions,
+    args_list = c(
+      df = list(df),
+      extra_afun_params,
+      dots_extra_args
+    )
   )
 
-  if (is.null(unlist(x_stats))) {
-    return(NULL)
-  }
-
-  # Fill in with formatting defaults if needed
-  .stats <- get_stats("count_patients_with_event", stats_in = .stats)
+  # Fill in formatting defaults
+  .stats <- get_stats("count_patients_with_event", stats_in = .stats, custom_stats_in = names(custom_stat_functions))
   .formats <- get_formats_from_stats(.stats, .formats)
   .labels <- get_labels_from_stats(.stats, .labels)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
@@ -132,15 +141,18 @@ a_count_patients_with_event <- function(df,
   x_stats <- x_stats[.stats]
 
   # Auto format handling
-  .formats <- apply_auto_formatting(.formats, x_stats, .df_row, .var)
+  .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
+
+  # Get and check statistical names
+  .stat_names <- get_stat_names(x_stats, .stat_names)
 
   in_rows(
     .list = x_stats,
     .formats = .formats,
     .names = names(.labels),
+    .stat_names = .stat_names,
     .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls(),
-    .format_na_strs = na_str
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
   )
 }
 
@@ -192,38 +204,44 @@ count_patients_with_event <- function(lyt,
                                       riskdiff = FALSE,
                                       na_str = default_na_str(),
                                       nested = TRUE,
+                                      show_labels = ifelse(length(vars) > 1, "visible", "hidden"),
                                       ...,
                                       table_names = vars,
                                       .stats = "count_fraction",
+                                      .stat_names = NULL,
                                       .formats = list(count_fraction = format_count_fraction_fixed_dp),
                                       .labels = NULL,
                                       .indent_mods = NULL) {
   checkmate::assert_flag(riskdiff)
-  extra_args <- list(
-    .stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str
-  )
-  s_args <- list(filters = filters, ...)
+  afun <- if (isFALSE(riskdiff)) a_count_patients_with_event else afun_riskdiff
 
-  if (isFALSE(riskdiff)) {
-    extra_args <- c(extra_args, s_args)
-  } else {
-    extra_args <- c(
-      extra_args,
-      list(
-        afun = list("s_count_patients_with_event" = a_count_patients_with_event),
-        s_args = s_args
-      )
-    )
-  }
+  # Process standard extra arguments
+  extra_args <- list(".stats" = .stats)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Process additional arguments to the statistic function
+  extra_args <- c(
+    extra_args,
+    filters = list(filters),
+    if (!isFALSE(riskdiff)) list(afun = list("s_count_patients_with_event" = a_count_patients_with_event)),
+    ...
+  )
+
+  # Append additional info from layout to the analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(afun) <- c(formals(afun), extra_args[[".additional_fun_parameters"]])
 
   analyze(
     lyt = lyt,
     vars = vars,
-    afun = ifelse(isFALSE(riskdiff), a_count_patients_with_event, afun_riskdiff),
-    show_labels = ifelse(length(vars) > 1, "visible", "hidden"),
-    table_names = table_names,
+    afun = afun,
     na_str = na_str,
     nested = nested,
-    extra_args = extra_args
+    extra_args = extra_args,
+    show_labels = show_labels,
+    table_names = table_names
   )
 }

@@ -5,6 +5,7 @@
 \alias{analyze_num_patients}
 \alias{s_num_patients}
 \alias{s_num_patients_content}
+\alias{a_num_patients}
 \title{Count number of patients}
 \usage{
 analyze_num_patients(
@@ -15,14 +16,15 @@ analyze_num_patients(
   unique_count_suffix = TRUE,
   na_str = default_na_str(),
   nested = TRUE,
-  .stats = NULL,
-  .formats = NULL,
-  .labels = c(unique = "Number of patients with at least one event", nonunique =
-    "Number of events"),
   show_labels = c("default", "visible", "hidden"),
-  .indent_mods = 0L,
   riskdiff = FALSE,
-  ...
+  ...,
+  .stats = c("unique", "nonunique", "unique_count"),
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = list(unique = "Number of patients with at least one event", nonunique =
+    "Number of events"),
+  .indent_mods = NULL
 )
 
 summarize_num_patients(
@@ -32,19 +34,21 @@ summarize_num_patients(
   count_by = NULL,
   unique_count_suffix = TRUE,
   na_str = default_na_str(),
-  .stats = NULL,
-  .formats = NULL,
-  .labels = c(unique = "Number of patients with at least one event", nonunique =
-    "Number of events"),
-  .indent_mods = 0L,
   riskdiff = FALSE,
-  ...
+  ...,
+  .stats = c("unique", "nonunique", "unique_count"),
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = list(unique = "Number of patients with at least one event", nonunique =
+    "Number of events"),
+  .indent_mods = NULL
 )
 
 s_num_patients(
   x,
   labelstr,
   .N_col,
+  ...,
   count_by = NULL,
   unique_count_suffix = TRUE
 )
@@ -54,9 +58,21 @@ s_num_patients_content(
   labelstr = "",
   .N_col,
   .var,
+  ...,
   required = NULL,
   count_by = NULL,
   unique_count_suffix = TRUE
+)
+
+a_num_patients(
+  df,
+  labelstr = "",
+  ...,
+  .stats = NULL,
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -78,25 +94,28 @@ Defaults to \code{TRUE}.}
 possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
-\item{.stats}{(\code{character})\cr statistics to select for the table.
-
-Options are: \verb{'unique', 'nonunique', 'unique_count'}}
-
-\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
-information on the \code{"auto"} setting.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
-
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
-
-\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
-unmodified default behavior. Can be negative.}
 
 \item{riskdiff}{(\code{flag})\cr whether a risk difference column is present. When set to \code{TRUE}, \code{\link[=add_riskdiff]{add_riskdiff()}} must be
 used as \code{split_fun} in the prior column split of the table layout, specifying which columns should be compared.
 See \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} for details on risk difference calculation.}
 
 \item{...}{additional arguments for the lower level functions.}
+
+\item{.stats}{(\code{character})\cr statistics to select for the table.
+
+Options are: \verb{'unique', 'nonunique', 'unique_count'}}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
+
+\item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
+information on the \code{"auto"} setting.}
+
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
+\item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
+unmodified default behavior. Can be negative.}
 
 \item{x}{(\code{character} or \code{factor})\cr vector of patient IDs.}
 
@@ -137,6 +156,10 @@ the statistics from \code{s_num_patients_content()} to the table layout.
 \itemize{
 \item \code{s_num_patients_content()} returns the same values as \code{s_num_patients()}.
 }
+
+\itemize{
+\item \code{a_num_patients()} returns the corresponding list with formatted \code{\link[rtables:CellValue]{rtables::CellValue()}}.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
@@ -175,6 +198,9 @@ total number of patients, and the number of non-unique patients.
 \item \code{s_num_patients_content()}: Statistics function which counts the number of unique patients
 in a column (variable), the corresponding percentage taken with respect to the total number of
 patients, and the number of non-unique patients in the column.
+
+\item \code{a_num_patients()}: Formatted analysis function which is used as \code{afun}
+in \code{analyze_num_patients()} and as \code{cfun} in \code{summarize_num_patients()}.
 
 }}
 \note{
@@ -230,3 +256,4 @@ df_by_event <- data.frame(
 s_num_patients_content(df_by_event, .N_col = 5, .var = "USUBJID", count_by = "EVENT")
 
 }
+\keyword{internal}

@@ -28,29 +28,23 @@ count_patients_with_flags(
 s_count_patients_with_flags(
   df,
   .var,
-  flag_variables,
-  flag_labels = NULL,
   .N_col = ncol(df),
   .N_row = nrow(df),
+  ...,
+  flag_variables,
+  flag_labels = NULL,
   denom = c("n", "N_col", "N_row")
 )
 
 a_count_patients_with_flags(
   df,
   labelstr = "",
-  flag_variables,
-  flag_labels = NULL,
-  denom = c("n", "N_col", "N_row"),
-  .N_col = ncol(df),
-  .N_row = nrow(df),
-  .df_row,
-  .var = NULL,
+  ...,
   .stats = NULL,
   .stat_names = NULL,
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL,
-  na_str = default_na_str()
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -119,8 +113,6 @@ passed by \code{rtables}.}
 \item{labelstr}{(\code{string})\cr label of the level of the parent split currently being summarized
 (must be present as second argument in Content Row Functions). See \code{\link[rtables:summarize_row_groups]{rtables::summarize_row_groups()}}
 for more information.}
-
-\item{.df_row}{(\code{data.frame})\cr data frame across all of the columns for the given row split.}
 }
 \value{
 \itemize{

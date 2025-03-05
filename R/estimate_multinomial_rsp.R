@@ -145,7 +145,6 @@ a_length_proportion <- function(x,
   )
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
 
-
   # Auto format handling
   .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
 

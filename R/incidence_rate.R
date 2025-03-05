@@ -59,6 +59,7 @@ NULL
 #' @keywords internal
 s_incidence_rate <- function(df,
                              .var,
+                             ...,
                              n_events,
                              is_event = lifecycle::deprecated(),
                              id_var = "USUBJID",
@@ -125,56 +126,61 @@ s_incidence_rate <- function(df,
 #' @export
 a_incidence_rate <- function(df,
                              labelstr = "",
-                             .var,
-                             .df_row,
-                             n_events,
-                             id_var = "USUBJID",
-                             control = control_incidence_rate(),
+                             label_fmt = "%s - %.labels",
+                             ...,
                              .stats = NULL,
-                             .formats = c(
-                               "person_years" = "xx.x",
-                               "n_events" = "xx",
-                               "rate" = "xx.xx",
-                               "rate_ci" = "(xx.xx, xx.xx)",
-                               "n_unique" = "xx",
-                               "n_rate" = "xx (xx.x)"
-                             ),
+                             .stat_names = NULL,
+                             .formats = NULL,
                              .labels = NULL,
-                             .indent_mods = NULL,
-                             na_str = default_na_str(),
-                             label_fmt = "%s - %.labels") {
+                             .indent_mods = NULL) {
   checkmate::assert_string(label_fmt)
 
-  x_stats <- s_incidence_rate(
-    df = df, .var = .var, n_events = n_events, id_var = id_var, control = control
-  )
-  if (is.null(unlist(x_stats))) {
-    return(NULL)
-  }
+  # Check for additional parameters to the statistics function
+  dots_extra_args <- list(...)
+  extra_afun_params <- retrieve_extra_afun_params(names(dots_extra_args$.additional_fun_parameters))
+  dots_extra_args$.additional_fun_parameters <- NULL
 
-  # Fill in with defaults
-  formats_def <- formals()$.formats %>% eval()
-  .formats <- c(.formats, formats_def)[!duplicated(names(c(.formats, formats_def)))]
-  labels_def <- sapply(x_stats, function(x) attributes(x)$label)
-  .labels <- c(.labels, labels_def)[!duplicated(names(c(.labels, labels_def)))]
+  # Check for user-defined functions
+  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
+  .stats <- default_and_custom_stats_list$all_stats
+  custom_stat_functions <- default_and_custom_stats_list$custom_stats
+
+  # Main statistic calculations
+  x_stats <- .apply_stat_functions(
+    default_stat_fnc = s_incidence_rate,
+    custom_stat_fnc_list = custom_stat_functions,
+    args_list = c(
+      df = list(df),
+      extra_afun_params,
+      dots_extra_args
+    )
+  )
+
+  # Fill in formatting defaults
+  .stats <- get_stats("estimate_incidence_rate", stats_in = .stats, custom_stats_in = names(custom_stat_functions))
+  x_stats <- x_stats[.stats]
+  .formats <- get_formats_from_stats(.stats, .formats)
+  .labels <- get_labels_from_stats(.stats, .labels, tern_defaults = lapply(x_stats, attr, "label"))
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
+
+  # Apply label format
   if (nzchar(labelstr) > 0) {
     .labels <- sapply(.labels, function(x) gsub("%.labels", x, gsub("%s", labelstr, label_fmt)))
   }
 
-  # Fill in with formatting defaults if needed
-  .stats <- get_stats("estimate_incidence_rate", stats_in = .stats)
-  .formats <- get_formats_from_stats(.stats, .formats)
-  .labels <- get_labels_from_stats(.stats, .labels)
-  .indent_mods <- get_indents_from_stats(.stats, .indent_mods)
+  # Auto format handling
+  .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
 
-  x_stats <- x_stats[.stats]
+  # Get and check statistical names
+  .stat_names <- get_stat_names(x_stats, .stat_names)
 
   in_rows(
     .list = x_stats,
     .formats = .formats,
+    .names = names(.labels),
+    .stat_names = .stat_names,
     .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls(),
-    .format_na_strs = na_str
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
   )
 }
 
@@ -227,29 +233,43 @@ estimate_incidence_rate <- function(lyt,
                                     show_labels = "hidden",
                                     table_names = vars,
                                     .stats = c("person_years", "n_events", "rate", "rate_ci"),
-                                    .formats = NULL,
+                                    .stat_names = NULL,
+                                    .formats = list(rate = "xx.xx", rate_ci = "(xx.xx, xx.xx)"),
                                     .labels = NULL,
                                     .indent_mods = NULL) {
+  # Process standard extra arguments
+  extra_args <- list(".stats" = .stats)
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Process additional arguments to the statistic function
   extra_args <- c(
-    list(.stats = .stats, .formats = .formats, .labels = .labels, .indent_mods = .indent_mods, na_str = na_str),
-    list(n_events = n_events, id_var = id_var, control = control, label_fmt = label_fmt, ...)
+    extra_args,
+    n_events = n_events, id_var = id_var, control = list(control), label_fmt = label_fmt,
+    ...
   )
+
+  # Adding additional info from layout to analysis function
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_incidence_rate) <- c(formals(a_incidence_rate), extra_args[[".additional_fun_parameters"]])
 
   if (!summarize) {
     analyze(
-      lyt,
-      vars,
-      show_labels = show_labels,
-      table_names = table_names,
+      lyt = lyt,
+      vars = vars,
       afun = a_incidence_rate,
       na_str = na_str,
       nested = nested,
-      extra_args = extra_args
+      extra_args = extra_args,
+      show_labels = show_labels,
+      table_names = table_names
     )
   } else {
     summarize_row_groups(
-      lyt,
-      vars,
+      lyt = lyt,
+      var = vars,
       cfun = a_incidence_rate,
       na_str = na_str,
       extra_args = extra_args
