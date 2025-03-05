@@ -177,7 +177,8 @@ a_response_subgroups <- function(df,
     .stats,
     function(x) x_stats[[x]] %>% stats::setNames(var_lvls)
   ) %>%
-    stats::setNames(.stats)
+    stats::setNames(.stats) %>%
+    .unlist_keep_nulls()
 
   .nms <- if ("biomarker" %in% names(dots_extra_args)) var_lvls else names(.labels)
 
@@ -188,7 +189,7 @@ a_response_subgroups <- function(df,
   .stat_names <- get_stat_names(x_stats, .stat_names)
 
   in_rows(
-    .list = x_stats %>% .unlist_keep_nulls(),
+    .list = x_stats,
     .formats = .formats,
     .names = .nms,
     .stat_names = .stat_names,
