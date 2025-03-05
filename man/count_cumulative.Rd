@@ -10,6 +10,8 @@ count_cumulative(
   lyt,
   vars,
   thresholds,
+  lower_tail = TRUE,
+  include_eq = TRUE,
   var_labels = vars,
   show_labels = "visible",
   na_str = default_na_str(),
@@ -17,9 +19,7 @@ count_cumulative(
   table_names = vars,
   ...,
   na_rm = TRUE,
-  lower_tail = TRUE,
-  include_eq = TRUE,
-  .stats = NULL,
+  .stats = c("count_fraction"),
   .stat_names = NULL,
   .formats = NULL,
   .labels = NULL,
@@ -55,6 +55,11 @@ a_count_cumulative(
 
 \item{thresholds}{(\code{numeric})\cr vector of cutoff values for the counts.}
 
+\item{lower_tail}{(\code{flag})\cr whether to count lower tail, default is \code{TRUE}.}
+
+\item{include_eq}{(\code{flag})\cr whether to include value equal to the \code{threshold} in
+count, default is \code{TRUE}.}
+
 \item{var_labels}{(\code{character})\cr variable labels.}
 
 \item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
@@ -71,11 +76,6 @@ times, to avoid warnings from \code{rtables}.}
 \item{...}{additional arguments for the lower level functions.}
 
 \item{na_rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
-
-\item{lower_tail}{(\code{flag})\cr whether to count lower tail, default is \code{TRUE}.}
-
-\item{include_eq}{(\code{flag})\cr whether to include value equal to the \code{threshold} in
-count, default is \code{TRUE}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 

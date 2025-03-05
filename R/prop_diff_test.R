@@ -35,7 +35,7 @@ s_test_proportion_diff <- function(df,
                                    method = c("chisq", "schouten", "fisher", "cmh"),
                                    ...) {
   method <- match.arg(method)
-  y <- list(pval = character())
+  y <- list(pval = numeric())
 
   if (!.in_ref_col) {
     assert_df_with_variables(df, list(rsp = .var))
@@ -202,6 +202,8 @@ a_test_proportion_diff <- function(df,
 #' @order 2
 test_proportion_diff <- function(lyt,
                                  vars,
+                                 variables = list(strata = NULL),
+                                 method = c("chisq", "schouten", "fisher", "cmh"),
                                  var_labels = vars,
                                  na_str = default_na_str(),
                                  nested = TRUE,
@@ -210,8 +212,6 @@ test_proportion_diff <- function(lyt,
                                  section_div = NA_character_,
                                  ...,
                                  na_rm = TRUE,
-                                 variables = list(strata = NULL),
-                                 method = c("chisq", "schouten", "fisher", "cmh"),
                                  .stats = c("pval"),
                                  .stat_names = NULL,
                                  .formats = c(pval = "x.xxxx | (<0.0001)"),

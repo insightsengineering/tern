@@ -10,6 +10,11 @@
 estimate_proportion_diff(
   lyt,
   vars,
+  variables = list(strata = NULL),
+  conf_level = 0.95,
+  method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc", "strat_newcombe",
+    "strat_newcombecc"),
+  weights_method = "cmh",
   var_labels = vars,
   na_str = default_na_str(),
   nested = TRUE,
@@ -18,11 +23,6 @@ estimate_proportion_diff(
   section_div = NA_character_,
   ...,
   na_rm = TRUE,
-  variables = list(strata = NULL),
-  conf_level = 0.95,
-  method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc", "strat_newcombe",
-    "strat_newcombecc"),
-  weights_method = "cmh",
   .stats = c("diff", "diff_ci"),
   .stat_names = NULL,
   .formats = c(diff = "xx.x", diff_ci = "(xx.x, xx.x)"),
@@ -58,6 +58,15 @@ a_proportion_diff(
 
 \item{vars}{(\code{character})\cr variable names for the primary analysis variable to be iterated over.}
 
+\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
+
+\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
+\item{method}{(\code{string})\cr the method used for the confidence interval estimation.}
+
+\item{weights_method}{(\code{string})\cr weights method. Can be either \code{"cmh"} or \code{"heuristic"}
+and directs the way weights are estimated.}
+
 \item{var_labels}{(\code{character})\cr variable labels.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
@@ -77,15 +86,6 @@ defined by this split instruction, or \code{NA_character_} (the default) for no 
 \item{...}{additional arguments for the lower level functions.}
 
 \item{na_rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
-
-\item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
-
-\item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
-
-\item{method}{(\code{string})\cr the method used for the confidence interval estimation.}
-
-\item{weights_method}{(\code{string})\cr weights method. Can be either \code{"cmh"} or \code{"heuristic"}
-and directs the way weights are estimated.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 

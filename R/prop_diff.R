@@ -73,7 +73,7 @@ s_proportion_diff <- function(df,
       "permitted. Please choose a different method."
     ))
   }
-  y <- list(diff = character(), diff_ci = character())
+  y <- list(diff = numeric(), diff_ci = numeric())
 
   if (!.in_ref_col) {
     rsp <- c(.ref_group[[.var]], df[[.var]])
@@ -263,14 +263,6 @@ a_proportion_diff <- function(df,
 #' @order 2
 estimate_proportion_diff <- function(lyt,
                                      vars,
-                                     var_labels = vars,
-                                     na_str = default_na_str(),
-                                     nested = TRUE,
-                                     show_labels = "hidden",
-                                     table_names = vars,
-                                     section_div = NA_character_,
-                                     ...,
-                                     na_rm = TRUE,
                                      variables = list(strata = NULL),
                                      conf_level = 0.95,
                                      method = c(
@@ -279,6 +271,14 @@ estimate_proportion_diff <- function(lyt,
                                        "strat_newcombe", "strat_newcombecc"
                                      ),
                                      weights_method = "cmh",
+                                     var_labels = vars,
+                                     na_str = default_na_str(),
+                                     nested = TRUE,
+                                     show_labels = "hidden",
+                                     table_names = vars,
+                                     section_div = NA_character_,
+                                     ...,
+                                     na_rm = TRUE,
                                      .stats = c("diff", "diff_ci"),
                                      .stat_names = NULL,
                                      .formats = c(diff = "xx.x", diff_ci = "(xx.x, xx.x)"),

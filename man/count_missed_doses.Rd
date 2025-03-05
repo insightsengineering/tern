@@ -17,7 +17,7 @@ count_missed_doses(
   table_names = vars,
   ...,
   na_rm = TRUE,
-  .stats = NULL,
+  .stats = c("n", "count_fraction"),
   .stat_names = NULL,
   .formats = NULL,
   .labels = NULL,
