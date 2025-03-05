@@ -168,7 +168,9 @@ a_count_patients_sum_exposure <- function(df,
   )
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
 
-  x_stats <- x_stats %>% .unlist_keep_nulls()
+  x_stats <- x_stats[.stats] %>%
+    .unlist_keep_nulls() %>%
+    setNames(names(.formats))
 
   # Auto format handling
   .formats <- apply_auto_formatting(.formats, x_stats, extra_afun_params$.df_row, extra_afun_params$.var)
