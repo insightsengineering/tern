@@ -204,6 +204,7 @@ count_patients_with_event <- function(lyt,
                                       riskdiff = FALSE,
                                       na_str = default_na_str(),
                                       nested = TRUE,
+                                      show_labels = ifelse(length(vars) > 1, "visible", "hidden"),
                                       ...,
                                       table_names = vars,
                                       .stats = "count_fraction",
@@ -240,7 +241,7 @@ count_patients_with_event <- function(lyt,
     na_str = na_str,
     nested = nested,
     extra_args = extra_args,
-    show_labels = ifelse(length(vars) > 1, "visible", "hidden"),
+    show_labels = show_labels,
     table_names = table_names
   )
 }

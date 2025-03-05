@@ -13,6 +13,7 @@ count_patients_with_event(
   riskdiff = FALSE,
   na_str = default_na_str(),
   nested = TRUE,
+  show_labels = ifelse(length(vars) > 1, "visible", "hidden"),
   ...,
   table_names = vars,
   .stats = "count_fraction",
@@ -63,6 +64,8 @@ See \code{\link[=stat_propdiff_ci]{stat_propdiff_ci()}} for details on risk diff
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
 possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
+
+\item{show_labels}{(\code{string})\cr label visibility: one of "default", "visible" and "hidden".}
 
 \item{...}{additional arguments for the lower level functions.}
 
