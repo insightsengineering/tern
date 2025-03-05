@@ -1,4 +1,4 @@
-# tern 0.9.7.9011
+# tern 0.9.7.9012
 
 ### Enhancements
 * Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, `count_abnormal_lab_worsen_by_baseline()`, `coxph_pairwise()`, `estimate_multinomial_rsp()`, `estimate_proportion()`, `estimate_odds_ratio()`, `summarize_ancova()`, `summarize_glm_count()`, `summarize_num_patients()`, and `surv_timepoint()` to work without `make_afun()`.
