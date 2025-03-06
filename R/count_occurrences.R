@@ -170,11 +170,6 @@ a_count_occurrences <- function(df,
   .stats <- default_and_custom_stats_list$all_stats
   custom_stat_functions <- default_and_custom_stats_list$custom_stats
 
-  # if empty, return NA
-  if (nrow(df) == 0) {
-    return(in_rows(.list = as.list(rep(NA, length(.stats))) %>% stats::setNames(.stats)))
-  }
-
   # Apply statistics function
   x_stats <- .apply_stat_functions(
     default_stat_fnc = s_count_occurrences,
