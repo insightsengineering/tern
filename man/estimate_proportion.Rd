@@ -38,6 +38,7 @@ s_proportion(
   max_iterations = 50,
   variables = list(strata = NULL),
   long = FALSE,
+  denom = c("n", "N_col", "N_row"),
   ...
 )
 
@@ -110,6 +111,13 @@ variable name in \code{.var}.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}
+
+\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
+\itemize{
+\item \code{n}: number of values in this row and column intersection.
+\item \code{N_row}: total number of values in this row across columns.
+\item \code{N_col}: total number of values in this column across rows.
+}}
 }
 \value{
 \itemize{

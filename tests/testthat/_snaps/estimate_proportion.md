@@ -217,3 +217,24 @@
       [1,] "108.00 (54.00%)"   
       [2,] "(46.7669, 60.5951)"
 
+# `estimate_proportion` works with different denominators
+
+    Code
+      res
+    Output
+                                         all obs   
+                                         (N=200)   
+      —————————————————————————————————————————————
+      Responders                       108 (54.0%) 
+      95% CI (Wald, with correction)   (46.8, 61.2)
+
+---
+
+    Code
+      res
+    Output
+                                         all obs   
+      —————————————————————————————————————————————
+      Responders                       108 (54.0%) 
+      95% CI (Wald, with correction)   (46.8, 61.2)
+

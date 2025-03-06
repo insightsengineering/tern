@@ -10,7 +10,7 @@
 \alias{prop_jeffreys}
 \title{Helper functions for calculating proportion confidence intervals}
 \usage{
-prop_wilson(rsp, conf_level, correct = FALSE)
+prop_wilson(rsp, n = length(rsp), conf_level, correct = FALSE)
 
 prop_strat_wilson(
   rsp,
@@ -21,16 +21,19 @@ prop_strat_wilson(
   correct = FALSE
 )
 
-prop_clopper_pearson(rsp, conf_level)
+prop_clopper_pearson(rsp, n = length(rsp), conf_level)
 
-prop_wald(rsp, conf_level, correct = FALSE)
+prop_wald(rsp, n = length(rsp), conf_level, correct = FALSE)
 
-prop_agresti_coull(rsp, conf_level)
+prop_agresti_coull(rsp, n = length(rsp), conf_level)
 
-prop_jeffreys(rsp, conf_level)
+prop_jeffreys(rsp, n = length(rsp), conf_level)
 }
 \arguments{
 \item{rsp}{(\code{logical})\cr vector indicating whether each subject is a responder or not.}
+
+\item{n}{(\code{count})\cr number of participants (if \code{denom = "N_col"} or the number of responders
+if \code{denom = "n"}, the default).}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
