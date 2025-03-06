@@ -271,6 +271,15 @@ get_formats_from_stats <- function(stats,
   }
   checkmate::assert_list(levels_per_stats, null.ok = TRUE)
 
+  # If unnamed formats given as formats_in and same number of stats, use one format per stat
+  if (
+    !is.null(formats_in) && length(formats_in) == length(stats) &&
+    is.null(names(formats_in)) && is.null(levels_per_stats) # nolint
+  ) {
+    out <- as.list(formats_in) %>% setNames(stats)
+    return(out)
+  }
+
   # If levels_per_stats not given, assume one row per statistic
   if (is.null(levels_per_stats)) levels_per_stats <- as.list(stats) %>% setNames(stats)
 
@@ -317,6 +326,15 @@ get_labels_from_stats <- function(stats,
     checkmate::assert_character(labels_in, null.ok = TRUE)
   }
   checkmate::assert_list(levels_per_stats, null.ok = TRUE)
+
+  # If unnamed labels given as labels_in and same number of stats, use one label per stat
+  if (
+    !is.null(labels_in) && length(labels_in) == length(stats) &&
+    is.null(names(labels_in)) && is.null(levels_per_stats) # nolint
+  ) {
+    out <- as.list(labels_in) %>% setNames(stats)
+    return(out)
+  }
 
   # If levels_per_stats not given, assume one row per statistic
   if (is.null(levels_per_stats)) levels_per_stats <- as.list(stats) %>% setNames(stats)
