@@ -339,3 +339,46 @@ testthat::test_that(
     testthat::expect_snapshot(res)
   }
 )
+testthat::test_that("`estimate_proportion` works with different denominators", {
+  set.seed(1)
+
+  # Data loading and processing
+  anl <- tern_ex_adrs %>%
+    dplyr::filter(PARAMCD == "BESRSPI") %>%
+    dplyr::mutate(DTHFL = DTHFL == "Y") # Death flag yes
+
+  # Changing other variables (weights and max_nt)
+  n_ws <- length(unique(anl$SEX)) * length(unique(anl$STRATA1))
+  expect_error(
+    {
+      result <- basic_table() %>%
+        estimate_proportion(
+          vars = "DTHFL",
+          method = "strat_wilson",
+          variables = list(strata = c("SEX", "STRATA1")),
+          weights = rep(1 / n_ws, n_ws),
+          denom = "N_cols"
+        ) %>%
+        build_table(anl)
+    },
+    "Stratified methods only support"
+  )
+
+  result <- basic_table() %>%
+    estimate_proportion(
+      vars = "DTHFL",
+      denom = "N_col"
+    ) %>%
+    build_table(anl, col_counts = c(200))
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+
+  result <- basic_table() %>%
+    estimate_proportion(
+      vars = "DTHFL",
+      denom = "n"
+    ) %>%
+    build_table(anl)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
