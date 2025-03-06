@@ -181,6 +181,11 @@ a_count_occurrences <- function(df,
     )
   )
 
+  # if empty, return NA
+  if (is.null(unlist(x_stats))) {
+    return(in_rows(.list = as.list(rep(NA, length(.stats))) %>% stats::setNames(.stats)))
+  }
+
   # Fill in formatting defaults
   .stats <- get_stats("count_occurrences", stats_in = .stats, custom_stats_in = names(custom_stat_functions))
   x_stats <- x_stats[.stats]
