@@ -170,11 +170,6 @@ a_count_occurrences <- function(df,
   .stats <- default_and_custom_stats_list$all_stats
   custom_stat_functions <- default_and_custom_stats_list$custom_stats
 
-  # if empty, return NA
-  if (nrow(df) == 0) {
-    return(in_rows(.list = as.list(rep(NA, length(.stats))) %>% stats::setNames(.stats)))
-  }
-
   # Apply statistics function
   x_stats <- .apply_stat_functions(
     default_stat_fnc = s_count_occurrences,
@@ -185,6 +180,11 @@ a_count_occurrences <- function(df,
       dots_extra_args
     )
   )
+
+  # if empty, return NA
+  if (is.null(unlist(x_stats))) {
+    return(in_rows(.list = as.list(rep(NA, length(.stats))) %>% stats::setNames(.stats)))
+  }
 
   # Fill in formatting defaults
   .stats <- get_stats("count_occurrences", stats_in = .stats, custom_stats_in = names(custom_stat_functions))
@@ -320,7 +320,7 @@ summarize_occurrences <- function(lyt,
                                   .stats = "count_fraction_fixed_dp",
                                   .stat_names = NULL,
                                   .formats = NULL,
-                                  .indent_mods = NULL,
+                                  .indent_mods = 0L,
                                   .labels = NULL) {
   checkmate::assert_flag(riskdiff)
   afun <- if (isFALSE(riskdiff)) a_count_occurrences else afun_riskdiff
@@ -330,7 +330,14 @@ summarize_occurrences <- function(lyt,
   if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
-  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+  if (is.null(.indent_mods)) {
+    indent_mod <- 0L
+  } else if (length(.indent_mods) == 1) {
+    indent_mod <- .indent_mods
+  } else {
+    indent_mod <- 0L
+    extra_args[[".indent_mods"]] <- .indent_mods
+  }
 
   # Process additional arguments to the statistic function
   extra_args <- c(
@@ -349,6 +356,7 @@ summarize_occurrences <- function(lyt,
     var = var,
     cfun = afun,
     na_str = na_str,
-    extra_args = extra_args
+    extra_args = extra_args,
+    indent_mod = indent_mod
   )
 }

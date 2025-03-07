@@ -37,7 +37,7 @@ summarize_occurrences(
   .stats = "count_fraction_fixed_dp",
   .stat_names = NULL,
   .formats = NULL,
-  .indent_mods = NULL,
+  .indent_mods = 0L,
   .labels = NULL
 )
 

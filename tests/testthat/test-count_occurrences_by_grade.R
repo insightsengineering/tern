@@ -483,7 +483,6 @@ testthat::test_that("summarize_occurrences works as expected with risk differenc
     summarize_occurrences_by_grade(
       var = "AESEV",
       riskdiff = TRUE,
-      .indent_mods = 1L,
       grade_groups = grade_groups,
       id = "SITEID"
     ) %>%

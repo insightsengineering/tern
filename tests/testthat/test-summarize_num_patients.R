@@ -209,6 +209,22 @@ testthat::test_that(
     testthat::expect_snapshot(res)
   }
 )
+testthat::test_that("summarize_num_patients works with single unnamed .labels/.formats values", {
+  df <- data.frame(
+    USUBJID = as.character(c(1, 2, 1, 4, NA, 6, 6, 8, 9)),
+    ARM = c("A", "A", "A", "A", "A", "B", "B", "B", "B"),
+    AGE = c(10, 15, 10, 17, 8, 11, 11, 19, 17)
+  )
+
+  result <- basic_table() %>%
+    split_cols_by("ARM") %>%
+    add_colcounts() %>%
+    summarize_num_patients("USUBJID", .stats = "unique_count", .labels = "- Overall -", .formats = "xx.xx") %>%
+    build_table(df)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
 
 testthat::test_that("analyze_num_patients works well for pagination", {
   set.seed(1)

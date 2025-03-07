@@ -24,8 +24,8 @@ count_occurrences_by_grade(
   .stats = "count_fraction",
   .stat_names = NULL,
   .formats = list(count_fraction = format_count_fraction_fixed_dp),
-  .indent_mods = NULL,
-  .labels = NULL
+  .labels = NULL,
+  .indent_mods = NULL
 )
 
 summarize_occurrences_by_grade(
@@ -41,8 +41,8 @@ summarize_occurrences_by_grade(
   .stats = "count_fraction",
   .stat_names = NULL,
   .formats = list(count_fraction = format_count_fraction_fixed_dp),
-  .indent_mods = NULL,
-  .labels = NULL
+  .labels = NULL,
+  .indent_mods = 0L
 )
 
 s_count_occurrences_by_grade(
@@ -114,10 +114,10 @@ Options are: \verb{'count_fraction', 'count_fraction_fixed_dp'}}
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
 
+\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
+
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.}
-
-\item{.labels}{(named \code{character})\cr labels for the statistics (without indent).}
 
 \item{df}{(\code{data.frame})\cr data set containing all analysis variables.}
 

@@ -235,7 +235,7 @@ summarize_num_patients <- function(lyt,
                                      unique = "Number of patients with at least one event",
                                      nonunique = "Number of events"
                                    ),
-                                   .indent_mods = NULL) {
+                                   .indent_mods = 0L) {
   checkmate::assert_flag(riskdiff)
   afun <- if (isFALSE(riskdiff)) a_num_patients else afun_riskdiff
 
@@ -244,7 +244,14 @@ summarize_num_patients <- function(lyt,
   if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
-  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+  if (is.null(.indent_mods)) {
+    indent_mod <- 0L
+  } else if (length(.indent_mods) == 1) {
+    indent_mod <- .indent_mods
+  } else {
+    indent_mod <- 0L
+    extra_args[[".indent_mods"]] <- .indent_mods
+  }
 
   # Process additional arguments to the statistic function
   extra_args <- c(
@@ -263,7 +270,8 @@ summarize_num_patients <- function(lyt,
     var = var,
     cfun = afun,
     na_str = na_str,
-    extra_args = extra_args
+    extra_args = extra_args,
+    indent_mod = indent_mod
   )
 }
 

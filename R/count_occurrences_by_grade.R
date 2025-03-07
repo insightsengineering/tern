@@ -376,8 +376,8 @@ count_occurrences_by_grade <- function(lyt,
                                        .stats = "count_fraction",
                                        .stat_names = NULL,
                                        .formats = list(count_fraction = format_count_fraction_fixed_dp),
-                                       .indent_mods = NULL,
-                                       .labels = NULL) {
+                                       .labels = NULL,
+                                       .indent_mods = NULL) {
   checkmate::assert_flag(riskdiff)
   afun <- if (isFALSE(riskdiff)) a_count_occurrences_by_grade else afun_riskdiff
 
@@ -455,8 +455,8 @@ summarize_occurrences_by_grade <- function(lyt,
                                            .stats = "count_fraction",
                                            .stat_names = NULL,
                                            .formats = list(count_fraction = format_count_fraction_fixed_dp),
-                                           .indent_mods = NULL,
-                                           .labels = NULL) {
+                                           .labels = NULL,
+                                           .indent_mods = 0L) {
   checkmate::assert_flag(riskdiff)
   afun <- if (isFALSE(riskdiff)) a_count_occurrences_by_grade else afun_riskdiff
 
@@ -465,7 +465,14 @@ summarize_occurrences_by_grade <- function(lyt,
   if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
   if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
   if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
-  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+  if (is.null(.indent_mods)) {
+    indent_mod <- 0L
+  } else if (length(.indent_mods) == 1) {
+    indent_mod <- .indent_mods
+  } else {
+    indent_mod <- 0L
+    extra_args[[".indent_mods"]] <- .indent_mods
+  }
 
   # Process additional arguments to the statistic function
   extra_args <- c(
@@ -484,6 +491,7 @@ summarize_occurrences_by_grade <- function(lyt,
     var = var,
     cfun = afun,
     na_str = na_str,
-    extra_args = extra_args
+    extra_args = extra_args,
+    indent_mod = indent_mod
   )
 }
