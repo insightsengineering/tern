@@ -188,11 +188,10 @@ a_count_cumulative <- function(x,
   # Fill in formats/indents/labels with custom input and defaults
   .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
-  if (is.null(.labels)) {
-    .labels <- sapply(.unlist_keep_nulls(x_stats), attr, "label")
-    .labels <- .labels[nzchar(.labels) & !sapply(.labels, is.null) & !is.na(.labels)]
-  }
-  .labels <- get_labels_from_stats(.stats, .labels, levels_per_stats)
+  .labels <- get_labels_from_stats(
+    .stats, .labels, levels_per_stats,
+    label_attr_from_stats = sapply(.unlist_keep_nulls(x_stats), attr, "label")
+  )
 
   # Unlist stats
   x_stats <- x_stats %>%
