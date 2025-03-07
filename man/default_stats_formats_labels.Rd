@@ -51,6 +51,7 @@ get_labels_from_stats(
   stats,
   labels_in = NULL,
   levels_per_stats = NULL,
+  label_attr_from_stats = NULL,
   tern_defaults = tern_default_labels
 )
 
@@ -108,6 +109,10 @@ Must be of the same type as the values that are being filled in (e.g. indentatio
 
 \item{labels_in}{(named \code{character})\cr custom labels to use instead of defaults. If no value is provided, the
 variable level (if rows correspond to levels of a variable) or statistic name will be used as label.}
+
+\item{label_attr_from_stats}{(named \code{list})\cr if \code{labels_in = NULL}, then this will be used instead. It is a list
+of values defined in statistical functions as default labels. Values are ignored if \code{labels_in} is provided or \code{""}
+values are provided.}
 
 \item{indents_in}{(named \code{integer})\cr custom row indent modifiers to use instead of defaults. Defaults to \code{0L} for
 all values.}

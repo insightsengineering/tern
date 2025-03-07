@@ -2,7 +2,6 @@
 % Please edit documentation in R/count_missed_doses.R
 \name{count_missed_doses}
 \alias{count_missed_doses}
-\alias{s_count_nonmissing}
 \alias{s_count_missed_doses}
 \alias{a_count_missed_doses}
 \title{Count number of patients with missed doses by thresholds}
@@ -15,30 +14,33 @@ count_missed_doses(
   show_labels = "visible",
   na_str = default_na_str(),
   nested = TRUE,
-  ...,
   table_names = vars,
-  .stats = NULL,
+  ...,
+  na_rm = TRUE,
+  .stats = c("n", "count_fraction"),
+  .stat_names = NULL,
   .formats = NULL,
   .labels = NULL,
   .indent_mods = NULL
 )
-
-s_count_nonmissing(x)
 
 s_count_missed_doses(
   x,
   thresholds,
   .N_col,
   .N_row,
-  denom = c("N_col", "n", "N_row")
+  denom = c("N_col", "n", "N_row"),
+  ...
 )
 
 a_count_missed_doses(
   x,
-  thresholds,
-  .N_col,
-  .N_row,
-  denom = c("N_col", "n", "N_row")
+  ...,
+  .stats = NULL,
+  .stat_names = NULL,
+  .formats = NULL,
+  .labels = NULL,
+  .indent_mods = NULL
 )
 }
 \arguments{
@@ -58,14 +60,19 @@ a_count_missed_doses(
 possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.
 underneath analyses, which is not allowed.}
 
-\item{...}{additional arguments for the lower level functions.}
-
 \item{table_names}{(\code{character})\cr this can be customized in the case that the same \code{vars} are analyzed multiple
 times, to avoid warnings from \code{rtables}.}
 
+\item{...}{additional arguments for the lower level functions.}
+
+\item{na_rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
+
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
-Options are: \verb{'n', 'count_fraction', 'count_fraction_fixed_dp'}}
+Options are: \verb{'n', 'count_fraction'}}
+
+\item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
+(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}
@@ -98,10 +105,6 @@ the statistics from \code{s_count_missed_doses()} to the table layout.
 }
 
 \itemize{
-\item \code{s_count_nonmissing()} returns the statistic \code{n} which is the count of non-missing values in \code{x}.
-}
-
-\itemize{
 \item \code{s_count_missed_doses()} returns the statistics \code{n} and \code{count_fraction} with one element for each threshold.
 }
 
@@ -123,8 +126,6 @@ assumes that every row of the given data frame corresponds to a unique patient.
 \itemize{
 \item \code{count_missed_doses()}: Layout-creating function which can take statistics function arguments
 and additional format arguments. This function is a wrapper for \code{\link[rtables:analyze]{rtables::analyze()}}.
-
-\item \code{s_count_nonmissing()}: Statistics function to count non-missing values.
 
 \item \code{s_count_missed_doses()}: Statistics function to count patients with missed doses.
 

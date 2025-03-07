@@ -92,3 +92,30 @@
           > 3      0      3 (75%) 
           > 7      0      1 (25%) 
 
+# Testing label behavior when s_* forecasts label attributes
+
+    Code
+      row.names(result)
+    Output
+      [1] "<= 3" "<= 7"
+
+---
+
+    Code
+      row.names(result)
+    Output
+      [1] "argh" "7"   
+
+---
+
+    Code
+      res
+    Output
+                   A          B    
+      —————————————————————————————
+      <= 3      2 (40%)   1 (16.7%)
+      <= 7      4 (80%)    3 (50%) 
+      a            1          1    
+      b            3          3    
+      min-max    1, 2       1, 2   
+

@@ -165,7 +165,7 @@ a_incidence_rate <- function(df,
 
   # Apply label format
   if (nzchar(labelstr) > 0) {
-    .labels <- sapply(.labels, \(x) gsub("%.labels", x, gsub("%s", labelstr, label_fmt)))
+    .labels <- sapply(.labels, function(x) gsub("%.labels", x, gsub("%s", labelstr, label_fmt)))
   }
 
   # Auto format handling

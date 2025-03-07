@@ -9,8 +9,8 @@ h_count_cumulative(
   threshold,
   lower_tail = TRUE,
   include_eq = TRUE,
-  na.rm = TRUE,
-  .N_col
+  na_rm = TRUE,
+  denom
 )
 }
 \arguments{
@@ -23,10 +23,14 @@ h_count_cumulative(
 \item{include_eq}{(\code{flag})\cr whether to include value equal to the \code{threshold} in
 count, default is \code{TRUE}.}
 
-\item{na.rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
+\item{na_rm}{(\code{flag})\cr whether \code{NA} values should be removed from \code{x} prior to analysis.}
 
-\item{.N_col}{(\code{integer(1)})\cr column-wise N (column count) for the full column being analyzed that is typically
-passed by \code{rtables}.}
+\item{denom}{(\code{string})\cr choice of denominator for proportion. Options are:
+\itemize{
+\item \code{n}: number of values in this row and column intersection.
+\item \code{N_row}: total number of values in this row across columns.
+\item \code{N_col}: total number of values in this column across rows.
+}}
 }
 \value{
 A named vector with items:
@@ -46,10 +50,10 @@ set.seed(1, kind = "Mersenne-Twister")
 x <- c(sample(1:10, 10), NA)
 .N_col <- length(x)
 
-h_count_cumulative(x, 5, .N_col = .N_col)
-h_count_cumulative(x, 5, lower_tail = FALSE, include_eq = FALSE, na.rm = FALSE, .N_col = .N_col)
-h_count_cumulative(x, 0, lower_tail = FALSE, .N_col = .N_col)
-h_count_cumulative(x, 100, lower_tail = FALSE, .N_col = .N_col)
+h_count_cumulative(x, 5, denom = .N_col)
+h_count_cumulative(x, 5, lower_tail = FALSE, include_eq = FALSE, na_rm = FALSE, denom = .N_col)
+h_count_cumulative(x, 0, lower_tail = FALSE, denom = .N_col)
+h_count_cumulative(x, 100, lower_tail = FALSE, denom = .N_col)
 
 }
 \seealso{
