@@ -25,16 +25,6 @@
 #' @order 1
 NULL
 
-#' @describeIn count_missed_doses Statistics function to count non-missing values.
-#'
-#' @return
-#' * `s_count_nonmissing()` returns the statistic `n` which is the count of non-missing values in `x`.
-#'
-#' @keywords internal
-s_count_nonmissing <- function(x) {
-  list(n = n_available(x))
-}
-
 #' Description function that calculates labels for `s_count_missed_doses()`
 #'
 #' @description `r lifecycle::badge("stable")`
@@ -60,7 +50,8 @@ s_count_missed_doses <- function(x,
                                  thresholds,
                                  .N_col, # nolint
                                  .N_row, # nolint
-                                 denom = c("N_col", "n", "N_row")) {
+                                 denom = c("N_col", "n", "N_row"),
+                                 ...) {
   stat <- s_count_cumulative(
     x = x,
     thresholds = thresholds,
@@ -68,14 +59,15 @@ s_count_missed_doses <- function(x,
     include_eq = TRUE,
     .N_col = .N_col,
     .N_row = .N_row,
-    denom = denom
+    denom = denom,
+    ...
   )
   labels <- d_count_missed_doses(thresholds)
   for (i in seq_along(stat$count_fraction)) {
     stat$count_fraction[[i]] <- formatters::with_label(stat$count_fraction[[i]], label = labels[i])
   }
-  n_stat <- s_count_nonmissing(x)
-  c(n_stat, stat)
+
+  c(list(n = n_available(x)), stat)
 }
 
 #' @describeIn count_missed_doses Formatted analysis function which is used as `afun`
@@ -85,10 +77,79 @@ s_count_missed_doses <- function(x,
 #' * `a_count_missed_doses()` returns the corresponding list with formatted [rtables::CellValue()].
 #'
 #' @keywords internal
-a_count_missed_doses <- make_afun(
-  s_count_missed_doses,
-  .formats = c(n = "xx", count_fraction = format_count_fraction)
-)
+a_count_missed_doses <- function(x,
+                                 ...,
+                                 .stats = NULL,
+                                 .stat_names = NULL,
+                                 .formats = NULL,
+                                 .labels = NULL,
+                                 .indent_mods = NULL) {
+  dots_extra_args <- list(...)
+
+  # Check if there are user-defined functions
+  default_and_custom_stats_list <- .split_std_from_custom_stats(.stats)
+  .stats <- default_and_custom_stats_list$all_stats
+  custom_stat_functions <- default_and_custom_stats_list$custom_stats
+
+  # Adding automatically extra parameters to the statistic function (see ?rtables::additional_fun_params)
+  extra_afun_params <- retrieve_extra_afun_params(
+    names(dots_extra_args$.additional_fun_parameters)
+  )
+  dots_extra_args$.additional_fun_parameters <- NULL # After extraction we do not need them anymore
+
+  # Main statistical functions application
+  x_stats <- .apply_stat_functions(
+    default_stat_fnc = s_count_missed_doses,
+    custom_stat_fnc_list = custom_stat_functions,
+    args_list = c(
+      x = list(x),
+      extra_afun_params,
+      dots_extra_args
+    )
+  )
+
+  # Fill in with stats defaults if needed
+  .stats <- get_stats("count_missed_doses",
+    stats_in = .stats,
+    custom_stats_in = names(custom_stat_functions)
+  )
+
+  x_stats <- x_stats[.stats]
+  levels_per_stats <- lapply(x_stats, names)
+
+  # Fill in formats/indents/labels with custom input and defaults
+  .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
+  .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
+  .labels <- get_labels_from_stats(
+    .stats, .labels, levels_per_stats,
+    label_attr_from_stats = sapply(.unlist_keep_nulls(x_stats), attr, "label")
+  )
+
+  # Unlist stats
+  x_stats <- x_stats %>%
+    .unlist_keep_nulls() %>%
+    setNames(names(.formats))
+
+  # Auto format handling
+  .formats <- apply_auto_formatting(
+    .formats,
+    x_stats,
+    extra_afun_params$.df_row,
+    extra_afun_params$.var
+  )
+
+  # Get and check statistical names from defaults
+  .stat_names <- get_stat_names(x_stats, .stat_names) # note is x_stats
+
+  in_rows(
+    .list = x_stats,
+    .formats = .formats,
+    .names = names(.labels),
+    .stat_names = .stat_names,
+    .labels = .labels %>% .unlist_keep_nulls(),
+    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+  )
+}
 
 #' @describeIn count_missed_doses Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
@@ -125,30 +186,45 @@ count_missed_doses <- function(lyt,
                                show_labels = "visible",
                                na_str = default_na_str(),
                                nested = TRUE,
-                               ...,
                                table_names = vars,
-                               .stats = NULL,
+                               ...,
+                               na_rm = TRUE,
+                               .stats = c("n", "count_fraction"),
+                               .stat_names = NULL,
                                .formats = NULL,
                                .labels = NULL,
                                .indent_mods = NULL) {
-  extra_args <- list(thresholds = thresholds, ...)
-
-  afun <- make_afun(
-    a_count_missed_doses,
-    .stats = .stats,
-    .formats = .formats,
-    .labels = .labels,
-    .indent_mods = .indent_mods,
-    .ungroup_stats = "count_fraction"
+  # Depending on main functions
+  extra_args <- list(
+    "na_rm" = na_rm,
+    "thresholds" = thresholds,
+    ...
   )
+
+  # Needed defaults
+  if (!is.null(.stats)) extra_args[[".stats"]] <- .stats
+  if (!is.null(.stat_names)) extra_args[[".stat_names"]] <- .stat_names
+  if (!is.null(.formats)) extra_args[[".formats"]] <- .formats
+  if (!is.null(.labels)) extra_args[[".labels"]] <- .labels
+  if (!is.null(.indent_mods)) extra_args[[".indent_mods"]] <- .indent_mods
+
+  # Adding all additional information from layout to analysis functions (see ?rtables::additional_fun_params)
+  extra_args[[".additional_fun_parameters"]] <- get_additional_afun_params(add_alt_df = FALSE)
+  formals(a_count_missed_doses) <- c(
+    formals(a_count_missed_doses),
+    extra_args[[".additional_fun_parameters"]]
+  )
+
+  # Main {rtables} structural call
   analyze(
-    lyt = lyt,
-    vars = vars,
-    afun = afun,
-    var_labels = var_labels,
-    table_names = table_names,
-    show_labels = show_labels,
+    lyt,
+    vars,
+    afun = a_count_missed_doses,
     na_str = na_str,
+    inclNAs = !na_rm,
+    table_names = table_names,
+    var_labels = var_labels,
+    show_labels = show_labels,
     nested = nested,
     extra_args = extra_args
   )

@@ -98,6 +98,8 @@ s_proportion <- function(df,
   } else if (checkmate::test_subset(method, c("strat_wilson", "strat_wilsonc"))) {
     stop("To use stratified methods you need to specify the strata variables.")
   }
+
+  # Finding the Responders
   if (checkmate::test_atomic_vector(df)) {
     rsp <- as.logical(df)
   } else {
