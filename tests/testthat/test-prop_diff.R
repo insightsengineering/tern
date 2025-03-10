@@ -262,7 +262,7 @@ testthat::test_that("`estimate_proportion_diff` and cmh is compatible with `rtab
       vars = "rsp",
       variables = list(strata = c("f1", "f2")),
       conf_level = 0.90,
-      .formats = c("xx.xxxx", "(xx.xxxx, xx.xxxx)"),
+      .formats = c(diff = "xx.xxxx", diff_ci = "(xx.xxxx, xx.xxxx)"),
       method = "cmh"
     )
 
@@ -292,7 +292,7 @@ testthat::test_that("`estimate_proportion_diff` and strat_newcombe is compatible
       vars = "rsp",
       variables = list(strata = c("f1", "f2")),
       conf_level = 0.95,
-      .formats = c("xx.xx", "(xx.xx, xx.xx)"),
+      .formats = c(diff = "xx.xx", diff_ci = "(xx.xx, xx.xx)"),
       method = "strat_newcombe"
     )
   result <- build_table(l, df = dta)
