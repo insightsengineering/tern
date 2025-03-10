@@ -32,7 +32,6 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/argument_convention.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/arrange_grobs.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/as.rtable.html</loc></url>
-<url><loc>https://insightsengineering.github.io/tern/reference/as_factor_keep_attributes.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/assertions.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/bins_percent_labels.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/c_label_n.html</loc></url>
@@ -43,7 +42,6 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/combination_function.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/combine_counts.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/combine_groups.html</loc></url>
-<url><loc>https://insightsengineering.github.io/tern/reference/combine_levels.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/combine_vectors.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/compare_variables.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/control_analyze_vars.html</loc></url>
@@ -103,9 +101,7 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/extreme_format.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/f_conf_level.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/f_pval.html</loc></url>
-<url><loc>https://insightsengineering.github.io/tern/reference/fct_collapse_only.html</loc></url>
-<url><loc>https://insightsengineering.github.io/tern/reference/fct_discard.html</loc></url>
-<url><loc>https://insightsengineering.github.io/tern/reference/fct_explicit_na_if.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern/reference/factor_utils.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/fit_coxreg.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/fit_logistic.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/fit_rsp_step.html</loc></url>
