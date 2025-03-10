@@ -181,6 +181,7 @@ summarize_change <- function(lyt,
   extra_args <- c(
     extra_args,
     variables = list(variables),
+    na_rm = na_rm,
     ...
   )
 
