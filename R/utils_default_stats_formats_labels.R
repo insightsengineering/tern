@@ -277,8 +277,8 @@ get_formats_from_stats <- function(stats,
   out <- .fill_in_vals_by_stats(levels_per_stats, formats_in, tern_defaults)
 
   # Default to NULL if no format
-  weird_case_to_check <- unlist(out, use.names = FALSE) == unlist(levels_per_stats, use.names = FALSE)
-  out[names(out) == out | weird_case_to_check] <- list(NULL)
+  case_input_is_not_stat <- unlist(out, use.names = FALSE) == unlist(levels_per_stats, use.names = FALSE)
+  out[names(out) == out | case_input_is_not_stat] <- list(NULL)
 
   out
 }
