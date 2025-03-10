@@ -222,11 +222,11 @@ get_stat_names <- function(stat_results, stat_names_in = NULL) {
   }
 
   # Applying
-  out_defalt <- do.call(default_stat_fnc, args = args_list)
+  out_default <- do.call(default_stat_fnc, args = args_list)
   out_custom <- lapply(custom_stat_fnc_list, function(fnc) do.call(fnc, args = args_list))
 
   # Merging
-  c(out_defalt, out_custom)
+  c(out_default, out_custom)
 }
 
 #' @describeIn default_stats_formats_labels Get formats corresponding to a list of statistics.
