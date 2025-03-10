@@ -221,13 +221,12 @@ get_stat_names <- function(stat_results, stat_names_in = NULL) {
     }
   }
 
-  # Merging
-  stat_fnc_list <- c(default_stat_fnc, custom_stat_fnc_list)
-
   # Applying
-  out <- unlist(lapply(stat_fnc_list, function(fnc) do.call(fnc, args = args_list)), recursive = FALSE)
+  out_default <- do.call(default_stat_fnc, args = args_list)
+  out_custom <- lapply(custom_stat_fnc_list, function(fnc) do.call(fnc, args = args_list))
 
-  out
+  # Merging
+  c(out_default, out_custom)
 }
 
 #' @describeIn default_stats_formats_labels Get formats corresponding to a list of statistics.
@@ -278,7 +277,8 @@ get_formats_from_stats <- function(stats,
   out <- .fill_in_vals_by_stats(levels_per_stats, formats_in, tern_defaults)
 
   # Default to NULL if no format
-  out[names(out) == out] <- list(NULL)
+  case_input_is_not_stat <- unlist(out, use.names = FALSE) == unlist(levels_per_stats, use.names = FALSE)
+  out[names(out) == out | case_input_is_not_stat] <- list(NULL)
 
   out
 }
@@ -288,6 +288,9 @@ get_formats_from_stats <- function(stats,
 #'
 #' @param labels_in (named `character`)\cr custom labels to use instead of defaults. If no value is provided, the
 #'   variable level (if rows correspond to levels of a variable) or statistic name will be used as label.
+#' @param label_attr_from_stats (named `list`)\cr if `labels_in = NULL`, then this will be used instead. It is a list
+#'   of values defined in statistical functions as default labels. Values are ignored if `labels_in` is provided or `""`
+#'   values are provided.
 #'
 #' @return
 #' * `get_labels_from_stats()` returns a named list of labels as strings.
@@ -307,8 +310,20 @@ get_formats_from_stats <- function(stats,
 get_labels_from_stats <- function(stats,
                                   labels_in = NULL,
                                   levels_per_stats = NULL,
+                                  label_attr_from_stats = NULL,
                                   tern_defaults = tern_default_labels) {
   checkmate::assert_character(stats, min.len = 1)
+
+  # If labels_in is NULL, use label_attr_from_stats
+  if (is.null(labels_in)) {
+    labels_in <- label_attr_from_stats
+    labels_in <- label_attr_from_stats[
+      nzchar(label_attr_from_stats) &
+        !sapply(label_attr_from_stats, is.null) &
+        !is.na(label_attr_from_stats)
+    ]
+  }
+
   # It may be a list
   if (checkmate::test_list(labels_in, null.ok = TRUE)) {
     checkmate::assert_list(labels_in, null.ok = TRUE)
@@ -513,8 +528,8 @@ tern_default_stats <- list(
     "median_ci_3d",
     "mean_ci_3d", "geom_mean_ci_3d"
   ),
-  count_cumulative = c("count_fraction", "count_fraction_fixed_dp"),
-  count_missed_doses = c("n", "count_fraction", "count_fraction_fixed_dp"),
+  count_cumulative = c("count_fraction"),
+  count_missed_doses = c("n", "count_fraction"),
   count_occurrences = c("count", "count_fraction", "count_fraction_fixed_dp", "fraction"),
   count_occurrences_by_grade = c("count_fraction", "count_fraction_fixed_dp"),
   count_patients_with_event = c("n", "count", "count_fraction", "count_fraction_fixed_dp", "n_blq"),

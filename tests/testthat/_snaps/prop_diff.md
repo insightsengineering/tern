@@ -224,12 +224,14 @@
       res
     Output
       $diff
-      [1] 14.69622
+       diff_ha 
+      14.69622 
       attr(,"label")
       [1] "Difference in Response rate (%)"
       
       $diff_ci
-      [1] -3.118966 32.511412
+      diff_ci_ha_l diff_ci_ha_u 
+         -3.118966    32.511412 
       attr(,"label")
       [1] "90% CI (Anderson-Hauck)"
       
@@ -240,12 +242,14 @@
       res
     Output
       $diff
-      [1] 13.76866
+      diff_cmh 
+      13.76866 
       attr(,"label")
       [1] "Difference in Response rate (%)"
       
       $diff_ci
-      [1] -0.9989872 28.5363076
+      diff_ci_cmh_l diff_ci_cmh_u 
+         -0.9989872    28.5363076 
       attr(,"label")
       [1] "90% CI (CMH, without correction)"
       
