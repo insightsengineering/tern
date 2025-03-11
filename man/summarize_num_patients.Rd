@@ -41,7 +41,7 @@ summarize_num_patients(
   .formats = NULL,
   .labels = list(unique = "Number of patients with at least one event", nonunique =
     "Number of events"),
-  .indent_mods = NULL
+  .indent_mods = 0L
 )
 
 s_num_patients(
