@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.951448183492382" branch-rate="0" lines-covered="11366" lines-valid="11946" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-03-11 03:34:16.556157">
+<coverage line-rate="0.951448183492382" branch-rate="0" lines-covered="11366" lines-valid="11946" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-03-11 05:13:28.339158">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
@@ -5172,28 +5172,28 @@
             </method>
             <method name="try_car_anova" signature="" line-rate="0.909090909090909" branch-rate="0" complexity="0">
               <lines>
-                <line number="176" hits="1" branch="false"/>
-                <line number="177" hits="1" branch="false"/>
-                <line number="178" hits="1" branch="false"/>
-                <line number="179" hits="1" branch="false"/>
-                <line number="180" hits="1" branch="false"/>
-                <line number="181" hits="1" branch="false"/>
-                <line number="182" hits="1" branch="false"/>
-                <line number="183" hits="1" branch="false"/>
-                <line number="184" hits="1" branch="false"/>
-                <line number="185" hits="1" branch="false"/>
-                <line number="186" hits="1" branch="false"/>
-                <line number="187" hits="1" branch="false"/>
-                <line number="188" hits="1" branch="false"/>
-                <line number="189" hits="1" branch="false"/>
+                <line number="176" hits="2" branch="false"/>
+                <line number="177" hits="2" branch="false"/>
+                <line number="178" hits="2" branch="false"/>
+                <line number="179" hits="2" branch="false"/>
+                <line number="180" hits="2" branch="false"/>
+                <line number="181" hits="2" branch="false"/>
+                <line number="182" hits="2" branch="false"/>
+                <line number="183" hits="2" branch="false"/>
+                <line number="184" hits="2" branch="false"/>
+                <line number="185" hits="2" branch="false"/>
+                <line number="186" hits="2" branch="false"/>
+                <line number="187" hits="2" branch="false"/>
+                <line number="188" hits="2" branch="false"/>
+                <line number="189" hits="2" branch="false"/>
                 <line number="191" hits="0" branch="false"/>
                 <line number="195" hits="0" branch="false"/>
-                <line number="196" hits="1" branch="false"/>
-                <line number="197" hits="1" branch="false"/>
-                <line number="198" hits="1" branch="false"/>
-                <line number="199" hits="1" branch="false"/>
-                <line number="200" hits="1" branch="false"/>
-                <line number="202" hits="1" branch="false"/>
+                <line number="196" hits="2" branch="false"/>
+                <line number="197" hits="2" branch="false"/>
+                <line number="198" hits="2" branch="false"/>
+                <line number="199" hits="2" branch="false"/>
+                <line number="200" hits="2" branch="false"/>
+                <line number="202" hits="2" branch="false"/>
               </lines>
             </method>
             <method name="fit_n_aov" signature="" line-rate="0.947368421052632" branch-rate="0" complexity="0">
@@ -5367,28 +5367,28 @@
             <line number="148" hits="8" branch="false"/>
             <line number="149" hits="8" branch="false"/>
             <line number="150" hits="8" branch="false"/>
-            <line number="176" hits="1" branch="false"/>
-            <line number="177" hits="1" branch="false"/>
-            <line number="178" hits="1" branch="false"/>
-            <line number="179" hits="1" branch="false"/>
-            <line number="180" hits="1" branch="false"/>
-            <line number="181" hits="1" branch="false"/>
-            <line number="182" hits="1" branch="false"/>
-            <line number="183" hits="1" branch="false"/>
-            <line number="184" hits="1" branch="false"/>
-            <line number="185" hits="1" branch="false"/>
-            <line number="186" hits="1" branch="false"/>
-            <line number="187" hits="1" branch="false"/>
-            <line number="188" hits="1" branch="false"/>
-            <line number="189" hits="1" branch="false"/>
+            <line number="176" hits="2" branch="false"/>
+            <line number="177" hits="2" branch="false"/>
+            <line number="178" hits="2" branch="false"/>
+            <line number="179" hits="2" branch="false"/>
+            <line number="180" hits="2" branch="false"/>
+            <line number="181" hits="2" branch="false"/>
+            <line number="182" hits="2" branch="false"/>
+            <line number="183" hits="2" branch="false"/>
+            <line number="184" hits="2" branch="false"/>
+            <line number="185" hits="2" branch="false"/>
+            <line number="186" hits="2" branch="false"/>
+            <line number="187" hits="2" branch="false"/>
+            <line number="188" hits="2" branch="false"/>
+            <line number="189" hits="2" branch="false"/>
             <line number="191" hits="0" branch="false"/>
             <line number="195" hits="0" branch="false"/>
-            <line number="196" hits="1" branch="false"/>
-            <line number="197" hits="1" branch="false"/>
-            <line number="198" hits="1" branch="false"/>
-            <line number="199" hits="1" branch="false"/>
-            <line number="200" hits="1" branch="false"/>
-            <line number="202" hits="1" branch="false"/>
+            <line number="196" hits="2" branch="false"/>
+            <line number="197" hits="2" branch="false"/>
+            <line number="198" hits="2" branch="false"/>
+            <line number="199" hits="2" branch="false"/>
+            <line number="200" hits="2" branch="false"/>
+            <line number="202" hits="2" branch="false"/>
             <line number="220" hits="1" branch="false"/>
             <line number="222" hits="1" branch="false"/>
             <line number="223" hits="1" branch="false"/>
