@@ -304,6 +304,16 @@
       Number of events                                 4           3    
       (n)                                              3           3    
 
+# summarize_num_patients works with single unnamed .labels/.formats values
+
+    Code
+      res
+    Output
+                      A       B  
+                    (N=5)   (N=4)
+      ———————————————————————————
+      - Overall -   3.00    3.00 
+
 # analyze_num_patients works well for pagination
 
     Code
