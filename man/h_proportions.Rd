@@ -32,8 +32,8 @@ prop_jeffreys(rsp, n = length(rsp), conf_level)
 \arguments{
 \item{rsp}{(\code{logical})\cr vector indicating whether each subject is a responder or not.}
 
-\item{n}{(\code{count})\cr number of participants (if \code{denom = "N_col"} or the number of responders
-if \code{denom = "n"}, the default).}
+\item{n}{(\code{count})\cr number of participants (if \code{denom = "N_col"}) or the number of responders
+(if \code{denom = "n"}, the default).}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
 
