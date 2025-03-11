@@ -443,8 +443,8 @@ prop_strat_wilson <- function(rsp,
 #' @describeIn h_proportions Calculates the Clopper-Pearson interval by calling [stats::binom.test()].
 #'   Also referred to as the `exact` method.
 #'
-#' @param n (`count`)\cr number of participants (if `denom = "N_col"` or the number of responders
-#'   if `denom = "n"`, the default).
+#' @param n (`count`)\cr number of participants (if `denom = "N_col"`) or the number of responders
+#'   (if `denom = "n"`, the default).
 #'
 #' @examples
 #' prop_clopper_pearson(rsp, conf_level = .95)
