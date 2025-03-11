@@ -74,10 +74,14 @@ s_proportion <- function(df,
                          max_iterations = 50,
                          variables = list(strata = NULL),
                          long = FALSE,
+                         denom = c("n", "N_col", "N_row"),
                          ...) {
   method <- match.arg(method)
   checkmate::assert_flag(long)
   assert_proportion_value(conf_level)
+  args_list <- list(...)
+  .N_row <- args_list[[".N_row"]] # nolint
+  .N_col <- args_list[[".N_col"]] # nolint
 
   if (!is.null(variables$strata)) {
     # Checks for strata
@@ -101,23 +105,38 @@ s_proportion <- function(df,
   } else {
     rsp <- as.logical(df[[.var]])
   }
-  n <- sum(rsp)
-  p_hat <- mean(rsp)
+
+  # Stop for stratified analysis
+  if (method %in% c("strat_wilson", "strat_wilsonc") && denom[1] != "n") {
+    stop(
+      "Stratified methods only support 'n' as the denominator (denom). ",
+      "Consider adding negative responders directly to the dataset."
+    )
+  }
+
+  denom <- match.arg(denom) %>%
+    switch(
+      n = length(rsp),
+      N_row = .N_row,
+      N_col = .N_col
+    )
+  n_rsp <- sum(rsp)
+  p_hat <- ifelse(denom > 0, n_rsp / denom, 0)
 
   prop_ci <- switch(method,
-    "clopper-pearson" = prop_clopper_pearson(rsp, conf_level),
-    "wilson" = prop_wilson(rsp, conf_level),
-    "wilsonc" = prop_wilson(rsp, conf_level, correct = TRUE),
+    "clopper-pearson" = prop_clopper_pearson(rsp, n = denom, conf_level),
+    "wilson" = prop_wilson(rsp, n = denom, conf_level),
+    "wilsonc" = prop_wilson(rsp, n = denom, conf_level, correct = TRUE),
     "strat_wilson" = prop_strat_wilson(rsp, strata, weights, conf_level, max_iterations, correct = FALSE)$conf_int,
     "strat_wilsonc" = prop_strat_wilson(rsp, strata, weights, conf_level, max_iterations, correct = TRUE)$conf_int,
-    "wald" = prop_wald(rsp, conf_level),
-    "waldcc" = prop_wald(rsp, conf_level, correct = TRUE),
-    "agresti-coull" = prop_agresti_coull(rsp, conf_level),
-    "jeffreys" = prop_jeffreys(rsp, conf_level)
+    "wald" = prop_wald(rsp, n = denom, conf_level),
+    "waldcc" = prop_wald(rsp, n = denom, conf_level, correct = TRUE),
+    "agresti-coull" = prop_agresti_coull(rsp, n = denom, conf_level),
+    "jeffreys" = prop_jeffreys(rsp, n = denom, conf_level)
   )
 
   list(
-    "n_prop" = formatters::with_label(c(n, p_hat), "Responders"),
+    "n_prop" = formatters::with_label(c(n_rsp, p_hat), "Responders"),
     "prop_ci" = formatters::with_label(x = 100 * prop_ci, label = d_proportion(conf_level, method, long = long))
   )
 }
@@ -290,10 +309,10 @@ NULL
 #' prop_wilson(rsp, conf_level = 0.9)
 #'
 #' @export
-prop_wilson <- function(rsp, conf_level, correct = FALSE) {
+prop_wilson <- function(rsp, n = length(rsp), conf_level, correct = FALSE) {
   y <- stats::prop.test(
     sum(rsp),
-    length(rsp),
+    n,
     correct = correct,
     conf.level = conf_level
   )
@@ -424,15 +443,17 @@ prop_strat_wilson <- function(rsp,
 #' @describeIn h_proportions Calculates the Clopper-Pearson interval by calling [stats::binom.test()].
 #'   Also referred to as the `exact` method.
 #'
+#' @param n (`count`)\cr number of participants (if `denom = "N_col"`) or the number of responders
+#'   (if `denom = "n"`, the default).
+#'
 #' @examples
 #' prop_clopper_pearson(rsp, conf_level = .95)
 #'
 #' @export
-prop_clopper_pearson <- function(rsp,
-                                 conf_level) {
+prop_clopper_pearson <- function(rsp, n = length(rsp), conf_level) {
   y <- stats::binom.test(
     x = sum(rsp),
-    n = length(rsp),
+    n = n,
     conf.level = conf_level
   )
   as.numeric(y$conf.int)
@@ -448,9 +469,8 @@ prop_clopper_pearson <- function(rsp,
 #' prop_wald(rsp, conf_level = 0.95, correct = TRUE)
 #'
 #' @export
-prop_wald <- function(rsp, conf_level, correct = FALSE) {
-  n <- length(rsp)
-  p_hat <- mean(rsp)
+prop_wald <- function(rsp, n = length(rsp), conf_level, correct = FALSE) {
+  p_hat <- ifelse(n > 0, sum(rsp) / n, 0)
   z <- stats::qnorm((1 + conf_level) / 2)
   q_hat <- 1 - p_hat
   correct <- if (correct) 1 / (2 * n) else 0
@@ -469,8 +489,7 @@ prop_wald <- function(rsp, conf_level, correct = FALSE) {
 #' prop_agresti_coull(rsp, conf_level = 0.95)
 #'
 #' @export
-prop_agresti_coull <- function(rsp, conf_level) {
-  n <- length(rsp)
+prop_agresti_coull <- function(rsp, n = length(rsp), conf_level) {
   x_sum <- sum(rsp)
   z <- stats::qnorm((1 + conf_level) / 2)
 
@@ -495,9 +514,7 @@ prop_agresti_coull <- function(rsp, conf_level) {
 #' prop_jeffreys(rsp, conf_level = 0.95)
 #'
 #' @export
-prop_jeffreys <- function(rsp,
-                          conf_level) {
-  n <- length(rsp)
+prop_jeffreys <- function(rsp, n = length(rsp), conf_level) {
   x_sum <- sum(rsp)
 
   alpha <- 1 - conf_level
