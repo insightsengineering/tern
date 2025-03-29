@@ -6,6 +6,7 @@
 * Refactored `afun_riskdiff()`, `count_occurrences()`, `count_occurrences_by_grade()`, `count_patients_with_event()`, `count_patients_with_flags()`, `count_values()`, `estimate_incidence_rate()`, `h_tab_one_biomarker()`, `summarize_change()`, `summarize_colvars()`, `summarize_patients_exposure_in_cols()`, `survival_time()`, `tabulate_rsp_subgroups()`, `tabulate_survival_subgroups()`, `tabulate_rsp_biomarkers()`, and `tabulate_survival_biomarkers()` to align with new analysis function style.
 * Converted `as_factor_keep_attributes()` to an exported function.
 * Added `denom` parameter to `estimate_proportion()`.
+* Added `weights_emmeans` argument to `summarize_ancova()`.
 
 ### Bug Fixes
 * Fixed bug in `a_count_patients_with_flags()` preventing select custom label and indentation specification formats from being applied.

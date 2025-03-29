@@ -13,6 +13,7 @@ summarize_ancova(
   conf_level,
   interaction_y = FALSE,
   interaction_item = NULL,
+  weights_emmeans = NULL,
   var_labels,
   na_str = default_na_str(),
   nested = TRUE,
@@ -36,6 +37,7 @@ s_ancova(
   conf_level,
   interaction_y = FALSE,
   interaction_item = NULL,
+  weights_emmeans = NULL,
   ...
 )
 
@@ -69,6 +71,8 @@ used to select the specific ANCOVA results. if the interaction is not needed, th
 
 \item{interaction_item}{(\code{string} or \code{NULL})\cr name of the variable that should have interactions
 with arm. if the interaction is not needed, the default option is \code{NULL}.}
+
+\item{weights_emmeans}{(\code{string} or \code{NULL})\cr argument from \code{\link[emmeans:emmeans]{emmeans::emmeans()}}}
 
 \item{var_labels}{(\code{character})\cr variable labels.}
 
