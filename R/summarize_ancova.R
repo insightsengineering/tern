@@ -122,7 +122,13 @@ s_ancova <- function(df,
                      interaction_item = NULL,
                      weights_emmeans = NULL,
                      ...) {
-  emmeans_fit <- h_ancova(.var = .var, variables = variables, .df_row = .df_row, interaction_item = interaction_item, weights_emmeans = weights_emmeans)
+  emmeans_fit <- h_ancova(
+    .var = .var,
+    variables = variables,
+    .df_row = .df_row,
+    interaction_item = interaction_item,
+    weights_emmeans = weights_emmeans
+  )
 
   sum_fit <- summary(
     emmeans_fit,
