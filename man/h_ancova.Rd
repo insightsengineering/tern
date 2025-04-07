@@ -4,7 +4,13 @@
 \alias{h_ancova}
 \title{Helper function to return results of a linear model}
 \usage{
-h_ancova(.var, .df_row, variables, interaction_item = NULL)
+h_ancova(
+  .var,
+  .df_row,
+  variables,
+  interaction_item = NULL,
+  weights_emmeans = NULL
+)
 }
 \arguments{
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
@@ -22,6 +28,8 @@ interaction terms indicated by \code{"X1 * X2"}.
 
 \item{interaction_item}{(\code{string} or \code{NULL})\cr name of the variable that should have interactions
 with arm. if the interaction is not needed, the default option is \code{NULL}.}
+
+\item{weights_emmeans}{(\code{string} or \code{NULL})\cr argument from \code{\link[emmeans:emmeans]{emmeans::emmeans()}}}
 }
 \value{
 The summary of a linear model.

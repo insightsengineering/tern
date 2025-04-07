@@ -38,6 +38,7 @@ NULL
 #'     interaction terms indicated by `"X1 * X2"`.
 #' @param interaction_item (`string` or `NULL`)\cr name of the variable that should have interactions
 #'   with arm. if the interaction is not needed, the default option is `NULL`.
+#' @param weights_emmeans (`string` or `NULL`)\cr argument from [emmeans::emmeans()]
 #'
 #' @return The summary of a linear model.
 #'
@@ -52,7 +53,8 @@ NULL
 h_ancova <- function(.var,
                      .df_row,
                      variables,
-                     interaction_item = NULL) {
+                     interaction_item = NULL,
+                     weights_emmeans = NULL) {
   checkmate::assert_string(.var)
   checkmate::assert_list(variables)
   checkmate::assert_subset(names(variables), c("arm", "covariates"))
@@ -88,7 +90,8 @@ h_ancova <- function(.var,
     # Specify here the group variable over which EMM are desired.
     specs = specs,
     # Pass the data again so that the factor levels of the arm variable can be inferred.
-    data = .df_row
+    data = .df_row,
+    weights = weights_emmeans
   )
 
   emmeans_fit
@@ -117,8 +120,15 @@ s_ancova <- function(df,
                      conf_level,
                      interaction_y = FALSE,
                      interaction_item = NULL,
+                     weights_emmeans = NULL,
                      ...) {
-  emmeans_fit <- h_ancova(.var = .var, variables = variables, .df_row = .df_row, interaction_item = interaction_item)
+  emmeans_fit <- h_ancova(
+    .var = .var,
+    variables = variables,
+    .df_row = .df_row,
+    interaction_item = interaction_item,
+    weights_emmeans = weights_emmeans
+  )
 
   sum_fit <- summary(
     emmeans_fit,
@@ -300,6 +310,7 @@ summarize_ancova <- function(lyt,
                              conf_level,
                              interaction_y = FALSE,
                              interaction_item = NULL,
+                             weights_emmeans = NULL,
                              var_labels,
                              na_str = default_na_str(),
                              nested = TRUE,
@@ -323,6 +334,7 @@ summarize_ancova <- function(lyt,
     extra_args,
     variables = list(variables), conf_level = list(conf_level), interaction_y = list(interaction_y),
     interaction_item = list(interaction_item),
+    weights_emmeans = weights_emmeans,
     ...
   )
 
