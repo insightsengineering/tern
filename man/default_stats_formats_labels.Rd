@@ -130,7 +130,7 @@ for details.}
 }
 
 \itemize{
-\item \code{get_stat_names()} returns a named list of\code{character} vectors, indicating the names of
+\item \code{get_stat_names()} returns a named list of \code{character} vectors, indicating the names of
 statistical outputs.
 }
 

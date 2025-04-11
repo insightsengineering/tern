@@ -18,15 +18,15 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Joe Zhu \email{joe.zhu@roche.com}
+\strong{Maintainer}: Joe Zhu \email{joe.zhu@roche.com} (\href{https://orcid.org/0000-0001-7566-2787}{ORCID})
 
 Authors:
 \itemize{
   \item Daniel Sabanés Bové \email{daniel.sabanes_bove@roche.com}
   \item Jana Stoilova \email{jana.stoilova@roche.com}
-  \item Davide Garolini \email{davide.garolini@roche.com}
-  \item Emily de la Rua \email{emily.de_la_rua@contractors.roche.com}
-  \item Abinaya Yogasekaram \email{abinaya.yogasekaram@contractors.roche.com}
+  \item Davide Garolini \email{davide.garolini@roche.com} (\href{https://orcid.org/0000-0002-1445-1369}{ORCID})
+  \item Emily de la Rua \email{emily.de_la_rua@contractors.roche.com} (\href{https://orcid.org/0009-0000-8738-5561}{ORCID})
+  \item Abinaya Yogasekaram \email{abinaya.yogasekaram@contractors.roche.com} (\href{https://orcid.org/0009-0005-2083-1105}{ORCID})
   \item Heng Wang \email{wang.heng@gene.com}
   \item Francois Collin
   \item Adrian Waddell \email{adrian.waddell@gene.com}

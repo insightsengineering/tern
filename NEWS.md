@@ -1,29 +1,29 @@
-# tern 0.9.7.9018
+# tern 0.9.8
 
 ### Enhancements
 * Refactored `count_abnormal()`, `count_abnormal_by_baseline()`, `count_abnormal_by_marked()`, `count_abnormal_by_worst_grade()`, `count_abnormal_lab_worsen_by_baseline()`, `count_cumulative()`, `count_missed_doses()`, `coxph_pairwise()`, `estimate_multinomial_rsp()`, `estimate_proportion()`, `estimate_proportion_diff()`, `estimate_odds_ratio()`, `summarize_ancova()`, `summarize_glm_count()`, `summarize_num_patients()`, `surv_timepoint()`, and `test_proportion_diff()` to work without `make_afun()`.
-* Added `geom_sd` and `geom_mean_sd` to `s_summary()` default available statistics.
 * Refactored `afun_riskdiff()`, `count_occurrences()`, `count_occurrences_by_grade()`, `count_patients_with_event()`, `count_patients_with_flags()`, `count_values()`, `estimate_incidence_rate()`, `h_tab_one_biomarker()`, `summarize_change()`, `summarize_colvars()`, `summarize_patients_exposure_in_cols()`, `survival_time()`, `tabulate_rsp_subgroups()`, `tabulate_survival_subgroups()`, `tabulate_rsp_biomarkers()`, and `tabulate_survival_biomarkers()` to align with new analysis function style.
-* Converted `as_factor_keep_attributes()` to an exported function.
+* Added `geom_sd` and `geom_mean_sd` to `s_summary()` as default available statistics.
 * Added `denom` parameter to `estimate_proportion()`.
 * Added `weights_emmeans` argument to `summarize_ancova()`.
 
 ### Bug Fixes
-* Fixed bug in `a_count_patients_with_flags()` preventing select custom label and indentation specification formats from being applied.
-* Fixed bug in `tabulate_rsp_subgroups` and `tabulate_survival_subgroups` preventing the `pct` option from having an effect when adding a risk difference column.
+* Fixed bug in `a_count_patients_with_flags()` preventing select custom label/indentation formats from being applied.
+* Fixed bug in `tabulate_rsp_subgroups()` and `tabulate_survival_subgroups()` preventing the `pct` option from having an effect when adding a risk difference column.
 * Fixed bug with the order of `.stats` when adding custom statistical functions.
 * Fixed bug with multiple custom functions not being represented correctly as a list of output stats.
 
 ### Miscellaneous
-* Removed internal function `ungroup_stats()` and replaced its usage with the `get_*_from_stats()` functions.
 * Began deprecation of the unused `table_names` argument to `count_abnormal_lab_worsen_by_baseline()`.
-* Added warnings for `geom_mean` statistical output.
 * Began deprecation of the unused `h_split_param()` function.
 * Began deprecation of the unused `label_all` parameter to `tabulate_rsp_subgroups()`, with redirection to the same parameter in `extract_rsp_subgroups()`.
 * Began deprecation of the no longer used helper functions `h_tab_one_biomarker()`, `h_tab_rsp_one_biomarker()`, and `h_tab_surv_one_biomarker()`.
-* Moved helper functions `h_tab_rsp_one_biomarker()` and `h_tab_surv_one_biomarker()` into `h_biomarkers_subgroups.R`.
 * Updated documentation to remove suggestions to use `make_afun()`.
+* Added warnings for `geom_mean` statistical output.
+* Moved helper functions `h_tab_rsp_one_biomarker()` and `h_tab_surv_one_biomarker()` into `h_biomarkers_subgroups.R`.
 * Reorganized the utility documentation related to factors (`utils_factor.R`) into a single file.
+* Converted `as_factor_keep_attributes()` to an exported function.
+* Removed internal function `ungroup_stats()` and replaced its usage with the `get_*_from_stats()` functions.
 * Removed `s_count_nonmissing()` as it is a non-repeated small and internal function.
 
 # tern 0.9.7
