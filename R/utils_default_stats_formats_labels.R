@@ -143,7 +143,7 @@ get_stats <- function(method_groups = "analyze_vars_numeric",
 #' @param stat_names_in (`character`)\cr custom modification of statistical values.
 #'
 #' @return
-#' * `get_stat_names()` returns a named list of`character` vectors, indicating the names of
+#' * `get_stat_names()` returns a named list of `character` vectors, indicating the names of
 #'    statistical outputs.
 #'
 #' @examples
