@@ -1,0 +1,5 @@
+"Flavor","CheckId","InstallId","BuildId"
+"r-devel-linux-x86_64-debian-gcc","e8ee99db5a7303586d0e21e2522b0e31","9cbd23a24f4eaa2edcb727a3e1df8bc6","8d69f6eaf0b375ff4e8a516a4c56c16c"
+"r-devel-linux-x86_64-fedora-clang","5fb04d57b8d608b4bb6fc98b112f74a4","8c8be02e55856e9735938e6e1e25e7ed","8d69f6eaf0b375ff4e8a516a4c56c16c"
+"r-devel-linux-x86_64-fedora-gcc","68405de87d02e7edb2a57afa11e10a49","8c8be02e55856e9735938e6e1e25e7ed","8d69f6eaf0b375ff4e8a516a4c56c16c"
+"r-release-windows-x86_64","ceeedebedbd594e537fa13c7695b1356","6f49a97301ceb648f1526f881a9e11d4","8d69f6eaf0b375ff4e8a516a4c56c16c"
