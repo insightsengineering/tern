@@ -15,8 +15,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Compare variables between groups — compare_variables">
 <meta name="description" content='
 The analyze function compare_vars() creates a layout element to summarize and compare one or more variables, using
@@ -50,7 +50,7 @@ statistic.'>
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.8</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,6 +85,7 @@ statistic.'>
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8-rc1">v0.9.8-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.7">v0.9.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
@@ -127,7 +128,7 @@ statistic.'>
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Compare variables between groups</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.7/R/compare_variables.R" class="external-link"><code>R/compare_variables.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.8/R/compare_variables.R" class="external-link"><code>R/compare_variables.R</code></a></small>
       <div class="d-none name"><code>compare_variables.Rd</code></div>
     </div>
 
@@ -159,7 +160,7 @@ statistic.</p>
 <span>  table_names <span class="op">=</span> <span class="va">vars</span>,</span>
 <span>  section_div <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
 <span>  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"mean_sd"</span>, <span class="st">"count_fraction"</span>, <span class="st">"pval"</span><span class="op">)</span>,</span>
-<span>  .stat_names_in <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .stat_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
@@ -255,12 +256,12 @@ defined by this split instruction, or <code>NA_character_</code> (the default) f
 </dt>
 <dd>
 <p>(<code>character</code>)<br> statistics to select for the table.</p>
-<p>Options for numeric variables are: <code>'n', 'sum', 'mean', 'sd', 'se', 'mean_sd', 'mean_se', 'mean_ci', 'mean_sei', 'mean_sdi', 'mean_pval', 'median', 'mad', 'median_ci', 'quantiles', 'iqr', 'range', 'min', 'max', 'median_range', 'cv', 'geom_mean', 'geom_mean_ci', 'geom_cv', 'median_ci_3d', 'mean_ci_3d', 'geom_mean_ci_3d', 'pval'</code></p>
+<p>Options for numeric variables are: <code>'n', 'sum', 'mean', 'sd', 'se', 'mean_sd', 'mean_se', 'mean_ci', 'mean_sei', 'mean_sdi', 'mean_pval', 'median', 'mad', 'median_ci', 'quantiles', 'iqr', 'range', 'min', 'max', 'median_range', 'cv', 'geom_mean', 'geom_sd', 'geom_mean_sd', 'geom_mean_ci', 'geom_cv', 'median_ci_3d', 'mean_ci_3d', 'geom_mean_ci_3d', 'pval'</code></p>
 <p>Options for non-numeric variables are: <code>'n', 'count', 'count_fraction', 'count_fraction_fixed_dp', 'fraction', 'n_blq', 'pval_counts'</code></p>
 </dd>
 
 
-<dt id="arg--stat-names-in">.stat_names_in<a class="anchor" aria-label="anchor" href="#arg--stat-names-in"></a>
+<dt id="arg--stat-names">.stat_names<a class="anchor" aria-label="anchor" href="#arg--stat-names"></a>
 </dt>
 <dd><p>(<code>character</code>)<br> names of the statistics that are passed directly to name single statistics
 (<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
@@ -358,6 +359,9 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-in"><span>  <span class="fu">split_cols_by</span><span class="op">(</span><span class="st">"ARMCD"</span>, ref_group <span class="op">=</span> <span class="st">"ARM B"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">compare_vars</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AGE"</span>, <span class="st">"SEX"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">build_table</span><span class="op">(</span><span class="va">lyt</span>, <span class="va">tern_ex_adsl</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>longer object length is not a multiple of shorter object length</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>longer object length is not a multiple of shorter object length</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>longer object length is not a multiple of shorter object length</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                  ARM A        ARM B        ARM C   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ———————————————————————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AGE                                                                </span>
@@ -505,6 +509,14 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> geom_mean </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  4.985435 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $geom_sd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  geom_sd </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.294674 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_sd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> geom_mean   geom_sd </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4.985435  1.294674 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_ci_lwr mean_ci_upr </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    4.144463    5.997052 </span>
@@ -643,6 +655,14 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> geom_mean </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  4.952266 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $geom_sd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  geom_sd </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.266655 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_sd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> geom_mean   geom_sd </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4.952266  1.266655 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_ci_lwr mean_ci_upr </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    4.181833    5.864639 </span>
@@ -660,7 +680,7 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Geometric Mean (95% CI)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> numeric(0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Empty numeric does not fail, it returns NA-filled items and no p-value.</span></span></span>
@@ -779,7 +799,15 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> geom_mean </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       NaN </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        NA </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $geom_sd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> geom_sd </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      NA </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_sd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> geom_mean   geom_sd </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        NA        NA </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mean_ci_lwr mean_ci_upr </span>
@@ -793,12 +821,12 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geom_mean_ci_3d</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   geom_mean mean_ci_lwr mean_ci_upr </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         NaN          NA          NA </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          NA          NA          NA </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Geometric Mean (95% CI)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> numeric(0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `s_compare.factor`</span></span></span>

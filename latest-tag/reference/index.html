@@ -15,8 +15,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Package index">
 <meta property="og:image" content="https://insightsengineering.github.io/tern/logo.png">
 <link rel="stylesheet" href="../consent.css">
@@ -30,7 +30,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.8</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,6 +65,7 @@
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8-rc1">v0.9.8-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.7">v0.9.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
@@ -172,7 +173,7 @@
 <ul>
 <li><p><strong>Analyze functions</strong> are used in combination with <code>rtables</code> layout functions in the pipeline which creates the table.</p></li>
 <li><p><strong>Statistics functions</strong> (denoted by <code>s_</code> prefix) compute the numbers that are tabulated later. In order to separate computation from formatting, they do not take care of <code>rcell</code> type formatting themselves.</p></li>
-<li><p><strong>Formatted analysis functions</strong> (denoted by <code>a_</code> prefix) have the same arguments as the corresponding statistics functions, and can be further customized by calling <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/make_afun.html" class="external-link">rtables::make_afun()</a></code> on them. They are used as <code>afun</code> in <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
+<li><p><strong>Formatted analysis functions</strong> (denoted by <code>a_</code> prefix) apply formatting to results from their corresponding statistics functions. They are used as <code>afun</code> in <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
 </ul>
 </div>
 
@@ -202,7 +203,7 @@
 <dl>
 <dt>
 
-          <code><a href="summarize_num_patients.html">analyze_num_patients()</a></code> <code><a href="summarize_num_patients.html">summarize_num_patients()</a></code> <code><a href="summarize_num_patients.html">s_num_patients()</a></code> <code><a href="summarize_num_patients.html">s_num_patients_content()</a></code>
+          <code><a href="summarize_num_patients.html">analyze_num_patients()</a></code> <code><a href="summarize_num_patients.html">summarize_num_patients()</a></code> <code><a href="summarize_num_patients.html">s_num_patients()</a></code> <code><a href="summarize_num_patients.html">s_num_patients_content()</a></code> <code><a href="summarize_num_patients.html">a_num_patients()</a></code>
           <span class="badge lifecycle lifecycle-stable">stable</span>
         </dt>
         <dd>Count number of patients</dd>
@@ -258,7 +259,7 @@
 <dl>
 <dt>
 
-          <code><a href="abnormal_by_worst_grade_worsen.html">count_abnormal_lab_worsen_by_baseline()</a></code> <code><a href="abnormal_by_worst_grade_worsen.html">s_count_abnormal_lab_worsen_by_baseline()</a></code> <code><a href="abnormal_by_worst_grade_worsen.html">a_count_abnormal_lab_worsen_by_baseline()</a></code>
+          <code><a href="abnormal_lab_worsen_by_baseline.html">count_abnormal_lab_worsen_by_baseline()</a></code> <code><a href="abnormal_lab_worsen_by_baseline.html">s_count_abnormal_lab_worsen_by_baseline()</a></code> <code><a href="abnormal_lab_worsen_by_baseline.html">a_count_abnormal_lab_worsen_by_baseline()</a></code>
           <span class="badge lifecycle lifecycle-stable">stable</span>
         </dt>
         <dd>Count patients with toxicity grades that have worsened from baseline by highest grade post-baseline</dd>
@@ -274,7 +275,7 @@
 <dl>
 <dt>
 
-          <code><a href="count_missed_doses.html">count_missed_doses()</a></code> <code><a href="count_missed_doses.html">s_count_nonmissing()</a></code> <code><a href="count_missed_doses.html">s_count_missed_doses()</a></code> <code><a href="count_missed_doses.html">a_count_missed_doses()</a></code>
+          <code><a href="count_missed_doses.html">count_missed_doses()</a></code> <code><a href="count_missed_doses.html">s_count_missed_doses()</a></code> <code><a href="count_missed_doses.html">a_count_missed_doses()</a></code>
           <span class="badge lifecycle lifecycle-stable">stable</span>
         </dt>
         <dd>Count number of patients with missed doses by thresholds</dd>
@@ -410,7 +411,7 @@
 <dl>
 <dt>
 
-          <code><a href="summarize_glm_count.html">summarize_glm_count()</a></code> <code><a href="summarize_glm_count.html">s_glm_count()</a></code>
+          <code><a href="summarize_glm_count.html">summarize_glm_count()</a></code> <code><a href="summarize_glm_count.html">s_glm_count()</a></code> <code><a href="summarize_glm_count.html">a_glm_count()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Summarize Poisson negative binomial regression</dd>
@@ -434,7 +435,7 @@
 <dl>
 <dt>
 
-          <code><a href="survival_timepoint.html">surv_timepoint()</a></code> <code><a href="survival_timepoint.html">s_surv_timepoint()</a></code> <code><a href="survival_timepoint.html">a_surv_timepoint()</a></code> <code><a href="survival_timepoint.html">s_surv_timepoint_diff()</a></code> <code><a href="survival_timepoint.html">a_surv_timepoint_diff()</a></code>
+          <code><a href="survival_timepoint.html">surv_timepoint()</a></code> <code><a href="survival_timepoint.html">s_surv_timepoint()</a></code> <code><a href="survival_timepoint.html">s_surv_timepoint_diff()</a></code> <code><a href="survival_timepoint.html">a_surv_timepoint()</a></code>
           <span class="badge lifecycle lifecycle-stable">stable</span>
         </dt>
         <dd>Survival time point analysis</dd>
@@ -813,7 +814,7 @@
 <dt>
 
           <code><a href="default_stats_formats_labels.html">get_stats()</a></code> <code><a href="default_stats_formats_labels.html">get_stat_names()</a></code> <code><a href="default_stats_formats_labels.html">get_formats_from_stats()</a></code> <code><a href="default_stats_formats_labels.html">get_labels_from_stats()</a></code> <code><a href="default_stats_formats_labels.html">get_indents_from_stats()</a></code> <code><a href="default_stats_formats_labels.html">tern_default_stats</a></code> <code><a href="default_stats_formats_labels.html">tern_default_formats</a></code> <code><a href="default_stats_formats_labels.html">tern_default_labels</a></code> <code><a href="default_stats_formats_labels.html">summary_formats()</a></code> <code><a href="default_stats_formats_labels.html">summary_labels()</a></code>
-          <span class="badge lifecycle lifecycle-stable">stable</span>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Get default statistical methods and their associated formats, labels, and indent modifiers</dd>
       </dl>
@@ -985,7 +986,7 @@
 <dl>
 <dt>
 
-          <code><a href="h_response_biomarkers_subgroups.html">h_rsp_to_logistic_variables()</a></code> <code><a href="h_response_biomarkers_subgroups.html">h_logistic_mult_cont_df()</a></code> <code><a href="h_response_biomarkers_subgroups.html">h_tab_rsp_one_biomarker()</a></code>
+          <code><a href="h_response_biomarkers_subgroups.html">h_rsp_to_logistic_variables()</a></code> <code><a href="h_response_biomarkers_subgroups.html">h_logistic_mult_cont_df()</a></code>
           <span class="badge lifecycle lifecycle-stable">stable</span>
         </dt>
         <dd>Helper functions for tabulating biomarker effects on binary response by subgroup</dd>
@@ -1009,14 +1010,6 @@
 <dl>
 <dt>
 
-          <code><a href="h_split_param.html">h_split_param()</a></code>
-          <span class="badge lifecycle lifecycle-stable">stable</span>
-        </dt>
-        <dd>Split parameters</dd>
-      </dl>
-<dl>
-<dt>
-
           <code><a href="h_stack_by_baskets.html">h_stack_by_baskets()</a></code>
           <span class="badge lifecycle lifecycle-stable">stable</span>
         </dt>
@@ -1033,7 +1026,7 @@
 <dl>
 <dt>
 
-          <code><a href="h_survival_biomarkers_subgroups.html">h_surv_to_coxreg_variables()</a></code> <code><a href="h_survival_biomarkers_subgroups.html">h_coxreg_mult_cont_df()</a></code> <code><a href="h_survival_biomarkers_subgroups.html">h_tab_surv_one_biomarker()</a></code>
+          <code><a href="h_survival_biomarkers_subgroups.html">h_surv_to_coxreg_variables()</a></code> <code><a href="h_survival_biomarkers_subgroups.html">h_coxreg_mult_cont_df()</a></code>
           <span class="badge lifecycle lifecycle-stable">stable</span>
         </dt>
         <dd>Helper functions for tabulating biomarker effects on survival by subgroup</dd>
@@ -1045,14 +1038,6 @@
           <span class="badge lifecycle lifecycle-stable">stable</span>
         </dt>
         <dd>Helper functions for tabulating survival duration by subgroup</dd>
-      </dl>
-<dl>
-<dt>
-
-          <code><a href="h_tab_one_biomarker.html">h_tab_one_biomarker()</a></code>
-          <span class="badge lifecycle lifecycle-stable">stable</span>
-        </dt>
-        <dd>Helper function for tabulation of a single biomarker result</dd>
       </dl>
 <dl>
 <dt>
@@ -1076,7 +1061,7 @@
           <code><a href="h_worsen_counter.html">h_worsen_counter()</a></code>
           <span class="badge lifecycle lifecycle-stable">stable</span>
         </dt>
-        <dd>Helper function to analyze patients for <code><a href="../reference/abnormal_by_worst_grade_worsen.html">s_count_abnormal_lab_worsen_by_baseline()</a></code>
+        <dd>Helper function to analyze patients for <code><a href="../reference/abnormal_lab_worsen_by_baseline.html">s_count_abnormal_lab_worsen_by_baseline()</a></code>
 </dd>
       </dl>
 <dl>
@@ -1169,18 +1154,18 @@
 <dl>
 <dt>
 
-          <code><a href="combine_levels.html">combine_levels()</a></code>
-          <span class="badge lifecycle lifecycle-stable">stable</span>
-        </dt>
-        <dd>Combine factor levels</dd>
-      </dl>
-<dl>
-<dt>
-
           <code><a href="combine_vectors.html">combine_vectors()</a></code>
 
         </dt>
         <dd>Element-wise combination of two vectors</dd>
+      </dl>
+<dl>
+<dt>
+
+          <code><a href="factor_utils.html">combine_levels()</a></code> <code><a href="factor_utils.html">as_factor_keep_attributes()</a></code> <code><a href="factor_utils.html">fct_discard()</a></code> <code><a href="factor_utils.html">fct_explicit_na_if()</a></code> <code><a href="factor_utils.html">fct_collapse_only()</a></code>
+          <span class="badge lifecycle lifecycle-stable">stable</span>
+        </dt>
+        <dd>Factor utilities</dd>
       </dl>
 <dl>
 <dt>
@@ -1481,10 +1466,10 @@
 <dl>
 <dt>
 
-          <code><a href="as_factor_keep_attributes.html">as_factor_keep_attributes()</a></code>
-
+          <code><a href="factor_utils.html">combine_levels()</a></code> <code><a href="factor_utils.html">as_factor_keep_attributes()</a></code> <code><a href="factor_utils.html">fct_discard()</a></code> <code><a href="factor_utils.html">fct_explicit_na_if()</a></code> <code><a href="factor_utils.html">fct_collapse_only()</a></code>
+          <span class="badge lifecycle lifecycle-stable">stable</span>
         </dt>
-        <dd>Conversion of a vector to a factor</dd>
+        <dd>Factor utilities</dd>
       </dl>
 <dl>
 <dt>
@@ -1493,14 +1478,6 @@
 
         </dt>
         <dd>Labels for bins in percent</dd>
-      </dl>
-<dl>
-<dt>
-
-          <code><a href="combine_levels.html">combine_levels()</a></code>
-          <span class="badge lifecycle lifecycle-stable">stable</span>
-        </dt>
-        <dd>Combine factor levels</dd>
       </dl>
 <dl>
 <dt>
@@ -1615,30 +1592,6 @@
           <span class="badge lifecycle lifecycle-stable">stable</span>
         </dt>
         <dd>Missing data</dd>
-      </dl>
-<dl>
-<dt>
-
-          <code><a href="fct_collapse_only.html">fct_collapse_only()</a></code>
-          <span class="badge lifecycle lifecycle-stable">stable</span>
-        </dt>
-        <dd>Collapse factor levels and keep only those new group levels</dd>
-      </dl>
-<dl>
-<dt>
-
-          <code><a href="fct_discard.html">fct_discard()</a></code>
-          <span class="badge lifecycle lifecycle-stable">stable</span>
-        </dt>
-        <dd>Discard specified levels of a factor</dd>
-      </dl>
-<dl>
-<dt>
-
-          <code><a href="fct_explicit_na_if.html">fct_explicit_na_if()</a></code>
-          <span class="badge lifecycle lifecycle-stable">stable</span>
-        </dt>
-        <dd>Insertion of explicit missing values in a factor</dd>
       </dl>
 <dl>
 <dt>
@@ -1869,6 +1822,22 @@
           <span class="badge lifecycle lifecycle-deprecated">deprecated</span>
         </dt>
         <dd>Helper function to prepare a KM layout</dd>
+      </dl>
+<dl>
+<dt>
+
+          <code><a href="h_split_param.html">h_split_param()</a></code>
+          <span class="badge lifecycle lifecycle-deprecated">deprecated</span>
+        </dt>
+        <dd>Split parameters</dd>
+      </dl>
+<dl>
+<dt>
+
+          <code><a href="h_biomarkers_subgroups.html">h_tab_one_biomarker()</a></code> <code><a href="h_biomarkers_subgroups.html">h_tab_rsp_one_biomarker()</a></code> <code><a href="h_biomarkers_subgroups.html">h_tab_surv_one_biomarker()</a></code>
+          <span class="badge lifecycle lifecycle-deprecated">deprecated</span>
+        </dt>
+        <dd>Helper functions for tabulation of a single biomarker result</dd>
       </dl>
 <dl>
 <dt>

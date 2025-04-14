@@ -15,8 +15,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Summarize analysis of covariance (ANCOVA) results — summarize_ancova">
 <meta name="description" content="
 The analyze function summarize_ancova() creates a layout element to summarize ANCOVA results.
@@ -48,7 +48,7 @@ the ANCOVA results via the interaction_y parameter.">
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.8</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,6 +83,7 @@ the ANCOVA results via the interaction_y parameter.">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8-rc1">v0.9.8-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.7">v0.9.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
@@ -125,7 +126,7 @@ the ANCOVA results via the interaction_y parameter.">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Summarize analysis of covariance (ANCOVA) results</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.7/R/summarize_ancova.R" class="external-link"><code>R/summarize_ancova.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.8/R/summarize_ancova.R" class="external-link"><code>R/summarize_ancova.R</code></a></small>
       <div class="d-none name"><code>summarize_ancova.Rd</code></div>
     </div>
 
@@ -151,40 +152,42 @@ the ANCOVA results via the <code>interaction_y</code> parameter.</p>
 <span>  <span class="va">conf_level</span>,</span>
 <span>  interaction_y <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  interaction_item <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  weights_emmeans <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">var_labels</span>,</span>
 <span>  na_str <span class="op">=</span> <span class="fu"><a href="default_na_str.html">default_na_str</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  show_labels <span class="op">=</span> <span class="st">"visible"</span>,</span>
 <span>  table_names <span class="op">=</span> <span class="va">vars</span>,</span>
-<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"lsmean"</span>, <span class="st">"lsmean_diff"</span>, <span class="st">"lsmean_diff_ci"</span>, <span class="st">"pval"</span><span class="op">)</span>,</span>
+<span>  .stat_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  .indent_mods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>lsmean_diff_ci <span class="op">=</span> <span class="fl">1L</span>, pval <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">s_ancova</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
 <span>  <span class="va">.var</span>,</span>
 <span>  <span class="va">.df_row</span>,</span>
-<span>  <span class="va">variables</span>,</span>
 <span>  <span class="va">.ref_group</span>,</span>
 <span>  <span class="va">.in_ref_col</span>,</span>
+<span>  <span class="va">variables</span>,</span>
 <span>  <span class="va">conf_level</span>,</span>
 <span>  interaction_y <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  interaction_item <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  interaction_item <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  weights_emmeans <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">a_ancova</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
-<span>  <span class="va">.var</span>,</span>
-<span>  <span class="va">.df_row</span>,</span>
-<span>  <span class="va">variables</span>,</span>
-<span>  <span class="va">.ref_group</span>,</span>
-<span>  <span class="va">.in_ref_col</span>,</span>
-<span>  <span class="va">conf_level</span>,</span>
-<span>  interaction_y <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  interaction_item <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .stat_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -234,6 +237,11 @@ used to select the specific ANCOVA results. if the interaction is not needed, th
 with arm. if the interaction is not needed, the default option is <code>NULL</code>.</p></dd>
 
 
+<dt id="arg-weights-emmeans">weights_emmeans<a class="anchor" aria-label="anchor" href="#arg-weights-emmeans"></a>
+</dt>
+<dd><p>(<code>string</code> or <code>NULL</code>)<br> argument from <code><a href="https://rvlenth.github.io/emmeans/reference/emmeans.html" class="external-link">emmeans::emmeans()</a></code></p></dd>
+
+
 <dt id="arg-var-labels">var_labels<a class="anchor" aria-label="anchor" href="#arg-var-labels"></a>
 </dt>
 <dd><p>(<code>character</code>)<br> variable labels.</p></dd>
@@ -273,6 +281,12 @@ times, to avoid warnings from <code>rtables</code>.</p></dd>
 <p>(<code>character</code>)<br> statistics to select for the table.</p>
 <p>Options are: <code>'n', 'lsmean', 'lsmean_diff', 'lsmean_diff_ci', 'pval'</code></p>
 </dd>
+
+
+<dt id="arg--stat-names">.stat_names<a class="anchor" aria-label="anchor" href="#arg--stat-names"></a>
+</dt>
+<dd><p>(<code>character</code>)<br> names of the statistics that are passed directly to name single statistics
+(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
 
 
 <dt id="arg--formats">.formats<a class="anchor" aria-label="anchor" href="#arg--formats"></a>

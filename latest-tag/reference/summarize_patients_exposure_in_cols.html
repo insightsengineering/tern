@@ -15,8 +15,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Count number of patients and sum exposure across all patients in columns — summarize_patients_exposure_in_cols">
 <meta name="description" content="
 The analyze function analyze_patients_exposure_in_cols() creates a layout element to count total numbers of
@@ -56,7 +56,7 @@ analyze_patients_exposure_in_cols() or summarize_patients_exposure_in_cols().">
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.8</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,6 +91,7 @@ analyze_patients_exposure_in_cols() or summarize_patients_exposure_in_cols().">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8-rc1">v0.9.8-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.7">v0.9.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
@@ -133,7 +134,7 @@ analyze_patients_exposure_in_cols() or summarize_patients_exposure_in_cols().">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Count number of patients and sum exposure across all patients in columns</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.7/R/summarize_patients_exposure_in_cols.R" class="external-link"><code>R/summarize_patients_exposure_in_cols.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.8/R/summarize_patients_exposure_in_cols.R" class="external-link"><code>R/summarize_patients_exposure_in_cols.R</code></a></small>
       <div class="d-none name"><code>summarize_patients_exposure_in_cols.Rd</code></div>
     </div>
 
@@ -166,8 +167,10 @@ occurred.</p>
 <span>  col_split <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  na_str <span class="op">=</span> <span class="fu"><a href="default_na_str.html">default_na_str</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_patients"</span>, <span class="st">"sum_exposure"</span><span class="op">)</span>,</span>
+<span>  .stat_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>n_patients <span class="op">=</span> <span class="st">"Patients"</span>, sum_exposure <span class="op">=</span> <span class="st">"Person time"</span><span class="op">)</span>,</span>
-<span>  .indent_mods <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -182,31 +185,33 @@ occurred.</p>
 <span>  na_str <span class="op">=</span> <span class="fu"><a href="default_na_str.html">default_na_str</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_patients"</span>, <span class="st">"sum_exposure"</span><span class="op">)</span>,</span>
+<span>  .stat_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>n_patients <span class="op">=</span> <span class="st">"Patients"</span>, sum_exposure <span class="op">=</span> <span class="st">"Person time"</span><span class="op">)</span>,</span>
 <span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">s_count_patients_sum_exposure</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
-<span>  ex_var <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
-<span>  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
 <span>  labelstr <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_patients"</span>, <span class="st">"sum_exposure"</span><span class="op">)</span>,</span>
 <span>  <span class="va">.N_col</span>,</span>
-<span>  custom_label <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  ex_var <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
+<span>  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
+<span>  custom_label <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  var_level <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">a_count_patients_sum_exposure</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
-<span>  var <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  ex_var <span class="op">=</span> <span class="st">"AVAL"</span>,</span>
-<span>  id <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
-<span>  add_total_level <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  custom_label <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  labelstr <span class="op">=</span> <span class="st">""</span>,</span>
-<span>  <span class="va">.N_col</span>,</span>
-<span>  <span class="va">.stats</span>,</span>
-<span>  .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>n_patients <span class="op">=</span> <span class="st">"xx (xx.x%)"</span>, sum_exposure <span class="op">=</span> <span class="st">"xx"</span><span class="op">)</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .stat_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -267,6 +272,18 @@ column split has been done already earlier in the layout pipe.</p></dd>
 </dd>
 
 
+<dt id="arg--stat-names">.stat_names<a class="anchor" aria-label="anchor" href="#arg--stat-names"></a>
+</dt>
+<dd><p>(<code>character</code>)<br> names of the statistics that are passed directly to name single statistics
+(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
+
+
+<dt id="arg--formats">.formats<a class="anchor" aria-label="anchor" href="#arg--formats"></a>
+</dt>
+<dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics. See Details in <code>analyze_vars</code> for more
+information on the <code>"auto"</code> setting.</p></dd>
+
+
 <dt id="arg--labels">.labels<a class="anchor" aria-label="anchor" href="#arg--labels"></a>
 </dt>
 <dd><p>(named <code>character</code>)<br> labels for the statistics (without indent).</p></dd>
@@ -299,12 +316,6 @@ for more information.</p></dd>
 </dt>
 <dd><p>(<code>integer(1)</code>)<br> column-wise N (column count) for the full column being analyzed that is typically
 passed by <code>rtables</code>.</p></dd>
-
-
-<dt id="arg--formats">.formats<a class="anchor" aria-label="anchor" href="#arg--formats"></a>
-</dt>
-<dd><p>(named <code>character</code> or <code>list</code>)<br> formats for the statistics. See Details in <code>analyze_vars</code> for more
-information on the <code>"auto"</code> setting.</p></dd>
 
 </dl>
 </div>
@@ -457,18 +468,6 @@ pages when pagination is used.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                      Person time</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ————————————————————————————————————————————————</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total patients numbers/person time       114    </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">a_count_patients_sum_exposure</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  df <span class="op">=</span> <span class="va">df</span>,</span></span>
-<span class="r-in"><span>  var <span class="op">=</span> <span class="st">"SEX"</span>,</span></span>
-<span class="r-in"><span>  .N_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  .stats <span class="op">=</span> <span class="st">"n_patients"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   row_name formatted_cell indent_mod row_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   Female      6 (50.0%)          0    Female</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     Male      6 (50.0%)          0      Male</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

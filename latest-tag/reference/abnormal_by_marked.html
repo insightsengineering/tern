@@ -15,8 +15,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Count patients with marked laboratory abnormalities — abnormal_by_marked">
 <meta name="description" content="
 The analyze function count_abnormal_by_marked() creates a layout element to count patients with marked laboratory
@@ -72,7 +72,7 @@ row splits, one on variable param and one on variable direction.">
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.8</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -107,6 +107,7 @@ row splits, one on variable param and one on variable direction.">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8-rc1">v0.9.8-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.7">v0.9.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
@@ -149,7 +150,7 @@ row splits, one on variable param and one on variable direction.">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Count patients with marked laboratory abnormalities</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.7/R/abnormal_by_marked.R" class="external-link"><code>R/abnormal_by_marked.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.8/R/abnormal_by_marked.R" class="external-link"><code>R/abnormal_by_marked.R</code></a></small>
       <div class="d-none name"><code>abnormal_by_marked.Rd</code></div>
     </div>
 
@@ -188,8 +189,9 @@ row splits, one on variable <code>param</code> and one on variable <code>directi
 <span>  na_str <span class="op">=</span> <span class="fu"><a href="default_na_str.html">default_na_str</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span>,</span>
-<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="st">"count_fraction"</span>,</span>
+<span>  .stat_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>count_fraction <span class="op">=</span> <span class="va">format_count_fraction</span><span class="op">)</span>,</span>
 <span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
@@ -199,15 +201,18 @@ row splits, one on variable <code>param</code> and one on variable <code>directi
 <span>  .var <span class="op">=</span> <span class="st">"AVALCAT1"</span>,</span>
 <span>  <span class="va">.spl_context</span>,</span>
 <span>  category <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>single <span class="op">=</span> <span class="st">"SINGLE"</span>, last_replicated <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LAST"</span>, <span class="st">"REPLICATED"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, param <span class="op">=</span> <span class="st">"PARAM"</span>, direction <span class="op">=</span> <span class="st">"abn_dir"</span><span class="op">)</span></span>
+<span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, param <span class="op">=</span> <span class="st">"PARAM"</span>, direction <span class="op">=</span> <span class="st">"abn_dir"</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">a_count_abnormal_by_marked</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
-<span>  .var <span class="op">=</span> <span class="st">"AVALCAT1"</span>,</span>
-<span>  <span class="va">.spl_context</span>,</span>
-<span>  category <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>single <span class="op">=</span> <span class="st">"SINGLE"</span>, last_replicated <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"LAST"</span>, <span class="st">"REPLICATED"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"USUBJID"</span>, param <span class="op">=</span> <span class="st">"PARAM"</span>, direction <span class="op">=</span> <span class="st">"abn_dir"</span><span class="op">)</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .stat_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -256,6 +261,12 @@ underneath analyses, which is not allowed.</p></dd>
 <p>(<code>character</code>)<br> statistics to select for the table.</p>
 <p>Options are: <code>'count_fraction', 'count_fraction_fixed_dp'</code></p>
 </dd>
+
+
+<dt id="arg--stat-names">.stat_names<a class="anchor" aria-label="anchor" href="#arg--stat-names"></a>
+</dt>
+<dd><p>(<code>character</code>)<br> names of the statistics that are passed directly to name single statistics
+(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
 
 
 <dt id="arg--formats">.formats<a class="anchor" aria-label="anchor" href="#arg--formats"></a>

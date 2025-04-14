@@ -15,8 +15,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Tabulation">
 <link rel="stylesheet" href="../consent.css">
 <script src="../consent.js" type="text/javascript" charset="utf-8"></script>
@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.8</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,6 +64,7 @@
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8-rc1">v0.9.8-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.7">v0.9.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
@@ -113,7 +114,7 @@
             
             <h4 data-toc-skip class="date">2022-03-09</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.7/vignettes/tables.Rmd" class="external-link"><code>vignettes/tables.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.8/vignettes/tables.Rmd" class="external-link"><code>vignettes/tables.Rmd</code></a></small>
       <div class="d-none name"><code>tables.Rmd</code></div>
     </div>
 
@@ -176,15 +177,15 @@ useful to help define the analysis.</li>
 the computation of the numbers that are tabulated later. In order to
 separate computation from formatting, they should not take care of
 <code>rcell</code> type formatting themselves.</li>
-<li>formatted analysis functions <code>a_*</code>. These have the same
-arguments as the corresponding statistics functions, and can be further
-customized by calling <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/make_afun.html" class="external-link">rtables::make_afun()</a></code> on them. They
-are used as <code>afun</code> in <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</li>
-<li><strong>analyze functions
-<code>rtables::analyze(..., afun = make_afun(tern::a_*))</code>. Analyze
-functions are used in combination with the <code>rtables</code> layout
-functions, in the pipeline which creates the table. They are the last
-element of the chain.</strong></li>
+<li>formatted analysis functions <code>a_*</code>. These apply
+formatting to results from their corresponding statistics functions.
+They are used as <code>afun</code> in
+<code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</li>
+<li>analyze functions
+<code>rtables::analyze(..., afun = tern::a_*)</code>. Analyze functions
+are used in combination with the <code>rtables</code> layout functions,
+in the pipeline which creates the table. They are the last element of
+the chain.</li>
 </ul>
 <p>We will use the native <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze.html" class="external-link">rtables::analyze</a></code> function with
 the <code>tern</code> formatted analysis functions as a
@@ -195,22 +196,6 @@ the <code>tern</code> formatted analysis functions as a
 <span>    <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze.html" class="external-link">analyze</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span>, afun <span class="op">=</span> <span class="va">a_summary</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l</span>, df <span class="op">=</span> <span class="va">adrs</span><span class="op">)</span></span></code></pre>
-<p>The <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/make_afun.html" class="external-link">rtables::make_afun</a></code> function is helpful when somebody
-wants to attach some format to the formatted analysis function.</p>
-<pre><code><span><span class="va">afun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/make_afun.html" class="external-link">make_afun</a></span><span class="op">(</span></span>
-<span>    <span class="va">a_summary</span>,</span>
-<span>    .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>median <span class="op">=</span> <span class="st">"xx."</span><span class="op">)</span>,</span>
-<span>    .labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>median <span class="op">=</span> <span class="st">"My median"</span><span class="op">)</span>,</span>
-<span>    .indent_mods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>median <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">l2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_rows_by.html" class="external-link">split_rows_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"AVISIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze.html" class="external-link">analyze</a></span><span class="op">(</span>vars <span class="op">=</span> <span class="st">"AVAL"</span>, afun <span class="op">=</span> <span class="va">afun</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">l2</span>, df <span class="op">=</span> <span class="va">adrs</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -260,7 +245,7 @@ demographic properties such as age, sex, race, etc.</p>
 <p>In the example below the only function from <code>tern</code> is
 <code><a href="../reference/analyze_variables.html">analyze_vars()</a></code> and the remaining layout functions are from
 <code>rtables</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Select variables to include in table.</span></span>
 <span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AGE"</span>, <span class="st">"SEX"</span><span class="op">)</span></span>
 <span><span class="va">var_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Age (yr)"</span>, <span class="st">"Sex"</span><span class="op">)</span></span>
@@ -293,7 +278,7 @@ factor variables and explicitly set the order of the levels. This is the
 case for the display order in columns and rows. Note that the
 <code>forcats</code> package has many useful functions to help with
 these types of data processing steps (not used below).</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Reorder the levels in the ARM variable.</span></span>
 <span><span class="va">adsl</span><span class="op">$</span><span class="va">ARM</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">adsl</span><span class="op">$</span><span class="va">ARM</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B: Placebo"</span>, <span class="st">"A: Drug X"</span>, <span class="st">"C: Combination"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -346,7 +331,7 @@ categorical variables we modify the summary to include the number of
 records and the counts of categories. We also modify the display format
 for the mean and standard deviation to print two decimal places instead
 of just one.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Select statistics and modify default formats.</span></span>
 <span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -375,7 +360,7 @@ of just one.</p>
 different datasets to create different summaries. For example, here we
 can easily create the same summary of demographics for the Brazil and
 China subgroups, respectively:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lyt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/add_overall_col.html" class="external-link">add_overall_col</a></span><span class="op">(</span><span class="st">"All Patients"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -429,7 +414,7 @@ layout creating functions in a tabulation pipeline.</p>
 <p>We start by creating the high-level summary. The layout creating
 function in <code>tern</code> that can do this is
 <code><a href="../reference/summarize_num_patients.html">summarize_num_patients()</a></code>:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ACTARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -481,7 +466,7 @@ analysis.</p>
 The results of this Statistics function is a list with the elements
 <code>unique</code>, <code>nonunique</code> and
 <code>unique_count</code>:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/summarize_num_patients.html">s_num_patients</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">adae</span><span class="op">$</span><span class="va">USUBJID</span>, labelstr <span class="op">=</span> <span class="st">""</span>, .N_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">adae</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $unique</span></span>
 <span><span class="co">#&gt; [1] 365.000000   0.188728</span></span>
@@ -512,7 +497,7 @@ statistic. The result will show only the counts of unique patients. Note
 we make this update in both the <code>.stats</code> and
 <code>.labels</code> argument of
 <code><a href="../reference/summarize_num_patients.html">summarize_num_patients()</a></code>.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ACTARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -536,7 +521,7 @@ table.</p>
 at each system organ class level. To do this we split the analysis data
 with <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_rows_by.html" class="external-link">split_rows_by()</a></code> before calling again
 <code><a href="../reference/summarize_num_patients.html">summarize_num_patients()</a></code>.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ACTARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -599,7 +584,7 @@ creating function that can produce a count table of event frequencies.
 The layout creating function for this is
 <code><a href="../reference/count_occurrences.html">count_occurrences()</a></code>. Let’s first try using this function in
 a simpler layout without row splits:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ACTARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -623,7 +608,7 @@ a simpler layout without row splits:</p>
 <span><span class="co">#&gt; dcd D.1.1.4.2   48 (35.8%)   42 (31.3%)     50 (37.9%)     140 (35.0%) </span></span>
 <span><span class="co">#&gt; dcd D.2.1.5.3   47 (35.1%)   58 (43.3%)     57 (43.2%)     162 (40.5%)</span></span></code></pre></div>
 <p>Putting everything together, the final AE table looks like this:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ACTARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -714,7 +699,7 @@ analysis dataset. We select the endpoint to analyze from
 <code>PARAMCD</code> and define the logical variable <code>is_rsp</code>
 which indicates whether a patient is classified as a responder or
 not.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Preprocessing to select an analysis endpoint.</span></span>
 <span><span class="va">anl</span> <span class="op">&lt;-</span> <span class="va">adrs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"BESRSPI"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -722,7 +707,7 @@ not.</p>
 <p>To create a summary of the proportion of responders in each treatment
 group, use the <code><a href="../reference/estimate_proportion.html">estimate_proportion()</a></code> layout creating
 function:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -740,7 +725,7 @@ function:</p>
 use the argument <code>ref_group</code> from
 <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">split_cols_by()</a></code>. Below we change the reference arm to “B:
 Placebo” and so this arm is displayed as the first column:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -756,7 +741,7 @@ Placebo” and so this arm is displayed as the first column:</p>
 <p>To further customize the analysis, we can use the <code>method</code>
 and <code>conf_level</code> arguments to modify the type of confidence
 interval that is calculated:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -775,7 +760,7 @@ interval that is calculated:</p>
 response rates between the reference arm each comparison arm. Use
 <code><a href="../reference/prop_diff.html">estimate_proportion_diff()</a></code> layout creating function for
 this:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -795,7 +780,7 @@ this:</p>
 test for the difference in response rates. Use the
 <code><a href="../reference/prop_diff_test.html">test_proportion_diff()</a></code> layout creating function for
 this:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -807,7 +792,7 @@ this:</p>
 <span><span class="co">#&gt;   p-value (Chi-Squared Test)    0.0006                     &lt;0.0001</span></span></code></pre></div>
 <p>To customize the output, we use the <code>method</code> argument to
 select a Chi-Squared test with Schouten correction.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -826,7 +811,7 @@ analysis variable in all table sections is the same
 (<code>is_rsp</code>), we need to give each sub-table a unique name.
 This is done by adding the <code>table_names</code> argument and
 providing unique names through that:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">split_cols_by</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ARM"</span>, ref_group <span class="op">=</span> <span class="st">"B: Placebo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/add_colcounts.html" class="external-link">add_colcounts</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>

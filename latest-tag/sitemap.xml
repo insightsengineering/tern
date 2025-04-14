@@ -17,7 +17,7 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/abnormal_by_baseline.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/abnormal_by_marked.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/abnormal_by_worst_grade.html</loc></url>
-<url><loc>https://insightsengineering.github.io/tern/reference/abnormal_by_worst_grade_worsen.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern/reference/abnormal_lab_worsen_by_baseline.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/add_riskdiff.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/add_rowcounts.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/aesi_label.html</loc></url>
@@ -32,7 +32,6 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/argument_convention.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/arrange_grobs.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/as.rtable.html</loc></url>
-<url><loc>https://insightsengineering.github.io/tern/reference/as_factor_keep_attributes.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/assertions.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/bins_percent_labels.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/c_label_n.html</loc></url>
@@ -43,7 +42,6 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/combination_function.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/combine_counts.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/combine_groups.html</loc></url>
-<url><loc>https://insightsengineering.github.io/tern/reference/combine_levels.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/combine_vectors.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/compare_variables.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/control_analyze_vars.html</loc></url>
@@ -103,9 +101,7 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/extreme_format.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/f_conf_level.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/f_pval.html</loc></url>
-<url><loc>https://insightsengineering.github.io/tern/reference/fct_collapse_only.html</loc></url>
-<url><loc>https://insightsengineering.github.io/tern/reference/fct_discard.html</loc></url>
-<url><loc>https://insightsengineering.github.io/tern/reference/fct_explicit_na_if.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern/reference/factor_utils.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/fit_coxreg.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/fit_logistic.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/fit_rsp_step.html</loc></url>
@@ -138,6 +134,7 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/h_adsl_adlb_merge_using_worst_flag.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/h_ancova.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/h_append_grade_groups.html</loc></url>
+<url><loc>https://insightsengineering.github.io/tern/reference/h_biomarkers_subgroups.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/h_col_indices.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/h_count_cumulative.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/h_cox_regression.html</loc></url>
@@ -169,7 +166,6 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/h_step.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/h_survival_biomarkers_subgroups.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/h_survival_duration_subgroups.html</loc></url>
-<url><loc>https://insightsengineering.github.io/tern/reference/h_tab_one_biomarker.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/h_tbl_coxph_pairwise.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/h_tbl_median_surv.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/h_worsen_counter.html</loc></url>
@@ -228,7 +224,6 @@
 <url><loc>https://insightsengineering.github.io/tern/reference/to_n.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/to_string_matrix.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/try_car_anova.html</loc></url>
-<url><loc>https://insightsengineering.github.io/tern/reference/ungroup_stats.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/univariate.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/unlist_and_blank_na.html</loc></url>
 <url><loc>https://insightsengineering.github.io/tern/reference/update_weights_strat_wilson.html</loc></url>

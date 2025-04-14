@@ -15,8 +15,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Proportion difference estimation — prop_diff">
 <meta name="description" content="
 The analysis function estimate_proportion_diff() creates a layout element to estimate the difference in proportion
@@ -42,7 +42,7 @@ strata element of the variables argument.">
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.8</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,6 +77,7 @@ strata element of the variables argument.">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8-rc1">v0.9.8-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.7">v0.9.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
@@ -119,7 +120,7 @@ strata element of the variables argument.">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Proportion difference estimation</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.7/R/prop_diff.R" class="external-link"><code>R/prop_diff.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.8/R/prop_diff.R" class="external-link"><code>R/prop_diff.R</code></a></small>
       <div class="d-none name"><code>prop_diff.Rd</code></div>
     </div>
 
@@ -143,16 +144,19 @@ constructing the confidence interval of the proportion difference. A stratificat
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"waldcc"</span>, <span class="st">"wald"</span>, <span class="st">"cmh"</span>, <span class="st">"ha"</span>, <span class="st">"newcombe"</span>, <span class="st">"newcombecc"</span>, <span class="st">"strat_newcombe"</span>,</span>
 <span>    <span class="st">"strat_newcombecc"</span><span class="op">)</span>,</span>
 <span>  weights_method <span class="op">=</span> <span class="st">"cmh"</span>,</span>
+<span>  var_labels <span class="op">=</span> <span class="va">vars</span>,</span>
 <span>  na_str <span class="op">=</span> <span class="fu"><a href="default_na_str.html">default_na_str</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  <span class="va">...</span>,</span>
-<span>  var_labels <span class="op">=</span> <span class="va">vars</span>,</span>
 <span>  show_labels <span class="op">=</span> <span class="st">"hidden"</span>,</span>
 <span>  table_names <span class="op">=</span> <span class="va">vars</span>,</span>
-<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  section_div <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  na_rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"diff"</span>, <span class="st">"diff_ci"</span><span class="op">)</span>,</span>
+<span>  .stat_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>diff <span class="op">=</span> <span class="st">"xx.x"</span>, diff_ci <span class="op">=</span> <span class="st">"(xx.x, xx.x)"</span><span class="op">)</span>,</span>
 <span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  .indent_mods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>diff <span class="op">=</span> <span class="fl">0L</span>, diff_ci <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">s_proportion_diff</span><span class="op">(</span></span>
@@ -164,19 +168,18 @@ constructing the confidence interval of the proportion difference. A stratificat
 <span>  conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"waldcc"</span>, <span class="st">"wald"</span>, <span class="st">"cmh"</span>, <span class="st">"ha"</span>, <span class="st">"newcombe"</span>, <span class="st">"newcombecc"</span>, <span class="st">"strat_newcombe"</span>,</span>
 <span>    <span class="st">"strat_newcombecc"</span><span class="op">)</span>,</span>
-<span>  weights_method <span class="op">=</span> <span class="st">"cmh"</span></span>
+<span>  weights_method <span class="op">=</span> <span class="st">"cmh"</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">a_proportion_diff</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
-<span>  <span class="va">.var</span>,</span>
-<span>  <span class="va">.ref_group</span>,</span>
-<span>  <span class="va">.in_ref_col</span>,</span>
-<span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>strata <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span>
-<span>  conf_level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"waldcc"</span>, <span class="st">"wald"</span>, <span class="st">"cmh"</span>, <span class="st">"ha"</span>, <span class="st">"newcombe"</span>, <span class="st">"newcombecc"</span>, <span class="st">"strat_newcombe"</span>,</span>
-<span>    <span class="st">"strat_newcombecc"</span><span class="op">)</span>,</span>
-<span>  weights_method <span class="op">=</span> <span class="st">"cmh"</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .stat_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -217,6 +220,11 @@ constructing the confidence interval of the proportion difference. A stratificat
 and directs the way weights are estimated.</p></dd>
 
 
+<dt id="arg-var-labels">var_labels<a class="anchor" aria-label="anchor" href="#arg-var-labels"></a>
+</dt>
+<dd><p>(<code>character</code>)<br> variable labels.</p></dd>
+
+
 <dt id="arg-na-str">na_str<a class="anchor" aria-label="anchor" href="#arg-na-str"></a>
 </dt>
 <dd><p>(<code>string</code>)<br> string used to replace all <code>NA</code> or empty values in the output.</p></dd>
@@ -227,16 +235,6 @@ and directs the way weights are estimated.</p></dd>
 <dd><p>(<code>flag</code>)<br> whether this layout instruction should be applied within the existing layout structure _if
 possible (<code>TRUE</code>, the default) or as a new top-level element (<code>FALSE</code>). Ignored if it would nest a split.
 underneath analyses, which is not allowed.</p></dd>
-
-
-<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a>
-</dt>
-<dd><p>additional arguments for the lower level functions.</p></dd>
-
-
-<dt id="arg-var-labels">var_labels<a class="anchor" aria-label="anchor" href="#arg-var-labels"></a>
-</dt>
-<dd><p>(<code>character</code>)<br> variable labels.</p></dd>
 
 
 <dt id="arg-show-labels">show_labels<a class="anchor" aria-label="anchor" href="#arg-show-labels"></a>
@@ -250,12 +248,34 @@ underneath analyses, which is not allowed.</p></dd>
 times, to avoid warnings from <code>rtables</code>.</p></dd>
 
 
+<dt id="arg-section-div">section_div<a class="anchor" aria-label="anchor" href="#arg-section-div"></a>
+</dt>
+<dd><p>(<code>string</code>)<br> string which should be repeated as a section divider after each group
+defined by this split instruction, or <code>NA_character_</code> (the default) for no section divider.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a>
+</dt>
+<dd><p>additional arguments for the lower level functions.</p></dd>
+
+
+<dt id="arg-na-rm">na_rm<a class="anchor" aria-label="anchor" href="#arg-na-rm"></a>
+</dt>
+<dd><p>(<code>flag</code>)<br> whether <code>NA</code> values should be removed from <code>x</code> prior to analysis.</p></dd>
+
+
 <dt id="arg--stats">.stats<a class="anchor" aria-label="anchor" href="#arg--stats"></a>
 </dt>
 <dd>
 <p>(<code>character</code>)<br> statistics to select for the table.</p>
 <p>Options are: <code>'diff', 'diff_ci'</code></p>
 </dd>
+
+
+<dt id="arg--stat-names">.stat_names<a class="anchor" aria-label="anchor" href="#arg--stat-names"></a>
+</dt>
+<dd><p>(<code>character</code>)<br> names of the statistics that are passed directly to name single statistics
+(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
 
 
 <dt id="arg--formats">.formats<a class="anchor" aria-label="anchor" href="#arg--formats"></a>
@@ -373,12 +393,14 @@ not permitted.</p>
 <span class="r-in"><span>  method <span class="op">=</span> <span class="st">"ha"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $diff</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> diff_ha </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      12 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Difference in Response rate (%)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $diff_ci</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -5.374519 29.374519</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> diff_ci_ha_l diff_ci_ha_u </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    -5.374519    29.374519 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "90% CI (Anderson-Hauck)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -394,18 +416,21 @@ not permitted.</p>
 <span class="r-in"><span>  method <span class="op">=</span> <span class="st">"cmh"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $diff</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12.05847</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> diff_cmh </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12.05847 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Difference in Response rate (%)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $diff_ci</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -2.67057 26.78750</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> diff_ci_cmh_l diff_ci_cmh_u </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      -2.67057      26.78750 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"label")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "90% CI (CMH, without correction)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">a_proportion_diff</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">dta</span>, <span class="va">grp</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  .stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"diff"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  .var <span class="op">=</span> <span class="st">"rsp"</span>,</span></span>
 <span class="r-in"><span>  .ref_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">dta</span>, <span class="va">grp</span> <span class="op">==</span> <span class="st">"B"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  .in_ref_col <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
@@ -415,8 +440,7 @@ not permitted.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   row_name formatted_cell indent_mod                       row_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     diff           12.0          0 Difference in Response rate (%)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  diff_ci   (-5.4, 29.4)          1         90% CI (Anderson-Hauck)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     diff             12          0 Difference in Response rate (%)</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

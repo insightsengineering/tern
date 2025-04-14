@@ -15,8 +15,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Changelog">
 <meta property="og:image" content="https://insightsengineering.github.io/tern/logo.png">
 <link rel="stylesheet" href="../consent.css">
@@ -30,7 +30,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.8</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,6 +65,7 @@
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8-rc1">v0.9.8-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.7">v0.9.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
@@ -107,12 +108,56 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.7/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.8/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.9.8" id="tern-098">tern 0.9.8<a class="anchor" aria-label="anchor" href="#tern-098"></a>
+</h2>
+<p class="text-muted">CRAN release: 2025-04-14</p>
+<div class="section level4">
+<h4 id="enhancements-0-9-8">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-9-8"></a>
+</h4>
+<ul>
+<li>Refactored <code><a href="../reference/abnormal.html">count_abnormal()</a></code>, <code><a href="../reference/abnormal_by_baseline.html">count_abnormal_by_baseline()</a></code>, <code><a href="../reference/abnormal_by_marked.html">count_abnormal_by_marked()</a></code>, <code><a href="../reference/abnormal_by_worst_grade.html">count_abnormal_by_worst_grade()</a></code>, <code><a href="../reference/abnormal_lab_worsen_by_baseline.html">count_abnormal_lab_worsen_by_baseline()</a></code>, <code><a href="../reference/count_cumulative.html">count_cumulative()</a></code>, <code><a href="../reference/count_missed_doses.html">count_missed_doses()</a></code>, <code><a href="../reference/survival_coxph_pairwise.html">coxph_pairwise()</a></code>, <code><a href="../reference/estimate_multinomial_rsp.html">estimate_multinomial_rsp()</a></code>, <code><a href="../reference/estimate_proportion.html">estimate_proportion()</a></code>, <code><a href="../reference/prop_diff.html">estimate_proportion_diff()</a></code>, <code><a href="../reference/odds_ratio.html">estimate_odds_ratio()</a></code>, <code><a href="../reference/summarize_ancova.html">summarize_ancova()</a></code>, <code><a href="../reference/summarize_glm_count.html">summarize_glm_count()</a></code>, <code><a href="../reference/summarize_num_patients.html">summarize_num_patients()</a></code>, <code><a href="../reference/survival_timepoint.html">surv_timepoint()</a></code>, and <code><a href="../reference/prop_diff_test.html">test_proportion_diff()</a></code> to work without <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/make_afun.html" class="external-link">make_afun()</a></code>.</li>
+<li>Refactored <code><a href="../reference/afun_riskdiff.html">afun_riskdiff()</a></code>, <code><a href="../reference/count_occurrences.html">count_occurrences()</a></code>, <code><a href="../reference/count_occurrences_by_grade.html">count_occurrences_by_grade()</a></code>, <code><a href="../reference/count_patients_with_event.html">count_patients_with_event()</a></code>, <code><a href="../reference/count_patients_with_flags.html">count_patients_with_flags()</a></code>, <code><a href="../reference/count_values.html">count_values()</a></code>, <code><a href="../reference/incidence_rate.html">estimate_incidence_rate()</a></code>, <code><a href="../reference/h_biomarkers_subgroups.html">h_tab_one_biomarker()</a></code>, <code><a href="../reference/summarize_change.html">summarize_change()</a></code>, <code><a href="../reference/summarize_colvars.html">summarize_colvars()</a></code>, <code><a href="../reference/summarize_patients_exposure_in_cols.html">summarize_patients_exposure_in_cols()</a></code>, <code><a href="../reference/survival_time.html">survival_time()</a></code>, <code><a href="../reference/response_subgroups.html">tabulate_rsp_subgroups()</a></code>, <code><a href="../reference/survival_duration_subgroups.html">tabulate_survival_subgroups()</a></code>, <code><a href="../reference/response_biomarkers_subgroups.html">tabulate_rsp_biomarkers()</a></code>, and <code><a href="../reference/survival_biomarkers_subgroups.html">tabulate_survival_biomarkers()</a></code> to align with new analysis function style.</li>
+<li>Added <code>geom_sd</code> and <code>geom_mean_sd</code> to <code><a href="../reference/analyze_variables.html">s_summary()</a></code> as default available statistics.</li>
+<li>Added <code>denom</code> parameter to <code><a href="../reference/estimate_proportion.html">estimate_proportion()</a></code>.</li>
+<li>Added <code>weights_emmeans</code> argument to <code><a href="../reference/summarize_ancova.html">summarize_ancova()</a></code>.</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="bug-fixes-0-9-8">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-9-8"></a>
+</h4>
+<ul>
+<li>Fixed bug in <code><a href="../reference/count_patients_with_flags.html">a_count_patients_with_flags()</a></code> preventing select custom label/indentation formats from being applied.</li>
+<li>Fixed bug in <code><a href="../reference/response_subgroups.html">tabulate_rsp_subgroups()</a></code> and <code><a href="../reference/survival_duration_subgroups.html">tabulate_survival_subgroups()</a></code> preventing the <code>pct</code> option from having an effect when adding a risk difference column.</li>
+<li>Fixed bug with the order of <code>.stats</code> when adding custom statistical functions.</li>
+<li>Fixed bug with multiple custom functions not being represented correctly as a list of output stats.</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="miscellaneous-0-9-8">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-0-9-8"></a>
+</h4>
+<ul>
+<li>Began deprecation of the unused <code>table_names</code> argument to <code><a href="../reference/abnormal_lab_worsen_by_baseline.html">count_abnormal_lab_worsen_by_baseline()</a></code>.</li>
+<li>Began deprecation of the unused <code><a href="../reference/h_split_param.html">h_split_param()</a></code> function.</li>
+<li>Began deprecation of the unused <code>label_all</code> parameter to <code><a href="../reference/response_subgroups.html">tabulate_rsp_subgroups()</a></code>, with redirection to the same parameter in <code><a href="../reference/extract_rsp_subgroups.html">extract_rsp_subgroups()</a></code>.</li>
+<li>Began deprecation of the no longer used helper functions <code><a href="../reference/h_biomarkers_subgroups.html">h_tab_one_biomarker()</a></code>, <code><a href="../reference/h_biomarkers_subgroups.html">h_tab_rsp_one_biomarker()</a></code>, and <code><a href="../reference/h_biomarkers_subgroups.html">h_tab_surv_one_biomarker()</a></code>.</li>
+<li>Updated documentation to remove suggestions to use <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/make_afun.html" class="external-link">make_afun()</a></code>.</li>
+<li>Added warnings for <code>geom_mean</code> statistical output.</li>
+<li>Moved helper functions <code><a href="../reference/h_biomarkers_subgroups.html">h_tab_rsp_one_biomarker()</a></code> and <code><a href="../reference/h_biomarkers_subgroups.html">h_tab_surv_one_biomarker()</a></code> into <code>h_biomarkers_subgroups.R</code>.</li>
+<li>Reorganized the utility documentation related to factors (<code>utils_factor.R</code>) into a single file.</li>
+<li>Converted <code><a href="../reference/factor_utils.html">as_factor_keep_attributes()</a></code> to an exported function.</li>
+<li>Removed internal function <code>ungroup_stats()</code> and replaced its usage with the <code>get_*_from_stats()</code> functions.</li>
+<li>Removed <code>s_count_nonmissing()</code> as it is a non-repeated small and internal function.</li>
+</ul>
+</div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.9.7" id="tern-097">tern 0.9.7<a class="anchor" aria-label="anchor" href="#tern-097"></a>
 </h2>
+<p class="text-muted">CRAN release: 2025-01-17</p>
 <div class="section level4">
 <h4 id="enhancements-0-9-7">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-9-7"></a>
 </h4>
@@ -740,7 +785,7 @@
 <li>Added deprecated badge to <code>g_mmrm</code>.</li>
 <li>Removed internal function calls in examples (<code>tern:::</code>) and added <code>dontrun</code> to internal function examples.</li>
 <li>Removed warnings and messages to console occurring in examples and tests.</li>
-<li>Deprecated functions <code>color_palette</code> and <code>h_set_nest_theme</code> in favor of <code><a href="https://rdrr.io/pkg/nestcolor/man/color_palette.html" class="external-link">nestcolor::color_palette</a></code> and <code><a href="https://rdrr.io/pkg/nestcolor/man/theme_nest.html" class="external-link">nestcolor::theme_nest</a></code>, respectively.</li>
+<li>Deprecated functions <code>color_palette</code> and <code>h_set_nest_theme</code> in favor of <code><a href="https://insightsengineering.github.io/nestcolor/latest-tag/reference/color_palette.html" class="external-link">nestcolor::color_palette</a></code> and <code><a href="https://insightsengineering.github.io/nestcolor/latest-tag/reference/theme_nest.html" class="external-link">nestcolor::theme_nest</a></code>, respectively.</li>
 <li>Removed deprecated functions: <code>color_palette</code>, <code>color_palette_core</code>, <code>h_set_nest_theme</code>, <code>s_cox_univariate</code>.</li>
 <li>Removed deprecated MMRM functions: <code>fit_mmrm</code>, <code>g_mmrm_diagnostic</code>, <code>g_mmrm_lsmeans</code>, <code>as.rtable.mmrm</code>, <code>h_mmrm_fixed</code>, <code>h_mmrm_cov</code>, <code>h_mmrm_diagnostic</code>, <code>tidy.mmrm</code>, <code>s_mmrm_lsmeans</code>, <code>s_mmrm_lsmeans_single</code>, <code>summarize_lsmeans</code>.</li>
 <li>Renamed functions <code>arm</code> to <code>study_arm</code> and <code>extract</code> to <code>extract_by_name</code>.</li>

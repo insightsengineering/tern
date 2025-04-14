@@ -15,8 +15,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Understanding `tern` functions">
 <link rel="stylesheet" href="../consent.css">
 <script src="../consent.js" type="text/javascript" charset="utf-8"></script>
@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.8</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,6 +64,7 @@
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8-rc1">v0.9.8-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.7">v0.9.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
@@ -113,7 +114,7 @@
             
             <h4 data-toc-skip class="date">2024-11-04</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.7/vignettes/tern_functions_guide.Rmd" class="external-link"><code>vignettes/tern_functions_guide.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.8/vignettes/tern_functions_guide.Rmd" class="external-link"><code>vignettes/tern_functions_guide.Rmd</code></a></small>
       <div class="d-none name"><code>tern_functions_guide.Rmd</code></div>
     </div>
 
@@ -229,23 +230,23 @@ as follows:</p>
 <span>  <span class="fu"><a href="../reference/summarize_change.html">summarize_change</a></span><span class="op">(</span><span class="st">"CHG"</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>value <span class="op">=</span> <span class="st">"AVAL"</span>, baseline_flag <span class="op">=</span> <span class="st">"ABLFLL"</span><span class="op">)</span>, na_rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">dta_test</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                     A               B         C </span></span>
-<span><span class="co">#&gt; ————————————————————————————————————————————————</span></span>
-<span><span class="co">#&gt; V1                                              </span></span>
-<span><span class="co">#&gt;   n                 2               1         0 </span></span>
-<span><span class="co">#&gt;   Mean (SD)    7.50 (2.12)      3.00 (NA)     NA</span></span>
-<span><span class="co">#&gt;   Median          7.50            3.00        NA</span></span>
-<span><span class="co">#&gt;   Min - Max    6.00 - 9.00     3.00 - 3.00    NA</span></span>
-<span><span class="co">#&gt; V2                                              </span></span>
-<span><span class="co">#&gt;   n                 2               1         0 </span></span>
-<span><span class="co">#&gt;   Mean (SD)   -1.00 (0.00)     -1.00 (NA)     NA</span></span>
-<span><span class="co">#&gt;   Median          -1.00           -1.00       NA</span></span>
-<span><span class="co">#&gt;   Min - Max   -1.00 - -1.00   -1.00 - -1.00   NA</span></span>
-<span><span class="co">#&gt; V3                                              </span></span>
-<span><span class="co">#&gt;   n                 2               1         0 </span></span>
-<span><span class="co">#&gt;   Mean (SD)   -2.00 (0.00)     -2.00 (NA)     NA</span></span>
-<span><span class="co">#&gt;   Median          -2.00           -2.00       NA</span></span>
-<span><span class="co">#&gt;   Min - Max   -2.00 - -2.00   -2.00 - -2.00   NA</span></span>
+<span><span class="co">#&gt;                     A         B    C </span></span>
+<span><span class="co">#&gt; —————————————————————————————————————</span></span>
+<span><span class="co">#&gt; V1                                   </span></span>
+<span><span class="co">#&gt;   n                 2         2    2 </span></span>
+<span><span class="co">#&gt;   Mean (SD)    7.50 (2.12)    NA   NA</span></span>
+<span><span class="co">#&gt;   Median          7.50        NA   NA</span></span>
+<span><span class="co">#&gt;   Min - Max    6.00 - 9.00    NA   NA</span></span>
+<span><span class="co">#&gt; V2                                   </span></span>
+<span><span class="co">#&gt;   n                 2         2    2 </span></span>
+<span><span class="co">#&gt;   Mean (SD)   -1.00 (0.00)    NA   NA</span></span>
+<span><span class="co">#&gt;   Median          -1.00       NA   NA</span></span>
+<span><span class="co">#&gt;   Min - Max   -1.00 - -1.00   NA   NA</span></span>
+<span><span class="co">#&gt; V3                                   </span></span>
+<span><span class="co">#&gt;   n                 2         2    2 </span></span>
+<span><span class="co">#&gt;   Mean (SD)   -2.00 (0.00)    NA   NA</span></span>
+<span><span class="co">#&gt;   Median          -2.00       NA   NA</span></span>
+<span><span class="co">#&gt;   Min - Max   -2.00 - -2.00   NA   NA</span></span>
 <span></span>
 <span><span class="co"># changing the NA string (it is done on all levels)</span></span>
 <span><span class="va">fix_layout</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>

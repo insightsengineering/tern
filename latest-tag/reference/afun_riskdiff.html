@@ -15,8 +15,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Analysis function to calculate risk difference column values — afun_riskdiff">
 <meta name="description" content="In the risk difference column, this function uses the statistics function associated with afun to
 calculates risk difference values from arm X (reference group) and arm Y. These arms are specified
@@ -40,7 +40,7 @@ function utilizes the stat_propdiff_ci() function to perform risk difference cal
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.8</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,6 +75,7 @@ function utilizes the stat_propdiff_ci() function to perform risk difference cal
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8-rc1">v0.9.8-rc1</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.7">v0.9.7</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.6">v0.9.6</a>
@@ -117,7 +118,7 @@ function utilizes the stat_propdiff_ci() function to perform risk difference cal
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Analysis function to calculate risk difference column values</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.7/R/riskdiff.R" class="external-link"><code>R/riskdiff.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.8/R/riskdiff.R" class="external-link"><code>R/riskdiff.R</code></a></small>
       <div class="d-none name"><code>afun_riskdiff.Rd</code></div>
     </div>
 
@@ -135,19 +136,13 @@ function utilizes the <code><a href="stat_propdiff_ci.html">stat_propdiff_ci()</
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">afun_riskdiff</span><span class="op">(</span></span>
 <span>  <span class="va">df</span>,</span>
 <span>  labelstr <span class="op">=</span> <span class="st">""</span>,</span>
-<span>  <span class="va">.var</span>,</span>
-<span>  <span class="va">.N_col</span>,</span>
-<span>  <span class="va">.N_row</span>,</span>
-<span>  <span class="va">.df_row</span>,</span>
-<span>  <span class="va">.spl_context</span>,</span>
-<span>  <span class="va">.all_col_counts</span>,</span>
-<span>  <span class="va">.stats</span>,</span>
+<span>  <span class="va">afun</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  .stats <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .stat_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .formats <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  .labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  na_str <span class="op">=</span> <span class="fu"><a href="default_na_str.html">default_na_str</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  <span class="va">afun</span>,</span>
-<span>  s_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  .indent_mods <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -169,44 +164,27 @@ function utilizes the <code><a href="stat_propdiff_ci.html">stat_propdiff_ci()</
 for more information.</p></dd>
 
 
-<dt id="arg--var">.var<a class="anchor" aria-label="anchor" href="#arg--var"></a>
+<dt id="arg-afun">afun<a class="anchor" aria-label="anchor" href="#arg-afun"></a>
 </dt>
-<dd><p>(<code>string</code>)<br> single variable name that is passed by <code>rtables</code> when requested
-by a statistics function.</p></dd>
+<dd><p>(named <code>list</code>)<br> a named list containing one name-value pair where the name corresponds to
+the name of the statistics function that should be used in calculations and the value is the corresponding
+analysis function.</p></dd>
 
 
-<dt id="arg--n-col">.N_col<a class="anchor" aria-label="anchor" href="#arg--n-col"></a>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a>
 </dt>
-<dd><p>(<code>integer(1)</code>)<br> column-wise N (column count) for the full column being analyzed that is typically
-passed by <code>rtables</code>.</p></dd>
-
-
-<dt id="arg--n-row">.N_row<a class="anchor" aria-label="anchor" href="#arg--n-row"></a>
-</dt>
-<dd><p>(<code>integer(1)</code>)<br> row-wise N (row group count) for the group of observations being analyzed
-(i.e. with no column-based subsetting) that is typically passed by <code>rtables</code>.</p></dd>
-
-
-<dt id="arg--df-row">.df_row<a class="anchor" aria-label="anchor" href="#arg--df-row"></a>
-</dt>
-<dd><p>(<code>data.frame</code>)<br> data frame across all of the columns for the given row split.</p></dd>
-
-
-<dt id="arg--spl-context">.spl_context<a class="anchor" aria-label="anchor" href="#arg--spl-context"></a>
-</dt>
-<dd><p>(<code>data.frame</code>)<br> gives information about ancestor split states
-that is passed by <code>rtables</code>.</p></dd>
-
-
-<dt id="arg--all-col-counts">.all_col_counts<a class="anchor" aria-label="anchor" href="#arg--all-col-counts"></a>
-</dt>
-<dd><p>(<code>integer</code>)<br> vector where each value represents a global count for a column. Values are
-taken from <code>alt_counts_df</code> if specified (see <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">rtables::build_table()</a></code>).</p></dd>
+<dd><p>additional arguments for the lower level functions.</p></dd>
 
 
 <dt id="arg--stats">.stats<a class="anchor" aria-label="anchor" href="#arg--stats"></a>
 </dt>
 <dd><p>(<code>character</code>)<br> statistics to select for the table.</p></dd>
+
+
+<dt id="arg--stat-names">.stat_names<a class="anchor" aria-label="anchor" href="#arg--stat-names"></a>
+</dt>
+<dd><p>(<code>character</code>)<br> names of the statistics that are passed directly to name single statistics
+(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
 
 
 <dt id="arg--formats">.formats<a class="anchor" aria-label="anchor" href="#arg--formats"></a>
@@ -224,24 +202,6 @@ information on the <code>"auto"</code> setting.</p></dd>
 </dt>
 <dd><p>(named <code>integer</code>)<br> indent modifiers for the labels. Defaults to 0, which corresponds to the
 unmodified default behavior. Can be negative.</p></dd>
-
-
-<dt id="arg-na-str">na_str<a class="anchor" aria-label="anchor" href="#arg-na-str"></a>
-</dt>
-<dd><p>(<code>string</code>)<br> string used to replace all <code>NA</code> or empty values in the output.</p></dd>
-
-
-<dt id="arg-afun">afun<a class="anchor" aria-label="anchor" href="#arg-afun"></a>
-</dt>
-<dd><p>(named <code>list</code>)<br> a named list containing one name-value pair where the name corresponds to
-the name of the statistics function that should be used in calculations and the value is the corresponding
-analysis function.</p></dd>
-
-
-<dt id="arg-s-args">s_args<a class="anchor" aria-label="anchor" href="#arg-s-args"></a>
-</dt>
-<dd><p>(named <code>list</code>)<br> additional arguments to be passed to the statistics function and analysis
-function supplied in <code>afun</code>.</p></dd>
 
 </dl>
 </div>
