@@ -1,6 +1,6 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.9.8
+Version: 0.9.8.433
 Date: 2025-04-07
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre"),
@@ -28,7 +28,7 @@ URL: https://insightsengineering.github.io/tern/,
     https://github.com/insightsengineering/tern/
 BugReports: https://github.com/insightsengineering/tern/issues
 Depends:
-    R (>= 4.4.0),
+    R (>= 4.3.3),
     rtables (>= 0.6.12)
 Imports:
     broom (>= 0.5.4),
