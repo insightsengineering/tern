@@ -185,8 +185,8 @@ g_lineplot <- function(df,
   checkmate::assert_logical(as_list)
 
   if (!is.null(table)) {
-    table_format <- get_formats_from_stats(table)
-    table_labels <- get_labels_from_stats(table) %>% .unlist_keep_nulls()
+    table_format <- get_formats_from_stats(table) %>% modifyList(table_format %||% list())
+    table_labels <- get_labels_from_stats(table) %>% modifyList(table_labels %||% list()) %>% .unlist_keep_nulls()
   }
 
   extra_args <- list(...)
@@ -538,7 +538,7 @@ g_lineplot <- function(df,
 h_format_row <- function(x, format, labels = NULL) {
   # cell: one row, one column data.frame
   format_cell <- function(x, format, label = NULL) {
-    fc <- format_rcell(x = x, format = unlist(format))
+    fc <- format_rcell(x = x, format = format)
     if (is.na(fc)) {
       fc <- "NA"
     }
@@ -556,7 +556,7 @@ h_format_row <- function(x, format, labels = NULL) {
   row <- do.call(
     cbind,
     lapply(
-      names(x), function(xn) format_cell(x[[xn]], format = format[xn], label = labels[xn])
+      names(x), function(xn) format_cell(x[[xn]], format = format[[xn]], label = labels[xn])
     )
   )
 

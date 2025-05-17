@@ -14,6 +14,7 @@
 #' @importFrom rlang .data %||%
 #' @importFrom survival coxph strata Surv
 #' @importFrom stats pchisq setNames complete.cases qnorm qt sd
+#' @importFrom utils modifyList
 NULL
 
 # Resolve missing global definitions:
