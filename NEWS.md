@@ -18,8 +18,6 @@
 * Fixed bug in `tabulate_rsp_subgroups()` and `tabulate_survival_subgroups()` preventing the `pct` option from having an effect when adding a risk difference column.
 * Fixed bug with the order of `.stats` when adding custom statistical functions.
 * Fixed bug with multiple custom functions not being represented correctly as a list of output stats.
-* Fixed bug in `g_lineplot()` where `table_format` and `table_labels` arguments were ignored.
-* Fixed bug in `g_lineplot()` not being able to take a function as a format for table stats.
 
 ### Miscellaneous
 * Began deprecation of the unused `table_names` argument to `count_abnormal_lab_worsen_by_baseline()`.
