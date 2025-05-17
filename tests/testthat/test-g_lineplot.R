@@ -249,3 +249,26 @@ testthat::test_that("g_lineplot as_list argument works", {
   expect_snapshot_ggplot("g_lineplot_plot_only", g_lineplot_plot_only, width = 10, height = 4)
   expect_snapshot_ggplot("g_lineplot_table_only", g_lineplot_table_only, width = 9, height = 3)
 })
+
+testthat::test_that("g_lineplot works with custom table formats/labels", {
+  testthat::expect_silent(g_lineplot_custom_fmt <- withr::with_options(
+    opts_partial_match_old,
+    g_lineplot(
+      adlb,
+      adsl,
+      table = c("n", "mean", "mean_ci"),
+      table_format = list(
+        mean = function(x, ...) {
+          ifelse(x < 20, round_fmt(x, digits = 3), round_fmt(x, digits = 2))
+        },
+        mean_ci = "(xx.xxx, xx.xxx)"
+      ),
+      table_labels = list(
+        mean = "mean",
+        mean_ci = "95% CI"
+      )
+    )
+  ))
+
+  expect_snapshot_ggplot(title = "g_lineplot_custom_fmt", fig = g_lineplot_custom_fmt, width = 10, height = 8)
+})
