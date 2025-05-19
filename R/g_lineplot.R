@@ -185,8 +185,8 @@ g_lineplot <- function(df,
   checkmate::assert_logical(as_list)
 
   if (!is.null(table)) {
-    table_format <- get_formats_from_stats(table) %>% modifyList(table_format %||% list())
-    table_labels <- get_labels_from_stats(table) %>% modifyList(table_labels %||% list()) %>% .unlist_keep_nulls()
+    table_format <- get_formats_from_stats(table, formats_in = table_format)
+    table_labels <- get_labels_from_stats(table, labels_in = table_labels) %>% .unlist_keep_nulls()
   }
 
   extra_args <- list(...)
