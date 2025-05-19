@@ -62,9 +62,10 @@
 #' @param subtitle_add_unit (`flag`)\cr whether the y-axis unit, i.e. `unique(df[[variables["y_unit"]]])` should be
 #'   added to the plot's subtitle (`subtitle`).
 #' @param caption (`string`)\cr optional caption below the plot.
-#' @param table_format (named `character` or `NULL`)\cr format patterns for descriptive statistics used in the
-#'   (optional) table appended to the plot. It is passed directly to the `h_format_row` function through the `format`
-#'   parameter. Names of `table_format` must match the names of statistics returned by `sfun` function.
+#' @param table_format (named `vector` or `NULL`)\cr custom formats for descriptive statistics used instead of defaults
+#'   in the (optional) table appended to the plot. It is passed directly to the `h_format_row` function through
+#'   the `format` parameter. Names of `table_format` must match the names of statistics returned by `sfun` function.
+#'   Can be a character vector with values from [formatters::list_valid_format_labels()] or custom format functions.
 #' @param table_labels (named `character` or `NULL`)\cr labels for descriptive statistics used in the (optional) table
 #'   appended to the plot. Names of `table_labels` must match the names of statistics returned by `sfun` function.
 #' @param table_font_size (`numeric(1)`)\cr font size of the text in the table.
@@ -127,6 +128,23 @@
 #'   table = c("n", "mean", "mean_ci"),
 #'   control = control_analyze_vars(conf_level = 0.80),
 #'   title = "Plot of Mean and 80% Confidence Limits by Visit"
+#' )
+#'
+#' # Mean with CI, table with customized formats/labels
+#' g_lineplot(
+#'   adlb,
+#'   adsl,
+#'   table = c("n", "mean", "mean_ci"),
+#'   table_format = list(
+#'     mean = function(x, ...) {
+#'       ifelse(x < 20, round_fmt(x, digits = 3), round_fmt(x, digits = 2))
+#'     },
+#'     mean_ci = "(xx.xxx, xx.xxx)"
+#'   ),
+#'   table_labels = list(
+#'     mean = "mean",
+#'     mean_ci = "95% CI"
+#'   )
 #' )
 #'
 #' # Mean with CI, table, filtered data

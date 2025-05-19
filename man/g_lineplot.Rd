@@ -135,9 +135,10 @@ added to the plot's subtitle (\code{subtitle}).}
 
 \item{caption}{(\code{string})\cr optional caption below the plot.}
 
-\item{table_format}{(named \code{character} or \code{NULL})\cr format patterns for descriptive statistics used in the
-(optional) table appended to the plot. It is passed directly to the \code{h_format_row} function through the \code{format}
-parameter. Names of \code{table_format} must match the names of statistics returned by \code{sfun} function.}
+\item{table_format}{(named \code{vector} or \code{NULL})\cr custom formats for descriptive statistics used instead of defaults
+in the (optional) table appended to the plot. It is passed directly to the \code{h_format_row} function through
+the \code{format} parameter. Names of \code{table_format} must match the names of statistics returned by \code{sfun} function.
+Can be a character vector with values from \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or custom format functions.}
 
 \item{table_labels}{(named \code{character} or \code{NULL})\cr labels for descriptive statistics used in the (optional) table
 appended to the plot. Names of \code{table_labels} must match the names of statistics returned by \code{sfun} function.}
@@ -214,6 +215,23 @@ g_lineplot(
   table = c("n", "mean", "mean_ci"),
   control = control_analyze_vars(conf_level = 0.80),
   title = "Plot of Mean and 80\% Confidence Limits by Visit"
+)
+
+# Mean with CI, table with customized formats/labels
+g_lineplot(
+  adlb,
+  adsl,
+  table = c("n", "mean", "mean_ci"),
+  table_format = list(
+    mean = function(x, ...) {
+      ifelse(x < 20, round_fmt(x, digits = 3), round_fmt(x, digits = 2))
+    },
+    mean_ci = "(xx.xxx, xx.xxx)"
+  ),
+  table_labels = list(
+    mean = "mean",
+    mean_ci = "95\% CI"
+  )
 )
 
 # Mean with CI, table, filtered data
