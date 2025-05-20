@@ -62,9 +62,10 @@
 #' @param subtitle_add_unit (`flag`)\cr whether the y-axis unit, i.e. `unique(df[[variables["y_unit"]]])` should be
 #'   added to the plot's subtitle (`subtitle`).
 #' @param caption (`string`)\cr optional caption below the plot.
-#' @param table_format (named `character` or `NULL`)\cr format patterns for descriptive statistics used in the
-#'   (optional) table appended to the plot. It is passed directly to the `h_format_row` function through the `format`
-#'   parameter. Names of `table_format` must match the names of statistics returned by `sfun` function.
+#' @param table_format (named `vector` or `NULL`)\cr custom formats for descriptive statistics used instead of defaults
+#'   in the (optional) table appended to the plot. It is passed directly to the `h_format_row` function through
+#'   the `format` parameter. Names of `table_format` must match the names of statistics returned by `sfun` function.
+#'   Can be a character vector with values from [formatters::list_valid_format_labels()] or custom format functions.
 #' @param table_labels (named `character` or `NULL`)\cr labels for descriptive statistics used in the (optional) table
 #'   appended to the plot. Names of `table_labels` must match the names of statistics returned by `sfun` function.
 #' @param table_font_size (`numeric(1)`)\cr font size of the text in the table.
@@ -129,6 +130,23 @@
 #'   title = "Plot of Mean and 80% Confidence Limits by Visit"
 #' )
 #'
+#' # Mean with CI, table with customized formats/labels
+#' g_lineplot(
+#'   adlb,
+#'   adsl,
+#'   table = c("n", "mean", "mean_ci"),
+#'   table_format = list(
+#'     mean = function(x, ...) {
+#'       ifelse(x < 20, round_fmt(x, digits = 3), round_fmt(x, digits = 2))
+#'     },
+#'     mean_ci = "(xx.xxx, xx.xxx)"
+#'   ),
+#'   table_labels = list(
+#'     mean = "mean",
+#'     mean_ci = "95% CI"
+#'   )
+#' )
+#'
 #' # Mean with CI, table, filtered data
 #' adlb_f <- dplyr::filter(adlb, ARMCD != "ARM A" | AVISIT == "BASELINE")
 #' g_lineplot(adlb_f, table = c("n", "mean"))
@@ -185,8 +203,8 @@ g_lineplot <- function(df,
   checkmate::assert_logical(as_list)
 
   if (!is.null(table)) {
-    table_format <- get_formats_from_stats(table)
-    table_labels <- get_labels_from_stats(table) %>% .unlist_keep_nulls()
+    table_format <- get_formats_from_stats(table, formats_in = table_format)
+    table_labels <- get_labels_from_stats(table, labels_in = table_labels) %>% .unlist_keep_nulls()
   }
 
   extra_args <- list(...)
@@ -538,7 +556,7 @@ g_lineplot <- function(df,
 h_format_row <- function(x, format, labels = NULL) {
   # cell: one row, one column data.frame
   format_cell <- function(x, format, label = NULL) {
-    fc <- format_rcell(x = x, format = unlist(format))
+    fc <- format_rcell(x = x, format = format)
     if (is.na(fc)) {
       fc <- "NA"
     }
@@ -556,7 +574,7 @@ h_format_row <- function(x, format, labels = NULL) {
   row <- do.call(
     cbind,
     lapply(
-      names(x), function(xn) format_cell(x[[xn]], format = format[xn], label = labels[xn])
+      names(x), function(xn) format_cell(x[[xn]], format = format[[xn]], label = labels[xn])
     )
   )
 

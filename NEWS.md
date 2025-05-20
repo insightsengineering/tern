@@ -1,5 +1,9 @@
 # tern 0.9.8.9001
 
+### Bug Fixes
+* Fixed bug in `g_lineplot()` where `table_format` and `table_labels` arguments were ignored.
+* Fixed bug in `g_lineplot()` not being able to take a function as a format for table stats.
+
 # tern 0.9.8
 
 ### Enhancements
