@@ -354,7 +354,8 @@ tabulate_rsp_subgroups <- function(lyt,
       var = "row_type",
       split_fun = keep_split_levels("content"),
       nested = FALSE,
-      child_labels = "hidden"
+      child_labels = "hidden",
+      var_labels = "row_type"
     )
     lyt_prop <- analyze_colvars(
       lyt = lyt_prop,
@@ -370,7 +371,8 @@ tabulate_rsp_subgroups <- function(lyt,
         var = "row_type",
         split_fun = keep_split_levels("analysis"),
         nested = FALSE,
-        child_labels = "hidden"
+        child_labels = "hidden",
+        var_labels = "row_type2"
       )
       lyt_prop <- split_rows_by(lyt = lyt_prop, var = "var_label", nested = TRUE)
       lyt_prop <- analyze_colvars(
