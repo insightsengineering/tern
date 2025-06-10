@@ -66,6 +66,8 @@ Suggests:
     svglite (>= 2.1.2),
     testthat (>= 3.1.9),
     withr (>= 2.0.0)
+Remotes:
+    insightsengineering/rtables@main
 VignetteBuilder:
     knitr,
     rmarkdown
