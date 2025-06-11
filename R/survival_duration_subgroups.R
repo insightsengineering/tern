@@ -360,7 +360,8 @@ tabulate_survival_subgroups <- function(lyt,
       var = "row_type",
       split_fun = keep_split_levels("content"),
       nested = FALSE,
-      child_labels = "hidden"
+      child_labels = "hidden",
+      parent_name = "All Patients"
     )
     lyt_survtime <- analyze_colvars(
       lyt = lyt_survtime,
@@ -376,7 +377,8 @@ tabulate_survival_subgroups <- function(lyt,
         var = "row_type",
         split_fun = keep_split_levels("analysis"),
         nested = FALSE,
-        child_labels = "hidden"
+        child_labels = "hidden",
+        parent_name = "analysis rows"
       )
       lyt_survtime <- split_rows_by(lyt = lyt_survtime, var = "var_label", nested = TRUE)
       lyt_survtime <- analyze_colvars(
@@ -407,7 +409,8 @@ tabulate_survival_subgroups <- function(lyt,
     var = "row_type",
     split_fun = keep_split_levels("content"),
     nested = FALSE,
-    child_labels = "hidden"
+    child_labels = "hidden",
+    parent_name = "All patient row"
   )
   lyt_hr <- analyze_colvars(
     lyt = lyt_hr,
@@ -424,7 +427,8 @@ tabulate_survival_subgroups <- function(lyt,
       var = "row_type",
       split_fun = keep_split_levels("analysis"),
       nested = FALSE,
-      child_labels = "hidden"
+      child_labels = "hidden",
+      parent_name = "analysis rows"
     )
     lyt_hr <- split_rows_by(lyt = lyt_hr, var = "var_label", nested = TRUE)
     lyt_hr <- analyze_colvars(

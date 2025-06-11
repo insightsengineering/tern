@@ -355,7 +355,7 @@ tabulate_rsp_subgroups <- function(lyt,
       split_fun = keep_split_levels("content"),
       nested = FALSE,
       child_labels = "hidden",
-      labels_var = "row_type"
+      parent_name = "All Patients"
     )
     lyt_prop <- analyze_colvars(
       lyt = lyt_prop,
@@ -372,7 +372,7 @@ tabulate_rsp_subgroups <- function(lyt,
         split_fun = keep_split_levels("analysis"),
         nested = FALSE,
         child_labels = "hidden",
-        labels_var = "row_type2"
+        parent_name = "analysis rows"
       )
       lyt_prop <- split_rows_by(lyt = lyt_prop, var = "var_label", nested = TRUE)
       lyt_prop <- analyze_colvars(
@@ -403,7 +403,8 @@ tabulate_rsp_subgroups <- function(lyt,
     var = "row_type",
     split_fun = keep_split_levels("content"),
     nested = FALSE,
-    child_labels = "hidden"
+    child_labels = "hidden",
+    parent_name = "All Patients"
   )
   lyt_or <- analyze_colvars(
     lyt = lyt_or,
@@ -420,7 +421,8 @@ tabulate_rsp_subgroups <- function(lyt,
       var = "row_type",
       split_fun = keep_split_levels("analysis"),
       nested = FALSE,
-      child_labels = "hidden"
+      child_labels = "hidden",
+      parent_name = "analysis rows"
     )
     lyt_or <- split_rows_by(lyt = lyt_or, var = "var_label", nested = TRUE)
     lyt_or <- analyze_colvars(
