@@ -1,5 +1,8 @@
 # tern 0.9.8.9002
 
+### Enhancements
+* Code enhancement in `tabulate_rsp_subgroups` and `tabulate_survival_subgroups`, adding `parent_name` when using `split_rows_by` and `analysis` on the same variable multiple times, enhancing the table paths. Upstream enhancement from `rtables`.
+
 ### Bug Fixes
 * Fixed bug in `g_lineplot()` where `table_format` and `table_labels` arguments were ignored.
 * Fixed bug in `g_lineplot()` not being able to take a function as a format for table stats.
