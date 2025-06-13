@@ -356,3 +356,24 @@ testthat::test_that("s_proportion_diff works with strata", {
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
+
+# check_diff_prop_ci ----
+testthat::test_that("check_diff_prop_ci is silent with healthy input", {
+  # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
+  rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
+  grp <- factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
+
+  testthat::expect_silent(check_diff_prop_ci(
+    rsp = rsp, grp = grp, conf_level = 0.90
+  ))
+})
+
+testthat::test_that("check_diff_prop_ci fails with wrong input", {
+  rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
+  grp <- c("A", "B", "A", "B", "A", "A")
+
+  testthat::expect_error(check_diff_prop_ci(
+    rsp = rsp, grp = grp, conf_level = "0.90"
+  ))
+
+})

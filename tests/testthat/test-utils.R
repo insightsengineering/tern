@@ -713,3 +713,36 @@ testthat::test_that(
     testthat::expect_snapshot(res)
   }
 )
+
+testthat::test_that(
+  "clogit_with_tryCatch is silent with healthy input",
+  code = {
+    adrs_local <- tern_ex_adrs %>%
+      dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) %>%
+      dplyr::mutate(
+        RSP = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
+        ARMBIN = droplevels(ARMCD)
+      )
+    dta <- adrs_local
+    dta <- dta[sample(nrow(dta)), ]
+
+    testthat::expect_silent(clogit_with_tryCatch(formula = RSP ~ ARMBIN + strata(STRATA1), data = dta))
+  }
+)
+
+testthat::test_that(
+  "clogit_with_tryCatch fails with wrong input",
+  code = {
+    adrs_local <- tern_ex_adrs %>%
+      dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) %>%
+      dplyr::mutate(
+        RSP = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
+        ARMBIN = droplevels(ARMCD)
+      )
+    dta <- adrs_local
+    dta <- dta[sample(nrow(dta)), ]
+
+    testthat::expect_error(clogit_with_tryCatch(formula = xRSP ~ ARMBIN + strata(STRATA1), data = dta))
+  }
+)
+

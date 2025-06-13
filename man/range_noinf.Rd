@@ -17,7 +17,15 @@ range_noinf(x, na.rm = FALSE, finite = FALSE)
 A 2-element vector of class \code{numeric}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 This function returns \code{c(NA, NA)} instead of \code{c(-Inf, Inf)} for zero-length data
 without any warnings.
 }
-\keyword{internal}
+\examples{
+x <- rnorm(20, 1)
+range_noinf(x, na.rm = TRUE)
+range_noinf(rep(NA, 20), na.rm = TRUE)
+range(rep(NA, 20), na.rm = TRUE)
+
+}

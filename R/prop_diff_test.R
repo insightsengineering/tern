@@ -26,7 +26,27 @@ NULL
 #' * `s_test_proportion_diff()` returns a named `list` with a single item `pval` with an attribute `label`
 #'   describing the method used. The p-value tests the null hypothesis that proportions in two groups are the same.
 #'
-#' @keywords internal
+#' @examples
+#'
+#' ## "Mid" case: 4/4 respond in group A, 1/2 respond in group B.
+#' nex <- 100 # Number of example rows
+#' dta <- data.frame(
+#'   "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
+#'   "grp" = sample(c("A", "B"), nex, TRUE),
+#'   "f1" = sample(c("a1", "a2"), nex, TRUE),
+#'   "f2" = sample(c("x", "y", "z"), nex, TRUE),
+#'   stringsAsFactors = TRUE
+#' )
+#' s_test_proportion_diff(
+#'   df = subset(dta, grp == "A"),
+#'   .var = "rsp",
+#'   .ref_group = subset(dta, grp == "B"),
+#'   .in_ref_col = FALSE,
+#'   variables = NULL,
+#'   method = "chisq"
+#' )
+#'
+#' @export
 s_test_proportion_diff <- function(df,
                                    .var,
                                    .ref_group,

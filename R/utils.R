@@ -1,5 +1,7 @@
 #' Re-implemented `range()` default S3 method for numerical objects
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' This function returns `c(NA, NA)` instead of `c(-Inf, Inf)` for zero-length data
 #' without any warnings.
 #'
@@ -9,7 +11,13 @@
 #'
 #' @return A 2-element vector of class `numeric`.
 #'
-#' @keywords internal
+#' @examples
+#' x <- rnorm(20, 1)
+#' range_noinf(x, na.rm = TRUE)
+#' range_noinf(rep(NA, 20), na.rm = TRUE)
+#' range(rep(NA, 20), na.rm = TRUE)
+#'
+#' @export
 range_noinf <- function(x, na.rm = FALSE, finite = FALSE) { # nolint
 
   checkmate::assert_numeric(x)
@@ -60,12 +68,17 @@ f_pval <- function(test_mean) {
 
 #' Utility function to return a named list of covariate names
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' @param covariates (`character`)\cr a vector that can contain single variable names (such as
 #'   `"X1"`), and/or interaction terms indicated by `"X1 * X2"`.
 #'
 #' @return A named `list` of `character` vector.
 #'
-#' @keywords internal
+#' @examples
+#' get_covariates(c("a * b", "c"))
+#'
+#' @export
 get_covariates <- function(covariates) {
   checkmate::assert_character(covariates)
   cov_vars <- unique(trimws(unlist(strsplit(covariates, "\\*"))))
@@ -434,7 +447,32 @@ reapply_varlabels <- function(x, varlabels, ...) {
   x
 }
 
-# Wrapper function of survival::clogit so that when model fitting failed, a more useful message would show
+#' Wrapper function of survival::clogit
+#'
+#' When model fitting failed, a more useful message would show.
+#'
+#' @param formula Model formula.
+#' @param data data frame.
+#' @param ... further parameters to be added to survival::clogit.
+#'
+#' @return When model fitting is successful, an object of class "clogit".\cr
+#' When model fitting failed, an error message is shown.
+#'
+#' @examples
+#' \dontrun{
+#' library(dplyr)
+#'  adrs_local <- tern_ex_adrs %>%
+#'   dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) %>%
+#'   dplyr::mutate(
+#'     RSP = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
+#'     ARMBIN = droplevels(ARMCD)
+#'   )
+#' dta <- adrs_local
+#' dta <- dta[sample(nrow(dta)), ]
+#' mod <- clogit_with_tryCatch(formula = RSP ~ ARMBIN * AGE + strata(STRATA1), data = dta)
+#'}
+#'
+#' @export
 clogit_with_tryCatch <- function(formula, data, ...) { # nolint
   tryCatch(
     survival::clogit(formula = formula, data = data, ...),

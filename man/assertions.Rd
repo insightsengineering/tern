@@ -91,6 +91,8 @@ for proportions.}
 Nothing if assertion passes, otherwise prints the error message.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 Additional assertion functions which can be used together with the \code{checkmate} package.
 }
 \section{Functions}{
@@ -112,4 +114,21 @@ trim \code{NA} levels out of the vector list itself.
 \item \code{assert_proportion_value()}: Check whether \code{x} is a proportion: number between 0 and 1.
 
 }}
+\examples{
+x <- data.frame(
+a = 1:10,
+b = rnorm(10)
+)
+assert_df_with_variables(x, variables = list(a = "a", b = "b"))
+
+x <- ex_adsl
+assert_df_with_variables(x, list(a = "ARM", b = "USUBJID"))
+
+x <- ex_adsl
+assert_df_with_factors(x, list(a = "ARM"))
+
+assert_proportion_value(0.95)
+assert_proportion_value(1.0, include_boundaries = TRUE)
+
+}
 \keyword{internal}

@@ -13,7 +13,16 @@ labels_or_names(x)
 A \code{character} vector with the labels or names for the list elements.
 }
 \description{
-Internal helper function for working with nested statistic function results which typically
+Helper function for working with nested statistic function results which typically
 don't have labels but names that we can use.
 }
-\keyword{internal}
+\examples{
+x <- data.frame(
+  a = 1:10,
+  b = rnorm(10)
+)
+labels_or_names(x)
+var_labels(x) <- c(b = "Label for b", a = NA)
+labels_or_names(x)
+
+}
