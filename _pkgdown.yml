@@ -78,7 +78,7 @@ reference:
       - starts_with("tidy.")
       - univariate
       - get_covariates
-      - clogit_ith_tryCatch
+      - clogit_with_tryCatch
 
   - title: Graphs
     desc: These function create graphical type output.
