@@ -375,5 +375,4 @@ testthat::test_that("check_diff_prop_ci fails with wrong input", {
   testthat::expect_error(check_diff_prop_ci(
     rsp = rsp, grp = grp, conf_level = "0.90"
   ))
-
 })

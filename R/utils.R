@@ -461,7 +461,7 @@ reapply_varlabels <- function(x, varlabels, ...) {
 #' @examples
 #' \dontrun{
 #' library(dplyr)
-#'  adrs_local <- tern_ex_adrs %>%
+#' adrs_local <- tern_ex_adrs %>%
 #'   dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) %>%
 #'   dplyr::mutate(
 #'     RSP = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
@@ -470,7 +470,7 @@ reapply_varlabels <- function(x, varlabels, ...) {
 #' dta <- adrs_local
 #' dta <- dta[sample(nrow(dta)), ]
 #' mod <- clogit_with_tryCatch(formula = RSP ~ ARMBIN * AGE + strata(STRATA1), data = dta)
-#'}
+#' }
 #'
 #' @export
 clogit_with_tryCatch <- function(formula, data, ...) { # nolint

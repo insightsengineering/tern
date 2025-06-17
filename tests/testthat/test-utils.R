@@ -775,6 +775,5 @@ testthat::test_that(
     mod[["userCall"]] <- NULL
     mod2[["userCall"]] <- NULL
     testthat::expect_equal(mod, mod2)
-
   }
 )
