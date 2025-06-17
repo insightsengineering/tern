@@ -116,8 +116,8 @@ trim \code{NA} levels out of the vector list itself.
 }}
 \examples{
 x <- data.frame(
-a = 1:10,
-b = rnorm(10)
+  a = 1:10,
+  b = rnorm(10)
 )
 assert_df_with_variables(x, variables = list(a = "a", b = "b"))
 

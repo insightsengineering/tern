@@ -236,12 +236,13 @@ adtte_f <- tern_ex_adtte \%>\%
     is_event = CNSR == 0
   )
 
-s_surv_timepoint(df = subset(adtte_f, ARMCD == "ARM A"),
+s_surv_timepoint(
+  df = subset(adtte_f, ARMCD == "ARM A"),
   .var = "AVAL",
   is_event = "is_event",
   time_point = c(10),
   control = control_surv_timepoint()
- )
+)
 
 }
 \keyword{internal}
