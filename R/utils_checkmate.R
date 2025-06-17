@@ -33,7 +33,7 @@ check_list_of_variables <- function(x) {
   if (isTRUE(res)) {
     res <- checkmate::check_character(unlist(x), min.chars = 1)
   }
-  return(res)
+  res
 }
 #' @describeIn assertions Checks whether `x` is a valid list of variable names.
 #'   `NULL` elements of the list `x` are dropped with `Filter(Negate(is.null), x)`.
