@@ -746,3 +746,35 @@ testthat::test_that(
   }
 )
 
+testthat::test_that(
+  "clogit_with_tryCatch works with healthy input",
+  code = {
+    adrs_local <- tern_ex_adrs %>%
+      dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) %>%
+      dplyr::mutate(
+        RSP = dplyr::case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
+        ARMBIN = droplevels(ARMCD)
+      )
+    dta <- adrs_local
+    dta <- dta[sample(nrow(dta)), ]
+
+    testthat::expect_silent(clogit_with_tryCatch(formula = RSP ~ ARMBIN + strata(STRATA1), data = dta))
+
+    # https://github.com/therneau/survival/issues/240
+    withr::with_options(
+      opts_partial_match_old,
+      mod <- survival::clogit(formula = RSP ~ ARMBIN + strata(STRATA1), data = dta)
+    )
+    withr::with_options(
+      opts_partial_match_old,
+      mod2 <- clogit_with_tryCatch(formula = RSP ~ ARMBIN + strata(STRATA1), data = dta)
+    )
+
+    mod[["call"]] <- NULL
+    mod2[["call"]] <- NULL
+    mod[["userCall"]] <- NULL
+    mod2[["userCall"]] <- NULL
+    testthat::expect_equal(mod, mod2)
+
+  }
+)

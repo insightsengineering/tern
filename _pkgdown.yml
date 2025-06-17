@@ -140,6 +140,7 @@ reference:
           `rtables` package.
     contents:
       - starts_with("format_")
+      - range_noinf
 
   - title: rtables Scoring Functions
     desc: These functions can help with table sorting.
