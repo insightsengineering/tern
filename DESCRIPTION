@@ -1,6 +1,6 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.9.8.9004
+Version: 0.9.9
 Date: 2025-06-18
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre"),
@@ -29,7 +29,7 @@ URL: https://insightsengineering.github.io/tern/,
 BugReports: https://github.com/insightsengineering/tern/issues
 Depends:
     R (>= 4.4.0),
-    rtables (>= 0.6.12)
+    rtables (>= 0.6.13)
 Imports:
     broom (>= 0.5.4),
     car (>= 3.0-13),
@@ -72,8 +72,6 @@ VignetteBuilder:
 RdMacros:
     lifecycle,
     Rdpack
-Remotes:
-    insightsengineering/rtables@main
 Config/Needs/verdepcheck: insightsengineering/rtables, tidymodels/broom,
     cran/car, mllg/checkmate, wilkelab/cowplot, tidyverse/dplyr,
     rvlenth/emmeans, tidyverse/forcats, insightsengineering/formatters,
