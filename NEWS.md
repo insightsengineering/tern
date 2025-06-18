@@ -1,4 +1,4 @@
-# tern 0.9.8.9003
+# tern 0.9.8.9004
 
 ### Enhancements
 * Code enhancement in `tabulate_rsp_subgroups` and `tabulate_survival_subgroups`, adding `parent_name` when using `split_rows_by` and `analysis` on the same variable multiple times, enhancing the table paths. Upstream enhancement from `rtables`.
