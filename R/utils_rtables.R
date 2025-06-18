@@ -221,14 +221,23 @@ h_col_indices <- function(table_tree, col_names) {
 
 #' Labels or names of list elements
 #'
-#' Internal helper function for working with nested statistic function results which typically
+#' Helper function for working with nested statistic function results which typically
 #' don't have labels but names that we can use.
 #'
 #' @param x (`list`)\cr a list.
 #'
 #' @return A `character` vector with the labels or names for the list elements.
 #'
-#' @keywords internal
+#' @examples
+#' x <- data.frame(
+#'   a = 1:10,
+#'   b = rnorm(10)
+#' )
+#' labels_or_names(x)
+#' var_labels(x) <- c(b = "Label for b", a = NA)
+#' labels_or_names(x)
+#'
+#' @export
 labels_or_names <- function(x) {
   checkmate::assert_multi_class(x, c("data.frame", "list"))
   labs <- sapply(x, obj_label)

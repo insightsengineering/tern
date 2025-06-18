@@ -326,13 +326,27 @@ estimate_proportion_diff <- function(lyt,
 
 #' Check proportion difference arguments
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Verifies that and/or convert arguments into valid values to be used in the
 #' estimation of difference in responder proportions.
 #'
 #' @inheritParams prop_diff
 #' @inheritParams prop_diff_wald
 #'
-#' @keywords internal
+#' @examples
+#' # example code
+#' ## "Mid" case: 4/4 respond in group A, 1/2 respond in group B.
+#' nex <- 100 # Number of example rows
+#' dta <- data.frame(
+#'   "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
+#'   "grp" = sample(c("A", "B"), nex, TRUE),
+#'   "f1" = sample(c("a1", "a2"), nex, TRUE),
+#'   "f2" = sample(c("x", "y", "z"), nex, TRUE),
+#'   stringsAsFactors = TRUE
+#' )
+#' check_diff_prop_ci(rsp = dta[["rsp"]], grp = dta[["grp"]], conf_level = 0.95)
+#' @export
 check_diff_prop_ci <- function(rsp,
                                grp,
                                strata = NULL,

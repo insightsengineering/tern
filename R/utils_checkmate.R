@@ -1,5 +1,7 @@
 #' Additional assertions to use with `checkmate`
 #'
+#' @description `r lifecycle::badge("stable")`
+#'
 #' Additional assertion functions which can be used together with the `checkmate` package.
 #'
 #' @inheritParams checkmate::assert_factor
@@ -31,7 +33,7 @@ check_list_of_variables <- function(x) {
   if (isTRUE(res)) {
     res <- checkmate::check_character(unlist(x), min.chars = 1)
   }
-  return(res)
+  res
 }
 #' @describeIn assertions Checks whether `x` is a valid list of variable names.
 #'   `NULL` elements of the list `x` are dropped with `Filter(Negate(is.null), x)`.
@@ -74,7 +76,17 @@ check_df_with_variables <- function(df, variables, na_level = NULL) {
 #'   Please notice how this produces an error when not all variables are present in the
 #'   data.frame while the opposite is not required.
 #'
-#' @keywords internal
+#' @examples
+#' x <- data.frame(
+#'   a = 1:10,
+#'   b = rnorm(10)
+#' )
+#' assert_df_with_variables(x, variables = list(a = "a", b = "b"))
+#'
+#' x <- ex_adsl
+#' assert_df_with_variables(x, list(a = "ARM", b = "USUBJID"))
+#'
+#' @export
 assert_df_with_variables <- checkmate::makeAssertionFunction(check_df_with_variables)
 
 check_valid_factor <- function(x,
@@ -146,12 +158,20 @@ check_df_with_factors <- function(df,
 #'   are all factors. Note that the creation of `NA` by direct call of `factor()` will
 #'   trim `NA` levels out of the vector list itself.
 #'
-#' @keywords internal
+#' @examples
+#' x <- ex_adsl
+#' assert_df_with_factors(x, list(a = "ARM"))
+#'
+#' @export
 assert_df_with_factors <- checkmate::makeAssertionFunction(check_df_with_factors)
 
 #' @describeIn assertions Check whether `x` is a proportion: number between 0 and 1.
 #'
-#' @keywords internal
+#' @examples
+#' assert_proportion_value(0.95)
+#' assert_proportion_value(1.0, include_boundaries = TRUE)
+#'
+#' @export
 assert_proportion_value <- function(x, include_boundaries = FALSE) {
   checkmate::assert_number(x, lower = 0, upper = 1)
   checkmate::assert_flag(include_boundaries)

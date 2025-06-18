@@ -32,6 +32,7 @@
 * Moved helper functions `h_tab_rsp_one_biomarker()` and `h_tab_surv_one_biomarker()` into `h_biomarkers_subgroups.R`.
 * Reorganized the utility documentation related to factors (`utils_factor.R`) into a single file.
 * Converted `as_factor_keep_attributes()` to an exported function.
+* Converted `assert_df_with_factors()`, `assert_df_with_variables()`, `assert_proportion_value()`, `check_diff_prop_ci()`, `clogit_with_tryCatch()`, `get_covariates()`, `labels_or_names()`, `range_noinf()` , `s_surv_timepoint()`, `s_test_proportion_diff()` to exported functions.
 * Removed internal function `ungroup_stats()` and replaced its usage with the `get_*_from_stats()` functions.
 * Removed `s_count_nonmissing()` as it is a non-repeated small and internal function.
 

@@ -63,6 +63,8 @@ reference:
       - -analyze_functions
       - -estimate_coef
       - -summarize_functions
+      - s_surv_timepoint
+      - s_test_proportion_diff
 
   - title: Model-Specific Functions
     desc: These functions help with fitting or extracting results from specific
@@ -75,6 +77,8 @@ reference:
       - starts_with("logistic_")
       - starts_with("tidy.")
       - univariate
+      - get_covariates
+      - clogit_with_tryCatch
 
   - title: Graphs
     desc: These function create graphical type output.
@@ -107,6 +111,7 @@ reference:
       - -h_tab_one_biomarker
       - -h_xticks
       - -prop_diff
+      - check_diff_prop_ci
 
   - title: rtables Helper Functions
     desc: These functions help to work with the `rtables` package and may be
@@ -128,12 +133,14 @@ reference:
       - to_string_matrix
       - groups_list_to_df
       - utils_split_funs
+      - labels_or_names
 
   - title: rtables Formatting Functions
     desc: These functions provide customized formatting rules to work with the
           `rtables` package.
     contents:
       - starts_with("format_")
+      - range_noinf
 
   - title: rtables Scoring Functions
     desc: These functions can help with table sorting.

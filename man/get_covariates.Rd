@@ -14,6 +14,9 @@ get_covariates(covariates)
 A named \code{list} of \code{character} vector.
 }
 \description{
-Utility function to return a named list of covariate names
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 }
-\keyword{internal}
+\examples{
+get_covariates(c("a * b", "c"))
+
+}
