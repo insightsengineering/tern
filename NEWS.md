@@ -1,11 +1,14 @@
-# tern 0.9.8.9004
+# tern 0.9.9
 
 ### Enhancements
-* Code enhancement in `tabulate_rsp_subgroups` and `tabulate_survival_subgroups`, adding `parent_name` when using `split_rows_by` and `analysis` on the same variable multiple times, enhancing the table paths. Upstream enhancement from `rtables`.
+* Updated `tabulate_rsp_subgroups()` and `tabulate_survival_subgroups()` to specify parameter `parent_name` when using `split_rows_by()` and `analyze()` internally to enhance table paths.
 
 ### Bug Fixes
 * Fixed bug in `g_lineplot()` where `table_format` and `table_labels` arguments were ignored.
-* Fixed bug in `g_lineplot()` not being able to take a function as a format for table stats.
+* Fixed bug in `g_lineplot()` to allow use of a function as a format for table stats.
+
+### Miscellaneous
+* Converted `assert_df_with_factors()`, `assert_df_with_variables()`, `assert_proportion_value()`, `check_diff_prop_ci()`, `clogit_with_tryCatch()`, `get_covariates()`, `labels_or_names()`, `range_noinf()` , `s_surv_timepoint()`, and `s_test_proportion_diff()` to exported functions.
 
 # tern 0.9.8
 
@@ -32,7 +35,6 @@
 * Moved helper functions `h_tab_rsp_one_biomarker()` and `h_tab_surv_one_biomarker()` into `h_biomarkers_subgroups.R`.
 * Reorganized the utility documentation related to factors (`utils_factor.R`) into a single file.
 * Converted `as_factor_keep_attributes()` to an exported function.
-* Converted `assert_df_with_factors()`, `assert_df_with_variables()`, `assert_proportion_value()`, `check_diff_prop_ci()`, `clogit_with_tryCatch()`, `get_covariates()`, `labels_or_names()`, `range_noinf()` , `s_surv_timepoint()`, `s_test_proportion_diff()` to exported functions.
 * Removed internal function `ungroup_stats()` and replaced its usage with the `get_*_from_stats()` functions.
 * Removed `s_count_nonmissing()` as it is a non-repeated small and internal function.
 
