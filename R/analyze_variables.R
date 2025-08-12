@@ -329,6 +329,7 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
   verbose <- args_list[["verbose"]] %||% TRUE
   compare_with_ref_group <- args_list[["compare_with_ref_group"]]
 
+  len_inputx <- length(x)
   if (na_rm) {
     x <- x[!is.na(x)] %>% fct_discard("<Missing>")
   } else {
@@ -339,28 +340,38 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 
   y$n <- list("n" = c("n" = length(x))) # all list of a list
 
-  y$count <- lapply(as.list(table(x, useNA = "ifany")), setNames, nm = "count")
 
-  denom <- match.arg(denom) %>%
-    switch(
-      n = length(x),
-      N_row = .N_row,
-      N_col = .N_col
+  # when length(x) = 0, count related stats should be of form list(NULL), rather than list()
+  # except when input x vector of length 0, keep structure as before (used in tests)
+  if (y$n == 0 && len_inputx > 0) {
+    y[["count"]] <- list(NULL)
+    y[["count_fraction"]] <- list(NULL)
+    y[["count_fraction_fixed_dp"]] <- list(NULL)
+    y[["fraction"]] <- list(NULL)
+  } else {
+    y$count <- lapply(as.list(table(x, useNA = "ifany")), setNames, nm = "count")
+
+    denom <- match.arg(denom) %>%
+      switch(
+        n = length(x),
+        N_row = .N_row,
+        N_col = .N_col
+      )
+
+    y$count_fraction <- lapply(
+      y$count,
+      function(x) {
+        c(x, "p" = ifelse(denom > 0, x / denom, 0))
+      }
     )
 
-  y$count_fraction <- lapply(
-    y$count,
-    function(x) {
-      c(x, "p" = ifelse(denom > 0, x / denom, 0))
-    }
-  )
+    y$count_fraction_fixed_dp <- y$count_fraction
 
-  y$count_fraction_fixed_dp <- y$count_fraction
-
-  y$fraction <- lapply(
-    y$count,
-    function(count) c("num" = unname(count), "denom" = denom)
-  )
+    y$fraction <- lapply(
+      y$count,
+      function(count) c("num" = unname(count), "denom" = denom)
+    )
+  }
 
   y$n_blq <- list("n_blq" = c("n_blq" = sum(grepl("BLQ|LTR|<[1-9]|<PCLLOQ", x))))
 
@@ -636,6 +647,11 @@ a_summary <- function(x,
     x_stats <- x_stats %>%
       .unlist_keep_nulls() %>%
       setNames(names(.formats))
+
+    # identify non-null stats (if n = 0, count, count_fraction, etc will be null)
+    # these stats should then not be presented in rows, except for pval_counts
+    nonnullstat <- !sapply(x_stats, is.null)
+    if ("pval_counts" %in% names(x_stats)) nonnullstat[["pval_counts"]] <- TRUE
   }
 
   # Check for custom labels from control_analyze_vars
@@ -656,13 +672,26 @@ a_summary <- function(x,
   # Get and check statistical names from defaults
   .stat_names <- get_stat_names(x_stats, .stat_names)
 
+  .labels <- .labels %>% .unlist_keep_nulls()
+  .indent_mods <- .indent_mods %>% .unlist_keep_nulls()
+
+  # get rid of stats that were null, ie keep nonnullstat only
+  # remove these statistics from stats, .formats, .labels, .indent_mods, .stat_names
+  if (is_char && any(!nonnullstat)) {
+    x_stats <- x_stats[nonnullstat]
+    .formats <- .formats[nonnullstat]
+    .labels <- .labels[nonnullstat]
+    .indent_mods <- .indent_mods[nonnullstat]
+    .stat_names <- .stat_names[nonnullstat]
+  }
+
   in_rows(
     .list = x_stats,
     .formats = .formats,
     .names = names(.labels),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels,
+    .indent_mods = .indent_mods
   )
 }
 
