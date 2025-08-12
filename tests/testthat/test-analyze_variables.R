@@ -690,9 +690,11 @@ testthat::test_that("analyze_vars works with all missing factor", {
   data_mtcars$hp2 <- as.factor("<Missing>")
 
   res <- basic_table() %>%
-    analyze_vars(vars = c("hp2"),
+    analyze_vars(
+      vars = c("hp2"),
       .stats = c("n", "count_fraction", "count"),
-      na_rm = TRUE) %>%
+      na_rm = TRUE
+    ) %>%
     build_table(data_mtcars)
 
   expect_identical(
@@ -703,7 +705,6 @@ testthat::test_that("analyze_vars works with all missing factor", {
       "n      0   "
     )
   )
-
 })
 
 testthat::test_that("analyze_vars works with all missing character", {
@@ -711,10 +712,12 @@ testthat::test_that("analyze_vars works with all missing character", {
   data_mtcars$hp2 <- "<Missing>"
 
   res <- basic_table() %>%
-    analyze_vars(vars = c("hp2"),
-                 .stats = c("n", "count_fraction", "count"),
-                 na_rm = TRUE,
-                 verbose = FALSE) %>%
+    analyze_vars(
+      vars = c("hp2"),
+      .stats = c("n", "count_fraction", "count"),
+      na_rm = TRUE,
+      verbose = FALSE
+    ) %>%
     build_table(data_mtcars)
 
   expect_identical(
@@ -725,5 +728,4 @@ testthat::test_that("analyze_vars works with all missing character", {
       "n      0   "
     )
   )
-
 })
