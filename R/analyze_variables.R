@@ -339,7 +339,8 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 
   y$n <- list("n" = c("n" = length(x))) # all list of a list
 
-  # when input x has no levels after discard missing, count related stats should be of form list(NULL), rather than list()
+  # when input x has no levels after discard missing, count related stats should be of form list(NULL)
+  # rather than list()
   if (length(levels(x)) == 0) {
     y[["count"]] <- list(NULL)
     y[["count_fraction"]] <- list(NULL)
