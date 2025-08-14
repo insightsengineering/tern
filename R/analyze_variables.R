@@ -329,7 +329,6 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
   verbose <- args_list[["verbose"]] %||% TRUE
   compare_with_ref_group <- args_list[["compare_with_ref_group"]]
 
-  len_inputx <- length(x)
   if (na_rm) {
     x <- x[!is.na(x)] %>% fct_discard("<Missing>")
   } else {
@@ -340,10 +339,8 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 
   y$n <- list("n" = c("n" = length(x))) # all list of a list
 
-
-  # when length(x) = 0, count related stats should be of form list(NULL), rather than list()
-  # except when input x vector of length 0, keep structure as before (used in tests)
-  if (y$n == 0 && len_inputx > 0) {
+  # when input x has no levels after discard missing, count related stats should be of form list(NULL), rather than list()
+  if (length(levels(x)) == 0) {
     y[["count"]] <- list(NULL)
     y[["count_fraction"]] <- list(NULL)
     y[["count_fraction_fixed_dp"]] <- list(NULL)
