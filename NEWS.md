@@ -1,5 +1,8 @@
 # tern 0.9.9.9001
 
+### Bug Fixes
+* Fixed bug in `a_summary()` causing an error when all values of a factor input variable were `NA`.
+
 # tern 0.9.9
 
 ### Enhancements
@@ -8,7 +11,6 @@
 ### Bug Fixes
 * Fixed bug in `g_lineplot()` where `table_format` and `table_labels` arguments were ignored.
 * Fixed bug in `g_lineplot()` to allow use of a function as a format for table stats.
-* Fixed bug in `s_summary()` and `a_summary()` when all values of factor variable are NA/Missing.
 
 ### Miscellaneous
 * Converted `assert_df_with_factors()`, `assert_df_with_variables()`, `assert_proportion_value()`, `check_diff_prop_ci()`, `clogit_with_tryCatch()`, `get_covariates()`, `labels_or_names()`, `range_noinf()` , `s_surv_timepoint()`, and `s_test_proportion_diff()` to exported functions.

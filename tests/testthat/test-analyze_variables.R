@@ -684,8 +684,7 @@ testthat::test_that("analyze_vars warnings for geom_verbose work", {
   expect_true(all(is.na(cell_values(result2)[[1]])))
 })
 
-
-testthat::test_that("analyze_vars works with all missing factor", {
+testthat::test_that("analyze_vars works with all-NA factor input", {
   data_mtcars <- mtcars
   data_mtcars$hp2 <- as.factor("<Missing>")
 
@@ -707,7 +706,7 @@ testthat::test_that("analyze_vars works with all missing factor", {
   )
 })
 
-testthat::test_that("analyze_vars works with all missing character", {
+testthat::test_that("analyze_vars works with all-NA character input", {
   data_mtcars <- mtcars
   data_mtcars$hp2 <- "<Missing>"
 
