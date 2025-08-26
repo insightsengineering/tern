@@ -609,7 +609,7 @@ a_summary <- function(x,
     add_pval = dots_extra_args$compare_with_ref_group %||% FALSE
   )
 
-  x_stats <- x_stats[intersect(.stats, names(x_stats))]
+  x_stats <- x_stats[.stats]
 
   is_char <- is.character(x) || is.factor(x)
   if (is_char) {
