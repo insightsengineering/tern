@@ -301,7 +301,8 @@ testthat::test_that("tabulate_rsp_subgroups riskdiff argument works as expected"
       riskdiff = control_riskdiff(
         arm_x = levels(df$prop$arm)[1],
         arm_y = levels(df$prop$arm)[2],
-        col_label = "Prop. Diff\n(95% CI)"
+        col_label = "Prop. Diff\n(95% CI)",
+        format = "xx. (xx. - xx.)"
       )
     )
 
