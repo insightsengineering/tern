@@ -364,7 +364,6 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 
   y$n_blq <- list("n_blq" = c("n_blq" = sum(grepl("BLQ|LTR|<[1-9]|<PCLLOQ", x))))
 
-
   if (isTRUE(compare_with_ref_group)) {
     .ref_group <- as_factor_keep_attributes(args_list[[".ref_group"]], verbose = verbose)
     .in_ref_col <- args_list[[".in_ref_col"]]
@@ -614,6 +613,7 @@ a_summary <- function(x,
 
   is_char <- is.character(x) || is.factor(x)
   if (is_char) {
+    x_stats <- x_stats[sapply(x_stats, \(x) length(x) > 0 || is.numeric(x))] # only return non-empty stats
     levels_per_stats <- lapply(x_stats, names)
   } else {
     levels_per_stats <- names(x_stats) %>%
