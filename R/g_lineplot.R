@@ -297,11 +297,12 @@ g_lineplot <- function(df,
     df_N[[strata_N]] <- paste0(df_N[[group_var]], " (N = ", df_N$N, ")") # nolint
 
     # keep strata factor levels
+    search_strings <- unique(df_N[[strata_N]])
     matches <- sapply(unique(df_N[[group_var]]), function(x) {
       regex_pattern <- gsub("([][(){}^$.|*+?\\\\])", "\\\\\\1", x)
-      unique(df_N[[paste0(group_var, "_N")]])[grepl(
-        paste0("^", regex_pattern),
-        unique(df_N[[paste0(group_var, "_N")]])
+      search_strings[grepl(
+        paste0("^", regex_pattern, "\\b"),
+        search_strings
       )]
     })
     df_N[[paste0(group_var, "_N")]] <- factor(df_N[[group_var]]) # nolint
