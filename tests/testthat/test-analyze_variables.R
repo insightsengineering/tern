@@ -683,3 +683,48 @@ testthat::test_that("analyze_vars warnings for geom_verbose work", {
   # Do we expect output to be NA?
   expect_true(all(is.na(cell_values(result2)[[1]])))
 })
+
+testthat::test_that("analyze_vars works with all-NA factor input", {
+  data_mtcars <- mtcars
+  data_mtcars$hp2 <- as.factor("<Missing>")
+
+  res <- basic_table() %>%
+    analyze_vars(
+      vars = c("hp2"),
+      .stats = c("n", "count_fraction", "count"),
+      na_rm = TRUE
+    ) %>%
+    build_table(data_mtcars)
+
+  expect_identical(
+    strsplit(toString(matrix_form(res), hsep = "-"), "\n")[[1]],
+    c(
+      "    all obs",
+      "-----------",
+      "n      0   "
+    )
+  )
+})
+
+testthat::test_that("analyze_vars works with all-NA character input", {
+  data_mtcars <- mtcars
+  data_mtcars$hp2 <- "<Missing>"
+
+  res <- basic_table() %>%
+    analyze_vars(
+      vars = c("hp2"),
+      .stats = c("n", "count_fraction", "count"),
+      na_rm = TRUE,
+      verbose = FALSE
+    ) %>%
+    build_table(data_mtcars)
+
+  expect_identical(
+    strsplit(toString(matrix_form(res), hsep = "-"), "\n")[[1]],
+    c(
+      "    all obs",
+      "-----------",
+      "n      0   "
+    )
+  )
+})

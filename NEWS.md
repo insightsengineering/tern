@@ -2,6 +2,7 @@
 
 ### Bug Fixes
 * Fixed bug in `tabulate_rsp_subgroups()` and `tabulate_survival_subgroups()` preventing risk difference column format specified via `control_riskdiff()` from being applied.
+* Fixed bug in `a_summary()` causing an error when all values of a factor input variable were `NA`.
 
 # tern 0.9.9
 
