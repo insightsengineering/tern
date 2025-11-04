@@ -9,7 +9,7 @@ df_explicit_na(
   omit_columns = NULL,
   char_as_factor = TRUE,
   logical_as_factor = FALSE,
-  na_level = "<Missing>"
+  na_level = default_na_str()
 )
 }
 \arguments{

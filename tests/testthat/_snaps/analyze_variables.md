@@ -826,7 +826,7 @@
       count 
           2 
       
-      $count$`NA`
+      $count$<NA>
       count 
           1 
       
@@ -844,7 +844,7 @@
           count         p 
       2.0000000 0.2857143 
       
-      $count_fraction$`NA`
+      $count_fraction$<NA>
           count         p 
       1.0000000 0.1428571 
       
@@ -862,7 +862,7 @@
           count         p 
       2.0000000 0.2857143 
       
-      $count_fraction_fixed_dp$`NA`
+      $count_fraction_fixed_dp$<NA>
           count         p 
       1.0000000 0.1428571 
       
@@ -880,7 +880,7 @@
         num denom 
           2     7 
       
-      $fraction$`NA`
+      $fraction$<NA>
         num denom 
           1     7 
       
@@ -899,8 +899,8 @@
     Output
       $n
       $n$n
-      n 
-      9 
+       n 
+      10 
       
       
       $count
@@ -916,47 +916,63 @@
       count 
           4 
       
+      $count$<NA>
+      count 
+          1 
+      
       
       $count_fraction
       $count_fraction$Female
-          count         p 
-      2.0000000 0.2222222 
+      count     p 
+        2.0   0.2 
       
       $count_fraction$Male
-          count         p 
-      3.0000000 0.3333333 
+      count     p 
+        3.0   0.3 
       
       $count_fraction$Unknown
-          count         p 
-      4.0000000 0.4444444 
+      count     p 
+        4.0   0.4 
+      
+      $count_fraction$<NA>
+      count     p 
+        1.0   0.1 
       
       
       $count_fraction_fixed_dp
       $count_fraction_fixed_dp$Female
-          count         p 
-      2.0000000 0.2222222 
+      count     p 
+        2.0   0.2 
       
       $count_fraction_fixed_dp$Male
-          count         p 
-      3.0000000 0.3333333 
+      count     p 
+        3.0   0.3 
       
       $count_fraction_fixed_dp$Unknown
-          count         p 
-      4.0000000 0.4444444 
+      count     p 
+        4.0   0.4 
+      
+      $count_fraction_fixed_dp$<NA>
+      count     p 
+        1.0   0.1 
       
       
       $fraction
       $fraction$Female
         num denom 
-          2     9 
+          2    10 
       
       $fraction$Male
         num denom 
-          3     9 
+          3    10 
       
       $fraction$Unknown
         num denom 
-          4     9 
+          4    10 
+      
+      $fraction$<NA>
+        num denom 
+          1    10 
       
       
       $n_blq
@@ -1520,19 +1536,19 @@
       2                     count.a              2          5                 a
       3                     count.b              1          5                 b
       4                     count.c              1          5                 c
-      5                    count.NA              1          5                NA
+      5                    count.NA              1          5              <NA>
       6            count_fraction.a        2 (40%)          0                 a
       7            count_fraction.b        1 (20%)          0                 b
       8            count_fraction.c        1 (20%)          0                 c
-      9           count_fraction.NA        1 (20%)          0                NA
+      9           count_fraction.NA        1 (20%)          0              <NA>
       10  count_fraction_fixed_dp.a      2 (40.0%)          0                 a
       11  count_fraction_fixed_dp.b      1 (20.0%)          0                 b
       12  count_fraction_fixed_dp.c      1 (20.0%)          0                 c
-      13 count_fraction_fixed_dp.NA      1 (20.0%)          0                NA
+      13 count_fraction_fixed_dp.NA      1 (20.0%)          0              <NA>
       14                 fraction.a    2/5 (40.0%)          0                 a
       15                 fraction.b    1/5 (20.0%)          0                 b
       16                 fraction.c    1/5 (20.0%)          0                 c
-      17                fraction.NA    1/5 (20.0%)          0                NA
+      17                fraction.NA    1/5 (20.0%)          0              <NA>
       18                      n_blq              0          0             n_blq
 
 # a_summary works with healthy input when compare_with_ref_group = TRUE.
@@ -1649,34 +1665,6 @@
       1      pval        <0.0001          3        pvalue
       2 median_ci   -1.47 - 0.78          3 Median 95% CI
 
----
-
-    Code
-      res
-    Output
-      RowsVerticalSection (in_rows) object print method:
-      ----------------------------
-                           row_name formatted_cell indent_mod                  row_label
-      1                           n           5.00         -1          number of records
-      2                     count.a              2          5                          a
-      3                     count.b              1          5                          b
-      4                     count.c              1          5                          c
-      5                    count.NA              1          5                         NA
-      6            count_fraction.a        2 (40%)          0                          a
-      7            count_fraction.b        1 (20%)          0                          b
-      8            count_fraction.c        1 (20%)          0                          c
-      9           count_fraction.NA        1 (20%)          0                         NA
-      10  count_fraction_fixed_dp.a      2 (40.0%)          0                          a
-      11  count_fraction_fixed_dp.b      1 (20.0%)          0                          b
-      12  count_fraction_fixed_dp.c      1 (20.0%)          0                          c
-      13 count_fraction_fixed_dp.NA      1 (20.0%)          0                         NA
-      14                 fraction.a    2/5 (40.0%)          0                          a
-      15                 fraction.b    1/5 (20.0%)          0                          b
-      16                 fraction.c    1/5 (20.0%)          0                          c
-      17                fraction.NA    1/5 (20.0%)          0                         NA
-      18                      n_blq              0          0                      n_blq
-      19                pval_counts         0.8254          0 p-value (chi-squared test)
-
 # `analyze_vars` works with healthy input, default `na_rm = TRUE`.
 
     Code
@@ -1730,24 +1718,12 @@
     Code
       res
     Output
-           all obs
-      ————————————
-      n       5   
-      a    2 (40%)
-      b    1 (20%)
-      NA   2 (40%)
-
----
-
-    Code
-      res
-    Output
-                  all obs
-      ———————————————————
-      n              5   
-      a           2 (40%)
-      b           1 (20%)
-      <Missing>   2 (40%)
+             all obs
+      ——————————————
+      n         5   
+      a      2 (40%)
+      b      1 (20%)
+      <NA>   2 (40%)
 
 # `analyze_vars` works with factors and different denominators
 
@@ -1894,19 +1870,7 @@
       n          5   
       FALSE   1 (20%)
       TRUE    2 (40%)
-      NA      2 (40%)
-
----
-
-    Code
-      res
-    Output
-                  all obs
-      ———————————————————
-      n              5   
-      FALSE       1 (20%)
-      TRUE        2 (40%)
-      <Missing>   2 (40%)
+      <NA>    2 (40%)
 
 # `analyze_vars` works with empty named numeric variables
 

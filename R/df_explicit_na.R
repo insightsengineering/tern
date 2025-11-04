@@ -71,7 +71,7 @@ df_explicit_na <- function(data,
                            omit_columns = NULL,
                            char_as_factor = TRUE,
                            logical_as_factor = FALSE,
-                           na_level = "<Missing>") {
+                           na_level = default_na_str()) {
   checkmate::assert_character(omit_columns, null.ok = TRUE, min.len = 1, any.missing = FALSE)
   checkmate::assert_data_frame(data)
   checkmate::assert_flag(char_as_factor)

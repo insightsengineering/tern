@@ -6,6 +6,8 @@
 #'
 #' @param x (`factor` or `character`)\cr values for which any missing values should be substituted.
 #' @param label (`string`)\cr string that missing data should be replaced with.
+#' @param drop_na (`flag`)\cr if `TRUE` and `x` is a factor, any levels
+#'   that are only `label` will be dropped.
 #'
 #' @return `x` with any `NA` values substituted by `label`.
 #'
@@ -18,14 +20,19 @@
 #'
 #' explicit_na(sas_na(c("a", "")))
 #'
+#' explicit_na(factor(levels = c(NA, "a")))
+#' explicit_na(factor(levels = c(NA, "a")), drop_na = TRUE) # previous default
+#'
 #' @export
-explicit_na <- function(x, label = "<Missing>", drop_only_label = FALSE) {
-  checkmate::assert_string(label)
+explicit_na <- function(x, label = default_na_str(), drop_na = default_drop_na()) {
+  checkmate::assert_string(label, na.ok = TRUE)
+  checkmate::assert_flag(drop_na)
 
   if (is.factor(x)) {
     x <- forcats::fct_na_value_to_level(x, label)
-    if (drop_only_label)
+    if (drop_na) {
       x <- forcats::fct_drop(x, only = label)
+    }
   } else if (is.character(x)) {
     x[is.na(x)] <- label
   } else {
@@ -33,6 +40,27 @@ explicit_na <- function(x, label = "<Missing>", drop_only_label = FALSE) {
   }
 
   x
+}
+#' @describeIn explicit_na Getter for default `NA` value replacement string. Retrieves the
+#'
+#' @return
+#' * `tern_default_drop_na`: (`flag`)\cr default value for `drop_na` argument in `explicit_na()`.
+#'
+#' @export
+default_drop_na <- function() {
+  getOption("tern_default_drop_na", default = TRUE)
+}
+
+#' @describeIn explicit_na Setter for default `NA` value replacement string. Sets the
+#'   option `"tern_default_drop_na"` within the R environment.
+#'
+#' @return
+#' * `tern_default_drop_na` has no return value.
+#'
+#' @export
+set_default_drop_na <- function(drop_na) {
+  checkmate::assert_flag(drop_na, null.ok = TRUE)
+  options("tern_default_drop_na" = drop_na)
 }
 
 #' Convert strings to `NA`

@@ -23,11 +23,21 @@ skip_if_too_deep <- function(depth) {
 
 # expect_snapshot_ggplot - set custom plot dimensions
 expect_snapshot_ggplot <- function(title, fig, width = NA, height = NA, no_plot_snapshots = TRUE) {
+
+  name <- paste0(title, ".svg")
+
+  # 1. ALWAYS announce the file *first*.
+  #    This tells testthat the snapshot is active.
+  testthat::announce_snapshot_file(name = name)
+
+  # 2. Now you can safely skip.
+  #    If a skip is triggered, the function stops,
+  #    but testthat knows not to delete the file.
   testthat::skip_on_ci()
   testthat::skip_if_not_installed("svglite")
   testthat::skip_if(no_plot_snapshots)
 
-  name <- paste0(title, ".svg")
+  # 3. If not skipped, generate the plot and run the comparison.
   path <- tempdir()
   withr::with_options(
     opts_partial_match_old,
@@ -35,6 +45,5 @@ expect_snapshot_ggplot <- function(title, fig, width = NA, height = NA, no_plot_
   )
   path <- file.path(path, name)
 
-  testthat::announce_snapshot_file(name = name)
   testthat::expect_snapshot_file(path, name)
 }

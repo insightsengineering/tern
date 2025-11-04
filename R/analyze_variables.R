@@ -332,7 +332,7 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
   if (na_rm) {
     x <- x[!is.na(x)]
   } else {
-    x <- x %>% explicit_na(label = "NA")
+    x <- x %>% explicit_na()
   }
 
   y <- list()
@@ -376,8 +376,8 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
       x <- x[!is.na(x)] %>% fct_discard("<Missing>")
       .ref_group <- .ref_group[!is.na(.ref_group)] %>% fct_discard("<Missing>")
     } else {
-      x <- x %>% explicit_na(label = "NA")
-      .ref_group <- .ref_group %>% explicit_na(label = "NA")
+      x <- x %>% explicit_na()
+      .ref_group <- .ref_group %>% explicit_na()
     }
 
     if ("NA" %in% levels(x)) levels(.ref_group) <- c(levels(.ref_group), "NA")
