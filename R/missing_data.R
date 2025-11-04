@@ -19,18 +19,20 @@
 #' explicit_na(sas_na(c("a", "")))
 #'
 #' @export
-explicit_na <- function(x, label = "<Missing>") {
+explicit_na <- function(x, label = "<Missing>", drop_only_label = FALSE) {
   checkmate::assert_string(label)
 
   if (is.factor(x)) {
     x <- forcats::fct_na_value_to_level(x, label)
-    forcats::fct_drop(x, only = label)
+    if (drop_only_label)
+      x <- forcats::fct_drop(x, only = label)
   } else if (is.character(x)) {
     x[is.na(x)] <- label
-    x
   } else {
     stop("only factors and character vectors allowed")
   }
+
+  x
 }
 
 #' Convert strings to `NA`

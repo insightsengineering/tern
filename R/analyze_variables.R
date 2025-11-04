@@ -330,7 +330,7 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
   compare_with_ref_group <- args_list[["compare_with_ref_group"]]
 
   if (na_rm) {
-    x <- x[!is.na(x)] %>% fct_discard("<Missing>")
+    x <- x[!is.na(x)]
   } else {
     x <- x %>% explicit_na(label = "NA")
   }
