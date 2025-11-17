@@ -46,7 +46,8 @@ relvar_init <- function(relvar1, relvar2) {
     ))
     return(NA)
   }
-  return(list("relvar1" = relvar1, "relvar2" = relvar2))
+
+  list("relvar1" = relvar1, "relvar2" = relvar2)
 }
 
 rel_var <- function(df = NULL, var_name = NULL, var_values = NULL, related_var = NULL) {
@@ -575,7 +576,7 @@ generate_adlb <- function(adsl = tern_ex_adsl,
 
     data_compare <- data_compare[, -which(names(data_compare) %in% c("row_check"))]
 
-    return(data_compare)
+    data_compare
   }
 
   adlb <- flag_variables(adlb, TRUE, "ELSE", FALSE) %>% dplyr::rename(WORS01FL = "new_var")

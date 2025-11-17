@@ -41,7 +41,7 @@ explicit_na <- function(x, label = default_na_str(), drop_na = default_drop_na()
 
   x
 }
-#' @describeIn explicit_na Getter for default `NA` value replacement string. Retrieves the
+#' @describeIn explicit_na should `NA` values without a dedicated level be dropped?
 #'
 #' @return
 #' * `tern_default_drop_na`: (`flag`)\cr default value for `drop_na` argument in `explicit_na()`.

@@ -38,7 +38,7 @@ Substitute missing data with a string or factor level.
 }
 \section{Functions}{
 \itemize{
-\item \code{default_drop_na()}: Getter for default \code{NA} value replacement string. Retrieves the
+\item \code{default_drop_na()}: should \code{NA} values without a dedicated level be dropped?
 
 \item \code{set_default_drop_na()}: Setter for default \code{NA} value replacement string. Sets the
 option \code{"tern_default_drop_na"} within the R environment.

@@ -3,6 +3,8 @@
 ### Bug Fixes
 * Fixed bug in `tabulate_rsp_subgroups()` and `tabulate_survival_subgroups()` preventing risk difference column format specified via `control_riskdiff()` from being applied.
 * Fixed bug in `a_summary()` causing an error when all values of a factor input variable were `NA`.
+* Fixed `NA` behavior in `s_summary.factor` and `s_summary.character` when `na.rm = FALSE` to ensure that `NA` values are always represented in output tables. 
+* Unified explicit `NA` behavior for missing values in `explicit_na()`.
 
 # tern 0.9.9
 
