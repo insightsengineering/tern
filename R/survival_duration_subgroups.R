@@ -318,6 +318,7 @@ tabulate_survival_subgroups <- function(lyt,
     colvars_hr$vars <- c(colvars_hr$vars, "riskdiff")
     colvars_hr$labels <- c(colvars_hr$labels, riskdiff = riskdiff$col_label)
     arm_cols <- paste(rep(c("n_events", "n_events", "n", "n")), c(riskdiff$arm_x, riskdiff$arm_y), sep = "_")
+    extra_args[[".formats"]] <- c(extra_args[[".formats"]], list(riskdiff = riskdiff$format))
 
     df_prop_diff <- df$survtime %>%
       dplyr::select(-"median") %>%
