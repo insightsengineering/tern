@@ -23,7 +23,6 @@ skip_if_too_deep <- function(depth) {
 
 # expect_snapshot_ggplot - set custom plot dimensions
 expect_snapshot_ggplot <- function(title, fig, width = NA, height = NA, no_plot_snapshots = TRUE) {
-
   name <- paste0(title, ".svg")
 
   # 1. ALWAYS announce the file *first*.
