@@ -167,7 +167,7 @@ s_summary.numeric <- function(x, control = control_analyze_vars(), ...) {
 
   if (na_rm) {
     x <- x[!is.na(x)]
-  }
+  } # no explicit NA because it should be numeric
 
   y <- list()
 
@@ -326,13 +326,14 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
   .N_row <- args_list[[".N_row"]] # nolint
   .N_col <- args_list[[".N_col"]] # nolint
   na_rm <- args_list[["na_rm"]] %||% TRUE
+  na_str <- args_list[["na_str"]] %||% "NA"
   verbose <- args_list[["verbose"]] %||% TRUE
   compare_with_ref_group <- args_list[["compare_with_ref_group"]]
 
   if (na_rm) {
     x <- x[!is.na(x)]
   } else {
-    x <- x %>% explicit_na()
+    x <- x %>% explicit_na(label = na_str)
   }
 
   y <- list()
@@ -416,12 +417,13 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 s_summary.character <- function(x, denom = c("n", "N_col", "N_row"), ...) {
   args_list <- list(...)
   na_rm <- args_list[["na_rm"]] %||% TRUE
+  na_str <- args_list[["na_str"]] %||% "NA"
   verbose <- args_list[["verbose"]] %||% TRUE
 
   if (na_rm) {
     y <- as_factor_keep_attributes(x, verbose = verbose)
   } else {
-    y <- as_factor_keep_attributes(x, verbose = verbose, na_level = "NA")
+    y <- as_factor_keep_attributes(x, verbose = verbose, na_level = na_str)
   }
 
   s_summary(x = y, denom = denom, ...)
@@ -468,7 +470,7 @@ s_summary.logical <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 
   if (na_rm) {
     x <- x[!is.na(x)]
-  }
+  } # na values are and should be logical here
 
   y <- list()
   y$n <- c("n" = length(x))
