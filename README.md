@@ -6,13 +6,13 @@
 [![Code Coverage 📔](https://raw.githubusercontent.com/insightsengineering/tern/_xml_coverage_reports/data/main/badge.svg)](https://insightsengineering.github.io/tern/main/coverage-report/)
 
 ![GitHub forks](https://img.shields.io/github/forks/insightsengineering/tern?style=social)
-![GitHub repo stars](https://img.shields.io/github/stars/insightsengineering/tern?style=social)
+![GitHub stars](https://img.shields.io/github/stars/insightsengineering/tern?style=social)
 
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/insightsengineering/tern)
 ![GitHub contributors](https://img.shields.io/github/contributors/insightsengineering/tern)
 ![GitHub last commit](https://img.shields.io/github/last-commit/insightsengineering/tern)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/insightsengineering/tern)
-![GitHub repo size](https://img.shields.io/github/repo-size/insightsengineering/tern)
+![GitHub repository size](https://img.shields.io/github/repo-size/insightsengineering/tern)
 ![GitHub language count](https://img.shields.io/github/languages/count/insightsengineering/tern)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Current Version](https://img.shields.io/github/r-package/v/insightsengineering/tern/main?color=purple\&label=package%20version)](https://github.com/insightsengineering/tern/tree/main)
@@ -91,6 +91,6 @@ This package is the result of the joint efforts by many developers and stakehold
 
 ### Stargazers
 
-[![Stargazers repo roster for tern](https://reporoster.com/stars/insightsengineering/tern)](https://github.com/insightsengineering/tern/stargazers)
+[![Stargazers roster for tern](https://reporoster.com/stars/insightsengineering/tern)](https://github.com/insightsengineering/tern/stargazers)
 
-[![Forkers repo roster for tern](https://reporoster.com/forks/insightsengineering/tern)](https://github.com/insightsengineering/tern/network/members)
+[![Forkers roster for tern](https://reporoster.com/forks/insightsengineering/tern)](https://github.com/insightsengineering/tern/network/members)

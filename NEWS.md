@@ -364,7 +364,7 @@
 * Created vignette which saves cached synthetic CDISC dataset files to the `data/` folder and
   generated cached synthetic datasets.
 * Updated all examples/tests to use datasets from the `data/` folder instead of `scda` datasets.
-* Removed all template tests from `tern`. These tests are in internal repo `scda.test`.
+* Removed all template tests from `tern`. These tests are in internal repository `scda.test`.
 
 ### Miscellaneous
 * Renamed `summarize_vars_in_cols` to `analyze_vars_in_cols` to reflect the appropriate `analyze` logic.
