@@ -27,8 +27,7 @@
 #'   for as explicit factor levels.
 #' * If factor variables contain `NA`, these `NA` values are excluded by default. To include `NA` values
 #'   set `na.rm = FALSE` and missing values will be displayed as an `NA` level. Alternatively, an explicit
-#'   factor level can be defined for `NA` values during pre-processing via [df_explicit_na()] - the
-#'   default `na_level` (`"<Missing>"`) will also be excluded when `na.rm` is set to `TRUE`.
+#'   factor level can be defined for `NA` values during pre-processing via [df_explicit_na()].
 #' * For character variables, automatic conversion to factor does not guarantee that the table
 #'   will be generated correctly. In particular for sparse tables this very likely can fail.
 #'   Therefore it is always better to manually convert character variables to factors during pre-processing.

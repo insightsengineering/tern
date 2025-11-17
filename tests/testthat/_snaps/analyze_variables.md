@@ -899,8 +899,8 @@
     Output
       $n
       $n$n
-       n 
-      10 
+      n 
+      9 
       
       
       $count
@@ -916,63 +916,47 @@
       count 
           4 
       
-      $count$<NA>
-      count 
-          1 
-      
       
       $count_fraction
       $count_fraction$Female
-      count     p 
-        2.0   0.2 
+          count         p 
+      2.0000000 0.2222222 
       
       $count_fraction$Male
-      count     p 
-        3.0   0.3 
+          count         p 
+      3.0000000 0.3333333 
       
       $count_fraction$Unknown
-      count     p 
-        4.0   0.4 
-      
-      $count_fraction$<NA>
-      count     p 
-        1.0   0.1 
+          count         p 
+      4.0000000 0.4444444 
       
       
       $count_fraction_fixed_dp
       $count_fraction_fixed_dp$Female
-      count     p 
-        2.0   0.2 
+          count         p 
+      2.0000000 0.2222222 
       
       $count_fraction_fixed_dp$Male
-      count     p 
-        3.0   0.3 
+          count         p 
+      3.0000000 0.3333333 
       
       $count_fraction_fixed_dp$Unknown
-      count     p 
-        4.0   0.4 
-      
-      $count_fraction_fixed_dp$<NA>
-      count     p 
-        1.0   0.1 
+          count         p 
+      4.0000000 0.4444444 
       
       
       $fraction
       $fraction$Female
         num denom 
-          2    10 
+          2     9 
       
       $fraction$Male
         num denom 
-          3    10 
+          3     9 
       
       $fraction$Unknown
         num denom 
-          4    10 
-      
-      $fraction$<NA>
-        num denom 
-          1    10 
+          4     9 
       
       
       $n_blq

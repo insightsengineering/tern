@@ -145,8 +145,7 @@ be difficult since we use counts for the chi-squared test statistic, therefore m
 for as explicit factor levels.
 \item If factor variables contain \code{NA}, these \code{NA} values are excluded by default. To include \code{NA} values
 set \code{na.rm = FALSE} and missing values will be displayed as an \code{NA} level. Alternatively, an explicit
-factor level can be defined for \code{NA} values during pre-processing via \code{\link[=df_explicit_na]{df_explicit_na()}} - the
-default \code{na_level} (\code{"<Missing>"}) will also be excluded when \code{na.rm} is set to \code{TRUE}.
+factor level can be defined for \code{NA} values during pre-processing via \code{\link[=df_explicit_na]{df_explicit_na()}}.
 \item For character variables, automatic conversion to factor does not guarantee that the table
 will be generated correctly. In particular for sparse tables this very likely can fail.
 Therefore it is always better to manually convert character variables to factors during pre-processing.

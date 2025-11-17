@@ -48,7 +48,7 @@
     Code
       res
     Output
-      [1] 0.9063036
+      [1] 0.6443698
 
 # s_compare for character works as expected
 
