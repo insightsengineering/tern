@@ -64,8 +64,9 @@ testthat::test_that("s_summary works when factors have NA levels", {
 
 testthat::test_that("s_summary works with factors with NA values handled and correctly removes them by default", {
   x <- factor(c("Female", "Male", "Female", "Male", "Male", "Unknown", "Unknown", "Unknown", "Unknown", NA))
+  x <- explicit_na(x, label = "<Missing>")
 
-  result <- s_summary(x)
+  result <- s_summary(x, na_str_drop = "<Missing>")
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)

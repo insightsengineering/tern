@@ -327,11 +327,16 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
   .N_col <- args_list[[".N_col"]] # nolint
   na_rm <- args_list[["na_rm"]] %||% TRUE
   na_str <- args_list[["na_str"]] %||% "NA"
+  na_str_drop <- args_list[["na_str_drop"]]
   verbose <- args_list[["verbose"]] %||% TRUE
   compare_with_ref_group <- args_list[["compare_with_ref_group"]]
+  checkmate::assert_string(na_str_drop, null.ok = TRUE)
 
   if (na_rm) {
     x <- x[!is.na(x)]
+    if (!is.null(na_str_drop)) {
+      x <- fct_discard(x, na_str_drop)
+    }
   } else {
     x <- x %>% explicit_na(label = na_str)
   }
@@ -671,6 +676,7 @@ a_summary <- function(x,
 #' @describeIn analyze_variables Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
+#' @param na_str_drop (`string`)\cr Additional `NA` string to be dropped from factor calculations.
 #' @param ... additional arguments passed to `s_summary()`, including:
 #'   * `denom`: (`string`) See parameter description below.
 #'   * `.N_row`: (`numeric(1)`) Row-wise N (row group count) for the group of observations being analyzed (i.e. with no
@@ -753,6 +759,7 @@ analyze_vars <- function(lyt,
                          vars,
                          var_labels = vars,
                          na_str = default_na_str(),
+                         na_str_drop = "<Missing>",
                          nested = TRUE,
                          show_labels = "default",
                          table_names = vars,
@@ -768,6 +775,7 @@ analyze_vars <- function(lyt,
   # Depending on main functions
   extra_args <- list(
     "na_rm" = na_rm,
+    "na_str_drop" = na_str_drop,
     "compare_with_ref_group" = compare_with_ref_group,
     ...
   )
