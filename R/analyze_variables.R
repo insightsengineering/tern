@@ -676,7 +676,8 @@ a_summary <- function(x,
 #' @describeIn analyze_variables Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
-#' @param na_str_drop (`string`)\cr Additional `NA` string to be dropped from factor calculations.
+#' @param na_str_drop (`string`)\cr Additional `NA` string to be dropped from factor calculations. If `NULL`
+#'   nothing will be removed beyond standard `NA` handling.
 #' @param ... additional arguments passed to `s_summary()`, including:
 #'   * `denom`: (`string`) See parameter description below.
 #'   * `.N_row`: (`numeric(1)`) Row-wise N (row group count) for the group of observations being analyzed (i.e. with no
