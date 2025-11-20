@@ -2,23 +2,48 @@
 % Please edit documentation in R/missing_data.R
 \name{explicit_na}
 \alias{explicit_na}
+\alias{default_drop_na}
+\alias{set_default_drop_na}
 \title{Missing data}
 \usage{
-explicit_na(x, label = "<Missing>")
+explicit_na(x, label = default_na_str(), drop_na = default_drop_na())
+
+default_drop_na()
+
+set_default_drop_na(drop_na)
 }
 \arguments{
 \item{x}{(\code{factor} or \code{character})\cr values for which any missing values should be substituted.}
 
 \item{label}{(\code{string})\cr string that missing data should be replaced with.}
+
+\item{drop_na}{(\code{flag})\cr if \code{TRUE} and \code{x} is a factor, any levels
+that are only \code{label} will be dropped.}
 }
 \value{
 \code{x} with any \code{NA} values substituted by \code{label}.
+
+\itemize{
+\item \code{tern_default_drop_na}: (\code{flag})\cr default value for \code{drop_na} argument in \code{explicit_na()}.
+}
+
+\itemize{
+\item \code{tern_default_drop_na} has no return value.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 
 Substitute missing data with a string or factor level.
 }
+\section{Functions}{
+\itemize{
+\item \code{default_drop_na()}: should \code{NA} values without a dedicated level be dropped?
+
+\item \code{set_default_drop_na()}: Setter for default \code{NA} value replacement string. Sets the
+option \code{"tern_default_drop_na"} within the R environment.
+
+}}
 \examples{
 explicit_na(c(NA, "a", "b"))
 is.na(explicit_na(c(NA, "a", "b")))
@@ -27,5 +52,8 @@ explicit_na(factor(c(NA, "a", "b")))
 is.na(explicit_na(factor(c(NA, "a", "b"))))
 
 explicit_na(sas_na(c("a", "")))
+
+explicit_na(factor(levels = c(NA, "a")))
+explicit_na(factor(levels = c(NA, "a")), drop_na = TRUE) # previous default
 
 }

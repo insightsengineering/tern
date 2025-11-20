@@ -335,7 +335,7 @@ h_coxreg_inter_estimations <- function(variable,
       y <- vcov[vcov_el, vcov_el]
       y <- sum(y)
       y <- sqrt(y)
-      return(y)
+      y
     }
   )
   q_norm <- stats::qnorm((1 + conf_level) / 2)

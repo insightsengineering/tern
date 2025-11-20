@@ -224,7 +224,6 @@ testthat::test_that("analyze_vars_in_cols works well with categorical data", {
       label_pos = "topleft",
       child_labels = "hidden"
     ) %>%
-    # split_cols_by("STRATA1") %>%
     analyze_vars_in_cols(
       vars = "ARM",
       .stats = c("n", "count_fraction"),

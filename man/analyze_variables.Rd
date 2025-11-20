@@ -16,6 +16,7 @@ analyze_vars(
   vars,
   var_labels = vars,
   na_str = default_na_str(),
+  na_str_drop = "<Missing>",
   nested = TRUE,
   show_labels = "default",
   table_names = vars,
@@ -58,6 +59,9 @@ a_summary(
 \item{var_labels}{(\code{character})\cr variable labels.}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
+
+\item{na_str_drop}{(\code{string})\cr Additional \code{NA} string to be dropped from factor calculations. If \code{NULL}
+nothing will be removed beyond standard \code{NA} handling.}
 
 \item{nested}{(\code{flag})\cr whether this layout instruction should be applied within the existing layout structure _if
 possible (\code{TRUE}, the default) or as a new top-level element (\code{FALSE}). Ignored if it would nest a split.

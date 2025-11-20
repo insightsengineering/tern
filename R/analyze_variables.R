@@ -167,7 +167,7 @@ s_summary.numeric <- function(x, control = control_analyze_vars(), ...) {
 
   if (na_rm) {
     x <- x[!is.na(x)]
-  }
+  } # no explicit NA because it should be numeric
 
   y <- list()
 
@@ -326,13 +326,19 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
   .N_row <- args_list[[".N_row"]] # nolint
   .N_col <- args_list[[".N_col"]] # nolint
   na_rm <- args_list[["na_rm"]] %||% TRUE
+  na_str <- args_list[["na_str"]] %||% "NA"
+  na_str_drop <- args_list[["na_str_drop"]]
   verbose <- args_list[["verbose"]] %||% TRUE
   compare_with_ref_group <- args_list[["compare_with_ref_group"]]
+  checkmate::assert_string(na_str_drop, null.ok = TRUE)
 
   if (na_rm) {
-    x <- x[!is.na(x)] %>% fct_discard("<Missing>")
+    x <- x[!is.na(x)]
+    if (!is.null(na_str_drop)) {
+      x <- fct_discard(x, na_str_drop)
+    }
   } else {
-    x <- x %>% explicit_na(label = "NA")
+    x <- x %>% explicit_na(label = na_str)
   }
 
   y <- list()
@@ -375,8 +381,8 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
       x <- x[!is.na(x)] %>% fct_discard("<Missing>")
       .ref_group <- .ref_group[!is.na(.ref_group)] %>% fct_discard("<Missing>")
     } else {
-      x <- x %>% explicit_na(label = "NA")
-      .ref_group <- .ref_group %>% explicit_na(label = "NA")
+      x <- x %>% explicit_na(label = na_str)
+      .ref_group <- .ref_group %>% explicit_na(label = na_str)
     }
 
     if ("NA" %in% levels(x)) levels(.ref_group) <- c(levels(.ref_group), "NA")
@@ -415,12 +421,13 @@ s_summary.factor <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 s_summary.character <- function(x, denom = c("n", "N_col", "N_row"), ...) {
   args_list <- list(...)
   na_rm <- args_list[["na_rm"]] %||% TRUE
+  na_str <- args_list[["na_str"]] %||% "NA"
   verbose <- args_list[["verbose"]] %||% TRUE
 
   if (na_rm) {
     y <- as_factor_keep_attributes(x, verbose = verbose)
   } else {
-    y <- as_factor_keep_attributes(x, verbose = verbose, na_level = "NA")
+    y <- as_factor_keep_attributes(x, verbose = verbose, na_level = na_str)
   }
 
   s_summary(x = y, denom = denom, ...)
@@ -467,7 +474,7 @@ s_summary.logical <- function(x, denom = c("n", "N_col", "N_row"), ...) {
 
   if (na_rm) {
     x <- x[!is.na(x)]
-  }
+  } # na values are and should be logical here
 
   y <- list()
   y$n <- c("n" = length(x))
@@ -669,6 +676,8 @@ a_summary <- function(x,
 #' @describeIn analyze_variables Layout-creating function which can take statistics function arguments
 #'   and additional format arguments. This function is a wrapper for [rtables::analyze()].
 #'
+#' @param na_str_drop (`string`)\cr Additional `NA` string to be dropped from factor calculations. If `NULL`
+#'   nothing will be removed beyond standard `NA` handling.
 #' @param ... additional arguments passed to `s_summary()`, including:
 #'   * `denom`: (`string`) See parameter description below.
 #'   * `.N_row`: (`numeric(1)`) Row-wise N (row group count) for the group of observations being analyzed (i.e. with no
@@ -751,6 +760,7 @@ analyze_vars <- function(lyt,
                          vars,
                          var_labels = vars,
                          na_str = default_na_str(),
+                         na_str_drop = "<Missing>",
                          nested = TRUE,
                          show_labels = "default",
                          table_names = vars,
@@ -766,6 +776,7 @@ analyze_vars <- function(lyt,
   # Depending on main functions
   extra_args <- list(
     "na_rm" = na_rm,
+    "na_str_drop" = na_str_drop,
     "compare_with_ref_group" = compare_with_ref_group,
     ...
   )
