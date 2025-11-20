@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.951427140711067" branch-rate="0" lines-covered="11400" lines-valid="11982" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-11-18 10:47:22.41265">
+<coverage line-rate="0.951427140711067" branch-rate="0" lines-covered="11400" lines-valid="11982" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-11-20 10:42:52.497715">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
@@ -1455,23 +1455,22 @@
             </method>
             <method name="analyze_vars" signature="" line-rate="0.96551724137931" branch-rate="0" complexity="0">
               <lines>
-                <line number="776" hits="42" branch="false"/>
                 <line number="777" hits="42" branch="false"/>
                 <line number="778" hits="42" branch="false"/>
                 <line number="779" hits="42" branch="false"/>
                 <line number="780" hits="42" branch="false"/>
                 <line number="781" hits="42" branch="false"/>
-                <line number="784" hits="42" branch="false"/>
-                <line number="785" hits="3" branch="false"/>
-                <line number="786" hits="9" branch="false"/>
-                <line number="787" hits="4" branch="false"/>
-                <line number="788" hits="0" branch="false"/>
-                <line number="791" hits="42" branch="false"/>
+                <line number="782" hits="42" branch="false"/>
+                <line number="785" hits="42" branch="false"/>
+                <line number="786" hits="3" branch="false"/>
+                <line number="787" hits="9" branch="false"/>
+                <line number="788" hits="4" branch="false"/>
+                <line number="789" hits="0" branch="false"/>
                 <line number="792" hits="42" branch="false"/>
                 <line number="793" hits="42" branch="false"/>
                 <line number="794" hits="42" branch="false"/>
                 <line number="795" hits="42" branch="false"/>
-                <line number="798" hits="42" branch="false"/>
+                <line number="796" hits="42" branch="false"/>
                 <line number="799" hits="42" branch="false"/>
                 <line number="800" hits="42" branch="false"/>
                 <line number="801" hits="42" branch="false"/>
@@ -1484,6 +1483,7 @@
                 <line number="808" hits="42" branch="false"/>
                 <line number="809" hits="42" branch="false"/>
                 <line number="810" hits="42" branch="false"/>
+                <line number="811" hits="42" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -1754,23 +1754,22 @@
             <line number="671" hits="334" branch="false"/>
             <line number="672" hits="334" branch="false"/>
             <line number="673" hits="334" branch="false"/>
-            <line number="776" hits="42" branch="false"/>
             <line number="777" hits="42" branch="false"/>
             <line number="778" hits="42" branch="false"/>
             <line number="779" hits="42" branch="false"/>
             <line number="780" hits="42" branch="false"/>
             <line number="781" hits="42" branch="false"/>
-            <line number="784" hits="42" branch="false"/>
-            <line number="785" hits="3" branch="false"/>
-            <line number="786" hits="9" branch="false"/>
-            <line number="787" hits="4" branch="false"/>
-            <line number="788" hits="0" branch="false"/>
-            <line number="791" hits="42" branch="false"/>
+            <line number="782" hits="42" branch="false"/>
+            <line number="785" hits="42" branch="false"/>
+            <line number="786" hits="3" branch="false"/>
+            <line number="787" hits="9" branch="false"/>
+            <line number="788" hits="4" branch="false"/>
+            <line number="789" hits="0" branch="false"/>
             <line number="792" hits="42" branch="false"/>
             <line number="793" hits="42" branch="false"/>
             <line number="794" hits="42" branch="false"/>
             <line number="795" hits="42" branch="false"/>
-            <line number="798" hits="42" branch="false"/>
+            <line number="796" hits="42" branch="false"/>
             <line number="799" hits="42" branch="false"/>
             <line number="800" hits="42" branch="false"/>
             <line number="801" hits="42" branch="false"/>
@@ -1783,6 +1782,7 @@
             <line number="808" hits="42" branch="false"/>
             <line number="809" hits="42" branch="false"/>
             <line number="810" hits="42" branch="false"/>
+            <line number="811" hits="42" branch="false"/>
           </lines>
         </class>
         <class name="analyze_vars_in_cols.R" filename="R/analyze_vars_in_cols.R" line-rate="0.921348314606742" branch-rate="0" complexity="0">
