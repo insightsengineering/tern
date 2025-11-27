@@ -62,6 +62,7 @@ Suggests:
     lattice (>= 0.18-4),
     lubridate (>= 1.7.9),
     rmarkdown (>= 2.23),
+    sf (>= 1.0-22),
     sp (>= 2.2-0),
     stringr (>= 1.4.1),
     svglite (>= 2.1.2),
