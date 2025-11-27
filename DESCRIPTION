@@ -60,7 +60,6 @@ Imports:
 Suggests:
     knitr (>= 1.42),
     lattice (>= 0.18-4),
-    lme4 (>= 1.1-35),
     lubridate (>= 1.7.9),
     rmarkdown (>= 2.23),
     stringr (>= 1.4.1),
