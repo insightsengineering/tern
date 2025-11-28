@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.951427140711067" branch-rate="0" lines-covered="11400" lines-valid="11982" branches-covered="0" branches-valid="0" complexity="0" version="3.6.4" timestamp="2025-11-20 15:38:57.760527">
+<coverage line-rate="0.951419031719533" branch-rate="0" lines-covered="11398" lines-valid="11980" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2025-11-28 03:54:32.515361">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
   <packages>
-    <package name="tern" line-rate="0.951427140711067" branch-rate="0" complexity="0">
+    <package name="tern" line-rate="0.951419031719533" branch-rate="0" complexity="0">
       <classes>
         <class name="abnormal_by_baseline.R" filename="R/abnormal_by_baseline.R" line-rate="0.97029702970297" branch-rate="0" complexity="0">
           <methods>
@@ -25757,7 +25757,7 @@
             <line number="154" hits="2" branch="false"/>
           </lines>
         </class>
-        <class name="utils.R" filename="R/utils.R" line-rate="0.951048951048951" branch-rate="0" complexity="0">
+        <class name="utils.R" filename="R/utils.R" line-rate="0.950354609929078" branch-rate="0" complexity="0">
           <methods>
             <method name="range_noinf" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
@@ -25861,9 +25861,7 @@
               <lines>
                 <line number="238" hits="1017" branch="false"/>
                 <line number="239" hits="310" branch="false"/>
-                <line number="240" hits="1017" branch="false"/>
                 <line number="241" hits="707" branch="false"/>
-                <line number="242" hits="1017" branch="false"/>
               </lines>
             </method>
             <method name="combine_vectors" signature="" line-rate="1" branch-rate="0" complexity="0">
@@ -26040,9 +26038,7 @@
             <line number="224" hits="19" branch="false"/>
             <line number="238" hits="1017" branch="false"/>
             <line number="239" hits="310" branch="false"/>
-            <line number="240" hits="1017" branch="false"/>
             <line number="241" hits="707" branch="false"/>
-            <line number="242" hits="1017" branch="false"/>
             <line number="257" hits="42" branch="false"/>
             <line number="258" hits="42" branch="false"/>
             <line number="260" hits="42" branch="false"/>
