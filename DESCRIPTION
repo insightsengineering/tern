@@ -63,6 +63,7 @@ Suggests:
     lubridate (>= 1.7.9),
     rmarkdown (>= 2.23),
     stringr (>= 1.4.1),
+    sass (>= 0.4.10),
     svglite (>= 2.1.2),
     testthat (>= 3.1.9),
     withr (>= 2.0.0)
