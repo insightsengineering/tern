@@ -6,10 +6,18 @@ testthat::test_that("prop_chisq returns right result", {
   )
   grp <- c(rep("A", 20), rep("B", 20))
   tbl <- table(grp, rsp)
+  
   result <- prop_chisq(tbl)
-
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
+
+  result_less <- prop_chisq(tbl, alternative = "less")
+  res_less <- testthat::expect_silent(result_less)
+  testthat::expect_snapshot(res_less)
+
+  result_greater <- prop_chisq(tbl, alternative = "greater")
+  res_greater <- testthat::expect_silent(result_greater)
+  testthat::expect_snapshot(res_greater)
 })
 
 testthat::test_that("prop_cmh returns right result", {
@@ -18,10 +26,18 @@ testthat::test_that("prop_cmh returns right result", {
   grp <- factor(rep(c("A", "B"), each = 50))
   strata <- factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
   tbl <- table(grp, rsp, strata)
-  result <- prop_cmh(tbl)
 
+  result <- prop_cmh(tbl)
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
+
+  result_less <- prop_cmh(tbl, alternative = "less")
+  res_less <- testthat::expect_silent(result_less)
+  testthat::expect_snapshot(res_less)
+
+  result_greater <- prop_cmh(tbl, alternative = "greater")
+  res_greater <- testthat::expect_silent(result_greater)
+  testthat::expect_snapshot(res_greater)
 })
 
 testthat::test_that("prop_cmh also works when there are strata with just one observation", {
@@ -57,10 +73,18 @@ testthat::test_that("prop_fisher returns right result", {
   )
   grp <- c(rep("A", 20), rep("B", 20))
   tbl <- table(grp, rsp)
+  
   result <- prop_fisher(tbl)
-
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
+
+  result_less <- prop_fisher(tbl, alternative = "less")
+  res_less <- testthat::expect_silent(result_less)
+  testthat::expect_snapshot(res_less)
+
+  result_greater <- prop_fisher(tbl, alternative = "greater")
+  res_greater <- testthat::expect_silent(result_greater)
+  testthat::expect_snapshot(res_greater)
 })
 
 testthat::test_that("prop_schouten returns right result", {
@@ -89,6 +113,31 @@ testthat::test_that("prop_schouten returns right result", {
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("prop_schouten returns right result for less or greater alternative", {
+  set.seed(1, kind = "Mersenne-Twister")
+  rsp <- c(
+    sample(c(TRUE, FALSE), size = 20, prob = c(3 / 4, 1 / 4), replace = TRUE),
+    sample(c(TRUE, FALSE), size = 20, prob = c(1 / 2, 1 / 2), replace = TRUE)
+  )
+  grp <- c(rep("A", 20), rep("B", 20))
+  tbl <- table(grp, rsp)
+
+  result_less <- prop_schouten(tbl, alternative = "less")
+  res_less <- testthat::expect_silent(result_less)
+  testthat::expect_snapshot(res_less)
+
+  result_greater <- prop_schouten(tbl, alternative = "greater")
+  res_greater <- testthat::expect_silent(result_greater)
+  testthat::expect_snapshot(res_greater)
+
+  # And these results are in line with the standard Chi-Squared test.
+  result_chisq_less <- prop_chisq(tbl, alternative = "less")
+  result_chisq_greater <- prop_chisq(tbl, alternative = "greater")
+
+  expect_equal(result_less, result_chisq_less, tolerance = 1e-1)
+  expect_equal(result_greater, result_chisq_greater, tolerance = 1e-1)
+})
+
 testthat::test_that("s_test_proportion_diff and d_test_proportion_diff return right result", {
   set.seed(1984, kind = "Mersenne-Twister")
   dta <- data.frame(
@@ -113,6 +162,33 @@ testthat::test_that("s_test_proportion_diff and d_test_proportion_diff return ri
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("s_test_proportion_diff and d_test_proportion_diff work with less and greater alternatives", {
+  set.seed(1984, kind = "Mersenne-Twister")
+  dta <- data.frame(
+    rsp = sample(c(TRUE, FALSE), 100, TRUE),
+    grp = factor(rep(c("A", "B"), each = 50)),
+    strata = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+  )
+  method <- "cmh"
+  for (alternative in c("greater", "less")) {
+    result <- list(
+      d = d_test_proportion_diff(method, alternative = alternative),
+      s = s_test_proportion_diff(
+        df = subset(dta, grp == "A"),
+        .var = "rsp",
+        .ref_group = subset(dta, grp == "B"),
+        .in_ref_col = FALSE,
+        variables = list(strata = "strata"),
+        method = "cmh",
+        alternative = alternative
+      )
+    )
+
+    res <- testthat::expect_silent(result)
+    testthat::expect_snapshot(res)
+  }
+})
+
 testthat::test_that("test_proportion_diff returns right result", {
   set.seed(1984, kind = "Mersenne-Twister")
   dta <- data.frame(
@@ -126,6 +202,28 @@ testthat::test_that("test_proportion_diff returns right result", {
     test_proportion_diff(
       vars = "rsp",
       method = "cmh", variables = list(strata = "strata")
+    ) %>%
+    build_table(df = dta)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("test_proportion_diff uses alternative argument", {
+  set.seed(1984, kind = "Mersenne-Twister")
+  dta <- data.frame(
+    rsp = sample(c(TRUE, FALSE), 100, TRUE),
+    grp = factor(rep(c("A", "B"), each = 50)),
+    strata = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+  )
+
+  result <- basic_table() %>%
+    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
+    test_proportion_diff(
+      vars = "rsp",
+      method = "cmh", 
+      alternative = "greater",
+      variables = list(strata = "strata")
     ) %>%
     build_table(df = dta)
 

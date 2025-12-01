@@ -4,8 +4,9 @@
 #'
 #' The analyze function [test_proportion_diff()] creates a layout element to test the difference between two
 #' proportions. The primary analysis variable, `vars`, indicates whether a response has occurred for each record. See
-#' the `method` parameter for options of methods to use to calculate the p-value. Additionally, a stratification
-#' variable can be supplied via the `strata` element of the `variables` argument.
+#' the `method` parameter for options of methods to use to calculate the p-value. The argument `alternative` 
+#' specifies the direction of the alternative hypothesis. Additionally, a stratification variable can be 
+#' supplied via the `strata` element of the `variables` argument.
 #'
 #' @inheritParams argument_convention
 #' @param method (`string`)\cr one of `chisq`, `cmh`, `fisher`, or `schouten`; specifies the test used
@@ -53,6 +54,7 @@ s_test_proportion_diff <- function(df,
                                    .in_ref_col,
                                    variables = list(strata = NULL),
                                    method = c("chisq", "schouten", "fisher", "cmh"),
+                                   alternative = c("two.sided", "less", "greater"),
                                    ...) {
   method <- match.arg(method)
   y <- list(pval = numeric())
@@ -84,14 +86,14 @@ s_test_proportion_diff <- function(df,
     )
 
     y$pval <- switch(method,
-      chisq = prop_chisq(tbl),
-      cmh = prop_cmh(tbl),
-      fisher = prop_fisher(tbl),
-      schouten = prop_schouten(tbl)
+      chisq = prop_chisq(tbl, alternative = alternative),
+      cmh = prop_cmh(tbl, alternative = alternative),
+      fisher = prop_fisher(tbl, alternative = alternative),
+      schouten = prop_schouten(tbl, alternative = alternative)
     )
   }
 
-  y$pval <- formatters::with_label(y$pval, d_test_proportion_diff(method))
+  y$pval <- formatters::with_label(y$pval, d_test_proportion_diff(method, alternative = alternative))
   y
 }
 
@@ -106,8 +108,10 @@ s_test_proportion_diff <- function(df,
 #' @return A `string` describing the test from which the p-value is derived.
 #'
 #' @export
-d_test_proportion_diff <- function(method) {
+d_test_proportion_diff <- function(method, alternative = c("two.sided", "less", "greater")) {
   checkmate::assert_string(method)
+  alternative <- match.arg(alternative)
+
   meth_part <- switch(method,
     "schouten" = "Chi-Squared Test with Schouten Correction",
     "chisq" = "Chi-Squared Test",
@@ -115,7 +119,12 @@ d_test_proportion_diff <- function(method) {
     "fisher" = "Fisher's Exact Test",
     stop(paste(method, "does not have a description"))
   )
-  paste0("p-value (", meth_part, ")")
+  alt_part <- switch(alternative,
+    two.sided = "",
+    less = ", 1-sided, direction less",
+    greater = ", 1-sided, direction greater"
+  )
+  paste0("p-value (", meth_part, alt_part, ")")
 }
 
 #' @describeIn prop_diff_test Formatted analysis function which is used as `afun` in `test_proportion_diff()`.
@@ -224,6 +233,7 @@ test_proportion_diff <- function(lyt,
                                  vars,
                                  variables = list(strata = NULL),
                                  method = c("chisq", "schouten", "fisher", "cmh"),
+                                 alternative = c("two.sided", "less", "greater"),
                                  var_labels = vars,
                                  na_str = default_na_str(),
                                  nested = TRUE,
@@ -242,6 +252,7 @@ test_proportion_diff <- function(lyt,
     "na_rm" = na_rm,
     "variables" = variables,
     "method" = method,
+    "alternative" = alternative,
     ...
   )
 
@@ -280,6 +291,7 @@ test_proportion_diff <- function(lyt,
 #' Helper functions to implement various tests on the difference between two proportions.
 #'
 #' @param tbl (`matrix`)\cr matrix with two groups in rows and the binary response (`TRUE`/`FALSE`) in columns.
+#' @inheritParams argument_convention
 #'
 #' @return A p-value.
 #'
@@ -291,13 +303,13 @@ NULL
 #' @describeIn h_prop_diff_test Performs Chi-Squared test. Internally calls [stats::prop.test()].
 #'
 #' @keywords internal
-prop_chisq <- function(tbl) {
+prop_chisq <- function(tbl, alternative = c("two.sided", "less", "greater")) {
   checkmate::assert_integer(c(ncol(tbl), nrow(tbl)), lower = 2, upper = 2)
   tbl <- tbl[, c("TRUE", "FALSE")]
   if (any(colSums(tbl) == 0)) {
     return(1)
   }
-  stats::prop.test(tbl, correct = FALSE)$p.value
+  stats::prop.test(tbl, correct = FALSE, alternative = alternative)$p.value
 }
 
 #' @describeIn h_prop_diff_test Performs stratified Cochran-Mantel-Haenszel test. Internally calls
@@ -307,17 +319,18 @@ prop_chisq <- function(tbl) {
 #'   (`TRUE`/`FALSE`) in columns, and the strata in the third dimension.
 #'
 #' @keywords internal
-prop_cmh <- function(ary) {
+prop_cmh <- function(ary, alternative = c("two.sided", "less", "greater")) {
   checkmate::assert_array(ary)
   checkmate::assert_integer(c(ncol(ary), nrow(ary)), lower = 2, upper = 2)
   checkmate::assert_integer(length(dim(ary)), lower = 3, upper = 3)
+
   strata_sizes <- apply(ary, MARGIN = 3, sum)
   if (any(strata_sizes < 5)) {
     warning("<5 data points in some strata. CMH test may be incorrect.")
     ary <- ary[, , strata_sizes > 1]
   }
 
-  stats::mantelhaen.test(ary, correct = FALSE)$p.value
+  stats::mantelhaen.test(ary, correct = FALSE, alternative = alternative)$p.value
 }
 
 #' @describeIn h_prop_diff_test Performs the Chi-Squared test with Schouten correction.
@@ -325,8 +338,9 @@ prop_cmh <- function(ary) {
 #' @seealso Schouten correction is based upon \insertCite{Schouten1980-kd;textual}{tern}.
 #'
 #' @keywords internal
-prop_schouten <- function(tbl) {
+prop_schouten <- function(tbl, alternative = c("two.sided", "less", "greater")) {
   checkmate::assert_integer(c(ncol(tbl), nrow(tbl)), lower = 2, upper = 2)
+  alternative <- match.arg(alternative)
   tbl <- tbl[, c("TRUE", "FALSE")]
   if (any(colSums(tbl) == 0)) {
     return(1)
@@ -345,14 +359,24 @@ prop_schouten <- function(tbl) {
     (abs(prod(ad) - prod(bc)) - 0.5 * min(n1, n2))^2 /
     (n1 * n2 * sum(ac) * sum(bd))
 
-  1 - stats::pchisq(t_schouten, df = 1)
+  if (alternative == "two.sided") {
+    stats::pchisq(t_schouten, df = 1, lower.tail = FALSE)
+  } else {
+    # This follows the logic in stats::prop.test for one-sided p-values.
+    x1 <- tbl[1, 1]
+    x2 <- tbl[2, 1]
+    delta <- (x1 / n1) - (x2 / n2)
+    z <- sign(delta) * sqrt(t_schouten)
+    stats::pnorm(z, lower.tail = (alternative == "less"))
+  }
 }
 
 #' @describeIn h_prop_diff_test Performs the Fisher's exact test. Internally calls [stats::fisher.test()].
 #'
 #' @keywords internal
-prop_fisher <- function(tbl) {
+prop_fisher <- function(tbl, alternative = c("two.sided", "less", "greater")) {
   checkmate::assert_integer(c(ncol(tbl), nrow(tbl)), lower = 2, upper = 2)
+  alternative <- match.arg(alternative) # Is needed here, because stats::fisher.test does not handle defaults.
   tbl <- tbl[, c("TRUE", "FALSE")]
-  stats::fisher.test(tbl)$p.value
+  stats::fisher.test(tbl, alternative = alternative)$p.value
 }

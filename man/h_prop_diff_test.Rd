@@ -8,16 +8,19 @@
 \alias{prop_fisher}
 \title{Helper functions to test proportion differences}
 \usage{
-prop_chisq(tbl)
+prop_chisq(tbl, alternative = c("two.sided", "less", "greater"))
 
-prop_cmh(ary)
+prop_cmh(ary, alternative = c("two.sided", "less", "greater"))
 
-prop_schouten(tbl)
+prop_schouten(tbl, alternative = c("two.sided", "less", "greater"))
 
-prop_fisher(tbl)
+prop_fisher(tbl, alternative = c("two.sided", "less", "greater"))
 }
 \arguments{
 \item{tbl}{(\code{matrix})\cr matrix with two groups in rows and the binary response (\code{TRUE}/\code{FALSE}) in columns.}
+
+\item{alternative}{(\code{string})\cr whether \code{two.sided}, or one-sided \code{less} or \code{greater} p-value
+should be displayed.}
 
 \item{ary}{(\code{array}, 3 dimensions)\cr array with two groups in rows, the binary response
 (\code{TRUE}/\code{FALSE}) in columns, and the strata in the third dimension.}
