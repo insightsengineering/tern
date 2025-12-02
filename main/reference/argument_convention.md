@@ -101,6 +101,12 @@ that are used repeatedly to express an analysis.
   that constitute the split. A custom label can be set for this level
   via the `custom_label` argument.
 
+- alternative:
+
+  (`string`)  
+  whether `two.sided`, or one-sided `less` or `greater` p-value should
+  be displayed.
+
 - col_by:
 
   (`factor`)  

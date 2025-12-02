@@ -8,7 +8,7 @@ This is an auxiliary function that describes the analysis in
 ## Usage
 
 ``` r
-d_test_proportion_diff(method)
+d_test_proportion_diff(method, alternative = c("two.sided", "less", "greater"))
 ```
 
 ## Arguments
@@ -18,6 +18,12 @@ d_test_proportion_diff(method)
   (`string`)  
   one of `chisq`, `cmh`, `fisher`, or `schouten`; specifies the test
   used to calculate the p-value.
+
+- alternative:
+
+  (`string`)  
+  whether `two.sided`, or one-sided `less` or `greater` p-value should
+  be displayed.
 
 ## Value
 

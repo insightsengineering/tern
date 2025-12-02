@@ -6,8 +6,10 @@ The analyze function `test_proportion_diff()` creates a layout element
 to test the difference between two proportions. The primary analysis
 variable, `vars`, indicates whether a response has occurred for each
 record. See the `method` parameter for options of methods to use to
-calculate the p-value. Additionally, a stratification variable can be
-supplied via the `strata` element of the `variables` argument.
+calculate the p-value. The argument `alternative` specifies the
+direction of the alternative hypothesis. Additionally, a stratification
+variable can be supplied via the `strata` element of the `variables`
+argument.
 
 ## Usage
 
@@ -17,6 +19,7 @@ test_proportion_diff(
   vars,
   variables = list(strata = NULL),
   method = c("chisq", "schouten", "fisher", "cmh"),
+  alternative = c("two.sided", "less", "greater"),
   var_labels = vars,
   na_str = default_na_str(),
   nested = TRUE,
@@ -39,6 +42,7 @@ s_test_proportion_diff(
   .in_ref_col,
   variables = list(strata = NULL),
   method = c("chisq", "schouten", "fisher", "cmh"),
+  alternative = c("two.sided", "less", "greater"),
   ...
 )
 
@@ -75,6 +79,12 @@ a_test_proportion_diff(
   (`string`)  
   one of `chisq`, `cmh`, `fisher`, or `schouten`; specifies the test
   used to calculate the p-value.
+
+- alternative:
+
+  (`string`)  
+  whether `two.sided`, or one-sided `less` or `greater` p-value should
+  be displayed.
 
 - var_labels:
 

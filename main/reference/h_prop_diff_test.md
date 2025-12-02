@@ -6,13 +6,13 @@ two proportions.
 ## Usage
 
 ``` r
-prop_chisq(tbl)
+prop_chisq(tbl, alternative = c("two.sided", "less", "greater"))
 
-prop_cmh(ary)
+prop_cmh(ary, alternative = c("two.sided", "less", "greater"))
 
-prop_schouten(tbl)
+prop_schouten(tbl, alternative = c("two.sided", "less", "greater"))
 
-prop_fisher(tbl)
+prop_fisher(tbl, alternative = c("two.sided", "less", "greater"))
 ```
 
 ## Arguments
@@ -22,6 +22,12 @@ prop_fisher(tbl)
   (`matrix`)  
   matrix with two groups in rows and the binary response
   (`TRUE`/`FALSE`) in columns.
+
+- alternative:
+
+  (`string`)  
+  whether `two.sided`, or one-sided `less` or `greater` p-value should
+  be displayed.
 
 - ary:
 

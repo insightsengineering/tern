@@ -20,7 +20,7 @@ Useful links:
 
 Authors:
 
-- Daniel Sabanés Bové <daniel.sabanes_bove@roche.com>
+- Daniel Sabanés Bové <daniel.sabanes_bove@rconis.com>
 
 - Jana Stoilova <jana.stoilova@roche.com>
 
