@@ -22,5 +22,5 @@ tests/testthat/_snaps/**/*.new.md
 tests/testthat/_snaps/**/*.new.svg
 
 # Air config files
-^\.vscode$
-^[.]?air[.]toml$
+.vscode/
+air.toml
