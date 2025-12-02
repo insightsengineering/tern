@@ -46,6 +46,9 @@ by a statistics function.}
 \item{add_total_level}{(\code{flag})\cr adds a "total" level after the others which includes all the levels
 that constitute the split. A custom label can be set for this level via the \code{custom_label} argument.}
 
+\item{alternative}{(\code{string})\cr whether \code{two.sided}, or one-sided \code{less} or \code{greater} p-value
+should be displayed.}
+
 \item{col_by}{(\code{factor})\cr defining column groups.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}

@@ -22,7 +22,7 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Daniel Sabanés Bové \email{daniel.sabanes_bove@roche.com}
+  \item Daniel Sabanés Bové \email{daniel.sabanes_bove@rconis.com}
   \item Jana Stoilova \email{jana.stoilova@roche.com}
   \item Davide Garolini \email{davide.garolini@roche.com} (\href{https://orcid.org/0000-0002-1445-1369}{ORCID})
   \item Emily de la Rua \email{emily.de_la_rua@contractors.roche.com} (\href{https://orcid.org/0009-0000-8738-5561}{ORCID})

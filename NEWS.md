@@ -1,5 +1,8 @@
 # tern 0.9.9.9006
 
+### Enhancements
+* Added `alternative` argument to `test_proportion_diff()` to allow one-sided hypothesis testing.
+
 ### Bug Fixes
 * Fixed bug in `tabulate_rsp_subgroups()` and `tabulate_survival_subgroups()` preventing risk difference column format specified via `control_riskdiff()` from being applied.
 * Fixed bug in `a_summary()` causing an error when all values of a factor input variable were `NA`.

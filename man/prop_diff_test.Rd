@@ -12,6 +12,7 @@ test_proportion_diff(
   vars,
   variables = list(strata = NULL),
   method = c("chisq", "schouten", "fisher", "cmh"),
+  alternative = c("two.sided", "less", "greater"),
   var_labels = vars,
   na_str = default_na_str(),
   nested = TRUE,
@@ -34,6 +35,7 @@ s_test_proportion_diff(
   .in_ref_col,
   variables = list(strata = NULL),
   method = c("chisq", "schouten", "fisher", "cmh"),
+  alternative = c("two.sided", "less", "greater"),
   ...
 )
 
@@ -56,6 +58,9 @@ a_test_proportion_diff(
 
 \item{method}{(\code{string})\cr one of \code{chisq}, \code{cmh}, \code{fisher}, or \code{schouten}; specifies the test used
 to calculate the p-value.}
+
+\item{alternative}{(\code{string})\cr whether \code{two.sided}, or one-sided \code{less} or \code{greater} p-value
+should be displayed.}
 
 \item{var_labels}{(\code{character})\cr variable labels.}
 
@@ -122,8 +127,9 @@ describing the method used. The p-value tests the null hypothesis that proportio
 
 The analyze function \code{\link[=test_proportion_diff]{test_proportion_diff()}} creates a layout element to test the difference between two
 proportions. The primary analysis variable, \code{vars}, indicates whether a response has occurred for each record. See
-the \code{method} parameter for options of methods to use to calculate the p-value. Additionally, a stratification
-variable can be supplied via the \code{strata} element of the \code{variables} argument.
+the \code{method} parameter for options of methods to use to calculate the p-value. The argument \code{alternative}
+specifies the direction of the alternative hypothesis. Additionally, a stratification variable can be
+supplied via the \code{strata} element of the \code{variables} argument.
 }
 \section{Functions}{
 \itemize{

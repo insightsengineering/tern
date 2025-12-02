@@ -29,6 +29,8 @@
 #'   by a statistics function.
 #' @param add_total_level (`flag`)\cr adds a "total" level after the others which includes all the levels
 #'   that constitute the split. A custom label can be set for this level via the `custom_label` argument.
+#' @param alternative (`string`)\cr whether `two.sided`, or one-sided `less` or `greater` p-value
+#'   should be displayed.
 #' @param col_by (`factor`)\cr defining column groups.
 #' @param conf_level (`proportion`)\cr confidence level of the interval.
 #' @param data (`data.frame`)\cr the dataset containing the variables to summarize.
