@@ -4,8 +4,8 @@
 #'
 #' The analyze function [test_proportion_diff()] creates a layout element to test the difference between two
 #' proportions. The primary analysis variable, `vars`, indicates whether a response has occurred for each record. See
-#' the `method` parameter for options of methods to use to calculate the p-value. The argument `alternative` 
-#' specifies the direction of the alternative hypothesis. Additionally, a stratification variable can be 
+#' the `method` parameter for options of methods to use to calculate the p-value. The argument `alternative`
+#' specifies the direction of the alternative hypothesis. Additionally, a stratification variable can be
 #' supplied via the `strata` element of the `variables` argument.
 #'
 #' @inheritParams argument_convention

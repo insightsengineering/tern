@@ -6,7 +6,7 @@ testthat::test_that("prop_chisq returns right result", {
   )
   grp <- c(rep("A", 20), rep("B", 20))
   tbl <- table(grp, rsp)
-  
+
   result <- prop_chisq(tbl)
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -73,7 +73,7 @@ testthat::test_that("prop_fisher returns right result", {
   )
   grp <- c(rep("A", 20), rep("B", 20))
   tbl <- table(grp, rsp)
-  
+
   result <- prop_fisher(tbl)
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -221,7 +221,7 @@ testthat::test_that("test_proportion_diff uses alternative argument", {
     split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
     test_proportion_diff(
       vars = "rsp",
-      method = "cmh", 
+      method = "cmh",
       alternative = "greater",
       variables = list(strata = "strata")
     ) %>%
