@@ -119,7 +119,7 @@ d_test_proportion_diff <- function(method, alternative = c("two.sided", "less", 
     "chisq" = "Chi-Squared Test",
     "cmh" = "Cochran-Mantel-Haenszel Test",
     "cmh_wh" = "Cochran-Mantel-Haenszel Test with Wilson-Hilferty Transformation",
-    "fisher" = "Fisher's Exact Test",    
+    "fisher" = "Fisher's Exact Test",
     stop(paste(method, "does not have a description"))
   )
   alt_part <- switch(alternative,
@@ -318,15 +318,15 @@ prop_chisq <- function(tbl, alternative = c("two.sided", "less", "greater")) {
 #' @describeIn h_prop_diff_test Performs stratified Cochran-Mantel-Haenszel test,
 #'   using [stats::mantelhaen.test()] internally.
 #'   Note that strata with less than two observations are automatically discarded.
-#' 
+#'
 #' @param ary (`array`, 3 dimensions)\cr array with two groups in rows, the binary response
 #'   (`TRUE`/`FALSE`) in columns, and the strata in the third dimension.
 #' @param transform (`string`)\cr either `none` or `wilson_hilferty`; specifies whether to apply
 #'   the Wilson-Hilferty transformation of the chi-squared statistic.
 #'
 #' @keywords internal
-prop_cmh <- function(ary, 
-                     alternative = c("two.sided", "less", "greater"), 
+prop_cmh <- function(ary,
+                     alternative = c("two.sided", "less", "greater"),
                      transform = c("none", "wilson_hilferty")) {
   checkmate::assert_array(ary)
   checkmate::assert_integer(c(ncol(ary), nrow(ary)), lower = 2, upper = 2)
@@ -356,7 +356,7 @@ prop_cmh <- function(ary,
     } else {
       stats::pnorm(wh_stat, lower.tail = (alternative == "greater"))
     }
-  }  
+  }
 }
 
 #' @describeIn h_prop_diff_test Performs the Chi-Squared test with Schouten correction.
