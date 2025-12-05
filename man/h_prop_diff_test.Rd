@@ -3,14 +3,20 @@
 \name{h_prop_diff_test}
 \alias{h_prop_diff_test}
 \alias{prop_chisq}
+\alias{h_prop_diff_test_cmh}
 \alias{prop_cmh}
+\alias{prop_wh}
 \alias{prop_schouten}
 \alias{prop_fisher}
 \title{Helper functions to test proportion differences}
 \usage{
 prop_chisq(tbl, alternative = c("two.sided", "less", "greater"))
 
+h_prop_diff_test_cmh(ary, ...)
+
 prop_cmh(ary, alternative = c("two.sided", "less", "greater"))
+
+prop_wh(ary, alternative = c("two.sided", "less", "greater"))
 
 prop_schouten(tbl, alternative = c("two.sided", "less", "greater"))
 
@@ -24,6 +30,8 @@ should be displayed.}
 
 \item{ary}{(\code{array}, 3 dimensions)\cr array with two groups in rows, the binary response
 (\code{TRUE}/\code{FALSE}) in columns, and the strata in the third dimension.}
+
+\item{...}{additional arguments for the lower level functions.}
 }
 \value{
 A p-value.
@@ -35,8 +43,15 @@ Helper functions to implement various tests on the difference between two propor
 \itemize{
 \item \code{prop_chisq()}: Performs Chi-Squared test. Internally calls \code{\link[stats:prop.test]{stats::prop.test()}}.
 
-\item \code{prop_cmh()}: Performs stratified Cochran-Mantel-Haenszel test. Internally calls
-\code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}. Note that strata with less than two observations are automatically discarded.
+\item \code{h_prop_diff_test_cmh()}: Performs stratified Cochran-Mantel-Haenszel test by
+calling \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}} to avoid code duplication between \code{\link[=prop_cmh]{prop_cmh()}} and \code{\link[=prop_wh]{prop_wh()}}.
+
+\item \code{prop_cmh()}: Performs stratified Cochran-Mantel-Haenszel test.
+Note that strata with less than two observations are automatically discarded.
+
+\item \code{prop_wh()}: Performs stratified Cochran-Mantel-Haenszel test with
+Wilson-Hilferty transformation of the chi-squared statistic.
+Note that strata with less than two observations are automatically discarded.
 
 \item \code{prop_schouten()}: Performs the Chi-Squared test with Schouten correction.
 

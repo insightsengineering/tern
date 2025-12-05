@@ -7,8 +7,8 @@
 d_test_proportion_diff(method, alternative = c("two.sided", "less", "greater"))
 }
 \arguments{
-\item{method}{(\code{string})\cr one of \code{chisq}, \code{cmh}, \code{fisher}, or \code{schouten}; specifies the test used
-to calculate the p-value.}
+\item{method}{(\code{string})\cr one of \code{chisq}, \code{cmh}, \code{fisher}, \code{schouten}, or \code{wh};
+specifies the test used to calculate the p-value.}
 
 \item{alternative}{(\code{string})\cr whether \code{two.sided}, or one-sided \code{less} or \code{greater} p-value
 should be displayed.}
