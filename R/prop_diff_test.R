@@ -9,8 +9,8 @@
 #' supplied via the `strata` element of the `variables` argument.
 #'
 #' @inheritParams argument_convention
-#' @param method (`string`)\cr one of `chisq`, `cmh`, `fisher`, or `schouten`; specifies the test used
-#'   to calculate the p-value.
+#' @param method (`string`)\cr one of `chisq`, `cmh`, `fisher`, `schouten`, or `wh`; 
+#'   specifies the test used to calculate the p-value.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
 #'   Options are: ``r shQuote(get_stats("test_proportion_diff"), type = "sh")``
@@ -53,7 +53,7 @@ s_test_proportion_diff <- function(df,
                                    .ref_group,
                                    .in_ref_col,
                                    variables = list(strata = NULL),
-                                   method = c("chisq", "schouten", "fisher", "cmh"),
+                                   method = c("chisq", "schouten", "fisher", "cmh", "wh"),
                                    alternative = c("two.sided", "less", "greater"),
                                    ...) {
   method <- match.arg(method)
@@ -89,7 +89,8 @@ s_test_proportion_diff <- function(df,
       chisq = prop_chisq(tbl, alternative = alternative),
       cmh = prop_cmh(tbl, alternative = alternative),
       fisher = prop_fisher(tbl, alternative = alternative),
-      schouten = prop_schouten(tbl, alternative = alternative)
+      schouten = prop_schouten(tbl, alternative = alternative),
+      wh = prop_wh(tbl, alternative = alternative)
     )
   }
 
@@ -117,6 +118,7 @@ d_test_proportion_diff <- function(method, alternative = c("two.sided", "less", 
     "chisq" = "Chi-Squared Test",
     "cmh" = "Cochran-Mantel-Haenszel Test",
     "fisher" = "Fisher's Exact Test",
+    "wh" = "Cochran-Mantel-Haenszel Test with Wilson-Hilferty Transformation",
     stop(paste(method, "does not have a description"))
   )
   alt_part <- switch(alternative,
@@ -232,7 +234,7 @@ a_test_proportion_diff <- function(df,
 test_proportion_diff <- function(lyt,
                                  vars,
                                  variables = list(strata = NULL),
-                                 method = c("chisq", "schouten", "fisher", "cmh"),
+                                 method = c("chisq", "schouten", "fisher", "cmh", "wh"),
                                  alternative = c("two.sided", "less", "greater"),
                                  var_labels = vars,
                                  na_str = default_na_str(),
@@ -379,4 +381,29 @@ prop_fisher <- function(tbl, alternative = c("two.sided", "less", "greater")) {
   alternative <- match.arg(alternative) # Is needed here, because stats::fisher.test does not handle defaults.
   tbl <- tbl[, c("TRUE", "FALSE")]
   stats::fisher.test(tbl, alternative = alternative)$p.value
+}
+
+#' @describeIn h_prop_diff_test Performs stratified Cochran-Mantel-Haenszel test with
+#'   Wilson-Hilferty transformation of the chi-squared statistic. 
+#'   Note that strata with less than two observations are automatically discarded.
+#'
+#' @param ary (`array`, 3 dimensions)\cr array with two groups in rows, the binary response
+#'   (`TRUE`/`FALSE`) in columns, and the strata in the third dimension.
+#'
+#' @keywords internal
+prop_wh <- function(ary, alternative = c("two.sided", "less", "greater")) {
+  checkmate::assert_array(ary)
+  checkmate::assert_integer(c(ncol(ary), nrow(ary)), lower = 2, upper = 2)
+  checkmate::assert_integer(length(dim(ary)), lower = 3, upper = 3)
+
+  cmh_res <- stats::mantelhaen.test(ary, correct = FALSE)
+  chisq_stat <- unname(cmh_res$statistic)
+  df <- unname(cmh_res$parameter)
+  wh_stat <- ((chisq_stat / df)^(1 / 3) - (1 - 2 / (9 * df))) / sqrt(2 / (9 * df))
+
+  if (alternative == "two.sided") {
+    2 * stats::pnorm(-abs(wh_stat))
+  } else {
+    stats::pnorm(wh_stat, lower.tail = (alternative == "greater"))
+  }
 }

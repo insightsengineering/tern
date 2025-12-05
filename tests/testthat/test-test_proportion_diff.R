@@ -140,12 +140,10 @@ testthat::test_that("prop_schouten returns right result for less or greater alte
 
 testthat::test_that("prop_wh returns right result for less or greater alternative", {
   set.seed(1, kind = "Mersenne-Twister")
-  rsp <- c(
-    sample(c(TRUE, FALSE), size = 20, prob = c(3 / 4, 1 / 4), replace = TRUE),
-    sample(c(TRUE, FALSE), size = 20, prob = c(1 / 2, 1 / 2), replace = TRUE)
-  )
-  grp <- c(rep("A", 20), rep("B", 20))
-  tbl <- table(grp, rsp)
+  rsp <- sample(c(TRUE, FALSE), 100, TRUE)
+  grp <- factor(rep(c("A", "B"), each = 50))
+  strata <- factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+  tbl <- table(grp, rsp, strata)
 
   result_less <- prop_wh(tbl, alternative = "less")
   res_less <- testthat::expect_silent(result_less)
@@ -155,12 +153,12 @@ testthat::test_that("prop_wh returns right result for less or greater alternativ
   res_greater <- testthat::expect_silent(result_greater)
   testthat::expect_snapshot(res_greater)
 
-  # And these results are in line with the standard Chi-Squared test.
-  result_chisq_less <- prop_chisq(tbl, alternative = "less")
-  result_chisq_greater <- prop_chisq(tbl, alternative = "greater")
+  # And these results are in line with the standard CMH test.
+  result_cmh_less <- prop_cmh(tbl, alternative = "less")
+  result_cmh_greater <- prop_cmh(tbl, alternative = "greater")
 
-  expect_equal(result_less, result_chisq_less, tolerance = 1e-1)
-  expect_equal(result_greater, result_chisq_greater, tolerance = 1e-1)
+  expect_equal(result_less, result_cmh_less, tolerance = 1e-1)
+  expect_equal(result_greater, result_cmh_greater, tolerance = 1e-1)
 })
 
 testthat::test_that("s_test_proportion_diff and d_test_proportion_diff return right result", {
