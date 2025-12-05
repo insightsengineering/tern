@@ -138,18 +138,18 @@ testthat::test_that("prop_schouten returns right result for less or greater alte
   expect_equal(result_greater, result_chisq_greater, tolerance = 1e-1)
 })
 
-testthat::test_that("prop_wh returns right result for less or greater alternative", {
+testthat::test_that("prop_cmh with Wilson-Hilferty transformation works", {
   set.seed(1, kind = "Mersenne-Twister")
   rsp <- sample(c(TRUE, FALSE), 100, TRUE)
   grp <- factor(rep(c("A", "B"), each = 50))
   strata <- factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
   tbl <- table(grp, rsp, strata)
 
-  result_less <- prop_wh(tbl, alternative = "less")
+  result_less <- prop_cmh(tbl, alternative = "less", transform = "wilson_hilferty")
   res_less <- testthat::expect_silent(result_less)
   testthat::expect_snapshot(res_less)
 
-  result_greater <- prop_wh(tbl, alternative = "greater")
+  result_greater <- prop_cmh(tbl, alternative = "greater", transform = "wilson_hilferty")
   res_greater <- testthat::expect_silent(result_greater)
   testthat::expect_snapshot(res_greater)
 
@@ -264,7 +264,7 @@ testthat::test_that("test_proportion_diff edge case: all responder by chisq", {
     split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
     test_proportion_diff(
       vars = "rsp",
-      method = c("chisq", "schouten", "fisher", "cmh", "wh")[1]
+      method = c("chisq", "schouten", "fisher", "cmh", "cmh_wh")[1]
     ) %>%
     build_table(df = dta)
 
@@ -282,7 +282,7 @@ testthat::test_that("test_proportion_diff edge case: all responder by schouten",
     split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
     test_proportion_diff(
       vars = "rsp",
-      method = c("chisq", "schouten", "fisher", "cmh", "wh")[2]
+      method = c("chisq", "schouten", "fisher", "cmh", "cmh_wh")[2]
     ) %>%
     build_table(df = dta)
 
@@ -302,7 +302,7 @@ testthat::test_that("test_proportion_diff edge case: all responder by fisher", {
       vars = "rsp",
       var_labels = "Variable Label",
       show_labels = "visible",
-      method = c("chisq", "schouten", "fisher", "cmh", "wh")[3]
+      method = c("chisq", "schouten", "fisher", "cmh", "cmh_wh")[3]
     ) %>%
     build_table(df = dta)
 
@@ -323,7 +323,7 @@ testthat::test_that("test_proportion_diff edge case: all responder by CMH", {
       vars = "rsp",
       var_labels = "Variable Label",
       show_labels = "visible",
-      method = c("chisq", "schouten", "fisher", "cmh", "wh")[4],
+      method = c("chisq", "schouten", "fisher", "cmh", "cmh_wh")[4],
       variables = list(strata = "strata")
     ) %>%
     build_table(df = dta)
@@ -332,7 +332,7 @@ testthat::test_that("test_proportion_diff edge case: all responder by CMH", {
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("test_proportion_diff edge case: all responder by WH", {
+testthat::test_that("test_proportion_diff edge case: all responder by CMH with Wilson-Hilferty transformation", {
   dta <- data.frame(
     rsp = rep(TRUE, each = 100),
     grp = factor(rep(c("A", "B"), each = 50)),
@@ -345,7 +345,7 @@ testthat::test_that("test_proportion_diff edge case: all responder by WH", {
       vars = "rsp",
       var_labels = "Variable Label",
       show_labels = "visible",
-      method = c("chisq", "schouten", "fisher", "cmh", "wh")[5],
+      method = c("chisq", "schouten", "fisher", "cmh", "cmh_wh")[5],
       variables = list(strata = "strata")
     ) %>%
     build_table(df = dta)

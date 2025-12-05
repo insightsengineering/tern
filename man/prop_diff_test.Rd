@@ -11,7 +11,7 @@ test_proportion_diff(
   lyt,
   vars,
   variables = list(strata = NULL),
-  method = c("chisq", "schouten", "fisher", "cmh", "wh"),
+  method = c("chisq", "schouten", "fisher", "cmh", "cmh_wh"),
   alternative = c("two.sided", "less", "greater"),
   var_labels = vars,
   na_str = default_na_str(),
@@ -34,7 +34,7 @@ s_test_proportion_diff(
   .ref_group,
   .in_ref_col,
   variables = list(strata = NULL),
-  method = c("chisq", "schouten", "fisher", "cmh", "wh"),
+  method = c("chisq", "schouten", "fisher", "cmh", "cmh_wh"),
   alternative = c("two.sided", "less", "greater"),
   ...
 )
@@ -56,7 +56,7 @@ a_test_proportion_diff(
 
 \item{variables}{(named \code{list} of \code{string})\cr list of additional analysis variables.}
 
-\item{method}{(\code{string})\cr one of \code{chisq}, \code{cmh}, \code{fisher}, \code{schouten}, or \code{wh};
+\item{method}{(\code{string})\cr one of \code{chisq}, \code{cmh}, \code{cmh_wh}, \code{fisher}, or \code{schouten};
 specifies the test used to calculate the p-value.}
 
 \item{alternative}{(\code{string})\cr whether \code{two.sided}, or one-sided \code{less} or \code{greater} p-value
