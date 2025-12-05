@@ -67,8 +67,8 @@ s_proportion_diff <- function(df,
                               ...) {
   method <- match.arg(method)
   if (
-    is.null(variables$strata) && 
-       checkmate::test_subset(method, c("cmh", "cmh_sato", "strat_newcombe", "strat_newcombecc"))
+    is.null(variables$strata) &&
+      checkmate::test_subset(method, c("cmh", "cmh_sato", "strat_newcombe", "strat_newcombecc"))
   ) {
     stop(paste(
       "When performing an unstratified analysis, methods",
@@ -654,7 +654,7 @@ prop_diff_cmh <- function(rsp,
     num <- diff_est * sum(p_terms) + sum(q_terms)
     denom <- sum(wt)^2
     sqrt(num / denom)
-  }  
+  }
   diff_ci <- c(diff_est - z * se_diff, diff_est + z * se_diff)
 
   list(
