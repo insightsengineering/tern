@@ -2,6 +2,7 @@
 
 ### Enhancements
 * Added `alternative` argument to `test_proportion_diff()` to allow one-sided hypothesis testing.
+* Added `wh` (CMH with Wilson-Hilferty transformation) method to `test_proportion_diff()` for stratified proportion difference testing.
 
 ### Bug Fixes
 * Fixed bug in `tabulate_rsp_subgroups()` and `tabulate_survival_subgroups()` preventing risk difference column format specified via `control_riskdiff()` from being applied.
