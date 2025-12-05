@@ -9,7 +9,7 @@
 #' supplied via the `strata` element of the `variables` argument.
 #'
 #' @inheritParams argument_convention
-#' @param method (`string`)\cr one of `chisq`, `cmh`, `fisher`, `schouten`, or `wh`; 
+#' @param method (`string`)\cr one of `chisq`, `cmh`, `fisher`, `schouten`, or `wh`;
 #'   specifies the test used to calculate the p-value.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
@@ -317,10 +317,10 @@ prop_chisq <- function(tbl, alternative = c("two.sided", "less", "greater")) {
 
 #' @describeIn h_prop_diff_test Performs stratified Cochran-Mantel-Haenszel test by
 #'   calling [stats::mantelhaen.test()] to avoid code duplication between [prop_cmh()] and [prop_wh()].
-#' 
+#'
 #' @param ary (`array`, 3 dimensions)\cr array with two groups in rows, the binary response
 #'   (`TRUE`/`FALSE`) in columns, and the strata in the third dimension.
-#' 
+#'
 #' @keywords internal
 h_prop_diff_test_cmh <- function(ary, ...) {
   checkmate::assert_array(ary)
@@ -336,7 +336,7 @@ h_prop_diff_test_cmh <- function(ary, ...) {
   stats::mantelhaen.test(ary, correct = FALSE, ...)
 }
 
-#' @describeIn h_prop_diff_test Performs stratified Cochran-Mantel-Haenszel test. 
+#' @describeIn h_prop_diff_test Performs stratified Cochran-Mantel-Haenszel test.
 #'   Note that strata with less than two observations are automatically discarded.
 #'
 #' @keywords internal
@@ -345,7 +345,7 @@ prop_cmh <- function(ary, alternative = c("two.sided", "less", "greater")) {
 }
 
 #' @describeIn h_prop_diff_test Performs stratified Cochran-Mantel-Haenszel test with
-#'   Wilson-Hilferty transformation of the chi-squared statistic. 
+#'   Wilson-Hilferty transformation of the chi-squared statistic.
 #'   Note that strata with less than two observations are automatically discarded.
 #'
 #' @keywords internal
