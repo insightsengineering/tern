@@ -8,7 +8,6 @@
 #' constructing the confidence interval of the proportion difference. A stratification variable can be supplied via the
 #' `strata` element of the `variables` argument.
 #'
-#'
 #' @inheritParams prop_diff_strat_nc
 #' @inheritParams argument_convention
 #' @param method (`string`)\cr the method used for the confidence interval estimation.
@@ -28,8 +27,8 @@ NULL
 #' @return
 #' * `s_proportion_diff()` returns a named list of elements `diff` and `diff_ci`.
 #'
-#' @note When performing an unstratified analysis, methods `"cmh"`, `"strat_newcombe"`, and `"strat_newcombecc"` are
-#'   not permitted.
+#' @note When performing an unstratified analysis, methods `"cmh"`, `"cmh_sato"`, `"strat_newcombe"`,
+#'   and `"strat_newcombecc"` are not permitted.
 #'
 #' @examples
 #' s_proportion_diff(
@@ -60,16 +59,20 @@ s_proportion_diff <- function(df,
                               variables = list(strata = NULL),
                               conf_level = 0.95,
                               method = c(
-                                "waldcc", "wald", "cmh",
+                                "waldcc", "wald", "cmh", "cmh_sato",
                                 "ha", "newcombe", "newcombecc",
                                 "strat_newcombe", "strat_newcombecc"
                               ),
                               weights_method = "cmh",
                               ...) {
   method <- match.arg(method)
-  if (is.null(variables$strata) && checkmate::test_subset(method, c("cmh", "strat_newcombe", "strat_newcombecc"))) {
+  if (
+    is.null(variables$strata) && 
+       checkmate::test_subset(method, c("cmh", "cmh_sato", "strat_newcombe", "strat_newcombecc"))
+  ) {
     stop(paste(
-      "When performing an unstratified analysis, methods 'cmh', 'strat_newcombe', and 'strat_newcombecc' are not",
+      "When performing an unstratified analysis, methods",
+      "'cmh', 'cmh_sato', 'strat_newcombe', and 'strat_newcombecc' are not",
       "permitted. Please choose a different method."
     ))
   }
@@ -128,7 +131,8 @@ s_proportion_diff <- function(df,
         conf_level,
         correct = TRUE
       ),
-      "cmh" = prop_diff_cmh(rsp, grp, strata, conf_level)[c("diff", "diff_ci")]
+      "cmh" = prop_diff_cmh(rsp, grp, strata, conf_level, diff_se = "standard")[c("diff", "diff_ci")],
+      "cmh_sato" = prop_diff_cmh(rsp, grp, strata, conf_level, diff_se = "sato")[c("diff", "diff_ci")]
     )
 
     y$diff <- setNames(y$diff * 100, paste0("diff_", method))
@@ -266,7 +270,7 @@ estimate_proportion_diff <- function(lyt,
                                      variables = list(strata = NULL),
                                      conf_level = 0.95,
                                      method = c(
-                                       "waldcc", "wald", "cmh",
+                                       "waldcc", "wald", "cmh", "cmh_sato",
                                        "ha", "newcombe", "newcombecc",
                                        "strat_newcombe", "strat_newcombecc"
                                      ),
@@ -387,7 +391,7 @@ d_proportion_diff <- function(conf_level,
     label <- paste(
       label,
       ifelse(
-        method == "cmh",
+        method %in% c("cmh", "cmh_sato"),
         "for adjusted difference",
         "for difference"
       )
@@ -396,6 +400,7 @@ d_proportion_diff <- function(conf_level,
 
   method_part <- switch(method,
     "cmh" = "CMH, without correction",
+    "cmh_sato" = "CMH, Sato variance estimator",
     "waldcc" = "Wald, with correction",
     "wald" = "Wald, without correction",
     "ha" = "Anderson-Hauck",
@@ -563,6 +568,7 @@ prop_diff_nc <- function(rsp,
 #'   test, use [stats::mantelhaen.test()].
 #'
 #' @param strata (`factor`)\cr variable with one level per stratum and same length as `rsp`.
+#' @param diff_se (`string`)\cr method to estimate the standard error for the difference.
 #'
 #' @examples
 #' # Cochran-Mantel-Haenszel confidence interval
@@ -581,14 +587,20 @@ prop_diff_nc <- function(rsp,
 #'   rsp = rsp, grp = grp, strata = interaction(strata_data),
 #'   conf_level = 0.90
 #' )
+#' prop_diff_cmh(
+#'   rsp = rsp, grp = grp, strata = interaction(strata_data),
+#'   conf_level = 0.90, diff_se = "sato"
+#' )
 #'
 #' @export
 prop_diff_cmh <- function(rsp,
                           grp,
                           strata,
-                          conf_level = 0.95) {
+                          conf_level = 0.95,
+                          diff_se = c("standard", "sato")) {
   grp <- as_factor_keep_attributes(grp)
   strata <- as_factor_keep_attributes(strata)
+  diff_se <- match.arg(diff_se)
   check_diff_prop_ci(
     rsp = rsp, grp = grp, conf_level = conf_level, strata = strata
   )
@@ -632,7 +644,17 @@ prop_diff_cmh <- function(rsp,
   estimate_ci <- list(ci1, ci2)
   names(estimate_ci) <- levels(grp)
   diff_est <- est2 - est1
-  se_diff <- sqrt(sum(((p1 * (1 - p1) / n1) + (p2 * (1 - p2) / n2)) * wt_normalized^2))
+
+  se_diff <- if (diff_se == "standard") {
+    sqrt(sum(((p1 * (1 - p1) / n1) + (p2 * (1 - p2) / n2)) * wt_normalized^2))
+  } else {
+    # Sato variance estimator.
+    p_terms <- (n2 * t_tbl[2, 1, ] - n1 * t_tbl[2, 2, ] + n1 * n2 * (n1 - n2) / 2) / (n1 + n2)^2
+    q_terms <- (t_tbl[2, 1, ] * (n2 - t_tbl[2, 2, ]) + t_tbl[2, 2, ] * (n1 - t_tbl[2, 1, ])) / (2 * (n1 + n2))
+    num <- diff_est * sum(p_terms) + sum(q_terms)
+    denom <- sum(wt)^2
+    sqrt(num / denom)
+  }  
   diff_ci <- c(diff_est - z * se_diff, diff_est + z * se_diff)
 
   list(

@@ -154,6 +154,42 @@
         8   9   4   9   6   6 
       
 
+# `prop_diff_cmh` with Sato variance estimator for difference
+
+    Code
+      res
+    Output
+      $prop
+        Placebo Treatment 
+      0.5331117 0.3954251 
+      
+      $prop_ci
+      $prop_ci$Placebo
+      [1] 0.4306536 0.6355698
+      
+      $prop_ci$Treatment
+      [1] 0.2890735 0.5017768
+      
+      
+      $diff
+      [1] -0.1376866
+      
+      $diff_ci
+      [1] -0.31471678  0.03934358
+      
+      $weights
+            a.x       b.x       a.y       b.y       a.z       b.z 
+      0.1148388 0.2131696 0.1148388 0.2131696 0.1767914 0.1671918 
+      
+      $n1
+      a.x b.x a.y b.y a.z b.z 
+        4  11   8  11  13  11 
+      
+      $n2
+      a.x b.x a.y b.y a.z b.z 
+        8   9   4   9   6   6 
+      
+
 # prop_diff_cmh works correctly when some strata don't have both groups
 
     Code
@@ -252,5 +288,23 @@
          -0.9989872    28.5363076 
       attr(,"label")
       [1] "90% CI (CMH, without correction)"
+      
+
+# s_proportion_diff works with CMH Sato method
+
+    Code
+      res
+    Output
+      $diff
+      diff_cmh_sato 
+           13.76866 
+      attr(,"label")
+      [1] "Difference in Response rate (%)"
+      
+      $diff_ci
+      diff_ci_cmh_sato_l diff_ci_cmh_sato_u 
+               -3.934358          31.471678 
+      attr(,"label")
+      [1] "90% CI (CMH, Sato variance estimator)"
       
 
