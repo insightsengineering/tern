@@ -5,12 +5,40 @@
     Output
       [1] 0.05653028
 
+---
+
+    Code
+      res_less
+    Output
+      [1] 0.9717349
+
+---
+
+    Code
+      res_greater
+    Output
+      [1] 0.02826514
+
 # prop_cmh returns right result
 
     Code
       res
     Output
       [1] 0.6477165
+
+---
+
+    Code
+      res_less
+    Output
+      [1] 0.6761418
+
+---
+
+    Code
+      res_greater
+    Output
+      [1] 0.3238582
 
 # prop_cmh also works when there are strata with just one observation
 
@@ -25,6 +53,20 @@
       res
     Output
       [1] 0.1109695
+
+---
+
+    Code
+      res_less
+    Output
+      [1] 0.9875791
+
+---
+
+    Code
+      res_greater
+    Output
+      [1] 0.05548477
 
 # prop_schouten returns right result
 
@@ -52,6 +94,34 @@
        [91] 4.432164e-01 5.103689e-06 4.082526e-04 5.098830e-02 1.118992e-03
        [96] 2.442491e-15 1.476617e-08 5.641109e-01 5.317809e-03 2.889880e-04
 
+# prop_schouten returns right result for less or greater alternative
+
+    Code
+      res_less
+    Output
+      [1] 0.9578287
+
+---
+
+    Code
+      res_greater
+    Output
+      [1] 0.04217134
+
+# prop_wh returns right result for less or greater alternative
+
+    Code
+      res_less
+    Output
+      [1] 0.6522653
+
+---
+
+    Code
+      res_greater
+    Output
+      [1] 0.3477347
+
 # s_test_proportion_diff and d_test_proportion_diff return right result
 
     Code
@@ -68,6 +138,38 @@
       
       
 
+# s_test_proportion_diff and d_test_proportion_diff work with less and greater alternatives
+
+    Code
+      res
+    Output
+      $d
+      [1] "p-value (Cochran-Mantel-Haenszel Test, 1-sided, direction greater)"
+      
+      $s
+      $s$pval
+      [1] 0.6761418
+      attr(,"label")
+      [1] "p-value (Cochran-Mantel-Haenszel Test, 1-sided, direction greater)"
+      
+      
+
+---
+
+    Code
+      res
+    Output
+      $d
+      [1] "p-value (Cochran-Mantel-Haenszel Test, 1-sided, direction less)"
+      
+      $s
+      $s$pval
+      [1] 0.3238582
+      attr(,"label")
+      [1] "p-value (Cochran-Mantel-Haenszel Test, 1-sided, direction less)"
+      
+      
+
 # test_proportion_diff returns right result
 
     Code
@@ -76,6 +178,15 @@
                                                  B     A   
       —————————————————————————————————————————————————————
         p-value (Cochran-Mantel-Haenszel Test)       0.6477
+
+# test_proportion_diff uses alternative argument
+
+    Code
+      res
+    Output
+                                                                             B     A   
+      —————————————————————————————————————————————————————————————————————————————————
+        p-value (Cochran-Mantel-Haenszel Test, 1-sided, direction greater)       0.6761
 
 # test_proportion_diff edge case: all responder by chisq
 
@@ -114,4 +225,14 @@
       ———————————————————————————————————————————————————
       Variable Label                                     
           p-value (Cochran-Mantel-Haenszel Test)       NA
+
+# test_proportion_diff edge case: all responder by WH
+
+    Code
+      res
+    Output
+                                                                                       B   A 
+      ———————————————————————————————————————————————————————————————————————————————————————
+      Variable Label                                                                         
+          p-value (Cochran-Mantel-Haenszel Test with Wilson-Hilferty Transformation)       NA
 
