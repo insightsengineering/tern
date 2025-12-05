@@ -10,7 +10,11 @@
 \usage{
 prop_chisq(tbl, alternative = c("two.sided", "less", "greater"))
 
-prop_cmh(ary, alternative = c("two.sided", "less", "greater"))
+prop_cmh(
+  ary,
+  alternative = c("two.sided", "less", "greater"),
+  transform = c("none", "wilson_hilferty")
+)
 
 prop_schouten(tbl, alternative = c("two.sided", "less", "greater"))
 
@@ -24,6 +28,9 @@ should be displayed.}
 
 \item{ary}{(\code{array}, 3 dimensions)\cr array with two groups in rows, the binary response
 (\code{TRUE}/\code{FALSE}) in columns, and the strata in the third dimension.}
+
+\item{transform}{(\code{string})\cr either \code{none} or \code{wilson_hilferty}; specifies whether to apply
+the Wilson-Hilferty transformation of the chi-squared statistic.}
 }
 \value{
 A p-value.
@@ -35,8 +42,9 @@ Helper functions to implement various tests on the difference between two propor
 \itemize{
 \item \code{prop_chisq()}: Performs Chi-Squared test. Internally calls \code{\link[stats:prop.test]{stats::prop.test()}}.
 
-\item \code{prop_cmh()}: Performs stratified Cochran-Mantel-Haenszel test. Internally calls
-\code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}}. Note that strata with less than two observations are automatically discarded.
+\item \code{prop_cmh()}: Performs stratified Cochran-Mantel-Haenszel test,
+using \code{\link[stats:mantelhaen.test]{stats::mantelhaen.test()}} internally.
+Note that strata with less than two observations are automatically discarded.
 
 \item \code{prop_schouten()}: Performs the Chi-Squared test with Schouten correction.
 
