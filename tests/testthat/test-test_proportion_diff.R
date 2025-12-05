@@ -110,7 +110,7 @@ testthat::test_that("prop_schouten returns right result", {
   )
 
   res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+  testthat::expect_snapshot_value(res, style = "deparse")
 })
 
 testthat::test_that("prop_schouten returns right result for less or greater alternative", {
