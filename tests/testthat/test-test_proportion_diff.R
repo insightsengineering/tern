@@ -138,6 +138,31 @@ testthat::test_that("prop_schouten returns right result for less or greater alte
   expect_equal(result_greater, result_chisq_greater, tolerance = 1e-1)
 })
 
+testthat::test_that("prop_wh returns right result for less or greater alternative", {
+  set.seed(1, kind = "Mersenne-Twister")
+  rsp <- c(
+    sample(c(TRUE, FALSE), size = 20, prob = c(3 / 4, 1 / 4), replace = TRUE),
+    sample(c(TRUE, FALSE), size = 20, prob = c(1 / 2, 1 / 2), replace = TRUE)
+  )
+  grp <- c(rep("A", 20), rep("B", 20))
+  tbl <- table(grp, rsp)
+
+  result_less <- prop_wh(tbl, alternative = "less")
+  res_less <- testthat::expect_silent(result_less)
+  testthat::expect_snapshot(res_less)
+
+  result_greater <- prop_wh(tbl, alternative = "greater")
+  res_greater <- testthat::expect_silent(result_greater)
+  testthat::expect_snapshot(res_greater)
+
+  # And these results are in line with the standard Chi-Squared test.
+  result_chisq_less <- prop_chisq(tbl, alternative = "less")
+  result_chisq_greater <- prop_chisq(tbl, alternative = "greater")
+
+  expect_equal(result_less, result_chisq_less, tolerance = 1e-1)
+  expect_equal(result_greater, result_chisq_greater, tolerance = 1e-1)
+})
+
 testthat::test_that("s_test_proportion_diff and d_test_proportion_diff return right result", {
   set.seed(1984, kind = "Mersenne-Twister")
   dta <- data.frame(
