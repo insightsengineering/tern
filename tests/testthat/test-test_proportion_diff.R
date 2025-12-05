@@ -264,7 +264,7 @@ testthat::test_that("test_proportion_diff edge case: all responder by chisq", {
     split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
     test_proportion_diff(
       vars = "rsp",
-      method = c("chisq", "schouten", "fisher", "cmh")[1]
+      method = c("chisq", "schouten", "fisher", "cmh", "wh")[1]
     ) %>%
     build_table(df = dta)
 
@@ -282,7 +282,7 @@ testthat::test_that("test_proportion_diff edge case: all responder by schouten",
     split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
     test_proportion_diff(
       vars = "rsp",
-      method = c("chisq", "schouten", "fisher", "cmh")[2]
+      method = c("chisq", "schouten", "fisher", "cmh", "wh")[2]
     ) %>%
     build_table(df = dta)
 
@@ -302,7 +302,7 @@ testthat::test_that("test_proportion_diff edge case: all responder by fisher", {
       vars = "rsp",
       var_labels = "Variable Label",
       show_labels = "visible",
-      method = c("chisq", "schouten", "fisher", "cmh")[3]
+      method = c("chisq", "schouten", "fisher", "cmh", "wh")[3]
     ) %>%
     build_table(df = dta)
 
@@ -323,7 +323,29 @@ testthat::test_that("test_proportion_diff edge case: all responder by CMH", {
       vars = "rsp",
       var_labels = "Variable Label",
       show_labels = "visible",
-      method = c("chisq", "schouten", "fisher", "cmh")[4],
+      method = c("chisq", "schouten", "fisher", "cmh", "wh")[4],
+      variables = list(strata = "strata")
+    ) %>%
+    build_table(df = dta)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("test_proportion_diff edge case: all responder by WH", {
+  dta <- data.frame(
+    rsp = rep(TRUE, each = 100),
+    grp = factor(rep(c("A", "B"), each = 50)),
+    strata = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+  )
+
+  result <- basic_table() %>%
+    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
+    test_proportion_diff(
+      vars = "rsp",
+      var_labels = "Variable Label",
+      show_labels = "visible",
+      method = c("chisq", "schouten", "fisher", "cmh", "wh")[5],
       variables = list(strata = "strata")
     ) %>%
     build_table(df = dta)

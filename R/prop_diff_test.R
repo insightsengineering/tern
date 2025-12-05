@@ -71,7 +71,7 @@ s_test_proportion_diff <- function(df,
       levels = c("ref", "Not-ref")
     )
 
-    if (!is.null(variables$strata) || method == "cmh") {
+    if (!is.null(variables$strata) || method %in% c("cmh", "wh")) {
       strata <- variables$strata
       checkmate::assert_false(is.null(strata))
       strata_vars <- stats::setNames(as.list(strata), strata)
@@ -82,6 +82,7 @@ s_test_proportion_diff <- function(df,
 
     tbl <- switch(method,
       cmh = table(grp, rsp, strata),
+      wh = table(grp, rsp, strata),
       table(grp, rsp)
     )
 
@@ -314,14 +315,14 @@ prop_chisq <- function(tbl, alternative = c("two.sided", "less", "greater")) {
   stats::prop.test(tbl, correct = FALSE, alternative = alternative)$p.value
 }
 
-#' @describeIn h_prop_diff_test Performs stratified Cochran-Mantel-Haenszel test. Internally calls
-#'   [stats::mantelhaen.test()]. Note that strata with less than two observations are automatically discarded.
-#'
+#' @describeIn h_prop_diff_test Performs stratified Cochran-Mantel-Haenszel test by
+#'   calling [stats::mantelhaen.test()] to avoid code duplication between [prop_cmh()] and [prop_wh()].
+#' 
 #' @param ary (`array`, 3 dimensions)\cr array with two groups in rows, the binary response
 #'   (`TRUE`/`FALSE`) in columns, and the strata in the third dimension.
-#'
+#' 
 #' @keywords internal
-prop_cmh <- function(ary, alternative = c("two.sided", "less", "greater")) {
+h_prop_diff_test_cmh <- function(ary, ...) {
   checkmate::assert_array(ary)
   checkmate::assert_integer(c(ncol(ary), nrow(ary)), lower = 2, upper = 2)
   checkmate::assert_integer(length(dim(ary)), lower = 3, upper = 3)
@@ -332,7 +333,35 @@ prop_cmh <- function(ary, alternative = c("two.sided", "less", "greater")) {
     ary <- ary[, , strata_sizes > 1]
   }
 
-  stats::mantelhaen.test(ary, correct = FALSE, alternative = alternative)$p.value
+  stats::mantelhaen.test(ary, correct = FALSE, ...)
+}
+
+#' @describeIn h_prop_diff_test Performs stratified Cochran-Mantel-Haenszel test. 
+#'   Note that strata with less than two observations are automatically discarded.
+#'
+#' @keywords internal
+prop_cmh <- function(ary, alternative = c("two.sided", "less", "greater")) {
+  h_prop_diff_test_cmh(ary, alternative = alternative)$p.value
+}
+
+#' @describeIn h_prop_diff_test Performs stratified Cochran-Mantel-Haenszel test with
+#'   Wilson-Hilferty transformation of the chi-squared statistic. 
+#'   Note that strata with less than two observations are automatically discarded.
+#'
+#' @keywords internal
+prop_wh <- function(ary, alternative = c("two.sided", "less", "greater")) {
+  cmh_res <- h_prop_diff_test_cmh(ary)
+  alternative <- match.arg(alternative)
+
+  chisq_stat <- unname(cmh_res$statistic)
+  df <- unname(cmh_res$parameter)
+  wh_stat <- ((chisq_stat / df)^(1 / 3) - (1 - 2 / (9 * df))) / sqrt(2 / (9 * df))
+
+  if (alternative == "two.sided") {
+    2 * stats::pnorm(-abs(wh_stat))
+  } else {
+    stats::pnorm(wh_stat, lower.tail = (alternative == "greater"))
+  }
 }
 
 #' @describeIn h_prop_diff_test Performs the Chi-Squared test with Schouten correction.
@@ -381,29 +410,4 @@ prop_fisher <- function(tbl, alternative = c("two.sided", "less", "greater")) {
   alternative <- match.arg(alternative) # Is needed here, because stats::fisher.test does not handle defaults.
   tbl <- tbl[, c("TRUE", "FALSE")]
   stats::fisher.test(tbl, alternative = alternative)$p.value
-}
-
-#' @describeIn h_prop_diff_test Performs stratified Cochran-Mantel-Haenszel test with
-#'   Wilson-Hilferty transformation of the chi-squared statistic. 
-#'   Note that strata with less than two observations are automatically discarded.
-#'
-#' @param ary (`array`, 3 dimensions)\cr array with two groups in rows, the binary response
-#'   (`TRUE`/`FALSE`) in columns, and the strata in the third dimension.
-#'
-#' @keywords internal
-prop_wh <- function(ary, alternative = c("two.sided", "less", "greater")) {
-  checkmate::assert_array(ary)
-  checkmate::assert_integer(c(ncol(ary), nrow(ary)), lower = 2, upper = 2)
-  checkmate::assert_integer(length(dim(ary)), lower = 3, upper = 3)
-
-  cmh_res <- stats::mantelhaen.test(ary, correct = FALSE)
-  chisq_stat <- unname(cmh_res$statistic)
-  df <- unname(cmh_res$parameter)
-  wh_stat <- ((chisq_stat / df)^(1 / 3) - (1 - 2 / (9 * df))) / sqrt(2 / (9 * df))
-
-  if (alternative == "two.sided") {
-    2 * stats::pnorm(-abs(wh_stat))
-  } else {
-    stats::pnorm(wh_stat, lower.tail = (alternative == "greater"))
-  }
 }
