@@ -135,22 +135,6 @@ testthat::test_that("`prop_diff_cmh` with Sato variance estimator for difference
     stringsAsFactors = TRUE
   )
 
-    # write.csv(data.frame(
-  #   rsp = as.numeric(rsp),
-  #   grp = grp,
-  #   strata = interaction(strata_data)
-  # ), file = "~/Desktop/cmh_sato_test.csv", row.names = FALSE)
-
-#   proc import out=mydata
-#     datafile="C:\Users\Daniel\Desktop\cmh_sato_test.csv"
-#     dbms=csv
-#     replace;
-# run;
-
-# proc freq data=mydata;
-#     tables strata * grp * rsp / COMMONRISKDIFF;
-# run;
-
   result <- prop_diff_cmh(
     rsp = rsp, grp = grp, strata = interaction(strata_data),
     conf_level = 0.90, diff_se = "sato"

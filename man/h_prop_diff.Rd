@@ -15,7 +15,13 @@ prop_diff_ha(rsp, grp, conf_level)
 
 prop_diff_nc(rsp, grp, conf_level, correct = FALSE)
 
-prop_diff_cmh(rsp, grp, strata, conf_level = 0.95)
+prop_diff_cmh(
+  rsp,
+  grp,
+  strata,
+  conf_level = 0.95,
+  diff_se = c("standard", "sato")
+)
 
 prop_diff_strat_nc(
   rsp,
@@ -38,6 +44,8 @@ prop_diff_strat_nc(
 information, see \code{\link[stats:prop.test]{stats::prop.test()}}.}
 
 \item{strata}{(\code{factor})\cr variable with one level per stratum and same length as \code{rsp}.}
+
+\item{diff_se}{(\code{string})\cr method to estimate the standard error for the difference.}
 
 \item{weights_method}{(\code{string})\cr weights method. Can be either \code{"cmh"} or \code{"heuristic"}
 and directs the way weights are estimated.}
@@ -121,6 +129,10 @@ strata_data <- data.frame(
 prop_diff_cmh(
   rsp = rsp, grp = grp, strata = interaction(strata_data),
   conf_level = 0.90
+)
+prop_diff_cmh(
+  rsp = rsp, grp = grp, strata = interaction(strata_data),
+  conf_level = 0.90, diff_se = "sato"
 )
 
 # Stratified Newcombe confidence interval
