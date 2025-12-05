@@ -12,8 +12,8 @@ estimate_proportion_diff(
   vars,
   variables = list(strata = NULL),
   conf_level = 0.95,
-  method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc", "strat_newcombe",
-    "strat_newcombecc"),
+  method = c("waldcc", "wald", "cmh", "cmh_sato", "ha", "newcombe", "newcombecc",
+    "strat_newcombe", "strat_newcombecc"),
   weights_method = "cmh",
   var_labels = vars,
   na_str = default_na_str(),
@@ -37,8 +37,8 @@ s_proportion_diff(
   .in_ref_col,
   variables = list(strata = NULL),
   conf_level = 0.95,
-  method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc", "strat_newcombe",
-    "strat_newcombecc"),
+  method = c("waldcc", "wald", "cmh", "cmh_sato", "ha", "newcombe", "newcombecc",
+    "strat_newcombe", "strat_newcombecc"),
   weights_method = "cmh",
   ...
 )
@@ -147,8 +147,8 @@ in terms of responder proportion.
 
 }}
 \note{
-When performing an unstratified analysis, methods \code{"cmh"}, \code{"strat_newcombe"}, and \code{"strat_newcombecc"} are
-not permitted.
+When performing an unstratified analysis, methods \code{"cmh"}, \code{"cmh_sato"}, \code{"strat_newcombe"},
+and \code{"strat_newcombecc"} are not permitted.
 }
 \examples{
 ## "Mid" case: 4/4 respond in group A, 1/2 respond in group B.
