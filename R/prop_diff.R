@@ -649,7 +649,7 @@ prop_diff_cmh <- function(rsp,
     sqrt(sum(((p1 * (1 - p1) / n1) + (p2 * (1 - p2) / n2)) * wt_normalized^2))
   } else {
     # Sato variance estimator.
-    p_terms <- (n2 * t_tbl[2, 1, ] - n1 * t_tbl[2, 2, ] + n1 * n2 * (n1 - n2) / 2) / (n1 + n2)^2
+    p_terms <- (n2^2 * t_tbl[2, 1, ] - n1^2 * t_tbl[2, 2, ] + n1 * n2 * (n1 - n2) / 2) / (n1 + n2)^2
     q_terms <- (t_tbl[2, 1, ] * (n2 - t_tbl[2, 2, ]) + t_tbl[2, 2, ] * (n1 - t_tbl[2, 1, ])) / (2 * (n1 + n2))
     num <- diff_est * sum(p_terms) + sum(q_terms)
     denom <- sum(wt)^2
@@ -662,6 +662,7 @@ prop_diff_cmh <- function(rsp,
     prop_ci = estimate_ci,
     diff = diff_est,
     diff_ci = diff_ci,
+    se_diff = se_diff,
     weights = wt_normalized,
     n1 = n1,
     n2 = n2

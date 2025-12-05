@@ -140,6 +140,10 @@ testthat::test_that("`prop_diff_cmh` with Sato variance estimator for difference
     conf_level = 0.90, diff_se = "sato"
   )
 
+  # Comparison values from SAS PROC FREQ TABLES with COMMONRISKDIFF option:
+  expect_equal(result$se_diff, 0.1081, tolerance = 1e-3)
+  expect_equal(result$diff_ci, c(-0.3154, 0.0400), tolerance = 1e-3)
+
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 })
