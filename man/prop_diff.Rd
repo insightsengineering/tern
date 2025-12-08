@@ -145,8 +145,10 @@ The possible methods are:
 \item \code{"ha"}: Anderson-Hauck confidence interval \insertCite{HauckAnderson1986}{tern}.
 \item \code{"newcombe"}: Newcombe confidence interval without continuity correction \insertCite{Newcombe1998}{tern}.
 \item \code{"newcombecc"}: Newcombe confidence interval with continuity correction \insertCite{Newcombe1998}{tern}.
-\item \code{"strat_newcombe"}: Stratified Newcombe confidence interval without continuity correction \insertCite{Yan2010-jt}{tern}.
-\item \code{"strat_newcombecc"}: Stratified Newcombe confidence interval with continuity correction \insertCite{Yan2010-jt}{tern}.
+\item \code{"strat_newcombe"}: Stratified Newcombe confidence interval without continuity
+correction \insertCite{Yan2010-jt}{tern}.
+\item \code{"strat_newcombecc"}: Stratified Newcombe confidence interval with continuity
+correction \insertCite{Yan2010-jt}{tern}.
 }
 }
 \section{Functions}{

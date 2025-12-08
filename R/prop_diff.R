@@ -7,9 +7,9 @@
 #' whether a response has occurred for each record. See the `method` parameter for options of methods to use when
 #' constructing the confidence interval of the proportion difference. A stratification variable can be supplied via the
 #' `strata` element of the `variables` argument.
-#' 
+#'
 #' @details The possible methods are:
-#' 
+#'
 #' - `"waldcc"`: Wald confidence interval with continuity correction \insertCite{Agresti1998}{tern}.
 #' - `"wald"`: Wald confidence interval without continuity correction \insertCite{Agresti1998}{tern}.
 #' - `"cmh"`: Cochran-Mantel-Haenszel (CMH) confidence interval \insertCite{MantelHaenszel1959}{tern}.
@@ -17,8 +17,10 @@
 #' - `"ha"`: Anderson-Hauck confidence interval \insertCite{HauckAnderson1986}{tern}.
 #' - `"newcombe"`: Newcombe confidence interval without continuity correction \insertCite{Newcombe1998}{tern}.
 #' - `"newcombecc"`: Newcombe confidence interval with continuity correction \insertCite{Newcombe1998}{tern}.
-#' - `"strat_newcombe"`: Stratified Newcombe confidence interval without continuity correction \insertCite{Yan2010-jt}{tern}.
-#' - `"strat_newcombecc"`: Stratified Newcombe confidence interval with continuity correction \insertCite{Yan2010-jt}{tern}.
+#' - `"strat_newcombe"`: Stratified Newcombe confidence interval without continuity 
+#'     correction \insertCite{Yan2010-jt}{tern}.
+#' - `"strat_newcombecc"`: Stratified Newcombe confidence interval with continuity 
+#'     correction \insertCite{Yan2010-jt}{tern}.
 #'
 #' @inheritParams prop_diff_strat_nc
 #' @inheritParams argument_convention
@@ -31,7 +33,7 @@
 #'
 #' @references
 #'   \insertAllCited{}
-#' 
+#'
 #' @name prop_diff
 #' @order 1
 NULL
@@ -444,7 +446,7 @@ d_proportion_diff <- function(conf_level,
 #'
 #' @references
 #'   \insertAllCited{}
-#' 
+#'
 #' @name h_prop_diff
 NULL
 
@@ -586,7 +588,8 @@ prop_diff_nc <- function(rsp,
 #'   test, use [stats::mantelhaen.test()].
 #'
 #' @param strata (`factor`)\cr variable with one level per stratum and same length as `rsp`.
-#' @param diff_se (`string`)\cr method to estimate the standard error for the difference, either `standard` or `sato` \insertCite{Sato1989}{tern}.
+#' @param diff_se (`string`)\cr method to estimate the standard error for the difference, either
+#'   `standard` or `sato` \insertCite{Sato1989}{tern}.
 #'
 #' @examples
 #' # Cochran-Mantel-Haenszel confidence interval
