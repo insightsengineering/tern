@@ -135,6 +135,20 @@ whether a response has occurred for each record. See the \code{method} parameter
 constructing the confidence interval of the proportion difference. A stratification variable can be supplied via the
 \code{strata} element of the \code{variables} argument.
 }
+\details{
+The possible methods are:
+\itemize{
+\item \code{"waldcc"}: Wald confidence interval with continuity correction \insertCite{Agresti1998}{tern}.
+\item \code{"wald"}: Wald confidence interval without continuity correction \insertCite{Agresti1998}{tern}.
+\item \code{"cmh"}: Cochran-Mantel-Haenszel (CMH) confidence interval \insertCite{MantelHaenszel1959}{tern}.
+\item \code{"cmh_sato"}: CMH confidence interval with Sato variance estimator \insertCite{Sato1989}{tern}.
+\item \code{"ha"}: Anderson-Hauck confidence interval \insertCite{HauckAnderson1986}{tern}.
+\item \code{"newcombe"}: Newcombe confidence interval without continuity correction \insertCite{Newcombe1998}{tern}.
+\item \code{"newcombecc"}: Newcombe confidence interval with continuity correction \insertCite{Newcombe1998}{tern}.
+\item \code{"strat_newcombe"}: Stratified Newcombe confidence interval without continuity correction \insertCite{Yan2010-jt}{tern}.
+\item \code{"strat_newcombecc"}: Stratified Newcombe confidence interval with continuity correction \insertCite{Yan2010-jt}{tern}.
+}
+}
 \section{Functions}{
 \itemize{
 \item \code{estimate_proportion_diff()}: Layout-creating function which can take statistics function arguments
@@ -201,6 +215,9 @@ a_proportion_diff(
   method = "ha"
 )
 
+}
+\references{
+\insertAllCited{}
 }
 \seealso{
 \code{\link[=d_proportion_diff]{d_proportion_diff()}}
