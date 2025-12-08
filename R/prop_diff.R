@@ -17,9 +17,9 @@
 #' - `"ha"`: Anderson-Hauck confidence interval \insertCite{HauckAnderson1986}{tern}.
 #' - `"newcombe"`: Newcombe confidence interval without continuity correction \insertCite{Newcombe1998}{tern}.
 #' - `"newcombecc"`: Newcombe confidence interval with continuity correction \insertCite{Newcombe1998}{tern}.
-#' - `"strat_newcombe"`: Stratified Newcombe confidence interval without continuity 
+#' - `"strat_newcombe"`: Stratified Newcombe confidence interval without continuity
 #'     correction \insertCite{Yan2010-jt}{tern}.
-#' - `"strat_newcombecc"`: Stratified Newcombe confidence interval with continuity 
+#' - `"strat_newcombecc"`: Stratified Newcombe confidence interval with continuity
 #'     correction \insertCite{Yan2010-jt}{tern}.
 #'
 #' @inheritParams prop_diff_strat_nc
