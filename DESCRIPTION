@@ -29,7 +29,7 @@ URL: https://insightsengineering.github.io/tern/,
 BugReports: https://github.com/insightsengineering/tern/issues
 Depends:
     R (>= 4.4.0),
-    rtables (>= 0.6.13)
+    rtables (>= 0.6.14)
 Imports:
     broom (>= 1.0.8),
     car (>= 3.1-3),
@@ -38,7 +38,7 @@ Imports:
     dplyr (>= 1.0.0),
     emmeans (>= 1.10.4),
     forcats (>= 1.0.0),
-    formatters (>= 0.5.11),
+    formatters (>= 0.5.12),
     ggplot2 (>= 3.5.0),
     grid,
     gridExtra (>= 2.0.0),
@@ -67,6 +67,9 @@ Suggests:
     svglite (>= 2.1.2),
     testthat (>= 3.1.9),
     withr (>= 2.0.0)
+Remotes:
+    insightsengineering/formatters@main,
+    insightsengineering/rtables@main
 VignetteBuilder:
     knitr,
     rmarkdown
