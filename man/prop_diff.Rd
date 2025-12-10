@@ -12,8 +12,8 @@ estimate_proportion_diff(
   vars,
   variables = list(strata = NULL),
   conf_level = 0.95,
-  method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc", "strat_newcombe",
-    "strat_newcombecc"),
+  method = c("waldcc", "wald", "cmh", "cmh_sato", "ha", "newcombe", "newcombecc",
+    "strat_newcombe", "strat_newcombecc"),
   weights_method = "cmh",
   var_labels = vars,
   na_str = default_na_str(),
@@ -37,8 +37,8 @@ s_proportion_diff(
   .in_ref_col,
   variables = list(strata = NULL),
   conf_level = 0.95,
-  method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc", "strat_newcombe",
-    "strat_newcombecc"),
+  method = c("waldcc", "wald", "cmh", "cmh_sato", "ha", "newcombe", "newcombecc",
+    "strat_newcombe", "strat_newcombecc"),
   weights_method = "cmh",
   ...
 )
@@ -135,6 +135,22 @@ whether a response has occurred for each record. See the \code{method} parameter
 constructing the confidence interval of the proportion difference. A stratification variable can be supplied via the
 \code{strata} element of the \code{variables} argument.
 }
+\details{
+The possible methods are:
+\itemize{
+\item \code{"waldcc"}: Wald confidence interval with continuity correction \insertCite{Agresti1998}{tern}.
+\item \code{"wald"}: Wald confidence interval without continuity correction \insertCite{Agresti1998}{tern}.
+\item \code{"cmh"}: Cochran-Mantel-Haenszel (CMH) confidence interval \insertCite{MantelHaenszel1959}{tern}.
+\item \code{"cmh_sato"}: CMH confidence interval with Sato variance estimator \insertCite{Sato1989}{tern}.
+\item \code{"ha"}: Anderson-Hauck confidence interval \insertCite{HauckAnderson1986}{tern}.
+\item \code{"newcombe"}: Newcombe confidence interval without continuity correction \insertCite{Newcombe1998}{tern}.
+\item \code{"newcombecc"}: Newcombe confidence interval with continuity correction \insertCite{Newcombe1998}{tern}.
+\item \code{"strat_newcombe"}: Stratified Newcombe confidence interval without continuity
+correction \insertCite{Yan2010-jt}{tern}.
+\item \code{"strat_newcombecc"}: Stratified Newcombe confidence interval with continuity
+correction \insertCite{Yan2010-jt}{tern}.
+}
+}
 \section{Functions}{
 \itemize{
 \item \code{estimate_proportion_diff()}: Layout-creating function which can take statistics function arguments
@@ -147,8 +163,8 @@ in terms of responder proportion.
 
 }}
 \note{
-When performing an unstratified analysis, methods \code{"cmh"}, \code{"strat_newcombe"}, and \code{"strat_newcombecc"} are
-not permitted.
+When performing an unstratified analysis, methods \code{"cmh"}, \code{"cmh_sato"}, \code{"strat_newcombe"},
+and \code{"strat_newcombecc"} are not permitted.
 }
 \examples{
 ## "Mid" case: 4/4 respond in group A, 1/2 respond in group B.
@@ -201,6 +217,9 @@ a_proportion_diff(
   method = "ha"
 )
 
+}
+\references{
+\insertAllCited{}
 }
 \seealso{
 \code{\link[=d_proportion_diff]{d_proportion_diff()}}
