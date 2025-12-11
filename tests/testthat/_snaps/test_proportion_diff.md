@@ -110,6 +110,20 @@
 
     0.0421713438492082
 
+# prop_cmh with Wilson-Hilferty transformation works
+
+    Code
+      res_less
+    Output
+      [1] 0.6522653
+
+---
+
+    Code
+      res_greater
+    Output
+      [1] 0.3477347
+
 # s_test_proportion_diff and d_test_proportion_diff return right result
 
     Code
