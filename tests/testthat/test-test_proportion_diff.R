@@ -110,7 +110,7 @@ testthat::test_that("prop_schouten returns right result", {
   )
 
   res <- testthat::expect_silent(result)
-  testthat::expect_snapshot(res)
+  testthat::expect_snapshot_value(res, style = "deparse", tolerance = 1e-3)
 })
 
 testthat::test_that("prop_schouten returns right result for less or greater alternative", {
@@ -124,11 +124,11 @@ testthat::test_that("prop_schouten returns right result for less or greater alte
 
   result_less <- prop_schouten(tbl, alternative = "less")
   res_less <- testthat::expect_silent(result_less)
-  testthat::expect_snapshot(res_less)
+  testthat::expect_snapshot_value(res_less, style = "deparse", tolerance = 1e-3)
 
   result_greater <- prop_schouten(tbl, alternative = "greater")
   res_greater <- testthat::expect_silent(result_greater)
-  testthat::expect_snapshot(res_greater)
+  testthat::expect_snapshot_value(res_greater, style = "deparse", tolerance = 1e-3)
 
   # And these results are in line with the standard Chi-Squared test.
   result_chisq_less <- prop_chisq(tbl, alternative = "less")

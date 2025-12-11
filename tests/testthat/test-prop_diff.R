@@ -124,6 +124,30 @@ testthat::test_that("`prop_diff_cmh` (proportion difference by CMH)", {
   ))
 })
 
+testthat::test_that("`prop_diff_cmh` with Sato variance estimator for difference", {
+  set.seed(2, kind = "Mersenne-Twister")
+  rsp <- sample(c(TRUE, FALSE), 100, TRUE)
+  grp <- sample(c("Placebo", "Treatment"), 100, TRUE)
+  grp <- factor(grp, levels = c("Placebo", "Treatment"))
+  strata_data <- data.frame(
+    "f1" = sample(c("a", "b"), 100, TRUE),
+    "f2" = sample(c("x", "y", "z"), 100, TRUE),
+    stringsAsFactors = TRUE
+  )
+
+  result <- prop_diff_cmh(
+    rsp = rsp, grp = grp, strata = interaction(strata_data),
+    conf_level = 0.90, diff_se = "sato"
+  )
+
+  # Comparison values from SAS PROC FREQ TABLES with COMMONRISKDIFF option:
+  expect_equal(result$se_diff, 0.1081, tolerance = 1e-3)
+  expect_equal(result$diff_ci, c(-0.3154, 0.0400), tolerance = 1e-3)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("prop_diff_cmh works correctly when some strata don't have both groups", {
   set.seed(2, kind = "Mersenne-Twister")
   rsp <- sample(c(TRUE, FALSE), 100, TRUE)
@@ -351,6 +375,30 @@ testthat::test_that("s_proportion_diff works with strata", {
     variables = list(strata = c("f1", "f2")),
     conf_level = 0.90,
     method = "cmh"
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("s_proportion_diff works with CMH Sato method", {
+  nex <- 100
+  set.seed(2)
+  dta <- data.frame(
+    "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
+    "grp" = sample(c("A", "B"), nex, TRUE),
+    "f1" = sample(c("a1", "a2"), nex, TRUE),
+    "f2" = sample(c("x", "y", "z"), nex, TRUE),
+    stringsAsFactors = TRUE
+  )
+  result <- s_proportion_diff(
+    df = subset(dta, grp == "A"),
+    .var = "rsp",
+    .ref_group = subset(dta, grp == "B"),
+    .in_ref_col = FALSE,
+    variables = list(strata = c("f1", "f2")),
+    conf_level = 0.90,
+    method = "cmh_sato"
   )
 
   res <- testthat::expect_silent(result)

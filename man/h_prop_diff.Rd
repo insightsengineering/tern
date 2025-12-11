@@ -15,7 +15,13 @@ prop_diff_ha(rsp, grp, conf_level)
 
 prop_diff_nc(rsp, grp, conf_level, correct = FALSE)
 
-prop_diff_cmh(rsp, grp, strata, conf_level = 0.95)
+prop_diff_cmh(
+  rsp,
+  grp,
+  strata,
+  conf_level = 0.95,
+  diff_se = c("standard", "sato")
+)
 
 prop_diff_strat_nc(
   rsp,
@@ -39,6 +45,9 @@ information, see \code{\link[stats:prop.test]{stats::prop.test()}}.}
 
 \item{strata}{(\code{factor})\cr variable with one level per stratum and same length as \code{rsp}.}
 
+\item{diff_se}{(\code{string})\cr method to estimate the standard error for the difference, either
+\code{standard} or \code{sato} \insertCite{Sato1989}{tern}.}
+
 \item{weights_method}{(\code{string})\cr weights method. Can be either \code{"cmh"} or \code{"heuristic"}
 and directs the way weights are estimated.}
 }
@@ -56,10 +65,10 @@ definition for a single proportion confidence interval using the normal
 approximation. It is possible to include a continuity correction for Wald's
 interval.
 
-\item \code{prop_diff_ha()}: Anderson-Hauck confidence interval.
+\item \code{prop_diff_ha()}: Anderson-Hauck confidence interval \insertCite{HauckAnderson1986}{tern}.
 
 \item \code{prop_diff_nc()}: Newcombe confidence interval. It is based on
-the Wilson score confidence interval for a single binomial proportion.
+the Wilson score confidence interval for a single binomial proportion \insertCite{Newcombe1998}{tern}.
 
 \item \code{prop_diff_cmh()}: Calculates the weighted difference. This is defined as the difference in
 response rates between the experimental treatment group and the control treatment group, adjusted
@@ -122,6 +131,10 @@ prop_diff_cmh(
   rsp = rsp, grp = grp, strata = interaction(strata_data),
   conf_level = 0.90
 )
+prop_diff_cmh(
+  rsp = rsp, grp = grp, strata = interaction(strata_data),
+  conf_level = 0.90, diff_se = "sato"
+)
 
 # Stratified Newcombe confidence interval
 
@@ -148,7 +161,7 @@ prop_diff_strat_nc(
 
 }
 \references{
-\insertRef{Yan2010-jt}{tern}
+\insertAllCited{}
 }
 \seealso{
 \code{\link[=prop_diff]{prop_diff()}} for implementation of these helper functions.
