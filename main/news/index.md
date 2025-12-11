@@ -1,12 +1,16 @@
 # Changelog
 
-## tern 0.9.9.9007
+## tern 0.9.9.9008
 
 #### Enhancements
 
 - Added `alternative` argument to
   [`test_proportion_diff()`](https://insightsengineering.github.io/tern/reference/prop_diff_test.md)
   to allow one-sided hypothesis testing.
+- Added `cmh_sato` method to
+  [`estimate_proportion_diff()`](https://insightsengineering.github.io/tern/reference/prop_diff.md)
+  for Cochran-Mantel-Haenszel proportion difference confidence interval
+  using Sato variance estimator.
 
 #### Bug Fixes
 

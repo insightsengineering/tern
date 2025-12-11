@@ -19,8 +19,8 @@ estimate_proportion_diff(
   vars,
   variables = list(strata = NULL),
   conf_level = 0.95,
-  method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc", "strat_newcombe",
-    "strat_newcombecc"),
+  method = c("waldcc", "wald", "cmh", "cmh_sato", "ha", "newcombe", "newcombecc",
+    "strat_newcombe", "strat_newcombecc"),
   weights_method = "cmh",
   var_labels = vars,
   na_str = default_na_str(),
@@ -44,8 +44,8 @@ s_proportion_diff(
   .in_ref_col,
   variables = list(strata = NULL),
   conf_level = 0.95,
-  method = c("waldcc", "wald", "cmh", "ha", "newcombe", "newcombecc", "strat_newcombe",
-    "strat_newcombecc"),
+  method = c("waldcc", "wald", "cmh", "cmh_sato", "ha", "newcombe", "newcombecc",
+    "strat_newcombe", "strat_newcombecc"),
   weights_method = "cmh",
   ...
 )
@@ -211,6 +211,36 @@ a_proportion_diff(
 - `a_proportion_diff()` returns the corresponding list with formatted
   [`rtables::CellValue()`](https://insightsengineering.github.io/rtables/latest-tag/reference/CellValue.html).
 
+## Details
+
+The possible methods are:
+
+- `"waldcc"`: Wald confidence interval with continuity correction
+  (Agresti and Coull 1998) .
+
+- `"wald"`: Wald confidence interval without continuity correction
+  (Agresti and Coull 1998) .
+
+- `"cmh"`: Cochran-Mantel-Haenszel (CMH) confidence interval (Mantel and
+  Haenszel 1959) .
+
+- `"cmh_sato"`: CMH confidence interval with Sato variance estimator
+  (Sato et al. 1989) .
+
+- `"ha"`: Anderson-Hauck confidence interval (Hauck and Anderson 1986) .
+
+- `"newcombe"`: Newcombe confidence interval without continuity
+  correction (Newcombe 1998) .
+
+- `"newcombecc"`: Newcombe confidence interval with continuity
+  correction (Newcombe 1998) .
+
+- `"strat_newcombe"`: Stratified Newcombe confidence interval without
+  continuity correction (Yan and Su 2010) .
+
+- `"strat_newcombecc"`: Stratified Newcombe confidence interval with
+  continuity correction (Yan and Su 2010) .
+
 ## Functions
 
 - `estimate_proportion_diff()`: Layout-creating function which can take
@@ -226,8 +256,40 @@ a_proportion_diff(
 
 ## Note
 
-When performing an unstratified analysis, methods `"cmh"`,
+When performing an unstratified analysis, methods `"cmh"`, `"cmh_sato"`,
 `"strat_newcombe"`, and `"strat_newcombecc"` are not permitted.
+
+## References
+
+Agresti A, Coull BA (1998). “Approximate is Better than "Exact" for
+Interval Estimation of Binomial Proportions.” *The American
+Statistician*, **52**(2), 119–126.
+[doi:10.1080/00031305.1998.10480550](https://doi.org/10.1080/00031305.1998.10480550)
+.  
+  
+Hauck WW, Anderson S (1986). “A Comparison of Large-Sample Confidence
+Interval Methods for the Difference of Two Binomial Probabilities.” *The
+American Statistician*, **40**(4), 318–322.
+[doi:10.2307/2684618](https://doi.org/10.2307/2684618) ,
+[2025-12-08](https://insightsengineering.github.io/tern/reference/2025-12-08).  
+  
+Mantel N, Haenszel W (1959). “Statistical aspects of the analysis of
+data from retrospective studies of disease.” *Journal of the National
+Cancer Institute*, **22**(4), 719–748.  
+  
+Newcombe RG (1998). “Interval estimation for the difference between
+independent proportions: comparison of eleven methods.” *Statistics in
+Medicine*, **17**(8), 873-890.
+[doi:10.1002/(SICI)1097-0258(19980430)17:8\<873::AID-SIM779\>3.0.CO;2-I](https://doi.org/10.1002/%28SICI%291097-0258%2819980430%2917%3A8%3C873%3A%3AAID-SIM779%3E3.0.CO%3B2-I)
+.  
+  
+Sato T, Greenland S, Robins JM (1989). “On the variance estimator for
+the Mantel-Haenszel Risk Difference.” *Biometrics*, **45**(4),
+1323–1324. <http://www.jstor.org/stable/2531784>.  
+  
+Yan X, Su XG (2010). “Stratified Wilson and Newcombe Confidence
+Intervals for Multiple Binomial Proportions.” *Stat. Biopharm. Res.*,
+**2**(3), 329–335.
 
 ## See also
 

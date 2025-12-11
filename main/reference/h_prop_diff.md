@@ -11,7 +11,13 @@ prop_diff_ha(rsp, grp, conf_level)
 
 prop_diff_nc(rsp, grp, conf_level, correct = FALSE)
 
-prop_diff_cmh(rsp, grp, strata, conf_level = 0.95)
+prop_diff_cmh(
+  rsp,
+  grp,
+  strata,
+  conf_level = 0.95,
+  diff_se = c("standard", "sato")
+)
 
 prop_diff_strat_nc(
   rsp,
@@ -52,6 +58,12 @@ prop_diff_strat_nc(
   (`factor`)  
   variable with one level per stratum and same length as `rsp`.
 
+- diff_se:
+
+  (`string`)  
+  method to estimate the standard error for the difference, either
+  `standard` or `sato` (Sato et al. 1989) .
+
 - weights_method:
 
   (`string`)  
@@ -70,10 +82,12 @@ A named `list` of elements `diff` (proportion difference) and `diff_ci`
   normal approximation. It is possible to include a continuity
   correction for Wald's interval.
 
-- `prop_diff_ha()`: Anderson-Hauck confidence interval.
+- `prop_diff_ha()`: Anderson-Hauck confidence interval (Hauck and
+  Anderson 1986) .
 
 - `prop_diff_nc()`: Newcombe confidence interval. It is based on the
-  Wilson score confidence interval for a single binomial proportion.
+  Wilson score confidence interval for a single binomial proportion
+  (Newcombe 1998) .
 
 - `prop_diff_cmh()`: Calculates the weighted difference. This is defined
   as the difference in response rates between the experimental treatment
@@ -93,6 +107,22 @@ A named `list` of elements `diff` (proportion difference) and `diff_ci`
 
 ## References
 
+Hauck WW, Anderson S (1986). “A Comparison of Large-Sample Confidence
+Interval Methods for the Difference of Two Binomial Probabilities.” *The
+American Statistician*, **40**(4), 318–322.
+[doi:10.2307/2684618](https://doi.org/10.2307/2684618) ,
+[2025-12-08](https://insightsengineering.github.io/tern/reference/2025-12-08).  
+  
+Newcombe RG (1998). “Interval estimation for the difference between
+independent proportions: comparison of eleven methods.” *Statistics in
+Medicine*, **17**(8), 873-890.
+[doi:10.1002/(SICI)1097-0258(19980430)17:8\<873::AID-SIM779\>3.0.CO;2-I](https://doi.org/10.1002/%28SICI%291097-0258%2819980430%2917%3A8%3C873%3A%3AAID-SIM779%3E3.0.CO%3B2-I)
+.  
+  
+Sato T, Greenland S, Robins JM (1989). “On the variance estimator for
+the Mantel-Haenszel Risk Difference.” *Biometrics*, **45**(4),
+1323–1324. <http://www.jstor.org/stable/2531784>.  
+  
 Yan X, Su XG (2010). “Stratified Wilson and Newcombe Confidence
 Intervals for Multiple Binomial Proportions.” *Stat. Biopharm. Res.*,
 **2**(3), 329–335.
@@ -198,6 +228,46 @@ prop_diff_cmh(
 #> 
 #> $diff_ci
 #> [1] -0.285363076  0.009989872
+#> 
+#> $se_diff
+#> [1] 0.08978092
+#> 
+#> $weights
+#>       a.x       b.x       a.y       b.y       a.z       b.z 
+#> 0.1148388 0.2131696 0.1148388 0.2131696 0.1767914 0.1671918 
+#> 
+#> $n1
+#> a.x b.x a.y b.y a.z b.z 
+#>   4  11   8  11  13  11 
+#> 
+#> $n2
+#> a.x b.x a.y b.y a.z b.z 
+#>   8   9   4   9   6   6 
+#> 
+prop_diff_cmh(
+  rsp = rsp, grp = grp, strata = interaction(strata_data),
+  conf_level = 0.90, diff_se = "sato"
+)
+#> $prop
+#>   Placebo Treatment 
+#> 0.5331117 0.3954251 
+#> 
+#> $prop_ci
+#> $prop_ci$Placebo
+#> [1] 0.4306536 0.6355698
+#> 
+#> $prop_ci$Treatment
+#> [1] 0.2890735 0.5017768
+#> 
+#> 
+#> $diff
+#> [1] -0.1376866
+#> 
+#> $diff_ci
+#> [1] -0.31541846  0.04004526
+#> 
+#> $se_diff
+#> [1] 0.1080533
 #> 
 #> $weights
 #>       a.x       b.x       a.y       b.y       a.z       b.z 
