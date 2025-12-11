@@ -148,6 +148,61 @@ testthat::test_that("`prop_diff_cmh` with Sato variance estimator for difference
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("h_miettinen_nurminen_var_est works as expected", {
+  result <- h_miettinen_nurminen_var_est(
+    n1 = 10, n2 = 15,
+    x1 = 4, x2 = 6, diff_par = 0.1
+  )
+  expect_snapshot_value(result, style = "deparse", tolerance = 1e-4)
+
+  result2 <- h_miettinen_nurminen_var_est(
+    n1 = c(10, 12), n2 = c(15, 18),
+    x1 = c(4, 2), x2 = c(6, 8), diff_par = 0.1
+  )
+  expect_snapshot_value(result2, style = "deparse", tolerance = 1e-4)
+})
+
+testthat::test_that("prop_diff_cmh works correctly with Miettinen-Nurminen variance estimator", {
+  # Example from the Lu (2008) paper, described in Melikov and Mosier (2025),
+  # https://pharmasug.org/proceedings/2025/SA/PharmaSUG-2025-SA-198.pdf
+
+  # Summary data
+  df_sum <- data.frame(
+    Stratum = c(1, 1, 2, 2, 3, 3),
+    Trt     = c(1, 2, 1, 2, 1, 2),
+    N       = c(15, 5, 10, 10, 25, 35),
+    Events  = c(1, 3, 3, 4, 2, 18)
+  )
+
+  # Expand into subject-level binary outcomes
+  df_bin <- do.call(
+    rbind,
+    lapply(seq_len(nrow(df_sum)), function(i) {
+      with(df_sum[i, ], {
+        data.frame(
+          Stratum = Stratum,
+          Trt     = Trt,
+          Outcome = c(rep(1, Events), rep(0, N - Events))
+        )
+      })
+    })
+  )
+
+  result <- prop_diff_cmh(
+    rsp = as.logical(df_bin$Outcome),
+    grp = factor(df_bin$Trt, levels = c(2, 1)),
+    strata = factor(df_bin$Stratum),
+    diff_se = "miettinen_nurminen",
+    conf_level = 0.95
+  )
+  # Compare with result on p.5 from Melikov and Mosier (2025).
+  expect_equal(result$diff, -0.37857, tolerance = 1e-4)
+  expect_equal(result$diff_ci, c(-0.5381, -0.1962), tolerance = 1e-3)
+
+  # Reasonable result for the standard error (was not reported).
+  expect_equal(result$se_diff, 0.08753, tolerance = 1e-4)
+})
+
 testthat::test_that("prop_diff_cmh works correctly when some strata don't have both groups", {
   set.seed(2, kind = "Mersenne-Twister")
   rsp <- sample(c(TRUE, FALSE), 100, TRUE)
@@ -168,7 +223,7 @@ testthat::test_that("prop_diff_cmh works correctly when some strata don't have b
   ))
 
   testthat::expect_false(is.na(result$diff))
-  testthat::expect_false(any(is.na(result$diff_ci)))
+  testthat::expect_false(anyNA(result$diff_ci))
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
@@ -403,6 +458,30 @@ testthat::test_that("s_proportion_diff works with CMH Sato method", {
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
+})
+
+testthat::test_that("s_proportion_diff works with CMH Miettinen and Nurminen method", {
+  nex <- 100
+  set.seed(2)
+  dta <- data.frame(
+    "rsp" = sample(c(TRUE, FALSE), nex, TRUE),
+    "grp" = sample(c("A", "B"), nex, TRUE),
+    "f1" = sample(c("a1", "a2"), nex, TRUE),
+    "f2" = sample(c("x", "y", "z"), nex, TRUE),
+    stringsAsFactors = TRUE
+  )
+  result <- s_proportion_diff(
+    df = subset(dta, grp == "A"),
+    .var = "rsp",
+    .ref_group = subset(dta, grp == "B"),
+    .in_ref_col = FALSE,
+    variables = list(strata = c("f1", "f2")),
+    conf_level = 0.90,
+    method = "cmh_mn"
+  )
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot_value(res, style = "deparse", tolerance = 1e-4)
 })
 
 # check_diff_prop_ci ----
