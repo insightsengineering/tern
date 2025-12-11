@@ -196,6 +196,17 @@
         8   9   4   9   6   6 
       
 
+# h_miettinen_nurminen_var_est works as expected
+
+    list(p1_hat = 0.342213591803752, p2_hat = 0.442213591803752, 
+        var_est = 0.0405774934104561)
+
+---
+
+    list(p1_hat = c(0.342213591803752, 0.265846883932378), p2_hat = c(0.442213591803752, 
+    0.365846883932378), var_est = c(0.0405774934104561, 0.0301587022300622
+    ))
+
 # prop_diff_cmh works correctly when some strata don't have both groups
 
     Code
@@ -316,4 +327,10 @@
       attr(,"label")
       [1] "90% CI (CMH, Sato variance estimator)"
       
+
+# s_proportion_diff works with CMH Miettinen and Nurminen method
+
+    list(diff = structure(c(diff_cmh_mn = 13.7686601988347), label = "Difference in Response rate (%)"), 
+        diff_ci = structure(c(diff_ci_cmh_mn_l = -3.45069418895496, 
+        diff_ci_cmh_mn_u = 30.2144371774115), label = "90% CI (CMH, Miettinen and Nurminen)"))
 

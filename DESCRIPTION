@@ -67,15 +67,15 @@ Suggests:
     svglite (>= 2.1.2),
     testthat (>= 3.1.9),
     withr (>= 2.0.0)
+Remotes:
+    insightsengineering/formatters@main,
+    insightsengineering/rtables@main
 VignetteBuilder:
     knitr,
     rmarkdown
 RdMacros:
     lifecycle,
     Rdpack
-Remotes:
-    insightsengineering/formatters@main,
-    insightsengineering/rtables@main
 Config/Needs/verdepcheck: insightsengineering/rtables, tidymodels/broom,
     cran/car, mllg/checkmate, wilkelab/cowplot, tidyverse/dplyr,
     rvlenth/emmeans, tidyverse/forcats, insightsengineering/formatters,
