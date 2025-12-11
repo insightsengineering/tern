@@ -593,7 +593,7 @@ prop_diff_nc <- function(rsp,
 #'
 #' @param strata (`factor`)\cr variable with one level per stratum and same length as `rsp`.
 #' @param diff_se (`string`)\cr method to estimate the standard error for the difference, either
-#'   `standard`, `sato` \insertCite{Sato1989}{tern} or 
+#'   `standard`, `sato` \insertCite{Sato1989}{tern} or
 #'   `miettinen_nurminen` \insertCite{MiettinenNurminen1985}{tern}.
 #'
 #' @examples
@@ -697,20 +697,20 @@ prop_diff_cmh <- function(rsp,
       denom <- sqrt(sum(wt^2 * var_est))
       num / denom
     }
-    # Find upper and lower confidence limits by root finding such that 
+    # Find upper and lower confidence limits by root finding such that
     # z_stat_fun(limit) = +/- z quantile:
     root_lower <- function(delta) z_stat_fun(delta) - z
-    root_upper <- function(delta) z_stat_fun(delta) + z    
+    root_upper <- function(delta) z_stat_fun(delta) + z
     diff_ci <- c(
       uniroot(root_lower, interval = c(-0.99, diff_est))$root,
       uniroot(root_upper, interval = c(diff_est, 0.99))$root
     )
     # Calculate the standard error separately.
     var_est <- h_miettinen_nurminen_var_est(
-        n1 = n1, n2 = n2,
-        x1 = x1, x2 = x2,
-        diff_par = diff_est
-      )$var_est
+      n1 = n1, n2 = n2,
+      x1 = x1, x2 = x2,
+      diff_par = diff_est
+    )$var_est
     se_diff <- sqrt(sum(wt_normalized^2 * var_est))
   }
 
@@ -767,10 +767,10 @@ h_miettinen_nurminen_var_est <- function(n1, n2, x1, x2, diff_par) {
   # nolint end
 
   # Solution for group 1 proportion.
-  q <- L2^3/(3 * L3)^3 - L1 * L2/(6 * L3^2) + L0/(2 * L3)
-  p <- sign(q) * sqrt(L2^2/(3 * L3)^2 - L1/(3 * L3))
-  a <- (1/3) * (base::pi + acos(q / p^3))
-  p1_hat <- 2 * p * cos(a) - L2/(3 * L3)
+  q <- L2^3 / (3 * L3)^3 - L1 * L2 / (6 * L3^2) + L0 / (2 * L3)
+  p <- sign(q) * sqrt(L2^2 / (3 * L3)^2 - L1 / (3 * L3))
+  a <- (1 / 3) * (base::pi + acos(q / p^3))
+  p1_hat <- 2 * p * cos(a) - L2 / (3 * L3)
 
   # Estimated group 2 proportion.
   p2_hat <- p1_hat + RD

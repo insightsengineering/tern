@@ -168,10 +168,10 @@ testthat::test_that("prop_diff_cmh works correctly with Miettinen-Nurminen varia
 
   # Summary data
   df_sum <- data.frame(
-    Stratum = c(1,1,2,2,3,3),
-    Trt     = c(1,2,1,2,1,2),
-    N       = c(15,5,10,10,25,35),
-    Events  = c(1,3,3,4,2,18)
+    Stratum = c(1, 1, 2, 2, 3, 3),
+    Trt     = c(1, 2, 1, 2, 1, 2),
+    N       = c(15, 5, 10, 10, 25, 35),
+    Events  = c(1, 3, 3, 4, 2, 18)
   )
 
   # Expand into subject-level binary outcomes
@@ -187,7 +187,7 @@ testthat::test_that("prop_diff_cmh works correctly with Miettinen-Nurminen varia
       })
     })
   )
-  
+
   result <- prop_diff_cmh(
     rsp = as.logical(df_bin$Outcome),
     grp = factor(df_bin$Trt, levels = c(2, 1)),
