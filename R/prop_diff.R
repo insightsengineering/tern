@@ -727,10 +727,10 @@ prop_diff_cmh <- function(rsp,
 }
 
 #' Variance Estimates in Strata following Miettinen and Nurminen
-#' 
-#' The variable names in this function follow the notation in the original 
+#'
+#' The variable names in this function follow the notation in the original
 #' paper by \insertCite{MiettinenNurminen1985;textual}{tern}, cf. Appendix 1.
-#' 
+#'
 #' @param n1 (`numeric`)\cr sample sizes in group 1.
 #' @param n2 (`numeric`)\cr sample sizes in group 2.
 #' @param x1 (`numeric`)\cr number of responders in group 1.
@@ -738,13 +738,13 @@ prop_diff_cmh <- function(rsp,
 #' @param diff_par (`numeric`)\cr assumed difference in true proportions
 #'   (group 2 minus group 1).
 #' @return A named `list` with elements:
-#' 
+#'
 #' - `p1_hat`: estimated proportion in group 1
 #' - `p2_hat`: estimated proportion in group 2
 #' - `var_est`: variance estimate of the difference in proportions
-#' 
+#'
 #' @keywords internal
-#' @references 
+#' @references
 #'   \insertAllCited{}
 h_miettinen_nurminen_var_est <- function(n1, n2, x1, x2, diff_par) {
   # nolint start
