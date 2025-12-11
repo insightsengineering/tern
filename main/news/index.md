@@ -1,6 +1,6 @@
 # Changelog
 
-## tern 0.9.9.9008
+## tern 0.9.9.9009
 
 #### Enhancements
 
@@ -10,7 +10,14 @@
 - Added `cmh_sato` method to
   [`estimate_proportion_diff()`](https://insightsengineering.github.io/tern/reference/prop_diff.md)
   for Cochran-Mantel-Haenszel proportion difference confidence interval
-  using Sato variance estimator.
+  using the Sato variance estimator.
+- Added `cmh_mn` method to
+  [`estimate_proportion_diff()`](https://insightsengineering.github.io/tern/reference/prop_diff.md)
+  for Cochran-Mantel-Haenszel proportion difference confidence interval
+  using the Miettinen and Nurminen method.
+- Added `cmh_wh` (CMH with Wilson-Hilferty transformation) method to
+  [`test_proportion_diff()`](https://insightsengineering.github.io/tern/reference/prop_diff_test.md)
+  for stratified proportion difference testing.
 
 #### Bug Fixes
 

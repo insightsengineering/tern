@@ -19,8 +19,8 @@ estimate_proportion_diff(
   vars,
   variables = list(strata = NULL),
   conf_level = 0.95,
-  method = c("waldcc", "wald", "cmh", "cmh_sato", "ha", "newcombe", "newcombecc",
-    "strat_newcombe", "strat_newcombecc"),
+  method = c("waldcc", "wald", "cmh", "cmh_sato", "cmh_mn", "ha", "newcombe",
+    "newcombecc", "strat_newcombe", "strat_newcombecc"),
   weights_method = "cmh",
   var_labels = vars,
   na_str = default_na_str(),
@@ -44,8 +44,8 @@ s_proportion_diff(
   .in_ref_col,
   variables = list(strata = NULL),
   conf_level = 0.95,
-  method = c("waldcc", "wald", "cmh", "cmh_sato", "ha", "newcombe", "newcombecc",
-    "strat_newcombe", "strat_newcombecc"),
+  method = c("waldcc", "wald", "cmh", "cmh_sato", "cmh_mn", "ha", "newcombe",
+    "newcombecc", "strat_newcombe", "strat_newcombecc"),
   weights_method = "cmh",
   ...
 )
@@ -227,6 +227,9 @@ The possible methods are:
 - `"cmh_sato"`: CMH confidence interval with Sato variance estimator
   (Sato et al. 1989) .
 
+- `"cmh_mn"`: CMH confidence interval with Miettinen and Nurminen
+  confidence interval (Miettinen and Nurminen 1985) .
+
 - `"ha"`: Anderson-Hauck confidence interval (Hauck and Anderson 1986) .
 
 - `"newcombe"`: Newcombe confidence interval without continuity
@@ -276,6 +279,10 @@ American Statistician*, **40**(4), 318–322.
 Mantel N, Haenszel W (1959). “Statistical aspects of the analysis of
 data from retrospective studies of disease.” *Journal of the National
 Cancer Institute*, **22**(4), 719–748.  
+  
+Miettinen OS, Nurminen M (1985). “Comparative analysis of two rates.”
+*Statistics in Medicine*, **4**(2), 213–226.
+[doi:10.1002/sim.4780040211](https://doi.org/10.1002/sim.4780040211) .  
   
 Newcombe RG (1998). “Interval estimation for the difference between
 independent proportions: comparison of eleven methods.” *Statistics in

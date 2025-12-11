@@ -16,7 +16,7 @@ prop_diff_cmh(
   grp,
   strata,
   conf_level = 0.95,
-  diff_se = c("standard", "sato")
+  diff_se = c("standard", "sato", "miettinen_nurminen")
 )
 
 prop_diff_strat_nc(
@@ -62,7 +62,8 @@ prop_diff_strat_nc(
 
   (`string`)  
   method to estimate the standard error for the difference, either
-  `standard` or `sato` (Sato et al. 1989) .
+  `standard`, `sato` (Sato et al. 1989) or `miettinen_nurminen`
+  (Miettinen and Nurminen 1985) .
 
 - weights_method:
 
@@ -112,6 +113,10 @@ Interval Methods for the Difference of Two Binomial Probabilities.” *The
 American Statistician*, **40**(4), 318–322.
 [doi:10.2307/2684618](https://doi.org/10.2307/2684618) ,
 [2025-12-08](https://insightsengineering.github.io/tern/reference/2025-12-08).  
+  
+Miettinen OS, Nurminen M (1985). “Comparative analysis of two rates.”
+*Statistics in Medicine*, **4**(2), 213–226.
+[doi:10.1002/sim.4780040211](https://doi.org/10.1002/sim.4780040211) .  
   
 Newcombe RG (1998). “Interval estimation for the difference between
 independent proportions: comparison of eleven methods.” *Statistics in

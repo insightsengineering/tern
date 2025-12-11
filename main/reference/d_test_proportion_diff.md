@@ -16,8 +16,8 @@ d_test_proportion_diff(method, alternative = c("two.sided", "less", "greater"))
 - method:
 
   (`string`)  
-  one of `chisq`, `cmh`, `fisher`, or `schouten`; specifies the test
-  used to calculate the p-value.
+  one of `chisq`, `cmh`, `cmh_wh`, `fisher`, or `schouten`; specifies
+  the test used to calculate the p-value.
 
 - alternative:
 

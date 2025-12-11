@@ -18,7 +18,7 @@ test_proportion_diff(
   lyt,
   vars,
   variables = list(strata = NULL),
-  method = c("chisq", "schouten", "fisher", "cmh"),
+  method = c("chisq", "schouten", "fisher", "cmh", "cmh_wh"),
   alternative = c("two.sided", "less", "greater"),
   var_labels = vars,
   na_str = default_na_str(),
@@ -41,7 +41,7 @@ s_test_proportion_diff(
   .ref_group,
   .in_ref_col,
   variables = list(strata = NULL),
-  method = c("chisq", "schouten", "fisher", "cmh"),
+  method = c("chisq", "schouten", "fisher", "cmh", "cmh_wh"),
   alternative = c("two.sided", "less", "greater"),
   ...
 )
@@ -77,8 +77,8 @@ a_test_proportion_diff(
 - method:
 
   (`string`)  
-  one of `chisq`, `cmh`, `fisher`, or `schouten`; specifies the test
-  used to calculate the p-value.
+  one of `chisq`, `cmh`, `cmh_wh`, `fisher`, or `schouten`; specifies
+  the test used to calculate the p-value.
 
 - alternative:
 
