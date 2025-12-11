@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.9.9.9007
-Date: 2025-12-02
+Version: 0.9.9.9008
+Date: 2025-12-11
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7566-2787")),
@@ -67,9 +67,6 @@ Suggests:
     svglite (>= 2.1.2),
     testthat (>= 3.1.9),
     withr (>= 2.0.0)
-Remotes:
-    insightsengineering/formatters@main,
-    insightsengineering/rtables@main
 VignetteBuilder:
     knitr,
     rmarkdown
