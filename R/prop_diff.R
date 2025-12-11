@@ -702,8 +702,8 @@ prop_diff_cmh <- function(rsp,
     root_lower <- function(delta) z_stat_fun(delta) - z
     root_upper <- function(delta) z_stat_fun(delta) + z
     diff_ci <- c(
-      uniroot(root_lower, interval = c(-0.99, diff_est))$root,
-      uniroot(root_upper, interval = c(diff_est, 0.99))$root
+      stats::uniroot(root_lower, interval = c(-0.99, diff_est))$root,
+      stats::uniroot(root_upper, interval = c(diff_est, 0.99))$root
     )
     # Calculate the standard error separately.
     var_est <- h_miettinen_nurminen_var_est(
