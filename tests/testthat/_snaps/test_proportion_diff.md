@@ -214,3 +214,13 @@
       Variable Label                                     
           p-value (Cochran-Mantel-Haenszel Test)       NA
 
+# test_proportion_diff edge case: all responder by CMH with Wilson-Hilferty transformation
+
+    Code
+      res
+    Output
+                                                                                       B   A 
+      ———————————————————————————————————————————————————————————————————————————————————————
+      Variable Label                                                                         
+          p-value (Cochran-Mantel-Haenszel Test with Wilson-Hilferty Transformation)       NA
+
