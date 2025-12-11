@@ -2,7 +2,7 @@
 % Please edit documentation in R/prop_diff.R
 \name{h_miettinen_nurminen_var_est}
 \alias{h_miettinen_nurminen_var_est}
-\title{Variance Estimates following Miettinen and Nurminen}
+\title{Variance Estimates in Strata following Miettinen and Nurminen}
 \usage{
 h_miettinen_nurminen_var_est(n1, n2, x1, x2, diff_par)
 }
@@ -18,13 +18,19 @@ h_miettinen_nurminen_var_est(n1, n2, x1, x2, diff_par)
 \item{diff_par}{(\code{numeric})\cr assumed difference in true proportions
 (group 2 minus group 1).}
 }
-\description{
-Variance Estimates following Miettinen and Nurminen
+\value{
+A named \code{list} with elements:
+\itemize{
+\item \code{p1_hat}: estimated proportion in group 1
+\item \code{p2_hat}: estimated proportion in group 2
+\item \code{var_est}: variance estimate of the difference in proportions
 }
-\details{
-The variable names in this function follow the notation
-in the original paper by \insertCite{MiettinenNurminen1985;textual}{tern}.
+}
+\description{
+The variable names in this function follow the notation in the original
+paper by \insertCite{MiettinenNurminen1985;textual}{tern}, cf. Appendix 1.
 }
 \references{
 \insertAllCited{}
 }
+\keyword{internal}
