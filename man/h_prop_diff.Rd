@@ -20,7 +20,7 @@ prop_diff_cmh(
   grp,
   strata,
   conf_level = 0.95,
-  diff_se = c("standard", "sato")
+  diff_se = c("standard", "sato", "miettinen_nurminen")
 )
 
 prop_diff_strat_nc(
@@ -46,7 +46,8 @@ information, see \code{\link[stats:prop.test]{stats::prop.test()}}.}
 \item{strata}{(\code{factor})\cr variable with one level per stratum and same length as \code{rsp}.}
 
 \item{diff_se}{(\code{string})\cr method to estimate the standard error for the difference, either
-\code{standard} or \code{sato} \insertCite{Sato1989}{tern}.}
+\code{standard}, \code{sato} \insertCite{Sato1989}{tern} or
+\code{miettinen_nurminen} \insertCite{MiettinenNurminen1985}{tern}.}
 
 \item{weights_method}{(\code{string})\cr weights method. Can be either \code{"cmh"} or \code{"heuristic"}
 and directs the way weights are estimated.}

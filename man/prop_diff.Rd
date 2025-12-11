@@ -12,8 +12,8 @@ estimate_proportion_diff(
   vars,
   variables = list(strata = NULL),
   conf_level = 0.95,
-  method = c("waldcc", "wald", "cmh", "cmh_sato", "ha", "newcombe", "newcombecc",
-    "strat_newcombe", "strat_newcombecc"),
+  method = c("waldcc", "wald", "cmh", "cmh_sato", "cmh_mn", "ha", "newcombe",
+    "newcombecc", "strat_newcombe", "strat_newcombecc"),
   weights_method = "cmh",
   var_labels = vars,
   na_str = default_na_str(),
@@ -37,8 +37,8 @@ s_proportion_diff(
   .in_ref_col,
   variables = list(strata = NULL),
   conf_level = 0.95,
-  method = c("waldcc", "wald", "cmh", "cmh_sato", "ha", "newcombe", "newcombecc",
-    "strat_newcombe", "strat_newcombecc"),
+  method = c("waldcc", "wald", "cmh", "cmh_sato", "cmh_mn", "ha", "newcombe",
+    "newcombecc", "strat_newcombe", "strat_newcombecc"),
   weights_method = "cmh",
   ...
 )
@@ -142,6 +142,8 @@ The possible methods are:
 \item \code{"wald"}: Wald confidence interval without continuity correction \insertCite{Agresti1998}{tern}.
 \item \code{"cmh"}: Cochran-Mantel-Haenszel (CMH) confidence interval \insertCite{MantelHaenszel1959}{tern}.
 \item \code{"cmh_sato"}: CMH confidence interval with Sato variance estimator \insertCite{Sato1989}{tern}.
+\item \code{"cmh_mn"}: CMH confidence interval with Miettinen and Nurminen confidence interval
+\insertCite{MiettinenNurminen1985}{tern}.
 \item \code{"ha"}: Anderson-Hauck confidence interval \insertCite{HauckAnderson1986}{tern}.
 \item \code{"newcombe"}: Newcombe confidence interval without continuity correction \insertCite{Newcombe1998}{tern}.
 \item \code{"newcombecc"}: Newcombe confidence interval with continuity correction \insertCite{Newcombe1998}{tern}.

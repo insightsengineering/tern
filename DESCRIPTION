@@ -76,9 +76,6 @@ VignetteBuilder:
 RdMacros:
     lifecycle,
     Rdpack
-Remotes:
-    insightsengineering/formatters@main,
-    insightsengineering/rtables@main
 Config/Needs/verdepcheck: insightsengineering/rtables, tidymodels/broom,
     cran/car, mllg/checkmate, wilkelab/cowplot, tidyverse/dplyr,
     rvlenth/emmeans, tidyverse/forcats, insightsengineering/formatters,

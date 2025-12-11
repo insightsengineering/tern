@@ -14,6 +14,8 @@
 #' - `"wald"`: Wald confidence interval without continuity correction \insertCite{Agresti1998}{tern}.
 #' - `"cmh"`: Cochran-Mantel-Haenszel (CMH) confidence interval \insertCite{MantelHaenszel1959}{tern}.
 #' - `"cmh_sato"`: CMH confidence interval with Sato variance estimator \insertCite{Sato1989}{tern}.
+#' - `"cmh_mn"`: CMH confidence interval with Miettinen and Nurminen confidence interval
+#'      \insertCite{MiettinenNurminen1985}{tern}.
 #' - `"ha"`: Anderson-Hauck confidence interval \insertCite{HauckAnderson1986}{tern}.
 #' - `"newcombe"`: Newcombe confidence interval without continuity correction \insertCite{Newcombe1998}{tern}.
 #' - `"newcombecc"`: Newcombe confidence interval with continuity correction \insertCite{Newcombe1998}{tern}.
@@ -76,7 +78,7 @@ s_proportion_diff <- function(df,
                               variables = list(strata = NULL),
                               conf_level = 0.95,
                               method = c(
-                                "waldcc", "wald", "cmh", "cmh_sato",
+                                "waldcc", "wald", "cmh", "cmh_sato", "cmh_mn",
                                 "ha", "newcombe", "newcombecc",
                                 "strat_newcombe", "strat_newcombecc"
                               ),
@@ -85,11 +87,11 @@ s_proportion_diff <- function(df,
   method <- match.arg(method)
   if (
     is.null(variables$strata) &&
-      checkmate::test_subset(method, c("cmh", "cmh_sato", "strat_newcombe", "strat_newcombecc"))
+      checkmate::test_subset(method, c("cmh", "cmh_sato", "cmh_mn", "strat_newcombe", "strat_newcombecc"))
   ) {
     stop(paste(
       "When performing an unstratified analysis, methods",
-      "'cmh', 'cmh_sato', 'strat_newcombe', and 'strat_newcombecc' are not",
+      "'cmh', 'cmh_sato', 'cmh_mn', 'strat_newcombe', and 'strat_newcombecc' are not",
       "permitted. Please choose a different method."
     ))
   }
@@ -149,7 +151,8 @@ s_proportion_diff <- function(df,
         correct = TRUE
       ),
       "cmh" = prop_diff_cmh(rsp, grp, strata, conf_level, diff_se = "standard")[c("diff", "diff_ci")],
-      "cmh_sato" = prop_diff_cmh(rsp, grp, strata, conf_level, diff_se = "sato")[c("diff", "diff_ci")]
+      "cmh_sato" = prop_diff_cmh(rsp, grp, strata, conf_level, diff_se = "sato")[c("diff", "diff_ci")],
+      "cmh_mn" = prop_diff_cmh(rsp, grp, strata, conf_level, diff_se = "miettinen_nurminen")[c("diff", "diff_ci")]
     )
 
     y$diff <- setNames(y$diff * 100, paste0("diff_", method))
@@ -287,7 +290,7 @@ estimate_proportion_diff <- function(lyt,
                                      variables = list(strata = NULL),
                                      conf_level = 0.95,
                                      method = c(
-                                       "waldcc", "wald", "cmh", "cmh_sato",
+                                       "waldcc", "wald", "cmh", "cmh_sato", "cmh_mn",
                                        "ha", "newcombe", "newcombecc",
                                        "strat_newcombe", "strat_newcombecc"
                                      ),
@@ -408,7 +411,7 @@ d_proportion_diff <- function(conf_level,
     label <- paste(
       label,
       ifelse(
-        method %in% c("cmh", "cmh_sato"),
+        method %in% c("cmh", "cmh_sato", "cmh_mn"),
         "for adjusted difference",
         "for difference"
       )
@@ -418,6 +421,7 @@ d_proportion_diff <- function(conf_level,
   method_part <- switch(method,
     "cmh" = "CMH, without correction",
     "cmh_sato" = "CMH, Sato variance estimator",
+    "cmh_mn" = "CMH, Miettinen and Nurminen",
     "waldcc" = "Wald, with correction",
     "wald" = "Wald, without correction",
     "ha" = "Anderson-Hauck",
@@ -589,7 +593,8 @@ prop_diff_nc <- function(rsp,
 #'
 #' @param strata (`factor`)\cr variable with one level per stratum and same length as `rsp`.
 #' @param diff_se (`string`)\cr method to estimate the standard error for the difference, either
-#'   `standard` or `sato` \insertCite{Sato1989}{tern}.
+#'   `standard`, `sato` \insertCite{Sato1989}{tern} or 
+#'   `miettinen_nurminen` \insertCite{MiettinenNurminen1985}{tern}.
 #'
 #' @examples
 #' # Cochran-Mantel-Haenszel confidence interval
@@ -618,7 +623,7 @@ prop_diff_cmh <- function(rsp,
                           grp,
                           strata,
                           conf_level = 0.95,
-                          diff_se = c("standard", "sato")) {
+                          diff_se = c("standard", "sato", "miettinen_nurminen")) {
   grp <- as_factor_keep_attributes(grp)
   strata <- as_factor_keep_attributes(strata)
   diff_se <- match.arg(diff_se)
@@ -641,8 +646,10 @@ prop_diff_cmh <- function(rsp,
   )
   n1 <- colSums(t_tbl[1:2, 1, ])
   n2 <- colSums(t_tbl[1:2, 2, ])
-  p1 <- t_tbl[2, 1, ] / n1
-  p2 <- t_tbl[2, 2, ] / n2
+  x1 <- t_tbl[2, 1, ]
+  p1 <- x1 / n1
+  x2 <- t_tbl[2, 2, ]
+  p2 <- x2 / n2
   # CMH weights
   use_stratum <- (n1 > 0) & (n2 > 0)
   n1 <- n1[use_stratum]
@@ -666,17 +673,46 @@ prop_diff_cmh <- function(rsp,
   names(estimate_ci) <- levels(grp)
   diff_est <- est2 - est1
 
-  se_diff <- if (diff_se == "standard") {
-    sqrt(sum(((p1 * (1 - p1) / n1) + (p2 * (1 - p2) / n2)) * wt_normalized^2))
+  if (diff_se %in% c("standard", "sato")) {
+    se_diff <- if (diff_se == "standard") {
+      sqrt(sum(((p1 * (1 - p1) / n1) + (p2 * (1 - p2) / n2)) * wt_normalized^2))
+    } else {
+      # Sato variance estimator.
+      p_terms <- (n2^2 * x1 - n1^2 * x2 + n1 * n2 * (n1 - n2) / 2) / (n1 + n2)^2
+      q_terms <- (x1 * (n2 - x2) + x2 * (n1 - x1)) / (2 * (n1 + n2))
+      num <- diff_est * sum(p_terms) + sum(q_terms)
+      denom <- sum(wt)^2
+      sqrt(num / denom)
+    }
+    diff_ci <- c(diff_est - z * se_diff, diff_est + z * se_diff)
   } else {
-    # Sato variance estimator.
-    p_terms <- (n2^2 * t_tbl[2, 1, ] - n1^2 * t_tbl[2, 2, ] + n1 * n2 * (n1 - n2) / 2) / (n1 + n2)^2
-    q_terms <- (t_tbl[2, 1, ] * (n2 - t_tbl[2, 2, ]) + t_tbl[2, 2, ] * (n1 - t_tbl[2, 1, ])) / (2 * (n1 + n2))
-    num <- diff_est * sum(p_terms) + sum(q_terms)
-    denom <- sum(wt)^2
-    sqrt(num / denom)
+    # Miettinen and Nurminen method is used.
+    z_stat_fun <- function(delta) {
+      var_est <- h_miettinen_nurminen_var_est(
+        n1 = n1, n2 = n2,
+        x1 = x1, x2 = x2,
+        diff_par = delta
+      )$var_est
+      num <- sum(wt * (p2 - p1 - delta))
+      denom <- sqrt(sum(wt^2 * var_est))
+      num / denom
+    }
+    # Find upper and lower confidence limits by root finding such that 
+    # z_stat_fun(limit) = +/- z quantile:
+    root_lower <- function(delta) z_stat_fun(delta) - z
+    root_upper <- function(delta) z_stat_fun(delta) + z    
+    diff_ci <- c(
+      uniroot(root_lower, interval = c(-0.99, diff_est))$root,
+      uniroot(root_upper, interval = c(diff_est, 0.99))$root
+    )
+    # Calculate the standard error separately.
+    var_est <- h_miettinen_nurminen_var_est(
+        n1 = n1, n2 = n2,
+        x1 = x1, x2 = x2,
+        diff_par = diff_est
+      )$var_est
+    se_diff <- sqrt(sum(wt_normalized^2 * var_est))
   }
-  diff_ci <- c(diff_est - z * se_diff, diff_est + z * se_diff)
 
   list(
     prop = estimate,
@@ -687,6 +723,60 @@ prop_diff_cmh <- function(rsp,
     weights = wt_normalized,
     n1 = n1,
     n2 = n2
+  )
+}
+
+#' Variance Estimates following Miettinen and Nurminen
+#' 
+#' @param n1 (`numeric`)\cr sample sizes in group 1.
+#' @param n2 (`numeric`)\cr sample sizes in group 2.
+#' @param x1 (`numeric`)\cr number of responders in group 1.
+#' @param x2 (`numeric`)\cr number of responders in group 2.
+#' @param diff_par (`numeric`)\cr assumed difference in true proportions
+#'   (group 2 minus group 1).
+#' 
+#' @details The variable names in this function follow the notation
+#'   in the original paper by \insertCite{MiettinenNurminen1985;textual}{tern}.
+#' 
+#' @references 
+#'   \insertAllCited{}
+h_miettinen_nurminen_var_est <- function(n1, n2, x1, x2, diff_par) {
+  # nolint start
+  # Translate to the notation in the paper.
+  S0 <- n1
+  S1 <- n2
+  c0 <- x1
+  c1 <- x2
+  RD <- diff_par
+
+  # Further definitions.
+  S <- S0 + S1
+  c <- c0 + c1
+
+  # Coefficients of the third-degree polynomial.
+  L3 <- S
+  L2 <- (S1 + 2 * S0) * RD - S - c
+  L1 <- (S0 * RD - S - 2 * c0) * RD + c
+  L0 <- c0 * RD * (1 - RD)
+  # nolint end
+
+  # Solution for group 1 proportion.
+  q <- L2^3/(3 * L3)^3 - L1 * L2/(6 * L3^2) + L0/(2 * L3)
+  p <- sign(q) * sqrt(L2^2/(3 * L3)^2 - L1/(3 * L3))
+  a <- (1/3) * (base::pi + acos(q / p^3))
+  p1_hat <- 2 * p * cos(a) - L2/(3 * L3)
+
+  # Estimated group 2 proportion.
+  p2_hat <- p1_hat + RD
+
+  # Variance estimate.
+  var_est <- (p1_hat * (1 - p1_hat) / n1 + p2_hat * (1 - p2_hat) / n2) *
+    S / (S - 1)
+
+  list(
+    p1_hat = p1_hat,
+    p2_hat = p2_hat,
+    var_est = var_est
   )
 }
 
