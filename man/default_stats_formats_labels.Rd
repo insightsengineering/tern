@@ -95,7 +95,7 @@ a statistical function. See examples for a structure with two statistical result
 
 \item{formats_in}{(named \code{vector})\cr custom formats to use instead of defaults. Can be a character vector with
 values from \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or custom format functions. Defaults to \code{NULL} for any rows
-with no value is provided.}
+with no value is provided. See Details.}
 
 \item{levels_per_stats}{(named \code{list} of \code{character} or \code{NULL})\cr named list where the name of each element is a
 statistic from \code{stats} and each element is the levels of a \code{factor} or \code{character} variable (or variable name),
@@ -164,6 +164,13 @@ seen in \code{\link[=analyze_vars]{analyze_vars()}}. See notes to understand why
 }
 \details{
 Current choices for \code{type} are \code{counts} and \code{numeric} for \code{\link[=analyze_vars]{analyze_vars()}} and affect \code{get_stats()}.
+
+if \code{formats_in} is \code{"default"}, instead of populating the
+return value with tern defaults, the return value will specify
+the \code{"default"} format for each element. This is useful
+primarily when formatting behavior should be inherited from a
+format specified via the \code{format} or \code{formats_var} argument to
+\code{analyze}.
 
 \verb{summary_*} quick get functions for labels or formats uses \code{get_stats} and \code{get_labels_from_stats} or
 \code{get_formats_from_stats} respectively to retrieve relevant information.
