@@ -75,7 +75,7 @@ RdMacros:
     Rdpack
 Remotes:
     insightsengineering/formatters@main,
-    insightsengineering/rtables@main
+    insightsengineering/rtables@1041_formats_var
 Config/Needs/verdepcheck: insightsengineering/rtables, tidymodels/broom,
     cran/car, mllg/checkmate, wilkelab/cowplot, tidyverse/dplyr,
     rvlenth/emmeans, tidyverse/forcats, insightsengineering/formatters,

@@ -28,7 +28,10 @@ analyze_vars(
   .stat_names = NULL,
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL
+  .indent_mods = NULL,
+  formats_var = NULL,
+  na_strs_var = NULL,
+  format = NULL
 )
 
 s_summary(x, ...)
@@ -108,6 +111,13 @@ information on the \code{"auto"} setting.}
 \item{.indent_mods}{(named \code{integer})\cr indent modifiers for the labels. Each element of the vector
 should be a name-value pair with name corresponding to a statistic specified in \code{.stats} and value the indentation
 for that statistic's row label.}
+
+\item{formats_var}{(\code{NULL} or \code{string})\cr Passed to \code{\link[rtables:analyze]{rtables::analyze()}}. \code{.formats} must be \code{"default"} and \code{format} must be \code{NULL} when this is non-NULL.}
+
+\item{na_strs_var}{(\code{string} or \code{NULL})\cr Passed to \code{analyze}. \code{na_str} must be
+\code{NA} when this is non-NULL.}
+
+\item{format}{(\code{NULL}, \code{list}, \code{string} or \code{function})\cr Passed to \code{\link[rtables:analyze]{rtables::analyze()}}. \code{.formats} must be \code{"default"} and \code{formats_var} must be \code{NULL} when this is non-NULL.}
 
 \item{x}{(\code{numeric})\cr vector of numbers we want to analyze.}
 
