@@ -689,6 +689,12 @@ a_summary <- function(x,
 #' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Each element of the vector
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.
+#' @param formats_var (`NULL` or `string`)\cr Passed to [rtables::analyze()]. `.formats` must be `"default"` and
+#' `format` must be `NULL` when this is non-NULL.
+#' @param format (`NULL`, `list`, `string` or `function`)\cr Passed to [rtables::analyze()]. `.formats` must be
+#' `"default"` and `formats_var` must be `NULL` when this is non-NULL.
+#' @param na_strs_var (`string` or `NULL`)\cr Passed to `analyze`. `na_str` must be
+#'   `NA` when this is non-NULL.
 #'
 #' @return
 #' * `analyze_vars()` returns a layout object suitable for passing to further layouting functions,
@@ -772,7 +778,10 @@ analyze_vars <- function(lyt,
                          .stat_names = NULL,
                          .formats = NULL,
                          .labels = NULL,
-                         .indent_mods = NULL) {
+                         .indent_mods = NULL,
+                         formats_var = NULL,
+                         na_strs_var = NULL,
+                         format = NULL) {
   # Depending on main functions
   extra_args <- list(
     "na_rm" = na_rm,
@@ -780,6 +789,39 @@ analyze_vars <- function(lyt,
     "compare_with_ref_group" = compare_with_ref_group,
     ...
   )
+
+  ## handle na_str = NA (logical) for user convenience
+  if (identical(na_str, NA)) {
+    na_str <- NA_character_
+  }
+
+  if (!is.null(formats_var) && !identical(.formats, "default")) {
+    stop(
+      ".formats must be set to 'default' when specifying a formats variable ",
+      "(got formats_var: ",
+      formats_var,
+      ")."
+    )
+  }
+
+  if (!is.null(format) && !identical(.formats, "default")) {
+    stop(
+      ".formats must be set to 'default' when passing the format argument down ",
+      "to analyze() (got format class:",
+      paste(class(format), collapse = " - "),
+      ")."
+    )
+  }
+
+
+  if (!is.null(na_strs_var) && !identical(na_str, NA_character_)) {
+    stop(
+      "na_str must be set to NA when specifying an na strings variable ",
+      "(got na_strs_var: ",
+      na_strs_var,
+      ")."
+    )
+  }
 
   # Needed defaults
   if (!is.null(.stats)) extra_args[[".stats"]] <- .stats
@@ -807,6 +849,8 @@ analyze_vars <- function(lyt,
     extra_args = extra_args,
     show_labels = show_labels,
     table_names = table_names,
-    section_div = section_div
+    section_div = section_div,
+    formats_var = formats_var,
+    na_strs_var = na_strs_var
   )
 }

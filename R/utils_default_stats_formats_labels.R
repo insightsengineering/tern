@@ -234,7 +234,14 @@ get_stat_names <- function(stat_results, stat_names_in = NULL) {
 #'
 #' @param formats_in (named `vector`)\cr custom formats to use instead of defaults. Can be a character vector with
 #'   values from [formatters::list_valid_format_labels()] or custom format functions. Defaults to `NULL` for any rows
-#'   with no value is provided.
+#'   with no value is provided. See Details.
+#'
+#' @details if `formats_in` is `"default"`, instead of populating the
+#'   return value with tern defaults, the return value will specify
+#'   the `"default"` format for each element. This is useful
+#'   primarily when formatting behavior should be inherited from a
+#'   format specified via the `format` or `formats_var` argument to
+#'   `analyze`.
 #'
 #' @return
 #' * `get_formats_from_stats()` returns a named list of formats as strings or functions.
@@ -279,17 +286,29 @@ get_formats_from_stats <- function(stats,
     return(out)
   }
 
+  full_default <- identical(formats_in, "default")
+
+  if (full_default) {
+    ## act as if we got NULL to get the right structure for return value
+    ## then replace each element with "default" below
+    formats_in <- NULL
+  }
+
   # If levels_per_stats not given, assume one row per statistic
   if (is.null(levels_per_stats)) levels_per_stats <- as.list(stats) %>% setNames(stats)
 
   # Apply custom formats
   out <- .fill_in_vals_by_stats(levels_per_stats, formats_in, tern_defaults)
 
-  # Default to NULL if no format
-  which_null <- names(which(sapply(levels_per_stats, is.null)))
-  levels_per_stats[which_null] <- which_null
-  case_input_is_not_stat <- unlist(out, use.names = FALSE) == unlist(levels_per_stats, use.names = FALSE)
-  out[names(out) == out | case_input_is_not_stat] <- list(NULL)
+  if (full_default) {
+    out <- setNames(rep("default", length(out)), names(out))
+  } else {
+    # Default to NULL if no format
+    which_null <- names(which(sapply(levels_per_stats, is.null)))
+    levels_per_stats[which_null] <- which_null
+    case_input_is_not_stat <- unlist(out, use.names = FALSE) == unlist(levels_per_stats, use.names = FALSE)
+    out[names(out) == out | case_input_is_not_stat] <- list(NULL)
+  }
 
   out
 }

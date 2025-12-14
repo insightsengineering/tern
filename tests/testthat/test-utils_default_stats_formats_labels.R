@@ -101,6 +101,10 @@ testthat::test_that("get_formats_from_stats works as expected", {
     ),
     as.list(stats_to_do)
   )
+
+  ## handled new "default" format correctly
+  expect_true(all(get_formats_from_stats(sts, "default") == "default"))
+  expect_identical(sts, names(get_formats_from_stats(sts, "default")))
 })
 
 testthat::test_that("get_labels_from_stats works as expected", {
