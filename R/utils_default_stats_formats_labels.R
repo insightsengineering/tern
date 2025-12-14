@@ -285,7 +285,7 @@ get_formats_from_stats <- function(stats,
     out <- as.list(formats_in) %>% setNames(stats)
     return(out)
   }
-  
+
   full_default <- identical(formats_in, "default")
 
   if (full_default) {

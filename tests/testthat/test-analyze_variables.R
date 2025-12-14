@@ -730,21 +730,26 @@ testthat::test_that("analyze_vars works with all-NA character input", {
 })
 
 test_that("`analyze_vars` works with new rtables format/na_str options in analyze()", {
-  v1fmts <- list(n = "N=xx",
-                 mean_sd = "xx.x (xx.x)",
-                 median = "xx.x",
-                 range = "xx.x - xx.x")
+  v1fmts <- list(
+    n = "N=xx",
+    mean_sd = "xx.x (xx.x)",
+    median = "xx.x",
+    range = "xx.x - xx.x"
+  )
 
-  v2fmts <- list(n = "(N=xx)",
-                 mean_sd = "xx.xx (xx.xx)",
-                 median = "xx.xx",
-                 range = "xx.xx - xx.xx")
+  v2fmts <- list(
+    n = "(N=xx)",
+    mean_sd = "xx.xx (xx.xx)",
+    median = "xx.xx",
+    range = "xx.xx - xx.xx"
+  )
 
-  v3fmts <-  list(n = "xx",
-                 mean_sd = "xx. (xx.)",
-                 median = "xx.",
-                 range = "xx - xx"
-                 )
+  v3fmts <- list(
+    n = "xx",
+    mean_sd = "xx. (xx.)",
+    median = "xx.",
+    range = "xx - xx"
+  )
   dta <- data.frame(
     USUBJID = rep(1:6, each = 3),
     AVISIT  = rep(paste0("V", 1:3), 6),
@@ -757,9 +762,11 @@ test_that("`analyze_vars` works with new rtables format/na_str options in analyz
   lyt <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     split_rows_by(var = "AVISIT") %>%
-    analyze_vars(vars = "AVAL",
-                 .formats = "default",
-                 formats_var = "formats")
+    analyze_vars(
+      vars = "AVAL",
+      .formats = "default",
+      formats_var = "formats"
+    )
 
   tbl <- build_table(lyt, dta)
 
@@ -767,31 +774,39 @@ test_that("`analyze_vars` works with new rtables format/na_str options in analyz
 
   fmts_col_vec <- unlist(c("", "-", v1fmts, "-", v2fmts, "-", v3fmts))
 
-  expect_identical(fmts,
-                   matrix(fmts_col_vec, nrow = 16, ncol = 3))
+  expect_identical(
+    fmts,
+    matrix(fmts_col_vec, nrow = 16, ncol = 3)
+  )
 
 
   lyt2 <- basic_table() %>%
     split_cols_by(var = "ARM") %>%
     split_rows_by(var = "AVISIT") %>%
-    analyze_vars(vars = "AVAL",
-                 .formats = "default",
-                 formats_var = "formats",
-                 na_str = NA,
-                 na_strs_var = "na_strs")
+    analyze_vars(
+      vars = "AVAL",
+      .formats = "default",
+      formats_var = "formats",
+      na_str = NA,
+      na_strs_var = "na_strs"
+    )
 
   tbl2 <- build_table(lyt2, dta)
   fmtcells2 <- get_formatted_cells(tbl2)
-  expect_identical(fmtcells2[, 3, drop = TRUE],
-                   c("",
-                     "N=0",
-                     rep("what?", 3),
-                     "",
-                     "(N=0)",
-                     rep("OK", 3),
-                     "",
-                     "0",
-                     rep("-", 3)))
+  expect_identical(
+    fmtcells2[, 3, drop = TRUE],
+    c(
+      "",
+      "N=0",
+      rep("what?", 3),
+      "",
+      "(N=0)",
+      rep("OK", 3),
+      "",
+      "0",
+      rep("-", 3)
+    )
+  )
 
   expect_error(analyze_vars(basic_table(), "AVAL", formats_var = "formats"))
   expect_error(analyze_vars(basic_table(), "AVAL", na_strs_var = "formats"))

@@ -789,8 +789,9 @@ analyze_vars <- function(lyt,
   )
 
   ## handle na_str = NA (logical) for user convenience
-  if (identical(na_str, NA))
+  if (identical(na_str, NA)) {
     na_str <- NA_character_
+  }
 
   if (!is.null(formats_var) && !identical(.formats, "default")) {
     stop(
