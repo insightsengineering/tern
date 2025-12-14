@@ -1,6 +1,6 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.9.9.9010
+Version: 0.9.10
 Date: 2025-12-14
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre"),
@@ -73,9 +73,6 @@ VignetteBuilder:
 RdMacros:
     lifecycle,
     Rdpack
-Remotes:
-    insightsengineering/formatters@main,
-    insightsengineering/rtables@main
 Config/Needs/verdepcheck: insightsengineering/rtables, tidymodels/broom,
     cran/car, mllg/checkmate, wilkelab/cowplot, tidyverse/dplyr,
     rvlenth/emmeans, tidyverse/forcats, insightsengineering/formatters,
