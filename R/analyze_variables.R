@@ -689,8 +689,10 @@ a_summary <- function(x,
 #' @param .indent_mods (named `integer`)\cr indent modifiers for the labels. Each element of the vector
 #'   should be a name-value pair with name corresponding to a statistic specified in `.stats` and value the indentation
 #'   for that statistic's row label.
-#' @param formats_var (`NULL` or `string`)\cr Passed to [rtables::analyze()]. `.formats` must be `"default"` and `format` must be `NULL` when this is non-NULL.
-#' @param format (`NULL`, `list`, `string` or `function`)\cr Passed to [rtables::analyze()]. `.formats` must be `"default"` and `formats_var` must be `NULL` when this is non-NULL.
+#' @param formats_var (`NULL` or `string`)\cr Passed to [rtables::analyze()]. `.formats` must be `"default"` and
+#' `format` must be `NULL` when this is non-NULL.
+#' @param format (`NULL`, `list`, `string` or `function`)\cr Passed to [rtables::analyze()]. `.formats` must be
+#' `"default"` and `formats_var` must be `NULL` when this is non-NULL.
 #' @param na_strs_var (`string` or `NULL`)\cr Passed to `analyze`. `na_str` must be
 #'   `NA` when this is non-NULL.
 #'
