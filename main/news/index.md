@@ -1,6 +1,6 @@
 # Changelog
 
-## tern 0.9.9.9009
+## tern 0.9.9.9010
 
 #### Enhancements
 
@@ -18,6 +18,13 @@
 - Added `cmh_wh` (CMH with Wilson-Hilferty transformation) method to
   [`test_proportion_diff()`](https://insightsengineering.github.io/tern/reference/prop_diff_test.md)
   for stratified proportion difference testing.
+- `analyze_vars` now accepts `format`, `formats_var` and `na_strs_var`
+  and passes them directly down to `analyze`
+- When `.formats` is `"default"` (the string), all stats will be
+  assigned the `"default"` format label rather than the default formats
+  baked into `tern`. This is intended for use in conjunction with the
+  `format` or `formats_var` arguments to `analyze` (and now
+  `analyze_vars`).
 
 #### Bug Fixes
 

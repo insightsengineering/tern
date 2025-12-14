@@ -32,7 +32,10 @@ analyze_vars(
   .stat_names = NULL,
   .formats = NULL,
   .labels = NULL,
-  .indent_mods = NULL
+  .indent_mods = NULL,
+  formats_var = NULL,
+  na_strs_var = NULL,
+  format = NULL
 )
 
 s_summary(x, ...)
@@ -180,6 +183,27 @@ a_summary(
   indent modifiers for the labels. Each element of the vector should be
   a name-value pair with name corresponding to a statistic specified in
   `.stats` and value the indentation for that statistic's row label.
+
+- formats_var:
+
+  (`NULL` or `string`)  
+  Passed to
+  [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).
+  `.formats` must be `"default"` and `format` must be `NULL` when this
+  is non-NULL.
+
+- na_strs_var:
+
+  (`string` or `NULL`)  
+  Passed to `analyze`. `na_str` must be `NA` when this is non-NULL.
+
+- format:
+
+  (`NULL`, `list`, `string` or `function`)  
+  Passed to
+  [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).
+  `.formats` must be `"default"` and `formats_var` must be `NULL` when
+  this is non-NULL.
 
 - x:
 

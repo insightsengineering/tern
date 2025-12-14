@@ -121,7 +121,7 @@ summary_labels(type = "numeric", include_pval = FALSE)
   with values from
   [`formatters::list_valid_format_labels()`](https://insightsengineering.github.io/formatters/latest-tag/reference/list_formats.html)
   or custom format functions. Defaults to `NULL` for any rows with no
-  value is provided.
+  value is provided. See Details.
 
 - levels_per_stats:
 
@@ -216,6 +216,12 @@ summary_labels(type = "numeric", include_pval = FALSE)
 Current choices for `type` are `counts` and `numeric` for
 [`analyze_vars()`](https://insightsengineering.github.io/tern/reference/analyze_variables.md)
 and affect `get_stats()`.
+
+if `formats_in` is `"default"`, instead of populating the return value
+with tern defaults, the return value will specify the `"default"` format
+for each element. This is useful primarily when formatting behavior
+should be inherited from a format specified via the `format` or
+`formats_var` argument to `analyze`.
 
 `summary_*` quick get functions for labels or formats uses `get_stats`
 and `get_labels_from_stats` or `get_formats_from_stats` respectively to
