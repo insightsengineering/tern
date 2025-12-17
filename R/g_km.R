@@ -500,35 +500,28 @@ g_km <- function(df,
 
     gg_at_risk <- df2gg(
       at_risk_tbl,
-      font_size = font_size, col_labels = FALSE, hline = FALSE,
-      colwidths = rep(1, ncol(at_risk_tbl))
+      font_size = eargs$font_size, col_labels = FALSE, hline = FALSE,
+      colwidths = rep(1, ncol(at_risk_tbl)),
+      add_proper_xaxis = TRUE
     ) +
-      labs(title = if (annot_at_risk_title) "Patients at Risk:" else NULL, x = xlab) +
-      theme_bw(base_size = font_size) +
-      theme(
-        plot.title = element_text(size = font_size, vjust = 3, face = "bold"),
-        panel.border = element_blank(),
-        panel.grid = element_blank(),
-        axis.title.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        axis.text.y = element_text(size = font_size, face = "italic", hjust = 1),
-        axis.text.x = element_text(size = font_size),
-        axis.line.x = element_line()
+      ggplot2::labs(title = if (!is.null(title)) title else NULL, x = xlab) +
+      ggplot2::theme_bw(base_size = eargs$font_size) +
+      ggplot2::theme(
+        plot.title = ggplot2::element_text(size = eargs$font_size, vjust = 3, face = "bold"),
+        panel.border = ggplot2::element_blank(),
+        panel.grid = ggplot2::element_blank(),
+        axis.title.y = ggplot2::element_blank(),
+        axis.ticks.y = ggplot2::element_blank(),
+        axis.text.y = ggplot2::element_text(size = eargs$font_size, face = "italic", hjust = 1),
+        axis.text.x = ggplot2::element_text(size = eargs$font_size),
+        axis.line.x = ggplot2::element_line()
       ) +
-      coord_cartesian(clip = "off", ylim = c(0.5, nrow(at_risk_tbl)))
-    gg_at_risk <- suppressMessages(
-      gg_at_risk +
-        scale_x_continuous(expand = c(0.025, 0), breaks = seq_along(at_risk_tbl) - 0.5, labels = xticks) +
-        scale_y_continuous(labels = rev(levels(annot_tbl$strata)), breaks = seq_len(nrow(at_risk_tbl)))
-    )
+      ggplot2::coord_cartesian(clip = "off", ylim = c(0.5, nrow(at_risk_tbl)))
 
     if (!as_list) {
       gg_plt <- cowplot::plot_grid(
-        gg_plt,
-        gg_at_risk,
-        align = "v",
-        axis = "tblr",
-        ncol = 1,
+        gg_plt, gg_at_risk,
+        align = "vh", axis = "b", ncol = 1,
         rel_heights = c(rel_height_plot, 1 - rel_height_plot)
       )
     }
