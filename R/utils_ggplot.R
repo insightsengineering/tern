@@ -203,8 +203,8 @@ df2gg <- function(df, colwidths = NULL, font_size = 10, col_labels = TRUE,
     res <- ggplot2::ggplot(data = df_long) +
       ggplot2::theme_void() +
       ggplot2::annotate("text",
-                        x = df_long$col_name, y = rev(df_long$row_name), # why rev?
-                        label = df_long$value, size = font_size / .pt
+        x = df_long$col_name, y = rev(df_long$row_name), # why rev?
+        label = df_long$value, size = font_size / .pt
       )
 
     # Create ggplot2 object with a specific x-axis based on column widths
@@ -231,12 +231,12 @@ df2gg <- function(df, colwidths = NULL, font_size = 10, col_labels = TRUE,
         sum(colwidths[1:i])
       )
       res <- res + ggplot2::annotate("text",
-                                     x = mean(line_pos), y = rev(seq_len(nrow(df))),
-                                     label = df[, i], size = font_size / .pt, fontface = if (col_labels) {
-                                       c(col_lab_fontface, rep("plain", nrow(df) - 1))
-                                     } else {
-                                       rep("plain", nrow(df))
-                                     }
+        x = mean(line_pos), y = rev(seq_len(nrow(df))),
+        label = df[, i], size = font_size / .pt, fontface = if (col_labels) {
+          c(col_lab_fontface, rep("plain", nrow(df) - 1))
+        } else {
+          rep("plain", nrow(df))
+        }
       )
     }
   }
