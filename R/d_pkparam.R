@@ -11,7 +11,7 @@
 d_pkparam <- function() {
   pk_dataset <- as.data.frame(matrix(
     c(
-      "TMAX", "Time of CMAX", "Tmax", "Plasma/Blood/Serum", "1",
+      "TMAX", "Time of CMAX Observation", "Tmax", "Plasma/Blood/Serum", "1",
       "CMAX", "Max Conc", "Cmax", "Plasma/Blood/Serum", "2",
       "CMAXD", "Max Conc Norm by Dose", "Cmax/D", "Plasma/Blood/Serum", "3",
       "AUCIFO", "AUC Infinity Obs", "AUCinf obs", "Plasma/Blood/Serum", "4",
