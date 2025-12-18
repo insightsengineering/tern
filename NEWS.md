@@ -1,4 +1,6 @@
-# tern 0.9.9.9010
+# tern 0.9.10.9000
+
+# tern 0.9.10
 
 ### Enhancements
 * Added `alternative` argument to `test_proportion_diff()` to allow one-sided hypothesis testing.
