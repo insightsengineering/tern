@@ -43,7 +43,7 @@ the analyze_vars_in_cols() function.">
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.10</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,6 +78,7 @@ the analyze_vars_in_cols() function.">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.10">v0.9.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.9">v0.9.9</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8.433">v0.9.8.433</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
@@ -123,7 +124,7 @@ the analyze_vars_in_cols() function.">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Summarize variables in columns</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.9/R/summarize_colvars.R" class="external-link"><code>R/summarize_colvars.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.10/R/summarize_colvars.R" class="external-link"><code>R/summarize_colvars.R</code></a></small>
       <div class="d-none name"><code>summarize_colvars.Rd</code></div>
     </div>
 
@@ -131,8 +132,8 @@ the analyze_vars_in_cols() function.">
     <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="figures/lifecycle-stable.svg" alt="[Stable]"></a></p>
 <p>The analyze function <code>summarize_colvars()</code> uses the statistics function <code><a href="analyze_variables.html">s_summary()</a></code> to analyze variables that are
 arranged in columns. The variables to analyze should be specified in the table layout via column splits (see
-<code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">rtables::split_cols_by()</a></code> and <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by_multivar.html" class="external-link">rtables::split_cols_by_multivar()</a></code>) prior to using <code>summarize_colvars()</code>.</p>
-<p>The function is a minimal wrapper for <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze_colvars.html" class="external-link">rtables::analyze_colvars()</a></code>, a function typically used to apply different
+<code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html" class="external-link">rtables::split_cols_by()</a></code> and <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by_multivar.html" class="external-link">rtables::split_cols_by_multivar()</a></code>) prior to using <code>summarize_colvars()</code>.</p>
+<p>The function is a minimal wrapper for <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html" class="external-link">rtables::analyze_colvars()</a></code>, a function typically used to apply different
 analysis methods in rows for each column variable. To use the analysis methods as column labels, please refer to
 the <code><a href="analyze_vars_in_cols.html">analyze_vars_in_cols()</a></code> function.</p>
     </div>
@@ -181,7 +182,7 @@ the <code><a href="analyze_vars_in_cols.html">analyze_vars_in_cols()</a></code> 
 <dt id="arg--stat-names">.stat_names<a class="anchor" aria-label="anchor" href="#arg--stat-names"></a>
 </dt>
 <dd><p>(<code>character</code>)<br> names of the statistics that are passed directly to name single statistics
-(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
+(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
 
 
 <dt id="arg--formats">.formats<a class="anchor" aria-label="anchor" href="#arg--formats"></a>
@@ -206,14 +207,14 @@ for that statistic's row label.</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a>
 </h2>
-    <p>A layout object suitable for passing to further layouting functions, or to <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">rtables::build_table()</a></code>.
+    <p>A layout object suitable for passing to further layouting functions, or to <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html" class="external-link">rtables::build_table()</a></code>.
 Adding this function to an <code>rtable</code> layout will summarize the given variables, arrange the output
 in columns, and add it to the table layout.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a>
 </h2>
-    <div class="dont-index"><p><code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by_multivar.html" class="external-link">rtables::split_cols_by_multivar()</a></code> and <code><a href="analyze_colvars_functions.html">analyze_colvars_functions</a></code>.</p></div>
+    <div class="dont-index"><p><code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by_multivar.html" class="external-link">rtables::split_cols_by_multivar()</a></code> and <code><a href="analyze_colvars_functions.html">analyze_colvars_functions</a></code>.</p></div>
     </div>
 
     <div class="section level2">

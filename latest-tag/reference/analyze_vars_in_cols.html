@@ -39,7 +39,7 @@ It was designed principally for PK tables.">
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.10</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,6 +74,7 @@ It was designed principally for PK tables.">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.10">v0.9.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.9">v0.9.9</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8.433">v0.9.8.433</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
@@ -119,7 +120,7 @@ It was designed principally for PK tables.">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Analyze numeric variables in columns</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.9/R/analyze_vars_in_cols.R" class="external-link"><code>R/analyze_vars_in_cols.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.10/R/analyze_vars_in_cols.R" class="external-link"><code>R/analyze_vars_in_cols.R</code></a></small>
       <div class="d-none name"><code>analyze_vars_in_cols.Rd</code></div>
     </div>
 
@@ -127,7 +128,7 @@ It was designed principally for PK tables.">
     <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
 <p>The layout-creating function <code>analyze_vars_in_cols()</code> creates a layout element to generate a column-wise
 analysis table.</p>
-<p>This function sets the analysis methods as column labels and is a wrapper for <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze_colvars.html" class="external-link">rtables::analyze_colvars()</a></code>.
+<p>This function sets the analysis methods as column labels and is a wrapper for <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html" class="external-link">rtables::analyze_colvars()</a></code>.
 It was designed principally for PK tables.</p>
     </div>
 
@@ -197,7 +198,7 @@ to <code>NULL</code> and if it contains only one <code>string</code>, it will du
 <dt id="arg-do-summarize-row-groups">do_summarize_row_groups<a class="anchor" aria-label="anchor" href="#arg-do-summarize-row-groups"></a>
 </dt>
 <dd><p>(<code>flag</code>)<br> defaults to <code>FALSE</code> and applies the analysis to the current
-label rows. This is a wrapper of <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code> and it can accept <code>labelstr</code>
+label rows. This is a wrapper of <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code> and it can accept <code>labelstr</code>
 to define row labels. This behavior is not supported as we never need to overload row labels.</p></dd>
 
 
@@ -265,7 +266,7 @@ information on the <code>"auto"</code> setting.</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a>
 </h2>
-    <p>A layout object suitable for passing to further layouting functions, or to <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">rtables::build_table()</a></code>.
+    <p>A layout object suitable for passing to further layouting functions, or to <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html" class="external-link">rtables::build_table()</a></code>.
 Adding this function to an <code>rtable</code> layout will summarize the given variables, arrange the output
 in columns, and add it to the table layout.</p>
     </div>
@@ -274,7 +275,7 @@ in columns, and add it to the table layout.</p>
 </h2>
 
 <ul>
-<li><p>This is an experimental implementation of <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code> and <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze_colvars.html" class="external-link">rtables::analyze_colvars()</a></code>
+<li><p>This is an experimental implementation of <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code> and <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html" class="external-link">rtables::analyze_colvars()</a></code>
 that may be subjected to changes as <code>rtables</code> extends its support to more complex analysis pipelines in the
 column space. We encourage users to read the examples carefully and file issues for different use cases.</p></li>
 <li><p>In this function, <code>labelstr</code> behaves atypically. If <code>labelstr = NULL</code> (the default), row labels are assigned
@@ -285,7 +286,7 @@ if <code>do_summarize_row_groups = TRUE</code>.</p></li>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a>
 </h2>
-    <div class="dont-index"><p><code><a href="analyze_variables.html">analyze_vars()</a></code>, <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze_colvars.html" class="external-link">rtables::analyze_colvars()</a></code>.</p></div>
+    <div class="dont-index"><p><code><a href="analyze_variables.html">analyze_vars()</a></code>, <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html" class="external-link">rtables::analyze_colvars()</a></code>.</p></div>
     </div>
 
     <div class="section level2">

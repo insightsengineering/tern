@@ -49,7 +49,7 @@ statistic.'>
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.10</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,6 +84,7 @@ statistic.'>
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.10">v0.9.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.9">v0.9.9</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8.433">v0.9.8.433</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
@@ -129,7 +130,7 @@ statistic.'>
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Compare variables between groups</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.9/R/compare_variables.R" class="external-link"><code>R/compare_variables.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.10/R/compare_variables.R" class="external-link"><code>R/compare_variables.R</code></a></small>
       <div class="d-none name"><code>compare_variables.Rd</code></div>
     </div>
 
@@ -140,7 +141,7 @@ the S3 generic function <code><a href="analyze_variables.html">s_summary()</a></
 for numeric variables can be viewed by running <code>get_stats("analyze_vars_numeric", add_pval = TRUE)</code> and for
 non-numeric variables by running <code>get_stats("analyze_vars_counts", add_pval = TRUE)</code>. Use the <code>.stats</code> parameter to
 specify the statistics to include in your output summary table.</p>
-<p>Prior to using this function in your table layout you must use <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">rtables::split_cols_by()</a></code> to create a column
+<p>Prior to using this function in your table layout you must use <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html" class="external-link">rtables::split_cols_by()</a></code> to create a column
 split on the variable to be used in comparisons, and specify a reference group via the <code>ref_group</code> parameter.
 Comparisons can be performed for each group (column) against the specified reference group by including the p-value
 statistic.</p>
@@ -265,7 +266,7 @@ defined by this split instruction, or <code>NA_character_</code> (the default) f
 <dt id="arg--stat-names">.stat_names<a class="anchor" aria-label="anchor" href="#arg--stat-names"></a>
 </dt>
 <dd><p>(<code>character</code>)<br> names of the statistics that are passed directly to name single statistics
-(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
+(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
 
 
 <dt id="arg--formats">.formats<a class="anchor" aria-label="anchor" href="#arg--formats"></a>
@@ -298,7 +299,7 @@ for that statistic's row label.</p></dd>
 
 <ul>
 <li><p><code>compare_vars()</code> returns a layout object suitable for passing to further layouting functions,
-or to <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted rows containing
+or to <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted rows containing
 the statistics from <code>s_compare()</code> to the table layout.</p></li>
 </ul>
 <ul>
@@ -311,7 +312,7 @@ the statistics from <code>s_compare()</code> to the table layout.</p></li>
 
 <ul>
 <li><p><code>compare_vars()</code>: Layout-creating function which can take statistics function arguments
-and additional format arguments. This function is a wrapper for <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
+and additional format arguments. This function is a wrapper for <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
 <li><p><code>s_compare()</code>: S3 generic function to produce a comparison summary.</p></li>
 <li><p><code>s_compare(numeric)</code>: Method for <code>numeric</code> class. This uses the standard t-test
 to calculate the p-value.</p></li>
@@ -334,8 +335,7 @@ be difficult since we use counts for the chi-squared test statistic, therefore m
 for as explicit factor levels.</p></li>
 <li><p>If factor variables contain <code>NA</code>, these <code>NA</code> values are excluded by default. To include <code>NA</code> values
 set <code>na.rm = FALSE</code> and missing values will be displayed as an <code>NA</code> level. Alternatively, an explicit
-factor level can be defined for <code>NA</code> values during pre-processing via <code><a href="df_explicit_na.html">df_explicit_na()</a></code> - the
-default <code>na_level</code> (<code>"&lt;Missing&gt;"</code>) will also be excluded when <code>na.rm</code> is set to <code>TRUE</code>.</p></li>
+factor level can be defined for <code>NA</code> values during pre-processing via <code><a href="df_explicit_na.html">df_explicit_na()</a></code>.</p></li>
 <li><p>For character variables, automatic conversion to factor does not guarantee that the table
 will be generated correctly. In particular for sparse tables this very likely can fail.
 Therefore it is always better to manually convert character variables to factors during pre-processing.</p></li>
@@ -912,7 +912,7 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n$n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> n </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count</span>
@@ -928,47 +928,63 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count$&lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3.0000000 0.4285714 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1428571 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1428571 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$&lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.0000000 0.2857143 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3.0000000 0.4285714 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1428571 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1428571 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$&lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.0000000 0.2857143 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     3     5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3     7 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1     5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1     7 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1     5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1     7 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$&lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2     7 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
@@ -1000,7 +1016,7 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count$`&lt;Missing&gt;`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count$`NA`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1018,7 +1034,7 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1428571 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`&lt;Missing&gt;`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`NA`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2.0000000 0.2857143 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1036,7 +1052,7 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1428571 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$`&lt;Missing&gt;`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$`NA`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2.0000000 0.2857143 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1054,7 +1070,7 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     1     7 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$`&lt;Missing&gt;`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$`NA`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     2     7 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1157,7 +1173,7 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n$n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> n </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count</span>
@@ -1173,47 +1189,63 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count$`&lt;Missing&gt;`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.5 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1666667 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1666667 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`&lt;Missing&gt;`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1666667 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.5 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1666667 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1666667 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$`&lt;Missing&gt;`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1666667 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     3     5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3     6 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1     5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1     6 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1     5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1     6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$`&lt;Missing&gt;`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1     6 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>
@@ -1232,7 +1264,7 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n$n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> n </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count</span>
@@ -1248,47 +1280,63 @@ which is used (with <code>compare = TRUE</code>) as the analysis function for <c
 <span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count$`&lt;Missing&gt;`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> count </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.5 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1666667 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1666667 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction$`&lt;Missing&gt;`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1666667 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3.0   0.5 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1666667 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> count     p </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1.0   0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1666667 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $count_fraction_fixed_dp$`&lt;Missing&gt;`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     count         p </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.1666667 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     3     5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3     6 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1     5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1     6 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1     5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1     6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fraction$`&lt;Missing&gt;`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   num denom </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1     6 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $n_blq</span>

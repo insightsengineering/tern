@@ -33,7 +33,7 @@ that are used repeatedly to express an analysis.">
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.10</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,6 +68,7 @@ that are used repeatedly to express an analysis.">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.10">v0.9.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.9">v0.9.9</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8.433">v0.9.8.433</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
@@ -113,7 +114,7 @@ that are used repeatedly to express an analysis.">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Standard arguments</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.9/R/argument_convention.R" class="external-link"><code>R/argument_convention.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.10/R/argument_convention.R" class="external-link"><code>R/argument_convention.R</code></a></small>
       <div class="d-none name"><code>argument_convention.Rd</code></div>
     </div>
 
@@ -143,7 +144,7 @@ that are used repeatedly to express an analysis.</p>
 <dt id="arg--all-col-counts">.all_col_counts<a class="anchor" aria-label="anchor" href="#arg--all-col-counts"></a>
 </dt>
 <dd><p>(<code>integer</code>)<br> vector where each value represents a global count for a column. Values are
-taken from <code>alt_counts_df</code> if specified (see <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">rtables::build_table()</a></code>).</p></dd>
+taken from <code>alt_counts_df</code> if specified (see <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html" class="external-link">rtables::build_table()</a></code>).</p></dd>
 
 
 <dt id="arg--df-row">.df_row<a class="anchor" aria-label="anchor" href="#arg--df-row"></a>
@@ -204,7 +205,7 @@ that is passed by <code>rtables</code>.</p></dd>
 <dt id="arg--stat-names">.stat_names<a class="anchor" aria-label="anchor" href="#arg--stat-names"></a>
 </dt>
 <dd><p>(<code>character</code>)<br> names of the statistics that are passed directly to name single statistics
-(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
+(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
 
 
 <dt id="arg--var">.var<a class="anchor" aria-label="anchor" href="#arg--var"></a>
@@ -217,6 +218,12 @@ by a statistics function.</p></dd>
 </dt>
 <dd><p>(<code>flag</code>)<br> adds a "total" level after the others which includes all the levels
 that constitute the split. A custom label can be set for this level via the <code>custom_label</code> argument.</p></dd>
+
+
+<dt id="arg-alternative">alternative<a class="anchor" aria-label="anchor" href="#arg-alternative"></a>
+</dt>
+<dd><p>(<code>string</code>)<br> whether <code>two.sided</code>, or one-sided <code>less</code> or <code>greater</code> p-value
+should be displayed.</p></dd>
 
 
 <dt id="arg-col-by">col_by<a class="anchor" aria-label="anchor" href="#arg-col-by"></a>
@@ -276,7 +283,7 @@ levels that belong to it in the character vectors that are elements of the list.
 <dt id="arg-labelstr">labelstr<a class="anchor" aria-label="anchor" href="#arg-labelstr"></a>
 </dt>
 <dd><p>(<code>string</code>)<br> label of the level of the parent split currently being summarized
-(must be present as second argument in Content Row Functions). See <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>
+(must be present as second argument in Content Row Functions). See <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>
 for more information.</p></dd>
 
 

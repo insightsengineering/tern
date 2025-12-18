@@ -71,7 +71,7 @@ summarize_row_groups() and rtables::analyze_colvars().
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.10</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,6 +106,7 @@ summarize_row_groups() and rtables::analyze_colvars().
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.10">v0.9.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.9">v0.9.9</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8.433">v0.9.8.433</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
@@ -151,12 +152,12 @@ summarize_row_groups() and rtables::analyze_colvars().
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Analyze functions in columns</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.9/R/analyze_colvars_functions.R" class="external-link"><code>R/analyze_colvars_functions.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.10/R/analyze_colvars_functions.R" class="external-link"><code>R/analyze_colvars_functions.R</code></a></small>
       <div class="d-none name"><code>analyze_colvars_functions.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
-    <p>These functions are wrappers of <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze_colvars.html" class="external-link">rtables::analyze_colvars()</a></code> which apply corresponding <code>tern</code>
+    <p>These functions are wrappers of <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html" class="external-link">rtables::analyze_colvars()</a></code> which apply corresponding <code>tern</code>
 statistics functions to add an analysis to a given table layout. In particular, these functions
 where designed to have the analysis methods split into different columns.</p>
 <ul>
@@ -171,11 +172,11 @@ to produce standard tables that show analysis methods as columns.</p></li>
 it is used for other tables.</p></li>
 <li><p><code><a href="summarize_patients_exposure_in_cols.html">analyze_patients_exposure_in_cols()</a></code>: based only on <code>analyze_colvars</code>. It needs
 <code><a href="summarize_patients_exposure_in_cols.html">summarize_patients_exposure_in_cols()</a></code> to leverage nesting of label rows analysis
-with <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>.</p></li>
-<li><p><code><a href="cox_regression.html">summarize_coxreg()</a></code>: generally based on <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>, it behaves
+with <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>.</p></li>
+<li><p><code><a href="cox_regression.html">summarize_coxreg()</a></code>: generally based on <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>, it behaves
 similarly to <code>tabulate_*</code> functions described above as it is designed to provide
 specific standard tables that may contain nested structure with a combination of
-<code>summarize_row_groups()</code> and <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze_colvars.html" class="external-link">rtables::analyze_colvars()</a></code>.</p></li>
+<code>summarize_row_groups()</code> and <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/analyze_colvars.html" class="external-link">rtables::analyze_colvars()</a></code>.</p></li>
 </ul>
 </div>
 
@@ -185,8 +186,8 @@ specific standard tables that may contain nested structure with a combination of
 </h2>
     <div class="dont-index">
 <ul>
-<li><p><a href="summarize_functions.html">summarize_functions</a> for functions which are wrappers for <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>.</p></li>
-<li><p><a href="analyze_functions.html">analyze_functions</a> for functions which are wrappers for <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
+<li><p><a href="summarize_functions.html">summarize_functions</a> for functions which are wrappers for <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>.</p></li>
+<li><p><a href="analyze_functions.html">analyze_functions</a> for functions which are wrappers for <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
 </ul>
 </div>
     </div>

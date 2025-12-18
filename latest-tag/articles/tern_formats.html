@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.10</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,6 +63,7 @@
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.10">v0.9.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.9">v0.9.9</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8.433">v0.9.8.433</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
@@ -115,7 +116,7 @@
             
             <h4 data-toc-skip class="date">2023-01-12</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.9/vignettes/tern_formats.Rmd" class="external-link"><code>vignettes/tern_formats.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.10/vignettes/tern_formats.Rmd" class="external-link"><code>vignettes/tern_formats.Rmd</code></a></small>
       <div class="d-none name"><code>tern_formats.Rmd</code></div>
     </div>
 
@@ -169,7 +170,7 @@ displaying the redundant zero percentage value.</p>
 <span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="va">df2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ONTRTFL</span> <span class="op">==</span> <span class="st">"Y"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/abnormal.html">count_abnormal</a></span><span class="op">(</span></span>
 <span>    var <span class="op">=</span> <span class="st">"RANGE"</span>,</span>
 <span>    abnormal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"LOW"</span>, high <span class="op">=</span> <span class="st">"HIGH"</span><span class="op">)</span>,</span>
@@ -177,7 +178,7 @@ displaying the redundant zero percentage value.</p>
 <span>    exclude_base_abn <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fraction <span class="op">=</span> <span class="va">format_fraction</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         all obs  </span></span>
 <span><span class="co">#&gt; —————————————————</span></span>
 <span><span class="co">#&gt; low    2/2 (100%)</span></span>
@@ -197,7 +198,7 @@ non-zero numerator and so both show a percentage.</p>
 <span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="va">df2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ONTRTFL</span> <span class="op">==</span> <span class="st">"Y"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/abnormal.html">count_abnormal</a></span><span class="op">(</span></span>
 <span>    var <span class="op">=</span> <span class="st">"RANGE"</span>,</span>
 <span>    abnormal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"LOW"</span>, high <span class="op">=</span> <span class="st">"HIGH"</span><span class="op">)</span>,</span>
@@ -205,7 +206,7 @@ non-zero numerator and so both show a percentage.</p>
 <span>    exclude_base_abn <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fraction <span class="op">=</span> <span class="va">format_fraction</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         all obs </span></span>
 <span><span class="co">#&gt; ————————————————</span></span>
 <span><span class="co">#&gt; low    1/2 (50%)</span></span>
@@ -226,7 +227,7 @@ numerator, yet both are displayed in the same format.</p>
 <span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="va">df2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ONTRTFL</span> <span class="op">==</span> <span class="st">"Y"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/abnormal.html">count_abnormal</a></span><span class="op">(</span></span>
 <span>    var <span class="op">=</span> <span class="st">"RANGE"</span>,</span>
 <span>    abnormal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"LOW"</span>, high <span class="op">=</span> <span class="st">"HIGH"</span><span class="op">)</span>,</span>
@@ -234,7 +235,7 @@ numerator, yet both are displayed in the same format.</p>
 <span>    exclude_base_abn <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fraction <span class="op">=</span> <span class="st">"xx / xx"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        all obs</span></span>
 <span><span class="co">#&gt; ——————————————</span></span>
 <span><span class="co">#&gt; low     2 / 2 </span></span>
@@ -255,7 +256,7 @@ of available formats in <code>formatters</code>.</p>
 <span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="va">df2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ONTRTFL</span> <span class="op">==</span> <span class="st">"Y"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/abnormal.html">count_abnormal</a></span><span class="op">(</span></span>
 <span>    var <span class="op">=</span> <span class="st">"RANGE"</span>,</span>
 <span>    abnormal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"LOW"</span>, high <span class="op">=</span> <span class="st">"HIGH"</span><span class="op">)</span>,</span>
@@ -263,7 +264,7 @@ of available formats in <code>formatters</code>.</p>
 <span>    exclude_base_abn <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fraction <span class="op">=</span> <span class="st">"xx.x / xx.x"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         all obs </span></span>
 <span><span class="co">#&gt; ————————————————</span></span>
 <span><span class="co">#&gt; low    2.0 / 2.0</span></span>
@@ -381,7 +382,7 @@ behavior when this formatting function is applied.</p>
 <span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">ONTRTFL</span> <span class="op">==</span> <span class="st">"Y"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/abnormal.html">count_abnormal</a></span><span class="op">(</span></span>
 <span>    var <span class="op">=</span> <span class="st">"RANGE"</span>,</span>
 <span>    abnormal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"LOW"</span>, high <span class="op">=</span> <span class="st">"HIGH"</span><span class="op">)</span>,</span>
@@ -389,7 +390,7 @@ behavior when this formatting function is applied.</p>
 <span>    exclude_base_abn <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fraction <span class="op">=</span> <span class="va">format_fraction_fixed_dp</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          all obs   </span></span>
 <span><span class="co">#&gt; ———————————————————</span></span>
 <span><span class="co">#&gt; low    2/2 (100.0%)</span></span>
@@ -416,7 +417,7 @@ want to display a 0 value (without the denominator).</p>
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/basic_table.html" class="external-link">basic_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/abnormal.html">count_abnormal</a></span><span class="op">(</span></span>
 <span>    var <span class="op">=</span> <span class="st">"RANGE"</span>,</span>
 <span>    abnormal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"LOW"</span>, high <span class="op">=</span> <span class="st">"HIGH"</span><span class="op">)</span>,</span>
@@ -424,7 +425,7 @@ want to display a 0 value (without the denominator).</p>
 <span>    exclude_base_abn <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    .formats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fraction <span class="op">=</span> <span class="va">custom_format</span><span class="op">)</span> <span class="co"># Here we implement our new custom_format function</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html" class="external-link">build_table</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           all obs    </span></span>
 <span><span class="co">#&gt; —————————————————————</span></span>
 <span><span class="co">#&gt; low    2/2 (100.000%)</span></span>

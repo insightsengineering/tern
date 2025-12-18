@@ -47,7 +47,7 @@ the ANCOVA results via the interaction_y parameter.">
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.10</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,6 +82,7 @@ the ANCOVA results via the interaction_y parameter.">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.10">v0.9.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.9">v0.9.9</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8.433">v0.9.8.433</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
@@ -127,7 +128,7 @@ the ANCOVA results via the interaction_y parameter.">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Summarize analysis of covariance (ANCOVA) results</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.9/R/summarize_ancova.R" class="external-link"><code>R/summarize_ancova.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.10/R/summarize_ancova.R" class="external-link"><code>R/summarize_ancova.R</code></a></small>
       <div class="d-none name"><code>summarize_ancova.Rd</code></div>
     </div>
 
@@ -287,7 +288,7 @@ times, to avoid warnings from <code>rtables</code>.</p></dd>
 <dt id="arg--stat-names">.stat_names<a class="anchor" aria-label="anchor" href="#arg--stat-names"></a>
 </dt>
 <dd><p>(<code>character</code>)<br> names of the statistics that are passed directly to name single statistics
-(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
+(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
 
 
 <dt id="arg--formats">.formats<a class="anchor" aria-label="anchor" href="#arg--formats"></a>
@@ -340,7 +341,7 @@ by a statistics function.</p></dd>
 
 <ul>
 <li><p><code>summarize_ancova()</code> returns a layout object suitable for passing to further layouting functions,
-or to <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted rows containing
+or to <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted rows containing
 the statistics from <code>s_ancova()</code> to the table layout.</p></li>
 </ul>
 <ul>
@@ -358,7 +359,7 @@ to the reference group.</p></li>
 </li>
 </ul>
 <ul>
-<li><p><code>a_ancova()</code> returns the corresponding list with formatted <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
+<li><p><code>a_ancova()</code> returns the corresponding list with formatted <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
 </ul>
 </div>
     <div class="section level2">
@@ -367,7 +368,7 @@ to the reference group.</p></li>
 
 <ul>
 <li><p><code>summarize_ancova()</code>: Layout-creating function which can take statistics function arguments
-and additional format arguments. This function is a wrapper for <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
+and additional format arguments. This function is a wrapper for <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
 <li><p><code>s_ancova()</code>: Statistics function that produces a named list of results
 of the investigated linear model.</p></li>
 <li><p><code>a_ancova()</code>: Formatted analysis function which is used as <code>afun</code> in <code>summarize_ancova()</code>.</p></li>

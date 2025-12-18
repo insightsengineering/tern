@@ -33,7 +33,7 @@ Substitute missing data with a string or factor level.">
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.10</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,6 +68,7 @@ Substitute missing data with a string or factor level.">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.10">v0.9.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.9">v0.9.9</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8.433">v0.9.8.433</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
@@ -113,7 +114,7 @@ Substitute missing data with a string or factor level.">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Missing data</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.9/R/missing_data.R" class="external-link"><code>R/missing_data.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.10/R/missing_data.R" class="external-link"><code>R/missing_data.R</code></a></small>
       <div class="d-none name"><code>explicit_na.Rd</code></div>
     </div>
 
@@ -125,7 +126,11 @@ Substitute missing data with a string or factor level.">
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a>
 </h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">explicit_na</span><span class="op">(</span><span class="va">x</span>, label <span class="op">=</span> <span class="st">"&lt;Missing&gt;"</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">explicit_na</span><span class="op">(</span><span class="va">x</span>, label <span class="op">=</span> <span class="fu"><a href="default_na_str.html">default_na_str</a></span><span class="op">(</span><span class="op">)</span>, drop_na <span class="op">=</span> <span class="fu">default_drop_na</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">default_drop_na</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">set_default_drop_na</span><span class="op">(</span><span class="va">drop_na</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -143,13 +148,35 @@ Substitute missing data with a string or factor level.">
 </dt>
 <dd><p>(<code>string</code>)<br> string that missing data should be replaced with.</p></dd>
 
+
+<dt id="arg-drop-na">drop_na<a class="anchor" aria-label="anchor" href="#arg-drop-na"></a>
+</dt>
+<dd><p>(<code>flag</code>)<br> if <code>TRUE</code> and <code>x</code> is a factor, any levels
+that are only <code>label</code> will be dropped.</p></dd>
+
 </dl>
 </div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a>
 </h2>
     <p><code>x</code> with any <code>NA</code> values substituted by <code>label</code>.</p>
-    </div>
+<ul>
+<li><p><code>tern_default_drop_na</code>: (<code>flag</code>)<br> default value for <code>drop_na</code> argument in <code>explicit_na()</code>.</p></li>
+</ul>
+<ul>
+<li><p><code>tern_default_drop_na</code> has no return value.</p></li>
+</ul>
+</div>
+    <div class="section level2">
+    <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
+</h2>
+
+<ul>
+<li><p><code>default_drop_na()</code>: should <code>NA</code> values without a dedicated level be dropped?</p></li>
+<li><p><code>set_default_drop_na()</code>: Setter for default <code>NA</code> value replacement string. Sets the
+option <code>"tern_default_drop_na"</code> within the R environment.</p></li>
+</ul>
+</div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a>
@@ -167,6 +194,13 @@ Substitute missing data with a string or factor level.">
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">explicit_na</span><span class="op">(</span><span class="fu"><a href="sas_na.html">sas_na</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "a"         "&lt;Missing&gt;"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">explicit_na</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span>levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">"a"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> factor()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Levels: a</span>
+<span class="r-in"><span><span class="fu">explicit_na</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span>levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">"a"</span><span class="op">)</span><span class="op">)</span>, drop_na <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># previous default</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> factor()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Levels: a</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

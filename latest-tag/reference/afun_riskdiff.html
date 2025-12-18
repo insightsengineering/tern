@@ -39,7 +39,7 @@ function utilizes the stat_propdiff_ci() function to perform risk difference cal
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.10</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,6 +74,7 @@ function utilizes the stat_propdiff_ci() function to perform risk difference cal
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.10">v0.9.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.9">v0.9.9</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8.433">v0.9.8.433</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
@@ -119,7 +120,7 @@ function utilizes the stat_propdiff_ci() function to perform risk difference cal
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Analysis function to calculate risk difference column values</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.9/R/riskdiff.R" class="external-link"><code>R/riskdiff.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.10/R/riskdiff.R" class="external-link"><code>R/riskdiff.R</code></a></small>
       <div class="d-none name"><code>afun_riskdiff.Rd</code></div>
     </div>
 
@@ -127,7 +128,7 @@ function utilizes the stat_propdiff_ci() function to perform risk difference cal
     <p>In the risk difference column, this function uses the statistics function associated with <code>afun</code> to
 calculates risk difference values from arm X (reference group) and arm Y. These arms are specified
 when configuring the risk difference column which is done using the <code><a href="add_riskdiff.html">add_riskdiff()</a></code> split function in
-the previous call to <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">rtables::split_cols_by()</a></code>. For all other columns, applies <code>afun</code> as usual. This
+the previous call to <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html" class="external-link">rtables::split_cols_by()</a></code>. For all other columns, applies <code>afun</code> as usual. This
 function utilizes the <code><a href="stat_propdiff_ci.html">stat_propdiff_ci()</a></code> function to perform risk difference calculations.</p>
     </div>
 
@@ -161,7 +162,7 @@ function utilizes the <code><a href="stat_propdiff_ci.html">stat_propdiff_ci()</
 <dt id="arg-labelstr">labelstr<a class="anchor" aria-label="anchor" href="#arg-labelstr"></a>
 </dt>
 <dd><p>(<code>string</code>)<br> label of the level of the parent split currently being summarized
-(must be present as second argument in Content Row Functions). See <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>
+(must be present as second argument in Content Row Functions). See <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html" class="external-link">rtables::summarize_row_groups()</a></code>
 for more information.</p></dd>
 
 
@@ -185,7 +186,7 @@ analysis function.</p></dd>
 <dt id="arg--stat-names">.stat_names<a class="anchor" aria-label="anchor" href="#arg--stat-names"></a>
 </dt>
 <dd><p>(<code>character</code>)<br> names of the statistics that are passed directly to name single statistics
-(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
+(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
 
 
 <dt id="arg--formats">.formats<a class="anchor" aria-label="anchor" href="#arg--formats"></a>
@@ -209,7 +210,7 @@ unmodified default behavior. Can be negative.</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a>
 </h2>
-    <p>A list of formatted <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p>
+    <p>A list of formatted <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a>
@@ -217,7 +218,7 @@ unmodified default behavior. Can be negative.</p></dd>
     <div class="dont-index">
 <ul>
 <li><p><code><a href="stat_propdiff_ci.html">stat_propdiff_ci()</a></code> for details on risk difference calculation.</p></li>
-<li><p>Split function <code><a href="add_riskdiff.html">add_riskdiff()</a></code> which, when used as <code>split_fun</code> within <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/split_cols_by.html" class="external-link">rtables::split_cols_by()</a></code> with
+<li><p>Split function <code><a href="add_riskdiff.html">add_riskdiff()</a></code> which, when used as <code>split_fun</code> within <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/split_cols_by.html" class="external-link">rtables::split_cols_by()</a></code> with
 <code>riskdiff</code> argument set to <code>TRUE</code> in subsequent analyze functions calls, adds a risk difference column
 to a table layout.</p></li>
 </ul>

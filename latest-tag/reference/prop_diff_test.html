@@ -20,13 +20,15 @@
 <meta name="description" content="
 The analyze function test_proportion_diff() creates a layout element to test the difference between two
 proportions. The primary analysis variable, vars, indicates whether a response has occurred for each record. See
-the method parameter for options of methods to use to calculate the p-value. Additionally, a stratification
-variable can be supplied via the strata element of the variables argument.">
+the method parameter for options of methods to use to calculate the p-value. The argument alternative
+specifies the direction of the alternative hypothesis. Additionally, a stratification variable can be
+supplied via the strata element of the variables argument.">
 <meta property="og:description" content="
 The analyze function test_proportion_diff() creates a layout element to test the difference between two
 proportions. The primary analysis variable, vars, indicates whether a response has occurred for each record. See
-the method parameter for options of methods to use to calculate the p-value. Additionally, a stratification
-variable can be supplied via the strata element of the variables argument.">
+the method parameter for options of methods to use to calculate the p-value. The argument alternative
+specifies the direction of the alternative hypothesis. Additionally, a stratification variable can be
+supplied via the strata element of the variables argument.">
 <meta property="og:image" content="https://insightsengineering.github.io/tern/logo.png">
 <link rel="stylesheet" href="../consent.css">
 <script src="../consent.js" type="text/javascript" charset="utf-8"></script>
@@ -39,7 +41,7 @@ variable can be supplied via the strata element of the variables argument.">
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.10</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,6 +76,7 @@ variable can be supplied via the strata element of the variables argument.">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.10">v0.9.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.9">v0.9.9</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8.433">v0.9.8.433</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
@@ -119,7 +122,7 @@ variable can be supplied via the strata element of the variables argument.">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Difference test for two proportions</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.9/R/prop_diff_test.R" class="external-link"><code>R/prop_diff_test.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.10/R/prop_diff_test.R" class="external-link"><code>R/prop_diff_test.R</code></a></small>
       <div class="d-none name"><code>prop_diff_test.Rd</code></div>
     </div>
 
@@ -127,8 +130,9 @@ variable can be supplied via the strata element of the variables argument.">
     <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="figures/lifecycle-stable.svg" alt="[Stable]"></a></p>
 <p>The analyze function <code>test_proportion_diff()</code> creates a layout element to test the difference between two
 proportions. The primary analysis variable, <code>vars</code>, indicates whether a response has occurred for each record. See
-the <code>method</code> parameter for options of methods to use to calculate the p-value. Additionally, a stratification
-variable can be supplied via the <code>strata</code> element of the <code>variables</code> argument.</p>
+the <code>method</code> parameter for options of methods to use to calculate the p-value. The argument <code>alternative</code>
+specifies the direction of the alternative hypothesis. Additionally, a stratification variable can be
+supplied via the <code>strata</code> element of the <code>variables</code> argument.</p>
     </div>
 
     <div class="section level2">
@@ -138,7 +142,8 @@ variable can be supplied via the <code>strata</code> element of the <code>variab
 <span>  <span class="va">lyt</span>,</span>
 <span>  <span class="va">vars</span>,</span>
 <span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>strata <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chisq"</span>, <span class="st">"schouten"</span>, <span class="st">"fisher"</span>, <span class="st">"cmh"</span><span class="op">)</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chisq"</span>, <span class="st">"schouten"</span>, <span class="st">"fisher"</span>, <span class="st">"cmh"</span>, <span class="st">"cmh_wh"</span><span class="op">)</span>,</span>
+<span>  alternative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"two.sided"</span>, <span class="st">"less"</span>, <span class="st">"greater"</span><span class="op">)</span>,</span>
 <span>  var_labels <span class="op">=</span> <span class="va">vars</span>,</span>
 <span>  na_str <span class="op">=</span> <span class="fu"><a href="default_na_str.html">default_na_str</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  nested <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -160,7 +165,8 @@ variable can be supplied via the <code>strata</code> element of the <code>variab
 <span>  <span class="va">.ref_group</span>,</span>
 <span>  <span class="va">.in_ref_col</span>,</span>
 <span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>strata <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chisq"</span>, <span class="st">"schouten"</span>, <span class="st">"fisher"</span>, <span class="st">"cmh"</span><span class="op">)</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chisq"</span>, <span class="st">"schouten"</span>, <span class="st">"fisher"</span>, <span class="st">"cmh"</span>, <span class="st">"cmh_wh"</span><span class="op">)</span>,</span>
+<span>  alternative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"two.sided"</span>, <span class="st">"less"</span>, <span class="st">"greater"</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -198,8 +204,14 @@ variable can be supplied via the <code>strata</code> element of the <code>variab
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a>
 </dt>
-<dd><p>(<code>string</code>)<br> one of <code>chisq</code>, <code>cmh</code>, <code>fisher</code>, or <code>schouten</code>; specifies the test used
-to calculate the p-value.</p></dd>
+<dd><p>(<code>string</code>)<br> one of <code>chisq</code>, <code>cmh</code>, <code>cmh_wh</code>, <code>fisher</code>, or <code>schouten</code>;
+specifies the test used to calculate the p-value.</p></dd>
+
+
+<dt id="arg-alternative">alternative<a class="anchor" aria-label="anchor" href="#arg-alternative"></a>
+</dt>
+<dd><p>(<code>string</code>)<br> whether <code>two.sided</code>, or one-sided <code>less</code> or <code>greater</code> p-value
+should be displayed.</p></dd>
 
 
 <dt id="arg-var-labels">var_labels<a class="anchor" aria-label="anchor" href="#arg-var-labels"></a>
@@ -257,7 +269,7 @@ defined by this split instruction, or <code>NA_character_</code> (the default) f
 <dt id="arg--stat-names">.stat_names<a class="anchor" aria-label="anchor" href="#arg--stat-names"></a>
 </dt>
 <dd><p>(<code>character</code>)<br> names of the statistics that are passed directly to name single statistics
-(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
+(<code>.stats</code>). This option is visible when producing <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html" class="external-link">rtables::as_result_df()</a></code> with <code>make_ard = TRUE</code>.</p></dd>
 
 
 <dt id="arg--formats">.formats<a class="anchor" aria-label="anchor" href="#arg--formats"></a>
@@ -305,7 +317,7 @@ by a statistics function.</p></dd>
 
 <ul>
 <li><p><code>test_proportion_diff()</code> returns a layout object suitable for passing to further layouting functions,
-or to <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted rows containing
+or to <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/build_table.html" class="external-link">rtables::build_table()</a></code>. Adding this function to an <code>rtable</code> layout will add formatted rows containing
 the statistics from <code>s_test_proportion_diff()</code> to the table layout.</p></li>
 </ul>
 <ul>
@@ -313,7 +325,7 @@ the statistics from <code>s_test_proportion_diff()</code> to the table layout.</
 describing the method used. The p-value tests the null hypothesis that proportions in two groups are the same.</p></li>
 </ul>
 <ul>
-<li><p><code>a_test_proportion_diff()</code> returns the corresponding list with formatted <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
+<li><p><code>a_test_proportion_diff()</code> returns the corresponding list with formatted <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
 </ul>
 </div>
     <div class="section level2">
@@ -322,7 +334,7 @@ describing the method used. The p-value tests the null hypothesis that proportio
 
 <ul>
 <li><p><code>test_proportion_diff()</code>: Layout-creating function which can take statistics function arguments
-and additional format arguments. This function is a wrapper for <code><a href="https://insightsengineering.github.io/rtables/latest-release/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
+and additional format arguments. This function is a wrapper for <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html" class="external-link">rtables::analyze()</a></code>.</p></li>
 <li><p><code>s_test_proportion_diff()</code>: Statistics function which tests the difference between two proportions.</p></li>
 <li><p><code>a_test_proportion_diff()</code>: Formatted analysis function which is used as <code>afun</code> in <code>test_proportion_diff()</code>.</p></li>
 </ul>

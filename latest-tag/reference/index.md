@@ -1,0 +1,869 @@
+# Package index
+
+## Overview Pages
+
+- [`tern`](https://insightsengineering.github.io/tern/reference/tern-package.md)
+  [`tern-package`](https://insightsengineering.github.io/tern/reference/tern-package.md)
+  : tern Package
+- [`analyze_functions`](https://insightsengineering.github.io/tern/reference/analyze_functions.md)
+  : Analyze functions
+- [`analyze_colvars_functions`](https://insightsengineering.github.io/tern/reference/analyze_colvars_functions.md)
+  : Analyze functions in columns
+- [`summarize_functions`](https://insightsengineering.github.io/tern/reference/summarize_functions.md)
+  : Summarize functions
+- [`formatting_functions`](https://insightsengineering.github.io/tern/reference/formatting_functions.md)
+  : Formatting functions
+
+## Analysis Functions
+
+Analyze functions with their corresponding statistics functions and
+formatted analysis functions.
+
+- **Analyze functions** are used in combination with `rtables` layout
+  functions in the pipeline which creates the table.
+
+- **Statistics functions** (denoted by `s_` prefix) compute the numbers
+  that are tabulated later. In order to separate computation from
+  formatting, they do not take care of `rcell` type formatting
+  themselves.
+
+- **Formatted analysis functions** (denoted by `a_` prefix) apply
+  formatting to results from their corresponding statistics functions.
+  They are used as `afun` in
+  [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).
+
+- [`analyze_vars()`](https://insightsengineering.github.io/tern/reference/analyze_variables.md)
+  [`s_summary()`](https://insightsengineering.github.io/tern/reference/analyze_variables.md)
+  [`a_summary()`](https://insightsengineering.github.io/tern/reference/analyze_variables.md)
+  **\[stable\]** : Analyze variables
+- [`analyze_vars_in_cols()`](https://insightsengineering.github.io/tern/reference/analyze_vars_in_cols.md)
+  **\[experimental\]** : Analyze numeric variables in columns
+- [`analyze_num_patients()`](https://insightsengineering.github.io/tern/reference/summarize_num_patients.md)
+  [`summarize_num_patients()`](https://insightsengineering.github.io/tern/reference/summarize_num_patients.md)
+  [`s_num_patients()`](https://insightsengineering.github.io/tern/reference/summarize_num_patients.md)
+  [`s_num_patients_content()`](https://insightsengineering.github.io/tern/reference/summarize_num_patients.md)
+  [`a_num_patients()`](https://insightsengineering.github.io/tern/reference/summarize_num_patients.md)
+  **\[stable\]** : Count number of patients
+- [`analyze_patients_exposure_in_cols()`](https://insightsengineering.github.io/tern/reference/summarize_patients_exposure_in_cols.md)
+  [`summarize_patients_exposure_in_cols()`](https://insightsengineering.github.io/tern/reference/summarize_patients_exposure_in_cols.md)
+  [`s_count_patients_sum_exposure()`](https://insightsengineering.github.io/tern/reference/summarize_patients_exposure_in_cols.md)
+  [`a_count_patients_sum_exposure()`](https://insightsengineering.github.io/tern/reference/summarize_patients_exposure_in_cols.md)
+  **\[stable\]** : Count number of patients and sum exposure across all
+  patients in columns
+- [`compare_vars()`](https://insightsengineering.github.io/tern/reference/compare_variables.md)
+  [`s_compare()`](https://insightsengineering.github.io/tern/reference/compare_variables.md)
+  **\[stable\]** : Compare variables between groups
+- [`count_abnormal()`](https://insightsengineering.github.io/tern/reference/abnormal.md)
+  [`s_count_abnormal()`](https://insightsengineering.github.io/tern/reference/abnormal.md)
+  [`a_count_abnormal()`](https://insightsengineering.github.io/tern/reference/abnormal.md)
+  **\[stable\]** : Count patients with abnormal range values
+- [`count_abnormal_by_baseline()`](https://insightsengineering.github.io/tern/reference/abnormal_by_baseline.md)
+  [`s_count_abnormal_by_baseline()`](https://insightsengineering.github.io/tern/reference/abnormal_by_baseline.md)
+  [`a_count_abnormal_by_baseline()`](https://insightsengineering.github.io/tern/reference/abnormal_by_baseline.md)
+  **\[stable\]** : Count patients with abnormal analysis range values by
+  baseline status
+- [`count_abnormal_by_marked()`](https://insightsengineering.github.io/tern/reference/abnormal_by_marked.md)
+  [`s_count_abnormal_by_marked()`](https://insightsengineering.github.io/tern/reference/abnormal_by_marked.md)
+  [`a_count_abnormal_by_marked()`](https://insightsengineering.github.io/tern/reference/abnormal_by_marked.md)
+  **\[stable\]** : Count patients with marked laboratory abnormalities
+- [`count_abnormal_by_worst_grade()`](https://insightsengineering.github.io/tern/reference/abnormal_by_worst_grade.md)
+  [`s_count_abnormal_by_worst_grade()`](https://insightsengineering.github.io/tern/reference/abnormal_by_worst_grade.md)
+  [`a_count_abnormal_by_worst_grade()`](https://insightsengineering.github.io/tern/reference/abnormal_by_worst_grade.md)
+  **\[stable\]** : Count patients by most extreme post-baseline toxicity
+  grade per direction of abnormality
+- [`count_abnormal_lab_worsen_by_baseline()`](https://insightsengineering.github.io/tern/reference/abnormal_lab_worsen_by_baseline.md)
+  [`s_count_abnormal_lab_worsen_by_baseline()`](https://insightsengineering.github.io/tern/reference/abnormal_lab_worsen_by_baseline.md)
+  [`a_count_abnormal_lab_worsen_by_baseline()`](https://insightsengineering.github.io/tern/reference/abnormal_lab_worsen_by_baseline.md)
+  **\[stable\]** : Count patients with toxicity grades that have
+  worsened from baseline by highest grade post-baseline
+- [`count_cumulative()`](https://insightsengineering.github.io/tern/reference/count_cumulative.md)
+  [`s_count_cumulative()`](https://insightsengineering.github.io/tern/reference/count_cumulative.md)
+  [`a_count_cumulative()`](https://insightsengineering.github.io/tern/reference/count_cumulative.md)
+  **\[stable\]** : Cumulative counts of numeric variable by thresholds
+- [`count_missed_doses()`](https://insightsengineering.github.io/tern/reference/count_missed_doses.md)
+  [`s_count_missed_doses()`](https://insightsengineering.github.io/tern/reference/count_missed_doses.md)
+  [`a_count_missed_doses()`](https://insightsengineering.github.io/tern/reference/count_missed_doses.md)
+  **\[stable\]** : Count number of patients with missed doses by
+  thresholds
+- [`count_occurrences()`](https://insightsengineering.github.io/tern/reference/count_occurrences.md)
+  [`summarize_occurrences()`](https://insightsengineering.github.io/tern/reference/count_occurrences.md)
+  [`s_count_occurrences()`](https://insightsengineering.github.io/tern/reference/count_occurrences.md)
+  [`a_count_occurrences()`](https://insightsengineering.github.io/tern/reference/count_occurrences.md)
+  **\[stable\]** : Count occurrences
+- [`count_occurrences_by_grade()`](https://insightsengineering.github.io/tern/reference/count_occurrences_by_grade.md)
+  [`summarize_occurrences_by_grade()`](https://insightsengineering.github.io/tern/reference/count_occurrences_by_grade.md)
+  [`s_count_occurrences_by_grade()`](https://insightsengineering.github.io/tern/reference/count_occurrences_by_grade.md)
+  [`a_count_occurrences_by_grade()`](https://insightsengineering.github.io/tern/reference/count_occurrences_by_grade.md)
+  **\[stable\]** : Count occurrences by grade
+- [`summarize_patients_events_in_cols()`](https://insightsengineering.github.io/tern/reference/count_patients_events_in_cols.md)
+  [`s_count_patients_and_multiple_events()`](https://insightsengineering.github.io/tern/reference/count_patients_events_in_cols.md)
+  **\[stable\]** : Count patient events in columns
+- [`count_patients_with_event()`](https://insightsengineering.github.io/tern/reference/count_patients_with_event.md)
+  [`s_count_patients_with_event()`](https://insightsengineering.github.io/tern/reference/count_patients_with_event.md)
+  [`a_count_patients_with_event()`](https://insightsengineering.github.io/tern/reference/count_patients_with_event.md)
+  **\[stable\]** : Count the number of patients with a particular event
+- [`count_patients_with_flags()`](https://insightsengineering.github.io/tern/reference/count_patients_with_flags.md)
+  [`s_count_patients_with_flags()`](https://insightsengineering.github.io/tern/reference/count_patients_with_flags.md)
+  [`a_count_patients_with_flags()`](https://insightsengineering.github.io/tern/reference/count_patients_with_flags.md)
+  **\[stable\]** : Count the number of patients with particular flags
+- [`count_values()`](https://insightsengineering.github.io/tern/reference/count_values.md)
+  [`s_count_values()`](https://insightsengineering.github.io/tern/reference/count_values.md)
+  [`a_count_values()`](https://insightsengineering.github.io/tern/reference/count_values.md)
+  **\[stable\]** : Count specific values
+- [`estimate_multinomial_response()`](https://insightsengineering.github.io/tern/reference/estimate_multinomial_rsp.md)
+  [`s_length_proportion()`](https://insightsengineering.github.io/tern/reference/estimate_multinomial_rsp.md)
+  [`a_length_proportion()`](https://insightsengineering.github.io/tern/reference/estimate_multinomial_rsp.md)
+  **\[stable\]** : Estimate proportions of each level of a variable
+- [`estimate_proportion()`](https://insightsengineering.github.io/tern/reference/estimate_proportion.md)
+  [`s_proportion()`](https://insightsengineering.github.io/tern/reference/estimate_proportion.md)
+  [`a_proportion()`](https://insightsengineering.github.io/tern/reference/estimate_proportion.md)
+  **\[stable\]** : Proportion estimation
+- [`estimate_incidence_rate()`](https://insightsengineering.github.io/tern/reference/incidence_rate.md)
+  [`s_incidence_rate()`](https://insightsengineering.github.io/tern/reference/incidence_rate.md)
+  [`a_incidence_rate()`](https://insightsengineering.github.io/tern/reference/incidence_rate.md)
+  **\[stable\]** : Incidence rate estimation
+- [`estimate_odds_ratio()`](https://insightsengineering.github.io/tern/reference/odds_ratio.md)
+  [`s_odds_ratio()`](https://insightsengineering.github.io/tern/reference/odds_ratio.md)
+  [`a_odds_ratio()`](https://insightsengineering.github.io/tern/reference/odds_ratio.md)
+  **\[stable\]** : Odds ratio estimation
+- [`estimate_proportion_diff()`](https://insightsengineering.github.io/tern/reference/prop_diff.md)
+  [`s_proportion_diff()`](https://insightsengineering.github.io/tern/reference/prop_diff.md)
+  [`a_proportion_diff()`](https://insightsengineering.github.io/tern/reference/prop_diff.md)
+  **\[stable\]** : Proportion difference estimation
+- [`s_bland_altman()`](https://insightsengineering.github.io/tern/reference/s_bland_altman.md)
+  **\[experimental\]** : Bland-Altman analysis
+- [`summarize_coxreg()`](https://insightsengineering.github.io/tern/reference/cox_regression.md)
+  [`s_coxreg()`](https://insightsengineering.github.io/tern/reference/cox_regression.md)
+  [`a_coxreg()`](https://insightsengineering.github.io/tern/reference/cox_regression.md)
+  **\[stable\]** : Cox proportional hazards regression
+- [`summarize_ancova()`](https://insightsengineering.github.io/tern/reference/summarize_ancova.md)
+  [`s_ancova()`](https://insightsengineering.github.io/tern/reference/summarize_ancova.md)
+  [`a_ancova()`](https://insightsengineering.github.io/tern/reference/summarize_ancova.md)
+  **\[stable\]** : Summarize analysis of covariance (ANCOVA) results
+- [`summarize_change()`](https://insightsengineering.github.io/tern/reference/summarize_change.md)
+  [`s_change_from_baseline()`](https://insightsengineering.github.io/tern/reference/summarize_change.md)
+  [`a_change_from_baseline()`](https://insightsengineering.github.io/tern/reference/summarize_change.md)
+  **\[stable\]** : Summarize change from baseline values or absolute
+  baseline values
+- [`summarize_colvars()`](https://insightsengineering.github.io/tern/reference/summarize_colvars.md)
+  **\[stable\]** : Summarize variables in columns
+- [`summarize_glm_count()`](https://insightsengineering.github.io/tern/reference/summarize_glm_count.md)
+  [`s_glm_count()`](https://insightsengineering.github.io/tern/reference/summarize_glm_count.md)
+  [`a_glm_count()`](https://insightsengineering.github.io/tern/reference/summarize_glm_count.md)
+  **\[experimental\]** : Summarize Poisson negative binomial regression
+- [`summarize_logistic()`](https://insightsengineering.github.io/tern/reference/summarize_logistic.md)
+  **\[stable\]** : Multivariate logistic regression table
+- [`surv_time()`](https://insightsengineering.github.io/tern/reference/survival_time.md)
+  [`s_surv_time()`](https://insightsengineering.github.io/tern/reference/survival_time.md)
+  [`a_surv_time()`](https://insightsengineering.github.io/tern/reference/survival_time.md)
+  **\[stable\]** : Survival time analysis
+- [`surv_timepoint()`](https://insightsengineering.github.io/tern/reference/survival_timepoint.md)
+  [`s_surv_timepoint()`](https://insightsengineering.github.io/tern/reference/survival_timepoint.md)
+  [`s_surv_timepoint_diff()`](https://insightsengineering.github.io/tern/reference/survival_timepoint.md)
+  [`a_surv_timepoint()`](https://insightsengineering.github.io/tern/reference/survival_timepoint.md)
+  **\[stable\]** : Survival time point analysis
+- [`tabulate_rsp_biomarkers()`](https://insightsengineering.github.io/tern/reference/response_biomarkers_subgroups.md)
+  **\[stable\]** : Tabulate biomarker effects on binary response by
+  subgroup
+- [`tabulate_rsp_subgroups()`](https://insightsengineering.github.io/tern/reference/response_subgroups.md)
+  [`a_response_subgroups()`](https://insightsengineering.github.io/tern/reference/response_subgroups.md)
+  **\[stable\]** : Tabulate binary response by subgroup
+- [`tabulate_survival_biomarkers()`](https://insightsengineering.github.io/tern/reference/survival_biomarkers_subgroups.md)
+  **\[stable\]** : Tabulate biomarker effects on survival by subgroup
+- [`tabulate_survival_subgroups()`](https://insightsengineering.github.io/tern/reference/survival_duration_subgroups.md)
+  [`a_survival_subgroups()`](https://insightsengineering.github.io/tern/reference/survival_duration_subgroups.md)
+  **\[stable\]** : Tabulate survival duration by subgroup
+- [`test_proportion_diff()`](https://insightsengineering.github.io/tern/reference/prop_diff_test.md)
+  [`s_test_proportion_diff()`](https://insightsengineering.github.io/tern/reference/prop_diff_test.md)
+  [`a_test_proportion_diff()`](https://insightsengineering.github.io/tern/reference/prop_diff_test.md)
+  **\[stable\]** : Difference test for two proportions
+
+## Model-Specific Functions
+
+These functions help with fitting or extracting results from specific
+models.
+
+- [`estimate_coef()`](https://insightsengineering.github.io/tern/reference/estimate_coef.md)
+  : Hazard ratio estimation in interactions
+- [`extract_rsp_biomarkers()`](https://insightsengineering.github.io/tern/reference/extract_rsp_biomarkers.md)
+  **\[stable\]** : Prepare response data estimates for multiple
+  biomarkers in a single data frame
+- [`extract_rsp_subgroups()`](https://insightsengineering.github.io/tern/reference/extract_rsp_subgroups.md)
+  **\[stable\]** : Prepare response data for population subgroups in
+  data frames
+- [`extract_survival_biomarkers()`](https://insightsengineering.github.io/tern/reference/extract_survival_biomarkers.md)
+  **\[stable\]** : Prepare survival data estimates for multiple
+  biomarkers in a single data frame
+- [`extract_survival_subgroups()`](https://insightsengineering.github.io/tern/reference/extract_survival_subgroups.md)
+  **\[stable\]** : Prepare survival data for population subgroups in
+  data frames
+- [`fit_coxreg_univar()`](https://insightsengineering.github.io/tern/reference/fit_coxreg.md)
+  [`fit_coxreg_multivar()`](https://insightsengineering.github.io/tern/reference/fit_coxreg.md)
+  **\[stable\]** : Fitting functions for Cox proportional hazards
+  regression
+- [`fit_logistic()`](https://insightsengineering.github.io/tern/reference/fit_logistic.md)
+  **\[stable\]** : Fit for logistic regression
+- [`fit_rsp_step()`](https://insightsengineering.github.io/tern/reference/fit_rsp_step.md)
+  **\[stable\]** : Subgroup treatment effect pattern (STEP) fit for
+  binary (response) outcome
+- [`fit_survival_step()`](https://insightsengineering.github.io/tern/reference/fit_survival_step.md)
+  **\[stable\]** : Subgroup treatment effect pattern (STEP) fit for
+  survival outcome
+- [`get_smooths()`](https://insightsengineering.github.io/tern/reference/get_smooths.md)
+  **\[stable\]** : Smooth function with optional grouping
+- [`logistic_regression_cols()`](https://insightsengineering.github.io/tern/reference/logistic_regression_cols.md)
+  **\[stable\]** : Logistic regression multivariate column layout
+  function
+- [`logistic_summary_by_flag()`](https://insightsengineering.github.io/tern/reference/logistic_summary_by_flag.md)
+  **\[stable\]** : Logistic regression summary table
+- [`tidy(`*`<glm>`*`)`](https://insightsengineering.github.io/tern/reference/tidy.glm.md)
+  **\[stable\]** : Custom tidy method for binomial GLM results
+- [`tidy(`*`<step>`*`)`](https://insightsengineering.github.io/tern/reference/tidy.step.md)
+  **\[stable\]** : Custom tidy method for STEP results
+- [`tidy(`*`<summary.coxph>`*`)`](https://insightsengineering.github.io/tern/reference/tidy_coxreg.md)
+  [`tidy(`*`<coxreg.univar>`*`)`](https://insightsengineering.github.io/tern/reference/tidy_coxreg.md)
+  [`tidy(`*`<coxreg.multivar>`*`)`](https://insightsengineering.github.io/tern/reference/tidy_coxreg.md)
+  **\[stable\]** : Custom tidy methods for Cox regression
+- [`univariate()`](https://insightsengineering.github.io/tern/reference/univariate.md)
+  **\[stable\]** : Univariate formula special term
+- [`get_covariates()`](https://insightsengineering.github.io/tern/reference/get_covariates.md)
+  **\[stable\]** : Utility function to return a named list of covariate
+  names
+- [`clogit_with_tryCatch()`](https://insightsengineering.github.io/tern/reference/clogit_with_tryCatch.md)
+  : Wrapper function of survival::clogit
+
+## Graphs
+
+These function create graphical type output.
+
+- [`g_bland_altman()`](https://insightsengineering.github.io/tern/reference/g_bland_altman.md)
+  **\[experimental\]** : Bland-Altman plot
+
+- [`g_forest()`](https://insightsengineering.github.io/tern/reference/g_forest.md)
+  **\[stable\]** :
+
+  Create a forest plot from an `rtable`
+
+- [`g_ipp()`](https://insightsengineering.github.io/tern/reference/g_ipp.md)
+  **\[stable\]** : Individual patient plots
+
+- [`g_km()`](https://insightsengineering.github.io/tern/reference/g_km.md)
+  **\[stable\]** : Kaplan-Meier plot
+
+- [`g_lineplot()`](https://insightsengineering.github.io/tern/reference/g_lineplot.md)
+  **\[stable\]** : Line plot with optional table
+
+- [`g_step()`](https://insightsengineering.github.io/tern/reference/g_step.md)
+  **\[stable\]** : Create a STEP graph
+
+- [`g_waterfall()`](https://insightsengineering.github.io/tern/reference/g_waterfall.md)
+  **\[stable\]** : Horizontal waterfall plot
+
+## Control Functions
+
+These functions capture options in lists and take care of defaults (and
+checks where applicable). They avoid cluttering of function signatures
+with long lists of single arguments.
+
+- [`control_analyze_vars()`](https://insightsengineering.github.io/tern/reference/control_analyze_vars.md)
+  **\[stable\]** : Control function for descriptive statistics
+
+- [`control_surv_med_annot()`](https://insightsengineering.github.io/tern/reference/control_annot.md)
+  [`control_coxph_annot()`](https://insightsengineering.github.io/tern/reference/control_annot.md)
+  **\[stable\]** : Control functions for Kaplan-Meier plot annotation
+  tables
+
+- [`control_coxph()`](https://insightsengineering.github.io/tern/reference/control_coxph.md)
+  **\[stable\]** : Control function for Cox-PH model
+
+- [`control_coxreg()`](https://insightsengineering.github.io/tern/reference/control_coxreg.md)
+  **\[stable\]** : Control function for Cox regression
+
+- [`control_incidence_rate()`](https://insightsengineering.github.io/tern/reference/control_incidence_rate.md)
+  **\[stable\]** : Control function for incidence rate
+
+- [`control_lineplot_vars()`](https://insightsengineering.github.io/tern/reference/control_lineplot_vars.md)
+  **\[stable\]** :
+
+  Control function for
+  [`g_lineplot()`](https://insightsengineering.github.io/tern/reference/g_lineplot.md)
+
+- [`control_logistic()`](https://insightsengineering.github.io/tern/reference/control_logistic.md)
+  **\[stable\]** : Control function for logistic regression model
+  fitting
+
+- [`control_riskdiff()`](https://insightsengineering.github.io/tern/reference/control_riskdiff.md)
+  **\[stable\]** : Control function for risk difference column
+
+- [`control_step()`](https://insightsengineering.github.io/tern/reference/control_step.md)
+  **\[stable\]** : Control function for subgroup treatment effect
+  pattern (STEP) calculations
+
+- [`control_surv_time()`](https://insightsengineering.github.io/tern/reference/control_surv_time.md)
+  **\[stable\]** :
+
+  Control function for `survfit` models for survival time
+
+- [`control_surv_timepoint()`](https://insightsengineering.github.io/tern/reference/control_surv_timepoint.md)
+  **\[stable\]** :
+
+  Control function for `survfit` models for patients' survival rate at
+  time points
+
+## Analysis Helper Functions
+
+These functions are useful in defining an analysis.
+
+- [`get_stats()`](https://insightsengineering.github.io/tern/reference/default_stats_formats_labels.md)
+  [`get_stat_names()`](https://insightsengineering.github.io/tern/reference/default_stats_formats_labels.md)
+  [`get_formats_from_stats()`](https://insightsengineering.github.io/tern/reference/default_stats_formats_labels.md)
+  [`get_labels_from_stats()`](https://insightsengineering.github.io/tern/reference/default_stats_formats_labels.md)
+  [`get_indents_from_stats()`](https://insightsengineering.github.io/tern/reference/default_stats_formats_labels.md)
+  [`tern_default_stats`](https://insightsengineering.github.io/tern/reference/default_stats_formats_labels.md)
+  [`tern_default_formats`](https://insightsengineering.github.io/tern/reference/default_stats_formats_labels.md)
+  [`tern_default_labels`](https://insightsengineering.github.io/tern/reference/default_stats_formats_labels.md)
+  [`summary_formats()`](https://insightsengineering.github.io/tern/reference/default_stats_formats_labels.md)
+  [`summary_labels()`](https://insightsengineering.github.io/tern/reference/default_stats_formats_labels.md)
+  **\[experimental\]** : Get default statistical methods and their
+  associated formats, labels, and indent modifiers
+
+- [`h_coxreg_inter_effect()`](https://insightsengineering.github.io/tern/reference/cox_regression_inter.md)
+  [`h_coxreg_extract_interaction()`](https://insightsengineering.github.io/tern/reference/cox_regression_inter.md)
+  [`h_coxreg_inter_estimations()`](https://insightsengineering.github.io/tern/reference/cox_regression_inter.md)
+  **\[stable\]** : Cox regression helper function for interactions
+
+- [`h_get_format_threshold()`](https://insightsengineering.github.io/tern/reference/extreme_format.md)
+  [`h_format_threshold()`](https://insightsengineering.github.io/tern/reference/extreme_format.md)
+  **\[stable\]** : Format extreme values
+
+- [`h_adlb_abnormal_by_worst_grade()`](https://insightsengineering.github.io/tern/reference/h_adlb_abnormal_by_worst_grade.md)
+  **\[stable\]** :
+
+  Helper function to prepare ADLB for
+  [`count_abnormal_by_worst_grade()`](https://insightsengineering.github.io/tern/reference/abnormal_by_worst_grade.md)
+
+- [`h_adlb_worsen()`](https://insightsengineering.github.io/tern/reference/h_adlb_worsen.md)
+  **\[stable\]** : Helper function to prepare ADLB with worst labs
+
+- [`h_adsl_adlb_merge_using_worst_flag()`](https://insightsengineering.github.io/tern/reference/h_adsl_adlb_merge_using_worst_flag.md)
+  **\[stable\]** : Helper function for deriving analysis datasets for
+  select laboratory tables
+
+- [`h_ancova()`](https://insightsengineering.github.io/tern/reference/h_ancova.md)
+  **\[stable\]** : Helper function to return results of a linear model
+
+- [`h_append_grade_groups()`](https://insightsengineering.github.io/tern/reference/h_append_grade_groups.md)
+  **\[stable\]** :
+
+  Helper function for
+  [`s_count_occurrences_by_grade()`](https://insightsengineering.github.io/tern/reference/count_occurrences_by_grade.md)
+
+- [`h_count_cumulative()`](https://insightsengineering.github.io/tern/reference/h_count_cumulative.md)
+  **\[stable\]** :
+
+  Helper function for
+  [`s_count_cumulative()`](https://insightsengineering.github.io/tern/reference/count_cumulative.md)
+
+- [`h_coxreg_univar_formulas()`](https://insightsengineering.github.io/tern/reference/h_cox_regression.md)
+  [`h_coxreg_multivar_formula()`](https://insightsengineering.github.io/tern/reference/h_cox_regression.md)
+  [`h_coxreg_univar_extract()`](https://insightsengineering.github.io/tern/reference/h_cox_regression.md)
+  [`h_coxreg_multivar_extract()`](https://insightsengineering.github.io/tern/reference/h_cox_regression.md)
+  **\[stable\]** : Helper functions for Cox proportional hazards
+  regression
+
+- [`h_decompose_gg()`](https://insightsengineering.github.io/tern/reference/h_decompose_gg.md)
+  **\[deprecated\]** :
+
+  `ggplot` decomposition
+
+- [`h_format_row()`](https://insightsengineering.github.io/tern/reference/h_format_row.md)
+  **\[stable\]** :
+
+  Helper function to format the optional `g_lineplot` table
+
+- [`h_ggkm()`](https://insightsengineering.github.io/tern/reference/h_ggkm.md)
+  **\[deprecated\]** : Helper function to create a KM plot
+
+- [`h_km_layout()`](https://insightsengineering.github.io/tern/reference/h_km_layout.md)
+  **\[deprecated\]** : Helper function to prepare a KM layout
+
+- [`h_get_interaction_vars()`](https://insightsengineering.github.io/tern/reference/h_logistic_regression.md)
+  [`h_interaction_coef_name()`](https://insightsengineering.github.io/tern/reference/h_logistic_regression.md)
+  [`h_or_cat_interaction()`](https://insightsengineering.github.io/tern/reference/h_logistic_regression.md)
+  [`h_or_cont_interaction()`](https://insightsengineering.github.io/tern/reference/h_logistic_regression.md)
+  [`h_or_interaction()`](https://insightsengineering.github.io/tern/reference/h_logistic_regression.md)
+  [`h_simple_term_labels()`](https://insightsengineering.github.io/tern/reference/h_logistic_regression.md)
+  [`h_interaction_term_labels()`](https://insightsengineering.github.io/tern/reference/h_logistic_regression.md)
+  [`h_glm_simple_term_extract()`](https://insightsengineering.github.io/tern/reference/h_logistic_regression.md)
+  [`h_glm_interaction_extract()`](https://insightsengineering.github.io/tern/reference/h_logistic_regression.md)
+  [`h_glm_inter_term_extract()`](https://insightsengineering.github.io/tern/reference/h_logistic_regression.md)
+  [`h_logistic_simple_terms()`](https://insightsengineering.github.io/tern/reference/h_logistic_regression.md)
+  [`h_logistic_inter_terms()`](https://insightsengineering.github.io/tern/reference/h_logistic_regression.md)
+  **\[stable\]** : Helper functions for multivariate logistic regression
+
+- [`h_map_for_count_abnormal()`](https://insightsengineering.github.io/tern/reference/h_map_for_count_abnormal.md)
+  **\[stable\]** :
+
+  Helper function to create a map data frame for `trim_levels_to_map()`
+
+- [`or_glm()`](https://insightsengineering.github.io/tern/reference/h_odds_ratio.md)
+  [`or_clogit()`](https://insightsengineering.github.io/tern/reference/h_odds_ratio.md)
+  **\[stable\]** : Helper functions for odds ratio estimation
+
+- [`h_pkparam_sort()`](https://insightsengineering.github.io/tern/reference/h_pkparam_sort.md)
+  **\[stable\]** :
+
+  Sort pharmacokinetic data by `PARAM` variable
+
+- [`h_ppmeans()`](https://insightsengineering.github.io/tern/reference/h_ppmeans.md)
+  : Function to return the estimated means using predicted probabilities
+
+- [`prop_diff_wald()`](https://insightsengineering.github.io/tern/reference/h_prop_diff.md)
+  [`prop_diff_ha()`](https://insightsengineering.github.io/tern/reference/h_prop_diff.md)
+  [`prop_diff_nc()`](https://insightsengineering.github.io/tern/reference/h_prop_diff.md)
+  [`prop_diff_cmh()`](https://insightsengineering.github.io/tern/reference/h_prop_diff.md)
+  [`prop_diff_strat_nc()`](https://insightsengineering.github.io/tern/reference/h_prop_diff.md)
+  **\[stable\]** : Helper functions to calculate proportion difference
+
+- [`prop_wilson()`](https://insightsengineering.github.io/tern/reference/h_proportions.md)
+  [`prop_strat_wilson()`](https://insightsengineering.github.io/tern/reference/h_proportions.md)
+  [`prop_clopper_pearson()`](https://insightsengineering.github.io/tern/reference/h_proportions.md)
+  [`prop_wald()`](https://insightsengineering.github.io/tern/reference/h_proportions.md)
+  [`prop_agresti_coull()`](https://insightsengineering.github.io/tern/reference/h_proportions.md)
+  [`prop_jeffreys()`](https://insightsengineering.github.io/tern/reference/h_proportions.md)
+  **\[stable\]** : Helper functions for calculating proportion
+  confidence intervals
+
+- [`h_rsp_to_logistic_variables()`](https://insightsengineering.github.io/tern/reference/h_response_biomarkers_subgroups.md)
+  [`h_logistic_mult_cont_df()`](https://insightsengineering.github.io/tern/reference/h_response_biomarkers_subgroups.md)
+  **\[stable\]** : Helper functions for tabulating biomarker effects on
+  binary response by subgroup
+
+- [`h_proportion_df()`](https://insightsengineering.github.io/tern/reference/h_response_subgroups.md)
+  [`h_proportion_subgroups_df()`](https://insightsengineering.github.io/tern/reference/h_response_subgroups.md)
+  [`h_odds_ratio_df()`](https://insightsengineering.github.io/tern/reference/h_response_subgroups.md)
+  [`h_odds_ratio_subgroups_df()`](https://insightsengineering.github.io/tern/reference/h_response_subgroups.md)
+  **\[stable\]** : Helper functions for tabulating binary response by
+  subgroup
+
+- [`h_split_by_subgroups()`](https://insightsengineering.github.io/tern/reference/h_split_by_subgroups.md)
+  **\[stable\]** : Split data frame by subgroups
+
+- [`h_stack_by_baskets()`](https://insightsengineering.github.io/tern/reference/h_stack_by_baskets.md)
+  **\[stable\]** : Helper function to create a new SMQ variable in ADAE
+  by stacking SMQ and/or CQ records.
+
+- [`h_step_window()`](https://insightsengineering.github.io/tern/reference/h_step.md)
+  [`h_step_trt_effect()`](https://insightsengineering.github.io/tern/reference/h_step.md)
+  [`h_step_survival_formula()`](https://insightsengineering.github.io/tern/reference/h_step.md)
+  [`h_step_survival_est()`](https://insightsengineering.github.io/tern/reference/h_step.md)
+  [`h_step_rsp_formula()`](https://insightsengineering.github.io/tern/reference/h_step.md)
+  [`h_step_rsp_est()`](https://insightsengineering.github.io/tern/reference/h_step.md)
+  **\[stable\]** : Helper functions for subgroup treatment effect
+  pattern (STEP) calculations
+
+- [`h_surv_to_coxreg_variables()`](https://insightsengineering.github.io/tern/reference/h_survival_biomarkers_subgroups.md)
+  [`h_coxreg_mult_cont_df()`](https://insightsengineering.github.io/tern/reference/h_survival_biomarkers_subgroups.md)
+  **\[stable\]** : Helper functions for tabulating biomarker effects on
+  survival by subgroup
+
+- [`h_survtime_df()`](https://insightsengineering.github.io/tern/reference/h_survival_duration_subgroups.md)
+  [`h_survtime_subgroups_df()`](https://insightsengineering.github.io/tern/reference/h_survival_duration_subgroups.md)
+  [`h_coxph_df()`](https://insightsengineering.github.io/tern/reference/h_survival_duration_subgroups.md)
+  [`h_coxph_subgroups_df()`](https://insightsengineering.github.io/tern/reference/h_survival_duration_subgroups.md)
+  **\[stable\]** : Helper functions for tabulating survival duration by
+  subgroup
+
+- [`h_tbl_coxph_pairwise()`](https://insightsengineering.github.io/tern/reference/h_tbl_coxph_pairwise.md)
+  **\[stable\]** : Helper function for generating a pairwise Cox-PH
+  table
+
+- [`h_tbl_median_surv()`](https://insightsengineering.github.io/tern/reference/h_tbl_median_surv.md)
+  **\[stable\]** : Helper function for survival estimations
+
+- [`h_worsen_counter()`](https://insightsengineering.github.io/tern/reference/h_worsen_counter.md)
+  **\[stable\]** :
+
+  Helper function to analyze patients for
+  [`s_count_abnormal_lab_worsen_by_baseline()`](https://insightsengineering.github.io/tern/reference/abnormal_lab_worsen_by_baseline.md)
+
+- [`imputation_rule()`](https://insightsengineering.github.io/tern/reference/imputation_rule.md)
+  **\[stable\]** : Apply 1/3 or 1/2 imputation rule to data
+
+- [`labels_use_control()`](https://insightsengineering.github.io/tern/reference/labels_use_control.md)
+  **\[stable\]** : Update labels according to control specifications
+
+- [`check_diff_prop_ci()`](https://insightsengineering.github.io/tern/reference/check_diff_prop_ci.md)
+  **\[stable\]** : Check proportion difference arguments
+
+## rtables Helper Functions
+
+These functions help to work with the `rtables` package and may be moved
+there later.
+
+- [`add_riskdiff()`](https://insightsengineering.github.io/tern/reference/add_riskdiff.md)
+  **\[stable\]** : Split function to configure risk difference column
+
+- [`add_rowcounts()`](https://insightsengineering.github.io/tern/reference/add_rowcounts.md)
+  **\[stable\]** : Layout-creating function to add row total counts
+
+- [`append_varlabels()`](https://insightsengineering.github.io/tern/reference/append_varlabels.md)
+  **\[stable\]** : Add variable labels to top left corner in table
+
+- [`default_na_str()`](https://insightsengineering.github.io/tern/reference/default_na_str.md)
+  [`set_default_na_str()`](https://insightsengineering.github.io/tern/reference/default_na_str.md)
+  **\[stable\]** :
+
+  Default string replacement for `NA` values
+
+- [`as.rtable()`](https://insightsengineering.github.io/tern/reference/as.rtable.md)
+  **\[stable\]** :
+
+  Convert to `rtable`
+
+- [`combine_counts()`](https://insightsengineering.github.io/tern/reference/combine_counts.md)
+  : Combine counts
+
+- [`combine_groups()`](https://insightsengineering.github.io/tern/reference/combine_groups.md)
+  **\[stable\]** : Reference and treatment group combination
+
+- [`combine_vectors()`](https://insightsengineering.github.io/tern/reference/combine_vectors.md)
+  : Element-wise combination of two vectors
+
+- [`combine_levels()`](https://insightsengineering.github.io/tern/reference/factor_utils.md)
+  [`as_factor_keep_attributes()`](https://insightsengineering.github.io/tern/reference/factor_utils.md)
+  [`fct_discard()`](https://insightsengineering.github.io/tern/reference/factor_utils.md)
+  [`fct_explicit_na_if()`](https://insightsengineering.github.io/tern/reference/factor_utils.md)
+  [`fct_collapse_only()`](https://insightsengineering.github.io/tern/reference/factor_utils.md)
+  **\[stable\]** : Factor utilities
+
+- [`h_col_indices()`](https://insightsengineering.github.io/tern/reference/h_col_indices.md)
+  **\[stable\]** : Obtain column indices
+
+- [`h_row_first_values()`](https://insightsengineering.github.io/tern/reference/rtables_access.md)
+  [`h_row_counts()`](https://insightsengineering.github.io/tern/reference/rtables_access.md)
+  [`h_row_fractions()`](https://insightsengineering.github.io/tern/reference/rtables_access.md)
+  [`h_col_counts()`](https://insightsengineering.github.io/tern/reference/rtables_access.md)
+  [`h_content_first_row()`](https://insightsengineering.github.io/tern/reference/rtables_access.md)
+  [`is_leaf_table()`](https://insightsengineering.github.io/tern/reference/rtables_access.md)
+  [`check_names_indices()`](https://insightsengineering.github.io/tern/reference/rtables_access.md)
+  **\[stable\]** :
+
+  Helper functions for accessing information from `rtables`
+
+- [`rtable2gg()`](https://insightsengineering.github.io/tern/reference/rtable2gg.md)
+  **\[experimental\]** :
+
+  Convert `rtable` objects to `ggplot` objects
+
+- [`split_cols_by_groups()`](https://insightsengineering.github.io/tern/reference/split_cols_by_groups.md)
+  **\[stable\]** : Split columns by groups of levels
+
+- [`to_string_matrix()`](https://insightsengineering.github.io/tern/reference/to_string_matrix.md)
+  **\[stable\]** : Convert table into matrix of strings
+
+- [`groups_list_to_df()`](https://insightsengineering.github.io/tern/reference/groups_list_to_df.md)
+  : Convert list of groups to a data frame
+
+- [`ref_group_position()`](https://insightsengineering.github.io/tern/reference/utils_split_funs.md)
+  [`level_order()`](https://insightsengineering.github.io/tern/reference/utils_split_funs.md)
+  **\[stable\]** : Custom split functions
+
+- [`labels_or_names()`](https://insightsengineering.github.io/tern/reference/labels_or_names.md)
+  : Labels or names of list elements
+
+## rtables Formatting Functions
+
+These functions provide customized formatting rules to work with the
+`rtables` package.
+
+- [`format_auto()`](https://insightsengineering.github.io/tern/reference/format_auto.md)
+  **\[stable\]** : Format automatically using data significant digits
+
+- [`format_count_fraction()`](https://insightsengineering.github.io/tern/reference/format_count_fraction.md)
+  **\[stable\]** : Format count and fraction
+
+- [`format_count_fraction_fixed_dp()`](https://insightsengineering.github.io/tern/reference/format_count_fraction_fixed_dp.md)
+  **\[experimental\]** : Format count and percentage with fixed single
+  decimal place
+
+- [`format_count_fraction_lt10()`](https://insightsengineering.github.io/tern/reference/format_count_fraction_lt10.md)
+  **\[stable\]** : Format count and fraction with special case for count
+  \< 10
+
+- [`format_extreme_values()`](https://insightsengineering.github.io/tern/reference/format_extreme_values.md)
+  **\[stable\]** : Format a single extreme value
+
+- [`format_extreme_values_ci()`](https://insightsengineering.github.io/tern/reference/format_extreme_values_ci.md)
+  **\[stable\]** : Format extreme values part of a confidence interval
+
+- [`format_fraction()`](https://insightsengineering.github.io/tern/reference/format_fraction.md)
+  **\[stable\]** : Format fraction and percentage
+
+- [`format_fraction_fixed_dp()`](https://insightsengineering.github.io/tern/reference/format_fraction_fixed_dp.md)
+  **\[stable\]** : Format fraction and percentage with fixed single
+  decimal place
+
+- [`format_fraction_threshold()`](https://insightsengineering.github.io/tern/reference/format_fraction_threshold.md)
+  **\[stable\]** : Format fraction with lower threshold
+
+- [`format_sigfig()`](https://insightsengineering.github.io/tern/reference/format_sigfig.md)
+  : Format numeric values by significant figures
+
+- [`format_xx()`](https://insightsengineering.github.io/tern/reference/format_xx.md)
+  : Format XX as a formatting function
+
+- [`range_noinf()`](https://insightsengineering.github.io/tern/reference/range_noinf.md)
+  **\[stable\]** :
+
+  Re-implemented [`range()`](https://rdrr.io/r/base/range.html) default
+  S3 method for numerical objects
+
+## rtables Scoring Functions
+
+These functions can help with table sorting.
+
+- [`score_occurrences()`](https://insightsengineering.github.io/tern/reference/score_occurrences.md)
+  [`score_occurrences_cols()`](https://insightsengineering.github.io/tern/reference/score_occurrences.md)
+  [`score_occurrences_subtable()`](https://insightsengineering.github.io/tern/reference/score_occurrences.md)
+  [`score_occurrences_cont_cols()`](https://insightsengineering.github.io/tern/reference/score_occurrences.md)
+  **\[stable\]** : Occurrence table sorting
+
+## rtables Pruning Functions
+
+These functions and classes help with flexible pruning of tables.
+
+- [`` `&`( ``*`<CombinationFunction>`*`,`*`<CombinationFunction>`*`)`](https://insightsengineering.github.io/tern/reference/combination_function.md)
+  [`` `|`( ``*`<CombinationFunction>`*`,`*`<CombinationFunction>`*`)`](https://insightsengineering.github.io/tern/reference/combination_function.md)
+  [`` `!`( ``*`<CombinationFunction>`*`)`](https://insightsengineering.github.io/tern/reference/combination_function.md)
+  **\[stable\]** :
+
+  Class for `CombinationFunction`
+
+- [`keep_rows()`](https://insightsengineering.github.io/tern/reference/prune_occurrences.md)
+  [`keep_content_rows()`](https://insightsengineering.github.io/tern/reference/prune_occurrences.md)
+  [`has_count_in_cols()`](https://insightsengineering.github.io/tern/reference/prune_occurrences.md)
+  [`has_count_in_any_col()`](https://insightsengineering.github.io/tern/reference/prune_occurrences.md)
+  [`has_fraction_in_cols()`](https://insightsengineering.github.io/tern/reference/prune_occurrences.md)
+  [`has_fraction_in_any_col()`](https://insightsengineering.github.io/tern/reference/prune_occurrences.md)
+  [`has_fractions_difference()`](https://insightsengineering.github.io/tern/reference/prune_occurrences.md)
+  [`has_counts_difference()`](https://insightsengineering.github.io/tern/reference/prune_occurrences.md)
+  **\[stable\]** : Occurrence table pruning
+
+## Graph Helper Functions
+
+These functions are useful to modify graphs.
+
+- [`decorate_grob()`](https://insightsengineering.github.io/tern/reference/decorate_grob.md)
+  **\[stable\]** : Add titles, footnotes, page Number, and a bounding
+  box to a grid grob
+
+- [`split_text_grob()`](https://insightsengineering.github.io/tern/reference/split_text_grob.md)
+  : Split text according to available text width
+
+- [`decorate_grob_factory()`](https://insightsengineering.github.io/tern/reference/decorate_grob_factory.md)
+  : Update page number
+
+- [`decorate_grob_set()`](https://insightsengineering.github.io/tern/reference/decorate_grob_set.md)
+  **\[stable\]** :
+
+  Decorate set of `grob`s and add page numbering
+
+- [`h_g_ipp()`](https://insightsengineering.github.io/tern/reference/h_g_ipp.md)
+  **\[stable\]** : Helper function to create simple line plot over time
+
+- [`h_xticks()`](https://insightsengineering.github.io/tern/reference/h_xticks.md)
+  **\[stable\]** : Helper function to calculate x-tick positions
+
+## Data Helper Functions
+
+These functions are used by other functions to derive data.
+
+- [`aesi_label()`](https://insightsengineering.github.io/tern/reference/aesi_label.md)
+  **\[stable\]** : Labels for adverse event baskets
+
+- [`combine_levels()`](https://insightsengineering.github.io/tern/reference/factor_utils.md)
+  [`as_factor_keep_attributes()`](https://insightsengineering.github.io/tern/reference/factor_utils.md)
+  [`fct_discard()`](https://insightsengineering.github.io/tern/reference/factor_utils.md)
+  [`fct_explicit_na_if()`](https://insightsengineering.github.io/tern/reference/factor_utils.md)
+  [`fct_collapse_only()`](https://insightsengineering.github.io/tern/reference/factor_utils.md)
+  **\[stable\]** : Factor utilities
+
+- [`bins_percent_labels()`](https://insightsengineering.github.io/tern/reference/bins_percent_labels.md)
+  : Labels for bins in percent
+
+- [`cut_quantile_bins()`](https://insightsengineering.github.io/tern/reference/cut_quantile_bins.md)
+  **\[stable\]** : Cut numeric vector into empirical quantile bins
+
+- [`day2month()`](https://insightsengineering.github.io/tern/reference/day2month.md)
+  : Conversion of days to months
+
+- [`df_explicit_na()`](https://insightsengineering.github.io/tern/reference/df_explicit_na.md)
+  **\[stable\]** : Encode categorical missing values in a data frame
+
+- [`d_count_abnormal_by_baseline()`](https://insightsengineering.github.io/tern/reference/d_count_abnormal_by_baseline.md)
+  **\[stable\]** :
+
+  Description function for
+  [`s_count_abnormal_by_baseline()`](https://insightsengineering.github.io/tern/reference/abnormal_by_baseline.md)
+
+- [`d_count_cumulative()`](https://insightsengineering.github.io/tern/reference/d_count_cumulative.md)
+  **\[stable\]** : Description of cumulative count
+
+- [`d_count_missed_doses()`](https://insightsengineering.github.io/tern/reference/d_count_missed_doses.md)
+  **\[stable\]** :
+
+  Description function that calculates labels for
+  [`s_count_missed_doses()`](https://insightsengineering.github.io/tern/reference/count_missed_doses.md)
+
+- [`d_onco_rsp_label()`](https://insightsengineering.github.io/tern/reference/d_onco_rsp_label.md)
+  **\[stable\]** : Description of standard oncology response
+
+- [`d_pkparam()`](https://insightsengineering.github.io/tern/reference/d_pkparam.md)
+  **\[stable\]** : Generate PK reference dataset
+
+- [`d_proportion()`](https://insightsengineering.github.io/tern/reference/d_proportion.md)
+  **\[stable\]** : Description of the proportion summary
+
+- [`d_proportion_diff()`](https://insightsengineering.github.io/tern/reference/d_proportion_diff.md)
+  **\[stable\]** : Description of method used for proportion comparison
+
+- [`d_rsp_subgroups_colvars()`](https://insightsengineering.github.io/tern/reference/d_rsp_subgroups_colvars.md)
+  **\[stable\]** : Labels for column variables in binary response by
+  subgroup table
+
+- [`d_survival_subgroups_colvars()`](https://insightsengineering.github.io/tern/reference/d_survival_subgroups_colvars.md)
+  **\[stable\]** : Labels for column variables in survival duration by
+  subgroup table
+
+- [`d_test_proportion_diff()`](https://insightsengineering.github.io/tern/reference/d_test_proportion_diff.md)
+  **\[stable\]** : Description of the difference test between two
+  proportions
+
+- [`explicit_na()`](https://insightsengineering.github.io/tern/reference/explicit_na.md)
+  [`default_drop_na()`](https://insightsengineering.github.io/tern/reference/explicit_na.md)
+  [`set_default_drop_na()`](https://insightsengineering.github.io/tern/reference/explicit_na.md)
+  **\[stable\]** : Missing data
+
+- [`f_conf_level()`](https://insightsengineering.github.io/tern/reference/f_conf_level.md)
+  **\[stable\]** : Utility function to create label for confidence
+  interval
+
+- [`f_pval()`](https://insightsengineering.github.io/tern/reference/f_pval.md)
+  **\[stable\]** : Utility function to create label for p-value
+
+- [`h_data_plot()`](https://insightsengineering.github.io/tern/reference/h_data_plot.md)
+  **\[stable\]** : Helper function to tidy survival fit data
+
+- [`month2day()`](https://insightsengineering.github.io/tern/reference/month2day.md)
+  **\[stable\]** : Conversion of months to days
+
+- [`reapply_varlabels()`](https://insightsengineering.github.io/tern/reference/reapply_varlabels.md)
+  : Reapply variable labels
+
+- [`sas_na()`](https://insightsengineering.github.io/tern/reference/sas_na.md)
+  **\[stable\]** :
+
+  Convert strings to `NA`
+
+- [`stat_mean_ci()`](https://insightsengineering.github.io/tern/reference/stat_mean_ci.md)
+  **\[stable\]** : Confidence interval for mean
+
+- [`stat_mean_pval()`](https://insightsengineering.github.io/tern/reference/stat_mean_pval.md)
+  **\[stable\]** : p-Value of the mean
+
+- [`stat_median_ci()`](https://insightsengineering.github.io/tern/reference/stat_median_ci.md)
+  **\[stable\]** : Confidence interval for median
+
+- [`stat_propdiff_ci()`](https://insightsengineering.github.io/tern/reference/stat_propdiff_ci.md)
+  **\[stable\]** : Proportion difference and confidence interval
+
+- [`strata_normal_quantile()`](https://insightsengineering.github.io/tern/reference/strata_normal_quantile.md)
+  **\[stable\]** : Helper function for the estimation of stratified
+  quantiles
+
+- [`to_n()`](https://insightsengineering.github.io/tern/reference/to_n.md)
+  **\[stable\]** : Replicate entries of a vector if required
+
+- [`update_weights_strat_wilson()`](https://insightsengineering.github.io/tern/reference/update_weights_strat_wilson.md)
+  **\[stable\]** :
+
+  Helper function for the estimation of weights for
+  [`prop_strat_wilson()`](https://insightsengineering.github.io/tern/reference/h_proportions.md)
+
+## Assertion Functions
+
+These functions supplement those in the `checkmate` package.
+
+- [`assert_list_of_variables()`](https://insightsengineering.github.io/tern/reference/assertions.md)
+  [`assert_df_with_variables()`](https://insightsengineering.github.io/tern/reference/assertions.md)
+  [`assert_valid_factor()`](https://insightsengineering.github.io/tern/reference/assertions.md)
+  [`assert_df_with_factors()`](https://insightsengineering.github.io/tern/reference/assertions.md)
+  [`assert_proportion_value()`](https://insightsengineering.github.io/tern/reference/assertions.md)
+  **\[stable\]** :
+
+  Additional assertions to use with `checkmate`
+
+## Data
+
+Data included in the package.
+
+- [`tern_ex_adsl`](https://insightsengineering.github.io/tern/reference/ex_data.md)
+  [`tern_ex_adae`](https://insightsengineering.github.io/tern/reference/ex_data.md)
+  [`tern_ex_adlb`](https://insightsengineering.github.io/tern/reference/ex_data.md)
+  [`tern_ex_adpp`](https://insightsengineering.github.io/tern/reference/ex_data.md)
+  [`tern_ex_adrs`](https://insightsengineering.github.io/tern/reference/ex_data.md)
+  [`tern_ex_adtte`](https://insightsengineering.github.io/tern/reference/ex_data.md)
+  : Simulated CDISC data for examples
+
+## Deprecated Functions
+
+Functions that are currently deprecated within `tern`.
+
+- [`forest_viewport()`](https://insightsengineering.github.io/tern/reference/forest_viewport.md)
+  **\[deprecated\]** : Create a viewport tree for the forest plot
+
+- [`h_decompose_gg()`](https://insightsengineering.github.io/tern/reference/h_decompose_gg.md)
+  **\[deprecated\]** :
+
+  `ggplot` decomposition
+
+- [`h_ggkm()`](https://insightsengineering.github.io/tern/reference/h_ggkm.md)
+  **\[deprecated\]** : Helper function to create a KM plot
+
+- [`h_grob_coxph()`](https://insightsengineering.github.io/tern/reference/h_grob_coxph.md)
+  **\[deprecated\]** : Helper function to create Cox-PH grobs
+
+- [`h_grob_median_surv()`](https://insightsengineering.github.io/tern/reference/h_grob_median_surv.md)
+  **\[deprecated\]** : Helper function to create survival estimation
+  grobs
+
+- [`h_grob_tbl_at_risk()`](https://insightsengineering.github.io/tern/reference/h_grob_tbl_at_risk.md)
+  **\[deprecated\]** : Helper function to create patient-at-risk grobs
+
+- [`h_grob_y_annot()`](https://insightsengineering.github.io/tern/reference/h_grob_y_annot.md)
+  **\[deprecated\]** : Helper function to create grid object with y-axis
+  annotation
+
+- [`h_km_layout()`](https://insightsengineering.github.io/tern/reference/h_km_layout.md)
+  **\[deprecated\]** : Helper function to prepare a KM layout
+
+- [`h_split_param()`](https://insightsengineering.github.io/tern/reference/h_split_param.md)
+  **\[deprecated\]** : Split parameters
+
+- [`h_tab_one_biomarker()`](https://insightsengineering.github.io/tern/reference/h_biomarkers_subgroups.md)
+  [`h_tab_rsp_one_biomarker()`](https://insightsengineering.github.io/tern/reference/h_biomarkers_subgroups.md)
+  [`h_tab_surv_one_biomarker()`](https://insightsengineering.github.io/tern/reference/h_biomarkers_subgroups.md)
+  **\[deprecated\]** : Helper functions for tabulation of a single
+  biomarker result
+
+- [`stack_grobs()`](https://insightsengineering.github.io/tern/reference/stack_grobs.md)
+  **\[deprecated\]** : Stack multiple grobs
+
+- [`arrange_grobs()`](https://insightsengineering.github.io/tern/reference/arrange_grobs.md)
+  **\[deprecated\]** : Arrange multiple grobs
+
+- [`draw_grob()`](https://insightsengineering.github.io/tern/reference/draw_grob.md)
+  **\[deprecated\]** :
+
+  Draw `grob`

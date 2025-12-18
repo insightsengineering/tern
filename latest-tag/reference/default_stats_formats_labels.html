@@ -39,7 +39,7 @@ seen in analyze_vars(). See notes to understand why this is experimental.">
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.10</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,6 +74,7 @@ seen in analyze_vars(). See notes to understand why this is experimental.">
     <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/release-candidate">release-candidate</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/main">main</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/latest-tag">latest-tag</a>
+<a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.10">v0.9.10</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.9">v0.9.9</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8.433">v0.9.8.433</a>
 <a class="dropdown-item" data-toggle="tooltip" title="" href="https://insightsengineering.github.io/tern/v0.9.8">v0.9.8</a>
@@ -119,7 +120,7 @@ seen in analyze_vars(). See notes to understand why this is experimental.">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Get default statistical methods and their associated formats, labels, and indent modifiers</h1>
-      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.9/R/utils_default_stats_formats_labels.R" class="external-link"><code>R/utils_default_stats_formats_labels.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/insightsengineering/tern/blob/v0.9.10/R/utils_default_stats_formats_labels.R" class="external-link"><code>R/utils_default_stats_formats_labels.R</code></a></small>
       <div class="d-none name"><code>default_stats_formats_labels.Rd</code></div>
     </div>
 
@@ -244,7 +245,7 @@ a statistical function. See examples for a structure with two statistical result
 </dt>
 <dd><p>(named <code>vector</code>)<br> custom formats to use instead of defaults. Can be a character vector with
 values from <code><a href="https://insightsengineering.github.io/formatters/latest-tag/reference/list_formats.html" class="external-link">formatters::list_valid_format_labels()</a></code> or custom format functions. Defaults to <code>NULL</code> for any rows
-with no value is provided.</p></dd>
+with no value is provided. See Details.</p></dd>
 
 
 <dt id="arg-levels-per-stats">levels_per_stats<a class="anchor" aria-label="anchor" href="#arg-levels-per-stats"></a>
@@ -330,6 +331,12 @@ statistical outputs.</p></li>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a>
 </h2>
     <p>Current choices for <code>type</code> are <code>counts</code> and <code>numeric</code> for <code><a href="analyze_variables.html">analyze_vars()</a></code> and affect <code>get_stats()</code>.</p>
+<p>if <code>formats_in</code> is <code>"default"</code>, instead of populating the
+return value with tern defaults, the return value will specify
+the <code>"default"</code> format for each element. This is useful
+primarily when formatting behavior should be inherited from a
+format specified via the <code>format</code> or <code>formats_var</code> argument to
+<code>analyze</code>.</p>
 <p><code>summary_*</code> quick get functions for labels or formats uses <code>get_stats</code> and <code>get_labels_from_stats</code> or
 <code>get_formats_from_stats</code> respectively to retrieve relevant information.</p>
     </div>
@@ -362,7 +369,7 @@ Returns labels of descriptive statistics which are understood by <code>rtables</
     <p>These defaults are experimental because we use the names of functions to retrieve the default
 statistics. This should be generalized in groups of methods according to more reasonable groupings.</p>
 <p>Formats in <code>tern</code> and <code>rtables</code> can be functions that take in the table cell value and
-return a string. This is well documented in <code><a href="https://insightsengineering.github.io/rtables/latest-release/articles/custom_appearance.html" class="external-link">vignette("custom_appearance", package = "rtables")</a></code>.</p>
+return a string. This is well documented in <code><a href="https://insightsengineering.github.io/rtables/latest-tag/articles/custom_appearance.html" class="external-link">vignette("custom_appearance", package = "rtables")</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a>
