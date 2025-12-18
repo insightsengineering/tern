@@ -273,8 +273,7 @@ Statistician*, **52**(2), 119–126.
 Hauck WW, Anderson S (1986). “A Comparison of Large-Sample Confidence
 Interval Methods for the Difference of Two Binomial Probabilities.” *The
 American Statistician*, **40**(4), 318–322.
-[doi:10.2307/2684618](https://doi.org/10.2307/2684618) ,
-[2025-12-08](https://insightsengineering.github.io/tern/reference/2025-12-08).  
+[doi:10.2307/2684618](https://doi.org/10.2307/2684618) .  
   
 Mantel N, Haenszel W (1959). “Statistical aspects of the analysis of
 data from retrospective studies of disease.” *Journal of the National

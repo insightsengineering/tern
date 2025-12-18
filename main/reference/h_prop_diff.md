@@ -111,8 +111,7 @@ A named `list` of elements `diff` (proportion difference) and `diff_ci`
 Hauck WW, Anderson S (1986). “A Comparison of Large-Sample Confidence
 Interval Methods for the Difference of Two Binomial Probabilities.” *The
 American Statistician*, **40**(4), 318–322.
-[doi:10.2307/2684618](https://doi.org/10.2307/2684618) ,
-[2025-12-08](https://insightsengineering.github.io/tern/reference/2025-12-08).  
+[doi:10.2307/2684618](https://doi.org/10.2307/2684618) .  
   
 Miettinen OS, Nurminen M (1985). “Comparative analysis of two rates.”
 *Statistics in Medicine*, **4**(2), 213–226.
