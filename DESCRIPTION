@@ -1,6 +1,6 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.9.10.9001
+Version: 0.9.10.9002
 Date: 2025-12-23
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre"),
@@ -17,8 +17,8 @@ Authors@R: c(
     person("Francois", "Collin", role = "aut"),
     person("Adrian", "Waddell", , "adrian.waddell@gene.com", role = "aut"),
     person("Pawel", "Rucki", , "pawel.rucki@roche.com", role = "aut"),
-    person("Chendi", "Liao", , , role = "aut"),
-    person("Jennifer", "Li", , , role = "aut"),
+    person("Chendi", "Liao", role = "aut"),
+    person("Jennifer", "Li", role = "aut"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
 Description: Table, Listings, and Graphs (TLG) library for common outputs
