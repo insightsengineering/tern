@@ -1,5 +1,7 @@
 # Changelog
 
+## tern 0.9.10.9002
+
 ## tern 0.9.10
 
 CRAN release: 2025-12-18

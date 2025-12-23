@@ -37,13 +37,13 @@ Source:
 
 Zhu J, Sabanés Bové D, Stoilova J, Garolini D, de la Rua E, Yogasekaram
 A, Wang H, Collin F, Waddell A, Rucki P, Liao C, Li J (2025). *tern:
-Create Common TLGs Used in Clinical Trials*. R package version 0.9.10,
-<https://insightsengineering.github.io/tern/>.
+Create Common TLGs Used in Clinical Trials*. R package version
+0.9.10.9002, <https://insightsengineering.github.io/tern/>.
 
     @Manual{,
       title = {tern: Create Common TLGs Used in Clinical Trials},
       author = {Joe Zhu and Daniel {Sabanés Bové} and Jana Stoilova and Davide Garolini and Emily {de la Rua} and Abinaya Yogasekaram and Heng Wang and Francois Collin and Adrian Waddell and Pawel Rucki and Chendi Liao and Jennifer Li},
       year = {2025},
-      note = {R package version 0.9.10},
+      note = {R package version 0.9.10.9002},
       url = {https://insightsengineering.github.io/tern/},
     }
