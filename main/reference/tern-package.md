@@ -22,7 +22,7 @@ Authors:
 
 - Daniel Sabanés Bové <daniel.sabanes_bove@rconis.com>
 
-- Jana Stoilova <jana.stoilova@roche.com>
+- Jana Stoilova <stoilova@dnli.com>
 
 - Davide Garolini <davide.garolini@roche.com>
   ([ORCID](https://orcid.org/0000-0002-1445-1369))
