@@ -6,7 +6,7 @@ Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7566-2787")),
     person("Daniel", "Sabanés Bové", , "daniel.sabanes_bove@rconis.com", role = "aut"),
-    person("Jana", "Stoilova", , "jana.stoilova@roche.com", role = "aut"),
+    person("Jana", "Stoilova", , "stoilova@dnli.com", role = "aut"),
     person("Davide", "Garolini", , "davide.garolini@roche.com", role = "aut",
            comment = c(ORCID = "0000-0002-1445-1369")),
     person("Emily", "de la Rua", , "emilydelarua@gmail.com", role = "aut",
