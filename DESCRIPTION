@@ -62,10 +62,9 @@ Suggests:
     lattice (>= 0.18-4),
     lubridate (>= 1.7.9),
     rmarkdown (>= 2.23),
-    sass (>= 0.4.10),
     stringr (>= 1.4.1),
     svglite (>= 2.1.2),
-    testthat (>= 3.1.9),
+    testthat (>= 3.3.0),
     withr (>= 2.0.0)
 VignetteBuilder:
     knitr,
