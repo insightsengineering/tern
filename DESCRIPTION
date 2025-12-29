@@ -61,7 +61,7 @@ Suggests:
     knitr (>= 1.42),
     lattice (>= 0.18-4),
     lubridate (>= 1.7.9),
-    rmarkdown (>= 2.23),
+    rmarkdown (>= 2.28),
     stringr (>= 1.4.1),
     svglite (>= 2.1.2),
     testthat (>= 3.3.0),
