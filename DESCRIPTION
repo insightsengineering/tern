@@ -15,7 +15,7 @@ Authors@R: c(
            comment = c(ORCID = "0009-0005-2083-1105")),
     person("Heng", "Wang", , "Heng.Wang21@gilead.com", role = "aut"),
     person("Francois", "Collin", role = "aut"),
-    person("Adrian", "Waddell", , "adrian.waddell@gene.com", role = "aut"),
+    person("Adrian", "Waddell", , "adrian.waddell@gmail.com", role = "aut"),
     person("Pawel", "Rucki", , "pawel.rucki@roche.com", role = "aut"),
     person("Chendi", "Liao", role = "aut"),
     person("Jennifer", "Li", role = "aut"),
