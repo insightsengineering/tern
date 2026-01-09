@@ -1,7 +1,7 @@
 Package: tern
 Title: Create Common TLGs Used in Clinical Trials
-Version: 0.9.10.9004
-Date: 2025-12-25
+Version: 0.9.10.9006
+Date: 2026-01-03
 Authors@R: c(
     person("Joe", "Zhu", , "joe.zhu@roche.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7566-2787")),
@@ -15,7 +15,7 @@ Authors@R: c(
            comment = c(ORCID = "0009-0005-2083-1105")),
     person("Heng", "Wang", , "Heng.Wang21@gilead.com", role = "aut"),
     person("Francois", "Collin", role = "aut"),
-    person("Adrian", "Waddell", , "adrian.waddell@gene.com", role = "aut"),
+    person("Adrian", "Waddell", , "adrian.waddell@gmail.com", role = "aut"),
     person("Pawel", "Rucki", , "pawel.rucki@roche.com", role = "aut"),
     person("Chendi", "Liao", role = "aut"),
     person("Jennifer", "Li", role = "aut"),
@@ -61,11 +61,10 @@ Suggests:
     knitr (>= 1.42),
     lattice (>= 0.18-4),
     lubridate (>= 1.7.9),
-    rmarkdown (>= 2.23),
-    sass (>= 0.4.10),
+    rmarkdown (>= 2.28),
     stringr (>= 1.4.1),
     svglite (>= 2.1.2),
-    testthat (>= 3.1.9),
+    testthat (>= 3.3.0),
     withr (>= 2.0.0)
 VignetteBuilder:
     knitr,

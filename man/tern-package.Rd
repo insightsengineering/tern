@@ -29,7 +29,7 @@ Authors:
   \item Abinaya Yogasekaram \email{ayogasek@gmail.com} (\href{https://orcid.org/0009-0005-2083-1105}{ORCID})
   \item Heng Wang \email{Heng.Wang21@gilead.com}
   \item Francois Collin
-  \item Adrian Waddell \email{adrian.waddell@gene.com}
+  \item Adrian Waddell \email{adrian.waddell@gmail.com}
   \item Pawel Rucki \email{pawel.rucki@roche.com}
   \item Chendi Liao
   \item Jennifer Li
