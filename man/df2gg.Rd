@@ -11,7 +11,8 @@ df2gg(
   col_labels = TRUE,
   col_lab_fontface = "bold",
   hline = TRUE,
-  bg_fill = NULL
+  bg_fill = NULL,
+  add_proper_xaxis = FALSE
 )
 }
 \arguments{
@@ -32,6 +33,8 @@ if \code{col_labels = TRUE}). Defaults to \code{"bold"}.}
 \item{hline}{(\code{flag})\cr whether a horizontal line should be printed below the first row of the table.}
 
 \item{bg_fill}{(\code{string})\cr table background fill color.}
+
+\item{add_proper_xaxis}{(\code{flag})\cr whether to add a proper x-axis with column values.}
 }
 \value{
 A \code{ggplot} object.
