@@ -334,7 +334,7 @@ g_km <- function(df,
     )
   ) +
     theme_bw(base_size = font_size) +
-    scale_y_continuous(limits = ylim, expand = c(0.025, 0)) +
+    scale_y_continuous(limits = ylim) +
     labs(title = title, x = xlab, y = ylab, caption = footnotes) +
     theme(
       axis.text = element_text(size = font_size),
@@ -352,18 +352,18 @@ g_km <- function(df,
   # derive x-axis limits
   if (!is.null(max_time) && !is.null(xticks)) {
     gg_plt <- gg_plt + scale_x_continuous(
-      breaks = xticks, limits = c(min(0, xticks), max(c(xticks, max_time))), expand = c(0.025, 0)
+      breaks = xticks, limits = c(min(0, xticks), max(c(xticks, max_time)))
     )
   } else if (!is.null(xticks)) {
     if (max(data$time) <= max(xticks)) {
       gg_plt <- gg_plt + scale_x_continuous(
-        breaks = xticks, limits = c(min(0, min(xticks)), max(xticks)), expand = c(0.025, 0)
+        breaks = xticks, limits = c(min(0, min(xticks)), max(xticks))
       )
     } else {
-      gg_plt <- gg_plt + scale_x_continuous(breaks = xticks, expand = c(0.025, 0))
+      gg_plt <- gg_plt + scale_x_continuous(breaks = xticks)
     }
   } else if (!is.null(max_time)) {
-    gg_plt <- gg_plt + scale_x_continuous(limits = c(0, max_time), expand = c(0.025, 0))
+    gg_plt <- gg_plt + scale_x_continuous(limits = c(0, max_time))
   }
 
   # set legend position
@@ -427,7 +427,75 @@ g_km <- function(df,
   }
   if (!is.null(ggtheme)) gg_plt <- gg_plt + ggtheme
 
-  # annotate with stats (text/vlines)
+  # add at risk annotation table -----------------------------------------------
+  if (annot_at_risk) {
+    annot_tbl <- summary(fit_km, times = xticks, extend = TRUE)
+    annot_tbl <- if (is.null(fit_km$strata)) {
+      data.frame(
+        n.risk = annot_tbl$n.risk,
+        time = annot_tbl$time,
+        strata = armval
+      )
+    } else {
+      strata_lst <- strsplit(sub("=", "equals", levels(annot_tbl$strata)), "equals")
+      levels(annot_tbl$strata) <- matrix(unlist(strata_lst), ncol = 2, byrow = TRUE)[, 2]
+      data.frame(
+        n.risk = annot_tbl$n.risk,
+        time = annot_tbl$time,
+        strata = annot_tbl$strata
+      )
+    }
+
+    at_risk_tbl <- as.data.frame(tidyr::pivot_wider(annot_tbl, names_from = "time", values_from = "n.risk")[, -1])
+    at_risk_tbl[is.na(at_risk_tbl)] <- 0
+    rownames(at_risk_tbl) <- levels(annot_tbl$strata)
+
+    gg_at_risk <- df2gg(
+      at_risk_tbl,
+      font_size = font_size, col_labels = FALSE, hline = FALSE,
+      colwidths = rep(1, ncol(at_risk_tbl)),
+      add_proper_xaxis = TRUE
+    ) +
+      ggplot2::labs(title = if (!is.null(title)) title else NULL, x = xlab) +
+      ggplot2::theme_bw(base_size = font_size) +
+      ggplot2::theme(
+        plot.title = ggplot2::element_text(size = font_size, vjust = 3, face = "bold"),
+        panel.border = ggplot2::element_blank(),
+        panel.grid = ggplot2::element_blank(),
+        axis.title.y = ggplot2::element_blank(),
+        axis.ticks.y = ggplot2::element_blank(),
+        axis.text.y = ggplot2::element_text(size = font_size, face = "italic", hjust = 1),
+        axis.text.x = ggplot2::element_text(size = font_size),
+        axis.line.x = ggplot2::element_line()
+      ) +
+      ggplot2::coord_cartesian(clip = "off", ylim = c(0.5, nrow(at_risk_tbl)))
+
+    # 1. Get the exact x-range from the top plot (the 0-1200 range)
+    top_range <- layer_scales(gg_plt)$x$range$range
+    top_breaks <- layer_scales(gg_plt)$x$break_positions()
+
+    # 2. Force the bottom plot (table) to use the SAME range and breaks
+    # This ensures 0 on the top is exactly above 0 on the bottom
+    gg_at_risk <- gg_at_risk +
+      scale_x_continuous(
+        limits = top_range,
+        breaks = top_breaks
+      )
+
+    # 3. Force the top plot to also have no expansion so they match perfectly
+    gg_plt <- gg_plt + scale_x_continuous(limits = top_range)
+
+    if (!as_list) {
+      # Apply this to both plots
+      gg_plt <- cowplot::plot_grid(
+        gg_plt, gg_at_risk,
+        align = "v", axis = "lr", ncol = 1,
+        rel_heights = c(rel_height_plot, 1 - rel_height_plot)
+      )
+    }
+  }
+
+  # annotate with stats (text/vlines) -----------------------------------------
   if (!is.null(annot_stats)) {
     if ("median" %in% annot_stats) {
       fit_km_all <- survival::survfit(
@@ -475,66 +543,7 @@ g_km <- function(df,
     gg_plt <- gg_plt + guides(fill = guide_legend(override.aes = list(shape = NA, label = "")))
   }
 
-  # add at risk annotation table
-  if (annot_at_risk) {
-    annot_tbl <- summary(fit_km, times = xticks, extend = TRUE)
-    annot_tbl <- if (is.null(fit_km$strata)) {
-      data.frame(
-        n.risk = annot_tbl$n.risk,
-        time = annot_tbl$time,
-        strata = armval
-      )
-    } else {
-      strata_lst <- strsplit(sub("=", "equals", levels(annot_tbl$strata)), "equals")
-      levels(annot_tbl$strata) <- matrix(unlist(strata_lst), ncol = 2, byrow = TRUE)[, 2]
-      data.frame(
-        n.risk = annot_tbl$n.risk,
-        time = annot_tbl$time,
-        strata = annot_tbl$strata
-      )
-    }
-
-    at_risk_tbl <- as.data.frame(tidyr::pivot_wider(annot_tbl, names_from = "time", values_from = "n.risk")[, -1])
-    at_risk_tbl[is.na(at_risk_tbl)] <- 0
-    rownames(at_risk_tbl) <- levels(annot_tbl$strata)
-
-    gg_at_risk <- df2gg(
-      at_risk_tbl,
-      font_size = font_size, col_labels = FALSE, hline = FALSE,
-      colwidths = rep(1, ncol(at_risk_tbl))
-    ) +
-      labs(title = if (annot_at_risk_title) "Patients at Risk:" else NULL, x = xlab) +
-      theme_bw(base_size = font_size) +
-      theme(
-        plot.title = element_text(size = font_size, vjust = 3, face = "bold"),
-        panel.border = element_blank(),
-        panel.grid = element_blank(),
-        axis.title.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        axis.text.y = element_text(size = font_size, face = "italic", hjust = 1),
-        axis.text.x = element_text(size = font_size),
-        axis.line.x = element_line()
-      ) +
-      coord_cartesian(clip = "off", ylim = c(0.5, nrow(at_risk_tbl)))
-    gg_at_risk <- suppressMessages(
-      gg_at_risk +
-        scale_x_continuous(expand = c(0.025, 0), breaks = seq_along(at_risk_tbl) - 0.5, labels = xticks) +
-        scale_y_continuous(labels = rev(levels(annot_tbl$strata)), breaks = seq_len(nrow(at_risk_tbl)))
-    )
-
-    if (!as_list) {
-      gg_plt <- cowplot::plot_grid(
-        gg_plt,
-        gg_at_risk,
-        align = "v",
-        axis = "tblr",
-        ncol = 1,
-        rel_heights = c(rel_height_plot, 1 - rel_height_plot)
-      )
-    }
-  }
-
-  # add median survival time annotation table
+  # add median survival time annotation table ----------------------------------
   if (annot_surv_med) {
     surv_med_tbl <- h_tbl_median_surv(fit_km = fit_km, armval = armval)
     bg_fill <- if (isTRUE(control_annot_surv_med[["fill"]])) "#00000020" else control_annot_surv_med[["fill"]]
@@ -547,7 +556,7 @@ g_km <- function(df,
       coord_cartesian(clip = "off", ylim = c(0.5, nrow(surv_med_tbl) + 1.5))
     gg_surv_med <- suppressMessages(
       gg_surv_med +
-        scale_x_continuous(expand = c(0.025, 0)) +
+        scale_x_continuous() +
         scale_y_continuous(labels = rev(rownames(surv_med_tbl)), breaks = seq_len(nrow(surv_med_tbl)))
     )
 
@@ -582,7 +591,7 @@ g_km <- function(df,
       coord_cartesian(clip = "off", ylim = c(0.5, nrow(coxph_tbl) + 1.5))
     gg_coxph <- suppressMessages(
       gg_coxph +
-        scale_x_continuous(expand = c(0.025, 0)) +
+        scale_x_continuous() +
         scale_y_continuous(labels = rev(rownames(coxph_tbl)), breaks = seq_len(nrow(coxph_tbl)))
     )
 
