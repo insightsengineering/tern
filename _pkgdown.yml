@@ -3,11 +3,20 @@ url: https://insightsengineering.github.io/tern
 
 template:
   package: nesttemplate
+  includes:
+    in_header: |
+      <script async src="https://widget.kapa.ai/kapa-widget.bundle.js"
+      data-modal-override-open-class="open-kapa-widget"
+      data-project-name="tern"
+      data-project-logo="https://insightsengineering.github.io/tern/latest-tag/logo.png"
+      data-modal-title="tern AI ✨"
+      data-website-id="<this-has-to-be-obtained-from-kapa-ai-account>"
+      ></script>
 
 navbar:
   structure:
     left: [intro, reference, articles, tutorials, news, reports]
-    right: [search, github]
+    right: [search, github, ai]
   components:
     reports:
       text: Reports
@@ -22,6 +31,10 @@ navbar:
       icon: fa-github
       href: https://github.com/insightsengineering/tern
       aria-label: GitHub
+    ai:
+      text: Ask AI ✨
+      href: "#"
+      class: open-kapa-widget
 
 reference:
   - title: Overview Pages
