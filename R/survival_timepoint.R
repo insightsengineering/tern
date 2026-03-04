@@ -305,7 +305,7 @@ surv_timepoint <- function(lyt,
                              "rate_diff", "rate_diff_ci", "ztest_pval"
                            ),
                            .stat_names = NULL,
-                           .formats = list(rate_ci = "(xx.xx, xx.xx)"),
+                           .formats = list(rate_ci = "(xx.x, xx.x)"),
                            .labels = NULL,
                            .indent_mods = if (method == "both") {
                              c(rate_diff = 1L, rate_diff_ci = 2L, ztest_pval = 2L)

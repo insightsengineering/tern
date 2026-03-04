@@ -339,12 +339,12 @@ logistic_summary_by_flag <- function(flag_var, na_str = default_na_str(), .inden
   checkmate::assert_string(flag_var)
   function(lyt) {
     cfun_list <- list(
-      df = cfun_by_flag("df", flag_var, format = "xx.", .indent_mods = .indent_mods),
-      estimate = cfun_by_flag("estimate", flag_var, format = "xx.xxx", .indent_mods = .indent_mods),
-      std_error = cfun_by_flag("std_error", flag_var, format = "xx.xxx", .indent_mods = .indent_mods),
+      df = cfun_by_flag("df", flag_var, format = "xx.x", .indent_mods = .indent_mods),
+      estimate = cfun_by_flag("estimate", flag_var, format = "xx.xx", .indent_mods = .indent_mods),
+      std_error = cfun_by_flag("std_error", flag_var, format = "xx.xx", .indent_mods = .indent_mods),
       odds_ratio = cfun_by_flag("odds_ratio", flag_var, format = ">999.99", .indent_mods = .indent_mods),
       ci = cfun_by_flag("ci", flag_var, format = format_extreme_values_ci(2L), .indent_mods = .indent_mods),
-      pvalue = cfun_by_flag("pvalue", flag_var, format = "x.xxxx | (<0.0001)", .indent_mods = .indent_mods)
+      pvalue = cfun_by_flag("pvalue", flag_var, format = "x.xxx | (<0.0001)", .indent_mods = .indent_mods)
     )
     summarize_row_groups(
       lyt = lyt,

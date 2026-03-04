@@ -162,11 +162,11 @@ summarize_change <- function(lyt,
                              .stats = c("n", "mean_sd", "median", "range"),
                              .stat_names = NULL,
                              .formats = c(
-                               mean_sd = "xx.xx (xx.xx)",
-                               mean_se = "xx.xx (xx.xx)",
-                               median = "xx.xx",
-                               range = "xx.xx - xx.xx",
-                               mean_pval = "xx.xx"
+                               mean_sd = "xx.x (xx.x)",
+                               mean_se = "xx.x (xx.x)",
+                               median = "xx.x",
+                               range = "xx.x - xx.x",
+                               mean_pval = "xx.x"
                              ),
                              .labels = NULL,
                              .indent_mods = NULL) {

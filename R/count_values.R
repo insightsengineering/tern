@@ -185,7 +185,7 @@ count_values <- function(lyt,
                          table_names = vars,
                          .stats = "count_fraction",
                          .stat_names = NULL,
-                         .formats = c(count_fraction = "xx (xx.xx%)", count = "xx"),
+                         .formats = c(count_fraction = "xx (xx.x%)", count = "xx"),
                          .labels = c(count_fraction = paste(values, collapse = ", ")),
                          .indent_mods = NULL) {
   # Process standard extra arguments

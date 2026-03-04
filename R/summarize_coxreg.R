@@ -329,7 +329,7 @@ summarize_coxreg <- function(lyt,
                              common_var = "STUDYID",
                              .stats = c("n", "hr", "ci", "pval", "pval_inter"),
                              .formats = c(
-                               n = "xx", hr = "xx.xx", ci = "(xx.xx, xx.xx)",
+                               n = "xx", hr = "xx.x", ci = "(xx.xx, xx.xx)",
                                pval = "x.xxxx | (<0.0001)", pval_inter = "x.xxxx | (<0.0001)"
                              ),
                              varlabels = NULL,

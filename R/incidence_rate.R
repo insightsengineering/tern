@@ -234,7 +234,7 @@ estimate_incidence_rate <- function(lyt,
                                     table_names = vars,
                                     .stats = c("person_years", "n_events", "rate", "rate_ci"),
                                     .stat_names = NULL,
-                                    .formats = list(rate = "xx.xx", rate_ci = "(xx.xx, xx.xx)"),
+                                    .formats = list(rate = "xx.x", rate_ci = "(xx.x, xx.x)"),
                                     .labels = NULL,
                                     .indent_mods = NULL) {
   # Process standard extra arguments
