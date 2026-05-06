@@ -8,6 +8,11 @@
       attr(,"label")
       [1] "p-value (log-rank)"
       
+      $lr_stat_df
+      [1] 2.865544 1.000000
+      attr(,"label")
+      [1] "Log-rank Degrees of freedom"
+      
       $hr
       [1] 0.7108557
       attr(,"label")
@@ -43,6 +48,11 @@
       [1] 0.09203863
       attr(,"label")
       [1] "p-value (wald)"
+      
+      $lr_stat_df
+      [1] 2.865544 1.000000
+      attr(,"label")
+      [1] "Log-rank Degrees of freedom"
       
       $hr
       [1] 0.7108557
@@ -80,6 +90,11 @@
       attr(,"label")
       [1] "p-value (log-rank)"
       
+      $lr_stat_df
+      [1] 4.390702 1.000000
+      attr(,"label")
+      [1] "Log-rank Degrees of freedom"
+      
       $hr
       [1] 0.6251817
       attr(,"label")
@@ -115,6 +130,11 @@
       [1] 0.03764119
       attr(,"label")
       [1] "p-value (wald)"
+      
+      $lr_stat_df
+      [1] 4.390702 1.000000
+      attr(,"label")
+      [1] "Log-rank Degrees of freedom"
       
       $hr
       [1] 0.6251817
@@ -194,10 +214,10 @@
     Code
       result
     Output
-                              ARM A   ARM B    ARM C 
-      ———————————————————————————————————————————————
-      Unstratified Analysis                          
-        p-value (log-rank)            1.0000   1.0000
-        Hazard Ratio                  empty    empty 
-        95% CI                        empty    empty 
+                              ARM A   ARM B   ARM C
+      —————————————————————————————————————————————
+      Unstratified Analysis                        
+        p-value (log-rank)            empty   empty
+        Hazard Ratio                  empty   empty
+        95% CI                        empty   empty
 

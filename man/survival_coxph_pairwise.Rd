@@ -34,6 +34,7 @@ s_coxph_pairwise(
   strata = NULL,
   strat = lifecycle::deprecated(),
   control = control_coxph(),
+  alternative = c("two.sided", "less", "greater"),
   ...
 )
 
@@ -107,6 +108,9 @@ by a statistics function.}
 \item{is_event}{(\code{flag})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
 \item{strat}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{strata} argument instead.}
+
+\item{alternative}{(\code{string})\cr whether \code{two.sided}, or one-sided \code{less} or \code{greater} p-value
+should be displayed.}
 }
 \value{
 \itemize{

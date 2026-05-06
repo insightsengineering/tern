@@ -80,6 +80,30 @@ testthat::test_that("s_coxph_pairwise works with customized arguments and strati
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("s_coxph_pairwise works with stratification factors for Log-Rank test", {
+  adtte_f <- tern_ex_adtte %>%
+    dplyr::filter(PARAMCD == "OS") %>%
+    dplyr::mutate(is_event = CNSR == 0)
+  df <- adtte_f %>% dplyr::filter(ARMCD == "ARM A")
+  df_ref <- adtte_f %>% dplyr::filter(ARMCD == "ARM B")
+
+  # default control uses pval_method = "log-rank"
+  result <- s_coxph_pairwise(
+    df = df,
+    .ref_group = df_ref,
+    .in_ref_col = FALSE,
+    .var = "AVAL",
+    is_event = "is_event",
+    strata = c("SEX", "RACE")
+  )
+
+  testthat::expect_silent(result)
+  testthat::expect_true("lr_stat_df" %in% names(result))
+  testthat::expect_type(result$lr_stat_df, "double")
+  testthat::expect_length(result$lr_stat_df, 2)
+  testthat::expect_identical(attr(result$lr_stat_df, "label"), "Log-rank Degrees of freedom")
+})
+
 testthat::test_that("coxph_pairwise works with default arguments and no stratification factors", {
   adtte_f <- tern_ex_adtte %>%
     dplyr::filter(PARAMCD == "OS") %>%
@@ -215,7 +239,7 @@ testthat::test_that("coxph_pairwise works with NA values", {
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = FALSE)
 
-  testthat::expect_warning(testthat::expect_warning(
+  testthat::expect_warning(testthat::expect_warning(testthat::expect_warning(testthat::expect_warning(
     result <- basic_table() %>%
       split_cols_by(
         var = "ARMCD",
@@ -229,7 +253,7 @@ testthat::test_that("coxph_pairwise works with NA values", {
         na_str = "empty"
       ) %>%
       build_table(df = adtte_f)
-  ))
+  ))))
 
   testthat::expect_snapshot(result)
 })

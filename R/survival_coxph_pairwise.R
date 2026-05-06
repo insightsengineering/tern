@@ -47,6 +47,7 @@ s_coxph_pairwise <- function(df,
                              strata = NULL,
                              strat = lifecycle::deprecated(),
                              control = control_coxph(),
+                             alternative = c("two.sided", "less", "greater"),
                              ...) {
   if (lifecycle::is_present(strat)) {
     lifecycle::deprecate_warn("0.9.4", "s_coxph_pairwise(strat)", "s_coxph_pairwise(strata)")
@@ -57,6 +58,8 @@ s_coxph_pairwise <- function(df,
   checkmate::assert_numeric(df[[.var]])
   checkmate::assert_logical(df[[is_event]])
   assert_df_with_variables(df, list(tte = .var, is_event = is_event))
+  alternative <- match.arg(alternative)
+
   pval_method <- control$pval_method
   ties <- control$ties
   conf_level <- control$conf_level
@@ -65,6 +68,7 @@ s_coxph_pairwise <- function(df,
     return(
       list(
         pvalue = formatters::with_label(numeric(), paste0("p-value (", pval_method, ")")),
+        lr_stat_df = formatters::with_label(numeric(), "Log-rank Degrees of freedom"),
         hr = formatters::with_label(numeric(), "Hazard Ratio"),
         hr_ci = formatters::with_label(numeric(), f_conf_level(conf_level)),
         hr_ci_3d = formatters::with_label(numeric(), paste0("Hazard Ratio (", f_conf_level(conf_level), ")")),
@@ -99,19 +103,44 @@ s_coxph_pairwise <- function(df,
     ties = ties
   )
   sum_cox <- summary(cox_fit, conf.int = conf_level, extend = TRUE)
-  orginal_survdiff <- survival::survdiff(
-    formula_cox,
-    data = df_cox
-  )
-  log_rank_pvalue <- 1 - pchisq(orginal_survdiff$chisq, length(orginal_survdiff$n) - 1)
+  original_survdiff <- survival::survdiff(formula_cox, data = df_cox)
+  log_rank_stat <- original_survdiff$chisq
+
+  # See survival::survdiff for the d.f. calculation.
+  etmp <- if (is.matrix(original_survdiff$exp)) {
+    apply(original_survdiff$exp, 1, sum)
+  } else {
+    original_survdiff$exp
+  }
+  log_rank_df <- (sum(1 * (etmp > 0))) - 1
+  # Check the consistency of the d.f. with the p-value returned by survival::survdiff.
+  log_rank_pvalue <- stats::pchisq(log_rank_stat, log_rank_df, lower.tail = FALSE)
+  checkmate::assert_true(all.equal(log_rank_pvalue, original_survdiff$pvalue))
 
   pval <- switch(pval_method,
     "wald" = sum_cox$waldtest["pvalue"],
     "log-rank" = log_rank_pvalue, # pvalue from original log-rank test survival::survdiff()
     "likelihood" = sum_cox$logtest["pvalue"]
   )
+
+  # Handle one-sided alternatives.
+  if (alternative != "two.sided") {
+    right_direction <- if (alternative == "less") {
+      sum_cox$conf.int[1, 1] < 1
+    } else {
+      sum_cox$conf.int[1, 1] >= 1
+    }
+    pval <- if (right_direction) {
+      pval / 2
+    } else {
+      1 - pval / 2
+    }
+  }
+
+
   list(
     pvalue = formatters::with_label(unname(pval), paste0("p-value (", pval_method, ")")),
+    lr_stat_df = formatters::with_label(unname(c(log_rank_stat, log_rank_df)), "Log-rank Degrees of freedom"),
     hr = formatters::with_label(sum_cox$conf.int[1, 1], "Hazard Ratio"),
     hr_ci = formatters::with_label(unname(sum_cox$conf.int[1, 3:4]), f_conf_level(conf_level)),
     hr_ci_3d = formatters::with_label(
