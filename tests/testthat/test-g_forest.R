@@ -126,6 +126,9 @@ testthat::test_that("g_forest argument deprecation warnings work", {
 ## Deprecated functions ----
 
 testthat::test_that("forest_grob works", {
+  # Clear lifecycle's deprecation cache so warnings are emitted regardless of test order
+  rm(list = ls(lifecycle:::deprecation_env), envir = lifecycle:::deprecation_env)
+
   tbl <- rtable(
     header = rheader(
       rrow("", "E", rcell("CI", colspan = 2), "N"),
@@ -145,16 +148,10 @@ testthat::test_that("forest_grob works", {
     lifecycle::expect_deprecated(
       lifecycle::expect_deprecated(
         lifecycle::expect_deprecated(
-          lifecycle::expect_deprecated(
-            lifecycle::expect_deprecated(
-              lifecycle::expect_deprecated(
-                p <- forest_grob(tbl, x, lower, upper,
-                  vline = 1, forest_header = c("A", "B"),
-                  x_at = c(.1, 1, 10), xlim = c(0.1, 10), logx = TRUE, symbol_size = symbol_scale,
-                  vp = grid::plotViewport(margins = c(1, 1, 1, 1))
-                )
-              )
-            )
+          p <- tern:::forest_grob(tbl, x, lower, upper,
+            vline = 1, forest_header = c("A", "B"),
+            x_at = c(.1, 1, 10), xlim = c(0.1, 10), logx = TRUE, symbol_size = symbol_scale,
+            vp = grid::plotViewport(margins = c(1, 1, 1, 1))
           )
         )
       )
@@ -163,6 +160,9 @@ testthat::test_that("forest_grob works", {
 })
 
 testthat::test_that("forest_viewport works", {
+  # Clear lifecycle's deprecation cache so warnings are emitted regardless of test order
+  rm(list = ls(lifecycle:::deprecation_env), envir = lifecycle:::deprecation_env)
+
   tbl <- rtable(
     header = rheader(
       rrow("", "E", rcell("CI", colspan = 2)),
@@ -173,5 +173,5 @@ testthat::test_that("forest_viewport works", {
     rrow("row 3", 1.2, 0.8, 1.2)
   )
 
-  lifecycle::expect_deprecated(lifecycle::expect_deprecated(lifecycle::expect_deprecated(v <- forest_viewport(tbl))))
+  lifecycle::expect_deprecated(lifecycle::expect_deprecated(v <- forest_viewport(tbl)))
 })
