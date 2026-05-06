@@ -1,5 +1,9 @@
 # tern 0.9.10.9006
 
+### Miscellaneous
+* `g_forest()`, `g_km()`, and `g_lineplot()` now use `plotlist` in `cowplot::plot_grid()` calls so the original `ggplot` objects remain accessible after grid composition.
+* S3 methods in `decorate_grob.R` and `utils_grid.R` need `@exportS3Method` tags to comply with `roxygen2` 8.0.0.
+
 # tern 0.9.10
 
 ### Enhancements
