@@ -524,8 +524,7 @@ g_km <- function(df,
 
     if (!as_list) {
       gg_plt <- cowplot::plot_grid(
-        gg_plt,
-        gg_at_risk,
+        plotlist = list(gg_plt, gg_at_risk),
         align = "v",
         axis = "tblr",
         ncol = 1,

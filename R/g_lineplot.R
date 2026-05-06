@@ -510,8 +510,7 @@ g_lineplot <- function(df,
     if (!as_list) {
       # align plot and table
       cowplot::plot_grid(
-        p,
-        tbl,
+        plotlist = list(p, tbl),
         ncol = 1,
         align = "v",
         axis = "tblr",

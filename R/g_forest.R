@@ -420,8 +420,7 @@ g_forest <- function(tbl,
     )
   } else {
     cowplot::plot_grid(
-      gg_table,
-      gg_plt,
+      plotlist = list(gg_table, gg_plt),
       align = "h",
       axis = "tblr",
       rel_widths = c(1 - rel_width_forest, rel_width_forest)
