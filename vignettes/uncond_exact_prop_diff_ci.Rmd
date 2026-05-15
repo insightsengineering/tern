@@ -57,9 +57,9 @@ It then computes the confidence limits by inverting two separate one-sided exact
 For a given $100(1 - \alpha/2)\%$ confidence level, the confidence limits for the risk difference $d$ are computed as
 
 $$
-d_L = \sup \{ d_* : P_U(d_*) > \alpha/2 \},
+d_L = \inf \{ d_* : P_U(d_*) > \alpha/2 \},
 \qquad
-d_U = \inf \{ d_* : P_L(d_*) > \alpha/2 \}.
+d_U = \sup \{ d_* : P_L(d_*) > \alpha/2 \}.
 $$
 
 where
@@ -100,7 +100,7 @@ Similarly, to compute $P_L(d_*)$, the sum includes probabilities of those tables
 for which $T(a) \le t_0$. For a fixed value of $d_*$, $P_L(d_*)$ is defined as
 the maximum sum over all possible values of $p_2$.
 
-Finally, the confidence limits are defined as the supremum of $d_*$ values for which $P_U(d_*)$ is greater than $\alpha/2$ for the lower limit, and the infimum of $d_*$ values for which $P_L(d_*)$ is greater than $\alpha/2$ for the upper limit.
+Finally, the confidence limits are defined as the infimum of $d_*$ values for which $P_U(d_*)$ is greater than $\alpha/2$ for the lower limit, and the supremum of $d_*$ values for which $P_L(d_*)$ is greater than $\alpha/2$ for the upper limit.
 
 ## Prototype
 
@@ -178,72 +178,173 @@ worst_case_tail_probability <- function(d_star, n11_obs, n21_obs, n1, n2,
 
 # Step 6: Invert one-sided tests to obtain the two-sided
 # 100 * (1 - alpha)% CI for d = p1 - p2.
+# For monotone one-sided p-value functions, use uniroot to solve
+# P_U(d) = alpha/2 and P_L(d) = alpha/2 directly.
+find_ci_bound_uniroot <- function(p_value_function, cutoff,
+                                  direction = c("increasing", "decreasing"),
+                                  interval = c(-1, 1),
+                                  tol = 1e-6,
+                                  maxiter = 1000) {
+  direction <- match.arg(direction)
+  lo <- interval[1]
+  hi <- interval[2]
+
+  f_lo <- p_value_function(lo) - cutoff
+  f_hi <- p_value_function(hi) - cutoff
+
+  # Boundary cases for the set {d : p_value_function(d) > cutoff}.
+  if (direction == "increasing") {
+    if (f_lo > 0) {
+      return(lo)
+    }
+    if (f_hi <= 0) {
+      return(NA_real_)
+    }
+  } else {
+    if (f_hi > 0) {
+      return(hi)
+    }
+    if (f_lo <= 0) {
+      return(NA_real_)
+    }
+  }
+
+  uniroot(
+    f = function(d) p_value_function(d) - cutoff,
+    interval = interval,
+    tol = tol,
+    maxiter = maxiter
+  )$root
+}
+
 uncond_exact_diff_ci_prototype <- function(n11_obs, n21_obs, n1, n2,
                                            alpha = 0.05,
-                                           d_grid = seq(-1, 1, by = 0.001)) {
+                                           uniroot_tol = 1e-6,
+                                           uniroot_maxiter = 1000) {
   cutoff <- alpha / 2
 
-  p_upper <- vapply(
-    d_grid,
-    FUN.VALUE = numeric(1),
-    FUN = function(d_star) {
-      worst_case_tail_probability(
-        d_star = d_star,
-        n11_obs = n11_obs,
-        n21_obs = n21_obs,
-        n1 = n1,
-        n2 = n2,
-        tail = "upper"
-      )
-    }
+  p_upper <- function(d_star) {
+    worst_case_tail_probability(
+      d_star = d_star,
+      n11_obs = n11_obs,
+      n21_obs = n21_obs,
+      n1 = n1,
+      n2 = n2,
+      tail = "upper"
+    )
+  }
+
+  p_lower <- function(d_star) {
+    worst_case_tail_probability(
+      d_star = d_star,
+      n11_obs = n11_obs,
+      n21_obs = n21_obs,
+      n1 = n1,
+      n2 = n2,
+      tail = "lower"
+    )
+  }
+
+  d_L <- find_ci_bound_uniroot(
+    p_value_function = p_upper,
+    cutoff = cutoff,
+    direction = "increasing",
+    interval = c(-1, 1),
+    tol = uniroot_tol,
+    maxiter = uniroot_maxiter
   )
 
-  p_lower <- vapply(
-    d_grid,
-    FUN.VALUE = numeric(1),
-    FUN = function(d_star) {
-      worst_case_tail_probability(
-        d_star = d_star,
-        n11_obs = n11_obs,
-        n21_obs = n21_obs,
-        n1 = n1,
-        n2 = n2,
-        tail = "lower"
-      )
-    }
+  d_U <- find_ci_bound_uniroot(
+    p_value_function = p_lower,
+    cutoff = cutoff,
+    direction = "decreasing",
+    interval = c(-1, 1),
+    tol = uniroot_tol,
+    maxiter = uniroot_maxiter
   )
-
-  lower_candidates <- d_grid[p_upper > cutoff]
-  upper_candidates <- d_grid[p_lower > cutoff]
-
-  d_L <- if (length(lower_candidates)) max(lower_candidates) else NA_real_
-  d_U <- if (length(upper_candidates)) min(upper_candidates) else NA_real_
 
   list(
     estimate = n11_obs / n1 - n21_obs / n2,
     conf_level = 1 - alpha,
     conf_int = c(lower = d_L, upper = d_U),
     details = list(
-      d_grid = d_grid,
-      p_upper = p_upper,
-      p_lower = p_lower,
-      cutoff = cutoff
+      cutoff = cutoff,
+      inversion = "uniroot",
+      uniroot_tol = uniroot_tol,
+      uniroot_maxiter = uniroot_maxiter
     )
   )
 }
+```
 
-# Example: observed first-column counts n11 = 7 of n1 = 20,
-# and n21 = 3 of n2 = 18.
-prototype_result <- uncond_exact_diff_ci_prototype(
-  n11_obs = 7,
-  n21_obs = 3,
-  n1 = 20,
-  n2 = 18,
+## Example 1
+
+```{r}
+example1 <- uncond_exact_diff_ci_prototype(
+  n11_obs = 40,
+  n21_obs = 5,
+  n1 = 78,
+  n2 = 17,
   alpha = 0.05
 )
 
-prototype_result$estimate
-prototype_result$conf_int
+example1$estimate
+example1$conf_int
+
+# Expected from SAS (only 4 digits are available):
+expected_estimate1 <- 0.2187
+expected_conf_int1 <- c(lower = -0.0466, upper = 0.4676)
+
+# Compare:
+all.equal(example1$estimate, expected_estimate1, tol = 1e-4)
+all.equal(example1$conf_int, expected_conf_int1, tol = 1e-4)
 ```
+
+## Example 2
+
+```{r}
+example2 <- uncond_exact_diff_ci_prototype(
+  n11_obs = 27,
+  n21_obs = 3,
+  n1 = 57,
+  n2 = 3,
+  alpha = 0.05
+)
+
+example2$estimate
+example2$conf_int
+
+# Expected from SAS (only 4 digits are available):
+expected_estimate2 <- -0.5263
+expected_conf_int2 <- c(lower = -0.9057, upper = 0.1197)
+
+# Compare:
+all.equal(example2$estimate, expected_estimate2, tol = 1e-4)
+all.equal(example2$conf_int, expected_conf_int2, tol = 1e-4)
+```
+
+## Example 3
+
+```{r}
+example3 <- uncond_exact_diff_ci_prototype(
+  n11_obs = 27,
+  n21_obs = 3,
+  n1 = 57,
+  n2 = 3,
+  alpha = 0.01
+)
+
+example3$estimate
+example3$conf_int
+
+# Expected from SAS (only 4 digits are available):
+expected_estimate3 <- -0.5263
+expected_conf_int3 <- c(lower = -0.9586, upper = 0.2677)
+
+# Compare:
+all.equal(example3$estimate, expected_estimate3, tol = 1e-4)
+all.equal(example3$conf_int, expected_conf_int3, tol = 1e-4)
+```
+
 
 ## References
