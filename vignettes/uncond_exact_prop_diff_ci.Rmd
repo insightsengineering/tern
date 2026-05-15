@@ -25,6 +25,7 @@ knitr::opts_chunk$set(
 ```
 
 This vignette explains the construction of the unconditional exact confidence interval for the difference in proportions using the `estimate_proportion_diff()` function with `method = "uncond_exact_diff"` from the `tern` package. This method is particularly useful when dealing with small sample sizes or when the assumptions of other methods (like the normal approximation) are not met.
+In SAS this method is implemented in the `FREQ` procedure with the `RISKDIFF(METHOD = NOSCORE)` option in the `EXACT` statement.
 
 ## Definition
 
@@ -51,10 +52,10 @@ f(n_{11}, n_{21}; n_1, n_2, d, p_2)
 \cdot \binom{n_2}{n_{21}} p_2^{n_{21}} (1 - p_2)^{n_2 - n_{21}}.
 $$
 
-The exact unconditional approach fixes the row margins $n_1$ and $n_2$ of the $2 \times 2$ table and eliminates the nuisance parameter $p_2$ by using the maximum p-value (worst-case scenario) over all possible values of $p_2$ [@SantnerSnell1980].
-It then computes the confidence limits by inverting two separate one-sided exact tests that are based on the unstandardized risk difference $d$.
+The exact unconditional approach fixes the row margins $n_1$ and $n_2$ of the $2 \times 2$ table and eliminates the nuisance parameter $p_2$ by using the maximum p-value (worst-case scenario) over all possible values of $p_2$ [@SantnerSnell1980]. 
+It then computes the confidence limits by inverting two separate one-sided exact tests that are based on the unstandardized risk difference $d$. @SantnerSnell1980 refer to this method as the "Tail Method" for confidence intervals.
 
-For a given $100(1 - \alpha/2)\%$ confidence level, the confidence limits for the risk difference $d$ are computed as
+For a given $100(1 - \alpha/2)\%$ confidence level, the confidence limits for the risk difference $d$ are computed as (note that this is not correct in the SAS documentation [here](https://documentation.sas.com/doc/en/pgmsascdc/v_074/procstat/procstat_freq_details54.htm#procstat.freq.freqrdiffcl)):
 
 $$
 d_L = \inf \{ d_* : P_U(d_*) > \alpha/2 \},
@@ -109,7 +110,7 @@ definition step by step: table enumeration ($A$), test statistic
 $T(a)$, table probability $f(\cdot)$, worst-case one-sided p-values
 $P_U(d_*)$ and $P_L(d_*)$, and inversion to confidence limits.
 
-```{r, eval = FALSE}
+```{r}
 # Step 1: Enumerate all tables in A with fixed row margins n1 and n2.
 enumerate_tables_fixed_margins <- function(n1, n2) {
   expand.grid(n11 = 0:n1, n21 = 0:n2)
@@ -346,5 +347,31 @@ all.equal(example3$estimate, expected_estimate3, tol = 1e-4)
 all.equal(example3$conf_int, expected_conf_int3, tol = 1e-4)
 ```
 
+## Example 4
+
+This very small sample size use case is directly from the @SantnerSnell1980 paper (section 4, Tail Method Intervals and Comparisons).
+
+```{r}
+example4 <- uncond_exact_diff_ci_prototype(
+  n11_obs = 0,
+  n21_obs = 2,
+  n1 = 2,
+  n2 = 2,
+  alpha = 0.1
+)
+
+example4$estimate
+example4$conf_int
+
+# Expected from paper (only 4 digits are available):
+expected_estimate4 <- -1
+expected_conf_int4 <- c(lower = -1, upper = 0.0543)
+
+# Compare:
+all.equal(example4$estimate, expected_estimate4, tol = 1e-4)
+all.equal(example4$conf_int, expected_conf_int4, tol = 1e-4)
+```
+
+So also this matches the expected results from the paper.
 
 ## References
