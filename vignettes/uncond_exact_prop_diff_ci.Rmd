@@ -1,0 +1,249 @@
+---
+title: "Unconditional Exact Confidence Interval for Difference in Proportions"
+date: "2026-05-15"
+output:
+    rmarkdown::html_document:
+        theme: "spacelab"
+        highlight: "kate"
+        toc: true
+        toc_float: true
+vignette: >
+    %\VignetteIndexEntry{Unconditional Exact Confidence Interval for Difference in Proportions}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+bibliography: ../inst/REFERENCES.bib
+editor_options:
+    markdown:
+        wrap: 72
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette explains the construction of the unconditional exact confidence interval for the difference in proportions using the `estimate_proportion_diff()` function with `method = "uncond_exact_diff"` from the `tern` package. This method is particularly useful when dealing with small sample sizes or when the assumptions of other methods (like the normal approximation) are not met.
+
+## Definition
+
+The definition of the exact unconditional confidence limits is as follows.
+Without loss of generality, we define $p_1$ as the risk (proportion) to be in column 1 for row 1, and $p_2$ as the risk (proportion) to be in column 1 for row 2. The risk difference is defined as the difference between the row 1 and row 2 risks
+(proportions), $d = p_1 - p_2$, and $n_1$ and $n_2$ denote the row totals of the
+$2 \times 2$ table. The probability function for a given $2 \times 2$ table
+
+$$
+\begin{array}{c|cc|c}
+& \text{Column 1} & \text{Column 2} & \text{Row Total} \\
+\hline
+\text{Row 1} & n_{11} & n_{12} & n_1 \\
+\text{Row 2} & n_{21} & n_{22} & n_2 \\
+\hline
+\end{array}
+$$
+
+can then be expressed in terms of the table cell frequencies, the risk difference, and the nuisance parameter $p_2$ as:
+
+$$
+f(n_{11}, n_{21}; n_1, n_2, d, p_2)
+= \binom{n_1}{n_{11}} (d + p_2)^{n_{11}} (1 - d - p_2)^{n_1 - n_{11}}
+\cdot \binom{n_2}{n_{21}} p_2^{n_{21}} (1 - p_2)^{n_2 - n_{21}}.
+$$
+
+The exact unconditional approach fixes the row margins $n_1$ and $n_2$ of the $2 \times 2$ table and eliminates the nuisance parameter $p_2$ by using the maximum p-value (worst-case scenario) over all possible values of $p_2$ [@SantnerSnell1980].
+It then computes the confidence limits by inverting two separate one-sided exact tests that are based on the unstandardized risk difference $d$.
+
+For a given $100(1 - \alpha/2)\%$ confidence level, the confidence limits for the risk difference $d$ are computed as
+
+$$
+d_L = \sup \{ d_* : P_U(d_*) > \alpha/2 \},
+\qquad
+d_U = \inf \{ d_* : P_L(d_*) > \alpha/2 \}.
+$$
+
+where
+
+$$
+P_U(d_*) = \sup_{p_2}
+\left(
+    \sum_{A,\,T(a) \ge t_0}
+    f(n_{11}, n_{21}; n_1, n_2, d_*, p_2)
+\right)
+$$
+
+and
+
+$$
+P_L(d_*) = \sup_{p_2}
+\left(
+    \sum_{A,\,T(a) \le t_0}
+    f(n_{11}, n_{21}; n_1, n_2, d_*, p_2)
+\right).
+$$
+
+The set $A$ includes all $2 \times 2$ tables in which the row sums are $n_1$ and
+$n_2$, as these are assumed fixed as explained above. $T(a)$ denotes the value of the test statistic, here the unstandardized risk
+difference, for table $a$ in $A$, which depends on the counts $n_{11}(a)$ and $n_{21}(a)$ in the first column of the table, and is defined as:
+
+$$
+T(a) = \frac{n_{11}(a)}{n_1} - \frac{n_{21}(a)}{n_2}.
+$$
+
+$t_0$ is the value of the test statistic for the observed table.
+
+To compute $P_U(d_*)$, the sum includes probabilities of those tables
+for which $T(a) \ge t_0$. For a fixed value of $d_*$, $P_U(d_*)$ is defined as
+the maximum sum over all possible values of $p_2$.
+
+Similarly, to compute $P_L(d_*)$, the sum includes probabilities of those tables
+for which $T(a) \le t_0$. For a fixed value of $d_*$, $P_L(d_*)$ is defined as
+the maximum sum over all possible values of $p_2$.
+
+Finally, the confidence limits are defined as the supremum of $d_*$ values for which $P_U(d_*)$ is greater than $\alpha/2$ for the lower limit, and the infimum of $d_*$ values for which $P_L(d_*)$ is greater than $\alpha/2$ for the upper limit.
+
+## Prototype
+
+The following is a readable prototype implementation that follows the
+definition step by step: table enumeration ($A$), test statistic
+$T(a)$, table probability $f(\cdot)$, worst-case one-sided p-values
+$P_U(d_*)$ and $P_L(d_*)$, and inversion to confidence limits.
+
+```{r, eval = FALSE}
+# Step 1: Enumerate all tables in A with fixed row margins n1 and n2.
+enumerate_tables_fixed_margins <- function(n1, n2) {
+  expand.grid(n11 = 0:n1, n21 = 0:n2)
+}
+
+# Step 2: Compute T(a) = n11 / n1 - n21 / n2 for each table a in A.
+risk_difference_statistic <- function(n11, n21, n1, n2) {
+  n11 / n1 - n21 / n2
+}
+
+# Step 3: Compute f(n11, n21; n1, n2, d, p2).
+table_probability_f <- function(n11, n21, n1, n2, d, p2) {
+  p1 <- d + p2
+  dbinom(n11, size = n1, prob = p1) * dbinom(n21, size = n2, prob = p2)
+}
+
+# Step 4: For fixed d, determine valid nuisance-parameter range for p2
+# so that p2 in [0, 1] and p1 = d + p2 in [0, 1].
+valid_p2_interval <- function(d) {
+  lower <- max(0, -d)
+  upper <- min(1, 1 - d)
+  c(lower, upper)
+}
+
+# Step 5: Compute worst-case one-sided tail probability:
+#   P_U(d*) = sup_p2 sum_{T(a) >= t0} f(...)
+#   P_L(d*) = sup_p2 sum_{T(a) <= t0} f(...)
+worst_case_tail_probability <- function(d_star, n11_obs, n21_obs, n1, n2,
+                                        tail = c("upper", "lower")) {
+  tail <- match.arg(tail)
+  tables <- enumerate_tables_fixed_margins(n1, n2)
+  t_values <- risk_difference_statistic(
+    n11 = tables$n11, n21 = tables$n21, n1 = n1, n2 = n2
+  )
+  t0 <- risk_difference_statistic(n11_obs, n21_obs, n1, n2)
+
+  include_table <- if (tail == "upper") {
+    t_values >= t0
+  } else {
+    t_values <= t0
+  }
+
+  objective <- function(p2) {
+    probs <- table_probability_f(
+      n11 = tables$n11,
+      n21 = tables$n21,
+      n1 = n1,
+      n2 = n2,
+      d = d_star,
+      p2 = p2
+    )
+    sum(probs[include_table])
+  }
+
+  interval <- valid_p2_interval(d_star)
+  if (interval[1] == interval[2]) {
+    return(objective(interval[1]))
+  }
+
+  optimize(
+    f = objective,
+    interval = interval,
+    maximum = TRUE
+  )$objective
+}
+
+# Step 6: Invert one-sided tests to obtain the two-sided
+# 100 * (1 - alpha)% CI for d = p1 - p2.
+uncond_exact_diff_ci_prototype <- function(n11_obs, n21_obs, n1, n2,
+                                           alpha = 0.05,
+                                           d_grid = seq(-1, 1, by = 0.001)) {
+  cutoff <- alpha / 2
+
+  p_upper <- vapply(
+    d_grid,
+    FUN.VALUE = numeric(1),
+    FUN = function(d_star) {
+      worst_case_tail_probability(
+        d_star = d_star,
+        n11_obs = n11_obs,
+        n21_obs = n21_obs,
+        n1 = n1,
+        n2 = n2,
+        tail = "upper"
+      )
+    }
+  )
+
+  p_lower <- vapply(
+    d_grid,
+    FUN.VALUE = numeric(1),
+    FUN = function(d_star) {
+      worst_case_tail_probability(
+        d_star = d_star,
+        n11_obs = n11_obs,
+        n21_obs = n21_obs,
+        n1 = n1,
+        n2 = n2,
+        tail = "lower"
+      )
+    }
+  )
+
+  lower_candidates <- d_grid[p_upper > cutoff]
+  upper_candidates <- d_grid[p_lower > cutoff]
+
+  d_L <- if (length(lower_candidates)) max(lower_candidates) else NA_real_
+  d_U <- if (length(upper_candidates)) min(upper_candidates) else NA_real_
+
+  list(
+    estimate = n11_obs / n1 - n21_obs / n2,
+    conf_level = 1 - alpha,
+    conf_int = c(lower = d_L, upper = d_U),
+    details = list(
+      d_grid = d_grid,
+      p_upper = p_upper,
+      p_lower = p_lower,
+      cutoff = cutoff
+    )
+  )
+}
+
+# Example: observed first-column counts n11 = 7 of n1 = 20,
+# and n21 = 3 of n2 = 18.
+prototype_result <- uncond_exact_diff_ci_prototype(
+  n11_obs = 7,
+  n21_obs = 3,
+  n1 = 20,
+  n2 = 18,
+  alpha = 0.05
+)
+
+prototype_result$estimate
+prototype_result$conf_int
+```
+
+## References
