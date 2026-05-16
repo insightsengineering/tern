@@ -203,11 +203,12 @@
     Code
       res
     Output
-                            ARM A       ARM B            ARM C     
-      —————————————————————————————————————————————————————————————
-      Stratified Analysis                                          
-        Hazard Ratio                    1.600            2.049     
-        99% CI                      (0.894, 2.863)   (1.092, 3.844)
+                               ARM A       ARM B            ARM C     
+      ————————————————————————————————————————————————————————————————
+      Stratified Analysis                                             
+        Hazard Ratio                       1.600            2.049     
+        99% CI                         (0.894, 2.863)   (1.092, 3.844)
+        p-value (likelihood)               0.0181           0.0014    
 
 # coxph_pairwise works with NA values
 

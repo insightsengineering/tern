@@ -201,7 +201,8 @@ testthat::test_that("coxph_pairwise works with customized arguments and stratifi
       var_labels = c("Stratified Analysis"),
       control = control_coxph(pval_method = "likelihood", conf_level = 0.99),
       strata = c("SEX", "RACE"),
-      .stats = c("hr", "hr_ci"),
+      alternative = "greater",
+      .stats = c("hr", "hr_ci", "pvalue"),
       .formats = c(hr = "xx.xxx", hr_ci = "(xx.xxx, xx.xxx)")
     ) %>%
     build_table(df = adtte_f)
