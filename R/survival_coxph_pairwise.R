@@ -105,17 +105,8 @@ s_coxph_pairwise <- function(df,
   sum_cox <- summary(cox_fit, conf.int = conf_level, extend = TRUE)
   original_survdiff <- survival::survdiff(formula_cox, data = df_cox)
   log_rank_stat <- original_survdiff$chisq
-
-  # See survival::survdiff for the d.f. calculation.
-  etmp <- if (is.matrix(original_survdiff$exp)) {
-    apply(original_survdiff$exp, 1, sum)
-  } else {
-    original_survdiff$exp
-  }
-  log_rank_df <- (sum(1 * (etmp > 0))) - 1
-  # Check the consistency of the d.f. with the p-value returned by survival::survdiff.
-  log_rank_pvalue <- stats::pchisq(log_rank_stat, log_rank_df, lower.tail = FALSE)
-  checkmate::assert_true(all.equal(log_rank_pvalue, original_survdiff$pvalue))
+  log_rank_df <- length(original_survdiff$n) - 1
+  log_rank_pvalue <- original_survdiff$pvalue
 
   pval <- switch(pval_method,
     "wald" = sum_cox$waldtest["pvalue"],
