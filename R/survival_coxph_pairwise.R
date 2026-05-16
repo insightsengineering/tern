@@ -116,15 +116,16 @@ s_coxph_pairwise <- function(df,
 
   # Handle one-sided alternatives.
   if (alternative != "two.sided") {
-    right_direction <- if (alternative == "less") {
-      sum_cox$conf.int[1, 1] < 1
+    # Need to calculate the signed log-rank statistic, which is not included 
+    # in the original survdiff output.
+    otmp <- rowSums(original_survdiff$obs)
+    etmp <- rowSums(original_survdiff$exp)
+    signed_lr_stat <- (otmp[2] - etmp[2]) / sqrt(original_survdiff$var[2, 2])
+
+    pval <- if (alternative == "less") {
+      stats::pnorm(signed_lr_stat)
     } else {
-      sum_cox$conf.int[1, 1] >= 1
-    }
-    pval <- if (right_direction) {
-      pval / 2
-    } else {
-      1 - pval / 2
+      stats::pnorm(signed_lr_stat, lower.tail = FALSE)
     }
   }
 

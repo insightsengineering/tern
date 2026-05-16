@@ -253,7 +253,7 @@ testthat::test_that("coxph_pairwise works with NA values", {
     dplyr::filter(PARAMCD == "OS") %>%
     dplyr::mutate(is_event = FALSE)
 
-  testthat::expect_warning(testthat::expect_warning(testthat::expect_warning(testthat::expect_warning(
+  testthat::expect_warning(testthat::expect_warning(
     result <- basic_table() %>%
       split_cols_by(
         var = "ARMCD",
@@ -267,7 +267,7 @@ testthat::test_that("coxph_pairwise works with NA values", {
         na_str = "empty"
       ) %>%
       build_table(df = adtte_f)
-  ))))
+  ))
 
   testthat::expect_snapshot(result)
 })
