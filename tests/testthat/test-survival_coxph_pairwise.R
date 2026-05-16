@@ -102,6 +102,20 @@ testthat::test_that("s_coxph_pairwise works with stratification factors for Log-
   testthat::expect_type(result$lr_stat_df, "double")
   testthat::expect_length(result$lr_stat_df, 2)
   testthat::expect_identical(attr(result$lr_stat_df, "label"), "Log-rank Degrees of freedom")
+
+  # Check the consistency of the d.f. with the p-value returned by survival::survdiff.
+  log_rank_pvalue <- stats::pchisq(
+    result$lr_stat_df[1],
+    result$lr_stat_df[2],
+    lower.tail = FALSE
+  )
+  original_survdiff <- survival::survdiff(
+    survival::Surv(AVAL, is_event) ~ ARMCD + strata(SEX, RACE),
+    data = adtte_f %>%
+      dplyr::filter(ARMCD %in% c("ARM A", "ARM B")) %>%
+      droplevels()
+  )
+  testthat::expect_equal(log_rank_pvalue, original_survdiff$pvalue)
 })
 
 testthat::test_that("coxph_pairwise works with default arguments and no stratification factors", {
