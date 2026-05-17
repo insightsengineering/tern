@@ -103,273 +103,114 @@ the maximum sum over all possible values of $p_2$.
 
 Finally, the confidence limits are defined as the infimum of $d_*$ values for which $P_U(d_*)$ is greater than $\alpha/2$ for the lower limit, and the supremum of $d_*$ values for which $P_L(d_*)$ is greater than $\alpha/2$ for the upper limit.
 
-## Prototype
+## Implementation
 
-The following is a readable prototype implementation that follows the
-definition step by step: table enumeration ($A$), test statistic
-$T(a)$, table probability $f(\cdot)$, worst-case one-sided p-values
-$P_U(d_*)$ and $P_L(d_*)$, and inversion to confidence limits.
+The `prop_diff_uncond_exact()` function in the `tern` package implements the above definition of the unconditional exact confidence interval for the difference in proportions.
+
+## Examples
+
+We will use this little example helper to create the data sets below in the format as needed.
 
 ```{r}
-# Step 1: Enumerate all tables in A with fixed row margins n1 and n2.
-enumerate_tables_fixed_margins <- function(n1, n2) {
-  expand.grid(n11 = 0:n1, n21 = 0:n2)
-}
-
-# Step 2: Compute T(a) = n11 / n1 - n21 / n2 for each table a in A.
-risk_difference_statistic <- function(n11, n21, n1, n2) {
-  n11 / n1 - n21 / n2
-}
-
-# Step 3: Compute f(n11, n21; n1, n2, d, p2).
-table_probability_f <- function(n11, n21, n1, n2, d, p2) {
-  p1 <- d + p2
-  dbinom(n11, size = n1, prob = p1) * dbinom(n21, size = n2, prob = p2)
-}
-
-# Step 4: For fixed d, determine valid nuisance-parameter range for p2
-# so that p2 in [0, 1] and p1 = d + p2 in [0, 1].
-valid_p2_interval <- function(d) {
-  lower <- max(0, -d)
-  upper <- min(1, 1 - d)
-  c(lower, upper)
-}
-
-# Step 5: Compute worst-case one-sided tail probability:
-#   P_U(d*) = sup_p2 sum_{T(a) >= t0} f(...)
-#   P_L(d*) = sup_p2 sum_{T(a) <= t0} f(...)
-worst_case_tail_probability <- function(d_star, n11_obs, n21_obs, n1, n2,
-                                        tail = c("upper", "lower")) {
-  tail <- match.arg(tail)
-  tables <- enumerate_tables_fixed_margins(n1, n2)
-  t_values <- risk_difference_statistic(
-    n11 = tables$n11, n21 = tables$n21, n1 = n1, n2 = n2
-  )
-  t0 <- risk_difference_statistic(n11_obs, n21_obs, n1, n2)
-
-  include_table <- if (tail == "upper") {
-    t_values >= t0
-  } else {
-    t_values <= t0
-  }
-
-  objective <- function(p2) {
-    probs <- table_probability_f(
-      n11 = tables$n11,
-      n21 = tables$n21,
-      n1 = n1,
-      n2 = n2,
-      d = d_star,
-      p2 = p2
-    )
-    sum(probs[include_table])
-  }
-
-  interval <- valid_p2_interval(d_star)
-  if (interval[1] == interval[2]) {
-    return(objective(interval[1]))
-  }
-
-  optimize(
-    f = objective,
-    interval = interval,
-    maximum = TRUE
-  )$objective
-}
-
-# Step 6: Invert one-sided tests to obtain the two-sided
-# 100 * (1 - alpha)% CI for d = p1 - p2.
-# For monotone one-sided p-value functions, use uniroot to solve
-# P_U(d) = alpha/2 and P_L(d) = alpha/2 directly.
-find_ci_bound_uniroot <- function(p_value_function, cutoff,
-                                  direction = c("increasing", "decreasing"),
-                                  interval = c(-1, 1),
-                                  tol = 1e-6,
-                                  maxiter = 1000) {
-  direction <- match.arg(direction)
-  lo <- interval[1]
-  hi <- interval[2]
-
-  f_lo <- p_value_function(lo) - cutoff
-  f_hi <- p_value_function(hi) - cutoff
-
-  # Boundary cases for the set {d : p_value_function(d) > cutoff}.
-  if (direction == "increasing") {
-    if (f_lo > 0) {
-      return(lo)
-    }
-    if (f_hi <= 0) {
-      return(NA_real_)
-    }
-  } else {
-    if (f_hi > 0) {
-      return(hi)
-    }
-    if (f_lo <= 0) {
-      return(NA_real_)
-    }
-  }
-
-  uniroot(
-    f = function(d) p_value_function(d) - cutoff,
-    interval = interval,
-    tol = tol,
-    maxiter = maxiter
-  )$root
-}
-
-uncond_exact_diff_ci_prototype <- function(n11_obs, n21_obs, n1, n2,
-                                           alpha = 0.05,
-                                           uniroot_tol = 1e-6,
-                                           uniroot_maxiter = 1000) {
-  cutoff <- alpha / 2
-
-  p_upper <- function(d_star) {
-    worst_case_tail_probability(
-      d_star = d_star,
-      n11_obs = n11_obs,
-      n21_obs = n21_obs,
-      n1 = n1,
-      n2 = n2,
-      tail = "upper"
-    )
-  }
-
-  p_lower <- function(d_star) {
-    worst_case_tail_probability(
-      d_star = d_star,
-      n11_obs = n11_obs,
-      n21_obs = n21_obs,
-      n1 = n1,
-      n2 = n2,
-      tail = "lower"
-    )
-  }
-
-  d_L <- find_ci_bound_uniroot(
-    p_value_function = p_upper,
-    cutoff = cutoff,
-    direction = "increasing",
-    interval = c(-1, 1),
-    tol = uniroot_tol,
-    maxiter = uniroot_maxiter
-  )
-
-  d_U <- find_ci_bound_uniroot(
-    p_value_function = p_lower,
-    cutoff = cutoff,
-    direction = "decreasing",
-    interval = c(-1, 1),
-    tol = uniroot_tol,
-    maxiter = uniroot_maxiter
-  )
-
-  list(
-    estimate = n11_obs / n1 - n21_obs / n2,
-    conf_level = 1 - alpha,
-    conf_int = c(lower = d_L, upper = d_U),
-    details = list(
-      cutoff = cutoff,
-      inversion = "uniroot",
-      uniroot_tol = uniroot_tol,
-      uniroot_maxiter = uniroot_maxiter
-    )
-  )
+mk_data <- function(n11, n21, n1, n2) {
+    rsp <- c(rep(TRUE, n21), rep(FALSE, n2 - n21), rep(TRUE, n11), rep(FALSE, n1 - n11))
+    grp <- factor(c(rep("B", n2), rep("A", n1)), levels = c("B", "A"))
+    list(rsp = rsp, grp = grp)
 }
 ```
 
-## Example 1
+### Example 1
 
 ```{r}
-example1 <- uncond_exact_diff_ci_prototype(
-  n11_obs = 40,
-  n21_obs = 5,
-  n1 = 78,
-  n2 = 17,
-  alpha = 0.05
-)
+n11_obs <- 40
+n21_obs <- 5
+n1 <- 78
+n2 <- 17
+dta <- mk_data(n11 = n11_obs, n21 = n21_obs, n1 = n1, n2 = n2)
 
-example1$estimate
-example1$conf_int
+example1 <- tern::prop_diff_uncond_exact(rsp = dta$rsp, grp = dta$grp, conf_level = 0.95)
+
+example1$diff
+example1$diff_ci
 
 # Expected from SAS (only 4 digits are available):
 expected_estimate1 <- 0.2187
 expected_conf_int1 <- c(lower = -0.0466, upper = 0.4676)
 
 # Compare:
-all.equal(example1$estimate, expected_estimate1, tol = 1e-4)
-all.equal(example1$conf_int, expected_conf_int1, tol = 1e-4)
+all.equal(example1$diff, expected_estimate1, tol = 1e-4)
+all.equal(example1$diff_ci, expected_conf_int1, tol = 1e-4)
 ```
 
-## Example 2
+### Example 2
 
 ```{r}
-example2 <- uncond_exact_diff_ci_prototype(
-  n11_obs = 27,
-  n21_obs = 3,
-  n1 = 57,
-  n2 = 3,
-  alpha = 0.05
-)
+n11_obs <- 27
+n21_obs <- 3
+n1 <- 57
+n2 <- 3
+dta <- mk_data(n11 = n11_obs, n21 = n21_obs, n1 = n1, n2 = n2)
 
-example2$estimate
-example2$conf_int
+example2 <- tern::prop_diff_uncond_exact(rsp = dta$rsp, grp = dta$grp, conf_level = 0.95)
+
+example2$diff
+example2$diff_ci
 
 # Expected from SAS (only 4 digits are available):
 expected_estimate2 <- -0.5263
 expected_conf_int2 <- c(lower = -0.9057, upper = 0.1197)
 
 # Compare:
-all.equal(example2$estimate, expected_estimate2, tol = 1e-4)
-all.equal(example2$conf_int, expected_conf_int2, tol = 1e-4)
+all.equal(example2$diff, expected_estimate2, tol = 1e-4)
+all.equal(example2$diff_ci, expected_conf_int2, tol = 1e-4)
 ```
 
-## Example 3
+### Example 3
 
 ```{r}
-example3 <- uncond_exact_diff_ci_prototype(
-  n11_obs = 27,
-  n21_obs = 3,
-  n1 = 57,
-  n2 = 3,
-  alpha = 0.01
-)
+n11_obs <- 27
+n21_obs <- 3
+n1 <- 57
+n2 <- 3
+dta <- mk_data(n11 = n11_obs, n21 = n21_obs, n1 = n1, n2 = n2)
 
-example3$estimate
-example3$conf_int
+example3 <- tern::prop_diff_uncond_exact(rsp = dta$rsp, grp = dta$grp, conf_level = 0.99)
+
+example3$diff
+example3$diff_ci
 
 # Expected from SAS (only 4 digits are available):
 expected_estimate3 <- -0.5263
 expected_conf_int3 <- c(lower = -0.9586, upper = 0.2677)
 
 # Compare:
-all.equal(example3$estimate, expected_estimate3, tol = 1e-4)
-all.equal(example3$conf_int, expected_conf_int3, tol = 1e-4)
+all.equal(example3$diff, expected_estimate3, tol = 1e-4)
+all.equal(example3$diff_ci, expected_conf_int3, tol = 1e-4)
 ```
 
-## Example 4
+### Example 4
 
 This very small sample size use case is directly from the @SantnerSnell1980 paper (section 4, Tail Method Intervals and Comparisons).
 
 ```{r}
-example4 <- uncond_exact_diff_ci_prototype(
-  n11_obs = 0,
-  n21_obs = 2,
-  n1 = 2,
-  n2 = 2,
-  alpha = 0.1
-)
+n11_obs <- 0
+n21_obs <- 2
+n1 <- 2
+n2 <- 2
+dta <- mk_data(n11 = n11_obs, n21 = n21_obs, n1 = n1, n2 = n2)
 
-example4$estimate
-example4$conf_int
+example4 <- tern::prop_diff_uncond_exact(rsp = dta$rsp, grp = dta$grp, conf_level = 0.90)
+
+example4$diff
+example4$diff_ci
 
 # Expected from paper (only 4 digits are available):
 expected_estimate4 <- -1
 expected_conf_int4 <- c(lower = -1, upper = 0.0543)
 
 # Compare:
-all.equal(example4$estimate, expected_estimate4, tol = 1e-4)
-all.equal(example4$conf_int, expected_conf_int4, tol = 1e-4)
+all.equal(example4$diff, expected_estimate4, tol = 1e-4)
+all.equal(example4$diff_ci, expected_conf_int4, tol = 1e-4)
 ```
 
 So also this matches the expected results from the paper.

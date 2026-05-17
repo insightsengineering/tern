@@ -907,8 +907,10 @@ prop_diff_strat_nc <- function(rsp,
   )
 }
 
-#' Internal helper for unconditional exact CI tail probabilities
+#' Worst case tail probability for unconditional exact CI calculation
 #'
+#' This function is an internal helper for [prop_diff_uncond_exact()].
+#' 
 #' @param d_star (`number`) hypothesized difference in proportions.
 #' @param n1 (`positive integer`) sample size in group 1.
 #' @param n2 (`positive integer`) sample size in group 2.
@@ -939,12 +941,18 @@ h_worst_case_tail_probability <- function(d_star,
   checkmate::assert_true(length(t_values) == nrow(tables))
 
   tail <- match.arg(tail)
+
+  # Step 0: Determine which tables are in the tail based on the observed test 
+  # statistic value and the tail direction.
   include_table <- if (tail == "upper") {
     t_values >= t0
   } else {
     t_values <= t0
   }
 
+  # Step 1: For fixed d_star, and given p2, 
+  # calculate the likelihood of each table in A 
+  # and sum over tables in the tail to get the tail probability.
   objective <- function(p2) {
     p1 <- d_star + p2
     probs <- stats::dbinom(tables$n11, size = n1, prob = p1) *
@@ -952,11 +960,15 @@ h_worst_case_tail_probability <- function(d_star,
     sum(probs[include_table])
   }
 
+  # Step 2: For fixed d, determine valid nuisance-parameter range for p2
+  # so that p2 in [0, 1] and p1 = d + p2 in [0, 1].
   interval <- c(max(0, -d_star), min(1, 1 - d_star))
   if (interval[1] == interval[2]) {
     return(objective(interval[1]))
   }
 
+  # Step 3: Maximize the tail probability over the valid range of p2 to
+  # get the worst-case tail probability.
   stats::optimize(
     f = objective,
     interval = interval,
@@ -964,8 +976,10 @@ h_worst_case_tail_probability <- function(d_star,
   )$objective
 }
 
-#' Internal helper for root-finding CI bounds from one-sided p-value functions
+#' Root-finding CI bounds from one-sided p-value functions
 #'
+#' This function is an internal helper for [prop_diff_uncond_exact()].
+#' 
 #' @param p_value_function (`function`) one-sided p-value function in terms of `d`.
 #' @param cutoff (`number`) one-sided significance level threshold.
 #' @param direction (`string`) one of `"increasing"` or `"decreasing"`.
@@ -993,6 +1007,9 @@ h_find_ci_bound_uniroot <- function(p_value_function,
   lo <- interval[1]
   hi <- interval[2]
 
+  # Step 0: Check for boundary cases where the p-value function is above or
+  # below the cutoff at the endpoints of the search interval. 
+  # If so, return the appropriate endpoint or NA.
   f_lo <- p_value_function(lo) - cutoff
   f_hi <- p_value_function(hi) - cutoff
 
@@ -1012,6 +1029,7 @@ h_find_ci_bound_uniroot <- function(p_value_function,
     }
   }
 
+  # Step 1: Find the value of d such that p_value_function(d) = cutoff using root finding. 
   stats::uniroot(
     f = function(d) p_value_function(d) - cutoff,
     interval = interval,
@@ -1046,20 +1064,32 @@ prop_diff_uncond_exact <- function(rsp,
   cutoff <- alpha / 2
 
   tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
+
+  # Step 0: Calculate the observed difference in proportions 
+  # and the observed test statistic value.
   n2 <- sum(tbl[1, ])
   n1 <- sum(tbl[2, ])
   n21_obs <- tbl[1, 1]
   n11_obs <- tbl[2, 1]
   diff_est <- n11_obs / n1 - n21_obs / n2
 
+  # Step 1: Enumerate all tables in A with fixed row margins 
+  # n1 and n2.
   tables <- expand.grid(
     n11 = 0:n1,
     n21 = 0:n2
   )
+
+  # Step 2: Compute T(a) = n11 / n1 - n21 / n2 for each table a in A.
   t_values <- tables$n11 / n1 - tables$n21 / n2
   t0 <- diff_est
 
+  # Step 3: For each hypothesized difference d*, compute the worst-case
+  # tail probabilities P_U(d*) and P_L(d*) by maximizing over the nuisance
+  # parameter p2.
   p_upper <- function(d_star) {
+    # Step 4a: Compute worst-case one-sided tail probability:
+    # P_U(d*) = sup_p2 sum_{T(a) >= t0} f(...)
     h_worst_case_tail_probability(
       d_star = d_star,
       n1 = n1,
@@ -1071,6 +1101,8 @@ prop_diff_uncond_exact <- function(rsp,
     )
   }
   p_lower <- function(d_star) {
+    # Step 4b: Compute worst-case one-sided tail probability:
+    # P_L(d*) = sup_p2 sum_{T(a) <= t0} f(...)
     h_worst_case_tail_probability(
       d_star = d_star,
       n1 = n1,
@@ -1082,6 +1114,10 @@ prop_diff_uncond_exact <- function(rsp,
     )
   }
 
+  # Step 5: Invert one-sided tests to obtain the two-sided
+  # 100 * (1 - alpha)% CI for d = p1 - p2.
+  # For monotone one-sided p-value functions, use uniroot to solve
+  # P_U(d) = alpha/2 and P_L(d) = alpha/2 directly.
   diff_ci <- c(
     lower = h_find_ci_bound_uniroot(p_upper, cutoff = cutoff, direction = "increasing"),
     upper = h_find_ci_bound_uniroot(p_lower, cutoff = cutoff, direction = "decreasing")
