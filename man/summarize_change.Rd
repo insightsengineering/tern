@@ -70,7 +70,7 @@ defined by this split instruction, or \code{NA_character_} (the default) for no 
 Options are: \verb{'n', 'sum', 'mean', 'sd', 'se', 'mean_sd', 'mean_se', 'mean_ci', 'mean_sei', 'mean_sdi', 'mean_pval', 'median', 'mad', 'median_ci', 'quantiles', 'iqr', 'range', 'min', 'max', 'median_range', 'cv', 'geom_mean', 'geom_sd', 'geom_mean_sd', 'geom_mean_ci', 'geom_cv', 'median_ci_3d', 'mean_ci_3d', 'geom_mean_ci_3d'}}
 
 \item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
-(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
+(\code{.stats}). This option is visible when producing \code{\link[rtables:as_result_df]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.formats}{(named \code{character} or \code{list})\cr formats for the statistics. See Details in \code{analyze_vars} for more
 information on the \code{"auto"} setting.}

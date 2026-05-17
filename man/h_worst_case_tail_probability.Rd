@@ -2,7 +2,7 @@
 % Please edit documentation in R/prop_diff.R
 \name{h_worst_case_tail_probability}
 \alias{h_worst_case_tail_probability}
-\title{Internal helper for unconditional exact CI tail probabilities}
+\title{Worst case tail probability for unconditional exact CI calculation}
 \usage{
 h_worst_case_tail_probability(
   d_star,
@@ -35,6 +35,6 @@ A \code{number} between 0 and 1 corresponding to the worst-case one-sided tail p
 at the hypothesized difference.
 }
 \description{
-Internal helper for unconditional exact CI tail probabilities
+This function is an internal helper for \code{\link[=prop_diff_uncond_exact]{prop_diff_uncond_exact()}}.
 }
 \keyword{internal}

@@ -26,18 +26,18 @@ format_fun(x = 0.009)
 
 }
 \seealso{
-Other formatting functions: 
+Other formatting functions:
 \code{\link{extreme_format}},
-\code{\link{format_auto}()},
-\code{\link{format_count_fraction}()},
-\code{\link{format_count_fraction_fixed_dp}()},
-\code{\link{format_count_fraction_lt10}()},
-\code{\link{format_extreme_values_ci}()},
-\code{\link{format_fraction}()},
-\code{\link{format_fraction_fixed_dp}()},
-\code{\link{format_fraction_threshold}()},
-\code{\link{format_sigfig}()},
-\code{\link{format_xx}()},
+\code{\link[=format_auto]{format_auto()}},
+\code{\link[=format_count_fraction]{format_count_fraction()}},
+\code{\link[=format_count_fraction_fixed_dp]{format_count_fraction_fixed_dp()}},
+\code{\link[=format_count_fraction_lt10]{format_count_fraction_lt10()}},
+\code{\link[=format_extreme_values_ci]{format_extreme_values_ci()}},
+\code{\link[=format_fraction]{format_fraction()}},
+\code{\link[=format_fraction_fixed_dp]{format_fraction_fixed_dp()}},
+\code{\link[=format_fraction_threshold]{format_fraction_threshold()}},
+\code{\link[=format_sigfig]{format_sigfig()}},
+\code{\link[=format_xx]{format_xx()}},
 \code{\link{formatting_functions}}
 }
 \concept{formatting functions}

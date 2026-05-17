@@ -75,7 +75,7 @@ underneath analyses, which is not allowed.}
 information on the \code{"auto"} setting.}
 
 \item{.aligns}{(\code{character} or \code{NULL})\cr alignment for table contents (not including labels). When \code{NULL},
-\code{"center"} is applied. See \code{\link[formatters:list_formats]{formatters::list_valid_aligns()}} for a list of all currently supported alignments.}
+\code{"center"} is applied. See \code{\link[formatters:list_valid_aligns]{formatters::list_valid_aligns()}} for a list of all currently supported alignments.}
 }
 \value{
 A layout object suitable for passing to further layouting functions, or to \code{\link[rtables:build_table]{rtables::build_table()}}.

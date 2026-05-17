@@ -7,22 +7,22 @@
 See below for the list of formatting functions created in \code{tern} to work with \code{rtables}.
 }
 \details{
-Other available formats can be listed via \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}}. Additional
+Other available formats can be listed via \code{\link[formatters:list_valid_format_labels]{formatters::list_valid_format_labels()}}. Additional
 custom formats can be created via the \code{\link[formatters:sprintf_format]{formatters::sprintf_format()}} function.
 }
 \seealso{
-Other formatting functions: 
+Other formatting functions:
 \code{\link{extreme_format}},
-\code{\link{format_auto}()},
-\code{\link{format_count_fraction}()},
-\code{\link{format_count_fraction_fixed_dp}()},
-\code{\link{format_count_fraction_lt10}()},
-\code{\link{format_extreme_values}()},
-\code{\link{format_extreme_values_ci}()},
-\code{\link{format_fraction}()},
-\code{\link{format_fraction_fixed_dp}()},
-\code{\link{format_fraction_threshold}()},
-\code{\link{format_sigfig}()},
-\code{\link{format_xx}()}
+\code{\link[=format_auto]{format_auto()}},
+\code{\link[=format_count_fraction]{format_count_fraction()}},
+\code{\link[=format_count_fraction_fixed_dp]{format_count_fraction_fixed_dp()}},
+\code{\link[=format_count_fraction_lt10]{format_count_fraction_lt10()}},
+\code{\link[=format_extreme_values]{format_extreme_values()}},
+\code{\link[=format_extreme_values_ci]{format_extreme_values_ci()}},
+\code{\link[=format_fraction]{format_fraction()}},
+\code{\link[=format_fraction_fixed_dp]{format_fraction_fixed_dp()}},
+\code{\link[=format_fraction_threshold]{format_fraction_threshold()}},
+\code{\link[=format_sigfig]{format_sigfig()}},
+\code{\link[=format_xx]{format_xx()}}
 }
 \concept{formatting functions}

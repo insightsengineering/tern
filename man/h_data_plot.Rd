@@ -24,7 +24,7 @@ A \code{tibble} with columns \code{time}, \code{n.risk}, \code{n.event}, \code{n
 Convert the survival fit data into a data frame designed for plotting
 within \code{g_km}.
 
-This starts from the \code{\link[broom:reexports]{broom::tidy()}} result, and then:
+This starts from the \code{\link[broom:tidy]{broom::tidy()}} result, and then:
 \itemize{
 \item Post-processes the \code{strata} column into a factor.
 \item Extends each stratum by an additional first row with time 0 and probability 1 so that

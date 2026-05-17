@@ -2,7 +2,7 @@
 % Please edit documentation in R/prop_diff.R
 \name{h_find_ci_bound_uniroot}
 \alias{h_find_ci_bound_uniroot}
-\title{Internal helper for root-finding CI bounds from one-sided p-value functions}
+\title{Root-finding CI bounds from one-sided p-value functions}
 \usage{
 h_find_ci_bound_uniroot(
   p_value_function,
@@ -30,6 +30,6 @@ h_find_ci_bound_uniroot(
 A \code{number} with the requested CI bound, or \code{NA_real_} if no bound exists.
 }
 \description{
-Internal helper for root-finding CI bounds from one-sided p-value functions
+This function is an internal helper for \code{\link[=prop_diff_uncond_exact]{prop_diff_uncond_exact()}}.
 }
 \keyword{internal}
