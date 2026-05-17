@@ -1,5 +1,9 @@
 # tern 0.9.10.9006
 
+### Enhancements
+
+* Added `uncond_exact_diff` method to `estimate_proportion_diff()` for the unconditional exact confidence interval for the difference in proportions by inverting one-sided tail tests over a nuisance parameter. 
+
 # tern 0.9.10
 
 ### Enhancements
