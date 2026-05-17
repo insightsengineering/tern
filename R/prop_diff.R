@@ -910,7 +910,7 @@ prop_diff_strat_nc <- function(rsp,
 #' Worst case tail probability for unconditional exact CI calculation
 #'
 #' This function is an internal helper for [prop_diff_uncond_exact()].
-#' 
+#'
 #' @param d_star (`number`) hypothesized difference in proportions.
 #' @param n1 (`positive integer`) sample size in group 1.
 #' @param n2 (`positive integer`) sample size in group 2.
@@ -942,7 +942,7 @@ h_worst_case_tail_probability <- function(d_star,
 
   tail <- match.arg(tail)
 
-  # Step 0: Determine which tables are in the tail based on the observed test 
+  # Step 0: Determine which tables are in the tail based on the observed test
   # statistic value and the tail direction.
   include_table <- if (tail == "upper") {
     t_values >= t0
@@ -950,8 +950,8 @@ h_worst_case_tail_probability <- function(d_star,
     t_values <= t0
   }
 
-  # Step 1: For fixed d_star, and given p2, 
-  # calculate the likelihood of each table in A 
+  # Step 1: For fixed d_star, and given p2,
+  # calculate the likelihood of each table in A
   # and sum over tables in the tail to get the tail probability.
   objective <- function(p2) {
     p1 <- d_star + p2
@@ -979,7 +979,7 @@ h_worst_case_tail_probability <- function(d_star,
 #' Root-finding CI bounds from one-sided p-value functions
 #'
 #' This function is an internal helper for [prop_diff_uncond_exact()].
-#' 
+#'
 #' @param p_value_function (`function`) one-sided p-value function in terms of `d`.
 #' @param cutoff (`number`) one-sided significance level threshold.
 #' @param direction (`string`) one of `"increasing"` or `"decreasing"`.
@@ -1008,7 +1008,7 @@ h_find_ci_bound_uniroot <- function(p_value_function,
   hi <- interval[2]
 
   # Step 0: Check for boundary cases where the p-value function is above or
-  # below the cutoff at the endpoints of the search interval. 
+  # below the cutoff at the endpoints of the search interval.
   # If so, return the appropriate endpoint or NA.
   f_lo <- p_value_function(lo) - cutoff
   f_hi <- p_value_function(hi) - cutoff
@@ -1029,7 +1029,7 @@ h_find_ci_bound_uniroot <- function(p_value_function,
     }
   }
 
-  # Step 1: Find the value of d such that p_value_function(d) = cutoff using root finding. 
+  # Step 1: Find the value of d such that p_value_function(d) = cutoff using root finding.
   stats::uniroot(
     f = function(d) p_value_function(d) - cutoff,
     interval = interval,
@@ -1039,7 +1039,7 @@ h_find_ci_bound_uniroot <- function(p_value_function,
 }
 
 #' @describeIn h_prop_diff Unconditional exact confidence interval for the difference in
-#'   proportions by inverting one-sided tail tests over a nuisance parameter. This is 
+#'   proportions by inverting one-sided tail tests over a nuisance parameter. This is
 #'   the "tail method" described by Santner and Snell \insertCite{SantnerSnell1980}{tern}.
 #'
 #' @examples
@@ -1065,7 +1065,7 @@ prop_diff_uncond_exact <- function(rsp,
 
   tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
 
-  # Step 0: Calculate the observed difference in proportions 
+  # Step 0: Calculate the observed difference in proportions
   # and the observed test statistic value.
   n2 <- sum(tbl[1, ])
   n1 <- sum(tbl[2, ])
@@ -1073,7 +1073,7 @@ prop_diff_uncond_exact <- function(rsp,
   n11_obs <- tbl[2, 1]
   diff_est <- n11_obs / n1 - n21_obs / n2
 
-  # Step 1: Enumerate all tables in A with fixed row margins 
+  # Step 1: Enumerate all tables in A with fixed row margins
   # n1 and n2.
   tables <- expand.grid(
     n11 = 0:n1,

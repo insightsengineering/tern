@@ -113,9 +113,9 @@ We will use this little example helper to create the data sets below in the form
 
 ```{r}
 mk_data <- function(n11, n21, n1, n2) {
-    rsp <- c(rep(TRUE, n21), rep(FALSE, n2 - n21), rep(TRUE, n11), rep(FALSE, n1 - n11))
-    grp <- factor(c(rep("B", n2), rep("A", n1)), levels = c("B", "A"))
-    list(rsp = rsp, grp = grp)
+  rsp <- c(rep(TRUE, n21), rep(FALSE, n2 - n21), rep(TRUE, n11), rep(FALSE, n1 - n11))
+  grp <- factor(c(rep("B", n2), rep("A", n1)), levels = c("B", "A"))
+  list(rsp = rsp, grp = grp)
 }
 ```
 
