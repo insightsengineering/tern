@@ -138,7 +138,7 @@ added to the plot's subtitle (\code{subtitle}).}
 \item{table_format}{(named \code{vector} or \code{NULL})\cr custom formats for descriptive statistics used instead of defaults
 in the (optional) table appended to the plot. It is passed directly to the \code{h_format_row} function through
 the \code{format} parameter. Names of \code{table_format} must match the names of statistics returned by \code{sfun} function.
-Can be a character vector with values from \code{\link[formatters:list_formats]{formatters::list_valid_format_labels()}} or custom format functions.}
+Can be a character vector with values from \code{\link[formatters:list_valid_format_labels]{formatters::list_valid_format_labels()}} or custom format functions.}
 
 \item{table_labels}{(named \code{character} or \code{NULL})\cr labels for descriptive statistics used in the (optional) table
 appended to the plot. Names of \code{table_labels} must match the names of statistics returned by \code{sfun} function.}

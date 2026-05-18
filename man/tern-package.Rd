@@ -22,7 +22,8 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Daniel Sabanés Bové \email{daniel.sabanes_bove@rconis.com}
+  \item Joe Zhu \email{joe.zhu@roche.com} (\href{https://orcid.org/0000-0001-7566-2787}{ORCID})
+  \item Daniel Saban<U+00E9>s Bov<U+00E9> \email{daniel.sabanes_bove@rconis.com}
   \item Jana Stoilova \email{stoilova@dnli.com}
   \item Davide Garolini \email{davide.garolini@roche.com} (\href{https://orcid.org/0000-0002-1445-1369}{ORCID})
   \item Emily de la Rua \email{emilydelarua@gmail.com} (\href{https://orcid.org/0009-0000-8738-5561}{ORCID})

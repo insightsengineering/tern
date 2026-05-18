@@ -208,6 +208,9 @@ decorate_grob <- function(grob,
     page = page,
     width_titles = width_titles,
     width_footnotes = width_footnotes,
+    border = border,
+    padding = padding,
+    margins = margins,
     outer_margins = outer_margins,
     gp_titles = gp_titles,
     gp_footnotes = gp_footnotes,
@@ -246,7 +249,7 @@ decorate_grob <- function(grob,
 
 # nocov start
 #' @importFrom grid validDetails
-#' @noRd
+#' @exportS3Method
 validDetails.decoratedGrob <- function(x) {
   checkmate::assert_character(x$titles)
   checkmate::assert_character(x$footnotes)
@@ -271,13 +274,13 @@ validDetails.decoratedGrob <- function(x) {
 }
 
 #' @importFrom grid widthDetails
-#' @noRd
+#' @exportS3Method
 widthDetails.decoratedGrob <- function(x) {
   grid::unit(1, "null")
 }
 
 #' @importFrom grid heightDetails
-#' @noRd
+#' @exportS3Method
 heightDetails.decoratedGrob <- function(x) {
   grid::unit(1, "null")
 }
@@ -366,7 +369,7 @@ split_text_grob <- function(text,
 }
 
 #' @importFrom grid validDetails
-#' @noRd
+#' @exportS3Method
 validDetails.dynamicSplitText <- function(x) {
   checkmate::assert_character(x$text)
   checkmate::assert_true(grid::is.unit(x$width))
@@ -375,7 +378,7 @@ validDetails.dynamicSplitText <- function(x) {
 }
 
 #' @importFrom grid heightDetails
-#' @noRd
+#' @exportS3Method
 heightDetails.dynamicSplitText <- function(x) {
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
     attr(x$text, "fixed_text")
@@ -386,13 +389,13 @@ heightDetails.dynamicSplitText <- function(x) {
 }
 
 #' @importFrom grid widthDetails
-#' @noRd
+#' @exportS3Method
 widthDetails.dynamicSplitText <- function(x) {
   x$width
 }
 
 #' @importFrom grid drawDetails
-#' @noRd
+#' @exportS3Method
 drawDetails.dynamicSplitText <- function(x, recording) {
   txt <- if (!is.null(attr(x$text, "fixed_text"))) {
     attr(x$text, "fixed_text")
