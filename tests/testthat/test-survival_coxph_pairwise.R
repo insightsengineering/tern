@@ -50,8 +50,7 @@ testthat::test_that("s_coxph_pairwise works with one-sided p-value for Wald test
     .var = "AVAL",
     is_event = "is_event",
     strata = NULL,
-    control = control_coxph(pval_method = "wald", ties = "breslow", conf_level = 0.9),
-    alternative = "less"
+    control = control_coxph(pval_method = "wald", ties = "breslow", conf_level = 0.9, alternative = "less")
   ))
   testthat::expect_snapshot(result)
 })
@@ -213,9 +212,8 @@ testthat::test_that("coxph_pairwise works with customized arguments and stratifi
       vars = "AVAL",
       is_event = "is_event",
       var_labels = c("Stratified Analysis"),
-      control = control_coxph(pval_method = "log-rank", conf_level = 0.99),
+      control = control_coxph(pval_method = "log-rank", conf_level = 0.99, alternative = "greater"),
       strata = c("SEX", "RACE"),
-      alternative = "greater",
       .stats = c("hr", "hr_ci", "pvalue"),
       .formats = c(hr = "xx.xxx", hr_ci = "(xx.xxx, xx.xxx)")
     ) %>%
