@@ -1,6 +1,8 @@
 # tern 0.9.10.9006
 
-* Added `alternative` argument to `s_coxph_pairwise()` to allow one-sided hypothesis testing and added `lr_stat_df` to the parameters return list
+### Enhancements
+* Added `alternative` argument to `s_coxph_pairwise()` to allow one-sided hypothesis testing.
+* Added `lr_stat_df` to the parameters return list of `s_coxph_pairwise()`.
 
 # tern 0.9.10
 
