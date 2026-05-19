@@ -305,31 +305,53 @@ testthat::test_that("prop_diff_strat_nc output matches equivalent SAS function o
 })
 
 
-testthat::test_that("`prop_diff_uncond_exact` matches reference values", {
+testthat::test_that("`prop_diff_uncond_exact` matches reference values and works with edge cases", {
   mk_data <- function(n11, n21, n1, n2) {
     rsp <- c(rep(TRUE, n21), rep(FALSE, n2 - n21), rep(TRUE, n11), rep(FALSE, n1 - n11))
     grp <- factor(c(rep("B", n2), rep("A", n1)), levels = c("B", "A"))
     list(rsp = rsp, grp = grp)
   }
 
+  # From SAS.
   case1 <- mk_data(n11 = 40, n21 = 5, n1 = 78, n2 = 17)
   result1 <- prop_diff_uncond_exact(rsp = case1$rsp, grp = case1$grp, conf_level = 0.95)
   expect_equal(result1$diff, 0.2187, tolerance = 1e-4)
   expect_equal(result1$diff_ci, c(-0.0466, 0.4676), tolerance = 1e-4)
 
+  # From SAS.
   case2 <- mk_data(n11 = 27, n21 = 3, n1 = 57, n2 = 3)
   result2 <- prop_diff_uncond_exact(rsp = case2$rsp, grp = case2$grp, conf_level = 0.95)
   expect_equal(result2$diff, -0.5263, tolerance = 1e-4)
   expect_equal(result2$diff_ci, c(-0.9057, 0.1197), tolerance = 1e-4)
 
+  # From SAS.
   result3 <- prop_diff_uncond_exact(rsp = case2$rsp, grp = case2$grp, conf_level = 0.99)
   expect_equal(result3$diff, -0.5263, tolerance = 1e-4)
   expect_equal(result3$diff_ci, c(-0.9586, 0.2677), tolerance = 1e-4)
 
+  # Zero successes in one group; from paper.
   case4 <- mk_data(n11 = 0, n21 = 2, n1 = 2, n2 = 2)
   result4 <- prop_diff_uncond_exact(rsp = case4$rsp, grp = case4$grp, conf_level = 0.90)
   expect_equal(result4$diff, -1, tolerance = 1e-8)
   expect_equal(result4$diff_ci, c(-1, 0.0543), tolerance = 1e-3)
+
+  # All successes; from paper.
+  case5 <- mk_data(n11 = 2, n21 = 2, n1 = 2, n2 = 2)
+  result5 <- prop_diff_uncond_exact(rsp = case5$rsp, grp = case5$grp, conf_level = 0.90)
+  expect_equal(result5$diff, 0, tolerance = 1e-8)
+  expect_equal(result5$diff_ci, c(-0.8048, 0.8048), tolerance = 1e-3)
+
+  # All failures; note this is the same as all successes so gives the same CI - from paper.
+  case6 <- mk_data(n11 = 0, n21 = 0, n1 = 2, n2 = 2)
+  result6 <- prop_diff_uncond_exact(rsp = case6$rsp, grp = case6$grp)
+  expect_equal(result6$diff, 0, tolerance = 1e-8)
+  expect_equal(result6$diff_ci, c(-0.8648, 0.8648), tolerance = 1e-3)
+
+  # No observations: Same behavior as other methods.
+  case7 <- mk_data(n11 = 0, n21 = 0, n1 = 0, n2 = 0)
+  result7 <- prop_diff_uncond_exact(rsp = case7$rsp, grp = case7$grp)
+  expect_true(is.nan(result7$diff))
+  expect_equal(result7$diff_ci, c(NaN, NaN))
 })
 
 testthat::test_that("h_worst_case_tail_probability returns valid tail probabilities", {

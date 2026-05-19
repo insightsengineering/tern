@@ -1069,6 +1069,14 @@ prop_diff_uncond_exact <- function(rsp,
   # and the observed test statistic value.
   n2 <- sum(tbl[1, ])
   n1 <- sum(tbl[2, ])
+
+  if (n1 == 0 || n2 == 0) {
+    return(list(
+        diff = NaN,
+        diff_ci = c(NaN, NaN)
+    ))
+  }
+
   n21_obs <- tbl[1, 1]
   n11_obs <- tbl[2, 1]
   diff_est <- n11_obs / n1 - n21_obs / n2
@@ -1119,12 +1127,12 @@ prop_diff_uncond_exact <- function(rsp,
   # For monotone one-sided p-value functions, use uniroot to solve
   # P_U(d) = alpha/2 and P_L(d) = alpha/2 directly.
   diff_ci <- c(
-    lower = h_find_ci_bound_uniroot(p_upper, cutoff = cutoff, direction = "increasing"),
-    upper = h_find_ci_bound_uniroot(p_lower, cutoff = cutoff, direction = "decreasing")
+    h_find_ci_bound_uniroot(p_upper, cutoff = cutoff, direction = "increasing"),
+    h_find_ci_bound_uniroot(p_lower, cutoff = cutoff, direction = "decreasing")
   )
 
   list(
     diff = diff_est,
-    diff_ci = unname(diff_ci)
+    diff_ci = diff_ci
   )
 }
