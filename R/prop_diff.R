@@ -1083,6 +1083,9 @@ prop_diff_uncond_exact <- function(rsp,
 
   # Step 1: Enumerate all tables in A with fixed row margins
   # n1 and n2.
+  if (n1 * n2 > 1e5) {
+    warning("uncond_exact_diff: Large sample sizes may lead to long computation time.")
+  }
   tables <- expand.grid(
     n11 = 0:n1,
     n21 = 0:n2

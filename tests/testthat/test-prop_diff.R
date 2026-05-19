@@ -352,6 +352,13 @@ testthat::test_that("`prop_diff_uncond_exact` matches reference values and works
   result7 <- prop_diff_uncond_exact(rsp = case7$rsp, grp = case7$grp)
   expect_true(is.nan(result7$diff))
   expect_equal(result7$diff_ci, c(NaN, NaN))
+
+  skip_on_cran()
+  case8 <- mk_data(n11 = 200, n21 = 100, n1 = 330, n2 = 330)
+  expect_warning(
+    prop_diff_uncond_exact(rsp = case8$rsp, grp = case8$grp),
+    "long computation"
+  )
 })
 
 testthat::test_that("h_worst_case_tail_probability returns valid tail probabilities", {
