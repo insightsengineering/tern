@@ -1072,8 +1072,8 @@ prop_diff_uncond_exact <- function(rsp,
 
   if (n1 == 0 || n2 == 0) {
     return(list(
-        diff = NaN,
-        diff_ci = c(NaN, NaN)
+      diff = NaN,
+      diff_ci = c(NaN, NaN)
     ))
   }
 
