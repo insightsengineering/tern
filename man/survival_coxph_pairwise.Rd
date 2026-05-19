@@ -34,7 +34,6 @@ s_coxph_pairwise(
   strata = NULL,
   strat = lifecycle::deprecated(),
   control = control_coxph(),
-  alternative = c("two.sided", "less", "greater"),
   ...
 )
 
@@ -64,6 +63,9 @@ method is \code{"log-rank"} which comes from \code{\link[survival:survdiff]{surv
 \item \code{ties} (\code{string})\cr specifying the method for tie handling. Default is \code{"efron"},
 can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[survival:coxph]{survival::coxph()}}.
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
+\item \code{alternative} (\code{string})\cr alternative hypothesis for the p-value test. Default is \code{"two.sided"},
+can also be set to \code{"less"} or \code{"greater"} for one-sided testing. Note that one-sided testing is not
+supported when \code{pval_method = "likelihood"}.
 }}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
@@ -83,7 +85,7 @@ times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
-Options are: \verb{'pvalue', 'hr', 'hr_ci', 'n_tot', 'n_tot_events'}}
+Options are: \verb{'pvalue', 'hr', 'hr_ci', 'hr_ci_3d', 'lr_stat_df', 'n_tot', 'n_tot_events'}}
 
 \item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
 (\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
@@ -108,9 +110,6 @@ by a statistics function.}
 \item{is_event}{(\code{flag})\cr \code{TRUE} if event, \code{FALSE} if time to event is censored.}
 
 \item{strat}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Please use the \code{strata} argument instead.}
-
-\item{alternative}{(\code{string})\cr whether \code{two.sided}, or one-sided \code{less} or \code{greater} p-value
-should be displayed.}
 }
 \value{
 \itemize{

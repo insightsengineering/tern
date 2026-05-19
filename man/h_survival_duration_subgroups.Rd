@@ -55,6 +55,9 @@ method is \code{"log-rank"} which comes from \code{\link[survival:survdiff]{surv
 \item \code{ties} (\code{string})\cr specifying the method for tie handling. Default is \code{"efron"},
 can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[survival:coxph]{survival::coxph()}}.
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
+\item \code{alternative} (\code{string})\cr alternative hypothesis for the p-value test. Default is \code{"two.sided"},
+can also be set to \code{"less"} or \code{"greater"} for one-sided testing. Note that one-sided testing is not
+supported when \code{pval_method = "likelihood"}.
 }}
 }
 \value{
