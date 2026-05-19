@@ -10,18 +10,23 @@
 #'   Default method is `"log-rank"`, can also be set to `"wald"` or `"likelihood"`.
 #' @param ties (`string`)\cr string specifying the method for tie handling. Default is `"efron"`,
 #'   can also be set to `"breslow"` or `"exact"`. See more in [survival::coxph()].
+#' @param alternative (`string`)\cr alternative hypothesis for the p-value test. Default is `"two.sided"`,
+#'   can also be set to `"less"` or `"greater"` for one-sided testing. Note that one-sided testing is not
+#'   supported when `pval_method = "likelihood"`.
 #'
 #' @return A list of components with the same names as the arguments.
 #'
 #' @export
 control_coxph <- function(pval_method = c("log-rank", "wald", "likelihood"),
                           ties = c("efron", "breslow", "exact"),
-                          conf_level = 0.95) {
+                          conf_level = 0.95,
+                          alternative = c("two.sided", "less", "greater")) {
   pval_method <- match.arg(pval_method)
   ties <- match.arg(ties)
+  alternative <- match.arg(alternative)
   assert_proportion_value(conf_level)
 
-  list(pval_method = pval_method, ties = ties, conf_level = conf_level)
+  list(pval_method = pval_method, ties = ties, conf_level = conf_level, alternative = alternative)
 }
 
 #' Control function for `survfit` models for survival time

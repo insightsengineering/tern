@@ -20,6 +20,9 @@
 #'   * `ties` (`string`)\cr specifying the method for tie handling. Default is `"efron"`,
 #'     can also be set to `"breslow"` or `"exact"`. See more in [survival::coxph()].
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
+#'   * `alternative` (`string`)\cr alternative hypothesis for the p-value test. Default is `"two.sided"`,
+#'     can also be set to `"less"` or `"greater"` for one-sided testing. Note that one-sided testing is not
+#'     supported when `pval_method = "likelihood"`.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
 #'   Options are: ``r shQuote(get_stats("coxph_pairwise"), type = "sh")``
@@ -47,7 +50,6 @@ s_coxph_pairwise <- function(df,
                              strata = NULL,
                              strat = lifecycle::deprecated(),
                              control = control_coxph(),
-                             alternative = c("two.sided", "less", "greater"),
                              ...) {
   if (lifecycle::is_present(strat)) {
     lifecycle::deprecate_warn("0.9.4", "s_coxph_pairwise(strat)", "s_coxph_pairwise(strata)")
@@ -58,11 +60,11 @@ s_coxph_pairwise <- function(df,
   checkmate::assert_numeric(df[[.var]])
   checkmate::assert_logical(df[[is_event]])
   assert_df_with_variables(df, list(tte = .var, is_event = is_event))
-  alternative <- match.arg(alternative)
 
   pval_method <- control$pval_method
   ties <- control$ties
   conf_level <- control$conf_level
+  alternative <- control$alternative
 
   if (.in_ref_col) {
     return(
