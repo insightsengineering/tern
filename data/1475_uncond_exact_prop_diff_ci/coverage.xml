@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "https://raw.githubusercontent.com/cobertura/cobertura/master/cobertura/src/site/htdocs/xml/coverage-04.dtd">
-<coverage line-rate="0.951542931980028" branch-rate="0" lines-covered="11625" lines-valid="12217" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2026-05-19 03:26:52.1015">
+<coverage line-rate="0.951554828150573" branch-rate="0" lines-covered="11628" lines-valid="12220" branches-covered="0" branches-valid="0" complexity="0" version="3.6.5" timestamp="2026-05-20 12:59:57.993091">
   <sources>
     <source>/__w/tern/tern/tern</source>
   </sources>
   <packages>
-    <package name="tern" line-rate="0.951542931980028" branch-rate="0" complexity="0">
+    <package name="tern" line-rate="0.951554828150573" branch-rate="0" complexity="0">
       <classes>
         <class name="abnormal_by_baseline.R" filename="R/abnormal_by_baseline.R" line-rate="0.97029702970297" branch-rate="0" complexity="0">
           <methods>
@@ -6459,49 +6459,52 @@
                 <line number="242" hits="9" branch="false"/>
                 <line number="243" hits="9" branch="false"/>
                 <line number="244" hits="9" branch="false"/>
+                <line number="245" hits="9" branch="false"/>
+                <line number="246" hits="9" branch="false"/>
+                <line number="247" hits="9" branch="false"/>
               </lines>
             </method>
             <method name="split_string" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="415" hits="26" branch="false"/>
-                <line number="416" hits="26" branch="false"/>
-                <line number="417" hits="26" branch="false"/>
-                <line number="418" hits="48" branch="false"/>
-                <line number="419" hits="6" branch="false"/>
-                <line number="420" hits="48" branch="false"/>
+                <line number="418" hits="26" branch="false"/>
+                <line number="419" hits="26" branch="false"/>
+                <line number="420" hits="26" branch="false"/>
                 <line number="421" hits="48" branch="false"/>
-                <line number="422" hits="48" branch="false"/>
+                <line number="422" hits="6" branch="false"/>
+                <line number="423" hits="48" branch="false"/>
                 <line number="424" hits="48" branch="false"/>
                 <line number="425" hits="48" branch="false"/>
-                <line number="426" hits="48" branch="false"/>
-                <line number="427" hits="12" branch="false"/>
-                <line number="428" hits="184" branch="false"/>
-                <line number="430" hits="184" branch="false"/>
-                <line number="431" hits="177" branch="false"/>
-                <line number="432" hits="177" branch="false"/>
-                <line number="434" hits="7" branch="false"/>
-                <line number="435" hits="7" branch="false"/>
-                <line number="437" hits="184" branch="false"/>
-                <line number="441" hits="26" branch="false"/>
+                <line number="427" hits="48" branch="false"/>
+                <line number="428" hits="48" branch="false"/>
+                <line number="429" hits="48" branch="false"/>
+                <line number="430" hits="12" branch="false"/>
+                <line number="431" hits="184" branch="false"/>
+                <line number="433" hits="184" branch="false"/>
+                <line number="434" hits="177" branch="false"/>
+                <line number="435" hits="177" branch="false"/>
+                <line number="437" hits="7" branch="false"/>
+                <line number="438" hits="7" branch="false"/>
+                <line number="440" hits="184" branch="false"/>
+                <line number="444" hits="26" branch="false"/>
               </lines>
             </method>
             <method name="decorate_grob_factory" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="455" hits="2" branch="false"/>
-                <line number="456" hits="2" branch="false"/>
-                <line number="457" hits="2" branch="false"/>
                 <line number="458" hits="2" branch="false"/>
-                <line number="459" hits="1" branch="false"/>
+                <line number="459" hits="2" branch="false"/>
                 <line number="460" hits="2" branch="false"/>
                 <line number="461" hits="2" branch="false"/>
-                <line number="462" hits="2" branch="false"/>
+                <line number="462" hits="1" branch="false"/>
+                <line number="463" hits="2" branch="false"/>
+                <line number="464" hits="2" branch="false"/>
+                <line number="465" hits="2" branch="false"/>
               </lines>
             </method>
             <method name="decorate_grob_set" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
-                <line number="515" hits="1" branch="false"/>
-                <line number="516" hits="1" branch="false"/>
-                <line number="517" hits="1" branch="false"/>
+                <line number="518" hits="1" branch="false"/>
+                <line number="519" hits="1" branch="false"/>
+                <line number="520" hits="1" branch="false"/>
               </lines>
             </method>
           </methods>
@@ -6588,37 +6591,40 @@
             <line number="242" hits="9" branch="false"/>
             <line number="243" hits="9" branch="false"/>
             <line number="244" hits="9" branch="false"/>
-            <line number="415" hits="26" branch="false"/>
-            <line number="416" hits="26" branch="false"/>
-            <line number="417" hits="26" branch="false"/>
-            <line number="418" hits="48" branch="false"/>
-            <line number="419" hits="6" branch="false"/>
-            <line number="420" hits="48" branch="false"/>
+            <line number="245" hits="9" branch="false"/>
+            <line number="246" hits="9" branch="false"/>
+            <line number="247" hits="9" branch="false"/>
+            <line number="418" hits="26" branch="false"/>
+            <line number="419" hits="26" branch="false"/>
+            <line number="420" hits="26" branch="false"/>
             <line number="421" hits="48" branch="false"/>
-            <line number="422" hits="48" branch="false"/>
+            <line number="422" hits="6" branch="false"/>
+            <line number="423" hits="48" branch="false"/>
             <line number="424" hits="48" branch="false"/>
             <line number="425" hits="48" branch="false"/>
-            <line number="426" hits="48" branch="false"/>
-            <line number="427" hits="12" branch="false"/>
-            <line number="428" hits="184" branch="false"/>
-            <line number="430" hits="184" branch="false"/>
-            <line number="431" hits="177" branch="false"/>
-            <line number="432" hits="177" branch="false"/>
-            <line number="434" hits="7" branch="false"/>
-            <line number="435" hits="7" branch="false"/>
-            <line number="437" hits="184" branch="false"/>
-            <line number="441" hits="26" branch="false"/>
-            <line number="455" hits="2" branch="false"/>
-            <line number="456" hits="2" branch="false"/>
-            <line number="457" hits="2" branch="false"/>
+            <line number="427" hits="48" branch="false"/>
+            <line number="428" hits="48" branch="false"/>
+            <line number="429" hits="48" branch="false"/>
+            <line number="430" hits="12" branch="false"/>
+            <line number="431" hits="184" branch="false"/>
+            <line number="433" hits="184" branch="false"/>
+            <line number="434" hits="177" branch="false"/>
+            <line number="435" hits="177" branch="false"/>
+            <line number="437" hits="7" branch="false"/>
+            <line number="438" hits="7" branch="false"/>
+            <line number="440" hits="184" branch="false"/>
+            <line number="444" hits="26" branch="false"/>
             <line number="458" hits="2" branch="false"/>
-            <line number="459" hits="1" branch="false"/>
+            <line number="459" hits="2" branch="false"/>
             <line number="460" hits="2" branch="false"/>
             <line number="461" hits="2" branch="false"/>
-            <line number="462" hits="2" branch="false"/>
-            <line number="515" hits="1" branch="false"/>
-            <line number="516" hits="1" branch="false"/>
-            <line number="517" hits="1" branch="false"/>
+            <line number="462" hits="1" branch="false"/>
+            <line number="463" hits="2" branch="false"/>
+            <line number="464" hits="2" branch="false"/>
+            <line number="465" hits="2" branch="false"/>
+            <line number="518" hits="1" branch="false"/>
+            <line number="519" hits="1" branch="false"/>
+            <line number="520" hits="1" branch="false"/>
           </lines>
         </class>
         <class name="desctools_binom_diff.R" filename="R/desctools_binom_diff.R" line-rate="0.896940418679549" branch-rate="0" complexity="0">
