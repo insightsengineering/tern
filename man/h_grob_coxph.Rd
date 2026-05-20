@@ -22,7 +22,7 @@ h_grob_coxph(
 
 \item{width}{(\code{grid::unit})\cr width (as a unit) to use when printing the grob.}
 
-\item{ttheme}{(\code{list})\cr see \code{\link[gridExtra:tableGrob]{gridExtra::ttheme_default()}}.}
+\item{ttheme}{(\code{list})\cr see \code{\link[gridExtra:ttheme_default]{gridExtra::ttheme_default()}}.}
 }
 \value{
 A \code{grob} of a table containing statistics \code{HR}, \verb{XX\% CI} (\code{XX} taken from \code{control_coxph_pw}),

@@ -7,7 +7,7 @@
 \item{...}{additional arguments for the lower level functions.}
 
 \item{.aligns}{(\code{character} or \code{NULL})\cr alignment for table contents (not including labels). When \code{NULL},
-\code{"center"} is applied. See \code{\link[formatters:list_formats]{formatters::list_valid_aligns()}} for a list of all currently supported alignments.}
+\code{"center"} is applied. See \code{\link[formatters:list_valid_aligns]{formatters::list_valid_aligns()}} for a list of all currently supported alignments.}
 
 \item{.all_col_counts}{(\code{integer})\cr vector where each value represents a global count for a column. Values are
 taken from \code{alt_counts_df} if specified (see \code{\link[rtables:build_table]{rtables::build_table()}}).}
@@ -38,7 +38,7 @@ that is passed by \code{rtables}.}
 \item{.stats}{(\code{character})\cr statistics to select for the table.}
 
 \item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
-(\code{.stats}). This option is visible when producing \code{\link[rtables:data.frame_export]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
+(\code{.stats}). This option is visible when producing \code{\link[rtables:as_result_df]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
 
 \item{.var}{(\code{string})\cr single variable name that is passed by \code{rtables} when requested
 by a statistics function.}

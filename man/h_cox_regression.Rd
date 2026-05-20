@@ -38,11 +38,11 @@ by a statistics function.}
 }
 \value{
 \itemize{
-\item \code{h_coxreg_univar_formulas()} returns a \code{character} vector coercible into formulas (e.g \code{\link[stats:formula]{stats::as.formula()}}).
+\item \code{h_coxreg_univar_formulas()} returns a \code{character} vector coercible into formulas (e.g \code{\link[stats:as.formula]{stats::as.formula()}}).
 }
 
 \itemize{
-\item \code{h_coxreg_multivar_formula()} returns a \code{string} coercible into a formula (e.g \code{\link[stats:formula]{stats::as.formula()}}).
+\item \code{h_coxreg_multivar_formula()} returns a \code{string} coercible into a formula (e.g \code{\link[stats:as.formula]{stats::as.formula()}}).
 }
 
 \itemize{

@@ -85,7 +85,7 @@ Defaults to \code{NA} for no section divider. If a vector of two strings are giv
 treatment and covariate sections and the second between different covariates.}
 
 \item{model_df}{(\code{data.frame})\cr contains the resulting model fit from a \link{fit_coxreg}
-function with tidying applied via \code{\link[broom:reexports]{broom::tidy()}}.}
+function with tidying applied via \code{\link[broom:tidy]{broom::tidy()}}.}
 
 \item{.which_vars}{(\code{character})\cr which rows should statistics be returned for from the given model.
 Defaults to \code{"all"}. Other options include \code{"var_main"} for main effects, \code{"inter"} for interaction effects,
