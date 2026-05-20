@@ -18,17 +18,17 @@ set_default_drop_na(drop_na)
 
 - x:
 
-  (`factor` or `character`)  
+  (`factor` or `character`)\
   values for which any missing values should be substituted.
 
 - label:
 
-  (`string`)  
+  (`string`)\
   string that missing data should be replaced with.
 
 - drop_na:
 
-  (`flag`)  
+  (`flag`)\
   if `TRUE` and `x` is a factor, any levels that are only `label` will
   be dropped.
 
@@ -36,7 +36,7 @@ set_default_drop_na(drop_na)
 
 `x` with any `NA` values substituted by `label`.
 
-- `tern_default_drop_na`: (`flag`)  
+- `tern_default_drop_na`: (`flag`)\
   default value for `drop_na` argument in `explicit_na()`.
 
 &nbsp;

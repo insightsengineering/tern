@@ -51,53 +51,53 @@ a_surv_time(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - is_event:
 
-  (`flag`)  
+  (`flag`)\
   `TRUE` if event, `FALSE` if time to event is censored.
 
 - control:
 
-  (`list`)  
+  (`list`)\
   parameters for comparison details, specified by using the helper
   function
   [`control_surv_time()`](https://insightsengineering.github.io/tern/reference/control_surv_time.md).
   Some possible parameter options are:
 
-  - `conf_level` (`proportion`)  
+  - `conf_level` (`proportion`)\
     confidence level of the interval for survival time.
 
-  - `conf_type` (`string`)  
+  - `conf_type` (`string`)\
     confidence interval type. Options are "plain" (default), "log", or
     "log-log", see more in
     [`survival::survfit()`](https://rdrr.io/pkg/survival/man/survfit.html).
     Note option "none" is not supported.
 
-  - `quantiles` (`numeric`)  
+  - `quantiles` (`numeric`)\
     vector of length two to specify the quantiles of survival time.
 
 - ref_fn_censor:
 
-  (`flag`)  
+  (`flag`)\
   whether referential footnotes indicating censored observations should
   be printed when the `range` statistic is included.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -109,23 +109,23 @@ a_surv_time(
 
 - var_labels:
 
-  (`character`)  
+  (`character`)\
   variable labels.
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - table_names:
 
-  (`character`)  
+  (`character`)\
   this can be customized in the case that the same `vars` are analyzed
   multiple times, to avoid warnings from `rtables`.
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options are:
@@ -133,7 +133,7 @@ a_surv_time(
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -141,36 +141,36 @@ a_surv_time(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Each element of the vector should be
   a name-value pair with name corresponding to a statistic specified in
   `.stats` and value the indentation for that statistic's row label.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - .var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - labelstr:
 
-  (`string`)  
+  (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
   [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)

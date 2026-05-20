@@ -75,36 +75,36 @@ a_surv_timepoint(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - time_point:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   survival time point of interest.
 
 - is_event:
 
-  (`flag`)  
+  (`flag`)\
   `TRUE` if event, `FALSE` if time to event is censored.
 
 - control:
 
-  (`list`)  
+  (`list`)\
   parameters for comparison details, specified by using the helper
   function
   [`control_surv_timepoint()`](https://insightsengineering.github.io/tern/reference/control_surv_timepoint.md).
   Some possible parameter options are:
 
-  - `conf_level` (`proportion`)  
+  - `conf_level` (`proportion`)\
     confidence level of the interval for survival rate.
 
-  - `conf_type` (`string`)  
+  - `conf_type` (`string`)\
     confidence interval type. Options are "plain" (default), "log",
     "log-log", see more in
     [`survival::survfit()`](https://rdrr.io/pkg/survival/man/survfit.html).
@@ -112,18 +112,18 @@ a_surv_timepoint(
 
 - method:
 
-  (`string`)  
+  (`string`)\
   `"surv"` (survival estimations), `"surv_diff"` (difference in survival
   with the control), or `"both"`.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -135,23 +135,23 @@ a_surv_timepoint(
 
 - table_names_suffix:
 
-  (`string`)  
+  (`string`)\
   optional suffix for the `table_names` used for the `rtables` to avoid
   warnings from duplicate table names.
 
 - var_labels:
 
-  (`character`)  
+  (`character`)\
   variable labels.
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options are:
@@ -159,7 +159,7 @@ a_surv_timepoint(
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -167,41 +167,41 @@ a_surv_timepoint(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Each element of the vector should be
   a name-value pair with name corresponding to a statistic specified in
   `.stats` and value the indentation for that statistic's row label.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - .var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - .ref_group:
 
-  (`data.frame` or `vector`)  
+  (`data.frame` or `vector`)\
   the data corresponding to the reference group.
 
 - .in_ref_col:
 
-  (`flag`)  
+  (`flag`)\
   `TRUE` when working with the reference level, `FALSE` otherwise.
 
 ## Value

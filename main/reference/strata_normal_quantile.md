@@ -16,19 +16,19 @@ strata_normal_quantile(vars, weights, conf_level)
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - weights:
 
-  (`numeric` or `NULL`)  
+  (`numeric` or `NULL`)\
   weights for each level of the strata. If `NULL`, they are estimated
   using the iterative algorithm proposed in Yan and Su (2010) that
   minimizes the weighted squared length of the confidence interval.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 ## Value
@@ -53,5 +53,5 @@ vars <- ests * (1 - ests) / ns
 weights <- rep(1 / length(ns), length(ns))
 
 strata_normal_quantile(vars, weights, 0.95)
-#> [1] 1.133649
+#> [1] 1.132958
 ```

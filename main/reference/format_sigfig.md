@@ -13,12 +13,12 @@ format_sigfig(sigfig, format = "xx", num_fmt = "fg")
 
 - sigfig:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   number of significant figures to display.
 
 - format:
 
-  (`string`)  
+  (`string`)\
   the format label (string) to apply when printing the value. Decimal
   places in string are ignored in favor of formatting by significant
   figures. Formats options are: `"xx"`, `"xx / xx"`, `"(xx, xx)"`,
@@ -26,7 +26,7 @@ format_sigfig(sigfig, format = "xx", num_fmt = "fg")
 
 - num_fmt:
 
-  (`string`)  
+  (`string`)\
   numeric format modifiers to apply to the value. Defaults to `"fg"` for
   standard significant figures formatting - fixed (non-scientific
   notation) format (`"f"`) and `sigfig` equal to number of significant

@@ -12,13 +12,13 @@ afun_selected_stats(.stats, all_stats)
 
 - .stats:
 
-  (`vector` or `NULL`)  
+  (`vector` or `NULL`)\
   input to the layout creating function. Note that `NULL` means in this
   context that all default statistics should be used.
 
 - all_stats:
 
-  (`character`)  
+  (`character`)\
   all statistics which can be selected here potentially.
 
 ## Value

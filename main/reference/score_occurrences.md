@@ -21,7 +21,7 @@ score_occurrences_cont_cols(...)
 
 - table_row:
 
-  (`TableRow`)  
+  (`TableRow`)\
   an analysis row in a occurrence table.
 
 - ...:

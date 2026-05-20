@@ -23,17 +23,17 @@ e1 | e2
 
 - e1:
 
-  (`CombinationFunction`)  
+  (`CombinationFunction`)\
   left hand side of logical operator.
 
 - e2:
 
-  (`CombinationFunction`)  
+  (`CombinationFunction`)\
   right hand side of logical operator.
 
 - x:
 
-  (`CombinationFunction`)  
+  (`CombinationFunction`)\
   the function which should be negated.
 
 ## Value

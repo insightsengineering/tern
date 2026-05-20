@@ -15,7 +15,7 @@ h_decompose_gg(gg)
 
 - gg:
 
-  (`ggplot`)  
+  (`ggplot`)\
   a graphic to decompose.
 
 ## Value

@@ -36,33 +36,33 @@ h_coxreg_inter_estimations(
 
 - x:
 
-  (`numeric` or `factor`)  
+  (`numeric` or `factor`)\
   the values of the covariate to be tested.
 
 - effect:
 
-  (`string`)  
+  (`string`)\
   the name of the effect to be tested and estimated.
 
 - covar:
 
-  (`string`)  
+  (`string`)\
   the name of the covariate in the model.
 
 - mod:
 
-  (`coxph`)  
+  (`coxph`)\
   a fitted Cox regression model (see
   [`survival::coxph()`](https://rdrr.io/pkg/survival/man/coxph.html)).
 
 - label:
 
-  (`string`)  
+  (`string`)\
   the label to be returned as `term_label`.
 
 - control:
 
-  (`list`)  
+  (`list`)\
   a list of controls as returned by
   [`control_coxreg()`](https://insightsengineering.github.io/tern/reference/control_coxreg.md).
 
@@ -72,30 +72,30 @@ h_coxreg_inter_estimations(
 
 - at:
 
-  (`list`)  
+  (`list`)\
   a list with items named after the covariate, every item is a vector of
   levels at which the interaction should be estimated.
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   the data frame on which the model was fit.
 
 - variable, given:
 
-  (`string`)  
+  (`string`)\
   the name of variables in interaction. We seek the estimation of the
   levels of `variable` given the levels of `given`.
 
 - lvl_var, lvl_given:
 
-  (`character`)  
+  (`character`)\
   corresponding levels as given by
   [`levels()`](https://rdrr.io/r/base/levels.html).
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 ## Value

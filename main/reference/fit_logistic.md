@@ -19,17 +19,17 @@ fit_logistic(
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   the data frame on which the model was fit.
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables.
 
 - response_definition:
 
-  (`string`)  
+  (`string`)\
   the definition of what an event is in terms of `response`. This will
   be used when fitting the (conditional) logistic regression model on
   the left hand side of the formula.

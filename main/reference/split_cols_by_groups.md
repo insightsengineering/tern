@@ -12,24 +12,24 @@ split_cols_by_groups(lyt, var, groups_list = NULL, ref_group = NULL, ...)
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - groups_list:
 
-  (named `list` of `character`)  
+  (named `list` of `character`)\
   specifies the new group levels via the names and the levels that
   belong to it in the character vectors that are elements of the list.
 
 - ref_group:
 
-  (`data.frame` or `vector`)  
+  (`data.frame` or `vector`)\
   the data corresponding to the reference group.
 
 - ...:

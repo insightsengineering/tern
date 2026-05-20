@@ -67,33 +67,33 @@ a_summary(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - var_labels:
 
-  (`character`)  
+  (`character`)\
   variable labels.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - na_str_drop:
 
-  (`string`)  
+  (`string`)\
   Additional `NA` string to be dropped from factor calculations. If
   `NULL` nothing will be removed beyond standard `NA` handling.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -101,18 +101,18 @@ a_summary(
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - table_names:
 
-  (`character`)  
+  (`character`)\
   this can be customized in the case that the same `vars` are analyzed
   multiple times, to avoid warnings from `rtables`.
 
 - section_div:
 
-  (`string`)  
+  (`string`)\
   string which should be repeated as a section divider after each group
   defined by this split instruction, or `NA_character_` (the default)
   for no section divider.
@@ -137,19 +137,19 @@ a_summary(
 
 - na_rm:
 
-  (`flag`)  
+  (`flag`)\
   whether `NA` values should be removed from `x` prior to analysis.
 
 - compare_with_ref_group:
 
-  (`flag`)  
+  (`flag`)\
   whether comparison statistics should be analyzed instead of summary
   statistics (`compare_with_ref_group = TRUE` adds `pval` statistic
   comparing against reference group).
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options for numeric variables are:
@@ -160,7 +160,7 @@ a_summary(
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -168,25 +168,25 @@ a_summary(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Each element of the vector should be
   a name-value pair with name corresponding to a statistic specified in
   `.stats` and value the indentation for that statistic's row label.
 
 - formats_var:
 
-  (`NULL` or `string`)  
+  (`NULL` or `string`)\
   Passed to
   [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).
   `.formats` must be `"default"` and `format` must be `NULL` when this
@@ -194,12 +194,12 @@ a_summary(
 
 - na_strs_var:
 
-  (`string` or `NULL`)  
+  (`string` or `NULL`)\
   Passed to `analyze`. `na_str` must be `NA` when this is non-NULL.
 
 - format:
 
-  (`NULL`, `list`, `string` or `function`)  
+  (`NULL`, `list`, `string` or `function`)\
   Passed to
   [`rtables::analyze()`](https://insightsengineering.github.io/rtables/latest-tag/reference/analyze.html).
   `.formats` must be `"default"` and `formats_var` must be `NULL` when
@@ -207,35 +207,35 @@ a_summary(
 
 - x:
 
-  (`numeric`)  
+  (`numeric`)\
   vector of numbers we want to analyze.
 
 - control:
 
-  (`list`)  
+  (`list`)\
   parameters for descriptive statistics details, specified by using the
   helper function
   [`control_analyze_vars()`](https://insightsengineering.github.io/tern/reference/control_analyze_vars.md).
   Some possible parameter options are:
 
-  - `conf_level` (`proportion`)  
+  - `conf_level` (`proportion`)\
     confidence level of the interval for mean and median.
 
-  - `quantiles` (`numeric(2)`)  
+  - `quantiles` (`numeric(2)`)\
     vector of length two to specify the quantiles.
 
-  - `quantile_type` (`numeric(1)`)  
+  - `quantile_type` (`numeric(1)`)\
     between 1 and 9 selecting quantile algorithms to be used. See more
     about `type` in
     [`stats::quantile()`](https://rdrr.io/r/stats/quantile.html).
 
-  - `test_mean` (`numeric(1)`)  
+  - `test_mean` (`numeric(1)`)\
     value to test against the mean under the null hypothesis when
     calculating p-value.
 
 - denom:
 
-  (`string`)  
+  (`string`)\
   choice of denominator for proportion. Options are:
 
   - `n`: number of values in this row and column intersection.
@@ -2928,33 +2928,33 @@ a_summary(rnorm(10), .N_col = 10, .N_row = 20, .var = "bla")
 #> ----------------------------
 #>           row_name       formatted_cell indent_mod                   row_label
 #> 1                n                   10          0                           n
-#> 2              sum                 -1.2          0                         Sum
-#> 3             mean                 -0.1          0                        Mean
+#> 2              sum                 -4.4          0                         Sum
+#> 3             mean                 -0.4          0                        Mean
 #> 4               sd                  1.1          0                          SD
 #> 5               se                  0.4          0                          SE
-#> 6          mean_sd           -0.1 (1.1)          0                   Mean (SD)
-#> 7          mean_se           -0.1 (0.4)          0                   Mean (SE)
-#> 8          mean_ci        (-0.94, 0.71)          0                 Mean 95% CI
-#> 9         mean_sei        (-0.48, 0.25)          0               Mean -/+ 1xSE
-#> 10        mean_sdi        (-1.26, 1.03)          0               Mean -/+ 1xSD
-#> 11       mean_pval               0.7577          0 Mean p-value (H0: mean = 0)
+#> 6          mean_sd           -0.4 (1.1)          0                   Mean (SD)
+#> 7          mean_se           -0.4 (0.4)          0                   Mean (SE)
+#> 8          mean_ci        (-1.24, 0.36)          0                 Mean 95% CI
+#> 9         mean_sei       (-0.79, -0.09)          0               Mean -/+ 1xSE
+#> 10        mean_sdi        (-1.56, 0.68)          0               Mean -/+ 1xSD
+#> 11       mean_pval               0.2432          0 Mean p-value (H0: mean = 0)
 #> 12          median                 -0.2          0                      Median
 #> 13             mad                  0.0          0   Median Absolute Deviation
-#> 14       median_ci        (-1.63, 0.63)          0               Median 95% CI
-#> 15       quantiles           -0.6 - 0.5          0             25% and 75%-ile
-#> 16             iqr                  1.1          0                         IQR
-#> 17           range           -1.9 - 2.1          0                   Min - Max
-#> 18             min                 -1.9          0                     Minimum
-#> 19             max                  2.1          0                     Maximum
-#> 20    median_range    -0.2 (-1.9 - 2.1)          0          Median (Min - Max)
-#> 21              cv               -994.1          0                      CV (%)
+#> 14       median_ci        (-1.82, 0.62)          0               Median 95% CI
+#> 15       quantiles           -1.4 - 0.3          0             25% and 75%-ile
+#> 16             iqr                  1.7          0                         IQR
+#> 17           range           -2.4 - 1.1          0                   Min - Max
+#> 18             min                 -2.4          0                     Minimum
+#> 19             max                  1.1          0                     Maximum
+#> 20    median_range    -0.2 (-2.4 - 1.1)          0          Median (Min - Max)
+#> 21              cv               -253.2          0                      CV (%)
 #> 22       geom_mean                   NA          0              Geometric Mean
 #> 23         geom_sd                   NA          0                Geometric SD
 #> 24    geom_mean_sd                   NA          0         Geometric Mean (SD)
 #> 25    geom_mean_ci                   NA          0       Geometric Mean 95% CI
 #> 26         geom_cv                   NA          0         CV % Geometric Mean
-#> 27    median_ci_3d -0.17 (-1.63 - 0.63)          0             Median (95% CI)
-#> 28      mean_ci_3d -0.12 (-0.94 - 0.71)          0               Mean (95% CI)
+#> 27    median_ci_3d -0.25 (-1.82 - 0.62)          0             Median (95% CI)
+#> 28      mean_ci_3d -0.44 (-1.24 - 0.36)          0               Mean (95% CI)
 #> 29 geom_mean_ci_3d                   NA          0     Geometric Mean (95% CI)
 a_summary(rnorm(10, 5, 1),
   .ref_group = rnorm(20, -5, 1), .var = "bla", compare_with_ref_group = TRUE,
@@ -2964,33 +2964,33 @@ a_summary(rnorm(10, 5, 1),
 #> ----------------------------
 #>           row_name     formatted_cell indent_mod                   row_label
 #> 1                n                 10          0                           n
-#> 2              sum               54.1          0                         Sum
-#> 3             mean                5.4          0                        Mean
-#> 4               sd                0.9          0                          SD
+#> 2              sum               51.5          0                         Sum
+#> 3             mean                5.2          0                        Mean
+#> 4               sd                1.0          0                          SD
 #> 5               se                0.3          0                          SE
-#> 6          mean_sd          5.4 (0.9)          0                   Mean (SD)
-#> 7          mean_se          5.4 (0.3)          0                   Mean (SE)
-#> 8          mean_ci       (4.74, 6.09)          0                 Mean 95% CI
-#> 9         mean_sei       (5.11, 5.71)          0               Mean -/+ 1xSE
-#> 10        mean_sdi       (4.47, 6.36)          0               Mean -/+ 1xSD
+#> 6          mean_sd          5.2 (1.0)          0                   Mean (SD)
+#> 7          mean_se          5.2 (0.3)          0                   Mean (SE)
+#> 8          mean_ci       (4.46, 5.84)          0                 Mean 95% CI
+#> 9         mean_sei       (4.85, 5.46)          0               Mean -/+ 1xSE
+#> 10        mean_sdi       (4.19, 6.12)          0               Mean -/+ 1xSD
 #> 11       mean_pval            <0.0001          0 Mean p-value (H0: mean = 0)
 #> 12          median                5.1          0                      Median
-#> 13             mad               -0.0          0   Median Absolute Deviation
-#> 14       median_ci       (4.75, 6.07)          0               Median 95% CI
-#> 15       quantiles          5.0 - 5.6          0             25% and 75%-ile
-#> 16             iqr                0.6          0                         IQR
-#> 17           range          4.4 - 7.8          0                   Min - Max
-#> 18             min                4.4          0                     Minimum
-#> 19             max                7.8          0                     Maximum
-#> 20    median_range    5.1 (4.4 - 7.8)          0          Median (Min - Max)
-#> 21              cv               17.5          0                      CV (%)
-#> 22       geom_mean                5.3          0              Geometric Mean
+#> 13             mad                0.0          0   Median Absolute Deviation
+#> 14       median_ci       (4.69, 6.07)          0               Median 95% CI
+#> 15       quantiles          4.7 - 5.9          0             25% and 75%-ile
+#> 16             iqr                1.2          0                         IQR
+#> 17           range          3.1 - 6.6          0                   Min - Max
+#> 18             min                3.1          0                     Minimum
+#> 19             max                6.6          0                     Maximum
+#> 20    median_range    5.1 (3.1 - 6.6)          0          Median (Min - Max)
+#> 21              cv               18.7          0                      CV (%)
+#> 22       geom_mean                5.1          0              Geometric Mean
 #> 23         geom_sd                1.2          0                Geometric SD
-#> 24    geom_mean_sd          5.3 (1.2)          0         Geometric Mean (SD)
-#> 25    geom_mean_ci       (4.78, 5.99)          0       Geometric Mean 95% CI
-#> 26         geom_cv               15.9          0         CV % Geometric Mean
-#> 27    median_ci_3d 5.09 (4.75 - 6.07)          0             Median (95% CI)
-#> 28      mean_ci_3d 5.41 (4.74 - 6.09)          0               Mean (95% CI)
-#> 29 geom_mean_ci_3d 5.35 (4.78 - 5.99)          0     Geometric Mean (95% CI)
+#> 24    geom_mean_sd          5.1 (1.2)          0         Geometric Mean (SD)
+#> 25    geom_mean_ci       (4.36, 5.87)          0       Geometric Mean 95% CI
+#> 26         geom_cv               21.0          0         CV % Geometric Mean
+#> 27    median_ci_3d 5.14 (4.69 - 6.07)          0             Median (95% CI)
+#> 28      mean_ci_3d 5.15 (4.46 - 5.84)          0               Mean (95% CI)
+#> 29 geom_mean_ci_3d 5.06 (4.36 - 5.87)          0     Geometric Mean (95% CI)
 #> 30            pval            <0.0001          0            p-value (t-test)
 ```

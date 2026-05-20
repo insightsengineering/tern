@@ -13,7 +13,7 @@ format_xx(str)
 
 - str:
 
-  (`string`)  
+  (`string`)\
   template.
 
 ## Value

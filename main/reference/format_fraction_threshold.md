@@ -16,7 +16,7 @@ format_fraction_threshold(threshold)
 
 - threshold:
 
-  (`proportion`)  
+  (`proportion`)\
   lower threshold.
 
 ## Value

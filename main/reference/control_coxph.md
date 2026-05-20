@@ -21,20 +21,20 @@ control_coxph(
 
 - pval_method:
 
-  (`string`)  
+  (`string`)\
   p-value method for testing hazard ratio = 1. Default method is
   `"log-rank"`, can also be set to `"wald"` or `"likelihood"`.
 
 - ties:
 
-  (`string`)  
+  (`string`)\
   string specifying the method for tie handling. Default is `"efron"`,
   can also be set to `"breslow"` or `"exact"`. See more in
   [`survival::coxph()`](https://rdrr.io/pkg/survival/man/coxph.html).
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 ## Value

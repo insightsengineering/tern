@@ -17,12 +17,12 @@ add_rowcounts(lyt, alt_counts = FALSE)
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - alt_counts:
 
-  (`flag`)  
+  (`flag`)\
   whether row counts should be taken from `alt_counts_df` (`TRUE`) or
   from `df` (`FALSE`). Defaults to `FALSE`.
 

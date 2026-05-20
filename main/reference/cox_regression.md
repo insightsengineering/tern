@@ -48,42 +48,42 @@ a_coxreg(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables.
 
 - control:
 
-  (`list`)  
+  (`list`)\
   a list of parameters as returned by the helper function
   [`control_coxreg()`](https://insightsengineering.github.io/tern/reference/control_coxreg.md).
 
 - at:
 
-  (`list` of `numeric`)  
+  (`list` of `numeric`)\
   when the candidate covariate is a `numeric`, use `at` to specify the
   value of the covariate at which the effect should be estimated.
 
 - multivar:
 
-  (`flag`)  
+  (`flag`)\
   whether multivariate Cox regression should run (defaults to `FALSE`),
   otherwise univariate Cox regression will run.
 
 - common_var:
 
-  (`string`)  
+  (`string`)\
   the name of a factor variable in the dataset which takes the same
   value for all rows. This should be created during pre-processing if no
   such variable currently exists.
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   the names of statistics to be reported among:
 
   - `n`: number of observations (univariate only)
@@ -99,13 +99,13 @@ a_coxreg(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - varlabels:
 
-  (`list`)  
+  (`list`)\
   a named list corresponds to the names of variables found in data,
   passed as a named list and corresponding to time, event, arm, strata,
   and covariates terms. If arm is missing from variables, then only Cox
@@ -114,18 +114,18 @@ a_coxreg(
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   custom string to replace all `NA` values with. Defaults to `""`.
 
 - .section_div:
 
-  (`string` or `NA`)  
+  (`string` or `NA`)\
   string which should be repeated as a section divider between sections.
   Defaults to `NA` for no section divider. If a vector of two strings
   are given, the first will be used between treatment and covariate
@@ -133,15 +133,15 @@ a_coxreg(
 
 - model_df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   contains the resulting model fit from a
   [fit_coxreg](https://insightsengineering.github.io/tern/reference/fit_coxreg.md)
   function with tidying applied via
-  [`broom::tidy()`](https://broom.tidymodels.org/reference/reexports.html).
+  [`broom::tidy()`](https://generics.r-lib.org/reference/tidy.html).
 
 - .which_vars:
 
-  (`character`)  
+  (`character`)\
   which rows should statistics be returned for from the given model.
   Defaults to `"all"`. Other options include `"var_main"` for main
   effects, `"inter"` for interaction effects, and `"multi_lvl"` for
@@ -150,7 +150,7 @@ a_coxreg(
 
 - .var_nms:
 
-  (`character`)  
+  (`character`)\
   the `term` value of rows in `df` for which `.stats` should be
   returned. Typically this is the name of a variable. If using variable
   labels, `var` should be a vector of both the desired variable name and
@@ -160,12 +160,12 @@ a_coxreg(
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - labelstr:
 
-  (`string`)  
+  (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
   [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
@@ -173,23 +173,23 @@ a_coxreg(
 
 - eff:
 
-  (`flag`)  
+  (`flag`)\
   whether treatment effect should be calculated. Defaults to `FALSE`.
 
 - var_main:
 
-  (`flag`)  
+  (`flag`)\
   whether main effects should be calculated. Defaults to `FALSE`.
 
 - .spl_context:
 
-  (`data.frame`)  
+  (`data.frame`)\
   gives information about ancestor split states that is passed by
   `rtables`.
 
 - cache_env:
 
-  (`environment`)  
+  (`environment`)\
   an environment object used to cache the regression model in order to
   avoid repeatedly fitting the same model for every row in the table.
   Defaults to `NULL` (no caching).

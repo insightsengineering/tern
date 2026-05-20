@@ -16,12 +16,12 @@ logistic_regression_cols(lyt, conf_level = 0.95)
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 ## Value

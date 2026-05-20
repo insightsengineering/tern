@@ -14,6 +14,7 @@ vignettes.
 The packages used in this vignette are:
 
 ``` r
+
 library(rtables)
 library(tern)
 library(dplyr)
@@ -22,6 +23,7 @@ library(dplyr)
 The datasets used in this vignette are:
 
 ``` r
+
 adsl <- ex_adsl
 adae <- ex_adae
 adrs <- ex_adrs
@@ -109,6 +111,7 @@ In the example below the only function from `tern` is
 and the remaining layout functions are from `rtables`.
 
 ``` r
+
 # Select variables to include in table.
 vars <- c("AGE", "SEX")
 var_labels <- c("Age (yr)", "Sex")
@@ -145,6 +148,7 @@ package has many useful functions to help with these types of data
 processing steps (not used below).
 
 ``` r
+
 # Reorder the levels in the ARM variable.
 adsl$ARM <- factor(adsl$ARM, levels = c("B: Placebo", "A: Drug X", "C: Combination"))
 
@@ -209,6 +213,7 @@ for the mean and standard deviation to print two decimal places instead
 of just one.
 
 ``` r
+
 # Select statistics and modify default formats.
 basic_table() %>%
   split_cols_by(var = "ARM") %>%
@@ -241,6 +246,7 @@ the same summary of demographics for the Brazil and China subgroups,
 respectively:
 
 ``` r
+
 lyt <- basic_table() %>%
   split_cols_by(var = "ARM") %>%
   add_overall_col("All Patients") %>%
@@ -298,6 +304,7 @@ function in `tern` that can do this is
 [`summarize_num_patients()`](https://insightsengineering.github.io/tern/reference/summarize_num_patients.md):
 
 ``` r
+
 basic_table() %>%
   split_cols_by(var = "ACTARM") %>%
   add_colcounts() %>%
@@ -354,6 +361,7 @@ The results of this Statistics function is a list with the elements
 `unique`, `nonunique` and `unique_count`:
 
 ``` r
+
 s_num_patients(x = adae$USUBJID, labelstr = "", .N_col = nrow(adae))
 #> $unique
 #> [1] 365.000000   0.188728
@@ -389,6 +397,7 @@ update in both the `.stats` and `.labels` argument of
 [`summarize_num_patients()`](https://insightsengineering.github.io/tern/reference/summarize_num_patients.md).
 
 ``` r
+
 basic_table() %>%
   split_cols_by(var = "ACTARM") %>%
   add_colcounts() %>%
@@ -418,6 +427,7 @@ before calling again
 [`summarize_num_patients()`](https://insightsengineering.github.io/tern/reference/summarize_num_patients.md).
 
 ``` r
+
 basic_table() %>%
   split_cols_by(var = "ACTARM") %>%
   add_colcounts() %>%
@@ -485,6 +495,7 @@ Let’s first try using this function in a simpler layout without row
 splits:
 
 ``` r
+
 basic_table() %>%
   split_cols_by(var = "ACTARM") %>%
   add_colcounts() %>%
@@ -512,6 +523,7 @@ basic_table() %>%
 Putting everything together, the final AE table looks like this:
 
 ``` r
+
 basic_table() %>%
   split_cols_by(var = "ACTARM") %>%
   add_colcounts() %>%
@@ -603,6 +615,7 @@ logical variable `is_rsp` which indicates whether a patient is
 classified as a responder or not.
 
 ``` r
+
 # Preprocessing to select an analysis endpoint.
 anl <- adrs %>%
   dplyr::filter(PARAMCD == "BESRSPI") %>%
@@ -615,6 +628,7 @@ group, use the
 layout creating function:
 
 ``` r
+
 basic_table() %>%
   split_cols_by(var = "ARM") %>%
   add_colcounts() %>%
@@ -637,6 +651,7 @@ Below we change the reference arm to “B: Placebo” and so this arm is
 displayed as the first column:
 
 ``` r
+
 basic_table() %>%
   split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
   add_colcounts() %>%
@@ -656,6 +671,7 @@ To further customize the analysis, we can use the `method` and
 calculated:
 
 ``` r
+
 basic_table() %>%
   split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
   add_colcounts() %>%
@@ -678,6 +694,7 @@ response rates between the reference arm each comparison arm. Use
 layout creating function for this:
 
 ``` r
+
 basic_table() %>%
   split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
   add_colcounts() %>%
@@ -701,6 +718,7 @@ test for the difference in response rates. Use the
 layout creating function for this:
 
 ``` r
+
 basic_table() %>%
   split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
   add_colcounts() %>%
@@ -716,6 +734,7 @@ To customize the output, we use the `method` argument to select a
 Chi-Squared test with Schouten correction.
 
 ``` r
+
 basic_table() %>%
   split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
   add_colcounts() %>%
@@ -737,6 +756,7 @@ each sub-table a unique name. This is done by adding the `table_names`
 argument and providing unique names through that:
 
 ``` r
+
 basic_table() %>%
   split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
   add_colcounts() %>%

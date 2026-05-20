@@ -76,28 +76,28 @@ a_count_abnormal_by_marked(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - category:
 
-  (`list`)  
+  (`list`)\
   a list with different marked category names for single and last or
   replicated.
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -109,14 +109,14 @@ a_count_abnormal_by_marked(
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options are: `'count_fraction', 'count_fraction_fixed_dp'`
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -124,35 +124,35 @@ a_count_abnormal_by_marked(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - .var, var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - .spl_context:
 
-  (`data.frame`)  
+  (`data.frame`)\
   gives information about ancestor split states that is passed by
   `rtables`.
 

@@ -19,17 +19,17 @@ rtable2gg(tbl, fontsize = 12, colwidths = NULL, lbl_col_padding = 0)
 
 - tbl:
 
-  (`VTableTree`)  
+  (`VTableTree`)\
   `rtables` table object.
 
 - fontsize:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   font size.
 
 - colwidths:
 
-  (`numeric` or `NULL`)  
+  (`numeric` or `NULL`)\
   a vector of column widths. Each element's position in `colwidths`
   corresponds to the column of `tbl` in the same position. If `NULL`,
   column widths are calculated according to maximum number of characters
@@ -37,7 +37,7 @@ rtable2gg(tbl, fontsize = 12, colwidths = NULL, lbl_col_padding = 0)
 
 - lbl_col_padding:
 
-  (`numeric`)  
+  (`numeric`)\
   additional padding to use when calculating spacing between the first
   (label) column and the second column of `tbl`. If `colwidths` is
   specified, the width of the first column becomes

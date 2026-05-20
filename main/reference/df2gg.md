@@ -24,12 +24,12 @@ df2gg(
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   a data frame.
 
 - colwidths:
 
-  (`numeric` or `NULL`)  
+  (`numeric` or `NULL`)\
   a vector of column widths. Each element's position in `colwidths`
   corresponds to the column of `df` in the same position. If `NULL`,
   column widths are calculated according to maximum number of characters
@@ -37,30 +37,30 @@ df2gg(
 
 - font_size:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   font size.
 
 - col_labels:
 
-  (`flag`)  
+  (`flag`)\
   whether the column names (labels) of `df` should be used as the first
   row of the output table.
 
 - col_lab_fontface:
 
-  (`string`)  
+  (`string`)\
   font face to apply to the first row (of column labels if
   `col_labels = TRUE`). Defaults to `"bold"`.
 
 - hline:
 
-  (`flag`)  
+  (`flag`)\
   whether a horizontal line should be printed below the first row of the
   table.
 
 - bg_fill:
 
-  (`string`)  
+  (`string`)\
   table background fill color.
 
 ## Value

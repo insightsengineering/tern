@@ -24,42 +24,42 @@ h_glm_negbin(.var, .df_row, variables, weights)
 
 - .var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - .df_row:
 
-  (`data.frame`)  
+  (`data.frame`)\
   dataset that includes all the variables that are called in `.var` and
   `variables`.
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables, with expected elements:
 
-  - `arm` (`string`)  
+  - `arm` (`string`)\
     group variable, for which the covariate adjusted means of multiple
     groups will be summarized. Specifically, the first level of `arm`
     variable is taken as the reference group.
 
-  - `covariates` (`character`)  
+  - `covariates` (`character`)\
     a vector that can contain single variable names (such as `"X1"`),
     and/or interaction terms indicated by `"X1 * X2"`.
 
-  - `offset` (`numeric`)  
+  - `offset` (`numeric`)\
     a numeric vector or scalar adding an offset.
 
 - distribution:
 
-  (`character`)  
+  (`character`)\
   a character value specifying the distribution used in the regression
   (Poisson, Quasi-Poisson, negative binomial).
 
 - weights:
 
-  (`character`)  
+  (`character`)\
   a character vector specifying weights used in averaging predictions.
   Number of weights must equal the number of levels included in the
   covariates. Weights option passed to

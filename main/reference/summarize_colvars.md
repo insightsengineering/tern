@@ -38,12 +38,12 @@ summarize_colvars(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - ...:
@@ -53,12 +53,12 @@ summarize_colvars(
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -66,18 +66,18 @@ summarize_colvars(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `vector` of `integer`)  
+  (named `vector` of `integer`)\
   indent modifiers for the labels. Each element of the vector should be
   a name-value pair with name corresponding to a statistic specified in
   `.stats` and value the indentation for that statistic's row label.

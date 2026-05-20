@@ -15,17 +15,17 @@ d_count_cumulative(threshold, lower_tail = TRUE, include_eq = TRUE)
 
 - threshold:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   a cutoff value as threshold to count values of `x`.
 
 - lower_tail:
 
-  (`flag`)  
+  (`flag`)\
   whether to count lower tail, default is `TRUE`.
 
 - include_eq:
 
-  (`flag`)  
+  (`flag`)\
   whether to include value equal to the `threshold` in count, default is
   `TRUE`.
 

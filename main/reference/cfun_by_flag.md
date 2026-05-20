@@ -12,19 +12,19 @@ cfun_by_flag(analysis_var, flag_var, format = "xx", .indent_mods = NULL)
 
 - analysis_var:
 
-  (`string`)  
+  (`string`)\
   variable name for the column containing values to be returned by the
   content function.
 
 - flag_var:
 
-  (`string`)  
+  (`string`)\
   variable name for the logical column identifying which row should be
   returned.
 
 - format:
 
-  (`string`)  
+  (`string`)\
   `rtables` format to use.
 
 ## Value

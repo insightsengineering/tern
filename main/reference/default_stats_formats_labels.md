@@ -75,48 +75,48 @@ summary_labels(type = "numeric", include_pval = FALSE)
 
 - method_groups:
 
-  (`character`)  
+  (`character`)\
   indicates the statistical method group (`tern` analyze function) to
   retrieve default statistics for. A character vector can be used to
   specify more than one statistical method group.
 
 - stats_in:
 
-  (`character`)  
+  (`character`)\
   statistics to retrieve for the selected method group. If custom
   statistical functions are used, `stats_in` needs to have them in too.
 
 - custom_stats_in:
 
-  (`character`)  
+  (`character`)\
   custom statistics to add to the default statistics.
 
 - add_pval:
 
-  (`flag`)  
+  (`flag`)\
   should `"pval"` (or `"pval_counts"` if `method_groups` contains
   `"analyze_vars_counts"`) be added to the statistical methods?
 
 - stat_results:
 
-  (`list`)  
+  (`list`)\
   list of statistical results. It should be used close to the end of a
   statistical function. See examples for a structure with two
   statistical results and two groups.
 
 - stat_names_in:
 
-  (`character`)  
+  (`character`)\
   custom modification of statistical values.
 
 - stats:
 
-  (`character`)  
+  (`character`)\
   statistical methods to return defaults for.
 
 - formats_in:
 
-  (named `vector`)  
+  (named `vector`)\
   custom formats to use instead of defaults. Can be a character vector
   with values from
   [`formatters::list_valid_format_labels()`](https://insightsengineering.github.io/formatters/latest-tag/reference/list_formats.html)
@@ -125,7 +125,7 @@ summary_labels(type = "numeric", include_pval = FALSE)
 
 - levels_per_stats:
 
-  (named `list` of `character` or `NULL`)  
+  (named `list` of `character` or `NULL`)\
   named list where the name of each element is a statistic from `stats`
   and each element is the levels of a `factor` or `character` variable
   (or variable name), each corresponding to a single row, for which the
@@ -138,28 +138,28 @@ summary_labels(type = "numeric", include_pval = FALSE)
 
 - tern_defaults:
 
-  (`list` or `vector`)  
+  (`list` or `vector`)\
   defaults to use to fill in missing values if no user input is given.
   Must be of the same type as the values that are being filled in (e.g.
   indentation must be integers).
 
 - labels_in:
 
-  (named `character`)  
+  (named `character`)\
   custom labels to use instead of defaults. If no value is provided, the
   variable level (if rows correspond to levels of a variable) or
   statistic name will be used as label.
 
 - label_attr_from_stats:
 
-  (named `list`)  
+  (named `list`)\
   if `labels_in = NULL`, then this will be used instead. It is a list of
   values defined in statistical functions as default labels. Values are
   ignored if `labels_in` is provided or `""` values are provided.
 
 - indents_in:
 
-  (named `integer`)  
+  (named `integer`)\
   custom row indent modifiers to use instead of defaults. Defaults to
   `0L` for all values.
 
@@ -170,12 +170,12 @@ summary_labels(type = "numeric", include_pval = FALSE)
 
 - type:
 
-  (`string`)  
+  (`string`)\
   `"numeric"` or `"counts"`.
 
 - include_pval:
 
-  (`flag`)  
+  (`flag`)\
   same as the `add_pval` argument in `get_stats()`.
 
 ## Value

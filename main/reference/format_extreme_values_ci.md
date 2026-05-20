@@ -16,7 +16,7 @@ format_extreme_values_ci(digits = 2L)
 
 - digits:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   number of decimal places to display.
 
 ## Value

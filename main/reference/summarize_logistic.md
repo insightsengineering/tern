@@ -30,22 +30,22 @@ summarize_logistic(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - drop_and_remove_str:
 
-  (`string`)  
+  (`string`)\
   string to be dropped and removed.
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 

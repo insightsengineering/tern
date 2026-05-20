@@ -27,22 +27,22 @@ h_grob_coxph(
 
 - x:
 
-  (`proportion`)  
+  (`proportion`)\
   a value between 0 and 1 specifying x-location.
 
 - y:
 
-  (`proportion`)  
+  (`proportion`)\
   a value between 0 and 1 specifying y-location.
 
 - width:
 
-  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))  
+  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))\
   width (as a unit) to use when printing the grob.
 
 - ttheme:
 
-  (`list`)  
+  (`list`)\
   see
   [`gridExtra::ttheme_default()`](https://rdrr.io/pkg/gridExtra/man/tableGrob.html).
 

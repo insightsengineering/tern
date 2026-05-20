@@ -57,7 +57,7 @@ h_logistic_inter_terms(x, fit_glm, conf_level = 0.95, at = NULL)
 
 - fit_glm:
 
-  (`glm`)  
+  (`glm`)\
   logistic regression model fitted by
   [`stats::glm()`](https://rdrr.io/r/stats/glm.html) with "binomial"
   family. Limited functionality is also available for conditional
@@ -68,69 +68,69 @@ h_logistic_inter_terms(x, fit_glm, conf_level = 0.95, at = NULL)
 
 - interaction_vars:
 
-  (`character(2)`)  
+  (`character(2)`)\
   interaction variable names.
 
 - first_var_with_level:
 
-  (`character(2)`)  
+  (`character(2)`)\
   the first variable name with the interaction level.
 
 - second_var_with_level:
 
-  (`character(2)`)  
+  (`character(2)`)\
   the second variable name with the interaction level.
 
 - odds_ratio_var:
 
-  (`string`)  
+  (`string`)\
   the odds ratio variable.
 
 - interaction_var:
 
-  (`string`)  
+  (`string`)\
   the interaction variable.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - at:
 
-  (`numeric` or `NULL`)  
+  (`numeric` or `NULL`)\
   optional values for the interaction variable. Otherwise the median is
   used.
 
 - terms:
 
-  (`character`)  
+  (`character`)\
   simple terms.
 
 - table:
 
-  (`table`)  
+  (`table`)\
   table containing numbers for terms.
 
 - terms1:
 
-  (`character`)  
+  (`character`)\
   terms for first dimension (rows).
 
 - terms2:
 
-  (`character`)  
+  (`character`)\
   terms for second dimension (rows).
 
 - any:
 
-  (`flag`)  
+  (`flag`)\
   whether any of `term1` and `term2` can be fulfilled to count the
   number of patients. In that case they can only be scalar (strings).
 
 - x:
 
-  (`character`)  
+  (`character`)\
   a variable or interaction term in `fit_glm` (depending on the helper
   function used).
 

@@ -23,33 +23,33 @@ stat_mean_ci(
 
 - x:
 
-  (`numeric`)  
+  (`numeric`)\
   vector of numbers we want to analyze.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - na.rm:
 
-  (`flag`)  
+  (`flag`)\
   whether `NA` values should be removed from `x` prior to analysis.
 
 - n_min:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   a minimum number of non-missing `x` to estimate the confidence
   interval for mean.
 
 - gg_helper:
 
-  (`flag`)  
+  (`flag`)\
   whether output should be aligned for use with `ggplot`s.
 
 - geom_mean:
 
-  (`flag`)  
+  (`flag`)\
   whether the geometric mean should be calculated.
 
 ## Value

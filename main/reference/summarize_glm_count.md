@@ -63,51 +63,51 @@ a_glm_count(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables, with expected elements:
 
-  - `arm` (`string`)  
+  - `arm` (`string`)\
     group variable, for which the covariate adjusted means of multiple
     groups will be summarized. Specifically, the first level of `arm`
     variable is taken as the reference group.
 
-  - `covariates` (`character`)  
+  - `covariates` (`character`)\
     a vector that can contain single variable names (such as `"X1"`),
     and/or interaction terms indicated by `"X1 * X2"`.
 
-  - `offset` (`numeric`)  
+  - `offset` (`numeric`)\
     a numeric vector or scalar adding an offset.
 
 - distribution:
 
-  (`character`)  
+  (`character`)\
   a character value specifying the distribution used in the regression
   (Poisson, Quasi-Poisson, negative binomial).
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - rate_mean_method:
 
-  (`character(1)`)  
+  (`character(1)`)\
   method used to estimate the mean odds ratio. Defaults to `emmeans`.
   see details for more information.
 
 - weights:
 
-  (`character`)  
+  (`character`)\
   a character vector specifying weights used in averaging predictions.
   Number of weights must equal the number of levels included in the
   covariates. Weights option passed to
@@ -115,23 +115,23 @@ a_glm_count(
 
 - scale:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   linear scaling factor for rate and confidence intervals. Defaults to
   `1`.
 
 - var_labels:
 
-  (`character`)  
+  (`character`)\
   variable labels.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -143,18 +143,18 @@ a_glm_count(
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - table_names:
 
-  (`character`)  
+  (`character`)\
   this can be customized in the case that the same `vars` are analyzed
   multiple times, to avoid warnings from `rtables`.
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options are:
@@ -162,7 +162,7 @@ a_glm_count(
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -170,46 +170,46 @@ a_glm_count(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - .var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - .df_row:
 
-  (`data.frame`)  
+  (`data.frame`)\
   dataset that includes all the variables that are called in `.var` and
   `variables`.
 
 - .ref_group:
 
-  (`data.frame` or `vector`)  
+  (`data.frame` or `vector`)\
   the data corresponding to the reference group.
 
 - .in_ref_col:
 
-  (`flag`)  
+  (`flag`)\
   `TRUE` when working with the reference level, `FALSE` otherwise.
 
 ## Value

@@ -15,12 +15,12 @@ d_proportion(conf_level, method, long = FALSE)
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - method:
 
-  (`string`)  
+  (`string`)\
   the method used to construct the confidence interval for proportion of
   successful outcomes; one of `waldcc`, `wald`, `clopper-pearson`,
   `wilson`, `wilsonc`, `strat_wilson`, `strat_wilsonc`, `agresti-coull`
@@ -28,7 +28,7 @@ d_proportion(conf_level, method, long = FALSE)
 
 - long:
 
-  (`flag`)  
+  (`flag`)\
   whether a long or a short (default) description is required.
 
 ## Value

@@ -27,59 +27,59 @@ fct_collapse_only(.f, ..., .na_level = "<Missing>")
 
 - x:
 
-  (`factor`)  
+  (`factor`)\
   factor variable or object to convert (for
   `as_factor_keep_attributes`).
 
 - levels:
 
-  (`character`)  
+  (`character`)\
   level names to be combined.
 
 - new_level:
 
-  (`string`)  
+  (`string`)\
   name of new level.
 
 - x_name:
 
-  (`string`)  
+  (`string`)\
   name of `x`.
 
 - na_level:
 
-  (`string`)  
+  (`string`)\
   which level to use for missing values.
 
 - verbose:
 
-  (`flag`)  
+  (`flag`)\
   defaults to `TRUE`. It prints out warnings and messages.
 
 - discard:
 
-  (`character`)  
+  (`character`)\
   levels to discard.
 
 - condition:
 
-  (`logical`)  
+  (`logical`)\
   positions at which to insert missing values.
 
 - .f:
 
-  (`factor` or `character`)  
+  (`factor` or `character`)\
   original vector.
 
 - ...:
 
-  (named `character`)  
+  (named `character`)\
   levels in each vector provided will be collapsed into the new level
   given by the respective name.
 
 - .na_level:
 
-  (`string`)  
+  (`string`)\
   which level to use for other levels, which should be missing in the
   new factor. Note that this level must not be contained in the new
   levels specified in `...`.

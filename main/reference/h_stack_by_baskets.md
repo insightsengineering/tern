@@ -27,28 +27,28 @@ h_stack_by_baskets(
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - baskets:
 
-  (`character`)  
+  (`character`)\
   variable names of the selected Standardized/Customized queries.
 
 - smq_varlabel:
 
-  (`string`)  
+  (`string`)\
   a label for the new variable created.
 
 - keys:
 
-  (`character`)  
+  (`character`)\
   names of the key variables to be returned along with the new variable
   created.
 
 - aag_summary:
 
-  (`data.frame`)  
+  (`data.frame`)\
   containing the SMQ baskets and the levels of interest for the final
   SMQ variable. This is useful when there are some levels of interest
   that are not observed in the `df` dataset. The two columns of this
@@ -56,7 +56,7 @@ h_stack_by_baskets(
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 ## Value

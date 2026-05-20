@@ -13,7 +13,7 @@ labels_or_names(x)
 
 - x:
 
-  (`list`)  
+  (`list`)\
   a list.
 
 ## Value

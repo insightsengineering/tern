@@ -15,13 +15,13 @@ muffled_car_anova(mod, test_statistic)
 
 - mod:
 
-  (`coxph`)  
+  (`coxph`)\
   Cox regression model fitted by
   [`survival::coxph()`](https://rdrr.io/pkg/survival/man/coxph.html).
 
 - test_statistic:
 
-  (`string`)  
+  (`string`)\
   the method used for estimation of p.values; `wald` (default) or
   `likelihood`.
 

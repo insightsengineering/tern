@@ -15,7 +15,7 @@ d_count_abnormal_by_baseline(abnormal)
 
 - abnormal:
 
-  (`character`)  
+  (`character`)\
   values identifying the abnormal range level(s) in `.var`.
 
 ## Value

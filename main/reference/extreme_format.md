@@ -16,12 +16,12 @@ h_format_threshold(x, digits = 2L)
 
 - digits:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   number of decimal places to display.
 
 - x:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   value to format.
 
 ## Value

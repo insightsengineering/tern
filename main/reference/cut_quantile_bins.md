@@ -20,34 +20,34 @@ cut_quantile_bins(
 
 - x:
 
-  (`numeric`)  
+  (`numeric`)\
   the continuous variable values which should be cut into quantile bins.
   This may contain `NA` values, which are then not used for the quantile
   calculations, but included in the return vector.
 
 - probs:
 
-  (`numeric`)  
+  (`numeric`)\
   the probabilities identifying the quantiles. This is a sorted vector
   of unique `proportion` values, i.e. between 0 and 1, where the
   boundaries 0 and 1 must not be included.
 
 - labels:
 
-  (`character`)  
+  (`character`)\
   the unique labels for the quantile bins. When there are `n`
   probabilities in `probs`, then this must be `n + 1` long.
 
 - type:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   type of quantiles to use, see
   [`stats::quantile()`](https://rdrr.io/r/stats/quantile.html) for
   details.
 
 - ordered:
 
-  (`flag`)  
+  (`flag`)\
   should the result be an ordered factor.
 
 ## Value

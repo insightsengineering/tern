@@ -23,12 +23,12 @@ h_coxreg_multivar_extract(var, data, mod, control = control_coxreg())
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables.
 
 - interaction:
 
-  (`flag`)  
+  (`flag`)\
   if `TRUE`, the model includes the interaction between the studied
   treatment and candidate covariate. Note that for univariate models
   without treatment arm, and multivariate models, no interaction can be
@@ -36,34 +36,34 @@ h_coxreg_multivar_extract(var, data, mod, control = control_coxreg())
 
 - effect:
 
-  (`string`)  
+  (`string`)\
   the treatment variable.
 
 - covar:
 
-  (`string`)  
+  (`string`)\
   the name of the covariate in the model.
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   the dataset containing the variables to summarize.
 
 - mod:
 
-  (`coxph`)  
+  (`coxph`)\
   Cox regression model fitted by
   [`survival::coxph()`](https://rdrr.io/pkg/survival/man/coxph.html).
 
 - control:
 
-  (`list`)  
+  (`list`)\
   a list of controls as returned by
   [`control_coxreg()`](https://insightsengineering.github.io/tern/reference/control_coxreg.md).
 
 - var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 

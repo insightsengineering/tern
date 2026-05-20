@@ -33,49 +33,49 @@ h_odds_ratio_subgroups_df(
 
 - rsp:
 
-  (`logical`)  
+  (`logical`)\
   vector indicating whether each subject is a responder or not.
 
 - arm:
 
-  (`factor`)  
+  (`factor`)\
   the treatment group variable.
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables.
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   the dataset containing the variables to summarize.
 
 - groups_lists:
 
-  (named `list` of `list`)  
+  (named `list` of `list`)\
   optionally contains for each `subgroups` variable a list, which
   specifies the new group levels via the names and the levels that
   belong to it in the character vectors that are elements of the list.
 
 - label_all:
 
-  (`string`)  
+  (`string`)\
   label for the total population analysis.
 
 - strata_data:
 
-  (`factor`, `data.frame`, or `NULL`)  
+  (`factor`, `data.frame`, or `NULL`)\
   required if stratified analysis is performed.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - method:
 
-  (`string` or `NULL`)  
+  (`string` or `NULL`)\
   specifies the test used to calculate the p-value for the difference
   between two proportions. For options, see
   [`test_proportion_diff()`](https://insightsengineering.github.io/tern/reference/prop_diff_test.md).

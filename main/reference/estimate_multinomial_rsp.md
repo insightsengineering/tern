@@ -43,23 +43,23 @@ a_length_proportion(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -71,25 +71,25 @@ a_length_proportion(
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - table_names:
 
-  (`character`)  
+  (`character`)\
   this can be customized in the case that the same `vars` are analyzed
   multiple times, to avoid warnings from `rtables`.
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options are: `'n_prop', 'prop_ci'`
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -97,29 +97,29 @@ a_length_proportion(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - x:
 
-  (`numeric`)  
+  (`numeric`)\
   vector of numbers we want to analyze.
 
 - .N_col:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   column-wise N (column count) for the full column being analyzed that
   is typically passed by `rtables`.
 

@@ -48,73 +48,73 @@ assert_proportion_value(x, include_boundaries = FALSE)
 
 - x:
 
-  (`any`)  
+  (`any`)\
   object to test.
 
 - .var.name:
 
-  \[`character(1)`\]  
+  \[`character(1)`\]\
   Name of the checked object to print in assertions. Defaults to the
   heuristic implemented in
   [`vname`](https://mllg.github.io/checkmate/reference/vname.html).
 
 - add:
 
-  \[`AssertCollection`\]  
+  \[`AssertCollection`\]\
   Collection to store assertion messages. See
   [`AssertCollection`](https://mllg.github.io/checkmate/reference/AssertCollection.html).
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set to test.
 
 - variables:
 
-  (named `list` of `character`)  
+  (named `list` of `character`)\
   list of variables to test.
 
 - na_level:
 
-  (`string`)  
+  (`string`)\
   the string you have been using to represent NA or missing data. For
   `NA` values please consider using directly
   [`is.na()`](https://rdrr.io/r/base/NA.html) or similar approaches.
 
 - min.levels:
 
-  \[`integer(1)`\]  
+  \[`integer(1)`\]\
   Minimum number of factor levels. Default is `NULL` (no check).
 
 - max.levels:
 
-  \[`integer(1)`\]  
+  \[`integer(1)`\]\
   Maximum number of factor levels. Default is `NULL` (no check).
 
 - null.ok:
 
-  \[`logical(1)`\]  
+  \[`logical(1)`\]\
   If set to `TRUE`, `x` may also be `NULL`. In this case only a type
   check of `x` is performed, all additional checks are disabled.
 
 - any.missing:
 
-  \[`logical(1)`\]  
+  \[`logical(1)`\]\
   Are vectors with missing values allowed? Default is `TRUE`.
 
 - n.levels:
 
-  \[`integer(1)`\]  
+  \[`integer(1)`\]\
   Exact number of factor levels. Default is `NULL` (no check).
 
 - len:
 
-  \[`integer(1)`\]  
+  \[`integer(1)`\]\
   Exact expected length of `x`.
 
 - include_boundaries:
 
-  (`flag`)  
+  (`flag`)\
   whether to include boundaries when testing for proportions.
 
 ## Value

@@ -17,22 +17,22 @@ append_varlabels(lyt, df, vars, indent = 0L)
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names of which the labels are to be looked up in `df`.
 
 - indent:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   non-negative number of nested indent space, default to 0L which means
   no indent. 1L means two spaces indent, 2L means four spaces indent and
   so on.

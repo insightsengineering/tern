@@ -32,12 +32,12 @@ h_ggkm(
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   survival data as pre-processed by `h_data_plot`.
 
 - xticks:
 
-  (`numeric` or `NULL`)  
+  (`numeric` or `NULL`)\
   numeric vector of tick positions or a single number with spacing
   between ticks on the x-axis. If `NULL` (default),
   [`labeling::extended()`](https://rdrr.io/pkg/labeling/man/extended.html)
@@ -45,88 +45,88 @@ h_ggkm(
 
 - yval:
 
-  (`string`)  
+  (`string`)\
   type of plot, to be plotted on the y-axis. Options are `Survival`
   (default) and `Failure` probability.
 
 - censor_show:
 
-  (`flag`)  
+  (`flag`)\
   whether to show censored observations.
 
 - xlab:
 
-  (`string`)  
+  (`string`)\
   x-axis label.
 
 - ylab:
 
-  (`string`)  
+  (`string`)\
   y-axis label.
 
 - ylim:
 
-  (`numeric(2)`)  
+  (`numeric(2)`)\
   vector containing lower and upper limits for the y-axis, respectively.
   If `NULL` (default), the default scale range is used.
 
 - title:
 
-  (`string`)  
+  (`string`)\
   plot title.
 
 - footnotes:
 
-  (`string`)  
+  (`string`)\
   plot footnotes.
 
 - max_time:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   maximum value to show on x-axis. Only data values less than or up to
   this threshold value will be plotted (defaults to `NULL`).
 
 - lwd:
 
-  (`numeric`)  
+  (`numeric`)\
   line width. If a vector is given, its length should be equal to the
   number of strata from
   [`survival::survfit()`](https://rdrr.io/pkg/survival/man/survfit.html).
 
 - lty:
 
-  (`numeric`)  
+  (`numeric`)\
   line type. If a vector is given, its length should be equal to the
   number of strata from
   [`survival::survfit()`](https://rdrr.io/pkg/survival/man/survfit.html).
 
 - pch:
 
-  (`string`)  
+  (`string`)\
   name of symbol or character to use as point symbol to indicate
   censored cases.
 
 - size:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   size of censored point symbols.
 
 - col:
 
-  (`character`)  
+  (`character`)\
   lines colors. Length of a vector should be equal to number of strata
   from
   [`survival::survfit()`](https://rdrr.io/pkg/survival/man/survfit.html).
 
 - ci_ribbon:
 
-  (`flag`)  
+  (`flag`)\
   whether the confidence interval should be drawn around the
   Kaplan-Meier curve.
 
 - ggtheme:
 
-  (`theme`)  
+  (`theme`)\
   a graphical theme as provided by `ggplot2` to format the Kaplan-Meier
   plot.
 

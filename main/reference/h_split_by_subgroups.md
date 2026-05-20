@@ -14,19 +14,19 @@ h_split_by_subgroups(data, subgroups, groups_lists = list())
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   dataset to split.
 
 - subgroups:
 
-  (`character`)  
+  (`character`)\
   names of factor variables from `data` used to create subsets. Unused
   levels not present in `data` are dropped. Note that the order in this
   vector determines the order in the downstream table.
 
 - groups_lists:
 
-  (named `list` of `list`)  
+  (named `list` of `list`)\
   optionally contains for each `subgroups` variable a list, which
   specifies the new group levels via the names and the levels that
   belong to it in the character vectors that are elements of the list.

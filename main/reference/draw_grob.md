@@ -14,17 +14,17 @@ draw_grob(grob, newpage = TRUE, vp = NULL)
 
 - grob:
 
-  (`grob`)  
+  (`grob`)\
   grid object.
 
 - newpage:
 
-  (`flag`)  
+  (`flag`)\
   draw on a new page.
 
 - vp:
 
-  (`viewport` or `NULL`)  
+  (`viewport` or `NULL`)\
   a [`viewport()`](https://rdrr.io/r/grid/viewport.html) object (or
   `NULL`).
 

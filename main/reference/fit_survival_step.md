@@ -28,18 +28,18 @@ fit_survival_step(
 
 - variables:
 
-  (named `list` of `character`)  
+  (named `list` of `character`)\
   list of analysis variables: needs `time`, `event`, `arm`, `biomarker`,
   and optional `covariates` and `strata`.
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   the dataset containing the variables to summarize.
 
 - control:
 
-  (named `list`)  
+  (named `list`)\
   combined control list from
   [`control_step()`](https://insightsengineering.github.io/tern/reference/control_step.md)
   and

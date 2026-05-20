@@ -24,7 +24,7 @@ split_text_grob(
 
 - text:
 
-  (`string`)  
+  (`string`)\
   the text to wrap.
 
 - x:
@@ -37,7 +37,7 @@ split_text_grob(
 
 - width:
 
-  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))  
+  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))\
   a unit object specifying maximum width of text.
 
 - just:

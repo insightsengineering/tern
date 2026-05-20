@@ -17,28 +17,28 @@ h_worsen_counter(df, id, .var, baseline_var, direction_var)
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - id:
 
-  (`string`)  
+  (`string`)\
   subject variable name.
 
 - .var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - baseline_var:
 
-  (`string`)  
+  (`string`)\
   name of the baseline lab grade variable.
 
 - direction_var:
 
-  (`string`)  
+  (`string`)\
   name of the direction variable specifying the direction of the shift
   table of interest. Only lab records flagged by `L`, `H` or `B` are
   included in the shift table.

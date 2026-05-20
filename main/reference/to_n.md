@@ -14,12 +14,12 @@ to_n(x, n)
 
 - x:
 
-  (`numeric`)  
+  (`numeric`)\
   vector of numbers we want to analyze.
 
 - n:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   number of entries that are needed.
 
 ## Value

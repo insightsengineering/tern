@@ -27,30 +27,30 @@ extract_survival_biomarkers(
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables.
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   the dataset containing the variables to summarize.
 
 - groups_lists:
 
-  (named `list` of `list`)  
+  (named `list` of `list`)\
   optionally contains for each `subgroups` variable a list, which
   specifies the new group levels via the names and the levels that
   belong to it in the character vectors that are elements of the list.
 
 - control:
 
-  (`list`)  
+  (`list`)\
   a list of parameters as returned by the helper function
   [`control_coxreg()`](https://insightsengineering.github.io/tern/reference/control_coxreg.md).
 
 - label_all:
 
-  (`string`)  
+  (`string`)\
   label for the total population analysis.
 
 ## Value

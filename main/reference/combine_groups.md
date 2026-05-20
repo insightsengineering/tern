@@ -16,17 +16,17 @@ combine_groups(fct, ref = NULL, collapse = "/")
 
 - fct:
 
-  (`factor`)  
+  (`factor`)\
   the variable with levels which needs to be grouped.
 
 - ref:
 
-  (`character`)  
+  (`character`)\
   the reference level(s).
 
 - collapse:
 
-  (`string`)  
+  (`string`)\
   a character string to separate `fct` and `ref`.
 
 ## Value

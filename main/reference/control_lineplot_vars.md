@@ -23,37 +23,37 @@ control_lineplot_vars(
 
 - x:
 
-  (`string`)  
+  (`string`)\
   x-variable name.
 
 - y:
 
-  (`string`)  
+  (`string`)\
   y-variable name.
 
 - group_var:
 
-  (`string` or `NA`)  
+  (`string` or `NA`)\
   group variable name.
 
 - facet_var:
 
-  (`string` or `NA`)  
+  (`string` or `NA`)\
   faceting variable name.
 
 - paramcd:
 
-  (`string` or `NA`)  
+  (`string` or `NA`)\
   parameter code variable name.
 
 - y_unit:
 
-  (`string` or `NA`)  
+  (`string` or `NA`)\
   y-axis unit variable name.
 
 - subject_var:
 
-  (`string` or `NA`)  
+  (`string` or `NA`)\
   subject variable name.
 
 ## Value

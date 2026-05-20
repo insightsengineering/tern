@@ -12,7 +12,7 @@ n_available(x)
 
 - x:
 
-  (`vector`)  
+  (`vector`)\
   vector in which to count non-missing values.
 
 ## Value

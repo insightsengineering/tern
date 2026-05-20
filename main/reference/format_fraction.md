@@ -14,7 +14,7 @@ format_fraction(x, ...)
 
 - x:
 
-  (named `integer`)  
+  (named `integer`)\
   vector with elements `num` and `denom`.
 
 - ...:

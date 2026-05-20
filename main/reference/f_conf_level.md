@@ -12,7 +12,7 @@ f_conf_level(conf_level)
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 ## Value

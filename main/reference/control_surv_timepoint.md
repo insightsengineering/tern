@@ -21,12 +21,12 @@ control_surv_timepoint(
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - conf_type:
 
-  (`string`)  
+  (`string`)\
   confidence interval type. Options are "plain" (default), "log",
   "log-log", see more in
   [`survival::survfit()`](https://rdrr.io/pkg/survival/man/survfit.html).

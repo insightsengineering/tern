@@ -26,13 +26,13 @@ level_order(order)
 
 - position:
 
-  (`string` or `integer`)  
+  (`string` or `integer`)\
   position to use for the reference group facet. Can be `"first"`,
   `"last"`, or a specific position.
 
 - order:
 
-  (`character` or `numeric`)  
+  (`character` or `numeric`)\
   vector of ordering indices for the split facets.
 
 ## Value

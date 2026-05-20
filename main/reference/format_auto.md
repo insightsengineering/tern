@@ -21,7 +21,7 @@ format_auto(dt_var, x_stat)
 
 - dt_var:
 
-  (`numeric`)  
+  (`numeric`)\
   variable data the statistics were calculated from. Used only to find
   significant digits. In
   [analyze_vars](https://insightsengineering.github.io/tern/reference/analyze_variables.md)
@@ -32,7 +32,7 @@ format_auto(dt_var, x_stat)
 
 - x_stat:
 
-  (`string`)  
+  (`string`)\
   string indicating the current statistical method used.
 
 ## Value

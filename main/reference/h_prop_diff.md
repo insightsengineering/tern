@@ -33,41 +33,41 @@ prop_diff_strat_nc(
 
 - rsp:
 
-  (`logical`)  
+  (`logical`)\
   vector indicating whether each subject is a responder or not.
 
 - grp:
 
-  (`factor`)  
+  (`factor`)\
   vector assigning observations to one out of two groups (e.g. reference
   and treatment group).
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - correct:
 
-  (`flag`)  
+  (`flag`)\
   whether to include the continuity correction. For further information,
   see [`stats::prop.test()`](https://rdrr.io/r/stats/prop.test.html).
 
 - strata:
 
-  (`factor`)  
+  (`factor`)\
   variable with one level per stratum and same length as `rsp`.
 
 - diff_se:
 
-  (`string`)  
+  (`string`)\
   method to estimate the standard error for the difference, either
   `standard`, `sato` (Sato et al. 1989) or `miettinen_nurminen`
   (Miettinen and Nurminen 1985) .
 
 - weights_method:
 
-  (`string`)  
+  (`string`)\
   weights method. Can be either `"cmh"` or `"heuristic"` and directs the
   way weights are estimated.
 
@@ -111,22 +111,22 @@ A named `list` of elements `diff` (proportion difference) and `diff_ci`
 Hauck WW, Anderson S (1986). “A Comparison of Large-Sample Confidence
 Interval Methods for the Difference of Two Binomial Probabilities.” *The
 American Statistician*, **40**(4), 318–322.
-[doi:10.2307/2684618](https://doi.org/10.2307/2684618) .  
-  
+[doi:10.2307/2684618](https://doi.org/10.2307/2684618) .\
+\
 Miettinen OS, Nurminen M (1985). “Comparative analysis of two rates.”
 *Statistics in Medicine*, **4**(2), 213–226.
-[doi:10.1002/sim.4780040211](https://doi.org/10.1002/sim.4780040211) .  
-  
+[doi:10.1002/sim.4780040211](https://doi.org/10.1002/sim.4780040211) .\
+\
 Newcombe RG (1998). “Interval estimation for the difference between
 independent proportions: comparison of eleven methods.” *Statistics in
 Medicine*, **17**(8), 873-890.
 [doi:10.1002/(SICI)1097-0258(19980430)17:8\<873::AID-SIM779\>3.0.CO;2-I](https://doi.org/10.1002/%28SICI%291097-0258%2819980430%2917%3A8%3C873%3A%3AAID-SIM779%3E3.0.CO%3B2-I)
-.  
-  
+.\
+\
 Sato T, Greenland S, Robins JM (1989). “On the variance estimator for
 the Mantel-Haenszel Risk Difference.” *Biometrics*, **45**(4),
-1323–1324. <http://www.jstor.org/stable/2531784>.  
-  
+1323–1324. <http://www.jstor.org/stable/2531784>.\
+\
 Yan X, Su XG (2010). “Stratified Wilson and Newcombe Confidence
 Intervals for Multiple Binomial Proportions.” *Stat. Biopharm. Res.*,
 **2**(3), 329–335.

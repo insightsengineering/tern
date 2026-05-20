@@ -21,18 +21,18 @@ logistic_summary_by_flag(
 
 - flag_var:
 
-  (`string`)  
+  (`string`)\
   variable name identifying which row should be used in this content
   function.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 

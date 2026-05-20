@@ -24,30 +24,30 @@ h_adsl_adlb_merge_using_worst_flag(
 
 - adsl:
 
-  (`data.frame`)  
+  (`data.frame`)\
   ADSL data frame.
 
 - adlb:
 
-  (`data.frame`)  
+  (`data.frame`)\
   ADLB data frame.
 
 - worst_flag:
 
-  (named `character`)  
+  (named `character`)\
   worst post-baseline lab flag variable. See how this is implemented in
   the following examples.
 
 - by_visit:
 
-  (`flag`)  
+  (`flag`)\
   defaults to `FALSE` to generate worst grade per patient. If worst
   grade per patient per visit is specified for `worst_flag`, then
   `by_visit` should be `TRUE` to generate worst grade patient per visit.
 
 - no_fillin_visits:
 
-  (named `character`)  
+  (named `character`)\
   visits that are not considered for post-baseline worst toxicity grade.
   Defaults to `c("SCREENING", "BASELINE")`.
 

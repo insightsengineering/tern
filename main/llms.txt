@@ -86,6 +86,7 @@ created using `tern` functionality.
 version with:
 
 ``` r
+
 install.packages("tern")
 ```
 
@@ -93,6 +94,7 @@ or you can install the latest development version directly from GitHub
 by running the following:
 
 ``` r
+
 # install.packages("pak")
 pak::pak("insightsengineering/tern")
 ```

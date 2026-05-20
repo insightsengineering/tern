@@ -17,22 +17,22 @@ h_coxreg_mult_cont_df(variables, data, control = control_coxreg())
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables.
 
 - biomarker:
 
-  (`string`)  
+  (`string`)\
   the name of the biomarker variable.
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   the dataset containing the variables to summarize.
 
 - control:
 
-  (`list`)  
+  (`list`)\
   a list of parameters as returned by the helper function
   [`control_coxreg()`](https://insightsengineering.github.io/tern/reference/control_coxreg.md).
 

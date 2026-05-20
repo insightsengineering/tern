@@ -19,37 +19,37 @@ imputation_rule(
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - x_stats:
 
-  (named `list`)  
+  (named `list`)\
   a named list of statistics, typically the results of
   [`s_summary()`](https://insightsengineering.github.io/tern/reference/analyze_variables.md).
 
 - stat:
 
-  (`string`)  
+  (`string`)\
   statistic to return the value/NA level of according to the imputation
   rule applied.
 
 - imp_rule:
 
-  (`string`)  
+  (`string`)\
   imputation rule setting. Set to `"1/3"` to implement 1/3 imputation
   rule or `"1/2"` to implement 1/2 imputation rule.
 
 - post:
 
-  (`flag`)  
+  (`flag`)\
   whether the data corresponds to a post-dose time-point (defaults to
   `FALSE`). This parameter is only used when `imp_rule` is set to
   `"1/3"`.
 
 - avalcat_var:
 
-  (`string`)  
+  (`string`)\
   name of variable that indicates whether a row in `df` corresponds to
   an analysis value in category `"BLQ"`, `"LTR"`, `"<PCLLOQ"`, or none
   of the above (defaults to `"AVALCAT1"`). Variable `avalcat_var` must

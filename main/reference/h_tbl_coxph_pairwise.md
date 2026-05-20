@@ -21,56 +21,56 @@ h_tbl_coxph_pairwise(
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - variables:
 
-  (named `list`)  
+  (named `list`)\
   variable names. Details are:
 
-  - `tte` (`numeric`)  
+  - `tte` (`numeric`)\
     variable indicating time-to-event duration values.
 
-  - `is_event` (`logical`)  
+  - `is_event` (`logical`)\
     event variable. `TRUE` if event, `FALSE` if time to event is
     censored.
 
-  - `arm` (`factor`)  
+  - `arm` (`factor`)\
     the treatment group variable.
 
-  - `strata` (`character` or `NULL`)  
+  - `strata` (`character` or `NULL`)\
     variable names indicating stratification factors.
 
 - ref_group_coxph:
 
-  (`string` or `NULL`)  
+  (`string` or `NULL`)\
   level of arm variable to use as reference group in calculations for
   `annot_coxph` table. If `NULL` (default), uses the first level of the
   arm variable.
 
 - control_coxph_pw:
 
-  (`list`)  
+  (`list`)\
   parameters for comparison details, specified using the helper function
   [`control_coxph()`](https://insightsengineering.github.io/tern/reference/control_coxph.md).
   Some possible parameter options are:
 
-  - `pval_method` (`string`)  
+  - `pval_method` (`string`)\
     p-value method for testing hazard ratio = 1. Default method is
     `"log-rank"`, can also be set to `"wald"` or `"likelihood"`.
 
-  - `ties` (`string`)  
+  - `ties` (`string`)\
     method for tie handling. Default is `"efron"`, can also be set to
     `"breslow"` or `"exact"`. See more in
     [`survival::coxph()`](https://rdrr.io/pkg/survival/man/coxph.html)
 
-  - `conf_level` (`proportion`)  
+  - `conf_level` (`proportion`)\
     confidence level of the interval for HR.
 
 - annot_coxph_ref_lbls:
 
-  (`flag`)  
+  (`flag`)\
   whether the reference group should be explicitly printed in labels for
   the `annot_coxph` table. If `FALSE` (default), only comparison groups
   will be printed in `annot_coxph` table labels.

@@ -23,17 +23,17 @@ h_map_for_count_abnormal(
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - variables:
 
-  (named `list` of `string`)  
+  (named `list` of `string`)\
   list of additional analysis variables.
 
 - abnormal:
 
-  (named `list`)  
+  (named `list`)\
   identifying the abnormal range level(s) in `df`. Based on the levels
   of abnormality of the input dataset, it can be something like
   `list(Low = "LOW LOW", High = "HIGH HIGH")` or
@@ -41,13 +41,13 @@ h_map_for_count_abnormal(
 
 - method:
 
-  (`string`)  
+  (`string`)\
   indicates how the returned map will be constructed. Can be `"default"`
   or `"range"`.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 ## Value

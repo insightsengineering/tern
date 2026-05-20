@@ -25,19 +25,19 @@ to_string_matrix(
 
 - x:
 
-  (`VTableTree`)  
+  (`VTableTree`)\
   `rtables` table object.
 
 - widths:
 
-  (`numeric` or `NULL`)  
+  (`numeric` or `NULL`)\
   Proposed widths for the columns of `x`. The expected length of this
   numeric vector can be retrieved with `ncol(x) + 1` as the column of
   row names must also be considered.
 
 - max_width:
 
-  (`integer(1)`, `string` or `NULL`)  
+  (`integer(1)`, `string` or `NULL`)\
   width that title and footer (including footnotes) materials should be
   word-wrapped to. If `NULL`, it is set to the current print width of
   the session (`getOption("width")`). If set to `"auto"`, the width of
@@ -46,7 +46,7 @@ to_string_matrix(
 
 - hsep:
 
-  (`string`)  
+  (`string`)\
   character to repeat to create header/body separator line. If `NULL`,
   the object value will be used. If `" "`, an empty separator will be
   printed. See
@@ -55,13 +55,13 @@ to_string_matrix(
 
 - with_spaces:
 
-  (`flag`)  
+  (`flag`)\
   whether the tested table should keep the indentation and other
   relevant spaces.
 
 - print_txt_to_copy:
 
-  (`flag`)  
+  (`flag`)\
   utility to have a way to copy the input table directly into the
   expected variable instead of copying it too manually.
 

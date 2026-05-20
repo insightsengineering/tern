@@ -22,12 +22,12 @@ control_surv_time(
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - conf_type:
 
-  (`string`)  
+  (`string`)\
   confidence interval type. Options are "plain" (default), "log",
   "log-log", see more in
   [`survival::survfit()`](https://rdrr.io/pkg/survival/man/survfit.html).
@@ -35,7 +35,7 @@ control_surv_time(
 
 - quantiles:
 
-  (`numeric(2)`)  
+  (`numeric(2)`)\
   vector of length two specifying the quantiles of survival time.
 
 ## Value

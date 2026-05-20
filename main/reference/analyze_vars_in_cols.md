@@ -38,12 +38,12 @@ analyze_vars_in_cols(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - ...:
@@ -52,17 +52,17 @@ analyze_vars_in_cols(
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - row_labels:
 
-  (`character`)  
+  (`character`)\
   as this function works in columns space, usually `.labels` character
   vector applies on the column space. You can change the row labels by
   defining this parameter to a named character vector with names
@@ -71,7 +71,7 @@ analyze_vars_in_cols(
 
 - do_summarize_row_groups:
 
-  (`flag`)  
+  (`flag`)\
   defaults to `FALSE` and applies the analysis to the current label
   rows. This is a wrapper of
   [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
@@ -80,7 +80,7 @@ analyze_vars_in_cols(
 
 - split_col_vars:
 
-  (`flag`)  
+  (`flag`)\
   defaults to `TRUE` and puts the analysis results onto the columns.
   This option allows you to add multiple instances of this functions,
   also in a nested fashion, without adding more splits. This split must
@@ -88,7 +88,7 @@ analyze_vars_in_cols(
 
 - imp_rule:
 
-  (`string` or `NULL`)  
+  (`string` or `NULL`)\
   imputation rule setting. Defaults to `NULL` for no imputation rule.
   Can also be `"1/3"` to implement 1/3 imputation rule or `"1/2"` to
   implement 1/2 imputation rule. In order to use an imputation rule, the
@@ -98,7 +98,7 @@ analyze_vars_in_cols(
 
 - avalcat_var:
 
-  (`string`)  
+  (`string`)\
   if `imp_rule` is not `NULL`, name of variable that indicates whether a
   row in the data corresponds to an analysis value in category `"BLQ"`,
   `"LTR"`, `"<PCLLOQ"`, or none of the above (defaults to `"AVALCAT1"`).
@@ -107,7 +107,7 @@ analyze_vars_in_cols(
 
 - cache:
 
-  (`flag`)  
+  (`flag`)\
   whether to store computed values in a temporary caching environment.
   This will speed up calculations in large tables, but should be set to
   `FALSE` if the same `rtable` layout is used for multiple tables with
@@ -115,18 +115,18 @@ analyze_vars_in_cols(
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -134,13 +134,13 @@ analyze_vars_in_cols(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .aligns:
 
-  (`character` or `NULL`)  
+  (`character` or `NULL`)\
   alignment for table contents (not including labels). When `NULL`,
   `"center"` is applied. See
   [`formatters::list_valid_aligns()`](https://insightsengineering.github.io/formatters/latest-tag/reference/list_formats.html)

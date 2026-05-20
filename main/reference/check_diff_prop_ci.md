@@ -15,28 +15,28 @@ check_diff_prop_ci(rsp, grp, strata = NULL, conf_level, correct = NULL)
 
 - rsp:
 
-  (`logical`)  
+  (`logical`)\
   vector indicating whether each subject is a responder or not.
 
 - grp:
 
-  (`factor`)  
+  (`factor`)\
   vector assigning observations to one out of two groups (e.g. reference
   and treatment group).
 
 - strata:
 
-  (`factor`)  
+  (`factor`)\
   variable with one level per stratum and same length as `rsp`.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - correct:
 
-  (`flag`)  
+  (`flag`)\
   whether to include the continuity correction. For further information,
   see [`stats::prop.test()`](https://rdrr.io/r/stats/prop.test.html).
 

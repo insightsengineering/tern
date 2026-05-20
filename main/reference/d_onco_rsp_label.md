@@ -14,7 +14,7 @@ d_onco_rsp_label(x)
 
 - x:
 
-  (`character`)  
+  (`character`)\
   the standard oncology codes to be described.
 
 ## Value

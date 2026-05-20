@@ -24,6 +24,7 @@ To see the available format strings available in `formatters` see
 The packages used in this vignette are:
 
 ``` r
+
 library(rtables)
 library(formatters)
 library(tern)
@@ -38,6 +39,7 @@ value has a numerator value of zero and so the fraction value is
 displayed without also displaying the redundant zero percentage value.
 
 ``` r
+
 df2 <- data.frame(
   ID = as.character(c(1, 1, 2, 2)),
   RANGE = factor(c("NORMAL", "LOW", "HIGH", "LOW")),
@@ -70,6 +72,7 @@ function is utilized again. This time both “low” values and “high”
 values have a non-zero numerator and so both show a percentage.
 
 ``` r
+
 df2 <- data.frame(
   ID = as.character(c(1, 1, 2, 2)),
   RANGE = factor(c("NORMAL", "LOW", "HIGH", "HIGH")),
@@ -103,6 +106,7 @@ our value format. The “high” value has a zero numerator value and the
 format.
 
 ``` r
+
 df2 <- data.frame(
   ID = as.character(c(1, 1, 2, 2)),
   RANGE = factor(c("NORMAL", "LOW", "HIGH", "LOW")),
@@ -135,6 +139,7 @@ using the `"xx.x / xx.x"` format instead. Use
 to see the full list of available formats in `formatters`.
 
 ``` r
+
 df2 <- data.frame(
   ID = as.character(c(1, 1, 2, 2)),
   RANGE = factor(c("NORMAL", "LOW", "HIGH", "LOW")),
@@ -186,6 +191,7 @@ two functions will always have one decimal place in their percentage,
 even if the digit is a zero. See the following example:
 
 ``` r
+
 format_fraction_fixed_dp(x = c(num = 1L, denom = 3L))
 #> [1] "1/3 (33.3%)"
 format_fraction_fixed_dp(x = c(num = 1L, denom = 2L))
@@ -210,6 +216,7 @@ the maximum number of digits to include, and very large or very small
 values are given a special string value. For example:
 
 ``` r
+
 extreme_format <- format_extreme_values(digits = 2)
 extreme_format(0.235)
 #> [1] "0.23"
@@ -225,6 +232,7 @@ function allows the user to specify a lower percentage threshold, below
 which values are instead assigned a special string value. For example:
 
 ``` r
+
 fraction_format <- format_fraction_threshold(0.05)
 fraction_format(x = c(20, 0.1))
 #> [1] 10
@@ -250,6 +258,7 @@ function. First we will take a look at this function in detail and then
 we will customize it.
 
 ``` r
+
 # First we will see how the format_fraction_fixed_dp code works and displays the outputs
 format_fraction_fixed_dp <- function(x, ...) {
   attr(x, "label") <- NULL
@@ -276,6 +285,7 @@ create a dummy dataset and then observe the output value behavior when
 this formatting function is applied.
 
 ``` r
+
 df2 <- data.frame(
   ID = as.character(c(1, 1, 2, 2)),
   RANGE = factor(c("NORMAL", "LOW", "HIGH", "LOW")),
@@ -306,6 +316,7 @@ value, and if the numerator value is 0 we only want to display a 0 value
 (without the denominator).
 
 ``` r
+
 custom_format <- function(x, ...) {
   attr(x, "label") <- NULL
   checkmate::assert_vector(x)

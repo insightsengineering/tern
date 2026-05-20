@@ -15,22 +15,22 @@ stat_median_ci(x, conf_level = 0.95, na.rm = TRUE, gg_helper = TRUE)
 
 - x:
 
-  (`numeric`)  
+  (`numeric`)\
   vector of numbers we want to analyze.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - na.rm:
 
-  (`flag`)  
+  (`flag`)\
   whether `NA` values should be removed from `x` prior to analysis.
 
 - gg_helper:
 
-  (`flag`)  
+  (`flag`)\
   whether output should be aligned for use with `ggplot`s.
 
 ## Value

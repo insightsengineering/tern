@@ -12,7 +12,7 @@ make_names(nams)
 
 - nams:
 
-  (`character`)  
+  (`character`)\
   vector of original names.
 
 ## Value

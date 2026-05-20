@@ -15,13 +15,13 @@ h_tbl_median_surv(fit_km, armval = "All")
 
 - fit_km:
 
-  (`survfit`)  
+  (`survfit`)\
   result of
   [`survival::survfit()`](https://rdrr.io/pkg/survival/man/survfit.html).
 
 - armval:
 
-  (`string`)  
+  (`string`)\
   used as strata name when treatment arm variable only has one level.
   Default is `"All"`.
 

@@ -25,34 +25,34 @@ control_coxph_annot(
 
 - x:
 
-  (`proportion`)  
+  (`proportion`)\
   x-coordinate for center of annotation table.
 
 - y:
 
-  (`proportion`)  
+  (`proportion`)\
   y-coordinate for center of annotation table.
 
 - w:
 
-  (`proportion`)  
+  (`proportion`)\
   relative width of the annotation table.
 
 - h:
 
-  (`proportion`)  
+  (`proportion`)\
   relative height of the annotation table.
 
 - fill:
 
-  (`flag` or `character`)  
+  (`flag` or `character`)\
   whether the annotation table should have a background fill color. Can
   also be a color code to use as the background fill color. If `TRUE`,
   color code defaults to `"#00000020"`.
 
 - ref_lbls:
 
-  (`flag`)  
+  (`flag`)\
   whether the reference group should be explicitly printed in labels for
   the annotation table. If `FALSE` (default), only comparison groups
   will be printed in the table labels.

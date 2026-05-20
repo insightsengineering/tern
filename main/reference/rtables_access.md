@@ -29,24 +29,24 @@ check_names_indices(table_row, col_names = NULL, col_indices = NULL)
 
 - table_row:
 
-  (`TableRow`)  
+  (`TableRow`)\
   an analysis row in a occurrence table.
 
 - col_names:
 
-  (`character`)  
+  (`character`)\
   the names of the columns to extract from.
 
 - col_indices:
 
-  (`integer`)  
+  (`integer`)\
   the indices of the columns to extract from. If `col_names` are
   provided, then these are inferred from the names of `table_row`. Note
   that this currently only works well with a single column split.
 
 - table:
 
-  (`VTableNodeInfo`)  
+  (`VTableNodeInfo`)\
   an occurrence table or row.
 
 ## Value

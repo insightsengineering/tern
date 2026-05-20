@@ -15,7 +15,7 @@ format_count_fraction(x, ...)
 
 - x:
 
-  (`numeric(2)`)  
+  (`numeric(2)`)\
   vector of length 2 with count and fraction, respectively.
 
 - ...:

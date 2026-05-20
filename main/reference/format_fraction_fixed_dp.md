@@ -16,7 +16,7 @@ format_fraction_fixed_dp(x, ...)
 
 - x:
 
-  (named `integer`)  
+  (named `integer`)\
   vector with elements `num` and `denom`.
 
 - ...:

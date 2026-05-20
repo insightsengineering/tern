@@ -25,39 +25,39 @@ stat_propdiff_ci(
 
 - x:
 
-  (`list` of `integer`)  
+  (`list` of `integer`)\
   list of number of occurrences in arm X (reference group).
 
 - y:
 
-  (`list` of `integer`)  
+  (`list` of `integer`)\
   list of number of occurrences in arm Y. Must be of equal length to
   `x`.
 
 - N_x:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   total number of records in arm X.
 
 - N_y:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   total number of records in arm Y.
 
 - list_names:
 
-  (`character`)  
+  (`character`)\
   names of each variable/level corresponding to pair of proportions in
   `x` and `y`. Must be of equal length to `x` and `y`.
 
 - conf_level:
 
-  (`proportion`)  
+  (`proportion`)\
   confidence level of the interval.
 
 - pct:
 
-  (`flag`)  
+  (`flag`)\
   whether output should be returned as percentages. Defaults to `TRUE`.
 
 ## Value

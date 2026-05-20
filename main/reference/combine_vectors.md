@@ -12,12 +12,12 @@ combine_vectors(x, y)
 
 - x:
 
-  (`vector`)  
+  (`vector`)\
   first vector to combine.
 
 - y:
 
-  (`vector`)  
+  (`vector`)\
   second vector to combine.
 
 ## Value

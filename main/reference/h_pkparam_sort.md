@@ -12,12 +12,12 @@ h_pkparam_sort(pk_data, key_var = "PARAMCD")
 
 - pk_data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   pharmacokinetic data frame.
 
 - key_var:
 
-  (`string`)  
+  (`string`)\
   key variable used to merge pk_data and metadata created by
   [`d_pkparam()`](https://insightsengineering.github.io/tern/reference/d_pkparam.md).
 

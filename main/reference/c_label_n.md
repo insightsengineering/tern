@@ -18,12 +18,12 @@ c_label_n(df, labelstr, .N_row)
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - labelstr:
 
-  (`string`)  
+  (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
   [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
@@ -31,7 +31,7 @@ c_label_n(df, labelstr, .N_row)
 
 - .N_row:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   row-wise N (row group count) for the group of observations being
   analyzed (i.e. with no column-based subsetting) that is typically
   passed by `rtables`.

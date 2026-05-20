@@ -20,39 +20,39 @@ h_incidence_rate_byar(person_years, n_events, alpha = 0.05)
 
 - person_years:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   total person-years at risk.
 
 - n_events:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   number of events observed.
 
 - control:
 
-  (`list`)  
+  (`list`)\
   parameters for estimation details, specified by using the helper
   function
   [`control_incidence_rate()`](https://insightsengineering.github.io/tern/reference/control_incidence_rate.md).
   Possible parameter options are:
 
-  - `conf_level`: (`proportion`)  
+  - `conf_level`: (`proportion`)\
     confidence level for the estimated incidence rate.
 
-  - `conf_type`: (`string`)  
+  - `conf_type`: (`string`)\
     `normal` (default), `normal_log`, `exact`, or `byar` for confidence
     interval type.
 
-  - `input_time_unit`: (`string`)  
+  - `input_time_unit`: (`string`)\
     `day`, `week`, `month`, or `year` (default) indicating time unit for
     data input.
 
-  - `num_pt_year`: (`numeric`)  
+  - `num_pt_year`: (`numeric`)\
     time unit for desired output (in person-years).
 
 - alpha:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   two-sided alpha-level for confidence interval.
 
 ## Value

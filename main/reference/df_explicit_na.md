@@ -21,28 +21,28 @@ df_explicit_na(
 
 - data:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set.
 
 - omit_columns:
 
-  (`character`)  
+  (`character`)\
   names of variables from `data` that should not be modified by this
   function.
 
 - char_as_factor:
 
-  (`flag`)  
+  (`flag`)\
   whether to convert character variables in `data` to factors.
 
 - logical_as_factor:
 
-  (`flag`)  
+  (`flag`)\
   whether to convert logical variables in `data` to factors.
 
 - na_level:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values inside
   non-`omit_columns` columns.
 

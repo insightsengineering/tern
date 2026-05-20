@@ -40,7 +40,7 @@ h_tab_surv_one_biomarker(
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   results for a single biomarker. For `h_tab_rsp_one_biomarker()`, the
   results returned by
   [`extract_rsp_biomarkers()`](https://insightsengineering.github.io/tern/reference/extract_rsp_biomarkers.md).
@@ -49,18 +49,18 @@ h_tab_surv_one_biomarker(
 
 - afuns:
 
-  (named `list` of `function`)  
+  (named `list` of `function`)\
   analysis functions.
 
 - colvars:
 
-  (named `list`)  
+  (named `list`)\
   named list with elements `vars` (variables to tabulate) and `labels`
   (their labels).
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - ...:
@@ -69,12 +69,12 @@ h_tab_surv_one_biomarker(
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -82,29 +82,29 @@ h_tab_surv_one_biomarker(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - time_unit:
 
-  (`string`)  
+  (`string`)\
   label with unit of median survival time. Default `NULL` skips
   displaying unit.
 

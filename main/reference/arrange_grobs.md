@@ -28,43 +28,43 @@ arrange_grobs(
 
 - grobs:
 
-  (`list` of `grob`)  
+  (`list` of `grob`)\
   a list of grobs.
 
 - ncol:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   number of columns in layout.
 
 - nrow:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   number of rows in layout.
 
 - padding_ht:
 
-  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))  
+  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))\
   unit of length 1, vertical space between each grob.
 
 - padding_wt:
 
-  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))  
+  ([`grid::unit`](https://rdrr.io/r/grid/unit.html))\
   unit of length 1, horizontal space between each grob.
 
 - vp:
 
-  (`viewport` or `NULL`)  
+  (`viewport` or `NULL`)\
   a [`viewport()`](https://rdrr.io/r/grid/viewport.html) object (or
   `NULL`).
 
 - gp:
 
-  (`gpar`)  
+  (`gpar`)\
   a [`gpar()`](https://rdrr.io/r/grid/gpar.html) object.
 
 - name:
 
-  (`string`)  
+  (`string`)\
   a character identifier for the grob.
 
 ## Value

@@ -33,13 +33,13 @@ tabulate_rsp_biomarkers(
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   containing all analysis variables, as returned by
   [`extract_rsp_biomarkers()`](https://insightsengineering.github.io/tern/reference/extract_rsp_biomarkers.md).
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   the names of statistics to be reported among:
 
   - `n_tot`: Total number of patients per group.
@@ -57,7 +57,7 @@ tabulate_rsp_biomarkers(
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - ...:
@@ -66,7 +66,7 @@ tabulate_rsp_biomarkers(
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -74,18 +74,18 @@ tabulate_rsp_biomarkers(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 

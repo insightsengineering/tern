@@ -21,7 +21,7 @@ set_default_na_str(na_str)
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   single string value to set in the R environment options as the default
   value to replace `NA`s. Use `getOption("tern_default_na_str")` to
   check the current value set in the R environment (defaults to `NULL`

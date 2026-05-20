@@ -24,7 +24,7 @@ clogit_with_tryCatch(formula, data, ...)
 
 ## Value
 
-When model fitting is successful, an object of class "clogit".  
+When model fitting is successful, an object of class "clogit".\
 When model fitting failed, an error message is shown.
 
 ## Examples

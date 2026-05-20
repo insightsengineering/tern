@@ -59,50 +59,50 @@ a_coxph_pairwise(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - vars:
 
-  (`character`)  
+  (`character`)\
   variable names for the primary analysis variable to be iterated over.
 
 - strata:
 
-  (`character` or `NULL`)  
+  (`character` or `NULL`)\
   variable names indicating stratification factors.
 
 - control:
 
-  (`list`)  
+  (`list`)\
   parameters for comparison details, specified by using the helper
   function
   [`control_coxph()`](https://insightsengineering.github.io/tern/reference/control_coxph.md).
   Some possible parameter options are:
 
-  - `pval_method` (`string`)  
+  - `pval_method` (`string`)\
     p-value method for testing the null hypothesis that hazard ratio
     = 1. Default method is `"log-rank"` which comes from
     [`survival::survdiff()`](https://rdrr.io/pkg/survival/man/survdiff.html),
     can also be set to `"wald"` or `"likelihood"` (from
     [`survival::coxph()`](https://rdrr.io/pkg/survival/man/coxph.html)).
 
-  - `ties` (`string`)  
+  - `ties` (`string`)\
     specifying the method for tie handling. Default is `"efron"`, can
     also be set to `"breslow"` or `"exact"`. See more in
     [`survival::coxph()`](https://rdrr.io/pkg/survival/man/coxph.html).
 
-  - `conf_level` (`proportion`)  
+  - `conf_level` (`proportion`)\
     confidence level of the interval for HR.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - nested:
 
-  (`flag`)  
+  (`flag`)\
   whether this layout instruction should be applied within the existing
   layout structure \_if possible (`TRUE`, the default) or as a new
   top-level element (`FALSE`). Ignored if it would nest a split.
@@ -114,30 +114,30 @@ a_coxph_pairwise(
 
 - var_labels:
 
-  (`character`)  
+  (`character`)\
   variable labels.
 
 - show_labels:
 
-  (`string`)  
+  (`string`)\
   label visibility: one of "default", "visible" and "hidden".
 
 - table_names:
 
-  (`character`)  
+  (`character`)\
   this can be customized in the case that the same `vars` are analyzed
   multiple times, to avoid warnings from `rtables`.
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options are: `'pvalue', 'hr', 'hr_ci', 'n_tot', 'n_tot_events'`
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -145,45 +145,45 @@ a_coxph_pairwise(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - .ref_group:
 
-  (`data.frame` or `vector`)  
+  (`data.frame` or `vector`)\
   the data corresponding to the reference group.
 
 - .in_ref_col:
 
-  (`flag`)  
+  (`flag`)\
   `TRUE` when working with the reference level, `FALSE` otherwise.
 
 - .var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - is_event:
 
-  (`flag`)  
+  (`flag`)\
   `TRUE` if event, `FALSE` if time to event is censored.
 
 - strat:

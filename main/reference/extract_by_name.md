@@ -13,12 +13,12 @@ extract_by_name(x, names)
 
 - x:
 
-  (named `vector`)  
+  (named `vector`)\
   where to extract named elements from.
 
 - names:
 
-  (`character`)  
+  (`character`)\
   vector of names to extract.
 
 ## Value

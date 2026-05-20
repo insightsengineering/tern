@@ -90,58 +90,58 @@ a_count_patients_sum_exposure(
 
 - lyt:
 
-  (`PreDataTableLayouts`)  
+  (`PreDataTableLayouts`)\
   layout that analyses will be added to.
 
 - var:
 
-  (`string`)  
+  (`string`)\
   single variable name that is passed by `rtables` when requested by a
   statistics function.
 
 - ex_var:
 
-  (`string`)  
+  (`string`)\
   name of the variable in `df` containing exposure values.
 
 - id:
 
-  (`string`)  
+  (`string`)\
   subject variable name.
 
 - add_total_level:
 
-  (`flag`)  
+  (`flag`)\
   adds a "total" level after the others which includes all the levels
   that constitute the split. A custom label can be set for this level
   via the `custom_label` argument.
 
 - custom_label:
 
-  (`string` or `NULL`)  
+  (`string` or `NULL`)\
   if provided and `labelstr` is empty, this will be used as label.
 
 - col_split:
 
-  (`flag`)  
+  (`flag`)\
   whether the columns should be split. Set to `FALSE` when the required
   column split has been done already earlier in the layout pipe.
 
 - na_str:
 
-  (`string`)  
+  (`string`)\
   string used to replace all `NA` or empty values in the output.
 
 - .stats:
 
-  (`character`)  
+  (`character`)\
   statistics to select for the table.
 
   Options are: `'n_patients', 'sum_exposure'`
 
 - .stat_names:
 
-  (`character`)  
+  (`character`)\
   names of the statistics that are passed directly to name single
   statistics (`.stats`). This option is visible when producing
   [`rtables::as_result_df()`](https://insightsengineering.github.io/rtables/latest-tag/reference/data.frame_export.html)
@@ -149,18 +149,18 @@ a_count_patients_sum_exposure(
 
 - .formats:
 
-  (named `character` or `list`)  
+  (named `character` or `list`)\
   formats for the statistics. See Details in `analyze_vars` for more
   information on the `"auto"` setting.
 
 - .labels:
 
-  (named `character`)  
+  (named `character`)\
   labels for the statistics (without indent).
 
 - .indent_mods:
 
-  (named `integer`)  
+  (named `integer`)\
   indent modifiers for the labels. Defaults to 0, which corresponds to
   the unmodified default behavior. Can be negative.
 
@@ -170,12 +170,12 @@ a_count_patients_sum_exposure(
 
 - df:
 
-  (`data.frame`)  
+  (`data.frame`)\
   data set containing all analysis variables.
 
 - labelstr:
 
-  (`string`)  
+  (`string`)\
   label of the level of the parent split currently being summarized
   (must be present as second argument in Content Row Functions). See
   [`rtables::summarize_row_groups()`](https://insightsengineering.github.io/rtables/latest-tag/reference/summarize_row_groups.html)
@@ -183,7 +183,7 @@ a_count_patients_sum_exposure(
 
 - .N_col:
 
-  (`integer(1)`)  
+  (`integer(1)`)\
   column-wise N (column count) for the full column being analyzed that
   is typically passed by `rtables`.
 

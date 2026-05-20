@@ -43,6 +43,7 @@ The main questions that may arise are:
 Data set and library loading.
 
 ``` r
+
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
@@ -90,6 +91,7 @@ Classic use of
 [`summarize_change()`](https://insightsengineering.github.io/tern/reference/summarize_change.md).
 
 ``` r
+
 fix_layout <- basic_table() %>%
   split_cols_by("ARM") %>%
   split_rows_by("AVISIT")
@@ -168,6 +170,7 @@ fix_layout %>%
 `.stats`. Here is how you can change the default formatting.
 
 ``` r
+
 # changing n count format and label and indentation
 fix_layout %>%
   summarize_change("CHG",
@@ -195,6 +198,7 @@ fix_layout %>%
 What if I want something special for the format?
 
 ``` r
+
 # changing n count format and label and indentation
 fix_layout %>%
   summarize_change("CHG",
@@ -220,6 +224,7 @@ fix_layout %>%
 Adding a custom statistic (and custom format):
 
 ``` r
+
 # changing n count format and label and indentation
 fix_layout %>%
   summarize_change(

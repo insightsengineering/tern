@@ -23,25 +23,25 @@ prop_fisher(tbl, alternative = c("two.sided", "less", "greater"))
 
 - tbl:
 
-  (`matrix`)  
+  (`matrix`)\
   matrix with two groups in rows and the binary response
   (`TRUE`/`FALSE`) in columns.
 
 - alternative:
 
-  (`string`)  
+  (`string`)\
   whether `two.sided`, or one-sided `less` or `greater` p-value should
   be displayed.
 
 - ary:
 
-  (`array`, 3 dimensions)  
+  (`array`, 3 dimensions)\
   array with two groups in rows, the binary response (`TRUE`/`FALSE`) in
   columns, and the strata in the third dimension.
 
 - transform:
 
-  (`string`)  
+  (`string`)\
   either `none` or `wilson_hilferty`; specifies whether to apply the
   Wilson-Hilferty transformation of the chi-squared statistic.
 

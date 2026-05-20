@@ -20,14 +20,14 @@ get_additional_afun_params(add_alt_df = FALSE)
 
 - extra_afun_params:
 
-  (`list`)  
+  (`list`)\
   list of additional parameters (`character`) to be retrieved from the
   environment. Curated list is present in
   [rtables::additional_fun_params](https://insightsengineering.github.io/rtables/latest-tag/reference/additional_fun_params.html).
 
 - add_alt_df:
 
-  (`logical`)  
+  (`logical`)\
   if `TRUE`, the function will also add `.alt_df` and `.alt_df_row`
   parameters.
 

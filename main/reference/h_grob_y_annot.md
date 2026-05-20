@@ -14,12 +14,12 @@ h_grob_y_annot(ylab, yaxis)
 
 - ylab:
 
-  (`gtable`)  
+  (`gtable`)\
   the y-lab as a graphical object derived from a `ggplot`.
 
 - yaxis:
 
-  (`gtable`)  
+  (`gtable`)\
   the y-axis as a graphical object derived from a `ggplot`.
 
 ## Value

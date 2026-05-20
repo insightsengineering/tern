@@ -6,7 +6,7 @@ Convert the survival fit data into a data frame designed for plotting
 within `g_km`.
 
 This starts from the
-[`broom::tidy()`](https://broom.tidymodels.org/reference/reexports.html)
+[`broom::tidy()`](https://generics.r-lib.org/reference/tidy.html)
 result, and then:
 
 - Post-processes the `strata` column into a factor.
@@ -29,19 +29,19 @@ h_data_plot(fit_km, armval = "All", max_time = NULL)
 
 - fit_km:
 
-  (`survfit`)  
+  (`survfit`)\
   result of
   [`survival::survfit()`](https://rdrr.io/pkg/survival/man/survfit.html).
 
 - armval:
 
-  (`string`)  
+  (`string`)\
   used as strata name when treatment arm variable only has one level.
   Default is `"All"`.
 
 - max_time:
 
-  (`numeric(1)`)  
+  (`numeric(1)`)\
   maximum value to show on x-axis. Only data values less than or up to
   this threshold value will be plotted (defaults to `NULL`).
 
