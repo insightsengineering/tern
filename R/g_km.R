@@ -536,7 +536,11 @@ g_km <- function(df,
 
   # add median survival time annotation table
   if (annot_surv_med) {
-    surv_med_tbl <- h_tbl_median_surv(fit_km = fit_km, armval = armval)
+    surv_med_tbl <- h_tbl_median_surv(
+      fit_km = fit_km,
+      armval = armval,
+      digits = control_annot_surv_med[["digits"]] %||% 4
+    )
     bg_fill <- if (isTRUE(control_annot_surv_med[["fill"]])) "#00000020" else control_annot_surv_med[["fill"]]
 
     gg_surv_med <- df2gg(surv_med_tbl, font_size = font_size, colwidths = c(1, 1, 2), bg_fill = bg_fill) +
