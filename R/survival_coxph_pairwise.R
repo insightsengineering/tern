@@ -20,6 +20,9 @@
 #'   * `ties` (`string`)\cr specifying the method for tie handling. Default is `"efron"`,
 #'     can also be set to `"breslow"` or `"exact"`. See more in [survival::coxph()].
 #'   * `conf_level` (`proportion`)\cr confidence level of the interval for HR.
+#'   * `alternative` (`string`)\cr alternative hypothesis for the p-value test. Default is `"two.sided"`,
+#'     can also be set to `"less"` or `"greater"` for one-sided testing. Note that one-sided testing is not
+#'     supported when `pval_method = "likelihood"`.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
 #'   Options are: ``r shQuote(get_stats("coxph_pairwise"), type = "sh")``
@@ -57,14 +60,17 @@ s_coxph_pairwise <- function(df,
   checkmate::assert_numeric(df[[.var]])
   checkmate::assert_logical(df[[is_event]])
   assert_df_with_variables(df, list(tte = .var, is_event = is_event))
+
   pval_method <- control$pval_method
   ties <- control$ties
   conf_level <- control$conf_level
+  alternative <- control$alternative
 
   if (.in_ref_col) {
     return(
       list(
         pvalue = formatters::with_label(numeric(), paste0("p-value (", pval_method, ")")),
+        lr_stat_df = formatters::with_label(numeric(), "Log-rank Degrees of freedom"),
         hr = formatters::with_label(numeric(), "Hazard Ratio"),
         hr_ci = formatters::with_label(numeric(), f_conf_level(conf_level)),
         hr_ci_3d = formatters::with_label(numeric(), paste0("Hazard Ratio (", f_conf_level(conf_level), ")")),
@@ -99,19 +105,53 @@ s_coxph_pairwise <- function(df,
     ties = ties
   )
   sum_cox <- summary(cox_fit, conf.int = conf_level, extend = TRUE)
-  orginal_survdiff <- survival::survdiff(
-    formula_cox,
-    data = df_cox
-  )
-  log_rank_pvalue <- 1 - pchisq(orginal_survdiff$chisq, length(orginal_survdiff$n) - 1)
 
-  pval <- switch(pval_method,
-    "wald" = sum_cox$waldtest["pvalue"],
-    "log-rank" = log_rank_pvalue, # pvalue from original log-rank test survival::survdiff()
-    "likelihood" = sum_cox$logtest["pvalue"]
-  )
+  original_survdiff <- survival::survdiff(formula_cox, data = df_cox)
+  log_rank_stat <- original_survdiff$chisq
+  log_rank_df <- length(original_survdiff$n) - 1
+
+  pval <- if (pval_method == "wald") {
+    if (alternative == "two.sided") {
+        sum_cox$waldtest["pvalue"]
+    } else {
+        # Need to calculate the signed Wald statistic.
+        beta_est <- unname(cox_fit$coefficients)
+        beta_se <- sqrt(cox_fit$var[1, 1])
+        signed_wald_stat <- beta_est / beta_se
+        if (alternative == "less") {
+          stats::pnorm(signed_wald_stat)
+        } else {
+          stats::pnorm(signed_wald_stat, lower.tail = FALSE)
+        }
+    }    
+  } else if (pval_method == "log-rank") {
+    if (alternative == "two.sided") {
+        original_survdiff$pvalue
+    } else {
+        # Need to calculate the signed log-rank statistic, 
+        # which is not included in the original survdiff output.
+        otmp <- rowSums(original_survdiff$obs)
+        etmp <- rowSums(original_survdiff$exp)
+        signed_lr_stat <- (otmp[2] - etmp[2]) / sqrt(original_survdiff$var[2, 2])
+
+        if (alternative == "less") {
+          stats::pnorm(signed_lr_stat)
+        } else {
+          stats::pnorm(signed_lr_stat, lower.tail = FALSE)
+        }
+    }
+  } else if (pval_method == "likelihood") {
+    if (alternative != "two.sided") {
+        stop("Likelihood ratio test does not support one-sided alternatives")
+    }
+    sum_cox$logtest["pvalue"]
+  } else {
+    stop("Invalid p-value method specified in control_coxph()")
+  }
+
   list(
     pvalue = formatters::with_label(unname(pval), paste0("p-value (", pval_method, ")")),
+    lr_stat_df = formatters::with_label(unname(c(log_rank_stat, log_rank_df)), "Log-rank Degrees of freedom"),
     hr = formatters::with_label(sum_cox$conf.int[1, 1], "Hazard Ratio"),
     hr_ci = formatters::with_label(unname(sum_cox$conf.int[1, 3:4]), f_conf_level(conf_level)),
     hr_ci_3d = formatters::with_label(

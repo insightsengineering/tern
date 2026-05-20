@@ -1,12 +1,17 @@
 # s_coxph_pairwise works with default arguments and no stratification factors
 
     Code
-      res
+      result
     Output
       $pvalue
       [1] 0.09049511
       attr(,"label")
       [1] "p-value (log-rank)"
+      
+      $lr_stat_df
+      [1] 2.865544 1.000000
+      attr(,"label")
+      [1] "Log-rank Degrees of freedom"
       
       $hr
       [1] 0.7108557
@@ -37,12 +42,58 @@
 # s_coxph_pairwise works with customized arguments and no stratification factors
 
     Code
-      res
+      result
     Output
       $pvalue
       [1] 0.09203863
       attr(,"label")
       [1] "p-value (wald)"
+      
+      $lr_stat_df
+      [1] 2.865544 1.000000
+      attr(,"label")
+      [1] "Log-rank Degrees of freedom"
+      
+      $hr
+      [1] 0.7108557
+      attr(,"label")
+      [1] "Hazard Ratio"
+      
+      $hr_ci
+      [1] 0.5094153 0.9919525
+      attr(,"label")
+      [1] "90% CI"
+      
+      $hr_ci_3d
+      [1] 0.7108557 0.5094153 0.9919525
+      attr(,"label")
+      [1] "Hazard Ratio (90% CI)"
+      
+      $n_tot
+      [1] 142
+      attr(,"label")
+      [1] "Total n"
+      
+      $n_tot_events
+      [1] 101
+      attr(,"label")
+      [1] "Total events"
+      
+
+# s_coxph_pairwise works with one-sided p-value for Wald test
+
+    Code
+      result
+    Output
+      $pvalue
+      [1] 0.04601932
+      attr(,"label")
+      [1] "p-value (wald)"
+      
+      $lr_stat_df
+      [1] 2.865544 1.000000
+      attr(,"label")
+      [1] "Log-rank Degrees of freedom"
       
       $hr
       [1] 0.7108557
@@ -73,12 +124,17 @@
 # s_coxph_pairwise works with default arguments and stratification factors
 
     Code
-      res
+      result
     Output
       $pvalue
       [1] 0.03613543
       attr(,"label")
       [1] "p-value (log-rank)"
+      
+      $lr_stat_df
+      [1] 4.390702 1.000000
+      attr(,"label")
+      [1] "Log-rank Degrees of freedom"
       
       $hr
       [1] 0.6251817
@@ -109,12 +165,17 @@
 # s_coxph_pairwise works with customized arguments and stratification factors
 
     Code
-      res
+      result
     Output
       $pvalue
       [1] 0.03764119
       attr(,"label")
       [1] "p-value (wald)"
+      
+      $lr_stat_df
+      [1] 4.390702 1.000000
+      attr(,"label")
+      [1] "Log-rank Degrees of freedom"
       
       $hr
       [1] 0.6251817
@@ -183,21 +244,22 @@
     Code
       res
     Output
-                            ARM A       ARM B            ARM C     
-      —————————————————————————————————————————————————————————————
-      Stratified Analysis                                          
-        Hazard Ratio                    1.600            2.049     
-        99% CI                      (0.894, 2.863)   (1.092, 3.844)
+                             ARM A       ARM B            ARM C     
+      ——————————————————————————————————————————————————————————————
+      Stratified Analysis                                           
+        Hazard Ratio                     1.600            2.049     
+        99% CI                       (0.894, 2.863)   (1.092, 3.844)
+        p-value (log-rank)               0.0181           0.0014    
 
 # coxph_pairwise works with NA values
 
     Code
       result
     Output
-                              ARM A   ARM B    ARM C 
-      ———————————————————————————————————————————————
-      Unstratified Analysis                          
-        p-value (log-rank)            1.0000   1.0000
-        Hazard Ratio                  empty    empty 
-        95% CI                        empty    empty 
+                              ARM A   ARM B   ARM C
+      —————————————————————————————————————————————
+      Unstratified Analysis                        
+        p-value (log-rank)            empty   empty
+        Hazard Ratio                  empty   empty
+        95% CI                        empty   empty
 
