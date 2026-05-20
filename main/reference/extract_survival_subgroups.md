@@ -67,6 +67,12 @@ extract_survival_subgroups(
   - `conf_level` (`proportion`)\
     confidence level of the interval for HR.
 
+  - `alternative` (`string`)\
+    alternative hypothesis for the p-value test. Default is
+    `"two.sided"`, can also be set to `"less"` or `"greater"` for
+    one-sided testing. Note that one-sided testing is not supported when
+    `pval_method = "likelihood"`.
+
 - label_all:
 
   (`string`)\

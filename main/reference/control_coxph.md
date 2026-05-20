@@ -13,7 +13,8 @@ model, typically used internally to specify details of Cox-PH model for
 control_coxph(
   pval_method = c("log-rank", "wald", "likelihood"),
   ties = c("efron", "breslow", "exact"),
-  conf_level = 0.95
+  conf_level = 0.95,
+  alternative = c("two.sided", "less", "greater")
 )
 ```
 
@@ -36,6 +37,14 @@ control_coxph(
 
   (`proportion`)\
   confidence level of the interval.
+
+- alternative:
+
+  (`string`)\
+  alternative hypothesis for the p-value test. Default is `"two.sided"`,
+  can also be set to `"less"` or `"greater"` for one-sided testing. Note
+  that one-sided testing is not supported when
+  `pval_method = "likelihood"`.
 
 ## Value
 

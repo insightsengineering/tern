@@ -95,6 +95,12 @@ a_coxph_pairwise(
   - `conf_level` (`proportion`)\
     confidence level of the interval for HR.
 
+  - `alternative` (`string`)\
+    alternative hypothesis for the p-value test. Default is
+    `"two.sided"`, can also be set to `"less"` or `"greater"` for
+    one-sided testing. Note that one-sided testing is not supported when
+    `pval_method = "likelihood"`.
+
 - na_str:
 
   (`string`)\
@@ -133,7 +139,8 @@ a_coxph_pairwise(
   (`character`)\
   statistics to select for the table.
 
-  Options are: `'pvalue', 'hr', 'hr_ci', 'n_tot', 'n_tot_events'`
+  Options are:
+  `'pvalue', 'hr', 'hr_ci', 'hr_ci_3d', 'lr_stat_df', 'n_tot', 'n_tot_events'`
 
 - .stat_names:
 
