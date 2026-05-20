@@ -61,7 +61,7 @@ subtables: They sum up all specified column counts in the subtable. This is usef
 there is no available content row summing up these counts.
 
 \item \code{score_occurrences_cont_cols()}: Produces a score function for sorting table by summing the first content row in
-specified columns. Note that this is extending \code{\link[rtables:score_funs]{rtables::cont_n_onecol()}} and \code{\link[rtables:score_funs]{rtables::cont_n_allcols()}}.
+specified columns. Note that this is extending \code{\link[rtables:cont_n_onecol]{rtables::cont_n_onecol()}} and \code{\link[rtables:cont_n_allcols]{rtables::cont_n_allcols()}}.
 
 }}
 \examples{

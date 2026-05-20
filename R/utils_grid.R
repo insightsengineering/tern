@@ -280,7 +280,7 @@ tern_grob <- function(x) {
   x
 }
 
-#' @keywords internal
+#' @exportS3Method
 print.ternGrob <- function(x, ...) {
   grid::grid.newpage()
   grid::grid.draw(x)
