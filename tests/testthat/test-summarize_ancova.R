@@ -209,11 +209,10 @@ testthat::test_that("summarize_ancova works with irregular arm levels", {
 
   adsl <- adsl %>%
     mutate(
-      ARMCD = case_match(
+      ARMCD = recode_values(
         ARMCD,
-        "ARM A" ~ "10mg/kg",
-        "ARM B" ~ "20mg/kg",
-        "ARM C" ~ "30mg/kg"
+        from = c("ARM A", "ARM B", "ARM C"),
+        to = c("10mg/kg", "20mg/kg", "30mg/kg")
       ) %>% factor(levels = paste0(1:3, "0mg/kg")),
     )
 
