@@ -63,6 +63,9 @@ method is \code{"log-rank"} which comes from \code{\link[survival:survdiff]{surv
 \item \code{ties} (\code{string})\cr specifying the method for tie handling. Default is \code{"efron"},
 can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[survival:coxph]{survival::coxph()}}.
 \item \code{conf_level} (\code{proportion})\cr confidence level of the interval for HR.
+\item \code{alternative} (\code{string})\cr alternative hypothesis for the p-value test. Default is \code{"two.sided"},
+can also be set to \code{"less"} or \code{"greater"} for one-sided testing. Note that one-sided testing is not
+supported when \code{pval_method = "likelihood"}.
 }}
 
 \item{na_str}{(\code{string})\cr string used to replace all \code{NA} or empty values in the output.}
@@ -82,7 +85,7 @@ times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
-Options are: \verb{'pvalue', 'hr', 'hr_ci', 'n_tot', 'n_tot_events'}}
+Options are: \verb{'pvalue', 'hr', 'hr_ci', 'hr_ci_3d', 'lr_stat_df', 'n_tot', 'n_tot_events'}}
 
 \item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
 (\code{.stats}). This option is visible when producing \code{\link[rtables:as_result_df]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}

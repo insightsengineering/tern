@@ -7,7 +7,8 @@
 control_coxph(
   pval_method = c("log-rank", "wald", "likelihood"),
   ties = c("efron", "breslow", "exact"),
-  conf_level = 0.95
+  conf_level = 0.95,
+  alternative = c("two.sided", "less", "greater")
 )
 }
 \arguments{
@@ -18,6 +19,10 @@ Default method is \code{"log-rank"}, can also be set to \code{"wald"} or \code{"
 can also be set to \code{"breslow"} or \code{"exact"}. See more in \code{\link[survival:coxph]{survival::coxph()}}.}
 
 \item{conf_level}{(\code{proportion})\cr confidence level of the interval.}
+
+\item{alternative}{(\code{string})\cr alternative hypothesis for the p-value test. Default is \code{"two.sided"},
+can also be set to \code{"less"} or \code{"greater"} for one-sided testing. Note that one-sided testing is not
+supported when \code{pval_method = "likelihood"}.}
 }
 \value{
 A list of components with the same names as the arguments.
