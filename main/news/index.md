@@ -1,6 +1,6 @@
 # Changelog
 
-## tern 0.9.10.9008
+## tern 0.9.10.9009
 
 #### Miscellaneous
 
@@ -14,6 +14,11 @@
   to allow one-sided hypothesis testing.
 - Added `lr_stat_df` to the parameters return list of
   [`s_coxph_pairwise()`](https://insightsengineering.github.io/tern/reference/survival_coxph_pairwise.md).
+- Added `uncond_exact_diff` method to
+  [`estimate_proportion_diff()`](https://insightsengineering.github.io/tern/reference/prop_diff.md)
+  for the unconditional exact confidence interval for the difference in
+  proportions by inverting one-sided tail tests over a nuisance
+  parameter.
 
 ## tern 0.9.10
 

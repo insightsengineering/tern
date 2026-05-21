@@ -423,6 +423,7 @@ These functions are useful in defining an analysis.
   [`prop_diff_nc()`](https://insightsengineering.github.io/tern/reference/h_prop_diff.md)
   [`prop_diff_cmh()`](https://insightsengineering.github.io/tern/reference/h_prop_diff.md)
   [`prop_diff_strat_nc()`](https://insightsengineering.github.io/tern/reference/h_prop_diff.md)
+  [`prop_diff_uncond_exact()`](https://insightsengineering.github.io/tern/reference/h_prop_diff.md)
   **\[stable\]** : Helper functions to calculate proportion difference
 
 - [`prop_wilson()`](https://insightsengineering.github.io/tern/reference/h_proportions.md)

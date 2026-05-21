@@ -20,7 +20,7 @@ estimate_proportion_diff(
   variables = list(strata = NULL),
   conf_level = 0.95,
   method = c("waldcc", "wald", "cmh", "cmh_sato", "cmh_mn", "ha", "newcombe",
-    "newcombecc", "strat_newcombe", "strat_newcombecc"),
+    "newcombecc", "strat_newcombe", "strat_newcombecc", "uncond_exact_diff"),
   weights_method = "cmh",
   var_labels = vars,
   na_str = default_na_str(),
@@ -45,7 +45,7 @@ s_proportion_diff(
   variables = list(strata = NULL),
   conf_level = 0.95,
   method = c("waldcc", "wald", "cmh", "cmh_sato", "cmh_mn", "ha", "newcombe",
-    "newcombecc", "strat_newcombe", "strat_newcombecc"),
+    "newcombecc", "strat_newcombe", "strat_newcombecc", "uncond_exact_diff"),
   weights_method = "cmh",
   ...
 )
@@ -244,6 +244,9 @@ The possible methods are:
 - `"strat_newcombecc"`: Stratified Newcombe confidence interval with
   continuity correction (Yan and Su 2010) .
 
+- `"uncond_exact_diff"`: Unconditional exact confidence interval for the
+  difference in proportions (Santner and Snell 1980) .
+
 ## Functions
 
 - `estimate_proportion_diff()`: Layout-creating function which can take
@@ -260,7 +263,8 @@ The possible methods are:
 ## Note
 
 When performing an unstratified analysis, methods `"cmh"`, `"cmh_sato"`,
-`"strat_newcombe"`, and `"strat_newcombecc"` are not permitted.
+`"strat_newcombe"`, and `"strat_newcombecc"` are not permitted. For
+stratified analysis, method `"uncond_exact_diff"` is not permitted.
 
 ## References
 
@@ -287,6 +291,12 @@ Newcombe RG (1998). “Interval estimation for the difference between
 independent proportions: comparison of eleven methods.” *Statistics in
 Medicine*, **17**(8), 873-890.
 [doi:10.1002/(SICI)1097-0258(19980430)17:8\<873::AID-SIM779\>3.0.CO;2-I](https://doi.org/10.1002/%28SICI%291097-0258%2819980430%2917%3A8%3C873%3A%3AAID-SIM779%3E3.0.CO%3B2-I)
+.\
+\
+Santner TJ, Snell MK (1980). “Small-Sample Confidence Intervals for p1 -
+p2 and p1/p2 in 2 x 2 Contingency Tables.” *Journal of the American
+Statistical Association*, **75**(370), 386–394.
+[doi:10.1080/01621459.1980.10477482](https://doi.org/10.1080/01621459.1980.10477482)
 .\
 \
 Sato T, Greenland S, Robins JM (1989). “On the variance estimator for

@@ -27,6 +27,8 @@ prop_diff_strat_nc(
   conf_level = 0.95,
   correct = FALSE
 )
+
+prop_diff_uncond_exact(rsp, grp, conf_level = 0.95)
 ```
 
 ## Arguments
@@ -106,6 +108,11 @@ A named `list` of elements `diff` (proportion difference) and `diff_ci`
   [`prop_strat_wilson()`](https://insightsengineering.github.io/tern/reference/h_proportions.md)
   or from CMH-derived weights (see `prop_diff_cmh()`).
 
+- `prop_diff_uncond_exact()`: Unconditional exact confidence interval
+  for the difference in proportions by inverting one-sided tail tests
+  over a nuisance parameter. This is the "tail method" described by
+  Santner and Snell (Santner and Snell 1980) .
+
 ## References
 
 Hauck WW, Anderson S (1986). “A Comparison of Large-Sample Confidence
@@ -121,6 +128,12 @@ Newcombe RG (1998). “Interval estimation for the difference between
 independent proportions: comparison of eleven methods.” *Statistics in
 Medicine*, **17**(8), 873-890.
 [doi:10.1002/(SICI)1097-0258(19980430)17:8\<873::AID-SIM779\>3.0.CO;2-I](https://doi.org/10.1002/%28SICI%291097-0258%2819980430%2917%3A8%3C873%3A%3AAID-SIM779%3E3.0.CO%3B2-I)
+.\
+\
+Santner TJ, Snell MK (1980). “Small-Sample Confidence Intervals for p1 -
+p2 and p1/p2 in 2 x 2 Contingency Tables.” *Journal of the American
+Statistical Association*, **75**(370), 386–394.
+[doi:10.1080/01621459.1980.10477482](https://doi.org/10.1080/01621459.1980.10477482)
 .\
 \
 Sato T, Greenland S, Robins JM (1989). “On the variance estimator for
@@ -321,5 +334,21 @@ prop_diff_strat_nc(
 #> $diff_ci
 #>      lower      upper 
 #> -0.2540844  0.1027720 
+#> 
+
+# Unconditional exact confidence interval
+n11 <- 40
+n21 <- 5
+n1 <- 78
+n2 <- 17
+rsp <- c(rep(TRUE, n21), rep(FALSE, n2 - n21), rep(TRUE, n11), rep(FALSE, n1 - n11))
+grp <- factor(c(rep("B", n2), rep("A", n1)), levels = c("B", "A"))
+
+prop_diff_uncond_exact(rsp = rsp, grp = grp, conf_level = 0.95)
+#> $diff
+#> [1] 0.2187029
+#> 
+#> $diff_ci
+#> [1] -0.04659335  0.46760887
 #> 
 ```
