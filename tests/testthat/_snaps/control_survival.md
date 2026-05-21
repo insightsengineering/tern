@@ -12,6 +12,9 @@
       $conf_level
       [1] 0.8
       
+      $alternative
+      [1] "two.sided"
+      
 
 # control_surv_time works with customized parameters
 

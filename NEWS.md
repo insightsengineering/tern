@@ -6,6 +6,7 @@
 ### Enhancements
 * Added `alternative` argument to `s_coxph_pairwise()` to allow one-sided hypothesis testing. 
 * Added `lr_stat_df` to the parameters return list of `s_coxph_pairwise()`.
+* Added `uncond_exact_diff` method to `estimate_proportion_diff()` for the unconditional exact confidence interval for the difference in proportions by inverting one-sided tail tests over a nuisance parameter.
 
 # tern 0.9.10
 
