@@ -304,6 +304,157 @@ testthat::test_that("prop_diff_strat_nc output matches equivalent SAS function o
   testthat::expect_snapshot(res)
 })
 
+
+testthat::test_that("`prop_diff_uncond_exact` matches reference values and works with edge cases", {
+  mk_data <- function(n11, n21, n1, n2) {
+    rsp <- c(rep(TRUE, n21), rep(FALSE, n2 - n21), rep(TRUE, n11), rep(FALSE, n1 - n11))
+    grp <- factor(c(rep("B", n2), rep("A", n1)), levels = c("B", "A"))
+    list(rsp = rsp, grp = grp)
+  }
+
+  # From SAS.
+  case1 <- mk_data(n11 = 40, n21 = 5, n1 = 78, n2 = 17)
+  result1 <- prop_diff_uncond_exact(rsp = case1$rsp, grp = case1$grp, conf_level = 0.95)
+  expect_equal(result1$diff, 0.2187, tolerance = 1e-4)
+  expect_equal(result1$diff_ci, c(-0.0466, 0.4676), tolerance = 1e-4)
+
+  # From SAS.
+  case2 <- mk_data(n11 = 27, n21 = 3, n1 = 57, n2 = 3)
+  result2 <- prop_diff_uncond_exact(rsp = case2$rsp, grp = case2$grp, conf_level = 0.95)
+  expect_equal(result2$diff, -0.5263, tolerance = 1e-4)
+  expect_equal(result2$diff_ci, c(-0.9057, 0.1197), tolerance = 1e-4)
+
+  # From SAS.
+  result3 <- prop_diff_uncond_exact(rsp = case2$rsp, grp = case2$grp, conf_level = 0.99)
+  expect_equal(result3$diff, -0.5263, tolerance = 1e-4)
+  expect_equal(result3$diff_ci, c(-0.9586, 0.2677), tolerance = 1e-4)
+
+  # Zero successes in one group; from paper.
+  case4 <- mk_data(n11 = 0, n21 = 2, n1 = 2, n2 = 2)
+  result4 <- prop_diff_uncond_exact(rsp = case4$rsp, grp = case4$grp, conf_level = 0.90)
+  expect_equal(result4$diff, -1, tolerance = 1e-8)
+  expect_equal(result4$diff_ci, c(-1, 0.0543), tolerance = 1e-3)
+
+  # All successes; from paper.
+  case5 <- mk_data(n11 = 2, n21 = 2, n1 = 2, n2 = 2)
+  result5 <- prop_diff_uncond_exact(rsp = case5$rsp, grp = case5$grp, conf_level = 0.90)
+  expect_equal(result5$diff, 0, tolerance = 1e-8)
+  expect_equal(result5$diff_ci, c(-0.8048, 0.8048), tolerance = 1e-3)
+
+  # All failures; note this is the same as all successes so gives the same CI - from paper.
+  case6 <- mk_data(n11 = 0, n21 = 0, n1 = 2, n2 = 2)
+  result6 <- prop_diff_uncond_exact(rsp = case6$rsp, grp = case6$grp)
+  expect_equal(result6$diff, 0, tolerance = 1e-8)
+  expect_equal(result6$diff_ci, c(-0.8648, 0.8648), tolerance = 1e-3)
+
+  # No observations: Same behavior as other methods.
+  case7 <- mk_data(n11 = 0, n21 = 0, n1 = 0, n2 = 0)
+  result7 <- prop_diff_uncond_exact(rsp = case7$rsp, grp = case7$grp)
+  expect_true(is.nan(result7$diff))
+  expect_equal(result7$diff_ci, c(NaN, NaN))
+
+  skip_on_cran()
+  case8 <- mk_data(n11 = 200, n21 = 100, n1 = 330, n2 = 330)
+  expect_warning(
+    prop_diff_uncond_exact(rsp = case8$rsp, grp = case8$grp),
+    "long computation"
+  )
+})
+
+testthat::test_that("h_worst_case_tail_probability returns valid tail probabilities", {
+  n1 <- 2
+  n2 <- 2
+  t0 <- 0
+  tables <- expand.grid(n11 = 0:n1, n21 = 0:n2)
+  t_values <- tables$n11 / n1 - tables$n21 / n2
+
+  p_upper <- h_worst_case_tail_probability(
+    d_star = 0,
+    n1 = n1,
+    n2 = n2,
+    t_values = t_values,
+    t0 = t0,
+    tables = tables,
+    tail = "upper"
+  )
+  p_lower <- h_worst_case_tail_probability(
+    d_star = 0,
+    n1 = n1,
+    n2 = n2,
+    t_values = t_values,
+    t0 = t0,
+    tables = tables,
+    tail = "lower"
+  )
+
+  expect_gte(p_upper, 0)
+  expect_lte(p_upper, 1)
+  expect_gte(p_lower, 0)
+  expect_lte(p_lower, 1)
+})
+
+testthat::test_that("h_worst_case_tail_probability handles degenerate p2 interval", {
+  n1 <- 2
+  n2 <- 2
+  t0 <- 0
+  tables <- expand.grid(n11 = 0:n1, n21 = 0:n2)
+  t_values <- tables$n11 / n1 - tables$n21 / n2
+
+  p_upper <- h_worst_case_tail_probability(
+    d_star = 1,
+    n1 = n1,
+    n2 = n2,
+    t_values = t_values,
+    t0 = t0,
+    tables = tables,
+    tail = "upper"
+  )
+  p_lower <- h_worst_case_tail_probability(
+    d_star = 1,
+    n1 = n1,
+    n2 = n2,
+    t_values = t_values,
+    t0 = t0,
+    tables = tables,
+    tail = "lower"
+  )
+
+  expect_equal(p_upper, 1, tolerance = 1e-10)
+  expect_equal(p_lower, 0, tolerance = 1e-10)
+})
+
+testthat::test_that("h_find_ci_bound_uniroot finds expected roots", {
+  p_increasing <- function(d) (d + 1) / 2
+  p_decreasing <- function(d) (1 - d) / 2
+
+  lower <- h_find_ci_bound_uniroot(
+    p_value_function = p_increasing,
+    cutoff = 0.25,
+    direction = "increasing"
+  )
+  upper <- h_find_ci_bound_uniroot(
+    p_value_function = p_decreasing,
+    cutoff = 0.25,
+    direction = "decreasing"
+  )
+
+  expect_equal(lower, -0.5, tolerance = 1e-6)
+  expect_equal(upper, 0.5, tolerance = 1e-6)
+})
+
+testthat::test_that("h_find_ci_bound_uniroot handles boundary case", {
+  always_large <- function(d) 0.9
+
+  boundary <- h_find_ci_bound_uniroot(
+    p_value_function = always_large,
+    cutoff = 0.25,
+    direction = "increasing",
+    interval = c(-1, 1)
+  )
+
+  expect_equal(boundary, -1)
+})
+
 testthat::test_that("`estimate_proportion_diff` is compatible with `rtables`", {
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
   dta <- data.frame(
@@ -484,7 +635,50 @@ testthat::test_that("s_proportion_diff works with CMH Miettinen and Nurminen met
   testthat::expect_snapshot_value(res, style = "deparse", tolerance = 1e-4)
 })
 
-# check_diff_prop_ci ----
+
+testthat::test_that("s_proportion_diff works with uncond_exact_diff", {
+  dta <- data.frame(
+    rsp = c(rep(TRUE, 5), rep(FALSE, 12), rep(TRUE, 40), rep(FALSE, 38)),
+    grp = c(rep("B", 17), rep("A", 78)),
+    stringsAsFactors = FALSE
+  )
+
+  result <- s_proportion_diff(
+    df = subset(dta, grp == "A"),
+    .var = "rsp",
+    .ref_group = subset(dta, grp == "B"),
+    .in_ref_col = FALSE,
+    conf_level = 0.95,
+    method = "uncond_exact_diff"
+  )
+
+  expect_equal(as.numeric(result$diff), 21.87, tolerance = 1e-2)
+  expect_equal(as.numeric(result$diff_ci), c(-4.66, 46.76), tolerance = 1e-2)
+  expect_identical(attr(result$diff_ci, "label"), "95% CI (Unconditional exact)")
+})
+
+testthat::test_that("s_proportion_diff rejects uncond_exact_diff with strata", {
+  dta <- data.frame(
+    rsp = c(TRUE, FALSE, TRUE, FALSE),
+    grp = c("A", "A", "B", "B"),
+    strata = c("S1", "S2", "S1", "S2"),
+    stringsAsFactors = FALSE
+  )
+
+  expect_error(
+    s_proportion_diff(
+      df = subset(dta, grp == "A"),
+      .var = "rsp",
+      .ref_group = subset(dta, grp == "B"),
+      .in_ref_col = FALSE,
+      variables = list(strata = "strata"),
+      conf_level = 0.95,
+      method = "uncond_exact_diff"
+    ),
+    "only available for unstratified analyses"
+  )
+})
+
 testthat::test_that("check_diff_prop_ci is silent with healthy input", {
   # "Mid" case: 3/4 respond in group A, 1/2 respond in group B.
   rsp <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
