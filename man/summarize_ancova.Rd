@@ -91,7 +91,7 @@ times, to avoid warnings from \code{rtables}.}
 
 \item{.stats}{(\code{character})\cr statistics to select for the table.
 
-Options are: \verb{'n', 'lsmean', 'lsmean_diff', 'lsmean_diff_ci', 'pval'}}
+Options are: \verb{'n', 'lsmean', 'lsmean_se', 'lsmean_ci', 'lsmean_diff', 'lsmean_diff_ci', 'lsmean_diffci', 'pval'}}
 
 \item{.stat_names}{(\code{character})\cr names of the statistics that are passed directly to name single statistics
 (\code{.stats}). This option is visible when producing \code{\link[rtables:as_result_df]{rtables::as_result_df()}} with \code{make_ard = TRUE}.}
@@ -123,14 +123,18 @@ the statistics from \code{s_ancova()} to the table layout.
 }
 
 \itemize{
-\item \code{s_ancova()} returns a named list of 5 statistics:
+\item \code{s_ancova()} returns a named list of 8 statistics:
 \itemize{
 \item \code{n}: Count of complete sample size for the group.
 \item \code{lsmean}: Estimated marginal means in the group.
+\item \code{lsmean_se}: Adjusted mean with standard error as a 2-element vector \code{c(emmean, SE)}.
+\item \code{lsmean_ci}: Adjusted mean with confidence interval as a 3-element vector \code{c(emmean, lower.CL, upper.CL)}.
 \item \code{lsmean_diff}: Difference in estimated marginal means in comparison to the reference group.
 If working with the reference group, this will be empty.
 \item \code{lsmean_diff_ci}: Confidence level for difference in estimated marginal means in comparison
 to the reference group.
+\item \code{lsmean_diffci}: Difference in adjusted means with confidence interval as a 3-element vector
+\code{c(estimate, lower.CL, upper.CL)}. If working with the reference group, this will be \code{NA}.
 \item \code{pval}: p-value (not adjusted for multiple comparisons).
 }
 }

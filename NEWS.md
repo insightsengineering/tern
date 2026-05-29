@@ -2,11 +2,14 @@
 
 ### Miscellaneous
 * Updated `roxygen2` to 8.0.0 and added `@exportS3Method` tags for S3 methods in `decorate_grob.R` and `utils_grid.R`.
+* Converted  `s_ancova()`to exported functions.
 
 ### Enhancements
 * Added `alternative` argument to `s_coxph_pairwise()` to allow one-sided hypothesis testing. 
 * Added `lr_stat_df` to the parameters return list of `s_coxph_pairwise()`.
 * Added `uncond_exact_diff` method to `estimate_proportion_diff()` for the unconditional exact confidence interval for the difference in proportions by inverting one-sided tail tests over a nuisance parameter.
+* Added `lsmean_se`, `lsmean_ci`, and `lsmean_diffci` statistics to `s_ancova()`.
+* Added `weights_emmeans` parameter on `s_ancova()`.
 
 # tern 0.9.10
 

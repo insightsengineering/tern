@@ -231,3 +231,89 @@ testthat::test_that("summarize_ancova works with irregular arm levels", {
   res <- testthat::expect_silent(result3)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("s_ancova returns lsmean_se, lsmean_ci, lsmean_diffci for non-ref column", {
+  df_col <- iris %>% dplyr::filter(Species == "versicolor")
+  df_ref <- iris %>% dplyr::filter(Species == "setosa")
+  result <- s_ancova(
+    df = df_col,
+    .var = "Sepal.Length",
+    .df_row = iris,
+    variables = list(arm = "Species", covariates = "Petal.Length"),
+    .ref_group = df_ref,
+    .in_ref_col = FALSE,
+    conf_level = 0.95
+  )
+
+  testthat::expect_length(result$lsmean_se, 2)
+  testthat::expect_length(result$lsmean_ci, 3)
+  testthat::expect_length(result$lsmean_diffci, 3)
+  testthat::expect_equal(as.numeric(result$lsmean_se[[1]]), as.numeric(result$lsmean))
+  testthat::expect_equal(as.numeric(result$lsmean_diffci[[1]]), as.numeric(result$lsmean_diff))
+  testthat::expect_equal(as.numeric(result$lsmean_diffci[2:3]), as.numeric(result$lsmean_diff_ci))
+})
+
+testthat::test_that("s_ancova returns lsmean_se and lsmean_ci for ref column", {
+  df_ref <- iris %>% dplyr::filter(Species == "setosa")
+  result <- s_ancova(
+    df = df_ref,
+    .var = "Sepal.Length",
+    .df_row = iris,
+    variables = list(arm = "Species", covariates = "Petal.Length"),
+    .ref_group = df_ref,
+    .in_ref_col = TRUE,
+    conf_level = 0.95
+  )
+
+  testthat::expect_length(result$lsmean_se, 2)
+  testthat::expect_length(result$lsmean_ci, 3)
+  testthat::expect_true(all(is.na(result$lsmean_diffci)))
+  testthat::expect_length(result$lsmean_diff, 0)
+})
+
+testthat::test_that("s_ancova returns NA diffs when .ref_group is NULL", {
+  df_col <- iris %>% dplyr::filter(Species == "versicolor")
+  result <- s_ancova(
+    df = df_col,
+    .var = "Sepal.Length",
+    .df_row = iris,
+    variables = list(arm = "Species", covariates = "Petal.Length"),
+    .ref_group = NULL,
+    .in_ref_col = FALSE,
+    conf_level = 0.95
+  )
+
+  testthat::expect_true(is.na(result$lsmean_diff))
+  testthat::expect_true(all(is.na(result$lsmean_diff_ci)))
+  testthat::expect_true(all(is.na(result$lsmean_diffci)))
+  testthat::expect_true(is.na(result$pval))
+})
+
+testthat::test_that("s_ancova respects weights_emmeans parameter", {
+  df_col <- iris %>% dplyr::filter(Species == "versicolor")
+  df_ref <- iris %>% dplyr::filter(Species == "setosa")
+
+  result_null <- s_ancova(
+    df = df_col,
+    .var = "Sepal.Length",
+    .df_row = iris,
+    variables = list(arm = "Species", covariates = NULL),
+    .ref_group = df_ref,
+    .in_ref_col = FALSE,
+    conf_level = 0.95,
+    weights_emmeans = NULL
+  )
+  result_cf <- s_ancova(
+    df = df_col,
+    .var = "Sepal.Length",
+    .df_row = iris,
+    variables = list(arm = "Species", covariates = NULL),
+    .ref_group = df_ref,
+    .in_ref_col = FALSE,
+    conf_level = 0.95,
+    weights_emmeans = "counterfactual"
+  )
+
+  # With no covariates, proportional and counterfactual weights give the same emmeans
+  testthat::expect_equal(result_null$lsmean, result_cf$lsmean, tolerance = 1e-6)
+})
