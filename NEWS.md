@@ -8,6 +8,9 @@
 * Added `lr_stat_df` to the parameters return list of `s_coxph_pairwise()`.
 * Added `uncond_exact_diff` method to `estimate_proportion_diff()` for the unconditional exact confidence interval for the difference in proportions by inverting one-sided tail tests over a nuisance parameter.
 
+### Bug Fixes
+* Fixed bug in `prop_diff_cmh()` which previously failed when strata combinations had 0 observations.
+
 # tern 0.9.10
 
 ### Enhancements
