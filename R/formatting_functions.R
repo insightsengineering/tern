@@ -573,3 +573,32 @@ apply_auto_formatting <- function(.formats, x_stats, .df_row, .var) {
   }
   .formats
 }
+
+#' Format range with censoring indicators
+#'
+#' @description `r lifecycle::badge("stable")`
+#'
+#' Formats a survival time range where the minimum and/or maximum may be a censored observation.
+#' A `+` suffix is appended to a bound when the corresponding censoring flag is `TRUE`.
+#'
+#' @param x (`numeric(4)`)\\cr vector of the form `c(min, max, lower_censored, upper_censored)`,
+#'   where `lower_censored` and `upper_censored` are `0`/`1` (or `FALSE`/`TRUE`) flags.
+#' @param ... not used. Required for `rtables` interface.
+#'
+#' @return A string in the format `"min to max"`, with `+` appended to `min` and/or `max`
+#'   when the corresponding censoring flag is non-zero.
+#'
+#' @examples
+#' format_range_cens(c(1.2, 8.5, 0, 0))
+#' format_range_cens(c(1.2, 8.5, 1, 0))
+#' format_range_cens(c(1.2, 8.5, 0, 1))
+#' format_range_cens(c(1.2, 8.5, 1, 1))
+#'
+#' @family formatting functions
+#' @export
+format_range_cens <- function(x, ...) {
+  checkmate::assert_numeric(x, len = 4)
+  lo <- paste0(round(x[1], 1), if (x[3] != 0) "+")
+  hi <- paste0(round(x[2], 1), if (x[4] != 0) "+")
+  paste(lo, "to", hi)
+}
