@@ -248,9 +248,10 @@ testthat::test_that("prop_diff_cmh works correctly when strata combinations are 
 
   testthat::expect_warning(
     result <- prop_diff_cmh(
-    rsp = rsp, grp = grp, strata = interaction(strata_data),
-    conf_level = 0.90
-  ), "Less than 5 observations in some strata.")
+      rsp = rsp, grp = grp, strata = interaction(strata_data),
+      conf_level = 0.90
+    ), "Less than 5 observations in some strata."
+  )
 
   testthat::expect_false(is.na(result$diff))
   testthat::expect_false(anyNA(result$diff_ci))
