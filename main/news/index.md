@@ -1,6 +1,6 @@
 # Changelog
 
-## tern 0.9.10.9009
+## tern 0.9.10.9010
 
 #### Miscellaneous
 
@@ -19,6 +19,12 @@
   for the unconditional exact confidence interval for the difference in
   proportions by inverting one-sided tail tests over a nuisance
   parameter.
+
+#### Bug Fixes
+
+- Fixed bug in
+  [`prop_diff_cmh()`](https://insightsengineering.github.io/tern/reference/h_prop_diff.md)
+  which previously failed when strata combinations had 0 observations.
 
 ## tern 0.9.10
 
