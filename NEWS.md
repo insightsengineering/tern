@@ -1,4 +1,4 @@
-# tern 0.9.10.9009
+# tern 0.9.10.9010
 
 ### Miscellaneous
 * Updated `roxygen2` to 8.0.0 and added `@exportS3Method` tags for S3 methods in `decorate_grob.R` and `utils_grid.R`.
