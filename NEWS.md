@@ -2,6 +2,7 @@
 
 ### Miscellaneous
 * Updated `roxygen2` to 8.0.0 and added `@exportS3Method` tags for S3 methods in `decorate_grob.R` and `utils_grid.R`.
+* Converted  `s_surv_time()`to exported functions.
 
 ### Enhancements
 * Added `alternative` argument to `s_coxph_pairwise()` to allow one-sided hypothesis testing. 

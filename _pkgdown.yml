@@ -64,6 +64,7 @@ reference:
       - -estimate_coef
       - -summarize_functions
       - s_surv_timepoint
+      - s_surv_time
       - s_test_proportion_diff
 
   - title: Model-Specific Functions

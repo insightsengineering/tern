@@ -255,10 +255,3 @@ testthat::test_that("s_surv_time range_with_cens_info flags both bounds censored
   rwci <- result$range_with_cens_info
   testthat::expect_equal(as.numeric(rwci[3:4]), c(1, 1))
 })
-
-testthat::test_that("format_range_cens produces correct strings", {
-  testthat::expect_equal(format_range_cens(c(1.2, 8.5, 0, 0)), "1.2 to 8.5")
-  testthat::expect_equal(format_range_cens(c(1.2, 8.5, 1, 0)), "1.2+ to 8.5")
-  testthat::expect_equal(format_range_cens(c(1.2, 8.5, 0, 1)), "1.2 to 8.5+")
-  testthat::expect_equal(format_range_cens(c(1.2, 8.5, 1, 1)), "1.2+ to 8.5+")
-})

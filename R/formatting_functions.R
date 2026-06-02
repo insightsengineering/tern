@@ -576,7 +576,7 @@ apply_auto_formatting <- function(.formats, x_stats, .df_row, .var) {
 
 #' Format range with censoring indicators
 #'
-#' @description `r lifecycle::badge("stable")`
+#' @description `r lifecycle::("experimental")``
 #'
 #' Formats a survival time range where the minimum and/or maximum may be a censored observation.
 #' A `+` suffix is appended to a bound when the corresponding censoring flag is `TRUE`.
@@ -594,8 +594,7 @@ apply_auto_formatting <- function(.formats, x_stats, .df_row, .var) {
 #' format_range_cens(c(1.2, 8.5, 0, 1))
 #' format_range_cens(c(1.2, 8.5, 1, 1))
 #'
-#' @family formatting functions
-#' @export
+#' @keywords internal
 format_range_cens <- function(x, ...) {
   checkmate::assert_numeric(x, len = 4)
   lo <- paste0(round(x[1], 1), if (x[3] != 0) "+")

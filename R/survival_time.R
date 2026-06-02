@@ -52,7 +52,7 @@ NULL
 #'   * `range_event`: Survival time range for observations with events.
 #'   * `range`: Survival time range for all observations.
 #'
-#' @keywords internal
+#' @export
 s_surv_time <- function(df,
                         .var,
                         ...,
