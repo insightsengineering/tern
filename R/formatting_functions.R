@@ -576,12 +576,12 @@ apply_auto_formatting <- function(.formats, x_stats, .df_row, .var) {
 
 #' Format range with censoring indicators
 #'
-#' @description `r lifecycle::("experimental")``
+#' @description `r lifecycle::badge("experimental")`
 #'
 #' Formats a survival time range where the minimum and/or maximum may be a censored observation.
 #' A `+` suffix is appended to a bound when the corresponding censoring flag is `TRUE`.
 #'
-#' @param x (`numeric(4)`)\\cr vector of the form `c(min, max, lower_censored, upper_censored)`,
+#' @param x (`numeric(4)`)\cr vector of the form `c(min, max, lower_censored, upper_censored)`,
 #'   where `lower_censored` and `upper_censored` are `0`/`1` (or `FALSE`/`TRUE`) flags.
 #' @param ... not used. Required for `rtables` interface.
 #'

@@ -7,7 +7,7 @@
 format_range_cens(x, ...)
 }
 \arguments{
-\item{x}{(\code{numeric(4)})\\cr vector of the form \code{c(min, max, lower_censored, upper_censored)},
+\item{x}{(\code{numeric(4)})\cr vector of the form \code{c(min, max, lower_censored, upper_censored)},
 where \code{lower_censored} and \code{upper_censored} are \code{0}/\code{1} (or \code{FALSE}/\code{TRUE}) flags.}
 
 \item{...}{not used. Required for \code{rtables} interface.}
@@ -17,7 +17,7 @@ A string in the format \code{"min to max"}, with \code{+} appended to \code{min}
 when the corresponding censoring flag is non-zero.
 }
 \description{
-`r lifecycle::("experimental")``
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Formats a survival time range where the minimum and/or maximum may be a censored observation.
 A \code{+} suffix is appended to a bound when the corresponding censoring flag is \code{TRUE}.
