@@ -7,6 +7,7 @@
 \alias{prop_diff_nc}
 \alias{prop_diff_cmh}
 \alias{prop_diff_strat_nc}
+\alias{prop_diff_uncond_exact}
 \title{Helper functions to calculate proportion difference}
 \usage{
 prop_diff_wald(rsp, grp, conf_level = 0.95, correct = FALSE)
@@ -31,6 +32,8 @@ prop_diff_strat_nc(
   conf_level = 0.95,
   correct = FALSE
 )
+
+prop_diff_uncond_exact(rsp, grp, conf_level = 0.95)
 }
 \arguments{
 \item{rsp}{(\code{logical})\cr vector indicating whether each subject is a responder or not.}
@@ -81,6 +84,10 @@ rates between the experimental treatment group and the control treatment group, 
 factors. This implementation follows closely the one proposed by \insertCite{Yan2010-jt;textual}{tern}.
 Weights can be estimated from the heuristic proposed in \code{\link[=prop_strat_wilson]{prop_strat_wilson()}} or from CMH-derived weights
 (see \code{\link[=prop_diff_cmh]{prop_diff_cmh()}}).
+
+\item \code{prop_diff_uncond_exact()}: Unconditional exact confidence interval for the difference in
+proportions by inverting one-sided tail tests over a nuisance parameter. This is
+the "tail method" described by Santner and Snell \insertCite{SantnerSnell1980}{tern}.
 
 }}
 \examples{
@@ -159,6 +166,16 @@ prop_diff_strat_nc(
   weights_method = "wilson_h",
   conf_level = 0.90
 )
+
+# Unconditional exact confidence interval
+n11 <- 40
+n21 <- 5
+n1 <- 78
+n2 <- 17
+rsp <- c(rep(TRUE, n21), rep(FALSE, n2 - n21), rep(TRUE, n11), rep(FALSE, n1 - n11))
+grp <- factor(c(rep("B", n2), rep("A", n1)), levels = c("B", "A"))
+
+prop_diff_uncond_exact(rsp = rsp, grp = grp, conf_level = 0.95)
 
 }
 \references{

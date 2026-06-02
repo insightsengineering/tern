@@ -23,6 +23,8 @@
 #'     correction \insertCite{Yan2010-jt}{tern}.
 #' - `"strat_newcombecc"`: Stratified Newcombe confidence interval with continuity
 #'     correction \insertCite{Yan2010-jt}{tern}.
+#' - `"uncond_exact_diff"`: Unconditional exact confidence interval for the difference in
+#'      proportions \insertCite{SantnerSnell1980}{tern}.
 #'
 #' @inheritParams prop_diff_strat_nc
 #' @inheritParams argument_convention
@@ -47,7 +49,8 @@ NULL
 #' * `s_proportion_diff()` returns a named list of elements `diff` and `diff_ci`.
 #'
 #' @note When performing an unstratified analysis, methods `"cmh"`, `"cmh_sato"`, `"strat_newcombe"`,
-#'   and `"strat_newcombecc"` are not permitted.
+#'   and `"strat_newcombecc"` are not permitted. For stratified analysis, method
+#'   `"uncond_exact_diff"` is not permitted.
 #'
 #' @examples
 #' s_proportion_diff(
@@ -80,7 +83,7 @@ s_proportion_diff <- function(df,
                               method = c(
                                 "waldcc", "wald", "cmh", "cmh_sato", "cmh_mn",
                                 "ha", "newcombe", "newcombecc",
-                                "strat_newcombe", "strat_newcombecc"
+                                "strat_newcombe", "strat_newcombecc", "uncond_exact_diff"
                               ),
                               weights_method = "cmh",
                               ...) {
@@ -94,6 +97,11 @@ s_proportion_diff <- function(df,
       "'cmh', 'cmh_sato', 'cmh_mn', 'strat_newcombe', and 'strat_newcombecc' are not",
       "permitted. Please choose a different method."
     ))
+  }
+  if (!is.null(variables$strata) && identical(method, "uncond_exact_diff")) {
+    stop(
+      "Method 'uncond_exact_diff' is only available for unstratified analyses. Please choose a different method."
+    )
   }
   y <- list(diff = numeric(), diff_ci = numeric())
 
@@ -152,7 +160,8 @@ s_proportion_diff <- function(df,
       ),
       "cmh" = prop_diff_cmh(rsp, grp, strata, conf_level, diff_se = "standard")[c("diff", "diff_ci")],
       "cmh_sato" = prop_diff_cmh(rsp, grp, strata, conf_level, diff_se = "sato")[c("diff", "diff_ci")],
-      "cmh_mn" = prop_diff_cmh(rsp, grp, strata, conf_level, diff_se = "miettinen_nurminen")[c("diff", "diff_ci")]
+      "cmh_mn" = prop_diff_cmh(rsp, grp, strata, conf_level, diff_se = "miettinen_nurminen")[c("diff", "diff_ci")],
+      "uncond_exact_diff" = prop_diff_uncond_exact(rsp, grp, conf_level)
     )
 
     y$diff <- setNames(y$diff * 100, paste0("diff_", method))
@@ -292,7 +301,7 @@ estimate_proportion_diff <- function(lyt,
                                      method = c(
                                        "waldcc", "wald", "cmh", "cmh_sato", "cmh_mn",
                                        "ha", "newcombe", "newcombecc",
-                                       "strat_newcombe", "strat_newcombecc"
+                                       "strat_newcombe", "strat_newcombecc", "uncond_exact_diff"
                                      ),
                                      weights_method = "cmh",
                                      var_labels = vars,
@@ -429,6 +438,7 @@ d_proportion_diff <- function(conf_level,
     "newcombecc" = "Newcombe, with correction",
     "strat_newcombe" = "Stratified Newcombe, without correction",
     "strat_newcombecc" = "Stratified Newcombe, with correction",
+    "uncond_exact_diff" = "Unconditional exact",
     stop(paste(method, "does not have a description"))
   )
   paste0(label, " (", method_part, ")")
@@ -894,5 +904,238 @@ prop_diff_strat_nc <- function(rsp,
   list(
     "diff" = diff_est,
     "diff_ci" = c("lower" = lower, "upper" = upper)
+  )
+}
+
+#' Worst case tail probability for unconditional exact CI calculation
+#'
+#' This function is an internal helper for [prop_diff_uncond_exact()].
+#'
+#' @param d_star (`number`) hypothesized difference in proportions.
+#' @param n1 (`positive integer`) sample size in group 1.
+#' @param n2 (`positive integer`) sample size in group 2.
+#' @param t_values (`numeric`) vector of test statistic values from enumerated tables.
+#' @param t0 (`number`) observed test statistic value.
+#' @param tables (`data.frame`) with columns `n11` and `n21` containing enumerated
+#'   outcomes in each group.
+#' @param tail (`string`) one of `"upper"` or `"lower"` indicating which tail to compute.
+#'
+#' @return A `number` between 0 and 1 corresponding to the worst-case one-sided tail probability
+#'   at the hypothesized difference.
+#'
+#' @keywords internal
+h_worst_case_tail_probability <- function(d_star,
+                                          n1,
+                                          n2,
+                                          t_values,
+                                          t0,
+                                          tables,
+                                          tail = c("upper", "lower")) {
+  checkmate::assert_number(d_star, lower = -1, upper = 1)
+  checkmate::assert_int(n1, lower = 1)
+  checkmate::assert_int(n2, lower = 1)
+  checkmate::assert_numeric(t_values, any.missing = FALSE)
+  checkmate::assert_number(t0)
+  checkmate::assert_data_frame(tables, min.rows = 1)
+  checkmate::assert_names(names(tables), must.include = c("n11", "n21"))
+  checkmate::assert_true(length(t_values) == nrow(tables))
+
+  tail <- match.arg(tail)
+
+  # Step 0: Determine which tables are in the tail based on the observed test
+  # statistic value and the tail direction.
+  include_table <- if (tail == "upper") {
+    t_values >= t0
+  } else {
+    t_values <= t0
+  }
+
+  # Step 1: For fixed d_star, and given p2,
+  # calculate the likelihood of each table in A
+  # and sum over tables in the tail to get the tail probability.
+  objective <- function(p2) {
+    p1 <- d_star + p2
+    probs <- stats::dbinom(tables$n11, size = n1, prob = p1) *
+      stats::dbinom(tables$n21, size = n2, prob = p2)
+    sum(probs[include_table])
+  }
+
+  # Step 2: For fixed d, determine valid nuisance-parameter range for p2
+  # so that p2 in [0, 1] and p1 = d + p2 in [0, 1].
+  interval <- c(max(0, -d_star), min(1, 1 - d_star))
+  if (interval[1] == interval[2]) {
+    return(objective(interval[1]))
+  }
+
+  # Step 3: Maximize the tail probability over the valid range of p2 to
+  # get the worst-case tail probability.
+  stats::optimize(
+    f = objective,
+    interval = interval,
+    maximum = TRUE
+  )$objective
+}
+
+#' Root-finding CI bounds from one-sided p-value functions
+#'
+#' This function is an internal helper for [prop_diff_uncond_exact()].
+#'
+#' @param p_value_function (`function`) one-sided p-value function in terms of `d`.
+#' @param cutoff (`number`) one-sided significance level threshold.
+#' @param direction (`string`) one of `"increasing"` or `"decreasing"`.
+#' @param interval (`numeric`) 2-element search interval.
+#' @param tol (`number`) tolerance for [stats::uniroot()].
+#' @param maxiter (`integer`) maximum number of [stats::uniroot()] iterations.
+#'
+#' @return A `number` with the requested CI bound, or `NA_real_` if no bound exists.
+#'
+#' @keywords internal
+h_find_ci_bound_uniroot <- function(p_value_function,
+                                    cutoff,
+                                    direction = c("increasing", "decreasing"),
+                                    interval = c(-1, 1),
+                                    tol = 1e-6,
+                                    maxiter = 1000) {
+  checkmate::assert_function(p_value_function)
+  checkmate::assert_number(cutoff, lower = 0, upper = 1)
+  checkmate::assert_numeric(interval, len = 2, any.missing = FALSE)
+  checkmate::assert_true(interval[1] < interval[2])
+  checkmate::assert_number(tol, lower = 0)
+  checkmate::assert_int(maxiter, lower = 1)
+
+  direction <- match.arg(direction)
+  lo <- interval[1]
+  hi <- interval[2]
+
+  # Step 0: Check for boundary cases where the p-value function is above or
+  # below the cutoff at the endpoints of the search interval.
+  # If so, return the appropriate endpoint or NA.
+  f_lo <- p_value_function(lo) - cutoff
+  f_hi <- p_value_function(hi) - cutoff
+
+  if (direction == "increasing") {
+    if (f_lo > 0) {
+      return(lo)
+    }
+    if (f_hi <= 0) {
+      return(NA_real_)
+    }
+  } else {
+    if (f_hi > 0) {
+      return(hi)
+    }
+    if (f_lo <= 0) {
+      return(NA_real_)
+    }
+  }
+
+  # Step 1: Find the value of d such that p_value_function(d) = cutoff using root finding.
+  stats::uniroot(
+    f = function(d) p_value_function(d) - cutoff,
+    interval = interval,
+    tol = tol,
+    maxiter = maxiter
+  )$root
+}
+
+#' @describeIn h_prop_diff Unconditional exact confidence interval for the difference in
+#'   proportions by inverting one-sided tail tests over a nuisance parameter. This is
+#'   the "tail method" described by Santner and Snell \insertCite{SantnerSnell1980}{tern}.
+#'
+#' @examples
+#' # Unconditional exact confidence interval
+#' n11 <- 40
+#' n21 <- 5
+#' n1 <- 78
+#' n2 <- 17
+#' rsp <- c(rep(TRUE, n21), rep(FALSE, n2 - n21), rep(TRUE, n11), rep(FALSE, n1 - n11))
+#' grp <- factor(c(rep("B", n2), rep("A", n1)), levels = c("B", "A"))
+#'
+#' prop_diff_uncond_exact(rsp = rsp, grp = grp, conf_level = 0.95)
+#'
+#' @export
+prop_diff_uncond_exact <- function(rsp,
+                                   grp,
+                                   conf_level = 0.95) {
+  grp <- as_factor_keep_attributes(grp)
+  check_diff_prop_ci(rsp = rsp, grp = grp, conf_level = conf_level)
+
+  alpha <- 1 - conf_level
+  cutoff <- alpha / 2
+
+  tbl <- table(grp, factor(rsp, levels = c(TRUE, FALSE)))
+
+  # Step 0: Calculate the observed difference in proportions
+  # and the observed test statistic value.
+  n2 <- sum(tbl[1, ])
+  n1 <- sum(tbl[2, ])
+
+  if (n1 == 0 || n2 == 0) {
+    return(list(
+      diff = NaN,
+      diff_ci = c(NaN, NaN)
+    ))
+  }
+
+  n21_obs <- tbl[1, 1]
+  n11_obs <- tbl[2, 1]
+  diff_est <- n11_obs / n1 - n21_obs / n2
+
+  # Step 1: Enumerate all tables in A with fixed row margins
+  # n1 and n2.
+  if (n1 * n2 > 1e5) {
+    warning("uncond_exact_diff: Large sample sizes may lead to long computation time.")
+  }
+  tables <- expand.grid(
+    n11 = 0:n1,
+    n21 = 0:n2
+  )
+
+  # Step 2: Compute T(a) = n11 / n1 - n21 / n2 for each table a in A.
+  t_values <- tables$n11 / n1 - tables$n21 / n2
+  t0 <- diff_est
+
+  # Step 3: For each hypothesized difference d*, compute the worst-case
+  # tail probabilities P_U(d*) and P_L(d*) by maximizing over the nuisance
+  # parameter p2.
+  p_upper <- function(d_star) {
+    # Step 4a: Compute worst-case one-sided tail probability:
+    # P_U(d*) = sup_p2 sum_{T(a) >= t0} f(...)
+    h_worst_case_tail_probability(
+      d_star = d_star,
+      n1 = n1,
+      n2 = n2,
+      t_values = t_values,
+      t0 = t0,
+      tables = tables,
+      tail = "upper"
+    )
+  }
+  p_lower <- function(d_star) {
+    # Step 4b: Compute worst-case one-sided tail probability:
+    # P_L(d*) = sup_p2 sum_{T(a) <= t0} f(...)
+    h_worst_case_tail_probability(
+      d_star = d_star,
+      n1 = n1,
+      n2 = n2,
+      t_values = t_values,
+      t0 = t0,
+      tables = tables,
+      tail = "lower"
+    )
+  }
+
+  # Step 5: Invert one-sided tests to obtain the two-sided
+  # 100 * (1 - alpha)% CI for d = p1 - p2.
+  # For monotone one-sided p-value functions, use uniroot to solve
+  # P_U(d) = alpha/2 and P_L(d) = alpha/2 directly.
+  diff_ci <- c(
+    h_find_ci_bound_uniroot(p_upper, cutoff = cutoff, direction = "increasing"),
+    h_find_ci_bound_uniroot(p_lower, cutoff = cutoff, direction = "decreasing")
+  )
+
+  list(
+    diff = diff_est,
+    diff_ci = diff_ci
   )
 }
