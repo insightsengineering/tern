@@ -1,4 +1,4 @@
-# tern 0.9.10.9009
+# tern 0.9.10.9010
 
 ### Miscellaneous
 * Updated `roxygen2` to 8.0.0 and added `@exportS3Method` tags for S3 methods in `decorate_grob.R` and `utils_grid.R`.
@@ -10,6 +10,9 @@
 * Added `uncond_exact_diff` method to `estimate_proportion_diff()` for the unconditional exact confidence interval for the difference in proportions by inverting one-sided tail tests over a nuisance parameter.
 * Added `lsmean_se`, `lsmean_ci`, and `lsmean_diffci` statistics to `s_ancova()`.
 * Added `weights_emmeans` parameter on `s_ancova()`.
+
+### Bug Fixes
+* Fixed bug in `prop_diff_cmh()` which previously failed when strata combinations had 0 observations.
 
 # tern 0.9.10
 
