@@ -17,16 +17,9 @@ A string in the format \code{"min to max"}, with \code{+} appended to \code{min}
 when the corresponding censoring flag is non-zero.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+`r lifecycle::("experimental")``
 
 Formats a survival time range where the minimum and/or maximum may be a censored observation.
 A \code{+} suffix is appended to a bound when the corresponding censoring flag is \code{TRUE}.
-}
-\examples{
-format_range_cens(c(1.2, 8.5, 0, 0))
-format_range_cens(c(1.2, 8.5, 1, 0))
-format_range_cens(c(1.2, 8.5, 0, 1))
-format_range_cens(c(1.2, 8.5, 1, 1))
-
 }
 \keyword{internal}

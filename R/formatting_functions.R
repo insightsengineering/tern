@@ -588,11 +588,6 @@ apply_auto_formatting <- function(.formats, x_stats, .df_row, .var) {
 #' @return A string in the format `"min to max"`, with `+` appended to `min` and/or `max`
 #'   when the corresponding censoring flag is non-zero.
 #'
-#' @examples
-#' format_range_cens(c(1.2, 8.5, 0, 0))
-#' format_range_cens(c(1.2, 8.5, 1, 0))
-#' format_range_cens(c(1.2, 8.5, 0, 1))
-#' format_range_cens(c(1.2, 8.5, 1, 1))
 #'
 #' @keywords internal
 format_range_cens <- function(x, ...) {
