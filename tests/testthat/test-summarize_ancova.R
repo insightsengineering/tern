@@ -232,7 +232,7 @@ testthat::test_that("summarize_ancova works with irregular arm levels", {
   testthat::expect_snapshot(res)
 })
 
-testthat::test_that("s_ancova returns lsmean_se, lsmean_ci, lsmean_diffci for non-ref column", {
+testthat::test_that("s_ancova returns lsmean_se, lsmean_ci, lsmean_diff_with_ci for non-ref column", {
   df_col <- iris %>% dplyr::filter(Species == "versicolor")
   df_ref <- iris %>% dplyr::filter(Species == "setosa")
   result <- s_ancova(
@@ -247,10 +247,10 @@ testthat::test_that("s_ancova returns lsmean_se, lsmean_ci, lsmean_diffci for no
 
   testthat::expect_length(result$lsmean_se, 2)
   testthat::expect_length(result$lsmean_ci, 3)
-  testthat::expect_length(result$lsmean_diffci, 3)
+  testthat::expect_length(result$lsmean_diff_with_ci, 3)
   testthat::expect_equal(as.numeric(result$lsmean_se[[1]]), as.numeric(result$lsmean))
-  testthat::expect_equal(as.numeric(result$lsmean_diffci[[1]]), as.numeric(result$lsmean_diff))
-  testthat::expect_equal(as.numeric(result$lsmean_diffci[2:3]), as.numeric(result$lsmean_diff_ci))
+  testthat::expect_equal(as.numeric(result$lsmean_diff_with_ci[[1]]), as.numeric(result$lsmean_diff))
+  testthat::expect_equal(as.numeric(result$lsmean_diff_with_ci[2:3]), as.numeric(result$lsmean_diff_ci))
 })
 
 testthat::test_that("s_ancova returns lsmean_se and lsmean_ci for ref column", {
@@ -267,7 +267,7 @@ testthat::test_that("s_ancova returns lsmean_se and lsmean_ci for ref column", {
 
   testthat::expect_length(result$lsmean_se, 2)
   testthat::expect_length(result$lsmean_ci, 3)
-  testthat::expect_true(all(is.na(result$lsmean_diffci)))
+  testthat::expect_true(all(is.na(result$lsmean_diff_with_ci)))
   testthat::expect_length(result$lsmean_diff, 0)
 })
 
@@ -285,7 +285,7 @@ testthat::test_that("s_ancova returns NA diffs when .ref_group is NULL", {
 
   testthat::expect_true(is.na(result$lsmean_diff))
   testthat::expect_true(all(is.na(result$lsmean_diff_ci)))
-  testthat::expect_true(all(is.na(result$lsmean_diffci)))
+  testthat::expect_true(all(is.na(result$lsmean_diff_with_ci)))
   testthat::expect_true(is.na(result$pval))
 })
 
