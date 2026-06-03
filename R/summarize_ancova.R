@@ -110,7 +110,7 @@ h_ancova <- function(.var,
 #'     If working with the reference group, this will be empty.
 #'   * `lsmean_diff_ci`: Confidence level for difference in estimated marginal means in comparison
 #'     to the reference group.
-#'   * `lsmean_diffci`: Difference in adjusted means with confidence interval as a 3-element vector
+#'   * `lsmean_diff_with_ci`: Difference in adjusted means with confidence interval as a 3-element vector
 #'     `c(estimate, lower.CL, upper.CL)`. If working with the reference group, this will be `NA`.
 #'   * `pval`: p-value (not adjusted for multiple comparisons).
 #'
@@ -154,8 +154,15 @@ s_ancova <- function(df,
     # convert characters selected in interaction_y into the numeric order
     interaction_y <- which(sum_fit_level[[interaction_item]] == interaction_y)
     sum_fit_level <- sum_fit_level[interaction_y, ]
+    # if interaction is called, reset the index
+    ref_key <- seq(sum_fit[[arm]][unique(.ref_group[[arm]])])
+    ref_key <- tail(ref_key, n = 1)
+    ref_key <- (interaction_y - 1) * length(unique(.df_row[[arm]])) + ref_key
   } else {
     y <- df[[.var]]
+    # Get the index of the ref arm when interaction is not called
+    ref_key <- seq(sum_fit[[arm]][unique(.ref_group[[arm]])])
+    ref_key <- tail(ref_key, n = 1)
   }
 
   if (.in_ref_col) {
@@ -172,58 +179,40 @@ s_ancova <- function(df,
       ),
       lsmean_diff = formatters::with_label(numeric(), "Difference in Adjusted Means"),
       lsmean_diff_ci = formatters::with_label(numeric(), f_conf_level(conf_level)),
-      lsmean_diffci = formatters::with_label(
+      lsmean_diff_with_ci = formatters::with_label(
         c(NA_real_, NA_real_, NA_real_),
-        "Difference in Adjusted Means (95% CI)"
+        paste0("Difference in Adjusted Means (", f_conf_level(conf_level), ")")
       ),
       pval = formatters::with_label(numeric(), "p-value")
     )
   } else {
-    if (!is.null(.ref_group)) {
-      # Compute ref_key — index of the reference arm in the emmeans grid
-      if (interaction_y != FALSE) {
-        ref_key <- seq(sum_fit[[arm]][unique(.ref_group[[arm]])])
-        ref_key <- tail(ref_key, n = 1)
-        ref_key <- (interaction_y - 1) * length(unique(.df_row[[arm]])) + ref_key
-      } else {
-        ref_key <- seq(sum_fit[[arm]][unique(.ref_group[[arm]])])
-        ref_key <- tail(ref_key, n = 1)
-      }
-      # Estimate the differences between the marginal means.
-      emmeans_contrasts <- emmeans::contrast(
-        emmeans_fit,
-        # Compare all arms versus the control arm.
-        method = "trt.vs.ctrl",
-        # Take the arm factor from .ref_group as the control arm.
-        ref = ref_key,
-        level = conf_level
-      )
-      sum_contrasts <- summary(
-        emmeans_contrasts,
-        # Derive confidence intervals, t-tests and p-values.
-        infer = TRUE,
-        # Do not adjust the p-values for multiplicity.
-        adjust = "none"
-      )
+    # Estimate the differences between the marginal means.
+    emmeans_contrasts <- emmeans::contrast(
+      emmeans_fit,
+      # Compare all arms versus the control arm.
+      method = "trt.vs.ctrl",
+      # Take the arm factor from .ref_group as the control arm.
+      ref = ref_key,
+      level = conf_level
+    )
+    sum_contrasts <- summary(
+      emmeans_contrasts,
+      # Derive confidence intervals, t-tests and p-values.
+      infer = TRUE,
+      # Do not adjust the p-values for multiplicity.
+      adjust = "none"
+    )
 
-      contrast_lvls <- gsub(
-        "^\\(|\\)$", "", gsub(paste0(" - \\(*", .ref_group[[arm]][1], ".*"), "", sum_contrasts$contrast)
-      )
-      if (!is.null(interaction_item)) {
-        sum_contrasts_level <- sum_contrasts[grepl(sum_level, contrast_lvls, fixed = TRUE), ]
-      } else {
-        sum_contrasts_level <- sum_contrasts[sum_level == contrast_lvls, ]
-      }
-      if (interaction_y != FALSE) {
-        sum_contrasts_level <- sum_contrasts_level[interaction_y, ]
-      }
+    contrast_lvls <- gsub(
+      "^\\(|\\)$", "", gsub(paste0(" - \\(*", .ref_group[[arm]][1], ".*"), "", sum_contrasts$contrast)
+    )
+    if (!is.null(interaction_item)) {
+      sum_contrasts_level <- sum_contrasts[grepl(sum_level, contrast_lvls, fixed = TRUE), ]
     } else {
-      sum_contrasts_level <- list(
-        estimate = NA_real_,
-        lower.CL = NA_real_,
-        upper.CL = NA_real_,
-        p.value = NA_real_
-      )
+      sum_contrasts_level <- sum_contrasts[sum_level == contrast_lvls, ]
+    }
+    if (interaction_y != FALSE) {
+      sum_contrasts_level <- sum_contrasts_level[interaction_y, ]
     }
 
     list(
@@ -242,9 +231,9 @@ s_ancova <- function(df,
         c(sum_contrasts_level$lower.CL, sum_contrasts_level$upper.CL),
         f_conf_level(conf_level)
       ),
-      lsmean_diffci = formatters::with_label(
+      lsmean_diff_with_ci = formatters::with_label(
         c(sum_contrasts_level$estimate, sum_contrasts_level$lower.CL, sum_contrasts_level$upper.CL),
-        "Difference in Adjusted Means (95% CI)"
+        paste0("Difference in Adjusted Means (", f_conf_level(conf_level), ")")
       ),
       pval = formatters::with_label(sum_contrasts_level$p.value, "p-value")
     )
