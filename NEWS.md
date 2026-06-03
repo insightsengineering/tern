@@ -8,7 +8,6 @@
 * Added `lr_stat_df` to the parameters return list of `s_coxph_pairwise()`.
 * Added `uncond_exact_diff` method to `estimate_proportion_diff()` for the unconditional exact confidence interval for the difference in proportions by inverting one-sided tail tests over a nuisance parameter.
 * Added `lsmean_se`, `lsmean_ci`, and `lsmean_diffci` statistics to `s_ancova()`.
-* Added `weights_emmeans` parameter on `s_ancova()`.
 * Added `s_ancova()`to exported functions.
 
 ### Bug Fixes
