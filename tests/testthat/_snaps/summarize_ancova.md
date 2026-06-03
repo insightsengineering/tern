@@ -43,10 +43,10 @@
       attr(,"label")
       [1] "99% CI"
       
-      $lsmean_diffci
+      $lsmean_diff_with_ci
       [1] -0.4374138 -1.4268150  0.5519873
       attr(,"label")
-      [1] "Difference in Adjusted Means (95% CI)"
+      [1] "Difference in Adjusted Means (99% CI)"
       
       $pval
       [1] 0.2503574
@@ -87,7 +87,7 @@
       attr(,"label")
       [1] "95% CI"
       
-      $lsmean_diffci
+      $lsmean_diff_with_ci
       [1] NA NA NA
       attr(,"label")
       [1] "Difference in Adjusted Means (95% CI)"
