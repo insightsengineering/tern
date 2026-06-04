@@ -42,7 +42,7 @@ format_fraction <- function(x, ...) {
     )
   }
 
-  return(result)
+  result
 }
 
 #' Format fraction and percentage with fixed single decimal place
@@ -77,7 +77,7 @@ format_fraction_fixed_dp <- function(x, ...) {
       " (", sprintf("%.1f", round(x["num"] / x["denom"] * 100, 1)), "%)"
     )
   }
-  return(result)
+  result
 }
 
 #' Format count and fraction
@@ -114,7 +114,7 @@ format_count_fraction <- function(x, ...) {
     paste0(x[1], " (", round(x[2] * 100, 1), "%)")
   }
 
-  return(result)
+  result
 }
 
 #' Format count and percentage with fixed single decimal place
@@ -153,7 +153,7 @@ format_count_fraction_fixed_dp <- function(x, ...) {
     sprintf("%d (%.1f%%)", x[1], x[2] * 100)
   }
 
-  return(result)
+  result
 }
 
 #' Format count and fraction with special case for count < 10
@@ -190,7 +190,7 @@ format_count_fraction_lt10 <- function(x, ...) {
     paste0(x[1], " (", round(x[2] * 100, 1), "%)")
   }
 
-  return(result)
+  result
 }
 
 #' Format XX as a formatting function
@@ -229,17 +229,17 @@ format_xx <- function(str) {
       rounding <- function(x) {
         round(x, digits = ifelse(length(y) > 1, nchar(y[2]), 0))
       }
-      return(rounding)
+      rounding
     }
   )
 
   rtable_format <- function(x, output) {
     values <- Map(y = x, fun = roundings, function(y, fun) fun(y))
     regmatches(x = str, m = positions)[[1]] <- values
-    return(str)
+    str
   }
 
-  return(rtable_format)
+  rtable_format
 }
 
 #' Format numeric values by significant figures
@@ -534,7 +534,7 @@ format_auto <- function(dt_var, x_stat) {
     out[is_even] <- str_vals
     out[!is_even] <- inv_str_fmt
 
-    return(paste0(out, collapse = ""))
+    paste0(out, collapse = "")
   }
 }
 
@@ -546,11 +546,11 @@ str_extract <- function(string, pattern = "xx|xx\\.|xx\\.x+", invert = FALSE) {
 # Helper function
 count_decimalplaces <- function(dec) {
   if (is.na(dec)) {
-    return(0)
+    0
   } else if (abs(dec - round(dec)) > .Machine$double.eps^0.5) { # For precision
     nchar(strsplit(format(dec, scientific = FALSE, trim = FALSE), ".", fixed = TRUE)[[1]][[2]])
   } else {
-    return(0)
+    0
   }
 }
 
