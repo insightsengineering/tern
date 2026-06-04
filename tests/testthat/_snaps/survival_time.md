@@ -51,7 +51,7 @@
       $range_with_cens_info
       [1]   0.07143141 154.08901021   0.00000000   0.00000000
       attr(,"label")
-      [1] "Min, max"
+      [1] "Min - Max"
       
 
 # s_surv_time works with customized arguments
@@ -107,7 +107,7 @@
       $range_with_cens_info
       [1]   0.07143141 154.08901021   0.00000000   0.00000000
       attr(,"label")
-      [1] "Min, max"
+      [1] "Min - Max"
       
 
 # a_surv_time works with default arguments
@@ -127,7 +127,7 @@
       7          range_censor           0.8 to 78.9          0 Range (censored)
       8           range_event          0.1 to 155.5          0    Range (event)
       9                 range           0.1 - 155.5          0        Min - Max
-      10 range_with_cens_info          0.1 to 155.5          0         Min, max
+      10 range_with_cens_info          0.1 to 155.5          0        Min - Max
 
 # a_surv_time works with customized arguments
 
@@ -171,7 +171,7 @@
         Range (censored)               0.8 to 63.5                    6.2 to 78.9                    3.4 to 52.4         
         Range (event)                  0.3 to 155.5                   0.1 to 154.1                   0.6 to 80.7         
         Range                          0.3 - 155.5                    0.1 - 154.1                     0.6 - 80.7         
-        Min, max                       0.3 to 155.5                   0.1 to 154.1                   0.6 to 80.7         
+        Min - Max                      0.3 to 155.5                   0.1 to 154.1                   0.6 to 80.7         
 
 # surv_time works with referential footnotes
 

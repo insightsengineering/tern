@@ -732,7 +732,7 @@ tern_default_labels <- c(
   range = "Min - Max",
   range_censor = "Range (censored)",
   range_event = "Range (event)",
-  range_with_cens_info = "Min, max",
+  range_with_cens_info = "Min - Max",
   rate = "Adjusted Rate",
   rate_ratio = "Adjusted Rate Ratio",
   sd = "SD",
