@@ -51,6 +51,7 @@ NULL
 #'   * `range_censor`: Survival time range for censored observations.
 #'   * `range_event`: Survival time range for observations with events.
 #'   * `range`: Survival time range for all observations.
+#'   * `range_with_cens_info`: Survival time range for all observations, with `+` suffix on censored bounds.
 #'
 #' @export
 s_surv_time <- function(df,

@@ -119,6 +119,7 @@ the statistics from \code{s_surv_time()} to the table layout.
 \item \code{range_censor}: Survival time range for censored observations.
 \item \code{range_event}: Survival time range for observations with events.
 \item \code{range}: Survival time range for all observations.
+\item \code{range_with_cens_info}: Survival time range for all observations, with \code{+} suffix on censored bounds.
 }
 }
 
