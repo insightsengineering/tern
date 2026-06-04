@@ -111,7 +111,7 @@ h_ancova <- function(.var,
 #'   * `lsmean_diff_ci`: Confidence level for difference in estimated marginal means in comparison
 #'     to the reference group.
 #'   * `lsmean_diff_with_ci`: Difference in adjusted means with confidence interval as a 3-element vector
-#'     `c(estimate, lower.CL, upper.CL)`. If working with the reference group, this will be `NA`.
+#'     `c(estimate, lower.CL, upper.CL)`.
 #'   * `pval`: p-value (not adjusted for multiple comparisons).
 #'
 #' @export
