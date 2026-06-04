@@ -180,7 +180,7 @@ s_ancova <- function(df,
       lsmean_diff = formatters::with_label(numeric(), "Difference in Adjusted Means"),
       lsmean_diff_ci = formatters::with_label(numeric(), f_conf_level(conf_level)),
       lsmean_diff_with_ci = formatters::with_label(
-        c(NA_real_, NA_real_, NA_real_),
+        numeric(),
         paste0("Difference in Adjusted Means (", f_conf_level(conf_level), ")")
       ),
       pval = formatters::with_label(numeric(), "p-value")

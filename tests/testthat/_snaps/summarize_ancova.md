@@ -88,7 +88,7 @@
       [1] "95% CI"
       
       $lsmean_diff_with_ci
-      [1] NA NA NA
+      numeric(0)
       attr(,"label")
       [1] "Difference in Adjusted Means (95% CI)"
       
