@@ -678,7 +678,7 @@ tern_default_formats <- c(
   rate_ratio = "xx.xxxx",
   rate_ratio_ci = "(xx.xxxx, xx.xxxx)",
   rate_se = "xx.xx",
-  range_with_cens_info = format_range_cens,
+  range_with_cens_info = list(format_range_cens(1L)),
   riskdiff = "xx.x (xx.x - xx.x)",
   sd = "xx.x",
   se = "xx.x",

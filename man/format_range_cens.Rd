@@ -4,17 +4,16 @@
 \alias{format_range_cens}
 \title{Format range with censoring indicators}
 \usage{
-format_range_cens(x, ...)
+format_range_cens(digits = 1L)
 }
 \arguments{
-\item{x}{(\code{numeric(4)})\cr vector of the form \code{c(min, max, lower_censored, upper_censored)},
-where \code{lower_censored} and \code{upper_censored} are \code{0}/\code{1} (or \code{FALSE}/\code{TRUE}) flags.}
-
-\item{...}{not used. Required for \code{rtables} interface.}
+\item{digits}{(\code{integer(1)})\cr number of decimal places to display. Defaults to \code{1L}.}
 }
 \value{
-A string in the format \code{"min to max"}, with \code{+} appended to \code{min} and/or \code{max}
-when the corresponding censoring flag is non-zero.
+An \code{rtables} formatting function that takes a \code{numeric(4)} vector of the form
+\code{c(min, max, lower_censored, upper_censored)}, where \code{lower_censored} and \code{upper_censored}
+are \code{0}/\code{1} (or \code{FALSE}/\code{TRUE}) flags, and returns a string in the format \code{"min to max"},
+with \code{+} appended to \code{min} and/or \code{max} when the corresponding censoring flag is non-zero.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -22,4 +21,26 @@ when the corresponding censoring flag is non-zero.
 Formats a survival time range where the minimum and/or maximum may be a censored observation.
 A \code{+} suffix is appended to a bound when the corresponding censoring flag is \code{TRUE}.
 }
-\keyword{internal}
+\examples{
+fmt <- format_range_cens(1L)
+fmt(c(1.23, 9.87, 1, 0))
+fmt(c(1.23, 9.87, 0, 0))
+
+}
+\seealso{
+Other formatting functions: 
+\code{\link{extreme_format}},
+\code{\link{format_auto}()},
+\code{\link{format_count_fraction}()},
+\code{\link{format_count_fraction_fixed_dp}()},
+\code{\link{format_count_fraction_lt10}()},
+\code{\link{format_extreme_values}()},
+\code{\link{format_extreme_values_ci}()},
+\code{\link{format_fraction}()},
+\code{\link{format_fraction_fixed_dp}()},
+\code{\link{format_fraction_threshold}()},
+\code{\link{format_sigfig}()},
+\code{\link{format_xx}()},
+\code{\link{formatting_functions}}
+}
+\concept{formatting functions}

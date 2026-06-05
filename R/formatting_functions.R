@@ -581,18 +581,26 @@ apply_auto_formatting <- function(.formats, x_stats, .df_row, .var) {
 #' Formats a survival time range where the minimum and/or maximum may be a censored observation.
 #' A `+` suffix is appended to a bound when the corresponding censoring flag is `TRUE`.
 #'
-#' @param x (`numeric(4)`)\cr vector of the form `c(min, max, lower_censored, upper_censored)`,
-#'   where `lower_censored` and `upper_censored` are `0`/`1` (or `FALSE`/`TRUE`) flags.
-#' @param ... not used. Required for `rtables` interface.
+#' @param digits (`integer(1)`)\cr number of decimal places to display. Defaults to `1L`.
 #'
-#' @return A string in the format `"min to max"`, with `+` appended to `min` and/or `max`
-#'   when the corresponding censoring flag is non-zero.
+#' @return An `rtables` formatting function that takes a `numeric(4)` vector of the form
+#'   `c(min, max, lower_censored, upper_censored)`, where `lower_censored` and `upper_censored`
+#'   are `0`/`1` (or `FALSE`/`TRUE`) flags, and returns a string in the format `"min to max"`,
+#'   with `+` appended to `min` and/or `max` when the corresponding censoring flag is non-zero.
 #'
+#' @examples
+#' fmt <- format_range_cens(1L)
+#' fmt(c(1.23, 9.87, 1, 0))
+#' fmt(c(1.23, 9.87, 0, 0))
 #'
-#' @keywords internal
-format_range_cens <- function(x, ...) {
-  checkmate::assert_numeric(x, len = 4)
-  lo <- paste0(round(x[1], 1), if (x[3] != 0) "+")
-  hi <- paste0(round(x[2], 1), if (x[4] != 0) "+")
-  paste(lo, "to", hi)
+#' @family formatting functions
+#' @export
+format_range_cens <- function(digits = 1L) {
+  checkmate::assert_integerish(digits)
+  function(x, ...) {
+    checkmate::assert_numeric(x, len = 4)
+    l_result <- paste0(round(x[1], digits), if (x[3] != 0) "+" else "")
+    h_result <- paste0(round(x[2], digits), if (x[4] != 0) "+" else "")
+    paste(l_result, "to", h_result)
+  }
 }
