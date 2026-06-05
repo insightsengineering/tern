@@ -198,7 +198,6 @@ testthat::test_that("a_surv_time works when `is_event` only has FALSE observatio
 })
 
 testthat::test_that("s_surv_time includes range_with_cens_info with no censoring at boundaries (0, 0)", {
-  # All observations are events — no censoring at either boundary
   anl <- tibble::tribble(
     ~AVAL, ~is_event,
     2,     TRUE,
@@ -216,12 +215,11 @@ testthat::test_that("s_surv_time includes range_with_cens_info with no censoring
 })
 
 testthat::test_that("s_surv_time range_with_cens_info flags upper censored (0, 1)", {
-  # Censored observation has the largest value — upper boundary is censored
   anl <- tibble::tribble(
     ~AVAL, ~is_event,
     2,     TRUE,
     5,     TRUE,
-    10,    FALSE   # censored at max
+    10,    FALSE
   )
   result <- s_surv_time(anl, .var = "AVAL", is_event = "is_event")
   rwci <- result$range_with_cens_info
@@ -230,17 +228,16 @@ testthat::test_that("s_surv_time range_with_cens_info flags upper censored (0, 1
 })
 
 testthat::test_that("s_surv_time range_with_cens_info flags lower censored (1, 0)", {
-  # Censored observation has the smallest value — lower boundary is censored
   anl <- tibble::tribble(
     ~AVAL, ~is_event,
-    1,     FALSE,  # censored at min
+    1,     FALSE,
     5,     TRUE,
     8,     TRUE
   )
   result <- s_surv_time(anl, .var = "AVAL", is_event = "is_event")
   rwci <- result$range_with_cens_info
-  testthat::expect_equal(as.numeric(rwci[3]), 1)  # lower censored
-  testthat::expect_equal(as.numeric(rwci[4]), 0)  # upper not censored
+  testthat::expect_equal(as.numeric(rwci[3]), 1)
+  testthat::expect_equal(as.numeric(rwci[4]), 0)
 })
 
 testthat::test_that("s_surv_time range_with_cens_info flags both bounds censored when all censored (1, 1)", {
