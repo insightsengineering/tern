@@ -125,7 +125,7 @@ s_surv_time <- function(df,
     ),
     range_with_cens_info = formatters::with_label(
       c(range, lower_censored, upper_censored),
-      "Min - Max"
+      "Min - Max (with censoring)"
     )
   )
 }
