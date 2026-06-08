@@ -23,6 +23,16 @@
       attr(,"label")
       [1] "Adjusted Mean"
       
+      $lsmean_se
+      [1] 5.71740917 0.06680849
+      attr(,"label")
+      [1] "Adjusted Mean (SE)"
+      
+      $lsmean_ci
+      [1] 5.717409 5.542996 5.891823
+      attr(,"label")
+      [1] "99% CI"
+      
       $lsmean_diff
       [1] -0.4374138
       attr(,"label")
@@ -32,6 +42,11 @@
       [1] -1.4268150  0.5519873
       attr(,"label")
       [1] "99% CI"
+      
+      $lsmean_diff_with_ci
+      [1] -0.4374138 -1.4268150  0.5519873
+      attr(,"label")
+      [1] "Difference in Adjusted Means (99% CI)"
       
       $pval
       [1] 0.2503574
@@ -52,6 +67,16 @@
       attr(,"label")
       [1] "Adjusted Mean"
       
+      $lsmean_se
+      [1] 4.36264203 0.08598191
+      attr(,"label")
+      [1] "Adjusted Mean (SE)"
+      
+      $lsmean_ci
+      [1] 4.362642 4.192651 4.532633
+      attr(,"label")
+      [1] "95% CI"
+      
       $lsmean_diff
       numeric(0)
       attr(,"label")
@@ -61,6 +86,11 @@
       numeric(0)
       attr(,"label")
       [1] "95% CI"
+      
+      $lsmean_diff_with_ci
+      numeric(0)
+      attr(,"label")
+      [1] "Difference in Adjusted Means (95% CI)"
       
       $pval
       numeric(0)
