@@ -588,7 +588,8 @@ tern_default_stats <- list(
   summarize_patients_events_in_cols = c("unique", "all"),
   surv_time = c(
     "median", "median_ci", "median_ci_3d", "quantiles",
-    "quantiles_lower", "quantiles_upper", "range_censor", "range_event", "range"
+    "quantiles_lower", "quantiles_upper", "range_censor", "range_event", "range",
+    "range_with_cens_info"
   ),
   surv_timepoint = c("pt_at_risk", "event_free_rate", "rate_se", "rate_ci", "event_free_rate_3d"),
   surv_timepoint_diff = c("rate_diff", "rate_diff_ci", "ztest_pval", "rate_diff_ci_3d"),
@@ -681,6 +682,7 @@ tern_default_formats <- c(
   rate_ratio = "xx.xxxx",
   rate_ratio_ci = "(xx.xxxx, xx.xxxx)",
   rate_se = "xx.xx",
+  range_with_cens_info = list(format_range_cens(1L)),
   riskdiff = "xx.x (xx.x - xx.x)",
   sd = "xx.x",
   se = "xx.x",
@@ -734,6 +736,7 @@ tern_default_labels <- c(
   range = "Min - Max",
   range_censor = "Range (censored)",
   range_event = "Range (event)",
+  range_with_cens_info = "Min - Max (with censoring)",
   rate = "Adjusted Rate",
   rate_ratio = "Adjusted Rate Ratio",
   sd = "SD",

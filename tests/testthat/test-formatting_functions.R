@@ -251,3 +251,28 @@ testthat::test_that("auto formatting works with NA values", {
 
   testthat::expect_snapshot(result)
 })
+
+testthat::test_that("format_range_cens works with no censoring", {
+  fmt <- format_range_cens(1L)
+  testthat::expect_identical(fmt(c(1.2, 9.8, 0, 0)), "1.2 to 9.8")
+})
+
+testthat::test_that("format_range_cens appends + to lower bound when lower censored", {
+  fmt <- format_range_cens(1L)
+  testthat::expect_identical(fmt(c(1.2, 9.8, 1, 0)), "1.2+ to 9.8")
+})
+
+testthat::test_that("format_range_cens appends + to upper bound when upper censored", {
+  fmt <- format_range_cens(1L)
+  testthat::expect_identical(fmt(c(1.2, 9.8, 0, 1)), "1.2 to 9.8+")
+})
+
+testthat::test_that("format_range_cens appends + to both bounds when both censored", {
+  fmt <- format_range_cens(1L)
+  testthat::expect_identical(fmt(c(1.2, 9.8, 1, 1)), "1.2+ to 9.8+")
+})
+
+testthat::test_that("format_range_cens respects digits argument", {
+  fmt <- format_range_cens(2L)
+  testthat::expect_identical(fmt(c(1.234, 9.876, 1, 0)), "1.23+ to 9.88")
+})
