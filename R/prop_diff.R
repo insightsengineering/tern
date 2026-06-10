@@ -641,7 +641,7 @@ prop_diff_cmh <- function(rsp,
     rsp = rsp, grp = grp, conf_level = conf_level, strata = strata
   )
 
-  if (any(tapply(rsp, strata, length) < 5)) {
+  if (any(tapply(rsp, strata, length, default = 0) < 5)) {
     warning("Less than 5 observations in some strata.")
   }
 

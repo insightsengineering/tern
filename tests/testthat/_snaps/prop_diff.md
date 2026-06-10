@@ -246,6 +246,45 @@
         9   4   9   6   6 
       
 
+# prop_diff_cmh works correctly when strata combinations are empty
+
+    Code
+      res
+    Output
+      $prop
+        Placebo Treatment 
+       0.569842  0.398075 
+      
+      $prop_ci
+      $prop_ci$Placebo
+      [1] 0.4637119 0.6759721
+      
+      $prop_ci$Treatment
+      [1] 0.2836122 0.5125378
+      
+      
+      $diff
+      [1] -0.171767
+      
+      $diff_ci
+      [1] -0.32786094 -0.01567301
+      
+      $se_diff
+      [1] 0.09489839
+      
+      $weights
+            b.x       a.y       b.y       a.z       b.z 
+      0.2408257 0.1297378 0.2408257 0.1997279 0.1888829 
+      
+      $n1
+      b.x a.y b.y a.z b.z 
+       11   8  11  13  11 
+      
+      $n2
+      b.x a.y b.y a.z b.z 
+        9   4   9   6   6 
+      
+
 # prop_diff_strat_nc output matches equivalent SAS function output
 
     Code

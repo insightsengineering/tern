@@ -231,3 +231,21 @@ testthat::test_that("summarize_ancova works with irregular arm levels", {
   res <- testthat::expect_silent(result3)
   testthat::expect_snapshot(res)
 })
+
+testthat::test_that("s_ancova returns lsmean_se and lsmean_ci for ref column", {
+  df_ref <- iris %>% dplyr::filter(Species == "setosa")
+  result <- s_ancova(
+    df = df_ref,
+    .var = "Sepal.Length",
+    .df_row = iris,
+    variables = list(arm = "Species", covariates = "Petal.Length"),
+    .ref_group = df_ref,
+    .in_ref_col = TRUE,
+    conf_level = 0.95
+  )
+
+  testthat::expect_length(result$lsmean_se, 2)
+  testthat::expect_length(result$lsmean_ci, 3)
+  testthat::expect_true(all(is.na(result$lsmean_diff_with_ci)))
+  testthat::expect_length(result$lsmean_diff, 0)
+})

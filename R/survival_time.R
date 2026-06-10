@@ -51,8 +51,9 @@ NULL
 #'   * `range_censor`: Survival time range for censored observations.
 #'   * `range_event`: Survival time range for observations with events.
 #'   * `range`: Survival time range for all observations.
+#'   * `range_with_cens_info`: Survival time range for all observations, with `+` suffix on censored bounds.
 #'
-#' @keywords internal
+#' @export
 s_surv_time <- function(df,
                         .var,
                         ...,
@@ -80,6 +81,11 @@ s_surv_time <- function(df,
   range_censor <- range_noinf(df[[.var]][!df[[is_event]]], na.rm = TRUE)
   range_event <- range_noinf(df[[.var]][df[[is_event]]], na.rm = TRUE)
   range <- range_noinf(df[[.var]], na.rm = TRUE)
+
+  any_censored <- !all(df[[is_event]])
+  no_event <- !any(df[[is_event]])
+  lower_censored <- any_censored && (no_event || range_censor[1] < range_event[1])
+  upper_censored <- any_censored && (no_event || range_censor[2] > range_event[2])
 
   names(quantiles) <- as.character(100 * quantiles)
   srv_qt_tab_pre <- unlist(srv_qt_tab_pre)
@@ -116,6 +122,10 @@ s_surv_time <- function(df,
     ),
     quantiles_upper = formatters::with_label(
       unname(srv_qt_ci[[2]]), paste0(quantiles[2] * 100, "%-ile (", f_conf_level(conf_level), ")")
+    ),
+    range_with_cens_info = formatters::with_label(
+      c(range, lower_censored, upper_censored),
+      "Min - Max (with censoring)"
     )
   )
 }

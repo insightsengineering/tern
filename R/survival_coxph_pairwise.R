@@ -112,37 +112,37 @@ s_coxph_pairwise <- function(df,
 
   pval <- if (pval_method == "wald") {
     if (alternative == "two.sided") {
-        sum_cox$waldtest["pvalue"]
+      sum_cox$waldtest["pvalue"]
     } else {
-        # Need to calculate the signed Wald statistic.
-        beta_est <- unname(cox_fit$coefficients)
-        beta_se <- sqrt(cox_fit$var[1, 1])
-        signed_wald_stat <- beta_est / beta_se
-        if (alternative == "less") {
-          stats::pnorm(signed_wald_stat)
-        } else {
-          stats::pnorm(signed_wald_stat, lower.tail = FALSE)
-        }
-    }    
+      # Need to calculate the signed Wald statistic.
+      beta_est <- unname(cox_fit$coefficients)
+      beta_se <- sqrt(cox_fit$var[1, 1])
+      signed_wald_stat <- beta_est / beta_se
+      if (alternative == "less") {
+        stats::pnorm(signed_wald_stat)
+      } else {
+        stats::pnorm(signed_wald_stat, lower.tail = FALSE)
+      }
+    }
   } else if (pval_method == "log-rank") {
     if (alternative == "two.sided") {
-        original_survdiff$pvalue
+      original_survdiff$pvalue
     } else {
-        # Need to calculate the signed log-rank statistic, 
-        # which is not included in the original survdiff output.
-        otmp <- rowSums(original_survdiff$obs)
-        etmp <- rowSums(original_survdiff$exp)
-        signed_lr_stat <- (otmp[2] - etmp[2]) / sqrt(original_survdiff$var[2, 2])
+      # Need to calculate the signed log-rank statistic,
+      # which is not included in the original survdiff output.
+      otmp <- rowSums(original_survdiff$obs)
+      etmp <- rowSums(original_survdiff$exp)
+      signed_lr_stat <- (otmp[2] - etmp[2]) / sqrt(original_survdiff$var[2, 2])
 
-        if (alternative == "less") {
-          stats::pnorm(signed_lr_stat)
-        } else {
-          stats::pnorm(signed_lr_stat, lower.tail = FALSE)
-        }
+      if (alternative == "less") {
+        stats::pnorm(signed_lr_stat)
+      } else {
+        stats::pnorm(signed_lr_stat, lower.tail = FALSE)
+      }
     }
   } else if (pval_method == "likelihood") {
     if (alternative != "two.sided") {
-        stop("Likelihood ratio test does not support one-sided alternatives")
+      stop("Likelihood ratio test does not support one-sided alternatives")
     }
     sum_cox$logtest["pvalue"]
   } else {

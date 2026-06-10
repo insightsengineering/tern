@@ -229,6 +229,37 @@ testthat::test_that("prop_diff_cmh works correctly when some strata don't have b
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("prop_diff_cmh works correctly when strata combinations are empty", {
+  set.seed(2, kind = "Mersenne-Twister")
+  rsp <- sample(c(TRUE, FALSE), 100, TRUE)
+  grp <- sample(c("Placebo", "Treatment"), 100, TRUE)
+  grp <- factor(grp, levels = c("Placebo", "Treatment"))
+  strata_data <- data.frame(
+    "f1" = sample(c("a", "b"), 100, TRUE),
+    "f2" = sample(c("x", "y", "z"), 100, TRUE),
+    stringsAsFactors = TRUE
+  )
+
+  # Remove all combinations where f1 == "a" and f2 == "x":
+  keep <- !(strata_data$f1 == "a" & strata_data$f2 == "x")
+  rsp <- rsp[keep]
+  grp <- grp[keep]
+  strata_data <- strata_data[keep, ]
+
+  testthat::expect_warning(
+    result <- prop_diff_cmh(
+      rsp = rsp, grp = grp, strata = interaction(strata_data),
+      conf_level = 0.90
+    ), "Less than 5 observations in some strata."
+  )
+
+  testthat::expect_false(is.na(result$diff))
+  testthat::expect_false(anyNA(result$diff_ci))
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("`prop_strat_nc` (proportion difference by stratified Newcombe) with cmh weights", {
   set.seed(1)
   rsp <- c(
