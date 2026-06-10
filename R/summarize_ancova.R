@@ -101,16 +101,20 @@ h_ancova <- function(.var,
 #'   of the investigated linear model.
 #'
 #' @return
-#' * `s_ancova()` returns a named list of 5 statistics:
+#' * `s_ancova()` returns a named list of 8 statistics:
 #'   * `n`: Count of complete sample size for the group.
 #'   * `lsmean`: Estimated marginal means in the group.
+#'   * `lsmean_se`: Adjusted mean with standard error as a 2-element vector `c(emmean, SE)`.
+#'   * `lsmean_ci`: Adjusted mean with confidence interval as a 3-element vector `c(emmean, lower.CL, upper.CL)`.
 #'   * `lsmean_diff`: Difference in estimated marginal means in comparison to the reference group.
 #'     If working with the reference group, this will be empty.
 #'   * `lsmean_diff_ci`: Confidence level for difference in estimated marginal means in comparison
 #'     to the reference group.
+#'   * `lsmean_diff_with_ci`: Difference in adjusted means with confidence interval as a 3-element vector
+#'     `c(estimate, lower.CL, upper.CL)`.
 #'   * `pval`: p-value (not adjusted for multiple comparisons).
 #'
-#' @keywords internal
+#' @export
 s_ancova <- function(df,
                      .var,
                      .df_row,
@@ -165,8 +169,20 @@ s_ancova <- function(df,
     list(
       n = length(y[!is.na(y)]),
       lsmean = formatters::with_label(sum_fit_level$emmean, "Adjusted Mean"),
+      lsmean_se = formatters::with_label(
+        c(sum_fit_level$emmean, sum_fit_level$SE),
+        "Adjusted Mean (SE)"
+      ),
+      lsmean_ci = formatters::with_label(
+        c(sum_fit_level$emmean, sum_fit_level$lower.CL, sum_fit_level$upper.CL),
+        f_conf_level(conf_level)
+      ),
       lsmean_diff = formatters::with_label(numeric(), "Difference in Adjusted Means"),
       lsmean_diff_ci = formatters::with_label(numeric(), f_conf_level(conf_level)),
+      lsmean_diff_with_ci = formatters::with_label(
+        numeric(),
+        paste0("Difference in Adjusted Means (", f_conf_level(conf_level), ")")
+      ),
       pval = formatters::with_label(numeric(), "p-value")
     )
   } else {
@@ -202,10 +218,22 @@ s_ancova <- function(df,
     list(
       n = length(y[!is.na(y)]),
       lsmean = formatters::with_label(sum_fit_level$emmean, "Adjusted Mean"),
+      lsmean_se = formatters::with_label(
+        c(sum_fit_level$emmean, sum_fit_level$SE),
+        "Adjusted Mean (SE)"
+      ),
+      lsmean_ci = formatters::with_label(
+        c(sum_fit_level$emmean, sum_fit_level$lower.CL, sum_fit_level$upper.CL),
+        f_conf_level(conf_level)
+      ),
       lsmean_diff = formatters::with_label(sum_contrasts_level$estimate, "Difference in Adjusted Means"),
       lsmean_diff_ci = formatters::with_label(
         c(sum_contrasts_level$lower.CL, sum_contrasts_level$upper.CL),
         f_conf_level(conf_level)
+      ),
+      lsmean_diff_with_ci = formatters::with_label(
+        c(sum_contrasts_level$estimate, sum_contrasts_level$lower.CL, sum_contrasts_level$upper.CL),
+        paste0("Difference in Adjusted Means (", f_conf_level(conf_level), ")")
       ),
       pval = formatters::with_label(sum_contrasts_level$p.value, "p-value")
     )

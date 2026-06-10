@@ -48,6 +48,11 @@
       attr(,"label")
       [1] "75%-ile (95% CI)"
       
+      $range_with_cens_info
+      [1]   0.07143141 154.08901021   0.00000000   0.00000000
+      attr(,"label")
+      [1] "Min - Max (with censoring)"
+      
 
 # s_surv_time works with customized arguments
 
@@ -99,6 +104,11 @@
       attr(,"label")
       [1] "80%-ile (99% CI)"
       
+      $range_with_cens_info
+      [1]   0.07143141 154.08901021   0.00000000   0.00000000
+      attr(,"label")
+      [1] "Min - Max (with censoring)"
+      
 
 # a_surv_time works with default arguments
 
@@ -107,16 +117,28 @@
     Output
       RowsVerticalSection (in_rows) object print method:
       ----------------------------
-               row_name        formatted_cell indent_mod        row_label
-      1          median                  24.8          0           Median
-      2       median_ci        (21.10, 31.35)          0    Median 95% CI
-      3    median_ci_3d 24.76 (21.10 - 31.35)          0  Median (95% CI)
-      4       quantiles           10.8 - 47.6          0  25% and 75%-ile
-      5 quantiles_lower  10.81 (6.65 - 13.43)          0 25%-ile (95% CI)
-      6 quantiles_upper 47.60 (39.27 - 57.82)          0 75%-ile (95% CI)
-      7    range_censor           0.8 to 78.9          0 Range (censored)
-      8     range_event          0.1 to 155.5          0    Range (event)
-      9           range           0.1 - 155.5          0        Min - Max
+                     row_name        formatted_cell indent_mod
+      1                median                  24.8          0
+      2             median_ci        (21.10, 31.35)          0
+      3          median_ci_3d 24.76 (21.10 - 31.35)          0
+      4             quantiles           10.8 - 47.6          0
+      5       quantiles_lower  10.81 (6.65 - 13.43)          0
+      6       quantiles_upper 47.60 (39.27 - 57.82)          0
+      7          range_censor           0.8 to 78.9          0
+      8           range_event          0.1 to 155.5          0
+      9                 range           0.1 - 155.5          0
+      10 range_with_cens_info          0.1 to 155.5          0
+                          row_label
+      1                      Median
+      2               Median 95% CI
+      3             Median (95% CI)
+      4             25% and 75%-ile
+      5            25%-ile (95% CI)
+      6            75%-ile (95% CI)
+      7            Range (censored)
+      8               Range (event)
+      9                   Min - Max
+      10 Min - Max (with censoring)
 
 # a_surv_time works with customized arguments
 
@@ -148,18 +170,19 @@
     Code
       res
     Output
-                                          ARM A                          ARM B                          ARM C            
-      ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-      Survival Time (Months)                                                                                             
-        Median                             32.0                           23.9                           20.8            
-          90% CI               (25.557055515, 49.309164814)   (18.861684287, 32.147869886)   (12.954083786, 26.023348062)
-        Median (90% CI)           32.02 (25.56 - 49.31)          23.91 (18.86 - 32.15)          20.77 (12.95 - 26.02)    
-        40% and 60%-ile                25.6 - 46.5                    18.3 - 29.2                    13.0 - 25.7         
-        40%-ile (90% CI)          25.56 (20.73 - 33.39)          18.26 (12.77 - 23.91)          12.95 (10.10 - 24.76)    
-        60%-ile (90% CI)          46.51 (32.02 - 57.82)          29.19 (23.91 - 41.30)          25.75 (20.77 - 37.10)    
-        Range (censored)               0.8 to 63.5                    6.2 to 78.9                    3.4 to 52.4         
-        Range (event)                  0.3 to 155.5                   0.1 to 154.1                   0.6 to 80.7         
-        Range                          0.3 - 155.5                    0.1 - 154.1                     0.6 - 80.7         
+                                                ARM A                          ARM B                          ARM C            
+      —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+      Survival Time (Months)                                                                                                   
+        Median                                   32.0                           23.9                           20.8            
+          90% CI                     (25.557055515, 49.309164814)   (18.861684287, 32.147869886)   (12.954083786, 26.023348062)
+        Median (90% CI)                 32.02 (25.56 - 49.31)          23.91 (18.86 - 32.15)          20.77 (12.95 - 26.02)    
+        40% and 60%-ile                      25.6 - 46.5                    18.3 - 29.2                    13.0 - 25.7         
+        40%-ile (90% CI)                25.56 (20.73 - 33.39)          18.26 (12.77 - 23.91)          12.95 (10.10 - 24.76)    
+        60%-ile (90% CI)                46.51 (32.02 - 57.82)          29.19 (23.91 - 41.30)          25.75 (20.77 - 37.10)    
+        Range (censored)                     0.8 to 63.5                    6.2 to 78.9                    3.4 to 52.4         
+        Range (event)                        0.3 to 155.5                   0.1 to 154.1                   0.6 to 80.7         
+        Range                                0.3 - 155.5                    0.1 - 154.1                     0.6 - 80.7         
+        Min - Max (with censoring)           0.3 to 155.5                   0.1 to 154.1                   0.6 to 80.7         
 
 # surv_time works with referential footnotes
 

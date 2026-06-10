@@ -42,7 +42,7 @@ format_fraction <- function(x, ...) {
     )
   }
 
-  return(result)
+  result
 }
 
 #' Format fraction and percentage with fixed single decimal place
@@ -77,7 +77,7 @@ format_fraction_fixed_dp <- function(x, ...) {
       " (", sprintf("%.1f", round(x["num"] / x["denom"] * 100, 1)), "%)"
     )
   }
-  return(result)
+  result
 }
 
 #' Format count and fraction
@@ -114,7 +114,7 @@ format_count_fraction <- function(x, ...) {
     paste0(x[1], " (", round(x[2] * 100, 1), "%)")
   }
 
-  return(result)
+  result
 }
 
 #' Format count and percentage with fixed single decimal place
@@ -153,7 +153,7 @@ format_count_fraction_fixed_dp <- function(x, ...) {
     sprintf("%d (%.1f%%)", x[1], x[2] * 100)
   }
 
-  return(result)
+  result
 }
 
 #' Format count and fraction with special case for count < 10
@@ -190,7 +190,7 @@ format_count_fraction_lt10 <- function(x, ...) {
     paste0(x[1], " (", round(x[2] * 100, 1), "%)")
   }
 
-  return(result)
+  result
 }
 
 #' Format XX as a formatting function
@@ -229,17 +229,17 @@ format_xx <- function(str) {
       rounding <- function(x) {
         round(x, digits = ifelse(length(y) > 1, nchar(y[2]), 0))
       }
-      return(rounding)
+      rounding
     }
   )
 
   rtable_format <- function(x, output) {
     values <- Map(y = x, fun = roundings, function(y, fun) fun(y))
     regmatches(x = str, m = positions)[[1]] <- values
-    return(str)
+    str
   }
 
-  return(rtable_format)
+  rtable_format
 }
 
 #' Format numeric values by significant figures
@@ -534,7 +534,7 @@ format_auto <- function(dt_var, x_stat) {
     out[is_even] <- str_vals
     out[!is_even] <- inv_str_fmt
 
-    return(paste0(out, collapse = ""))
+    paste0(out, collapse = "")
   }
 }
 
@@ -546,11 +546,11 @@ str_extract <- function(string, pattern = "xx|xx\\.|xx\\.x+", invert = FALSE) {
 # Helper function
 count_decimalplaces <- function(dec) {
   if (is.na(dec)) {
-    return(0)
+    0
   } else if (abs(dec - round(dec)) > .Machine$double.eps^0.5) { # For precision
     nchar(strsplit(format(dec, scientific = FALSE, trim = FALSE), ".", fixed = TRUE)[[1]][[2]])
   } else {
-    return(0)
+    0
   }
 }
 
@@ -572,4 +572,35 @@ apply_auto_formatting <- function(.formats, x_stats, .df_row, .var) {
     .formats[is_auto_fmt] <- lapply(names(auto_stats), format_auto, dt_var = var_df)
   }
   .formats
+}
+
+#' Format range with censoring indicators
+#'
+#' @description `r lifecycle::badge("experimental")`
+#'
+#' Formats a survival time range where the minimum and/or maximum may be a censored observation.
+#' A `+` suffix is appended to a bound when the corresponding censoring flag is `TRUE`.
+#'
+#' @param digits (`integer(1)`)\cr number of decimal places to display. Defaults to `1L`.
+#'
+#' @return An `rtables` formatting function that takes a `numeric(4)` vector of the form
+#'   `c(min, max, lower_censored, upper_censored)`, where `lower_censored` and `upper_censored`
+#'   are `0`/`1` (or `FALSE`/`TRUE`) flags, and returns a string in the format `"min to max"`,
+#'   with `+` appended to `min` and/or `max` when the corresponding censoring flag is non-zero.
+#'
+#' @examples
+#' fmt <- format_range_cens(1L)
+#' fmt(c(1.23, 9.87, 1, 0))
+#' fmt(c(1.23, 9.87, 0, 0))
+#'
+#' @family formatting functions
+#' @export
+format_range_cens <- function(digits = 1L) {
+  checkmate::assert_integerish(digits)
+  function(x, ...) {
+    checkmate::assert_numeric(x, len = 4)
+    l_result <- paste0(round(x[1], digits), if (x[3] != 0) "+" else "")
+    h_result <- paste0(round(x[2], digits), if (x[4] != 0) "+" else "")
+    paste(l_result, "to", h_result)
+  }
 }
