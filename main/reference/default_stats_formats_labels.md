@@ -435,7 +435,7 @@ get_formats_from_stats(cnt_stats)
 #>     paste0(x[1], " (", round(x[2] * 100, 1), "%)")
 #>   }
 #> 
-#>   return(result)
+#>   result
 #> }
 #> <environment: namespace:tern>
 #> 
@@ -459,7 +459,7 @@ get_formats_from_stats(cnt_stats)
 #>     sprintf("%d (%.1f%%)", x[1], x[2] * 100)
 #>   }
 #> 
-#>   return(result)
+#>   result
 #> }
 #> <environment: namespace:tern>
 #> 
@@ -478,7 +478,7 @@ get_formats_from_stats(cnt_stats)
 #>       " (", sprintf("%.1f", round(x["num"] / x["denom"] * 100, 1)), "%)"
 #>     )
 #>   }
-#>   return(result)
+#>   result
 #> }
 #> <environment: namespace:tern>
 #> 
@@ -511,7 +511,7 @@ get_formats_from_stats(all_cnt_occ)
 #>     paste0(x[1], " (", round(x[2] * 100, 1), "%)")
 #>   }
 #> 
-#>   return(result)
+#>   result
 #> }
 #> <environment: namespace:tern>
 #> 
@@ -535,7 +535,7 @@ get_formats_from_stats(all_cnt_occ)
 #>     sprintf("%d (%.1f%%)", x[1], x[2] * 100)
 #>   }
 #> 
-#>   return(result)
+#>   result
 #> }
 #> <environment: namespace:tern>
 #> 
@@ -554,7 +554,7 @@ get_formats_from_stats(all_cnt_occ)
 #>       " (", sprintf("%.1f", round(x["num"] / x["denom"] * 100, 1)), "%)"
 #>     )
 #>   }
-#>   return(result)
+#>   result
 #> }
 #> <environment: namespace:tern>
 #> 
@@ -582,7 +582,7 @@ get_formats_from_stats(all_cnt_occ, formats_in = c("fraction" = c("xx")))
 #>     paste0(x[1], " (", round(x[2] * 100, 1), "%)")
 #>   }
 #> 
-#>   return(result)
+#>   result
 #> }
 #> <environment: namespace:tern>
 #> 
@@ -606,7 +606,7 @@ get_formats_from_stats(all_cnt_occ, formats_in = c("fraction" = c("xx")))
 #>     sprintf("%d (%.1f%%)", x[1], x[2] * 100)
 #>   }
 #> 
-#>   return(result)
+#>   result
 #> }
 #> <environment: namespace:tern>
 #> 
@@ -637,7 +637,7 @@ get_formats_from_stats(all_cnt_occ, formats_in = list("fraction" = c("xx.xx", "x
 #>     paste0(x[1], " (", round(x[2] * 100, 1), "%)")
 #>   }
 #> 
-#>   return(result)
+#>   result
 #> }
 #> <environment: namespace:tern>
 #> 
@@ -661,7 +661,7 @@ get_formats_from_stats(all_cnt_occ, formats_in = list("fraction" = c("xx.xx", "x
 #>     sprintf("%d (%.1f%%)", x[1], x[2] * 100)
 #>   }
 #> 
-#>   return(result)
+#>   result
 #> }
 #> <environment: namespace:tern>
 #> 
@@ -971,7 +971,7 @@ summary_formats(type = "counts", include_pval = TRUE)
 #>     paste0(x[1], " (", round(x[2] * 100, 1), "%)")
 #>   }
 #> 
-#>   return(result)
+#>   result
 #> }
 #> <environment: namespace:tern>
 #> 
@@ -995,7 +995,7 @@ summary_formats(type = "counts", include_pval = TRUE)
 #>     sprintf("%d (%.1f%%)", x[1], x[2] * 100)
 #>   }
 #> 
-#>   return(result)
+#>   result
 #> }
 #> <environment: namespace:tern>
 #> 
@@ -1014,7 +1014,7 @@ summary_formats(type = "counts", include_pval = TRUE)
 #>       " (", sprintf("%.1f", round(x["num"] / x["denom"] * 100, 1)), "%)"
 #>     )
 #>   }
-#>   return(result)
+#>   result
 #> }
 #> <environment: namespace:tern>
 #> 

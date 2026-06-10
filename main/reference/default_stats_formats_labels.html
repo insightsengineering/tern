@@ -15,7 +15,7 @@ seen in analyze_vars(). See notes to understand why this is experimental."><meta
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.10.9010</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.10.9011</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -413,7 +413,7 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span>     paste0(x[1], " (", round(x[2] * 100, 1), "%)")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   return(result)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:tern&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -437,7 +437,7 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span>     sprintf("%d (%.1f%%)", x[1], x[2] * 100)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   return(result)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:tern&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -456,7 +456,7 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span>       " (", sprintf("%.1f", round(x["num"] / x["denom"] * 100, 1)), "%)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     )</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   return(result)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:tern&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -489,7 +489,7 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span>     paste0(x[1], " (", round(x[2] * 100, 1), "%)")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   return(result)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:tern&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -513,7 +513,7 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span>     sprintf("%d (%.1f%%)", x[1], x[2] * 100)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   return(result)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:tern&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -532,7 +532,7 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span>       " (", sprintf("%.1f", round(x["num"] / x["denom"] * 100, 1)), "%)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     )</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   return(result)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:tern&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -560,7 +560,7 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span>     paste0(x[1], " (", round(x[2] * 100, 1), "%)")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   return(result)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:tern&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -584,7 +584,7 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span>     sprintf("%d (%.1f%%)", x[1], x[2] * 100)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   return(result)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:tern&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -615,7 +615,7 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span>     paste0(x[1], " (", round(x[2] * 100, 1), "%)")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   return(result)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:tern&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -639,7 +639,7 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span>     sprintf("%d (%.1f%%)", x[1], x[2] * 100)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   return(result)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:tern&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -949,7 +949,7 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span>     paste0(x[1], " (", round(x[2] * 100, 1), "%)")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   return(result)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:tern&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -973,7 +973,7 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span>     sprintf("%d (%.1f%%)", x[1], x[2] * 100)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   return(result)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:tern&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -992,7 +992,7 @@ return a string. This is well documented in <code><a href="https://insightsengin
 <span class="r-out co"><span class="r-pr">#&gt;</span>       " (", sprintf("%.1f", round(x["num"] / x["denom"] * 100, 1)), "%)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     )</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   return(result)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:tern&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

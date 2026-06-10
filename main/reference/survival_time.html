@@ -15,7 +15,7 @@ not an event has occurred."><meta property="og:image" content="https://insightse
 
     <a class="navbar-brand me-2" href="../index.html">tern</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.10.9010</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.10.9011</small>
 
     <div style="width: 140px; margin-left: 0.5rem;"> <small class="nav-text text-muted me-auto">part of</small> <img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/nest.png?raw=true" alt="NEST" style="height: 30px;"><a href="https://pharmaverse.org/" class="external-link"><img src="https://github.com/insightsengineering/hex-stickers/blob/main/PNG/pharmaverse.png?raw=true" alt="pharmaverse" style="height: 28px;"></a> </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -159,7 +159,7 @@ times, to avoid warnings from <code>rtables</code>.</p></dd>
 
 <dt id="arg--stats">.stats<a class="anchor" aria-label="anchor" href="#arg--stats"></a></dt>
 <dd><p>(<code>character</code>)<br> statistics to select for the table.</p>
-<p>Options are: <code>'median', 'median_ci', 'median_ci_3d', 'quantiles', 'quantiles_lower', 'quantiles_upper', 'range_censor', 'range_event', 'range'</code></p></dd>
+<p>Options are: <code>'median', 'median_ci', 'median_ci_3d', 'quantiles', 'quantiles_lower', 'quantiles_upper', 'range_censor', 'range_event', 'range', 'range_with_cens_info'</code></p></dd>
 
 
 <dt id="arg--stat-names">.stat_names<a class="anchor" aria-label="anchor" href="#arg--stat-names"></a></dt>
@@ -212,6 +212,7 @@ the statistics from <code>s_surv_time()</code> to the table layout.</p></li>
 <li><p><code>range_censor</code>: Survival time range for censored observations.</p></li>
 <li><p><code>range_event</code>: Survival time range for observations with events.</p></li>
 <li><p><code>range</code>: Survival time range for all observations.</p></li>
+<li><p><code>range_with_cens_info</code>: Survival time range for all observations, with <code>+</code> suffix on censored bounds.</p></li>
 </ul></li>
 </ul><ul><li><p><code>a_surv_time()</code> returns the corresponding list with formatted <code><a href="https://insightsengineering.github.io/rtables/latest-tag/reference/CellValue.html" class="external-link">rtables::CellValue()</a></code>.</p></li>
 </ul></div>
@@ -263,16 +264,28 @@ and additional format arguments. This function is a wrapper for <code><a href="h
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RowsVerticalSection (in_rows) object print method:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          row_name        formatted_cell indent_mod        row_label</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          median                  32.0          0           Median</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       median_ci        (22.51, 49.31)          0    Median 95% CI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    median_ci_3d 32.02 (22.51 - 49.31)          0  Median (95% CI)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       quantiles           17.4 - 65.3          0  25% and 75%-ile</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 quantiles_lower 17.37 (10.13 - 22.51)          0 25%-ile (95% CI)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 quantiles_upper 65.28 (49.31 - 87.21)          0 75%-ile (95% CI)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    range_censor           0.8 to 63.5          0 Range (censored)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8     range_event          0.3 to 155.5          0    Range (event)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9           range           0.3 - 155.5          0        Min - Max</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                row_name        formatted_cell indent_mod</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                median                  32.0          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2             median_ci        (22.51, 49.31)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          median_ci_3d 32.02 (22.51 - 49.31)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4             quantiles           17.4 - 65.3          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       quantiles_lower 17.37 (10.13 - 22.51)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       quantiles_upper 65.28 (49.31 - 87.21)          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7          range_censor           0.8 to 63.5          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8           range_event          0.3 to 155.5          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                 range           0.3 - 155.5          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 range_with_cens_info          0.3 to 155.5          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     row_label</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                      Median</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2               Median 95% CI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3             Median (95% CI)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4             25% and 75%-ile</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5            25%-ile (95% CI)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6            75%-ile (95% CI)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7            Range (censored)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8               Range (event)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                   Min - Max</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 Min - Max (with censoring)</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

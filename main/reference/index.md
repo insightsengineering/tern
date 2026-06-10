@@ -608,6 +608,9 @@ These functions provide customized formatting rules to work with the
 - [`format_fraction_threshold()`](https://insightsengineering.github.io/tern/reference/format_fraction_threshold.md)
   **\[stable\]** : Format fraction with lower threshold
 
+- [`format_range_cens()`](https://insightsengineering.github.io/tern/reference/format_range_cens.md)
+  **\[experimental\]** : Format range with censoring indicators
+
 - [`format_sigfig()`](https://insightsengineering.github.io/tern/reference/format_sigfig.md)
   : Format numeric values by significant figures
 

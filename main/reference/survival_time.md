@@ -129,7 +129,7 @@ a_surv_time(
   statistics to select for the table.
 
   Options are:
-  `'median', 'median_ci', 'median_ci_3d', 'quantiles', 'quantiles_lower', 'quantiles_upper', 'range_censor', 'range_event', 'range'`
+  `'median', 'median_ci', 'median_ci_3d', 'quantiles', 'quantiles_lower', 'quantiles_upper', 'range_censor', 'range_event', 'range', 'range_with_cens_info'`
 
 - .stat_names:
 
@@ -208,6 +208,9 @@ a_surv_time(
 
   - `range`: Survival time range for all observations.
 
+  - `range_with_cens_info`: Survival time range for all observations,
+    with `+` suffix on censored bounds.
+
 &nbsp;
 
 - `a_surv_time()` returns the corresponding list with formatted
@@ -265,14 +268,26 @@ a_surv_time(
 )
 #> RowsVerticalSection (in_rows) object print method:
 #> ----------------------------
-#>          row_name        formatted_cell indent_mod        row_label
-#> 1          median                  32.0          0           Median
-#> 2       median_ci        (22.51, 49.31)          0    Median 95% CI
-#> 3    median_ci_3d 32.02 (22.51 - 49.31)          0  Median (95% CI)
-#> 4       quantiles           17.4 - 65.3          0  25% and 75%-ile
-#> 5 quantiles_lower 17.37 (10.13 - 22.51)          0 25%-ile (95% CI)
-#> 6 quantiles_upper 65.28 (49.31 - 87.21)          0 75%-ile (95% CI)
-#> 7    range_censor           0.8 to 63.5          0 Range (censored)
-#> 8     range_event          0.3 to 155.5          0    Range (event)
-#> 9           range           0.3 - 155.5          0        Min - Max
+#>                row_name        formatted_cell indent_mod
+#> 1                median                  32.0          0
+#> 2             median_ci        (22.51, 49.31)          0
+#> 3          median_ci_3d 32.02 (22.51 - 49.31)          0
+#> 4             quantiles           17.4 - 65.3          0
+#> 5       quantiles_lower 17.37 (10.13 - 22.51)          0
+#> 6       quantiles_upper 65.28 (49.31 - 87.21)          0
+#> 7          range_censor           0.8 to 63.5          0
+#> 8           range_event          0.3 to 155.5          0
+#> 9                 range           0.3 - 155.5          0
+#> 10 range_with_cens_info          0.3 to 155.5          0
+#>                     row_label
+#> 1                      Median
+#> 2               Median 95% CI
+#> 3             Median (95% CI)
+#> 4             25% and 75%-ile
+#> 5            25%-ile (95% CI)
+#> 6            75%-ile (95% CI)
+#> 7            Range (censored)
+#> 8               Range (event)
+#> 9                   Min - Max
+#> 10 Min - Max (with censoring)
 ```

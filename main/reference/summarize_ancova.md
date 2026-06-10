@@ -154,7 +154,8 @@ a_ancova(
   (`character`)\
   statistics to select for the table.
 
-  Options are: `'n', 'lsmean', 'lsmean_diff', 'lsmean_diff_ci', 'pval'`
+  Options are:
+  `'n', 'lsmean', 'lsmean_se', 'lsmean_ci', 'lsmean_diff', 'lsmean_diff_ci', 'lsmean_diff_with_ci', 'pval'`
 
 - .stat_names:
 
@@ -218,11 +219,17 @@ a_ancova(
 
 &nbsp;
 
-- `s_ancova()` returns a named list of 5 statistics:
+- `s_ancova()` returns a named list of 8 statistics:
 
   - `n`: Count of complete sample size for the group.
 
   - `lsmean`: Estimated marginal means in the group.
+
+  - `lsmean_se`: Adjusted mean with standard error as a 2-element vector
+    `c(emmean, SE)`.
+
+  - `lsmean_ci`: Adjusted mean with confidence interval as a 3-element
+    vector `c(emmean, lower.CL, upper.CL)`.
 
   - `lsmean_diff`: Difference in estimated marginal means in comparison
     to the reference group. If working with the reference group, this
@@ -230,6 +237,9 @@ a_ancova(
 
   - `lsmean_diff_ci`: Confidence level for difference in estimated
     marginal means in comparison to the reference group.
+
+  - `lsmean_diff_with_ci`: Difference in adjusted means with confidence
+    interval as a 3-element vector `c(estimate, lower.CL, upper.CL)`.
 
   - `pval`: p-value (not adjusted for multiple comparisons).
 

@@ -1,11 +1,14 @@
 # Changelog
 
-## tern 0.9.10.9010
+## tern 0.9.10.9011
 
 #### Miscellaneous
 
 - Updated `roxygen2` to 8.0.0 and added `@exportS3Method` tags for S3
   methods in `decorate_grob.R` and `utils_grid.R`.
+- Converted
+  [`s_surv_time()`](https://insightsengineering.github.io/tern/reference/survival_time.md)to
+  exported functions.
 
 #### Enhancements
 
@@ -19,6 +22,13 @@
   for the unconditional exact confidence interval for the difference in
   proportions by inverting one-sided tail tests over a nuisance
   parameter.
+- Added `range_with_cens_info` statistic to
+  [`s_surv_time()`](https://insightsengineering.github.io/tern/reference/survival_time.md).
+- Added `lsmean_se`, `lsmean_ci`, and `lsmean_diffci` statistics to
+  [`s_ancova()`](https://insightsengineering.github.io/tern/reference/summarize_ancova.md).
+- Added
+  [`s_ancova()`](https://insightsengineering.github.io/tern/reference/summarize_ancova.md)
+  to exported functions.
 
 #### Bug Fixes
 
