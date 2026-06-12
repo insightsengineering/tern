@@ -9,7 +9,7 @@
 #' supplied via the `strata` element of the `variables` argument.
 #'
 #' @inheritParams argument_convention
-#' @param method (`string`)\cr one of `chisq`, `cmh`, `cmh_wh`, `fisher`, or `schouten`;
+#' @param method (`string`)\cr one of `chisq`, `cmh`, `cmh_sato`, `cmh_wh`, `fisher`, or `schouten`;
 #'   specifies the test used to calculate the p-value.
 #' @param .stats (`character`)\cr statistics to select for the table.
 #'
@@ -53,7 +53,7 @@ s_test_proportion_diff <- function(df,
                                    .ref_group,
                                    .in_ref_col,
                                    variables = list(strata = NULL),
-                                   method = c("chisq", "schouten", "fisher", "cmh", "cmh_wh"),
+                                   method = c("chisq", "schouten", "fisher", "cmh", "cmh_sato", "cmh_wh"),
                                    alternative = c("two.sided", "less", "greater"),
                                    ...) {
   method <- match.arg(method)
@@ -82,6 +82,7 @@ s_test_proportion_diff <- function(df,
 
     tbl <- switch(method,
       cmh = table(grp, rsp, strata),
+      cmh_sato = table(grp, rsp, strata),
       cmh_wh = table(grp, rsp, strata),
       table(grp, rsp)
     )
@@ -91,6 +92,7 @@ s_test_proportion_diff <- function(df,
       cmh = prop_cmh(tbl, alternative = alternative),
       fisher = prop_fisher(tbl, alternative = alternative),
       schouten = prop_schouten(tbl, alternative = alternative),
+      cmh_sato = prop_cmh(tbl, alternative = alternative, diff_se = "sato"),
       cmh_wh = prop_cmh(tbl, alternative = alternative, transform = "wilson_hilferty")
     )
   }
@@ -118,6 +120,7 @@ d_test_proportion_diff <- function(method, alternative = c("two.sided", "less", 
     "schouten" = "Chi-Squared Test with Schouten Correction",
     "chisq" = "Chi-Squared Test",
     "cmh" = "Cochran-Mantel-Haenszel Test",
+    "cmh_sato" = "Cochran-Mantel-Haenszel Test with Sato Variance Estimator",
     "cmh_wh" = "Cochran-Mantel-Haenszel Test with Wilson-Hilferty Transformation",
     "fisher" = "Fisher's Exact Test",
     stop(paste(method, "does not have a description"))
@@ -235,7 +238,7 @@ a_test_proportion_diff <- function(df,
 test_proportion_diff <- function(lyt,
                                  vars,
                                  variables = list(strata = NULL),
-                                 method = c("chisq", "schouten", "fisher", "cmh", "cmh_wh"),
+                                 method = c("chisq", "schouten", "fisher", "cmh", "cmh_sato", "cmh_wh"),
                                  alternative = c("two.sided", "less", "greater"),
                                  var_labels = vars,
                                  na_str = default_na_str(),
@@ -321,17 +324,20 @@ prop_chisq <- function(tbl, alternative = c("two.sided", "less", "greater")) {
 #'
 #' @param ary (`array`, 3 dimensions)\cr array with two groups in rows, the binary response
 #'   (`TRUE`/`FALSE`) in columns, and the strata in the third dimension.
+#' @param diff_se (`string`)\cr either `standard` or `sato`; specifies whether to use the Sato variance estimator to calculate the chi-squared statistic.
 #' @param transform (`string`)\cr either `none` or `wilson_hilferty`; specifies whether to apply
 #'   the Wilson-Hilferty transformation of the chi-squared statistic.
 #'
 #' @keywords internal
 prop_cmh <- function(ary,
                      alternative = c("two.sided", "less", "greater"),
+                     diff_se = c("standard", "sato"),
                      transform = c("none", "wilson_hilferty")) {
   checkmate::assert_array(ary)
   checkmate::assert_integer(c(ncol(ary), nrow(ary)), lower = 2, upper = 2)
   checkmate::assert_integer(length(dim(ary)), lower = 3, upper = 3)
   alternative <- match.arg(alternative)
+  diff_se <- match.arg(diff_se)
   transform <- match.arg(transform)
 
   strata_sizes <- apply(ary, MARGIN = 3, sum)
