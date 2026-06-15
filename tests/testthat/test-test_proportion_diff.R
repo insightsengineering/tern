@@ -20,24 +20,58 @@ testthat::test_that("prop_chisq returns right result", {
   testthat::expect_snapshot(res_greater)
 })
 
-testthat::test_that("prop_cmh returns right result", {
+testthat::test_that("prop_cmh returns right result for odds ratio < 1", {
   set.seed(1, kind = "Mersenne-Twister")
-  rsp <- sample(c(TRUE, FALSE), 100, TRUE)
+  rsp <- factor(sample(c(TRUE, FALSE), 100, TRUE), levels = c("TRUE", "FALSE"))
   grp <- factor(rep(c("A", "B"), each = 50))
   strata <- factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
   tbl <- table(grp, rsp, strata)
+  checkmate::assert_true(stats::mantelhaen.test(tbl, correct = FALSE)$estimate < 1)
 
   result <- prop_cmh(tbl)
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
+  expected <- stats::mantelhaen.test(tbl, correct = FALSE)$p.value
+  testthat::expect_equal(result, expected, tolerance = 1e-3)
 
   result_less <- prop_cmh(tbl, alternative = "less")
   res_less <- testthat::expect_silent(result_less)
   testthat::expect_snapshot(res_less)
+  expected_less <- stats::mantelhaen.test(tbl, correct = FALSE, alternative = "less")$p.value
+  testthat::expect_equal(result_less, expected_less, tolerance = 1e-3)
 
   result_greater <- prop_cmh(tbl, alternative = "greater")
   res_greater <- testthat::expect_silent(result_greater)
   testthat::expect_snapshot(res_greater)
+  expected_greater <- stats::mantelhaen.test(tbl, correct = FALSE, alternative = "greater")$p.value
+  testthat::expect_equal(result_greater, expected_greater, tolerance = 1e-3)
+})
+
+testthat::test_that("prop_cmh returns right result for odds ratio > 1", {
+  set.seed(847, kind = "Mersenne-Twister")
+  rsp <- factor(sample(c(TRUE, FALSE), 100, TRUE), levels = c("TRUE", "FALSE"))
+  grp <- factor(rep(c("A", "B"), each = 50))
+  strata <- factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
+  tbl <- table(grp, rsp, strata)
+  checkmate::assert_true(stats::mantelhaen.test(tbl, correct = FALSE)$estimate > 1)
+
+  result <- prop_cmh(tbl)
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+  expected <- stats::mantelhaen.test(tbl, correct = FALSE)$p.value
+  testthat::expect_equal(result, expected, tolerance = 1e-3)
+
+  result_less <- prop_cmh(tbl, alternative = "less")
+  res_less <- testthat::expect_silent(result_less)
+  testthat::expect_snapshot(res_less)
+  expected_less <- stats::mantelhaen.test(tbl, correct = FALSE, alternative = "less")$p.value
+  testthat::expect_equal(result_less, expected_less, tolerance = 1e-3)
+
+  result_greater <- prop_cmh(tbl, alternative = "greater")
+  res_greater <- testthat::expect_silent(result_greater)
+  testthat::expect_snapshot(res_greater)
+  expected_greater <- stats::mantelhaen.test(tbl, correct = FALSE, alternative = "greater")$p.value
+  testthat::expect_equal(result_greater, expected_greater, tolerance = 1e-3)
 })
 
 testthat::test_that("prop_cmh also works when there are strata with just one observation", {
@@ -159,6 +193,67 @@ testthat::test_that("prop_cmh with Wilson-Hilferty transformation works", {
 
   expect_equal(result_less, result_cmh_less, tolerance = 1e-1)
   expect_equal(result_greater, result_cmh_greater, tolerance = 1e-1)
+})
+
+testthat::test_that("prop_cmh with Sato variance estimator works", {
+  tbl1 <- structure(
+    c(
+      2L, 5L, 14L, 11L,
+      3L, 4L, 8L, 6L,
+      2L, 7L, 17L, 13L,
+      4L, 5L, 13L, 12L
+    ),
+    .Dim = c(2L, 2L, 4L),
+    .Dimnames = list(
+      grp = c("B", "A"),
+      rsp = c("TRUE", "FALSE"),
+      strata = c("S1", "S2", "S3", "S4")
+    ),
+    class = "table"
+  )
+  result1 <- prop_cmh(tbl1, diff_se = "sato")
+  testthat::expect_equal(result1, 0.035, tolerance = 1e-3)
+
+  tbl2 <- structure(
+    c(
+      2L, 7L, 14L, 8L,
+      3L, 3L, 8L, 7L,
+      2L, 10L, 17L, 10L,
+      4L, 5L, 13L, 12L
+    ),
+    .Dim = c(2L, 2L, 4L),
+    .Dimnames = list(
+      grp = c("B", "A"),
+      rsp = c("TRUE", "FALSE"),
+      strata = c("S1", "S2", "S3", "S4")
+    ),
+    class = "table"
+  )
+  result2 <- prop_cmh(tbl2, diff_se = "sato")
+  testthat::expect_equal(result2, 0.004, tolerance = 1e-2)
+})
+
+testthat::test_that("prop_cmh with Sato variance estimator and Wilson-Hilferty transformation works", {
+  tbl <- structure(
+    c(
+      2L, 5L, 14L, 11L,
+      3L, 4L, 8L, 6L,
+      2L, 7L, 17L, 13L,
+      4L, 5L, 13L, 12L
+    ),
+    .Dim = c(2L, 2L, 4L),
+    .Dimnames = list(
+      grp = c("B", "A"),
+      rsp = c("TRUE", "FALSE"),
+      strata = c("S1", "S2", "S3", "S4")
+    ),
+    class = "table"
+  )
+  testthat::expect_warning(
+    result <- prop_cmh(tbl, diff_se = "sato", transform = "wilson_hilferty"),
+    "not designed for use with the Sato variance estimator"
+  )
+  testthat::expect_snapshot_value(res, style = "deparse", tolerance = 1e-3)
 })
 
 testthat::test_that("s_test_proportion_diff and d_test_proportion_diff return right result", {

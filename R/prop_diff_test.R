@@ -346,22 +346,35 @@ prop_cmh <- function(ary,
     ary <- ary[, , strata_sizes > 1]
   }
 
-  cmh_res <- stats::mantelhaen.test(ary, correct = FALSE, alternative = alternative)
-
-  if (transform == "none") {
-    cmh_res$p.value
+  z_stat <- if (diff_se == "standard") {
+    mh_res <- stats::mantelhaen.test(ary, correct = FALSE, alternative = alternative)
+    checkmate::assert_true(mh_res$parameter == 1)
+    sqrt(unname(mh_res$statistic)) * ifelse(unname(mh_res$estimate) < 1, 1, -1)
   } else {
-    chisq_stat <- unname(cmh_res$statistic)
-    df <- unname(cmh_res$parameter)
-    num <- (chisq_stat / df)^(1 / 3) - (1 - 2 / (9 * df))
-    denom <- sqrt(2 / (9 * df))
-    wh_stat <- num / denom
+    # Use the Sato variance estimator.
+    cmh <- h_diff_cmh(ary)
+    cmh_se <- h_diff_cmh_se(cmh, diff_se = "sato")
+    cmh$diff_est / cmh_se
+  }
 
-    if (alternative == "two.sided") {
-      2 * stats::pnorm(-abs(wh_stat))
-    } else {
-      stats::pnorm(wh_stat, lower.tail = (alternative == "greater"))
+  if (transform == "wilson_hilferty") {
+    if (diff_se == "sato") {
+      warning(
+        "Wilson-Hilferty transformation was not designed ", 
+        "for use with the Sato variance estimator"
+      )
     }
+    chisq_stat <- z_stat^2
+    df <- 1  # Because we only compare two groups.
+    num <- (1 - 2 / (9 * df)) - (chisq_stat / df)^(1 / 3)
+    denom <- sqrt(2 / (9 * df))
+    z_stat <- num / denom * sign(z_stat) # Preserve the direction of effect.
+  }
+
+  if (alternative == "two.sided") {
+    2 * stats::pnorm(-abs(z_stat))
+  } else {
+    stats::pnorm(z_stat, lower.tail = (alternative == "greater"))
   }
 }
 

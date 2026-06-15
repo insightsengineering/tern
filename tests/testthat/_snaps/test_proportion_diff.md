@@ -19,7 +19,7 @@
     Output
       [1] 0.02826514
 
-# prop_cmh returns right result
+# prop_cmh returns right result for odds ratio < 1
 
     Code
       res
@@ -31,14 +31,35 @@
     Code
       res_less
     Output
-      [1] 0.6761418
+      [1] 0.3238582
 
 ---
 
     Code
       res_greater
     Output
-      [1] 0.3238582
+      [1] 0.6761418
+
+# prop_cmh returns right result for odds ratio > 1
+
+    Code
+      res
+    Output
+      [1] 0.3833285
+
+---
+
+    Code
+      res_less
+    Output
+      [1] 0.8083357
+
+---
+
+    Code
+      res_greater
+    Output
+      [1] 0.1916643
 
 # prop_cmh also works when there are strata with just one observation
 
@@ -123,6 +144,10 @@
       res_greater
     Output
       [1] 0.3477347
+
+# prop_cmh with Sato variance estimator and Wilson-Hilferty transformation works
+
+    0.383328522648178
 
 # s_test_proportion_diff and d_test_proportion_diff return right result
 
