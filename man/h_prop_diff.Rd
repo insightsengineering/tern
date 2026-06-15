@@ -5,6 +5,8 @@
 \alias{prop_diff_wald}
 \alias{prop_diff_ha}
 \alias{prop_diff_nc}
+\alias{h_diff_cmh}
+\alias{h_diff_cmh_se}
 \alias{prop_diff_cmh}
 \alias{prop_diff_strat_nc}
 \alias{prop_diff_uncond_exact}
@@ -15,6 +17,10 @@ prop_diff_wald(rsp, grp, conf_level = 0.95, correct = FALSE)
 prop_diff_ha(rsp, grp, conf_level)
 
 prop_diff_nc(rsp, grp, conf_level, correct = FALSE)
+
+h_diff_cmh(tbl)
+
+h_diff_cmh_se(cmh_results, diff_se = c("standard", "sato"))
 
 prop_diff_cmh(
   rsp,
@@ -46,11 +52,17 @@ prop_diff_uncond_exact(rsp, grp, conf_level = 0.95)
 \item{correct}{(\code{flag})\cr whether to include the continuity correction. For further
 information, see \code{\link[stats:prop.test]{stats::prop.test()}}.}
 
-\item{strata}{(\code{factor})\cr variable with one level per stratum and same length as \code{rsp}.}
+\item{tbl}{(\code{array})\cr 3-dimensional array with dimensions corresponding to
+group, response, and strata. The second dimension (response) should have names
+"TRUE" and "FALSE".}
+
+\item{cmh_results}{(\code{list})\cr output of \code{\link[=h_diff_cmh]{h_diff_cmh()}}.}
 
 \item{diff_se}{(\code{string})\cr method to estimate the standard error for the difference, either
 \code{standard}, \code{sato} \insertCite{Sato1989}{tern} or
 \code{miettinen_nurminen} \insertCite{MiettinenNurminen1985}{tern}.}
+
+\item{strata}{(\code{factor})\cr variable with one level per stratum and same length as \code{rsp}.}
 
 \item{weights_method}{(\code{string})\cr weights method. Can be either \code{"cmh"} or \code{"heuristic"}
 and directs the way weights are estimated.}
@@ -73,6 +85,12 @@ interval.
 
 \item \code{prop_diff_nc()}: Newcombe confidence interval. It is based on
 the Wilson score confidence interval for a single binomial proportion \insertCite{Newcombe1998}{tern}.
+
+\item \code{h_diff_cmh()}: Helper function to calculate the CMH weighted
+difference in proportions.
+
+\item \code{h_diff_cmh_se()}: Helper function to calculate the standard error for the
+CMH weighted difference in proportions.
 
 \item \code{prop_diff_cmh()}: Calculates the weighted difference. This is defined as the difference in
 response rates between the experimental treatment group and the control treatment group, adjusted
@@ -184,3 +202,4 @@ prop_diff_uncond_exact(rsp = rsp, grp = grp, conf_level = 0.95)
 \seealso{
 \code{\link[=prop_diff]{prop_diff()}} for implementation of these helper functions.
 }
+\keyword{internal}
