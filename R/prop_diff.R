@@ -596,13 +596,13 @@ prop_diff_nc <- function(rsp,
   )
 }
 
-#' @describeIn h_prop_diff Helper function to calculate the CMH weighted 
+#' @describeIn h_prop_diff Helper function to calculate the CMH weighted
 #' difference in proportions.
-#' 
-#' @param tbl (`array`)\cr 3-dimensional array with dimensions corresponding to 
-#'   group, response, and strata. The second dimension (response) should have names 
+#'
+#' @param tbl (`array`)\cr 3-dimensional array with dimensions corresponding to
+#'   group, response, and strata. The second dimension (response) should have names
 #'   "TRUE" and "FALSE".
-#' 
+#'
 #' @keywords internal
 h_diff_cmh <- function(tbl) {
   checkmate::assert_array(tbl)
@@ -643,11 +643,11 @@ h_diff_cmh <- function(tbl) {
   )
 }
 
-#' @describeIn h_prop_diff Helper function to calculate the standard error for the 
+#' @describeIn h_prop_diff Helper function to calculate the standard error for the
 #'   CMH weighted difference in proportions.
-#' 
+#'
 #' @param cmh_results (`list`)\cr output of [h_diff_cmh()].
-#' 
+#'
 #' @keywords internal
 h_diff_cmh_se <- function(cmh_results, diff_se = c("standard", "sato")) {
   checkmate::assert_list(cmh_results, types = "numeric", any.missing = FALSE, names = "unique")
@@ -659,8 +659,8 @@ h_diff_cmh_se <- function(cmh_results, diff_se = c("standard", "sato")) {
     sqrt(sum((terms1 + terms2) * l$wt_normalized^2))
   } else {
     # Sato variance estimator.
-    p_terms_num <- l$n2^2 * l$x1 - 
-      l$n1^2 * l$x2 + 
+    p_terms_num <- l$n2^2 * l$x1 -
+      l$n1^2 * l$x2 +
       l$n1 * l$n2 * (l$n1 - l$n2) / 2
     p_terms <- p_terms_num / (l$n1 + l$n2)^2
     q_terms_num <- l$x1 * (l$n2 - l$x2) + l$x2 * (l$n1 - l$x1)
@@ -723,7 +723,7 @@ prop_diff_cmh <- function(rsp,
   # first dimension: CONTROL, TX
   # 2nd dimension: TRUE, FALSE
   # 3rd dimension: levels of strata
-  # Note: rsp needs to be a factor to handle edge case of 
+  # Note: rsp needs to be a factor to handle edge case of
   #       no FALSE (or TRUE) rsp records.
   t_tbl <- table(
     grp,

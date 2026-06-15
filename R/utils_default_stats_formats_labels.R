@@ -580,8 +580,10 @@ tern_default_stats <- list(
   estimate_odds_ratio = c("or_ci", "n_tot"),
   estimate_proportion = c("n_prop", "prop_ci"),
   estimate_proportion_diff = c("diff", "diff_ci"),
-  summarize_ancova = c("n", "lsmean", "lsmean_se", "lsmean_ci",
-                       "lsmean_diff", "lsmean_diff_ci", "lsmean_diff_with_ci", "pval"),
+  summarize_ancova = c(
+    "n", "lsmean", "lsmean_se", "lsmean_ci",
+    "lsmean_diff", "lsmean_diff_ci", "lsmean_diff_with_ci", "pval"
+  ),
   summarize_coxreg = c("n", "hr", "ci", "pval", "pval_inter"),
   summarize_glm_count = c("n", "rate", "rate_ci", "rate_ratio", "rate_ratio_ci", "pval"),
   summarize_num_patients = c("unique", "nonunique", "unique_count"),

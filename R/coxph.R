@@ -195,8 +195,7 @@ try_car_anova <- function(mod,
         invokeRestart("muffleWarning")
       }
     ),
-    finally = {
-    }
+    finally = {}
   )
 
   return(y)

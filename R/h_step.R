@@ -171,8 +171,7 @@ h_step_survival_est <- function(formula,
         invokeRestart("muffleWarning")
       }
     ),
-    finally = {
-    }
+    finally = {}
   )
   if (!is.null(coxph_warnings)) {
     warning(paste(
@@ -285,8 +284,7 @@ h_step_rsp_est <- function(formula,
         invokeRestart("muffleWarning")
       }
     ),
-    finally = {
-    }
+    finally = {}
   )
   if (!is.null(fit_warnings)) {
     warning(paste(

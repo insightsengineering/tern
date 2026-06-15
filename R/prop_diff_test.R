@@ -360,12 +360,12 @@ prop_cmh <- function(ary,
   if (transform == "wilson_hilferty") {
     if (diff_se == "sato") {
       warning(
-        "Wilson-Hilferty transformation was not designed ", 
+        "Wilson-Hilferty transformation was not designed ",
         "for use with the Sato variance estimator"
       )
     }
     chisq_stat <- z_stat^2
-    df <- 1  # Because we only compare two groups.
+    df <- 1 # Because we only compare two groups.
     num <- (1 - 2 / (9 * df)) - (chisq_stat / df)^(1 / 3)
     denom <- sqrt(2 / (9 * df))
     z_stat <- num / denom * sign(z_stat) # Preserve the direction of effect.
