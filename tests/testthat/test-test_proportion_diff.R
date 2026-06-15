@@ -253,7 +253,7 @@ testthat::test_that("prop_cmh with Sato variance estimator and Wilson-Hilferty t
     result <- prop_cmh(tbl, diff_se = "sato", transform = "wilson_hilferty"),
     "not designed for use with the Sato variance estimator"
   )
-  testthat::expect_snapshot_value(res, style = "deparse", tolerance = 1e-3)
+  testthat::expect_snapshot_value(result, style = "deparse", tolerance = 1e-3)
 })
 
 testthat::test_that("s_test_proportion_diff and d_test_proportion_diff return right result", {

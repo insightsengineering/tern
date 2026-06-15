@@ -147,7 +147,7 @@
 
 # prop_cmh with Sato variance estimator and Wilson-Hilferty transformation works
 
-    0.383328522648178
+    0.0660308573944943
 
 # s_test_proportion_diff and d_test_proportion_diff return right result
 
