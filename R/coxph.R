@@ -25,8 +25,7 @@ univariate <- function(x) {
 # Get the right-hand-term of a formula
 rht <- function(x) {
   checkmate::assert_formula(x)
-  y <- as.character(rev(x)[[1]])
-  return(y)
+  as.character(rev(x)[[1]])
 }
 
 #' Hazard ratio estimation in interactions
@@ -109,7 +108,7 @@ estimate_coef <- function(variable, given,
   design_mat <- apply(
     X = design_mat, MARGIN = 1, FUN = function(x) {
       mmat[names(mmat) %in% x[-which(names(x) == "given")]] <- 1
-      return(mmat)
+      mmat
     }
   )
   colnames(design_mat) <- interaction_names
@@ -124,7 +123,7 @@ estimate_coef <- function(variable, given,
     y <- vcov[vcov_el, vcov_el]
     y <- sum(y)
     y <- sqrt(y)
-    return(y)
+    y
   })
 
   q_norm <- stats::qnorm((1 + conf_level) / 2)
@@ -135,7 +134,7 @@ estimate_coef <- function(variable, given,
     x["lcl"] <- exp(x["coef"] - q_norm * x["se(coef)"])
     x["ucl"] <- exp(x["coef"] + q_norm * x["se(coef)"])
 
-    return(x)
+    x
   })
 
   y <- t(y)
@@ -147,7 +146,7 @@ estimate_coef <- function(variable, given,
     " hazard ratio given the level of ", given, " compared to ",
     variable, " level ", lvl_var[1], "."
   )
-  return(y)
+  y
 }
 
 #' `tryCatch` around `car::Anova`
@@ -198,7 +197,7 @@ try_car_anova <- function(mod,
     finally = {}
   )
 
-  return(y)
+  y
 }
 
 #' Fit a Cox regression model and ANOVA
@@ -240,7 +239,7 @@ fit_n_aov <- function(formula,
   y <- list(mod = mod, msum = msum, aov = aov)
   attr(y, "message") <- warn_attr
 
-  return(y)
+  y
 }
 
 # argument_checks
@@ -265,7 +264,7 @@ name_covariate_names <- function(covariates) {
   no_names <- is.null(names(covariates))
   if (any(miss_names)) names(covariates)[miss_names] <- vapply(covariates[miss_names], FUN = rht, FUN.VALUE = "name")
   if (no_names) names(covariates) <- vapply(covariates, FUN = rht, FUN.VALUE = "name")
-  return(covariates)
+  covariates
 }
 
 check_increments <- function(increments, covariates) {

@@ -30,7 +30,8 @@ should be displayed.}
 \item{ary}{(\code{array}, 3 dimensions)\cr array with two groups in rows, the binary response
 (\code{TRUE}/\code{FALSE}) in columns, and the strata in the third dimension.}
 
-\item{diff_se}{(\code{string})\cr either \code{standard} or \code{sato}; specifies whether to use the Sato variance estimator to calculate the chi-squared statistic.}
+\item{diff_se}{(\code{string})\cr either \code{standard} or \code{sato}; specifies whether to use the Sato
+variance estimator to calculate the chi-squared statistic.}
 
 \item{transform}{(\code{string})\cr either \code{none} or \code{wilson_hilferty}; specifies whether to apply
 the Wilson-Hilferty transformation of the chi-squared statistic.}
