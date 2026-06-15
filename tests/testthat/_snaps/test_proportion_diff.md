@@ -263,3 +263,13 @@
       Variable Label                                                                         
           p-value (Cochran-Mantel-Haenszel Test with Wilson-Hilferty Transformation)       NA
 
+# test_proportion_diff edge case: all responder by CMH with Sato variance estimator
+
+    Code
+      res
+    Output
+                                                                                B     A   
+      ————————————————————————————————————————————————————————————————————————————————————
+      Variable Label                                                                      
+          p-value (Cochran-Mantel-Haenszel Test with Sato Variance Estimator)       1.0000
+
