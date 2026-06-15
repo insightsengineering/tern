@@ -324,7 +324,7 @@ prop_chisq <- function(tbl, alternative = c("two.sided", "less", "greater")) {
 #'
 #' @param ary (`array`, 3 dimensions)\cr array with two groups in rows, the binary response
 #'   (`TRUE`/`FALSE`) in columns, and the strata in the third dimension.
-#' @param diff_se (`string`)\cr either `standard` or `sato`; specifies whether to use the Sato 
+#' @param diff_se (`string`)\cr either `standard` or `sato`; specifies whether to use the Sato
 #'   variance estimator to calculate the chi-squared statistic.
 #' @param transform (`string`)\cr either `none` or `wilson_hilferty`; specifies whether to apply
 #'   the Wilson-Hilferty transformation of the chi-squared statistic.
