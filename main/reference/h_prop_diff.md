@@ -11,6 +11,10 @@ prop_diff_ha(rsp, grp, conf_level)
 
 prop_diff_nc(rsp, grp, conf_level, correct = FALSE)
 
+h_diff_cmh(tbl)
+
+h_diff_cmh_se(cmh_results, diff_se = c("standard", "sato"))
+
 prop_diff_cmh(
   rsp,
   grp,
@@ -55,10 +59,17 @@ prop_diff_uncond_exact(rsp, grp, conf_level = 0.95)
   whether to include the continuity correction. For further information,
   see [`stats::prop.test()`](https://rdrr.io/r/stats/prop.test.html).
 
-- strata:
+- tbl:
 
-  (`factor`)\
-  variable with one level per stratum and same length as `rsp`.
+  (`array`)\
+  3-dimensional array with dimensions corresponding to group, response,
+  and strata. The second dimension (response) should have names "TRUE"
+  and "FALSE".
+
+- cmh_results:
+
+  (`list`)\
+  output of `h_diff_cmh()`.
 
 - diff_se:
 
@@ -66,6 +77,11 @@ prop_diff_uncond_exact(rsp, grp, conf_level = 0.95)
   method to estimate the standard error for the difference, either
   `standard`, `sato` (Sato et al. 1989) or `miettinen_nurminen`
   (Miettinen and Nurminen 1985) .
+
+- strata:
+
+  (`factor`)\
+  variable with one level per stratum and same length as `rsp`.
 
 - weights_method:
 
@@ -91,6 +107,12 @@ A named `list` of elements `diff` (proportion difference) and `diff_ci`
 - `prop_diff_nc()`: Newcombe confidence interval. It is based on the
   Wilson score confidence interval for a single binomial proportion
   (Newcombe 1998) .
+
+- `h_diff_cmh()`: Helper function to calculate the CMH weighted
+  difference in proportions.
+
+- `h_diff_cmh_se()`: Helper function to calculate the standard error for
+  the CMH weighted difference in proportions.
 
 - `prop_diff_cmh()`: Calculates the weighted difference. This is defined
   as the difference in response rates between the experimental treatment

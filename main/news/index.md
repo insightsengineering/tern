@@ -1,14 +1,6 @@
 # Changelog
 
-## tern 0.9.10.9011
-
-#### Miscellaneous
-
-- Updated `roxygen2` to 8.0.0 and added `@exportS3Method` tags for S3
-  methods in `decorate_grob.R` and `utils_grid.R`.
-- Converted
-  [`s_surv_time()`](https://insightsengineering.github.io/tern/reference/survival_time.md)to
-  exported functions.
+## tern 0.9.10.9013
 
 #### Enhancements
 
@@ -22,6 +14,10 @@
   for the unconditional exact confidence interval for the difference in
   proportions by inverting one-sided tail tests over a nuisance
   parameter.
+- Added `cmh_sato` method to
+  [`test_proportion_diff()`](https://insightsengineering.github.io/tern/reference/prop_diff_test.md)
+  for CMH testing with the Sato variance estimator.
+  ([\#1482](https://github.com/insightsengineering/tern/issues/1482))
 - Added `range_with_cens_info` statistic to
   [`s_surv_time()`](https://insightsengineering.github.io/tern/reference/survival_time.md).
 - Added `lsmean_se`, `lsmean_ci`, and `lsmean_diffci` statistics to
@@ -35,6 +31,19 @@
 - Fixed bug in
   [`prop_diff_cmh()`](https://insightsengineering.github.io/tern/reference/h_prop_diff.md)
   which previously failed when strata combinations had 0 observations.
+- Fixed one-sided p-values in
+  [`prop_cmh()`](https://insightsengineering.github.io/tern/reference/h_prop_diff_test.md)
+  with Wilson-Hilferty transformation — the sign of the effect was lost,
+  producing incorrect p-values for `alternative = "less"` and
+  `alternative = "greater"`.
+
+#### Miscellaneous
+
+- Updated `roxygen2` to 8.0.0 and added `@exportS3Method` tags for S3
+  methods in `decorate_grob.R` and `utils_grid.R`.
+- Converted
+  [`s_surv_time()`](https://insightsengineering.github.io/tern/reference/survival_time.md)
+  to exported functions.
 
 ## tern 0.9.10
 

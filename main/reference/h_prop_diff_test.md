@@ -11,6 +11,7 @@ prop_chisq(tbl, alternative = c("two.sided", "less", "greater"))
 prop_cmh(
   ary,
   alternative = c("two.sided", "less", "greater"),
+  diff_se = c("standard", "sato"),
   transform = c("none", "wilson_hilferty")
 )
 
@@ -38,6 +39,12 @@ prop_fisher(tbl, alternative = c("two.sided", "less", "greater"))
   (`array`, 3 dimensions)\
   array with two groups in rows, the binary response (`TRUE`/`FALSE`) in
   columns, and the strata in the third dimension.
+
+- diff_se:
+
+  (`string`)\
+  either `standard` or `sato`; specifies whether to use the Sato
+  variance estimator to calculate the chi-squared statistic.
 
 - transform:
 
