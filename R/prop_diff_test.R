@@ -350,7 +350,10 @@ prop_cmh <- function(ary,
   z_stat <- if (diff_se == "standard") {
     mh_res <- stats::mantelhaen.test(ary, correct = FALSE, alternative = alternative)
     checkmate::assert_true(mh_res$parameter == 1)
-    sqrt(unname(mh_res$statistic)) * ifelse(unname(mh_res$estimate) < 1, 1, -1)
+    # Note: The odds ratio (OR) estimate from `mantelhaen.test` and the proportion difference
+    # always agree in direction, therefore we can use the OR estimate to determine the sign here.
+    stat_sign <- ifelse(mh_res$estimate < 1, 1, -1)
+    sqrt(unname(mh_res$statistic)) * stat_sign
   } else {
     # Use the Sato variance estimator.
     cmh <- h_diff_cmh(ary)
