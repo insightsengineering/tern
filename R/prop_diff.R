@@ -596,6 +596,81 @@ prop_diff_nc <- function(rsp,
   )
 }
 
+#' @describeIn h_prop_diff Helper function to calculate the CMH weighted
+#' difference in proportions.
+#'
+#' @param tbl (`array`)\cr 3-dimensional array with dimensions corresponding to
+#'   group, response, and strata. The second dimension (response) should have names
+#'   "TRUE" and "FALSE".
+#'
+#' @keywords internal
+h_diff_cmh <- function(tbl) {
+  checkmate::assert_array(tbl)
+  checkmate::assert_integer(c(ncol(tbl), nrow(tbl)), lower = 2, upper = 2)
+  checkmate::assert_integer(length(dim(tbl)), lower = 3, upper = 3)
+  checkmate::assert_true(identical(dimnames(tbl)[[2]], c("TRUE", "FALSE")))
+
+  n1 <- colSums(tbl[1, 1:2, ])
+  n2 <- colSums(tbl[2, 1:2, ])
+  x1 <- tbl[1, 1, ]
+  p1 <- x1 / n1
+  x2 <- tbl[2, 1, ]
+  p2 <- x2 / n2
+  # CMH weights
+  use_stratum <- (n1 > 0) & (n2 > 0)
+  n1 <- n1[use_stratum]
+  n2 <- n2[use_stratum]
+  p1 <- p1[use_stratum]
+  p2 <- p2[use_stratum]
+  wt <- (n1 * n2 / (n1 + n2))
+  wt_normalized <- wt / sum(wt)
+  est1 <- sum(wt_normalized * p1)
+  est2 <- sum(wt_normalized * p2)
+  diff_est <- est2 - est1
+
+  list(
+    x1 = x1,
+    n1 = n1,
+    p1 = p1,
+    x2 = x2,
+    n2 = n2,
+    p2 = p2,
+    wt = wt,
+    wt_normalized = wt_normalized,
+    est1 = est1,
+    est2 = est2,
+    diff_est = diff_est
+  )
+}
+
+#' @describeIn h_prop_diff Helper function to calculate the standard error for the
+#'   CMH weighted difference in proportions.
+#'
+#' @param cmh_results (`list`)\cr output of [h_diff_cmh()].
+#'
+#' @keywords internal
+h_diff_cmh_se <- function(cmh_results, diff_se = c("standard", "sato")) {
+  checkmate::assert_list(cmh_results, types = "numeric", any.missing = FALSE, names = "unique")
+  diff_se <- match.arg(diff_se)
+  l <- cmh_results # For easier readability of the formulas below.
+  if (diff_se == "standard") {
+    terms1 <- l$p1 * (1 - l$p1) / l$n1
+    terms2 <- l$p2 * (1 - l$p2) / l$n2
+    sqrt(sum((terms1 + terms2) * l$wt_normalized^2))
+  } else {
+    # Sato variance estimator.
+    p_terms_num <- l$n2^2 * l$x1 -
+      l$n1^2 * l$x2 +
+      l$n1 * l$n2 * (l$n1 - l$n2) / 2
+    p_terms <- p_terms_num / (l$n1 + l$n2)^2
+    q_terms_num <- l$x1 * (l$n2 - l$x2) + l$x2 * (l$n1 - l$x1)
+    q_terms <- q_terms_num / (2 * (l$n1 + l$n2))
+    num <- l$diff_est * sum(p_terms) + sum(q_terms)
+    denom <- sum(l$wt)^2
+    sqrt(num / denom)
+  }
+}
+
 #' @describeIn h_prop_diff Calculates the weighted difference. This is defined as the difference in
 #'   response rates between the experimental treatment group and the control treatment group, adjusted
 #'   for stratification factors by applying Cochran-Mantel-Haenszel (CMH) weights. For the CMH chi-squared
@@ -645,66 +720,43 @@ prop_diff_cmh <- function(rsp,
     warning("Less than 5 observations in some strata.")
   }
 
-  # first dimension: FALSE, TRUE
-  # 2nd dimension: CONTROL, TX
+  # first dimension: CONTROL, TX
+  # 2nd dimension: TRUE, FALSE
   # 3rd dimension: levels of strata
-  # rsp as factor rsp to handle edge case of no FALSE (or TRUE) rsp records
+  # Note: rsp needs to be a factor to handle edge case of
+  #       no FALSE (or TRUE) rsp records.
   t_tbl <- table(
-    factor(rsp, levels = c("FALSE", "TRUE")),
     grp,
+    factor(rsp, levels = c("TRUE", "FALSE")),
     strata
   )
-  n1 <- colSums(t_tbl[1:2, 1, ])
-  n2 <- colSums(t_tbl[1:2, 2, ])
-  x1 <- t_tbl[2, 1, ]
-  p1 <- x1 / n1
-  x2 <- t_tbl[2, 2, ]
-  p2 <- x2 / n2
-  # CMH weights
-  use_stratum <- (n1 > 0) & (n2 > 0)
-  n1 <- n1[use_stratum]
-  n2 <- n2[use_stratum]
-  p1 <- p1[use_stratum]
-  p2 <- p2[use_stratum]
-  wt <- (n1 * n2 / (n1 + n2))
-  wt_normalized <- wt / sum(wt)
-  est1 <- sum(wt_normalized * p1)
-  est2 <- sum(wt_normalized * p2)
-  estimate <- c(est1, est2)
+  cmh <- h_diff_cmh(t_tbl)
+
+  estimate <- c(cmh$est1, cmh$est2)
   names(estimate) <- levels(grp)
-  se1 <- sqrt(sum(wt_normalized^2 * p1 * (1 - p1) / n1))
-  se2 <- sqrt(sum(wt_normalized^2 * p2 * (1 - p2) / n2))
+  se1 <- sqrt(sum(cmh$wt_normalized^2 * cmh$p1 * (1 - cmh$p1) / cmh$n1))
+  se2 <- sqrt(sum(cmh$wt_normalized^2 * cmh$p2 * (1 - cmh$p2) / cmh$n2))
   z <- stats::qnorm((1 + conf_level) / 2)
   err1 <- z * se1
   err2 <- z * se2
-  ci1 <- c((est1 - err1), (est1 + err1))
-  ci2 <- c((est2 - err2), (est2 + err2))
+  ci1 <- c((cmh$est1 - err1), (cmh$est1 + err1))
+  ci2 <- c((cmh$est2 - err2), (cmh$est2 + err2))
   estimate_ci <- list(ci1, ci2)
   names(estimate_ci) <- levels(grp)
-  diff_est <- est2 - est1
 
   if (diff_se %in% c("standard", "sato")) {
-    se_diff <- if (diff_se == "standard") {
-      sqrt(sum(((p1 * (1 - p1) / n1) + (p2 * (1 - p2) / n2)) * wt_normalized^2))
-    } else {
-      # Sato variance estimator.
-      p_terms <- (n2^2 * x1 - n1^2 * x2 + n1 * n2 * (n1 - n2) / 2) / (n1 + n2)^2
-      q_terms <- (x1 * (n2 - x2) + x2 * (n1 - x1)) / (2 * (n1 + n2))
-      num <- diff_est * sum(p_terms) + sum(q_terms)
-      denom <- sum(wt)^2
-      sqrt(num / denom)
-    }
-    diff_ci <- c(diff_est - z * se_diff, diff_est + z * se_diff)
+    se_diff <- h_diff_cmh_se(cmh, diff_se = diff_se)
+    diff_ci <- c(cmh$diff_est - z * se_diff, cmh$diff_est + z * se_diff)
   } else {
     # Miettinen and Nurminen method is used.
     z_stat_fun <- function(delta) {
       var_est <- h_miettinen_nurminen_var_est(
-        n1 = n1, n2 = n2,
-        x1 = x1, x2 = x2,
+        n1 = cmh$n1, n2 = cmh$n2,
+        x1 = cmh$x1, x2 = cmh$x2,
         diff_par = delta
       )$var_est
-      num <- sum(wt * (p2 - p1 - delta))
-      denom <- sqrt(sum(wt^2 * var_est))
+      num <- sum(cmh$wt * (cmh$p2 - cmh$p1 - delta))
+      denom <- sqrt(sum(cmh$wt^2 * var_est))
       num / denom
     }
     # Find upper and lower confidence limits by root finding such that
@@ -712,27 +764,27 @@ prop_diff_cmh <- function(rsp,
     root_lower <- function(delta) z_stat_fun(delta) - z
     root_upper <- function(delta) z_stat_fun(delta) + z
     diff_ci <- c(
-      stats::uniroot(root_lower, interval = c(-0.99, diff_est))$root,
-      stats::uniroot(root_upper, interval = c(diff_est, 0.99))$root
+      stats::uniroot(root_lower, interval = c(-0.99, cmh$diff_est))$root,
+      stats::uniroot(root_upper, interval = c(cmh$diff_est, 0.99))$root
     )
     # Calculate the standard error separately.
     var_est <- h_miettinen_nurminen_var_est(
-      n1 = n1, n2 = n2,
-      x1 = x1, x2 = x2,
-      diff_par = diff_est
+      n1 = cmh$n1, n2 = cmh$n2,
+      x1 = cmh$x1, x2 = cmh$x2,
+      diff_par = cmh$diff_est
     )$var_est
-    se_diff <- sqrt(sum(wt_normalized^2 * var_est))
+    se_diff <- sqrt(sum(cmh$wt_normalized^2 * var_est))
   }
 
   list(
     prop = estimate,
     prop_ci = estimate_ci,
-    diff = diff_est,
+    diff = cmh$diff_est,
     diff_ci = diff_ci,
     se_diff = se_diff,
-    weights = wt_normalized,
-    n1 = n1,
-    n2 = n2
+    weights = cmh$wt_normalized,
+    n1 = cmh$n1,
+    n2 = cmh$n2
   )
 }
 

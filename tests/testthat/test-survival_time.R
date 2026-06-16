@@ -223,8 +223,8 @@ testthat::test_that("s_surv_time range_with_cens_info flags upper censored (0, 1
   )
   result <- s_surv_time(anl, .var = "AVAL", is_event = "is_event")
   rwci <- result$range_with_cens_info
-  testthat::expect_equal(as.numeric(rwci[3]), 0)  # lower not censored
-  testthat::expect_equal(as.numeric(rwci[4]), 1)  # upper censored
+  testthat::expect_equal(as.numeric(rwci[3]), 0) # lower not censored
+  testthat::expect_equal(as.numeric(rwci[4]), 1) # upper censored
 })
 
 testthat::test_that("s_surv_time range_with_cens_info flags lower censored (1, 0)", {

@@ -35,6 +35,7 @@ Other formatting functions:
 \code{\link[=format_extreme_values_ci]{format_extreme_values_ci()}},
 \code{\link[=format_fraction_fixed_dp]{format_fraction_fixed_dp()}},
 \code{\link[=format_fraction_threshold]{format_fraction_threshold()}},
+\code{\link[=format_range_cens]{format_range_cens()}},
 \code{\link[=format_sigfig]{format_sigfig()}},
 \code{\link[=format_xx]{format_xx()}},
 \code{\link{formatting_functions}}

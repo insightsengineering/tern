@@ -1,19 +1,21 @@
 # tern 0.9.10.9012
 
-### Miscellaneous
-* Updated `roxygen2` to 8.0.0 and added `@exportS3Method` tags for S3 methods in `decorate_grob.R` and `utils_grid.R`.
-* Converted  `s_surv_time()`to exported functions.
-
 ### Enhancements
 * Added `alternative` argument to `s_coxph_pairwise()` to allow one-sided hypothesis testing. 
 * Added `lr_stat_df` to the parameters return list of `s_coxph_pairwise()`.
 * Added `uncond_exact_diff` method to `estimate_proportion_diff()` for the unconditional exact confidence interval for the difference in proportions by inverting one-sided tail tests over a nuisance parameter.
+* Added `cmh_sato` method to `test_proportion_diff()` for CMH testing with the Sato variance estimator. (#1482)
 * Added `range_with_cens_info` statistic to `s_surv_time()`.
 * Added `lsmean_se`, `lsmean_ci`, and `lsmean_diffci` statistics to `s_ancova()`.
 * Added `s_ancova()` to exported functions.
 
 ### Bug Fixes
 * Fixed bug in `prop_diff_cmh()` which previously failed when strata combinations had 0 observations.
+* Fixed one-sided p-values in `prop_cmh()` with Wilson-Hilferty transformation — the sign of the effect was lost, producing incorrect p-values for `alternative = "less"` and `alternative = "greater"`.
+
+### Miscellaneous
+* Updated `roxygen2` to 8.0.0 and added `@exportS3Method` tags for S3 methods in `decorate_grob.R` and `utils_grid.R`.
+* Converted `s_surv_time()` to exported functions.
 
 # tern 0.9.10
 
