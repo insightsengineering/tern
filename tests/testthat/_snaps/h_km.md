@@ -18,6 +18,33 @@
       $fill
       [1] TRUE
       
+      $digits
+      [1] 4
+      
+
+# control_surv_med_annot works with custom digits
+
+    Code
+      res
+    Output
+      $x
+      [1] 0.8
+      
+      $y
+      [1] 0.85
+      
+      $w
+      [1] 0.32
+      
+      $h
+      [1] 0.16
+      
+      $fill
+      [1] TRUE
+      
+      $digits
+      [1] 2
+      
 
 # control_coxph_annot works with default settings
 
@@ -38,6 +65,9 @@
       
       $fill
       [1] TRUE
+      
+      $digits
+      [1] 4
       
       $ref_lbls
       [1] FALSE
@@ -97,6 +127,16 @@
       ARM A 69  974.6   (687, 1625)
       ARM B 73  727.8 (555.8, 1156)
       ARM C 58  632.3   (393, 1001)
+
+# h_tbl_median_surv respects digits parameter
+
+    Code
+      res
+    Output
+             N Median      95% CI
+      ARM A 69    970 (690, 1600)
+      ARM B 73    730 (560, 1200)
+      ARM C 58    630 (390, 1000)
 
 # h_tbl_coxph_pairwise estimates HR, CI and pvalue
 

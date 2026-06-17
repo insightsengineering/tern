@@ -8,6 +8,7 @@
 * Added `range_with_cens_info` statistic to `s_surv_time()`.
 * Added `lsmean_se`, `lsmean_ci`, and `lsmean_diffci` statistics to `s_ancova()`.
 * Added `s_ancova()` to exported functions.
+* Added `digits` argument to `h_tbl_median_surv()` and `control_surv_med_annot()` to control significant digits for median survival annotation. (#1467)
 
 ### Bug Fixes
 * Fixed bug in `prop_diff_cmh()` which previously failed when strata combinations had 0 observations.

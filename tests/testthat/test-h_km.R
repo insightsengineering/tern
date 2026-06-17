@@ -11,6 +11,13 @@ testthat::test_that("control_surv_med_annot works with default settings", {
   testthat::expect_snapshot(res)
 })
 
+testthat::test_that("control_surv_med_annot works with custom digits", {
+  result <- control_surv_med_annot(digits = 2)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
 testthat::test_that("control_coxph_annot works with default settings", {
   result <- control_coxph_annot()
 
@@ -79,6 +86,13 @@ testthat::test_that("h_xticks works with xticks number when max_time is not NULL
 
 testthat::test_that("h_tbl_median_surv estimates median survival time with CI", {
   result <- h_tbl_median_surv(fit_km = test_fit)
+
+  res <- testthat::expect_silent(result)
+  testthat::expect_snapshot(res)
+})
+
+testthat::test_that("h_tbl_median_surv respects digits parameter", {
+  result <- h_tbl_median_surv(fit_km = test_fit, digits = 2)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)

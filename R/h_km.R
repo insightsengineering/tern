@@ -23,17 +23,22 @@ NULL
 #'   table can be added in [g_km()] by setting `annot_surv_med=TRUE`, and can be configured using the
 #'   `control_surv_med_annot()` function by setting it as the `control_annot_surv_med` argument.
 #'
+#' @param digits (`integer(1)`)\cr number of significant digits for median survival
+#'   time and confidence interval values. Defaults to `4`.
+#'
 #' @examples
 #' control_surv_med_annot()
+#' control_surv_med_annot(digits = 2)
 #'
 #' @export
-control_surv_med_annot <- function(x = 0.8, y = 0.85, w = 0.32, h = 0.16, fill = TRUE) {
+control_surv_med_annot <- function(x = 0.8, y = 0.85, w = 0.32, h = 0.16, fill = TRUE, digits = 4) {
   assert_proportion_value(x)
   assert_proportion_value(y)
   assert_proportion_value(w)
   assert_proportion_value(h)
+  checkmate::assert_int(digits, lower = 1)
 
-  list(x = x, y = y, w = w, h = h, fill = fill)
+  list(x = x, y = y, w = w, h = h, fill = fill, digits = digits)
 }
 
 #' @describeIn control_annot Control function for formatting the Cox-PH annotation table. This annotation table can be
@@ -117,6 +122,8 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #' Transform a survival fit to a table with groups in rows characterized by N, median and confidence interval.
 #'
 #' @inheritParams h_data_plot
+#' @param digits (`integer(1)`)\cr number of significant digits for median and CI values.
+#'   Defaults to `4`.
 #'
 #' @return A summary table with statistics `N`, `Median`, and `XX% CI` (`XX` taken from `fit_km`).
 #'
@@ -130,9 +137,11 @@ h_xticks <- function(data, xticks = NULL, max_time = NULL) {
 #'   data = adtte
 #' )
 #' h_tbl_median_surv(fit_km = fit)
+#' h_tbl_median_surv(fit_km = fit, digits = 2)
 #'
 #' @export
-h_tbl_median_surv <- function(fit_km, armval = "All") {
+h_tbl_median_surv <- function(fit_km, armval = "All", digits = 4) {
+  checkmate::assert_int(digits, lower = 1)
   y <- if (is.null(fit_km$strata)) {
     as.data.frame(t(summary(fit_km)$table), row.names = armval)
   } else {
@@ -143,9 +152,9 @@ h_tbl_median_surv <- function(fit_km, armval = "All") {
   }
   conf.int <- summary(fit_km)$conf.int # nolint
   y$records <- round(y$records)
-  y$median <- signif(y$median, 4)
+  y$median <- signif(y$median, digits)
   y$`CI` <- paste0(
-    "(", signif(y[[paste0(conf.int, "LCL")]], 4), ", ", signif(y[[paste0(conf.int, "UCL")]], 4), ")"
+    "(", signif(y[[paste0(conf.int, "LCL")]], digits), ", ", signif(y[[paste0(conf.int, "UCL")]], digits), ")"
   )
   stats::setNames(
     y[c("records", "median", "CI")],
@@ -1109,12 +1118,10 @@ h_grob_coxph <- function(...,
         "Warning: Cox table will not be displayed as there is",
         "not any level to be compared in the arm variable."
       ))
-      return(
-        grid::gList(
-          grid::gTree(
-            vp = NULL,
-            children = NULL
-          )
+      grid::gList(
+        grid::gTree(
+          vp = NULL,
+          children = NULL
         )
       )
     }
