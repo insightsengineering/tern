@@ -49,9 +49,10 @@ Santner and Snell (1980) refer to this method as the “Tail Method” for
 confidence intervals.
 
 For a given $`100(1 - \alpha/2)\%`$ confidence level, the confidence
-limits for the risk difference $`d`$ are computed as (note that this is
-not correct in the SAS documentation
-[here](https://documentation.sas.com/doc/en/pgmsascdc/v_074/procstat/procstat_freq_details54.htm#procstat.freq.freqrdiffcl)):
+limits for the risk difference $`d`$ are computed as (note that the
+corresponding formula in the [SAS
+documentation](https://documentation.sas.com/doc/en/pgmsascdc/v_074/procstat/procstat_freq_details54.htm)
+is not correct):
 
 ``` math
 d_L = \inf \{ d_* : P_U(d_*) > \alpha/2 \},

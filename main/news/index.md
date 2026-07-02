@@ -1,6 +1,6 @@
 # Changelog
 
-## tern 0.9.10.9013
+## tern 0.9.10.9014
 
 #### Enhancements
 
@@ -39,6 +39,13 @@
 
 #### Miscellaneous
 
+- Relaxed
+  [`fit_logistic()`](https://insightsengineering.github.io/tern/reference/fit_logistic.md)
+  tests to compare only the formula right-hand side, so they no longer
+  break when
+  [`survival::clogit()`](https://rdrr.io/pkg/survival/man/clogit.html)
+  changes the internally generated response term.
+  ([\#1484](https://github.com/insightsengineering/tern/issues/1484))
 - Updated `roxygen2` to 8.0.0 and added `@exportS3Method` tags for S3
   methods in `decorate_grob.R` and `utils_grid.R`.
 - Converted
