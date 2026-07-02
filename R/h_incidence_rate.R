@@ -24,7 +24,11 @@ NULL
 #' @describeIn h_incidence_rate Helper function to estimate the incidence rate and
 #'   associated confidence interval.
 #'
-#' @keywords internal
+#' @examples
+#' h_incidence_rate(200, 2)
+#' h_incidence_rate(200, 2, control_incidence_rate(conf_type = "exact", num_pt_year = 100))
+#'
+#' @export
 h_incidence_rate <- function(person_years,
                              n_events,
                              control = control_incidence_rate()) {

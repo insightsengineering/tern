@@ -8,6 +8,7 @@
 * Added `range_with_cens_info` statistic to `s_surv_time()`.
 * Added `lsmean_se`, `lsmean_ci`, and `lsmean_diffci` statistics to `s_ancova()`.
 * Added `s_ancova()` to exported functions.
+* Exported `h_incidence_rate()` to allow to reuse the incidence rate estimation logic.
 
 ### Bug Fixes
 * Fixed bug in `prop_diff_cmh()` which previously failed when strata combinations had 0 observations.
