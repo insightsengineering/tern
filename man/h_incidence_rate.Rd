@@ -63,6 +63,9 @@ associated Byar's confidence interval. Unit is one person-year.
 
 }}
 \examples{
+h_incidence_rate(200, 2)
+h_incidence_rate(200, 2, control_incidence_rate(conf_type = "exact", num_pt_year = 100))
+
 h_incidence_rate_normal(200, 2)
 
 h_incidence_rate_normal_log(200, 2)
@@ -75,4 +78,3 @@ h_incidence_rate_byar(200, 2)
 \seealso{
 \link{incidence_rate}
 }
-\keyword{internal}
