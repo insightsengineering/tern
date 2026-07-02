@@ -25,9 +25,9 @@
 #' library(dplyr)
 #' library(broom)
 #'
-#' adrs_f <- tern_ex_adrs %>%
-#'   filter(PARAMCD == "BESRSPI") %>%
-#'   filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
+#' adrs_f <- tern_ex_adrs |>
+#'   filter(PARAMCD == "BESRSPI") |>
+#'   filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) |>
 #'   mutate(
 #'     Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
 #'     RACE = factor(RACE),
@@ -59,19 +59,19 @@
 #' df <- df_explicit_na(df, na_level = "_")
 #' df2 <- df_explicit_na(df2, na_level = "_")
 #'
-#' result1 <- basic_table() %>%
+#' result1 <- basic_table() |>
 #'   summarize_logistic(
 #'     conf_level = 0.95,
 #'     drop_and_remove_str = "_"
-#'   ) %>%
+#'   ) |>
 #'   build_table(df = df)
 #' result1
 #'
-#' result2 <- basic_table() %>%
+#' result2 <- basic_table() |>
 #'   summarize_logistic(
 #'     conf_level = 0.95,
 #'     drop_and_remove_str = "_"
-#'   ) %>%
+#'   ) |>
 #'   build_table(df = df2)
 #' result2
 #'
@@ -126,9 +126,9 @@ summarize_logistic <- function(lyt,
 #' @examples
 #' library(dplyr)
 #'
-#' adrs_f <- tern_ex_adrs %>%
-#'   filter(PARAMCD == "BESRSPI") %>%
-#'   filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
+#' adrs_f <- tern_ex_adrs |>
+#'   filter(PARAMCD == "BESRSPI") |>
+#'   filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) |>
 #'   mutate(
 #'     Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
 #'     RACE = factor(RACE),
@@ -228,9 +228,9 @@ fit_logistic <- function(data,
 #' library(dplyr)
 #' library(broom)
 #'
-#' adrs_f <- tern_ex_adrs %>%
-#'   filter(PARAMCD == "BESRSPI") %>%
-#'   filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) %>%
+#' adrs_f <- tern_ex_adrs |>
+#'   filter(PARAMCD == "BESRSPI") |>
+#'   filter(RACE %in% c("ASIAN", "WHITE", "BLACK OR AFRICAN AMERICAN")) |>
 #'   mutate(
 #'     Response = case_when(AVALC %in% c("PR", "CR") ~ 1, TRUE ~ 0),
 #'     RACE = factor(RACE),

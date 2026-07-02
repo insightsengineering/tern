@@ -19,7 +19,7 @@ testthat::test_that("control_coxph_annot works with default settings", {
 })
 
 testthat::test_that("h_xticks works with default settings", {
-  result <- h_data_plot(test_fit) %>%
+  result <- h_data_plot(test_fit) |>
     h_xticks()
 
   res <- testthat::expect_silent(result)
@@ -27,7 +27,7 @@ testthat::test_that("h_xticks works with default settings", {
 })
 
 testthat::test_that("h_xticks works with xticks number", {
-  result <- h_data_plot(test_fit) %>%
+  result <- h_data_plot(test_fit) |>
     h_xticks(xticks = 100)
 
   res <- testthat::expect_silent(result)
@@ -36,7 +36,7 @@ testthat::test_that("h_xticks works with xticks number", {
 
 testthat::test_that("h_xticks works with xticks numeric", {
   expected <- c(0, 365, 1000)
-  result <- h_data_plot(test_fit) %>%
+  result <- h_data_plot(test_fit) |>
     h_xticks(xticks = expected)
 
   res <- testthat::expect_silent(result)
@@ -45,13 +45,13 @@ testthat::test_that("h_xticks works with xticks numeric", {
 
 testthat::test_that("h_xticks returns error when xticks non-numeric", {
   testthat::expect_error(
-    h_data_plot(test_fit) %>% h_xticks(xticks = TRUE)
+    h_data_plot(test_fit) |> h_xticks(xticks = TRUE)
   )
 })
 
 testthat::test_that("h_xticks works with max_time only", {
-  result <- h_data_plot(test_fit) %>%
-    filter(time <= 3000) %>%
+  result <- h_data_plot(test_fit) |>
+    filter(time <= 3000) |>
     h_xticks(max_time = 3000)
 
   res <- testthat::expect_silent(result)
@@ -60,8 +60,8 @@ testthat::test_that("h_xticks works with max_time only", {
 
 testthat::test_that("h_xticks works with xticks numeric when max_time is not NULL", {
   expected <- c(0, 365, 1000)
-  result <- h_data_plot(test_fit) %>%
-    filter(time <= 1500) %>%
+  result <- h_data_plot(test_fit) |>
+    filter(time <= 1500) |>
     h_xticks(xticks = expected, max_time = 1500)
 
   res <- testthat::expect_silent(result)
@@ -69,8 +69,8 @@ testthat::test_that("h_xticks works with xticks numeric when max_time is not NUL
 })
 
 testthat::test_that("h_xticks works with xticks number when max_time is not NULL", {
-  result <- h_data_plot(test_fit) %>%
-    filter(time <= 1500) %>%
+  result <- h_data_plot(test_fit) |>
+    filter(time <= 1500) |>
     h_xticks(xticks = 500, max_time = 1500)
 
   res <- testthat::expect_silent(result)
@@ -85,8 +85,8 @@ testthat::test_that("h_tbl_median_surv estimates median survival time with CI", 
 })
 
 testthat::test_that("h_tbl_coxph_pairwise estimates HR, CI and pvalue", {
-  df <- tern_ex_adtte %>%
-    filter(PARAMCD == "OS") %>%
+  df <- tern_ex_adtte |>
+    filter(PARAMCD == "OS") |>
     mutate(is_event = CNSR == 0)
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
   result1 <- h_tbl_coxph_pairwise(
@@ -120,10 +120,10 @@ testthat::test_that("h_data_plot works as expected", {
 })
 
 testthat::test_that("h_data_plot respects the ordering of the arm variable factor levels", {
-  data <- tern_ex_adtte %>%
-    filter(PARAMCD == "OS") %>%
-    mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM C", "ARM A"))) %>%
-    survival::survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+  data <- tern_ex_adtte |>
+    filter(PARAMCD == "OS") |>
+    mutate(ARMCD = factor(ARMCD, levels = c("ARM B", "ARM C", "ARM A"))) |>
+    (\(d) survival::survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = d))()
 
   testthat::expect_silent(result <- h_data_plot(data))
   res <- levels(result$strata)
@@ -136,7 +136,7 @@ testthat::test_that("h_data_plot respects the ordering of the arm variable facto
 testthat::test_that("h_data_plot adds rows that have time 0 and estimate 1", {
   data <- test_fit
   testthat::expect_silent(result <- h_data_plot(data))
-  result_corner <- result %>%
+  result_corner <- result |>
     filter(time == 0, estimate == 1)
   res <- result_corner$strata
 
@@ -149,9 +149,9 @@ testthat::test_that("h_data_plot adds rows that have time 0 and estimate 1", {
 
 # Deprecated Functions ----
 
-fit_km <- tern_ex_adtte %>%
-  filter(PARAMCD == "OS") %>%
-  survival::survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = .)
+fit_km <- tern_ex_adtte |>
+  filter(PARAMCD == "OS") |>
+  (\(d) survival::survfit(formula = Surv(AVAL, 1 - CNSR) ~ ARMCD, data = d))()
 data_plot <- h_data_plot(fit_km = fit_km)
 xticks <- h_xticks(data = data_plot)
 
@@ -175,7 +175,7 @@ testthat::test_that("h_ggkm, h_decompose_gg, h_grob_y_annot, and h_km_layout ret
 })
 
 testthat::test_that("h_grob_median_surv return deprecation warning", {
-  lifecycle::expect_deprecated(grob_surv <- fit_km %>% h_grob_median_surv())
+  lifecycle::expect_deprecated(grob_surv <- fit_km |> h_grob_median_surv())
 })
 
 testthat::test_that("h_grob_tbl_at_risk return deprecation warning", {
@@ -193,8 +193,8 @@ testthat::test_that("h_grob_tbl_at_risk return deprecation warning", {
 })
 
 testthat::test_that("h_grob_coxph returns error when only one arm", {
-  df <- tern_ex_adtte %>%
-    filter(PARAMCD == "OS") %>%
+  df <- tern_ex_adtte |>
+    filter(PARAMCD == "OS") |>
     mutate(is_event = CNSR == 0)
   variables <- list(tte = "AVAL", is_event = "is_event", arm = "ARMCD")
 

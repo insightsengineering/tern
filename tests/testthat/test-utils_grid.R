@@ -49,5 +49,5 @@ testthat::test_that("arrange_grobs works with a single grob", {
 
 testthat::test_that("draw_grob works with viewport specified", {
   rect <- grid::rectGrob(width = grid::unit(0.5, "npc"), height = grid::unit(0.5, "npc"))
-  suppressWarnings(lifecycle::expect_deprecated(rect %>% draw_grob(vp = grid::viewport(angle = 45))))
+  suppressWarnings(lifecycle::expect_deprecated(rect |> draw_grob(vp = grid::viewport(angle = 45))))
 })

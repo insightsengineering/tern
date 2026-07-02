@@ -1,9 +1,9 @@
-adpp <- tern_ex_adpp %>% h_pkparam_sort()
+adpp <- tern_ex_adpp |> h_pkparam_sort()
 
 testthat::test_that("analyze_vars_in_cols works correctly", {
-  lyt <- basic_table() %>%
-    split_rows_by(var = "ARM", label_pos = "topleft") %>%
-    split_rows_by(var = "SEX", label_pos = "topleft", child_labels = "hidden") %>%
+  lyt <- basic_table() |>
+    split_rows_by(var = "ARM", label_pos = "topleft") |>
+    split_rows_by(var = "SEX", label_pos = "topleft", child_labels = "hidden") |>
     analyze_vars_in_cols(vars = "AGE", .stats = c("n", "mean", "se"))
   result <- build_table(lyt = lyt, df = adpp)
 
@@ -12,37 +12,37 @@ testthat::test_that("analyze_vars_in_cols works correctly", {
 
   # It fails if called multiple times with identical col split
   testthat::expect_error(
-    basic_table() %>%
-      split_rows_by(var = "ARM", label_pos = "topleft") %>%
-      split_rows_by(var = "SEX", label_pos = "topleft") %>%
-      analyze_vars_in_cols(vars = "AGE", .stats = c("n", "mean", "se")) %>%
+    basic_table() |>
+      split_rows_by(var = "ARM", label_pos = "topleft") |>
+      split_rows_by(var = "SEX", label_pos = "topleft") |>
+      analyze_vars_in_cols(vars = "AGE", .stats = c("n", "mean", "se")) |>
       analyze_vars_in_cols(vars = "AGE", .stats = c("n", "mean", "se"))
   )
 
   # It fails if called multiple times with identical col split on different lines
   testthat::expect_error(
-    basic_table() %>%
-      split_rows_by(var = "ARM", label_pos = "topleft") %>%
-      analyze_vars_in_cols(vars = "AGE", .stats = c("n", "mean", "se")) %>%
-      split_rows_by(var = "SEX", label_pos = "topleft") %>%
+    basic_table() |>
+      split_rows_by(var = "ARM", label_pos = "topleft") |>
+      analyze_vars_in_cols(vars = "AGE", .stats = c("n", "mean", "se")) |>
+      split_rows_by(var = "SEX", label_pos = "topleft") |>
       analyze_vars_in_cols(vars = "AGE", .stats = c("n", "mean", "se"))
   )
 })
 
 testthat::test_that("analyze_vars_in_cols throws error when vars and .stats lengths differ in len", {
-  lyt <- basic_table() %>%
-    split_rows_by(var = "ARM", label_pos = "topleft") %>%
+  lyt <- basic_table() |>
+    split_rows_by(var = "ARM", label_pos = "topleft") |>
     split_rows_by(var = "SEX", label_pos = "topleft")
   testthat::expect_error(
-    lyt %>%
+    lyt |>
       analyze_vars_in_cols(vars = c("AGE", "AGE"), .stats = c("n", "mean", "se"))
   )
 })
 
 testthat::test_that("custom labels can be set with row_labels for analyze_colvars", {
   lbl <- "some custom label"
-  lyt <- basic_table() %>%
-    split_rows_by("SEX") %>%
+  lyt <- basic_table() |>
+    split_rows_by("SEX") |>
     analyze_vars_in_cols(
       vars = "AGE",
       row_labels = lbl
@@ -54,8 +54,8 @@ testthat::test_that("custom labels can be set with row_labels for analyze_colvar
 
   # Changing specifically all to custom labels
   lbl <- c("F" = "Female Statistic", "M" = "Male Statistic")
-  lyt <- basic_table() %>%
-    split_rows_by("SEX") %>%
+  lyt <- basic_table() |>
+    split_rows_by("SEX") |>
     analyze_vars_in_cols(
       vars = "AGE",
       row_labels = lbl
@@ -71,8 +71,8 @@ testthat::test_that("custom labels can be set with row_labels for analyze_colvar
     "BLACK OR AFRICAN AMERICAN",
     "Black or African American Statistic"
   )
-  lyt <- basic_table() %>%
-    split_rows_by("RACE", split_fun = drop_split_levels) %>%
+  lyt <- basic_table() |>
+    split_rows_by("RACE", split_fun = drop_split_levels) |>
     analyze_vars_in_cols(
       vars = "AGE",
       row_labels = lbl
@@ -81,8 +81,8 @@ testthat::test_that("custom labels can be set with row_labels for analyze_colvar
 
   # Error if there is no representation of the label
   lbl <- c("A" = "Female Statistic", "M" = "Male Statistic")
-  lyt <- basic_table() %>%
-    split_rows_by("SEX") %>%
+  lyt <- basic_table() |>
+    split_rows_by("SEX") |>
     analyze_vars_in_cols(
       vars = "AGE",
       row_labels = lbl
@@ -92,8 +92,8 @@ testthat::test_that("custom labels can be set with row_labels for analyze_colvar
 
 testthat::test_that("custom labels can be set with row_labels and summarize", {
   lbl <- "some custom label"
-  lyt <- basic_table() %>%
-    split_rows_by("SEX") %>%
+  lyt <- basic_table() |>
+    split_rows_by("SEX") |>
     analyze_vars_in_cols(
       vars = "AGE",
       row_labels = lbl,
@@ -106,8 +106,8 @@ testthat::test_that("custom labels can be set with row_labels and summarize", {
 
   # Changing specifically all to custom labels
   lbl <- c("F" = "Female Statistic", "M" = "Male Statistic")
-  lyt <- basic_table() %>%
-    split_rows_by("SEX") %>%
+  lyt <- basic_table() |>
+    split_rows_by("SEX") |>
     analyze_vars_in_cols(
       vars = "AGE",
       row_labels = lbl,
@@ -124,8 +124,8 @@ testthat::test_that("custom labels can be set with row_labels and summarize", {
     "BLACK OR AFRICAN AMERICAN",
     "Black or African American Statistic"
   )
-  lyt <- basic_table() %>%
-    split_rows_by("RACE", split_fun = drop_split_levels) %>%
+  lyt <- basic_table() |>
+    split_rows_by("RACE", split_fun = drop_split_levels) |>
     analyze_vars_in_cols(
       vars = "AGE",
       row_labels = lbl,
@@ -135,8 +135,8 @@ testthat::test_that("custom labels can be set with row_labels and summarize", {
 
   # Error if there is no representation of the label
   lbl <- c("A" = "Female Statistic", "M" = "Male Statistic")
-  lyt <- basic_table() %>%
-    split_rows_by("SEX") %>%
+  lyt <- basic_table() |>
+    split_rows_by("SEX") |>
     analyze_vars_in_cols(
       vars = "AGE",
       row_labels = lbl,
@@ -150,22 +150,22 @@ testthat::test_that("summarize works with nested analyze", {
   row_labels_for_analyze <- tolower(rl_tmp)
   names(row_labels_for_analyze) <- rl_tmp
 
-  lyt <- basic_table() %>%
-    split_rows_by("SEX") %>%
+  lyt <- basic_table() |>
+    split_rows_by("SEX") |>
     analyze_vars_in_cols(
       vars = "AGE",
       do_summarize_row_groups = TRUE,
       .indent_mods = 1L,
       row_labels = c("F" = "Female", "M" = "Male")
-    ) %>%
-    append_topleft("  Sex") %>%
-    split_rows_by("RACE", child_labels = "hidden", split_fun = drop_split_levels) %>%
+    ) |>
+    append_topleft("  Sex") |>
+    split_rows_by("RACE", child_labels = "hidden", split_fun = drop_split_levels) |>
     analyze_vars_in_cols(
       vars = "AGE",
       split_col_vars = FALSE,
       .indent_mods = 4L,
       row_labels = row_labels_for_analyze
-    ) %>%
+    ) |>
     append_topleft("          Ethnicity")
 
   tbl <- testthat::expect_silent(build_table(lyt, df = tern_ex_adpp, alt_counts_df = tern_ex_adsl))
@@ -180,25 +180,25 @@ testthat::test_that("summarize works with nested analyze", {
   testthat::expect_snapshot(sort_at_path(tbl, c("SEX", "*", "RACE"), scorefun(1)))
 
   # More nesting
-  lyt <- basic_table() %>%
-    split_rows_by("SEX") %>%
+  lyt <- basic_table() |>
+    split_rows_by("SEX") |>
     analyze_vars_in_cols(
       vars = "AGE",
       do_summarize_row_groups = TRUE
-    ) %>%
-    split_rows_by("RACE", child_labels = "hidden", split_fun = drop_split_levels) %>%
-    analyze_vars_in_cols(
-      vars = "AGE",
-      split_col_vars = FALSE,
-      do_summarize_row_groups = TRUE
-    ) %>%
-    split_rows_by("ARM", child_labels = "hidden", split_fun = drop_split_levels) %>%
+    ) |>
+    split_rows_by("RACE", child_labels = "hidden", split_fun = drop_split_levels) |>
     analyze_vars_in_cols(
       vars = "AGE",
       split_col_vars = FALSE,
       do_summarize_row_groups = TRUE
-    ) %>%
-    split_rows_by("STRATA1", child_labels = "hidden", split_fun = drop_split_levels) %>%
+    ) |>
+    split_rows_by("ARM", child_labels = "hidden", split_fun = drop_split_levels) |>
+    analyze_vars_in_cols(
+      vars = "AGE",
+      split_col_vars = FALSE,
+      do_summarize_row_groups = TRUE
+    ) |>
+    split_rows_by("STRATA1", child_labels = "hidden", split_fun = drop_split_levels) |>
     analyze_vars_in_cols(
       vars = "AGE",
       split_col_vars = FALSE
@@ -215,15 +215,15 @@ testthat::test_that("summarize works with nested analyze", {
 
 testthat::test_that("analyze_vars_in_cols works well with categorical data", {
   # Regression test after #1013
-  adpp <- tern_ex_adpp %>% h_pkparam_sort()
+  adpp <- tern_ex_adpp |> h_pkparam_sort()
 
-  lyt <- basic_table() %>%
-    split_rows_by(var = "STRATA1", label_pos = "topleft") %>%
+  lyt <- basic_table() |>
+    split_rows_by(var = "STRATA1", label_pos = "topleft") |>
     split_rows_by(
       var = "SEX",
       label_pos = "topleft",
       child_labels = "hidden"
-    ) %>%
+    ) |>
     analyze_vars_in_cols(
       vars = "ARM",
       .stats = c("n", "count_fraction"),
@@ -234,14 +234,14 @@ testthat::test_that("analyze_vars_in_cols works well with categorical data", {
     "The analyzed column produced more than one category of results."
   )
 
-  lyt <- basic_table() %>%
-    split_rows_by(var = "STRATA1", label_pos = "topleft") %>%
+  lyt <- basic_table() |>
+    split_rows_by(var = "STRATA1", label_pos = "topleft") |>
     split_rows_by(
       var = "SEX",
       label_pos = "topleft",
       child_labels = "hidden"
-    ) %>%
-    split_cols_by("ARM") %>%
+    ) |>
+    split_cols_by("ARM") |>
     analyze_vars_in_cols(
       vars = "counter",
       .stats = c("count_fraction"),
@@ -249,7 +249,7 @@ testthat::test_that("analyze_vars_in_cols works well with categorical data", {
     )
   testthat::expect_snapshot(build_table(
     lyt = lyt,
-    df = adpp %>% mutate(counter = factor("n"))
+    df = adpp |> mutate(counter = factor("n"))
   ))
 
   # Alternative to discuss (xxx)
@@ -267,11 +267,11 @@ testthat::test_that("analyze_vars_in_cols works well with categorical data", {
   }
 
   testthat::expect_snapshot(
-    basic_table(show_colcounts = TRUE) %>%
-      split_rows_by(var = "STRATA1", label_pos = "topleft") %>%
-      split_cols_by("ARM") %>%
-      analyze(vars = "SEX", afun = count_fraction) %>%
-      append_topleft("  SEX") %>%
+    basic_table(show_colcounts = TRUE) |>
+      split_rows_by(var = "STRATA1", label_pos = "topleft") |>
+      split_cols_by("ARM") |>
+      analyze(vars = "SEX", afun = count_fraction) |>
+      append_topleft("  SEX") |>
       build_table(adpp)
   )
 })
@@ -288,20 +288,20 @@ testthat::test_that("analyze_vars_in_cols works with imputation rule", {
   )
 
   # 1/3 imputation rule
-  lyt <- basic_table() %>%
+  lyt <- basic_table() |>
     split_rows_by(
       var = "ARM",
       split_fun = drop_split_levels
-    ) %>%
+    ) |>
     split_rows_by(
       var = "VISIT",
       split_fun = drop_split_levels
-    ) %>%
+    ) |>
     split_rows_by(
       var = "NFRLT",
       split_fun = drop_split_levels,
       child_labels = "hidden"
-    ) %>%
+    ) |>
     analyze_vars_in_cols(
       vars = c("AVAL", "AVALCAT1", rep("AVAL", 5)),
       .stats = c("n", "n_blq", "mean", "sd", "geom_mean", "min", "max"),
@@ -320,20 +320,20 @@ testthat::test_that("analyze_vars_in_cols works with imputation rule", {
   df$NFRLT <- as.character(df$NFRLT)
 
   # 1/3 imputation rule, custom avalcat_var
-  lyt <- basic_table() %>%
+  lyt <- basic_table() |>
     split_rows_by(
       var = "ARM",
       split_fun = drop_split_levels
-    ) %>%
+    ) |>
     split_rows_by(
       var = "VISIT",
       split_fun = drop_split_levels
-    ) %>%
+    ) |>
     split_rows_by(
       var = "NFRLT",
       split_fun = drop_split_levels,
       child_labels = "hidden"
-    ) %>%
+    ) |>
     analyze_vars_in_cols(
       vars = c("AVAL", "AVALCAT2", rep("AVAL", 5)),
       .stats = c("n", "n_blq", "mean", "sd", "geom_mean", "min", "max"),
@@ -351,20 +351,20 @@ testthat::test_that("analyze_vars_in_cols works with imputation rule", {
   testthat::expect_snapshot(res)
 
   # 1/2 imputation rule
-  lyt <- basic_table() %>%
+  lyt <- basic_table() |>
     split_rows_by(
       var = "ARM",
       split_fun = drop_split_levels
-    ) %>%
+    ) |>
     split_rows_by(
       var = "VISIT",
       split_fun = drop_split_levels
-    ) %>%
+    ) |>
     split_rows_by(
       var = "NFRLT",
       split_fun = drop_split_levels,
       child_labels = "hidden"
-    ) %>%
+    ) |>
     analyze_vars_in_cols(
       vars = c("AVAL", "AVALCAT1", rep("AVAL", 5)),
       .stats = c("n", "n_blq", "mean", "sd", "geom_mean", "min", "max"),
@@ -391,20 +391,20 @@ testthat::test_that("analyze_vars_in_cols works with caching", {
     NFRLT = with_label(as.factor(rep(c(0, seq(0, 42, 6)), 18)), "Nominal Time")
   )
 
-  lyt <- basic_table() %>%
+  lyt <- basic_table() |>
     split_rows_by(
       var = "ARM",
       split_fun = drop_split_levels
-    ) %>%
+    ) |>
     split_rows_by(
       var = "VISIT",
       split_fun = drop_split_levels
-    ) %>%
+    ) |>
     split_rows_by(
       var = "NFRLT",
       split_fun = drop_split_levels,
       child_labels = "hidden"
-    ) %>%
+    ) |>
     analyze_vars_in_cols(
       vars = c("AVAL", "AVALCAT1", rep("AVAL", 5)),
       .stats = c("n", "n_blq", "mean", "sd", "geom_mean", "min", "max"),

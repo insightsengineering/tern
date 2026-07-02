@@ -116,8 +116,8 @@ h_tab_one_biomarker <- function(df,
 #' adrs <- tern_ex_adrs
 #' adrs_labels <- formatters::var_labels(adrs)
 #'
-#' adrs_f <- adrs %>%
-#'   filter(PARAMCD == "BESRSPI") %>%
+#' adrs_f <- adrs |>
+#'   filter(PARAMCD == "BESRSPI") |>
 #'   mutate(rsp = AVALC == "CR")
 #' formatters::var_labels(adrs_f) <- c(adrs_labels, "Response")
 #'
@@ -179,8 +179,8 @@ h_tab_rsp_one_biomarker <- function(df,
 #' # Save variable labels before data processing steps.
 #' adtte_labels <- formatters::var_labels(adtte, fill = FALSE)
 #'
-#' adtte_f <- adtte %>%
-#'   filter(PARAMCD == "OS") %>%
+#' adtte_f <- adtte |>
+#'   filter(PARAMCD == "OS") |>
 #'   mutate(
 #'     AVALU = as.character(AVALU),
 #'     is_event = CNSR == 0

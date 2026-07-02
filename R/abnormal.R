@@ -132,8 +132,8 @@ a_count_abnormal <- function(df,
   .labels <- get_labels_from_stats(.stats, .labels, levels_per_stats)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
 
-  x_stats <- x_stats[.stats] %>%
-    .unlist_keep_nulls() %>%
+  x_stats <- x_stats[.stats] |>
+    .unlist_keep_nulls() |>
     setNames(names(.formats))
 
   # Auto format handling
@@ -145,10 +145,10 @@ a_count_abnormal <- function(df,
   in_rows(
     .list = x_stats,
     .formats = .formats,
-    .names = .labels %>% .unlist_keep_nulls(),
+    .names = .labels |> .unlist_keep_nulls(),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -172,12 +172,12 @@ a_count_abnormal <- function(df,
 #' )
 #'
 #' # Select only post-baseline records.
-#' df <- df %>%
+#' df <- df |>
 #'   filter(ONTRTFL == "Y")
 #'
 #' # Layout creating function.
-#' basic_table() %>%
-#'   count_abnormal(var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW")) %>%
+#' basic_table() |>
+#'   count_abnormal(var = "ANRIND", abnormal = list(high = "HIGH", low = "LOW")) |>
 #'   build_table(df)
 #'
 #' # Passing of statistics function and formatting arguments.
@@ -190,15 +190,15 @@ a_count_abnormal <- function(df,
 #' )
 #'
 #' # Select only post-baseline records.
-#' df2 <- df2 %>%
+#' df2 <- df2 |>
 #'   filter(ONTRTFL == "Y")
 #'
-#' basic_table() %>%
+#' basic_table() |>
 #'   count_abnormal(
 #'     var = "RANGE",
 #'     abnormal = list(low = "LOW", high = "HIGH"),
 #'     variables = list(id = "ID", baseline = "BL_RANGE")
-#'   ) %>%
+#'   ) |>
 #'   build_table(df2)
 #'
 #' @export

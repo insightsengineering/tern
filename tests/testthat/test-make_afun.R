@@ -182,9 +182,9 @@ testthat::test_that("make_afun produces empty cells and keeps labels when applie
     )
   }
   afun <- make_afun(sfun, .null_ref_cells = FALSE)
-  result <- basic_table() %>%
-    split_cols_by("Species", ref_group = "setosa") %>%
-    analyze("Sepal.Length", afun = afun) %>%
+  result <- basic_table() |>
+    split_cols_by("Species", ref_group = "setosa") |>
+    analyze("Sepal.Length", afun = afun) |>
     build_table(iris)
 
   res <- testthat::expect_silent(result)
@@ -205,9 +205,9 @@ testthat::test_that("make_afun by default removes results from `.in_ref_col`", {
     formats = c(range = c("(xx.xx, xx.xx)")),
     indent_mods = c(range = 0L)
   )
-  result <- basic_table() %>%
-    split_cols_by("Species", ref_group = "setosa") %>%
-    analyze("Sepal.Length", afun = afun) %>%
+  result <- basic_table() |>
+    split_cols_by("Species", ref_group = "setosa") |>
+    analyze("Sepal.Length", afun = afun) |>
     build_table(iris)
 
   res <- testthat::expect_silent(result)

@@ -189,7 +189,7 @@ testthat::test_that("Wrapping works consistently", {
   exp_nchar_lab <- c(144, 114, 9, 4, 0, 0, 8)
 
   # Force informative error
-  if (!checkmate::check_set_equal(nchar_lab_extracted, exp_nchar_lab)) {
+  if (!isTRUE(checkmate::check_set_equal(nchar_lab_extracted, exp_nchar_lab))) {
     stop(
       "width:", eg_width,
       "\nnchar_out_label  : ", paste(nchar_lab_extracted, collapse = " "),

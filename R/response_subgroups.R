@@ -24,10 +24,10 @@
 #' adrs <- tern_ex_adrs
 #' adrs_labels <- formatters::var_labels(adrs)
 #'
-#' adrs_f <- adrs %>%
-#'   filter(PARAMCD == "BESRSPI") %>%
-#'   filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
-#'   droplevels() %>%
+#' adrs_f <- adrs |>
+#'   filter(PARAMCD == "BESRSPI") |>
+#'   filter(ARM %in% c("A: Drug X", "B: Placebo")) |>
+#'   droplevels() |>
 #'   mutate(
 #'     # Reorder levels of factor to make the placebo group the reference arm.
 #'     ARM = fct_relevel(ARM, "B: Placebo"),
@@ -156,7 +156,7 @@ a_response_subgroups <- function(df,
 
   # if empty, return NA
   if (nrow(df) == 0) {
-    return(in_rows(.list = list(NA) %>% stats::setNames(cur_col_stat)))
+    return(in_rows(.list = list(NA) |> stats::setNames(cur_col_stat)))
   }
 
   # Main statistics taken from df
@@ -164,20 +164,20 @@ a_response_subgroups <- function(df,
 
   # Fill in formatting defaults
   .stats <- get_stats("tabulate_rsp_subgroups", stats_in = cur_col_stat)
-  levels_per_stats <- rep(list(var_lvls), length(.stats)) %>% setNames(.stats)
+  levels_per_stats <- rep(list(var_lvls), length(.stats)) |> setNames(.stats)
   .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
   .labels <- get_labels_from_stats(
     .stats, .labels, levels_per_stats,
     # default labels are pre-determined in extract_*() function
-    tern_defaults = as.list(as.character(df$subgroup)) %>% setNames(var_lvls)
+    tern_defaults = as.list(as.character(df$subgroup)) |> setNames(var_lvls)
   )
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
 
   x_stats <- lapply(
     .stats,
-    function(x) x_stats[[x]] %>% stats::setNames(var_lvls)
-  ) %>%
-    stats::setNames(.stats) %>%
+    function(x) x_stats[[x]] |> stats::setNames(var_lvls)
+  ) |>
+    stats::setNames(.stats) |>
     .unlist_keep_nulls()
 
   .nms <- if ("biomarker" %in% names(dots_extra_args)) var_lvls else names(.labels)
@@ -193,8 +193,8 @@ a_response_subgroups <- function(df,
     .formats = .formats,
     .names = .nms,
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -222,18 +222,18 @@ a_response_subgroups <- function(df,
 #'
 #' @examples
 #' # Table with default columns
-#' basic_table() %>%
+#' basic_table() |>
 #'   tabulate_rsp_subgroups(df)
 #'
 #' # Table with selected columns
-#' basic_table() %>%
+#' basic_table() |>
 #'   tabulate_rsp_subgroups(
 #'     df = df,
 #'     vars = c("n_tot", "n", "n_rsp", "prop", "or", "ci")
 #'   )
 #'
 #' # Table with risk difference column added
-#' basic_table() %>%
+#' basic_table() |>
 #'   tabulate_rsp_subgroups(
 #'     df,
 #'     riskdiff = control_riskdiff(
@@ -314,14 +314,14 @@ tabulate_rsp_subgroups <- function(lyt,
     arm_cols <- paste(rep(c("n_rsp", "n_rsp", "n", "n")), c(riskdiff$arm_x, riskdiff$arm_y), sep = "_")
     extra_args[[".formats"]] <- c(extra_args[[".formats"]], list(riskdiff = riskdiff$format))
 
-    df_prop_diff <- df$prop %>%
-      dplyr::select(-"prop") %>%
+    df_prop_diff <- df$prop |>
+      dplyr::select(-"prop") |>
       tidyr::pivot_wider(
         id_cols = c("subgroup", "var", "var_label", "row_type"),
         names_from = "arm",
         values_from = c("n", "n_rsp")
-      ) %>%
-      dplyr::rowwise() %>%
+      ) |>
+      dplyr::rowwise() |>
       dplyr::mutate(
         riskdiff = stat_propdiff_ci(
           x = as.list(.data[[arm_cols[1]]]),
@@ -330,10 +330,10 @@ tabulate_rsp_subgroups <- function(lyt,
           N_y = .data[[arm_cols[4]]],
           pct = riskdiff$pct
         )
-      ) %>%
+      ) |>
       dplyr::select(-dplyr::all_of(arm_cols))
 
-    df$or <- df$or %>%
+    df$or <- df$or |>
       dplyr::left_join(
         df_prop_diff,
         by = c("subgroup", "var", "var_label", "row_type")
@@ -412,7 +412,7 @@ tabulate_rsp_subgroups <- function(lyt,
     afun = a_response_subgroups,
     na_str = na_str,
     extra_args = extra_args
-  ) %>%
+  ) |>
     append_topleft("Baseline Risk Factors")
 
   # Add analysis rows

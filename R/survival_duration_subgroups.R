@@ -39,12 +39,12 @@
 #' # Save variable labels before data processing steps.
 #' adtte_labels <- formatters::var_labels(adtte)
 #'
-#' adtte_f <- adtte %>%
+#' adtte_f <- adtte |>
 #'   filter(
 #'     PARAMCD == "OS",
 #'     ARM %in% c("B: Placebo", "A: Drug X"),
 #'     SEX %in% c("M", "F")
-#'   ) %>%
+#'   ) |>
 #'   mutate(
 #'     # Reorder levels of ARM to display reference arm before treatment arm.
 #'     ARM = droplevels(forcats::fct_relevel(ARM, "B: Placebo")),
@@ -180,7 +180,7 @@ a_survival_subgroups <- function(df,
 
   # if empty, return NA
   if (nrow(df) == 0) {
-    return(in_rows(.list = list(NA) %>% stats::setNames(cur_col_stat)))
+    return(in_rows(.list = list(NA) |> stats::setNames(cur_col_stat)))
   }
 
   # Main statistics taken from df
@@ -188,20 +188,20 @@ a_survival_subgroups <- function(df,
 
   # Fill in formatting defaults
   .stats <- get_stats("tabulate_survival_subgroups", stats_in = cur_col_stat)
-  levels_per_stats <- rep(list(var_lvls), length(.stats)) %>% setNames(.stats)
+  levels_per_stats <- rep(list(var_lvls), length(.stats)) |> setNames(.stats)
   .formats <- get_formats_from_stats(.stats, .formats, levels_per_stats)
   .labels <- get_labels_from_stats(
     .stats, .labels, levels_per_stats,
     # default labels are pre-determined in extract_*() function
-    tern_defaults = as.list(as.character(df$subgroup)) %>% setNames(var_lvls)
+    tern_defaults = as.list(as.character(df$subgroup)) |> setNames(var_lvls)
   )
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
 
   x_stats <- lapply(
     .stats,
-    function(x) x_stats[[x]] %>% stats::setNames(var_lvls)
-  ) %>%
-    stats::setNames(.stats) %>%
+    function(x) x_stats[[x]] |> stats::setNames(var_lvls)
+  ) |>
+    stats::setNames(.stats) |>
     .unlist_keep_nulls()
 
   # Auto format handling
@@ -215,8 +215,8 @@ a_survival_subgroups <- function(df,
     .formats = .formats,
     .names = names(.labels),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -235,11 +235,11 @@ a_survival_subgroups <- function(df,
 #'
 #' @examples
 #' ## Table with default columns.
-#' basic_table() %>%
+#' basic_table() |>
 #'   tabulate_survival_subgroups(df, time_unit = adtte_f$AVALU[1])
 #'
 #' ## Table with a manually chosen set of columns: adding "pval".
-#' basic_table() %>%
+#' basic_table() |>
 #'   tabulate_survival_subgroups(
 #'     df = df,
 #'     vars = c("n_tot_events", "n_events", "median", "hr", "ci", "pval"),
@@ -320,14 +320,14 @@ tabulate_survival_subgroups <- function(lyt,
     arm_cols <- paste(rep(c("n_events", "n_events", "n", "n")), c(riskdiff$arm_x, riskdiff$arm_y), sep = "_")
     extra_args[[".formats"]] <- c(extra_args[[".formats"]], list(riskdiff = riskdiff$format))
 
-    df_prop_diff <- df$survtime %>%
-      dplyr::select(-"median") %>%
+    df_prop_diff <- df$survtime |>
+      dplyr::select(-"median") |>
       tidyr::pivot_wider(
         id_cols = c("subgroup", "var", "var_label", "row_type"),
         names_from = "arm",
         values_from = c("n", "n_events")
-      ) %>%
-      dplyr::rowwise() %>%
+      ) |>
+      dplyr::rowwise() |>
       dplyr::mutate(
         riskdiff = stat_propdiff_ci(
           x = as.list(.data[[arm_cols[1]]]),
@@ -336,10 +336,10 @@ tabulate_survival_subgroups <- function(lyt,
           N_y = .data[[arm_cols[4]]],
           pct = riskdiff$pct
         )
-      ) %>%
+      ) |>
       dplyr::select(-dplyr::all_of(arm_cols))
 
-    df$hr <- df$hr %>%
+    df$hr <- df$hr |>
       dplyr::left_join(
         df_prop_diff,
         by = c("subgroup", "var", "var_label", "row_type")
@@ -418,7 +418,7 @@ tabulate_survival_subgroups <- function(lyt,
     afun = a_survival_subgroups,
     na_str = na_str,
     extra_args = extra_args
-  ) %>%
+  ) |>
     append_topleft("Baseline Risk Factors")
 
   # Add analysis rows

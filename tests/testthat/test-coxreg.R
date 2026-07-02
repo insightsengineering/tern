@@ -249,7 +249,7 @@ testthat::test_that("fit_coxreg_univar returns model results as expected", {
 })
 
 testthat::test_that("fit_coxreg_univar runs with non-represented level of a factor", {
-  data <- dta_bladder_raw %>%
+  data <- dta_bladder_raw |>
     dplyr::filter(covar1 %in% 1:3)
 
   variables <- list(
@@ -261,7 +261,7 @@ testthat::test_that("fit_coxreg_univar runs with non-represented level of a fact
 })
 
 testthat::test_that("fit_coxreg_univar is stopped when there are not 2 arms", {
-  data <- dta_bladder_raw %>%
+  data <- dta_bladder_raw |>
     dplyr::filter(covar1 %in% 1:3)
 
   variables <- list(

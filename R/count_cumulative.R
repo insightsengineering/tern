@@ -121,7 +121,7 @@ s_count_cumulative <- function(x,
                                ...) {
   checkmate::assert_numeric(thresholds, min.len = 1, any.missing = FALSE)
 
-  denom <- match.arg(denom) %>%
+  denom <- match.arg(denom) |>
     switch(
       n = length(x),
       N_row = .N_row,
@@ -194,8 +194,8 @@ a_count_cumulative <- function(x,
   )
 
   # Unlist stats
-  x_stats <- x_stats %>%
-    .unlist_keep_nulls() %>%
+  x_stats <- x_stats |>
+    .unlist_keep_nulls() |>
     setNames(names(.formats))
 
   # Auto format handling
@@ -214,8 +214,8 @@ a_count_cumulative <- function(x,
     .formats = .formats,
     .names = names(.labels),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -228,13 +228,13 @@ a_count_cumulative <- function(x,
 #'   the statistics from `s_count_cumulative()` to the table layout.
 #'
 #' @examples
-#' basic_table() %>%
-#'   split_cols_by("ARM") %>%
-#'   add_colcounts() %>%
+#' basic_table() |>
+#'   split_cols_by("ARM") |>
+#'   add_colcounts() |>
 #'   count_cumulative(
 #'     vars = "AGE",
 #'     thresholds = c(40, 60)
-#'   ) %>%
+#'   ) |>
 #'   build_table(tern_ex_adsl)
 #'
 #' @export

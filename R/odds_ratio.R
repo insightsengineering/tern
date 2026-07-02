@@ -217,10 +217,10 @@ a_odds_ratio <- function(df,
   in_rows(
     .list = x_stats,
     .formats = .formats,
-    .names = .labels %>% .unlist_keep_nulls(),
+    .names = .labels |> .unlist_keep_nulls(),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -240,8 +240,8 @@ a_odds_ratio <- function(df,
 #'   strata = factor(sample(c("C", "D"), 100, TRUE))
 #' )
 #'
-#' l <- basic_table() %>%
-#'   split_cols_by(var = "grp", ref_group = "B") %>%
+#' l <- basic_table() |>
+#'   split_cols_by(var = "grp", ref_group = "B") |>
 #'   estimate_odds_ratio(vars = "rsp")
 #'
 #' build_table(l, df = dta)

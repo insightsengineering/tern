@@ -493,8 +493,8 @@ testthat::test_that("`estimate_proportion_diff` is compatible with `rtables`", {
     grp = factor(c("A", "B", "A", "B", "A", "A"), levels = c("B", "A"))
   )
 
-  l <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B") %>%
+  l <- basic_table() |>
+    split_cols_by(var = "grp", ref_group = "B") |>
     estimate_proportion_diff(
       vars = "rsp",
       conf_level = 0.90,
@@ -517,8 +517,8 @@ testthat::test_that("`estimate_proportion_diff` and cmh is compatible with `rtab
     "f2" = sample(c("x", "y", "z"), nex, TRUE),
     stringsAsFactors = TRUE
   )
-  l <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
+  l <- basic_table() |>
+    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) |>
     estimate_proportion_diff(
       vars = "rsp",
       variables = list(strata = c("f1", "f2")),
@@ -547,8 +547,8 @@ testthat::test_that("`estimate_proportion_diff` and strat_newcombe is compatible
   )
   strata <- interaction(strata_data)
   dta <- cbind(rsp, grp, strata_data)
-  l <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B") %>%
+  l <- basic_table() |>
+    split_cols_by(var = "grp", ref_group = "B") |>
     estimate_proportion_diff(
       vars = "rsp",
       variables = list(strata = c("f1", "f2")),

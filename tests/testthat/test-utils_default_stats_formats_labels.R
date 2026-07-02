@@ -141,7 +141,7 @@ testthat::test_that("get_labels_from_stats works as expected", {
         "catch_me" = "xx"
       )
     ),
-    stats_to_do %>% as.list()
+    stats_to_do |> as.list()
   )
 })
 
@@ -162,7 +162,7 @@ testthat::test_that("get_labels_from_stats with labels in works when adding leve
     c(
       "count.a" = "any A", "count.b" = "COUNT", "count.c" = "Lvl c:",
       "count_fraction.a" = "any A", "count_fraction.b" = "CF: B", "count_fraction.c" = "Lvl c:"
-    ) %>% as.list()
+    ) |> as.list()
   )
 })
 
@@ -215,7 +215,7 @@ testthat::test_that("get_indents_from_stats works as expected", {
     get_indents_from_stats(c(names(stats_to_do), "n"),
       indents_in = stats_to_do
     ),
-    c(stats_to_do, n = 0L) %>% as.list()
+    c(stats_to_do, n = 0L) |> as.list()
   )
 })
 
@@ -225,16 +225,16 @@ testthat::test_that("labels_use_control works as expected", {
   custom_labels <- c(mean_ci = "mean ci", quantiles = "my quantiles")
 
   lbls <- get_labels_from_stats(stats)
-  res <- lbls %>% labels_use_control(control)
+  res <- lbls |> labels_use_control(control)
   testthat::expect_snapshot(res)
 
   lbls <- get_labels_from_stats(stats, labels_in = custom_labels)
-  res <- lbls %>% labels_use_control(control, custom_labels)
+  res <- lbls |> labels_use_control(control, custom_labels)
   testthat::expect_snapshot(res)
 })
 
 testthat::test_that("summary_formats works as expected", {
-  result <- summary_formats() %>% unlist() # More compact fruition
+  result <- summary_formats() |> unlist() # More compact fruition
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 

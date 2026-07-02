@@ -1,10 +1,10 @@
 # Pre-processing the table
-tab <- basic_table() %>%
-  split_cols_by("ARM") %>%
-  split_rows_by("RACE") %>%
-  split_rows_by("STRATA1") %>%
-  summarize_row_groups() %>%
-  analyze_vars("COUNTRY", .stats = "count_fraction") %>%
+tab <- basic_table() |>
+  split_cols_by("ARM") |>
+  split_rows_by("RACE") |>
+  split_rows_by("STRATA1") |>
+  summarize_row_groups() |>
+  analyze_vars("COUNTRY", .stats = "count_fraction") |>
   build_table(DM)
 
 testthat::test_that("keep_rows works in a special case identical to standard pruning", {
@@ -37,8 +37,8 @@ testthat::test_that("keep_content_rows works as expected", {
   result <- prune_table(tab, keep_content_rows(more_than_twenty))
   result_leaves <- collect_leaves(result)
   result_content_rows <- result_leaves[sapply(result_leaves, class) == "ContentRow"]
-  result_counts <- result_content_rows %>%
-    lapply(h_row_counts, col_names = names(tab)) %>%
+  result_counts <- result_content_rows |>
+    lapply(h_row_counts, col_names = names(tab)) |>
     sapply(sum)
   testthat::expect_true(all(result_counts > 20))
 })
@@ -151,7 +151,7 @@ testthat::test_that("has_counts_difference result performs comparisons correctly
 })
 
 testthat::test_that("combination of pruning functions works", {
-  result <- tab %>%
+  result <- tab |>
     prune_table(
       keep_rows(
         has_fractions_difference(atleast = 0.1, c("A: Drug X", "C: Combination")) &

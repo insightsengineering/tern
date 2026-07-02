@@ -80,9 +80,9 @@ Analyze functions are used in combination with the `rtables` layout functions, i
 We will use the native `rtables::analyze` function with the `tern` formatted analysis functions as a `afun` parameter.
 
 ```
-l <- basic_table() %>%
-    split_cols_by(var = "ARM") %>%
-    split_rows_by(var = "AVISIT") %>%
+l <- basic_table() |>
+    split_cols_by(var = "ARM") |>
+    split_rows_by(var = "AVISIT") |>
     analyze(vars = "AVAL", afun = a_summary)
 
 build_table(l, df = adrs)
@@ -109,14 +109,14 @@ In the example below the only function from `tern` is `analyze_vars()` and the r
 vars <- c("AGE", "SEX")
 var_labels <- c("Age (yr)", "Sex")
 
-basic_table() %>%
-  split_cols_by(var = "ARM") %>%
-  add_overall_col("All Patients") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by(var = "ARM") |>
+  add_overall_col("All Patients") |>
+  add_colcounts() |>
   analyze_vars(
     vars = vars,
     var_labels = var_labels
-  ) %>%
+  ) |>
   build_table(adsl)
 ```
 
@@ -129,14 +129,14 @@ adsl$ARM <- factor(adsl$ARM, levels = c("B: Placebo", "A: Drug X", "C: Combinati
 # Reorder the levels in the SEX variable.
 adsl$SEX <- factor(adsl$SEX, levels = c("M", "F", "U", "UNDIFFERENTIATED"))
 
-basic_table() %>%
-  split_cols_by(var = "ARM") %>%
-  add_overall_col("All Patients") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by(var = "ARM") |>
+  add_overall_col("All Patients") |>
+  add_colcounts() |>
   analyze_vars(
     vars = vars,
     var_labels = var_labels
-  ) %>%
+  ) |>
   build_table(adsl)
 ```
 
@@ -148,34 +148,34 @@ For this example we will change the default summary for numeric variables to inc
 
 ```{r}
 # Select statistics and modify default formats.
-basic_table() %>%
-  split_cols_by(var = "ARM") %>%
-  add_overall_col("All Patients") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by(var = "ARM") |>
+  add_overall_col("All Patients") |>
+  add_colcounts() |>
   analyze_vars(
     vars = vars,
     var_labels = var_labels,
     .stats = c("n", "mean_sd", "count"),
     .formats = c(mean_sd = "xx.xx (xx.xx)")
-  ) %>%
+  ) |>
   build_table(adsl)
 ```
 
 One feature of a `layout` is that it can be used with different datasets to create different summaries. For example, here we can easily create the same summary of demographics for the Brazil and China subgroups, respectively:
 
 ```{r}
-lyt <- basic_table() %>%
-  split_cols_by(var = "ARM") %>%
-  add_overall_col("All Patients") %>%
-  add_colcounts() %>%
+lyt <- basic_table() |>
+  split_cols_by(var = "ARM") |>
+  add_overall_col("All Patients") |>
+  add_colcounts() |>
   analyze_vars(
     vars = vars,
     var_labels = var_labels
   )
 
-build_table(lyt, df = adsl %>% dplyr::filter(COUNTRY == "BRA"))
+build_table(lyt, df = adsl |> dplyr::filter(COUNTRY == "BRA"))
 
-build_table(lyt, df = adsl %>% dplyr::filter(COUNTRY == "CHN"))
+build_table(lyt, df = adsl |> dplyr::filter(COUNTRY == "CHN"))
 ```
 
 ### Adverse Event Table
@@ -186,10 +186,10 @@ To create this table we will need to use a combination of several layout creatin
 
 We start by creating the high-level summary. The layout creating function in `tern` that can do this is `summarize_num_patients()`:
 ```{r}
-basic_table() %>%
-  split_cols_by(var = "ACTARM") %>%
-  add_colcounts() %>%
-  add_overall_col(label = "All Patients") %>%
+basic_table() |>
+  split_cols_by(var = "ACTARM") |>
+  add_colcounts() |>
+  add_overall_col(label = "All Patients") |>
   summarize_num_patients(
     var = "USUBJID",
     .stats = c("unique", "nonunique"),
@@ -197,7 +197,7 @@ basic_table() %>%
       unique = "Total number of patients with at least one AE",
       nonunique = "Overall total number of events"
     )
-  ) %>%
+  ) |>
   build_table(
     df = adae,
     alt_counts_df = adsl
@@ -222,15 +222,15 @@ From these results you can see that the `unique` and `nonunique` statistics are 
 Now that we know what types of statistics can be derived by `s_num_patients()`, we can try modifying the default layout returned by `summarize_num_patients()`. Instead of reporting the `unique` and `nonqunie` statistics, we specify that the analysis should include only the `unique_count` statistic. The result will show only the counts of unique patients. Note we make this update in both the `.stats` and `.labels` argument of `summarize_num_patients()`.
 
 ```{r}
-basic_table() %>%
-  split_cols_by(var = "ACTARM") %>%
-  add_colcounts() %>%
-  add_overall_col(label = "All Patients") %>%
+basic_table() |>
+  split_cols_by(var = "ACTARM") |>
+  add_colcounts() |>
+  add_overall_col(label = "All Patients") |>
   summarize_num_patients(
     var = "USUBJID",
     .stats = "unique_count",
     .labels = c(unique_count = "Total number of patients with at least one AE")
-  ) %>%
+  ) |>
   build_table(
     df = adae,
     alt_counts_df = adsl
@@ -241,10 +241,10 @@ Let's now continue building on the layout for the adverse event table.
 
 After we have the top-level summary, we can repeat the same summary at each system organ class level. To do this we split the analysis data with `split_rows_by()` before calling again `summarize_num_patients()`.
 ```{r}
-basic_table() %>%
-  split_cols_by(var = "ACTARM") %>%
-  add_colcounts() %>%
-  add_overall_col(label = "All Patients") %>%
+basic_table() |>
+  split_cols_by(var = "ACTARM") |>
+  add_colcounts() |>
+  add_overall_col(label = "All Patients") |>
   summarize_num_patients(
     var = "USUBJID",
     .stats = c("unique", "nonunique"),
@@ -252,14 +252,14 @@ basic_table() %>%
       unique = "Total number of patients with at least one AE",
       nonunique = "Overall total number of events"
     )
-  ) %>%
+  ) |>
   split_rows_by(
     "AEBODSYS",
     child_labels = "visible",
     nested = FALSE,
     indent_mod = -1L,
     split_fun = drop_split_levels
-  ) %>%
+  ) |>
   summarize_num_patients(
     var = "USUBJID",
     .stats = c("unique", "nonunique"),
@@ -267,7 +267,7 @@ basic_table() %>%
       unique = "Total number of patients with at least one AE",
       nonunique = "Overall total number of events"
     )
-  ) %>%
+  ) |>
   build_table(
     df = adae,
     alt_counts_df = adsl
@@ -277,11 +277,11 @@ basic_table() %>%
 The table looks almost ready. For the final step, we need a layout creating function that can produce a count table of event frequencies. The layout creating function for this is `count_occurrences()`. Let's first try using this function in a simpler layout without row splits:
 
 ```{r}
-basic_table() %>%
-  split_cols_by(var = "ACTARM") %>%
-  add_colcounts() %>%
-  add_overall_col(label = "All Patients") %>%
-  count_occurrences(vars = "AEDECOD") %>%
+basic_table() |>
+  split_cols_by(var = "ACTARM") |>
+  add_colcounts() |>
+  add_overall_col(label = "All Patients") |>
+  count_occurrences(vars = "AEDECOD") |>
   build_table(
     df = adae,
     alt_counts_df = adsl
@@ -291,10 +291,10 @@ basic_table() %>%
 Putting everything together, the final AE table looks like this:
 
 ```{r}
-basic_table() %>%
-  split_cols_by(var = "ACTARM") %>%
-  add_colcounts() %>%
-  add_overall_col(label = "All Patients") %>%
+basic_table() |>
+  split_cols_by(var = "ACTARM") |>
+  add_colcounts() |>
+  add_overall_col(label = "All Patients") |>
   summarize_num_patients(
     var = "USUBJID",
     .stats = c("unique", "nonunique"),
@@ -302,14 +302,14 @@ basic_table() %>%
       unique = "Total number of patients with at least one AE",
       nonunique = "Overall total number of events"
     )
-  ) %>%
+  ) |>
   split_rows_by(
     "AEBODSYS",
     child_labels = "visible",
     nested = FALSE,
     indent_mod = -1L,
     split_fun = drop_split_levels
-  ) %>%
+  ) |>
   summarize_num_patients(
     var = "USUBJID",
     .stats = c("unique", "nonunique"),
@@ -317,8 +317,8 @@ basic_table() %>%
       unique = "Total number of patients with at least one AE",
       nonunique = "Overall total number of events"
     )
-  ) %>%
-  count_occurrences(vars = "AEDECOD") %>%
+  ) |>
+  count_occurrences(vars = "AEDECOD") |>
   build_table(
     df = adae,
     alt_counts_df = adsl
@@ -339,107 +339,107 @@ First we start with some data preparation steps to set up the analysis dataset. 
 
 ```{r}
 # Preprocessing to select an analysis endpoint.
-anl <- adrs %>%
-  dplyr::filter(PARAMCD == "BESRSPI") %>%
+anl <- adrs |>
+  dplyr::filter(PARAMCD == "BESRSPI") |>
   dplyr::mutate(is_rsp = AVALC %in% c("CR", "PR"))
 ```
 
 To create a summary of the proportion of responders in each treatment group, use the `estimate_proportion()` layout creating function:
 ```{r}
-basic_table() %>%
-  split_cols_by(var = "ARM") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by(var = "ARM") |>
+  add_colcounts() |>
   estimate_proportion(
     vars = "is_rsp",
     table_names = "est_prop"
-  ) %>%
+  ) |>
   build_table(anl)
 ```
 
 To specify which arm in the table should be used as the reference, use the argument `ref_group` from `split_cols_by()`. Below we change the reference arm to "B: Placebo" and so this arm is displayed as the first column:
 
 ```{r}
-basic_table() %>%
-  split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by(var = "ARM", ref_group = "B: Placebo") |>
+  add_colcounts() |>
   estimate_proportion(
     vars = "is_rsp"
-  ) %>%
+  ) |>
   build_table(anl)
 ```
 
 To further customize the analysis, we can use the `method` and `conf_level` arguments to modify the type of confidence interval that is calculated:
 
 ```{r}
-basic_table() %>%
-  split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by(var = "ARM", ref_group = "B: Placebo") |>
+  add_colcounts() |>
   estimate_proportion(
     vars = "is_rsp",
     method = "clopper-pearson",
     conf_level = 0.9
-  ) %>%
+  ) |>
   build_table(anl)
 ```
 
 The next table section needed should summarize the difference in response rates between the reference arm each comparison arm. Use `estimate_proportion_diff()` layout creating function for this:
 ```{r}
-basic_table() %>%
-  split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by(var = "ARM", ref_group = "B: Placebo") |>
+  add_colcounts() |>
   estimate_proportion_diff(
     vars = "is_rsp",
     show_labels = "visible",
     var_labels = "Unstratified Analysis"
-  ) %>%
+  ) |>
   build_table(anl)
 ```
 
 The final section needed to complete the table includes a statistical test for the difference in response rates. Use the `test_proportion_diff()` layout creating function for this:
 ```{r}
-basic_table() %>%
-  split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
-  add_colcounts() %>%
-  test_proportion_diff(vars = "is_rsp") %>%
+basic_table() |>
+  split_cols_by(var = "ARM", ref_group = "B: Placebo") |>
+  add_colcounts() |>
+  test_proportion_diff(vars = "is_rsp") |>
   build_table(anl)
 ```
 
 To customize the output, we use the `method` argument to select a Chi-Squared test with Schouten correction.
 
 ```{r}
-basic_table() %>%
-  split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by(var = "ARM", ref_group = "B: Placebo") |>
+  add_colcounts() |>
   test_proportion_diff(
     vars = "is_rsp",
     method = "schouten"
-  ) %>%
+  ) |>
   build_table(anl)
 ```
 
 Now we can put all the table sections together in one layout pipeline. Note there is one more small change needed. Since the primary analysis variable in all table sections is the same (`is_rsp`), we need to give each sub-table a unique name. This is done by adding the `table_names` argument and providing unique names through that:
 
 ```{r}
-basic_table() %>%
-  split_cols_by(var = "ARM", ref_group = "B: Placebo") %>%
-  add_colcounts() %>%
+basic_table() |>
+  split_cols_by(var = "ARM", ref_group = "B: Placebo") |>
+  add_colcounts() |>
   estimate_proportion(
     vars = "is_rsp",
     method = "clopper-pearson",
     conf_level = 0.9,
     table_names = "est_prop"
-  ) %>%
+  ) |>
   estimate_proportion_diff(
     vars = "is_rsp",
     show_labels = "visible",
     var_labels = "Unstratified Analysis",
     table_names = "est_prop_diff"
-  ) %>%
+  ) |>
   test_proportion_diff(
     vars = "is_rsp",
     method = "schouten",
     table_names = "test_prop_diff"
-  ) %>%
+  ) |>
   build_table(anl)
 ```
 

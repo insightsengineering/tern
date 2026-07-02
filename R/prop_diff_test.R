@@ -203,8 +203,8 @@ a_test_proportion_diff <- function(df,
     .formats = .formats,
     .names = names(.labels),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -224,8 +224,8 @@ a_test_proportion_diff <- function(df,
 #' )
 #'
 #' # With `rtables` pipelines.
-#' l <- basic_table() %>%
-#'   split_cols_by(var = "grp", ref_group = "B") %>%
+#' l <- basic_table() |>
+#'   split_cols_by(var = "grp", ref_group = "B") |>
 #'   test_proportion_diff(
 #'     vars = "rsp",
 #'     method = "cmh", variables = list(strata = "strata")

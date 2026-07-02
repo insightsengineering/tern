@@ -143,8 +143,8 @@ a_count_abnormal_by_marked <- function(df,
   .labels <- get_labels_from_stats(.stats, .labels, levels_per_stats)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
 
-  x_stats <- x_stats[.stats] %>%
-    .unlist_keep_nulls() %>%
+  x_stats <- x_stats[.stats] |>
+    .unlist_keep_nulls() |>
     setNames(names(.formats))
 
   # Auto format handling
@@ -156,10 +156,10 @@ a_count_abnormal_by_marked <- function(df,
   in_rows(
     .list = x_stats,
     .formats = .formats,
-    .names = .labels %>% .unlist_keep_nulls(),
+    .names = .labels |> .unlist_keep_nulls(),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -188,7 +188,7 @@ a_count_abnormal_by_marked <- function(df,
 #'   stringsAsFactors = FALSE
 #' )
 #'
-#' df <- df %>%
+#' df <- df |>
 #'   mutate(abn_dir = factor(
 #'     case_when(
 #'       ANRIND == "LOW LOW" ~ "Low",
@@ -199,9 +199,9 @@ a_count_abnormal_by_marked <- function(df,
 #'   ))
 #'
 #' # Select only post-baseline records.
-#' df <- df %>% filter(ONTRTFL == "Y")
-#' df_crp <- df %>%
-#'   filter(PARAMCD == "CRP") %>%
+#' df <- df |> filter(ONTRTFL == "Y")
+#' df_crp <- df |>
+#'   filter(PARAMCD == "CRP") |>
 #'   droplevels()
 #' full_parent_df <- list(df_crp, "not_needed")
 #' cur_col_subset <- list(rep(TRUE, nrow(df_crp)), "not_needed")
@@ -213,22 +213,22 @@ a_count_abnormal_by_marked <- function(df,
 #'
 #' map <- unique(
 #'   df[df$abn_dir %in% c("Low", "High") & df$AVALCAT1 != "", c("PARAMCD", "abn_dir")]
-#' ) %>%
-#'   lapply(as.character) %>%
-#'   as.data.frame() %>%
+#' ) |>
+#'   lapply(as.character) |>
+#'   as.data.frame() |>
 #'   arrange(PARAMCD, abn_dir)
 #'
-#' basic_table() %>%
-#'   split_cols_by("ARMCD") %>%
-#'   split_rows_by("PARAMCD") %>%
+#' basic_table() |>
+#'   split_cols_by("ARMCD") |>
+#'   split_rows_by("PARAMCD") |>
 #'   summarize_num_patients(
 #'     var = "USUBJID",
 #'     .stats = "unique_count"
-#'   ) %>%
+#'   ) |>
 #'   split_rows_by(
 #'     "abn_dir",
 #'     split_fun = trim_levels_to_map(map)
-#'   ) %>%
+#'   ) |>
 #'   count_abnormal_by_marked(
 #'     var = "AVALCAT1",
 #'     variables = list(
@@ -236,20 +236,20 @@ a_count_abnormal_by_marked <- function(df,
 #'       param = "PARAMCD",
 #'       direction = "abn_dir"
 #'     )
-#'   ) %>%
+#'   ) |>
 #'   build_table(df = df)
 #'
-#' basic_table() %>%
-#'   split_cols_by("ARMCD") %>%
-#'   split_rows_by("PARAMCD") %>%
+#' basic_table() |>
+#'   split_cols_by("ARMCD") |>
+#'   split_rows_by("PARAMCD") |>
 #'   summarize_num_patients(
 #'     var = "USUBJID",
 #'     .stats = "unique_count"
-#'   ) %>%
+#'   ) |>
 #'   split_rows_by(
 #'     "abn_dir",
 #'     split_fun = trim_levels_in_group("abn_dir")
-#'   ) %>%
+#'   ) |>
 #'   count_abnormal_by_marked(
 #'     var = "AVALCAT1",
 #'     variables = list(
@@ -257,7 +257,7 @@ a_count_abnormal_by_marked <- function(df,
 #'       param = "PARAMCD",
 #'       direction = "abn_dir"
 #'     )
-#'   ) %>%
+#'   ) |>
 #'   build_table(df = df)
 #'
 #' @export

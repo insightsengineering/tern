@@ -41,40 +41,40 @@ testthat::test_that("summarize_num_patients works as expected with healthy input
   )
 
   # Check with both output
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
-    summarize_num_patients("USUBJID") %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    add_colcounts() |>
+    summarize_num_patients("USUBJID") |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # Check with number of unique patients only
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
-    summarize_num_patients("USUBJID", .stats = c("unique")) %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    add_colcounts() |>
+    summarize_num_patients("USUBJID", .stats = c("unique")) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # Check with number of non-unique patients only
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
-    summarize_num_patients("USUBJID", .stats = c("nonunique")) %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    add_colcounts() |>
+    summarize_num_patients("USUBJID", .stats = c("nonunique")) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # Check with number of unique patients count only
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
-    summarize_num_patients("USUBJID", .stats = c("unique_count")) %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    add_colcounts() |>
+    summarize_num_patients("USUBJID", .stats = c("unique_count")) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
@@ -149,40 +149,40 @@ testthat::test_that("summarize_num_patients with count_by works as expected with
   )
 
   # Check with both output
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
-    summarize_num_patients("USUBJID", count_by = "BY") %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    add_colcounts() |>
+    summarize_num_patients("USUBJID", count_by = "BY") |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # Check with number of unique patients only
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
-    summarize_num_patients("USUBJID", count_by = "BY", .stats = c("unique")) %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    add_colcounts() |>
+    summarize_num_patients("USUBJID", count_by = "BY", .stats = c("unique")) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # Check with number of non-unique patients only
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
-    summarize_num_patients("USUBJID", count_by = "BY", .stats = c("nonunique")) %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    add_colcounts() |>
+    summarize_num_patients("USUBJID", count_by = "BY", .stats = c("nonunique")) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # Check with number of unique patients count only
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
-    summarize_num_patients("USUBJID", count_by = "BY", .stats = c("unique_count")) %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    add_colcounts() |>
+    summarize_num_patients("USUBJID", count_by = "BY", .stats = c("unique_count")) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
@@ -199,10 +199,10 @@ testthat::test_that(
     )
 
     # Check with both output
-    result <- basic_table() %>%
-      split_cols_by("ARM") %>%
-      add_colcounts() %>%
-      summarize_num_patients("USUBJID", count_by = "BY") %>%
+    result <- basic_table() |>
+      split_cols_by("ARM") |>
+      add_colcounts() |>
+      summarize_num_patients("USUBJID", count_by = "BY") |>
       build_table(df)
 
     res <- testthat::expect_silent(result)
@@ -216,10 +216,10 @@ testthat::test_that("summarize_num_patients works with single unnamed .labels/.f
     AGE = c(10, 15, 10, 17, 8, 11, 11, 19, 17)
   )
 
-  result <- basic_table() %>%
-    split_cols_by("ARM") %>%
-    add_colcounts() %>%
-    summarize_num_patients("USUBJID", .stats = "unique_count", .labels = "- Overall -", .formats = "xx.xx") %>%
+  result <- basic_table() |>
+    split_cols_by("ARM") |>
+    add_colcounts() |>
+    summarize_num_patients("USUBJID", .stats = "unique_count", .labels = "- Overall -", .formats = "xx.xx") |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
@@ -236,23 +236,23 @@ testthat::test_that("analyze_num_patients works well for pagination", {
   )
 
   # Check a standard
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM") %>%
-    analyze_num_patients("USUBJID", .stats = c("unique", "nonunique")) %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("ARM") |>
+    analyze_num_patients("USUBJID", .stats = c("unique", "nonunique")) |>
     split_rows_by("AE",
       child_labels = "visible",
       nested = FALSE,
       split_fun = drop_split_levels
-    ) %>%
-    summarize_num_patients("USUBJID", .stats = c("unique", "nonunique")) %>%
-    count_occurrences(vars = "BY", .indent_mods = -1L) %>%
-    add_overall_col(label = "A+B") %>%
-    build_table(df) %>%
+    ) |>
+    summarize_num_patients("USUBJID", .stats = c("unique", "nonunique")) |>
+    count_occurrences(vars = "BY", .indent_mods = -1L) |>
+    add_overall_col(label = "A+B") |>
+    build_table(df) |>
     prune_table()
 
   # Sorting
-  result <- result %>%
-    sort_at_path(path = "AE", cont_n_onecol(2)) %>%
+  result <- result |>
+    sort_at_path(path = "AE", cont_n_onecol(2)) |>
     sort_at_path(path = c("AE", "*", "BY"), score_occurrences_cols(col_indices = 2L))
 
   res <- testthat::expect_silent(result)
@@ -275,27 +275,27 @@ testthat::test_that("analyze_num_patients works well for pagination", {
 
 testthat::test_that("summarize_num_patients works as expected with risk difference column", {
   # One statistic
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
-    split_rows_by("AESOC", child_labels = "visible") %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) |>
+    split_rows_by("AESOC", child_labels = "visible") |>
     summarize_num_patients(
       "USUBJID",
       .stats = "unique",
       riskdiff = TRUE
-    ) %>%
+    ) |>
     build_table(tern_ex_adae)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # Multiple statistics
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
-    split_rows_by("AESOC", child_labels = "visible") %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) |>
+    split_rows_by("AESOC", child_labels = "visible") |>
     summarize_num_patients(
       "USUBJID",
       riskdiff = TRUE
-    ) %>%
+    ) |>
     build_table(tern_ex_adae)
 
   res <- testthat::expect_silent(result)
@@ -304,29 +304,29 @@ testthat::test_that("summarize_num_patients works as expected with risk differen
 
 testthat::test_that("analyze_num_patients works as expected with risk difference column", {
   # One statistic
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) |>
     analyze_num_patients(
       vars = "USUBJID",
       .stats = "unique",
       .labels = c(unique = "Any SAE"),
       riskdiff = TRUE,
       denom = "N_col"
-    ) %>%
+    ) |>
     build_table(tern_ex_adae)
 
   res <- testthat::expect_silent(result)
   testthat::expect_snapshot(res)
 
   # Multiple statistics
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("ARM", split_fun = add_riskdiff("A: Drug X", "B: Placebo")) |>
     analyze_num_patients(
       vars = "USUBJID",
       .labels = c(unique = "Any SAE"),
       riskdiff = TRUE,
       denom = "N_col"
-    ) %>%
+    ) |>
     build_table(tern_ex_adae)
 
   res <- testthat::expect_silent(result)

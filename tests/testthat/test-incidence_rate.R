@@ -4,7 +4,7 @@ df <- data.frame(
   AVAL = c(10.1, 20.4, 15.3, 20.8, 18.7, 23.4),
   ARM = factor(c("A", "A", "A", "B", "B", "B")),
   STRATA1 = factor(c("X", "Y", "Y", "X", "X", "Y"))
-) %>%
+) |>
   dplyr::mutate(n_events = 1 - CNSR)
 
 testthat::test_that("control_incidence_rate works with customized parameters", {
@@ -78,12 +78,12 @@ testthat::test_that("a_incidence_rate works with customized arguments", {
 })
 
 testthat::test_that("estimate_incidence_rate works as expected with default input", {
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM") %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("ARM") |>
     estimate_incidence_rate(
       vars = "AVAL",
       n_events = "n_events"
-    ) %>%
+    ) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
@@ -91,8 +91,8 @@ testthat::test_that("estimate_incidence_rate works as expected with default inpu
 })
 
 testthat::test_that("estimate_incidence_rate works as expected with custom input", {
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM") %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("ARM") |>
     estimate_incidence_rate(
       vars = "AVAL",
       n_events = "n_events",
@@ -106,7 +106,7 @@ testthat::test_that("estimate_incidence_rate works as expected with custom input
       .formats = c(n_rate = "xx.xx (xx.xx)", n_unique = "xx.xx"),
       .labels = c(n_rate = "Total number of applicable adverse events (rate)"),
       .indent_mods = c(n_rate = 3L)
-    ) %>%
+    ) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
@@ -114,14 +114,14 @@ testthat::test_that("estimate_incidence_rate works as expected with custom input
 })
 
 testthat::test_that("estimate_incidence_rate works with default arguments with summarize = TRUE", {
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM") %>%
-    split_rows_by("STRATA1") %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("ARM") |>
+    split_rows_by("STRATA1") |>
     estimate_incidence_rate(
       vars = "AVAL",
       n_events = "n_events",
       summarize = TRUE
-    ) %>%
+    ) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
@@ -129,21 +129,21 @@ testthat::test_that("estimate_incidence_rate works with default arguments with s
 })
 
 testthat::test_that("estimate_incidence_rate works with custom arguments with summarize = TRUE", {
-  result <- basic_table(show_colcounts = TRUE) %>%
-    split_cols_by("ARM") %>%
+  result <- basic_table(show_colcounts = TRUE) |>
+    split_cols_by("ARM") |>
     estimate_incidence_rate(
       vars = "AVAL",
       n_events = "n_events",
       .stats = c("person_years", "n_events", "rate")
-    ) %>%
-    split_rows_by("STRATA1", child_labels = "visible") %>%
+    ) |>
+    split_rows_by("STRATA1", child_labels = "visible") |>
     estimate_incidence_rate(
       vars = "AVAL",
       n_events = "n_events",
       .stats = c("n_unique", "n_rate"),
       summarize = TRUE,
       label_fmt = "%.labels"
-    ) %>%
+    ) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)

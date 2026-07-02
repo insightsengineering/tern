@@ -315,12 +315,12 @@ testthat::test_that("test_proportion_diff returns right result", {
     strata = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
   )
 
-  result <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
+  result <- basic_table() |>
+    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) |>
     test_proportion_diff(
       vars = "rsp",
       method = "cmh", variables = list(strata = "strata")
-    ) %>%
+    ) |>
     build_table(df = dta)
 
   res <- testthat::expect_silent(result)
@@ -335,14 +335,14 @@ testthat::test_that("test_proportion_diff uses alternative argument", {
     strata = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
   )
 
-  result <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
+  result <- basic_table() |>
+    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) |>
     test_proportion_diff(
       vars = "rsp",
       method = "cmh",
       alternative = "greater",
       variables = list(strata = "strata")
-    ) %>%
+    ) |>
     build_table(df = dta)
 
   res <- testthat::expect_silent(result)
@@ -355,12 +355,12 @@ testthat::test_that("test_proportion_diff edge case: all responder by chisq", {
     grp = factor(rep(c("A", "B"), each = 50))
   )
 
-  result <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
+  result <- basic_table() |>
+    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) |>
     test_proportion_diff(
       vars = "rsp",
       method = c("chisq", "schouten", "fisher", "cmh", "cmh_wh")[1]
-    ) %>%
+    ) |>
     build_table(df = dta)
 
   res <- testthat::expect_silent(result)
@@ -373,12 +373,12 @@ testthat::test_that("test_proportion_diff edge case: all responder by schouten",
     grp = factor(rep(c("A", "B"), each = 50))
   )
 
-  result <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
+  result <- basic_table() |>
+    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) |>
     test_proportion_diff(
       vars = "rsp",
       method = c("chisq", "schouten", "fisher", "cmh", "cmh_wh")[2]
-    ) %>%
+    ) |>
     build_table(df = dta)
 
   res <- testthat::expect_silent(result)
@@ -391,14 +391,14 @@ testthat::test_that("test_proportion_diff edge case: all responder by fisher", {
     grp = factor(rep(c("A", "B"), each = 50))
   )
 
-  result <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
+  result <- basic_table() |>
+    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) |>
     test_proportion_diff(
       vars = "rsp",
       var_labels = "Variable Label",
       show_labels = "visible",
       method = c("chisq", "schouten", "fisher", "cmh", "cmh_wh")[3]
-    ) %>%
+    ) |>
     build_table(df = dta)
 
   res <- testthat::expect_silent(result)
@@ -412,15 +412,15 @@ testthat::test_that("test_proportion_diff edge case: all responder by CMH", {
     strata = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
   )
 
-  result <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
+  result <- basic_table() |>
+    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) |>
     test_proportion_diff(
       vars = "rsp",
       var_labels = "Variable Label",
       show_labels = "visible",
       method = c("chisq", "schouten", "fisher", "cmh", "cmh_wh")[4],
       variables = list(strata = "strata")
-    ) %>%
+    ) |>
     build_table(df = dta)
 
   res <- testthat::expect_silent(result)
@@ -434,15 +434,15 @@ testthat::test_that("test_proportion_diff edge case: all responder by CMH with W
     strata = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
   )
 
-  result <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
+  result <- basic_table() |>
+    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) |>
     test_proportion_diff(
       vars = "rsp",
       var_labels = "Variable Label",
       show_labels = "visible",
       method = c("chisq", "schouten", "fisher", "cmh", "cmh_wh")[5],
       variables = list(strata = "strata")
-    ) %>%
+    ) |>
     build_table(df = dta)
 
   res <- testthat::expect_silent(result)
@@ -456,15 +456,15 @@ testthat::test_that("test_proportion_diff edge case: all responder by CMH with S
     strata = factor(rep(c("V", "W", "X", "Y", "Z"), each = 20))
   )
 
-  result <- basic_table() %>%
-    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) %>%
+  result <- basic_table() |>
+    split_cols_by(var = "grp", ref_group = "B", split_fun = ref_group_position("first")) |>
     test_proportion_diff(
       vars = "rsp",
       var_labels = "Variable Label",
       show_labels = "visible",
       method = "cmh_sato",
       variables = list(strata = "strata")
-    ) %>%
+    ) |>
     build_table(df = dta)
 
   res <- testthat::expect_silent(result)

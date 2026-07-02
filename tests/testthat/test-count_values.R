@@ -56,8 +56,8 @@ testthat::test_that("s_count_values for factor gives the same result as for char
 })
 
 testthat::test_that("count_values works as expected with a single value", {
-  result <- basic_table() %>%
-    count_values("Species", values = "setosa") %>%
+  result <- basic_table() |>
+    count_values("Species", values = "setosa") |>
     build_table(iris)
 
   res <- testthat::expect_silent(result)
@@ -70,11 +70,11 @@ testthat::test_that("count_values works as expected with multiple values and var
     y = c("b", "a", "a", "f"),
     stringsAsFactors = FALSE
   )
-  result <- basic_table() %>%
+  result <- basic_table() |>
     count_values(
       c("x", "y"),
       values = c("a", "f")
-    ) %>%
+    ) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
@@ -107,11 +107,11 @@ testthat::test_that("count_values works as expected with multiple values and var
     y = c("b", "a", "a", "f"),
     stringsAsFactors = FALSE
   )
-  result <- basic_table() %>%
+  result <- basic_table() |>
     count_values(
       "x",
       values = TRUE
-    ) %>%
+    ) |>
     build_table(df)
 
   res <- testthat::expect_silent(result)
@@ -119,8 +119,8 @@ testthat::test_that("count_values works as expected with multiple values and var
 })
 
 testthat::test_that("count_values works with denom specified", {
-  result <- basic_table() %>%
-    count_values("Species", values = "setosa", denom = "N_col") %>%
+  result <- basic_table() |>
+    count_values("Species", values = "setosa", denom = "N_col") |>
     build_table(iris)
 
   res <- testthat::expect_silent(result)
@@ -128,34 +128,34 @@ testthat::test_that("count_values works with denom specified", {
 
   # Some more test cases
   case1 <- testthat::expect_silent(
-    basic_table(show_colcounts = TRUE) %>%
-      split_cols_by("ACTARM") %>%
-      count_values("AESER", values = "Y") %>%
+    basic_table(show_colcounts = TRUE) |>
+      split_cols_by("ACTARM") |>
+      count_values("AESER", values = "Y") |>
       build_table(df = tern_ex_adae)
   )
   testthat::expect_snapshot(case1)
 
   case2 <- testthat::expect_silent(
-    basic_table(show_colcounts = TRUE) %>%
-      split_cols_by("ACTARM") %>%
-      count_values("AESER", values = "Y", denom = "N_col") %>%
+    basic_table(show_colcounts = TRUE) |>
+      split_cols_by("ACTARM") |>
+      count_values("AESER", values = "Y", denom = "N_col") |>
       build_table(df = tern_ex_adae, alt_counts_df = tern_ex_adsl)
   )
   testthat::expect_snapshot(case2)
 
   case3 <- testthat::expect_silent(
-    basic_table(show_colcounts = TRUE) %>%
-      split_cols_by("ACTARM") %>%
-      count_values("AESER", values = "Y", denom = "N_row") %>%
+    basic_table(show_colcounts = TRUE) |>
+      split_cols_by("ACTARM") |>
+      count_values("AESER", values = "Y", denom = "N_row") |>
       build_table(df = tern_ex_adae, alt_counts_df = tern_ex_adsl)
   )
   testthat::expect_snapshot(case3)
 
   # case 4 should be the same as case 1 for the rows
   case4 <- testthat::expect_silent(
-    basic_table(show_colcounts = TRUE) %>%
-      split_cols_by("ACTARM") %>%
-      count_values("AESER", values = "Y", denom = "n") %>%
+    basic_table(show_colcounts = TRUE) |>
+      split_cols_by("ACTARM") |>
+      count_values("AESER", values = "Y", denom = "n") |>
       build_table(df = tern_ex_adae, alt_counts_df = tern_ex_adsl)
   )
   testthat::expect_snapshot(case4)

@@ -40,8 +40,8 @@
 #'   ARM = rep(c("A", "B"), each = 6),
 #'   SEX = c("F", "F", "M", "M", "M", "M", "F", "F", "F", "M", "M", "F")
 #' )
-#' df_adsl <- df %>%
-#'   select(USUBJID, ARM) %>%
+#' df_adsl <- df |>
+#'   select(USUBJID, ARM) |>
 #'   unique()
 #'
 #' @name count_occurrences
@@ -104,7 +104,7 @@ s_count_occurrences <- function(df,
     df[[.var]]
   }
   ids <- factor(df[[id]])
-  denom <- match.arg(denom) %>%
+  denom <- match.arg(denom) |>
     switch(
       n = nlevels(ids),
       N_row = .N_row,
@@ -183,7 +183,7 @@ a_count_occurrences <- function(df,
 
   # if empty, return NA
   if (is.null(unlist(x_stats))) {
-    return(in_rows(.list = as.list(rep(NA, length(.stats))) %>% stats::setNames(.stats)))
+    return(in_rows(.list = as.list(rep(NA, length(.stats))) |> stats::setNames(.stats)))
   }
 
   # Fill in formatting defaults
@@ -194,8 +194,8 @@ a_count_occurrences <- function(df,
   .labels <- get_labels_from_stats(.stats, .labels, levels_per_stats)
   .indent_mods <- get_indents_from_stats(.stats, .indent_mods, levels_per_stats)
 
-  x_stats <- x_stats[.stats] %>%
-    .unlist_keep_nulls() %>%
+  x_stats <- x_stats[.stats] |>
+    .unlist_keep_nulls() |>
     setNames(names(.formats))
 
   # Auto format handling
@@ -207,10 +207,10 @@ a_count_occurrences <- function(df,
   in_rows(
     .list = x_stats,
     .formats = .formats,
-    .names = .labels %>% .unlist_keep_nulls(),
+    .names = .labels |> .unlist_keep_nulls(),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
@@ -224,14 +224,14 @@ a_count_occurrences <- function(df,
 #'
 #' @examples
 #' # Create table layout
-#' lyt <- basic_table() %>%
-#'   split_cols_by("ARM") %>%
-#'   add_colcounts() %>%
+#' lyt <- basic_table() |>
+#'   split_cols_by("ARM") |>
+#'   add_colcounts() |>
 #'   count_occurrences(vars = "MHDECOD", .stats = c("count_fraction"))
 #'
 #' # Apply table layout to data and produce `rtable` object
-#' tbl <- lyt %>%
-#'   build_table(df, alt_counts_df = df_adsl) %>%
+#' tbl <- lyt |>
+#'   build_table(df, alt_counts_df = df_adsl) |>
 #'   prune_table()
 #'
 #' tbl
@@ -299,13 +299,13 @@ count_occurrences <- function(lyt,
 #'
 #' @examples
 #' # Layout creating function with custom format.
-#' basic_table() %>%
-#'   add_colcounts() %>%
-#'   split_rows_by("SEX", child_labels = "visible") %>%
+#' basic_table() |>
+#'   add_colcounts() |>
+#'   split_rows_by("SEX", child_labels = "visible") |>
 #'   summarize_occurrences(
 #'     var = "MHDECOD",
 #'     .formats = c("count_fraction" = "xx.xx (xx.xx%)")
-#'   ) %>%
+#'   ) |>
 #'   build_table(df, alt_counts_df = df_adsl)
 #'
 #' @export

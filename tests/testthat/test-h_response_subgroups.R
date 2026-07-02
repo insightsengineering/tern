@@ -1,11 +1,11 @@
 # Local data pre-processing
 preprocess_adrs <- function(adrs, n_records = 20) {
   adrs_labels <- formatters::var_labels(adrs)
-  adrs <- adrs %>%
-    dplyr::filter(PARAMCD == "BESRSPI") %>%
-    dplyr::filter(ARM %in% c("A: Drug X", "B: Placebo")) %>%
-    dplyr::slice(1:n_records) %>%
-    droplevels() %>%
+  adrs <- adrs |>
+    dplyr::filter(PARAMCD == "BESRSPI") |>
+    dplyr::filter(ARM %in% c("A: Drug X", "B: Placebo")) |>
+    dplyr::slice(1:n_records) |>
+    droplevels() |>
     dplyr::mutate(
       # Reorder levels of factor to make the placebo group the reference arm.
       ARM = forcats::fct_relevel(ARM, "B: Placebo"),

@@ -1,5 +1,5 @@
 testthat::test_that("h_glm_poisson glm-fit works with healthy input", {
-  anl <- tern_ex_adtte %>%
+  anl <- tern_ex_adtte |>
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -9,7 +9,7 @@ testthat::test_that("h_glm_poisson glm-fit works with healthy input", {
     variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = NULL)
   )
 
-  mat1 <- summary(result$glm_fit)$coefficients %>% as.data.frame()
+  mat1 <- summary(result$glm_fit)$coefficients |> as.data.frame()
   mat1$coefs <- row.names(mat1)
   rownames(mat1) <- NULL
   names(mat1) <- c("Estimate", "SE", "z_value", "Pr", "coefs")
@@ -19,7 +19,7 @@ testthat::test_that("h_glm_poisson glm-fit works with healthy input", {
 })
 
 testthat::test_that("h_glm_poisson emmeans-fit works with healthy input no offset", {
-  anl <- tern_ex_adtte %>%
+  anl <- tern_ex_adtte |>
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -54,7 +54,7 @@ testthat::test_that("h_glm_poisson fails wrong inputs", {
 })
 
 testthat::test_that("h_glm_poisson glm-fit works with healthy input with covariates", {
-  anl <- tern_ex_adtte %>%
+  anl <- tern_ex_adtte |>
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -64,7 +64,7 @@ testthat::test_that("h_glm_poisson glm-fit works with healthy input with covaria
     variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = c("REGION1"))
   )
 
-  mat1 <- summary(result$glm_fit)$coefficients %>% as.data.frame()
+  mat1 <- summary(result$glm_fit)$coefficients |> as.data.frame()
   mat1$coefs <- row.names(mat1)
   rownames(mat1) <- NULL
   names(mat1) <- c("Estimate", "SE", "z_value", "Pr", "coefs")
@@ -74,7 +74,7 @@ testthat::test_that("h_glm_poisson glm-fit works with healthy input with covaria
 })
 
 testthat::test_that("h_glm_poisson emmeans-fit works with healthy input with covariates", {
-  anl <- tern_ex_adtte %>%
+  anl <- tern_ex_adtte |>
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -91,7 +91,7 @@ testthat::test_that("h_glm_poisson emmeans-fit works with healthy input with cov
 })
 
 testthat::test_that("h_glm_quasipoisson glm-fit works with healthy input", {
-  anl <- tern_ex_adtte %>%
+  anl <- tern_ex_adtte |>
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -101,7 +101,7 @@ testthat::test_that("h_glm_quasipoisson glm-fit works with healthy input", {
     variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = c("REGION1"))
   )
 
-  mat1 <- summary(result$glm_fit)$coefficients %>% as.data.frame()
+  mat1 <- summary(result$glm_fit)$coefficients |> as.data.frame()
   mat1$coefs <- row.names(mat1)
   rownames(mat1) <- NULL
   names(mat1) <- c("Estimate", "SE", "z_value", "Pr", "coefs")
@@ -111,7 +111,7 @@ testthat::test_that("h_glm_quasipoisson glm-fit works with healthy input", {
 })
 
 testthat::test_that("h_glm_quasipoisson emmeans-fit works with healthy input", {
-  anl <- tern_ex_adtte %>%
+  anl <- tern_ex_adtte |>
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -145,7 +145,7 @@ testthat::test_that("h_glm_quasipoisson fails wrong inputs", {
 })
 
 testthat::test_that("h_glm_negbin glm-fit works with healthy input with offset", {
-  anl <- tern_ex_adtte %>%
+  anl <- tern_ex_adtte |>
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -155,7 +155,7 @@ testthat::test_that("h_glm_negbin glm-fit works with healthy input with offset",
     variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = c("REGION1"))
   )
 
-  mat1 <- summary(result$glm_fit)$coefficients %>% as.data.frame()
+  mat1 <- summary(result$glm_fit)$coefficients |> as.data.frame()
   mat1$coefs <- row.names(mat1)
   rownames(mat1) <- NULL
   names(mat1) <- c("Estimate", "SE", "z_value", "Pr", "coefs")
@@ -165,7 +165,7 @@ testthat::test_that("h_glm_negbin glm-fit works with healthy input with offset",
 })
 
 testthat::test_that("h_glm_negbin emmeans-fit works with healthy input no offset", {
-  anl <- tern_ex_adtte %>%
+  anl <- tern_ex_adtte |>
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -199,7 +199,7 @@ testthat::test_that("h_glm_negbin fails wrong inputs", {
 })
 
 testthat::test_that("h_glm_count glm-fit works with healthy input", {
-  anl <- tern_ex_adtte %>%
+  anl <- tern_ex_adtte |>
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -210,7 +210,7 @@ testthat::test_that("h_glm_count glm-fit works with healthy input", {
     distribution = "poisson"
   )
 
-  mat1 <- summary(result$glm_fit)$coefficients %>% as.data.frame()
+  mat1 <- summary(result$glm_fit)$coefficients |> as.data.frame()
   mat1$coefs <- row.names(mat1)
   rownames(mat1) <- NULL
   names(mat1) <- c("Estimate", "SE", "z_value", "Pr", "coefs")
@@ -220,7 +220,7 @@ testthat::test_that("h_glm_count glm-fit works with healthy input", {
 })
 
 testthat::test_that("h_glm_count emmeans-fit works with healthy input", {
-  anl <- tern_ex_adtte %>%
+  anl <- tern_ex_adtte |>
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -256,7 +256,7 @@ testthat::test_that("h_glm_count fails wrong inputs", {
 
 testthat::test_that("h_ppmeans works with healthy input", {
   set.seed(2)
-  anl <- tern_ex_adtte %>%
+  anl <- tern_ex_adtte |>
     dplyr::filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
@@ -304,12 +304,12 @@ testthat::test_that("h_ppmeans works with healthy input", {
 
 testthat::test_that("s_glm_count works with healthy input", {
   set.seed(2)
-  anl <- tern_ex_adtte %>%
+  anl <- tern_ex_adtte |>
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
   result <- s_glm_count(
-    df = anl %>%
+    df = anl |>
       filter(ARMCD == "ARM B"),
     .df_row = anl,
     .var = "AVAL",
@@ -326,12 +326,12 @@ testthat::test_that("s_glm_count works with healthy input", {
 
 testthat::test_that("s_glm_count (negative binomial) works with healthy input", {
   set.seed(2)
-  anl <- tern_ex_adtte %>%
+  anl <- tern_ex_adtte |>
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
   result <- s_glm_count(
-    df = anl %>%
+    df = anl |>
       filter(ARMCD == "ARM B"),
     .df_row = anl,
     .var = "AVAL",
@@ -348,17 +348,17 @@ testthat::test_that("s_glm_count (negative binomial) works with healthy input", 
 
 testthat::test_that("s_glm_count works with no reference group selected.", {
   set.seed(2)
-  anl <- tern_ex_adtte %>%
+  anl <- tern_ex_adtte |>
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
   result <- s_glm_count(
-    df = anl %>%
+    df = anl |>
       filter(ARMCD == "ARM B"),
     .df_row = anl,
     .var = "AVAL",
     .in_ref_col = FALSE,
-    .ref_group = anl %>%
+    .ref_group = anl |>
       filter(ARMCD == "ARM B"),
     variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
     conf_level = 0.95,
@@ -372,17 +372,17 @@ testthat::test_that("s_glm_count works with no reference group selected.", {
 
 testthat::test_that("s_glm_count (negative binomial) works with no reference group selected.", {
   set.seed(2)
-  anl <- tern_ex_adtte %>%
+  anl <- tern_ex_adtte |>
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
 
   result <- s_glm_count(
-    df = anl %>%
+    df = anl |>
       filter(ARMCD == "ARM B"),
     .df_row = anl,
     .var = "AVAL",
     .in_ref_col = FALSE,
-    .ref_group = anl %>%
+    .ref_group = anl |>
       filter(ARMCD == "ARM B"),
     variables = list(arm = "ARMCD", offset = "lgTMATRSK", covariates = c("REGION1")),
     conf_level = 0.95,
@@ -396,7 +396,7 @@ testthat::test_that("s_glm_count (negative binomial) works with no reference gro
 
 testthat::test_that("s_glm_count fails wrong inputs", {
   testthat::expect_error(s_glm_count(
-    df = anl %>%
+    df = anl |>
       filter(ARMCD == "ARM B"),
     .df_row = anl,
     .var = "AVAL",
@@ -409,19 +409,19 @@ testthat::test_that("s_glm_count fails wrong inputs", {
 })
 
 testthat::test_that("summarize_glm_count works with healthy inputs", {
-  anl <- tern_ex_adtte %>%
+  anl <- tern_ex_adtte |>
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
-  result <- basic_table() %>%
-    split_cols_by("ARM", ref_group = "B: Placebo", split_fun = ref_group_position("first")) %>%
-    add_colcounts() %>%
+  result <- basic_table() |>
+    split_cols_by("ARM", ref_group = "B: Placebo", split_fun = ref_group_position("first")) |>
+    add_colcounts() |>
     analyze_vars(
       "AVAL_f",
       var_labels = "Number of exacerbations per patient",
       .stats = c("count_fraction"),
       .formats = c("count_fraction" = "xx (xx.xx%)"),
       .labels = c("Number of exacerbations per patient")
-    ) %>%
+    ) |>
     summarize_glm_count(
       vars = "AVAL",
       variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = NULL),
@@ -432,7 +432,7 @@ testthat::test_that("summarize_glm_count works with healthy inputs", {
       table_names = "unadj",
       .stats = c("rate"),
       .labels = c(rate = "Rate")
-    ) %>%
+    ) |>
     build_table(anl)
 
   res <- testthat::expect_silent(result)
@@ -440,19 +440,19 @@ testthat::test_that("summarize_glm_count works with healthy inputs", {
 })
 
 testthat::test_that("summarize_glm_count (negative binomial) works with healthy inputs", {
-  anl <- tern_ex_adtte %>%
+  anl <- tern_ex_adtte |>
     filter(PARAMCD == "TNE")
   anl$AVAL_f <- as.factor(anl$AVAL)
-  result <- basic_table() %>%
-    split_cols_by("ARM", ref_group = "B: Placebo", split_fun = ref_group_position("first")) %>%
-    add_colcounts() %>%
+  result <- basic_table() |>
+    split_cols_by("ARM", ref_group = "B: Placebo", split_fun = ref_group_position("first")) |>
+    add_colcounts() |>
     analyze_vars(
       "AVAL_f",
       var_labels = "Number of exacerbations per patient",
       .stats = c("count_fraction"),
       .formats = c("count_fraction" = "xx (xx.xx%)"),
       .labels = c("Number of exacerbations per patient")
-    ) %>%
+    ) |>
     summarize_glm_count(
       vars = "AVAL",
       variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = NULL),
@@ -463,7 +463,7 @@ testthat::test_that("summarize_glm_count (negative binomial) works with healthy 
       table_names = "unadj",
       .stats = c("rate"),
       .labels = c(rate = "Rate")
-    ) %>%
+    ) |>
     build_table(anl)
 
   res <- testthat::expect_silent(result)

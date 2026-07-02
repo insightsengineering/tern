@@ -47,19 +47,19 @@ NULL
 #' @examples
 #' library(dplyr)
 #'
-#' anl <- tern_ex_adtte %>% filter(PARAMCD == "TNE")
+#' anl <- tern_ex_adtte |> filter(PARAMCD == "TNE")
 #' anl$AVAL_f <- as.factor(anl$AVAL)
 #'
-#' lyt <- basic_table() %>%
-#'   split_cols_by("ARM", ref_group = "B: Placebo") %>%
-#'   add_colcounts() %>%
+#' lyt <- basic_table() |>
+#'   split_cols_by("ARM", ref_group = "B: Placebo") |>
+#'   add_colcounts() |>
 #'   analyze_vars(
 #'     "AVAL_f",
 #'     var_labels = "Number of exacerbations per patient",
 #'     .stats = c("count_fraction"),
 #'     .formats = c("count_fraction" = "xx (xx.xx%)"),
 #'     .labels = c("Number of exacerbations per patient")
-#'   ) %>%
+#'   ) |>
 #'   summarize_glm_count(
 #'     vars = "AVAL",
 #'     variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = NULL),
@@ -70,7 +70,7 @@ NULL
 #'     table_names = "adjP",
 #'     .stats = c("rate"),
 #'     .labels = c(rate = "Rate")
-#'   ) %>%
+#'   ) |>
 #'   summarize_glm_count(
 #'     vars = "AVAL",
 #'     variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = c("REGION1")),
@@ -84,7 +84,7 @@ NULL
 #'       rate = "Rate", rate_ci = "Rate CI", rate_ratio = "Rate Ratio",
 #'       rate_ratio_ci = "Rate Ratio CI", pval = "p value"
 #'     )
-#'   ) %>%
+#'   ) |>
 #'   summarize_glm_count(
 #'     vars = "AVAL",
 #'     variables = list(arm = "ARM", offset = "lgTMATRSK", covariates = c("REGION1")),
@@ -322,10 +322,10 @@ a_glm_count <- function(df,
   in_rows(
     .list = x_stats,
     .formats = .formats,
-    .names = .labels %>% .unlist_keep_nulls(),
+    .names = .labels |> .unlist_keep_nulls(),
     .stat_names = .stat_names,
-    .labels = .labels %>% .unlist_keep_nulls(),
-    .indent_mods = .indent_mods %>% .unlist_keep_nulls()
+    .labels = .labels |> .unlist_keep_nulls(),
+    .indent_mods = .indent_mods |> .unlist_keep_nulls()
   )
 }
 
