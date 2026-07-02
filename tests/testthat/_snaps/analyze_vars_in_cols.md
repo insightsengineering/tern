@@ -129,7 +129,7 @@
 # analyze_vars_in_cols works well with categorical data
 
     Code
-      build_table(lyt = lyt, df = adpp |> mutate(counter = factor("n")))
+      build_table(lyt = lyt, df = mutate(adpp, counter = factor("n")))
     Output
       STRATA1   A: Drug X   B: Placebo   C: Combination
         SEX                                            
@@ -147,9 +147,9 @@
 ---
 
     Code
-      basic_table(show_colcounts = TRUE) |> split_rows_by(var = "STRATA1",
-        label_pos = "topleft") |> split_cols_by("ARM") |> analyze(vars = "SEX",
-        afun = count_fraction) |> append_topleft("  SEX") |> build_table(adpp)
+      build_table(append_topleft(analyze(split_cols_by(split_rows_by(basic_table(
+        show_colcounts = TRUE), var = "STRATA1", label_pos = "topleft"), "ARM"),
+      vars = "SEX", afun = count_fraction), "  SEX"), adpp)
     Output
       STRATA1   A: Drug X   B: Placebo   C: Combination
         SEX       (N=0)       (N=0)         (N=522)    
