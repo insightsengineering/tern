@@ -30,7 +30,6 @@ repos:
           - gtable
           - labeling
           - lifecycle
-          - magrittr
           - MASS
           - methods
           - nestcolor
