@@ -19,6 +19,7 @@ Authors@R: c(
     person("Pawel", "Rucki", , "pawel.rucki@roche.com", role = "aut"),
     person("Chendi", "Liao", role = "aut"),
     person("Jennifer", "Li", role = "aut"),
+    person("David", "Munoz Tord", , "david.munoztord@mailbox.org", role = "ctb"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
 Description: Table, Listings, and Graphs (TLG) library for common outputs
