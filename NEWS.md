@@ -1,4 +1,4 @@
-# tern 0.9.10.9013
+# tern 0.9.10.9014
 
 ### Enhancements
 * Added `alternative` argument to `s_coxph_pairwise()` to allow one-sided hypothesis testing. 
@@ -15,6 +15,7 @@
 * Fixed one-sided p-values in `prop_cmh()` with Wilson-Hilferty transformation — the sign of the effect was lost, producing incorrect p-values for `alternative = "less"` and `alternative = "greater"`.
 
 ### Miscellaneous
+* Relaxed `fit_logistic()` tests to compare only the formula right-hand side, so they no longer break when `survival::clogit()` changes the internally generated response term. (#1484)
 * Updated `roxygen2` to 8.0.0 and added `@exportS3Method` tags for S3 methods in `decorate_grob.R` and `utils_grid.R`.
 * Converted `s_surv_time()` to exported functions.
 
